@@ -1,0 +1,34 @@
+{
+    "name": "integrated/content-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Content Bundle",
+    "keywords": ["Integrated", "content"],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/framework-bundle": "~2.2",
+        "doctrine/mongodb": "1.0.*",
+        "doctrine/mongodb-odm": "1.0.*",
+        "doctrine/mongodb-odm-bundle": "3.0.*"
+    },
+    "autoload":{
+        "psr-0":{
+            "Integrated\\Bundle\\ContentBundle": ""
+        }
+    },
+    "target-dir": "Integrated/Bundle/ContentBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
