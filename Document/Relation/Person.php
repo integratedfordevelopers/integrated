@@ -5,7 +5,7 @@ use Integrated\Bundle\ContentBundle\Document\File;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * Content type Person
+ * Document type Relation\Person
  *
  * @package Integrated\Bundle\ContentBundle\Document\Relation
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

@@ -4,7 +4,7 @@ namespace Integrated\Bundle\ContentBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * Content type File
+ * Document type File
  *
  * @package Integrated\Bundle\ContentBundle\Document
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

@@ -5,7 +5,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * Abstract base class for content types
+ * Abstract base class for document types
  *
  * @package Integrated\Bundle\ContentBundle\Document
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
