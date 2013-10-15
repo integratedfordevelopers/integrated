@@ -1,7 +1,8 @@
 <?php
 namespace Integrated\Bundle\ContentBundle\Document;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
+    Integrated\Bundle\ContentBundle\Mapping\Annotations as Content;
 
 /**
  * Document type Article
@@ -9,6 +10,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @package Integrated\Bundle\ContentBundle\Document
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\Document(collection="content")
+ * @Content\Document("Article")
  */
 class Article extends AbstractContent
 {

@@ -1,8 +1,9 @@
 <?php
 namespace Integrated\Bundle\ContentBundle\Document;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Common\Collections\ArrayCollection,
+    Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
+    Integrated\Bundle\ContentBundle\Mapping\Annotations as Content;
 
 /**
  * Abstract base class for document types
@@ -36,6 +37,7 @@ abstract class AbstractContent
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(label="Naam")
      */
     protected $name;
 
