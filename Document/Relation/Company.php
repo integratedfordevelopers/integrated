@@ -1,8 +1,9 @@
 <?php
 namespace Integrated\Bundle\ContentBundle\Document\Relation;
 
-use Integrated\Bundle\ContentBundle\Document\File;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
+    Integrated\Bundle\ContentBundle\Document\File,
+    Integrated\Bundle\ContentBundle\Mapping\Annotations as Content;
 
 /**
  * Document type Relation\Company
@@ -10,6 +11,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @package Integrated\Bundle\ContentBundle\Document\Relation
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\Document(collection="content")
+ * @Content\Document("Company")
  */
 class Company extends AbstractRelation
 {
