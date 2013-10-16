@@ -1,4 +1,5 @@
 <?php
+
 /*
 * This file is part of the Integrated package.
 *
@@ -12,7 +13,6 @@ namespace Integrated\Component\Content\Exception;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 interface ExceptionInterface
 {
