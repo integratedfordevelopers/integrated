@@ -67,27 +67,6 @@ class AnnotationsDriver implements DriverInterface
                 }
             }
 
-            while ($class = $class->getParentClass()) {
-
-
-
-
-                foreach ($class->getProperties() as $reflectionProperty) {
-                    /* @var $field Annotations\Field */
-                    $field = $this->reader->getPropertyAnnotation($reflectionProperty, 'FMS\Bundle\ContentBundle\Mapping\Annotations\Field');
-                    if (null !== $field) {
-                        $metadata->addField(
-                            $reflectionProperty->getName(),
-                            array(
-                                'type' => $field->getType(),
-                                'label' => $field->getLabel(),
-                                'required' => $field->getRequired()
-                            )
-                        );
-                    }
-                }
-            }
-
             return $metadata;
         }
 
