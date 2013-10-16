@@ -1,13 +1,20 @@
 <?php
-namespace Integrated\Bundle\ContentBundle\Document\Embedded;
+/*
+* This file is part of the Integrated package.
+*
+* (c) e-Active B.V. <integrated@e-active.nl>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+namespace Integrated\Bundle\ContentBundle\Document\Content\Content\Embedded;
 
-use Integrated\Bundle\ContentBundle\Document\Relation\Person;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
+    Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 
 /**
  * Embedded document Author
  *
- * @package Integrated\Bundle\ContentBundle\Document\Embedded
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\EmbeddedDocument
  */
@@ -21,7 +28,7 @@ class Author
 
     /**
      * @var Person
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Relation\Person")
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person")
      */
     protected $person;
 

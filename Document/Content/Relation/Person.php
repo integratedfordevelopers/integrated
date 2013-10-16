@@ -1,14 +1,21 @@
 <?php
-namespace Integrated\Bundle\ContentBundle\Document\Relation;
+/*
+* This file is part of the Integrated package.
+*
+* (c) e-Active B.V. <integrated@e-active.nl>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Integrated\Bundle\ContentBundle\Document\File,
+    Integrated\Bundle\ContentBundle\Document\Content\File,
     Integrated\Bundle\ContentBundle\Mapping\Annotations as Content;
 
 /**
  * Document type Relation\Person
  *
- * @package Integrated\Bundle\ContentBundle\Document\Relation
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\Document(collection="content")
  * @Content\Document("Person")
@@ -41,13 +48,13 @@ class Person extends AbstractRelation
 
     /**
      * @var array Job
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Embedded\Job", strategy="set")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job", strategy="set")
      */
     protected $jobs = array();
 
     /**
      * @var File
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\File")
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
      */
     protected $picture;
 

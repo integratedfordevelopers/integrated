@@ -1,5 +1,13 @@
 <?php
-namespace Integrated\Bundle\ContentBundle\Document;
+/*
+* This file is part of the Integrated package.
+*
+* (c) e-Active B.V. <integrated@e-active.nl>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
@@ -8,16 +16,15 @@ use Doctrine\Common\Collections\ArrayCollection,
 /**
  * Abstract base class for document types
  *
- * @package Integrated\Bundle\ContentBundle\Document
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\Document(collection="content")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
  * @ODM\DiscriminatorMap({
- *      "Article"="Integrated\Bundle\ContentBundle\Document\Article",
- *      "File"="Integrated\Bundle\ContentBundle\Document\File",
- *      "Relation\Company"="Integrated\Bundle\ContentBundle\Document\Relation\Company",
- *      "Relation\Person"="Integrated\Bundle\ContentBundle\Document\Relation\Person"
+ *      "Article"="Integrated\Bundle\ContentBundle\Document\Content\Article",
+ *      "File"="Integrated\Bundle\ContentBundle\Document\Content\File",
+ *      "Relation\Company"="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company",
+ *      "Relation\Person"="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person"
  * })
  */
 abstract class AbstractContent

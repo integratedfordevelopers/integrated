@@ -1,5 +1,13 @@
 <?php
-namespace Integrated\Bundle\ContentBundle\Document;
+/*
+* This file is part of the Integrated package.
+*
+* (c) e-Active B.V. <integrated@e-active.nl>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Integrated\Bundle\ContentBundle\Mapping\Annotations as Content;
@@ -7,7 +15,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
 /**
  * Document type File
  *
- * @package Integrated\Bundle\ContentBundle\Document
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\Document(collection="content")
  * @Content\Document("File")

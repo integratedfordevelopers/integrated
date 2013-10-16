@@ -1,13 +1,20 @@
 <?php
-namespace Integrated\Bundle\ContentBundle\Document\Relation;
+/*
+* This file is part of the Integrated package.
+*
+* (c) e-Active B.V. <integrated@e-active.nl>
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
+namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
-use Integrated\Bundle\ContentBundle\Document\AbstractContent;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
+    Integrated\Bundle\ContentBundle\Document\Content\AbstractContent;
 
 /**
  * Abstract class for Relations
  *
- * @package Integrated\Bundle\ContentBundle\Document\Relation
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\MappedSuperclass
  */
@@ -39,7 +46,7 @@ abstract class AbstractRelation extends AbstractContent
 
     /**
      * @var array Address
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Embedded\Address", strategy="set")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address", strategy="set")
      */
     protected $addresses = array();
 
