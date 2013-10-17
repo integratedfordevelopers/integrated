@@ -17,14 +17,6 @@ namespace Integrated\Component\Content;
  */
 interface ContentInterface
 {
-//	/**
-//	 * Set the type of the content
-//	 *
-//	 * @param string $type
-//	 * @return ContentInterface
-//	 */
-//	public function setType($type);
-
     /**
 	 * Return the type of the Content
 	 *

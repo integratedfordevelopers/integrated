@@ -76,7 +76,7 @@ interface ContentTypeInterface
 	 *
 	 * @return ContentTypeRelationInterface
 	 */
-	public function getRelation($name, $type = null);
+	public function getRelation($class, $type = null);
 
 	/**
 	 * Check if a relation exist with this content type
@@ -86,5 +86,5 @@ interface ContentTypeInterface
 	 *
 	 * @return bool
 	 */
-	public function hasRelation($name, $type = null);
+	public function hasRelation($class, $type = null);
 }

@@ -30,7 +30,7 @@ interface FormFactoryInterface
 	 * a type has to be specified.
 	 *
 	 * @param string|ContentInterface $class A object or a fully qualified class name of type ContentInterface
-	 * @param string                  $type     The content type name
+	 * @param string                  $type  The content type name
 	 *
 	 * @return FormTypeInterface
 	 *
