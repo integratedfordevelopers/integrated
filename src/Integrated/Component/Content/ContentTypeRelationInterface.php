@@ -12,23 +12,15 @@
 namespace Integrated\Component\Content;
 
 /**
- * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ContentInterface
+interface ContentTypeRelationInterface
 {
-//	/**
-//	 * Set the type of the content
-//	 *
-//	 * @param string $type
-//	 * @return ContentInterface
-//	 */
-//	public function setType($type);
+	/**
+	 * @return ContentTypeInterface
+	 */
+	public function getType();
 
-    /**
-	 * Return the type of the Content
-	 *
-     * @return string
-     */
-    public function getType();
+
+//	public function getMaxContections();
 }
