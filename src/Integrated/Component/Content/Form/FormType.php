@@ -11,9 +11,7 @@
 
 namespace Integrated\Component\Content\Form;
 
-use Integrated\Component\Content\ContentInterface;
 use Integrated\Component\Content\ContentTypeInterface;
-use Integrated\Component\Content\ContentTypeFieldInterface;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
