@@ -18,12 +18,16 @@ use Integrated\Component\Content\ContentTypeInterface;
  */
 class ContentType implements ContentTypeInterface
 {
+	private $class;
+
+	private $type;
+
 	/**
 	 * {@inheritdoc}
 	 */
 	public function getClass()
 	{
-		// TODO: Implement getClass() method.
+		return $this->class;
 	}
 
 	/**
@@ -31,7 +35,7 @@ class ContentType implements ContentTypeInterface
 	 */
 	public function getType()
 	{
-		// TODO: Implement getType() method.
+		return $this->type;
 	}
 
 	/**
@@ -39,7 +43,10 @@ class ContentType implements ContentTypeInterface
 	 */
 	public function create()
 	{
-		// TODO: Implement create() method.
+		$instance = new $this->class();
+		$instance->setType($this->type);
+
+		return $instance;
 	}
 
 	/**
