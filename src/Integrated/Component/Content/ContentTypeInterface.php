@@ -71,7 +71,7 @@ interface ContentTypeInterface
 	/**
 	 * Get the information of the specified relation
 	 *
-	 * @param string|ContentInterface|ContentTypeInterface
+	 * @param string|ContentInterface
 	 * @param string $type
 	 *
 	 * @return ContentTypeRelationInterface
@@ -81,7 +81,7 @@ interface ContentTypeInterface
 	/**
 	 * Check if a relation exist with this content type
 	 *
-	 * @param string|ContentInterface|ContentTypeInterface
+	 * @param string|ContentInterface
 	 * @param string $type
 	 *
 	 * @return bool
