@@ -13,7 +13,7 @@ namespace Integrated\Component\Content\Form;
 
 use Integrated\Component\Content\Exception\UnexpectedTypeException;
 use Integrated\Component\Content\Exception\InvalidArgumentException;
-use Integrated\Component\Content\ContentTypeFactoryInterface;
+use Integrated\Component\Content\ContentTypeResolverInterface;
 use Integrated\Component\Content\ContentInterface;
 
 /**
@@ -21,11 +21,11 @@ use Integrated\Component\Content\ContentInterface;
  */
 class FormFactory implements FormFactoryInterface
 {
-	private $factory;
+	private $resolver;
 
-	public function __construct(ContentTypeFactoryInterface $factory)
+	public function __construct(ContentTypeResolverInterface $resolver)
 	{
-		$this->factory = $factory;
+		$this->resolver = $resolver;
 	}
 
 	/**
@@ -45,6 +45,6 @@ class FormFactory implements FormFactoryInterface
 			throw new InvalidArgumentException(sprintf('The content class "%s" is not a valid class or not subclass of Integrated\\Component\\Content\\ContentInterface.', $class));
 		}
 
-		return new FormType($this->factory->getType($class, $type));
+		return new FormType($this->resolver->getType($class, $type));
 	}
 }
