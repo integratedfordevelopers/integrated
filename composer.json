@@ -11,14 +11,21 @@
             "homepage": "http://www.e-active.nl"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive-integrated/library.git"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4",
         "symfony/framework-bundle": "~2.2",
         "doctrine/mongodb": "1.0.*",
         "doctrine/mongodb-odm": "1.0.*",
-        "doctrine/mongodb-odm-bundle": "3.0.*"
+        "doctrine/mongodb-odm-bundle": "3.0.*",
+        "integrated/library": "dev-master"
     },
     "autoload":{
         "psr-0":{
