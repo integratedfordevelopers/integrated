@@ -9,6 +9,8 @@
 */
 namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
 /**
  * Document ContentType
  *
