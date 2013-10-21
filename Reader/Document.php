@@ -30,7 +30,7 @@ class Document
     /**
      * @var string
      */
-    protected $documentClass = 'Integrated\\Bundle\\ContentBundle\\Document\\AbstractContent';
+    protected $documentClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\AbstractContent';
 
     /**
      * Constructor

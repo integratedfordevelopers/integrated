@@ -1,0 +1,35 @@
+<ul>
+    <li>
+        <a href="{{ path('integrated_content_contenttype_new') }}">
+            Create a new content type
+        </a>
+    </li>
+</ul>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for document in documents %}
+        <tr>
+            <td>Name</td>
+            <td>Type</td>
+            <td>Created</td>
+            <td>
+                Edit Delete
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">
+                No content types added
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
