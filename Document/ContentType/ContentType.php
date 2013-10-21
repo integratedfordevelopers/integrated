@@ -17,7 +17,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\Document(collection="contenttype")
  */
-class ContentType implements ContentTypeInterface
+class ContentType
 {
     /**
      * @var string
