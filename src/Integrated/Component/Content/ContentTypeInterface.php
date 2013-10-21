@@ -27,7 +27,7 @@ interface ContentTypeInterface
     public function getClassType();
 
     /**
-     * @return array
+     * @return ContentTypeFieldInterface[]
      */
     public function getFields();
 
