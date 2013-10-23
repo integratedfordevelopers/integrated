@@ -12,15 +12,14 @@
 namespace Integrated\Component\Content;
 
 /**
- * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ContentTypeFactoryInterface
+interface ContentTypeResolverListInterface extends ContentTypeResolverInterface
 {
-    /**
-     * @param $class
-     * @param null $type
-     * @return ContentTypeInterface
-     */
-    public function getType($class, $type = null);
+	/**
+	 * Get a list of all the content types.
+	 *
+	 * @return ContentTypeIteratorInterface
+	 */
+	public function getTypes();
 }

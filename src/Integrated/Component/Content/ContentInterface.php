@@ -18,6 +18,8 @@ namespace Integrated\Component\Content;
 interface ContentInterface
 {
     /**
+	 * Return the type of the Content
+	 *
      * @return string
      */
     public function getType();

@@ -18,23 +18,73 @@ namespace Integrated\Component\Content;
 interface ContentTypeInterface
 {
     /**
+	 * Get the class of the content type
+	 *
      * @return string
      */
-    public function getClassName();
+    public function getClass();
 
     /**
+	 * Get the type of the content type
+	 *
      * @return string
      */
-    public function getClassType();
+    public function getType();
+
+	/**
+	 * Get a new instance of this content type
+	 *
+	 * @return ContentInterface
+	 */
+	public function create();
 
     /**
+	 * Get all the fields of this content type, the field are returned in order.
+	 *
      * @return ContentTypeFieldInterface[]
      */
     public function getFields();
 
     /**
-     * @param $name
+	 * Get the information of the specified field
+	 *
+     * @param string $name The field name
      * @return ContentTypeFieldInterface
      */
     public function getField($name);
+
+	/**
+	 * Check if a field exist in the content type
+	 *
+	 * @param $name
+	 * @return bool
+	 */
+	public function hasField($name);
+
+	/**
+	 * Get all the relations this content type has.
+	 *
+	 * @return ContentTypeRelationInterface[]
+	 */
+	public function getRelations();
+
+	/**
+	 * Get the information of the specified relation
+	 *
+	 * @param string|ContentInterface
+	 * @param string $type
+	 *
+	 * @return ContentTypeRelationInterface
+	 */
+	public function getRelation($class, $type = null);
+
+	/**
+	 * Check if a relation exist with this content type
+	 *
+	 * @param string|ContentInterface
+	 * @param string $type
+	 *
+	 * @return bool
+	 */
+	public function hasRelation($class, $type = null);
 }
