@@ -1,0 +1,44 @@
+<ul>
+    <li>
+        <a href="{{ path('integrated_content_contenttype_index') }}">
+            Overview
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('integrated_content_contenttype_edit', {'id': contentType.id}) }}">
+            Edit
+        </a>
+    </li>
+</ul>
+<h1>Show</h1>
+<dl>
+    <dt>
+        ClassType
+    </dt>
+    <dd>
+        {{ contentType.classType }}
+    </dd>
+    <dt>
+    ClassName
+    </dt>
+    <dd>
+    {{ contentType.className }}
+    </dd>
+    <dt>
+        Fields
+    </dt>
+    <dd>
+        <ul>
+            {% for field in contentType.fields %}
+            <li>
+                {{ field.name }}
+            </li>
+            {% else %}
+            <li>
+                No fields added
+            </li>
+            {% endfor %}
+        </ul>
+    </dd>
+</dl>
+{{ form(form) }}

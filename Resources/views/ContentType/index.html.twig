@@ -1,6 +1,6 @@
 <ul>
     <li>
-        <a href="{{ path('integrated_content_contenttype_new') }}">
+        <a href="{{ path('integrated_content_contenttype_select') }}">
             Create a new content type
         </a>
     </li>
@@ -17,11 +17,19 @@
     <tbody>
         {% for document in documents %}
         <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Created</td>
             <td>
-                Edit Delete
+                <a href="{{ path('integrated_content_contenttype_show', {'id': document.id}) }}">
+                    {{ document.classType }}
+                </a>
+            </td>
+            <td>
+                {{ document.className }}
+            </td>
+            <td>
+                {{ document.createdAt|date }}
+            </td>
+            <td>
+                <a href="{{ path('integrated_content_contenttype_edit', {'id': document.id}) }}">Edit</a>
             </td>
         </tr>
         {% else %}

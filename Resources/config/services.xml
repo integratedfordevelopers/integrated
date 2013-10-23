@@ -5,20 +5,25 @@
 
     <parameters>
         <parameter key="integrated_content.mapping.metadata.driver.class">Integrated\Bundle\ContentBundle\Mapping\Driver\AnnotationsDriver</parameter>
-        <parameter key="integrated_content.mapping.metadata.factory.class">Integrated\Bundle\ContentBundle\Mapping\Metadata\MetadataFactory</parameter>
+        <parameter key="integrated_content.mapping.metadata.content_type_factory.class">Integrated\Bundle\ContentBundle\Mapping\Metadata\ContentTypeFactory</parameter>
         <parameter key="integrated_content.reader.document.class">Integrated\Bundle\ContentBundle\Reader\Document</parameter>
+        <parameter key="doctrine_mongo_db_param_converter.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
     </parameters>
 
     <services>
         <service id="integrated_content.mapping.metadata.driver" class="%integrated_content.mapping.metadata.driver.class%">
             <argument type="service" id="annotation_reader" />
         </service>
-        <service id="integrated_content.mapping.metadata.factory" class="%integrated_content.mapping.metadata.factory.class%">
+        <service id="integrated_content.mapping.metadata.content_type_factory" class="%integrated_content.mapping.metadata.content_type_factory.class%">
             <argument type="service" id="integrated_content.mapping.metadata.driver" />
         </service>
         <service id="integrated_content.reader.document" class="%integrated_content.reader.document.class%">
             <argument type="service" id="doctrine_mongodb" />
-            <argument type="service" id="integrated_content.mapping.metadata.factory" />
+            <argument type="service" id="integrated_content.mapping.metadata.content_type_factory" />
+        </service>
+        <service id="doctrine_mongo_db_param_converter" class="%doctrine_mongo_db_param_converter.class%">
+            <argument type="service" id="doctrine_mongodb" />
+            <tag name="request.param_converter" converter="doctrine.odm" />
         </service>
     </services>
 </container>

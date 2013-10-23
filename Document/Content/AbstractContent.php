@@ -12,6 +12,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection,
     Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
     Integrated\Bundle\ContentBundle\Mapping\Annotations as Content;
+use Integrated\Component\Content\ContentInterface;
 
 /**
  * Abstract base class for document types
@@ -27,7 +28,7 @@ use Doctrine\Common\Collections\ArrayCollection,
  *      "Relation\Person"="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person"
  * })
  */
-abstract class AbstractContent
+abstract class AbstractContent implements ContentInterface
 {
     /**
      * @var string

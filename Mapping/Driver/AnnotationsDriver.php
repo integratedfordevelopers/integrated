@@ -1,9 +1,9 @@
 <?php
 namespace Integrated\Bundle\ContentBundle\Mapping\Driver;
 
-use Doctrine\Common\Annotations\Reader,
-    Integrated\Bundle\ContentBundle\Mapping\Metadata\Metadata,
-    Integrated\Bundle\ContentBundle\Mapping\Annotations;
+use Doctrine\Common\Annotations\Reader;
+use Integrated\Bundle\ContentBundle\Mapping\Annotations;
+use Integrated\Bundle\ContentBundle\Mapping\Metadata;
 
 /**
  * AnnotationsDriver for mapping documents
@@ -42,32 +42,31 @@ class AnnotationsDriver implements DriverInterface
      * Load metadata for class
      *
      * @param \ReflectionClass $class
-     * @return Metadata|null
+     * @return Document|null
      */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
         /* @var $document Annotations\Document */
         $document = $this->reader->getClassAnnotation($class, $this->documentClass);
         if (null !== $document) {
-            $metadata = new Metadata();
-            $metadata->setName($document->getName());
+            $contentType = new Metadata\ContentType();
+            $contentType->setClassName($class->getName())->setClassType($document->getName());
 
             foreach ($class->getProperties() as $reflectionProperty) {
                 /* @var $field Annotations\Field */
                 $field = $this->reader->getPropertyAnnotation($reflectionProperty, $this->fieldClass);
                 if (null !== $field) {
-                    $metadata->addField(
-                        $reflectionProperty->getName(),
-                        array(
-                            'type' => $field->getType(),
-                            'label' => $field->getLabel(),
-                            'required' => $field->getRequired()
-                        )
-                    );
+                    $contentTypeField = new Metadata\ContentTypeField();
+                    $contentTypeField->setName($reflectionProperty->getName())
+                        ->setType($field->getType())
+                        ->setLabel($field->getLabel())
+                        ->setRequired($field->getRequired());
+                    $field->setType($field->getType())->setLabel($field->getLabel());
+                    $contentType->addField($contentTypeField);
                 }
             }
 
-            return $metadata;
+            return $contentType;
         }
 
         return null;

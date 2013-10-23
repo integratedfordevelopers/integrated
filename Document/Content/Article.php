@@ -24,6 +24,7 @@ class Article extends AbstractContent
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(label="Subtitle")
      */
     protected $subtitle;
 

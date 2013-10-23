@@ -1,8 +1,8 @@
 <?php
 namespace Integrated\Bundle\ContentBundle\Reader;
 
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry,
-    Integrated\Bundle\ContentBundle\Mapping\Metadata\MetadataFactory;
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Integrated\Bundle\ContentBundle\Mapping\Metadata;
 
 /**
  * Reader for metadata of the documents
@@ -18,9 +18,9 @@ class Document
     protected $managerRegistry;
 
     /**
-     * @var MetadataFactory
+     * @var Metadata\ContentTypeFactory
      */
-    protected $metadataFactory;
+    protected $contentTypeFactory;
 
     /**
      * @var array
@@ -36,12 +36,12 @@ class Document
      * Constructor
      *
      * @param ManagerRegistry $managerRegistry
-     * @param MetadataFactory $metadataFactory
+     * @param Metadata\ContentTypeFactory $metadataFactory
      */
-    public function __construct(ManagerRegistry $managerRegistry, MetadataFactory $metadataFactory)
+    public function __construct(ManagerRegistry $managerRegistry, Metadata\ContentTypeFactory $contentTypeFactory)
     {
         $this->managerRegistry = $managerRegistry;
-        $this->metadataFactory = $metadataFactory;
+        $this->contentTypeFactory = $contentTypeFactory;
     }
 
     /**
@@ -58,7 +58,7 @@ class Document
                 $reflection = new \ReflectionClass($class);
                 if ($reflection->isSubclassOf($this->documentClass)) {
                     if ($reflection->isInstantiable()) {
-                        $metadata = $this->metadataFactory->build($class);
+                        $metadata = $this->contentTypeFactory->build($class);
                         if (null !== $metadata) {
                             $this->documents[$class] = $metadata;
                         }

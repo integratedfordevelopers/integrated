@@ -8,10 +8,6 @@
         <default key="_controller">IntegratedContentBundle:ContentType:index</default>
     </route>
 
-    <route id="integrated_content_contenttype_show" path="/{id}" methods="GET">
-        <default key="_controller">IntegratedContentBundle:ContentType:show</default>
-    </route>
-
     <route id="integrated_content_contenttype_select" path="/select" methods="GET">
         <default key="_controller">IntegratedContentBundle:ContentType:select</default>
     </route>
@@ -28,8 +24,17 @@
         <default key="_controller">IntegratedContentBundle:ContentType:edit</default>
     </route>
 
+    <route id="integrated_content_contenttype_update" path="/{id}" methods="PUT">
+        <default key="_controller">IntegratedContentBundle:ContentType:update</default>
+    </route>
+
     <route id="integrated_content_contenttype_delete" path="/{id}" methods="DELETE">
         <default key="_controller">IntegratedContentBundle:ContentType:delete</default>
+    </route>
+
+
+    <route id="integrated_content_contenttype_show" path="/{id}" methods="GET">
+        <default key="_controller">IntegratedContentBundle:ContentType:show</default>
     </route>
 
 

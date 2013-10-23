@@ -10,9 +10,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request,
-    Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Integrated\Bundle\ContentBundle\Form\Type as Form;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Mapping\Metadata;
 
 class ContentTypeController extends Controller
 {
@@ -22,9 +25,15 @@ class ContentTypeController extends Controller
     protected $contentTypeClass = 'Integrated\\Bundle\\ContentBundle\\Document\\ContentType\\ContentType';
 
     /**
+     * @var \Integrated\Bundle\ContentBundle\Reader\Document
+     */
+    protected $reader;
+
+    /**
      * Lists all the ContentType documents
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Template()
+     * @return array
      */
     public function indexAction()
     {
@@ -33,67 +42,275 @@ class ContentTypeController extends Controller
 
         $documents = $dm->getRepository($this->contentTypeClass)->findAll();
 
-        return $this->render('IntegratedContentBundle:ContentType:index.html.twig', array('documents' => $documents));
-    }
-
-    /**
-     * Finds and displays a ContentType document
-     *
-     * @param ContentType $contentType
-     * @return array
-     */
-    public function showAction(ContentType $contentType)
-    {
         return array(
-            'contentType' => $contentType
+            'documents' => $documents
         );
     }
 
     /**
      * Display a list of Content documents
+     *
+     * @Template()
+     * @return array
      */
     public function selectAction()
     {
+        // Get all the document types
+        $documents = $this->getReader()->readAll();
 
+        return array(
+            'documents' => $documents
+        );
+    }
+
+    /**
+     * Finds and displays a ContentType document
+     *
+     * @Template()
+     * @param ContentType $contentType
+     * @return array
+     */
+    public function showAction(ContentType $contentType)
+    {
+        // Create form
+        $form = $this->createDeleteForm($contentType->getId());
+
+        return array(
+            'form' => $form->createView(),
+            'contentType' => $contentType
+        );
     }
 
     /**
      * Displays a form to create a new ContentType document
+     *
+     * @Template()
+     * @param Request $request
+     * @return array
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
+        // Validate request based on document param
+        $documents = $this->getReader()->readAll();
+        if (!isset($documents[$request->get('className')])) {
+            return $this->redirect($this->generateUrl('integrated_content_contenttype_select'));
+        }
 
+        /* @var $metadata Metadata\ContentType */
+        $metadata = $documents[$request->get('className')];
+
+        // Create contentType
+        $contentType = new ContentType();
+        $contentType->setClassName($metadata->getClassName());
+
+        // Create form
+        $form = $this->createCreateForm($contentType, $metadata);
+
+        return array(
+            'form' => $form->createView()
+        );
     }
 
     /**
      * Creates a new ContentType document
+     *
+     * @Template("IntegratedContentBundle:ContentType:new.html.twig")
+     * @param Request $request
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createAction(Request $request)
     {
+        // Validate request based on document param
+        $documents = $this->getReader()->readAll();
+        $formData = $request->get('content_type');
+        if (!isset($documents[$formData['className']])) {
+            return $this->redirect($this->generateUrl('integrated_content_contenttype_select'));
+        }
 
+        /* @var $metadata Metadata\ContentType */
+        $metadata = $documents[$formData['className']];
+
+        // Create contentType
+        $contentType = new ContentType();
+        $contentType->setClassName($metadata->getClassName());
+
+        // Create form
+        $form = $this->createCreateForm($contentType, $metadata);
+
+        // Validate request
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+
+            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+            $dm = $this->get('doctrine_mongodb')->getManager();
+            $dm->persist($contentType);
+            $dm->flush();
+
+            return $this->redirect($this->generateUrl('integrated_content_contenttype_show', array('id' => $contentType->getId())));
+        }
+
+        return array(
+            'form' => $form->createView()
+        );
     }
 
     /**
      * Display a form to edit an existing ContentType document
+     *
+     * @Template
+     * @param ContentType $contentType
+     * @return array
      */
     public function editAction(ContentType $contentType)
     {
+        // Get all the document types
+        $documents = $this->getReader()->readAll();
 
+        /* @var $metadata Metadata\ContentType */
+        $metadata = $documents[$contentType->getClassName()];
+
+        // Create form
+        $form = $this->createEditForm($contentType, $metadata);
+
+        return array(
+            'form' => $form->createView(),
+            'contentType' => $contentType
+        );
     }
 
     /**
      * Edits an existing ContentType document
      *
+     * @Template("IntegratedContentBundle:ContentType:edit.html.twig")
      * @param Request $request
      * @param ContentType $contentType
+     * @return array|\Symfony\Component\HttpFoundation\Response
      */
     public function updateAction(Request $request, ContentType $contentType)
     {
+        // Get all the document types
+        $documents = $this->getReader()->readAll();
 
+        /* @var $metadata Metadata\ContentType */
+        $metadata = $documents[$contentType->getClassName()];
+
+        // Create form
+        $form = $this->createEditForm($contentType, $metadata);
+
+        // Validate request
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+
+            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+            $dm = $this->get('doctrine_mongodb')->getManager();
+            $dm->flush();
+
+            return $this->redirect($this->generateUrl('integrated_content_contenttype_show', array('id' => $contentType->getId())));
+        }
+
+        return array(
+            'form' => $form->createView(),
+            'contentType' => $contentType
+        );
     }
 
+    /**
+     * Deletes a ContentType document
+     *
+     * @param Request $request
+     * @param ContentType $contentType
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteAction(Request $request, ContentType $contentType)
     {
+        $form = $this->createDeleteForm($contentType->getId());
+        $form->handleRequest($request);
 
+        if ($form->isValid()) {
+
+            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+            $dm = $this->get('doctrine_mongodb')->getManager();
+            $dm->remove($contentType);
+            $dm->flush();
+        }
+
+        return $this->redirect($this->generateUrl('integrated_content_contenttype_index'));
+    }
+
+    /**
+     * Get reader document form service container
+     *
+     * @return \Integrated\Bundle\ContentBundle\Reader\Document
+     */
+    protected function getReader()
+    {
+        if (null === $this->reader) {
+            $this->reader = $this->get('integrated_content.reader.document');
+        }
+
+        return $this->reader;
+    }
+
+    /**
+     * Creates a form to create a ContentType document
+     *
+     * @param ContentType $contentType
+     * @param Metadata\ContentType $metadata
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createCreateForm(ContentType $contentType, Metadata\ContentType $metadata)
+    {
+        $form = $this->createForm(
+            new Form\ContentType($metadata),
+            $contentType,
+            array(
+                'action' => $this->generateUrl('integrated_content_contenttype_create'),
+                'method' => 'POST',
+            )
+        );
+
+        $form->add('submit', 'submit', array('label' => 'Create'));
+
+        return $form;
+    }
+
+    /**
+     * Creates a form to edit a ContentType document.
+     *
+     * @param ContentType $contentType
+     * @param Metadata\ContentType $metadata
+     * @return \Symfony\Component\Form\Form
+     */
+    private function createEditForm(ContentType $contentType, Metadata\ContentType $metadata)
+    {
+        $form = $this->createForm(
+            new Form\ContentType($metadata),
+            $contentType,
+            array(
+                'action' => $this->generateUrl('integrated_content_contenttype_update', array('id' => $contentType->getId())),
+                'method' => 'PUT',
+            )
+        );
+
+        $form->add('submit', 'submit', array('label' => 'Update'));
+
+        return $form;
+    }
+
+    /**
+     * Creates a form to delete a Kitty entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('integrated_content_contenttype_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm()
+            ;
     }
 }

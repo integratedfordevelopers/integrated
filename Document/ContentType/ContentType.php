@@ -10,14 +10,18 @@
 namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Component\Content\ContentTypeInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 /**
  * Document ContentType
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="contenttype")
+ * @ODM\Document(collection="content_type")
+ * @MongoDBUnique(fields="classType")
  */
-class ContentType
+class ContentType implements ContentTypeInterface
 {
     /**
      * @var string
@@ -28,25 +32,27 @@ class ContentType
     /**
      * @var string The class name of the document type
      * @ODM\String
+     * @Assert\NotBlank()
      */
-    protected $type;
+    protected $className;
 
     /**
      * @var string
      * @ODM\String
      * @ODM\UniqueIndex
+     * @Assert\NotBlank()
      */
-    protected $name;
+    protected $classType;
 
     /**
-     * @var array Embedded\Field
-     * @ODM\EmbedMany(targetDocument="FMS\Bundle\ContentTypeBundle\Document\Embedded\Field", strategy="set")
+     * @var Embedded\Field[]
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field", strategy="set")
      */
     protected $fields = array();
 
     /**
      * @var array Embedded\Reference
-     * @ODM\EmbedMany(targetDocument="FMS\Bundle\ContentTypeBundle\Document\Embedded\Reference", strategy="set")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Reference", strategy="set")
      */
     protected $references = array();
 
@@ -87,57 +93,62 @@ class ContentType
     }
 
     /**
-     * Get the type of the document
+     * Get the className of the document
      *
      * @return string The class name of the document type
      */
-    public function getType()
+    public function getClassName()
     {
-        return $this->type;
+        return $this->className;
     }
 
     /**
-     * Set the type of the document
+     * Set the className of the document
      *
-     * @param string $type The class name of the document type
+     * @param string $className The class name of the document type
      * @return $this
      */
-    public function setType($type)
+    public function setClassName($className)
     {
-        $this->type = $type;
+        $this->className = $className;
         return $this;
     }
 
     /**
-     * Get the name of the document
+     * Get the classType of the document
      *
      * @return string
      */
-    public function getName()
+    public function getClassType()
     {
-        return $this->name;
+        return $this->classType;
     }
 
     /**
-     * Set the name of the document
+     * Set the classType of the document
      *
-     * @param string $name
+     * @param string $classType
      * @return $this
      */
-    public function setName($name)
+    public function setClassType($classType)
     {
-        $this->name = $name;
+        $this->classType = $classType;
         return $this;
     }
 
     /**
      * Get the fields of the document
      *
-     * @return array Embedded\Field
+     * @return Embedded\Field[]
      */
     public function getFields()
     {
         return $this->fields;
+    }
+
+    public function getField($name)
+    {
+        //todo implement
     }
 
     /**

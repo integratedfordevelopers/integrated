@@ -9,7 +9,7 @@ use Integrated\Bundle\ContentBundle\Mapping\Driver;
  * @package Integrated\Bundle\ContentBundle\Mapping\Metadata
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class MetadataFactory
+class ContentTypeFactory
 {
     /**
      * @var Driver\DriverInterface
