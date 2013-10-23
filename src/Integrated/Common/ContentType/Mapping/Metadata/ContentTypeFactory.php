@@ -9,19 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Component\Content\Mapping\Metadata;
+namespace Integrated\Common\ContentType\Mapping\Metadata;
 
-use Integrated\Component\Content\Mapping\Driver\DriverInterface;
+use Integrated\Common\ContentType\Mapping\Driver;
 
 /**
- * Factory for metadata
+ * Factory for ContentType metadata
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class MetadataFactory
+class ContentTypeFactory
 {
     /**
-     * @var DriverInterface
+     * @var Driver\DriverInterface
      */
     protected $driver;
 
@@ -31,9 +31,9 @@ class MetadataFactory
     protected $loadedMetadata = array();
 
     /**
-     * @param DriverInterface $driver
+     * @param Driver\DriverInterface $driver
      */
-    public function __construct(DriverInterface $driver)
+    public function __construct(Driver\DriverInterface $driver)
     {
         $this->driver = $driver;
     }

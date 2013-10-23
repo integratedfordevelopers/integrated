@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Component\Content\Mapping\Annotations;
+namespace Integrated\Common\ContentType\Mapping\Annotations;
 
 /**
  * Annotation for defining field options for properties of a document

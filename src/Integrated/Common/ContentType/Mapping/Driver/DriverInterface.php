@@ -10,7 +10,7 @@
  */
 
 
-namespace Integrated\Component\Content\Mapping\Driver;
+namespace Integrated\Common\ContentType\Mapping\Driver;
 
 /**
  * Interface for mapping drivers
