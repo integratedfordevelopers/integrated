@@ -9,11 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Component\Content\Exception;
+namespace Integrated\Component\Content;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
+final class ContentType
 {
+	const MAPPED_NONE = 0;
+
+	const MAPPED_ONE  = 1;
+
+	const MAPPED_MANY = 2;
 }
