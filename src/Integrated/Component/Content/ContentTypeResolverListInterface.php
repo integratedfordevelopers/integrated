@@ -17,9 +17,9 @@ namespace Integrated\Component\Content;
 interface ContentTypeResolverListInterface extends ContentTypeResolverInterface
 {
 	/**
-	 * Get a list of all the conten types
+	 * Get a list of all the content types.
 	 *
-	 * @return ContentTypeInterface[]
+	 * @return ContentTypeIteratorInterface
 	 */
 	public function getTypes();
 }

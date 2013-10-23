@@ -16,12 +16,6 @@ namespace Integrated\Component\Content;
  */
 interface ContentTypeRelationInterface
 {
-	const MAPPED_NONE = 0;
-
-	const MAPPED_ONE  = 1;
-
-	const MAPPED_MANY = 2;
-
 //	/**
 //	 * Return the name/type op the relation
 //	 *
@@ -50,9 +44,9 @@ interface ContentTypeRelationInterface
 	 * 1 - one
 	 * 2 - many
 	 *
-	 * @see ContentTypeRelationInterface::MAPPED_NONE
-	 * @see ContentTypeRelationInterface::MAPPED_ONE
-	 * @see ContentTypeRelationInterface::MAPPED_MANY
+	 * @see ContentType::MAPPED_NONE
+	 * @see ContentType::MAPPED_ONE
+	 * @see ContentType::MAPPED_MANY
 	 *
 	 * @return int
 	 */
