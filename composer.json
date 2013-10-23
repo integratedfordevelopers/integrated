@@ -20,7 +20,11 @@
 	 	"doctrine/mongodb-odm": "1.0.*"
     },
     "autoload":{
-		"psr-0": { "Integrated\\Component\\": "src/" }
+		"psr-0": {
+			"Integrated\\MongoDB\\ContentType\\": "src/",
+			"Integrated\\Common\\Content\\": "src/",
+			"Integrated\\Common\\ContentType\\": "src/"
+		}
     },
     "extra": {
         "branch-alias": {
