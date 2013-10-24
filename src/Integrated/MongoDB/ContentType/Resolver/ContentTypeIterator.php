@@ -36,7 +36,8 @@ class ContentTypeIterator implements ContentTypeIteratorInterface
 	 */
 	public function current()
 	{
-		if (null === $this->cursor->current() && $this->cursor->valid()) {
+		if (null === $this->current && $this->cursor->valid()) {
+			// lazy load and cache the current content type
 			$this->current = $this->cursor->current();
 		}
 

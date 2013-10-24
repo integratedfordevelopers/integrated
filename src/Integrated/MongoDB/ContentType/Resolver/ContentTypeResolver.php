@@ -12,6 +12,10 @@
 namespace Integrated\MongoDB\Contenttype\Resolver;
 
 use Integrated\Common\ContentType\Resolver\ContentTypeResolverListInterface;
+use Integrated\MongoDB\ContentType\Exception\ExceptionInterface;
+use Integrated\MongoDB\ContentType\Exception\InvalidArgumentException;
+use Integrated\MongoDB\ContentType\Exception\UnexpectedTypeException;
+
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
@@ -19,7 +23,17 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class ContentTypeResolver implements ContentTypeResolverListInterface
 {
+	const CONTENT_TYPE_INTERFACE = 'Integrated\\Component\\Content\\ContentTypeInterface';
+
+	/**
+	 * @var DocumentRepository
+	 */
 	protected $repository;
+
+	/**
+	 * @var array
+	 */
+	protected $types = array();
 
 	/**
 	 * Create a ContentTypeResolver based on a MongoDB DocumentRepository
@@ -28,13 +42,15 @@ class ContentTypeResolver implements ContentTypeResolverListInterface
 	 * or else the ContentTypeResolver will throw a exception.
 	 *
 	 * @param DocumentRepository $repository
+	 *
+	 * @throws InvalidArgumentException if the document class does implement the correct interface
 	 */
 	public function __construct(DocumentRepository $repository)
 	{
 		$reflection = new \ReflectionClass($repository->getClassName());
 
-		if (!$reflection->implementsInterface('Integrated\Component\Content\ContentTypeInterface')) {
-			throw new \Exception(); // @todo good exception
+		if (!$reflection->implementsInterface(self::CONTENT_TYPE_INTERFACE)) {
+			throw new InvalidArgumentException(sprintf('The document class "%s" of the DocumentRepository does not implement the "%s" interface.', $repository->getClassName(), self::CONTENT_TYPE_INTERFACE));
 		}
 
 		$this->repository = $repository;
@@ -45,11 +61,25 @@ class ContentTypeResolver implements ContentTypeResolverListInterface
 	 */
 	public function getType($class, $type)
 	{
-		if (null !== ($obj = $this->repository->findOneBy(['class' => $class, 'type' => $type]))) {
-			return $obj;
+		if (!is_string($class)) {
+			throw new UnexpectedTypeException($class, 'string');
+  		}
+
+		if (!is_string($type)) {
+			throw new UnexpectedTypeException($type, 'string');
+  		}
+
+		$key = json_encode(['class' => $class, 'type' => $type]);
+
+		if (!isset($this->types[$key])) {
+			if (null === ($type = $this->repository->findOneBy(['class' => $class, 'type' => $type]))) {
+				throw new InvalidArgumentException(sprintf('Could not load content type bases on the given class "%s" and type "%s"', $class, $type));
+			}
+
+			$this->types[$key] = $type;
 		}
 
-		throw new \Exception(); // @todo good exception
+		return $this->types[$key];
 	}
 
 	/**
@@ -57,7 +87,15 @@ class ContentTypeResolver implements ContentTypeResolverListInterface
 	 */
 	public function hasType($class, $type)
 	{
-		return (bool) $this->repository->findBy(['class' => $class, 'type' => $type])->count();
+		try {
+			$this->getType($class, $type);
+		} catch (UnexpectedTypeException $e) {
+			throw $e;
+		} catch (ExceptionInterface $e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

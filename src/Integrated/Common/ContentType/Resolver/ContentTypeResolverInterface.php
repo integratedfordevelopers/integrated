@@ -11,6 +11,8 @@
 
 namespace Integrated\Common\ContentType\Resolver;
 
+use Integrated\MongoDB\ContentType\Exception\InvalidArgumentException;
+use Integrated\MongoDB\ContentType\Exception\UnexpectedTypeException;
 use Integrated\MongoDB\ContentType\Resolver\ContentTypeIterator;
 
 /**
@@ -25,6 +27,9 @@ interface ContentTypeResolverInterface
 	 * @param string $type  The content type name
 	 *
      * @return ContentTypeIterator
+	 *
+	 * @throws UnexpectedTypeException  if the passed arguments are not strings
+	 * @throws InvalidArgumentException if the content type can not be found
      */
     public function getType($class, $type);
 
@@ -35,6 +40,8 @@ interface ContentTypeResolverInterface
 	 * @param string $type  The content type name
 	 *
      * @return bool
+	 *
+	 * @throws UnexpectedTypeException  if the passed arguments are not strings
 	 */
 	public function hasType($class, $type);
 }
