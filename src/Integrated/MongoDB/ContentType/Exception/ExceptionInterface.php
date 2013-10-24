@@ -11,9 +11,11 @@
 
 namespace Integrated\MongoDB\ContentType\Exception;
 
+use Integrated\Common\ContentType\Exception\ExceptionInterface as BaseExceptionInterface;
+
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-interface ExceptionInterface
+interface ExceptionInterface extends BaseExceptionInterface
 {
 }
