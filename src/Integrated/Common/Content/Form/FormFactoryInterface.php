@@ -11,7 +11,6 @@
 
 namespace Integrated\Common\Content\Form;
 
-
 use Integrated\Common\Content\Exception\UnexpectedTypeException;
 use Integrated\Common\Content\Exception\InvalidArgumentException;
 use Integrated\Common\Content\ContentInterface;
