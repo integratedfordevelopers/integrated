@@ -26,6 +26,8 @@ class FormType implements FormTypeInterface
 {
 	protected $contentType;
 
+	protected $name = null;
+
 	/**
 	 * @param ContentTypeInterface $contentType
 	 */
@@ -87,6 +89,11 @@ class FormType implements FormTypeInterface
 	 */
 	public function getName()
 	{
-		return $this->contentType->getClass() . '::' . $this->contentType->getType();
+		if (null === $this->name) {
+			$this->name = preg_replace('#[^a-zA-Z0-9\-_]#', '_', $this->contentType->getClass() . '__' . $this->contentType->getType());
+			$this->name = strtolower($this->name);
+		}
+
+		return $this->name;
 	}
 }

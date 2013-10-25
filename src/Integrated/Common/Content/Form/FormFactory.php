@@ -41,10 +41,14 @@ class FormFactory implements FormFactoryInterface
 		if ($class instanceof ContentInterface) {
 			$class = get_class($class);
 		} elseif (!is_string($class)) {
-			throw new UnexpectedTypeException($class, 'string or Integrated\\Component\\Content\\ContentInterface');
-		} elseif (!class_exists($class) || !is_subclass_of($class, 'Integrated\\Component\\Content\\ContentInterface')) {
-			throw new InvalidArgumentException(sprintf('The content class "%s" is not a valid class or not subclass of Integrated\\Component\\Content\\ContentInterface.', $class));
+			throw new UnexpectedTypeException($class, 'string or Integrated\Commont\Content\ContentInterface');
+		} elseif (!class_exists($class) || !is_subclass_of($class, 'Integrated\Common\Content\ContentInterface')) {
+			throw new InvalidArgumentException(sprintf('The content class "%s" is not a valid class or not subclass of Integrated\Commont\Content\ContentInterface.', $class));
 		}
+
+		if (!is_string($type)) {
+			throw new UnexpectedTypeException($type, 'string');
+  		}
 
 		return new FormType($this->resolver->getType($class, $type));
 	}
