@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Reader;
+namespace Integrated\Common\Content\Reader;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Integrated\Common\ContentType\Mapping\Metadata;
@@ -39,13 +39,13 @@ class Document
     /**
      * @var string
      */
-    protected $documentClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\AbstractContent';
+    protected $contentInterface = 'Integrated\\Common\\Content\\ContentInterface';
 
     /**
      * Constructor
      *
      * @param ManagerRegistry $managerRegistry
-     * @param Metadata\ContentTypeFactory $metadataFactory
+     * @param Metadata\ContentTypeFactory $contentTypeFactory
      */
     public function __construct(ManagerRegistry $managerRegistry, Metadata\ContentTypeFactory $contentTypeFactory)
     {
@@ -54,7 +54,7 @@ class Document
     }
 
     /**
-     * Read all the Document Types and return their metadata
+     * Read all the document that implements the ContentInterface and return their metadata
      *
      * @return array
      */
@@ -71,8 +71,8 @@ class Document
                 // Create new reflection class
                 $reflection = new \ReflectionClass($class);
 
-                // Class should be subclass of documentClass
-                if ($reflection->isSubclassOf($this->documentClass)) {
+                // Class implements ContentInterface
+                if ($reflection->implementsInterface($this->contentInterface)) {
 
                     // Class should be instantiable
                     if ($reflection->isInstantiable()) {
