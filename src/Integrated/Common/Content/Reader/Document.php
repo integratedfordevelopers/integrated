@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Content\Reader;
 
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 use Integrated\Common\ContentType\Mapping\Metadata;
 
 /**
@@ -22,9 +22,9 @@ use Integrated\Common\ContentType\Mapping\Metadata;
 class Document
 {
     /**
-     * @var ManagerRegistry
+     * @var ClassMetadataFactory
      */
-    protected $managerRegistry;
+    protected $metadataFactory;
 
     /**
      * @var Metadata\ContentTypeFactory
@@ -37,19 +37,24 @@ class Document
     protected $documents = array();
 
     /**
+     * @var array
+     */
+    protected $classNames;
+
+    /**
      * @var string
      */
-    protected $contentInterface = 'Integrated\\Common\\Content\\ContentInterface';
+    protected $contentInterface = 'Integrated\Common\Content\ContentInterface';
 
     /**
      * Constructor
      *
-     * @param ManagerRegistry $managerRegistry
+     * @param ClassMetadataFactory $metadataFactory
      * @param Metadata\ContentTypeFactory $contentTypeFactory
      */
-    public function __construct(ManagerRegistry $managerRegistry, Metadata\ContentTypeFactory $contentTypeFactory)
+    public function __construct(ClassMetadataFactory $metadataFactory, Metadata\ContentTypeFactory $contentTypeFactory)
     {
-        $this->managerRegistry = $managerRegistry;
+        $this->metadataFactory = $metadataFactory;
         $this->contentTypeFactory = $contentTypeFactory;
     }
 
@@ -61,7 +66,7 @@ class Document
     public function readAll()
     {
         // Get list of available documents
-        $classes = $this->managerRegistry->getManager()->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+        $classes = $this->getClassNames();
 
         foreach ($classes as $class) {
 
@@ -88,5 +93,20 @@ class Document
         }
 
         return $this->documents;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getClassNames()
+    {
+        if (null === $this->classNames) {
+            $this->classNames = array();
+            foreach ($this->metadataFactory->getAllMetadata() as $metadata) {
+                $this->classNames[] = $metadata->getName();
+            }
+        }
+
+        return $this->classNames;
     }
 }
