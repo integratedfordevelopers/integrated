@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\MongoDB\Contenttype\Resolver;
+namespace Integrated\MongoDB\ContentType\Resolver;
 
 use Integrated\Common\ContentType\Resolver\ContentTypeResolverListInterface;
 use Integrated\MongoDB\ContentType\Exception\ExceptionInterface;
@@ -23,7 +23,7 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class ContentTypeResolver implements ContentTypeResolverListInterface
 {
-	const CONTENT_TYPE_INTERFACE = 'Integrated\\Component\\Content\\ContentTypeInterface';
+	const CONTENT_TYPE_INTERFACE = 'Integrated\Common\ContentType\ContentTypeInterface';
 
 	/**
 	 * @var DocumentRepository
