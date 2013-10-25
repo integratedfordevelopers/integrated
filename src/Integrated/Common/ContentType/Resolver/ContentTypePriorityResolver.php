@@ -10,6 +10,7 @@
 */
 
 namespace Integrated\Common\ContentType\Resolver;
+use Integrated\Common\ContentType\Exception\InvalidArgumentException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -77,8 +78,12 @@ class ContentTypePriorityResolver implements ContentTypeResolverInterface
 	public function getResolvers()
 	{
 		if ($this->sorted === null) {
-			ksort($this->resolvers);
-			$this->sorted = call_user_func_array('array_merge', $this->resolvers);
+			$this->sorted = array();
+
+			if (!empty($this->resolvers)) {
+				krsort($this->resolvers);
+				$this->sorted = call_user_func_array('array_merge', $this->resolvers);
+			}
 		}
 
 		return $this->sorted;
@@ -120,7 +125,7 @@ class ContentTypePriorityResolver implements ContentTypeResolverInterface
 			return $resolver->getType($class, $type);
 		}
 
-		return null; // todo probably change to throwing a exception
+		throw new  InvalidArgumentException(sprintf('Could not load content type bases on the given class "%s" and type "%s"', $class, $type));
 	}
 
 	/**
@@ -128,9 +133,9 @@ class ContentTypePriorityResolver implements ContentTypeResolverInterface
 	 */
 	public function hasType($class, $type)
 	{
-		if ($resolver = $this->findResolver($class, $type))
+		if ($this->findResolver($class, $type))
 		{
-			return $resolver->hasType($class, $type);
+			return true;
 		}
 
 		return false;

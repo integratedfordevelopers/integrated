@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\MongoDB\Contenttype\Resolver;
+namespace Integrated\MongoDB\ContentType\Resolver;
 
 use Integrated\Common\ContentType\ContentTypeIteratorInterface;
 use Doctrine\ODM\MongoDB\Cursor;
@@ -66,7 +66,7 @@ class ContentTypeIterator implements ContentTypeIteratorInterface
 	 */
 	public function valid()
 	{
-		$this->cursor->valid();
+		return $this->cursor->valid();
 	}
 
 	/**
