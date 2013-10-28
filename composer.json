@@ -26,7 +26,7 @@
         "doctrine/mongodb": "1.0.*",
         "doctrine/mongodb-odm": "1.0.*",
         "doctrine/mongodb-odm-bundle": "3.0.*",
-        "integrated/library": "dev-master"
+        "integrated/library": "dev-develop"
     },
     "autoload":{
         "psr-0":{
