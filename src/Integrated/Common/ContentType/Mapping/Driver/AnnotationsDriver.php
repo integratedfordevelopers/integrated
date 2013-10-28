@@ -80,7 +80,5 @@ class AnnotationsDriver implements DriverInterface
 
             return $contentType;
         }
-
-        return null;
     }
 }
