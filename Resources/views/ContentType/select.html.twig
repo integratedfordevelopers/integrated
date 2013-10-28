@@ -3,9 +3,9 @@
 </h1>
 <form method="get" action="{{ path('integrated_content_contenttype_new') }}">
     <label>Document type</label>
-    <select name="className">
+    <select name="class">
         {% for key, document in documents %}
-        <option value="{{ document.className }}">{{ document.classType }}</option>
+        <option value="{{ document.class }}">{{ document.type }}</option>
         {% endfor %}
     </select>
     <input type="submit" value="Submit" />

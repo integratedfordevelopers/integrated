@@ -4,7 +4,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Integrated\Bundle\ContentBundle\Mapping\Metadata;
+use Integrated\Common\ContentType\Mapping\Metadata;
 
 class ContentType extends AbstractType
 {
@@ -24,12 +24,12 @@ class ContentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            'className',
+            'class',
             'hidden'
         );
 
         $builder->add(
-            'classType',
+            'type',
             'text',
             array(
                 'label' => 'Name',

@@ -14,18 +14,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Integrated\Bundle\ContentBundle\Form\Type as Form;
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-use Integrated\Bundle\ContentBundle\Mapping\Metadata;
+use Integrated\MongoDB\ContentType\Document\ContentType;
+use Integrated\Common\ContentType\Mapping\Metadata;
 
 class ContentTypeController extends Controller
 {
     /**
      * @var string
      */
-    protected $contentTypeClass = 'Integrated\\Bundle\\ContentBundle\\Document\\ContentType\\ContentType';
+    protected $contentTypeClass = 'Integrated\\MongoDB\\ContentType\\Document\\ContentType';
 
     /**
-     * @var \Integrated\Bundle\ContentBundle\Reader\Document
+     * @var \Integrated\Common\Content\Reader\Document
      */
     protected $reader;
 
@@ -92,16 +92,16 @@ class ContentTypeController extends Controller
     {
         // Validate request based on document param
         $documents = $this->getReader()->readAll();
-        if (!isset($documents[$request->get('className')])) {
+        if (!isset($documents[$request->get('class')])) {
             return $this->redirect($this->generateUrl('integrated_content_contenttype_select'));
         }
 
         /* @var $metadata Metadata\ContentType */
-        $metadata = $documents[$request->get('className')];
+        $metadata = $documents[$request->get('class')];
 
         // Create contentType
         $contentType = new ContentType();
-        $contentType->setClassName($metadata->getClassName());
+        $contentType->setClass($metadata->getClass());
 
         // Create form
         $form = $this->createCreateForm($contentType, $metadata);
@@ -123,16 +123,16 @@ class ContentTypeController extends Controller
         // Validate request based on document param
         $documents = $this->getReader()->readAll();
         $formData = $request->get('content_type');
-        if (!isset($documents[$formData['className']])) {
+        if (!isset($documents[$formData['class']])) {
             return $this->redirect($this->generateUrl('integrated_content_contenttype_select'));
         }
 
         /* @var $metadata Metadata\ContentType */
-        $metadata = $documents[$formData['className']];
+        $metadata = $documents[$formData['class']];
 
         // Create contentType
         $contentType = new ContentType();
-        $contentType->setClassName($metadata->getClassName());
+        $contentType->setClass($metadata->getClass());
 
         // Create form
         $form = $this->createCreateForm($contentType, $metadata);
@@ -167,7 +167,7 @@ class ContentTypeController extends Controller
         $documents = $this->getReader()->readAll();
 
         /* @var $metadata Metadata\ContentType */
-        $metadata = $documents[$contentType->getClassName()];
+        $metadata = $documents[$contentType->getClass()];
 
         // Create form
         $form = $this->createEditForm($contentType, $metadata);
@@ -192,7 +192,7 @@ class ContentTypeController extends Controller
         $documents = $this->getReader()->readAll();
 
         /* @var $metadata Metadata\ContentType */
-        $metadata = $documents[$contentType->getClassName()];
+        $metadata = $documents[$contentType->getClass()];
 
         // Create form
         $form = $this->createEditForm($contentType, $metadata);
@@ -240,7 +240,7 @@ class ContentTypeController extends Controller
     /**
      * Get reader document form service container
      *
-     * @return \Integrated\Bundle\ContentBundle\Reader\Document
+     * @return \Integrated\Common\ContentType\Reader\Document
      */
     protected function getReader()
     {
