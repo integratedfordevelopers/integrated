@@ -12,6 +12,7 @@
 namespace Integrated\MongoDB\ContentType\Document\Embedded;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\MongoDB\ContentType\Document\ContentType;
 
 /**
  * Embedded document Relation
@@ -22,7 +23,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class Relation
 {
     /**
-     * @var \Integrated\MongoDB\ContentType\Document\ContentType
+     * @var ContentType
      * @ODM\ReferenceOne(targetDocument="Integrated\MongoDB\ContentType\Document\ContentType")
      */
     protected $contentType;
@@ -40,7 +41,7 @@ class Relation
     protected $required;
 
     /**
-     * @return \Integrated\MongoDB\ContentType\Document\ContentType
+     * @return ContentType
      */
     public function getContentType()
     {
@@ -48,10 +49,10 @@ class Relation
     }
 
     /**
-     * @param \Integrated\MongoDB\ContentType\Document\ContentType $contentType
+     * @param ContentType $contentType
      * @return $this
      */
-    public function setContentType($contentType)
+    public function setContentType(ContentType $contentType)
     {
         $this->contentType = $contentType;
         return $this;
