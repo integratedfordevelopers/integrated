@@ -53,8 +53,8 @@ class ContentTypeFactoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($return));
 
         // Assert
-        $this->assertEquals($return, $this->factory->build(get_class(new Test())));
-        $this->assertEquals($return, $this->factory->build(get_class(new Test())));
+        $this->assertEquals($return, $this->factory->build(__NAMESPACE__ . '\Test'));
+        $this->assertEquals($return, $this->factory->build(__NAMESPACE__ . '\Test'));
 
     }
 }
