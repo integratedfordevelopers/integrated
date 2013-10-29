@@ -24,7 +24,7 @@ class Relation
 {
     /**
      * @var ContentType
-     * @ODM\ReferenceOne(targetDocument="Integrated\MongoDB\ContentType\Document\ContentType")
+     * @ODM\ReferenceOne(targetDocument="Integrated\MongoDB\ContentType\Document\ContentType", cascade={"remove"})
      */
     protected $contentType;
 
