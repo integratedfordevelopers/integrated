@@ -31,4 +31,9 @@ interface ContentTypeFieldInterface
      * @return string
      */
     public function getLabel();
+
+    /**
+     * @return bool
+     */
+    public function getRequired();
 }
