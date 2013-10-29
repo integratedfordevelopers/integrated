@@ -240,7 +240,7 @@ class ContentTypeController extends Controller
     /**
      * Get reader document form service container
      *
-     * @return \Integrated\Common\ContentType\Reader\Document
+     * @return \Integrated\Common\Content\Reader\Document
      */
     protected function getReader()
     {
