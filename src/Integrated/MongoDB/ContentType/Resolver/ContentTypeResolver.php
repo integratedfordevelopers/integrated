@@ -12,9 +12,10 @@
 namespace Integrated\MongoDB\ContentType\Resolver;
 
 use Integrated\Common\ContentType\Resolver\ContentTypeResolverListInterface;
-use Integrated\MongoDB\ContentType\Exception\ExceptionInterface;
-use Integrated\MongoDB\ContentType\Exception\InvalidArgumentException;
-use Integrated\MongoDB\ContentType\Exception\UnexpectedTypeException;
+
+use Integrated\Common\ContentType\Exception\ExceptionInterface;
+use Integrated\Common\ContentType\Exception\InvalidArgumentException;
+use Integrated\Common\ContentType\Exception\UnexpectedTypeException;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
