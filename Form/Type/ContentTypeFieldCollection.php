@@ -5,7 +5,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeFieldCollection as Transformer;
-use Integrated\Bundle\ContentBundle\Mapping\Metadata;
+use Integrated\Common\ContentType\Mapping\Metadata;
 
 class ContentTypeFieldCollection extends AbstractType
 {
