@@ -2,7 +2,6 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 
 class ContentTypeFieldCollection implements DataTransformerInterface
 {
@@ -15,9 +14,10 @@ class ContentTypeFieldCollection implements DataTransformerInterface
         return $field;
     }
 
+
     /**
-     * @param mixed $value
-     * @return Field|mixed|null
+     * @param mixed $values
+     * @return mixed|null
      */
     public function reverseTransform($values)
     {
