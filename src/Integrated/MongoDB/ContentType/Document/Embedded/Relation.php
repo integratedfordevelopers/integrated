@@ -38,4 +38,57 @@ class Relation
      * @ODM\Boolean
      */
     protected $required;
+
+    /**
+     * @return \Integrated\MongoDB\ContentType\Document\ContentType
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param \Integrated\MongoDB\ContentType\Document\ContentType $contentType
+     * @return $this
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMultiple()
+    {
+        return $this->multiple;
+    }
+
+    /**
+     * @param bool $multiple
+     * @return $this
+     */
+    public function setMultiple($multiple)
+    {
+        $this->multiple = $multiple;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getRequired()
+    {
+        return $this->required;
+    }
+    /**
+     * @param bool $required
+     * @return $this;
+     */
+    public function setRequired($required)
+    {
+        $this->required = $required;
+        return $this;
+    }
 }
