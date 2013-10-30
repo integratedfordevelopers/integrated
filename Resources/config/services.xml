@@ -1,35 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <container xmlns="http://symfony.com/schema/dic/services"
-           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-        <parameter key="integrated_content.mapping.metadata.driver.class">Integrated\Common\ContentType\Mapping\Driver\AnnotationsDriver</parameter>
-        <parameter key="integrated_content.mapping.metadata.content_type_factory.class">Integrated\Common\ContentType\Mapping\Metadata\ContentTypeFactory</parameter>
-        <parameter key="integrated_content.reader.document.class">Integrated\Common\Content\Reader\Document</parameter>
-        <parameter key="integrated_content.reader.document_factory.class">Integrated\Common\Content\Reader\DocumentFactory</parameter>
-        <parameter key="doctrine_mongo_db_param_converter.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
-    </parameters>
+	<parameters>
 
-    <services>
-        <service id="integrated_content.mapping.metadata.driver" class="%integrated_content.mapping.metadata.driver.class%">
-            <argument type="service" id="annotation_reader" />
-        </service>
-        <service id="integrated_content.mapping.metadata.content_type_factory" class="%integrated_content.mapping.metadata.content_type_factory.class%">
-            <argument type="service" id="integrated_content.mapping.metadata.driver" />
-        </service>
-        <service id="integrated_content.reader.document_factory" class="%integrated_content.reader.document_factory.class%"/>
-        <service id="integrated_content.reader.document"
-                 class="%integrated_content.reader.document.class%"
-                 factory-service="integrated_content.reader.document_factory"
-                 factory-method="build"
-        >
-            <argument type="service" id="doctrine_mongodb" />
-            <argument type="service" id="integrated_content.mapping.metadata.content_type_factory" />
-        </service>
-        <service id="doctrine_mongo_db_param_converter" class="%doctrine_mongo_db_param_converter.class%">
-            <argument type="service" id="doctrine_mongodb" />
-            <tag name="request.param_converter" converter="doctrine.odm" />
-        </service>
-    </services>
+		<parameter key="integrated_content.mapping.metadata.driver.class">Integrated\Common\ContentType\Mapping\Driver\AnnotationsDriver</parameter>
+		<parameter key="integrated_content.mapping.metadata.content_type_factory.class">Integrated\Common\ContentType\Mapping\Metadata\ContentTypeFactory</parameter>
+
+		<parameter key="integrated_content.reader.document.class">Integrated\Common\Content\Reader\Document</parameter>
+		<parameter key="integrated_content.reader.document_factory.class">Integrated\Common\Content\Reader\DocumentFactory</parameter>
+
+		<parameter key="integrated_content.resolver.priority.class">Integrated\Common\ContentType\Resolver\ContentTypePriorityResolver</parameter>
+		<parameter key="integrated_content.resolver.mongodb.class">Integrated\MongoDB\ContentType\Resolver\ContentTypeResolver</parameter>
+
+		<parameter key="integrated_content.form.factory.class">Integrated\Common\Content\Form\FormFactory</parameter>
+
+		<parameter key="doctrine_mongo_db_param_converter.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
+
+	</parameters>
+
+	<services>
+
+		<service id="integrated_content.mapping.metadata.driver"
+				 class="%integrated_content.mapping.metadata.driver.class%">
+			<argument type="service" id="annotation_reader"/>
+		</service>
+
+		<service id="integrated_content.mapping.metadata.content_type_factory"
+				 class="%integrated_content.mapping.metadata.content_type_factory.class%">
+			<argument type="service" id="integrated_content.mapping.metadata.driver"/>
+		</service>
+
+		<service id="integrated_content.reader.document_factory"
+				 class="%integrated_content.reader.document_factory.class%"/>
+
+		<service id="integrated_content.reader.document"
+				 class="%integrated_content.reader.document.class%"
+				 factory-service="integrated_content.reader.document_factory"
+				 factory-method="build"
+				>
+			<argument type="service" id="doctrine_mongodb"/>
+			<argument type="service" id="integrated_content.mapping.metadata.content_type_factory"/>
+		</service>
+
+		<service id="integrated_content.resolver.mongodb.repository"
+				 class="Doctrine\ODM\MongoDB\DocumentRepository"
+				 factory-service="doctrine.odm.mongodb.document_manager"
+				 factory-method="getRepository"
+				 public="false"
+				>
+			<argument type="string">Integrated\MongoDB\ContentType\Document\ContentType</argument>
+		</service>
+
+		<service id="integrated_content.resolver.mongodb" class="%integrated_content.resolver.mongodb.class%">
+			<argument type="service" id="integrated_content.resolver.mongodb.repository"/>
+		</service>
+
+		<service id="integrated_content.resolver.priority" class="%integrated_content.resolver.priority.class%">
+			<call method="addResolver">
+				<argument type="service" id="integrated_content.resolver.mongodb" />
+			</call>
+		</service>
+
+		<service id="integrated_content.form.factory" class="%integrated_content.form.factory.class%">
+			<argument type="service" id="integrated_content.resolver.priority"/>
+		</service>
+
+		<service id="integrated.form.resolver" alias="integrated_content.resolver.priority" />
+		<service id="integrated.form.factory" alias="integrated_content.form.factory" />
+
+		<service id="doctrine_mongo_db_param_converter" class="%doctrine_mongo_db_param_converter.class%">
+			<argument type="service" id="doctrine_mongodb"/>
+			<tag name="request.param_converter" converter="doctrine.odm"/>
+		</service>
+
+	</services>
+
 </container>

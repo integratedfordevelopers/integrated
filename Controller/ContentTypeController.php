@@ -22,7 +22,7 @@ class ContentTypeController extends Controller
     /**
      * @var string
      */
-    protected $contentTypeClass = 'Integrated\\MongoDB\\ContentType\\Document\\ContentType';
+    protected $contentTypeClass = 'Integrated\MongoDB\ContentType\Document\ContentType';
 
     /**
      * @var \Integrated\Common\Content\Reader\Document
