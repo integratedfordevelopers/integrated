@@ -47,6 +47,11 @@ class FormType implements FormTypeInterface
 				$builder->create($field->getName(), $field->getType(), array('label' => $field->getLabel()))
 			);
 		}
+
+		// submit buttons
+
+		$builder->add('save', 'submit');
+		$builder->add('back', 'submit');
 	}
 
 	/**
