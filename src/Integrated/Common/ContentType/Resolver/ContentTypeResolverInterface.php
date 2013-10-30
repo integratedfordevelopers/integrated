@@ -45,4 +45,11 @@ interface ContentTypeResolverInterface
 	 * @throws UnexpectedTypeException  if the passed arguments are not strings
 	 */
 	public function hasType($class, $type);
+
+	/**
+	 * Get a list of all the content types.
+	 *
+	 * @return ContentTypeIteratorInterface
+	 */
+	public function getTypes();
 }

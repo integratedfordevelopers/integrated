@@ -140,4 +140,18 @@ class ContentTypePriorityResolver implements ContentTypeResolverInterface
 
 		return false;
 	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getTypes()
+	{
+		$iterator = new ContentTypePriorityIterator();
+
+		foreach ($this->getResolvers() as $resolver) {
+			$iterator->append($resolver);
+		}
+
+		return $iterator;
+	}
 }

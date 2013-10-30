@@ -212,4 +212,9 @@ class ContentTypePriorityResolverTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertFalse($this->resolver->hasType('class', 'type'));
 	}
+
+	public function testGetTypes()
+	{
+		$this->assertInstanceOf('Integrated\Common\ContentType\ContentTypeIteratorInterface', $this->resolver->getTypes());
+	}
 }

@@ -11,7 +11,7 @@
 
 namespace Integrated\MongoDB\ContentType\Resolver;
 
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverListInterface;
+use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
 
 use Integrated\Common\ContentType\Exception\ExceptionInterface;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
@@ -22,7 +22,7 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContentTypeResolver implements ContentTypeResolverListInterface
+class ContentTypeResolver implements ContentTypeResolverInterface
 {
 	const CONTENT_TYPE_INTERFACE = 'Integrated\Common\ContentType\ContentTypeInterface';
 
