@@ -172,7 +172,13 @@ class ContentType implements ContentTypeInterface
      */
     public function hasField($name)
     {
-        // TODO: Implement hasField() method.
+        foreach ($this->getFields() as $field) {
+            if ($field->getName() == $name) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
