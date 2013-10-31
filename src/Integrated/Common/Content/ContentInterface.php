@@ -17,6 +17,13 @@ namespace Integrated\Common\Content;
  */
 interface ContentInterface
 {
+	/**
+	 * Return the id of the content
+	 *
+	 * @return string
+	 */
+	public function getId();
+
     /**
 	 * Return the type of the Content
 	 *
