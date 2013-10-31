@@ -15,8 +15,8 @@ use Integrated\Common\ContentType\ContentTypeInterface;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -79,6 +79,14 @@ class FormType implements FormTypeInterface
 				return $this->contentType->create();
 			},
 		));
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getType()
+	{
+		return $this->contentType;
 	}
 
 	/**

@@ -38,7 +38,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
 
 	public function testInterface()
 	{
-		$this->assertInstanceOf('Symfony\Component\Form\FormTypeInterface', $this->form);
+		$this->assertInstanceOf('Integrated\Common\Content\Form\FormTypeInterface', $this->form);
 	}
 
 	public function testBuildForm()
@@ -54,6 +54,11 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
 	public function testGetParent()
 	{
 		$this->assertEquals('form', $this->form->getParent());
+	}
+
+	public function testGetType()
+	{
+		$this->assertSame($this->type, $this->form->getType());
 	}
 
 	public function testGetName()
