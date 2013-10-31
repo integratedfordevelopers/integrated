@@ -75,6 +75,28 @@ abstract class AbstractRelation extends AbstractContent
     }
 
     /**
+     * Get the description of the document
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the description of the document
+     *
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
      * Get the phonenumbers of the document
      *
      * @return array
