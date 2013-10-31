@@ -11,9 +11,7 @@
 
 namespace Integrated\Tests\MongoDB\Content\Document;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\MongoDB\Content\Document\Article;
-use Integrated\MongoDB\Content\Document\Embedded\Location;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -81,7 +79,8 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetReferencesFunction()
     {
-        $references = new ArrayCollection(array('key' => 'value'));
+        /* @var $references \Doctrine\Common\Collections\ArrayCollection | \PHPUnit_Framework_MockObject_MockObject */
+        $references = $this->getMock('Doctrine\Common\Collections\ArrayCollection');
         $this->assertSame($references, $this->article->setReferences($references)->getReferences());
     }
 
@@ -197,7 +196,8 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetLocationFunction()
     {
-        $location = new Location();
+        /* @var $location \Integrated\MongoDB\Content\Document\Embedded\Location | \PHPUnit_Framework_MockObject_MockObject */
+        $location = $this->getMock('Integrated\MongoDB\Content\Document\Embedded\Location');
         $this->assertSame($location, $this->article->setLocation($location)->getLocation());
     }
 }
