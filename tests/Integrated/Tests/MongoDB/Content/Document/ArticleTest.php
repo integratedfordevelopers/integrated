@@ -117,6 +117,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetDisabledFunction()
     {
         $this->assertTrue($this->article->setDisabled(true)->getDisabled());
+        $this->assertFalse($this->article->setDisabled(false)->getDisabled());
     }
 
     /**
