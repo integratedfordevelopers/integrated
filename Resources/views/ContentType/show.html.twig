@@ -32,10 +32,45 @@
             {% for field in contentType.fields %}
             <li>
                 {{ field.name }}
+                |
+                {{ field.label }}
+                |
+                {{ field.type }}
+                {% if field.required %}
+                | required
+                {% endif %}
             </li>
             {% else %}
             <li>
                 No fields added
+            </li>
+            {% endfor %}
+        </ul>
+    </dd>
+    <dt>
+        Relations
+    </dt>
+    <dd>
+        <ul>
+            {% for relation in contentType.relations %}
+            <li>
+                {{ relation.contentType.class }}
+                |
+                {{ relation.contentType.type }}
+                |
+                {% if relation.multiple == 1 %}
+                Multiple
+                {% else %}
+                One
+                {% endif %}
+                {% if relation.required %}
+                    | required
+                {% endif %}
+
+            </li>
+            {% else %}
+            <li>
+                No relations added
             </li>
             {% endfor %}
         </ul>
