@@ -261,7 +261,7 @@ class ContentTypeController extends Controller
     private function createCreateForm(ContentType $contentType, Metadata\ContentType $metadata)
     {
         $form = $this->createForm(
-            new Form\ContentType($metadata),
+            new Form\ContentType($metadata, $this->get('doctrine_mongodb')->getManager()->getRepository($this->contentTypeClass)),
             $contentType,
             array(
                 'action' => $this->generateUrl('integrated_content_contenttype_create'),
@@ -284,7 +284,7 @@ class ContentTypeController extends Controller
     private function createEditForm(ContentType $contentType, Metadata\ContentType $metadata)
     {
         $form = $this->createForm(
-            new Form\ContentType($metadata),
+            new Form\ContentType($metadata, $this->get('doctrine_mongodb')->getManager()->getRepository($this->contentTypeClass)),
             $contentType,
             array(
                 'action' => $this->generateUrl('integrated_content_contenttype_update', array('id' => $contentType->getId())),

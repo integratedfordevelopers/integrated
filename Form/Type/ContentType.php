@@ -4,6 +4,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Common\ContentType\Mapping\Metadata;
 
 class ContentType extends AbstractType
@@ -14,11 +15,18 @@ class ContentType extends AbstractType
     protected $contentType;
 
     /**
-     * @param Metadata\ContentType $contentType
+     * @var ObjectRepository
      */
-    public function __construct(Metadata\ContentType $contentType)
+    protected $repository;
+
+    /**
+     * @param Metadata\ContentType $contentType
+     * @param ObjectRepository $repository
+     */
+    public function __construct(Metadata\ContentType $contentType, ObjectRepository $repository)
     {
         $this->contentType = $contentType;
+        $this->repository = $repository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -39,6 +47,11 @@ class ContentType extends AbstractType
         $builder->add(
             'fields',
             new ContentTypeFieldCollection($this->contentType->getFields())
+        );
+
+        $builder->add(
+            'relations',
+            new ContentTypeRelationCollection($this->repository)
         );
     }
 
