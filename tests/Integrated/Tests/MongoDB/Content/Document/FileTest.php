@@ -32,17 +32,17 @@ class FileTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Article should implement ContentInterface
+     * File should implement ContentInterface
      */
-    public function testInterface()
+    public function testContentInterface()
     {
         $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->file);
     }
 
     /**
-     * Article should extend AbstractContent
+     * File should extend AbstractContent
      */
-    public function testAbstract()
+    public function testAbstractContent()
     {
         $this->assertInstanceOf('Integrated\MongoDB\Content\Document\AbstractContent', $this->file);
     }
