@@ -23,4 +23,12 @@ interface ContentInterface
      * @return string
      */
     public function getType();
+
+    /**
+     * Set the type of the Content
+     *
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type);
 }

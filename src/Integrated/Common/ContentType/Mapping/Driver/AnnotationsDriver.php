@@ -51,7 +51,7 @@ class AnnotationsDriver implements DriverInterface
      * Load metadata for class
      *
      * @param \ReflectionClass $class
-     * @return Metadata\ContentType|null
+     * @return Metadata\ContentType
      */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
@@ -80,7 +80,5 @@ class AnnotationsDriver implements DriverInterface
 
             return $contentType;
         }
-
-        return null;
     }
 }
