@@ -36,7 +36,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     /**
      * Article should implement ContentInterface
      */
-    public function testInterface()
+    public function testContentInterface()
     {
         $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->article);
     }
@@ -44,7 +44,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     /**
      * Article should extend AbstractContent
      */
-    public function testAbstract()
+    public function testAbstractContent()
     {
         $this->assertInstanceOf('Integrated\MongoDB\Content\Document\AbstractContent', $this->article);
     }
