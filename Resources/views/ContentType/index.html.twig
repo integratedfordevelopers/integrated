@@ -1,3 +1,7 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+
 <ul>
     <li>
         <a href="{{ path('integrated_content_contenttype_select') }}">
@@ -41,3 +45,5 @@
         {% endfor %}
     </tbody>
 </table>
+
+{% endblock %}

@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+//use Integrated\Common\Content\ContentInterface;
+use Integrated\MongoDB\Content\Document\AbstractContent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,36 +42,15 @@ class ContentController extends Controller
 			ksort($types[$key]);
 		}
 
+		/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+		$dm = $this->get('doctrine_mongodb')->getManager();
+		$dm->getRepository('Integrated\MongoDB\Content\Document\AbstractContent');
+
 		return array(
-			'types' => $types
+			'types' => $types,
+			'results' => $dm->getRepository('Integrated\MongoDB\Content\Document\AbstractContent')->findAll()
 		);
 	}
-
-//	/**
-//	 * Create a new document
-//	 *
-//	 * @Template()
-//	 * @param Request $request
-//	 * @return array
-//	 */
-//	public function newAction(Request $request)
-//	{
-//		$type = $this->get('integrated.form.resolver')->getType($request->get('class'), $request->get('type'));
-//
-//		$form = $this->createForm(
-//			$this->get('integrated.form.factory')->getType($request->get('class'), $request->get('type')),
-//			null,
-//			array(
-//				'action' => $this->generateUrl('integrated_content_content_create'),
-//				'method' => 'POST',
-//			)
-//		);
-//
-//		return array(
-//			'type' => $type,
-//			'form' => $form->createView()
-//		);
-//	}
 
 	/**
 	 * Create a new document
@@ -80,13 +61,14 @@ class ContentController extends Controller
 	 */
 	public function newAction(Request $request)
 	{
-		$type = $this->get('integrated.form.resolver')->getType($request->get('class'), $request->get('type'));
+		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
+		$type = $this->get('integrated.form.factory')->getType($request->get('class'), $request->get('type'));
 
 		$form = $this->createForm(
-			$this->get('integrated.form.factory')->getType($request->get('class'), $request->get('type')),
+			$type,
 			null,
 			array(
-				'action' => $this->generateUrl('integrated_content_content_create', ['class' => $type->getClass(), 'type' => $type->getType()]),
+				'action' => $this->generateUrl('integrated_content_content_new', ['class' => $request->get('class'), 'type' => $request->get('type')]),
 				'method' => 'POST',
 			)
 		);
@@ -113,20 +95,82 @@ class ContentController extends Controller
 		}
 
 		return array(
-			'type' => $type,
+			'type' => $type->getType(),
 			'form' => $form->createView()
 		);
 	}
 
 	/**
-	 * Create a new document
+	 * Update a existing document
 	 *
 	 * @Template()
 	 * @param Request $request
+	 * @param AbstractContent $content
 	 * @return array | Response
 	 */
-	public function editAction(Request $request)
+	public function editAction(Request $request, AbstractContent $content)
 	{
-		return array();
+		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
+		$type = $this->get('integrated.form.factory')->getType($content);
+
+		$form = $this->createForm(
+			$type,
+			$content,
+			array(
+				'action' => $this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]),
+				'method' => 'PUT',
+			)
+		);
+
+		if ($request->isMethod('put')) {
+			$form->handleRequest($request);
+
+			// check for back click else its a submit
+			if ($form->get('back')->isClicked()) {
+				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+			}
+
+			if ($form->isValid()) {
+				/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+				$dm = $this->get('doctrine_mongodb')->getManager();
+				$dm->flush();
+
+				return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
+			}
+		}
+
+		return array(
+			'type' => $type->getType(),
+			'form' => $form->createView()
+		);
+	}
+
+	/**
+	 * Delete a document
+	 *
+	 * @Template()
+	 * @param Request $request
+	 * @param AbstractContent $content
+	 * @return array | Response
+	 */
+	public function deleteAction(Request $request, AbstractContent $content)
+	{
+		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
+		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getType());
+
+		if ($request->isMethod('delete')) {
+			/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+			$dm = $this->get('doctrine_mongodb')->getManager();
+
+			$dm->remove($content);
+			$dm->flush();
+
+			return $this->redirect($this->generateUrl('integrated_content_content_index'));
+		}
+
+		return array(
+			'type' => $type,
+//			'form' => $form->createView()
+		);
 	}
 }

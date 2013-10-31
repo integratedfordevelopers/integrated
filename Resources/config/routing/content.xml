@@ -8,16 +8,28 @@
 		<default key="_controller">IntegratedContentBundle:Content:index</default>
 	</route>
 
-	<route id="integrated_content_content_new" path="/new" methods="GET">
+	<route id="integrated_content_content_new" path="/new">
 		<default key="_controller">IntegratedContentBundle:Content:new</default>
 	</route>
 
-	<route id="integrated_content_content_create" path="/" methods="POST">
+	<route id="integrated_content_content_new_rest" path="/" methods="POST">
 		<default key="_controller">IntegratedContentBundle:Content:new</default>
 	</route>
 
-	<route id="integrated_content_content_edit" path="/{id}/edit" methods="GET">
+	<route id="integrated_content_content_edit" path="/{id}"  methods="GET">
 		<default key="_controller">IntegratedContentBundle:Content:edit</default>
+	</route>
+
+	<route id="integrated_content_content_edit_rest" path="/{id}" methods="PUT">
+		<default key="_controller">IntegratedContentBundle:Content:edit</default>
+	</route>
+
+	<route id="integrated_content_content_delete" path="/{id}/delete">
+		<default key="_controller">IntegratedContentBundle:Content:delete</default>
+	</route>
+
+	<route id="integrated_content_content_delete_rest" path="/{id}" methods="DELETE">
+		<default key="_controller">IntegratedContentBundle:Content:delete</default>
 	</route>
 
 </routes>

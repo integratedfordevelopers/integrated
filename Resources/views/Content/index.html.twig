@@ -43,6 +43,48 @@
             </form>
         </div>
 
+        <div class="results">
+
+            {% for content in results %}
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <div class="pull-right">
+                        {#<a href title="open"><span class="glyphicon glyphicon-open"></span></a>#}
+                        <a href="{{ path('integrated_content_content_edit', {'id': content.id}) }}" title="edit"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a href="{{ path('integrated_content_content_delete', {'id': content.id}) }}" title="remove"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                    </div>
+
+                    {#<h3 class="panel-title">{{ content.title }}</h3>#}
+                </div>
+
+                {#{% if content.text|trim is not empty %}#}
+
+                {#<div class="panel-body">#}
+
+                    {#<div class="content">{{ content.text|striptags|raw }}</div>#}
+
+                {#</div>#}
+
+                {#{% endif %}#}
+
+            </div>
+
+            {% endfor %}
+
+            <ul class="pagination">
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul>
+
+        </div>
+
     </div>
 </div>
 
