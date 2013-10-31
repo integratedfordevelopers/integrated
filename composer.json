@@ -16,6 +16,7 @@
 	"require": {
 		"php": ">=5.4",
 		"symfony/form": "~2.3",
+        "symfony/validator": "~2.3",
 		"doctrine/mongodb": "1.0.*",
 		"doctrine/mongodb-odm": "1.0.*"
 	},
