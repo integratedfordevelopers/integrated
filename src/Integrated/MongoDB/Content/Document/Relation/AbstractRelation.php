@@ -13,6 +13,7 @@ namespace Integrated\MongoDB\Content\Document\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\MongoDB\Content\Document\AbstractContent;
+use Integrated\MongoDB\Content\Document\Embedded\Address;
 
 /**
  * Abstract class for Relations
@@ -47,7 +48,7 @@ abstract class AbstractRelation extends AbstractContent
     protected $email;
 
     /**
-     * @var array Address
+     * @var Address[]
      * @ODM\EmbedMany(targetDocument="Integrated\MongoDB\Content\Document\Embedded\Address", strategy="set")
      */
     protected $addresses = array();
@@ -143,7 +144,7 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * Get the addresses of the document
      *
-     * @return array
+     * @return Address[]
      */
     public function getAddresses()
     {
