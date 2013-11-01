@@ -148,7 +148,7 @@ class ContentController extends Controller
 		}
 
 		return array(
-			'type'    => $type,
+			'type'    => $type->getType(),
 			'form'    => $form->createView(),
 			'content' => $content
 		);
