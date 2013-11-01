@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 //use Integrated\Common\Content\ContentInterface;
+use Integrated\Bundle\ContentBundle\Form\Type\DeleteType;
 use Integrated\MongoDB\Content\Document\AbstractContent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -29,7 +30,7 @@ class ContentController extends Controller
 	 * @Template()
 	 * @return array
 	 */
-	public function indexAction()
+	public function indexAction(Request $request)
 	{
 		// group the types based on there class
 		$types = array();
@@ -42,13 +43,20 @@ class ContentController extends Controller
 			ksort($types[$key]);
 		}
 
-		/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+		/** @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
 		$dm = $this->get('doctrine_mongodb')->getManager();
-		$dm->getRepository('Integrated\MongoDB\Content\Document\AbstractContent');
+
+		/** @var $paginator \Knp\Component\Pager\Paginator */
+		$paginator = $this->get('knp_paginator');
+		$paginator = $paginator->paginate(
+			$dm->createQueryBuilder('Integrated\MongoDB\Content\Document\AbstractContent'),
+			$request->query->get('page', 1),
+			15
+		);
 
 		return array(
 			'types' => $types,
-			'results' => $dm->getRepository('Integrated\MongoDB\Content\Document\AbstractContent')->findAll()
+			'pager' => $paginator
 		);
 	}
 
@@ -140,8 +148,9 @@ class ContentController extends Controller
 		}
 
 		return array(
-			'type' => $type->getType(),
-			'form' => $form->createView()
+			'type'    => $type,
+			'form'    => $form->createView(),
+			'content' => $content
 		);
 	}
 
@@ -158,19 +167,38 @@ class ContentController extends Controller
 		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
 		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getType());
 
+		$form = $this->createForm(
+			new DeleteType(),
+			null,
+			array(
+				'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
+				'method' => 'DELETE',
+			)
+		);
+
 		if ($request->isMethod('delete')) {
-			/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-			$dm = $this->get('doctrine_mongodb')->getManager();
+			$form->handleRequest($request);
 
-			$dm->remove($content);
-			$dm->flush();
+			// check for back click else its a submit
+			if ($form->get('back')->isClicked()) {
+				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+			}
 
-			return $this->redirect($this->generateUrl('integrated_content_content_index'));
+			if ($form->isValid()) {
+				/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+				$dm = $this->get('doctrine_mongodb')->getManager();
+
+				$dm->remove($content);
+				$dm->flush();
+
+				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+			}
 		}
 
 		return array(
-			'type' => $type,
-//			'form' => $form->createView()
+			'type'    => $type,
+			'form'    => $form->createView(),
+			'content' => $content
 		);
 	}
 }
