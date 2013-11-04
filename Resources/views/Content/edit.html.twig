@@ -4,6 +4,21 @@
 
 <div class="row">
 
+    {% block notice %}
+
+        {% for notice in app.session.flashbag.get('notice') %}
+
+            <div class="alert alert-success">
+                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+
+                <h4>{{ notice.head }}</h4>
+                <p>{{ notice.body }}</p>
+            </div>
+
+        {% endfor %}
+
+    {% endblock %}
+
     <div class="page-header">
         <h1>Edit <small>{{ type.type }}</small></h1>
     </div>

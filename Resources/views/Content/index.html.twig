@@ -3,6 +3,22 @@
 {% block content %}
 
 <div class="row">
+
+    {% block notice %}
+
+        {% for notice in app.session.flashbag.get('notice') %}
+
+            <div class="alert alert-success">
+                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+
+                <h4>{{ notice.head }}</h4>
+                <p>{{ notice.body }}</p>
+            </div>
+
+        {% endfor %}
+
+    {% endblock %}
+
     <div class="col-md-3">
 
         <div class="btn-group">

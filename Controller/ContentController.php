@@ -98,6 +98,11 @@ class ContentController extends Controller
 				$dm->persist($content);
 				$dm->flush();
 
+				$this->get('session')->getFlashBag()->add('notice', array(
+					'head' => 'Succes!',
+					'body' => sprintf('A new %s is created', $type->getType()->getType())
+				));
+
 				return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
 			}
 		}
@@ -142,6 +147,11 @@ class ContentController extends Controller
 				/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
 				$dm = $this->get('doctrine_mongodb')->getManager();
 				$dm->flush();
+
+				$this->get('session')->getFlashBag()->add('notice', array(
+					'head' => 'Succes!',
+					'body' => sprintf('The changes to %s are saved', $type->getType()->getType())
+				));
 
 				return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
 			}
@@ -190,6 +200,11 @@ class ContentController extends Controller
 
 				$dm->remove($content);
 				$dm->flush();
+
+				$this->get('session')->getFlashBag()->add('notice', array(
+					'head' => 'Removed!',
+					'body' => sprintf('The %s is removed', $type->getType())
+				));
 
 				return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
