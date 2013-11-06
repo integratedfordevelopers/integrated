@@ -36,7 +36,7 @@ class DiscriminatorMapSubscriber implements EventSubscriber
 	private $children = array();
 
 	/**
-	 * Automaticly build the discriminator map for the given class
+	 * Automatically build the discriminator map for the given class
 	 *
 	 * @param string $class
 	 *
@@ -79,17 +79,13 @@ class DiscriminatorMapSubscriber implements EventSubscriber
 	{
 		$class = $event->getClassMetadata();
 
-		if ($class->getName() == $this->class) {
-			$this->setParent($class);
-		}
-
-		if ($class->isMappedSuperclass) {
+		if (!is_a($class->getName(), $this->class, true)) {
 			return;
 		}
 
-		// The parent can be child of its self if it is not a mapped super class
-
-		if ($class->getName() instanceof $this->class) {
+		if ($class->getName() == $this->class) {
+			$this->setParent($class);
+		} else {
 			$this->addChild($class);
 		}
 	}
@@ -102,12 +98,16 @@ class DiscriminatorMapSubscriber implements EventSubscriber
 		$this->parent = $parent;
 
 		// Reset discriminator and subclasses config as this will be build automatically
-		// NOTE: doctrine comments claim these properties are read only
+		// NOTE: doctrine doc comments claim these properties are read only
 
 		$this->parent->discriminatorMap = array();
 		$this->parent->discriminatorValue = null;
 
 		$this->parent->subClasses = array();
+
+		// The parent can be in its own discriminator map if it is not a mapped super class
+
+		$this->addDiscriminator($this->parent);
 	}
 
 	/**
@@ -115,13 +115,26 @@ class DiscriminatorMapSubscriber implements EventSubscriber
 	 */
 	private function addChild(ClassMetadataInfo $child)
 	{
-		$this->children[] = $child;
-		$this->parent->setDiscriminatorMap(array($child->getName() => $child->getName())); // it's called set but is implemented as a add.
+		$this->addDiscriminator($child);
 
-		// every time a child is added the map need to be distribute to all the childs
+		// every time a child is added the map need to be distribute to all the children
+
+		$this->children[] = $child;
 
 		foreach ($this->children as $child) {
 			$child->setDiscriminatorMap($this->parent->discriminatorMap);
 		}
+	}
+
+	/**
+	 * @param ClassMetadataInfo $class
+	 */
+	private function addDiscriminator(ClassMetadataInfo $class)
+	{
+		if ($class->isMappedSuperclass) {
+			return;
+		}
+
+		$this->parent->setDiscriminatorMap(array($class->getName() => $class->getName())); // it's called set but is implemented as a add.
 	}
 }

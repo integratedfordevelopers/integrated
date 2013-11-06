@@ -11,6 +11,8 @@
 
 namespace Integrated\MongoDB\ContentType;
 
+use Integrated\MongoDb\ContentType\Exception\InvalidArgumentException;
+
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\Common\EventSubscriber;
