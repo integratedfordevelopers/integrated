@@ -1,10 +1,11 @@
 <?php
 namespace Integrated\Bundle\ContentBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder,
-    Symfony\Component\Config\FileLocator,
-    Symfony\Component\HttpKernel\DependencyInjection\Extension,
-    Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * IntegratedContentExtension for loading configuration
@@ -12,8 +13,13 @@ use Symfony\Component\DependencyInjection\ContainerBuilder,
  * @package Integrated\Bundle\ContentBundle\DependencyInjection
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class IntegratedContentExtension extends Extension
+class IntegratedContentExtension extends Extension implements PrependExtensionInterface
 {
+    /**
+     * @var string
+     */
+    protected $formTemplate = 'IntegratedContentBundle:Form:form_div_layout.html.twig';
+
     /**
      * Load the configuration
      *
@@ -27,5 +33,32 @@ class IntegratedContentExtension extends Extension
 
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $this->configureTwigBundle($container);
+    }
+
+    /**
+     * @param ContainerBuilder $container The service container
+     *
+     * @return void
+     */
+    protected function configureTwigBundle(ContainerBuilder $container)
+    {
+        foreach ($container->getExtensions() as $name => $extension) {
+            switch ($name) {
+                case 'twig':
+                    $container->prependExtensionConfig(
+                        $name,
+                        array('form'  => array('resources' => array($this->formTemplate)))
+                    );
+                    break;
+            }
+        }
     }
 }
