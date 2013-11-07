@@ -39,11 +39,14 @@ class ContentTypeController extends Controller
     {
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
-
         $documents = $dm->getRepository($this->contentTypeClass)->findAll();
 
+        // Get al documentTypes
+        $documentTypes = $this->getReader()->readAll();
+
         return array(
-            'documents' => $documents
+            'documents' => $documents,
+            'documentTypes' => $documentTypes
         );
     }
 
@@ -56,10 +59,10 @@ class ContentTypeController extends Controller
     public function selectAction()
     {
         // Get all the document types
-        $documents = $this->getReader()->readAll();
+        $documentTypes = $this->getReader()->readAll();
 
         return array(
-            'documents' => $documents
+            'documentTypes' => $documentTypes
         );
     }
 
@@ -146,6 +149,9 @@ class ContentTypeController extends Controller
             $dm->persist($contentType);
             $dm->flush();
 
+            // Set flash message
+            $this->get('braincrafted_bootstrap.flash')->success('Item created');
+
             return $this->redirect($this->generateUrl('integrated_content_contenttype_show', array('id' => $contentType->getId())));
         }
 
@@ -205,6 +211,9 @@ class ContentTypeController extends Controller
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->flush();
 
+            // Set flash message
+            $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+
             return $this->redirect($this->generateUrl('integrated_content_contenttype_show', array('id' => $contentType->getId())));
         }
 
@@ -232,6 +241,9 @@ class ContentTypeController extends Controller
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->remove($contentType);
             $dm->flush();
+
+            // Set flash message
+            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
         }
 
         return $this->redirect($this->generateUrl('integrated_content_contenttype_index'));
@@ -309,7 +321,7 @@ class ContentTypeController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('integrated_content_contenttype_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> array('class' => 'btn-danger')))
             ->getForm()
             ;
     }
