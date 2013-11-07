@@ -1,12 +1,25 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block body %}
+<ol class="breadcrumb">
+    <li>
+        <a href="{{ path('integrated_content_contenttype_index') }}">Home</a>
+    </li>
+    <li class="active">Select</li>
+</ol>
 <h1>
     Select document type
 </h1>
 <form method="get" action="{{ path('integrated_content_contenttype_new') }}">
-    <label>Document type</label>
-    <select name="class">
-        {% for key, document in documents %}
-        <option value="{{ document.class }}">{{ document.type }}</option>
-        {% endfor %}
-    </select>
-    <input type="submit" value="Submit" />
+    <div class="form-group">
+        <label>Document type</label>
+        <select name="class" class="form-control">
+            {% for type in documentTypes %}
+                <option value="{{ type.class }}">{{ type.type }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">
+        Submit
+    </button>
 </form>
+{% endblock %}

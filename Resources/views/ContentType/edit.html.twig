@@ -1,38 +1,11 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block body %}
+<ol class="breadcrumb">
+    <li>
+        <a href="{{ path('integrated_content_contenttype_index') }}">Home</a>
+    </li>
+    <li class="active">Edit</li>
+</ol>
 <h1>Edit</h1>
-{{ form_start(form) }}
-    {{ form_errors(form) }}
-    {{ form_row(form.class) }}
-    {{ form_row(form._token) }}
-    <div class="form-group">
-        {{ form_row(form.type) }}
-    </div>
-    <div class="form-group">
-        Velden | Verplicht
-        <hr />
-        {% for field in form.fields %}
-            {{ form_widget(field.enabled) }}
-            {{ form_label(field.enabled) }}
-            |
-            {{ form_widget(field.required) }}
-            <hr />
-        {% endfor %}
-    </div>
-    <div class="form-group">
-        Contenttype | Aantal koppelingen | Verplicht
-        <hr />
-        {% for relation in form.relations %}
-            {{ form_widget(relation.enabled) }}
-            {{ form_label(relation.enabled) }}
-            |
-            {{ form_widget(relation.multiple.0) }}
-            {{ form_label(relation.multiple.0) }}
-            {{ form_widget(relation.multiple.1) }}
-            {{ form_label(relation.multiple.1) }}
-            |
-            {{ form_widget(relation.required) }}
-            <hr />
-        {% endfor %}
-    </div>
-    {{ form_row(form.submit) }}
-{#{{ form_end(form) }}#}
-</form>
+{{ form(form, {'style': 'horizontal'}) }}
+{% endblock %}
