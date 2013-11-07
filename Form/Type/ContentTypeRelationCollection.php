@@ -53,6 +53,6 @@ class ContentTypeRelationCollection extends AbstractType
      */
     public function getName()
     {
-        return 'content_type_field_collection';
+        return 'content_type_relation_collection';
     }
 }
