@@ -46,10 +46,13 @@ class ContentTypeField implements DataTransformerInterface
         if (is_array($value)) {
             if (!empty($value['enabled'])) {
                 $field = new Field();
-                $field->setRequired(!empty($value['required']));
+
+                $options = $this->contentTypeField->getOptions();
+                $options['required'] = !empty($value['required']);
+
+                $field->setRequired();
                 $field->setName($this->contentTypeField->getName())
-                      ->setLabel($this->contentTypeField->getLabel())
-                      ->setType($this->contentTypeField->getType());
+                      ->setOptions($options);
                 return $field;
             }
         }
