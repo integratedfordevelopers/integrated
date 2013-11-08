@@ -24,15 +24,14 @@ use Integrated\Common\ContentType\Mapping\Annotations as Content;
 class Article extends AbstractContent
 {
     /**
-     * {@inheritdoc}
-     * @Content\Field(label="Title")
+     * @var array
+     * @ODM\Hash
      */
-    protected $name;
+    protected $title;
 
     /**
-     * @var string
-     * @ODM\String
-     * @Content\Field(label="Subtitle")
+     * @var array
+     * @ODM\Hash
      */
     protected $subtitle;
 
@@ -45,7 +44,7 @@ class Article extends AbstractContent
     /**
      * @var string
      * @ODM\String
-     * @Content\Field(label="Source")
+     * @Content\Field
      */
     protected $source;
 
@@ -58,21 +57,19 @@ class Article extends AbstractContent
     /**
      * @var \DateTime
      * @ODM\Date
-     * @Content\Field(label="Published until", type="datetime")
+     * @Content\Field(type="datetime", options={"label" = "Published until"})
      */
     protected $publishedUntil;
 
     /**
-     * @var string
-     * @ODM\String
-     * @Content\Field(label="Intro", type="textarea")
+     * @var array
+     * @ODM\Hash
      */
     protected $intro;
 
     /**
-     * @var string
-     * @ODM\String
-     * @Content\Field(label="Content", type="textarea")
+     * @var array
+     * @ODM\Hash
      */
     protected $content;
 
@@ -83,9 +80,31 @@ class Article extends AbstractContent
     protected $location;
 
     /**
+     * Get the title of the document
+     *
+     * @return array
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the title of the document
+     *
+     * @param array $title
+     * @return $this
+     */
+    public function setTitle(array $title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
      * Get the subtitle of the document
      *
-     * @return string
+     * @return array
      */
     public function getSubtitle()
     {
@@ -95,10 +114,10 @@ class Article extends AbstractContent
     /**
      * Set the subtitle of the document
      *
-     * @param string $subtitle
+     * @param array $subtitle
      * @return $this
      */
-    public function setSubtitle($subtitle)
+    public function setSubtitle(array $subtitle)
     {
         $this->subtitle = $subtitle;
         return $this;
@@ -195,7 +214,7 @@ class Article extends AbstractContent
     /**
      * Get the intro of the document
      *
-     * @return string
+     * @return array
      */
     public function getIntro()
     {
@@ -205,10 +224,10 @@ class Article extends AbstractContent
     /**
      * Set the intro of the document
      *
-     * @param string $intro
+     * @param array $intro
      * @return $this
      */
-    public function setIntro($intro)
+    public function setIntro(array $intro)
     {
         $this->intro = $intro;
         return $this;
@@ -217,7 +236,7 @@ class Article extends AbstractContent
     /**
      * Get the content of the document
      *
-     * @return string
+     * @return array
      */
     public function getContent()
     {
@@ -227,10 +246,10 @@ class Article extends AbstractContent
     /**
      * Set the content of the document
      *
-     * @param string $content
+     * @param array $content
      * @return $this
      */
-    public function setContent($content)
+    public function setContent(array $content)
     {
         $this->content = $content;
         return $this;
