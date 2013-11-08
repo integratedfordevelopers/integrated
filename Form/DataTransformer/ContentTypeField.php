@@ -54,6 +54,7 @@ class ContentTypeField implements DataTransformerInterface
                 $options['required'] = !empty($value['required']);
 
                 $field->setName($this->contentTypeField->getName())
+                      ->setType($this->contentTypeField->getType())
                       ->setOptions($options);
 
                 return $field;
