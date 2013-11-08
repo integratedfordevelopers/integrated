@@ -103,6 +103,15 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test get- and setName function
+     */
+    public function testGetAndSetNameFunction()
+    {
+        $name = 'name';
+        $this->assertEquals($name, $this->company->setName($name)->getName());
+    }
+
+    /**
      * Test get- and setLogo function
      */
     public function testGetAndSetLogoFunction()

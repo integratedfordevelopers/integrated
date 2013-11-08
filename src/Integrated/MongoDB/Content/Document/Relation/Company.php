@@ -25,10 +25,39 @@ use Integrated\Common\ContentType\Mapping\Annotations as Content;
 class Company extends AbstractRelation
 {
     /**
+     * @var string
+     * @ODM\String
+     * @Content\Field
+     */
+    protected $name;
+
+    /**
      * @var File
      * @ODM\ReferenceOne(targetDocument="Integrated\MongoDB\Content\Document\File")
      */
     protected $logo;
+
+    /**
+     * Get the name of the document
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the name of the document
+     *
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 
     /**
      * Get the file of the document
@@ -50,6 +79,5 @@ class Company extends AbstractRelation
     {
         $this->logo = $logo;
         return $this;
-
     }
 }
