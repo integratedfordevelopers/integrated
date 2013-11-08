@@ -36,8 +36,8 @@ class ContentTypeField
     /**
      * @var bool
      */
-
     protected $required;
+
     /**
      * Get the name of the Field
      *

@@ -12,6 +12,7 @@
 namespace Integrated\MongoDB\ContentType\Document\Embedded;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\MongoDB\ContentType\Document\ContentType;
 
 /**
  * Embedded document Relation
@@ -22,8 +23,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class Relation
 {
     /**
-     * @var \Integrated\MongoDB\ContentType\Document\ContentType
-     * @ODM\ReferenceOne(targetDocument="Integrated\MongoDB\ContentType\Document\ContentType")
+     * @var ContentType
+     * @ODM\ReferenceOne(targetDocument="Integrated\MongoDB\ContentType\Document\ContentType", cascade={"remove"})
      */
     protected $contentType;
 
@@ -38,4 +39,57 @@ class Relation
      * @ODM\Boolean
      */
     protected $required;
+
+    /**
+     * @return ContentType
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param ContentType $contentType
+     * @return $this
+     */
+    public function setContentType(ContentType $contentType)
+    {
+        $this->contentType = $contentType;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMultiple()
+    {
+        return $this->multiple;
+    }
+
+    /**
+     * @param bool $multiple
+     * @return $this
+     */
+    public function setMultiple($multiple)
+    {
+        $this->multiple = $multiple;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getRequired()
+    {
+        return $this->required;
+    }
+    /**
+     * @param bool $required
+     * @return $this;
+     */
+    public function setRequired($required)
+    {
+        $this->required = $required;
+        return $this;
+    }
 }

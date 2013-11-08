@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Reader;
+namespace Integrated\Common\Content\Reader;
 
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Doctrine\Common\Persistence\Mapping\ClassMetadataFactory;
 use Integrated\Common\ContentType\Mapping\Metadata;
 
 /**
@@ -22,9 +22,9 @@ use Integrated\Common\ContentType\Mapping\Metadata;
 class Document
 {
     /**
-     * @var ManagerRegistry
+     * @var ClassMetadataFactory
      */
-    protected $managerRegistry;
+    protected $metadataFactory;
 
     /**
      * @var Metadata\ContentTypeFactory
@@ -37,31 +37,36 @@ class Document
     protected $documents = array();
 
     /**
+     * @var array
+     */
+    protected $classNames;
+
+    /**
      * @var string
      */
-    protected $documentClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\AbstractContent';
+    protected $contentInterface = 'Integrated\Common\Content\ContentInterface';
 
     /**
      * Constructor
      *
-     * @param ManagerRegistry $managerRegistry
-     * @param Metadata\ContentTypeFactory $metadataFactory
+     * @param ClassMetadataFactory $metadataFactory
+     * @param Metadata\ContentTypeFactory $contentTypeFactory
      */
-    public function __construct(ManagerRegistry $managerRegistry, Metadata\ContentTypeFactory $contentTypeFactory)
+    public function __construct(ClassMetadataFactory $metadataFactory, Metadata\ContentTypeFactory $contentTypeFactory)
     {
-        $this->managerRegistry = $managerRegistry;
+        $this->metadataFactory = $metadataFactory;
         $this->contentTypeFactory = $contentTypeFactory;
     }
 
     /**
-     * Read all the Document Types and return their metadata
+     * Read all the document that implements the ContentInterface and return their metadata
      *
      * @return array
      */
     public function readAll()
     {
         // Get list of available documents
-        $classes = $this->managerRegistry->getManager()->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+        $classes = $this->getClassNames();
 
         foreach ($classes as $class) {
 
@@ -71,8 +76,8 @@ class Document
                 // Create new reflection class
                 $reflection = new \ReflectionClass($class);
 
-                // Class should be subclass of documentClass
-                if ($reflection->isSubclassOf($this->documentClass)) {
+                // Class implements ContentInterface
+                if ($reflection->implementsInterface($this->contentInterface)) {
 
                     // Class should be instantiable
                     if ($reflection->isInstantiable()) {
@@ -88,5 +93,20 @@ class Document
         }
 
         return $this->documents;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getClassNames()
+    {
+        if (null === $this->classNames) {
+            $this->classNames = array();
+            foreach ($this->metadataFactory->getAllMetadata() as $metadata) {
+                $this->classNames[] = $metadata->getName();
+            }
+        }
+
+        return $this->classNames;
     }
 }
