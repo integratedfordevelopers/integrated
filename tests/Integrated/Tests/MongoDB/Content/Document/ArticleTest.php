@@ -66,15 +66,6 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setName function
-     */
-    public function testGetAndSetNameFunction()
-    {
-        $name = 'name';
-        $this->assertEquals($name, $this->article->setName($name)->getName());
-    }
-
-    /**
      * Test get- and setReferences function
      */
     public function testGetAndSetReferencesFunction()
