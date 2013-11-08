@@ -50,19 +50,11 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test label property
+     * Test options property
      */
-    public function testLabel()
+    public function testOptions()
     {
-        $label = 'henk';
-        $this->assertEquals($label, $this->field->setLabel($label)->getLabel());
-    }
-
-    /**
-     * Test required property
-     */
-    public function testRequired()
-    {
-        $this->assertTrue($this->field->setRequired(true)->getRequired());
+        $options = array('label' => 'Test', 'required' => false);
+        $this->assertEquals($options, $this->field->setOptions($options)->getOptions());
     }
 }

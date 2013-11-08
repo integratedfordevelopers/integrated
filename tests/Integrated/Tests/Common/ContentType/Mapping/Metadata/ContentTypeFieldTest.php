@@ -52,22 +52,12 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getters and setter of label
+     * Test getters and setter of options
      */
-    public function testLabel()
+    public function testOptions()
     {
-        $label = 'Henk';
-        $this->contentTypeField->setLabel($label);
-        $this->assertEquals($label, $this->contentTypeField->getLabel());
-    }
-
-    /**
-     * Test getters and setter of required
-     */
-    public function testRequired()
-    {
-        $required = true;
-        $this->contentTypeField->setRequired($required);
-        $this->assertEquals($required, $this->contentTypeField->getRequired());
+        $options = array('label' => 'Label', 'required' => false);
+        $this->contentTypeField->setOptions($options);
+        $this->assertEquals($options, $this->contentTypeField->getOptions());
     }
 }

@@ -24,6 +24,12 @@ use Integrated\Common\ContentType\Mapping\Annotations as Content;
 class Article extends AbstractContent
 {
     /**
+     * {@inheritdoc}
+     * @Content\Field(label="Title")
+     */
+    protected $name;
+
+    /**
      * @var string
      * @ODM\String
      * @Content\Field(label="Subtitle")
@@ -39,6 +45,7 @@ class Article extends AbstractContent
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(label="Source")
      */
     protected $source;
 
@@ -51,18 +58,21 @@ class Article extends AbstractContent
     /**
      * @var \DateTime
      * @ODM\Date
+     * @Content\Field(label="Published until", type="datetime")
      */
     protected $publishedUntil;
 
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(label="Intro", type="textarea")
      */
     protected $intro;
 
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(label="Content", type="textarea")
      */
     protected $content;
 

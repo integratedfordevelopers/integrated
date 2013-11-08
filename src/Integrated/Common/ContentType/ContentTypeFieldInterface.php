@@ -28,12 +28,7 @@ interface ContentTypeFieldInterface
     public function getType();
 
     /**
-     * @return string
+     * @return array
      */
-    public function getLabel();
-
-    /**
-     * @return bool
-     */
-    public function getRequired();
+    public function getOptions();
 }

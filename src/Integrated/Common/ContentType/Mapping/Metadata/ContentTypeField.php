@@ -29,14 +29,9 @@ class ContentTypeField
     protected $type;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $label;
-
-    /**
-     * @var bool
-     */
-    protected $required;
+    protected $options = array();
 
     /**
      * Get the name of the Field
@@ -82,39 +77,24 @@ class ContentTypeField
     }
 
     /**
-     * @return string
+     * Get the options of the Field
+     *
+     * @return array
      */
-    public function getLabel()
+    public function getOptions()
     {
-        return $this->label;
+        return $this->options;
     }
 
-
     /**
-     * @param string $label
+     * Set the options of the Field
+     *
+     * @param array $options
      * @return $this
      */
-    public function setLabel($label)
+    public function setOptions(array $options)
     {
-        $this->label = $label;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getRequired()
-    {
-        return $this->required;
-    }
-
-    /**
-     * @param bool $required
-     * @return $this
-     */
-    public function setRequired($required)
-    {
-        $this->required = $required;
+        $this->options = $options;
         return $this;
     }
 }

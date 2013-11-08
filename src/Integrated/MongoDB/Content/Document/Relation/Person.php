@@ -34,20 +34,22 @@ class Person extends AbstractRelation
     /**
      * @var string
      * @ODM\String
-     */
-    protected $nickname;
-
-    /**
-     * @var string
-     * @ODM\String
-     */
-    protected $surname;
-
-    /**
-     * @var string
-     * @ODM\String
+     * @content\Field(label="Title")
      */
     protected $title;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Content\Field(label="Nickname")
+     */
+    protected $nickname;
+    /**
+     * @var string
+     * @ODM\String
+     * @Content\Field(label="Surname")
+     */
+    protected $surname;
 
     /**
      * @var Job[]

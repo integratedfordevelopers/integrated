@@ -25,14 +25,9 @@ class Field
     protected $type = 'text';
 
     /**
-     * @var string
+     * @var array
      */
-    protected $label;
-
-    /**
-     * @var bool
-     */
-    protected $required = false;
+    protected $options = array();
 
     /**
      * Constructor
@@ -74,46 +69,24 @@ class Field
     }
 
     /**
-     * Get the label of the field
+     * Get the options of the field
      *
-     * @return string
+     * @return array
      */
-    public function getLabel()
+    public function getOptions()
     {
-        return $this->label;
+        return $this->options;
     }
 
     /**
      * Set the label of the field
      *
-     * @param string $label
+     * @param array $options
      * @return $this
      */
-    public function setLabel($label)
+    public function setOptions(array $options)
     {
-        $this->label = $label;
-        return $this;
-    }
-
-    /**
-     * Get the required of the field
-     *
-     * @return bool
-     */
-    public function getRequired()
-    {
-        return $this->required;
-    }
-
-    /**
-     * Set the required of the field
-     *
-     * @param bool $required
-     * @return $this
-     */
-    public function setRequired($required)
-    {
-        $this->required = (bool) $required;
+        $this->options = $options;
         return $this;
     }
 }

@@ -35,16 +35,10 @@ class Field implements ContentTypeFieldInterface
     protected $type;
 
     /**
-     * @var string The label of the form field
-     * @ODM\String
+     * @var array The options of the form field
+     * @ODM\Hash
      */
-    protected $label;
-
-    /**
-     * @var bool Is the form field required
-     * @ODM\Boolean
-     */
-    protected $required;
+    protected $options = array();
 
     /**
      * {@inheritdoc}
@@ -89,42 +83,20 @@ class Field implements ContentTypeFieldInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel()
+    public function getOptions()
     {
-        return $this->label;
+        return $this->options;
     }
 
     /**
-     * Set the label of the field
+     * Set the options of the field
      *
-     * @param string $label The label of the form field
+     * @param array $options The options of the form field
      * @return $this
      */
-    public function setLabel($label)
+    public function setOptions(array $options)
     {
-        $this->label = $label;
-        return $this;
-    }
-
-    /**
-     * Get the required of the field
-     *
-     * @return bool Is the form field required
-     */
-    public function getRequired()
-    {
-        return $this->required;
-    }
-
-    /**
-     * Set the required of the field
-     *
-     * @param bool $required Is the form field required
-     * @return $this
-     */
-    public function setRequired($required)
-    {
-        $this->required = $required;
+        $this->options = $options;
         return $this;
     }
 }

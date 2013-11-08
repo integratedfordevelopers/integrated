@@ -47,7 +47,7 @@ abstract class AbstractContent implements ContentInterface
     /**
      * @var string
      * @ODM\String
-     * @Content\Field(label="Naam")
+     * @Content\Field(label="Name")
      */
     protected $name;
 
@@ -78,6 +78,7 @@ abstract class AbstractContent implements ContentInterface
     /**
      * @var bool
      * @ODM\Boolean
+     * @Content\Field(label="Disabled", type="checkbox")
      */
     protected $disabled;
 

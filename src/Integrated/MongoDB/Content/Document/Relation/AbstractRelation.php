@@ -12,6 +12,7 @@
 namespace Integrated\MongoDB\Content\Document\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Common\ContentType\Mapping\Annotations as Content;
 use Integrated\MongoDB\Content\Document\AbstractContent;
 use Integrated\MongoDB\Content\Document\Embedded\Address;
 
@@ -32,6 +33,7 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(label="Description", type="textarea")
      */
     protected $description;
 
@@ -44,6 +46,7 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(label="E-mailaddress", type="email")
      */
     protected $email;
 

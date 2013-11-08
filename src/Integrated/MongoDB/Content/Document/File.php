@@ -24,14 +24,22 @@ use Integrated\Common\ContentType\Mapping\Annotations as Content;
 class File extends AbstractContent
 {
     /**
+     * {@inheritdoc}
+     * @Content\Field(label="Title")
+     */
+    protected $name;
+
+    /**
      * @var string
      * @ODM\String
+     * @Content\Field(label="File", type="file")
      */
     protected $file;
 
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(label="Description", type="textarea")
      */
     protected $description;
 
