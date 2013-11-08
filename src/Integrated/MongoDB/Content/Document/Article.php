@@ -27,13 +27,13 @@ class Article extends AbstractContent
      * @var array
      * @ODM\Hash
      */
-    protected $title;
+    protected $title = array();
 
     /**
      * @var array
      * @ODM\Hash
      */
-    protected $subtitle;
+    protected $subtitle = array();
 
     /**
      * @var array Embedded\Author
@@ -65,13 +65,13 @@ class Article extends AbstractContent
      * @var array
      * @ODM\Hash
      */
-    protected $intro;
+    protected $intro = array();
 
     /**
      * @var array
      * @ODM\Hash
      */
-    protected $content;
+    protected $content = array();
 
     /**
      * @var Embedded\Location
