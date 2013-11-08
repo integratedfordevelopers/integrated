@@ -28,13 +28,6 @@
             {% for field in contentType.fields %}
             <li>
                 {{ field.name }}
-                |
-                {{ field.label }}
-                |
-                {{ field.type }}
-                {% if field.required %}
-                | required
-                {% endif %}
             </li>
             {% else %}
             <li>
