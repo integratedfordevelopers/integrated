@@ -27,7 +27,7 @@ class File extends AbstractContent
      * @var array
      * @ODM\Hash
      */
-    protected $title;
+    protected $title = array();
 
     /**
      * @var string
@@ -40,7 +40,7 @@ class File extends AbstractContent
      * @var array
      * @ODM\Hash
      */
-    protected $description;
+    protected $description = array();
 
     /**
      * Get the title of the document
