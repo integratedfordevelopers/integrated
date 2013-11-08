@@ -27,15 +27,15 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * @var string
      * @ODM\String
+     * @Content\Field
      */
     protected $accountnumber;
 
     /**
-     * @var string
-     * @ODM\String
-     * @Content\Field(label="Description", type="textarea")
+     * @var array
+     * @ODM\Hash
      */
-    protected $description;
+    protected $description = array();
 
     /**
      * @var array
@@ -46,7 +46,7 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * @var string
      * @ODM\String
-     * @Content\Field(label="E-mailaddress", type="email")
+     * @Content\Field(type="email")
      */
     protected $email;
 
@@ -81,7 +81,7 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * Get the description of the document
      *
-     * @return string
+     * @return array
      */
     public function getDescription()
     {
@@ -91,10 +91,10 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * Set the description of the document
      *
-     * @param string $description
+     * @param array $description
      * @return $this
      */
-    public function setDescription($description)
+    public function setDescription(array $description)
     {
         $this->description = $description;
         return $this;

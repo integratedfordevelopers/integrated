@@ -69,7 +69,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetDescriptionFunction()
     {
-        $description = 'description';
+        $description = array('nl' => 'Omschrijving', 'en' => 'Description');
         $this->assertEquals($description, $this->company->setDescription($description)->getDescription());
     }
 
