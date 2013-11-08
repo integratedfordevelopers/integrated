@@ -69,7 +69,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($fields, $this->contentType->getFields());
 
         // Stub getName
-        $field2->expects($this->once())
+        $field2->expects($this->exactly(2))
             ->method('getName')
             ->will($this->returnValue('Henk'));
 
@@ -78,5 +78,6 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertSame($field2, $this->contentType->getField('Henk'));
+        $this->assertNull($this->contentType->getField('Henk de Vries'));
     }
 }

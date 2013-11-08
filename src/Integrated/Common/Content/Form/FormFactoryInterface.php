@@ -11,12 +11,9 @@
 
 namespace Integrated\Common\Content\Form;
 
-
 use Integrated\Common\Content\Exception\UnexpectedTypeException;
 use Integrated\Common\Content\Exception\InvalidArgumentException;
 use Integrated\Common\Content\ContentInterface;
-
-use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

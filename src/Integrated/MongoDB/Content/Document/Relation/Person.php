@@ -13,6 +13,7 @@ namespace Integrated\MongoDB\Content\Document\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\MongoDB\Content\Document\File;
+use Integrated\MongoDB\Content\Document\Embedded\Job;
 use Integrated\Common\ContentType\Mapping\Annotations as Content;
 
 /**
@@ -49,7 +50,7 @@ class Person extends AbstractRelation
     protected $title;
 
     /**
-     * @var array Job
+     * @var Job[]
      * @ODM\EmbedMany(targetDocument="Integrated\MongoDB\Content\Document\Embedded\Job", strategy="set")
      */
     protected $jobs = array();
@@ -151,7 +152,7 @@ class Person extends AbstractRelation
     /**
      * Get the jobs of the document
      *
-     * @return array
+     * @return Job[]
      */
     public function getJobs()
     {

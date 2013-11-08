@@ -87,7 +87,7 @@ class ContentType
 
     /**
      * @param $name
-     * @return ContentTypeField|void
+     * @return ContentTypeField|null
      */
     public function getField($name)
     {
@@ -96,6 +96,8 @@ class ContentType
                 return $field;
             }
         }
+
+        return null;
     }
 
     /**

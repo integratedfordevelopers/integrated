@@ -15,8 +15,8 @@ use Integrated\Common\ContentType\ContentTypeInterface;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -25,6 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class FormType implements FormTypeInterface
 {
 	protected $contentType;
+
+	protected $name = null;
 
 	/**
 	 * @param ContentTypeInterface $contentType
@@ -45,6 +47,11 @@ class FormType implements FormTypeInterface
 				$builder->create($field->getName(), $field->getType(), array('label' => $field->getLabel()))
 			);
 		}
+
+		// submit buttons
+
+		$builder->add('save', 'submit');
+		$builder->add('back', 'submit');
 	}
 
 	/**
@@ -77,6 +84,14 @@ class FormType implements FormTypeInterface
 	/**
 	 * {@inheritdoc}
 	 */
+	public function getType()
+	{
+		return $this->contentType;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
 	public function getParent()
 	{
 		return 'form';
@@ -87,6 +102,11 @@ class FormType implements FormTypeInterface
 	 */
 	public function getName()
 	{
-		return $this->contentType->getClass() . '::' . $this->contentType->getType();
+		if (null === $this->name) {
+			$this->name = preg_replace('#[^a-zA-Z0-9\-_]#', '_', $this->contentType->getClass() . '__' . $this->contentType->getType());
+			$this->name = strtolower($this->name);
+		}
+
+		return $this->name;
 	}
 }

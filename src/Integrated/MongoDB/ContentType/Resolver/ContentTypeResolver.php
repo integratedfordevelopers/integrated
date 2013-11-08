@@ -1,27 +1,28 @@
 <?php
 
 /*
-* This file is part of the Integrated package.
-*
-* (c) e-Active B.V. <integrated@e-active.nl>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Integrated\MongoDB\ContentType\Resolver;
 
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverListInterface;
-use Integrated\MongoDB\ContentType\Exception\ExceptionInterface;
-use Integrated\MongoDB\ContentType\Exception\InvalidArgumentException;
-use Integrated\MongoDB\ContentType\Exception\UnexpectedTypeException;
+use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+
+use Integrated\Common\ContentType\Exception\ExceptionInterface;
+use Integrated\Common\ContentType\Exception\InvalidArgumentException;
+use Integrated\Common\ContentType\Exception\UnexpectedTypeException;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContentTypeResolver implements ContentTypeResolverListInterface
+class ContentTypeResolver implements ContentTypeResolverInterface
 {
 	const CONTENT_TYPE_INTERFACE = 'Integrated\Common\ContentType\ContentTypeInterface';
 

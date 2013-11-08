@@ -1,19 +1,20 @@
 <?php
 
 /*
-* This file is part of the Integrated package.
-*
-* (c) e-Active B.V. <integrated@e-active.nl>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Integrated\Common\ContentType\Resolver;
 
-use Integrated\MongoDB\ContentType\Exception\InvalidArgumentException;
-use Integrated\MongoDB\ContentType\Exception\UnexpectedTypeException;
-use Integrated\MongoDB\ContentType\Resolver\ContentTypeIterator;
+use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Common\ContentType\ContentTypeIteratorInterface;
+use Integrated\Common\ContentType\Exception\InvalidArgumentException;
+use Integrated\Common\ContentType\Exception\UnexpectedTypeException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -26,7 +27,7 @@ interface ContentTypeResolverInterface
 	 * @param string $class A fully qualified class name of type ContentInterface
 	 * @param string $type  The content type name
 	 *
-     * @return ContentTypeIterator
+     * @return ContentTypeInterface
 	 *
 	 * @throws UnexpectedTypeException  if the passed arguments are not strings
 	 * @throws InvalidArgumentException if the content type can not be found
@@ -44,4 +45,11 @@ interface ContentTypeResolverInterface
 	 * @throws UnexpectedTypeException  if the passed arguments are not strings
 	 */
 	public function hasType($class, $type);
+
+	/**
+	 * Get a list of all the content types.
+	 *
+	 * @return ContentTypeIteratorInterface
+	 */
+	public function getTypes();
 }

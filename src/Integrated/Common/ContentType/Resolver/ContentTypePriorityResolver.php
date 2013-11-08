@@ -1,13 +1,13 @@
 <?php
 
 /*
-* This file is part of the Integrated package.
-*
-* (c) e-Active B.V. <integrated@e-active.nl>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Integrated\Common\ContentType\Resolver;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
@@ -139,5 +139,19 @@ class ContentTypePriorityResolver implements ContentTypeResolverInterface
 		}
 
 		return false;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function getTypes()
+	{
+		$iterator = new ContentTypePriorityIterator();
+
+		foreach ($this->getResolvers() as $resolver) {
+			$iterator->append($resolver);
+		}
+
+		return $iterator;
 	}
 }

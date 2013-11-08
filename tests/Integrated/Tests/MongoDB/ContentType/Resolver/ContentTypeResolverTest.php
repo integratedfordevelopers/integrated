@@ -45,7 +45,7 @@ class ContentTypeResolverTest extends \PHPUnit_Framework_TestCase
 
 	public function testInterface()
 	{
-		$this->assertInstanceOf('Integrated\Common\ContentType\Resolver\ContentTypeResolverListInterface', $this->resolver);
+		$this->assertInstanceOf('Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface', $this->resolver);
 	}
 
 	/**
@@ -74,7 +74,7 @@ class ContentTypeResolverTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \Integrated\MongoDB\ContentType\Exception\UnexpectedTypeException
+	 * @expectedException \Integrated\Common\ContentType\Exception\UnexpectedTypeException
 	 */
 	public function testGetTypeInvalidClass()
 	{
@@ -82,7 +82,7 @@ class ContentTypeResolverTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \Integrated\MongoDB\ContentType\Exception\UnexpectedTypeException
+	 * @expectedException \Integrated\Common\ContentType\Exception\UnexpectedTypeException
 	 */
 	public function testGetTypeInvalidType()
 	{
@@ -113,7 +113,7 @@ class ContentTypeResolverTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \Integrated\MongoDB\ContentType\Exception\UnexpectedTypeException
+	 * @expectedException \Integrated\Common\ContentType\Exception\UnexpectedTypeException
 	 */
 	public function testHasTypeInvalidClass()
 	{
@@ -121,7 +121,7 @@ class ContentTypeResolverTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException \Integrated\MongoDB\ContentType\Exception\UnexpectedTypeException
+	 * @expectedException \Integrated\Common\ContentType\Exception\UnexpectedTypeException
 	 */
 	public function testHasTypeInvalidType()
 	{
@@ -139,18 +139,10 @@ class ContentTypeResolverTest extends \PHPUnit_Framework_TestCase
 
 	public function testGetTypes()
 	{
-//		$type1 = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
-//		$type2 = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
-//		$type3 = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
-
 		$this->repository->expects($this->once())
 			->method('findAll')
 			->will($this->returnValue($this->getMock('Doctrine\ODM\MongoDB\Cursor', array(), array(), '', false)));
 
-//		$iterator = $this->resolver->getTypes();
-
 		$this->assertInstanceOf('Integrated\Common\ContentType\ContentTypeIteratorInterface', $this->resolver->getTypes());
-//		$this->assertSame($type1, $iterator->current());
-//		$this->assertSame(array($type1, $type2, $type3), iterator_to_array($iterator));
 	}
 }
