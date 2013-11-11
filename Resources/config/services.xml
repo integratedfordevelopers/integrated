@@ -51,7 +51,7 @@
 				 factory-method="getRepository"
 				 public="false"
 				>
-			<argument type="string">Integrated\MongoDB\ContentType\Document\ContentType</argument>
+			<argument type="string">Integrated\Bundle\ContentBundle\Document\ContentType\ContentType</argument>
 		</service>
 
 		<service id="integrated_content.resolver.mongodb" class="%integrated_content.resolver.mongodb.class%">

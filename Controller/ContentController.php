@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 //use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteType;
-use Integrated\MongoDB\Content\Document\AbstractContent;
+use Integrated\Bundle\ContentBundle\Document\Content\AbstractContent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +49,7 @@ class ContentController extends Controller
 		/** @var $paginator \Knp\Component\Pager\Paginator */
 		$paginator = $this->get('knp_paginator');
 		$paginator = $paginator->paginate(
-			$dm->createQueryBuilder('Integrated\MongoDB\Content\Document\AbstractContent'),
+			$dm->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\AbstractContent'),
 			$request->query->get('page', 1),
 			15
 		);
