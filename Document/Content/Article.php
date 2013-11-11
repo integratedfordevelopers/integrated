@@ -26,12 +26,14 @@ class Article extends AbstractContent
     /**
      * @var array
      * @ODM\Hash
+     * @Content\Field(type="translatable_text")
      */
     protected $title = array();
 
     /**
      * @var array
      * @ODM\Hash
+     * @Content\Field(type="translatable_text")
      */
     protected $subtitle = array();
 
@@ -64,12 +66,14 @@ class Article extends AbstractContent
     /**
      * @var array
      * @ODM\Hash
+     * @Content\Field(type="translatable_textarea")
      */
     protected $intro = array();
 
     /**
      * @var array
      * @ODM\Hash
+     * @Content\Field(type="translatable_textarea")
      */
     protected $content = array();
 

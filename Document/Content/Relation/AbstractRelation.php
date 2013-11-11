@@ -34,6 +34,7 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * @var array
      * @ODM\Hash
+     * @Content\Field(type="translatable_textarea")
      */
     protected $description = array();
 
