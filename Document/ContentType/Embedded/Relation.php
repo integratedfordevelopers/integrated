@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\MongoDB\ContentType\Document\ContentType;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 
 /**
  * Embedded document Relation
@@ -24,7 +24,7 @@ class Relation
 {
     /**
      * @var ContentType
-     * @ODM\ReferenceOne(targetDocument="Integrated\MongoDB\ContentType\Document\ContentType", cascade={"remove"})
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType", cascade={"remove"})
      */
     protected $contentType;
 

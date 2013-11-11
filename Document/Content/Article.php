@@ -37,7 +37,7 @@ class Article extends AbstractContent
 
     /**
      * @var array Embedded\Author
-     * @ODM\EmbedMany(targetDocument="Integrated\MongoDB\Content\Document\Embedded\Author", strategy="set")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author", strategy="set")
      */
     protected $authors = array();
 
@@ -75,7 +75,7 @@ class Article extends AbstractContent
 
     /**
      * @var Embedded\Location
-     * @ODM\EmbedOne(targetDocument="Integrated\MongoDB\Content\Document\Embedded\Location")
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location")
      */
     protected $location;
 

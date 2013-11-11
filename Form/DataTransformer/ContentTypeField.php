@@ -2,7 +2,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\MongoDB\ContentType\Document\Embedded\Field;
+use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Common\ContentType\Mapping\Metadata;
 
 class ContentTypeField implements DataTransformerInterface

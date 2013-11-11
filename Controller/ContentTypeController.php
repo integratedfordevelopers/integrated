@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Integrated\Bundle\ContentBundle\Form\Type as Form;
-use Integrated\MongoDB\ContentType\Document\ContentType;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Common\ContentType\Mapping\Metadata;
 
 class ContentTypeController extends Controller
@@ -22,7 +22,7 @@ class ContentTypeController extends Controller
     /**
      * @var string
      */
-    protected $contentTypeClass = 'Integrated\\MongoDB\\ContentType\\Document\\ContentType';
+    protected $contentTypeClass = 'Integrated\Bundle\ContentBundle\Document\ContentType\ContentType';
 
     /**
      * @var \Integrated\Common\Content\Reader\Document

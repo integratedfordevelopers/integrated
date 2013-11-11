@@ -48,13 +48,13 @@ class ContentType implements ContentTypeInterface
 
     /**
      * @var Embedded\Field[]
-     * @ODM\EmbedMany(targetDocument="Integrated\MongoDB\ContentType\Document\Embedded\Field", strategy="set")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field", strategy="set")
      */
     protected $fields = array();
 
     /**
      * @var Embedded\Relation[]
-     * @ODM\EmbedMany(targetDocument="Integrated\MongoDB\ContentType\Document\Embedded\Relation", strategy="set")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Relation", strategy="set")
      */
     protected $relations = array();
 
