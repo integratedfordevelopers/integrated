@@ -98,10 +98,8 @@ class ContentController extends Controller
 				$dm->persist($content);
 				$dm->flush();
 
-				$this->get('session')->getFlashBag()->add('notice', array(
-					'head' => 'Succes!',
-					'body' => sprintf('A new %s is created', $type->getType()->getType())
-				));
+                // Set flash message
+                $this->get('braincrafted_bootstrap.flash')->success(sprintf('A new %s is created', $type->getType()->getType()));
 
 				return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
 			}
@@ -148,10 +146,8 @@ class ContentController extends Controller
 				$dm = $this->get('doctrine_mongodb')->getManager();
 				$dm->flush();
 
-				$this->get('session')->getFlashBag()->add('notice', array(
-					'head' => 'Succes!',
-					'body' => sprintf('The changes to %s are saved', $type->getType()->getType())
-				));
+                // Set flash message
+                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to %s are saved', $type->getType()->getType()));
 
 				return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
 			}
