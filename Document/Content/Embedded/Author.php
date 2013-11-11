@@ -30,7 +30,7 @@ class Author
 
     /**
      * @var Person
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Person")
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person")
      */
     protected $person;
 
