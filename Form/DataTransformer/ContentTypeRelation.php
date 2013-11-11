@@ -2,7 +2,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\MongoDB\ContentType\Document\Embedded\Relation;
+use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Relation;
 use Integrated\Common\ContentType\ContentTypeInterface;
 
 class ContentTypeRelation implements DataTransformerInterface
