@@ -27,9 +27,12 @@ class ContentTypeField implements DataTransformerInterface
     public function transform($field)
     {
         if ($field instanceof Field) {
+
+            $options = $field->getOptions();
+
             return array(
                 'enabled' => true,
-                'required' => $field->getRequired()
+                'required' => !empty($options['required'])
             );
         }
 
@@ -46,10 +49,14 @@ class ContentTypeField implements DataTransformerInterface
         if (is_array($value)) {
             if (!empty($value['enabled'])) {
                 $field = new Field();
-                $field->setRequired(!empty($value['required']));
+
+                $options = $this->contentTypeField->getOptions();
+                $options['required'] = !empty($value['required']);
+
                 $field->setName($this->contentTypeField->getName())
-                      ->setLabel($this->contentTypeField->getLabel())
-                      ->setType($this->contentTypeField->getType());
+                      ->setType($this->contentTypeField->getType())
+                      ->setOptions($options);
+
                 return $field;
             }
         }

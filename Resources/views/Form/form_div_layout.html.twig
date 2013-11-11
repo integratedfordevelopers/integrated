@@ -1,0 +1,58 @@
+{% use "BraincraftedBootstrapBundle:Form:form_div_layout.html.twig" %}
+
+{% block content_type_field_collection_widget %}
+{% spaceless %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="40%">Fields</th>
+            <th>Required</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for field in form %}
+            <tr>
+                <td>
+                    {{ form_row(field.enabled) }}
+                </td>
+                <td>
+                    {{ form_widget(field.required) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endspaceless %}
+{% endblock %}
+
+{% block content_type_relation_collection_widget %}
+{% spaceless %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="40%">Contenttype</th>
+                <th colspan="2">Relations</th>
+                <th>Required</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for relation in form %}
+            <tr>
+                <td>
+                    {{ form_row(relation.enabled) }}
+                </td>
+                <td>
+                    {{ form_row(relation.multiple.0) }}
+                </td>
+                <td>
+                    {{ form_row(relation.multiple.1) }}
+                </td>
+                <td>
+                    {{ form_widget(relation.required) }}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endspaceless %}
+{% endblock %}

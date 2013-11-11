@@ -27,7 +27,9 @@
         "doctrine/mongodb": "1.0.*",
         "doctrine/mongodb-odm": "1.0.*",
         "doctrine/mongodb-odm-bundle": "3.0.*",
-        "integrated/library": "dev-develop"
+        "integrated/library": "dev-develop",
+        "braincrafted/bootstrap-bundle": "~2.0",
+        "twbs/bootstrap": "3.*"
     },
     "autoload":{
         "psr-0":{

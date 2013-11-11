@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}FMS{% endblock title %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet" media="screen">
+    {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+</head>
+<body>
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">ContentType</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+    {% block body %}{% endblock body %}
+</div>
+<script src="//code.jquery.com/jquery.js"></script>
+<script src="{{ asset('/js/bootstrap.js') }}"></script>
+</body>
+</html>

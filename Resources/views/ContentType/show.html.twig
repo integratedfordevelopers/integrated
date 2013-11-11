@@ -1,15 +1,11 @@
-<ul>
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block body %}
+<ol class="breadcrumb">
     <li>
-        <a href="{{ path('integrated_content_contenttype_index') }}">
-            Overview
-        </a>
+        <a href="{{ path('integrated_content_contenttype_index') }}">Home</a>
     </li>
-    <li>
-        <a href="{{ path('integrated_content_contenttype_edit', {'id': contentType.id}) }}">
-            Edit
-        </a>
-    </li>
-</ul>
+    <li class="active">Show</li>
+</ol>
 <h1>Show</h1>
 <dl>
     <dt>
@@ -40,5 +36,37 @@
             {% endfor %}
         </ul>
     </dd>
+    <dt>
+        Relations
+    </dt>
+    <dd>
+        <ul>
+            {% for relation in contentType.relations %}
+            <li>
+                {{ relation.contentType.class }}
+                |
+                {{ relation.contentType.type }}
+                |
+                {% if relation.multiple == 1 %}
+                Multiple
+                {% else %}
+                One
+                {% endif %}
+                {% if relation.required %}
+                    | required
+                {% endif %}
+
+            </li>
+            {% else %}
+            <li>
+                No relations added
+            </li>
+            {% endfor %}
+        </ul>
+    </dd>
 </dl>
-{{ form(form) }}
+<a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_contenttype_edit', {'id': contentType.id}) }}">
+    Edit
+</a>
+{{ form(form, { 'style': 'inline' }) }}
+{% endblock %}

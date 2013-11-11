@@ -1,15 +1,21 @@
-{% extends 'base.html.twig' %}
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block body %}
+<div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+        Add <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+        {% for type in documentTypes %}
+            <li>
+                <a href="{{ path('integrated_content_contenttype_new') }}?class={{ type.class }}">
+                    {{ type.type }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 
-{% block content %}
-
-<ul>
-    <li>
-        <a href="{{ path('integrated_content_contenttype_select') }}">
-            Create a new content type
-        </a>
-    </li>
-</ul>
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>Name</th>
@@ -33,7 +39,9 @@
                 {{ document.createdAt|date }}
             </td>
             <td>
-                <a href="{{ path('integrated_content_contenttype_edit', {'id': document.id}) }}">Edit</a>
+                <a href="{{ path('integrated_content_contenttype_edit', {'id': document.id}) }}">
+                    {{ icon('pencil') }}
+                </a>
             </td>
         </tr>
         {% else %}
@@ -45,5 +53,4 @@
         {% endfor %}
     </tbody>
 </table>
-
 {% endblock %}
