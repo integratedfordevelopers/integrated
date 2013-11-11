@@ -19,6 +19,9 @@
 
 		<parameter key="doctrine_mongo_db_param_converter.class">Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter</parameter>
 
+        <parameter key="integrated_content_form_type_translatable_text.class">Integrated\Bundle\ContentBundle\Form\Type\Translatable\Text</parameter>
+        <parameter key="integrated_content_form_type_translatable_textarea.class">Integrated\Bundle\ContentBundle\Form\Type\Translatable\Textarea</parameter>
+
 	</parameters>
 
 	<services>
@@ -75,6 +78,17 @@
 			<argument type="service" id="doctrine_mongodb"/>
 			<tag name="request.param_converter" converter="doctrine.odm"/>
 		</service>
+
+        <service id="integrated_content_form_type_translatable_text" class="%integrated_content_form_type_translatable_text.class%">
+            <tag name="form.type" alias="translatable_text" />
+        </service>
+
+        <service id="integrated_content_form_type_translatable_textarea" class="%integrated_content_form_type_translatable_textarea.class%">
+            <tag name="form.type" alias="translatable_textarea" />
+        </service>
+
+
+
 
 	</services>
 

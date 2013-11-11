@@ -56,3 +56,29 @@
     </table>
 {% endspaceless %}
 {% endblock %}
+
+{% block translatable_text_widget %}
+{% spaceless %}
+    {% for field in form %}
+        <div class="input-group" style="margin-bottom: 15px">
+            <span class="input-group-addon">
+                {{ field.vars.label }}
+            </span>
+            {{ form_widget(field) }}
+        </div>
+    {% endfor %}
+{% endspaceless %}
+{%  endblock %}
+
+{% block translatable_textarea_widget %}
+    {% spaceless %}
+        {% for field in form %}
+            <div class="input-group" style="margin-bottom: 15px">
+            <span class="input-group-addon">
+                {{ field.vars.label }}
+            </span>
+                {{ form_widget(field) }}
+            </div>
+        {% endfor %}
+    {% endspaceless %}
+{%  endblock %}

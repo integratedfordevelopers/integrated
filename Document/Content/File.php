@@ -26,6 +26,7 @@ class File extends AbstractContent
     /**
      * @var array
      * @ODM\Hash
+     * @Content\Field(type="translatable_text")
      */
     protected $title = array();
 
@@ -39,6 +40,7 @@ class File extends AbstractContent
     /**
      * @var array
      * @ODM\Hash
+     * @Content\Field(type="translatable_textarea")
      */
     protected $description = array();
 
