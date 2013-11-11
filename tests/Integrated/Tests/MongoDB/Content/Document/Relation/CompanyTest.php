@@ -69,7 +69,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetDescriptionFunction()
     {
-        $description = 'description';
+        $description = array('nl' => 'Omschrijving', 'en' => 'Description');
         $this->assertEquals($description, $this->company->setDescription($description)->getDescription());
     }
 
@@ -100,6 +100,15 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
             $this->getMock('Integrated\MongoDB\Content\Document\Embedded\Address')
         );
         $this->assertSame($addresses, $this->company->setAddresses($addresses)->getAddresses());
+    }
+
+    /**
+     * Test get- and setName function
+     */
+    public function testGetAndSetNameFunction()
+    {
+        $name = 'name';
+        $this->assertEquals($name, $this->company->setName($name)->getName());
     }
 
     /**

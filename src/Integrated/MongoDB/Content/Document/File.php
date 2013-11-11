@@ -24,16 +24,45 @@ use Integrated\Common\ContentType\Mapping\Annotations as Content;
 class File extends AbstractContent
 {
     /**
-     * @var string
-     * @ODM\String
+     * @var array
+     * @ODM\Hash
      */
-    protected $file;
+    protected $title = array();
 
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(type="file")
      */
-    protected $description;
+    protected $file;
+
+    /**
+     * @var array
+     * @ODM\Hash
+     */
+    protected $description = array();
+
+    /**
+     * Get the title of the document
+     *
+     * @return array
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the title of the document
+     *
+     * @param array $title
+     * @return $this
+     */
+    public function setTitle(array $title)
+    {
+        $this->title = $title;
+        return $this;
+    }
 
     /**
      * Get the file of the document
@@ -60,7 +89,7 @@ class File extends AbstractContent
     /**
      * Get the description of the document
      *
-     * @return string
+     * @return array
      */
     public function getDescription()
     {
@@ -70,10 +99,10 @@ class File extends AbstractContent
     /**
      * Set the description of the document
      *
-     * @param string $description
+     * @param array $description
      * @return $this
      */
-    public function setDescription($description)
+    public function setDescription(array $description)
     {
         $this->description = $description;
         return $this;

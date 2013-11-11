@@ -45,13 +45,6 @@ abstract class AbstractContent implements ContentInterface
     protected $type;
 
     /**
-     * @var string
-     * @ODM\String
-     * @Content\Field(label="Naam")
-     */
-    protected $name;
-
-    /**
      * @var ArrayCollection
      * @ODM\ReferenceMany(discriminatorField="class")
      */
@@ -78,6 +71,7 @@ abstract class AbstractContent implements ContentInterface
     /**
      * @var bool
      * @ODM\Boolean
+     * @Content\Field(type="checkbox")
      */
     protected $disabled;
 
@@ -137,28 +131,6 @@ abstract class AbstractContent implements ContentInterface
     public function setType($type)
     {
         $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * Get the name of the document
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set the name of the document
-     *
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
         return $this;
     }
 

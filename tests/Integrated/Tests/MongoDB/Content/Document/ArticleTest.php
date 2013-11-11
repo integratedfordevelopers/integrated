@@ -66,15 +66,6 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setName function
-     */
-    public function testGetAndSetNameFunction()
-    {
-        $name = 'name';
-        $this->assertEquals($name, $this->article->setName($name)->getName());
-    }
-
-    /**
      * Test get- and setReferences function
      */
     public function testGetAndSetReferencesFunction()
@@ -130,11 +121,20 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test get- and setTitle function
+     */
+    public function testGetAndSetTitleFunction()
+    {
+        $title = array('nl' => 'Titel', 'en' => 'Title');
+        $this->assertSame($title, $this->article->setTitle($title)->getTitle());
+    }
+
+    /**
      * Test get- and setSubtitle function
      */
     public function testGetAndSetSubtitleFunction()
     {
-        $subtitle = 'subtitle';
+        $subtitle = array('nl' => 'Onderkop', 'en' => 'Subtitle');
         $this->assertEquals($subtitle, $this->article->setSubtitle($subtitle)->getSubtitle());
     }
 
@@ -179,7 +179,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetIntroFunction()
     {
-        $intro = 'intro';
+        $intro = array('nl' => 'Inleiding', 'en' => 'Introduction');
         $this->assertEquals($intro, $this->article->setIntro($intro)->getIntro());
     }
 
@@ -188,7 +188,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetContentFunction()
     {
-        $content = 'content';
+        $content = array('nl' => 'Bericht', 'en' => 'Message');
         $this->assertEquals($content, $this->article->setContent($content)->getContent());
     }
 

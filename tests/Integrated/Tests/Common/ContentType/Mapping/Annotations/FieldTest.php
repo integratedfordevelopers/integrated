@@ -23,13 +23,15 @@ class FieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorWithValidData()
     {
+        // Create options array
+        $options = array('label' => 'de Vries', 'required' => true);
+
         // Create field
-        $field = new Field(array('type' => 'Henk', 'label' => 'de Vries', 'required' => true));
+        $field = new Field(array('type' => 'Henk', 'options' => $options));
 
         // Asserts
         $this->assertEquals('Henk', $field->getType());
-        $this->assertEquals('de Vries', $field->getLabel());
-        $this->assertTrue($field->getRequired());
+        $this->assertSame($options, $field->getOptions());
     }
 
 
@@ -53,6 +55,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase
 
         // Asserts
         $this->assertEquals('text', $field->getType());
-        $this->assertFalse($field->getRequired());
+        $this->assertSame(array(), $field->getOptions());
     }
 }

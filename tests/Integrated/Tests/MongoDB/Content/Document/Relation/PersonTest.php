@@ -74,21 +74,30 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setSurname function
+     * Test get- and setPrefix function
      */
-    public function testGetAndSetSurnameFunction()
+    public function testGetAndSetPrefixFunction()
     {
-        $surname = 'surname';
-        $this->assertEquals($surname, $this->person->setSurname($surname)->getSurname());
+        $prefix = 'Nutty Professor';
+        $this->assertEquals($prefix, $this->person->setPrefix($prefix)->getPrefix());
     }
 
     /**
-     * Test get- and setTitle function
+     * Test get- and setFirstname function
      */
-    public function testGetAndSetTitleFunction()
+    public function testGetAndSetFirstnameFunction()
     {
-        $title = 'title';
-        $this->assertEquals($title, $this->person->setTitle($title)->getTitle());
+        $firstname = 'Henk';
+        $this->assertEquals($firstname, $this->person->setFirstname($firstname)->getFirstname());
+    }
+
+    /**
+     * Test get- and setLastname function
+     */
+    public function testGetAndSetLastnameFunction()
+    {
+        $lastname = 'de Vries';
+        $this->assertEquals($lastname, $this->person->setLastname($lastname)->getLastname());
     }
 
     /**

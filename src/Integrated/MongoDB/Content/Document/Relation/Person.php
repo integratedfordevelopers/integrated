@@ -28,26 +28,37 @@ class Person extends AbstractRelation
     /**
      * @var string
      * @ODM\String
+     * @Content\Field(type="choice", options={"choices"={"Male", "Female"}})
      */
     protected $sex;
 
     /**
      * @var string
      * @ODM\String
+     * @content\Field
+     */
+    protected $prefix;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Content\Field
      */
     protected $nickname;
 
     /**
      * @var string
      * @ODM\String
+     * @Content\Field
      */
-    protected $surname;
+    protected $firstname;
 
     /**
      * @var string
      * @ODM\String
+     * @Content\Field
      */
-    protected $title;
+    protected $lastname;
 
     /**
      * @var Job[]
@@ -84,6 +95,28 @@ class Person extends AbstractRelation
     }
 
     /**
+     * Get the prefix of the document
+     *
+     * @return string
+     */
+    public function getPrefix()
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * Set the prefix of the document
+     *
+     * @param string $prefix
+     * @return $this
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+        return $this;
+    }
+
+    /**
      * Get the nickname of the document
      *
      * @return string
@@ -106,46 +139,46 @@ class Person extends AbstractRelation
     }
 
     /**
-     * Get the surname of the document
+     * Get the firstname of the document
      *
      * @return string
      */
-    public function getSurname()
+    public function getFirstname()
     {
-        return $this->surname;
+        return $this->firstname;
     }
 
     /**
-     * Set the surname of the document
+     * Set the firstname of the document
      *
-     * @param string $surname
+     * @param string $firstname
      * @return $this
      */
-    public function setSurname($surname)
+    public function setFirstname($firstname)
     {
-        $this->surname = $surname;
+        $this->firstname = $firstname;
         return $this;
     }
 
     /**
-     * Get the title of the document
+     * Get the lastname of the document
      *
      * @return string
      */
-    public function getTitle()
+    public function getLastname()
     {
-        return $this->title;
+        return $this->lastname;
     }
 
     /**
-     * Set the title of the document
+     * Set the lastname of the document
      *
-     * @param string $title
+     * @param string $lastname
      * @return $this
      */
-    public function setTitle($title)
+    public function setLastname($lastname)
     {
-        $this->title = $title;
+        $this->lastname = $lastname;
         return $this;
     }
 

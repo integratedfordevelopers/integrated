@@ -60,7 +60,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($document));
 
         // Create annotations Field
-        $field = new Field(array('label' => 'Do you love Henk?'));
+        $field = new Field(array('options' => array('label' => 'Do you love Henk?')));
 
         // Stub getPropertyAnnotation function
         $this->reader->expects($this->exactly(2))
