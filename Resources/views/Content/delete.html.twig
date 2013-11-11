@@ -1,16 +1,22 @@
-{% extends 'base.html.twig' %}
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block body %}
 
-{% block content %}
+<ol class="breadcrumb">
+    <li>
+        <a href="{{ path('integrated_content_content_index') }}">Home</a>
+    </li>
+    <li class="active">Delete</li>
+</ol>
+
+<div class="page-header">
+    <h1>Delete <small>{{ type.type }}</small></h1>
+</div>
 
 <div class="row">
 
-    <div class="page-header">
-        <h1>Delete <small>{{ type.type }}</small></h1>
-    </div>
-
     <div class="col-md-9">
 
-        <p>You are about to delete "{{ content.name }}", click the delete button below to confirm the action.</p>
+        <p>You are about to delete "{{ content.id }}", click the delete button below to confirm the action.</p>
 
         {{ form(form) }}
 

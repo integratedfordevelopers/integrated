@@ -1,23 +1,7 @@
-{% extends 'base.html.twig' %}
-
-{% block content %}
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block body %}
 
 <div class="row">
-
-    {% block notice %}
-
-        {% for notice in app.session.flashbag.get('notice') %}
-
-            <div class="alert alert-success">
-                <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-
-                <h4>{{ notice.head }}</h4>
-                <p>{{ notice.body }}</p>
-            </div>
-
-        {% endfor %}
-
-    {% endblock %}
 
     <div class="col-md-3">
 
@@ -72,7 +56,7 @@
                         <a href="{{ path('integrated_content_content_delete', {'id': content.id}) }}" title="remove"><span class="glyphicon glyphicon-remove-circle"></span></a>
                     </div>
 
-                    <h3 class="panel-title">{{ content.name }}</h3>
+                    <h3 class="panel-title">{{ content.id }}</h3>
                 </div>
 
                 {#{% if content.text|trim is not empty %}#}
