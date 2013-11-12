@@ -71,9 +71,8 @@ class AnnotationsDriver implements DriverInterface
                     $contentTypeField = new Metadata\ContentTypeField();
                     $contentTypeField->setName($reflectionProperty->getName())
                         ->setType($field->getType())
-                        ->setLabel($field->getLabel())
-                        ->setRequired($field->getRequired());
-                    $field->setType($field->getType())->setLabel($field->getLabel());
+                        ->setOptions($field->getOptions());
+
                     $contentType->addField($contentTypeField);
                 }
             }

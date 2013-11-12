@@ -44,7 +44,7 @@ class FormType implements FormTypeInterface
 		foreach ($this->contentType->getFields() as $field)
 		{
 			$builder->add(
-				$builder->create($field->getName(), $field->getType(), array('label' => $field->getLabel()))
+				$builder->create($field->getName(), $field->getType(), $field->getOptions())
 			);
 		}
 
