@@ -1,11 +1,13 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block body %}
-<ol class="breadcrumb">
-    <li>
-        <a href="{{ path('integrated_content_contenttype_index') }}">Home</a>
-    </li>
-    <li class="active">Edit</li>
-</ol>
-<h1>Edit</h1>
-{{ form(form, {'style': 'horizontal'}) }}
+    <ol class="breadcrumb">
+        <li>
+            <a href="{{ path('integrated_content_contenttype_index') }}">Home</a>
+        </li>
+        <li class="active">Edit</li>
+    </ol>
+    <div class="page-header">
+        <h1>Edit</h1>
+    </div>
+    {{ form(form, {'style': 'horizontal'}) }}
 {% endblock %}
