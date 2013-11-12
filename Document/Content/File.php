@@ -21,7 +21,7 @@ use Integrated\Common\ContentType\Mapping\Annotations as Content;
  * @ODM\Document(collection="content")
  * @Content\Document("File")
  */
-class File extends AbstractContent
+class File extends AbstractFile
 {
     /**
      * @var array
@@ -29,13 +29,6 @@ class File extends AbstractContent
      * @Content\Field(type="translatable_text")
      */
     protected $title = array();
-
-    /**
-     * @var string
-     * @ODM\String
-     * @Content\Field(type="file")
-     */
-    protected $file;
 
     /**
      * @var array
@@ -63,28 +56,6 @@ class File extends AbstractContent
     public function setTitle(array $title)
     {
         $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * Get the file of the document
-     *
-     * @return string
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    /**
-     * Set the file of the document
-     *
-     * @param string $file
-     * @return $this
-     */
-    public function setFile($file)
-    {
-        $this->file = $file;
         return $this;
     }
 
