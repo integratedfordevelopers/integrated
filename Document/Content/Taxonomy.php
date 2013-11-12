@@ -15,7 +15,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Content;
 
 /**
- * Document type File
+ * Document type Taxonomy
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\Document(collection="content")
