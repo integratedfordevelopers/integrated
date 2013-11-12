@@ -26,6 +26,7 @@ use Integrated\Common\Content\ContentInterface;
  * @ODM\DiscriminatorMap({
  *      "Article"="Integrated\Bundle\ContentBundle\Document\Content\Article",
  *      "File"="Integrated\Bundle\ContentBundle\Document\Content\File",
+ *      "Taxonomy"="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy",
  *      "Relation\Company"="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company",
  *      "Relation\Person"="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person"
  * })
