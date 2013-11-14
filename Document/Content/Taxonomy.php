@@ -12,28 +12,29 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Content;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
 
 /**
  * Document type Taxonomy
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ *
  * @ODM\Document(collection="content")
- * @Content\Document("Taxonomy")
+ * @Type\Document("Taxonomy")
  */
-class Taxonomy extends AbstractContent
+class Taxonomy extends Content
 {
     /**
      * @var array
      * @ODM\Hash
-     * @Content\Field(type="translatable_text")
+     * @Type\Field(type="translatable_text")
      */
     protected $title = array();
 
     /**
      * @var array
      * @ODM\Hash
-     * @Content\Field(type="translatable_textarea")
+     * @Type\Field(type="translatable_textarea")
      */
     protected $description = array();
 

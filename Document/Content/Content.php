@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Content;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Common\Content\ContentInterface;
 
 /**
@@ -23,15 +23,8 @@ use Integrated\Common\Content\ContentInterface;
  * @ODM\Document(collection="content")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
- * @ODM\DiscriminatorMap({
- *      "Article"="Integrated\Bundle\ContentBundle\Document\Content\Article",
- *      "File"="Integrated\Bundle\ContentBundle\Document\Content\File",
- *      "Taxonomy"="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy",
- *      "Relation\Company"="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company",
- *      "Relation\Person"="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person"
- * })
  */
-abstract class AbstractContent implements ContentInterface
+class Content implements ContentInterface
 {
     /**
      * @var string
@@ -72,7 +65,7 @@ abstract class AbstractContent implements ContentInterface
     /**
      * @var bool
      * @ODM\Boolean
-     * @Content\Field(type="checkbox")
+     * @Type\Field(type="checkbox")
      */
     protected $disabled;
 

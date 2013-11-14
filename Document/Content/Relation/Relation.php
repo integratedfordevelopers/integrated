@@ -20,6 +20,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
  * Abstract class for Relations
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ *
  * @ODM\MappedSuperclass
  */
 class Relation extends Content
