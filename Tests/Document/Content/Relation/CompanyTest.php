@@ -40,7 +40,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Company should extend AbstractContent
+     * Company should extend Content
      */
     public function testAbstractContent()
     {
@@ -48,7 +48,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Company should extend AbstractRelation
+     * Company should extend Relation
      */
     public function testAbstractRelation()
     {

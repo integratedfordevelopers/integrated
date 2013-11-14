@@ -12,28 +12,29 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Content;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
 
 /**
  * Document type Article
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content")
- * @Content\Document("Article")
+ *
+ * @ODM\Document
+ * @Type\Document("Article")
  */
-class Article extends AbstractContent
+class Article extends Content
 {
     /**
      * @var array
      * @ODM\Hash
-     * @Content\Field(type="translatable_text")
+     * @Type\Field(type="translatable_text")
      */
     protected $title = array();
 
     /**
      * @var array
      * @ODM\Hash
-     * @Content\Field(type="translatable_text")
+     * @Type\Field(type="translatable_text")
      */
     protected $subtitle = array();
 
@@ -46,7 +47,7 @@ class Article extends AbstractContent
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field
      */
     protected $source;
 
@@ -59,21 +60,21 @@ class Article extends AbstractContent
     /**
      * @var \DateTime
      * @ODM\Date
-     * @Content\Field(type="datetime", options={"label" = "Published until"})
+     * @Type\Field(type="datetime", options={"label" = "Published until"})
      */
     protected $publishedUntil;
 
     /**
      * @var array
      * @ODM\Hash
-     * @Content\Field(type="translatable_textarea")
+     * @Type\Field(type="translatable_textarea")
      */
     protected $intro = array();
 
     /**
      * @var array
      * @ODM\Hash
-     * @Content\Field(type="translatable_textarea")
+     * @Type\Field(type="translatable_textarea")
      */
     protected $content = array();
 

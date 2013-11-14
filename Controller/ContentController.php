@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 //use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteType;
-use Integrated\Bundle\ContentBundle\Document\Content\AbstractContent;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +49,7 @@ class ContentController extends Controller
 		/** @var $paginator \Knp\Component\Pager\Paginator */
 		$paginator = $this->get('knp_paginator');
 		$paginator = $paginator->paginate(
-			$dm->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\AbstractContent'),
+			$dm->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\Content'),
 			$request->query->get('page', 1),
 			15
 		);
@@ -116,10 +116,10 @@ class ContentController extends Controller
 	 *
 	 * @Template()
 	 * @param Request $request
-	 * @param AbstractContent $content
+	 * @param Content $content
 	 * @return array | Response
 	 */
-	public function editAction(Request $request, AbstractContent $content)
+	public function editAction(Request $request, Content $content)
 	{
 		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
 		$type = $this->get('integrated.form.factory')->getType($content);
@@ -165,10 +165,10 @@ class ContentController extends Controller
 	 *
 	 * @Template()
 	 * @param Request $request
-	 * @param AbstractContent $content
+	 * @param Content $content
 	 * @return array | Response
 	 */
-	public function deleteAction(Request $request, AbstractContent $content)
+	public function deleteAction(Request $request, Content $content)
 	{
 		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
 		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getType());

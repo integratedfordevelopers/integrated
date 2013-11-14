@@ -40,7 +40,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Article should extend AbstractContent
+     * Article should extend Content
      */
     public function testAbstractContent()
     {
