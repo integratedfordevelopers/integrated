@@ -44,6 +44,13 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
 	 */
 	private $builder;
 
+	/**
+	 * When set to true the any call made to functions is from internal sources.
+	 *
+	 * @var bool
+	 */
+	private $internal = false;
+
 	public function __construct()
 	{
 		$this->matcher = new ClassMetadataLoadFinderSubscriber();
@@ -75,18 +82,44 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
 		$this->evm->addEventSubscriber($this->builder);
 	}
 
-	public function getMetadataFor($className)
+	public function getAllMetadata()
 	{
-		$meta = parent::getMetadataFor($className);
+		$this->internal = true;
 
-		if ($this->matcher->hasMatches()) {
-			$this->getAllMetadata();
-		}
+		$metadata = parent::getAllMetadata();
+
+		$this->updateCache();
 
 		$this->matcher->clearMatches();
+		$this->internal = false;
 
-		// update the cache if required
+		return $metadata;
+	}
 
+	public function getMetadataFor($className)
+	{
+		$metadata = parent::getMetadataFor($className);
+
+		if ($this->internal) {
+			return $metadata;
+		}
+
+		$this->internal = true;
+
+		if ($this->matcher->hasMatches()) {
+			parent::getAllMetadata();
+		}
+
+		$this->updateCache();
+
+		$this->matcher->clearMatches();
+		$this->internal = false;
+
+		return $metadata;
+	}
+
+	private function updateCache()
+	{
 		if ($this->builder->hasChanges()) {
 			$cache = $this->getCacheDriver();
 
@@ -96,7 +129,5 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
 		}
 
 		$this->builder->clearChanges();
-
-		return $meta;
 	}
 }
