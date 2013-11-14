@@ -40,7 +40,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * File should extend AbstractContent
+     * File should extend Content
      */
     public function testAbstractContent()
     {

@@ -40,7 +40,7 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Person should extend AbstractContent
+     * Person should extend Content
      */
     public function testAbstractContent()
     {
@@ -48,7 +48,7 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Person should extend AbstractRelation
+     * Person should extend Relation
      */
     public function testAbstractRelation()
     {

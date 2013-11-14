@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Content;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 
@@ -20,43 +20,44 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
  * Document type Relation\Person
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content")
- * @Content\Document("Person")
+ *
+ * @ODM\Document
+ * @Type\Document("Person")
  */
-class Person extends AbstractRelation
+class Person extends Relation
 {
     /**
      * @var string
      * @ODM\String
-     * @Content\Field(type="choice", options={"choices"={"Male", "Female"}})
+     * @Type\Field(type="choice", options={"choices"={"Male", "Female"}})
      */
     protected $sex;
 
     /**
      * @var string
      * @ODM\String
-     * @content\Field
+     * @Type\Field
      */
     protected $prefix;
 
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field
      */
     protected $nickname;
 
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field
      */
     protected $firstname;
 
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field
      */
     protected $lastname;
 

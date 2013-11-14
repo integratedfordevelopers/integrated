@@ -12,22 +12,23 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Content;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 
 /**
  * Document type Relation\Company
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content")
- * @Content\Document("Company")
+ *
+ * @ODM\Document
+ * @Type\Document("Company")
  */
-class Company extends AbstractRelation
+class Company extends Relation
 {
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field
      */
     protected $name;
 

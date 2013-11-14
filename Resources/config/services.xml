@@ -87,9 +87,6 @@
             <tag name="form.type" alias="translatable_textarea" />
         </service>
 
-
-
-
 	</services>
 
 </container>
