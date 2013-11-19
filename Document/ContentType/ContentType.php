@@ -132,9 +132,7 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * Get the name of the content type
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
