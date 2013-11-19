@@ -31,7 +31,7 @@ class ContentTypeRelation extends AbstractType
             'checkbox',
             array(
                 'required' => false,
-                'label' => $this->contentType->getType()
+                'label' => $this->contentType->getName()
             )
         );
 
