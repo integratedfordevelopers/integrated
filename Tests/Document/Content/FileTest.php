@@ -34,7 +34,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
     /**
      * File should implement ContentInterface
      */
-    public function testContentInterface()
+    public function testInstanceOfContentInterface()
     {
         $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->file);
     }
@@ -42,9 +42,9 @@ class FileTest extends \PHPUnit_Framework_TestCase
     /**
      * File should extend Content
      */
-    public function testAbstractContent()
+    public function testInstanceOfContent()
     {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\AbstractContent', $this->file);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->file);
     }
 
     /**
@@ -61,7 +61,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetFileFunction()
     {
-        $file = 'file';
+        /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile | \PHPUnit_Framework_MockObject_MockObject */
+        $file = $this->getMock('Symfony\Component\HttpFoundation\File\UploadedFile', array(), array(), '', false);
         $this->assertEquals($file, $this->file->setFile($file)->getFile());
     }
 
