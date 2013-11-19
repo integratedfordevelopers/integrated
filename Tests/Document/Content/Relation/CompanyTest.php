@@ -34,7 +34,7 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
     /**
      * Company should implement ContentInterface
      */
-    public function testContentInterface()
+    public function testInstanceOfContentInterface()
     {
         $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->company);
     }
@@ -42,17 +42,17 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
     /**
      * Company should extend Content
      */
-    public function testAbstractContent()
+    public function testInstanceOfContent()
     {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\AbstractContent', $this->company);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->company);
     }
 
     /**
      * Company should extend Relation
      */
-    public function testAbstractRelation()
+    public function testInstanceOfRelation()
     {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Relation\AbstractRelation', $this->company);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation', $this->company);
     }
 
     /**
