@@ -34,7 +34,7 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     /**
      * Person should implement ContentInterface
      */
-    public function testContentInterface()
+    public function testInstanceOfContentInterface()
     {
         $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->person);
     }
@@ -42,17 +42,17 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     /**
      * Person should extend Content
      */
-    public function testAbstractContent()
+    public function testInstanceOfContent()
     {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\AbstractContent', $this->person);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->person);
     }
 
     /**
      * Person should extend Relation
      */
-    public function testAbstractRelation()
+    public function testInstanceOfRelation()
     {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Relation\AbstractRelation', $this->person);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation', $this->person);
     }
 
     /**
