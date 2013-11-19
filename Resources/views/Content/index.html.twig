@@ -15,7 +15,7 @@
 
                     {% for type in class %}
 
-                        <li><a href="{{ path('integrated_content_content_new', {'class': type.class, 'type': type.type}) }}">{{ type.type }}</a></li>
+                        <li><a href="{{ path('integrated_content_content_new', {'class': type.class, 'type': type.type}) }}">{{ type.name }}</a></li>
 
                     {% endfor %}
 
