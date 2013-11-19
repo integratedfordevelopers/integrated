@@ -20,6 +20,7 @@
         <tr>
             <th>Name</th>
             <th>Type</th>
+            <th>Class</th>
             <th>Created</th>
             <th>Actions</th>
         </tr>
@@ -29,8 +30,11 @@
         <tr>
             <td>
                 <a href="{{ path('integrated_content_contenttype_show', {'id': document.id}) }}">
-                    {{ document.type }}
+                    {{ document.name }}
                 </a>
+            </td>
+            <td>
+                {{ document.type }}
             </td>
             <td>
                 {{ document.class }}

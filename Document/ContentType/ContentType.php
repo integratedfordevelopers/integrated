@@ -41,8 +41,14 @@ class ContentType implements ContentTypeInterface
     /**
      * @var string
      * @ODM\String
-     * @ODM\UniqueIndex
      * @Assert\NotBlank()
+     */
+    protected $name;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex
      */
     protected $type;
 
@@ -122,6 +128,31 @@ class ContentType implements ContentTypeInterface
     public function setClass($class)
     {
         $this->class = $class;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the name of content type
+     *
+     * @param $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        if (null === $this->type) {
+            $this->setType(trim(strtolower($this->name)));
+        }
+
         return $this;
     }
 

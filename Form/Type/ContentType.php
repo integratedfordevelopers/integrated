@@ -37,7 +37,7 @@ class ContentType extends AbstractType
         );
 
         $builder->add(
-            'type',
+            'name',
             'text',
             array(
                 'label' => 'Name',
