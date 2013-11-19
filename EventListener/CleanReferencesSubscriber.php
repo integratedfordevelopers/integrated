@@ -23,11 +23,6 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
 class CleanReferencesSubscriber implements EventSubscriber
 {
     /**
-     * @var bool
-     */
-    private static $called = false;
-
-    /**
      * {@inheritdoc}
      */
     public function getSubscribedEvents()
@@ -42,19 +37,20 @@ class CleanReferencesSubscriber implements EventSubscriber
      */
     public function preRemove(LifecycleEventArgs $args)
     {
-        if (self::$called === false) {
-            $document = $args->getDocument();
-            $dm = $args->getDocumentManager();
-            if ($document instanceof Content) {
-                $dm->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\Content')
-                    ->update()
-                    ->multiple(true)
-                    ->field('references')->pull(array('$id' => $document->getId()))
-                    ->getQuery()
-                    ->execute();
-            }
+        // Get document
+        $document = $args->getDocument();
 
-            self::$called = true;
+        // Get document manager
+        $dm = $args->getDocumentManager();
+
+        // Document must be instanceof Content
+        if ($document instanceof Content) {
+            $dm->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\Content')
+                ->update()
+                ->multiple(true)
+                ->field('references')->pull(array('$id' => $document->getId()))
+                ->getQuery()
+                ->execute();
         }
     }
 }
