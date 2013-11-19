@@ -45,36 +45,50 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test id property
+     * Test get- and setId function
      */
-    public function testId()
+    public function testGetAndSetIdFunction()
     {
         $id = 'abc123';
         $this->assertEquals($id, $this->contentType->setId($id)->getId());
     }
 
     /**
-     * Test class property
+     * Test get- and setClass function
      */
-    public function testClass()
+    public function testGetAndSetClassFunction()
     {
         $class = 'HenkDeVries';
         $this->assertEquals($class, $this->contentType->setClass($class)->getClass());
     }
 
     /**
-     * Test type property
+     * Test get- and setName function
      */
-    public function testType()
+    public function testGetAndSetNameFunction()
+    {
+        $name = 'Henk de Vries';
+        $this->assertEquals($name, $this->contentType->setName($name)->getName());
+
+        // After name edit, type should stay the same
+        $type = $this->contentType->getType();
+        $this->contentType->setName('Wim');
+        $this->assertEquals($type, $this->contentType->getType());
+    }
+
+    /**
+     * Test get- and setType function
+     */
+    public function testGetAndSetTypeFunction()
     {
         $type = 'Familie De Vries';
         $this->assertEquals($type, $this->contentType->setType($type)->getType());
     }
 
     /**
-     * Test fields property
+     * Test get- and setFields function
      */
-    public function testFields()
+    public function testGetAndSetFieldsFunction()
     {
         // Mock fields
         $field1 = $this->getMockClass('Integrated\Common\ContentType\ContentTypeFieldInterface');
@@ -126,9 +140,9 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test relations property
+     * Test get- and setRelations function
      */
-    public function testRelations()
+    public function testGetAndSetRelationsFunction()
     {
         // Mock fields
         $relation1 = $this->getMockClass('Integrated\Common\ContentType\ContentTypeRelationInterface');
