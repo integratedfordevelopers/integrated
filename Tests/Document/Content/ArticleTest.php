@@ -34,7 +34,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     /**
      * Article should implement ContentInterface
      */
-    public function testContentInterface()
+    public function testInstanceOfContentInterface()
     {
         $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->article);
     }
@@ -42,9 +42,9 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     /**
      * Article should extend Content
      */
-    public function testAbstractContent()
+    public function testInstanceOfContent()
     {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\AbstractContent', $this->article);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->article);
     }
 
     /**
