@@ -15,9 +15,10 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable;
 
 /**
- * Abstract class for Relations
+ * Class for Relations
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
@@ -33,11 +34,11 @@ class Relation extends Content
     protected $accountnumber;
 
     /**
-     * @var array
-     * @ODM\Hash
+     * @var Translatable
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
      * @Type\Field(type="translatable_textarea")
      */
-    protected $description = array();
+    protected $description;
 
     /**
      * @var array
@@ -83,7 +84,7 @@ class Relation extends Content
     /**
      * Get the description of the document
      *
-     * @return array
+     * @return Translatable
      */
     public function getDescription()
     {
@@ -93,10 +94,10 @@ class Relation extends Content
     /**
      * Set the description of the document
      *
-     * @param array $description
+     * @param Translatable $description
      * @return $this
      */
-    public function setDescription(array $description)
+    public function setDescription(Translatable $description)
     {
         $this->description = $description;
         return $this;

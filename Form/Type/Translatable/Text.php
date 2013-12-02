@@ -31,6 +31,8 @@ class Text extends AbstractTranslatable
                 )
             );
         }
+
+        $builder->addModelTransformer($this->getDefaultTransformer());
     }
 
     public function getName()

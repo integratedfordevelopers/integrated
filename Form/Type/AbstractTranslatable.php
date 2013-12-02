@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\Translatable as Transformer;
 
 /**
  * @TODO this class is just a very simple setup
@@ -27,8 +28,16 @@ abstract class AbstractTranslatable extends AbstractType
     public function getLocales()
     {
         return array(
-            'en_US' => 'EN',
-            'nl_NL' => 'NL'
+            'en' => 'EN',
+            'nl' => 'NL'
         );
+    }
+
+    /**
+     * @return Transformer
+     */
+    protected function getDefaultTransformer()
+    {
+        return new Transformer();
     }
 }

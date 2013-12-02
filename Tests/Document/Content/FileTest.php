@@ -52,7 +52,8 @@ class FileTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetTitleFunction()
     {
-        $title = array('nl' => 'Titel', 'en' => 'Title');
+        /* @var $title \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
+        $title = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
         $this->assertSame($title, $this->file->setTitle($title)->getTitle());
     }
 
@@ -69,9 +70,10 @@ class FileTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get- and setDescription function
      */
-    public function testGetAndSetTypeFunction()
+    public function testGetAndSetDescriptionFunction()
     {
-        $description = array('nl' => 'Omschrijving', 'en' => 'Description');
+        /* @var $description \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
+        $description = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
         $this->assertEquals($description, $this->file->setDescription($description)->getDescription());
     }
 }
