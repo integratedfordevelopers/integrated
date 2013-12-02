@@ -1,0 +1,116 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+
+framework:
+    #esi:             ~
+    #translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_annotations: true }
+    templating:
+        engines: ['twig']
+        #assets_version: SomeVersionScheme
+    default_locale:  "%locale%"
+    trusted_proxies: ~
+    session:         ~
+    fragments:       ~
+    http_method_override: true
+
+# Twig Configuration
+twig:
+    debug:            %kernel.debug%
+    strict_variables: %kernel.debug%
+
+# Assetic Configuration
+assetic:
+    debug:          %kernel.debug%
+    use_controller: true
+    filters:
+        less:
+            node_paths: [/usr/local/lib/node_modules]
+            compress: true
+            apply_to: "\.less$"
+        cssrewrite: ~
+
+# Bootstrap configuration
+braincrafted_bootstrap:
+    less_filter: less
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   %database_driver%
+        host:     %database_host%
+        port:     %database_port%
+        dbname:   %database_name%
+        user:     %database_user%
+        password: %database_password%
+        charset:  UTF8
+        # if using pdo_sqlite as your database driver, add the path in parameters.yml
+        # e.g. database_path: %kernel.root_dir%/data/data.db3
+        # path:     %database_path%
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        auto_mapping: true
+
+doctrine_mongodb:
+    connections:
+        default:
+            server: mongodb://localhost:27017
+            options: {}
+    default_database: test_database
+    document_managers:
+        default:
+            auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: %mailer_transport%
+    host:      %mailer_host%
+    username:  %mailer_user%
+    password:  %mailer_password%
+    spool:     { type: memory }
+
+stfalcon_tinymce:
+      include_jquery: false
+      tinymce_jquery: true
+      selector: ".tinymce"
+      #base_url: "http://yourdomain.com/" # this parameter may be included if you need to override the assets_base_urls for your template engine (to override a CDN base url)
+      # Get current language from the parameters.ini
+      language: %locale%
+      # Custom buttons
+      tinymce_buttons:
+          integrated: # Id of the first button
+              title: "Integrated"
+              image: "http://stfalcon.com/favicon.ico"
+      theme:
+          # Advanced theme with almost all enabled plugins
+          simple:
+               menubar: "file edit insert view format table tools"
+               menu:
+                  edit: {title: 'Edit', items:'undo redo | cut copy paste pastetext | selectall '}
+                  insert: {title: 'Insert', items:'link styleselect'}
+                  format: {title: 'Format', items:'formats'}
+                  table: {title: 'Table', items:'inserttable tableprops deletetable cell row column'}
+               plugins:
+                   - "advlist autolink lists link image charmap print preview hr anchor pagebreak"
+                   - "searchreplace wordcount visualblocks visualchars code fullscreen"
+                   - "insertdatetime media nonbreaking save table contextmenu directionality"
+                   - "emoticons template paste textcolor"
+               toolbar1: "undo redo | styleselect | bold italic | bullist numlist | outdent indent | link"
+               image_advtab: true
+               templates:
+                   - {title: 'Test template 1', content: 'Test 1'}
+                   - {title: 'Test template 2', content: 'Test 2'}
+          # BBCode tag compatible theme (see http://www.bbcode.org/reference.php)
+          #bbcode:
+          #     plugins: ["bbcode, code, link, preview"]
+          #     menubar: false
+          #     toolbar1: "bold,italic,underline,undo,redo,link,unlink,removeformat,cleanup,code,preview"

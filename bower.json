@@ -1,0 +1,13 @@
+{
+    "name": "Integrated",
+    "version": "0.0.1",
+    "dependencies": {
+        "jquery": "1.10.2",
+        "select2": "3.4.3",
+        "addresspicker": "master",
+        "bootstrap": "3.0.2",
+        "jquery-ui": "1.10.3",
+        "smalot-bootstrap-datetimepicker": "2.2.0"
+    }
+
+}
