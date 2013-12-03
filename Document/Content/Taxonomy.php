@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable;
 
 /**
  * Document type Taxonomy
@@ -25,23 +26,23 @@ use Integrated\Common\ContentType\Mapping\Annotations as Type;
 class Taxonomy extends Content
 {
     /**
-     * @var array
-     * @ODM\Hash
+     * @var Translatable
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
      * @Type\Field(type="translatable_text")
      */
-    protected $title = array();
+    protected $title;
 
     /**
-     * @var array
-     * @ODM\Hash
+     * @var Translable
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
      * @Type\Field(type="translatable_textarea")
      */
-    protected $description = array();
+    protected $description;
 
     /**
      * Get the title of the document
      *
-     * @return array
+     * @return Translable
      */
     public function getTitle()
     {
@@ -51,10 +52,10 @@ class Taxonomy extends Content
     /**
      * Set the title of the document
      *
-     * @param array $title
+     * @param Translable $title
      * @return $this
      */
-    public function setTitle(array $title)
+    public function setTitle(Translable $title)
     {
         $this->title = $title;
         return $this;
@@ -63,7 +64,7 @@ class Taxonomy extends Content
     /**
      * Get the description of the document
      *
-     * @return array
+     * @return Translable
      */
     public function getDescription()
     {
@@ -73,10 +74,10 @@ class Taxonomy extends Content
     /**
      * Set the description of the document
      *
-     * @param array $description
+     * @param Translable $description
      * @return $this
      */
-    public function setDescription(array $description)
+    public function setDescription(Translable $description)
     {
         $this->description = $description;
         return $this;

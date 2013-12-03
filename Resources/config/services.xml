@@ -24,6 +24,8 @@
 
         <parameter key="integrated_content_eventlistener.cleanreferencessubscriber.class">Integrated\Bundle\ContentBundle\EventListener\CleanReferencesSubscriber</parameter>
 
+        <parameter key="integrated_content_eventlistener.translatablesubscriber.class">Integrated\Bundle\ContentBundle\EventListener\TranslatableSubscriber</parameter>
+
 	</parameters>
 
 	<services>
@@ -91,6 +93,11 @@
 
         <service id="integrated_content_eventlistener.cleanreferencessubscriber" class="%integrated_content_eventlistener.cleanreferencessubscriber.class%">
             <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+        <service id="integrated_content_eventlistener.translatablesubscriber" class="%integrated_content_eventlistener.translatablesubscriber.class%">
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+            <argument type="service" id="translator"/>
         </service>
 
 

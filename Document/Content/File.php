@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable;
 
 /**
  * Document type File
@@ -43,18 +44,18 @@ class File extends Content
 	protected $path;
 
 	/**
-	 * @var array
-	 * @ODM\Hash
+	 * @var Translatable
+	 * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
 	 * @Type\Field(type="translatable_text")
 	 */
-	protected $title = array();
+	protected $title;
 
 	/**
-	 * @var array
-	 * @ODM\Hash
+	 * @var Translatable
+	 * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
 	 * @Type\Field(type="translatable_textarea")
 	 */
-	protected $description = array();
+	protected $description;
 
 	/**
 	 * Set the file of the document
@@ -186,7 +187,7 @@ class File extends Content
 	/**
 	 * Get the title of the document
 	 *
-	 * @return array
+	 * @return Translatable
 	 */
 	public function getTitle()
 	{
@@ -196,10 +197,10 @@ class File extends Content
 	/**
 	 * Set the title of the document
 	 *
-	 * @param array $title
+	 * @param Translatable $title
 	 * @return $this
 	 */
-	public function setTitle(array $title)
+	public function setTitle(Translatable $title)
 	{
 		$this->title = $title;
 		return $this;
@@ -208,7 +209,7 @@ class File extends Content
 	/**
 	 * Get the description of the document
 	 *
-	 * @return array
+	 * @return Translatable
 	 */
 	public function getDescription()
 	{
@@ -218,10 +219,10 @@ class File extends Content
 	/**
 	 * Set the description of the document
 	 *
-	 * @param array $description
+	 * @param Translatable $description
 	 * @return $this
 	 */
-	public function setDescription(array $description)
+	public function setDescription(Translatable $description)
 	{
 		$this->description = $description;
 		return $this;

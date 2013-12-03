@@ -69,7 +69,8 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetDescriptionFunction()
     {
-        $description = array('nl' => 'Omschrijving', 'en' => 'Description');
+        /* @var $description \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
+        $description = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
         $this->assertEquals($description, $this->company->setDescription($description)->getDescription());
     }
 

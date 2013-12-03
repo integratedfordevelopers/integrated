@@ -31,6 +31,8 @@ class Textarea extends AbstractTranslatable
                 )
             );
         }
+
+        $builder->addModelTransformer($this->getDefaultTransformer());
     }
 
     public function getName()
