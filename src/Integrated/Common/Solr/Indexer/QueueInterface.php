@@ -9,12 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr;
+namespace Integrated\Common\Solr\Indexer;
+
+use Countable;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface QueueInterface extends \Countable
+interface QueueInterface extends Countable
 {
 	/**
 	 * @param QueueMessageInterface $message

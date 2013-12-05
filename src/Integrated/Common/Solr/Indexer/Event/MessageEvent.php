@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr\Event;
+namespace Integrated\Common\Solr\Indexer\Event;
 
-use Integrated\Common\Solr\IndexerInterface;
-use Integrated\Common\Solr\QueueMessageInterface;
+use Integrated\Common\Solr\Indexer\IndexerInterface;
+use Integrated\Common\Solr\Indexer\QueueMessageInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

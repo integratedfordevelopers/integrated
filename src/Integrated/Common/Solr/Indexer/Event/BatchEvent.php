@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr\Event;
+namespace Integrated\Common\Solr\Indexer\Event;
 
-use Integrated\Common\Solr\IndexerInterface;
-use Integrated\Common\Solr\BatchOperationInterface;
+use Integrated\Common\Solr\Indexer\IndexerInterface;
+use Integrated\Common\Solr\Indexer\BatchOperation;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -20,7 +20,7 @@ use Integrated\Common\Solr\BatchOperationInterface;
 class BatchEvent extends IndexerEvent
 {
 	/**
-	 * @var BatchOperationInterface
+	 * @var BatchOperation
 	 */
 	protected $operation;
 
@@ -28,9 +28,9 @@ class BatchEvent extends IndexerEvent
 	 * Event constructor
 	 *
 	 * @param IndexerInterface $indexer
-	 * @param BatchOperationInterface $operation
+	 * @param BatchOperation $operation
 	 */
-	public function __construct(IndexerInterface $indexer, BatchOperationInterface $operation)
+	public function __construct(IndexerInterface $indexer, BatchOperation $operation)
 	{
 		parent::__construct($indexer);
 
@@ -40,7 +40,7 @@ class BatchEvent extends IndexerEvent
 	/**
 	 * Get the batch operation object for this event
 	 *
-	 * @return BatchOperationInterface
+	 * @return BatchOperation
 	 */
 	public function getOperation()
 	{

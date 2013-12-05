@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr\Event;
+namespace Integrated\Common\Solr\Indexer\Event;
 
-use Integrated\Common\Solr\IndexerInterface;
+use Integrated\Common\Solr\Indexer\IndexerInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

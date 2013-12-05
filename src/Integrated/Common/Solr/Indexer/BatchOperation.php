@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr;
+namespace Integrated\Common\Solr\Indexer;
 
 use Solarium\QueryType\Update\Query\Command\Command;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class BatchOperation implements BatchOperationInterface
+class BatchOperation
 {
 	/**
 	 * @var QueueMessageInterface
@@ -41,7 +41,9 @@ class BatchOperation implements BatchOperationInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Return the queue message
+	 *
+	 * @return QueueMessageInterface
 	 */
 	public function getMessage()
 	{
@@ -49,7 +51,9 @@ class BatchOperation implements BatchOperationInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Get the command
+	 *
+	 * @return Command|null
 	 */
 	public function getCommand()
 	{
@@ -57,7 +61,12 @@ class BatchOperation implements BatchOperationInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Set the command
+	 *
+	 * This allows for the command to be changed or even
+	 * to be removed.
+	 *
+	 * @param Command $command
 	 */
 	public function setCommand(Command $command = null)
 	{

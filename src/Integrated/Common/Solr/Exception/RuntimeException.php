@@ -9,16 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr;
+namespace Integrated\Common\Solr\Exception;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface QueueMessageInterface extends \ArrayAccess
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
-	public function getId();
-
-	public function getType();
-
-	public function getData();
 }

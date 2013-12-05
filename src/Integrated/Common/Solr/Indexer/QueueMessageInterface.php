@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr;
+namespace Integrated\Common\Solr\Indexer;
 
-use Solarium\Core\Client\Client;
+use ArrayAccess;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface IndexerInterface
+interface QueueMessageInterface extends ArrayAccess
 {
-	public function setQueue(QueueInterface $queue);
+	public function getId();
 
-	public function setSolr(Client $client);
+	public function getType();
 
-	public function execute();
+	public function getData();
 }

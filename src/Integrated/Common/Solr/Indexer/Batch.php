@@ -9,27 +9,35 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr;
+namespace Integrated\Common\Solr\Indexer;
+
+use Countable;
+use IteratorAggregate;
+use ArrayIterator;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class Batch implements BatchInterface
+class Batch implements Countable, IteratorAggregate
 {
 	private $batch = array();
 
 	/**
-	 * @inheritdoc
+	 * Add teh given batch operation to the batch
+	 *
+	 * @param BatchOperation $operation
 	 */
-	public function add(BatchOperationInterface $operation)
+	public function add(BatchOperation $operation)
 	{
 		$this->batch[] = $operation;
 	}
 
 	/**
-	 * @inheritdoc
+	 * Remove the given batch operation from the batch
+	 *
+	 * @param BatchOperation $operation
 	 */
-	public function remove(BatchOperationInterface $operation)
+	public function remove(BatchOperation $operation)
 	{
 		foreach ($this->batch as $key => $value) {
 			if ($operation === $value) {
@@ -39,7 +47,7 @@ class Batch implements BatchInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Clear all the batch operation from the batch
 	 */
 	public function clear()
 	{
@@ -47,7 +55,9 @@ class Batch implements BatchInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Return the number of batch operations
+	 *
+	 * @return int
 	 */
 	public function count()
 	{
@@ -55,10 +65,12 @@ class Batch implements BatchInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Get a iterator to walk of the batch operations
+	 *
+	 * @return BatchOperation[]
 	 */
 	public function getIterator()
 	{
-		return new \ArrayIterator($this->batch);
+		return new ArrayIterator($this->batch);
 	}
 }
