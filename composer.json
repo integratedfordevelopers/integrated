@@ -1,0 +1,39 @@
+{
+    "name": "integrated/solr-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Solr Bundle",
+    "keywords": ["Integrated", "Solr"],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive-integrated/library.git"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "2.3.*",
+        "symfony/framework-bundle": "~2.2",
+        "integrated/library": "dev-develop"
+    },
+    "autoload":{
+        "psr-0":{
+            "Integrated\\Bundle\\SolrBundle": ""
+        }
+    },
+    "target-dir": "Integrated/Bundle/SolrBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
