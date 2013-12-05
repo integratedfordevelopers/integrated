@@ -42,7 +42,7 @@ class Taxonomy extends Content
     /**
      * Get the title of the document
      *
-     * @return Translable
+     * @return Translatable
      */
     public function getTitle()
     {
@@ -52,10 +52,10 @@ class Taxonomy extends Content
     /**
      * Set the title of the document
      *
-     * @param Translable $title
+     * @param Translatable $title
      * @return $this
      */
-    public function setTitle(Translable $title)
+    public function setTitle(Translatable $title)
     {
         $this->title = $title;
         return $this;
@@ -64,7 +64,7 @@ class Taxonomy extends Content
     /**
      * Get the description of the document
      *
-     * @return Translable
+     * @return Translatable
      */
     public function getDescription()
     {
@@ -74,10 +74,10 @@ class Taxonomy extends Content
     /**
      * Set the description of the document
      *
-     * @param Translable $description
+     * @param Translatable $description
      * @return $this
      */
-    public function setDescription(Translable $description)
+    public function setDescription(Translatable $description)
     {
         $this->description = $description;
         return $this;
