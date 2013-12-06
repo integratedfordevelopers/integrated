@@ -13,6 +13,8 @@ namespace Integrated\Common\Solr\Indexer;
 
 use Exception;
 
+use Integrated\Common\Queue\QueueInterface;
+
 use Integrated\Common\Solr\Exception\InvalidArgumentException;
 
 use Solarium\Core\Client\Client;

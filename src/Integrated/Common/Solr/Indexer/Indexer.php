@@ -13,6 +13,10 @@ namespace Integrated\Common\Solr\Indexer;
 
 use Exception;
 
+use Integrated\Common\Queue\Queue;
+use Integrated\Common\Queue\QueueInterface;
+use Integrated\Common\Queue\QueueMessageInterface;
+
 use Integrated\Common\Solr\Indexer\Event\BatchEvent;
 use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 use Integrated\Common\Solr\Indexer\Event\IndexerEvent;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr\Indexer;
+namespace Integrated\Common\Queue;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

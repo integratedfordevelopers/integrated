@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr\Indexer;
+namespace Integrated\Common\Queue;
 
 use Countable;
 
