@@ -11,12 +11,10 @@
 
 namespace Integrated\Common\Solr\Indexer;
 
-use Serializable;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class Job implements Serializable
+class Job implements JobInterface
 {
 	/**
 	 * @var string
@@ -29,8 +27,10 @@ class Job implements Serializable
 	private $options;
 
 	/**
-	 * @param null $action
-	 * @param array $options
+	 * The constructor
+	 *
+	 * @param string|null $action the action or null of not specified
+	 * @param string[] $options array of options
 	 */
 	public function __construct($action = null, array $options = array())
 	{
@@ -41,11 +41,17 @@ class Job implements Serializable
 		}
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function serialize()
 	{
 		return serialize(array('action' => $this->action, 'options' => $this->options));
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function unserialize($serialized)
 	{
 		$data = array();
@@ -59,7 +65,11 @@ class Job implements Serializable
 	}
 
 	/**
-	 * @param string $action
+	 * Set the action.
+	 *
+	 * If $action is null then the action will be unset.
+	 *
+	 * @param string|null $action
 	 * @return $this
 	 */
 	public function setAction($action)
@@ -69,7 +79,7 @@ class Job implements Serializable
 	}
 
 	/**
-	 * @return string|null
+	 * @inheritdoc
 	 */
 	public function getAction()
 	{
@@ -77,8 +87,19 @@ class Job implements Serializable
 	}
 
 	/**
-	 * @param string $name
+	 * @inheritdoc
+	 */
+	public function hasAction()
+	{
+		return (bool) $this->action;
+	}
+
+	/**
+	 * Set the option.
+	 *
+	 * @param string $name the option name
 	 * @param string $value
+	 *
 	 * @return $this
 	 */
 	public function setOption($name, $value)
@@ -88,8 +109,7 @@ class Job implements Serializable
 	}
 
 	/**
-	 * @param string $name
-	 * @return string|null
+	 * @inheritdoc
 	 */
 	public function getOption($name)
 	{
@@ -97,8 +117,7 @@ class Job implements Serializable
 	}
 
 	/**
-	 * @param string $name
-	 * @return bool
+	 * @inheritdoc
 	 */
 	public function hasOption($name)
 	{
@@ -106,7 +125,9 @@ class Job implements Serializable
 	}
 
 	/**
-	 * @param string $name
+	 * Remove the option
+	 *
+	 * @param string $name the name of the option to remove.
 	 * @return $this
 	 */
 	public function removeOption($name)
@@ -116,6 +137,8 @@ class Job implements Serializable
 	}
 
 	/**
+	 * Get all the options
+	 *
 	 * @return string[]
 	 */
 	public function getOptions()
@@ -124,6 +147,8 @@ class Job implements Serializable
 	}
 
 	/**
+	 * Remove all the options
+	 *
 	 * @return $this
 	 */
 	public function clearOptions()
