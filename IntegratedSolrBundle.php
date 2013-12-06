@@ -1,6 +1,6 @@
 <?php
 
-namespace Integrated\Bundle\ContentBundle;
+namespace Integrated\Bundle\SolrBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
