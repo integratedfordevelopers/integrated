@@ -20,10 +20,13 @@ use ArrayIterator;
  */
 class Batch implements Countable, IteratorAggregate
 {
+	/**
+	 * @var BatchOperation[]
+	 */
 	private $batch = array();
 
 	/**
-	 * Add teh given batch operation to the batch
+	 * Add the given batch operation to the batch.
 	 *
 	 * @param BatchOperation $operation
 	 */
@@ -47,7 +50,7 @@ class Batch implements Countable, IteratorAggregate
 	}
 
 	/**
-	 * Clear all the batch operation from the batch
+	 * Clear all the batch operation from the batch.
 	 */
 	public function clear()
 	{
@@ -55,7 +58,7 @@ class Batch implements Countable, IteratorAggregate
 	}
 
 	/**
-	 * Return the number of batch operations
+	 * Return the number of batch operations.
 	 *
 	 * @return int
 	 */
@@ -65,7 +68,7 @@ class Batch implements Countable, IteratorAggregate
 	}
 
 	/**
-	 * Get a iterator to walk of the batch operations
+	 * Get a iterator to walk of the batch operations.
 	 *
 	 * @return BatchOperation[]
 	 */

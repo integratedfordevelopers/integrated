@@ -25,7 +25,7 @@ class IndexerEvent extends Event
 	private $indexer;
 
 	/**
-	 * Event constructor
+	 * Event constructor.
 	 *
 	 * @param IndexerInterface $indexer
 	 */
@@ -35,7 +35,7 @@ class IndexerEvent extends Event
 	}
 
 	/**
-	 * Get the indexer object for this event
+	 * Get the indexer object for this event.
 	 *
 	 * @return IndexerInterface
 	 */

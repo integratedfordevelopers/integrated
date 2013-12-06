@@ -25,7 +25,7 @@ class ResultEvent extends IndexerEvent
 	protected $result;
 
 	/**
-	 * Event constructor
+	 * Event constructor.
 	 *
 	 * @param IndexerInterface $indexer
 	 * @param ResultInterface $result
@@ -38,7 +38,7 @@ class ResultEvent extends IndexerEvent
 	}
 
 	/**
-	 * Get the result object for this event
+	 * Get the result object for this event.
 	 *
 	 * @return ResultInterface
 	 */

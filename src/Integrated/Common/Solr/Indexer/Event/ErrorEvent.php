@@ -25,7 +25,7 @@ class ErrorEvent extends IndexerEvent
 	private $exception;
 
 	/**
-	 * Event constructor
+	 * Event constructor.
 	 *
 	 * @param IndexerInterface $indexer
 	 * @param ExceptionInterface $exception
@@ -38,7 +38,7 @@ class ErrorEvent extends IndexerEvent
 	}
 
 	/**
-	 * Get the exception object for this event
+	 * Get the exception object for this event.
 	 *
 	 * @return ExceptionInterface
 	 */

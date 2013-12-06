@@ -25,7 +25,7 @@ class BatchEvent extends IndexerEvent
 	protected $operation;
 
 	/**
-	 * Event constructor
+	 * Event constructor.
 	 *
 	 * @param IndexerInterface $indexer
 	 * @param BatchOperation $operation
@@ -38,7 +38,7 @@ class BatchEvent extends IndexerEvent
 	}
 
 	/**
-	 * Get the batch operation object for this event
+	 * Get the batch operation object for this event.
 	 *
 	 * @return BatchOperation
 	 */

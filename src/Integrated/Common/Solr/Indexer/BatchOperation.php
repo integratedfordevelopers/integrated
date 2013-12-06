@@ -29,7 +29,7 @@ class BatchOperation
 	private $command = null;
 
 	/**
-	 * Create a batch operation
+	 * Create a batch operation.
 	 *
 	 * @param QueueMessageInterface $message
 	 * @param Command $command
@@ -41,7 +41,7 @@ class BatchOperation
 	}
 
 	/**
-	 * Return the queue message
+	 * Return the queue message.
 	 *
 	 * @return QueueMessageInterface
 	 */
@@ -51,7 +51,7 @@ class BatchOperation
 	}
 
 	/**
-	 * Get the command
+	 * Get the command.
 	 *
 	 * @return Command|null
 	 */
@@ -61,7 +61,7 @@ class BatchOperation
 	}
 
 	/**
-	 * Set the command
+	 * Set the command.
 	 *
 	 * This allows for the command to be changed or even
 	 * to be removed.

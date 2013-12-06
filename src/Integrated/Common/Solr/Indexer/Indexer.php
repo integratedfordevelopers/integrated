@@ -71,6 +71,8 @@ class Indexer implements IndexerInterface
 	private $batch = null;
 
 	/**
+	 * Set the event dispatcher
+	 *
 	 * @param EventDispatcherInterface $dispatcher
 	 * @return $this
 	 */
@@ -81,6 +83,10 @@ class Indexer implements IndexerInterface
 	}
 
 	/**
+	 * Get the event dispatcher.
+	 *
+	 * If no event dispatcher is set then a default EventDispatcher is created.
+	 *
 	 * @return EventDispatcherInterface
 	 */
 	public function getEventDispatcher()
@@ -102,6 +108,10 @@ class Indexer implements IndexerInterface
 	}
 
 	/**
+	 * Get the queue.
+	 *
+	 * If no queue is set then a empty Queue is created.
+	 *
 	 * @return QueueInterface
 	 */
 	public function getQueue()
@@ -122,6 +132,10 @@ class Indexer implements IndexerInterface
 	}
 
 	/**
+	 * Get the serializer.
+	 *
+	 * If no queue is set then a default Serializer is created.
+	 *
 	 * @return SerializerInterface
 	 */
 	public function getSerializer()
@@ -143,7 +157,9 @@ class Indexer implements IndexerInterface
 	}
 
 	/**
-	 * @return Client
+	 * Get the solarium client
+	 *
+	 * @return Client|null
 	 */
 	public function getClient()
 	{
@@ -151,6 +167,10 @@ class Indexer implements IndexerInterface
 	}
 
 	/**
+	 * Get the batch
+	 *
+	 * If no batch is set then one will be created.
+	 *
 	 * @return Batch
 	 */
 	protected function getBatch()
@@ -163,22 +183,103 @@ class Indexer implements IndexerInterface
 	}
 
 	/**
-	 * Convert a queue message into a solarium update command
-	 *
-	 * @param Job $job
-	 * @return Command
-	 *
-	 * @throws OutOfBoundsException if the message type is empty or invlid
+	 * @inheritdoc
 	 */
-	protected function getCommand(Job $job)
+	public function execute(Client $client = null)
 	{
-		if (!$action = $job->getAction()) {
+		if ($client !== null) {
+			$this->setClient($client);
+		}
+
+		if ($this->getClient() === null) {
+			throw new InvalidArgumentException(sprintf('No instance of a Solarium\Core\Client\Client has been inserted into the indexer.'));
+		}
+
+		try {
+			$this->getEventDispatcher()->dispatch(Events::PRE_EXECUTE, new IndexerEvent($this));
+
+			try {
+				foreach ($this->getQueue()->get(1000) /* @TODO make $limit configurable */ as $data) {
+					$this->batch($data);
+				}
+
+				$this->send(); // send the last batch if there is any
+			} catch (ExceptionInterface $e) {
+				$this->getEventDispatcher()->dispatch(Events::ERROR, new ErrorEvent($this, $e));
+			}
+
+			$this->clean();
+
+			$this->getEventDispatcher()->dispatch(Events::POST_EXECUTE, new IndexerEvent($this));
+		} catch (Exception $e) {
+			$this->clean(); // clean up before exiting
+
+			throw $e;
+		}
+	}
+
+	/**
+	 * A queue message it not send to the solr server but grouped in a
+	 * batch to send more operations at ones.
+	 *
+	 * @param QueueMessageInterface $data
+	 */
+	protected function batch(QueueMessageInterface $data)
+	{
+		$operation = new BatchOperation($data, $this->convert($data));
+
+		// Send a event to allow the batch operation to be changed by
+		// external code. After that check if the batch is cancels or
+		// not. If canceled remove the message from the queue.
+
+		$this->getEventDispatcher()->dispatch(Events::BATCHING, new BatchEvent($this, $operation));
+
+		if ($operation->getCommand() === null) {
+			$this->delete($data);
+			return;
+		}
+
+		// make a clone so the batch operation it self can not be modified
+		// by external code anymore.
+
+		$batch = $this->getBatch();
+		$batch->add(clone $operation);
+
+		if ($batch->count() >= 10 /* @TODO make the count configurable */) {
+			$this->send();
+		}
+	}
+
+	/**
+	 * Convert a job into a solarium update command.
+	 *
+	 * @param JobInterface $job
+	 *
+	 * @return Command|null
+	 *
+	 * @throws OutOfBoundsException if the message type is empty or invalid
+	 * @throws SerializerException if there was problem deserializing a document
+	 */
+	protected function convert(JobInterface $job)
+	{
+		if ($job->hasAction()) {
 			throw new OutOfBoundsException(sprintf('The jobs action is empty, valid actions are "%s"', 'ADD, DELETE, OPTIMIZE, ROLLBACK or COMMIT'));
 		}
 
 		$command = null;
 
-		switch (strtoupper($action)) {
+		// Action specifies which command class to use where the options got
+		// optional argument. Except for the ADD and DELETE command. The ADD
+		// command need to deserialize a document and for that need the options
+		// "document.data", "document.class" and "document.format". And the
+		// DELETE command needs a "id" or a "query" but both are also allowed.
+		// if those requirements are not met then no command will be created
+		// and the result will be null.
+		//
+		// Options that are not used are ignored and will not generated any
+		// kind of error.
+
+		switch (strtoupper($job->getAction())) {
 			case 'ADD':
 
 				if ($job->hasOption('document.data') && $job->hasOption('document.class') && $job->hasOption('document.format')) {
@@ -205,12 +306,7 @@ class Indexer implements IndexerInterface
 			case 'DELETE':
 
 				if ($job->hasOption('id') || $job->hasOption('query')) {
-//				if ($job->hasOption('document') || $job->hasOption('query')) {
 					$command = new Delete();
-
-//					if ($job->hasOption('document')) {
-//						$command->addId($job->getOption('document'));
-//					}
 
 					if ($job->hasOption('id')) {
 						$command->addId($job->getOption('id'));
@@ -269,73 +365,10 @@ class Indexer implements IndexerInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * Send all the operation in the batch to the solr server.
+	 *
+	 * @throws ClientException when something goes wrong when transmitting the request
 	 */
-	public function execute(Client $client = null)
-	{
-		if ($client !== null) {
-			$this->setClient($client);
-		}
-
-		if ($this->getClient() === null) {
-			throw new InvalidArgumentException(sprintf('No instance of a Solarium\Core\Client\Client has been inserted into the indexer.'));
-		}
-
-		try {
-			$this->getEventDispatcher()->dispatch(Events::PRE_EXECUTE, new IndexerEvent($this));
-
-			try {
-				foreach ($this->getQueue()->get(1000) /* @TODO make $limit configurable */ as $data) {
-					$this->batch($data);
-				}
-
-				$this->send(); // send the last batch if there is any
-			} catch (ExceptionInterface $e) {
-				$this->getEventDispatcher()->dispatch(Events::ERROR, new ErrorEvent($this, $e));
-			}
-
-			$this->clean();
-
-			$this->getEventDispatcher()->dispatch(Events::POST_EXECUTE, new IndexerEvent($this));
-		} catch (Exception $e) {
-			$this->clean(); // clean up before exiting
-
-			throw $e;
-		}
-	}
-
-	protected function batch(QueueMessageInterface $data)
-	{
-		$operation = new BatchOperation($data, $this->getCommand($data));
-
-		// Send a event to allow the batch operation to be changed by
-		// external code. After that check if the batch is cancels or
-		// not. If canceled remove the message from the queue.
-
-		$this->getEventDispatcher()->dispatch(Events::BATCHING, new BatchEvent($this, $operation));
-
-		if ($operation->getCommand() === null) {
-			$this->delete($data);
-			return;
-		}
-
-		// make a clone so the batch operation it self can not be modified
-		// by external code anymore.
-
-		$batch = $this->getBatch();
-		$batch->add(clone $operation);
-
-		if ($batch->count() >= 10 /* @TODO make the count configurable */) {
-			$this->send();
-		}
-	}
-
-	protected function delete(QueueMessageInterface $data)
-	{
-		$this->getQueue()->delete($data);
-		$this->getEventDispatcher()->dispatch(Events::PROCESSED, new MessageEvent($this, $data));
-	}
-
 	protected function send()
 	{
 		$batch = $this->getBatch();
@@ -373,6 +406,21 @@ class Indexer implements IndexerInterface
 		$batch->clear();
 	}
 
+	/**
+	 * Delete the queue message from the queue and send a event update
+	 * that the message has been processes.
+	 *
+	 * @param QueueMessageInterface $data
+	 */
+	protected function delete(QueueMessageInterface $data)
+	{
+		$this->getQueue()->delete($data);
+		$this->getEventDispatcher()->dispatch(Events::PROCESSED, new MessageEvent($this, $data));
+	}
+
+	/**
+	 * Clean up the indexer.
+	 */
 	protected function clean()
 	{
 		if ($this->batch) {

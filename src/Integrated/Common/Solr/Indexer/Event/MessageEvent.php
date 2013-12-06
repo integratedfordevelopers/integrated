@@ -25,7 +25,7 @@ class MessageEvent extends IndexerEvent
 	protected $message;
 
 	/**
-	 * Event constructor
+	 * Event constructor.
 	 *
 	 * @param IndexerInterface $indexer
 	 * @param QueueMessageInterface $message
@@ -38,7 +38,7 @@ class MessageEvent extends IndexerEvent
 	}
 
 	/**
-	 * Get the queue message object for this event
+	 * Get the queue message object for this event.
 	 *
 	 * @return QueueMessageInterface
 	 */

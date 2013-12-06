@@ -25,7 +25,7 @@ class SendEvent extends IndexerEvent
 	protected $query;
 
 	/**
-	 * Event constructor
+	 * Event constructor.
 	 *
 	 * @param IndexerInterface $indexer
 	 * @param Query $batch
@@ -38,7 +38,7 @@ class SendEvent extends IndexerEvent
 	}
 
 	/**
-	 * Get the query object for this event
+	 * Get the query object for this event.
 	 *
 	 * @return Query
 	 */
