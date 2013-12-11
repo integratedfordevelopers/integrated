@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="mapping">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="documents">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="document" maxOccurs="unbounded">
+                                <xs:complexType>
+                                    <xs:all>
+                                        <xs:element name="fields" minOccurs="0">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="field" maxOccurs="unbounded">
+                                                        <xs:complexType>
+                                                            <xs:attribute type="xs:string" name="name" use="required" />
+                                                            <xs:attribute name="display">
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:integer">
+                                                                        <xs:pattern value="[0|1]"/>
+                                                                    </xs:restriction>
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="index">
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:integer">
+                                                                        <xs:pattern value="[0|1]"/>
+                                                                    </xs:restriction>
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="facet">
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:integer">
+                                                                        <xs:pattern value="[0|1]"/>
+                                                                    </xs:restriction>
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                            <xs:attribute name="sort">
+                                                                <xs:simpleType>
+                                                                    <xs:restriction base="xs:integer">
+                                                                        <xs:pattern value="[0|1]"/>
+                                                                    </xs:restriction>
+                                                                </xs:simpleType>
+                                                            </xs:attribute>
+                                                        </xs:complexType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:all>
+                                    <xs:attribute type="xs:string" name="class" use="required" />
+                                    <xs:attribute name="index">
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:integer">
+                                                <xs:pattern value="[0|1]"/>
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:attribute>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
