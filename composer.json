@@ -14,14 +14,13 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@bitbucket.org:eactive-integrated/library.git"
+            "url": "git@bitbucket.org:eactive/integrated-library.git"
         }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "2.3.*",
         "symfony/framework-bundle": "~2.2",
         "integrated/library": "dev-develop"
     },
