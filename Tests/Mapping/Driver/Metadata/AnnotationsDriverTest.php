@@ -39,6 +39,14 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Driver should implement DriverInterface
+     */
+    public function testInstanceofDriverInterface()
+    {
+        $this->assertInstanceOf('Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\DriverInterface', $this->driver);
+    }
+
+    /**
      * Test loadMetadataForClass function with two properties
      */
     public function testLoadMetadataForClassFunctionWithTwoProperties()
