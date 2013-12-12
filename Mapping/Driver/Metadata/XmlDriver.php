@@ -49,7 +49,7 @@ class XmlDriver implements DriverInterface
         // Get files in directory with extension
         $files = $this->fileLocator->getFiles($this->getExtension());
 
-        /* @var $file SplFileInfo */
+        /* @var $file \SplFileInfo */
         foreach ($files as $file) {
             $this->loadMetadataFromFile($file->getContents());
         }
