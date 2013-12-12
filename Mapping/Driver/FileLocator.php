@@ -26,6 +26,11 @@ class FileLocator
     protected $directories = array();
 
     /**
+     * @var Finder
+     */
+    protected $finder;
+
+    /**
      * @param array $directories
      */
     public function __construct($directories = array())
@@ -39,24 +44,25 @@ class FileLocator
      */
     public function getFiles($extension)
     {
-        $finder = new Finder();
         if (count($this->directories) > 0) {
-            $finder
+            $this->getFinder()
                 ->ignoreUnreadableDirs()
                 ->in($this->directories)
                 ->name("*.$extension")
             ;
         }
 
-        return $finder;
+        return $this->getFinder();
     }
 
     /**
      * @param array $directories
+     * @return $this
      */
     public function setDirectories($directories)
     {
         $this->directories = $directories;
+        return $this;
     }
 
     /**
@@ -65,5 +71,26 @@ class FileLocator
     public function getDirectories()
     {
         return $this->directories;
+    }
+
+    /**
+     * @param Finder $finder
+     * @return $this
+     */
+    public function setFinder(Finder $finder)
+    {
+        $this->finder = $finder;
+        return $this;
+    }
+
+    /**
+     * @return Finder
+     */
+    public function getFinder()
+    {
+        if (null === $this->finder) {
+            $this->finder = new Finder();
+        }
+        return $this->finder;
     }
 }
