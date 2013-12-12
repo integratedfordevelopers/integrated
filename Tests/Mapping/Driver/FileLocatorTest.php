@@ -10,6 +10,7 @@
  */
 
 namespace Integrated\Bundle\SolrBundle\Tests\Mapping\Driver;
+
 use Integrated\Bundle\SolrBundle\Mapping\Driver\FileLocator;
 
 /**
