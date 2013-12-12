@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata;
+namespace Integrated\Bundle\SolrBundle\Tests\Mapping\Driver\Metadata;
+
+use Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\AnnotationsDriver;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
