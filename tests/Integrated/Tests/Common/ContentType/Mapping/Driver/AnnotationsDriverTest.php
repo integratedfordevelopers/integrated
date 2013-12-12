@@ -48,9 +48,11 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadMetadataForClassFunction()
     {
+        // TODO: mock reflection class
         // Create reflection class
         $class = new \ReflectionClass(new Test());
 
+        // TODO: mock document class
         // Create annotations Document
         $document = new Document(array('name' => 'Henk de Vries'));
 
@@ -59,6 +61,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
             ->method('getClassAnnotation')
             ->will($this->returnValue($document));
 
+        // TODO: mock field class
         // Create annotations Field
         $field = new Field(array('options' => array('label' => 'Do you love Henk?')));
 
@@ -76,6 +79,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadMetadataForClassFunctionReturnNull()
     {
+        // TODO: mock reflection class
         // Create reflection class
         $class = new \ReflectionClass(new Test());
 
@@ -84,8 +88,10 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
     }
 }
 
+
 /**
  * Dummy class with two properties
+ * @todo reflection class should be mocked
  */
 class Test
 {
