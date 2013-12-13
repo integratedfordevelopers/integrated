@@ -28,9 +28,7 @@ class DriverChain implements DriverInterface
      */
     public function __construct(array $drivers)
     {
-        foreach ($drivers as $driver) {
-            $this->addDriver($driver, get_class($driver));
-        }
+        $this->setDrivers($drivers);
     }
 
     /**
@@ -53,17 +51,34 @@ class DriverChain implements DriverInterface
     }
 
     /**
+     * @param array $drivers
+     * @return $this
+     */
+    public function setDrivers(array $drivers)
+    {
+        foreach ($drivers as $driver) {
+            $this->addDriver($driver, get_class($driver));
+        }
+
+        return $this;
+    }
+
+    /**
      * @param \ReflectionClass $class
-     * @return mixed
+     * @return \Integrated\Bundle\SolrBundle\Mapping\Metadata\Metadata|null
      */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
-        foreach ($this->drivers as $driver) {
-            if ($metadata = $driver->loadMetadataForClass($class)) {
-                return $metadata;
+        if (is_array($this->drivers)) {
+
+            /* @var $driver DriverInterface */
+            foreach ($this->drivers as $driver) {
+                if ($metadata = $driver->loadMetadataForClass($class)) {
+                    return $metadata;
+                }
             }
         }
 
-        // TODO: should we throw an execption or return false
+        return null;
     }
 }
