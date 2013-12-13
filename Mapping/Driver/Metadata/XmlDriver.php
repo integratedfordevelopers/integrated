@@ -74,9 +74,7 @@ class XmlDriver implements DriverInterface
             $xsd = $path . '/mapping.xsd';
 
             if (file_exists($xsd)) {
-                if (!$doc->schemaValidate($xsd)) {
-                    // TODO throw exeption
-                }
+                $doc->schemaValidate($xsd);
             }
         }
 
