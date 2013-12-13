@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata;
 
+use Integrated\Bundle\SolrBundle\Mapping\Metadata\Metadata;
+
 /**
  * Interface for mapping drivers
  *
@@ -20,7 +22,7 @@ interface DriverInterface
 {
     /**
      * @param \ReflectionClass $class
-     * @return mixed
+     * @return Metadata
      */
     public function loadMetadataForClass(\ReflectionClass $class);
 }
