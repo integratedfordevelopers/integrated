@@ -114,9 +114,35 @@ class XmlDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test loadMetadataForClass function with invalid config
+     *
+     * @expectedException PHPUnit_Framework_Error_Warning
      */
     public function testLoadMetadataForClassFunctionWithInvalidConfig()
     {
+        /* @var $class \ReflectionClass | \PHPUnit_Framework_MockObject_MockObject */
+        $class = $this->getMock('ReflectionClass', array(), array(), '', false);
+
+        // Stub getName function
+        $class->expects($this->never())
+            ->method('getName')
+            ->will($this->returnValue('HenkDeVries'));
+
+        /* @var $file \SplFileInfo | \PHPUnit_Framework_MockObject_MockObject */
+        $file = $this->getMock('SplFileInfo', array('getContents'), array(), '', false);
+
+        // Stub getContents function
+        $file->expects($this->once())
+            ->method('getContents')
+            ->will($this->returnValue($this->getInvalidXml()));
+
+        // Stub getFiles function
+        $this->fileLocator->expects($this->once())
+            ->method('getFiles')
+            ->will($this->returnValue(array($file)));
+
+        // Assert
+        $this->assertNull($this->driver->loadMetadataForClass($class));
+
         $this->markTestIncomplete(
             'This test has not been implemented yet.'
         );
@@ -143,6 +169,20 @@ class XmlDriverTest extends \PHPUnit_Framework_TestCase
                     </document>
                     <document class="Test3" index="1" />
                 </documents>
+            </mapping>
+        ';
+    }
+
+    protected function getInvalidXml()
+    {
+        return '
+            <mapping>
+                <document class="Test" index="1">
+                    <fields>
+                        <field name="title" index="1" facet="0" display="1" sort="0"  />
+                        <field name="subtitle" index="1" facet="0" sort="0"  />
+                    </fields>
+                </document>
             </mapping>
         ';
     }
