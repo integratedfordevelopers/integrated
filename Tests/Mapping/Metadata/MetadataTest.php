@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\SolrBundle\Mapping\Metadata;
+namespace Integrated\Bundle\SolrBundle\Tests\Mapping\Metadata;
+
+use Integrated\Bundle\SolrBundle\Mapping\Metadata\Metadata;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
