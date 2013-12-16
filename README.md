@@ -1,3 +1,6 @@
-# Integrated Solr Bundle
+# Integrated Solr Bundle #
+The Integrated Solr Bundle adds support for Solr configuration to your documents or entities.
+## Documentation ##
+The documentation is stored in the `Resources/doc/index.md`.
 
-TODO: write a readme file ;)
+[Read the Documentation](Resources/doc/index.md)
