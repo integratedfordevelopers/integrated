@@ -136,6 +136,6 @@ class FileLocatorTest extends \PHPUnit_Framework_TestCase
         $this->fileLocator->setFinder($finder);
 
         // Asserts
-        $this->assertSame($finder, $this->fileLocator->getFiles('xml'));
+        $this->assertFalse($this->fileLocator->getFiles('xml'));
     }
 }
