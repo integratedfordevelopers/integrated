@@ -47,11 +47,12 @@ class YamlDriver implements DriverInterface
     public function loadMetadataForClass(\ReflectionClass $class)
     {
         // Get files in directory with extension
-        $files = $this->fileLocator->getFiles($this->getExtension());
+        if ($files = $this->fileLocator->getFiles($this->getExtension())) {
 
-        /* @var $file SplFileInfo */
-        foreach ($files as $file) {
-            $this->loadMetadataFromFile($file->getContents());
+            /* @var $file SplFileInfo */
+            foreach ($files as $file) {
+                $this->loadMetadataFromFile($file->getContents());
+            }
         }
 
         // Return Metadata if set
