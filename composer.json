@@ -18,6 +18,7 @@
 		"symfony/form": "~2.3",
         "symfony/validator": "~2.3",
 		"symfony/serializer": "~2.3",
+		"doctrine/dbal": ">=2.3.0,<2.5-dev",
 		"doctrine/mongodb": "1.0.*",
 		"doctrine/mongodb-odm": "1.0.*",
 		"solarium/solarium": "dev-develop"

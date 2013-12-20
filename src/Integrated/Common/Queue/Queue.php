@@ -11,42 +11,56 @@
 
 namespace Integrated\Common\Queue;
 
+use DateInterval;
+
+use Integrated\Common\Queue\Provider\QueueProviderInterface;
+use Integrated\Common\Queue\Exception\UnexpectedTypeException;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class Queue implements QueueInterface
 {
-	private $queue = array();
+	/**
+	 * @var string
+	 */
+	protected $channel;
 
 	/**
-	 * @inheritdoc
+	 * @var QueueProviderInterface
 	 */
-	public function add(QueueMessageInterface $message)
+	protected $provider;
+
+	public function __construct(QueueProviderInterface $provider, $channel)
 	{
-		$this->queue[spl_object_hash($message)] = $message;
-		return $this;
+		$this->provider = $provider;
+		$this->channel  = $channel;
+	}
+
+	public function getChannel()
+	{
+		return $this->channel;
+	}
+
+	public function getProvider()
+	{
+		return $this->provider;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function get($limit = 1)
+	public function push($payload, $delay = 0)
 	{
-		return array_slice($this->queue, 0, $limit);
+		$this->provider->push($this->channel, $payload, $delay);
 	}
 
 	/**
 	 * @inheritdoc
 	 */
-	public function delete(QueueMessageInterface $message)
+	public function pull($limit = 1)
 	{
-		$hash = spl_object_hash($message);
-
-		if (isset($this->queue[$hash])) {
-			unset($this->queue[$hash]);
-		}
-
-		return $this;
+		return $this->provider->pull($this->channel, $limit);
 	}
 
 	/**
@@ -54,6 +68,11 @@ class Queue implements QueueInterface
 	 */
 	public function count()
 	{
-		return count($this->queue);
+		return $this->provider->count($this->channel);
+	}
+
+	public function clear()
+	{
+		$this->provider->clear($this->channel);
 	}
 }

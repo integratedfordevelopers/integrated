@@ -11,16 +11,36 @@
 
 namespace Integrated\Common\Queue;
 
-use ArrayAccess;
+use Serializable;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface QueueMessageInterface extends ArrayAccess
+interface QueueMessageInterface
 {
-	public function getId();
+	/**
+	 * Delete the message from the queue.
+	 */
+	public function delete();
 
-	public function getType();
+	/**
+	 * Release the lock from the message so that an other queue worker can pick it up.
+	 *
+	 * @param int $delay
+	 */
+	public function release($delay = 0);
 
-	public function getData();
+	/**
+	 * The number of times this message has been picked up from the queue.
+	 *
+	 * @return int
+	 */
+	public function getAttempts();
+
+	/**
+	 * Get the message payload.
+	 *
+	 * @return mixed
+	 */
+	public function getPayload();
 }

@@ -12,6 +12,7 @@
 namespace Integrated\Common\Queue;
 
 use Countable;
+use Serializable;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -19,20 +20,19 @@ use Countable;
 interface QueueInterface extends Countable
 {
 	/**
-	 * @param QueueMessageInterface $message
-	 * @return QueueInterface
+	 * Push the payload to the queue
+	 *
+	 * @param string|Serializable $payload
+	 * @param int $delay
+	 * @return mixed
 	 */
-	public function add(QueueMessageInterface $message);
+	public function push($payload, $delay = 0);
 
 	/**
+	 * Pull one or more messages from the queue
+	 *
 	 * @param int $limit
-	 * @return QueueMessageInterface[]
+	 * @return QueueMessage
 	 */
-	public function get($limit = 1);
-
-	/**
-	 * @param QueueMessageInterface $message
-	 * @return QueueInterface
-	 */
-	public function delete(QueueMessageInterface $message);
+	public function pull($limit = 1);
 }
