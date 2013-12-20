@@ -23,7 +23,7 @@ class QueueProvider implements QueueProviderInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function push($channel, $payload, $delay = null)
+	public function push($channel, $payload, $delay = 0)
 	{
 		// this is a in memory queue so delay is ignored.
 

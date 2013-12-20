@@ -29,7 +29,7 @@ interface QueueProviderInterface
 	 * @param mixed  $payload The payload
 	 * @param int    $delay   The delay in seconds
 	 */
-	public function push($channel, $payload, $delay = null);
+	public function push($channel, $payload, $delay = 0);
 
 	/**
 	 * Pull one or more messaged from the queue
