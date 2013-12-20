@@ -40,7 +40,7 @@ class FileLocator
 
     /**
      * @param $extension
-     * @return Finder
+     * @return Finder|false
      */
     public function getFiles($extension)
     {
@@ -50,9 +50,11 @@ class FileLocator
                 ->in($this->directories)
                 ->name("*.$extension")
             ;
+
+            return $this->getFinder();
         }
 
-        return $this->getFinder();
+        return false;
     }
 
     /**

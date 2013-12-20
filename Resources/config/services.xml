@@ -4,34 +4,44 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
-        <parameter key="integrated_solr.mapping.file_locator_class">Integrated\Bundle\SolrBundle\Mapping\Driver\FileLocator</parameter>
-        <parameter key="integrated_solr.mapping.metadata.driver_chain.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\DriverChain</parameter>
-        <parameter key="integrated_solr.mapping.metadata.annotations_driver.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\AnnotationsDriver</parameter>
-        <parameter key="integrated_solr.mapping.metadata.yaml_driver.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\YamlDriver</parameter>
-        <parameter key="integrated_solr.mapping.metadata.xml_driver.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\XmlDriver</parameter>
+        <parameter key="integrated_solr.mapping.driver.file_locator.class">Integrated\Bundle\SolrBundle\Mapping\Driver\FileLocator</parameter>
+        <parameter key="integrated_solr.mapping.driver.metadata.driver_chain.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\DriverChain</parameter>
+        <parameter key="integrated_solr.mapping.driver.metadata.annotations_driver.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\AnnotationsDriver</parameter>
+        <parameter key="integrated_solr.mapping.driver.metadata.yaml_driver.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\YamlDriver</parameter>
+        <parameter key="integrated_solr.mapping.driver.metadata.xml_driver.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\XmlDriver</parameter>
+        <parameter key="integrated_solr.mapping.metadata.metadata_factory.class">Integrated\Bundle\SolrBundle\Mapping\Metadata\MetadataFactory</parameter>
+        <parameter key="integrated_solr.reader.content.class">Integrated\Bundle\SolrBundle\Reader\Content</parameter>
     </parameters>
 
     <services>
-        <service id="integrated_solr.mapping.file_locator" class="%integrated_solr.mapping.file_locator_class%">
-            <argument /><!-- collection of directories -->
+        <service id="integrated_solr.mapping.driver.file_locator" class="%integrated_solr.mapping.driver.file_locator.class%">
+            <!--<argument />&lt;!&ndash; collection of directories &ndash;&gt;-->
         </service>
 
-        <service id="integrated_solr.mapping.metadata.driver_chain" class="%integrated_solr.mapping.metadata.driver_chain.class%">
+        <service id="integrated_solr.mapping.metadata.driver.driver_chain" class="%integrated_solr.mapping.driver.metadata.driver_chain.class%">
             <argument type="collection">
-                <argument type="service" id="integrated_solr.mapping.metadata.xml_driver" />
-                <argument type="service" id="integrated_solr.mapping.metadata.yaml_driver" />
-                <argument type="service" id="integrated_solr.mapping.metadata.annotations_driver" />
+                <argument type="service" id="integrated_solr.mapping.driver.metadata.xml_driver" />
+                <argument type="service" id="integrated_solr.mapping.driver.metadata.yaml_driver" />
+                <argument type="service" id="integrated_solr.mapping.driver.metadata.annotations_driver" />
             </argument>
         </service>
 
-        <service id="integrated_solr.mapping.metadata.annotations_driver" class="%integrated_solr.mapping.metadata.annotations_driver.class%" public="false">
+        <service id="integrated_solr.mapping.driver.metadata.annotations_driver" class="%integrated_solr.mapping.driver.metadata.annotations_driver.class%" public="false">
             <argument type="service" id="annotation_reader"/>
         </service>
-        <service id="integrated_solr.mapping.metadata.yaml_driver" class="%integrated_solr.mapping.metadata.yaml_driver.class%" public="false">
-            <argument type="service" id="integrated_solr.mapping.file_locator" />
+        <service id="integrated_solr.mapping.driver.metadata.yaml_driver" class="%integrated_solr.mapping.driver.metadata.yaml_driver.class%" public="false">
+            <argument type="service" id="integrated_solr.mapping.driver.file_locator" />
         </service>
-        <service id="integrated_solr.mapping.metadata.xml_driver" class="%integrated_solr.mapping.metadata.xml_driver.class%" public="false">
-            <argument type="service" id="integrated_solr.mapping.file_locator" />
+        <service id="integrated_solr.mapping.driver.metadata.xml_driver" class="%integrated_solr.mapping.driver.metadata.xml_driver.class%" public="false">
+            <argument type="service" id="integrated_solr.mapping.driver.file_locator" />
+        </service>
+
+        <service id="integrated_solr.mapping.metadata.metadata_factory" class="%integrated_solr.mapping.metadata.metadata_factory.class%">
+            <argument type="service" id="integrated_solr.mapping.metadata.driver.driver_chain" />
+        </service>
+
+        <service id="integrated_solr.reader.content" class="%integrated_solr.reader.content.class%">
+            <argument type="service" id="integrated_solr.mapping.metadata.metadata_factory" />
         </service>
     </services>
 

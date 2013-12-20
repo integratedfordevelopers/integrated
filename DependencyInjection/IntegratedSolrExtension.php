@@ -38,14 +38,16 @@ class IntegratedSolrExtension extends Extension
 
         $config = $this->processConfiguration($configuration, $configs);
 
-        $directories = array();
-        foreach ($config['mapping']['directories'] as $directory) {
-            $directories[$directory['namespace_prefix']] = $directory['path'];
-        }
+        if ((isset($config['mapping']['directories'])) && is_array($config['mapping']['directories'])) {
+            $directories = array();
+            foreach ($config['mapping']['directories'] as $directory) {
+                $directories[$directory['namespace_prefix']] = $directory['path'];
+            }
 
-        $container
-            ->getDefinition('integrated_solr.mapping.file_locator')
-            ->replaceArgument(0, $directories)
-        ;
+            $container
+                ->getDefinition('integrated_solr.mapping.driver.file_locator')
+                ->replaceArgument(0, $directories)
+            ;
+        }
     }
 }
