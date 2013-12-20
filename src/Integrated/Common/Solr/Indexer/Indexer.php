@@ -16,6 +16,7 @@ use Exception;
 use Integrated\Common\Queue\Queue;
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Queue\QueueMessageInterface;
+use Integrated\Common\Queue\Provider\Memory\QueueProvider;
 
 use Integrated\Common\Solr\Indexer\Event\BatchEvent;
 use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
@@ -121,7 +122,7 @@ class Indexer implements IndexerInterface
 	public function getQueue()
 	{
 		if ($this->queue === null) {
-			$this->queue = new Queue();
+			$this->queue = new Queue(new QueueProvider(), 'indexer');
 		}
 
 		return $this->queue;
