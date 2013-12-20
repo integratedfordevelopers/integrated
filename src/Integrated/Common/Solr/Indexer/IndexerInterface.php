@@ -13,6 +13,7 @@ namespace Integrated\Common\Solr\Indexer;
 
 use Exception;
 
+use Integrated\Common\Queue\QueueAwareInterface;
 use Integrated\Common\Queue\QueueInterface;
 
 use Integrated\Common\Solr\Exception\InvalidArgumentException;
@@ -25,7 +26,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface IndexerInterface extends SerializerAwareInterface
+interface IndexerInterface extends SerializerAwareInterface, QueueAwareInterface
 {
 	/**
 	 * Set the queue.
