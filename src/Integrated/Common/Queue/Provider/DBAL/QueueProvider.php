@@ -11,9 +11,6 @@
 
 namespace Integrated\Common\Queue\Provider\DBAL;
 
-use DateTime;
-use DateInterval;
-
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
@@ -60,19 +57,14 @@ class QueueProvider implements QueueProviderInterface
 		$timestamp = time();
 		$delay = (int) $delay;
 
-		$query = '
-			INSERT INTO %s (id, channel, payload, attempts, time_created, time_updated, time_execute)
-			VALUES (%s, ?, ?, 0, ?, ?, ?)
-		';
-
-		$query = sprintf(
-			$query,
-			$this->platform->quoteIdentifier($this->options['queue_table_name']),
-			$this->platform->getGuidExpression()
-		);
-
-		$statement = $this->connection->prepare($query);
-		$statement->execute([$channel, $payload, $timestamp, $timestamp, ($timestamp + $delay)]);
+		$this->connection->insert($this->options['queue_table_name'], [
+			'channel' => $channel,
+			'payload' => $payload,
+			'attempts' => 0,
+			'time_created' => $timestamp,
+			'time_updated' => $timestamp,
+			'time_execute' => $timestamp + $delay,
+		]);
 	}
 
 	/**
@@ -109,12 +101,9 @@ class QueueProvider implements QueueProviderInterface
 			$this->platform->quoteIdentifier($this->options['queue_table_name'])
 		);
 
-		$statement = $this->connection->prepare($query);
-		$statement->execute([$channel, time()]);
-
 		$results = array();
 
-		foreach ($statement->fetchAll() as $row) {
+		foreach ($this->connection->fetchAll($query, [$channel, time()]) as $row) {
 			$delete = function() use ($row) {
 				$this->delete($row['id']);
 			};
@@ -136,14 +125,7 @@ class QueueProvider implements QueueProviderInterface
 	{
 		$channel = (string) $channel;
 
-		$query = 'DELETE FROM %s WHERE channel = ?';
-		$query = sprintf(
-			$query,
-			$this->platform->quoteIdentifier($this->options['queue_table_name'])
-		);
-
-		$statement = $this->connection->prepare($query);
-		$statement->execute([$channel]);
+		$this->connection->delete($this->options['queue_table_name'], ['channel' => $channel]);
 	}
 
 	/**
@@ -159,12 +141,8 @@ class QueueProvider implements QueueProviderInterface
 			$this->platform->quoteIdentifier($this->options['queue_table_name'])
 		);
 
-		$statement = $this->connection->prepare($query);
-		$statement->execute([$channel]);
-
-		$result = $statement->fetchColumn();
-
-		$statement->closeCursor();
+		$result = $this->connection->fetchColumn($query, [$channel]);
+		$result = array_shift($result);
 
 		return $result;
 	}
@@ -173,27 +151,11 @@ class QueueProvider implements QueueProviderInterface
 	{
 		$id = (string) $id;
 
-		$query = 'DELETE FROM %s WHERE id = ?';
-		$query = sprintf(
-			$query,
-			$this->platform->quoteIdentifier($this->options['queue_table_name'])
-		);
-
-		$statement = $this->connection->prepare($query);
-		$statement->execute([$id]);
+		$this->connection->delete($this->options['queue_table_name'], ['id' => $id]);
 	}
 
 	protected function release($id, $delay = 0)
 	{
-//		$id = (string) $id;
-//
-//		$query = 'DELETE FROM %s WHERE id = ?';
-//		$query = sprintf(
-//			$query,
-//			$this->platform->quoteIdentifier($this->options['queue_table_name'])
-//		);
-//
-//		$statement = $this->connection->prepare($query);
-//		$statement->execute([$id]);
+		// @todo still needs to be implemented but at the moment records are not locked in the first place.
 	}
 }
