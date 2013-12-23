@@ -32,6 +32,7 @@
 			"Integrated\\MongoDB\\ContentType\\": "src/",
 			"Integrated\\Common\\Content\\": "src/",
 			"Integrated\\Common\\ContentType\\": "src/",
+			"Integrated\\Common\\Queue\\": "src/",
 			"Integrated\\Common\\Solr\\": "src/"
 		}
 	},
