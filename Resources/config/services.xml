@@ -10,7 +10,7 @@
         <parameter key="integrated_solr.mapping.driver.metadata.yaml_driver.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\YamlDriver</parameter>
         <parameter key="integrated_solr.mapping.driver.metadata.xml_driver.class">Integrated\Bundle\SolrBundle\Mapping\Driver\Metadata\XmlDriver</parameter>
         <parameter key="integrated_solr.mapping.metadata.metadata_factory.class">Integrated\Bundle\SolrBundle\Mapping\Metadata\MetadataFactory</parameter>
-        <parameter key="integrated_solr.reader.content.class">Integrated\Bundle\SolrBundle\Reader\Content</parameter>
+        <parameter key="integrated_solr.converter.content.class">Integrated\Bundle\SolrBundle\Converter\Content</parameter>
     </parameters>
 
     <services>
@@ -40,7 +40,7 @@
             <argument type="service" id="integrated_solr.mapping.metadata.driver.driver_chain" />
         </service>
 
-        <service id="integrated_solr.reader.content" class="%integrated_solr.reader.content.class%">
+        <service id="integrated_solr.converter.content" class="%integrated_solr.converter.content.class%">
             <argument type="service" id="integrated_solr.mapping.metadata.metadata_factory" />
         </service>
     </services>
