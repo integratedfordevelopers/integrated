@@ -38,6 +38,14 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Content should implement DriverInterface
+     */
+    public function testInstanceofConverterInterface()
+    {
+        $this->assertInstanceOf('Integrated\Common\Solr\Converter\ConverterInterface', $this->content);
+    }
+
+    /**
      * Test getConfig function with invalid object
      *
      * @expectedException InvalidArgumentException
