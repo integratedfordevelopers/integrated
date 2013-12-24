@@ -16,6 +16,7 @@ use Exception;
 use Integrated\Common\Queue\QueueAwareInterface;
 use Integrated\Common\Queue\QueueInterface;
 
+use Integrated\Common\Solr\Converter\ConverterInterface;
 use Integrated\Common\Solr\Exception\InvalidArgumentException;
 
 use Solarium\Core\Client\Client;
@@ -49,7 +50,14 @@ interface IndexerInterface extends SerializerAwareInterface, QueueAwareInterface
 	 */
 	public function setSerializer(SerializerInterface $serializer);
 
-	/**
+    /**
+     * Set the converter
+     *
+     * @param ConverterInterface $convert
+     */
+    public function setConverter(ConverterInterface $convert);
+
+    /**
 	 * This wil execute a indexing run by getting jobs from the queue.
 	 *
 	 * @param Client $client if supplied this will overwrite the current set client

@@ -18,6 +18,8 @@ use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Queue\QueueMessageInterface;
 use Integrated\Common\Queue\Provider\Memory\QueueProvider;
 
+use Integrated\Common\Solr\Converter\ConverterInterface;
+
 use Integrated\Common\Solr\Indexer\Event\BatchEvent;
 use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 use Integrated\Common\Solr\Indexer\Event\IndexerEvent;
@@ -74,6 +76,11 @@ class Indexer implements IndexerInterface
 	 * @var Batch
 	 */
 	private $batch = null;
+
+    /**
+     * @var ConverterInterface
+     */
+    protected $converter;
 
 	/**
 	 * Set the event dispatcher
@@ -434,4 +441,22 @@ class Indexer implements IndexerInterface
 
 		$this->batch = null;
 	}
+
+    /**
+     * {@inheritdoc}
+     * @return $this
+     */
+    public function setConverter(ConverterInterface $converter)
+    {
+        $this->converter = $converter;
+        return $this;
+    }
+
+    /**
+     * @return ConverterInterface
+     */
+    public function getConverter()
+    {
+        return $this->converter;
+    }
 }
