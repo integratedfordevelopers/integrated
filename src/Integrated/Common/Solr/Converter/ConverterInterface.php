@@ -18,6 +18,7 @@ interface ConverterInterface
 {
     /**
      * @param object $object
+     * @return \Solarium\QueryType\Update\Query\Document\DocumentInterface
      */
     public function getDocument($object);
 }
