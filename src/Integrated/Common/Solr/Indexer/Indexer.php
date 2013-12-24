@@ -301,17 +301,21 @@ class Indexer implements IndexerInterface
 						throw new SerializerException($e->getMessage(), $e->getCode(), $e);
 					}
 
-					$command = new Add();
-					$command->addDocument($this->getConverter()->getDocment($document));
+                    if ($solrDocument = $this->getConverter()->getDocument($document)) {
 
-					if ($job->hasOption('overwrite')) {
-						$command->setOverwrite((bool) $job->getOption('overwrite'));
-					}
+                        $command = new Add();
+                        $command->addDocument($this->getConverter()->getDocment($solrDocument));
 
-					if ($job->hasOption('commitwithin')) {
-						$command->setCommitWithin((bool) $job->getOption('commitwithin'));
-					}
-				}
+                        if ($job->hasOption('overwrite')) {
+                            $command->setOverwrite((bool) $job->getOption('overwrite'));
+                        }
+                        if ($job->hasOption('commitwithin')) {
+                            $command->setCommitWithin((bool) $job->getOption('commitwithin'));
+                        }
+                    }
+
+
+                }
 
 				break;
 
