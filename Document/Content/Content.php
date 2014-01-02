@@ -151,6 +151,20 @@ class Content implements ContentInterface
     }
 
     /**
+     * Add a reference of the document
+     *
+     * @param object $reference
+     * @return $this
+     */
+    public function addReference($reference)
+    {
+        if (!$this->references->contains($reference)) {
+            $this->references->add($reference);
+        }
+        return $this;
+    }
+
+    /**
      * Get the createdAt of the document
      *
      * @return \DateTime
