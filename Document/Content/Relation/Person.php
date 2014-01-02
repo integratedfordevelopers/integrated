@@ -50,14 +50,14 @@ class Person extends Relation
     /**
      * @var string
      * @ODM\String
-     * @Type\Field
+     * @Type\Field(options={"label"="First name"})
      */
     protected $firstname;
 
     /**
      * @var string
      * @ODM\String
-     * @Type\Field
+     * @Type\Field(options={"label"="Last name"})
      */
     protected $lastname;
 
