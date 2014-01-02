@@ -2,79 +2,113 @@
 {% block body %}
     <ol class="breadcrumb">
         <li>
-            <a href="{{ path('integrated_content_contenttype_index') }}">Home</a>
+            <a href="{{ path('integrated_content_contenttype_index') }}">{% trans %}Home{% endtrans %}</a>
         </li>
-        <li class="active">Show</li>
+        <li class="active">{% trans %}Show{% endtrans %}</li>
     </ol>
     <div class="page-header">
-        <h1>Show</h1>
+        <h1>{% trans %}Show{% endtrans %}</h1>
     </div>
     <dl>
         <dt>
-            Name
+            {% trans %}Name{% endtrans %}
         </dt>
         <dd>
             {{ contentType.name }}
         </dd>
         <dt>
-            Type
+            {% trans %}Type{% endtrans %}
         </dt>
         <dd>
             {{ contentType.type }}
         </dd>
         <dt>
-            Class
+            {% trans %}Fields{% endtrans %}
         </dt>
         <dd>
-        {{ contentType.class }}
-        </dd>
-        <dt>
-            Fields
-        </dt>
-        <dd>
-            <ul>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="40%">{% trans %}Field{% endtrans %}</th>
+                        <th>{% trans %}Required{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
                 {% for field in contentType.fields %}
-                <li>
-                    {{ field.name }}
-                </li>
+                    <tr>
+                        <td>
+                            {{ field.label|trans }}
+                        </td>
+                        <td>
+                            {% if field.options.required is empty %}
+                                {% trans %}No{% endtrans %}
+                            {% else %}
+                                {% trans %}Yes{% endtrans %}
+                            {% endif %}
+                        </td>
+                    </tr>
                 {% else %}
-                <li>
-                    No fields added
-                </li>
+                    <tr>
+                        <td>
+                            {% trans %}No fields added{% endtrans %}
+                        </td>
+                    </tr>
                 {% endfor %}
-            </ul>
+                </tbody>
+            </table>
         </dd>
         <dt>
-            Relations
+            {% trans %}Relations{% endtrans %}
         </dt>
         <dd>
-            <ul>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="40%">
+                            {% trans %}Content type{% endtrans %}
+                        </th>
+                        <th>
+                            {% trans %}Relations{% endtrans %}
+                        </th>
+                        <th>
+                            {% trans %}Required{% endtrans %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
                 {% for relation in contentType.relations %}
-                <li>
-                    {{ relation.contentType.class }}
-                    |
-                    {{ relation.contentType.type }}
-                    |
-                    {% if relation.multiple == 1 %}
-                    Multiple
-                    {% else %}
-                    One
-                    {% endif %}
-                    {% if relation.required %}
-                        | required
-                    {% endif %}
-
-                </li>
+                    <tr>
+                        <td>
+                            {{ relation.contentType.type }}
+                        </td>
+                        <td>
+                            {% if relation.multiple == 1 %}
+                                {% trans %}Multiple{% endtrans %}
+                            {% else %}
+                                {% trans %}One{% endtrans %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if relation.required %}
+                                {% trans %}Yes{% endtrans %}
+                            {% else %}
+                                {% trans %}No{% endtrans %}
+                            {% endif %}
+                        </td>
+                    </tr>
                 {% else %}
-                <li>
-                    No relations added
-                </li>
+                    <tr>
+                        <td colspan="3">
+                            {% trans %}No relations added{% endtrans %}
+                        </td>
+                    </tr>
                 {% endfor %}
-            </ul>
+                </tbody>
+            </table>
         </dd>
     </dl>
     <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_contenttype_edit', {'id': contentType.id}) }}">
-        Edit
+        {% trans %}Edit{% endtrans %}
     </a>
     {{ form(form, { 'style': 'inline' }) }}
 {% endblock %}
