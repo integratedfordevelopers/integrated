@@ -54,12 +54,8 @@
                 <div class="panel-heading">
                     <div class="pull-right">
                         {#<a href title="open"><span class="glyphicon glyphicon-open"></span></a>#}
-                        <a href="{{ path('integrated_content_content_edit', {'id': content.id}) }}" title="{% trans %}Edit{% endtrans %}">
-                            <span class="glyphicon glyphicon-edit"></span>
-                        </a>
-                        <a href="{{ path('integrated_content_content_delete', {'id': content.id}) }}" title="{% trans %}Delete{% endtrans %}">
-                            <span class="glyphicon glyphicon-remove-circle"></span>
-                        </a>
+                        <a href="{{ path('integrated_content_content_edit', {'id': content.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a href="{{ path('integrated_content_content_delete', {'id': content.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
                     </div>
 
                     <h3 class="panel-title">{{ content.id }}</h3>
