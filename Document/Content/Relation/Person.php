@@ -50,14 +50,14 @@ class Person extends Relation
     /**
      * @var string
      * @ODM\String
-     * @Type\Field
+     * @Type\Field(options={"label"="First name"})
      */
     protected $firstname;
 
     /**
      * @var string
      * @ODM\String
-     * @Type\Field
+     * @Type\Field(options={"label"="Last name"})
      */
     protected $lastname;
 
@@ -86,12 +86,12 @@ class Person extends Relation
     /**
      * Set the gender of the document
      *
-     * @param string $sex
+     * @param string $gender
      * @return $this
      */
-    public function setGender($sex)
+    public function setGender($gender)
     {
-        $this->gender = $sex;
+        $this->gender = $gender;
         return $this;
     }
 

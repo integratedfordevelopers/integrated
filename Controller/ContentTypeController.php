@@ -293,7 +293,7 @@ class ContentTypeController extends Controller
             )
         );
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Save'));
 
         return $form;
     }
@@ -316,7 +316,7 @@ class ContentTypeController extends Controller
             )
         );
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Save'));
 
         return $form;
     }
