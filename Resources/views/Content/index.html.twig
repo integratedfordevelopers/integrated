@@ -7,7 +7,7 @@
 
         <div class="btn-group">
             <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
-                New <span class="caret"></span>
+                {% trans %}New{% endtrans %} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
 
@@ -34,11 +34,13 @@
         <div class="search">
             <form class="row" role="form">
                 <div class="col-md-10">
-                    <label class="sr-only" for="inputquery">Zoek tekst</label>
-                    <input type="text" name="q" class="form-control input-lg" id="inputquery" value="{{ app.request.query.get('q')|trim }}" placeholder="Zoek tekst" />
+                    <label class="sr-only" for="inputquery">
+                        {% trans %}Search text{% endtrans %}
+                    </label>
+                    <input type="search" name="q" class="form-control input-lg" id="inputquery" value="{{ app.request.query.get('q')|trim }}" placeholder="{% trans %}Search text{% endtrans %}" />
                 </div>
                 <div class="col-md-2">
-                    <button type="submit" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-search"></span> Zoeken</button>
+                    <button type="submit" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-search"></span> {% trans %}Search{% endtrans %}</button>
                 </div>
             </form>
         </div>
@@ -52,8 +54,12 @@
                 <div class="panel-heading">
                     <div class="pull-right">
                         {#<a href title="open"><span class="glyphicon glyphicon-open"></span></a>#}
-                        <a href="{{ path('integrated_content_content_edit', {'id': content.id}) }}" title="edit"><span class="glyphicon glyphicon-edit"></span></a>
-                        <a href="{{ path('integrated_content_content_delete', {'id': content.id}) }}" title="remove"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                        <a href="{{ path('integrated_content_content_edit', {'id': content.id}) }}" title="{% trans %}Edit{% endtrans %}">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a href="{{ path('integrated_content_content_delete', {'id': content.id}) }}" title="{% trans %}Remove{% endtrans %}">
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                        </a>
                     </div>
 
                     <h3 class="panel-title">{{ content.id }}</h3>
