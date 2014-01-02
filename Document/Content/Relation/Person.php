@@ -31,7 +31,7 @@ class Person extends Relation
      * @ODM\String
      * @Type\Field(type="choice", options={"choices"={"Male", "Female"}})
      */
-    protected $sex;
+    protected $gender;
 
     /**
      * @var string
@@ -74,24 +74,24 @@ class Person extends Relation
     protected $picture;
 
     /**
-     * Get the sex of the document (nothing more!)
+     * Get the gender of the document
      *
      * @return string
      */
-    public function getSex()
+    public function getGender()
     {
-        return $this->sex;
+        return $this->gender;
     }
 
     /**
-     * Set the sex of the document
+     * Set the gender of the document
      *
      * @param string $sex
      * @return $this
      */
-    public function setSex($sex)
+    public function setGender($sex)
     {
-        $this->sex = $sex;
+        $this->gender = $sex;
         return $this;
     }
 

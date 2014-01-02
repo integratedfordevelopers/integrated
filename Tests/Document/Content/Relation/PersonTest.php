@@ -56,12 +56,12 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setSex function
+     * Test get- and setGender function
      */
-    public function testGetAndSetSexFunction()
+    public function testGetAndSetGenderFunction()
     {
-        $sex = 'sex';
-        $this->assertEquals($sex, $this->person->setSex($sex)->getSex());
+        $gender = 'male';
+        $this->assertEquals($gender, $this->person->setGender($gender)->getGender());
     }
 
     /**
