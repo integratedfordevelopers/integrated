@@ -33,10 +33,10 @@ class Content implements ContentInterface
     protected $id;
 
     /**
-     * @var string
+     * @var string the type of the ContentType
      * @ODM\String
      */
-    protected $type;
+    protected $contentType;
 
     /**
      * @var ArrayCollection
@@ -107,24 +107,20 @@ class Content implements ContentInterface
     }
 
     /**
-     * Get the type of the document
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getType()
+    public function getContentType()
     {
-        return $this->type;
+        return $this->contentType;
     }
 
+
     /**
-     * Set the type of the document
-     *
-     * @param string $type
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setType($type)
+    public function setContentType($contentType)
     {
-        $this->type = $type;
+        $this->contentType = $contentType;
         return $this;
     }
 
