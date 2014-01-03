@@ -17,8 +17,11 @@
 		"php": ">=5.4",
 		"symfony/form": "~2.3",
         "symfony/validator": "~2.3",
+		"symfony/serializer": "~2.3",
+		"doctrine/dbal": ">=2.3.0,<2.5-dev",
 		"doctrine/mongodb": "1.0.*",
-		"doctrine/mongodb-odm": "1.0.*"
+		"doctrine/mongodb-odm": "1.0.*",
+		"solarium/solarium": "dev-develop"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "3.8.*"
@@ -28,7 +31,9 @@
             "Integrated\\MongoDB\\Content\\": "src/",
 			"Integrated\\MongoDB\\ContentType\\": "src/",
 			"Integrated\\Common\\Content\\": "src/",
-			"Integrated\\Common\\ContentType\\": "src/"
+			"Integrated\\Common\\ContentType\\": "src/",
+			"Integrated\\Common\\Queue\\": "src/",
+			"Integrated\\Common\\Solr\\": "src/"
 		}
 	},
 	"extra": {
