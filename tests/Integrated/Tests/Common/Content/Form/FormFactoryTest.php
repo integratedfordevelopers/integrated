@@ -77,7 +77,7 @@ class FormFactoryTest extends \PHPUnit_Framework_TestCase
 	{
 		$content = $this->getMock('Integrated\Common\Content\ContentInterface');
 		$content->expects($this->once())
-			->method('getType')
+			->method('getContentType')
 			->will($this->returnValue('type'));
 
 		$this->resolver->expects($this->once())
