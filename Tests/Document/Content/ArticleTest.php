@@ -57,12 +57,12 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setType function
+     * Test get- and setContentType function
      */
-    public function testGetAndSetTypeFunction()
+    public function testGetAndSetContentTypeFunction()
     {
-        $type = 'type';
-        $this->assertEquals($type, $this->article->setType($type)->getType());
+        $contentType = 'type';
+        $this->assertEquals($contentType, $this->article->setContentType($contentType)->getContentType());
     }
 
     /**
