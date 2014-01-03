@@ -25,17 +25,17 @@ interface ContentInterface
 	public function getId();
 
     /**
-	 * Return the type of the Content
+	 * Return the contentType of the Content
 	 *
      * @return string
      */
-    public function getType();
+    public function getContentType();
 
     /**
-     * Set the type of the Content
+     * Set the contentType of the Content
      *
-     * @param string $type
+     * @param string $contentType
      * @return $this
      */
-    public function setType($type);
+    public function setContentType($contentType);
 }

@@ -35,7 +35,7 @@ class FormFactory implements FormFactoryInterface
 	public function getType($class, $type = null)
 	{
 		if ($type === null && $class instanceof ContentInterface) {
-			$type = $class->getType();
+			$type = $class->getContentType();
 		}
 
 		if ($class instanceof ContentInterface) {
