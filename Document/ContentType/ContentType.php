@@ -84,7 +84,7 @@ class ContentType implements ContentTypeInterface
     public function create()
     {
         $instance = new $this->class();
-        $instance->setType($this->type);
+        $instance->setContentType($this->type);
 
         return $instance;
     }
