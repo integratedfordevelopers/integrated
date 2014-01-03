@@ -171,7 +171,7 @@ class ContentController extends Controller
 	public function deleteAction(Request $request, Content $content)
 	{
 		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getType());
+		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getContentType());
 
 		$form = $this->createForm(
 			new DeleteType(),
