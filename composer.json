@@ -14,7 +14,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@bitbucket.org:eactive-integrated/library.git"
+            "url": "git@bitbucket.org:eactive/integrated-library.git"
         }
     ],
     "minimum-stability": "dev",
