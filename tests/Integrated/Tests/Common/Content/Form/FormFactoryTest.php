@@ -24,6 +24,11 @@ class FormFactoryTest extends \PHPUnit_Framework_TestCase
 	 */
 	private $resolver;
 
+    /**
+     * @var \Integrated\Common\Content\Reader\Document | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $reader;
+
 	/**
 	 * @var FormFactory
 	 */
@@ -32,7 +37,8 @@ class FormFactoryTest extends \PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		$this->resolver = $this->getMock('Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface');
-		$this->factory = new FormFactory($this->resolver);
+        $this->reader = $this->getMock('Integrated\Common\Content\Reader\Document', array(), array(), '', false);
+		$this->factory = new FormFactory($this->resolver, $this->reader);
 
 	}
 
