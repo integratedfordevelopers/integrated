@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Manage</source>
+                <target>Beheer</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>New</source>
+                <target>Nieuw</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>Search text</source>
+                <target>Zoek tekst</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Search</source>
+                <target>Zoeken</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>Edit</source>
+                <target>Bewerk</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Delete</source>
+                <target>Verwijder</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>You are about to delete "%name%", click the delete button below to confirm the action.</source>
+                <target>U staat op het punt om "%name%" te verwijderen, klik op de verwijder knop hieronder om de actie te voltooien.</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Back</source>
+                <target>Terug</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>Save</source>
+                <target>Opslaan</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>Name</source>
+                <target>Naam</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>Created</source>
+                <target>Aangemaakt op</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>Actions</source>
+                <target>Acties</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>No content types added</source>
+                <target>Er zijn nog geen content types toegevoegd</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>Fields</source>
+                <target>Velden</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>Required</source>
+                <target>Verplicht</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>Relations</source>
+                <target>Relaties</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>One</source>
+                <target>Eén</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>Multiple</source>
+                <target>Meerdere</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Title</source>
+                <target>Titel</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>Subtitle</source>
+                <target>Subtitel</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>Source</source>
+                <target>Bron</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>Published until</source>
+                <target>Publiseren tot</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>Intro</source>
+                <target>Inleiding</target>
+            </trans-unit>
+            <trans-unit id="24">
+                <source>Content</source>
+                <target>Bericht</target>
+            </trans-unit>
+            <trans-unit id="25">
+                <source>Disabled</source>
+                <target>Inactief</target>
+            </trans-unit>
+            <trans-unit id="26">
+                <source>File</source>
+                <target>Bestand</target>
+            </trans-unit>
+            <trans-unit id="27">
+                <source>Description</source>
+                <target>Omschrijving</target>
+            </trans-unit>
+            <trans-unit id="28">
+                <source>Accountnumber</source>
+                <target>Accountnummer</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>Gender</source>
+                <target>Geslacht</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>Prefix</source>
+                <target>Titel</target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>Nickname</source>
+                <target>Bijnaam</target>
+            </trans-unit>
+            <trans-unit id="32">
+                <source>First name</source>
+                <target>Voornaam</target>
+            </trans-unit>
+            <trans-unit id="33">
+                <source>Last name</source>
+                <target>Achternaam</target>
+            </trans-unit>
+            <trans-unit id="34">
+                <source>Yes</source>
+                <target>Ja</target>
+            </trans-unit>
+            <trans-unit id="35">
+                <source>No</source>
+                <target>Nee</target>
+            </trans-unit>
+            <trans-unit id="36">
+                <source>Field</source>
+                <target>Veld</target>
+            </trans-unit>
+            <trans-unit id="37">
+                <source>Show</source>
+                <target>Bekijk</target>
+            </trans-unit>
+            <trans-unit id="38">
+                <source>No fields added</source>
+                <target>Er zijn geen velden toegevoegd</target>
+            </trans-unit>
+            <trans-unit id="39">
+                <source>No relations added</source>
+                <target>Er zijn geen relaties toegevoegd</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

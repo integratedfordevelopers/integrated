@@ -3,29 +3,21 @@
 
 <ol class="breadcrumb">
     <li>
-        <a href="{{ path('integrated_content_content_index') }}">Home</a>
+        <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
     </li>
-    <li class="active">Delete</li>
+    <li class="active">{% trans %}Delete{% endtrans %}</li>
 </ol>
 
 <div class="page-header">
-    <h1>Delete <small>{{ type.type }}</small></h1>
+    <h1>{% trans %}Delete{% endtrans %} <small>{{ type.name }}</small></h1>
 </div>
 
 <div class="row">
-
     <div class="col-md-9">
-
-        <p>You are about to delete "{{ content.id }}", click the delete button below to confirm the action.</p>
-
+        <p>
+            {% trans with {'%name%':  content.id} %}You are about to delete "%name%", click the delete button below to confirm the action.{% endtrans %}
+        </p>
         {{ form(form) }}
-
     </div>
-
-    <div class="col-md-3">
-
-    </div>
-
 </div>
-
 {% endblock %}

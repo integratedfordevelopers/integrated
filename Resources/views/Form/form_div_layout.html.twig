@@ -1,22 +1,26 @@
-{% use "BraincraftedBootstrapBundle:Form:form_div_layout.html.twig" %}
+{% use "BraincraftedBootstrapBundle:Form:bootstrap.html.twig" %}
+
 
 {% block content_type_field_collection_widget %}
 {% spaceless %}
     <table class="table">
         <thead>
         <tr>
-            <th width="40%">Fields</th>
-            <th>Required</th>
+            <th width="40%">{% trans %}Fields{% endtrans %}</th>
+            <th>{% trans %}Required{% endtrans %}</th>
         </tr>
         </thead>
         <tbody>
         {% for field in form %}
             <tr>
                 <td>
-                    {{ form_row(field.enabled) }}
+                    {% set element = field.enabled  %}
+                    {{ block('content_type_checkbox_widget') }}
                 </td>
                 <td>
-                    {{ form_widget(field.required) }}
+                    <div class="checkbox">
+                        {{ form_widget(field.required) }}
+                    </div>
                 </td>
             </tr>
         {% endfor %}
@@ -30,25 +34,30 @@
     <table class="table">
         <thead>
             <tr>
-                <th width="40%">Contenttype</th>
-                <th colspan="2">Relations</th>
-                <th>Required</th>
+                <th width="40%">{% trans %}Content type{% endtrans %}</th>
+                <th colspan="2">{% trans %}Relations{% endtrans %}</th>
+                <th>{% trans %}Required{% endtrans %}</th>
             </tr>
         </thead>
         <tbody>
         {% for relation in form %}
             <tr>
                 <td>
-                    {{ form_row(relation.enabled) }}
+                    {% set element = relation.enabled  %}
+                    {{ block('content_type_checkbox_widget') }}
                 </td>
                 <td>
-                    {{ form_row(relation.multiple.0) }}
+                    {% set element = relation.multiple.0  %}
+                    {{ block('content_type_radio_widget') }}
                 </td>
                 <td>
-                    {{ form_row(relation.multiple.1) }}
+                    {% set element = relation.multiple.1  %}
+                    {{ block('content_type_radio_widget') }}
                 </td>
                 <td>
-                    {{ form_widget(relation.required) }}
+                    <div class="checkbox">
+                        {{ form_widget(relation.required) }}
+                    </div>
                 </td>
             </tr>
         {% endfor %}
@@ -82,3 +91,33 @@
         {% endfor %}
     {% endspaceless %}
 {%  endblock %}
+
+{% block content_type_checkbox_widget %}
+    {% spaceless %}
+        <div class="checkbox">
+            {% if element.vars.label is not sameas(false) %}
+                <label for="{{ element.vars.id }}">
+                    <input id="{{ element.vars.id }}" name="{{ element.vars.full_name  }}" type="checkbox" {% if element.vars.value is defined %} value="{{ element.vars.value }}"{% endif %}{% if element.vars.checked %} checked="checked"{% endif %}/>
+                    {{ element.vars.label|trans({}, translation_domain) }}
+                </label>
+            {% else %}
+                {{ form_widget(field) }}
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block content_type_radio_widget %}
+    {% spaceless %}
+        <div class="radio">
+            {% if element.vars.label is not sameas(false) %}
+                <label for="{{ element.vars.id }}">
+                    <input id="{{ element.vars.id }}" name="{{ element.vars.full_name  }}" type="radio" {% if element.vars.value is defined %} value="{{ element.vars.value }}"{% endif %}{% if element.vars.checked %} checked="checked"{% endif %}/>
+                    {{ element.vars.label|trans({}, translation_domain) }}
+                </label>
+            {% else %}
+                {{ form_widget(field) }}
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}

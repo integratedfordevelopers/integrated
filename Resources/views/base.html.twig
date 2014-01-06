@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}FMS{% endblock title %}</title>
+    <title>{% block title %}{% trans %}Integrated{% endtrans %}{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet" media="screen">
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
@@ -11,25 +11,34 @@
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
+                <span class="sr-only">
+                    {% trans %}Toggle navigation{% endtrans %}
+                </span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">ContentBundle</a>
+            <a class="navbar-brand">{% trans %}Integrated{% endtrans %}</a>
         </div>
 
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav">
                 <li>
                     <a href="{{ path('integrated_content_content_index') }}">
-                        Content
+                        {% trans %}Content navigator{% endtrans %}
                     </a>
                 </li>
-                <li>
-                    <a href="{{ path('integrated_content_contenttype_index') }}">
-                        ContentType
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        {% trans %}Manage{% endtrans %} <b class="caret"></b>
                     </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="{{ path('integrated_content_contenttype_index') }}">
+                                {% trans %}Content types{% endtrans %}
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>

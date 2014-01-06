@@ -34,17 +34,17 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     /**
      * Article should implement ContentInterface
      */
-    public function testContentInterface()
+    public function testInstanceOfContentInterface()
     {
         $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->article);
     }
 
     /**
-     * Article should extend AbstractContent
+     * Article should extend Content
      */
-    public function testAbstractContent()
+    public function testInstanceOfContent()
     {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\AbstractContent', $this->article);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->article);
     }
 
     /**
@@ -125,7 +125,8 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetTitleFunction()
     {
-        $title = array('nl' => 'Titel', 'en' => 'Title');
+        /* @var $title \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
+        $title = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
         $this->assertSame($title, $this->article->setTitle($title)->getTitle());
     }
 
@@ -134,7 +135,8 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetSubtitleFunction()
     {
-        $subtitle = array('nl' => 'Onderkop', 'en' => 'Subtitle');
+        /* @var $subtitle \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
+        $subtitle = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
         $this->assertEquals($subtitle, $this->article->setSubtitle($subtitle)->getSubtitle());
     }
 
@@ -179,7 +181,8 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetIntroFunction()
     {
-        $intro = array('nl' => 'Inleiding', 'en' => 'Introduction');
+        /* @var $intro \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
+        $intro = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
         $this->assertEquals($intro, $this->article->setIntro($intro)->getIntro());
     }
 
@@ -188,7 +191,8 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetContentFunction()
     {
-        $content = array('nl' => 'Bericht', 'en' => 'Message');
+        /* @var $content \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
+        $content = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
         $this->assertEquals($content, $this->article->setContent($content)->getContent());
     }
 

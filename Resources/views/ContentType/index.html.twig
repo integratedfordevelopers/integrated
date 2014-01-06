@@ -2,7 +2,7 @@
 {% block body %}
 <div class="btn-group">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-        New <span class="caret"></span>
+        {% trans %}New{% endtrans %} <span class="caret"></span>
     </button>
     <ul class="dropdown-menu" role="menu">
         {% for type in documentTypes %}
@@ -18,10 +18,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Created</th>
-            <th>Actions</th>
+            <th>{% trans %}Name{% endtrans %}</th>
+            <th>{% trans %}Type{% endtrans %}</th>
+            <th>{% trans %}Created{% endtrans %}</th>
+            <th>{% trans %}Actions{% endtrans %}</th>
         </tr>
     </thead>
     <tbody>
@@ -29,17 +29,17 @@
         <tr>
             <td>
                 <a href="{{ path('integrated_content_contenttype_show', {'id': document.id}) }}">
-                    {{ document.type }}
+                    {{ document.name }}
                 </a>
             </td>
             <td>
-                {{ document.class }}
+                {{ document.type }}
             </td>
             <td>
                 {{ document.createdAt|date }}
             </td>
             <td>
-                <a href="{{ path('integrated_content_contenttype_edit', {'id': document.id}) }}">
+                <a href="{{ path('integrated_content_contenttype_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
                     {{ icon('pencil') }}
                 </a>
             </td>
@@ -47,7 +47,7 @@
         {% else %}
         <tr>
             <td colspan="4">
-                No content types added
+                {% trans %}No content types added{% endtrans %}
             </td>
         </tr>
         {% endfor %}

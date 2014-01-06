@@ -34,34 +34,34 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     /**
      * Person should implement ContentInterface
      */
-    public function testContentInterface()
+    public function testInstanceOfContentInterface()
     {
         $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->person);
     }
 
     /**
-     * Person should extend AbstractContent
+     * Person should extend Content
      */
-    public function testAbstractContent()
+    public function testInstanceOfContent()
     {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\AbstractContent', $this->person);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->person);
     }
 
     /**
-     * Person should extend AbstractRelation
+     * Person should extend Relation
      */
-    public function testAbstractRelation()
+    public function testInstanceOfRelation()
     {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Relation\AbstractRelation', $this->person);
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation', $this->person);
     }
 
     /**
-     * Test get- and setSex function
+     * Test get- and setGender function
      */
-    public function testGetAndSetSexFunction()
+    public function testGetAndSetGenderFunction()
     {
-        $sex = 'sex';
-        $this->assertEquals($sex, $this->person->setSex($sex)->getSex());
+        $gender = 'male';
+        $this->assertEquals($gender, $this->person->setGender($gender)->getGender());
     }
 
     /**

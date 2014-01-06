@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Content;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 
@@ -20,43 +20,44 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
  * Document type Relation\Person
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content")
- * @Content\Document("Person")
+ *
+ * @ODM\Document
+ * @Type\Document("Person")
  */
-class Person extends AbstractRelation
+class Person extends Relation
 {
     /**
      * @var string
      * @ODM\String
-     * @Content\Field(type="choice", options={"choices"={"Male", "Female"}})
+     * @Type\Field(type="choice", options={"choices"={"Male", "Female"}})
      */
-    protected $sex;
+    protected $gender;
 
     /**
      * @var string
      * @ODM\String
-     * @content\Field
+     * @Type\Field
      */
     protected $prefix;
 
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field
      */
     protected $nickname;
 
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field(options={"label"="First name"})
      */
     protected $firstname;
 
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field(options={"label"="Last name"})
      */
     protected $lastname;
 
@@ -73,24 +74,24 @@ class Person extends AbstractRelation
     protected $picture;
 
     /**
-     * Get the sex of the document (nothing more!)
+     * Get the gender of the document
      *
      * @return string
      */
-    public function getSex()
+    public function getGender()
     {
-        return $this->sex;
+        return $this->gender;
     }
 
     /**
-     * Set the sex of the document
+     * Set the gender of the document
      *
-     * @param string $sex
+     * @param string $gender
      * @return $this
      */
-    public function setSex($sex)
+    public function setGender($gender)
     {
-        $this->sex = $sex;
+        $this->gender = $gender;
         return $this;
     }
 

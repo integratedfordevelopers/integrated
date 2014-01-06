@@ -12,31 +12,33 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Content;
-use Integrated\Bundle\ContentBundle\Document\Content\AbstractContent;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable;
 
 /**
- * Abstract class for Relations
+ * Class for Relations
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ *
  * @ODM\MappedSuperclass
  */
-abstract class AbstractRelation extends AbstractContent
+class Relation extends Content
 {
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field
      */
     protected $accountnumber;
 
     /**
-     * @var array
-     * @ODM\Hash
-     * @Content\Field(type="translatable_textarea")
+     * @var Translatable
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
+     * @Type\Field(type="translatable_textarea")
      */
-    protected $description = array();
+    protected $description;
 
     /**
      * @var array
@@ -47,7 +49,7 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * @var string
      * @ODM\String
-     * @Content\Field(type="email")
+     * @Type\Field(type="email")
      */
     protected $email;
 
@@ -82,7 +84,7 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * Get the description of the document
      *
-     * @return array
+     * @return Translatable
      */
     public function getDescription()
     {
@@ -92,10 +94,10 @@ abstract class AbstractRelation extends AbstractContent
     /**
      * Set the description of the document
      *
-     * @param array $description
+     * @param Translatable $description
      * @return $this
      */
-    public function setDescription(array $description)
+    public function setDescription(Translatable $description)
     {
         $this->description = $description;
         return $this;

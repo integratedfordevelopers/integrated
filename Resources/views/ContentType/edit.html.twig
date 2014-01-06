@@ -2,12 +2,12 @@
 {% block body %}
     <ol class="breadcrumb">
         <li>
-            <a href="{{ path('integrated_content_contenttype_index') }}">Home</a>
+            <a href="{{ path('integrated_content_contenttype_index') }}">{% trans %}Home{% endtrans %}</a>
         </li>
-        <li class="active">Edit</li>
+        <li class="active">{% trans %}Edit{% endtrans %}</li>
     </ol>
     <div class="page-header">
-        <h1>Edit</h1>
+        <h1>{% trans %}Edit{% endtrans %}</h1>
     </div>
     {{ form(form, {'style': 'horizontal'}) }}
 {% endblock %}

@@ -239,11 +239,23 @@ class ContentTypeController extends Controller
 
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
-            $dm->remove($contentType);
-            $dm->flush();
 
-            // Set flash message
-            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            // Only delete ContentType when there are no Content items
+            $count = $dm->getRepository($contentType->getClass())->findBy(array('type' => $contentType->getType()))->count();
+            if ($count > 0) {
+
+                // Set flash message and redirect to item page
+                $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
+                return $this->redirect($this->generateUrl('integrated_content_contenttype_show', array('id' => $contentType->getId())));
+
+            } else {
+
+                $dm->remove($contentType);
+                $dm->flush();
+
+                // Set flash message
+                $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            }
         }
 
         return $this->redirect($this->generateUrl('integrated_content_contenttype_index'));
@@ -281,7 +293,7 @@ class ContentTypeController extends Controller
             )
         );
 
-        $form->add('submit', 'submit', array('label' => 'Create'));
+        $form->add('submit', 'submit', array('label' => 'Save'));
 
         return $form;
     }
@@ -304,7 +316,7 @@ class ContentTypeController extends Controller
             )
         );
 
-        $form->add('submit', 'submit', array('label' => 'Update'));
+        $form->add('submit', 'submit', array('label' => 'Save'));
 
         return $form;
     }

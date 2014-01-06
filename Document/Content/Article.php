@@ -12,30 +12,32 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Content;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable;
 
 /**
  * Document type Article
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content")
- * @Content\Document("Article")
+ *
+ * @ODM\Document
+ * @Type\Document("Article")
  */
-class Article extends AbstractContent
+class Article extends Content
 {
     /**
-     * @var array
-     * @ODM\Hash
-     * @Content\Field(type="translatable_text")
+     * @var Translatable
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
+     * @Type\Field(type="translatable_text")
      */
-    protected $title = array();
+    protected $title;
 
     /**
-     * @var array
-     * @ODM\Hash
-     * @Content\Field(type="translatable_text")
+     * @var Translatable
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
+     * @Type\Field(type="translatable_text")
      */
-    protected $subtitle = array();
+    protected $subtitle;
 
     /**
      * @var array Embedded\Author
@@ -46,7 +48,7 @@ class Article extends AbstractContent
     /**
      * @var string
      * @ODM\String
-     * @Content\Field
+     * @Type\Field
      */
     protected $source;
 
@@ -59,23 +61,23 @@ class Article extends AbstractContent
     /**
      * @var \DateTime
      * @ODM\Date
-     * @Content\Field(type="datetime", options={"label" = "Published until"})
+     * @Type\Field(type="datetime", options={"label" = "Published until"})
      */
     protected $publishedUntil;
 
     /**
-     * @var array
-     * @ODM\Hash
-     * @Content\Field(type="translatable_textarea")
+     * @var Translatable
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
+     * @Type\Field(type="translatable_textarea")
      */
-    protected $intro = array();
+    protected $intro;
 
     /**
-     * @var array
-     * @ODM\Hash
-     * @Content\Field(type="translatable_textarea")
+     * @var Translatable
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
+     * @Type\Field(type="translatable_textarea")
      */
-    protected $content = array();
+    protected $content;
 
     /**
      * @var Embedded\Location
@@ -86,7 +88,7 @@ class Article extends AbstractContent
     /**
      * Get the title of the document
      *
-     * @return array
+     * @return Translatable
      */
     public function getTitle()
     {
@@ -96,10 +98,10 @@ class Article extends AbstractContent
     /**
      * Set the title of the document
      *
-     * @param array $title
+     * @param Translatable $title
      * @return $this
      */
-    public function setTitle(array $title)
+    public function setTitle(Translatable $title)
     {
         $this->title = $title;
         return $this;
@@ -108,7 +110,7 @@ class Article extends AbstractContent
     /**
      * Get the subtitle of the document
      *
-     * @return array
+     * @return Translatable
      */
     public function getSubtitle()
     {
@@ -118,10 +120,10 @@ class Article extends AbstractContent
     /**
      * Set the subtitle of the document
      *
-     * @param array $subtitle
+     * @param Translatable $subtitle
      * @return $this
      */
-    public function setSubtitle(array $subtitle)
+    public function setSubtitle(Translatable $subtitle)
     {
         $this->subtitle = $subtitle;
         return $this;
@@ -218,7 +220,7 @@ class Article extends AbstractContent
     /**
      * Get the intro of the document
      *
-     * @return array
+     * @return Translatable
      */
     public function getIntro()
     {
@@ -228,10 +230,10 @@ class Article extends AbstractContent
     /**
      * Set the intro of the document
      *
-     * @param array $intro
+     * @param Translatable $intro
      * @return $this
      */
-    public function setIntro(array $intro)
+    public function setIntro(Translatable $intro)
     {
         $this->intro = $intro;
         return $this;
@@ -240,7 +242,7 @@ class Article extends AbstractContent
     /**
      * Get the content of the document
      *
-     * @return array
+     * @return Translatable
      */
     public function getContent()
     {
@@ -250,10 +252,10 @@ class Article extends AbstractContent
     /**
      * Set the content of the document
      *
-     * @param array $content
+     * @param Translatable $content
      * @return $this
      */
-    public function setContent(array $content)
+    public function setContent(Translatable $content)
     {
         $this->content = $content;
         return $this;
