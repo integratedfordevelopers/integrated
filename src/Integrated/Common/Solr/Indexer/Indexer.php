@@ -326,6 +326,16 @@ class Indexer implements IndexerInterface
                     }
                 }
 
+				if ($command === null) {
+					// check if there is a id so that the document can be removed from
+					// the index instead.
+
+					if ($job->hasOption('document.id')) {
+						$command = new Delete();
+						$command->addId($job->getOption('document.id'));
+					}
+				}
+
 				break;
 
 			case 'DELETE':
