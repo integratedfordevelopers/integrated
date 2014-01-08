@@ -86,12 +86,10 @@ class Indexer implements IndexerInterface
 	 * Set the event dispatcher
 	 *
 	 * @param EventDispatcherInterface $dispatcher
-	 * @return $this
 	 */
 	public function setEventDispatcher(EventDispatcherInterface $dispatcher)
 	{
 		$this->dispatcher = $dispatcher;
-		return $this;
 	}
 
 	/**
@@ -116,7 +114,6 @@ class Indexer implements IndexerInterface
 	public function setQueue(QueueInterface $queue)
 	{
 		$this->queue = $queue;
-		return $this;
 	}
 
 	/**
@@ -160,12 +157,27 @@ class Indexer implements IndexerInterface
 	}
 
 	/**
+	 * {@inheritdoc}
+	 */
+	public function setConverter(ConverterInterface $converter)
+	{
+		$this->converter = $converter;
+	}
+
+	/**
+	 * @return ConverterInterface
+	 */
+	public function getConverter()
+	{
+		return $this->converter;
+	}
+
+	/**
 	 * @inheritdoc
 	 */
 	public function setClient(Client $client)
 	{
 		$this->client = $client;
-		return $this;
 	}
 
 	/**
@@ -211,8 +223,8 @@ class Indexer implements IndexerInterface
 			$this->getEventDispatcher()->dispatch(Events::PRE_EXECUTE, new IndexerEvent($this));
 
 			try {
-				foreach ($this->getQueue()->get(1000) /* @TODO make $limit configurable */ as $data) {
-					$this->batch($data);
+				foreach ($this->getQueue()->pull(1000) /* @TODO make $limit configurable */ as $message) {
+					$this->batch($message);
 				}
 
 				$this->send(); // send the last batch if there is any
@@ -234,11 +246,11 @@ class Indexer implements IndexerInterface
 	 * A queue message it not send to the solr server but grouped in a
 	 * batch to send more operations at ones.
 	 *
-	 * @param QueueMessageInterface $data
+	 * @param QueueMessageInterface $message
 	 */
-	protected function batch(QueueMessageInterface $data)
+	protected function batch(QueueMessageInterface $message)
 	{
-		$operation = new BatchOperation($data, $this->convert($data));
+		$operation = new BatchOperation($message, $this->convert($message->getPayload()));
 
 		// Send a event to allow the batch operation to be changed by
 		// external code. After that check if the batch is cancels or
@@ -247,7 +259,7 @@ class Indexer implements IndexerInterface
 		$this->getEventDispatcher()->dispatch(Events::BATCHING, new BatchEvent($this, $operation));
 
 		if ($operation->getCommand() === null) {
-			$this->delete($data);
+			$this->delete($message);
 			return;
 		}
 
@@ -301,10 +313,9 @@ class Indexer implements IndexerInterface
 						throw new SerializerException($e->getMessage(), $e->getCode(), $e);
 					}
 
-                    if ($solrDocument = $this->getConverter()->getDocument($document)) {
-
+                    if ($document = $this->getConverter()->getDocument($document)) {
                         $command = new Add();
-                        $command->addDocument($this->getConverter()->getDocment($solrDocument));
+                        $command->addDocument($document);
 
                         if ($job->hasOption('overwrite')) {
                             $command->setOverwrite((bool) $job->getOption('overwrite'));
@@ -313,8 +324,6 @@ class Indexer implements IndexerInterface
                             $command->setCommitWithin((bool) $job->getOption('commitwithin'));
                         }
                     }
-
-
                 }
 
 				break;
@@ -426,12 +435,12 @@ class Indexer implements IndexerInterface
 	 * Delete the queue message from the queue and send a event update
 	 * that the message has been processes.
 	 *
-	 * @param QueueMessageInterface $data
+	 * @param QueueMessageInterface $message
 	 */
-	protected function delete(QueueMessageInterface $data)
+	protected function delete(QueueMessageInterface $message)
 	{
-		$this->getQueue()->delete($data);
-		$this->getEventDispatcher()->dispatch(Events::PROCESSED, new MessageEvent($this, $data));
+		$message->delete();
+		$this->getEventDispatcher()->dispatch(Events::PROCESSED, new MessageEvent($this, $message));
 	}
 
 	/**
@@ -445,22 +454,4 @@ class Indexer implements IndexerInterface
 
 		$this->batch = null;
 	}
-
-    /**
-     * {@inheritdoc}
-     * @return $this
-     */
-    public function setConverter(ConverterInterface $converter)
-    {
-        $this->converter = $converter;
-        return $this;
-    }
-
-    /**
-     * @return ConverterInterface
-     */
-    public function getConverter()
-    {
-        return $this->converter;
-    }
 }
