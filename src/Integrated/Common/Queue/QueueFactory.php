@@ -16,19 +16,19 @@ namespace Integrated\Common\Queue;
  */
 class QueueFactory implements QueueFactoryInterface
 {
-	private $adaptor;
+	private $provider;
 
 	private $registry = array();
 
-	public function __construct($adaptor)
+	public function __construct($provider)
 	{
-		$this->adaptor = $adaptor;
+		$this->provider = $provider;
 	}
 
 	public function getQueue($channel)
 	{
 		if (!isset($this->registry[$channel])) {
-			$this->registry[$channel] = new Queue($this->adaptor, $channel);
+			$this->registry[$channel] = new Queue($this->provider, $channel);
 		}
 
 		return $this->registry[$channel];

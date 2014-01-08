@@ -63,6 +63,11 @@ class QueueMessage implements QueueMessageInterface
 		}
 
 		$this->delete = null;
+
+		// release should be cleared as after a delete the message can not
+		// be returned anymore;
+
+		$this->release = null;
 	}
 
 	/**
@@ -76,6 +81,11 @@ class QueueMessage implements QueueMessageInterface
 		}
 
 		$this->release = null;
+
+		// delete should be cleared as the message has been released so control
+		// is given back to the provider.
+
+		$this->delete = null;
 	}
 
 	/**

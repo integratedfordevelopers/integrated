@@ -38,7 +38,10 @@ class QueueMessage implements QueueMessageInterface
 	 */
 	public function delete()
 	{
-		// do nothing the message is already deleted.
+		// release should be cleared as after a delete the message can not
+		// be returned anymore;
+
+		$this->release = null;
 	}
 
 	/**
