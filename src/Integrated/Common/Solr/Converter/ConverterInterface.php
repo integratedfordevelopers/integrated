@@ -11,14 +11,26 @@
 
 namespace Integrated\Common\Solr\Converter;
 
+use Solarium\QueryType\Update\Query\Document\DocumentInterface;
+
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
 interface ConverterInterface
 {
     /**
+	 * Convert the object to a solr document
+	 *
      * @param object $object
-     * @return \Solarium\QueryType\Update\Query\Document\DocumentInterface|null
+     * @return DocumentInterface|null
      */
     public function getDocument($object);
+
+	/**
+	 * Convert the object to a unique id
+	 *
+	 * @param object $object
+	 * @return string|null
+	 */
+	public function getId($object);
 }
