@@ -11,6 +11,7 @@
 
 namespace Integrated\Common\Content\Form;
 
+use Integrated\Common\Content\Reader;
 use Integrated\Common\ContentType\ContentTypeInterface;
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,16 +25,26 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class FormType implements FormTypeInterface
 {
-	protected $contentType;
+    /**
+     * @var ContentTypeInterface
+     */
+    protected $contentType;
+
+    /**
+     * @var Reader\Document
+     */
+    protected $reader;
 
 	protected $name = null;
 
 	/**
 	 * @param ContentTypeInterface $contentType
+     * @param Reader\Document $reader
 	 */
-	public function __construct(ContentTypeInterface $contentType)
+	public function __construct(ContentTypeInterface $contentType, Reader\Document $reader)
 	{
 		$this->contentType = $contentType;
+        $this->reader = $reader;
 	}
 
 	/**
@@ -41,15 +52,24 @@ class FormType implements FormTypeInterface
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		foreach ($this->contentType->getFields() as $field)
-		{
-			$builder->add(
-				$builder->create($field->getName(), $field->getType(), $field->getOptions())
-			);
-		}
+        $documents = $this->reader->readAll();
+        if (!isset($documents[$this->contentType->getClass()])) {
+            // TODO throw exception
+        }
+
+        /* @var $document \Integrated\Common\ContentType\Mapping\Metadata\ContentType */
+        $document = $documents[$this->contentType->getClass()];
+
+        foreach ($document->getFields() as $field) {
+            if ($this->contentType->hasField($field->getName())) {
+                $field = $this->contentType->getField($field->getName());
+                $builder->add(
+                    $builder->create($field->getName(), $field->getType(), $field->getOptions())
+                );
+            }
+        }
 
 		// submit buttons
-
 		$builder->add('save', 'submit');
 		$builder->add('back', 'submit');
 	}

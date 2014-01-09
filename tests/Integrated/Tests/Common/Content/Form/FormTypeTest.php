@@ -24,6 +24,11 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
 	 */
 	private $type;
 
+    /**
+     * @var \Integrated\Common\Content\Reader\Document | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $reader;
+
 	/**
 	 * @var FormType
 	 */
@@ -32,8 +37,8 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		$this->type = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
-		$this->form = new FormType($this->type);
-
+        $this->reader = $this->getMock('Integrated\Common\Content\Reader\Document', array(), array(), '', false);
+		$this->form = new FormType($this->type, $this->reader);
 	}
 
 	public function testInterface()
