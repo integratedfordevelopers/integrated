@@ -15,6 +15,10 @@
         {
             "type": "vcs",
             "url": "git@bitbucket.org:eactive/integrated-library.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
         }
     ],
     "minimum-stability": "dev",
@@ -28,6 +32,7 @@
         "doctrine/mongodb-odm": "1.0.*",
         "doctrine/mongodb-odm-bundle": "3.0.*",
         "integrated/library": "dev-develop",
+        "integrated/formtype-bundle": "dev-develop",
         "braincrafted/bootstrap-bundle": "~2.0",
         "twbs/bootstrap": "3.*"
     },
