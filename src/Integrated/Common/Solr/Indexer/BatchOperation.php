@@ -11,6 +11,8 @@
 
 namespace Integrated\Common\Solr\Indexer;
 
+use Integrated\Common\Queue\QueueMessageInterface;
+
 use Solarium\QueryType\Update\Query\Command\Command;
 
 /**
