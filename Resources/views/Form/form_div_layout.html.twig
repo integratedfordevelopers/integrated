@@ -1,0 +1,11 @@
+{% use "BraincraftedBootstrapBundle:Form:bootstrap.html.twig" %}
+
+{% block integrated_datetime_widget  %}
+    {% spaceless %}
+        <div class="input-group date form_datetime" style="width: 50%" data-date="" data-date-format="dd-m-yyyy - HH:ii">
+            <input {{ block('widget_attributes') }}  class="form-control" size="16" type="text" {% if value is not empty %}value="{{ value }}" {% endif %} readonly>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+        </div>
+    {% endspaceless %}
+{% endblock %}
