@@ -1,0 +1,7 @@
+{
+    "name": "integrated-formtype-datetime",
+    "dependencies": {
+        "jquery": "~2.0",
+        "smalot-bootstrap-datetimepicker": "2.2.0"
+    }
+}
