@@ -54,13 +54,7 @@ class Job implements JobInterface
 	 */
 	public function unserialize($serialized)
 	{
-		$data = array();
-
-		list(
-			$data['action'],
-			$data['options'],
-		) = unserialize($serialized);
-
+		$data = unserialize($serialized);
 		$this->__construct($data['action'], $data['options']);
 	}
 
