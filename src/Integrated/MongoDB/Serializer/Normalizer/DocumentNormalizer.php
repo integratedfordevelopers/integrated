@@ -27,7 +27,7 @@ class DocumentNormalizer extends SerializerAwareNormalizer implements Normalizer
 	/**
 	 * @var DocumentManager
 	 */
-	private $dm;
+	protected $dm = null;
 
 	/**
 	 * @param DocumentManager $dm
