@@ -32,6 +32,23 @@ final class Schema extends BaseSchema
 		$this->addQueueTable();
 	}
 
+
+	/**
+	 * Merges ACL schema with the given schema.
+	 *
+	 * @param BaseSchema $schema
+	 */
+	public function addToSchema(BaseSchema $schema)
+	{
+		foreach ($this->getTables() as $table) {
+			$schema->_addTable($table);
+		}
+
+		foreach ($this->getSequences() as $sequence) {
+			$schema->_addSequence($sequence);
+		}
+	}
+
 	protected function addQueueTable()
 	{
 		$table = $this->createTable($this->options['queue_table_name']);

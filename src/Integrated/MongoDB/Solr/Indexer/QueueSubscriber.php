@@ -15,6 +15,7 @@ use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\Common\EventSubscriber;
 
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Queue\QueueAwareInterface;
 
 use Integrated\Common\Solr\Converter\ConverterAwareInterface;
@@ -160,6 +161,11 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 
 	protected function process($action, LifecycleEventArgs $event)
 	{
+		// @hack
+		if (!$event->getDocument() instanceof ContentInterface) {
+			return;
+		}
+
 		$job = new Job($action);
 
 		switch($job->getAction()) {
