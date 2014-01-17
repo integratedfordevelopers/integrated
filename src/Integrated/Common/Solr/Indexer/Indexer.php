@@ -42,6 +42,8 @@ use Solarium\QueryType\Update\Query\Command\Delete;
 use Solarium\QueryType\Update\Query\Command\Optimize;
 use Solarium\QueryType\Update\Query\Command\Rollback;
 
+use Solarium\QueryType\Update\Query\Document\Document;
+
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Serializer;
@@ -308,14 +310,14 @@ class Indexer implements IndexerInterface
 
 				if ($job->hasOption('document.data') && $job->hasOption('document.class') && $job->hasOption('document.format')) {
 					try {
-						$document = $this->getSerializer()->deserialize($job->hasOption('document.data'), $job->hasOption('document.class'), $job->hasOption('document.format'));
+						$document = $this->getSerializer()->deserialize($job->getOption('document.data'), $job->getOption('document.class'), $job->getOption('document.format'));
 					} catch (Exception $e) {
 						throw new SerializerException($e->getMessage(), $e->getCode(), $e);
 					}
 
-                    if ($document = $this->getConverter()->getDocument($document)) {
+                    if ($document = $this->getConverter()->getFields($document)) {
                         $command = new Add();
-                        $command->addDocument($document);
+                        $command->addDocument(new Document($document));
 
                         if ($job->hasOption('overwrite')) {
                             $command->setOverwrite((bool) $job->getOption('overwrite'));

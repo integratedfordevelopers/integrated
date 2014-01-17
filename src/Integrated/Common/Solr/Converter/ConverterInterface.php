@@ -19,12 +19,12 @@ use Solarium\QueryType\Update\Query\Document\DocumentInterface;
 interface ConverterInterface
 {
     /**
-	 * Convert the object to a solr document
+	 * Convert the object to a array of fields
 	 *
      * @param object $object
-     * @return DocumentInterface|null
+     * @return array|null
      */
-    public function getDocument($object);
+    public function getFields($object);
 
 	/**
 	 * Convert the object to a unique id
