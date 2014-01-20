@@ -14,7 +14,11 @@
         {
             "type": "vcs",
             "url": "git@bitbucket.org:eactive/integrated-content-bundle.git"
-        }		
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
+        }
     ],
 
     "require": {
