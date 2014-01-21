@@ -288,7 +288,7 @@ class Indexer implements IndexerInterface
 	 */
 	protected function convert(JobInterface $job)
 	{
-		if ($job->hasAction()) {
+		if (!$job->hasAction()) {
 			throw new OutOfBoundsException(sprintf('The jobs action is empty, valid actions are "%s"', 'ADD, DELETE, OPTIMIZE, ROLLBACK or COMMIT'));
 		}
 
@@ -308,6 +308,8 @@ class Indexer implements IndexerInterface
 		switch (strtoupper($job->getAction())) {
 			case 'ADD':
 
+				$document = null;
+
 				if ($job->hasOption('document.data') && $job->hasOption('document.class') && $job->hasOption('document.format')) {
 					try {
 						$document = $this->getSerializer()->deserialize($job->getOption('document.data'), $job->getOption('document.class'), $job->getOption('document.format'));
@@ -315,7 +317,7 @@ class Indexer implements IndexerInterface
 						throw new SerializerException($e->getMessage(), $e->getCode(), $e);
 					}
 
-                    if ($document = $this->getConverter()->getFields($document)) {
+                    if ($document !== null && ($document = $this->getConverter()->getFields($document))) {
                         $command = new Add();
                         $command->addDocument(new Document($document));
 
