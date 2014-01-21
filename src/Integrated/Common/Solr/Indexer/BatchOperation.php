@@ -59,7 +59,7 @@ class BatchOperation
 	 */
 	public function getCommand()
 	{
-		$this->command;
+		return $this->command;
 	}
 
 	/**
