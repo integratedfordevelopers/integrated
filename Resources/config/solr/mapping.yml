@@ -1,0 +1,9 @@
+convert:
+  - class: Integrated\Bundle\ContentBundle\Document\Content\Article
+    fields:
+      id: '"article-" ~ document.id.value()'
+      title: ~
+      content: ~
+#      author: 'document.authors.person.firstname.value() ~ " " ~ document.authors.person.firstname.value()'
+      locale: ~
+    id: id
