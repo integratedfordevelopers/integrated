@@ -45,7 +45,7 @@ class YamlReader implements FileResolverReaderInterface
 				$spec->fields = $this->getFields($config);
 				$spec->id = $this->getId($config);
 
-				$specs[] = $specs;
+				$specs[] = $spec;
 			}
 		}
 
@@ -83,7 +83,7 @@ class YamlReader implements FileResolverReaderInterface
 			return [];
 		}
 
-		return $data['fields'];
+		return $data['fields']; // @todo do integer check
 	}
 
 	/**
