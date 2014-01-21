@@ -14,7 +14,7 @@ namespace Integrated\Bundle\SolrBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 /**
  * IntegratedContentExtension for loading configuration
@@ -31,23 +31,14 @@ class IntegratedSolrExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $configuration = new Configuration;
+		$loader->load('converter.xml');
+		$loader->load('indexer.xml');
+		$loader->load('queue.xml');
+		$loader->load('solarium.xml');
 
-        $config = $this->processConfiguration($configuration, $configs);
-
-        if ((isset($config['mapping']['directories'])) && is_array($config['mapping']['directories'])) {
-            $directories = array();
-            foreach ($config['mapping']['directories'] as $directory) {
-                $directories[$directory['namespace_prefix']] = $directory['path'];
-            }
-
-            $container
-                ->getDefinition('integrated_solr.mapping.driver.file_locator')
-                ->replaceArgument(0, $directories)
-            ;
-        }
+		$configuration = new Configuration();
+		$this->processConfiguration($configuration, $configs);
     }
 }

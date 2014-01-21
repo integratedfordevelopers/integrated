@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+		<parameter key="integrated_solr.indexer.mongodb.subscriber.class">Integrated\MongoDB\Solr\Indexer\QueueSubscriber</parameter>
+
+		<parameter key="integrated_solr.indexer.serializer.class">Symfony\Component\Serializer\Serializer</parameter>
+		<parameter key="integrated_solr.indexer.serializer.normalizer.mongodb.class">Integrated\MongoDB\Serializer\Normalizer\ContainerAwareDocumentNormalizer</parameter>
+		<parameter key="integrated_solr.indexer.serializer.encoder.json.class">Symfony\Component\Serializer\Encoder\JsonEncoder</parameter>
+
+		<parameter key="integrated_solr.indexer.class">Integrated\Common\Solr\Indexer\Indexer</parameter>
+
+    </parameters>
+
+    <services>
+
+		<service id="integrated_solr.indexer.mongodb.subscriber" class="%integrated_solr.indexer.mongodb.subscriber.class%">
+			<argument type="service" id="integrated_queue.solr_indexer" /> <!-- should be a config option -->
+			<argument type="service" id="integrated_solr.indexer.serializer" />
+			<argument type="service" id="integrated_solr.converter" />
+			<tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+		</service>
+
+		<service id="integrated_solr.indexer.serializer" class="%integrated_solr.indexer.serializer.class%">
+			<argument type="collection">
+				<argument type="service" id="integrated_solr.indexer.serializer.normalizer.mongodb" /> <!-- normalizers should be taggable -->
+			</argument>
+			<argument type="collection">
+				<argument type="service" id="integrated_solr.indexer.serializer.encoder.json" /> <!-- encoders should be taggable -->
+			</argument>
+		</service>
+
+		<service id="integrated_solr.indexer.serializer.normalizer.mongodb" class="%integrated_solr.indexer.serializer.normalizer.mongodb.class%" public="false">
+			<argument type="service" id="service_container"/>
+			<argument type="string">doctrine.odm.mongodb.document_manager</argument> <!-- should be a config option -->
+		</service>
+
+		<service id="integrated_solr.indexer.serializer.encoder.json" class="%integrated_solr.indexer.serializer.encoder.json.class%" public="false" />
+
+		<service id="integrated_solr.indexer.client" alias="integrated_solr.solarium.client.indexer" />
+
+		<service id="integrated_solr.indexer" class="%integrated_solr.indexer.class%">
+			<call method="setQueue">
+				<argument type="service" id="integrated_queue.solr_indexer" />
+			</call>
+			<call method="setSerializer">
+				<argument type="service" id="integrated_solr.indexer.serializer" />
+			</call>
+			<call method="setConverter">
+				<argument type="service" id="integrated_solr.converter" />
+			</call>
+			<call method="setClient">
+				<argument type="service" id="integrated_solr.solarium.client.indexer" />
+			</call>
+		</service>
+
+    </services>
+
+</container>
