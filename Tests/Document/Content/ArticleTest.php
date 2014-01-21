@@ -125,8 +125,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetTitleFunction()
     {
-        /* @var $title \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
-        $title = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
+        $title = 'title';
         $this->assertSame($title, $this->article->setTitle($title)->getTitle());
     }
 
@@ -135,8 +134,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetSubtitleFunction()
     {
-        /* @var $subtitle \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
-        $subtitle = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
+        $subtitle = 'subtitle';
         $this->assertEquals($subtitle, $this->article->setSubtitle($subtitle)->getSubtitle());
     }
 
@@ -181,8 +179,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetIntroFunction()
     {
-        /* @var $intro \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
-        $intro = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
+        $intro = 'intro';
         $this->assertEquals($intro, $this->article->setIntro($intro)->getIntro());
     }
 
@@ -191,8 +188,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetContentFunction()
     {
-        /* @var $content \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable | \PHPUnit_Framework_MockObject_MockObject */
-        $content = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable');
+        $content = 'content';
         $this->assertEquals($content, $this->article->setContent($content)->getContent());
     }
 
