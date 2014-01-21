@@ -34,7 +34,7 @@ class ConverterSpecification implements ConverterSpecificationInterface
 
 	public function hasField($field)
 	{
-		return isset($this->fields[$field]);
+		return array_key_exists($field, $this->fields);
 	}
 
 	public function getField($field)

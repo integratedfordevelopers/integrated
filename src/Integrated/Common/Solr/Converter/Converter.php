@@ -11,6 +11,7 @@
 
 namespace Integrated\Common\Solr\Converter;
 
+use Exception;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 /**
@@ -55,8 +56,9 @@ class Converter implements ConverterInterface
 		}
 
 		$fields = array();
+		$object = new ConverterObject($object);
 
-		foreach ($specs->getFields() as $field) {
+		foreach (array_keys($specs->getFields()) as $field) {
 			$fields[$field] = $this->getFieldValue($object, $field, $specs);
 		}
 
@@ -71,10 +73,10 @@ class Converter implements ConverterInterface
 			return null;
 		}
 
-		return $this->getFieldValue($object, $field, $specs);
+		return $this->getFieldValue(new ConverterObject($object), $field, $specs);
 	}
 
-	protected function getFieldValue($object, $field, ConverterSpecificationInterface $specs)
+	protected function getFieldValue(ConverterObject $object, $field, ConverterSpecificationInterface $specs)
 	{
 		if (!$specs->hasField($field)) {
 			return null;
@@ -83,10 +85,14 @@ class Converter implements ConverterInterface
 		$expression = $specs->getField($field);
 
 		if ($expression === null) {
-			$expression = 'document.' . $field;
+			$expression = 'document.' . $field . '.value()';
 		}
 
-		return $this->getExpressionLanguage()->evaluate($expression, array('document', $object));
+		try {
+			return $this->getExpressionLanguage()->evaluate($expression, array('document' => $object));
+		} catch (Exception $e) {
+			return null;
+		}
 	}
 
 	/**
@@ -109,6 +115,6 @@ class Converter implements ConverterInterface
 			return null;
 		}
 
-		return $this->getExpressionLanguage()->evaluate($id, array('document', $object));
+		return $this->getFieldValue(new ConverterObject($object), $id, $specs);
 	}
 }
