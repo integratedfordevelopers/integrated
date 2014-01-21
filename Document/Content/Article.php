@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable;
 
 /**
  * Document type Article
@@ -26,16 +25,16 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable;
 class Article extends Content
 {
     /**
-     * @var Translatable
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
-     * @Type\Field(type="translatable_text")
+     * @var string
+     * @ODM\String
+     * @Type\Field
      */
     protected $title;
 
     /**
-     * @var Translatable
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
-     * @Type\Field(type="translatable_text")
+     * @var string
+     * @ODM\String
+     * @Type\Field
      */
     protected $subtitle;
 
@@ -66,16 +65,16 @@ class Article extends Content
     protected $publishedUntil;
 
     /**
-     * @var Translatable
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
-     * @Type\Field(type="translatable_textarea")
+     * @var string
+     * @ODM\String
+     * @Type\Field
      */
     protected $intro;
 
     /**
-     * @var Translatable
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
-     * @Type\Field(type="translatable_textarea")
+     * @var string
+     * @ODM\String
+     * @Type\Field
      */
     protected $content;
 
@@ -88,7 +87,7 @@ class Article extends Content
     /**
      * Get the title of the document
      *
-     * @return Translatable
+     * @return string
      */
     public function getTitle()
     {
@@ -98,10 +97,10 @@ class Article extends Content
     /**
      * Set the title of the document
      *
-     * @param Translatable $title
+     * @param string $title
      * @return $this
      */
-    public function setTitle(Translatable $title)
+    public function setTitle($title)
     {
         $this->title = $title;
         return $this;
@@ -110,7 +109,7 @@ class Article extends Content
     /**
      * Get the subtitle of the document
      *
-     * @return Translatable
+     * @return string
      */
     public function getSubtitle()
     {
@@ -120,10 +119,10 @@ class Article extends Content
     /**
      * Set the subtitle of the document
      *
-     * @param Translatable $subtitle
+     * @param string $subtitle
      * @return $this
      */
-    public function setSubtitle(Translatable $subtitle)
+    public function setSubtitle($subtitle)
     {
         $this->subtitle = $subtitle;
         return $this;
@@ -220,7 +219,7 @@ class Article extends Content
     /**
      * Get the intro of the document
      *
-     * @return Translatable
+     * @return string
      */
     public function getIntro()
     {
@@ -230,10 +229,10 @@ class Article extends Content
     /**
      * Set the intro of the document
      *
-     * @param Translatable $intro
+     * @param string $intro
      * @return $this
      */
-    public function setIntro(Translatable $intro)
+    public function setIntro($intro)
     {
         $this->intro = $intro;
         return $this;
@@ -242,7 +241,7 @@ class Article extends Content
     /**
      * Get the content of the document
      *
-     * @return Translatable
+     * @return string
      */
     public function getContent()
     {
@@ -252,10 +251,10 @@ class Article extends Content
     /**
      * Set the content of the document
      *
-     * @param Translatable $content
+     * @param string $content
      * @return $this
      */
-    public function setContent(Translatable $content)
+    public function setContent($content)
     {
         $this->content = $content;
         return $this;

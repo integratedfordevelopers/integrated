@@ -15,7 +15,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable;
 
 /**
  * Class for Relations
@@ -34,9 +33,9 @@ class Relation extends Content
     protected $accountnumber;
 
     /**
-     * @var Translatable
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Translatable")
-     * @Type\Field(type="translatable_textarea")
+     * @var string
+     * @ODM\String
+     * @Type\Field
      */
     protected $description;
 
@@ -84,7 +83,7 @@ class Relation extends Content
     /**
      * Get the description of the document
      *
-     * @return Translatable
+     * @return string
      */
     public function getDescription()
     {
@@ -94,10 +93,10 @@ class Relation extends Content
     /**
      * Set the description of the document
      *
-     * @param Translatable $description
+     * @param string $description
      * @return $this
      */
-    public function setDescription(Translatable $description)
+    public function setDescription($description)
     {
         $this->description = $description;
         return $this;
