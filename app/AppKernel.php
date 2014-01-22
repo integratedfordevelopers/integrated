@@ -21,7 +21,6 @@ class AppKernel extends Kernel
             new Integrated\Bundle\FormTypeBundle\IntegratedFormTypeBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
 
         );
 
