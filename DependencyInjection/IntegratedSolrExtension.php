@@ -11,10 +11,14 @@
 
 namespace Integrated\Bundle\SolrBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * IntegratedContentExtension for loading configuration
@@ -39,6 +43,17 @@ class IntegratedSolrExtension extends Extension
 		$loader->load('solarium.xml');
 
 		$configuration = new Configuration();
-		$this->processConfiguration($configuration, $configs);
+		$config = $this->processConfiguration($configuration, $configs);
+
+		$endpoints = array();
+
+		foreach ($config['endpoints'] as $name => $options) {
+			$options['key'] = $name;
+			$container->setDefinition('solarium.client.endpoint.' . $name, new Definition('%integrated_solr.solarium.endpoint.class%', array($options)));
+
+			$endpoints[] = new Reference('solarium.client.endpoint.' . $name);
+		}
+
+		$container->setDefinition('solarium.client', new Definition('%integrated_solr.solarium.client.class%', array(array('endpoint' => $endpoints))));
     }
 }

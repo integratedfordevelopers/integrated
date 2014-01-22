@@ -7,24 +7,13 @@
     <parameters>
 
 		<parameter key="integrated_solr.solarium.client.class">Solarium\Client</parameter>
+		<parameter key="integrated_solr.solarium.endpoint.class">Solarium\Core\Client\Endpoint</parameter>
 
     </parameters>
 
     <services>
 
-		<service id="integrated_solr.solarium.client.indexer" class="%integrated_solr.solarium.client.class%">
-			<argument type="collection">
-				<argument type="collection" key="endpoint">
-					<argument type="collection" key="default">
-						<argument key="host">localhost</argument>
-						<argument key="port">8983</argument>
-						<argument key="path">/solr/</argument>
-						<argument key="core">testintegrated</argument>
-						<argument key="timeout">30</argument>
-					</argument>
-				</argument>
-			</argument>
-		</service>
+		<service id="integrated_solr.solarium.client.indexer" alias="solarium.client" />
 
     </services>
 
