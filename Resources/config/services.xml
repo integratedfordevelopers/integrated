@@ -6,6 +6,8 @@
 
 	<parameters>
 
+		<parameter key="integrated_content.odm.manager_configurator.class">Integrated\Bundle\ContentBundle\Configurator\ManagerConfigurator</parameter>
+
 		<parameter key="integrated_content.mapping.metadata.driver.class">Integrated\Common\ContentType\Mapping\Driver\AnnotationsDriver</parameter>
 		<parameter key="integrated_content.mapping.metadata.content_type_factory.class">Integrated\Common\ContentType\Mapping\Metadata\ContentTypeFactory</parameter>
 
