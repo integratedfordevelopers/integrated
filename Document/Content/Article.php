@@ -60,21 +60,21 @@ class Article extends Content
     /**
      * @var \DateTime
      * @ODM\Date
-     * @Type\Field(type="datetime", options={"label" = "Published until"})
+     * @Type\Field(type="integrated_datetime", options={"label" = "Published until"})
      */
     protected $publishedUntil;
 
     /**
      * @var string
      * @ODM\String
-     * @Type\Field
+     * @Type\Field(type="textarea")
      */
     protected $intro;
 
     /**
      * @var string
      * @ODM\String
-     * @Type\Field
+     * @Type\Field(type="textarea")
      */
     protected $content;
 
