@@ -45,7 +45,7 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
 	private $builder;
 
 	/**
-	 * When set to true the any call made to functions is from internal sources.
+	 * When set to true then any call made to functions is from internal sources.
 	 *
 	 * @var bool
 	 */
