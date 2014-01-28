@@ -3,7 +3,10 @@
 <head>
     <title>{% block title %}{% trans %}Integrated{% endtrans %}{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="{{ asset('/css/bootstrap.css') }}" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    {% stylesheets "@integrated_css" %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 </head>
 <body>
@@ -49,6 +52,8 @@
     {% block body %}{% endblock body %}
 </div>
 <script src="//code.jquery.com/jquery.js"></script>
-<script src="{{ asset('/js/bootstrap.js') }}"></script>
+{% javascripts "@integrated_js" %}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
 </body>
 </html>
