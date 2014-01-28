@@ -24,7 +24,7 @@ class Job implements JobInterface
 	/**
 	 * @var string[]
 	 */
-	private $options;
+	private $options = array();
 
 	/**
 	 * The constructor
@@ -55,7 +55,7 @@ class Job implements JobInterface
 	public function unserialize($serialized)
 	{
 		$data = unserialize($serialized);
-		$this->__construct($data['action'], $data['options']);
+		$this->__construct($data['action'], (array) $data['options']);
 	}
 
 	/**
