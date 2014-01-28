@@ -2,8 +2,9 @@ convert:
   - class: Integrated\Bundle\ContentBundle\Document\Content\Article
     fields:
       id: '"article-" ~ document.id.value()'
+      type_name: 'document.contenttype.value()'
+      type_class: '"Integrated\Bundle\ContentBundle\Document\Content\Article"'
+      type_id: 'id'
       title: ~
       content: ~
-#      author: 'document.authors.person.firstname.value() ~ " " ~ document.authors.person.firstname.value()'
-      locale: ~
     id: id

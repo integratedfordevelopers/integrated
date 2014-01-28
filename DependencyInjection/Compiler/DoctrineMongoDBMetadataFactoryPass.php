@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -31,5 +32,18 @@ class DoctrineMongoDBMetadataFactoryPass implements CompilerPassInterface
 
 		$config = $container->getDefinition('doctrine_mongodb.odm.default_configuration');
 		$config->addMethodCall('setClassMetadataFactoryName', array('Integrated\MongoDB\ContentType\Mapping\ClassMetadataFactory'));
+
+		if (!$container->hasDefinition('doctrine_mongodb.odm.default_document_manager')) {
+			return;
+		}
+
+		$manager = $container->getDefinition('doctrine_mongodb.odm.default_document_manager');
+
+		$container->setDefinition(
+			'integrated_content.odm.default_manager_configurator',
+			new Definition('%integrated_content.odm.manager_configurator.class%', array($manager->getConfigurator()))
+		);
+
+		$manager->setConfigurator(array(new Reference('integrated_content.odm.default_manager_configurator'), 'configure'));
 	}
 }

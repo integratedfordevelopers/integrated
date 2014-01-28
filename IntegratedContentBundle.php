@@ -25,15 +25,4 @@ class IntegratedContentBundle extends Bundle
 	{
 		return new IntegratedContentExtension();
 	}
-
-	public function boot()
-	{
-		// TODO: move this to a better location and make it configurable
-
-		if ($this->container->has('doctrine_mongodb.odm.default_document_manager')) {
-			/** @var \Doctrine\ODM\MongoDB\DocumentManager $manager */
-			$manager = $this->container->get('doctrine_mongodb.odm.default_document_manager');
-			$manager->getMetadataFactory()->addManagedClass('Integrated\Bundle\ContentBundle\Document\Content\Content');
-		}
-	}
 }
