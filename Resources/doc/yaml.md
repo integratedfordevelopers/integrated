@@ -1,7 +1,7 @@
 convert
   - class: Acme\DemoBundle\Document\Article
     fields:
-      id: '"Article-" ~ document.id'
+      id: '"Article-" ~ document.id.value()'
       title: ~
       content: ~
       author: 'document.authors.person.firstname.value() ~ " " ~ document.authors.person.lastname.value()'
@@ -12,7 +12,7 @@ convert
       - Acme\DemoBundle\Document\Article
       - Acme\DemoBundle\Document\Article
     fields:
-      id: '"Article-" ~ document.id'
+      id: '"Article-" ~ document.id.value()'
       title: ~
       content: ~
       author: 'document.authors.person.firstname.value() ~ " " ~ document.authors.person.lastname.value()'
