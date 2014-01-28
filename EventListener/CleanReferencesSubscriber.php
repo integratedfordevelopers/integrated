@@ -48,7 +48,8 @@ class CleanReferencesSubscriber implements EventSubscriber
             $dm->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\Content')
                 ->update()
                 ->multiple(true)
-                ->field('references')->pull(array('$id' => $document->getId()))
+                ->field('relations.references.$id')->equals($document->getId())
+                ->field('relations.$.references')->pull(array('$id' => $document->getId()))
                 ->getQuery()
                 ->execute();
         }
