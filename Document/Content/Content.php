@@ -40,9 +40,9 @@ class Content implements ContentInterface
 
     /**
      * @var ArrayCollection
-     * @ODM\ReferenceMany(discriminatorField="class")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation", strategy="set")
      */
-    protected $references;
+    protected $relations;
 
     /**
      * @var \DateTime
@@ -81,7 +81,7 @@ class Content implements ContentInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->references = new ArrayCollection();
+        $this->relations = new ArrayCollection();
     }
 
     /**
@@ -114,7 +114,6 @@ class Content implements ContentInterface
         return $this->contentType;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -125,40 +124,40 @@ class Content implements ContentInterface
     }
 
     /**
-     * Get the references of the document
+     * Get the relations of the document
      *
      * @return ArrayCollection
      */
-    public function getReferences()
+    public function getRelations()
     {
-        return $this->references;
+        return $this->relations;
     }
 
     /**
-     * Set the references of the document
+     * Set the relations of the document
      *
-     * @param ArrayCollection $references
+     * @param ArrayCollection $relations
      * @return $this
      */
-    public function setReferences(ArrayCollection $references)
+    public function setRelations(ArrayCollection $relations)
     {
-        $this->references = $references;
+        $this->relations = $relations;
         return $this;
     }
 
-    /**
-     * Add a reference of the document
-     *
-     * @param object $reference
-     * @return $this
-     */
-    public function addReference($reference)
-    {
-        if (!$this->references->contains($reference)) {
-            $this->references->add($reference);
-        }
-        return $this;
-    }
+//    /**
+//     * Add a reference of the document
+//     *
+//     * @param object $reference
+//     * @return $this
+//     */
+//    public function addReference($reference)
+//    {
+//        if (!$this->references->contains($reference)) {
+//            $this->references->add($reference);
+//        }
+//        return $this;
+//    }
 
     /**
      * Get the createdAt of the document
