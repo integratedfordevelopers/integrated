@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Common\Content\ContentInterface;
 
@@ -126,21 +127,10 @@ class Content implements ContentInterface
     /**
      * Get the relations of the document
      *
-     * @param string $contentType
      * @return ArrayCollection
      */
-    public function getRelations($contentType = null)
+    public function getRelations()
     {
-        if (null !== $contentType) {
-            return $this->relations->filter(function($relation) use($contentType) {
-                if ($relation instanceof ContentInterface) {
-                    if ($relation->getContentType() == $contentType) {
-                        return true;
-                    }
-                }
-            });
-        }
-
         return $this->relations;
     }
 
@@ -154,6 +144,45 @@ class Content implements ContentInterface
     {
         $this->relations = $relations;
         return $this;
+    }
+
+    /**
+     * Add relation to relations collection
+     *
+     * @param Relation $relation
+     * @return $this
+     */
+    public function addRelation(Relation $relation)
+    {
+        $this->relations->add($relation);
+        return $this;
+    }
+
+    /**
+     * Remove relation from relations collection
+     *
+     * @param Relation $relation
+     * @return $this
+     */
+    public function removeRelation(Relation $relation)
+    {
+        $this->relations->removeElement($relation);
+        return $this;
+    }
+
+    /**
+     * @param $contentType
+     * @return Relation|false
+     */
+    public function getRelation($contentType)
+    {
+        return $this->relations->filter(function($relation) use($contentType) {
+            if ($relation instanceof Relation) {
+                if ($relation->getContentType() == $contentType) {
+                    return true;
+                }
+            }
+        })->first();
     }
 
     /**
