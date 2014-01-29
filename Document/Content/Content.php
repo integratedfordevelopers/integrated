@@ -126,10 +126,21 @@ class Content implements ContentInterface
     /**
      * Get the relations of the document
      *
+     * @param string $contentType
      * @return ArrayCollection
      */
-    public function getRelations()
+    public function getRelations($contentType = null)
     {
+        if (null !== $contentType) {
+            return $this->relations->filter(function($relation) use($contentType) {
+                if ($relation instanceof ContentInterface) {
+                    if ($relation->getContentType() == $contentType) {
+                        return true;
+                    }
+                }
+            });
+        }
+
         return $this->relations;
     }
 
