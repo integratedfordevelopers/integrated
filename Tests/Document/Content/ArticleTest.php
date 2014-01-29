@@ -68,11 +68,11 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get- and setReferences function
      */
-    public function testGetAndSetReferencesFunction()
+    public function testGetAndSetRelationsFunction()
     {
-        /* @var $references \Doctrine\Common\Collections\ArrayCollection | \PHPUnit_Framework_MockObject_MockObject */
-        $references = $this->getMock('Doctrine\Common\Collections\ArrayCollection');
-        $this->assertSame($references, $this->article->setReferences($references)->getReferences());
+        /* @var $relations \Doctrine\Common\Collections\ArrayCollection | \PHPUnit_Framework_MockObject_MockObject */
+        $relations = $this->getMock('Doctrine\Common\Collections\ArrayCollection');
+        $this->assertSame($relations, $this->article->setRelations($relations)->getRelations());
     }
 
     /**
