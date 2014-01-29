@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr\Converter;
+namespace Integrated\Common\Solr\Converter\Object;
 
 use ArrayAccess;
 use ReflectionClass;
@@ -17,16 +17,13 @@ use ReflectionClass;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConverterObject implements ArrayAccess
+class ObjectWrapper implements WrapperInterface
 {
 	/**
 	 * @var mixed
 	 */
 	protected $value;
 
-	/**
-	 * @param mixed $value
-	 */
 	public function __construct($value)
 	{
 		$this->value = $value;
@@ -44,6 +41,23 @@ class ConverterObject implements ArrayAccess
 	public function raw()
 	{
 		return $this->value;
+	}
+
+	public function multi()
+	{
+		// check if its a array else nothing changes..
+
+		if ($this->isArray()) {
+			$values = array();
+
+			foreach ($this->value as $value) {
+				$values[] = new self($value);
+			}
+
+			return new MultiWrapper($values);
+		}
+
+		return $this;
 	}
 
 	public function isEmpty()
@@ -89,15 +103,9 @@ class ConverterObject implements ArrayAccess
 		return new self($this->value[$offset]);
 	}
 
-	public function offsetSet($offset, $value)
-	{
-		// not supported.
-	}
+	public function offsetSet($offset, $value) { /* not supported. */ }
 
-	public function offsetUnset($offset)
-	{
-		// not supported.
-	}
+	public function offsetUnset($offset) { /* not supported. */ }
 
 	public function __isset($name)
 	{
@@ -175,13 +183,34 @@ class ConverterObject implements ArrayAccess
 		return new self(null);
 	}
 
-	public function __set($name, $value)
-	{
-		// not supported.
-	}
+	public function __set($name, $value) { /* not supported. */ }
 
-	public function __unset($name)
+	public function __unset($name) { /* not supported. */ }
+
+	public function __call($name, array $arguments)
 	{
-		// not supported.
+		if ($this->isScalar()) {
+			return new self(null);
+		}
+
+		$value = $this->value;
+
+		// if the $value is a array get the first entry in that array this
+		// will be done only ones as if its a array in a array then the config
+		// should reflect that.
+
+		if ($this->isArray()) {
+			$value = isset($value[0]) ? $value[0] : null;
+		}
+
+		if (is_object($value)) {
+			$reflection = new ReflectionClass($value);
+
+			if ($reflection->hasMethod($name) && ($method = $reflection->getMethod($name)) && $method->isPublic() && $method->getNumberOfRequiredParameters() <= count($arguments)) {
+				return new self($method->invokeArgs($value, $arguments));
+			}
+		}
+
+		return new self(null);
 	}
 }
