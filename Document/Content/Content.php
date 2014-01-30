@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
@@ -137,12 +138,16 @@ class Content implements ContentInterface
     /**
      * Set the relations of the document
      *
-     * @param ArrayCollection $relations
+     * @param Collection $relations
      * @return $this
      */
-    public function setRelations(ArrayCollection $relations)
+    public function setRelations(Collection $relations)
     {
-        $this->relations = $relations;
+        foreach ($relations as $relation) {
+            // TODO: should we check if relation instanceof Relation
+            $this->addRelation($relation);
+        }
+
         return $this;
     }
 
@@ -154,7 +159,29 @@ class Content implements ContentInterface
      */
     public function addRelation(Relation $relation)
     {
-        $this->relations->add($relation);
+        if ($exist = $this->getRelation($relation->getContentType())) {
+            $exist->addReferences($relation->getReferences());
+        } else {
+            $this->relations->add($relation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add reference to relations collection
+     *
+     * @param ContentInterface $content
+     * @return $this
+     */
+    public function addReference(ContentInterface $content)
+    {
+        $relation = new Relation();
+        $relation->setContentType($content->getContentType());
+        $relation->addReference($content);
+
+        $this->addRelation($relation);
+
         return $this;
     }
 
