@@ -16,7 +16,8 @@
     "require": {
         "php": ">=5.4",
         "symfony/symfony": "2.3.*",
-        "symfony/framework-bundle": "~2.2"
+        "symfony/framework-bundle": "~2.2",
+        "sp/bower-bundle": "0.8"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
