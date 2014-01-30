@@ -36,12 +36,17 @@ class Relation
      */
     protected $references;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->references = new ArrayCollection();
     }
 
     /**
+     * Set contentType of Relation
+     *
      * @param string $contentType
      * @return $this
      */
@@ -52,6 +57,7 @@ class Relation
     }
 
     /**
+     * Get contentType of Relation
      * @return string
      */
     public function getContentType()
@@ -60,6 +66,7 @@ class Relation
     }
 
     /**
+     * Set references of Relations
      * @param Collection $references
      * @return $this
      */
@@ -70,6 +77,7 @@ class Relation
     }
 
     /**
+     * Get references of Relation
      * @return ArrayCollection
      */
     public function getReferences()
@@ -77,14 +85,41 @@ class Relation
         return $this->references;
     }
 
-    public function addReference(ContentInterface $reference)
+    /**
+     * Add references to references collection
+     *
+     * @param Collection $references
+     * @return $this
+     */
+    public function addReferences(Collection $references)
     {
-        $this->references->add($reference);
+        foreach ($references as $reference) {
+            $this->addReference($reference);
+        }
+
+        return $this;
     }
 
+    /**
+     * Add reference to references collection
+     * @param ContentInterface $reference
+     * @return $this
+     */
+    public function addReference(ContentInterface $reference)
+    {
+        if (!$this->references->contains($reference)) {
+            $this->references->add($reference);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove reference from references collection
+     * @param ContentInterface $reference
+     */
     public function removeReference(ContentInterface $reference)
     {
-        // TODO add remove function
-        //$this->references->remove()
+        $this->references->removeElement($reference);
     }
 }
