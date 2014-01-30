@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Util\Debug;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 
 /**
@@ -66,13 +68,59 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setReferences function
+     * Test get- and setRelations function
      */
     public function testGetAndSetRelationsFunction()
     {
-        /* @var $relations \Doctrine\Common\Collections\ArrayCollection | \PHPUnit_Framework_MockObject_MockObject */
-        $relations = $this->getMock('Doctrine\Common\Collections\ArrayCollection');
-        $this->assertSame($relations, $this->article->setRelations($relations)->getRelations());
+        /* @var $relation \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation | \PHPUnit_Framework_MockObject_MockObject */
+        $relation = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation');
+
+        // Stub getReferences
+        $relation->expects($this->once())
+            ->method('getReferences')
+            ->will($this->returnValue(new ArrayCollection()));
+
+        // Create relations collection
+        $relations = new ArrayCollection(array($relation));
+
+        // Asserts
+        $this->assertSame($this->article, $this->article->setRelations($relations));
+        $this->assertEquals($relations, $this->article->setRelations($relations)->getRelations());
+    }
+
+    /**
+     * Test addReference function
+     */
+    public function testAddReferenceFunction()
+    {
+        /* @var $content \Integrated\Common\Content\ContentInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $content = $this->getMock('Integrated\Common\Content\ContentInterface');
+
+        // Stub getContentType
+        $content->expects($this->once())
+            ->method('getContentType')
+            ->will($this->returnValue('contentType'));
+
+        // Asserts
+        $this->assertSame($this->article, $this->article->addReference($content));
+        $this->assertSame($content, $this->article->getRelation('contentType')->getReferences()->first());
+    }
+
+    /**
+     * Test removeReference function
+     */
+    public function testRemoveRelationFunction()
+    {
+        // Get empty collection with relations
+        $relations = $this->article->getRelations();
+
+        /* @var $relation \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation | \PHPUnit_Framework_MockObject_MockObject */
+        $relation = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation');
+
+        // Asserts
+        $this->assertSame($this->article, $this->article->addRelation($relation));
+        $this->assertSame($this->article, $this->article->removeRelation($relation));
+        $this->assertSame($relations, $this->article->getRelations());
     }
 
     /**
