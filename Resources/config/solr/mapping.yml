@@ -1,10 +1,86 @@
 convert:
+#  - class: Integrated\Bundle\ContentBundle\Document\Content\Content
+#    fields:
+#      id: '"content-" ~ $.id.value()'
+#      type_name: '$.contenttype.value()'
+#      type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Content"'
+#      type_id: '$.id.value()'
+#    id: id
+
   - class: Integrated\Bundle\ContentBundle\Document\Content\Article
     fields:
-      id: '"article-" ~ document.id.value()'
-      type_name: 'document.contenttype.value()'
-      type_class: '"Integrated\Bundle\ContentBundle\Document\Content\Article"'
-      type_id: 'id'
+      id: '"article-" ~ $.id.value()'
+      type_name: '$.contenttype.value()'
+      type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Article"'
+      type_id: '$.id.value()'
       title: ~
+      subtitle: ~
+      author: '$.authors[].person.concat(" ", ["@prefix", "@firstname", "@lastname"]).value()'
+      source: ~
       content: ~
+      locale: ~
+    id: id
+
+  - class: Integrated\Bundle\ContentBundle\Document\Content\File
+    fields:
+      id: '"file-" ~ $.id.value()'
+      type_name: '$.contenttype.value()'
+      type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\File"'
+      type_id: '$.id.value()'
+      title: ~
+      description: ~
+      content: '$.description.value()'
+    id: id
+
+  - class: Integrated\Bundle\ContentBundle\Document\Content\Taxonomy
+    fields:
+      id: '"taxonomy-" ~ $.id.value()'
+      type_name: '$.contenttype.value()'
+      type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Taxonomy"'
+      type_id: '$.id.value()'
+      title: ~
+      description: ~
+      content: '$.description.value()'
+    id: id
+
+#  - class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
+#    fields:
+#      id: '"relation-" ~ $.id.value()'
+#      type_name: '$.contenttype.value()'
+#      type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Relation"'
+#      type_id: '$.id.value()'
+#      title:  '$.name.value()'
+#      description: ~
+#      content: '$.description.value()'
+#      phonenumber: '$.phonenumbers[].value()'
+#      email: ~
+#      address: '$.addresses[].concat(" ", ["address1", "address2", "zipcode", "city", "state", "country"]).value()'
+#    id: id
+
+  - class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Company
+    fields:
+      id: '"company-" ~ $.id.value()'
+      type_name: '$.contenttype.value()'
+      type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Company"'
+      type_id: '$.id.value()'
+      title:  '$.name.value()'
+      description: ~
+      content: '$.description.value()'
+      phonenumber: '$.phonenumbers[].value()'
+      email: ~
+      address: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
+    id: id
+
+  - class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
+    fields:
+      id: '"person-" ~ $.id.value()'
+      type_name: '$.contenttype.value()'
+      type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Person"'
+      type_id: '$.id.value()'
+      title:  '$.concat(" ", ["@prefix", "@firstname", "@lastname"]).value()'
+      description: ~
+      content: '$.description.value()'
+      phonenumber: '$.phonenumbers[].value()'
+      email: ~
+      address: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
     id: id
