@@ -70,6 +70,17 @@ class MultiWrapper implements WrapperInterface
 		return $this;
 	}
 
+	public function concat($glue, $pieces = null, $keepempty = false)
+	{
+		$values = array();
+
+		foreach ($this->values as $value) {
+			$values[] = $value->concat($glue, $pieces, $keepempty);
+		}
+
+		return new MultiWrapper($values);
+	}
+
 	public function isEmpty()
 	{
 		return empty($this->values);

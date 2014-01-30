@@ -48,6 +48,14 @@ interface WrapperInterface extends ArrayAccess
 	public function multi();
 
 	/**
+	 * @param $glue
+	 * @param $pieces
+	 * @param bool $keepempty
+	 * @return mixed
+	 */
+	public function concat($glue, $pieces = null, $keepempty = false);
+
+	/**
 	 * check if the value is empty
 	 *
 	 * @return bool

@@ -60,6 +60,53 @@ class ObjectWrapper implements WrapperInterface
 		return $this;
 	}
 
+	public function concat($glue, $pieces = null, $keepempty = false)
+	{
+		// variable argument order stuff
+		// so check and reorder variables if required.
+
+		switch (func_num_args()) {
+			case 1:
+				$pieces = $glue;
+				$glue = '';
+
+				break;
+
+			case 2:
+
+				if (!is_array($pieces)) {
+					$keepempty = $pieces;
+					$pieces = $glue;
+					$glue = '';
+				}
+
+				break;
+		}
+
+		$glue = (string) $glue;
+		$pieces = (array) $pieces;
+		$keepempty = (bool) $keepempty;
+
+		// start collection all the values
+		// $pieces that start with a @ are considered variable names.
+
+		$values = array();
+
+		foreach ($pieces as $value) {
+			if ($value[0] == '@') {
+				$value = $this->__get(substr($value, 1))->value();
+			}
+
+			$values[] = $value;
+		}
+
+		if (!$keepempty) {
+			$values = array_filter($values);
+		}
+
+		return new self(implode($glue, $values));
+	}
+
 	public function isEmpty()
 	{
 		return empty($this->value);
