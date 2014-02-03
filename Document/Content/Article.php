@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 
@@ -39,10 +41,10 @@ class Article extends Content
     protected $subtitle;
 
     /**
-     * @var array Embedded\Author
+     * @var ArrayCollection Embedded\Author[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author", strategy="set")
      */
-    protected $authors = array();
+    protected $authors;
 
     /**
      * @var string
@@ -83,6 +85,15 @@ class Article extends Content
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location")
      */
     protected $location;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->authors = new ArrayCollection();
+    }
 
     /**
      * Get the title of the document
@@ -131,7 +142,7 @@ class Article extends Content
     /**
      * Get the authors of the document
      *
-     * @return array
+     * @return Collection
      */
     public function getAuthors()
     {
@@ -141,13 +152,37 @@ class Article extends Content
     /**
      * Set the authors of the document
      *
-     * @param array $authors
+     * @param Collection $authors
      * @return $this
      */
-    public function setAuthors(array $authors)
+    public function setAuthors(Collection $authors)
     {
         $this->authors = $authors;
         return $this;
+    }
+
+    /**
+     * Add author to authors collection
+     *
+     * @param Embedded\Author $author
+     * @return $this
+     */
+    public function addAuthor(Embedded\Author $author)
+    {
+        if (!$this->authors->contains($author)) {
+            $this->authors->add($author);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Embedded\Author $author
+     * @return boolean true if this collection contained the specified element, false otherwise.
+     */
+    public function removeAuthor(Embedded\Author $author)
+    {
+        return $this->authors->removeElement($author);
     }
 
     /**

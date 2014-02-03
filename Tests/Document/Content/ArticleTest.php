@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\Debug;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 
 /**
@@ -215,8 +214,63 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetAuthorsFunction()
     {
-        $authors = array('key' => 'value');
+        $authors = new ArrayCollection(array('key' => 'value'));
         $this->assertSame($authors, $this->article->setAuthors($authors)->getAuthors());
+    }
+
+    /**
+     * Test addAuthor function
+     */
+    public function testAddAuthorFunction()
+    {
+        /* @var $autho1 \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author | \PHPUnit_Framework_MockObject_MockObject */
+        $author = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author');
+
+        // Asserts
+        $this->assertSame($this->article, $this->article->addAuthor($author));
+        $this->assertCount(1, $this->article->getAuthors());
+    }
+
+    /**
+     * Test addAuthor function with duplicate author
+     */
+    public function testAddAuthorFunctionWithSameAuthor()
+    {
+        /* @var $author \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author | \PHPUnit_Framework_MockObject_MockObject */
+        $author = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author');
+
+        // Add author two times
+        $this->article->addAuthor($author)->addAuthor($author);
+
+        // Asserts
+        $this->assertCount(1, $this->article->getAuthors());
+    }
+
+    /**
+     * Test removeAuthor function
+     */
+    public function testRemoveAuthorFunction()
+    {
+        /* @var $author \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author | \PHPUnit_Framework_MockObject_MockObject */
+        $author = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author');
+
+        // Add author
+        $this->article->addAuthor($author);
+
+        // Assert
+        $this->assertTrue($this->article->removeAuthor($author));
+    }
+
+    /**
+     * Test removeAuthor function with unknown author
+     */
+    public function testRemoveAuthorFunctionWithUnknownAuthor()
+    {
+        /* @var $author \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author | \PHPUnit_Framework_MockObject_MockObject */
+        $author = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author');
+
+        // Assert
+        $this->assertFalse($this->article->removeAuthor($author));
     }
 
     /**
