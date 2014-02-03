@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Relation;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 
 /**
@@ -105,10 +106,67 @@ class PersonTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetJobsFunction()
     {
-        $jobs = array(
-            $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job')
+        $jobs = new ArrayCollection(
+            array(
+                $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job')
+            )
         );
         $this->assertSame($jobs, $this->person->setJobs($jobs)->getJobs());
+    }
+
+    /**
+     * Test addJob function
+     */
+    public function testAddJobFunction()
+    {
+        /* @var $job \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job | \PHPUnit_Framework_MockObject_MockObject */
+        $job = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
+
+        // Asserts
+        $this->assertSame($this->person, $this->person->addJob($job));
+        $this->assertCount(1, $this->person->getJobs());
+    }
+
+    /**
+     * Test addJob function with duplicate job
+     */
+    public function testAddJobFunctionWithDuplicateJob()
+    {
+        /* @var $job \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job | \PHPUnit_Framework_MockObject_MockObject */
+        $job = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
+
+        // Add job two times
+        $this->person->addJob($job)->addJob($job);
+
+        // Asserts
+        $this->assertCount(1, $this->person->getJobs());
+    }
+
+    /**
+     * Test removeJob function
+     */
+    public function testRemoveJobFunction()
+    {
+        /* @var $job \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job | \PHPUnit_Framework_MockObject_MockObject */
+        $job = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
+
+        // Add author
+        $this->person->addJob($job);
+
+        // Assert
+        $this->assertTrue($this->person->removeJob($job));
+    }
+
+    /**
+     * Test removeJob function with unknown job
+     */
+    public function testRemoveAuthorFunctionWithUnknownAuthor()
+    {
+        /* @var $job \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author | \PHPUnit_Framework_MockObject_MockObject */
+        $job = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
+
+        // Assert
+        $this->assertFalse($this->person->removeJob($job));
     }
 
     /**

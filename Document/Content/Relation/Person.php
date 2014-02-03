@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
@@ -62,16 +64,25 @@ class Person extends Relation
     protected $lastname;
 
     /**
-     * @var Job[]
+     * @var Collection Job[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job", strategy="set")
      */
-    protected $jobs = array();
+    protected $jobs;
 
     /**
      * @var File
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
      */
     protected $picture;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->jobs = new ArrayCollection();
+    }
 
     /**
      * Get the gender of the document
@@ -196,13 +207,38 @@ class Person extends Relation
     /**
      * Set the jobs of the document
      *
-     * @param array $jobs
+     * @param Collection $jobs
      * @return $this
      */
-    public function setJobs(array $jobs)
+    public function setJobs(Collection $jobs)
     {
         $this->jobs = $jobs;
         return $this;
+    }
+
+    /**
+     * Add job to the jobs collection
+     *
+     * @param Job $job
+     * @return $this
+     */
+    public function addJob(Job $job)
+    {
+        if (!$this->jobs->contains($job)) {
+            $this->jobs->add($job);
+        }
+        return $this;
+    }
+
+    /**
+     * Remove job from jobs collection
+     *
+     * @param Job $job
+     * @return bool true if this collection contained the specified element, false otherwise.
+     */
+    public function removeJob(Job $job)
+    {
+        return $this->jobs->removeElement($job);
     }
 
     /**
