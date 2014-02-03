@@ -1,0 +1,24 @@
+Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
+  Article:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Article
+    name: Article
+
+  Blog:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Article
+    name: Blog
+
+  Taxonomy:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Taxonomy
+    name: Taxonomy
+
+  Company:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Company
+    name: Company
+
+  Author:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
+    name: Author
+
+  Employee:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
+    name: Employee

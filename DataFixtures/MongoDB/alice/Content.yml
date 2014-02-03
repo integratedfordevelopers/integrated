@@ -1,0 +1,13 @@
+Integrated\Bundle\ContentBundle\Document\Content\Article:
+  article{1..100}:
+    contentType: article
+    disabled: <boolean(10)>
+
+    title: <sentence()>
+    subtitle: 15%? <sentence()>
+#    authors: ~
+    intro: 40%? <paragraph()>
+    content: <text()>
+#    source: <words()>
+    locale: <locale>
+#    location:
