@@ -56,33 +56,6 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setAccountnumber function
-     */
-    public function testGetAndSetAccountnumberFunction()
-    {
-        $accountnumber = 'accountnumber';
-        $this->assertEquals($accountnumber, $this->company->setAccountnumber($accountnumber)->getAccountnumber());
-    }
-
-    /**
-     * Test get- and setDescription function
-     */
-    public function testGetAndSetDescriptionFunction()
-    {
-        $description = 'description';
-        $this->assertEquals($description, $this->company->setDescription($description)->getDescription());
-    }
-
-    /**
-     * Test get- and setPhonenumbers function
-     */
-    public function testGetAndSetPhonenumbersFunction()
-    {
-        $phonenumbers = array('0123456789', '9876543210');
-        $this->assertSame($phonenumbers, $this->company->setPhonenumbers($phonenumbers)->getPhonenumbers());
-    }
-
-    /**
      * Test get- and setEmail function
      */
     public function testGetAndSetEmailFunction()

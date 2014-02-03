@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -40,10 +42,10 @@ class Relation extends Content
     protected $description;
 
     /**
-     * @var array
+     * @var Collection
      * @ODM\Hash
      */
-    protected $phonenumbers = array();
+    protected $phonenumbers;
 
     /**
      * @var string
@@ -57,6 +59,15 @@ class Relation extends Content
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address", strategy="set")
      */
     protected $addresses = array();
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->phonenumbers = new ArrayCollection();
+    }
 
     /**
      * Get the accountnumber of the document
@@ -105,7 +116,7 @@ class Relation extends Content
     /**
      * Get the phonenumbers of the document
      *
-     * @return array
+     * @return Collection
      */
     public function getPhonenumbers()
     {
@@ -115,13 +126,37 @@ class Relation extends Content
     /**
      * Set the phonenumbers of the document
      *
-     * @param array $phonenumbers
+     * @param Collection $phonenumbers
      * @return $this
      */
-    public function setPhonenumbers(array $phonenumbers)
+    public function setPhonenumbers(Collection $phonenumbers)
     {
         $this->phonenumbers = $phonenumbers;
         return $this;
+    }
+
+    /**
+     * Add phonenumber to phonenumbers collection
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return $this
+     */
+    public function addPhonenumber($key, $value)
+    {
+        $this->phonenumbers->set($key, $value);
+        return $this;
+    }
+
+    /**
+     * Remove phonenumber from phonenumbers collection
+     *
+     * @param string $key
+     * @return mixed The removed element or null if the collection did not contain the element.
+     */
+    public function removePhonenumber($key)
+    {
+        return $this->phonenumbers->remove($key);
     }
 
     /**
