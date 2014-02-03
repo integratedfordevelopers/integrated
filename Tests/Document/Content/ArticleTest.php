@@ -223,7 +223,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddAuthorFunction()
     {
-        /* @var $autho1 \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author | \PHPUnit_Framework_MockObject_MockObject */
+        /* @var $author \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author | \PHPUnit_Framework_MockObject_MockObject */
         $author = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author');
 
         // Asserts
