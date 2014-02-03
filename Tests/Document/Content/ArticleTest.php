@@ -164,8 +164,32 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetMetadataFunction()
     {
-        $metadata = array('key' => 'value');
+        $metadata = new ArrayCollection(array('key' => 'value'));
         $this->assertSame($metadata, $this->article->setMetadata($metadata)->getMetadata());
+    }
+
+    /**
+     * Test addMetadata function
+     */
+    public function testAddMetadataFunction()
+    {
+        $metadata = new ArrayCollection(array('key' => 'value'));
+
+        $this->assertSame($this->article, $this->article->setMetadata($metadata));
+        $this->assertSame($this->article, $this->article->addMetadata('key2', 'value2'));
+        $this->assertCount(2, $this->article->getMetadata());
+    }
+
+    /**
+     * Test removeMetadata function
+     */
+    public function testRemoveMetadataFunction()
+    {
+        $metadata = new ArrayCollection(array('key' => 'value'));
+
+        $this->assertSame($this->article, $this->article->setMetadata($metadata));
+        $this->assertSame('value', $this->article->removeMetadata('key'));
+        $this->assertCount(0, $this->article->getMetadata());
     }
 
     /**
