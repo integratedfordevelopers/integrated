@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -42,10 +40,10 @@ class Relation extends Content
     protected $description;
 
     /**
-     * @var Collection
+     * @var array
      * @ODM\Hash
      */
-    protected $phonenumbers;
+    protected $phonenumbers = array();
 
     /**
      * @var string
@@ -59,15 +57,6 @@ class Relation extends Content
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address", strategy="set")
      */
     protected $addresses = array();
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->phonenumbers = new ArrayCollection();
-    }
 
     /**
      * Get the accountnumber of the document
@@ -116,7 +105,7 @@ class Relation extends Content
     /**
      * Get the phonenumbers of the document
      *
-     * @return Collection
+     * @return array
      */
     public function getPhonenumbers()
     {
@@ -126,10 +115,10 @@ class Relation extends Content
     /**
      * Set the phonenumbers of the document
      *
-     * @param Collection $phonenumbers
+     * @param array $phonenumbers
      * @return $this
      */
-    public function setPhonenumbers(Collection $phonenumbers)
+    public function setPhonenumbers(array $phonenumbers)
     {
         $this->phonenumbers = $phonenumbers;
         return $this;
@@ -144,7 +133,7 @@ class Relation extends Content
      */
     public function addPhonenumber($key, $value)
     {
-        $this->phonenumbers->set($key, $value);
+        $this->phonenumbers[$key] = $value;
         return $this;
     }
 
@@ -156,7 +145,11 @@ class Relation extends Content
      */
     public function removePhonenumber($key)
     {
-        return $this->phonenumbers->remove($key);
+        if (isset($this->phonenumbers[$key])) {
+            $return = $this->phonenumbers[$key];
+            unset($this->phonenumbers[$key]);
+            return $return;
+        }
     }
 
     /**

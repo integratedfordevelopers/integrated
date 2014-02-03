@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Relation;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation;
 
 /**
@@ -63,7 +62,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetPhonenumbersFunction()
     {
-        $phonenumbers = new ArrayCollection(array('0123456789', '9876543210'));
+        $phonenumbers = array('0123456789', '9876543210');
         $this->assertSame($phonenumbers, $this->relation->setPhonenumbers($phonenumbers)->getPhonenumbers());
     }
 
@@ -88,7 +87,6 @@ class RelationTest extends \PHPUnit_Framework_TestCase
 
         // Asserts
         $this->assertCount(1, $this->relation->getPhonenumbers());
-        $this->assertSame('9876543210', $this->relation->getPhonenumbers()->get('work'));
     }
 
     /**

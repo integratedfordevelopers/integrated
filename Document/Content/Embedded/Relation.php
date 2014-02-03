@@ -116,10 +116,12 @@ class Relation
 
     /**
      * Remove reference from references collection
+     *
      * @param ContentInterface $reference
+     * @return bool true if this collection contained the specified element, false otherwise.
      */
     public function removeReference(ContentInterface $reference)
     {
-        $this->references->removeElement($reference);
+        return $this->references->removeElement($reference);
     }
 }

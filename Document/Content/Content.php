@@ -72,10 +72,10 @@ class Content implements ContentInterface
     protected $disabled;
 
     /**
-     * @var ArrayCollection
+     * @var array
      * @ODM\Hash
      */
-    protected $metadata;
+    protected $metadata = array();
 
     /**
      * Constructor
@@ -84,7 +84,6 @@ class Content implements ContentInterface
     {
         $this->createdAt = new \DateTime();
         $this->relations = new ArrayCollection();
-        $this->metadata = new ArrayCollection();
     }
 
     /**
@@ -314,10 +313,10 @@ class Content implements ContentInterface
     /**
      * Set the metadata of the document
      *
-     * @param Collection $metadata
+     * @param array $metadata
      * @return $this
      */
-    public function setMetadata(Collection $metadata)
+    public function setMetadata(array $metadata)
     {
         $this->metadata = $metadata;
         return $this;
@@ -332,7 +331,7 @@ class Content implements ContentInterface
      */
     public function addMetadata($key, $value)
     {
-        $this->metadata->set($key, $value);
+        $this->metadata[$key] = $value;
         return $this;
     }
 
@@ -344,6 +343,12 @@ class Content implements ContentInterface
      */
     public function removeMetadata($key)
     {
-        return $this->metadata->remove($key);
+        if (isset($this->metadata[$key])) {
+            $return = $this->metadata[$key];
+            unset($this->metadata[$key]);
+            return $return;
+        }
+
+        return false;
     }
 }
