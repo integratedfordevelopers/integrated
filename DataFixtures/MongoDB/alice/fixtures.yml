@@ -1,0 +1,10 @@
+Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
+  Article:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Article
+    name: Article
+#    type: article
+
+  Blog:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Article
+    name: Blog
+#    type: blog
