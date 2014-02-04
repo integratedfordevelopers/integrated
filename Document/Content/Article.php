@@ -92,6 +92,7 @@ class Article extends Content
     public function __construct()
     {
         parent::__construct();
+
         $this->authors = new ArrayCollection();
     }
 
@@ -311,7 +312,7 @@ class Article extends Content
      * @param Embedded\Location $location
      * @return $this
      */
-    public function setLocation(Embedded\Location $location)
+    public function setLocation(Embedded\Location $location = null)
     {
         $this->location = $location;
         return $this;
