@@ -11,10 +11,13 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber;
 
 /**
  * Class for Relations
@@ -39,11 +42,11 @@ class Relation extends Content
      */
     protected $description;
 
-    /**
-     * @var array
-     * @ODM\Hash
-     */
-    protected $phonenumbers = array();
+	/**
+	 * @var Phonenumber[] | Collection
+	 * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber", strategy="set")
+	 */
+    protected $phonenumbers;
 
     /**
      * @var string
@@ -56,7 +59,18 @@ class Relation extends Content
      * @var Address[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address", strategy="set")
      */
-    protected $addresses = array();
+    protected $addresses;
+
+	/**
+	 * Constructor
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->phonenumbers = new ArrayCollection();
+		$this->addresses = new ArrayCollection();
+	}
 
     /**
      * Get the accountnumber of the document
@@ -105,20 +119,32 @@ class Relation extends Content
     /**
      * Get the phonenumbers of the document
      *
-     * @return array
+     * @return Phonenumber[]
      */
-    public function getPhonenumbers()
+    public function getPhonenumbers($type = null)
     {
+		if ($type !== null) {
+			$result = array();
+
+			foreach ($this->phonenumbers as $obj) {
+				if (strcasecmp($type, $obj->getType()) === 0) {
+					$result[] = $obj;
+				}
+			}
+
+			return $result;
+		}
+
         return $this->phonenumbers;
     }
 
     /**
      * Set the phonenumbers of the document
      *
-     * @param array $phonenumbers
+     * @param Phonenumber[] $phonenumbers
      * @return $this
      */
-    public function setPhonenumbers(array $phonenumbers)
+    public function setPhonenumbers(Collection $phonenumbers)
     {
         $this->phonenumbers = $phonenumbers;
         return $this;
@@ -127,29 +153,51 @@ class Relation extends Content
     /**
      * Add phonenumber to phonenumbers collection
      *
-     * @param string $key
-     * @param mixed $value
+     * @param string|Phonenumber $phonenumber
+     * @param string $type
+	 *
      * @return $this
      */
-    public function addPhonenumber($key, $value)
+    public function addPhonenumber($phonenumber, $type = null)
     {
-        $this->phonenumbers[$key] = $value;
+		if ($phonenumber === null) {
+			return $this;
+		}
+
+		if ($phonenumber instanceof Phonenumber) {
+			$obj = $phonenumber;
+		} else {
+			$obj = new Phonenumber();
+			$obj->setNumber($phonenumber);
+			$obj->setType($type);
+		}
+
+		$this->phonenumbers->add($obj);
         return $this;
     }
 
     /**
      * Remove phonenumber from phonenumbers collection
      *
-     * @param string $key
-     * @return mixed The removed element or null if the collection did not contain the element.
+     * @param string|Phonenumber $phonenumber
+	 *
+     * @return bool The removed element or null if the collection did not contain the element.
      */
-    public function removePhonenumber($key)
+    public function removePhonenumber($phonenumber)
     {
-        if (isset($this->phonenumbers[$key])) {
-            $return = $this->phonenumbers[$key];
-            unset($this->phonenumbers[$key]);
-            return $return;
-        }
+		if ($phonenumber instanceof Phonenumber) {
+			return $this->phonenumbers->remove($phonenumber);
+		}
+
+		$return = false;
+
+		foreach ($this->phonenumbers as $obj) {
+			if (strcasecmp($phonenumber, $obj->getNumber()) === 0) {
+				$return = $this->phonenumbers->remove($obj);
+			}
+		}
+
+		return $return;
     }
 
     /**
@@ -190,9 +238,34 @@ class Relation extends Content
      * @param array $addresses
      * @return $this
      */
-    public function setAddresses(array $addresses)
+    public function setAddresses(Collection $addresses)
     {
         $this->addresses = $addresses;
         return $this;
     }
+
+	/**
+	 * Add address to addresses collection
+	 *
+	 * @param Address $address
+	 *
+	 * @return $this
+	 */
+	public function addAddress(Address $address = null)
+	{
+		if ($address !== null) {
+			$this->addresses->add($address);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param Address $address
+	 * @return bool
+	 */
+	public function removeAddress(Address $address)
+	{
+		return $this->addresses->removeElement($address);
+	}
 }
