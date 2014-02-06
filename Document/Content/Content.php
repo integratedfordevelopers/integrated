@@ -22,7 +22,7 @@ use Integrated\Common\Content\ContentInterface;
  * Abstract base class for document types
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content")
+ * @ODM\Document(collection="content", indexes={@ODM\Index(keys={"class"="asc"})})
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
  */
@@ -37,6 +37,7 @@ class Content implements ContentInterface
     /**
      * @var string the type of the ContentType
      * @ODM\String
+	 * @ODM\Index
      */
     protected $contentType;
 
