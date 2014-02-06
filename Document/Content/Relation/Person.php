@@ -219,13 +219,15 @@ class Person extends Relation
     /**
      * Add job to the jobs collection
      *
-     * @param Job $job
+     * @param mixed $job
      * @return $this
      */
-    public function addJob(Job $job)
+    public function addJob($job)
     {
-        if (!$this->jobs->contains($job)) {
-            $this->jobs->add($job);
+        if ($job instanceof Job) {
+            if (!$this->jobs->contains($job)) {
+                $this->jobs->add($job);
+            }
         }
         return $this;
     }
@@ -233,10 +235,10 @@ class Person extends Relation
     /**
      * Remove job from jobs collection
      *
-     * @param Job $job
+     * @param mixed $job
      * @return bool true if this collection contained the specified element, false otherwise.
      */
-    public function removeJob(Job $job)
+    public function removeJob($job)
     {
         return $this->jobs->removeElement($job);
     }
