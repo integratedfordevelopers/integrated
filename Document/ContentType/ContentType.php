@@ -149,8 +149,9 @@ class ContentType implements ContentTypeInterface
     {
         $this->name = $name;
 
+        // TODO use sluggable extension
         if (null === $this->type) {
-            $this->setType(trim(strtolower($this->name)));
+            $this->setType(trim(strtolower(str_replace(' ', '_', $this->name))));
         }
 
         return $this;
