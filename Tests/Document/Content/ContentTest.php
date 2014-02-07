@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Util\Debug;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 /**
@@ -95,6 +96,35 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         // Asserts
         $this->assertSame($this->content, $this->content->addReference($content));
         $this->assertSame($content, $this->content->getRelation('contentType')->getReferences()->first());
+    }
+
+    /**
+     * Test addReference function with two contentTypes
+     */
+    public function testAddReferenceFunctionWithTwoContentTypes()
+    {
+        /* @var $content1 \Integrated\Common\Content\ContentInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $content1 = $this->getMock('Integrated\Common\Content\ContentInterface');
+
+        // Stub getContentType
+        $content1->expects($this->once())
+            ->method('getContentType')
+            ->will($this->returnValue('contentType1'));
+
+        $this->content->addReference($content1);
+
+        /* @var $content2 \Integrated\Common\Content\ContentInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $content2 = $this->getMock('Integrated\Common\Content\ContentInterface');
+
+        // Stub getContentType
+        $content2->expects($this->once())
+            ->method('getContentType')
+            ->will($this->returnValue('contentType2'));
+
+        $this->content->addReference($content2);
+
+        // Asserts
+        $this->assertCount(1, $this->content->getRelations());
     }
 
     /**
