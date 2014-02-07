@@ -44,7 +44,7 @@ class Relation extends Content
 
 	/**
 	 * @var Phonenumber[] | Collection
-	 * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber", strategy="set")
+	 * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber", strategy="addToSet")
 	 */
     protected $phonenumbers;
 
@@ -57,7 +57,7 @@ class Relation extends Content
 
     /**
      * @var Address[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address", strategy="set")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address", strategy="addToSet")
      */
     protected $addresses;
 

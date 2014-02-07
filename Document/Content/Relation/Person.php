@@ -65,7 +65,7 @@ class Person extends Relation
 
     /**
      * @var Collection Job[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job", strategy="set")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job", strategy="addToSet")
      */
     protected $jobs;
 
