@@ -51,6 +51,16 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
 	 */
 	private $internal = false;
 
+	/**
+	 * This will contain all the ClassMetadata instance every made.
+	 *
+	 * The classes are stored in a registery so that they are only create for
+	 * a class ones.
+	 *
+	 * @var array
+	 */
+	private $registery = array();
+
 	public function __construct()
 	{
 		$this->matcher = new ClassMetadataLoadFinderSubscriber();
@@ -116,6 +126,18 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
 		$this->internal = false;
 
 		return $metadata;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	protected function newClassMetadataInstance($className)
+	{
+		if (!isset($this->registery[$className])) {
+			$this->registery[$className] = parent::newClassMetadataInstance($className);
+		}
+
+		return $this->registery[$className];
 	}
 
 	private function updateCache()
