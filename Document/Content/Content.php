@@ -43,7 +43,7 @@ class Content implements ContentInterface
 
     /**
      * @var ArrayCollection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation", strategy="addToSet")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation")
      */
     protected $relations;
 
