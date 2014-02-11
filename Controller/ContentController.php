@@ -43,13 +43,14 @@ class ContentController extends Controller
 			ksort($types[$key]);
 		}
 
-		/** @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-		$dm = $this->get('doctrine_mongodb')->getManager();
+        /** @var $client \Solarium\Client */
+        $client = $this->get('solarium.client');
+        $query = $client->createSelect();
 
 		/** @var $paginator \Knp\Component\Pager\Paginator */
 		$paginator = $this->get('knp_paginator');
 		$paginator = $paginator->paginate(
-			$dm->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\Content'),
+            array($client, $query),
 			$request->query->get('page', 1),
 			15
 		);
