@@ -42,7 +42,7 @@ class Article extends Content
 
     /**
      * @var ArrayCollection Embedded\Author[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author", strategy="addToSet")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author")
      */
     protected $authors;
 
