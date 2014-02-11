@@ -2,23 +2,29 @@ Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
   Article:
     class: Integrated\Bundle\ContentBundle\Document\Content\Article
     name: Article
+    fields: <classfields($class, ['title', 'Intro', 'content'])>
 
   Blog:
     class: Integrated\Bundle\ContentBundle\Document\Content\Article
     name: Blog
+    fields: <classfields($class, ['title', 'content'])>
 
   Taxonomy:
     class: Integrated\Bundle\ContentBundle\Document\Content\Taxonomy
     name: Taxonomy
+    fields: <classfields($class, ['title'])>
 
   Company:
     class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Company
     name: Company
+    fields: <classfields($class, ['name'])>
 
   Author:
     class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
     name: Author
+    fields: <classfields($class, ['firstname', 'lastname'])>
 
   Employee:
     class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
     name: Employee
+    fields: <classfields($class, ['firstname', 'lastname', 'email'], ['nickname'])>
