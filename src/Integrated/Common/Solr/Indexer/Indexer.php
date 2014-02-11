@@ -232,6 +232,8 @@ class Indexer implements IndexerInterface
 				$this->send(); // send the last batch if there is any
 			} catch (ExceptionInterface $e) {
 				$this->getEventDispatcher()->dispatch(Events::ERROR, new ErrorEvent($this, $e));
+
+				throw $e;
 			}
 
 			$this->clean();
