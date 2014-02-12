@@ -41,27 +41,31 @@ apt::source { 'debian_stable-backports':
 	include_src => true
 }
 
-package { ['git']: }
+# git
+
+package { [git]:
+	ensure  => latest,
+}
 
 # mount some tmpfs drives
 
-mount { '/vagrant/app/cache/':
-	ensure   => mounted,
-	device   => 'tmpfs',
-	fstype   => 'tmpfs',
-	options  => "noauto,size=128m,uid=1000,gid=1000,mode=777",
-	atboot	 => false,
-	remounts => false,
-}
-
-mount { '/vagrant/app/logs/':
-	ensure   => mounted,
-	device   => 'tmpfs',
-	fstype   => 'tmpfs',
-	options  => "noauto,size=32m,uid=1000,gid=1000,mode=777",
-	atboot	 => false,
-	remounts => false,
-}
+#mount { '/vagrant/app/cache/':
+#	ensure   => mounted,
+#	device   => 'tmpfs',
+#	fstype   => 'tmpfs',
+#	options  => "noauto,size=128m,uid=1000,gid=1000,mode=777",
+#	atboot	 => false,
+#	remounts => false,
+#}
+#
+#mount { '/vagrant/app/logs/':
+#	ensure   => mounted,
+#	device   => 'tmpfs',
+#	fstype   => 'tmpfs',
+#	options  => "noauto,size=32m,uid=1000,gid=1000,mode=777",
+#	atboot	 => false,
+#	remounts => false,
+#}
 
 # setup apache and php
 
@@ -82,28 +86,27 @@ package { [php-apc, php5-intl, php5-curl, php5-xdebug]:
 
 package { [php5-cli]:
 	ensure  => latest,
-	require => Class['apache::mod::php'],
 }
 
-#package { [phpmyadmin, javascript-common]:
-#	ensure  => present,
-#	require => Class['mysql::php'],
-#	notify  => Service['httpd'],
-#}
-#
-#file { '/etc/apache2/conf.d/phpmyadmin.conf':
-#	ensure => 'link',
-#	target  => "/etc/phpmyadmin/apache.conf",
-#	require => Package['phpmyadmin'],
-#	notify  => Service['httpd'],
-#}
-#
-#file { '/etc/apache2/conf.d/javascript-common.conf':
-#	ensure => 'link',
-#	target  => "/etc/javascript-common/javascript-common.conf",
-#	require => Package['javascript-common'],
-#	notify  => Service['httpd'],
-#}
+package { [phpmyadmin, javascript-common]:
+	ensure  => present,
+	require => Class['mysql::bindings'],
+	notify  => Service['httpd'],
+}
+
+file { '/etc/apache2/conf.d/phpmyadmin.conf':
+	ensure => 'link',
+	target  => "/etc/phpmyadmin/apache.conf",
+	require => Package['phpmyadmin'],
+	notify  => Service['httpd'],
+}
+
+file { '/etc/apache2/conf.d/javascript-common.conf':
+	ensure => 'link',
+	target  => "/etc/javascript-common/javascript-common.conf",
+	require => Package['javascript-common'],
+	notify  => Service['httpd'],
+}
 
 augeas { '/etc/php5/apache2/php.ini':
 	context => '/files/etc/php5/apache2/php.ini',
@@ -127,16 +130,7 @@ augeas { '/etc/php5/conf.d/xdebug.ini':
 	context => '/files/etc/php5/conf.d/xdebug.ini',
 	changes => [
 		'set Xdebug/xdebug.max_nesting_level 250',
-		'set Xdebug/xdebug.var_display_max_depth 6',
-
-		'set Xdebug/xdebug.remote_enable 1',
-		'set Xdebug/xdebug.remote_handler dbgp',
-		'set Xdebug/xdebug.remote_host 10.0.2.2',
-		'set Xdebug/xdebug.remote_port 9000',
-		'set Xdebug/xdebug.remote_autostart 0',
-
-		'set Xdebug/xdebug.profiler_enable_trigger 1',
-		'set Xdebug/xdebug.profiler_output_dir /vagrant',
+		'set Xdebug/xdebug.var_display_max_depth 8'
 	],
 	require => Package['php5-xdebug'],
 	notify  => Service['httpd'],
@@ -152,9 +146,8 @@ apache::vhost { 'symfony':
 
 # setup mongodb server
 
-class {'mongodb':
-	enable_10gen => true,
-}
+class { 'mongodb::globals': manage_package_repo => true }
+class { 'mongodb::server': }
 
 package { ["php5-mongo"]:
 	ensure  => latest,
@@ -169,8 +162,26 @@ file { '/etc/php5/conf.d/20-mongo.ini':
 	notify  => Service['httpd']
 }
 
+
+# setup mysql server
+
+class { 'mysql::server': root_password => 'root' }
+
+class { 'mysql::bindings':
+	php_enable => true,
+	require => Class['apache::mod::php']
+}
+
+mysql::db { 'website':
+	user     => 'website',
+	password => 'password',
+	host     => 'localhost',
+	grant    => ['all'],
+}
+
 # Install nodejs and less
-class {'nodejs':
+
+class { 'nodejs':
     manage_repo => true
 }
 
@@ -183,5 +194,10 @@ exec {'create node symlink':
 
 exec {'npm install lessc':
     command => 'npm install -g less',
+    require => Package['npm'],
+}
+
+exec {'npm install bower':
+    command => 'npm install -g bower',
     require => Package['npm'],
 }

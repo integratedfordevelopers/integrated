@@ -40,7 +40,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, :inline => "[ -d /etc/puppet/modules/apt ] || puppet module install puppetlabs/apt"
   config.vm.provision :shell, :inline => "[ -d /etc/puppet/modules/mongodb ] || puppet module install puppetlabs/mongodb"
   config.vm.provision :shell, :inline => "[ -d /etc/puppet/modules/nodejs ] || puppet module install puppetlabs/nodejs"
-#  config.vm.provision :shell, :inline => "[ -d /etc/puppet/modules/mysql ] || puppet module install puppetlabs/mysql"
+  config.vm.provision :shell, :inline => "[ -d /etc/puppet/modules/mysql ] || puppet module install puppetlabs/mysql"
 
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "vagrant/puppet/manifests"
