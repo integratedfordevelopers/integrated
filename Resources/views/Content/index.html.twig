@@ -60,17 +60,11 @@
 
                     <h3 class="panel-title">{{ content.title }}</h3>
                 </div>
-
-                {#{% if content.text|trim is not empty %}#}
-
-                {#<div class="panel-body">#}
-
-                    {#<div class="content">{{ content.text|striptags|raw }}</div>#}
-
-                {#</div>#}
-
-                {#{% endif %}#}
-
+                {% if content.content|join('...')|trim is not empty %}
+                <div class="panel-body">
+                    <div class="content">{{ content.content|join('...')|striptags|raw }}</div>
+                </div>
+                {% endif %}
             </div>
 
             {% endfor %}
