@@ -13,3 +13,8 @@ parameters:
 
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    solr_host:         ~
+    solr_core:         ~
+    solr_timeout:      30
+

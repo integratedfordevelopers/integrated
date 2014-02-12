@@ -37,6 +37,13 @@ assetic:
             compress: true
             apply_to: "\.less$"
         cssrewrite: ~
+    assets:
+        integrated_css:
+            inputs:
+                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css
+        integrated_js:
+            inputs:
+                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
 
 # Bootstrap configuration
 braincrafted_bootstrap:
@@ -77,3 +84,16 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+# Solr configuration
+integrated_solr:
+    endpoints:
+        default:
+            host: %solr_host%
+            core: %solr_core%
+            timeout: %solr_timeout%
+
+# Bower configuration
+sp_bower:
+    bundles:
+        IntegratedFormTypeBundle: ~
