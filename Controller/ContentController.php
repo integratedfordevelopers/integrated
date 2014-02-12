@@ -47,6 +47,13 @@ class ContentController extends Controller
         $client = $this->get('solarium.client');
         $query = $client->createSelect();
 
+        if ($q = $request->get('q')) {
+            $dismax = $query->getDisMax();
+            $dismax->setQueryFields('title content');
+
+            $query->setQuery($q);
+        }
+
 		/** @var $paginator \Knp\Component\Pager\Paginator */
 		$paginator = $this->get('knp_paginator');
 		$paginator = $paginator->paginate(
