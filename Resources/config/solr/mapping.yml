@@ -52,9 +52,9 @@ convert:
 #      title:  '$.name.value()'
 #      description: ~
 #      content: '$.description.value()'
-#      phonenumber: '$.phonenumbers[].value()'
-#      email: ~
-#      address: '$.addresses[].concat(" ", ["address1", "address2", "zipcode", "city", "state", "country"]).value()'
+#      phonenumber_text: '$.phonenumbers[].value()'
+#      email_text: '$.email.value()'
+#      address_text: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
 #    id: id
 
   - class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Company
@@ -66,9 +66,9 @@ convert:
       title:  '$.name.value()'
       description: ~
       content: '$.description.value()'
-      phonenumber: '$.phonenumbers[].value()'
-      email: ~
-      address: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
+      phonenumber_text: '$.phonenumbers[].value()'
+      email_text: '$.email.value()'
+      address_text: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
     id: id
 
   - class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
@@ -80,7 +80,7 @@ convert:
       title:  '$.concat(" ", ["@prefix", "@firstname", "@lastname"]).value()'
       description: ~
       content: '$.description.value()'
-      phonenumber: '$.phonenumbers[].value()'
-      email: ~
-      address: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
+      phonenumber_text: '$.phonenumbers[].value()'
+      email_text: '$.email.value()'
+      address_text: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
     id: id
