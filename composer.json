@@ -17,6 +17,10 @@
         },
         {
             "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-solr-bundle.git"
+        },
+        {
+            "type": "vcs",
             "url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
         }
     ],
@@ -35,13 +39,15 @@
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "integrated/library": "dev-develop",
-		"integrated/content-bundle": "dev-develop"
+		"integrated/content-bundle": "dev-develop",
+        "integrated/solr-bundle": "dev-develop"
     },
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
@@ -50,6 +56,7 @@
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
