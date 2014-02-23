@@ -14,8 +14,8 @@ parameters:
     locale:            en
     secret:            ThisTokenIsNotSoSecretChangeIt
 
-    mongodb_server     mongodb://localhost:27017
-    mongodb_database   integrated
+    mongodb_server:    mongodb://localhost:27017
+    mongodb_database:  integrated
 
     solr_host:         ~
     solr_port:         ~
