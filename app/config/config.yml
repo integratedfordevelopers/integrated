@@ -49,6 +49,7 @@ assetic:
 # Bootstrap configuration
 braincrafted_bootstrap:
     less_filter: less
+    jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.js
 
 # Doctrine Configuration
 doctrine:
@@ -99,3 +100,4 @@ integrated_solr:
 sp_bower:
     bundles:
         IntegratedFormTypeBundle: ~
+    bin: /usr/local/bin/bower

@@ -21,7 +21,9 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "integrated/library": "dev-develop",
 		"integrated/content-bundle": "dev-develop",
-        "integrated/solr-bundle": "dev-develop"
+        "integrated/solr-bundle": "dev-develop",
+        "sp/bower-bundle": "~0.9",
+        "components/jquery": "1.10.*"
     },
     "scripts": {
         "post-install-cmd": [
@@ -31,7 +33,10 @@
             "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
+            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
+            "php app/console assetic:dump web/",
+            "php app/console doctrine:mongodb:schema:create",
+            "php app/console init:queue"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -40,7 +45,10 @@
             "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install"
+            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
+            "php app/console assetic:dump web/",
+            "php app/console doctrine:mongodb:schema:create",
+            "php app/console init:queue"
         ]
     },
     "config": {
