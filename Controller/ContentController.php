@@ -109,6 +109,11 @@ class ContentController extends Controller
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('A new %s is created', $type->getType()->getType()));
 
+                //TODO: improve this. JSM and JvL are gonna kick me if they see this
+                $indexer = $this->get('integrated_solr.indexer');
+                $indexer->execute();
+                file_get_contents('http://' . $this->container->getParameter('solr_host') . ':' . $this->container->getParameter('solr_port') . '/solr/' . $this->container->getParameter('solr_core') . '/update?commit=true');
+
 				return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
 			}
 		}
@@ -157,7 +162,12 @@ class ContentController extends Controller
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to %s are saved', $type->getType()->getType()));
 
-				return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
+                //TODO: improve this. JSM and JvL are gonna kick me if they see this
+                $indexer = $this->get('integrated_solr.indexer');
+                $indexer->execute();
+                file_get_contents('http://' . $this->container->getParameter('solr_host') . ':' . $this->container->getParameter('solr_port') . '/solr/' . $this->container->getParameter('solr_core') . '/update?commit=true');
+
+                return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
 			}
 		}
 
@@ -210,7 +220,12 @@ class ContentController extends Controller
 					'body' => sprintf('The %s is removed', $type->getType())
 				));
 
-				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+                //TODO: improve this. JSM and JvL are gonna kick me if they see this
+                $indexer = $this->get('integrated_solr.indexer');
+                $indexer->execute();
+                file_get_contents('http://' . $this->container->getParameter('solr_host') . ':' . $this->container->getParameter('solr_port') . '/solr/' . $this->container->getParameter('solr_core') . '/update?commit=true');
+
+                return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 		}
 
