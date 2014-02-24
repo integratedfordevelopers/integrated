@@ -114,7 +114,7 @@ class ContentController extends Controller
                 $indexer->execute();
                 file_get_contents('http://' . $this->container->getParameter('solr_host') . ':' . $this->container->getParameter('solr_port') . '/solr/' . $this->container->getParameter('solr_core') . '/update?commit=true');
 
-				return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
+                return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 		}
 
@@ -167,7 +167,7 @@ class ContentController extends Controller
                 $indexer->execute();
                 file_get_contents('http://' . $this->container->getParameter('solr_host') . ':' . $this->container->getParameter('solr_port') . '/solr/' . $this->container->getParameter('solr_core') . '/update?commit=true');
 
-                return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
+                return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 		}
 
