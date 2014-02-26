@@ -21,6 +21,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "integrated/library": "dev-develop",
 		"integrated/content-bundle": "dev-develop",
+        "integrated/formtype-bundle": "dev-develop",
         "integrated/solr-bundle": "dev-develop",
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*"
