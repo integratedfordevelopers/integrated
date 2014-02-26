@@ -21,3 +21,5 @@ parameters:
     solr_port:         ~
     solr_core:         ~
     solr_timeout:      30
+
+    bower_bin:         /usr/local/bin/bower

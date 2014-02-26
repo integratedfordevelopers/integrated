@@ -100,4 +100,4 @@ integrated_solr:
 sp_bower:
     bundles:
         IntegratedFormTypeBundle: ~
-    bin: /usr/local/bin/bower
+    bin: %bower_bin%
