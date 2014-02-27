@@ -4,7 +4,7 @@ The IntegratedFormTypeBundle provides different Symfony Form Types for the Integ
 
 ## Installation ##
 
-The IntegratedFormTypeBundle can be installed following these steps:
+The Bundle is part of the default Integrated package. Manual installation can also be done by following these steps:
 
 1. Install using composer
 2. Enable the bundle
@@ -13,17 +13,9 @@ The IntegratedFormTypeBundle can be installed following these steps:
 
 ### 1. Install using composer ##
 
-	{
-    	"repositories": [
-        	{
-            	"type": "vcs",
-            	"url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
-        	}
-    	],
-    	"require": {
-    	    "integrated/formtype-bundle": "dev-develop"
-    	}
-	}
+  	"require": {
+   	    "integrated/formtype-bundle": "dev-develop"
+   	}
 
 ### 2. Enable the bundle ###
 
