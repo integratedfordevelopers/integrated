@@ -1,19 +1,28 @@
 <?php
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
+use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class ContentTypeFieldCollection implements DataTransformerInterface
 {
     /**
-     * @param mixed $field
-     * @return array|mixed
+     * @param mixed $fields
+     * @return array $return
      */
-    public function transform($field)
+    public function transform($fields)
     {
-        return $field;
-    }
+        $return = array();
+        if (is_array($fields) || $fields instanceof \Traversable) {
+            foreach ($fields as $field) {
+                if ($field instanceof Field) {
+                    $return[$field->getName()] = $field;
+                }
+            }
+        }
 
+        return $return;
+    }
 
     /**
      * @param mixed $values
