@@ -124,7 +124,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->content->addReference($content2);
 
         // Asserts
-        $this->assertCount(1, $this->content->getRelations());
+        $this->assertCount(2, $this->content->getRelations());
     }
 
     /**
