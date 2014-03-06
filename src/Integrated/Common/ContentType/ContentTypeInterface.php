@@ -15,7 +15,6 @@ use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 interface ContentTypeInterface
 {
@@ -78,22 +77,20 @@ interface ContentTypeInterface
 	public function getRelations();
 
 	/**
-	 * Get the information of the specified relation
+	 * Get relation based on id
 	 *
-	 * @param string|ContentInterface
-	 * @param string $type
+	 * @param string $id
 	 *
-	 * @return ContentTypeRelationInterface
+	 * @return false|ContentTypeRelationInterface
 	 */
-	public function getRelation($class, $type = null);
+	public function getRelation($id);
 
 	/**
 	 * Check if a relation exist with this content type
 	 *
-	 * @param string|ContentInterface
-	 * @param string $type
+	 * @param ContentTypeRelationInterface $relation
 	 *
 	 * @return bool
 	 */
-	public function hasRelation($class, $type = null);
+	public function hasRelation(ContentTypeRelationInterface $relation);
 }
