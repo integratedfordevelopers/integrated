@@ -1,0 +1,75 @@
+<a href="{{ path('integrated_content_content_type_relation_new', {'contentType': contentType.id}) }}">
+    Add relation
+</a>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            {% trans %}Name{% endtrans %}
+        </th>
+        <th>
+            {% trans %}Type{% endtrans %}
+        </th>
+        <th>
+            {% trans %}Content types{% endtrans %}
+        </th>
+        <th>
+            {% trans %}Relations{% endtrans %}
+        </th>
+        <th>
+            {% trans %}Required{% endtrans %}
+        </th>
+        <th>
+            {% trans %}Actions{% endtrans %}
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for relation in contentType.relations %}
+        <tr>
+            <td>
+                <a href="{{ path('integrated_content_content_type_relation_show', {'contentType': contentType.id, 'id': relation.id}) }}">
+                    {{ relation.name }}
+                </a>
+            </td>
+            <td>
+                {{ relation.type }}
+            </td>
+            <td>
+                <ul>
+                    {% for contentType in relation.contentTypes %}
+                    <li>
+                        {{ contentType.name }}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>
+                {% if relation.multiple == 1 %}
+                    {% trans %}Multiple{% endtrans %}
+                {% else %}
+                    {% trans %}One{% endtrans %}
+                {% endif %}
+            </td>
+            <td>
+                {% if relation.required %}
+                    {% trans %}Yes{% endtrans %}
+                {% else %}
+                    {% trans %}No{% endtrans %}
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ path('integrated_content_content_type_relation_edit', {'contentType': contentType.id, 'id': relation.id}) }}" title="{% trans %}Edit{% endtrans %}">
+                    {{ icon('pencil') }}
+                </a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="6">
+                {% trans %}No relations added{% endtrans %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

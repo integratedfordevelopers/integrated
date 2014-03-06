@@ -1,0 +1,67 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block body %}
+    <ol class="breadcrumb">
+        <li>
+            <a href="{{ path('integrated_content_content_type_index') }}">{% trans %}Home{% endtrans %}</a>
+        </li>
+        <li>
+            <a href="{{ path('integrated_content_content_type_show', {'id':  contentType.id}) }}">
+                {{ contentType.name }}
+            </a>
+        </li>
+        <li class="active">{% trans %}Show{% endtrans %}</li>
+    </ol>
+    <div class="page-header">
+        <h1>{% trans %}Show{% endtrans %}</h1>
+    </div>
+    <dl>
+        <dt>
+            {% trans %}Name{% endtrans %}
+        </dt>
+        <dd>
+            {{ relation.name }}
+        </dd>
+        <dt>
+            {% trans %}Type{% endtrans %}
+        </dt>
+        <dd>
+            {{ relation.type }}
+        </dd>
+        <dt>
+            Content types
+        </dt>
+        <dd>
+            <ul>
+                {% for contentType in relation.contentTypes %}
+                    <li>
+                        {{ contentType.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </dd>
+        <dt>
+            Multiple
+        </dt>
+        <dd>
+            {% if relation.multiple == 1 %}
+                {% trans %}Multiple{% endtrans %}
+            {% else %}
+                {% trans %}One{% endtrans %}
+            {% endif %}
+        </dd>
+        <dt>
+        Required
+        </dt>
+        <dd>
+        {% if relation.required %}
+        {% trans %}Yes{% endtrans %}
+        {% else %}
+        {% trans %}No{% endtrans %}
+        {% endif %}
+        </dd>
+    </dl>
+    <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_content_type_relation_edit', {'contentType': contentType.id, 'id': relation.id}) }}">
+        {% trans %}Edit{% endtrans %}
+    </a>
+    {{ form(form, { 'style': 'inline' }) }}
+{% endblock %}
