@@ -1,10 +1,8 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block body %}
-
 <div class="row">
 
     <div class="col-md-3">
-
         <div class="btn-group">
             <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown">
                 {% trans %}New{% endtrans %} <span class="caret"></span>
@@ -27,7 +25,20 @@
 
             </ul>
         </div>
-
+        <form>
+        {% for key, facet in facets %}
+            <h4>{{ key|capitalize }}</h4>
+            {% for title, count in facet %}
+            <div>
+                <label>
+                    <input {% if title in active %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
+                    {{ title }}
+                    <span class="badge">{{ count }}</span>
+                </label>
+            </div>
+            {% endfor %}
+        {% endfor %}
+        </form>
     </div>
     <div class="col-md-9">
 
@@ -58,7 +69,9 @@
                         <a href="{{ path('integrated_content_content_delete', {'id': content.type_id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
                     </div>
 
-                    <h3 class="panel-title">{{ content.title }}</h3>
+                    <h3 class="panel-title">
+                        <strong>{{ contentTypes[content.type_name] }}</strong> - {{ content.title }}
+                    </h3>
                 </div>
                 {% if content.content|join('...')|trim is not empty %}
                 <div class="panel-body">

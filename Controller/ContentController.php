@@ -35,8 +35,12 @@ class ContentController extends Controller
 		// group the types based on there class
 		$types = array();
 
+        // Store contentTypes in array
+        $displayTypes = array();
+
 		foreach ($this->get('integrated.form.resolver')->getTypes() as $type) {
 			$types[$type->getClass()][$type->getType()] = $type;
+            $displayTypes[$type->getType()] = $type->getName();
 		}
 
 		foreach (array_keys($types) as $key) {
@@ -47,12 +51,34 @@ class ContentController extends Controller
         $client = $this->get('solarium.client');
         $query = $client->createSelect();
 
+        $facetSet = $query->getFacetSet();
+        $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
+
+        $contentType = $request->get('contenttypes');
+        if (is_array($contentType)) {
+
+            if (count($contentType)) {
+                $helper = $query->getHelper();
+                $filter = function($param) use($helper) {
+                    return $helper->escapePhrase($param);
+                };
+
+                $query
+                    ->createFilterQuery('contenttypes')
+                    ->addTag('contenttypes')
+                    ->setQuery('type_name: ((%1%))', [implode(') OR (', array_map($filter, $contentType))]);
+            }
+        }
+
         if ($q = $request->get('q')) {
             $dismax = $query->getDisMax();
             $dismax->setQueryFields('title content');
 
             $query->setQuery($q);
         }
+
+        // Execute the query
+        $result = $client->select($query);
 
 		/** @var $paginator \Knp\Component\Pager\Paginator */
 		$paginator = $this->get('knp_paginator');
@@ -64,7 +90,10 @@ class ContentController extends Controller
 
 		return array(
 			'types' => $types,
-			'pager' => $paginator
+			'pager' => $paginator,
+            'contentTypes' => $displayTypes,
+            'active' => $contentType,
+            'facets' => $result->getFacetSet()->getFacets()
 		);
 	}
 
