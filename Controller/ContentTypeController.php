@@ -96,7 +96,7 @@ class ContentTypeController extends Controller
         // Validate request based on document param
         $documents = $this->getReader()->readAll();
         if (!isset($documents[$request->get('class')])) {
-            return $this->redirect($this->generateUrl('integrated_content_contenttype_select'));
+            return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
         }
 
         /* @var $metadata Metadata\ContentType */
@@ -127,7 +127,7 @@ class ContentTypeController extends Controller
         $documents = $this->getReader()->readAll();
         $formData = $request->get('content_type');
         if (!isset($documents[$formData['class']])) {
-            return $this->redirect($this->generateUrl('integrated_content_contenttype_select'));
+            return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
         }
 
         /* @var $metadata Metadata\ContentType */
@@ -152,7 +152,7 @@ class ContentTypeController extends Controller
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
-            return $this->redirect($this->generateUrl('integrated_content_contenttype_show', array('id' => $contentType->getId())));
+            return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
         }
 
         return array(
@@ -214,7 +214,7 @@ class ContentTypeController extends Controller
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
-            return $this->redirect($this->generateUrl('integrated_content_contenttype_show', array('id' => $contentType->getId())));
+            return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
         }
 
         return array(
@@ -246,7 +246,7 @@ class ContentTypeController extends Controller
 
                 // Set flash message and redirect to item page
                 $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
-                return $this->redirect($this->generateUrl('integrated_content_contenttype_show', array('id' => $contentType->getId())));
+                return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
 
             } else {
 
@@ -258,7 +258,7 @@ class ContentTypeController extends Controller
             }
         }
 
-        return $this->redirect($this->generateUrl('integrated_content_contenttype_index'));
+        return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
     }
 
     /**
@@ -285,10 +285,10 @@ class ContentTypeController extends Controller
     private function createCreateForm(ContentType $contentType, Metadata\ContentType $metadata)
     {
         $form = $this->createForm(
-            new Form\ContentType($metadata, $this->get('doctrine_mongodb')->getManager()->getRepository($this->contentTypeClass)),
+            new Form\ContentType($metadata),
             $contentType,
             array(
-                'action' => $this->generateUrl('integrated_content_contenttype_create'),
+                'action' => $this->generateUrl('integrated_content_content_type_create'),
                 'method' => 'POST',
             )
         );
@@ -308,10 +308,10 @@ class ContentTypeController extends Controller
     private function createEditForm(ContentType $contentType, Metadata\ContentType $metadata)
     {
         $form = $this->createForm(
-            new Form\ContentType($metadata, $this->get('doctrine_mongodb')->getManager()->getRepository($this->contentTypeClass)),
+            new Form\ContentType($metadata),
             $contentType,
             array(
-                'action' => $this->generateUrl('integrated_content_contenttype_update', array('id' => $contentType->getId())),
+                'action' => $this->generateUrl('integrated_content_content_type_update', array('id' => $contentType->getId())),
                 'method' => 'PUT',
             )
         );
@@ -331,7 +331,7 @@ class ContentTypeController extends Controller
     private function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('integrated_content_contenttype_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('integrated_content_content_type_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> array('class' => 'btn-danger')))
             ->getForm()

@@ -2,7 +2,7 @@
 {% block body %}
     <ol class="breadcrumb">
         <li>
-            <a href="{{ path('integrated_content_contenttype_index') }}">{% trans %}Home{% endtrans %}</a>
+            <a href="{{ path('integrated_content_content_type_index') }}">{% trans %}Home{% endtrans %}</a>
         </li>
         <li class="active">{% trans %}Show{% endtrans %}</li>
     </ol>
@@ -61,53 +61,10 @@
             {% trans %}Relations{% endtrans %}
         </dt>
         <dd>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th width="40%">
-                            {% trans %}Content type{% endtrans %}
-                        </th>
-                        <th>
-                            {% trans %}Relations{% endtrans %}
-                        </th>
-                        <th>
-                            {% trans %}Required{% endtrans %}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for relation in contentType.relations %}
-                    <tr>
-                        <td>
-                            {{ relation.contentType.type }}
-                        </td>
-                        <td>
-                            {% if relation.multiple == 1 %}
-                                {% trans %}Multiple{% endtrans %}
-                            {% else %}
-                                {% trans %}One{% endtrans %}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if relation.required %}
-                                {% trans %}Yes{% endtrans %}
-                            {% else %}
-                                {% trans %}No{% endtrans %}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="3">
-                            {% trans %}No relations added{% endtrans %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {{ render(controller("IntegratedContentBundle:ContentTypeRelation:index", {'contentType': contentType})) }}
         </dd>
     </dl>
-    <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_contenttype_edit', {'id': contentType.id}) }}">
+    <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_content_type_edit', {'id': contentType.id}) }}">
         {% trans %}Edit{% endtrans %}
     </a>
     {{ form(form, { 'style': 'inline' }) }}

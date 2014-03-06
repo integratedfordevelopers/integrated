@@ -7,7 +7,7 @@
     <ul class="dropdown-menu" role="menu">
         {% for type in documentTypes %}
             <li>
-                <a href="{{ path('integrated_content_contenttype_new') }}?class={{ type.class }}">
+                <a href="{{ path('integrated_content_content_type_new') }}?class={{ type.class }}">
                     {{ type.type }}
                 </a>
             </li>
@@ -28,7 +28,7 @@
         {% for document in documents %}
         <tr>
             <td>
-                <a href="{{ path('integrated_content_contenttype_show', {'id': document.id}) }}">
+                <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}">
                     {{ document.name }}
                 </a>
             </td>
@@ -39,7 +39,7 @@
                 {{ document.createdAt|date }}
             </td>
             <td>
-                <a href="{{ path('integrated_content_contenttype_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
+                <a href="{{ path('integrated_content_content_type_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
                     {{ icon('pencil') }}
                 </a>
             </td>
