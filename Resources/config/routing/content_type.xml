@@ -4,38 +4,40 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="integrated_content_contenttype_index" path="/" methods="GET">
+    <route id="integrated_content_content_type_index" path="/" methods="GET">
         <default key="_controller">IntegratedContentBundle:ContentType:index</default>
     </route>
 
-    <route id="integrated_content_contenttype_select" path="/select" methods="GET">
+    <route id="integrated_content_content_type_select" path="/select" methods="GET">
         <default key="_controller">IntegratedContentBundle:ContentType:select</default>
     </route>
 
-    <route id="integrated_content_contenttype_new" path="/new" methods="GET">
+    <route id="integrated_content_content_type_new" path="/new" methods="GET">
         <default key="_controller">IntegratedContentBundle:ContentType:new</default>
     </route>
 
-    <route id="integrated_content_contenttype_create" path="/" methods="POST">
+    <route id="integrated_content_content_type_create" path="/" methods="POST">
         <default key="_controller">IntegratedContentBundle:ContentType:create</default>
     </route>
 
-    <route id="integrated_content_contenttype_edit" path="/{id}/edit" methods="GET">
+    <route id="integrated_content_content_type_edit" path="/{id}/edit" methods="GET">
         <default key="_controller">IntegratedContentBundle:ContentType:edit</default>
     </route>
 
-    <route id="integrated_content_contenttype_update" path="/{id}" methods="PUT">
+    <route id="integrated_content_content_type_update" path="/{id}" methods="PUT">
         <default key="_controller">IntegratedContentBundle:ContentType:update</default>
     </route>
 
-    <route id="integrated_content_contenttype_delete" path="/{id}" methods="DELETE">
+    <route id="integrated_content_content_type_delete" path="/{id}" methods="DELETE">
         <default key="_controller">IntegratedContentBundle:ContentType:delete</default>
     </route>
 
 
-    <route id="integrated_content_contenttype_show" path="/{id}" methods="GET">
+    <route id="integrated_content_content_type_show" path="/{id}" methods="GET">
         <default key="_controller">IntegratedContentBundle:ContentType:show</default>
     </route>
+
+    <import resource="@IntegratedContentBundle/Resources/config/routing/content_type_relation.xml" prefix="/{contentType}/relation/" />
 
 
 </routes>
