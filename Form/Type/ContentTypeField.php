@@ -1,12 +1,24 @@
 <?php
 
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeField as Transformer;
 use Integrated\Common\ContentType\Mapping\Metadata;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeField as Transformer;
 
+/**
+ * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ */
 class ContentTypeField extends AbstractType
 {
     /**
@@ -22,6 +34,9 @@ class ContentTypeField extends AbstractType
         $this->contentTypeField = $contentTypeField;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
@@ -38,7 +53,6 @@ class ContentTypeField extends AbstractType
             'checkbox',
             array(
                 'required' => false
-                //'label' => 'Required'
             )
         );
 
@@ -46,9 +60,8 @@ class ContentTypeField extends AbstractType
         $builder->addModelTransformer($transformer);
     }
 
-
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {

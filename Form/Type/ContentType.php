@@ -1,12 +1,23 @@
 <?php
 
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Common\ContentType\Mapping\Metadata;
 
+/**
+ * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ */
 class ContentType extends AbstractType
 {
     /**
@@ -15,20 +26,16 @@ class ContentType extends AbstractType
     protected $contentType;
 
     /**
-     * @var ObjectRepository
-     */
-    protected $repository;
-
-    /**
      * @param Metadata\ContentType $contentType
-     * @param ObjectRepository $repository
      */
-    public function __construct(Metadata\ContentType $contentType, ObjectRepository $repository)
+    public function __construct(Metadata\ContentType $contentType)
     {
         $this->contentType = $contentType;
-        $this->repository = $repository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
@@ -48,16 +55,10 @@ class ContentType extends AbstractType
             'fields',
             new ContentTypeFieldCollection($this->contentType->getFields())
         );
-
-        $builder->add(
-            'relations',
-            new ContentTypeRelationCollection($this->repository)
-        );
     }
 
-
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {

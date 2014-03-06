@@ -1,37 +1,47 @@
 <?php
 
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeRelation as Transformer;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ */
 class ContentTypeRelation extends AbstractType
 {
     /**
-     * @var ContentTypeInterface
+     * {@inheritdoc}
      */
-    protected $contentType;
-
-    /**
-     * @param ContentTypeInterface $contentType
-     */
-    public function __construct(ContentTypeInterface $contentType)
-    {
-        $this->contentType = $contentType;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
+        $builder->add(
+            'name'
+        );
 
         $builder->add(
-            'enabled',
-            'checkbox',
+            'type'
+        );
+
+        $builder->add(
+            'contentTypes',
+            'document',
             array(
-                'required' => false,
-                'label' => $this->contentType->getName()
+                'class' => 'Integrated\Bundle\ContentBundle\Document\ContentType\ContentType',
+                'property' => 'name',
+                'expanded' => true,
+                'multiple' => true,
+                'empty_value' => false
             )
         );
 
@@ -44,7 +54,7 @@ class ContentTypeRelation extends AbstractType
                     1 => 'Multiple'
                 ),
                 'expanded' => true,
-                'required' => false
+                'empty_value' => false
             )
         );
 
@@ -53,20 +63,25 @@ class ContentTypeRelation extends AbstractType
             'checkbox',
             array(
                 'required' => false
-                //'label' => 'Required'
             )
         );
-
-        $transformer = new Transformer($this->contentType);
-        $builder->addModelTransformer($transformer);
     }
 
-
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
-        return 'content_type_field';
+        return 'content_type_relation';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Relation',
+        ));
     }
 }
