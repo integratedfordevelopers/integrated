@@ -11,6 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Documents\Functional\Embedded;
+use Integrated\Common\ContentType\ContentTypeRelationInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
@@ -62,7 +66,7 @@ class ContentType implements ContentTypeInterface
      * @var Embedded\Relation[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Relation")
      */
-    protected $relations = array();
+    protected $relations;
 
     /**
      * @var \DateTime
@@ -76,6 +80,7 @@ class ContentType implements ContentTypeInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->relations = new ArrayCollection();
     }
 
     /**
@@ -236,29 +241,68 @@ class ContentType implements ContentTypeInterface
     /**
      * Set the relations of the content type
      *
-     * @param array $relations
+     * @param Collection $relations
      * @return $this
      */
-    public function setRelations(array $relations)
+    public function setRelations(Collection $relations)
     {
         $this->relations = $relations;
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @param ContentTypeRelationInterface $relation
+     * @return bool TRUE if Relation is added FALSE otherwise
      */
-    public function getRelation($class, $type = null)
+    public function addRelation(ContentTypeRelationInterface $relation)
     {
-        // TODO: Implement getRelation() method.
+        if ($this->hasRelation($relation)) {
+            return false;
+        }
+
+        return $this->relations->add($relation);
+    }
+
+    /**
+     * @param ContentTypeRelationInterface $relation
+     * @return bool TRUE if Relation is removed FALSE otherwise
+     */
+    public function removeRelation(ContentTypeRelationInterface $relation)
+    {
+        if (!$this->hasRelation($relation)) {
+            return false;
+        }
+
+        return $this->relations->removeElement($relation);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasRelation($class, $type = null)
+    public function getRelation($id)
     {
-        // TODO: Implement hasRelation() method.
+        foreach ($this->getRelations() as $relation) {
+            if ($relation->getId() == $id) {
+                return $relation;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasRelation(ContentTypeRelationInterface $relation)
+    {
+        /** @var $item ContentTypeRelationInterface */
+        foreach ($this->getRelations() as $item) {
+            if ($item->getInternalName() == $relation->getInternalName()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
