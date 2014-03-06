@@ -319,9 +319,11 @@ class ContentType implements ContentTypeInterface
      * Set the createdAt of the content type
      *
      * @param \DateTime $createdAt
+     * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 }
