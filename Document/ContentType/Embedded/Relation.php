@@ -11,6 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Integrated\Common\ContentType\ContentTypeRelationInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 
@@ -20,17 +24,47 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\EmbeddedDocument
  */
-class Relation
+class Relation implements ContentTypeRelationInterface
 {
     /**
-     * @var ContentType
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType", cascade={"remove"})
+     * @var string
+     * @ODM\Id(strategy="UUID")
      */
-    protected $contentType;
+    protected $id;
+
+    /**
+     * @var string The name of the Relation
+     * @ODM\String
+     * @Assert\NotBlank()
+     */
+    protected $name;
+
+    /**
+     * @var string The internal name of the Relation, should be unique
+     * @ODM\String
+     * @ODM\UniqueIndex
+     * @Assert\NotBlank()
+     */
+    protected $internalName;
+
+    /**
+     * @var string The type of the Relation
+     * @ODM\String
+     * @Assert\NotBlank()
+     */
+    protected $type;
+
+    /**
+     * @var ContentType[]
+     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType")
+     * @Assert\NotBlank()
+     */
+    protected $contentTypes;
 
     /**
      * @var bool One or more references possible
      * @ODM\Boolean
+     * @Assert\NotBlank()
      */
     protected $multiple;
 
@@ -41,25 +75,111 @@ class Relation
     protected $required;
 
     /**
-     * @return ContentType
+     * Constructor
      */
-    public function getContentType()
+    public function __construct()
     {
-        return $this->contentType;
+        $this->contentTypes = new ArrayCollection();
     }
 
     /**
-     * @param ContentType $contentType
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
      * @return $this
      */
-    public function setContentType(ContentType $contentType)
+    public function setId($id)
     {
-        $this->contentType = $contentType;
+        $this->id = $id;
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        // TODO use sluggable extension
+        if (null === $this->internalName) {
+            $this->setInternalName(trim(strtolower(str_replace(' ', '_', $this->name))));
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInternalName()
+    {
+        return $this->internalName;
+    }
+
+    /**
+     * @param string $internalName
+     * @return $this
+     */
+    public function setInternalName($internalName)
+    {
+        $this->internalName = $internalName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContentTypes()
+    {
+        return $this->contentTypes;
+    }
+
+    /**
+     * @param Collection $contentTypes
+     * @return $this
+     */
+    public function setContentTypes(Collection $contentTypes)
+    {
+        $this->contentTypes = $contentTypes;
+        return $this;
+    }
+
+    /**
+     * @return bool
      */
     public function getMultiple()
     {
@@ -77,7 +197,7 @@ class Relation
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getRequired()
     {
