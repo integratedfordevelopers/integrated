@@ -24,6 +24,9 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
      */
     private $contentType;
 
+    /**
+     * Setup the test
+     */
     protected function setUp()
     {
         $this->contentType = new ContentType();
