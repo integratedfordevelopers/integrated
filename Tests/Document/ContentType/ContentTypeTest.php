@@ -33,6 +33,14 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * ContentType should implement ContentTypeInterface
+     */
+    public function testInstanceOfContentTypeInterface()
+    {
+        $this->assertInstanceOf('Integrated\Common\ContentType\ContentTypeInterface', $this->contentType);
+    }
+
+    /**
      * Test the create functions
      */
     public function testCreate()
