@@ -160,7 +160,121 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($relations, $this->contentType->setRelations($relations)->getRelations());
     }
 
-    // TODO test getRelation and hasRelation
+    /**
+     * Test addRelation function with new relation
+     */
+    public function testAddRelationFunctionWithNewRelation()
+    {
+        /** @var $newRelation \Integrated\Common\ContentType\ContentTypeRelationInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $newRelation = $this->getMock('Integrated\Common\ContentType\ContentTypeRelationInterface');
+
+        // Asserts
+        $this->assertTrue($this->contentType->addRelation($newRelation));
+        $this->assertCount(1, $this->contentType->getRelations());
+    }
+
+
+    /**
+     * Test addRelation function with duplicate relation
+     */
+    public function testAddRelationFunctionWithDuplicateRelation()
+    {
+        /** @var $newRelation \Integrated\Common\ContentType\ContentTypeRelationInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $newRelation = $this->getMock('Integrated\Common\ContentType\ContentTypeRelationInterface');
+
+        // Stub getId
+        $newRelation->expects($this->exactly(2))
+            ->method('getId')
+            ->will($this->returnValue('id1'));
+
+        $duplicateRelation = $newRelation;
+
+        // Asserts
+        $this->assertTrue($this->contentType->addRelation($newRelation));
+        $this->assertFalse($this->contentType->addRelation($duplicateRelation));
+        $this->assertCount(1, $this->contentType->getRelations());
+    }
+
+    /**
+     * Test getRelation function with existing relation
+     */
+    public function testGetRelationFunctionWithExistingRelation()
+    {
+        /** @var $relation \Integrated\Common\ContentType\ContentTypeRelationInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $relation = $this->getMock('Integrated\Common\ContentType\ContentTypeRelationInterface');
+
+        // Stub getId
+        $relation->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue('id1'));
+
+        // Asserts
+        $this->assertTrue($this->contentType->addRelation($relation));
+        $this->assertSame($relation, $this->contentType->getRelation('id1'));
+    }
+
+    /**
+     * Test getRelation function with not existing relation
+     */
+    public function testGetRelationFunctionWithNotExistingRelation()
+    {
+        /** @var $relation \Integrated\Common\ContentType\ContentTypeRelationInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $relation = $this->getMock('Integrated\Common\ContentType\ContentTypeRelationInterface');
+
+        // Stub getId
+        $relation->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue('id1'));
+
+        // Asserts
+        $this->assertTrue($this->contentType->addRelation($relation));
+        $this->assertFalse($this->contentType->getRelation('id2'));
+    }
+
+    /**
+     * Test removeRelation function with existing relation
+     */
+    public function testRemoveRelationFunctionWithExistingRelation()
+    {
+        /** @var $existingRelation \Integrated\Common\ContentType\ContentTypeRelationInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $existingRelation = $this->getMock('Integrated\Common\ContentType\ContentTypeRelationInterface');
+
+        // Stub getId
+        $existingRelation->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue('id1'));
+
+        // Asserts
+        $this->assertTrue($this->contentType->addRelation($existingRelation));
+        $this->assertCount(1, $this->contentType->getRelations());
+
+        $this->assertTrue($this->contentType->removeRelation($existingRelation));
+        $this->assertCount(0, $this->contentType->getRelations());
+    }
+
+    /**
+     * Test removeRelation function with not existing relation
+     */
+    public function testRemoveRelationFunctionWithNotExistingRelation()
+    {
+        /** @var $existingRelation \Integrated\Common\ContentType\ContentTypeRelationInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $existingRelation = $this->getMock('Integrated\Common\ContentType\ContentTypeRelationInterface');
+
+        // Stub getId
+        $existingRelation->expects($this->any())
+            ->method('getId')
+            ->will($this->returnValue('id1'));
+
+        /** @var $notExistingRelation \Integrated\Common\ContentType\ContentTypeRelationInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $notExistingRelation = $this->getMock('Integrated\Common\ContentType\ContentTypeRelationInterface');
+
+        // Asserts
+        $this->assertTrue($this->contentType->addRelation($existingRelation));
+        $this->assertCount(1, $this->contentType->getRelations());
+
+        $this->assertFalse($this->contentType->removeRelation($notExistingRelation));
+        $this->assertCount(1, $this->contentType->getRelations());
+    }
 
     /**
      * Test get- and setCreatedAt function
