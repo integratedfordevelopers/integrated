@@ -297,7 +297,7 @@ class ContentType implements ContentTypeInterface
     {
         /** @var $item ContentTypeRelationInterface */
         foreach ($this->getRelations() as $item) {
-            if ($item->getInternalName() == $relation->getInternalName()) {
+            if ($item->getId() == $relation->getId()) {
                 return true;
             }
         }
