@@ -19,7 +19,7 @@ interface ContentTypeRelationInterface
     /**
      * @return string
      */
-    public function getInternalName();
+    public function getId();
 
     /**
      * @return ContentTypeInterface[]
