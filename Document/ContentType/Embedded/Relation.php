@@ -171,6 +171,7 @@ class Relation implements ContentTypeRelationInterface
     {
         return $this->required;
     }
+
     /**
      * @param bool $required
      * @return $this;
