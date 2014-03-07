@@ -40,14 +40,6 @@ class Relation implements ContentTypeRelationInterface
     protected $name;
 
     /**
-     * @var string The internal name of the Relation, should be unique
-     * @ODM\String
-     * @ODM\UniqueIndex
-     * @Assert\NotBlank()
-     */
-    protected $internalName;
-
-    /**
      * @var string The type of the Relation
      * @ODM\String
      * @Assert\NotBlank()
@@ -115,30 +107,6 @@ class Relation implements ContentTypeRelationInterface
     public function setName($name)
     {
         $this->name = $name;
-
-        // TODO use sluggable extension
-        if (null === $this->internalName) {
-            $this->setInternalName(trim(strtolower(str_replace(' ', '_', $this->name))));
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getInternalName()
-    {
-        return $this->internalName;
-    }
-
-    /**
-     * @param string $internalName
-     * @return $this
-     */
-    public function setInternalName($internalName)
-    {
-        $this->internalName = $internalName;
         return $this;
     }
 
