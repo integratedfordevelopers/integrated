@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\ContentType;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 
 /**
@@ -148,9 +149,11 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $relation1 = $this->getMockClass('Integrated\Common\ContentType\ContentTypeRelationInterface');
         $relation2 = $this->getMockClass('Integrated\Common\ContentType\ContentTypeRelationInterface');
 
-        $relations = array(
-            $relation1,
-            $relation2
+        $relations = new ArrayCollection(
+            array(
+                $relation1,
+                $relation2
+            )
         );
 
         // Assert
@@ -159,5 +162,12 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
 
     // TODO test getRelation and hasRelation
 
-
+    /**
+     * Test get- and setCreatedAt function
+     */
+    public function testGetAndSetCreatedAtFunction()
+    {
+        $createdAt = new \DateTime();
+        $this->assertSame($createdAt, $this->contentType->setCreatedAt($createdAt)->getCreatedAt());
+    }
 }
