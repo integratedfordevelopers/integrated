@@ -21,7 +21,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-		"symfony/symfony": "2.3.*",
+		"symfony/symfony": "~2.4",
         "integrated/library": "dev-develop"
     },
     "autoload":{
