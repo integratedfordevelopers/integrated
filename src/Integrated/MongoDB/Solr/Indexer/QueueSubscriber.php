@@ -161,10 +161,12 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 
 	protected function process($action, LifecycleEventArgs $event)
 	{
-		// @hack
+		// @todo find better solution for this
+		// @codeCoverageIgnoreStart
 		if (!$event->getDocument() instanceof ContentInterface) {
 			return;
 		}
+		// @codeCoverageIgnoreEnd
 
 		$job = new Job($action);
 
