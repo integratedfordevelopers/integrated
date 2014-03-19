@@ -47,6 +47,8 @@ class Batch implements Countable, IteratorAggregate
 				unset($this->batch[$key]);
 			}
 		}
+
+		$this->batch = array_values($this->batch); // reorder keys
 	}
 
 	/**

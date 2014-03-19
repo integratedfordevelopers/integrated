@@ -28,13 +28,13 @@ class SendEvent extends IndexerEvent
 	 * Event constructor.
 	 *
 	 * @param IndexerInterface $indexer
-	 * @param Query $batch
+	 * @param Query $query
 	 */
-	public function __construct(IndexerInterface $indexer, Query $batch)
+	public function __construct(IndexerInterface $indexer, Query $query)
 	{
 		parent::__construct($indexer);
 
-		$this->query = $batch;
+		$this->query = $query;
 	}
 
 	/**

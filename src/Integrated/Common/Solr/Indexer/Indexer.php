@@ -70,6 +70,11 @@ class Indexer implements IndexerInterface
 	private $serializer;
 
 	/**
+	 * @var ConverterInterface
+	 */
+	protected $converter;
+
+	/**
 	 * @var Client
 	 */
 	private $client = null;
@@ -79,10 +84,6 @@ class Indexer implements IndexerInterface
 	 */
 	private $batch = null;
 
-    /**
-     * @var ConverterInterface
-     */
-    protected $converter;
 
 	/**
 	 * Set the event dispatcher
