@@ -25,7 +25,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "2.3.*",
+        "symfony/symfony": "~2.4",
         "symfony/framework-bundle": "~2.2",
 		"doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/mongodb": "1.0.*",
