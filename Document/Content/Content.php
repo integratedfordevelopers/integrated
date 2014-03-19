@@ -13,21 +13,33 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
+
+use Integrated\Common\Content\ExtensibleInterface;
+use Integrated\Common\Content\ExtensibleTrait;
+use Integrated\Common\Content\MetadatableInterface;
 use Integrated\Common\Content\ContentInterface;
+
+use Integrated\Common\Content\MetadataInterface;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
 
 /**
  * Abstract base class for document types
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ *
  * @ODM\Document(collection="content", indexes={@ODM\Index(keys={"class"="asc"})})
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
  */
-class Content implements ContentInterface
+class Content implements ContentInterface, ExtensibleInterface, MetadatableInterface
 {
+	use ExtensibleTrait;
+
     /**
      * @var string
      * @ODM\Id(strategy="UUID")
@@ -73,10 +85,10 @@ class Content implements ContentInterface
     protected $disabled;
 
     /**
-     * @var array
-     * @ODM\Hash
+     * @var Metadata
+	 * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
      */
-    protected $metadata = array();
+    protected $metadata = null;
 
     /**
      * Constructor
@@ -210,6 +222,8 @@ class Content implements ContentInterface
                     return true;
                 }
             }
+
+			return false;
         })->first();
     }
 
@@ -301,55 +315,28 @@ class Content implements ContentInterface
         return $this;
     }
 
-    /**
-     * Get the metadata of the document
-     *
-     * @return array
-     */
-    public function getMetadata()
-    {
-        return $this->metadata;
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function getMetadata()
+	{
+		if ($this->metadata === null) {
+			$this->metadata = new Metadata();
+		}
 
-    /**
-     * Set the metadata of the document
-     *
-     * @param array $metadata
-     * @return $this
-     */
-    public function setMetadata(array $metadata)
-    {
-        $this->metadata = $metadata;
-        return $this;
-    }
+		return $this->metadata;
+	}
 
-    /**
-     * Add metadata to the metadata collection
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return $this
-     */
-    public function addMetadata($key, $value)
-    {
-        $this->metadata[$key] = $value;
-        return $this;
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function setMetadata(MetadataInterface $metadata = null)
+	{
+		if ($metadata !== null && !$metadata instanceof Metadata) {
+			$metadata = new Metadata($metadata->toArray());
+		}
 
-    /**
-     * Remove metadata from the metadata collection
-     *
-     * @param $key
-     * @return mixed The removed element or null if the collection did not contain the element.
-     */
-    public function removeMetadata($key)
-    {
-        if (isset($this->metadata[$key])) {
-            $return = $this->metadata[$key];
-            unset($this->metadata[$key]);
-            return $return;
-        }
-
-        return false;
-    }
+		$this->metadata = $metadata;
+		return $this;
+	}
 }
