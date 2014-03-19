@@ -50,6 +50,7 @@ class QueueProviderTest extends \PHPUnit_Framework_TestCase
 
 		$result = $this->provider->pull('channel');
 
+		$this->assertInternalType('array', $result);
 		$this->assertCount(1, $result);
 		$this->assertContainsOnlyInstancesOf('Integrated\Common\Queue\Provider\Memory\QueueMessage', $result);
 		$this->assertEquals(1, $this->provider->count('channel'));
@@ -109,6 +110,14 @@ class QueueProviderTest extends \PHPUnit_Framework_TestCase
 		$message = array_pop($message);
 
 		$this->assertEquals('payload1', $message->getPayload());
+	}
+
+	public function testPullNoneExistingChannel()
+	{
+		$result = $this->provider->pull('channel');
+
+		$this->assertInternalType('array', $result);
+		$this->assertCount(0, $result);
 	}
 
 	public function testRelease()
