@@ -35,6 +35,9 @@ class FormType implements FormTypeInterface
      */
     protected $reader;
 
+	/**
+	 * @var string
+	 */
 	protected $name = null;
 
 	/**
