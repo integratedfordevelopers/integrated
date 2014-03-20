@@ -16,7 +16,7 @@ namespace Integrated\Common\Content\Extension;
  */
 class ExtensionRegistryBuilder implements ExtensionRegistryBuilderInterface
 {
-	use ExtensionRegistryTrait { addExtension as public; };
+	use ExtensionRegistryTrait { addExtension as public; }
 
 	/**
 	 * @inheritdoc
