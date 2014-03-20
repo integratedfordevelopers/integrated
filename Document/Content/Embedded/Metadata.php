@@ -25,7 +25,7 @@ class Metadata implements MetadataInterface
 {
 	/**
 	 * @var array
-	 * @ODM/hash
+	 * @ODM\Hash
 	 */
 	private $data;
 
