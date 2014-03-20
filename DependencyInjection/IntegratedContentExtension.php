@@ -1,4 +1,14 @@
 <?php
+
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Integrated\Bundle\ContentBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -8,12 +18,11 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * ContainerExtension for loading configuration
+ * IntegratedContentExtension for loading configuration
  *
- * @package Integrated\Bundle\ContentBundle\DependencyInjection
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContainerExtension extends Extension implements PrependExtensionInterface
+class IntegratedContentExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * @var string
