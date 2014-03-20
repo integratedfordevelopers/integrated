@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<parameters>
+
+		<parameter key="integrated_content.form.factory.class">Integrated\Common\Content\Form\FormFactory</parameter>
+
+	</parameters>
+
+	<services>
+
+		<service id="integrated_content.form.factory" class="%integrated_content.form.factory.class%">
+			<argument type="service" id="integrated_content.resolver.priority"/>
+            <argument type="service" id="integrated_content.reader.document"/>
+		</service>
+
+		<service id="integrated.form.resolver" alias="integrated_content.resolver.priority" />
+		<service id="integrated.form.factory" alias="integrated_content.form.factory" />
+
+	</services>
+
+</container>

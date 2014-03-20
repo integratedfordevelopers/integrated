@@ -8,12 +8,12 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * IntegratedContentExtension for loading configuration
+ * ContainerExtension for loading configuration
  *
  * @package Integrated\Bundle\ContentBundle\DependencyInjection
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class IntegratedContentExtension extends Extension implements PrependExtensionInterface
+class ContainerExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * @var string
@@ -29,7 +29,12 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.xml');
+
+		$loader->load('converters.xml');
+		$loader->load('form.xml');
+		$loader->load('mappings.xml');
+		$loader->load('mongo.xml');
+        $loader->load('resolvers.xml');
 
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);

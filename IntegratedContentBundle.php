@@ -3,7 +3,7 @@
 namespace Integrated\Bundle\ContentBundle;
 
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\DoctrineMongoDBMetadataFactoryPass;
-use Integrated\Bundle\ContentBundle\DependencyInjection\IntegratedContentExtension;
+use Integrated\Bundle\ContentBundle\DependencyInjection\ContainerExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -15,6 +15,8 @@ class IntegratedContentBundle extends Bundle
 	 */
 	public function build(ContainerBuilder $container)
 	{
+		parent::build($container);
+
 		$container->addCompilerPass(new DoctrineMongoDBMetadataFactoryPass());
 	}
 
@@ -23,6 +25,6 @@ class IntegratedContentBundle extends Bundle
 	 */
 	public function getContainerExtension()
 	{
-		return new IntegratedContentExtension();
+		return new ContainerExtension();
 	}
 }

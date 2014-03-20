@@ -41,7 +41,7 @@ class DoctrineMongoDBMetadataFactoryPass implements CompilerPassInterface
 
 		$container->setDefinition(
 			'integrated_content.odm.default_manager_configurator',
-			new Definition('%integrated_content.odm.manager_configurator.class%', array($manager->getConfigurator()))
+			new Definition('%integrated_content.odm.mongo.manager_configurator.class%', array($manager->getConfigurator()))
 		);
 
 		$manager->setConfigurator(array(new Reference('integrated_content.odm.default_manager_configurator'), 'configure'));
