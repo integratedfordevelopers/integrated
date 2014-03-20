@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<parameters>
+
+		<parameter key="integrated_content.extension.registry.builder.class">Integrated\Common\Content\Extension\ExtensionRegistryBuilder</parameter>
+		<parameter key="integrated_content.extension.registry.class">Integrated\Common\Content\Extension\ExtensionRegistryInterface</parameter>
+
+		<parameter key="integrated_content.extension.dispatcher.class">Integrated\Common\Content\Extension\ExtensionDispatcher</parameter>
+
+	</parameters>
+
+	<services>
+
+		<service id="integrated_content.extension.registry.builder" class="%integrated_content.extension.registry.builder.class%" />
+
+		<service id="integrated_content.extension.registry"
+				 class="%integrated_content.extension.registry.class%"
+				 factory-service="integrated_content.extension.registry.builder"
+				 factory-method="getRegistry"
+				/>
+
+		<service id="integrated_content.extension.dispatcher" class="integrated_content.extension.dispatcher.class">
+			<argument type="service" id="integrated_content.extension.registry" />
+		</service>
+
+	</services>
+
+</container>
