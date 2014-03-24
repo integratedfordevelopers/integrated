@@ -1,0 +1,70 @@
+{% extends "IntegratedUserBundle::layout.html.twig" %}
+
+{% block style %}
+
+    {{ parent() }}
+
+    <style type="text/css">
+
+        .modal-backdrop,
+        .modal-backdrop.fade,
+        .modal-backdrop.in {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #000;
+
+            opacity: .8 !important;
+            filter: alpha(opacity=80) !important;
+        }
+
+        .modal {
+            display: block;
+            overflow-y: hidden;
+        }
+
+        .modal-dialog {
+            margin-top: 5%;
+        }
+
+        .modal.auth .modal-footer {
+        	margin-top: -10px;
+        }
+
+    </style>
+
+{% endblock style %}
+
+{% block body %}
+
+<div class="modal auth">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content ">
+
+            {{ form_start(form, {'attr': {'id': 'login'}, 'style': 'horizontal'}) }}
+
+                <div class="modal-header">
+                    <h4 class="modal-title">{% trans %}Login{% endtrans %}</h4>
+                </div>
+
+                <div class="modal-body">
+
+                    {{ form_widget(form) }}
+
+                </div>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal-backdrop"></div>
+
+{% endblock body %}
