@@ -40,7 +40,7 @@ class ExtensionDispatcher implements ExtensionDispatcherInterface, ExtensionRegi
 		$this->dispatcher = new ExtensionEventDispatcher();
 
 		foreach ($this->registry->getExtensions() as $extension) {
-			$this->dispatcher->addSubscriber($extension);
+			$this->dispatcher->addSubscriber($extension->getEventSubscriber());
 		}
 
 		$this->dispatcher = new ImmutableEventDispatcher($this->dispatcher);

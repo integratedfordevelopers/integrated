@@ -16,16 +16,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ExtensionInterface extends EventSubscriberInterface
+interface ExtensionInterface
 {
+	/**
+	 * @return EventSubscriberInterface
+	 */
+	public function getEventSubscriber();
+
 	/**
 	 * @return string
 	 */
 	public function getName();
-
-	/**
-	 * @param string $class
-	 * @return bool
-	 */
-	public function supportsClass($class);
 }

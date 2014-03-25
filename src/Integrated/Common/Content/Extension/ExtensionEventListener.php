@@ -39,9 +39,9 @@ class ExtensionEventListener
 	{
 		$content = $event->getContent();
 
-		if (!$content || !$this->extension->supportsClass(get_class($content))) {
-			return;
-		}
+//		if (!$content || !$this->extension->supportsClass(get_class($content))) {
+//			return;
+//		}
 
 		$event = clone $event;
 		$event->setData(null);
