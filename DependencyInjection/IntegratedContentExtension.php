@@ -40,6 +40,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
 		$loader->load('converters.xml');
+		$loader->load('extensions.xml');
 		$loader->load('form.xml');
 		$loader->load('mappings.xml');
 		$loader->load('mongo.xml');

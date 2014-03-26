@@ -11,6 +11,8 @@
 
 		<parameter key="integrated_content.extension.dispatcher.class">Integrated\Common\Content\Extension\ExtensionDispatcher</parameter>
 
+		<parameter key="integrated_content.extension.adaptor.mongo.class">Integrated\Common\Content\Extension\Adaptor\Doctrine\DoctrineMongodbAdaptor</parameter>
+
 	</parameters>
 
 	<services>
@@ -23,8 +25,19 @@
 				 factory-method="getRegistry"
 				/>
 
-		<service id="integrated_content.extension.dispatcher" class="integrated_content.extension.dispatcher.class">
+		<service id="integrated_content.extension.dispatcher" class="%integrated_content.extension.dispatcher.class%">
 			<argument type="service" id="integrated_content.extension.registry" />
+		</service>
+
+		<service id="integrated_content.extension.adaptor.mongo" class="%integrated_content.extension.adaptor.mongo.class%">
+			<call method="setDispatcher">
+				<argument type="service" id="integrated_content.extension.dispatcher" />
+			</call>
+			<tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+		</service>
+
+		<service id="integrated_content.workflow.temp" class="Integrated\Bundle\ContentBundle\Extension\WorkflowExtension">
+			<tag name="integrated_content.extension" />
 		</service>
 
 	</services>
