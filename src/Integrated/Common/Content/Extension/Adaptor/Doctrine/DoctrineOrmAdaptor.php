@@ -11,6 +11,7 @@
 
 namespace Integrated\Common\Content\Extension\Adaptor\Doctrine;
 
+use Doctrine\Common\EventArgs;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**
@@ -34,7 +35,7 @@ class DoctrineOrmAdaptor
 		);
 	}
 
-	protected function getObject($eventArgs)
+	protected function getObject(EventArgs $eventArgs)
 	{
 		if ($eventArgs instanceof LifecycleEventArgs) {
 			return $eventArgs->getEntity();

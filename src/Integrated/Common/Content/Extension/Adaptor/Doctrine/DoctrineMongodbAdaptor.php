@@ -11,6 +11,7 @@
 
 namespace Integrated\Common\Content\Extension\Adaptor\Doctrine;
 
+use Doctrine\Common\EventArgs;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 
 /**
@@ -34,7 +35,7 @@ class DoctrineMongodbAdaptor extends DoctrineAdaptor
 		);
 	}
 
-	protected function getObject($eventArgs)
+	protected function getObject(EventArgs $eventArgs)
 	{
 		if ($eventArgs instanceof LifecycleEventArgs) {
 			return $eventArgs->getDocument();
