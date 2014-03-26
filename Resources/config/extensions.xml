@@ -36,10 +36,6 @@
 			<tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
 		</service>
 
-		<service id="integrated_content.workflow.temp" class="Integrated\Bundle\ContentBundle\Extension\WorkflowExtension">
-			<tag name="integrated_content.extension" />
-		</service>
-
 	</services>
 
 </container>
