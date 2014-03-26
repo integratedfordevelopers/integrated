@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<parameters>
+
+		<parameter key="integrated_content.mapping.metadata.driver.class">Integrated\Common\ContentType\Mapping\Driver\AnnotationsDriver</parameter>
+		<parameter key="integrated_content.mapping.metadata.content_type_factory.class">Integrated\Common\ContentType\Mapping\Metadata\ContentTypeFactory</parameter>
+
+		<parameter key="integrated_content.reader.document.class">Integrated\Common\Content\Reader\Document</parameter>
+		<parameter key="integrated_content.reader.document_factory.class">Integrated\Common\Content\Reader\DocumentFactory</parameter>
+
+	</parameters>
+
+	<services>
+
+		<service id="integrated_content.mapping.metadata.driver"
+				 class="%integrated_content.mapping.metadata.driver.class%">
+			<argument type="service" id="annotation_reader"/>
+		</service>
+
+		<service id="integrated_content.mapping.metadata.content_type_factory"
+				 class="%integrated_content.mapping.metadata.content_type_factory.class%">
+			<argument type="service" id="integrated_content.mapping.metadata.driver"/>
+		</service>
+
+		<service id="integrated_content.reader.document_factory"
+				 class="%integrated_content.reader.document_factory.class%"/>
+
+		<service id="integrated_content.reader.document"
+				 class="%integrated_content.reader.document.class%"
+				 factory-service="integrated_content.reader.document_factory"
+				 factory-method="build"
+				>
+			<argument type="service" id="doctrine_mongodb"/>
+			<argument type="service" id="integrated_content.mapping.metadata.content_type_factory"/>
+		</service>
+
+	</services>
+
+</container>
