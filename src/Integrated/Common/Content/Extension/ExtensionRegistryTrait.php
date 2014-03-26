@@ -19,7 +19,7 @@ trait ExtensionRegistryTrait
 	/**
 	 * @var ExtensionInterface[]
 	 */
-	protected $extensions;
+	protected $extensions = [];
 
 	protected function addExtension(ExtensionInterface $extension)
 	{
