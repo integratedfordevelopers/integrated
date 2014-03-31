@@ -15,7 +15,7 @@ use Integrated\Common\Content\Exception\UnexpectedTypeException;
 use Integrated\Common\Content\Exception\InvalidArgumentException;
 use Integrated\Common\Content\ContentInterface;
 
-use Integrated\Common\Content\Reader;
+use Integrated\Common\ContentType\Mapping\MetadataFactory;
 use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
 
 /**
@@ -29,18 +29,18 @@ class FormFactory implements FormFactoryInterface
     private $resolver;
 
     /**
-     * @var Reader\Document
+     * @var MetadataFactory
      */
-    private $reader;
+    private $metadata;
 
     /**
      * @param ContentTypeResolverInterface $resolver
-     * @param Reader\Document $reader
+     * @param MetadataFactory $metadata
      */
-    public function __construct(ContentTypeResolverInterface $resolver, Reader\Document $reader)
+    public function __construct(ContentTypeResolverInterface $resolver, MetadataFactory $metadata)
 	{
 		$this->resolver = $resolver;
-        $this->reader = $reader;
+        $this->metadata = $metadata;
 	}
 
 	/**
@@ -64,6 +64,6 @@ class FormFactory implements FormFactoryInterface
 			throw new UnexpectedTypeException($type, 'string');
   		}
 
-		return new FormType($this->resolver->getType($class, $type), $this->reader);
+		return new FormType($this->resolver->getType($class, $type), $this->metadata);
 	}
 }

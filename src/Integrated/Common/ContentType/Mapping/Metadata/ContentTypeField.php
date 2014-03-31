@@ -11,12 +11,14 @@
 
 namespace Integrated\Common\ContentType\Mapping\Metadata;
 
+use Integrated\Common\ContentType\Mapping\MetadataFieldEditorInterface;
+
 /**
  * Class for storing metadata properties of a field
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeField
+class ContentTypeField implements MetadataFieldEditorInterface
 {
     /**
      * @var string
@@ -31,12 +33,18 @@ class ContentTypeField
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
+
+	/**
+	 * @param string $name
+	 */
+	public function __construct($name)
+	{
+		$this->name = $name;
+	}
 
     /**
-     * Get the name of the Field
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getName()
     {
@@ -44,20 +52,7 @@ class ContentTypeField
     }
 
     /**
-     * Set the name of the Field
-     *
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-    /**
-     * Get the type of the Field
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getType()
     {
@@ -65,10 +60,7 @@ class ContentTypeField
     }
 
     /**
-     * Set the type of the Field
-     *
-     * @param string $type
-     * @return $this
+     * @inheritdoc
      */
     public function setType($type)
     {
@@ -77,9 +69,7 @@ class ContentTypeField
     }
 
     /**
-     * Get the options of the Field
-     *
-     * @return array
+     * @inheritdoc
      */
     public function getOptions()
     {
@@ -87,10 +77,7 @@ class ContentTypeField
     }
 
     /**
-     * Set the options of the Field
-     *
-     * @param array $options
-     * @return $this
+     * @inheritdoc
      */
     public function setOptions(array $options)
     {
@@ -98,7 +85,32 @@ class ContentTypeField
         return $this;
     }
 
-    /**
+	/**
+	 * @inheritdoc
+	 */
+	public function getOption($name)
+	{
+		return $this->hasOption($name) ? $this->options[$name] : null;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function hasOption($name)
+	{
+		return isset($this->options[$name]);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function setOption($name, $value)
+	{
+		$this->options[$name] = $value;
+		return $this;
+	}
+
+	/**
      * Shortcut to get the label of an element
      *
      * @return string
