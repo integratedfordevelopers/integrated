@@ -15,7 +15,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\EventArgs;
 
 use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
-use Integrated\Common\Content\Extension\ExtensionEvents;
+use Integrated\Common\Content\Extension\Events;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -32,37 +32,37 @@ class DoctrineAdaptor extends AbstractAdaptor implements EventSubscriber
 
 	public function preRemove(EventArgs $eventArgs)
 	{
-		$this->dispatch(ExtensionEvents::PRE_DELETE, $eventArgs);
+		$this->dispatch(Events::PRE_DELETE, $eventArgs);
 	}
 
 	public function postRemove(EventArgs $eventArgs)
 	{
-		$this->dispatch(ExtensionEvents::POST_DELETE, $eventArgs);
+		$this->dispatch(Events::POST_DELETE, $eventArgs);
 	}
 
 	public function prePersist(EventArgs $eventArgs)
 	{
-		$this->dispatch(ExtensionEvents::PRE_CREATE, $eventArgs);
+		$this->dispatch(Events::PRE_CREATE, $eventArgs);
 	}
 
 	public function postPersist(EventArgs $eventArgs)
 	{
-		$this->dispatch(ExtensionEvents::POST_CREATE, $eventArgs);
+		$this->dispatch(Events::POST_CREATE, $eventArgs);
 	}
 
 	public function preUpdate(EventArgs $eventArgs)
 	{
-		$this->dispatch(ExtensionEvents::PRE_UPDATE, $eventArgs);
+		$this->dispatch(Events::PRE_UPDATE, $eventArgs);
 	}
 
 	public function postUpdate(EventArgs $eventArgs)
 	{
-		$this->dispatch(ExtensionEvents::POST_UPDATE, $eventArgs);
+		$this->dispatch(Events::POST_UPDATE, $eventArgs);
 	}
 
 	public function postLoad(EventArgs $eventArgs)
 	{
-		$this->dispatch(ExtensionEvents::POST_READ, $eventArgs);
+		$this->dispatch(Events::POST_READ, $eventArgs);
 	}
 
 	protected function getObject(EventArgs $eventArgs)
@@ -72,12 +72,12 @@ class DoctrineAdaptor extends AbstractAdaptor implements EventSubscriber
 
 	protected function dispatch($event, EventArgs $eventArgs)
 	{
-		if ($this->dispatcher === null) {
+		if (($dispatcher = $this->getDispatcher()) === null) {
 			return;
 		}
 
 		if ($object = $this->getObject($eventArgs)) {
-			$this->dispatcher->dispatch($event, $object);
+			$dispatcher->dispatch($event, $object);
 		}
 	}
 }

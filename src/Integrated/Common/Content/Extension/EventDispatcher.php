@@ -11,17 +11,17 @@
 
 namespace Integrated\Common\Content\Extension;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcher As BaseEventDispatcher;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExtensionEventDispatcher extends EventDispatcher
+class EventDispatcher extends BaseEventDispatcher
 {
 	public function addListener($eventName, $listener, $priority = 0)
 	{
 		if (is_array($listener) && $listener[0] instanceof ExtensionInterface) {
-			$listener = new ExtensionEventListener($listener[0], $listener);
+			$listener = new EventListener($listener[0], $listener);
 		}
 
 		parent::addListener($eventName, $listener, $priority);

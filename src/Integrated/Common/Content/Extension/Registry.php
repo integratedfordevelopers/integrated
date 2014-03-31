@@ -14,9 +14,9 @@ namespace Integrated\Common\Content\Extension;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExtensionRegistry implements ExtensionRegistryInterface
+class Registry implements RegistryInterface
 {
-	use ExtensionRegistryTrait;
+	use RegistryTrait;
 
 	/**
 	 * @param ExtensionInterface[] $extensions

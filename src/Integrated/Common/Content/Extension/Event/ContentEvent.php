@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content\Extension;
+namespace Integrated\Common\Content\Extension\Event;
 
 use Integrated\Common\Content\ContentInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Integrated\Common\Content\Extension\Event;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExtensionEvent extends Event
+class ContentEvent extends Event
 {
 	/**
 	 * @var mixed
@@ -28,6 +28,13 @@ class ExtensionEvent extends Event
 	 * @var ContentInterface
 	 */
 	private $content;
+
+	public function __construct(ContentInterface $content)
+	{
+		parent::__construct(self::CONTENT);
+
+		$this->content = $content;
+	}
 
 	/**
 	 * @param mixed $data
@@ -43,14 +50,6 @@ class ExtensionEvent extends Event
 	public function getData()
 	{
 		return $this->data;
-	}
-
-	/**
-	 * @param ContentInterface $content
-	 */
-	public function setContent(ContentInterface $content)
-	{
-		$this->content = $content;
 	}
 
 	/**

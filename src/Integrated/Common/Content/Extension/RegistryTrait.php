@@ -14,22 +14,23 @@ namespace Integrated\Common\Content\Extension;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ExtensionRegistryInterface
+trait RegistryTrait
 {
 	/**
-	 * @return ExtensionInterface[]
+	 * @var ExtensionInterface[]
 	 */
-	public function getExtensions();
+	protected $extensions = [];
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasExtension($name);
+	protected function addExtension(ExtensionInterface $extension)
+	{
+		$name = $extension->getName();
 
-	/**
-	 * @param string $name
-	 * @return ExtensionInterface | null
-	 */
-	public function getExtension($name);
-}
+		if (isset($this->extensions[$name])) {
+			throw new \LogicException();
+		}
+
+		$this->extensions[$name] = $extension;
+
+		return $this;
+	}
+} 

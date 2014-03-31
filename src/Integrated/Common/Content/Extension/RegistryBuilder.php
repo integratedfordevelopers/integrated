@@ -14,15 +14,15 @@ namespace Integrated\Common\Content\Extension;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExtensionRegistryBuilder implements ExtensionRegistryBuilderInterface
+class RegistryBuilder implements RegistryBuilderInterface
 {
-	use ExtensionRegistryTrait { addExtension as public; }
+	use RegistryTrait { addExtension as public; }
 
 	/**
 	 * @inheritdoc
 	 */
 	public function getRegistry()
 	{
-		return new ExtensionRegistry($this->extensions);
+		return new Registry($this->extensions);
 	}
 }

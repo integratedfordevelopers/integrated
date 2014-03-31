@@ -14,8 +14,50 @@ namespace Integrated\Common\Content\Extension;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-final class ExtensionEvents
+final class Events
 {
+	private function __construct() {} // don't allow creation
+
+//	/**
+//	 *
+//	 */
+//	const CONTENT_POST_READ   = 'extension.content.read.post';
+//
+//	/**
+//	 *
+//	 */
+//	const CONTENT_PRE_CREATE  = 'extension.content.create.pre';
+//
+//	/**
+//	 *
+//	 */
+//	const CONTENT_POST_CREATE = 'extension.content.create.post';
+//
+//	/**
+//	 *
+//	 */
+//	const CONTENT_PRE_UPDATE  = 'extension.content.update.pre';
+//
+//	/**
+//	 *
+//	 */
+//	const CONTENT_POST_UPDATE = 'extension.content.update.post';
+//
+//	/**
+//	 *
+//	 */
+//	const CONTENT_PRE_DELETE  = 'extension.content.delete.pre';
+//
+//	/**
+//	 *
+//	 */
+//	const CONTENT_POST_DELETE = 'extension.content.delete.post';
+
+	/**
+	 *
+	 */
+	const PRE_READ   = 'extension.read.pre';
+
 	/**
 	 *
 	 */

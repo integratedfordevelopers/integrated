@@ -10,19 +10,24 @@
  */
 
 namespace Integrated\Common\Content\Extension;
-use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ExtensionDispatcherInterface
+interface RegistryBuilderInterface
 {
 	/**
-	 * Only ContentInterface objects will be processed by the dispatch function.
+	 * Add a extension to the registry.
 	 *
-	 * @param string $event
-	 * @param object $object
-	 * @return ExtensionEvent
+	 * The extension name needs to be unique or an exception will be thrown
+	 *
+	 * @param ExtensionInterface $extension
+	 * @return self
 	 */
-	public function dispatch($event, $object);
+	public function addExtension(ExtensionInterface $extension);
+
+	/**
+	 * @return RegistryInterface
+	 */
+	public function getRegistry();
 }

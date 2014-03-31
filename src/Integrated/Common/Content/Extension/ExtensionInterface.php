@@ -27,4 +27,41 @@ interface ExtensionInterface
 	 * @return string
 	 */
 	public function getName();
+
+//	/**
+//	 * @return string
+//	 */
+//	public function getDescription();
 }
+
+//interface ConfigurableInterface
+//{
+//	/**
+//	 * @return ConfigInterface
+//	 */
+//	public function getConfig();
+//}
+//
+//interface ConfigInterface
+//{
+//	public function getOptions();
+//
+//	public function setOptions(array $options);
+//
+//	public function setOption($option, $value = null);
+//
+//	public function getOption($option);
+//
+//	public function hasOption($option);
+//
+//	public function getDefaults();
+//
+//	public function getDefault($option);
+//
+//	public function hasDefault($option);
+//}
+
+
+
+
+

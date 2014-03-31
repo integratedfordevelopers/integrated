@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExtensionEventListener
+class EventListener
 {
 	/**
 	 * @var ExtensionInterface
@@ -35,7 +35,7 @@ class ExtensionEventListener
 		$this->listener = $listener;
 	}
 
-	public function __invoke(ExtensionEvent $event, $eventName, EventDispatcherInterface $dispatcher)
+	public function __invoke(ContentEvent $event, $eventName, EventDispatcherInterface $dispatcher)
 	{
 		$content = $event->getContent();
 

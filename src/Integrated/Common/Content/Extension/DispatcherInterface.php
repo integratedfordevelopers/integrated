@@ -11,10 +11,19 @@
 
 namespace Integrated\Common\Content\Extension;
 
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ExtensionAdaptorInterface
+interface DispatcherInterface
 {
-	public function setDispatcher(ExtensionDispatcherInterface $dispatcher);
+	/**
+	 * Only ContentInterface objects will be processed by the dispatch function.
+	 *
+	 * @param string $event
+	 * @param object $object
+	 * @return Event
+	 */
+	public function dispatch($event, $object);
 }

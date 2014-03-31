@@ -14,20 +14,22 @@ namespace Integrated\Common\Content\Extension;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ExtensionRegistryBuilderInterface
+interface RegistryInterface
 {
 	/**
-	 * Add a extension to the registry.
-	 *
-	 * The extension name needs to be unique or an exception will be thrown
-	 *
-	 * @param ExtensionInterface $extension
-	 * @return self
+	 * @return ExtensionInterface[]
 	 */
-	public function addExtension(ExtensionInterface $extension);
+	public function getExtensions();
 
 	/**
-	 * @return ExtensionRegistryInterface
+	 * @param string $name
+	 * @return bool
 	 */
-	public function getRegistry();
+	public function hasExtension($name);
+
+	/**
+	 * @param string $name
+	 * @return ExtensionInterface | null
+	 */
+	public function getExtension($name);
 }

@@ -14,23 +14,7 @@ namespace Integrated\Common\Content\Extension;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-trait ExtensionRegistryTrait
+interface AdaptorInterface
 {
-	/**
-	 * @var ExtensionInterface[]
-	 */
-	protected $extensions = [];
-
-	protected function addExtension(ExtensionInterface $extension)
-	{
-		$name = $extension->getName();
-
-		if (isset($this->extensions[$name])) {
-			throw new \LogicException();
-		}
-
-		$this->extensions[$name] = $extension;
-
-		return $this;
-	}
-} 
+	public function setDispatcher(DispatcherInterface $dispatcher);
+}

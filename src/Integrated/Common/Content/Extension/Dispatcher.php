@@ -11,18 +11,22 @@
 
 namespace Integrated\Common\Content\Extension;
 
+use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Content\Extension\Event\ContentEvent;
+use Integrated\Common\Content\Extension\Event\ContentTypeEvent;
 
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\ImmutableEventDispatcher;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExtensionDispatcher implements ExtensionDispatcherInterface, ExtensionRegistryInterface
+class Dispatcher implements DispatcherInterface, RegistryInterface
 {
 	/**
-	 * @var ExtensionRegistryInterface
+	 * @var RegistryInterface
 	 */
 	private $registry;
 
@@ -32,12 +36,12 @@ class ExtensionDispatcher implements ExtensionDispatcherInterface, ExtensionRegi
 	private $dispatcher;
 
 	/**
-	 * @param ExtensionRegistryInterface $registry
+	 * @param RegistryInterface $registry
 	 */
-	public function __construct(ExtensionRegistryInterface $registry)
+	public function __construct(RegistryInterface $registry)
 	{
 		$this->registry   = $registry;
-		$this->dispatcher = new ExtensionEventDispatcher();
+		$this->dispatcher = new EventDispatcher();
 
 		foreach ($this->registry->getExtensions() as $extension) {
 			$this->dispatcher->addSubscriber($extension->getEventSubscriber());
@@ -75,13 +79,14 @@ class ExtensionDispatcher implements ExtensionDispatcherInterface, ExtensionRegi
 	 */
 	public function dispatch($eventName, $object)
 	{
-		$event = new ExtensionEvent();
-
 		if ($object instanceof ContentInterface) {
-			$event->setContent($object);
-			$event = $this->dispatcher->dispatch($eventName, $event);
+			return $this->dispatcher->dispatch($eventName, new ContentEvent($object));
 		}
 
-		return $event;
+		if ($object instanceof ContentTypeInterface) {
+			return $this->dispatcher->dispatch($eventName, new ContentTypeEvent($object));
+		}
+
+		return new Event();
 	}
 }

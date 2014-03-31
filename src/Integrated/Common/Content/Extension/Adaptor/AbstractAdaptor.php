@@ -11,24 +11,30 @@
 
 namespace Integrated\Common\Content\Extension\Adaptor;
 
-use Integrated\Common\Content\Extension\ExtensionAdaptorInterface;
-use Integrated\Common\Content\Extension\ExtensionDispatcherInterface;
+use Integrated\Common\Content\Extension\AdaptorInterface;
+use Integrated\Common\Content\Extension\DispatcherInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-abstract class AbstractAdaptor implements ExtensionAdaptorInterface
+abstract class AbstractAdaptor implements AdaptorInterface
 {
 	/**
-	 * @var ExtensionDispatcherInterface | null
+	 * @var DispatcherInterface | null
 	 */
 	protected $dispatcher = null;
 
-	public function setDispatcher(ExtensionDispatcherInterface $dispatcher)
+	/**
+	 * @param DispatcherInterface $dispatcher
+	 */
+	public function setDispatcher(DispatcherInterface $dispatcher)
 	{
 		$this->dispatcher = $dispatcher;
 	}
 
+	/**
+	 * @return DispatcherInterface|null
+	 */
 	public function getDispatcher()
 	{
 		return $this->dispatcher;
