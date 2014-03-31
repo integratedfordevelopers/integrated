@@ -6,10 +6,10 @@
 
 	<parameters>
 
-		<parameter key="integrated_content.extension.registry.builder.class">Integrated\Common\Content\Extension\ExtensionRegistryBuilder</parameter>
-		<parameter key="integrated_content.extension.registry.class">Integrated\Common\Content\Extension\ExtensionRegistryInterface</parameter>
+		<parameter key="integrated_content.extension.registry.builder.class">Integrated\Common\Content\Extension\RegistryBuilder</parameter>
+		<parameter key="integrated_content.extension.registry.class">Integrated\Common\Content\Extension\RegistryInterface</parameter>
 
-		<parameter key="integrated_content.extension.dispatcher.class">Integrated\Common\Content\Extension\ExtensionDispatcher</parameter>
+		<parameter key="integrated_content.extension.dispatcher.class">Integrated\Common\Content\Extension\Dispatcher</parameter>
 
 		<parameter key="integrated_content.extension.adaptor.mongo.class">Integrated\Common\Content\Extension\Adaptor\Doctrine\DoctrineMongodbAdaptor</parameter>
 

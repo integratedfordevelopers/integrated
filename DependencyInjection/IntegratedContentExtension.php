@@ -42,7 +42,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 		$loader->load('converters.xml');
 		$loader->load('extensions.xml');
 		$loader->load('form.xml');
-		$loader->load('mappings.xml');
+		$loader->load('metadata.xml');
 		$loader->load('mongo.xml');
         $loader->load('resolvers.xml');
 
