@@ -53,6 +53,8 @@ final class Events
 //	 */
 //	const CONTENT_POST_DELETE = 'extension.content.delete.post';
 
+	const METADATA   = 'extension.metadata';
+
 	/**
 	 *
 	 */

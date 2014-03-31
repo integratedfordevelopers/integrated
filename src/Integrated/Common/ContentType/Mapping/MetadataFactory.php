@@ -53,6 +53,14 @@ class MetadataFactory implements MetadataFactoryInterface
 	}
 
 	/**
+	 * @param EventDispatcher $dispatcher
+	 */
+	public function setEventDispatcher(EventDispatcher $dispatcher)
+	{
+		$this->dispatcher = $dispatcher;
+	}
+
+	/**
 	 * @return DriverInterface
 	 */
 	public function getDriver()

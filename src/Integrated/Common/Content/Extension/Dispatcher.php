@@ -11,11 +11,13 @@
 
 namespace Integrated\Common\Content\Extension;
 
+use Integrated\Common\Content\Extension\Event\MetadataEvent;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Extension\Event\ContentEvent;
 use Integrated\Common\Content\Extension\Event\ContentTypeEvent;
 
+use Integrated\Common\ContentType\Mapping\MetadataEditorInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\ImmutableEventDispatcher;
@@ -85,6 +87,10 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
 
 		if ($object instanceof ContentTypeInterface) {
 			return $this->dispatcher->dispatch($eventName, new ContentTypeEvent($object));
+		}
+
+		if ($object instanceof MetadataEditorInterface) {
+			return $this->dispatcher->dispatch($eventName, new MetadataEvent($object));
 		}
 
 		return new Event();
