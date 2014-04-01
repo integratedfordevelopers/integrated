@@ -7,6 +7,7 @@
 	<parameters>
 
 		<parameter key="integrated_user.form.login.type.class">Integrated\Bundle\UserBundle\Form\Type\LoginType</parameter>
+        <parameter key="integrated_user.form.user.type.class">Integrated\Bundle\UserBundle\Form\Type\UserType</parameter>
 
 	</parameters>
 
@@ -15,6 +16,10 @@
 		<service id="integrated_user.form.login.type" class="%integrated_user.form.login.type.class%">
 			<argument type="service" id="service_container"/>
 		</service>
+
+        <service id="integrated_user.form.user.type" class="%integrated_user.form.user.type.class%">
+            <tag name="form.type" alias="integrated_user" />
+        </service>
 
 	</services>
 
