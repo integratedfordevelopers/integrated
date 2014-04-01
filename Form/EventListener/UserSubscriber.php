@@ -22,6 +22,37 @@ use Integrated\Common\Content\ExtensibleInterface;
 class UserSubscriber implements EventSubscriberInterface
 {
     /**
+     * @var string
+     */
+    protected $extensionName;
+
+    /**
+     * @param string $extensionName
+     */
+    public function __construct($extensionName)
+    {
+        $this->extensionName = $extensionName;
+    }
+
+    /**
+     * @param string $extensionName
+     * @return $this
+     */
+    public function setExtensionName($extensionName)
+    {
+        $this->extensionName = $extensionName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtensionName()
+    {
+        return $this->extensionName;
+    }
+
+    /**
      * @inheritdoc
      */
     public static function getSubscribedEvents()
@@ -37,12 +68,12 @@ class UserSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        $form = $event->getForm()->getParent();
+        $parent = $event->getForm()->getParent();
 
-        if (null !== $form) {
-            $content = $form->getNormData();
+        if (null !== $parent) {
+            $content = $parent->getNormData();
             if ($content instanceof ExtensibleInterface) {
-                // TODO get data from extension
+                $event->setData($content->getExtension($this->extensionName));
             }
         }
 
@@ -53,12 +84,12 @@ class UserSubscriber implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
-        $form = $event->getForm()->getParent();
+        $parent = $event->getForm()->getParent();
 
-        if (null !== $form) {
-            $content = $form->getNormData();
+        if (null !== $parent) {
+            $content = $parent->getNormData();
             if ($content instanceof ExtensibleInterface) {
-                // TODO set data in extension
+                $content->setExtension($this->extensionName, $event->getForm()->getData());
             }
         }
     }

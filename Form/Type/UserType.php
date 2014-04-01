@@ -36,7 +36,7 @@ class UserType extends AbstractType
             'password'
         );
 
-        $builder->addEventSubscriber(new UserSubscriber());
+        $builder->addEventSubscriber(new UserSubscriber('user'));
     }
 
     /**
