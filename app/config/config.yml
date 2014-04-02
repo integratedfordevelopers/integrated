@@ -101,3 +101,6 @@ sp_bower:
     bundles:
         IntegratedFormTypeBundle: ~
     bin: %bower_bin%
+    install_on_warmup: true
+    assetic:
+        enabled: false
