@@ -20,7 +20,7 @@ use Integrated\Common\ContentType\ContentTypeRelationInterface;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class FormRelationType extends AbstractType
+class RelationType extends AbstractType
 {
     /**
      * @var ContentTypeRelationInterface[]
