@@ -270,6 +270,6 @@ class Person extends Relation
      */
     public function __toString()
     {
-        return $this->firstname . ' ' . $this->getLastname();
+        return trim($this->firstname . ' ' . $this->getLastname());
     }
 }
