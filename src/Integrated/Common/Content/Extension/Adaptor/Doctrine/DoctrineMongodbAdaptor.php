@@ -11,13 +11,19 @@
 
 namespace Integrated\Common\Content\Extension\Adaptor\Doctrine;
 
-use Doctrine\Common\EventArgs;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Proxy;
+
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
+
+use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
+use Integrated\Common\Content\Extension\Events;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DoctrineMongodbAdaptor extends DoctrineAdaptor
+class DoctrineMongodbAdaptor extends AbstractAdaptor implements EventSubscriber
 {
 	/**
 	 * @inheritdoc
@@ -29,18 +35,74 @@ class DoctrineMongodbAdaptor extends DoctrineAdaptor
 			'postRemove',
 			'prePersist',
 			'postPersist',
-			'preUpdate',
-			'postUpdate',
+			'preFlush', // calculate our of preUpdate
+			'postUpdate', // probably should to postUpdate along the lines of the preUpdate
 			'postLoad',
 		);
 	}
 
-	protected function getObject(EventArgs $eventArgs)
+	public function preRemove(LifecycleEventArgs $args)
 	{
-		if ($eventArgs instanceof LifecycleEventArgs) {
-			return $eventArgs->getDocument();
+		$this->dispatch(Events::PRE_DELETE, $args->getDocument());
+	}
+
+	public function postRemove(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::POST_DELETE, $args->getDocument());
+	}
+
+	public function prePersist(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::PRE_CREATE, $args->getDocument());
+	}
+
+	public function postPersist(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::POST_CREATE, $args->getDocument());
+	}
+
+	public function preFlush(PreFlushEventArgs $event)
+	{
+		$manager = $event->getDocumentManager();
+		$uow = $manager->getUnitOfWork();
+
+		foreach ($uow->getIdentityMap() as $class => $objects) {
+			$class = $manager->getClassMetadata($class);
+
+			if ($class->isEmbeddedDocument) {
+				continue;
+			}
+
+			foreach ($objects as $object) {
+				if ($object instanceof Proxy && !$object->__isInitialized__) {
+     			   continue;
+    			}
+
+				if ($uow->isScheduledForUpdate($object) || $uow->isScheduledForDelete($object)) {
+					continue;
+				}
+
+				$this->dispatch(Events::PRE_UPDATE, $object);
+			}
+		}
+	}
+
+	public function postUpdate(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::POST_UPDATE, $args->getDocument());
+	}
+
+	public function postLoad(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::POST_READ, $args->getDocument());
+	}
+
+	protected function dispatch($event, $object)
+	{
+		if (($dispatcher = $this->getDispatcher()) === null) {
+			return;
 		}
 
-		return null;
+		$dispatcher->dispatch($event, $object);
 	}
 } 

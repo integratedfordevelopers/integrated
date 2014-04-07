@@ -11,13 +11,20 @@
 
 namespace Integrated\Common\Content\Extension\Adaptor\Doctrine;
 
-use Doctrine\Common\EventArgs;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Proxy;
+
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\PreFlushEventArgs;
+
+use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
+use Integrated\Common\Content\Extension\Events;
+
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DoctrineOrmAdaptor
+class DoctrineOrmAdaptor extends AbstractAdaptor implements EventSubscriber
 {
 	/**
 	 * @inheritdoc
@@ -29,18 +36,74 @@ class DoctrineOrmAdaptor
 			'postRemove',
 			'prePersist',
 			'postPersist',
-			'preUpdate',
+			'preFlush', // calculate our of preUpdate
 			'postUpdate',
 			'postLoad',
 		);
 	}
 
-	protected function getObject(EventArgs $eventArgs)
+	public function preRemove(LifecycleEventArgs $args)
 	{
-		if ($eventArgs instanceof LifecycleEventArgs) {
-			return $eventArgs->getEntity();
+		$this->dispatch(Events::PRE_DELETE, $args->getEntity());
+	}
+
+	public function postRemove(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::POST_DELETE, $args->getEntity());
+	}
+
+	public function prePersist(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::PRE_CREATE, $args->getEntity());
+	}
+
+	public function postPersist(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::POST_CREATE, $args->getEntity());
+	}
+
+	public function preFlush(PreFlushEventArgs $event)
+	{
+		$manager = $event->getEntityManager();
+		$uow = $manager->getUnitOfWork();
+
+		foreach ($uow->getIdentityMap() as $class => $objects) {
+			$class = $manager->getClassMetadata($class);
+
+			if ($class->isReadOnly) {
+				continue;
+			}
+
+			foreach ($objects as $object) {
+				if ($object instanceof Proxy && !$object->__isInitialized__) {
+     			   continue;
+    			}
+
+				if ($uow->isScheduledForUpdate($object) || $uow->isScheduledForDelete($object)) {
+					continue;
+				}
+
+				$this->dispatch(Events::PRE_UPDATE, $object);
+			}
+		}
+	}
+
+	public function postUpdate(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::POST_UPDATE, $args->getEntity());
+	}
+
+	public function postLoad(LifecycleEventArgs $args)
+	{
+		$this->dispatch(Events::POST_READ, $args->getEntity());
+	}
+
+	protected function dispatch($event, $object)
+	{
+		if (($dispatcher = $this->getDispatcher()) === null) {
+			return;
 		}
 
-		return null;
+		$dispatcher->dispatch($event, $object);
 	}
 } 
