@@ -95,10 +95,10 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get- and setLastname function
      */
-    public function testGetAndSetLastnameFunction()
+    public function testGetAndSetLastNameFunction()
     {
-        $lastname = 'de Vries';
-        $this->assertEquals($lastname, $this->person->setLastname($lastname)->getLastname());
+        $lastName = 'de Vries';
+        $this->assertEquals($lastName, $this->person->setLastName($lastName)->getLastName());
     }
 
     /**
@@ -188,7 +188,7 @@ class PersonTest extends \PHPUnit_Framework_TestCase
         $firstName = 'Henk';
         $lastName = 'de Vries';
 
-        $this->person->setFirstname($firstName)->setLastname($lastName);
+        $this->person->setFirstName($firstName)->setLastName($lastName);
 
         $this->assertEquals($firstName . ' ' . $lastName, (string) $this->person);
     }
@@ -199,7 +199,7 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     public function testToStringWithFirstNameOnly()
     {
         $firstName = 'Henk';
-        $this->assertEquals($firstName, (string) $this->person->setFirstname($firstName));
+        $this->assertEquals($firstName, (string) $this->person->setFirstName($firstName));
     }
 
     /**

@@ -54,14 +54,14 @@ class Person extends Relation
      * @ODM\String
      * @Type\Field(options={"label"="First name"})
      */
-    protected $firstname;
+    protected $firstName;
 
     /**
      * @var string
      * @ODM\String
      * @Type\Field(options={"label"="Last name"})
      */
-    protected $lastname;
+    protected $lastName;
 
     /**
      * @var Collection Job[]
@@ -155,42 +155,42 @@ class Person extends Relation
      *
      * @return string
      */
-    public function getFirstname()
+    public function getFirstName()
     {
-        return $this->firstname;
+        return $this->firstName;
     }
 
     /**
      * Set the firstname of the document
      *
-     * @param string $firstname
+     * @param string $firstName
      * @return $this
      */
-    public function setFirstname($firstname)
+    public function setFirstName($firstName)
     {
-        $this->firstname = $firstname;
+        $this->firstName = $firstName;
         return $this;
     }
 
     /**
-     * Get the lastname of the document
+     * Get the lastName of the document
      *
      * @return string
      */
-    public function getLastname()
+    public function getLastName()
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
     /**
-     * Set the lastname of the document
+     * Set the lastName of the document
      *
-     * @param string $lastname
+     * @param string $lastName
      * @return $this
      */
-    public function setLastname($lastname)
+    public function setLastName($lastName)
     {
-        $this->lastname = $lastname;
+        $this->lastName = $lastName;
         return $this;
     }
 
@@ -270,6 +270,6 @@ class Person extends Relation
      */
     public function __toString()
     {
-        return trim($this->firstname . ' ' . $this->getLastname());
+        return trim($this->firstName . ' ' . $this->lastName);
     }
 }
