@@ -264,4 +264,12 @@ class Person extends Relation
         $this->picture = $picture;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->firstname . ' ' . $this->getLastname();
+    }
 }

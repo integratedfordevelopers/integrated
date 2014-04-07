@@ -317,4 +317,9 @@ class Article extends Content
         $this->location = $location;
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->title;
+    }
 }
