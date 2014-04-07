@@ -12,6 +12,7 @@
 		<parameter key="integrated_content.extension.dispatcher.class">Integrated\Common\Content\Extension\Dispatcher</parameter>
 
 		<parameter key="integrated_content.extension.adaptor.mongo.class">Integrated\Common\Content\Extension\Adaptor\Doctrine\DoctrineMongodbAdaptor</parameter>
+		<parameter key="integrated_content.extension.adaptor.metadata.class">Integrated\Common\Content\Extension\Adaptor\Metadata\MetadataFactoryAdaptor</parameter>
 
 	</parameters>
 
@@ -34,6 +35,13 @@
 				<argument type="service" id="integrated_content.extension.dispatcher" />
 			</call>
 			<tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+		</service>
+
+		<service id="integrated_content.extension.adaptor.metadata" class="%integrated_content.extension.adaptor.metadata.class%">
+			<call method="setDispatcher">
+				<argument type="service" id="integrated_content.extension.dispatcher" />
+			</call>
+			<tag name="integrated_content.metadata.event_subscriber" />
 		</service>
 
 	</services>
