@@ -38,8 +38,8 @@ Integrated\Bundle\ContentBundle\Document\Content\Relation\Person:
     gender: <randomElement(['male', 'female'])>
     prefix: <prefix()>
     nickname: 15%? <username()>
-    firstname: <firstname()>
-    lastname: <lastname()>
+    firstName: <firstname()>
+    lastName: <lastname()>
     jobs: <randomElement([0,0,1,1,1,1,1,2])>x @job_embed*
 #    picture
 

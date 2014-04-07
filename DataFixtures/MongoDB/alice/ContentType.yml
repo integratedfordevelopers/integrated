@@ -22,9 +22,9 @@ Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
   Author:
     class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
     name: Author
-    fields: <classfields($class, ['firstname', 'lastname'])>
+    fields: <classfields($class, ['firstName', 'lastName'])>
 
   Employee:
     class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
     name: Employee
-    fields: <classfields($class, ['firstname', 'lastname', 'email'], ['nickname'])>
+    fields: <classfields($class, ['firstName', 'lastName', 'email'], ['nickname'])>
