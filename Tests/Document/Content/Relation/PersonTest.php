@@ -177,6 +177,37 @@ class PersonTest extends \PHPUnit_Framework_TestCase
         /* @var $picture \Integrated\Bundle\ContentBundle\Document\Content\File | \PHPUnit_Framework_MockObject_MockObject */
         $picture = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\File');
         $this->assertSame($picture, $this->person->setPicture($picture)->getPicture());
+    }
 
+
+    /**
+     * Test toString function with first and last name
+     */
+    public function testToStringFunctionWithFirstAndLastName()
+    {
+        $firstName = 'Henk';
+        $lastName = 'de Vries';
+
+        $this->person->setFirstname($firstName)->setLastname($lastName);
+
+        $this->assertEquals($firstName . ' ' . $lastName, (string) $this->person);
+    }
+
+    /**
+     * Test toString function with first name only
+     */
+    public function testToStringWithFirstNameOnly()
+    {
+        $firstName = 'Henk';
+        $this->assertEquals($firstName, (string) $this->person->setFirstname($firstName));
+    }
+
+    /**
+     * Test toString function with last name only
+     */
+    public function testToStringWithLastNameOnly()
+    {
+        $lastName = 'de Vries';
+        $this->assertEquals($lastName, (string) $this->person->setLastName($lastName));
     }
 }

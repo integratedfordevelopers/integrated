@@ -64,4 +64,13 @@ class TaxonomyTest extends \PHPUnit_Framework_TestCase
         $description = 'description';
         $this->assertEquals($description, $this->taxonomy->setDescription($description)->getDescription());
     }
+
+    /**
+     * Test toString function
+     */
+    public function testToStringFunction()
+    {
+        $title = 'Title';
+        $this->assertEquals($title, (string) $this->taxonomy->setTitle($title));
+    }
 }

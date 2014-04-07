@@ -74,4 +74,13 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $description = 'description';
         $this->assertEquals($description, $this->file->setDescription($description)->getDescription());
     }
+
+    /**
+     * Test toString function
+     */
+    public function testToStringFunction()
+    {
+        $title = 'Title';
+        $this->assertEquals($title, (string) $this->file->setTitle($title));
+    }
 }

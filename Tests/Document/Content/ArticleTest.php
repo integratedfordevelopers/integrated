@@ -184,4 +184,13 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         $location = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location');
         $this->assertSame($location, $this->article->setLocation($location)->getLocation());
     }
+
+    /**
+     * Test toString function
+     */
+    public function testToStringFunction()
+    {
+        $title = 'Title';
+        $this->assertEquals($title, (string) $this->article->setTitle($title));
+    }
 }

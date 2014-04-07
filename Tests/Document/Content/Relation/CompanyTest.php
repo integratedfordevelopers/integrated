@@ -93,4 +93,13 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
         $logo = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\File');
         $this->assertSame($logo, $this->company->setLogo($logo)->getLogo());
     }
+
+    /**
+     * Test toString function
+     */
+    public function testToStringFunction()
+    {
+        $name = 'Name';
+        $this->assertEquals($name, (string) $this->company->setName($name));
+    }
 }
