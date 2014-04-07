@@ -7,8 +7,9 @@
 	<parameters>
 
 		<parameter key="integrated_content.metadata.driver.annotation.mapping.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriver</parameter>
-
 		<parameter key="integrated_content.metadata.driver.annotation.class">Integrated\Common\ContentType\Mapping\Driver\AnnotationDriver</parameter>
+
+		<parameter key="integrated_content.metadata.factory.event_dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
 		<parameter key="integrated_content.metadata.factory.class">Integrated\Common\ContentType\Mapping\MetadataFactory</parameter>
 
 	</parameters>
@@ -29,8 +30,14 @@
 
 		<service id="integrated_content.metadata.driver" alias="integrated_content.metadata.driver.annotation" />
 
+		<service id="integrated_content.metadata.factory.event_dispatcher" class="%integrated_content.metadata.factory.event_dispatcher.class%" public="false" />
+
 		<service id="integrated_content.metadata.factory" class="%integrated_content.metadata.factory.class%">
 			<argument type="service" id="integrated_content.metadata.driver" />
+
+			<call method="setEventDispatcher">
+				<argument type="service" id="integrated_content.metadata.factory.event_dispatcher" />
+			</call>
 		</service>
 
 	</services>
