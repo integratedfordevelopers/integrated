@@ -11,17 +11,22 @@
 
 namespace Integrated\Common\Content\Extension;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 interface ExtensionInterface
 {
 	/**
-	 * @return EventSubscriberInterface
+	 * Return a list of event subscribers to add to the event dispatcher.
+	 *
+	 * @return EventSubscriberInterface[]
 	 */
-	public function getEventSubscriber();
+	public function getSubscribers();
+
+//	/**
+//	 * @return Dependency
+//	 */
+//	public function getDependencies();
 
 	/**
 	 * @return string
@@ -32,36 +37,32 @@ interface ExtensionInterface
 //	 * @return string
 //	 */
 //	public function getDescription();
+//
+//	/**
+//	 * @return string
+//	 */
+//	public function getVersion();
 }
 
-//interface ConfigurableInterface
+//interface EventSubscriberInterface extends BaseEventSubscriberInterface
 //{
-//	/**
-//	 * @return ConfigInterface
-//	 */
-//	public function getConfig();
+//	public function
+//
+//	public function isSupported($class);
+//
+//	public function isDisabled($class);
 //}
 //
-//interface ConfigInterface
+//interface Dependency
 //{
-//	public function getOptions();
+//	public function required();
 //
-//	public function setOptions(array $options);
-//
-//	public function setOption($option, $value = null);
-//
-//	public function getOption($option);
-//
-//	public function hasOption($option);
-//
-//	public function getDefaults();
-//
-//	public function getDefault($option);
-//
-//	public function hasDefault($option);
+//	public function optional();
 //}
-
-
-
-
-
+//
+//interface Specification
+//{
+//	public function required();
+//
+//	public function optional();
+//}
