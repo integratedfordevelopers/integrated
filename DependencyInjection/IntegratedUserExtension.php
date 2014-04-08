@@ -42,6 +42,8 @@ class IntegratedUserExtension extends Extension
 		$loader->load('manager.doctrine.xml');
 		$loader->load('security.xml');
 
+		$loader->load('extension.xml');
+
 		$configuration = new Configuration();
 		$config = $this->processConfiguration($configuration, $configs);
 
