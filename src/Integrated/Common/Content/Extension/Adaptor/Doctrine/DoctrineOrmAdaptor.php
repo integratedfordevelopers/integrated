@@ -79,7 +79,7 @@ class DoctrineOrmAdaptor extends AbstractAdaptor implements EventSubscriber
      			   continue;
     			}
 
-				if ($uow->isScheduledForUpdate($object) || $uow->isScheduledForDelete($object)) {
+				if ($uow->isScheduledForInsert($object) || $uow->isScheduledForDelete($object)) {
 					continue;
 				}
 
