@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -21,22 +22,28 @@ use Integrated\Bundle\UserBundle\Form\EventListener\UserSubscriber;
  */
 class UserType extends AbstractType
 {
+	/**
+	 * @var ContainerInterface
+	 */
+	private $container;
+
+	/**
+	 * @param ContainerInterface $container
+	 */
+	public function __construct(ContainerInterface $container)
+	{
+		$this->container = $container;
+	}
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'username',
-            'text'
-        );
+        $builder->add('username', 'text');
+        $builder->add('password', 'password', ['mapped' => false, 'required' => false]);
 
-        $builder->add(
-            'password',
-            'password'
-        );
-
-        $builder->addEventSubscriber(new UserSubscriber('user'));
+        $builder->addEventSubscriber(new UserSubscriber('integrated.extension.user', $this->container));
     }
 
     /**
@@ -45,7 +52,7 @@ class UserType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Integrated\Bundle\UserBundle\Model\User',
+            'data_class' => 'Integrated\\Bundle\\UserBundle\\Model\\User',
         ));
     }
 
