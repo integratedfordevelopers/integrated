@@ -13,8 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\Content\ContentInterface;
 use Doctrine\Common\Collections\Collection;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * Embedded document Reference
@@ -25,10 +25,11 @@ use Doctrine\Common\Collections\Collection;
 class Relation
 {
     /**
-     * @var string
+     * @var string id of the ContentType\Embedded\Relation
      * @ODM\String
+     * @ODM\Index
      */
-    protected $contentType;
+    protected $contentTypeRelation;
 
     /**
      * @var Collection
@@ -45,24 +46,21 @@ class Relation
     }
 
     /**
-     * Set contentType of Relation
-     *
-     * @param string $contentType
+     * @param string $contentTypeRelation
      * @return $this
      */
-    public function setContentType($contentType)
+    public function setContentTypeRelation($contentTypeRelation)
     {
-        $this->contentType = $contentType;
+        $this->contentTypeRelation = $contentTypeRelation;
         return $this;
     }
 
     /**
-     * Get contentType of Relation
      * @return string
      */
-    public function getContentType()
+    public function getContentTypeRelation()
     {
-        return $this->contentType;
+        return $this->contentTypeRelation;
     }
 
     /**

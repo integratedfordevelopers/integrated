@@ -172,7 +172,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
      */
     public function addRelation(Relation $relation)
     {
-        if ($exist = $this->getRelation($relation->getContentType())) {
+        if ($exist = $this->getRelation($relation->getContentTypeRelation())) {
             $exist->addReferences($relation->getReferences());
         } else {
             $this->relations->add($relation);
@@ -211,14 +211,14 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
     }
 
     /**
-     * @param $contentType
+     * @param $contentTypeRelation
      * @return Relation|false
      */
-    public function getRelation($contentType)
+    public function getRelation($contentTypeRelation)
     {
-        return $this->relations->filter(function($relation) use($contentType) {
+        return $this->relations->filter(function($relation) use($contentTypeRelation) {
             if ($relation instanceof Relation) {
-                if ($relation->getContentType() == $contentType) {
+                if ($relation->getContentTypeRelation() == $contentTypeRelation) {
                     return true;
                 }
             }
