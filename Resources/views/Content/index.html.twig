@@ -73,10 +73,12 @@
                         <strong>{{ contentTypes[content.type_name] }}</strong> - {{ content.title }}
                     </h3>
                 </div>
-                {% if content.content|join('...')|trim is not empty %}
-                <div class="panel-body">
-                    <div class="content">{{ content.content|join('...')|striptags|raw }}</div>
-                </div>
+                {% if content.content is defined %}
+                    {% if content.content|join('...')|trim is not empty %}
+                    <div class="panel-body">
+                        <div class="content">{{ content.content|join('...')|striptags|raw }}</div>
+                    </div>
+                    {% endif %}
                 {% endif %}
             </div>
 
