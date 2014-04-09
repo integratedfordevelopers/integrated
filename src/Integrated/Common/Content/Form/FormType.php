@@ -73,8 +73,10 @@ class FormType implements FormTypeInterface
         }
 
         $builder->add(
-            'relations',
-            new RelationType($this->contentType->getRelations())
+            $builder->create(
+                'relations',
+                new RelationType($this->contentType->getRelations())
+            )
         );
 
 		// submit buttons

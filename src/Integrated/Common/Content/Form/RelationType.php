@@ -41,15 +41,16 @@ class RelationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         foreach ($this->relations as $relation) {
+
             $builder->add(
                 $relation->getId(),
                 'document',
                 array(
                     'class' => 'Integrated\Bundle\ContentBundle\Document\Content\Content',
-                    'property' => 'id',
                     'label' => $relation->getName(),
                     'multiple' => $relation->getMultiple(),
                     'expanded' => $relation->getMultiple(),
+                    'empty_value' => 'Choose an option',
                     'query_builder' => function(DocumentRepository $dr) use($relation) {
 
                         $contentTypes = array();
@@ -61,7 +62,11 @@ class RelationType extends AbstractType
                     }
                 )
             );
+
         }
+
+        $transformer = new DataTransformer\Relation($this->relations);
+        $builder->addModelTransformer($transformer);
     }
 
     public function getName()
