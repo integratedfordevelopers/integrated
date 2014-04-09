@@ -11,6 +11,6 @@
 {% if pager.previous is defined %}
     {% set paging = paging|merge([{'prev': true}]) %}
 {% endif %}
-{% set data = {'href': 'resource', 'numFound': numFound, 'page': page,'limit': limit, 'pagination': pager|json_pagination , 'items': items} %}
+{% set data = {'href': 'resource', 'pagination': pager|json_pagination , 'items': items} %}
 {% endspaceless %}
 {{ data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
