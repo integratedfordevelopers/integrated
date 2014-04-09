@@ -74,7 +74,7 @@ class ContentSubscriber implements ContentSubscriberInterface
 	{
 		$class = new \ReflectionClass($object);
 
-		if (!$class->implementsInterface('Integrated\\Common\\Content\\MetadatableInterface')) {
+		if (!$class->implementsInterface('Integrated\\Common\\Content\\ContentInterface')) {
 			return false;
 		}
 
@@ -87,7 +87,6 @@ class ContentSubscriber implements ContentSubscriberInterface
 
 	public function read(ContentEvent $event)
 	{
-		/** @var \Integrated\Common\Content\MetadatableInterface $content */
 		$content = $event->getContent();
 
 		if (!$this->isSupported($content)) {
@@ -96,7 +95,9 @@ class ContentSubscriber implements ContentSubscriberInterface
 
 		$manager = $this->getManager();
 
-		if (!$content->getMetadata()->has('user_id') || !$user = $manager->find($content->getMetadata()->get('user_id'))) {
+		if ($user = $manager->findBy(['relation' => $content->getId()])) {
+			$user = array_shift($user); // get first user
+		} else {
 			$user = $manager->create();
 		}
 
@@ -105,7 +106,6 @@ class ContentSubscriber implements ContentSubscriberInterface
 
 	public function update(ContentEvent $event)
 	{
-		/** @var \Integrated\Common\Content\MetadatableInterface $content */
 		$content = $event->getContent();
 
 		if (!$this->isSupported($content)) {
@@ -113,9 +113,11 @@ class ContentSubscriber implements ContentSubscriberInterface
 		}
 
 		if ($user = $event->getData()) {
+			$user->setRelation($content);
+
 			$this->getManager()->persist($user);
 
-			$content->getMetadata()->set('user_id', $user->getId());
+//			$content->getMetadata()->set('user_id', $user->getId());
 //			$content->getMetadata()->set('user.id', $user->getId());
 		}
 	}

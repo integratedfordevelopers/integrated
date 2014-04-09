@@ -64,6 +64,16 @@ class User implements UserInterface
 	 */
 	protected $enabled = true;
 
+	/**
+	 * @var string
+	 */
+	protected $relation = null;
+
+	/**
+	 * @var \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
+	 */
+	protected $relation_instance = null;
+
 	public function __construct()
 	{
 		$this->groups = new ArrayCollection();
@@ -286,6 +296,33 @@ class User implements UserInterface
 	public function setEnabled($enabled = true)
 	{
 		$this->enabled = (bool) $enabled;
+	}
+
+	/**
+	 * @param \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation $relation
+	 */
+	public function setRelation($relation = null)
+	{
+		$relation = $relation instanceof \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation ? $relation : null;
+
+		$this->relation = $relation ? $relation->getId() : null;
+		$this->relation_instance = $relation;
+	}
+
+	/**
+	 * @return \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
+	 */
+	public function getRelation()
+	{
+//		try	{
+//			if ($this->relation_instance instanceof \Doctrine\Common\Persistence\Proxy && !$this->relation_instance->__isInitialized()) {
+//				$this->relation_instance->__load();
+//			}
+//		} catch (\Exception $e) {
+//			$this->relation_instance = null;
+//		}
+
+		return $this->relation_instance;
 	}
 
 	/**

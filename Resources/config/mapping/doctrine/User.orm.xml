@@ -23,6 +23,8 @@
 
 		<field name="enabled" column="enabled" type="boolean" />
 
+		<field name="relation" column="relation" type="string" nullable="true" />
+
     </entity>
 
 </doctrine-mapping>
