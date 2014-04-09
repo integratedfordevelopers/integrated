@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File as UploadedFile;
 
 /**
  * Document type File
@@ -93,7 +93,7 @@ class File extends Content
 	 */
 	protected function getUploadRootDir()
 	{
-		return __DIR__ . '/../../../../../../web/' . $this->getUploadDir();
+		return __DIR__ . '/../../../../../../../../web/' . $this->getUploadDir();
 	}
 
 	/**
@@ -143,24 +143,24 @@ class File extends Content
 	 */
 	public function upload()
 	{
-		// Only upload if we got a file
-		if (null === $this->getFile()) {
-			return;
-		}
+        // Only upload if we got a file
+        if (null === $this->getFile()) {
+            return;
+        }
 
-		// Remove old images
-		if (isset($this->temp)) {
-			unlink($this->temp);
-			$this->temp = null;
-		}
+        // Remove old images
+        if (isset($this->temp)) {
+            unlink($this->temp);
+            $this->temp = null;
+        }
 
-		// Set path
-		$this->path = $this->getFile()->guessExtension();
+        // Set path
+        $this->path = $this->getFile()->guessExtension();
 
-		// Move file
-		$this->getFile()->move($this->getUploadRootDir(), $this->id . '.' . $this->path);
+        // Move file
+        $this->getFile()->move($this->getUploadRootDir(), $this->id . '.' . $this->path);
 
-		// Unset file
+        // Unset file
 		$this->setFile(null);
 	}
 
