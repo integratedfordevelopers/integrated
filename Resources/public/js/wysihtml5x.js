@@ -1,1 +1,1 @@
-$('.integrated_wysihtml5x').wysihtml5();
+$('.integrated_wysihtml5x').wysihtml5( {useLineBreaks: false} );
