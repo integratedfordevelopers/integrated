@@ -58,7 +58,7 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 		if ($metadata->getClass() === self::RELATION_CLASS || is_subclass_of($metadata->getClass(), self::RELATION_CLASS)) {
 			$field = $metadata->newField('User');
 
-			$field->setType('integrated_user');
+			$field->setType('user_profile');
 			$field->setOption('mapped', false);
 
 			$metadata->addField($field);

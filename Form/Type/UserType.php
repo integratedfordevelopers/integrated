@@ -61,6 +61,6 @@ class UserType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_user';
+        return 'integrated_user_profile';
     }
 }

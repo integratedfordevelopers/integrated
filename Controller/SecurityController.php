@@ -12,10 +12,9 @@
 namespace Integrated\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\SecurityContext;
 
 /**
- * Configuration class for ContentBundle
+ * The login controller
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -24,7 +23,7 @@ class SecurityController extends Controller
 	public function loginAction()
 	{
 		$form = $this->createForm(
-			$this->get('integrated_user.security.login.form.type'),
+			'user_security_login',
 			null,
 			['action' => $this->generateUrl('integrated_user_check')]
 		);
