@@ -10,6 +10,7 @@
 
 		<parameter key="integrated_user.form.login.type.class">Integrated\Bundle\UserBundle\Form\Type\LoginType</parameter>
 		<parameter key="integrated_user.form.profile.type.class">Integrated\Bundle\UserBundle\Form\Type\UserType</parameter>
+		<parameter key="integrated_user.form.delete.type.class">Integrated\Bundle\UserBundle\Form\Type\DeleteType</parameter>
 
 	</parameters>
 
@@ -23,6 +24,8 @@
 		<service id="integrated_user.form.profile.type" class="%integrated_user.form.profile.type.class%">
 			<argument type="service" id="service_container"/>
 		</service>
+
+		<service id="integrated_user.form.delete.type" class="%integrated_user.form.delete.type.class%" />
 
 	</services>
 
