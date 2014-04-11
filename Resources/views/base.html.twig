@@ -51,10 +51,12 @@
     {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
     {% block body %}{% endblock body %}
 </div>
+{% block javascript %}
 <script src="//code.jquery.com/jquery.js"></script>
 <script src="{{ asset('/js/bootstrap.js') }}"></script>
 {% javascripts "@integrated_js" %}
 <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
+{% endblock javascript %}
 </body>
 </html>
