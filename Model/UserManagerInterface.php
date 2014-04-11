@@ -37,18 +37,17 @@ interface UserManagerInterface extends ManagerInterface
 	 */
 	public function remove(UserInterface $user);
 
-//	public function insert(UserInterface $user);
-//
-//	public function remove(UserInterface $user);
-//
-//	public function update(UserInterface $user);
-//
-//	public function refresh(UserInterface $user);
-
 	/**
 	 * Delete all the managed users.
 	 */
 	public function clear();
+
+//	/**
+//	 * Return the total number of users
+//	 *
+//	 * @return int
+//	 */
+//	public function count();
 
 	/**
 	 * Finds the user by its identifier.

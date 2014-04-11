@@ -7,12 +7,14 @@
 	<parameters>
 
 		<parameter key="integrated_user.user.class">Integrated\Bundle\UserBundle\Model\User</parameter>
+		<parameter key="integrated_user.group.class">Integrated\Bundle\UserBundle\Model\Group</parameter>
 
 	</parameters>
 
 	<services>
 
 		<service id="integrated_user.user.manager" alias="integrated_user.user.manager.doctrine" />
+		<service id="integrated_user.group.manager" alias="integrated_user.group.manager.doctrine" />
 
 	</services>
 
