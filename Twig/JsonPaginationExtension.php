@@ -85,16 +85,18 @@ class JsonPaginationExtension extends \Twig_Extension
             $return['next'] = array('href' => $href);
         }
 
-        foreach ($paginationData['pagesInRange'] as $page) {
-            $href = $this->generator->generate(
-                $pagination->getRoute(),
-                array_merge(
-                    $params,
-                    array($pagination->getPaginatorOption('pageParameterName') => $page)
-                )
-            );
+        if ($paginationData['pageCount'] > 0) {
+            foreach ($paginationData['pagesInRange'] as $page) {
+                $href = $this->generator->generate(
+                    $pagination->getRoute(),
+                    array_merge(
+                        $params,
+                        array($pagination->getPaginatorOption('pageParameterName') => $page)
+                    )
+                );
 
-            $return['pages'][$page] = array('href' => $href);
+                $return['pages'][$page] = array('href' => $href);
+            }
         }
 
 
