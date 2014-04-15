@@ -12,9 +12,13 @@
 namespace Integrated\Bundle\UserBundle\Controller;
 
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormBuilder;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -60,17 +64,21 @@ class ProfileController extends Controller
 		$form = $this->createForm(
 			'user_profile_new',
 			null,
-			array(
+			[
 				'action' => $this->generateUrl('integrated_user_profile_new'),
 				'method' => 'POST',
-			)
+			],
+			[
+				'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
+				'cancel' => ['type' => 'button', 'options' => ['label' => 'Cancel']],
+			]
 		);
 
 		if ($request->isMethod('post')) {
 			$form->handleRequest($request);
 
 			// check for back click else its a submit
-			if ($form->get('back')->isClicked()) {
+			if ($form->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_user_profile_index'));
 			}
 
@@ -109,17 +117,21 @@ class ProfileController extends Controller
 		$form = $this->createForm(
 			'user_profile_edit',
 			$user,
-			array(
+			[
 				'action' => $this->generateUrl('integrated_user_profile_edit', ['id' => $user->getId()]),
 				'method' => 'PUT',
-			)
+			],
+			[
+				'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+				'cancel' => ['type' => 'button', 'options' => ['label' => 'Cancel']],
+			]
 		);
 
 		if ($request->isMethod('put')) {
 			$form->handleRequest($request);
 
 			// check for back click else its a submit
-			if ($form->get('back')->isClicked()) {
+			if ($form->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_user_profile_index'));
 			}
 
@@ -156,17 +168,21 @@ class ProfileController extends Controller
 		$form = $this->createForm(
 			'user_profile_delete',
 			$user,
-			array(
+			[
 				'action' => $this->generateUrl('integrated_user_profile_delete', ['id' => $user->getId()]),
 				'method' => 'DELETE',
-			)
+			],
+			[
+				'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
+				'cancel' => ['type' => 'button', 'options' => ['label' => 'Cancel']],
+			]
 		);
 
 		if ($request->isMethod('delete')) {
 			$form->handleRequest($request);
 
 			// check for back click else its a submit
-			if ($form->get('back')->isClicked()) {
+			if ($form->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_user_profile_index'));
 			}
 
@@ -182,6 +198,23 @@ class ProfileController extends Controller
 			'user' => $user,
 			'form' => $form->createView()
 		);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function createForm($type, $data = null, array $options = [], array $buttons = [])
+	{
+		/** @var FormBuilder $form */
+		$form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+
+		if ($buttons) {
+			$form->add('actions', 'form_actions', [
+				'buttons' => $buttons
+			]);
+		}
+
+		return $form->getForm();
 	}
 
 	/**
