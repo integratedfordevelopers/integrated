@@ -13,7 +13,6 @@ namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
 use Integrated\Common\Content\ExtensibleInterface;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,13 +23,8 @@ use Symfony\Component\Security\Core\Util\SecureRandomInterface;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class UserSubscriber implements EventSubscriberInterface
+class UserProfileListener implements EventSubscriberInterface
 {
-	/**
-	 * @var ContainerInterface
-	 */
-	private $container;
-
 	/**
 	 * @var SecureRandomInterface
 	 */
@@ -47,12 +41,15 @@ class UserSubscriber implements EventSubscriberInterface
 	private $name;
 
 	/**
-	 * @param string $name
-	 * @param ContainerInterface $container
+	 * @param $name
+	 * @param SecureRandomInterface $generator
+	 * @param EncoderFactoryInterface $encoder
 	 */
-	public function __construct($name, ContainerInterface $container)
+	public function __construct($name, SecureRandomInterface $generator, EncoderFactoryInterface $encoder)
     {
-		$this->container = $container;
+		$this->generator = $generator;
+		$this->encoderFactory = $encoder;
+
         $this->name = $name;
     }
 
@@ -124,10 +121,6 @@ class UserSubscriber implements EventSubscriberInterface
 	 */
 	protected function getGenerator()
 	{
-		if ($this->generator === null) {
-			$this->generator = $this->getContainer()->get('security.secure_random');
-		}
-
 		return $this->generator;
 	}
 
@@ -137,18 +130,6 @@ class UserSubscriber implements EventSubscriberInterface
 	 */
 	protected function getEncoder($user)
 	{
-		if ($this->encoderFactory === null) {
-			$this->encoderFactory = $this->getContainer()->get('security.encoder_factory');
-		}
-
 		return $this->encoderFactory->getEncoder($user);
-	}
-
-	/**
-	 * @return ContainerInterface
-	 */
-	protected function getContainer()
-	{
-		return $this->container;
 	}
 }

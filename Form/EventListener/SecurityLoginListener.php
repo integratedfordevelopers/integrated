@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\UserBundle\Form;
+namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class SecurityLoginSubscriber implements EventSubscriberInterface
+class SecurityLoginListener implements EventSubscriberInterface
 {
 	/**
 	 * @var Request

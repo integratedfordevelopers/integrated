@@ -11,9 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
-use Integrated\Bundle\UserBundle\Form\SecurityLoginSubscriber;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Integrated\Bundle\UserBundle\Form\EventListener\SecurityLoginListener;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,18 +19,19 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class LoginType extends AbstractType
+class LoginFormType extends AbstractType
 {
 	/**
-	 * @var ContainerInterface
+	 * @var RequestStack
 	 */
-	private $container;
+	private $request;
 
 	/**
 	 * Create a login form type used for authentication.
@@ -40,11 +39,11 @@ class LoginType extends AbstractType
 	 * The container is used to retrieve the request so that the errors
 	 * and last username can be extracted from it.
 	 *
-	 * @param ContainerInterface $container
+	 * @param RequestStack $request
 	 */
-	public function __construct(ContainerInterface $container)
+	public function __construct(RequestStack $request)
 	{
-		$this->container = $container;
+		$this->request = $request;
 	}
 
 	/**
@@ -73,7 +72,7 @@ class LoginType extends AbstractType
 		$builder->add('login', 'submit');
 
 		if ($request = $this->getRequest()) {
-			$builder->addEventSubscriber(new SecurityLoginSubscriber($request));
+			$builder->addEventSubscriber(new SecurityLoginListener($request));
 		}
 	}
 
@@ -109,7 +108,7 @@ class LoginType extends AbstractType
 	 */
 	public function getName()
 	{
-		return 'integrated_user_security_login';
+		return 'integrated_user_security_login_form';
 	}
 
 	/**
@@ -117,10 +116,6 @@ class LoginType extends AbstractType
 	 */
 	protected function getRequest()
 	{
-		if ($this->container->has('request')) {
-			return $this->container->get('request');
-		}
-
-		return null;
+		return $this->request->getCurrentRequest();
 	}
 }

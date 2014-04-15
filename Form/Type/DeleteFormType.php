@@ -17,17 +17,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DeleteType extends AbstractType
+class DeleteFormType extends AbstractType
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		$builder->add('delete', 'submit');
-		$builder->add('back', 'submit');
-	}
-
 	/**
 	 * {@inheritdoc}
 	 */

@@ -11,28 +11,29 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Integrated\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 
 /**
- * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class UserType extends AbstractType
+class GroupFormType extends AbstractType
 {
 	/**
-	 * @var ContainerInterface
+	 * @var GroupManagerInterface
 	 */
-	private $container;
+	private $manager;
 
 	/**
-	 * @param ContainerInterface $container
+	 * @param GroupManagerInterface $manager
 	 */
-	public function __construct(ContainerInterface $container)
+	public function __construct(GroupManagerInterface $manager)
 	{
-		$this->container = $container;
+		$this->manager = $manager;
 	}
 
     /**
@@ -40,10 +41,7 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('username', 'text');
-        $builder->add('password', 'password', ['mapped' => false, 'required' => false]);
-
-        $builder->addEventSubscriber(new UserSubscriber('integrated.extension.user', $this->container));
+		$builder->add('name', 'text'); // todo: validate unique name
     }
 
     /**
@@ -52,7 +50,8 @@ class UserType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Integrated\\Bundle\\UserBundle\\Model\\User',
+			'empty_data' => function(FormInterface $form) { return $this->getManager()->create(); },
+            'data_class' => $this->getManager()->getClassName(),
         ));
     }
 
@@ -61,6 +60,14 @@ class UserType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_user_profile';
+        return 'integrated_user_group_form';
     }
+
+	/**
+	 * @return GroupManagerInterface
+	 */
+	public function getManager()
+	{
+		return $this->manager;
+	}
 }
