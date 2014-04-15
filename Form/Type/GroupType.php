@@ -33,7 +33,7 @@ class GroupType extends AbstractType
 	/**
 	 * @var ChoiceListInterface
 	 */
-	private $choicelist;
+	private $choiceList;
 
 	/**
 	 * @param GroupManagerInterface $manager
@@ -77,11 +77,11 @@ class GroupType extends AbstractType
 	 */
 	public function getChoiceList()
 	{
-		if ($this->choicelist === null) {
-			$this->choicelist = new ObjectChoiceList($this->getManager()->findAll(), 'name', [], null, 'id');
+		if ($this->choiceList === null) {
+			$this->choiceList = new ObjectChoiceList($this->getManager()->findAll(), 'name', [], null, 'id');
 		}
 
-		return $this->choicelist;
+		return $this->choiceList;
 	}
 
 	/**
