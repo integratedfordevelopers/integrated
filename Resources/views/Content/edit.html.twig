@@ -13,8 +13,253 @@
 </div>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-8">
         {{ form(form, { 'style': 'horizontal' }) }}
+    </div>
+    <div class="col-md-2">
+        <h3>{% trans %}Link to{% endtrans %}</h3>
+        <form role="form" id="relations-search">
+            <div class="input-group">
+                <input id="relations-q" class="form-control" type="search" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">
+                        <span class="glyphicon glyphicon-search"></span>&nbsp;
+                    </button>
+                </span>
+            </div>
+        </form>
+        <div id="relations-result"></div>
+    </div>
+    <div class="col-md-2">
+        <h3>{% trans %}Linked items{% endtrans %}</h3>
+        <div id="relations-selected"></div>
     </div>
 </div>
 {% endblock %}
+{% block javascript %}
+{{ parent() }}
+{% javascripts
+    "@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.min.js"
+%}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{% autoescape 'js' %}
+    {% verbatim %}
+    <script id="options-template" type="text/x-handlebars-template">
+        <ul class="media-list">
+            {{#each items}}
+            <li class="media">
+                <div class="checkbox">
+                    <label>
+                        {{#checked this.id ../selected }}
+                            <input type="checkbox" checked="checked" value="{{this.id}}"  />
+                        {{else}}
+                            <input type="checkbox" value="{{this.id}}"  />
+                        {{/checked}}
+                        {{this.title}}
+                    </label>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </script>
+    <script id="selected-template" type="text/x-handlebars-template">
+        <ul class="media-list">
+            {{#each items}}
+            <li class="media">
+                <a href="#" data-remove="{{this.id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                {{this.title}}
+            </li>
+            {{/each}}
+        </ul>
+    </script>
+    <script id="pagination-template" type="text/xhandlebars-template">
+        <ul class="pagination">
+            {{#if pagination.previous}}
+            <li>
+                <a href="{{pagination.previous.href}}">&laquo;</a>
+            </li>
+            {{else}}
+            <li class="disabled">
+                <span>&laquo;</span>
+            </li>
+            {{/if}}
+            {{#each pagination.pages}}
+            {{#equals ../pagination.page @key }}
+            <li class="active">
+                <span>{{@key}}</span>
+            </li>
+            {{else}}
+            <li>
+                <a href="{{this.href}}">{{@key}}</a>
+            </li>
+            {{/equals}}
+            {{/each}}
+            {{#if pagination.next}}
+            <li>
+                <a href="{{pagination.next.href}}">&raquo;</a>
+            </li>
+            {{else}}
+            <li class="disabled">
+                <span>&raquo;</span>
+            </li>
+            {{/if}}
+        </ul>
+    </script>
+    {% endverbatim %}
+    <script>
+
+        Handlebars.registerHelper('equals', function(v1, v2, options) {
+            if(v1 == v2) {
+                return options.fn(this);
+            }
+            return options.inverse(this);
+        });
+
+        Handlebars.registerHelper('checked', function(id, selected, options) {
+            if (selected.indexOf(id) >= 0) {
+                return options.fn(this);
+            } else {
+                return options.inverse(this);
+            }
+        });
+
+
+        var Relation = function(id) {
+            this.id = id;
+
+            var parent = this;
+
+            this.handleOptions = function(data) {
+                var optionsTemplateSource = $('#options-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
+                var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
+                data.selected = parent.getSelected();
+
+                var items = parent.getOptionsContainer().find('.items').html(optionsTemplate(data)).append(paginationTemplate(data));
+                items.find('.pagination a').click(function(ev){
+                    ev.preventDefault();
+                    parent.loadOptions($(this).attr('href'));
+                });
+                items.find('input').click(function(){
+                    if ($(this).is(':checked')) {
+                        parent.addOption($(this).val());
+                    } else {
+                        parent.removeOption($(this).val());
+                    }
+                })
+
+                parent.loadSelected();
+            }
+            this.handleSelected = function(data) {
+                var optionsTemplateSource = $('#selected-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
+                var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
+                data.selected = parent.getSelected();
+
+                var items = parent.getSelectedContainer().find('.items').html(optionsTemplate(data)).append(paginationTemplate(data));
+                items.find('.pagination a').click(function(ev){
+                    ev.preventDefault();
+                    parent.loadSelected($(this).attr('href'));
+                });
+                items.find('a[data-remove]').click(function(ev){
+                    ev.preventDefault();
+                    parent.removeOption($(this).data('remove'));
+                })
+            }
+            this.loadOptions = function(url) {
+                if (url == undefined) {
+                    url = this.getOptionsUrl();
+                }
+                $.ajax({
+                    url: url,
+                    success: this.handleOptions
+                });
+            }
+            this.loadSelected = function(url) {
+                if (url == undefined) {
+                    url = this.getSelectedUrl();
+                }
+                $.ajax({
+                    url: url,
+                    success: this.handleSelected
+                });
+            }
+
+            this.getTitle = function() {
+                return this.getInputElement().data('title');
+            }
+
+            this.getOptionsUrl = function() {
+                return "{{ path('integrated_content_content_index')}}" + '?relation=' + this.id + '&limit=5&q=' + $('#relations-q').val() + '&_format=json';
+            }
+
+            this.getSelectedUrl = function() {
+                return "{{ path('integrated_content_content_index')}}" + '?id[]=' + this.getSelected().join('&id[]=') + '&limit=5&_format=json';
+            }
+            this.getSelected = function() {
+                var selected = this.getInputElement().val().split(',');
+                selected = $.grep(selected,function(n){
+                    return(n);
+                });
+
+                return selected;
+            }
+
+            this.getOptionsContainer = function() {
+                if ($('#relations-result div[data-relation="' + this.id + '"').length > 0) {
+                    return $('#relations-result div[data-relation="' + this.id + '"');
+                } else {
+                    var container = $('<div data-relation="' + this.id +'"><h4>' + this.getTitle() + '</h4><div class="items"></div></div>');
+                    $('#relations-result').append(container);
+                    return container;
+                }
+            }
+
+            this.getSelectedContainer = function() {
+                if ($('#relations-selected div[data-relation="' + this.id + '"').length > 0) {
+                    return $('#relations-selected div[data-relation="' + this.id + '"');
+                } else {
+                    var container = $('<div data-relation="' + this.id +'"><h4>' + this.getTitle() + '</h4><div class="items"></div></div>');
+                    $('#relations-selected').append(container);
+                    return container;
+                }
+            }
+
+            this.addOption = function(id) {
+                var selected = this.getSelected();
+                selected.push(id);
+                this.getInputElement().val(selected.join(','));
+                this.loadSelected();
+            }
+
+            this.removeOption = function(id) {
+                var selected = this.getSelected();
+                if ($.inArray(id, selected) >= 0) {
+                    selected.splice($.inArray(id, selected), 1);
+                }
+
+                this.getInputElement().val(selected.join(','));
+                this.loadSelected();
+            }
+
+            this.showOption = function(id) {
+
+            }
+
+            this.getInputElement = function () {
+                return $('input[data-relation="' + this.id + '"]');
+            }
+        }
+
+        $.fn.relation = function() {
+            return this.each(function(){
+                var rel = new Relation($(this).data('relation'));
+                rel.loadOptions();
+            });
+        };
+
+        $('.form-relations input[data-relation]').relation();
+
+        //TODO observe search form
+    </script>
+{% endautoescape %}
+{% endblock javascript %}
