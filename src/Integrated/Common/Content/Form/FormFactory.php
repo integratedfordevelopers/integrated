@@ -34,13 +34,20 @@ class FormFactory implements FormFactoryInterface
     private $reader;
 
     /**
+     * @var RelationsType
+     */
+    private $relationsType;
+
+    /**
      * @param ContentTypeResolverInterface $resolver
      * @param Reader\Document $reader
+     * @param RelationsTypeInterface $relationsType
      */
-    public function __construct(ContentTypeResolverInterface $resolver, Reader\Document $reader)
+    public function __construct(ContentTypeResolverInterface $resolver, Reader\Document $reader, RelationsTypeInterface $relationsType)
 	{
 		$this->resolver = $resolver;
         $this->reader = $reader;
+        $this->relationsType = $relationsType;
 	}
 
 	/**
@@ -64,6 +71,6 @@ class FormFactory implements FormFactoryInterface
 			throw new UnexpectedTypeException($type, 'string');
   		}
 
-		return new FormType($this->resolver->getType($class, $type), $this->reader);
+		return new FormType($this->resolver->getType($class, $type), $this->reader, $this->relationsType);
 	}
 }
