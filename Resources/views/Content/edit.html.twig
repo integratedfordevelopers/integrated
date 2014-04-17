@@ -134,7 +134,10 @@
 
         $('.form-relations input[data-relation]').relation();
 
-        //TODO observe search form
+        $('#relations-search').submit(function(ev){
+            ev.preventDefault();
+            $('.form-relations input[data-relation]').relation();
+        });
     </script>
 {% endautoescape %}
 {% endblock javascript %}
