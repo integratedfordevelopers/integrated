@@ -52,7 +52,7 @@ class User implements UserInterface
 	/**
 	 * @var Collection | GroupInterface[]
 	 */
-	protected $groups = array();
+	protected $groups;
 
 	/**
 	 * @var bool

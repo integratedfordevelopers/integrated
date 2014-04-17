@@ -13,10 +13,13 @@ namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
 
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -43,7 +46,17 @@ class GroupType extends AbstractType
 		$this->manager = $manager;
 	}
 
-    /**
+	/**
+	 * @inheritdoc
+	 */
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		if ($options['multiple']) {
+			$builder->addViewTransformer(new CollectionToArrayTransformer(), true);
+		}
+	}
+
+	/**
      * @inheritdoc
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
