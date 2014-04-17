@@ -60,6 +60,10 @@
                     </label>
                 </div>
             </li>
+            {{else}}
+            <li class="media">
+                No items found
+            </li>
             {{/each}}
         </ul>
     </script>
@@ -69,6 +73,10 @@
             <li class="media">
                 <a href="#" data-remove="{{this.id}}"><span class="glyphicon glyphicon-remove"></span></a>
                 {{this.title}}
+            </li>
+            {{else}}
+            <li class="media">
+                No items selected
             </li>
             {{/each}}
         </ul>
