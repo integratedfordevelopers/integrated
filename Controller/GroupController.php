@@ -70,7 +70,7 @@ class GroupController extends Controller
 			],
 			[
 				'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
-				'cancel' => ['type' => 'button', 'options' => ['label' => 'Cancel']],
+				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
 			]
 		);
 
@@ -78,7 +78,7 @@ class GroupController extends Controller
 			$form->handleRequest($request);
 
 			// check for cancel click else its a submit
-			if ($form->get('cancel')->isClicked()) {
+			if ($form->get('actions')->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_user_group_index'));
 			}
 
@@ -88,7 +88,7 @@ class GroupController extends Controller
 				$this->getManager()->persist($user);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The group %s is created', $user->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
+                return $this->redirect($this->generateUrl('integrated_user_group_index'));
 			}
 		}
 
@@ -123,7 +123,7 @@ class GroupController extends Controller
 			],
 			[
 				'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
-				'cancel' => ['type' => 'button', 'options' => ['label' => 'Cancel']],
+				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
 			]
 		);
 
@@ -131,7 +131,7 @@ class GroupController extends Controller
 			$form->handleRequest($request);
 
 			// check for cancel click else its a submit
-			if ($form->get('cancel')->isClicked()) {
+			if ($form->get('actions')->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_user_group_index'));
 			}
 
@@ -174,7 +174,7 @@ class GroupController extends Controller
 			],
 			[
 				'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
-				'cancel' => ['type' => 'button', 'options' => ['label' => 'Cancel']],
+				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
 			]
 		);
 
@@ -182,7 +182,7 @@ class GroupController extends Controller
 			$form->handleRequest($request);
 
 			// check for cancel click else its a submit
-			if ($form->get('cancel')->isClicked()) {
+			if ($form->get('actions')->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_user_group_index'));
 			}
 
