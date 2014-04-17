@@ -2,6 +2,7 @@ var Relation = function(id, url) {
 
     this.id = id;
     this.url = url;
+    this.loadedSelected = false;
 
     var parent = this;
 
@@ -25,7 +26,10 @@ var Relation = function(id, url) {
             }
         })
 
-        parent.loadSelected();
+        if (parent.loadedSelected === false) {
+            parent.loadSelected();
+            parent.loadedSelected = true;
+        }
     }
 
     this.handleSelected = function(data) {
