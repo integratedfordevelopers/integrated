@@ -119,8 +119,10 @@
     </script>
     {% endverbatim %}
     <script>
-        var Relation = function(id) {
+        var Relation = function(id, url) {
+
             this.id = id;
+            this.url = url;
 
             var parent = this;
 
@@ -186,12 +188,13 @@
             }
 
             this.getOptionsUrl = function() {
-                return "{{ path('integrated_content_content_index')}}" + '?relation=' + this.id + '&limit=5&q=' + $('#relations-q').val() + '&_format=json';
+                return this.url + '?relation=' + this.id + '&limit=5&q=' + $('#relations-q').val() + '&_format=json';
             }
 
             this.getSelectedUrl = function() {
-                return "{{ path('integrated_content_content_index')}}" + '?id[]=' + this.getSelected().join('&id[]=') + '&limit=5&_format=json';
+                return this.url + '?id[]=' + this.getSelected().join('&id[]=') + '&limit=5&_format=json';
             }
+
             this.getSelected = function() {
                 var selected = this.getInputElement().val().split(',');
                 selected = $.grep(selected,function(n){
@@ -245,7 +248,7 @@
 
         $.fn.relation = function() {
             return this.each(function(){
-                var rel = new Relation($(this).data('relation'));
+                var rel = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}");
                 rel.loadOptions();
             });
         };
