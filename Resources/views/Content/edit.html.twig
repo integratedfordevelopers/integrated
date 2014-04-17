@@ -74,6 +74,7 @@
         </ul>
     </script>
     <script id="pagination-template" type="text/xhandlebars-template">
+        {{#hasPages pagination.pageCount}}
         <ul class="pagination">
             {{#if pagination.previous}}
             <li>
@@ -105,6 +106,7 @@
             </li>
             {{/if}}
         </ul>
+        {{/hasPages}}
     </script>
     {% endverbatim %}
     <script>
@@ -118,6 +120,14 @@
 
         Handlebars.registerHelper('checked', function(id, selected, options) {
             if (selected.indexOf(id) >= 0) {
+                return options.fn(this);
+            } else {
+                return options.inverse(this);
+            }
+        });
+
+        Handlebars.registerHelper('hasPages', function(pageCount, options) {
+            if (pageCount > 1) {
                 return options.fn(this);
             } else {
                 return options.inverse(this);
