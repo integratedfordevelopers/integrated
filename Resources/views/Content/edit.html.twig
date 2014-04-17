@@ -40,6 +40,7 @@
 {{ parent() }}
 {% javascripts
     "@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.min.js"
+    "@IntegratedContentBundle/Resources/public/js/handlebars.helpers.js"
 %}
 <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
@@ -118,31 +119,6 @@
     </script>
     {% endverbatim %}
     <script>
-
-        Handlebars.registerHelper('equals', function(v1, v2, options) {
-            if(v1 == v2) {
-                return options.fn(this);
-            }
-            return options.inverse(this);
-        });
-
-        Handlebars.registerHelper('checked', function(id, selected, options) {
-            if (selected.indexOf(id) >= 0) {
-                return options.fn(this);
-            } else {
-                return options.inverse(this);
-            }
-        });
-
-        Handlebars.registerHelper('hasPages', function(pageCount, options) {
-            if (pageCount > 1) {
-                return options.fn(this);
-            } else {
-                return options.inverse(this);
-            }
-        });
-
-
         var Relation = function(id) {
             this.id = id;
 
@@ -168,6 +144,7 @@
 
                 parent.loadSelected();
             }
+
             this.handleSelected = function(data) {
                 var optionsTemplateSource = $('#selected-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
                 var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
@@ -183,6 +160,7 @@
                     parent.removeOption($(this).data('remove'));
                 })
             }
+
             this.loadOptions = function(url) {
                 if (url == undefined) {
                     url = this.getOptionsUrl();
@@ -192,6 +170,7 @@
                     success: this.handleOptions
                 });
             }
+
             this.loadSelected = function(url) {
                 if (url == undefined) {
                     url = this.getSelectedUrl();
@@ -257,10 +236,6 @@
 
                 this.getInputElement().val(selected.join(','));
                 this.loadSelected();
-            }
-
-            this.showOption = function(id) {
-
             }
 
             this.getInputElement = function () {
