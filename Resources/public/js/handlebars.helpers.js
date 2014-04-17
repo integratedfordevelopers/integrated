@@ -20,3 +20,11 @@ Handlebars.registerHelper('hasPages', function(pageCount, options) {
         return options.inverse(this);
     }
 });
+
+Handlebars.registerHelper('hasItems', function(numFound, options) {
+    if (numFound > 0) {
+        return options.fn(this);
+    } else {
+        return options.inverse(this);
+    }
+});
