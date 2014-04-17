@@ -14,27 +14,15 @@ namespace Integrated\Bundle\UserBundle\Form\EventListener;
 use Integrated\Common\Content\ExtensibleInterface;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Symfony\Component\Security\Core\Util\SecureRandomInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class UserProfileListener implements EventSubscriberInterface
+class UserProfileExtensionListener implements EventSubscriberInterface
 {
-	/**
-	 * @var SecureRandomInterface
-	 */
-	private $generator;
-
-	/**
-	 * @var EncoderFactoryInterface
-	 */
-	private $encoderFactory;
-
     /**
      * @var string
      */
@@ -42,14 +30,9 @@ class UserProfileListener implements EventSubscriberInterface
 
 	/**
 	 * @param $name
-	 * @param SecureRandomInterface $generator
-	 * @param EncoderFactoryInterface $encoder
 	 */
-	public function __construct($name, SecureRandomInterface $generator, EncoderFactoryInterface $encoder)
+	public function __construct($name)
     {
-		$this->generator = $generator;
-		$this->encoderFactory = $encoder;
-
         $this->name = $name;
     }
 
@@ -92,19 +75,7 @@ class UserProfileListener implements EventSubscriberInterface
 		$content = $parent->getNormData();
 
 		if ($content instanceof ExtensibleInterface) {
-			$user = $event->getForm()->getData();
-
-			// if a password is entered it need to be encoded and stored in
-			// the user model.
-
-			if ($password = $event->getForm()->get('password')->getData()) {
-				$salt = base64_encode($this->getGenerator()->nextBytes(72));
-
-				$user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
-				$user->setSalt($salt);
-			}
-
-			$content->setExtension($this->getName(), $user); // should not be required
+			$content->setExtension($this->getName(), $event->getForm()->getData()); // should not be required
 		}
     }
 
@@ -114,22 +85,5 @@ class UserProfileListener implements EventSubscriberInterface
 	protected function getName()
 	{
 		return $this->name;
-	}
-
-	/**
-	 * @return SecureRandomInterface
-	 */
-	protected function getGenerator()
-	{
-		return $this->generator;
-	}
-
-	/**
-	 * @param object $user
-	 * @return PasswordEncoderInterface
-	 */
-	protected function getEncoder($user)
-	{
-		return $this->encoderFactory->getEncoder($user);
 	}
 }

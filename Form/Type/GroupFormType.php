@@ -12,11 +12,16 @@
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
+use Integrated\Bundle\UserBundle\Validator\Constraints\UniqueGroup;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\Form\FormInterface;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -41,7 +46,13 @@ class GroupFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$builder->add('name', 'text'); // todo: validate unique name
+		$builder->add('name', 'text', [
+			'required' => false,
+			'constraints' => [
+				new NotBlank(),
+				new Length(['min' => 3])
+			]
+		]);
     }
 
     /**
@@ -52,6 +63,8 @@ class GroupFormType extends AbstractType
         $resolver->setDefaults(array(
 			'empty_data' => function(FormInterface $form) { return $this->getManager()->create(); },
             'data_class' => $this->getManager()->getClassName(),
+
+			'constraints' => new UniqueGroup($this->manager)
         ));
     }
 

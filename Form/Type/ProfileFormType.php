@@ -11,17 +11,28 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
+use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileExtensionListener;
+use Integrated\Bundle\UserBundle\Form\EventListener\UserProfilePasswordListener;
+
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
+use Integrated\Bundle\UserBundle\Validator\Constraints\UniqueUser;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileListener;
+
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Util\SecureRandomInterface;
 
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class ProfileFormType extends AbstractType
 {
@@ -58,17 +69,25 @@ class ProfileFormType extends AbstractType
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('username', 'text');
+		$builder->add('username', 'text', [
+			'constraints' => [
+				new NotBlank(),
+				new Length(['min' => 3])
+			]
+		]);
 
 		$builder->add('password', 'password', [
 			'mapped' => false,
-			'required' => false,
-			'attr' => ['help_text' => 'Password will only be changed if a new password is entered']
+			'constraints' => [
+				new NotBlank(),
+				new Length(['min' => 6])
+			]
 		]);
 
-		$builder->add('groups', 'user_group_choice', ['required' => false]);
+		$builder->add('groups', 'user_group_choice');
 
-		$builder->addEventSubscriber(new UserProfileListener('integrated.extension.user', $this->generator, $this->encoderFactory));
+		$builder->addEventSubscriber(new UserProfilePasswordListener($this->generator, $this->encoderFactory));
+		$builder->addEventSubscriber(new UserProfileExtensionListener('integrated.extension.user'));
 	}
 
 	/**
@@ -77,8 +96,10 @@ class ProfileFormType extends AbstractType
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setDefaults(array(
-			'empty_data' => function(FormInterface $form) { return $this->getManager()->create(); },
-			'data_class' => $this->getManager()->getClassName(),
+			'empty_data'  => function(FormInterface $form) { return $this->getManager()->create(); },
+			'data_class'  => $this->getManager()->getClassName(),
+
+			'constraints' => new UniqueUser($this->manager)
 		));
 	}
 
