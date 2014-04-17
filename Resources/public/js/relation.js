@@ -8,14 +8,16 @@ var Relation = function(id, url) {
     this.handleOptions = function(data) {
         var optionsTemplateSource = $('#options-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
         var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
+
+        data.title = parent.getTitle();
         data.selected = parent.getSelected();
 
-        var items = parent.getOptionsContainer().find('.items').html(optionsTemplate(data)).append(paginationTemplate(data));
-        items.find('.pagination a').click(function(ev){
+        var container = parent.getOptionsContainer().html(optionsTemplate(data)).append(paginationTemplate(data));
+        container.find('.pagination a').click(function(ev){
             ev.preventDefault();
             parent.loadOptions($(this).attr('href'));
         });
-        items.find('input').click(function(){
+        container.find('input').click(function(){
             if ($(this).is(':checked')) {
                 parent.addOption($(this).val());
             } else {
@@ -29,14 +31,16 @@ var Relation = function(id, url) {
     this.handleSelected = function(data) {
         var optionsTemplateSource = $('#selected-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
         var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
+
+        data.title = parent.getTitle();
         data.selected = parent.getSelected();
 
-        var items = parent.getSelectedContainer().find('.items').html(optionsTemplate(data)).append(paginationTemplate(data));
-        items.find('.pagination a').click(function(ev){
+        var container = parent.getSelectedContainer().html(optionsTemplate(data)).append(paginationTemplate(data));
+        container.find('.pagination a').click(function(ev){
             ev.preventDefault();
             parent.loadSelected($(this).attr('href'));
         });
-        items.find('a[data-remove]').click(function(ev){
+        container.find('a[data-remove]').click(function(ev){
             ev.preventDefault();
             parent.removeOption($(this).data('remove'));
         })
@@ -87,7 +91,7 @@ var Relation = function(id, url) {
         if ($('#relations-result div[data-relation="' + this.id + '"').length > 0) {
             return $('#relations-result div[data-relation="' + this.id + '"');
         } else {
-            var container = $('<div data-relation="' + this.id +'"><h4>' + this.getTitle() + '</h4><div class="items"></div></div>');
+            var container = $('<div data-relation="' + this.id +'"></div>');
             $('#relations-result').append(container);
             return container;
         }
@@ -97,7 +101,7 @@ var Relation = function(id, url) {
         if ($('#relations-selected div[data-relation="' + this.id + '"').length > 0) {
             return $('#relations-selected div[data-relation="' + this.id + '"');
         } else {
-            var container = $('<div data-relation="' + this.id +'"><h4>' + this.getTitle() + '</h4><div class="items"></div></div>');
+            var container = $('<div data-relation="' + this.id +'"></div>');
             $('#relations-selected').append(container);
             return container;
         }

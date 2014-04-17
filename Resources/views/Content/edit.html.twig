@@ -45,9 +45,11 @@
 %}
 <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
+
 {% autoescape 'js' %}
     {% verbatim %}
     <script id="options-template" type="text/x-handlebars-template">
+        <h4>{{this.title}}</h4>
         <ul class="media-list">
             {{#each items}}
             <li class="media">
@@ -70,6 +72,7 @@
         </ul>
     </script>
     <script id="selected-template" type="text/x-handlebars-template">
+        <h4>{{this.title}}</h4>
         <ul class="media-list">
             {{#each items}}
             <li class="media">
@@ -120,8 +123,6 @@
     </script>
     {% endverbatim %}
     <script>
-
-
         $.fn.relation = function() {
             return this.each(function(){
                 var rel = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}");
