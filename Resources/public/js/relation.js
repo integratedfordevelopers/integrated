@@ -51,6 +51,11 @@ var Relation = function(id, url) {
     }
 
     this.loadOptions = function(url) {
+
+        this.getOptionsContainer().find('.pagination a').unbind('click').click(function(ev){
+            ev.preventDefault();
+        })
+
         if (url == undefined) {
             url = this.getOptionsUrl();
         }
@@ -61,6 +66,11 @@ var Relation = function(id, url) {
     }
 
     this.loadSelected = function(url) {
+
+        this.getSelectedContainer().find('.pagination a').unbind('click').click(function(ev){
+            ev.preventDefault();
+        })
+
         if (url == undefined) {
             url = this.getSelectedUrl();
         }
@@ -113,8 +123,21 @@ var Relation = function(id, url) {
 
     this.addOption = function(id) {
         var selected = this.getSelected();
+
+        if (this.getMultiple() === false) {
+            selected = [];
+        }
+
         selected.push(id);
+
         this.getInputElement().val(selected.join(','));
+
+        $('div[data-relation="' + this.id + '"] input:checked').each(function(){
+            if ($.inArray($(this).val(), selected) < 0) {
+                $(this).attr('checked', false);
+            }
+        })
+
         this.loadSelected();
     }
 
@@ -130,5 +153,9 @@ var Relation = function(id, url) {
 
     this.getInputElement = function () {
         return $('input[data-relation="' + this.id + '"]');
+    }
+
+    this.getMultiple = function() {
+        return (this.getInputElement().data('multiple') == 1);
     }
 }

@@ -56,7 +56,8 @@ class Relations extends AbstractType implements RelationsTypeInterface
                     'attr' => array(
                         'data-title' => $relation->getName(),
                         'data-relation' => $relation->getId(),
-                        'data-url' => $contentTypeStr
+                        'data-url' => $contentTypeStr,
+                        'data-multiple' => $relation->getMultiple()
                     )
                 )
             );
