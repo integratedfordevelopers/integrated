@@ -35,6 +35,11 @@ class FormType implements FormTypeInterface
      */
     protected $reader;
 
+    /**
+     * @var RelationsTypeInterface
+     */
+    protected $relationsType;
+
 	/**
 	 * @var string
 	 */
@@ -43,11 +48,13 @@ class FormType implements FormTypeInterface
 	/**
 	 * @param ContentTypeInterface $contentType
      * @param Reader\Document $reader
+     * @param RelationsTypeInterface $relationsType
 	 */
-	public function __construct(ContentTypeInterface $contentType, Reader\Document $reader)
+	public function __construct(ContentTypeInterface $contentType, Reader\Document $reader, RelationsTypeInterface $relationsType)
 	{
 		$this->contentType = $contentType;
         $this->reader = $reader;
+        $this->relationsType = $relationsType;
 	}
 
 	/**
@@ -71,6 +78,14 @@ class FormType implements FormTypeInterface
                 );
             }
         }
+
+        $this->relationsType->setRelations($this->contentType->getRelations());
+        $builder->add(
+            $builder->create(
+                'relations',
+                $this->relationsType
+            )
+        );
 
 		// submit buttons
 		$builder->add('save', 'submit');

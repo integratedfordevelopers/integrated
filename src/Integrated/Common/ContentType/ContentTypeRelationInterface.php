@@ -22,7 +22,22 @@ interface ContentTypeRelationInterface
     public function getId();
 
     /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @return string
+     */
+    public function getType();
+
+    /**
      * @return ContentTypeInterface[]
      */
     public function getContentTypes();
+
+    /**
+     * @return bool
+     */
+    public function getMultiple();
 }
