@@ -220,12 +220,29 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
         return $this->relations->filter(function($relation) use($relationId) {
             if ($relation instanceof Relation) {
                 if ($relation->getRelationId() == $relationId) {
-                    return $relation;
+                    return true;
                 }
             }
 
 			return false;
         })->first();
+    }
+
+    /**
+     * @param $relationType
+     * @return ArrayCollection|false
+     */
+    public function getRelationsByRelationType($relationType)
+    {
+        return $this->relations->filter(function($relation) use($relationType) {
+            if ($relation instanceof Relation) {
+                if ($relation->getRelationType() == $relationType) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
     }
 
     /**
