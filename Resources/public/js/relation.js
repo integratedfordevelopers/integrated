@@ -65,6 +65,15 @@ var Relation = function(id, url) {
         });
     }
 
+    this.refreshOptions = function() {
+        var selected = this.getSelected();
+        $('div[data-relation="' + this.id + '"] input:checked').each(function(){
+            if ($.inArray($(this).val(), selected) < 0) {
+                $(this).attr('checked', false);
+            }
+        })
+    }
+
     this.loadSelected = function(url) {
 
         this.getSelectedContainer().find('.pagination a').unbind('click').click(function(ev){
@@ -131,13 +140,7 @@ var Relation = function(id, url) {
         selected.push(id);
 
         this.getInputElement().val(selected.join(','));
-
-        $('div[data-relation="' + this.id + '"] input:checked').each(function(){
-            if ($.inArray($(this).val(), selected) < 0) {
-                $(this).attr('checked', false);
-            }
-        })
-
+        this.refreshOptions();
         this.loadSelected();
     }
 
@@ -148,6 +151,7 @@ var Relation = function(id, url) {
         }
 
         this.getInputElement().val(selected.join(','));
+        this.refreshOptions();
         this.loadSelected();
     }
 
