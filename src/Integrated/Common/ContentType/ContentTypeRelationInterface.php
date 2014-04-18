@@ -27,6 +27,11 @@ interface ContentTypeRelationInterface
     public function getName();
 
     /**
+     * @return string
+     */
+    public function getType();
+
+    /**
      * @return ContentTypeInterface[]
      */
     public function getContentTypes();
