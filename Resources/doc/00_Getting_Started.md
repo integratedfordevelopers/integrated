@@ -7,7 +7,7 @@ The IntegratedFormTypeBundle provides different Symfony Form Types for the Integ
 The Bundle is part of the default Integrated package. Manual installation can also be done by following these steps:
 
 1. Install using composer
-2. Enable the bundle
+2. Enable the bundle in the AppKernel.php
 3. Load front-end resources
 4. Add front-end resources to the Integrated assets
 
