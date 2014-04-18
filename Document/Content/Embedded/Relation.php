@@ -32,6 +32,13 @@ class Relation
     protected $relationId;
 
     /**
+     * @var string type of the ContentType\Embedded\Relation
+     * @ODM\String
+     * @ODM\Index
+     */
+    protected $relationType;
+
+    /**
      * @var Collection
      * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
      */
@@ -61,6 +68,24 @@ class Relation
     public function getRelationId()
     {
         return $this->relationId;
+    }
+
+    /**
+     * @param string $relationType
+     * @return $this
+     */
+    public function setRelationType($relationType)
+    {
+        $this->relationType = $relationType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelationType()
+    {
+        return $this->relationType;
     }
 
     /**
