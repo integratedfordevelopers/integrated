@@ -62,16 +62,13 @@ class Relations implements DataTransformerInterface
 
                 if ($relation instanceof \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation) {
 
-                    foreach ($this->relations as $contentTypeRelation) {
-                        if ($contentTypeRelation->getId() == $relation->getRelationId()) {
-
-                            $references = array();
-                            foreach ($relation->getReferences() as $content) {
-                                $references[] = $content->getId();
-                            }
-
-                            $return[$relation->getRelationId()] = implode(',', $references);
+                    if ($contentTypeRelation = $this->getContentTypeRelation($relation->getRelationId())) {
+                        $references = array();
+                        foreach ($relation->getReferences() as $content) {
+                            $references[] = $content->getId();
                         }
+
+                        $return[$relation->getRelationId()] = implode(',', $references);
                     }
                 }
             }
@@ -90,23 +87,42 @@ class Relations implements DataTransformerInterface
         if (is_array($value)) {
             foreach ($value as $contentTypeRelation => $references) {
 
-                $model = new Model();
-                $model->setRelationId($contentTypeRelation);
+                if ($contentTypeRelation = $this->getContentTypeRelation($contentTypeRelation)) {
 
-                if (null !== $references) {
-                    $references = array_filter(explode(',', $references));
-                    foreach ($references as $reference) {
+                    $model = new Model();
+                    $model->setRelationId($contentTypeRelation->getId());
+                    $model->setRelationType($contentTypeRelation->getType());
 
-                        if ($content = $this->om->getRepository(self::REPOSITORY)->find($reference)) {
-                            $model->addReference($content);
+                    if (null !== $references) {
+                        $references = array_filter(explode(',', $references));
+                        foreach ($references as $reference) {
+
+                            if ($content = $this->om->getRepository(self::REPOSITORY)->find($reference)) {
+                                $model->addReference($content);
+                            }
                         }
-                    }
 
-                    $relations->add($model);
+                        $relations->add($model);
+                    }
                 }
             }
         }
 
         return $relations;
+    }
+
+    /**
+     * @param string $relationId
+     * @return bool|ContentTypeRelationInterface
+     */
+    protected function getContentTypeRelation($relationId)
+    {
+        foreach ($this->relations as $relation) {
+            if ($relation->getId() == $relationId) {
+                return $relation;
+            }
+        }
+
+        return false;
     }
 }
