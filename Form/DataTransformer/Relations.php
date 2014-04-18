@@ -58,24 +58,19 @@ class Relations implements DataTransformerInterface
         $return = array();
         if (is_array($value) || $value instanceof \Traversable) {
 
-
-
             foreach ($value as $relation) {
 
-
-                //echo $relation->getContentTypeRelation() .  '<br />';
                 if ($relation instanceof \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation) {
 
-
                     foreach ($this->relations as $contentTypeRelation) {
-                        if ($contentTypeRelation->getId() == $relation->getContentTypeRelation()) {
+                        if ($contentTypeRelation->getId() == $relation->getRelationId()) {
 
                             $references = array();
                             foreach ($relation->getReferences() as $content) {
                                 $references[] = $content->getId();
                             }
 
-                            $return[$relation->getContentTypeRelation()] = implode(',', $references);
+                            $return[$relation->getRelationId()] = implode(',', $references);
                         }
                     }
                 }
@@ -96,7 +91,7 @@ class Relations implements DataTransformerInterface
             foreach ($value as $contentTypeRelation => $references) {
 
                 $model = new Model();
-                $model->setContentTypeRelation($contentTypeRelation);
+                $model->setRelationId($contentTypeRelation);
 
                 if (null !== $references) {
                     $references = array_filter(explode(',', $references));

@@ -29,7 +29,7 @@ class Relation
      * @ODM\String
      * @ODM\Index
      */
-    protected $contentTypeRelation;
+    protected $relationId;
 
     /**
      * @var Collection
@@ -46,21 +46,21 @@ class Relation
     }
 
     /**
-     * @param string $contentTypeRelation
+     * @param string $relationId
      * @return $this
      */
-    public function setContentTypeRelation($contentTypeRelation)
+    public function setRelationId($relationId)
     {
-        $this->contentTypeRelation = $contentTypeRelation;
+        $this->relationId = $relationId;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getContentTypeRelation()
+    public function getRelationId()
     {
-        return $this->contentTypeRelation;
+        return $this->relationId;
     }
 
     /**
