@@ -38,6 +38,7 @@ class ContentController extends Controller
         // Store contentTypes in array
         $displayTypes = array();
 
+        /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
 		foreach ($this->get('integrated.form.resolver')->getTypes() as $type) {
 			$types[$type->getClass()][$type->getType()] = $type;
             $displayTypes[$type->getType()] = $type->getName();
@@ -54,7 +55,28 @@ class ContentController extends Controller
         $facetSet = $query->getFacetSet();
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
 
-        $contentType = $request->get('contenttypes');
+        // TODO this code should be somewhere else
+        $relation = $request->query->get('relation');
+        if (null !== $relation) {
+
+            $contentType = array();
+
+            /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
+            foreach ($this->get('integrated.form.resolver')->getTypes() as $type) {
+                foreach ($type->getRelations() as $typeRelation) {
+                    if ($typeRelation->getId() == $relation) {
+                        foreach ($typeRelation->getContentTypes() as $relationContentType) {
+                            $contentType[] = $relationContentType->getType();
+                        }
+                        break;
+                    }
+                }
+            }
+
+        } else {
+            $contentType = $request->query->get('contenttypes');
+        }
+
         if (is_array($contentType)) {
 
             if (count($contentType)) {
@@ -67,6 +89,22 @@ class ContentController extends Controller
                     ->createFilterQuery('contenttypes')
                     ->addTag('contenttypes')
                     ->setQuery('type_name: ((%1%))', [implode(') OR (', array_map($filter, $contentType))]);
+            }
+        }
+
+        $id = $request->query->get('id');
+        if (is_array($id)) {
+
+            if (count($id)) {
+                $helper = $query->getHelper();
+                $filter = function($param) use($helper) {
+                    return $helper->escapePhrase($param);
+                };
+
+                $query
+                    ->createFilterQuery('id')
+                    ->addTag('id')
+                    ->setQuery('type_id: ((%1%))', [implode(') OR (', array_map($filter, $id))]);
             }
         }
 
@@ -85,7 +123,7 @@ class ContentController extends Controller
 		$paginator = $paginator->paginate(
             array($client, $query),
 			$request->query->get('page', 1),
-			15
+			$request->query->get('limit', 15)
 		);
 
 		return array(

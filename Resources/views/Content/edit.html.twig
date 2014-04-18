@@ -13,8 +13,37 @@
 </div>
 
 <div class="row">
-    <div class="col-md-9">
+    <div class="col-md-8">
         {{ form(form, { 'style': 'horizontal' }) }}
+    </div>
+    <div class="col-md-2">
+        <h3>{% trans %}Link to{% endtrans %}</h3>
+        <form role="form" id="relations-search">
+            <div class="input-group">
+                <input id="relations-q" class="form-control" type="search" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">
+                        <span class="glyphicon glyphicon-search"></span>&nbsp;
+                    </button>
+                </span>
+            </div>
+        </form>
+        <div id="relations-result"></div>
+    </div>
+    <div class="col-md-2">
+        <h3>{% trans %}Linked items{% endtrans %}</h3>
+        <div id="relations-selected"></div>
     </div>
 </div>
 {% endblock %}
+{% block javascript %}
+{{ parent() }}
+{% javascripts
+    "@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.min.js"
+    "@IntegratedContentBundle/Resources/public/js/handlebars.helpers.js"
+    "@IntegratedContentBundle/Resources/public/js/relation.js"
+%}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+{{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
+{% endblock javascript %}

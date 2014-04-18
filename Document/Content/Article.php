@@ -317,4 +317,12 @@ class Article extends Content
         $this->location = $location;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
+    }
 }

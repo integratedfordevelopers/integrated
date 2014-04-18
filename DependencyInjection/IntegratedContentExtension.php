@@ -44,6 +44,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 		$loader->load('mappings.xml');
 		$loader->load('mongo.xml');
         $loader->load('resolvers.xml');
+        $loader->load('twig.xml');
 
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);

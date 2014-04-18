@@ -13,8 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\Content\ContentInterface;
 use Doctrine\Common\Collections\Collection;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * Embedded document Reference
@@ -25,10 +25,18 @@ use Doctrine\Common\Collections\Collection;
 class Relation
 {
     /**
-     * @var string
+     * @var string id of the ContentType\Embedded\Relation
      * @ODM\String
+     * @ODM\Index
      */
-    protected $contentType;
+    protected $relationId;
+
+    /**
+     * @var string type of the ContentType\Embedded\Relation
+     * @ODM\String
+     * @ODM\Index
+     */
+    protected $relationType;
 
     /**
      * @var Collection
@@ -45,24 +53,39 @@ class Relation
     }
 
     /**
-     * Set contentType of Relation
-     *
-     * @param string $contentType
+     * @param string $relationId
      * @return $this
      */
-    public function setContentType($contentType)
+    public function setRelationId($relationId)
     {
-        $this->contentType = $contentType;
+        $this->relationId = $relationId;
         return $this;
     }
 
     /**
-     * Get contentType of Relation
      * @return string
      */
-    public function getContentType()
+    public function getRelationId()
     {
-        return $this->contentType;
+        return $this->relationId;
+    }
+
+    /**
+     * @param string $relationType
+     * @return $this
+     */
+    public function setRelationType($relationType)
+    {
+        $this->relationType = $relationType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelationType()
+    {
+        return $this->relationType;
     }
 
     /**

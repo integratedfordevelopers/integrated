@@ -81,4 +81,12 @@ class Taxonomy extends Content
         $this->description = $description;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
+    }
 }
