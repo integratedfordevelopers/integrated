@@ -27,6 +27,13 @@ interface GroupInterface /* extends Serializable */
 	public function getId();
 
 	/**
+	 * Set the name of the group
+	 *
+	 * @param string $name
+	 */
+	public function setName($name);
+
+	/**
 	 * Returns the name of the group
 	 *
 	 * @return string

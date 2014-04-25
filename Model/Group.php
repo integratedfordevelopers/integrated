@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\UserBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -27,9 +30,14 @@ class Group implements GroupInterface
 	protected $name;
 
 	/**
-	 * @var string[]
+	 * @var Collection | RoleInterface[]
 	 */
-	protected $roles = array();
+	protected $roles;
+
+	public function __construct()
+	{
+		$this->roles = new ArrayCollection();
+	}
 
 	/**
 	 * @return string
@@ -40,7 +48,7 @@ class Group implements GroupInterface
 	}
 
 	/**
-	 * @param string $name
+	 * @inheritdoc
 	 */
 	public function setName($name)
 	{
@@ -56,48 +64,38 @@ class Group implements GroupInterface
 	}
 
 	/**
-	 * @param string $role
+	 * @param RoleInterface $role
 	 */
-	public function addRole($role)
+	public function addRole(RoleInterface $role)
 	{
-		if (!$this->hasRole($role)) {
-			$this->roles[] = strtoupper($role);
+		if (!$this->roles->contains($role)) {
+			$this->roles->add($role);
 		}
 	}
 
 	/**
-	 * @param string $role
+	 * @param RoleInterface $role
 	 */
-	public function removeRole($role)
+	public function removeRole(RoleInterface $role)
 	{
-		if ($key = array_search(strtoupper($role), $this->roles) !== false) {
-			unset($this->roles[$key]);
-		}
+		$this->roles->removeElement($role);
 	}
 
 	/**
-	 * @param $role
+	 * @param RoleInterface $role
 	 * @return bool
 	 */
-	public function hasRole($role)
+	public function hasRole(RoleInterface $role)
 	{
-		return in_array(strtoupper($role), $this->roles);
+		return $this->roles->contains($role);
 	}
 
 	/**
-	 * @return string[]
+	 * @inheritdoc
 	 */
 	public function getRoles()
 	{
-		return $this->roles;
-	}
-
-	/**
-	 * @param array $roles
-	 */
-	public function setRoles(array $roles)
-	{
-		$this->roles = array_unique(array_map('strtoupper', array_filter($roles)));
+		return $this->roles->toArray();
 	}
 
 //	/**
@@ -115,4 +113,19 @@ class Group implements GroupInterface
 //	{
 //		// TODO: Implement unserialize() method.
 //	}
+
+	/**
+	 * Get the string representation of the group object.
+	 *
+	 * This can be use full for debugging
+	 *
+	 * @return string
+	 */
+	public function __toString()
+	{
+		return sprintf("ID: %s\nGroup: %s",
+			$this->getId(),
+			$this->getName()
+		);
+	}
 } 

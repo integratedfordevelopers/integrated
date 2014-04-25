@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Integrated\Bundle\UserBundle\Model\Role" table="security_roles">
+
+		<id name="id" column="id" type="integer">
+			<generator strategy="AUTO" />
+		</id>
+
+		<field name="role" column="name" type="string" length="255" unique="true" />
+
+		<field name="label" column="label" type="string" length="255" nullable="true" />
+
+		<field name="description" column="description" type="text" nullable="true" />
+
+		<field name="hidden" column="hidden" type="boolean" />
+
+    </entity>
+
+</doctrine-mapping>
