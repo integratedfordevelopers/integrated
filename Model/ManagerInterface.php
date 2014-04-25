@@ -18,13 +18,13 @@ use Countable;
  */
 interface ManagerInterface /* extends Countable */
 {
-	/**
-	 * Create a user object
-	 *
-	 * @return object
-	 */
-	public function create();
-
+//	/**
+//	 * Create a user object
+//	 *
+//	 * @return object
+//	 */
+//	public function create();
+//
 //	/**
 //	 * Change or add the object to the manager
 //	 *

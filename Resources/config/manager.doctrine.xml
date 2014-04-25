@@ -8,6 +8,7 @@
 
 		<parameter key="integrated_user.user.manager.doctrine.class">Integrated\Bundle\UserBundle\Doctrine\UserManager</parameter>
 		<parameter key="integrated_user.group.manager.doctrine.class">Integrated\Bundle\UserBundle\Doctrine\GroupManager</parameter>
+		<parameter key="integrated_user.role.manager.doctrine.class">Integrated\Bundle\UserBundle\Doctrine\RoleManager</parameter>
 
 	</parameters>
 
@@ -20,11 +21,14 @@
 			<argument>%integrated_user.user.class%</argument>
 		</service>
 
-		<service id="integrated_user.doctrine.object_manager" alias="doctrine.orm.entity_manager" /> <!-- config option -->
-
 		<service id="integrated_user.group.manager.doctrine" class="%integrated_user.group.manager.doctrine.class%">
 			<argument type="service" id="integrated_user.doctrine.object_manager" />
 			<argument>%integrated_user.group.class%</argument>
+		</service>
+
+		<service id="integrated_user.role.manager.doctrine" class="%integrated_user.role.manager.doctrine.class%">
+			<argument type="service" id="integrated_user.doctrine.object_manager" />
+			<argument>%integrated_user.role.class%</argument>
 		</service>
 
 	</services>
