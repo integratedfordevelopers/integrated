@@ -32,7 +32,13 @@
             <div>
                 <label>
                     <input {% if title in active %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
-                    {{ title }}
+                    {% if key == 'contenttypes' %}
+                        {% if contentTypes[title] is defined %}
+                            {{ contentTypes[title] }}
+                        {% else %}
+                            {{ title }}
+                        {% endif %}
+                    {% endif %}
                     <span class="badge">{{ count }}</span>
                 </label>
             </div>
@@ -70,7 +76,14 @@
                     </div>
 
                     <h3 class="panel-title">
-                        <strong>{{ contentTypes[content.type_name] }}</strong> - {{ content.title }}
+                        <strong>
+                            {% if contentTypes[content.type_name] is defined %}
+                                {{ contentTypes[content.type_name] }}
+                            {% else %}
+                                {{ content.type_name }}
+                            {% endif %}
+                        </strong> -
+                        {{ content.title }}
                     </h3>
                 </div>
                 {% if content.content is defined %}
