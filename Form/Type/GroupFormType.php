@@ -53,6 +53,8 @@ class GroupFormType extends AbstractType
 				new Length(['min' => 3])
 			]
 		]);
+
+		$builder->add('roles', 'user_role_choice');
     }
 
     /**

@@ -6,26 +6,33 @@
 
 	<services>
 
-		<service id="integrated_user.role.edit.form.type" class="%integrated_user.form.proxy.type.class%">
-			<argument type="service" id="integrated_user.form.role.type" />
-			<argument type="string">user_role_new</argument>
+		<service id="integrated_user.role.choice.type" class="%integrated_user.form.proxy.type.class%">
+			<argument type="service" id="integrated_user.form.role.choice.type" />
+			<argument type="string">user_role_choice</argument>
 
-			<tag name="form.type" alias="user_role_new" />
+			<tag name="form.type" alias="user_role_choice" />
 		</service>
 
-		<service id="integrated_user.role.new.form.type" class="%integrated_user.form.proxy.type.class%">
-			<argument type="service" id="integrated_user.form.role.type" />
-			<argument type="string">user_role_edit</argument>
+		<!--<service id="integrated_user.role.edit.form.type" class="%integrated_user.form.proxy.type.class%">-->
+			<!--<argument type="service" id="integrated_user.form.role.type" />-->
+			<!--<argument type="string">user_role_new</argument>-->
 
-			<tag name="form.type" alias="user_role_edit" />
-		</service>
+			<!--<tag name="form.type" alias="user_role_new" />-->
+		<!--</service>-->
 
-		<service id="integrated_user.role.delete.form.type" class="%integrated_user.form.proxy.type.class%">
-			<argument type="service" id="integrated_user.form.delete.type" />
-			<argument type="string">user_role_delete</argument>
+		<!--<service id="integrated_user.role.new.form.type" class="%integrated_user.form.proxy.type.class%">-->
+			<!--<argument type="service" id="integrated_user.form.role.type" />-->
+			<!--<argument type="string">user_role_edit</argument>-->
 
-			<tag name="form.type" alias="user_role_delete" />
-		</service>
+			<!--<tag name="form.type" alias="user_role_edit" />-->
+		<!--</service>-->
+
+		<!--<service id="integrated_user.role.delete.form.type" class="%integrated_user.form.proxy.type.class%">-->
+			<!--<argument type="service" id="integrated_user.form.delete.type" />-->
+			<!--<argument type="string">user_role_delete</argument>-->
+
+			<!--<tag name="form.type" alias="user_role_delete" />-->
+		<!--</service>-->
 
 	</services>
 

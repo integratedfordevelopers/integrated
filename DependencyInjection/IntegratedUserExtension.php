@@ -40,7 +40,7 @@ class IntegratedUserExtension extends Extension
 		$loader->load('form.xml');
 		$loader->load('form.profile.xml');
 		$loader->load('form.group.xml');
-//		$loader->load('form.role.xml');
+		$loader->load('form.role.xml');
 
 		$loader->load('manager.xml');
 		$loader->load('manager.doctrine.xml');
