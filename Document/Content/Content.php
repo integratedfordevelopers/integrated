@@ -241,6 +241,26 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
     }
 
     /**
+     * @param $relationType
+     * @return array|bool
+     */
+    public function getReferencesByRelationType($relationType)
+    {
+        if ($relations = $this->getRelationsByRelationType($relationType)) {
+            $references = array();
+
+            /** @var Relation $relation */
+            foreach ($relations as $relation) {
+                $references = array_merge($references, $relation->getReferences()->toArray());
+            }
+
+            return $references;
+        }
+
+        return false;
+    }
+
+    /**
      * Get the createdAt of the document
      *
      * @return \DateTime
