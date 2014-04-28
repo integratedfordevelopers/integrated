@@ -26,6 +26,7 @@ use Integrated\Common\Content\ContentInterface;
 
 use Integrated\Common\Content\MetadataInterface;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Abstract base class for document types
@@ -186,17 +187,11 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
      *
      * @todo not compatible with latest relations version
      * @param ContentInterface $content
-     * @return $this
+     * @throws \Exception
      */
     public function addReference(ContentInterface $content)
     {
-//        $relation = new Relation();
-//        $relation->setRelationId($content->getContentType()->);
-//        $relation->addReference($content);
-//
-//        $this->addRelation($relation);
-
-        return $this;
+        throw new \Exception('Method not longer supported');
     }
 
     /**
