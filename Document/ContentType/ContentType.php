@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Documents\Functional\Embedded;
 use Integrated\Common\ContentType\ContentTypeRelationInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
@@ -24,7 +23,7 @@ use Integrated\Common\ContentType\ContentTypeInterface;
  * Document ContentType
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content_type")
+ * @ODM\Document(collection="content_type", repositoryClass="ContentTypeRepository")
  * @MongoDBUnique(fields="type")
  */
 class ContentType implements ContentTypeInterface
