@@ -22,7 +22,7 @@
 
 		<service id="integrated_user.extension.user_relation" class="%integrated_user.extension.user_relation.subscriber.class%">
 			<argument type="service" id="doctrine_mongodb" on-invalid="ignore" />
-			<tag name="doctrine.orm.event_subscriber" connection="default" />
+			<tag name="doctrine.event_subscriber" connection="default" />
 		</service>
 
 	</services>
