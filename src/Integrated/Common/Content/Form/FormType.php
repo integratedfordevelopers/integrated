@@ -36,6 +36,11 @@ class FormType implements FormTypeInterface
     protected $metadata;
 
 	/**
+     * @var RelationsTypeInterface
+     */
+    protected $relationsType;
+
+	/**
 	 * @var string
 	 */
 	protected $name = null;
@@ -43,11 +48,13 @@ class FormType implements FormTypeInterface
 	/**
 	 * @param ContentTypeInterface $contentType
      * @param MetadataFactory $metadata
+     * @param RelationsTypeInterface $relationsType
 	 */
-	public function __construct(ContentTypeInterface $contentType, MetadataFactory $metadata)
+	public function __construct(ContentTypeInterface $contentType, MetadataFactory $metadata, RelationsTypeInterface $relationsType)
 	{
 		$this->contentType = $contentType;
         $this->metadata = $metadata;
+        $this->relationsType = $relationsType;
 	}
 
 	/**
@@ -67,6 +74,14 @@ class FormType implements FormTypeInterface
                 );
             }
         }
+
+        $this->relationsType->setRelations($this->contentType->getRelations());
+        $builder->add(
+            $builder->create(
+                'relations',
+                $this->relationsType
+            )
+        );
 
 		// submit buttons
 		$builder->add('save', 'submit');
