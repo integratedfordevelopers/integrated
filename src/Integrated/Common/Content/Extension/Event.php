@@ -21,7 +21,7 @@ class Event extends BaseEvent
 	/**
 	 *
 	 */
-	const CONTENT    = 'extension.event.content';
+	const CONTENT      = 'extension.event.content';
 
 	/**
 	 *
@@ -31,12 +31,12 @@ class Event extends BaseEvent
 	/**
 	 *
 	 */
-	const METADATA   = 'extension.event.medadata';
+	const METADATA     = 'extension.event.medadata';
 
 	/**
 	 *
 	 */
-	const UNKNOWN    = 'extension.event.unknown';
+	const UNKNOWN      = 'extension.event.unknown';
 
 	/**
 	 * @var string

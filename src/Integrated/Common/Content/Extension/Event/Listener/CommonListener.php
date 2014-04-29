@@ -9,15 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content\Extension;
+namespace Integrated\Common\Content\Extension\Event\Listener;
 
-use Integrated\Common\Content\ExtensibleInterface;
+use Integrated\Common\Content\Extension\Event;
+use Integrated\Common\Content\Extension\ExtensionInterface;
+
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class EventListener
+class CommonListener
 {
 	/**
 	 * @var ExtensionInterface
@@ -35,25 +37,10 @@ class EventListener
 		$this->listener = $listener;
 	}
 
-	public function __invoke(ContentEvent $event, $eventName, EventDispatcherInterface $dispatcher)
+	public function __invoke(Event $event, $eventName, EventDispatcherInterface $dispatcher)
 	{
-		$content = $event->getContent();
-
-//		if (!$content || !$this->extension->supportsClass(get_class($content))) {
-//			return;
-//		}
-
 		$event = clone $event;
-		$event->setData(null);
-
-		if ($content instanceof ExtensibleInterface){
-			$event->setData($content->getExtension($this->extension->getName()));
-		}
 
 		call_user_func($this->listener, $event, $eventName, $dispatcher);
-
-		if ($content instanceof ExtensibleInterface){
-			$content->setExtension($this->extension->getName(), $event->getData());
-		}
 	}
 } 

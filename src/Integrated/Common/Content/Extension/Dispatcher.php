@@ -11,13 +11,18 @@
 
 namespace Integrated\Common\Content\Extension;
 
-use Integrated\Common\Content\Extension\Event\MetadataEvent;
-use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Content\ContentInterface;
+
 use Integrated\Common\Content\Extension\Event\ContentEvent;
 use Integrated\Common\Content\Extension\Event\ContentTypeEvent;
+use Integrated\Common\Content\Extension\Event\MetadataEvent;
+use Integrated\Common\Content\Extension\Event\Subscriber\ContentSubscriberInterface;
+use Integrated\Common\Content\Extension\Event\Subscriber\ContentTypeSubscriberInterface;
+use Integrated\Common\Content\Extension\Event\Subscriber\MetadataSubscriberInterface;
 
 use Integrated\Common\ContentType\Mapping\MetadataEditorInterface;
+use Integrated\Common\ContentType\ContentTypeInterface;
+
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\ImmutableEventDispatcher;
@@ -33,9 +38,13 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
 	private $registry;
 
 	/**
-	 * @var EventDispatcherInterface
+	 * @var EventDispatcherInterface[]
 	 */
-	private $dispatcher;
+	private $dispatcher = [
+		'content'  => null,
+		'type'     => null,
+		'metadata' => null
+	];
 
 	/**
 	 * @param RegistryInterface $registry
@@ -43,13 +52,34 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
 	public function __construct(RegistryInterface $registry)
 	{
 		$this->registry   = $registry;
-		$this->dispatcher = new EventDispatcher();
+
+		$this->dispatcher = [
+			'content'  => new EventDispatcher(),
+			'type'     => new EventDispatcher(),
+			'metadata' => new EventDispatcher()
+		];
 
 		foreach ($this->registry->getExtensions() as $extension) {
-			$this->dispatcher->addSubscriber($extension->getEventSubscriber());
+			foreach ($extension->getSubscribers() as $subscriber) {
+				if ($subscriber instanceof ContentSubscriberInterface) {
+					$this->dispatcher['content']->addSubscriber($subscriber);
+				}
+
+				if ($subscriber instanceof ContentTypeSubscriberInterface) {
+					$this->dispatcher['type']->addSubscriber($subscriber);
+				}
+
+				if ($subscriber instanceof MetadataSubscriberInterface) {
+					$this->dispatcher['metadata']->addSubscriber($subscriber);
+				}
+			}
 		}
 
-		$this->dispatcher = new ImmutableEventDispatcher($this->dispatcher);
+		$this->dispatcher = [
+			'content'  => new ImmutableEventDispatcher($this->dispatcher['content']),
+			'type'     => new ImmutableEventDispatcher($this->dispatcher['type']),
+			'metadata' => new ImmutableEventDispatcher($this->dispatcher['metadata'])
+		];
 	}
 
 	/**
@@ -82,15 +112,15 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
 	public function dispatch($eventName, $object)
 	{
 		if ($object instanceof ContentInterface) {
-			return $this->dispatcher->dispatch($eventName, new ContentEvent($object));
+			return $this->dispatcher['content']->dispatch($eventName, new ContentEvent($object));
 		}
 
 		if ($object instanceof ContentTypeInterface) {
-			return $this->dispatcher->dispatch($eventName, new ContentTypeEvent($object));
+			return $this->dispatcher['type']->dispatch($eventName, new ContentTypeEvent($object));
 		}
 
 		if ($object instanceof MetadataEditorInterface) {
-			return $this->dispatcher->dispatch($eventName, new MetadataEvent($object));
+			return $this->dispatcher['metadata']->dispatch($eventName, new MetadataEvent($object));
 		}
 
 		return new Event();
