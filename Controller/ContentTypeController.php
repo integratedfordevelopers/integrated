@@ -227,7 +227,7 @@ class ContentTypeController extends Controller
             $dm = $this->get('doctrine_mongodb')->getManager();
 
             // Only delete ContentType when there are no Content items
-            $count = $dm->getRepository($contentType->getClass())->findBy(array('type' => $contentType->getType()))->count();
+            $count = count($dm->getRepository($contentType->getClass())->findBy(array('type' => $contentType->getType())));
             if ($count > 0) {
 
                 // Set flash message and redirect to item page
