@@ -10,6 +10,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -22,12 +23,12 @@ class ContentTypeController extends Controller
     /**
      * @var string
      */
-    protected $contentTypeClass = 'Integrated\Bundle\ContentBundle\Document\ContentType\ContentType';
+    protected $contentTypeClass = 'Integrated\\Bundle\\ContentBundle\\Document\\ContentType\\ContentType';
 
     /**
-     * @var \Integrated\Common\Content\Reader\Document
+     * @var MetadataFactoryInterface
      */
-    protected $reader;
+    protected $metadata;
 
     /**
      * Lists all the ContentType documents
@@ -42,7 +43,7 @@ class ContentTypeController extends Controller
         $documents = $dm->getRepository($this->contentTypeClass)->findAll();
 
         // Get al documentTypes
-        $documentTypes = $this->getReader()->readAll();
+        $documentTypes = $this->getMetadata()->getAllMetadata();
 
         return array(
             'documents' => $documents,
@@ -59,7 +60,7 @@ class ContentTypeController extends Controller
     public function selectAction()
     {
         // Get all the document types
-        $documentTypes = $this->getReader()->readAll();
+        $documentTypes = $this->getMetadata()->getAllMetadata();
 
         return array(
             'documentTypes' => $documentTypes
@@ -93,14 +94,11 @@ class ContentTypeController extends Controller
      */
     public function newAction(Request $request)
     {
-        // Validate request based on document param
-        $documents = $this->getReader()->readAll();
-        if (!isset($documents[$request->get('class')])) {
+		$metadata = $this->getMetadata()->getMetadata($request->get('class'));
+
+        if (!$metadata) {
             return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
         }
-
-        /* @var $metadata Metadata\ContentType */
-        $metadata = $documents[$request->get('class')];
 
         // Create contentType
         $contentType = new ContentType();
@@ -123,15 +121,11 @@ class ContentTypeController extends Controller
      */
     public function createAction(Request $request)
     {
-        // Validate request based on document param
-        $documents = $this->getReader()->readAll();
-        $formData = $request->get('content_type');
-        if (!isset($documents[$formData['class']])) {
+		$metadata = $this->getMetadata()->getMetadata($request->get('content_type')['class']);
+
+        if (!$metadata) {
             return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
         }
-
-        /* @var $metadata Metadata\ContentType */
-        $metadata = $documents[$formData['class']];
 
         // Create contentType
         $contentType = new ContentType();
@@ -169,11 +163,7 @@ class ContentTypeController extends Controller
      */
     public function editAction(ContentType $contentType)
     {
-        // Get all the document types
-        $documents = $this->getReader()->readAll();
-
-        /* @var $metadata Metadata\ContentType */
-        $metadata = $documents[$contentType->getClass()];
+		$metadata = $this->getMetadata()->getMetadata($contentType->getClass());
 
         // Create form
         $form = $this->createEditForm($contentType, $metadata);
@@ -194,11 +184,7 @@ class ContentTypeController extends Controller
      */
     public function updateAction(Request $request, ContentType $contentType)
     {
-        // Get all the document types
-        $documents = $this->getReader()->readAll();
-
-        /* @var $metadata Metadata\ContentType */
-        $metadata = $documents[$contentType->getClass()];
+		$metadata = $this->getMetadata()->getMetadata($contentType->getClass());
 
         // Create form
         $form = $this->createEditForm($contentType, $metadata);
@@ -261,19 +247,19 @@ class ContentTypeController extends Controller
         return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
     }
 
-    /**
-     * Get reader document form service container
-     *
-     * @return \Integrated\Common\Content\Reader\Document
-     */
-    protected function getReader()
-    {
-        if (null === $this->reader) {
-            $this->reader = $this->get('integrated_content.reader.document');
-        }
+	/**
+	 * Get the metadata factory form the service container
+	 *
+	 * @return MetadataFactoryInterface
+	 */
+	protected function getMetadata()
+	{
+		if ($this->metadata === null) {
+			$this->metadata = $this->get('integrated_content.metadata.factory');
+		}
 
-        return $this->reader;
-    }
+		return $this->metadata;
+	}
 
     /**
      * Creates a form to create a ContentType document
@@ -282,7 +268,7 @@ class ContentTypeController extends Controller
      * @param Metadata\ContentType $metadata
      * @return \Symfony\Component\Form\Form
      */
-    private function createCreateForm(ContentType $contentType, Metadata\ContentType $metadata)
+	protected function createCreateForm(ContentType $contentType, Metadata\ContentType $metadata)
     {
         $form = $this->createForm(
             new Form\ContentType($metadata),
@@ -305,7 +291,7 @@ class ContentTypeController extends Controller
      * @param Metadata\ContentType $metadata
      * @return \Symfony\Component\Form\Form
      */
-    private function createEditForm(ContentType $contentType, Metadata\ContentType $metadata)
+	protected function createEditForm(ContentType $contentType, Metadata\ContentType $metadata)
     {
         $form = $this->createForm(
             new Form\ContentType($metadata),
@@ -328,13 +314,12 @@ class ContentTypeController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
+	protected function createDeleteForm($id)
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('integrated_content_content_type_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> array('class' => 'btn-danger')))
-            ->getForm()
-            ;
+            ->getForm();
     }
 }

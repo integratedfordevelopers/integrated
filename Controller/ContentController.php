@@ -232,7 +232,6 @@ class ContentController extends Controller
                 //TODO: improve this. JSM and JvL are gonna kick me if they see this
                 $indexer = $this->get('integrated_solr.indexer');
                 $indexer->execute();
-                file_get_contents('http://' . $this->container->getParameter('solr_host') . ':' . $this->container->getParameter('solr_port') . '/solr/' . $this->container->getParameter('solr_core') . '/update?commit=true');
 
                 return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}

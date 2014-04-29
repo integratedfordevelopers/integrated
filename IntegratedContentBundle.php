@@ -12,6 +12,8 @@
 namespace Integrated\Bundle\ContentBundle;
 
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\DoctrineMongoDBMetadataFactoryPass;
+use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegistryBuilderPass;
+use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\MetadataEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\IntegratedContentExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,6 +35,8 @@ class IntegratedContentBundle extends Bundle
 		parent::build($container);
 
 		$container->addCompilerPass(new DoctrineMongoDBMetadataFactoryPass());
+		$container->addCompilerPass(new ExtensionRegistryBuilderPass());
+		$container->addCompilerPass(new MetadataEventDispatcherPass());
 	}
 
 	/**

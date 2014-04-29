@@ -16,6 +16,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 
+use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
 use Nelmio\Alice\Fixtures;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -26,6 +27,11 @@ use Symfony\Component\Finder\Finder;
  */
 class LoadFixtureData extends ContainerAware implements FixtureInterface
 {
+	/**
+	 * @var MetadataFactoryInterface
+	 */
+	private $metadata = null;
+
 	/**
 	 * @inheritdoc
 	 */
@@ -54,21 +60,14 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
 	 */
 	public function classfields($class, array $required = [], array $ignore = [])
 	{
-		$fields = array();
+		$fields = [];
 
-		/** @var \Integrated\Common\Content\Reader\Document $reader */
-		$reader = $this->container->get('integrated_content.reader.document');
-		$metadata = $reader->readAll();
-
-		if (!isset($metadata[$class])) {
+		if (!$metadata = $this->getMetadata()->getMetadata($class)) {
 			return $fields;
 		}
 
 		$required = array_map('strtolower', $required);
 		$ignore = array_map('strtolower', $ignore);
-
-		/** @var \Integrated\Common\ContentType\Mapping\Metadata\ContentType $metadata */
-		$metadata = $metadata[$class];
 
 		foreach ($metadata->getFields() as $field) {
 			if (in_array(strtolower($field->getName()), $ignore)) { continue; }
@@ -80,5 +79,17 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
 		}
 
 		return $fields;
+	}
+
+	/**
+	 * @return MetadataFactoryInterface
+	 */
+	protected function getMetadata()
+	{
+		if ($this->metadata === null) {
+			$this->metadata = $this->container->get('integrated_content.metadata.factory');
+		}
+
+		return $this->metadata;
 	}
 }
