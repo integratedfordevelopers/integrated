@@ -11,13 +11,23 @@
 
 namespace Integrated\Common\ContentType\Mapping\Metadata;
 
+use Integrated\Common\ContentType\Mapping\MetadataFieldInterface;
+use Integrated\Common\ContentType\Mapping\MetadataEditorInterface;
+
+use ReflectionClass;
+
 /**
  * Class for storing metadata properties of a Document
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentType
+class ContentType implements MetadataEditorInterface
 {
+	/**
+	 * @var ReflectionClass
+	 */
+	private $reflection = null;
+
     /**
      * @var string
      */
@@ -29,9 +39,38 @@ class ContentType
     protected $type;
 
     /**
-     * @var ContentTypeField[]
+     * @var MetadataFieldInterface[]
      */
-    protected $fields = array();
+    protected $fields = [];
+
+	/**
+	 * @param $class
+	 */
+	public function __construct($class)
+	{
+		$this->class = $class;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isContent()
+	{
+		$reflection = $this->getReflection();
+		return $reflection->implementsInterface(self::CONTENT) && $reflection->isInstantiable();
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getReflection()
+	{
+		if ($this->reflection === null) {
+			$this->reflection = new ReflectionClass($this->class);
+		}
+
+		return $this->reflection;
+	}
 
     /**
      * Get the class of the Document
@@ -44,21 +83,7 @@ class ContentType
     }
 
     /**
-     * Set the class of the Document
-     *
-     * @param string $class
-     * @return $this
-     */
-    public function setClass($class)
-    {
-        $this->class = $class;
-        return $this;
-    }
-
-    /**
-     * Get the type of the Document
-     *
-     * @return string
+     * @inheritdoc
      */
     public function getType()
     {
@@ -66,10 +91,7 @@ class ContentType
     }
 
     /**
-     * Set the type of the Document
-     *
-     * @param string type
-     * @return $this
+     * @inheritdoc
      */
     public function setType($type)
     {
@@ -78,45 +100,43 @@ class ContentType
     }
 
     /**
-     * @return ContentTypeField[]
+     * @inheritdoc
      */
     public function getFields()
     {
         return $this->fields;
     }
 
-    /**
-     * @param $name
-     * @return ContentTypeField|null
-     */
+	/**
+  	 * @inheritdoc
+  	 */
     public function getField($name)
     {
-        foreach ($this->fields as $field) {
-            if ($field->getName() == $name) {
-                return $field;
-            }
-        }
-
-        return null;
+		return $this->hasField($name) ? $this->fields[$name] : null;
     }
 
-    /**
-     * @param array ContentTypeField[]
-     * @return $this
-     */
-    public function setFields(array $fields)
-    {
-        $this->fields = $fields;
-        return $this;
-    }
+	/**
+	 * @inheritdoc
+	 */
+	public function hasField($name)
+	{
+		return isset($this->fields[$name]);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function newField($name)
+	{
+		return new ContentTypeField($name);
+	}
 
     /**
-     * @param ContentTypeField $field
-     * @return $this
+     * @inheritdoc
      */
-    public function addField(ContentTypeField $field)
+    public function addField(MetadataFieldInterface $field)
     {
-        $this->fields[] = $field;
+        $this->fields[$field->getName()] = $field;
         return $this;
     }
 }

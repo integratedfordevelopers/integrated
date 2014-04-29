@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Content\Form;
 
-use Integrated\Common\Content\Reader;
 use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Common\ContentType\Mapping\MetadataFactory;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -31,14 +31,9 @@ class FormType implements FormTypeInterface
     protected $contentType;
 
     /**
-     * @var Reader\Document
+     * @var MetadataFactory
      */
-    protected $reader;
-
-    /**
-     * @var RelationsTypeInterface
-     */
-    protected $relationsType;
+    protected $metadata;
 
 	/**
 	 * @var string
@@ -47,14 +42,12 @@ class FormType implements FormTypeInterface
 
 	/**
 	 * @param ContentTypeInterface $contentType
-     * @param Reader\Document $reader
-     * @param RelationsTypeInterface $relationsType
+     * @param MetadataFactory $metadata
 	 */
-	public function __construct(ContentTypeInterface $contentType, Reader\Document $reader, RelationsTypeInterface $relationsType)
+	public function __construct(ContentTypeInterface $contentType, MetadataFactory $metadata)
 	{
 		$this->contentType = $contentType;
-        $this->reader = $reader;
-        $this->relationsType = $relationsType;
+        $this->metadata = $metadata;
 	}
 
 	/**
@@ -62,13 +55,9 @@ class FormType implements FormTypeInterface
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-        $documents = $this->reader->readAll();
-        if (!isset($documents[$this->contentType->getClass()])) {
+        if (!$document = $this->metadata->getMetadata($this->contentType->getClass())) {
             // TODO throw exception
         }
-
-        /* @var $document \Integrated\Common\ContentType\Mapping\Metadata\ContentType */
-        $document = $documents[$this->contentType->getClass()];
 
         foreach ($document->getFields() as $field) {
             if ($this->contentType->hasField($field->getName())) {
@@ -78,14 +67,6 @@ class FormType implements FormTypeInterface
                 );
             }
         }
-
-        $this->relationsType->setRelations($this->contentType->getRelations());
-        $builder->add(
-            $builder->create(
-                'relations',
-                $this->relationsType
-            )
-        );
 
 		// submit buttons
 		$builder->add('save', 'submit');
