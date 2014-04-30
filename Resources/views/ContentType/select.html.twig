@@ -1,5 +1,6 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
-{% block body %}
+{% block content %}
+<div class="content_column_inner">
     <ol class="breadcrumb">
         <li>
             <a href="{{ path('integrated_content_content_type_index') }}">Home</a>
@@ -14,7 +15,9 @@
             <label>Document type</label>
             <select name="class" class="form-control">
                 {% for type in documentTypes %}
-                    <option value="{{ type.class }}">{{ type.type }}</option>
+                    {% if type.type %}
+                        <option value="{{ type.class }}">{{ type.type }}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
         </div>
@@ -22,4 +25,5 @@
             Submit
         </button>
     </form>
+</div>
 {% endblock %}
