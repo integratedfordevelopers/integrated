@@ -1,23 +1,27 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
-    <div class="content_columns_holder">
-        <div class="content_column_inner">
-            <div class="btn-group">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    {% trans %}New{% endtrans %} <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
+
+    <div class="filters_row">
+        <ul class="nav nav-pills">
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" role="button" id="drop_1">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
+                <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
                     {% for type in documentTypes %}
                         {% if type.type %}
-                        <li>
-                            <a href="{{ path('integrated_content_content_type_new') }}?class={{ type.class }}">
-                                {{ type.type }}
-                            </a>
-                        </li>
+                            <li role="presentation">
+                                <a href="{{ path('integrated_content_content_type_new') }}?class={{ type.class }}">
+                                    {{ type.type }}
+                                </a>
+                            </li>
                         {% endif %}
                     {% endfor %}
                 </ul>
-            </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content_columns_holder">
+        <div class="content_column_inner">
 
             <table class="table">
                 <thead>
