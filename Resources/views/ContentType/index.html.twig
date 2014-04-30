@@ -1,60 +1,62 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
-<div class="content_column_inner">
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            {% trans %}New{% endtrans %} <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            {% for type in documentTypes %}
-                {% if type.type %}
-                <li>
-                    <a href="{{ path('integrated_content_content_type_new') }}?class={{ type.class }}">
-                        {{ type.type }}
-                    </a>
-                </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </div>
+    <div class="content_columns_holder">
+        <div class="content_column_inner">
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    {% trans %}New{% endtrans %} <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    {% for type in documentTypes %}
+                        {% if type.type %}
+                        <li>
+                            <a href="{{ path('integrated_content_content_type_new') }}?class={{ type.class }}">
+                                {{ type.type }}
+                            </a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>{% trans %}Name{% endtrans %}</th>
-                <th>{% trans %}Type{% endtrans %}</th>
-                <th>{% trans %}Created{% endtrans %}</th>
-                <th>{% trans %}Actions{% endtrans %}</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for document in documents %}
-            <tr>
-                <td>
-                    <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}">
-                        {{ document.name }}
-                    </a>
-                </td>
-                <td>
-                    {{ document.type }}
-                </td>
-                <td>
-                    {{ document.createdAt|date }}
-                </td>
-                <td>
-                    <a href="{{ path('integrated_content_content_type_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
-                        {{ icon('pencil') }}
-                    </a>
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="4">
-                    {% trans %}No content types added{% endtrans %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans %}Name{% endtrans %}</th>
+                        <th>{% trans %}Type{% endtrans %}</th>
+                        <th>{% trans %}Created{% endtrans %}</th>
+                        <th>{% trans %}Actions{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in documents %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}">
+                                {{ document.name }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ document.type }}
+                        </td>
+                        <td>
+                            {{ document.createdAt|date }}
+                        </td>
+                        <td>
+                            <a href="{{ path('integrated_content_content_type_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
+                                {{ icon('pencil') }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4">
+                            {% trans %}No content types added{% endtrans %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

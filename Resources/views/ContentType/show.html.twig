@@ -1,73 +1,75 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
-    <div class="content_column_inner">
-        <ol class="breadcrumb">
-            <li>
-                <a href="{{ path('integrated_content_content_type_index') }}">{% trans %}Home{% endtrans %}</a>
-            </li>
-            <li class="active">{% trans %}Show{% endtrans %}</li>
-        </ol>
-        <div class="page-header">
-            <h1>{% trans %}Show{% endtrans %}</h1>
+    <div class="content_columns_holder">
+        <div class="content_column_inner">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_content_type_index') }}">{% trans %}Home{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Show{% endtrans %}</li>
+            </ol>
+            <div class="page-header">
+                <h1>{% trans %}Show{% endtrans %}</h1>
+            </div>
+            <dl>
+                <dt>
+                    {% trans %}Name{% endtrans %}
+                </dt>
+                <dd>
+                    {{ contentType.name }}
+                </dd>
+                <dt>
+                    {% trans %}Type{% endtrans %}
+                </dt>
+                <dd>
+                    {{ contentType.type }}
+                </dd>
+                <dt>
+                    {% trans %}Fields{% endtrans %}
+                </dt>
+                <dd>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th width="40%">{% trans %}Field{% endtrans %}</th>
+                                <th>{% trans %}Required{% endtrans %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for field in contentType.fields %}
+                            <tr>
+                                <td>
+                                    {{ field.label|trans }}
+                                </td>
+                                <td>
+                                    {% if field.options.required is empty %}
+                                        {% trans %}No{% endtrans %}
+                                    {% else %}
+                                        {% trans %}Yes{% endtrans %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>
+                                    {% trans %}No fields added{% endtrans %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </dd>
+                <dt>
+                    {% trans %}Relations{% endtrans %}
+                </dt>
+                <dd>
+                    {{ render(controller("IntegratedContentBundle:ContentTypeRelation:index", {'contentType': contentType})) }}
+                </dd>
+            </dl>
+            <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_content_type_edit', {'id': contentType.id}) }}">
+                {% trans %}Edit{% endtrans %}
+            </a>
+            {{ form(form, { 'style': 'inline' }) }}
         </div>
-        <dl>
-            <dt>
-                {% trans %}Name{% endtrans %}
-            </dt>
-            <dd>
-                {{ contentType.name }}
-            </dd>
-            <dt>
-                {% trans %}Type{% endtrans %}
-            </dt>
-            <dd>
-                {{ contentType.type }}
-            </dd>
-            <dt>
-                {% trans %}Fields{% endtrans %}
-            </dt>
-            <dd>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th width="40%">{% trans %}Field{% endtrans %}</th>
-                            <th>{% trans %}Required{% endtrans %}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for field in contentType.fields %}
-                        <tr>
-                            <td>
-                                {{ field.label|trans }}
-                            </td>
-                            <td>
-                                {% if field.options.required is empty %}
-                                    {% trans %}No{% endtrans %}
-                                {% else %}
-                                    {% trans %}Yes{% endtrans %}
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td>
-                                {% trans %}No fields added{% endtrans %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </dd>
-            <dt>
-                {% trans %}Relations{% endtrans %}
-            </dt>
-            <dd>
-                {{ render(controller("IntegratedContentBundle:ContentTypeRelation:index", {'contentType': contentType})) }}
-            </dd>
-        </dl>
-        <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_content_type_edit', {'id': contentType.id}) }}">
-            {% trans %}Edit{% endtrans %}
-        </a>
-        {{ form(form, { 'style': 'inline' }) }}
     </div>
 {% endblock %}

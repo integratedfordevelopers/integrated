@@ -111,9 +111,7 @@
                     {% block flash %}
                         {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
                     {% endblock flash %}
-                    <div class="content_columns_holder">
-                        {% block content %}{% endblock content %}
-                    </div>
+                    {% block content %}{% endblock content %}
                 </div>
             </div>
         {% endblock body %}
