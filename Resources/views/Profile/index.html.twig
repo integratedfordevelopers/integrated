@@ -1,69 +1,78 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
-{% block body %}
-<div class="row">
+{% block content %}
+    <div class="filters_row">
+        <ul class="nav nav-pills">
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" role="button" id="drop_1">Options <b class="caret"></b></a>
+                <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
+                    <li role="presentation"><a href="{{ path('integrated_user_profile_new') }}" tabindex="-1" role="menuitem">New</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 
-    <div class="col-md-12">
 
-        <a href="{{ path('integrated_user_profile_new') }}" class="btn btn-primary btn-lg " role="button">
-            {% trans %}New{% endtrans %}
-        </a>
+    <div class="content_columns_holder">
 
-        {#<div class="search">#}
-            {#<form class="row" role="form">#}
-                {#<div class="col-md-10">#}
-                    {#<label class="sr-only" for="inputquery">#}
-                        {#{% trans %}Search text{% endtrans %}#}
-                    {#</label>#}
-                    {#<input type="search" name="q" class="form-control input-lg" id="inputquery" value="{{ app.request.query.get('q')|trim }}" placeholder="{% trans %}Search text{% endtrans %}" />#}
-                {#</div>#}
-                {#<div class="col-md-2">#}
-                    {#<button type="submit" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-search"></span> {% trans %}Search{% endtrans %}</button>#}
-                {#</div>#}
-            {#</form>#}
-        {#</div>#}
 
-        <div class="results">
 
-            <table class="table table-striped table-hover">
+        <div class="content_column_inner">
 
-                <colgroup>
-                    <col style="width: 3em" />
-                    <col />
-                    <col style="width: 5em" />
-                </colgroup>
+            {#<div class="search">#}
+                {#<form class="row" role="form">#}
+                    {#<div class="col-md-10">#}
+                        {#<label class="sr-only" for="inputquery">#}
+                            {#{% trans %}Search text{% endtrans %}#}
+                        {#</label>#}
+                        {#<input type="search" name="q" class="form-control input-lg" id="inputquery" value="{{ app.request.query.get('q')|trim }}" placeholder="{% trans %}Search text{% endtrans %}" />#}
+                    {#</div>#}
+                    {#<div class="col-md-2">#}
+                        {#<button type="submit" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-search"></span> {% trans %}Search{% endtrans %}</button>#}
+                    {#</div>#}
+                {#</form>#}
+            {#</div>#}
 
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Username</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+            <div class="results">
 
-                <tbody>
+                <table class="table table-striped table-hover">
 
-                {% for user in users %}
+                    <colgroup>
+                        <col style="width: 3em" />
+                        <col />
+                        <col style="width: 5em" />
+                    </colgroup>
 
-                    <tr>
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.username }}</td>
-                        <td>
-                            <a href="{{ path('integrated_user_profile_edit', {'id': user.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
-                            <a href="{{ path('integrated_user_profile_delete', {'id': user.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
-               {% endfor %}
+                    <tbody>
 
-                </tbody>
+                    {% for user in users %}
 
-            </table>
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>
+                                <a href="{{ path('integrated_user_profile_edit', {'id': user.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a href="{{ path('integrated_user_profile_delete', {'id': user.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                            </td>
+                        </tr>
 
-            {{ knp_pagination_render(users) }}
+                   {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {{ knp_pagination_render(users) }}
+
+            </div>
 
         </div>
-
     </div>
-</div>
-
 {% endblock %}
