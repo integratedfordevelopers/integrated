@@ -8,6 +8,10 @@
         <default key="_controller">IntegratedContentBundle:ContentType:index</default>
     </route>
 
+    <route id="integrated_content_content_type_list" path="/list" methods="GET">
+        <default key="_controller">IntegratedContentBundle:ContentType:list</default>
+    </route>
+
     <route id="integrated_content_content_type_select" path="/select" methods="GET">
         <default key="_controller">IntegratedContentBundle:ContentType:select</default>
     </route>

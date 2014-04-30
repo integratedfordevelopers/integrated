@@ -52,6 +52,21 @@ class ContentTypeController extends Controller
     }
 
     /**
+     * @Template()
+     * @return array
+     */
+    public function listAction()
+    {
+        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $documents = $dm->getRepository($this->contentTypeClass)->findAll();
+
+        return array(
+            'documents' => $documents
+        );
+    }
+
+    /**
      * Display a list of Content documents
      *
      * @Template()
