@@ -6,11 +6,33 @@
     "autoload": {
         "psr-0": { "": "src/" }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-library.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-content-bundle.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-solr-bundle.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-user-bundle.git"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "~2.4",
         "doctrine/orm": ">=2.2.3,<2.4-dev",
-        "doctrine/doctrine-bundle": "1.2.*",
+        "doctrine/doctrine-bundle": "~1.2",
         "twig/extensions": "1.0.*",
         "symfony/assetic-bundle": "2.3.*",
         "symfony/swiftmailer-bundle": "2.3.*",
@@ -23,6 +45,7 @@
 		"integrated/content-bundle": "dev-develop",
         "integrated/formtype-bundle": "dev-develop",
         "integrated/solr-bundle": "dev-develop",
+        "integrated/user-bundle": "dev-develop",
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*"
     },

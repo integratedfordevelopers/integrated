@@ -1,2 +1,11 @@
 integrated_content:
     resource: "@IntegratedContentBundle/Resources/config/routing.xml"
+    prefix: "/admin"
+
+integrated_user:
+    resource: "@IntegratedUserBundle/Resources/config/routing.xml"
+    prefix: "/admin"
+
+integrated_security:
+    resource: "@IntegratedUserBundle/Resources/config/routing.security.xml"
+    prefix: "/admin"
