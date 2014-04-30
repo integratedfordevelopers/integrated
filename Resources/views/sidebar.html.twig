@@ -1,0 +1,27 @@
+<div class="col-sm-3 col-md-2 sidebar_left">
+    <div id="left_side_menu" class="navbar-collapse collapse left_side_menu">
+
+        <div class="edited_site_title_holder">
+            {#<h3 class="edited_site_title">Zorgkaartnederland</h3>#}
+        </div>
+
+        <ul class="nav left_sidebar_menu">
+
+            <li>
+                <a href="{{ path('integrated_content_content_index') }}">
+                    <i class="glyphicon glyphicon-list"></i>Content navigator
+                </a>
+            </li>
+
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-wrench"></i>Manager</a>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="{{ path('integrated_content_content_type_index') }}">Content types</a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+</div>
