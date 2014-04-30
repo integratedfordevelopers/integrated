@@ -76,26 +76,24 @@
                     {#</ul>#}
                 {#</li>#}
 
-
+                {% if app.user %}
                 <li class="dropdown dropdown_profile hidden-xs">
-
-                    <!-- TODO user info -->
                     <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">
-                        <img class="userpic" src="images/temp/userpic.jpg" alt="">
+                        <img src="http://placehold.it/45/ffffff&text=:)" class="userpic" />
                         <span class="glyphicon glyphicon-chevron-down arrow"></span>
                     </a>
                     <ul role="menu" class="dropdown-menu with_icons">
                         <li class="user_info">
-                            <h3 class="user_name">Marijn Otte</h3>
-                            <h4 class="user_email">marijn@e-active.nl</h4>
+                            <h3 class="user_name">{{ app.user.username }}</h3>
                         </li>
-                        <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-edit"></i>Edit profile</a></li>
-                        <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-picture"></i>Photo gallery</a></li>
-                        <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-cog"></i>Settings</a></li>
+                        <li><a href="{{ path('integrated_user_profile_edit', {id: app.user.id}) }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-edit"></i>Edit profile</a></li>
+                        {#<li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-picture"></i>Photo gallery</a></li>#}
+                        {#<li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-cog"></i>Settings</a></li>#}
                         <li class="divider" role="presentation"></li>
-                        <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-lock"></i>Log out</a></li>
+                        <li><a href="{{ path('integrated_user_logout') }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-lock"></i>Log out</a></li>
                     </ul>
                 </li>
+                {% endif %}
             </ul>
         </nav>
     </div>
