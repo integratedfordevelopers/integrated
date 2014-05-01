@@ -59,7 +59,7 @@ class ContentSubscriber implements ContentSubscriberInterface
 	{
 		return [
 			Events::POST_READ   => 'read',
-			Events::PRE_CREATE  => 'update',
+			Events::POST_CREATE => 'update',
 			Events::PRE_UPDATE  => 'update',
 			Events::POST_DELETE => 'delete'
 		];
@@ -96,12 +96,8 @@ class ContentSubscriber implements ContentSubscriberInterface
 		$manager = $this->getManager();
 
 		if ($user = $manager->findBy(['relation' => $content->getId()])) {
-			$user = array_shift($user); // get first user
-		} else {
-			$user = $manager->create();
+			$event->setData(array_shift($user)); // get first user
 		}
-
-		$event->setData($user);
 	}
 
 	public function update(ContentEvent $event)
