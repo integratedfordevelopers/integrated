@@ -2,28 +2,28 @@
     <div id="left_side_menu" class="navbar-collapse collapse left_side_menu">
 
         <div class="edited_site_title_holder">
-            {#<h3 class="edited_site_title">Zorgkaartnederland</h3>#}
+            {#<h3 class="edited_site_title">Title</h3>#}
         </div>
 
         <ul class="nav left_sidebar_menu">
 
             <li>
                 <a href="{{ path('integrated_content_content_index') }}">
-                    <i class="glyphicon glyphicon-list"></i>Content navigator
+                    <i class="glyphicon glyphicon-list"></i>{% trans %}Content navigator{% endtrans %}
                 </a>
             </li>
 
             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-wrench"></i>Manager</a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="glyphicon glyphicon-wrench"></i>{% trans %}Manage{% endtrans %}</a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="{{ path('integrated_content_content_type_index') }}">Content types</a>
+                        <a href="{{ path('integrated_content_content_type_index') }}">{% trans %}Content types{% endtrans %}</a>
                     </li>
                     <li>
-                        <a href="{{ path('integrated_user_profile_index') }}">Users</a>
+                        <a href="{{ path('integrated_user_profile_index') }}">{% trans %}Users{% endtrans %}</a>
                     </li>
                     <li>
-                        <a href="{{ path('integrated_user_group_index') }}">Groups</a>
+                        <a href="{{ path('integrated_user_group_index') }}">{% trans %}Groups{% endtrans %}</a>
                     </li>
                 </ul>
             </li>

@@ -211,6 +211,14 @@
                 <source>Search here...</source>
                 <target>Zoeken...</target>
             </trans-unit>
+            <trans-unit id="53">
+                <source>Users</source>
+                <target>Gebruikers</target>
+            </trans-unit>
+            <trans-unit id="54">
+                <source>Groups</source>
+                <target>Groepen</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
