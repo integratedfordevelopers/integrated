@@ -149,7 +149,7 @@ class ContentController extends Controller
 
 		$form = $this->createForm(
 			$type,
-			null,
+			$type->getType()->create(),
 			array(
 				'action' => $this->generateUrl('integrated_content_content_new', ['class' => $request->get('class'), 'type' => $request->get('type')]),
 				'method' => 'POST',
