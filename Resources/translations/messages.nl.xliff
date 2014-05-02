@@ -158,6 +158,59 @@
                 <source>No relations added</source>
                 <target>Er zijn geen relaties toegevoegd</target>
             </trans-unit>
+            <trans-unit id="40">
+                <source>Link to</source>
+                <target>Koppelen aan</target>
+            </trans-unit>
+
+            <trans-unit id="41">
+                <source>Link to</source>
+                <target>Koppelen aan</target>
+            </trans-unit>
+            <trans-unit id="42">
+                <source>Linked to</source>
+                <target>Gekoppeld aan</target>
+            </trans-unit>
+            <trans-unit id="43">
+                <source>Link to</source>
+                <target>Koppelen aan</target>
+            </trans-unit>
+            <trans-unit id="44">
+                <source>No items found</source>
+                <target>Geen items gevonden</target>
+            </trans-unit>
+            <trans-unit id="45">
+                <source>Create new</source>
+                <target>Nieuw</target>
+            </trans-unit>
+            <trans-unit id="46">
+                <source>Type</source>
+                <target>Type</target>
+            </trans-unit>
+            <trans-unit id="47">
+                <source>Edit relation</source>
+                <target>Relatie bewerken</target>
+            </trans-unit>
+            <trans-unit id="48">
+                <source>Content types</source>
+                <target>Content types</target>
+            </trans-unit>
+            <trans-unit id="49">
+                <source>Add relation</source>
+                <target>Relatie toevoegen</target>
+            </trans-unit>
+            <trans-unit id="50">
+                <source>Content type</source>
+                <target>Content type</target>
+            </trans-unit>
+            <trans-unit id="51">
+                <source>Edit relation</source>
+                <target>Relatie bewerken</target>
+            </trans-unit>
+            <trans-unit id="52">
+                <source>Search here...</source>
+                <target>Zoeken...</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
