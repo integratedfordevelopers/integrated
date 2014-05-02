@@ -80,7 +80,7 @@ The <info>%command.name%</info> command starts a full index of the site.
 	{
 		// @todo make it flexible so that is really indexes everything
 
-		$result = $this->getDocumentManager()->getRepository('Integrated\Bundle\ContentBundle\Document\Content\Content')->findBy([]);
+		$result = $this->getDocumentManager()->getUnitOfWork()->getDocumentPersister('Integrated\Bundle\ContentBundle\Document\Content\Content')->loadAll();
         $count = count($result);
 
 		/** @var $progress ProgressHelper */
