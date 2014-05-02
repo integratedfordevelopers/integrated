@@ -19,7 +19,7 @@
             <a href="#" type="button" class="visible-xs left_menu_toggle glyphicon glyphicon-th" data-toggle="collapse" data-target="#left_side_menu"></a>
 
             <a href="{{ path('integrated_content_content_index') }}" class="navbar-brand logo hidden-xs">
-                {% trans %}Integrated{% endtrans %}
+                Integrated
             </a>
 
             <ul class="nav" id="top_menu_for_desktop">
@@ -86,11 +86,9 @@
                         <li class="user_info">
                             <h3 class="user_name">{{ app.user.username }}</h3>
                         </li>
-                        <li><a href="{{ path('integrated_user_profile_edit', {id: app.user.id}) }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-edit"></i>Edit profile</a></li>
-                        {#<li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-picture"></i>Photo gallery</a></li>#}
-                        {#<li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-cog"></i>Settings</a></li>#}
+                        <li><a href="{{ path('integrated_user_profile_edit', {id: app.user.id}) }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-edit"></i>{% trans %}My profile{% endtrans %}</a></li>
                         <li class="divider" role="presentation"></li>
-                        <li><a href="{{ path('integrated_user_logout') }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-lock"></i>Log out</a></li>
+                        <li><a href="{{ path('integrated_user_logout') }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-lock"></i>{% trans %}Log out{% endtrans %}</a></li>
                     </ul>
                 </li>
                 {% endif %}
