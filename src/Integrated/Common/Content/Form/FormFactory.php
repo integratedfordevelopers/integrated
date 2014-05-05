@@ -18,6 +18,9 @@ use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\ContentType\Mapping\MetadataFactory;
 use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
 
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -33,6 +36,11 @@ class FormFactory implements FormFactoryInterface
      */
     private $metadata;
 
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	private $dispatcher = null;
+
     /**
      * @param ContentTypeResolverInterface $resolver
      * @param MetadataFactory $metadata
@@ -41,6 +49,26 @@ class FormFactory implements FormFactoryInterface
 	{
 		$this->resolver = $resolver;
         $this->metadata = $metadata;
+	}
+
+	/**
+	 * @param EventDispatcherInterface $dispatcher
+	 */
+	public function setEventDispatcher(EventDispatcherInterface $dispatcher)
+	{
+		$this->dispatcher = $dispatcher;
+	}
+
+	/**
+	 * @return EventDispatcherInterface
+	 */
+	public function getEventDispatcher()
+	{
+		if ($this->dispatcher === null) {
+			$this->dispatcher = new EventDispatcher();
+		}
+
+		return $this->dispatcher;
 	}
 
 	/**
@@ -64,6 +92,6 @@ class FormFactory implements FormFactoryInterface
 			throw new UnexpectedTypeException($type, 'string');
   		}
 
-		return new FormType($this->resolver->getType($class, $type), $this->metadata);
+		return new FormType($this->resolver->getType($class, $type), $this->metadata->getMetadata($class), $this->getEventDispatcher());
 	}
 }

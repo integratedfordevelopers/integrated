@@ -11,8 +11,16 @@
 
 namespace Integrated\Common\Content\Form;
 
+use Integrated\Common\Content\Form\Event\BuilderEvent;
+use Integrated\Common\Content\Form\Event\FieldEvent;
+use Integrated\Common\Content\Form\Event\OptionsEvent;
+use Integrated\Common\Content\Form\Event\ViewEvent;
+
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Mapping\MetadataFactory;
+use Integrated\Common\ContentType\Mapping\MetadataInterface;
+
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -31,9 +39,14 @@ class FormType implements FormTypeInterface
     protected $contentType;
 
     /**
-     * @var MetadataFactory
+     * @var MetadataInterface
      */
     protected $metadata;
+
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	protected $dispatcher = null;
 
 	/**
 	 * @var string
@@ -41,13 +54,15 @@ class FormType implements FormTypeInterface
 	protected $name = null;
 
 	/**
+	 * @param MetadataInterface $metadata
 	 * @param ContentTypeInterface $contentType
-     * @param MetadataFactory $metadata
+	 * @param EventDispatcherInterface $dispatcher
 	 */
-	public function __construct(ContentTypeInterface $contentType, MetadataFactory $metadata)
+	public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata, EventDispatcherInterface $dispatcher = null)
 	{
 		$this->contentType = $contentType;
         $this->metadata = $metadata;
+		$this->dispatcher = $dispatcher;
 	}
 
 	/**
@@ -55,22 +70,64 @@ class FormType implements FormTypeInterface
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-        if (!$document = $this->metadata->getMetadata($this->contentType->getClass())) {
-            // TODO throw exception
+		$dispatcher = $this->getEventDispatcher();
+
+		// allow events to change the options or add fields at the start of the form
+		if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
+			$event = new BuilderEvent($this->contentType, $this->metadata, $builder);
+			$event->setOptions($options);
+
+			$dispatcher->dispatch(Events::PRE_BUILD, $event);
+
+			$options = $event->getOptions();
+		}
+
+        foreach ($this->metadata->getFields() as $field) {
+
+			$ignored = $this->contentType->hasField($field->getName());
+
+			// allow events to add fields before the supplied field
+			if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
+				$event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field->getName(), $ignored);
+				$event->setOptions($options);
+
+				$dispatcher->dispatch(Events::PRE_BUILD_FIELD, $event);
+			}
+
+			if ($this->contentType->hasField($field->getName())) {
+				$field = $this->contentType->getField($field->getName());
+
+				// allow events to change the supplied field options or even remove it from the form
+				if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
+					$event = new FieldEvent($this->contentType, $this->metadata);
+					$event->setField(clone $field);
+
+					$dispatcher->dispatch(Events::BUILD_FIELD, $event);
+
+					$field = $event->isIgnored() ? null : $event->getField();
+				}
+
+				if ($field){
+					$builder->add($builder->create($field->getName(), $field->getType(), $field->getOptions()));
+				}
+			}
+
+			// allow events to add fields after the supplied field
+			if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
+				$event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field);
+				$event->setOptions($options);
+
+				$dispatcher->dispatch(Events::POST_BUILD_FIELD, $event);
+			}
         }
 
-        foreach ($document->getFields() as $field) {
-            if ($this->contentType->hasField($field->getName())) {
-                $field = $this->contentType->getField($field->getName());
-                $builder->add(
-                    $builder->create($field->getName(), $field->getType(), $field->getOptions())
-                );
-            }
-        }
+		// allow events to add fields at the end of the form
+		if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
+			$event = new BuilderEvent($this->contentType, $this->metadata, $builder);
+			$event->setOptions($options);
 
-		// submit buttons
-		$builder->add('save', 'submit');
-		$builder->add('back', 'submit');
+			$dispatcher->dispatch(Events::POST_BUILD, $event);
+		}
 	}
 
 	/**
@@ -78,6 +135,14 @@ class FormType implements FormTypeInterface
 	 */
 	public function buildView(FormView $view, FormInterface $form, array $options)
 	{
+		$dispatcher = $this->getEventDispatcher();
+
+		if ($dispatcher->hasListeners(Events::PRE_VIEW)) {
+			$event = new ViewEvent($this->contentType, $this->metadata, $view, $form);
+			$event->setOptions($options);
+
+			$this->getEventDispatcher()->dispatch(Events::PRE_VIEW, $event);
+		}
 	}
 
 	/**
@@ -85,6 +150,14 @@ class FormType implements FormTypeInterface
 	 */
 	public function finishView(FormView $view, FormInterface $form, array $options)
 	{
+		$dispatcher = $this->getEventDispatcher();
+
+		if ($dispatcher->hasListeners(Events::POST_VIEW)) {
+			$event = new ViewEvent($this->contentType, $this->metadata, $view, $form);
+			$event->setOptions($options);
+
+			$this->getEventDispatcher()->dispatch(Events::POST_VIEW, $event);
+		}
 	}
 
 	/**
@@ -92,12 +165,20 @@ class FormType implements FormTypeInterface
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
-		$resolver->setDefaults(array(
+		$dispatcher = $this->getEventDispatcher();
+
+		if ($dispatcher->hasListeners(Events::PRE_OPTIONS)) {
+			$dispatcher->dispatch(Events::PRE_OPTIONS, new OptionsEvent($this->contentType, $this->metadata, $resolver));
+		}
+
+		$resolver->setDefaults([
 			'data_class' => $this->contentType->getClass(),
-			'empty_data' => function(FormInterface $form) {
-				return $this->contentType->create();
-			},
-		));
+			'empty_data' => function(FormInterface $form) { return $this->contentType->create(); },
+		]);
+
+		if ($dispatcher->hasListeners(Events::POST_OPTIONS)) {
+			$dispatcher->dispatch(Events::POST_OPTIONS, new OptionsEvent($this->contentType, $this->metadata, $resolver));
+		}
 	}
 
 	/**
@@ -127,5 +208,17 @@ class FormType implements FormTypeInterface
 		}
 
 		return $this->name;
+	}
+
+	/**
+	 * @return EventDispatcherInterface
+	 */
+	public function getEventDispatcher()
+	{
+		if (null == $this->dispatcher) {
+			$this->dispatcher = new EventDispatcher();
+		}
+
+		return $this->dispatcher;
 	}
 }
