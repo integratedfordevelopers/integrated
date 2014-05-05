@@ -19,16 +19,14 @@ use Doctrine\ODM\MongoDB\Cursor;
  */
 class ContentTypeIterator implements ContentTypeIteratorInterface
 {
-	private $cursor;
-
-	private $current = null;
+	private $types;
 
 	/**
-	 * @param Cursor $cursor
+	 * @param array $types
 	 */
-	public function __construct(Cursor $cursor)
+	public function __construct(array $types)
 	{
-		$this->cursor  = $cursor;
+		$this->types  = $types;
 	}
 
 	/**
@@ -36,12 +34,7 @@ class ContentTypeIterator implements ContentTypeIteratorInterface
 	 */
 	public function current()
 	{
-		if (null === $this->current && $this->cursor->valid()) {
-			// lazy load and cache the current content type
-			$this->current = $this->cursor->current();
-		}
-
-		return $this->current;
+		return current($this->types);
 	}
 
 	/**
@@ -49,8 +42,7 @@ class ContentTypeIterator implements ContentTypeIteratorInterface
 	 */
 	public function next()
 	{
-		$this->cursor->next();
-		$this->current = null;
+		next($this->types);
 	}
 
 	/**
@@ -58,7 +50,7 @@ class ContentTypeIterator implements ContentTypeIteratorInterface
 	 */
 	public function key()
 	{
-		return $this->cursor->key();
+		return key($this->types);
 	}
 
 	/**
@@ -66,7 +58,7 @@ class ContentTypeIterator implements ContentTypeIteratorInterface
 	 */
 	public function valid()
 	{
-		return $this->cursor->valid();
+		return key($this->types) !== null;
 	}
 
 	/**
@@ -74,7 +66,6 @@ class ContentTypeIterator implements ContentTypeIteratorInterface
 	 */
 	public function rewind()
 	{
-		$this->cursor->rewind();
-		$this->current = null;
+		reset($this->types);;
 	}
 }

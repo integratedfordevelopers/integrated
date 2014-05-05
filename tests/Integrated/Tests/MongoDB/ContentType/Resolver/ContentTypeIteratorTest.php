@@ -20,19 +20,13 @@ use Doctrine\ODM\MongoDB\Cursor;
 class ContentTypeIteratorTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var Cursor | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $cursor;
-
-	/**
 	 * @var ContentTypeIterator
 	 */
 	protected $iterator;
 
 	protected function setUp()
 	{
-		$this->cursor = $this->getMock('Doctrine\ODM\MongoDB\Cursor', array(), array(), '', false);
-		$this->iterator = new ContentTypeIterator($this->cursor);
+		$this->iterator = new ContentTypeIterator(['key1' => 'data1', 'key2' => 'data2']);
 	}
 
 	public function testInterface()
@@ -42,52 +36,38 @@ class ContentTypeIteratorTest extends \PHPUnit_Framework_TestCase
 
 	public function testCurrent()
 	{
-		$type1 = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
-
-		$this->cursor->expects($this->once())
-			->method('valid')
-			->will($this->returnValue(true));
-
-		$this->cursor->expects($this->once())
-			->method('current')
-			->will($this->returnValue($type1));
-
-		$this->assertSame($type1, $this->iterator->current());
-		$this->assertSame($type1, $this->iterator->current()); // second call should not call cursor functions
+		$this->assertSame('data1', $this->iterator->current());
+		$this->assertSame('data1', $this->iterator->current()); // should still be same value
 	}
 
 	public function testNext()
 	{
-		$this->cursor->expects($this->once())
-			->method('next');
-
 		$this->iterator->next();
+		$this->assertSame('data2', $this->iterator->current());
 	}
 
 	public function testKey()
 	{
-		$this->cursor->expects($this->once())
-			->method('key')
-			->will($this->returnValue('key'));
-
-		$this->assertEquals('key', $this->iterator->key());
+		$this->assertEquals('key1', $this->iterator->key());
+		$this->iterator->next();
+		$this->assertEquals('key2', $this->iterator->key());
 	}
 
 	public function testValid()
 	{
-		$this->cursor->expects($this->once())
-			->method('valid')
-			->will($this->returnValue(true));
-
 		$this->assertTrue($this->iterator->valid());
+		$this->iterator->next();
+		$this->assertTrue($this->iterator->valid());
+		$this->iterator->next();
+		$this->assertFalse($this->iterator->valid());
 	}
 
 	public function testRewind()
 	{
-		$this->cursor->expects($this->once())
-			->method('rewind');
-
+		$this->iterator->next();
 		$this->iterator->rewind();
+
+		$this->assertSame('data1', $this->iterator->current());
 	}
 }
  

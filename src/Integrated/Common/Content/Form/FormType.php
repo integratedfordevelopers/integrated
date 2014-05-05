@@ -44,6 +44,11 @@ class FormType implements FormTypeInterface
     protected $metadata;
 
 	/**
+     * @var RelationsTypeInterface
+     */
+    protected $relationsType;
+
+	/**
 	 * @var EventDispatcherInterface
 	 */
 	protected $dispatcher = null;
@@ -54,14 +59,16 @@ class FormType implements FormTypeInterface
 	protected $name = null;
 
 	/**
-	 * @param MetadataInterface $metadata
 	 * @param ContentTypeInterface $contentType
+     * @param MetadataInterface $metadata
+     * @param RelationsTypeInterface $relationsType
 	 * @param EventDispatcherInterface $dispatcher
 	 */
-	public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata, EventDispatcherInterface $dispatcher = null)
+	public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata, RelationsTypeInterface $relationsType, EventDispatcherInterface $dispatcher = null)
 	{
 		$this->contentType = $contentType;
         $this->metadata = $metadata;
+		$this->relationsType = $relationsType;
 		$this->dispatcher = $dispatcher;
 	}
 
@@ -120,6 +127,14 @@ class FormType implements FormTypeInterface
 				$dispatcher->dispatch(Events::POST_BUILD_FIELD, $event);
 			}
         }
+
+        $this->relationsType->setRelations($this->contentType->getRelations());
+        $builder->add(
+            $builder->create(
+                'relations',
+                $this->relationsType
+            )
+        );
 
 		// allow events to add fields at the end of the form
 		if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
