@@ -13,7 +13,9 @@ namespace Integrated\Common\ContentType\Mapping;
 
 use Integrated\Common\ContentType\Mapping\Event\MetadataEvent;
 use Integrated\Common\ContentType\Mapping\Metadata\ContentType;
+
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -21,7 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 class MetadataFactory implements MetadataFactoryInterface
 {
 	/**
-	 * @var EventDispatcher
+	 * @var EventDispatcherInterface
 	 */
 	private $dispatcher = null;
 
@@ -41,7 +43,7 @@ class MetadataFactory implements MetadataFactoryInterface
 	}
 
 	/**
-	 * @return EventDispatcher
+	 * @return EventDispatcherInterface
 	 */
 	public function getEventDispatcher()
 	{
@@ -53,9 +55,9 @@ class MetadataFactory implements MetadataFactoryInterface
 	}
 
 	/**
-	 * @param EventDispatcher $dispatcher
+	 * @param EventDispatcherInterface $dispatcher
 	 */
-	public function setEventDispatcher(EventDispatcher $dispatcher)
+	public function setEventDispatcher(EventDispatcherInterface $dispatcher)
 	{
 		$this->dispatcher = $dispatcher;
 	}
