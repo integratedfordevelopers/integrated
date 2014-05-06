@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 //use Integrated\Common\Content\ContentInterface;
-use Integrated\Bundle\ContentBundle\Form\Type\DeleteType;
+use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -150,17 +150,21 @@ class ContentController extends Controller
 		$form = $this->createForm(
 			$type,
 			$type->getType()->create(),
-			array(
+			[
 				'action' => $this->generateUrl('integrated_content_content_new', ['class' => $request->get('class'), 'type' => $request->get('type')]),
 				'method' => 'POST',
-			)
+			],
+			[
+				'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
+				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+			]
 		);
 
 		if ($request->isMethod('post')) {
 			$form->handleRequest($request);
 
 			// check for back click else its a submit
-			if ($form->get('back')->isClicked()) {
+			if ($form->get('actions')->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 
@@ -207,17 +211,21 @@ class ContentController extends Controller
 		$form = $this->createForm(
 			$type,
 			$content,
-			array(
+			[
 				'action' => $this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]),
 				'method' => 'PUT',
-			)
+			],
+			[
+				'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+			]
 		);
 
 		if ($request->isMethod('put')) {
 			$form->handleRequest($request);
 
 			// check for back click else its a submit
-			if ($form->get('back')->isClicked()) {
+			if ($form->get('actions')->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 
@@ -258,19 +266,23 @@ class ContentController extends Controller
 		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getContentType());
 
 		$form = $this->createForm(
-			new DeleteType(),
-			null,
-			array(
+			new DeleteFormType(),
+			$content,
+			[
 				'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
 				'method' => 'DELETE',
-			)
+			],
+			[
+				'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
+				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+			]
 		);
 
 		if ($request->isMethod('delete')) {
 			$form->handleRequest($request);
 
 			// check for back click else its a submit
-			if ($form->get('back')->isClicked()) {
+			if ($form->get('actions')->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 
@@ -300,5 +312,23 @@ class ContentController extends Controller
 			'form'    => $form->createView(),
 			'content' => $content
 		);
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function createForm($type, $data = null, array $options = [], array $buttons = [])
+	{
+		/** @var FormBuilder $form */
+		$form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+
+		if ($buttons) {
+			$form->add('actions', 'form_actions', [
+				'buttons' => $buttons
+			]);
+		}
+
+		return $form->getForm();
 	}
 }
