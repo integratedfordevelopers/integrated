@@ -10,6 +10,7 @@
 		<parameter key="integrated_content.form.factory.class">Integrated\Common\Content\Form\FormFactory</parameter>
 
         <parameter key="integrated_content.form.relations.class">Integrated\Bundle\ContentBundle\Form\Type\Relations</parameter>
+		<parameter key="integrated_content.form.relations.listener.class">Integrated\Bundle\ContentBundle\EventListener\RelationsFormSubscriber</parameter>
 
 	</parameters>
 
@@ -33,6 +34,13 @@
 			<argument type="service" id="doctrine_mongodb"/>
 
 			<tag name="form.type" alias="integrated_relations" />
+		</service>
+
+		<service id="integrated_content.form.relations.listener" class="%integrated_content.form.relations.listener.class%">
+			<argument type="string">relations</argument>
+			<argument type="string">integrated_relations</argument>
+
+			<tag name="integrated_content.form.event_subscriber" />
 		</service>
 
 	</services>
