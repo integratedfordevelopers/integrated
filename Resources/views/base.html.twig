@@ -4,12 +4,19 @@
     <title>{% block title %}{% trans %}Integrated{% endtrans %}{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+{% block style %}
+
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/css/bootstrap.css" />
-    {% stylesheets "@integrated_css" output='css/styles.css' %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen" />
+
+    {% stylesheets "@integrated_css" %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
+
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+
+{% endblock style %}
+
 </head>
 <body>
 
@@ -113,12 +120,17 @@
         {% endblock body %}
     </div>
 </section>
+
 {% block javascript %}
-<script src="//code.jquery.com/jquery.js"></script>
-<script src="{{ asset('/js/bootstrap.js') }}"></script>
-{% javascripts "@integrated_js" %}
-<script src="{{ asset_url }}"></script>
-{% endjavascripts %}
+
+    <script src="//code.jquery.com/jquery.js"></script>
+    <script src="{{ asset('/js/bootstrap.js') }}"></script>
+
+    {% javascripts "@integrated_js" %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
 {% endblock javascript %}
+
 </body>
 </html>
