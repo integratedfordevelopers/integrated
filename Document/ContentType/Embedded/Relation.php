@@ -147,6 +147,19 @@ class Relation implements ContentTypeRelationInterface
     }
 
     /**
+     * @param ContentType $contentType
+     * @return $this
+     */
+    public function addContentType($contentType)
+    {
+        if (!$this->contentTypes->contains($contentType)) {
+            $this->contentTypes->add($contentType);
+        }
+
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     public function getMultiple()
