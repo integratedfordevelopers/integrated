@@ -36,11 +36,6 @@ class FormFactory implements FormFactoryInterface
      */
     private $metadata;
 
-    /**
-     * @var RelationsTypeInterface
-     */
-    private $relationsType;
-
 	/**
 	 * @var EventDispatcherInterface
 	 */
@@ -49,13 +44,11 @@ class FormFactory implements FormFactoryInterface
     /**
      * @param ContentTypeResolverInterface $resolver
      * @param MetadataFactory $metadata
-     * @param RelationsTypeInterface $relationsType
      */
-    public function __construct(ContentTypeResolverInterface $resolver, MetadataFactory $metadata, RelationsTypeInterface $relationsType)
+    public function __construct(ContentTypeResolverInterface $resolver, MetadataFactory $metadata)
 	{
 		$this->resolver = $resolver;
         $this->metadata = $metadata;
-        $this->relationsType = $relationsType;
 	}
 
 	/**
@@ -99,6 +92,6 @@ class FormFactory implements FormFactoryInterface
 			throw new UnexpectedTypeException($type, 'string');
   		}
 
-		return new FormType($this->resolver->getType($class, $type), $this->metadata->getMetadata($class), $this->relationsType, $this->getEventDispatcher());
+		return new FormType($this->resolver->getType($class, $type), $this->metadata->getMetadata($class), $this->getEventDispatcher());
 	}
 }

@@ -44,11 +44,6 @@ class FormType implements FormTypeInterface
     protected $metadata;
 
 	/**
-     * @var RelationsTypeInterface
-     */
-    protected $relationsType;
-
-	/**
 	 * @var EventDispatcherInterface
 	 */
 	protected $dispatcher = null;
@@ -64,11 +59,10 @@ class FormType implements FormTypeInterface
      * @param RelationsTypeInterface $relationsType
 	 * @param EventDispatcherInterface $dispatcher
 	 */
-	public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata, RelationsTypeInterface $relationsType, EventDispatcherInterface $dispatcher = null)
+	public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata, EventDispatcherInterface $dispatcher = null)
 	{
 		$this->contentType = $contentType;
         $this->metadata = $metadata;
-		$this->relationsType = $relationsType;
 		$this->dispatcher = $dispatcher;
 	}
 
@@ -94,7 +88,7 @@ class FormType implements FormTypeInterface
 			$ignored = $this->contentType->hasField($field->getName());
 
 			// allow events to add fields before the supplied field
-			if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
+			if ($dispatcher->hasListeners(Events::PRE_BUILD_FIELD)) {
 				$event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field->getName(), $ignored);
 				$event->setOptions($options);
 
@@ -105,7 +99,7 @@ class FormType implements FormTypeInterface
 				$field = $this->contentType->getField($field->getName());
 
 				// allow events to change the supplied field options or even remove it from the form
-				if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
+				if ($dispatcher->hasListeners(Events::BUILD_FIELD)) {
 					$event = new FieldEvent($this->contentType, $this->metadata);
 					$event->setField(clone $field);
 
@@ -114,13 +108,13 @@ class FormType implements FormTypeInterface
 					$field = $event->isIgnored() ? null : $event->getField();
 				}
 
-				if ($field){
+				if ($field) {
 					$builder->add($builder->create($field->getName(), $field->getType(), $field->getOptions()));
 				}
 			}
 
 			// allow events to add fields after the supplied field
-			if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
+			if ($dispatcher->hasListeners(Events::POST_BUILD_FIELD)) {
 				$event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field);
 				$event->setOptions($options);
 
@@ -128,16 +122,8 @@ class FormType implements FormTypeInterface
 			}
         }
 
-        $this->relationsType->setRelations($this->contentType->getRelations());
-        $builder->add(
-            $builder->create(
-                'relations',
-                $this->relationsType
-            )
-        );
-
 		// allow events to add fields at the end of the form
-		if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
+		if ($dispatcher->hasListeners(Events::POST_BUILD)) {
 			$event = new BuilderEvent($this->contentType, $this->metadata, $builder);
 			$event->setOptions($options);
 
