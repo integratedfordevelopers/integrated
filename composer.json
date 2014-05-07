@@ -25,7 +25,7 @@
 		"doctrine/dbal": ">=2.3.0,<2.5-dev",
 		"doctrine/orm": "~2.2,>=2.2.3",
 		"doctrine/mongodb": ">=1.0.0",
-		"doctrine/mongodb-odm": "dev-master",
+		"doctrine/mongodb-odm": "1.0.0-BETA10",
 		"solarium/solarium": "dev-develop"
 	},
 	"require-dev": {
