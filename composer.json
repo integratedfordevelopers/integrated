@@ -29,7 +29,7 @@
         "symfony/framework-bundle": "~2.2",
 		"doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/mongodb": ">=1.0.0",
-        "doctrine/mongodb-odm": "dev-master",
+        "doctrine/mongodb-odm": "1.0.0-BETA10",
         "doctrine/mongodb-odm-bundle": "3.0.x-dev",
         "integrated/library": "dev-develop",
         "integrated/formtype-bundle": "dev-develop",
