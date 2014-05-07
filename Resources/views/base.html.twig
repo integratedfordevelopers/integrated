@@ -2,7 +2,7 @@
 <html class="no-js">
 <head>
     <title>{% block title %}{% trans %}Integrated{% endtrans %}{% endblock title %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
 {% block style %}
 
@@ -22,8 +22,51 @@
 
 <header>
     <div class="container">
-        <nav class="navbar" role="navigation">
-            <a href="#" type="button" class="visible-xs left_menu_toggle glyphicon glyphicon-th" data-toggle="collapse" data-target="#left_side_menu"></a>
+        <nav class="navbar js-navbar-collapse" role="navigation">
+
+            <ul class="nav pull-left">
+                <li class="dropdown dropdown-large">
+                    <a href="#" class="dropdown-toggle left_menu_toggle glyphicon glyphicon-th" data-toggle="dropdown"></a>
+
+                    <ul class="dropdown-menu dropdown-menu-large row">
+                        <li class="col-sm-3">
+                            <ul>
+                                <li class="dropdown-header">{% trans %}Content{% endtrans %}</li>
+                                <li><a href="{{ path('integrated_content_content_index') }}">{% trans %}Content navigator{% endtrans %}</a></li>
+                            </ul>
+                        </li>
+{#
+                        <li class="divider"></li>
+#}
+                        <li class="col-sm-3">
+                            <ul>
+                                {% if is_granted('ROLE_ADMIN') %}
+                                <li class="dropdown-header">{% trans %}Manage{% endtrans %}</li>
+                                <li><a href="{{ path('integrated_content_content_type_index') }}">{% trans %}Content types{% endtrans %}</a></li>
+                                <li><a href="{{ path('integrated_user_profile_index') }}">{% trans %}Users{% endtrans %}</a></li>
+                                <li><a href="{{ path('integrated_user_group_index') }}">{% trans %}Groups{% endtrans %}</a></li>
+                                {% endif %}
+                                <li><span style="width:300px;display:block;"><!--ulgy hack, @todo: fix this-->&nbsp;</span></li>
+                            </ul>
+                        </li>
+
+                        <li class="col-sm-3">
+                            <ul>
+                                <li><span style="width:300px;display:block;"><!--ulgy hack, @todo: fix this-->&nbsp;</span></li>
+                            </ul>
+                        </li>
+
+
+                        <li class="col-sm-3">
+                            <ul>
+                                <li><span style="width:300px;display:block;"><!--ulgy hack, @todo: fix this-->&nbsp;</span></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </li>
+            </ul>
 
             <a href="{{ path('integrated_content_content_index') }}" class="navbar-brand logo hidden-xs">
                 Integrated
@@ -31,11 +74,11 @@
 
             <ul class="nav" id="top_menu_for_desktop">
                 <li class="dropdown for_mobile">
-                    <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">Create New <b class="caret"></b></a>
+                    <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
 
                     <div class="search_field_holder">
                         <form action="{{ path('integrated_content_content_index') }}">
-                            <input type="text" name="q" value="{{ app.request.query.get('q')|trim }}" class="form-control typehead_search" placeholder=""{% trans %}Search here...{% endtrans %}" autocomplete="off" />
+                            <input type="text" name="q" value="{{ app.request.query.get('q')|trim }}" class="form-control typehead_search" placeholder="{% trans %}Search here...{% endtrans %}" autocomplete="off" />
                             <button type="button" class="submit_btn"><i class="glyphicon glyphicon-search"></i></button>
                         </form>
                     </div>
@@ -105,19 +148,16 @@
 </header>
 <section class="content_section">
     <div class="container">
+
         {% block body %}
-            <div class="row">
-                {% block sidebar %}
-                    {% include 'IntegratedContentBundle::sidebar.html.twig' %}
-                {% endblock sidebar %}
-                <div class="col-sm-9 col-md-10 content_wrapper">
-                    {% block flash %}
-                        {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
-                    {% endblock flash %}
-                    {% block content %}{% endblock content %}
-                </div>
+            <div class="col-sm-12 content_wrapper">
+                {% block flash %}
+                    {% include 'BraincraftedBootstrapBundle::flash.html.twig' with { 'close': true } %}
+                {% endblock flash %}
+                {% block content %}{% endblock content %}
             </div>
         {% endblock body %}
+
     </div>
 </section>
 
