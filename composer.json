@@ -20,6 +20,7 @@
 		"symfony/expression-language": "~2.4",
 		"symfony/finder": "~2.4",
 		"symfony/form": "~2.4",
+		"symfony/security": "~2.4",
 		"symfony/serializer": "~2.4",
 		"symfony/validator": "~2.4",
 		"doctrine/dbal": ">=2.3.0,<2.5-dev",
@@ -39,6 +40,7 @@
 			"Integrated\\MongoDB\\Solr\\": "src/",
 			"Integrated\\Common\\Content\\": "src/",
 			"Integrated\\Common\\ContentType\\": "src/",
+			"Integrated\\Common\\Locks\\": "src/",
 			"Integrated\\Common\\Queue\\": "src/",
 			"Integrated\\Common\\Solr\\": "src/"
 		}
