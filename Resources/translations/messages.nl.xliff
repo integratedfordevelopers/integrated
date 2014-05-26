@@ -231,6 +231,10 @@
                 <source>Integrated</source>
                 <target>Integrated</target>
             </trans-unit>
+            <trans-unit id="58">
+                <source>Published at</source>
+                <target>Publiceren op</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
