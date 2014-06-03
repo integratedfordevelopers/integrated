@@ -11,12 +11,11 @@
 
 namespace Integrated\Common\Locks;
 
-use Doctrine\Common\Util\ClassUtils;
-
 use Integrated\Common\Locks\Exception\InvalidArgumentException;
 use Integrated\Common\Locks\Exception\InvalidObjectException;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -112,7 +111,7 @@ class Resource implements ResourceInterface
 	 */
 	public function equals(ResourceInterface $resource)
 	{
-		return $this->type === $resource->getType() && $this->identifier === $this->getIdentifier();
+		return $this->type === $resource->getType() && $this->identifier === $resource->getIdentifier();
 	}
 
 	/**
