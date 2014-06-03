@@ -17,9 +17,11 @@ use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 use Integrated\Common\Locks\Exception\InvalidArgumentException;
 use Integrated\Common\Locks\Exception\UnexpectedTypeException;
+use Integrated\Common\Locks\Filter;
 use Integrated\Common\Locks\LockInterface;
 use Integrated\Common\Locks\ManagerInterface;
 use Integrated\Common\Locks\RequestInterface;
+use Integrated\Common\Locks\ResourceInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -78,20 +80,18 @@ class Manager implements ManagerInterface
 			// have the server created a uuid for this lock
 
 			$data = $this->connection->fetchColumn('SELECT ' . $this->platform->getGuidExpression());
-			$data = array_shift($data);
-
 			$data = [
 				'id' => $data,
 				'resource' => Resource::serialize($request->getResource()),
 				'resource_owner' => Resource::serialize($owner),
 				'created' => $created,
 				'expires' => $expires,
-				'timeout' => $request->getTimeout()
+				'timeout' => $timeout
 			];
 
 			$this->connection->insert($this->options['lock_table_name'], $data);
 		} catch (DBALException $e) {
-			return null;
+			return null; // expected to be a dup key error
 		}
 
 		return Lock::factory($data);
@@ -113,7 +113,7 @@ class Manager implements ManagerInterface
 		try {
 			$this->connection->delete($this->options['lock_table_name'], $lock);
 		} catch (DBALException $e) {
-			return null; // could not be removed ...
+			// could not be removed ...
 		}
 	}
 
@@ -131,13 +131,13 @@ class Manager implements ManagerInterface
 		try {
 			$this->connection->beginTransaction();
 
-			$query = sprintf(
-				'SELECT * FROM %s WHERE id = ? %s',
-				$this->platform->quoteIdentifier($this->options['lock_table_name']),
-				$this->platform->getForUpdateSQL()
-			);
+			$builder = $this->connection->createQueryBuilder();
+			$builder
+				->select('l.*')
+				->from($this->options['lock_table_name'], 'l')
+				->where('l.id = ' . $builder->createPositionalParameter($lock));
 
-			if ($data = $this->connection->fetchAssoc($query, [$lock])) {
+			if ($data = $this->connection->fetchAssoc($builder->getSQL() . ' ' . $this->platform->getForUpdateSQL(), $builder->getParameters())) {
 				if ($data['timeout'] !== null) {
 					$data['expires'] = time() + $data['timeout'];
 
@@ -149,7 +149,7 @@ class Manager implements ManagerInterface
 		} catch (DBALException $e) {
 			$this->connection->rollBack();
 
-			return null; // probably raise a error
+			return null; // probably should raise a error
 		}
 
 		if ($data) {
@@ -160,7 +160,130 @@ class Manager implements ManagerInterface
 	}
 
 	/**
-	 * Remove all the locks set by this provider
+	 * @inheritdoc
+	 */
+	public function find($lock)
+	{
+		if ($lock instanceof LockInterface) {
+			$lock = $lock->getId();
+		} else if (!is_string($lock)) {
+			throw new UnexpectedTypeException($lock, 'string or Integrated\Common\Locks\LockInterface');
+		}
+
+		try {
+			$builder = $this->connection->createQueryBuilder();
+			$builder
+				->select('l.*')
+				->from($this->options['lock_table_name'], 'l')
+				->where('l.id = ' . $builder->createPositionalParameter($lock));
+
+			if ($data = $this->connection->fetchAssoc($builder->getSQL(), $builder->getParameters())) {
+				return Lock::factory($data);
+			}
+		}  catch (DBALException $e) {
+			return null; // probably should raise a error
+		}
+
+		return null;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function findAll()
+	{
+		return $this->findBy([]);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function findByResource(ResourceInterface $resource)
+	{
+		$filter = new Filter();
+		$filter->resources[] = $resource;
+
+		return $this->findBy($filter);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function findByOwner(ResourceInterface $resource)
+	{
+		$filter = new Filter();
+		$filter->owners[] = $resource;
+
+		return $this->findBy($filter);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function findBy($filters)
+	{
+		if (!is_array($filters)) {
+			$filters = [$filters];
+		}
+
+		// build the query based on the supplied filter or return all the result
+		// if no filters are supplied.
+
+		$builder = $this->connection->createQueryBuilder();
+
+		$builder->select('l.*');
+		$builder->from($this->options['lock_table_name'], 'l');
+
+		foreach ($filters as $filter) {
+			$where = $builder->expr()->andX();
+
+			if (!$filter instanceof Filter) {
+				throw new UnexpectedTypeException($filter, 'Integrated\Common\Locks\Filter');
+			}
+
+			$resources = is_array($filter->resources) ? $filter->resources : [$filter->resources];
+			$resources = array_filter($resources);
+
+			if (!empty($resources)) {
+				$resources = array_map(['Integrated\\Common\\Locks\\Provider\\DBAL\\Resource', 'serialize'], $resources);
+				$resources = array_map([$builder->getConnection(), 'quote'], $resources);
+
+				$where->add($builder->expr()->in('l.resource', $resources));
+			}
+
+			$owners = is_array($filter->owners) ? $filter->owners : [$filter->owners];
+			$owners = array_filter($owners);
+
+			if (!empty($owners)) {
+				$owners = array_map(['Integrated\\Common\\Locks\\Provider\\DBAL\\Resource', 'serialize'], $owners);
+				$owners = array_map([$builder->getConnection(), 'quote'], $owners);
+
+				$where->add($builder->expr()->in('l.resource_owner', $owners));
+			}
+
+			if ($where->count()) {
+				$builder->orWhere($where);
+			}
+		}
+
+		// yeah query time
+
+		$results = [];
+
+		try {
+			foreach ($this->connection->fetchAll($builder->getSQL(), $builder->getParameters()) as $data) {
+				$results[] = Lock::factory($data);
+			}
+		}  catch (DBALException $e) {
+			return null; // probably should raise a error
+		}
+
+		return $results;
+	}
+
+
+	/**
+	 * @inheritdoc
 	 */
 	public function clear()
 	{
@@ -181,13 +304,13 @@ class Manager implements ManagerInterface
 	public function clean()
 	{
 		try {
+			$builder = $this->connection->createQueryBuilder();
+			$builder
+				->delete()
+				->from($this->options['lock_table_name'], 'l')
+				->where('l.expires NOT NULL AND l.expires < ' . $builder->createPositionalParameter(time()));
 
-			$query = sprintf(
-				'DELETE FROM %s WHERE expires NOT NULL AND expires < ?',
-				$this->platform->quoteIdentifier($this->options['lock_table_name'])
-			);
-
-			$this->connection->executeQuery($query, [time()]);
+			$this->connection->executeQuery($builder->getSQL(), $builder->getParameters());
 		} catch (DBALException $e) {
 			// probably should raise a error
 		}

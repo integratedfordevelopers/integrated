@@ -45,15 +45,50 @@ interface ManagerInterface
 	 */
 	public function refresh($lock);
 
-//	/**
-//	 * @param Resource $resource
-//	 * @return Lock
-//	 */
-//	public function hasLock(Resource $resource);
-//
-//	/**
-//	 * @param Resource[] $resources
-//	 * @return Lock[]
-//	 */
-//	public function hasLocks($resources);
+	/**
+	 * Finds a lock by its identifier.
+	 *
+	 * @param LockInterface | string $lock lock object or a string with the lock id
+	 * @return LockInterface
+	 */
+	public function find($lock);
+
+	/**
+	 * Finds all the locks.
+	 *
+	 * @return LockInterface[]
+	 */
+	public function findAll();
+
+	/**
+	 * Find a lock by its resource identifier.
+	 *
+	 * The result should always contain zero to one result, can't lock the same
+	 * resource more then once, but its returned as a array for constancy reasons.
+	 *
+	 * @param ResourceInterface $resource
+	 * @return LockInterface[]
+	 */
+	public function findByResource(ResourceInterface $resource);
+
+	/**
+	 * Finds all the locks by its owner.
+	 *
+	 * @param ResourceInterface $resource
+	 * @return LockInterface[]
+	 */
+	public function findByOwner(ResourceInterface $resource);
+
+	/**
+	 * Finds the locks based on the given set of filters.
+	 *
+	 * @param Filter | Filter[] $filters
+	 * @return LockInterface[]
+	 */
+	public function findBy($filters);
+
+	/**
+	 * Remove all the locks.
+	 */
+	public function clear();
 }
