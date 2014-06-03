@@ -92,19 +92,25 @@ class ContentController extends Controller
             }
         }
 
-        $id = $request->query->get('id');
-        if (is_array($id)) {
+        if ($request->isMethod('post')) {
+            $id = (array) $request->get('id');
+            if (is_array($id)) {
 
-            if (count($id)) {
-                $helper = $query->getHelper();
-                $filter = function($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
+                if (count($id) == 0) {
+                    $id[] = '';
+                }
 
-                $query
-                    ->createFilterQuery('id')
-                    ->addTag('id')
-                    ->setQuery('type_id: ((%1%))', [implode(') OR (', array_map($filter, $id))]);
+                if (count($id)) {
+                    $helper = $query->getHelper();
+                    $filter = function($param) use($helper) {
+                        return $helper->escapePhrase($param);
+                    };
+
+                    $query
+                        ->createFilterQuery('id')
+                        ->addTag('id')
+                        ->setQuery('type_id: ((%1%))', [implode(') OR (', array_map($filter, $id))]);
+                }
             }
         }
 
