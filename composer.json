@@ -26,8 +26,8 @@
 		"doctrine/dbal": ">=2.3.0,<2.5-dev",
 		"doctrine/orm": "~2.2,>=2.2.3",
 		"doctrine/mongodb": ">=1.0.0",
-		"doctrine/mongodb-odm": "1.0.0-BETA10@dev",
-		"solarium/solarium": "dev-develop"
+        "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
+        "solarium/solarium": "3.2.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "3.7.*"
@@ -40,6 +40,7 @@
 			"Integrated\\MongoDB\\Solr\\": "src/",
 			"Integrated\\Common\\Content\\": "src/",
 			"Integrated\\Common\\ContentType\\": "src/",
+			"Integrated\\Common\\Form\\": "src/",
 			"Integrated\\Common\\Locks\\": "src/",
 			"Integrated\\Common\\Queue\\": "src/",
 			"Integrated\\Common\\Solr\\": "src/"
