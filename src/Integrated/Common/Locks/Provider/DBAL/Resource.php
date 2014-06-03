@@ -60,7 +60,7 @@ class Resource extends BaseResource
 			return null;
 		}
 
-		$resource = json_decode($serialized);
+		$resource = json_decode($serialized, true);
 
 		return new self($resource['type'], $resource['id']);
 	}
