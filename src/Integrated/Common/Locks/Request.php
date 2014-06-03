@@ -14,7 +14,7 @@ namespace Integrated\Common\Locks;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class request implements RequestInterface
+class Request implements RequestInterface
 {
 	/**
 	 * @var ResourceInterface

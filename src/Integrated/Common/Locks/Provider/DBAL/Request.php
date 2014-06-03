@@ -17,7 +17,7 @@ use Integrated\Common\Locks\ResourceInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class request implements RequestInterface
+class Request implements RequestInterface
 {
 	/**
 	 * @var ResourceInterface
