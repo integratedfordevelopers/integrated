@@ -18,22 +18,40 @@ use Datetime;
  */
 interface LockInterface
 {
+//	/**
+//	 * Release this lock
+//	 */
+//	public function release();
+//
+//	/**
+//	 * Refresh this lock
+//	 */
+//	public function refresh();
+
 	/**
+	 * Get the lock identifier
+	 *
 	 * @return string
 	 */
 	public function getId();
 
 	/**
+	 * Get the lock request
+	 *
 	 * @return RequestInterface
 	 */
 	public function getRequest();
 
 	/**
+	 * Get the created time
+	 *
 	 * @return Datetime
 	 */
 	public function getCreated();
 
 	/**
+	 * Get the expire time
+	 *
 	 * @return Datetime
 	 */
 	public function getExpires();
