@@ -137,7 +137,7 @@ class Manager implements ManagerInterface
 				->from($this->options['lock_table_name'], 'l')
 				->where('l.id = ' . $builder->createPositionalParameter($lock));
 
-			if ($data = $this->connection->fetchAssoc($builder->getSQL() . ' ' . $this->platform->getForUpdateSQL(), $builder->getParameters())) {
+			if ($data = $this->connection->fetchAssoc($builder->getSQL() . ' ' . $this->platform->getForUpdateSQL(), array_values($builder->getParameters()))) {
 				if ($data['timeout'] !== null) {
 					$data['expires'] = time() + $data['timeout'];
 
@@ -177,7 +177,7 @@ class Manager implements ManagerInterface
 				->from($this->options['lock_table_name'], 'l')
 				->where('l.id = ' . $builder->createPositionalParameter($lock));
 
-			if ($data = $this->connection->fetchAssoc($builder->getSQL(), $builder->getParameters())) {
+			if ($data = $this->connection->fetchAssoc($builder->getSQL(), array_values($builder->getParameters()))) {
 				return Lock::factory($data);
 			}
 		}  catch (DBALException $e) {
@@ -271,7 +271,7 @@ class Manager implements ManagerInterface
 		$results = [];
 
 		try {
-			foreach ($this->connection->fetchAll($builder->getSQL(), $builder->getParameters()) as $data) {
+			foreach ($this->connection->fetchAll($builder->getSQL(), array_values($builder->getParameters())) as $data) {
 				$results[] = Lock::factory($data);
 			}
 		}  catch (DBALException $e) {
@@ -292,7 +292,7 @@ class Manager implements ManagerInterface
 			// unique so there should be no issues with reusing the same key that
 			// auto id could have.
 
-			$this->connection->executeQuery($this->platform->getTruncateTableSQL($this->options['lock_table_name']));
+			$this->connection->executeUpdate($this->platform->getTruncateTableSQL($this->options['lock_table_name']));
 		} catch (DBALException $e) {
 			// probably should raise a error
 		}
@@ -306,11 +306,10 @@ class Manager implements ManagerInterface
 		try {
 			$builder = $this->connection->createQueryBuilder();
 			$builder
-				->delete()
-				->from($this->options['lock_table_name'], 'l')
-				->where('l.expires NOT NULL AND l.expires < ' . $builder->createPositionalParameter(time()));
+				->delete($this->options['lock_table_name'])
+				->where('expires IS NOT NULL AND expires < ' . $builder->createPositionalParameter(time()));
 
-			$this->connection->executeQuery($builder->getSQL(), $builder->getParameters());
+			$builder->execute();
 		} catch (DBALException $e) {
 			// probably should raise a error
 		}
