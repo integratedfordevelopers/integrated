@@ -11,11 +11,17 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Traversable;
+
+use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
+use Integrated\Common\Locks;
+
 //use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -131,7 +137,8 @@ class ContentController extends Controller
 			'pager' => $paginator,
             'contentTypes' => $displayTypes,
             'active' => $contentType,
-            'facets' => $result->getFacetSet()->getFacets()
+            'facets' => $result->getFacetSet()->getFacets(),
+			'locks' => $this->getLocks($paginator)
 		);
 	}
 
@@ -180,11 +187,6 @@ class ContentController extends Controller
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('A new %s is created', $type->getType()->getType()));
 
-                //TODO: improve this. JSM and JvL are gonna kick me if they see this
-                $indexer = $this->get('integrated_solr.indexer');
-                $indexer->execute();
-                file_get_contents('http://' . $this->container->getParameter('solr_host') . ':' . $this->container->getParameter('solr_port') . '/solr/' . $this->container->getParameter('solr_core') . '/update?commit=true');
-
                 return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 		}
@@ -208,47 +210,96 @@ class ContentController extends Controller
 		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
 		$type = $this->get('integrated.form.factory')->getType($content);
 
-		$form = $this->createForm(
-			$type,
-			$content,
-			[
-				'action' => $this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]),
-				'method' => 'PUT',
-			],
-			[
+		// get a lock on this content resource.
+		$lock = $this->getLock($content, 60);
+		$lock['locked'] = (bool) ($lock['lock'] && $lock['user'] !== $this->getUser());
+
+		// load a different set of buttons based bases on the locking stat for this
+		// content object
+
+		if ($lock['locked']) {
+			$buttons = [
+				'reload' => ['type' => 'submit', 'options' => ['label' => 'Reload']],
+				'reload_changed' => ['type' => 'submit', 'options' => ['label' => 'Reload (keep changes)', 'attr' => ['type' => 'default']]],
+				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+			];
+		} else {
+			$buttons = [
 				'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
 				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-			]
-		);
+			];
+		}
+
+		$form = $this->createForm($type, $content, [
+			'action' => $this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]),
+			'method' => 'PUT',
+
+			// don't display error's when the content is locked as the user can't save in the first place
+			'validation_groups' => $lock['locked'] ? false : null
+		], $buttons);
 
 		if ($request->isMethod('put')) {
 			$form->handleRequest($request);
 
-			// check for back click else its a submit
-			if ($form->get('actions')->get('cancel')->isClicked()) {
+			// possible actions are cancel, reload, reload_changed and save
+
+			$actions = $form->get('actions');
+
+			if ($actions->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 
-			if ($form->isValid()) {
-				/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-				$dm = $this->get('doctrine_mongodb')->getManager();
-				$dm->flush();
-
-                // Set flash message
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to %s are saved', $type->getType()->getType()));
-
-                //TODO: improve this. JSM and JvL are gonna kick me if they see this
-                $indexer = $this->get('integrated_solr.indexer');
-                $indexer->execute();
-
-                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+			if ($actions->has('reload') && $actions->get('reload')->isClicked()) {
+				return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
 			}
+
+			if ($actions->has('save') && $actions->get('save')->isClicked()) {
+				if (!$lock['locked'] && $form->isValid()) {
+					/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+					$dm = $this->get('doctrine_mongodb')->getManager();
+					$dm->flush();
+
+	                // Set flash message
+	                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to %s are saved', $type->getType()->getType()));
+
+	                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+				}
+			}
+
+			// reload_changed is just submitting without saving so the changes made are
+			// not lost and there is a new change to get a lock on the content.
+		}
+
+		if ($lock['locked']) {
+			// The current user is not the owner of the lock so display a error message
+			// explaining that the user can not edit the page while this lock is in effect.
+
+			if ($lock['user']) {
+				$user = $lock['user']->getUsername();
+
+				// we got a basic user name now try to get a better one
+
+				if (method_exists($lock['user'], 'getRelation')) {
+					if ($relation = $lock['user']->getRelation()) {
+						if (method_exists($relation,'__toString')) {
+							$user = (string) $relation;
+						}
+					}
+				}
+
+				$text = sprintf('The document is currently locked by %s, the document can not be edited until this lock is released.', $user);
+			} else {
+				$text = 'The document is currently locked and can not be edited until this lock is released.';
+			}
+
+			$this->get('braincrafted_bootstrap.flash')->error($text);
 		}
 
 		return array(
 			'type'    => $type->getType(),
 			'form'    => $form->createView(),
-			'content' => $content
+			'content' => $content,
+			'lock'    => $lock
 		);
 	}
 
@@ -265,55 +316,236 @@ class ContentController extends Controller
 		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
 		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getContentType());
 
-		$form = $this->createForm(
-			new DeleteFormType(),
-			$content,
-			[
-				'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
-				'method' => 'DELETE',
-			],
-			[
+		// get a lock on this content resource.
+		$lock = $this->getLock($content, 60);
+		$lock['locked'] = (bool) ($lock['lock'] && $lock['user'] !== $this->getUser());
+
+		// load a different set of buttons based bases on the locking stat for this
+		// content object
+
+		if ($lock['locked']) {
+			$buttons = [
+				'reload' => ['type' => 'submit', 'options' => ['label' => 'Retry']],
+				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+			];
+		} else {
+			$buttons = [
 				'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
 				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-			]
-		);
+			];
+		}
+
+		$form = $this->createForm(new DeleteFormType(), $content, [
+			'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
+			'method' => 'DELETE',
+		], $buttons);
 
 		if ($request->isMethod('delete')) {
 			$form->handleRequest($request);
 
+			// possible actions are cancel, reload and delete
+
+			$actions = $form->get('actions');
+
 			// check for back click else its a submit
-			if ($form->get('actions')->get('cancel')->isClicked()) {
+			if ($actions->get('cancel')->isClicked()) {
 				return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 
-			if ($form->isValid()) {
-				/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-				$dm = $this->get('doctrine_mongodb')->getManager();
-
-				$dm->remove($content);
-				$dm->flush();
-
-				$this->get('session')->getFlashBag()->add('notice', array(
-					'head' => 'Removed!',
-					'body' => sprintf('The %s is removed', $type->getType())
-				));
-
-                //TODO: improve this. JSM and JvL are gonna kick me if they see this
-                $indexer = $this->get('integrated_solr.indexer');
-                $indexer->execute();
-                file_get_contents('http://' . $this->container->getParameter('solr_host') . ':' . $this->container->getParameter('solr_port') . '/solr/' . $this->container->getParameter('solr_core') . '/update?commit=true');
-
-                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+			if ($actions->has('reload') && $actions->get('reload')->isClicked()) {
+				return $this->redirect($this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]));
 			}
+
+			if ($actions->has('delete') && $actions->get('delete')->isClicked()) {
+				if (!$lock['locked'] && $form->isValid()) {
+					/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+					$dm = $this->get('doctrine_mongodb')->getManager();
+
+					$dm->remove($content);
+					$dm->flush();
+
+					$this->get('braincrafted_bootstrap.flash')->notice(sprintf('The %s is removed', $type->getType()));
+
+					return $this->redirect($this->generateUrl('integrated_content_content_index'));
+				}
+			}
+		}
+
+		if ($lock['locked']) {
+			// The current user is not the owner of the lock so display a error message
+			// explaining that the user can not edit the page while this lock is in effect.
+
+			if ($lock['user']) {
+				$user = $lock['user']->getUsername();
+
+				// we got a basic user name now try to get a better one
+
+				if (method_exists($lock['user'], 'getRelation')) {
+					if ($relation = $lock['user']->getRelation()) {
+						if (method_exists($relation,'__toString')) {
+							$user = (string) $relation;
+						}
+					}
+				}
+
+				$text = sprintf('The document is currently locked by %s, the document can not be deleted until this lock is released.', $user);
+			} else {
+				$text = 'The document is currently locked and can not be deleted until this lock is released.';
+			}
+
+			$this->get('braincrafted_bootstrap.flash')->error($text);
 		}
 
 		return array(
 			'type'    => $type,
 			'form'    => $form->createView(),
-			'content' => $content
+			'content' => $content,
+			'lock'    => $lock
 		);
 	}
 
+	/**
+	 * Get a lock or find out who does have the lock.
+	 *
+	 * The result is a array with the following keys:
+	 * - lock: this will contain the instance of the lock object or null.
+	 * - user: this is the user the lock belongs to or null if the lock does
+	 *         not have a owner.
+	 *
+	 * @param object $object
+	 * @param int | null $timeout
+	 *
+	 * @return array
+	 */
+	protected function getLock($object, $timeout = null)
+	{
+		if (!$this->has('integrated_locking.dbal.manager')) {
+			return [
+				'lock' => null,
+				'user' => null,
+			];
+		}
+
+		/** @var Locks\ManagerInterface $service */
+		$service = $this->get('integrated_locking.dbal.manager');
+
+		$object = Locks\Resource::fromObject($object);
+		$owner = null;
+
+		if ($user = $this->getUser()) {
+			$owner = Locks\Resource::fromAccount($user);
+		}
+
+		if ($owner) {
+			$request = new Locks\Request($object);
+			$request->setOwner($owner);
+			$request->setTimeout($timeout);
+
+			if ($lock = $service->acquire($request)) {
+				return [
+					'lock' => $lock,
+					'user' => $this->getUser(),
+				];
+			}
+		} // can not acquire a lock if not logged in.
+
+		if ($lock = $service->findByResource($object)) {
+			$lock = $lock[0];
+
+			if ($owner && $owner->equals($lock->getRequest()->getOwner())) {
+				return [
+					'lock' => $lock,
+					'user' => $this->getUser(),
+				];
+			}
+
+			// get the user the locks belongs to.
+			$user = null;
+
+			if ($owner = $lock->getRequest()->getOwner()) {
+				if ($this->has('integrated_user.user.manager')) {
+					/** @var UserManagerInterface $manager */
+					$manager = $this->get('integrated_user.user.manager');
+
+					if ($manager->getClassName() === $owner->getType()) {
+						$user = $manager->findByUsername($owner->getIdentifier());
+					}
+				}
+			}
+
+			return [
+				'lock' => $lock,
+				'user' => $user,
+			];
+		}
+
+		return [
+			'lock' => null,
+			'user' => null,
+		];
+	}
+
+	protected function getLocks(Traversable $iterator)
+	{
+		$results = [];
+
+		if (!$this->has('integrated_locking.dbal.manager')) {
+			return $results;
+		}
+
+
+		$filter = new Locks\Filter();
+
+		foreach ($iterator as $data) {
+			$filter->resources[] = new Locks\Resource($data['type_class'], $data['type_id']);
+		}
+
+		if (!$filter->resources) {
+			return $results;
+		}
+
+		/** @var Locks\ManagerInterface $service */
+		$service = $this->get('integrated_locking.dbal.manager');
+
+		foreach ($service->findBy($filter) as $lock) {
+			// get the user the locks belongs to.
+			$user = null;
+
+			if ($owner = $lock->getRequest()->getOwner()) {
+				if ($this->has('integrated_user.user.manager')) {
+					/** @var UserManagerInterface $manager */
+					$manager = $this->get('integrated_user.user.manager');
+
+					if ($manager->getClassName() === $owner->getType()) {
+						$user = $manager->findByUsername($owner->getIdentifier());
+					}
+				}
+			}
+
+			$text = '';
+
+			if ($user) {
+				$text = $user->getUsername();
+
+				// we got a basic user name now try to get a better one
+
+				if (method_exists($user, 'getRelation')) {
+					if ($relation = $user->getRelation()) {
+						if (method_exists($relation,'__toString')) {
+							$text = (string) $relation;
+						}
+					}
+				}
+			}
+
+			$results[$lock->getRequest()->getResource()->getIdentifier()] = [
+				'lock' => $lock,
+				'user' => $text,
+			];
+		}
+
+		return $results;
+	}
 
 	/**
 	 * @inheritdoc

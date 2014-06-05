@@ -170,6 +170,12 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
+    {% block locking %}
+        {% if lock.lock is defined and lock.locked == false %}
+            {% include 'IntegratedLockingBundle::locking.refresh.html.twig' with { 'lock': lock.lock } %}
+        {% endif %}
+    {% endblock locking %}
+
 {% endblock javascript %}
 
 </body>
