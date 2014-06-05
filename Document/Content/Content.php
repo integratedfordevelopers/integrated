@@ -26,7 +26,6 @@ use Integrated\Common\Content\ContentInterface;
 
 use Integrated\Common\Content\MetadataInterface;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * Abstract base class for document types
@@ -75,6 +74,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
     /**
      * @var \DateTime
      * @ODM\Date
+     * @Type\Field(type="integrated_datetime", options={"label" = "Published at"})
      */
     protected $publishedAt;
 

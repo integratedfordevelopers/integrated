@@ -85,6 +85,10 @@ var Relation = function(id, url) {
         }
         $.ajax({
             url: url,
+            type: 'POST',
+            data: {
+                id: this.getSelected()
+            },
             success: this.handleSelected
         });
     }
@@ -98,7 +102,7 @@ var Relation = function(id, url) {
     }
 
     this.getSelectedUrl = function() {
-        return this.url + '?id[]=' + this.getSelected().join('&id[]=') + '&limit=5&_format=json';
+        return this.url + '?limit=5&_format=json';
     }
 
     this.getSelected = function() {
