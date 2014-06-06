@@ -30,7 +30,7 @@
 		"doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
-        "doctrine/mongodb-odm-bundle": "3.0.0-BETA6@dev",
+        "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
         "integrated/library": "dev-develop",
         "integrated/formtype-bundle": "dev-develop",
 		"knplabs/knp-paginator-bundle": "dev-master",
