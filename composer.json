@@ -23,7 +23,6 @@
 		"symfony/security": "~2.4",
 		"symfony/serializer": "~2.4",
 		"symfony/validator": "~2.4",
-		"doctrine/dbal": ">=2.3.0,<2.5-dev",
 		"doctrine/orm": "dev-master",
 		"doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
