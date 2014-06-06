@@ -33,6 +33,7 @@
         "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
         "integrated/library": "dev-develop",
         "integrated/formtype-bundle": "dev-develop",
+        "integrated/locking-bundle": "dev-develop",
 		"knplabs/knp-paginator-bundle": "dev-master",
 		"nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",
