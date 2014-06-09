@@ -9,3 +9,7 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block integrated_wysihtml5x_widget  %}
+        <textarea {{ block('widget_attributes') }}   class="form-control integrated_wysihtml5x"> {% if value is not empty %} {{ value }} {% endif %}  </textarea>
+{% endblock %}
