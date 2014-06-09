@@ -1,6 +1,7 @@
 {
     "name": "integrated/formtype-bundle",
     "type": "symfony-bundle",
+    "version": "0.1.1",
     "description": "Integrated FormType Bundle",
     "keywords": ["Integrated", "Form", "Form Type"],
     "homepage": "http://www.e-active.nl",
@@ -30,7 +31,7 @@
     "target-dir": "Integrated/Bundle/FormTypeBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "0.1.x-dev"
+            "dev-develop": "0.1.x-dev"
         }
     }
 }
