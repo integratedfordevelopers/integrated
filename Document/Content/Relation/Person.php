@@ -1,4 +1,5 @@
 <?php
+
 /*
 * This file is part of the Integrated package.
 *
@@ -7,50 +8,66 @@
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
+
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Integrated\Bundle\ContentBundle\Document\Content\File,
-    Integrated\Bundle\ContentBundle\Mapping\Annotations as Content;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Bundle\ContentBundle\Document\Content\File;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 
 /**
  * Document type Relation\Person
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content")
- * @Content\Document("Person")
+ *
+ * @ODM\Document
+ * @Type\Document("Person")
  */
-class Person extends AbstractRelation
+class Person extends Relation
 {
     /**
      * @var string
      * @ODM\String
+     * @Type\Field(type="choice", options={"choices"={"Male", "Female"}})
      */
-    protected $sex;
+    protected $gender;
 
     /**
      * @var string
      * @ODM\String
+     * @Type\Field
+     */
+    protected $prefix;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field
      */
     protected $nickname;
 
     /**
      * @var string
      * @ODM\String
+     * @Type\Field(options={"label"="First name"})
      */
-    protected $surname;
+    protected $firstName;
 
     /**
      * @var string
      * @ODM\String
+     * @Type\Field(options={"label"="Last name"})
      */
-    protected $title;
+    protected $lastName;
 
     /**
-     * @var array Job
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job", strategy="set")
+     * @var Collection Job[]
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job")
      */
-    protected $jobs = array();
+    protected $jobs;
 
     /**
      * @var File
@@ -59,24 +76,55 @@ class Person extends AbstractRelation
     protected $picture;
 
     /**
-     * Get the sex of the document (nothing more!)
-     *
-     * @return string
+     * Constructor
      */
-    public function getSex()
+    public function __construct()
     {
-        return $this->sex;
+        parent::__construct();
+        $this->jobs = new ArrayCollection();
     }
 
     /**
-     * Set the sex of the document
+     * Get the gender of the document
      *
-     * @param string $sex
+     * @return string
+     */
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
+    /**
+     * Set the gender of the document
+     *
+     * @param string $gender
      * @return $this
      */
-    public function setSex($sex)
+    public function setGender($gender)
     {
-        $this->sex = $sex;
+        $this->gender = $gender;
+        return $this;
+    }
+
+    /**
+     * Get the prefix of the document
+     *
+     * @return string
+     */
+    public function getPrefix()
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * Set the prefix of the document
+     *
+     * @param string $prefix
+     * @return $this
+     */
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
         return $this;
     }
 
@@ -103,53 +151,53 @@ class Person extends AbstractRelation
     }
 
     /**
-     * Get the surname of the document
+     * Get the firstname of the document
      *
      * @return string
      */
-    public function getSurname()
+    public function getFirstName()
     {
-        return $this->surname;
+        return $this->firstName;
     }
 
     /**
-     * Set the surname of the document
+     * Set the firstname of the document
      *
-     * @param string $surname
+     * @param string $firstName
      * @return $this
      */
-    public function setSurname($surname)
+    public function setFirstName($firstName)
     {
-        $this->surname = $surname;
+        $this->firstName = $firstName;
         return $this;
     }
 
     /**
-     * Get the title of the document
+     * Get the lastName of the document
      *
      * @return string
      */
-    public function getTitle()
+    public function getLastName()
     {
-        return $this->title;
+        return $this->lastName;
     }
 
     /**
-     * Set the title of the document
+     * Set the lastName of the document
      *
-     * @param string $title
+     * @param string $lastName
      * @return $this
      */
-    public function setTitle($title)
+    public function setLastName($lastName)
     {
-        $this->title = $title;
+        $this->lastName = $lastName;
         return $this;
     }
 
     /**
      * Get the jobs of the document
      *
-     * @return array
+     * @return Job[]
      */
     public function getJobs()
     {
@@ -159,13 +207,40 @@ class Person extends AbstractRelation
     /**
      * Set the jobs of the document
      *
-     * @param array $jobs
+     * @param Collection $jobs
      * @return $this
      */
-    public function setJobs(array $jobs)
+    public function setJobs(Collection $jobs)
     {
         $this->jobs = $jobs;
         return $this;
+    }
+
+    /**
+     * Add job to the jobs collection
+     *
+     * @param mixed $job
+     * @return $this
+     */
+    public function addJob($job)
+    {
+        if ($job instanceof Job) {
+            if (!$this->jobs->contains($job)) {
+                $this->jobs->add($job);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * Remove job from jobs collection
+     *
+     * @param mixed $job
+     * @return bool true if this collection contained the specified element, false otherwise.
+     */
+    public function removeJob($job)
+    {
+        return $this->jobs->removeElement($job);
     }
 
     /**
@@ -188,5 +263,13 @@ class Person extends AbstractRelation
     {
         $this->picture = $picture;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return trim($this->firstName . ' ' . $this->lastName);
     }
 }

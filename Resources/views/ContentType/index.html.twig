@@ -1,35 +1,66 @@
-<ul>
-    <li>
-        <a href="{{ path('integrated_content_contenttype_new') }}">
-            Create a new content type
-        </a>
-    </li>
-</ul>
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Created</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for document in documents %}
-        <tr>
-            <td>Name</td>
-            <td>Type</td>
-            <td>Created</td>
-            <td>
-                Edit Delete
-            </td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="4">
-                No content types added
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+
+    <div class="filters_row">
+        <ul class="nav nav-pills">
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" role="button" id="drop_1">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
+                <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
+                    {% for type in documentTypes %}
+                        {% if type.type %}
+                            <li role="presentation">
+                                <a href="{{ path('integrated_content_content_type_new') }}?class={{ type.class }}">
+                                    {{ type.type }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content_columns_holder">
+        <div class="content_column_inner">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{% trans %}Name{% endtrans %}</th>
+                        <th>{% trans %}Type{% endtrans %}</th>
+                        <th>{% trans %}Created{% endtrans %}</th>
+                        <th>{% trans %}Actions{% endtrans %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for document in documents %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}">
+                                {{ document.name }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ document.type }}
+                        </td>
+                        <td>
+                            {{ document.createdAt|date }}
+                        </td>
+                        <td>
+                            <a href="{{ path('integrated_content_content_type_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
+                                {{ icon('pencil') }}
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4">
+                            {% trans %}No content types added{% endtrans %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

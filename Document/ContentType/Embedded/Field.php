@@ -1,16 +1,18 @@
 <?php
+
 /*
-* This file is part of the Integrated package.
-*
-* (c) e-Active B.V. <integrated@e-active.nl>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Integrated\Component\Content\ContentTypeFieldInterface;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Common\ContentType\ContentTypeFieldInterface;
 
 /**
  * Embedded document Field
@@ -21,7 +23,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
 class Field implements ContentTypeFieldInterface
 {
     /**
-     * @var string The name of the property of the document type
+     * @var string The name of the property of the content type
      * @ODM\String
      */
     protected $name;
@@ -33,21 +35,13 @@ class Field implements ContentTypeFieldInterface
     protected $type;
 
     /**
-     * @var string The label of the form field
-     * @ODM\String
+     * @var array The options of the form field
+     * @ODM\Hash
      */
-    protected $label;
+    protected $options = array();
 
     /**
-     * @var bool Is the form field required
-     * @ODM\Boolean
-     */
-    protected $required;
-
-    /**
-     * Get the name of the field
-     *
-     * @return string The name of the property of the document type
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -57,7 +51,7 @@ class Field implements ContentTypeFieldInterface
     /**
      * Set the name of the field
      *
-     * @param string $name The name of the property of the document type
+     * @param string $name The name of the property of the content type
      * @return $this
      */
     public function setName($name)
@@ -67,9 +61,7 @@ class Field implements ContentTypeFieldInterface
     }
 
     /**
-     * Get the type of the field
-     *
-     * @return string The type of the form field
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -86,50 +78,35 @@ class Field implements ContentTypeFieldInterface
     {
         $this->type = $type;
         return $this;
-
     }
 
     /**
-     * Get the label of the field
+     * {@inheritdoc}
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set the options of the field
      *
-     * @return string The label of the form field
+     * @param array $options The options of the form field
+     * @return $this
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * Added shortcut to getLabel of field
+     *
+     * @return string
      */
     public function getLabel()
     {
-        return $this->label;
-    }
-
-    /**
-     * Set the label of the field
-     *
-     * @param string $label The label of the form field
-     * @return $this
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-        return $this;
-    }
-
-    /**
-     * Get the required of the field
-     *
-     * @return bool Is the form field required
-     */
-    public function getRequired()
-    {
-        return $this->required;
-    }
-
-    /**
-     * Set the required of the field
-     *
-     * @param bool $required Is the form field required
-     * @return $this
-     */
-    public function setRequired($required)
-    {
-        $this->required = $required;
-        return $this;
+        return isset($this->options['label']) ? $this->options['label'] : ucfirst($this->getName());
     }
 }

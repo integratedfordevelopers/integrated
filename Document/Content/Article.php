@@ -1,4 +1,5 @@
 <?php
+
 /*
 * This file is part of the Integrated package.
 *
@@ -7,35 +8,48 @@
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
+
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Integrated\Bundle\ContentBundle\Mapping\Annotations as Content;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
 
 /**
  * Document type Article
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content")
- * @Content\Document("Article")
+ *
+ * @ODM\Document
+ * @Type\Document("Article")
  */
-class Article extends AbstractContent
+class Article extends Content
 {
     /**
      * @var string
      * @ODM\String
+     * @Type\Field
      */
-    protected $subtitle;
-
-    /**
-     * @var array Embedded\Author
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author", strategy="set")
-     */
-    protected $authors = array();
+    protected $title;
 
     /**
      * @var string
      * @ODM\String
+     * @Type\Field
+     */
+    protected $subtitle;
+
+    /**
+     * @var ArrayCollection Embedded\Author[]
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author")
+     */
+    protected $authors;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field
      */
     protected $source;
 
@@ -48,18 +62,21 @@ class Article extends AbstractContent
     /**
      * @var \DateTime
      * @ODM\Date
+     * @Type\Field(type="integrated_datetime", options={"label" = "Published until"})
      */
     protected $publishedUntil;
 
     /**
      * @var string
      * @ODM\String
+     * @Type\Field(type="textarea")
      */
     protected $intro;
 
     /**
      * @var string
      * @ODM\String
+     * @Type\Field(type="textarea")
      */
     protected $content;
 
@@ -68,6 +85,38 @@ class Article extends AbstractContent
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location")
      */
     protected $location;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->authors = new ArrayCollection();
+    }
+
+    /**
+     * Get the title of the document
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the title of the document
+     *
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
 
     /**
      * Get the subtitle of the document
@@ -94,7 +143,7 @@ class Article extends AbstractContent
     /**
      * Get the authors of the document
      *
-     * @return array
+     * @return Collection
      */
     public function getAuthors()
     {
@@ -104,13 +153,37 @@ class Article extends AbstractContent
     /**
      * Set the authors of the document
      *
-     * @param array $authors
+     * @param Collection $authors
      * @return $this
      */
-    public function setAuthors(array $authors)
+    public function setAuthors(Collection $authors)
     {
         $this->authors = $authors;
         return $this;
+    }
+
+    /**
+     * Add author to authors collection
+     *
+     * @param Embedded\Author $author
+     * @return $this
+     */
+    public function addAuthor(Embedded\Author $author)
+    {
+        if (!$this->authors->contains($author)) {
+            $this->authors->add($author);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Embedded\Author $author
+     * @return boolean true if this collection contained the specified element, false otherwise.
+     */
+    public function removeAuthor(Embedded\Author $author)
+    {
+        return $this->authors->removeElement($author);
     }
 
     /**
@@ -239,9 +312,17 @@ class Article extends AbstractContent
      * @param Embedded\Location $location
      * @return $this
      */
-    public function setLocation(Embedded\Location $location)
+    public function setLocation(Embedded\Location $location = null)
     {
         $this->location = $location;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
     }
 }

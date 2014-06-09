@@ -1,0 +1,31 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+    <div class="content_columns_holder">
+        <div class="content_column_inner">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_content_type_index') }}">Home</a>
+                </li>
+                <li class="active">Select</li>
+            </ol>
+            <div class="page-header">
+                <h1>Select document type</h1>
+            </div>
+            <form method="get" action="{{ path('integrated_content_content_type_new') }}">
+                <div class="form-group">
+                    <label>Document type</label>
+                    <select name="class" class="form-control">
+                        {% for type in documentTypes %}
+                            {% if type.type %}
+                                <option value="{{ type.class }}">{{ type.type }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

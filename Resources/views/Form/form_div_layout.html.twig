@@ -1,0 +1,128 @@
+{% use "IntegratedFormTypeBundle:Form:form_div_layout.html.twig" with form_row as base_form_row %}
+
+{% block content_type_field_collection_widget %}
+{% spaceless %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="40%">{% trans %}Fields{% endtrans %}</th>
+            <th>{% trans %}Required{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for field in form %}
+            <tr>
+                <td>
+                    {% set element = field.enabled  %}
+                    {{ block('content_type_checkbox_widget') }}
+                </td>
+                <td>
+                    <div class="checkbox">
+                        {{ form_widget(field.required) }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endspaceless %}
+{% endblock %}
+
+{% block content_type_relation_collection_widget %}
+{% spaceless %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="40%">{% trans %}Content type{% endtrans %}</th>
+                <th colspan="2">{% trans %}Relations{% endtrans %}</th>
+                <th>{% trans %}Required{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for relation in form %}
+            <tr>
+                <td>
+                    {% set element = relation.enabled  %}
+                    {{ block('content_type_checkbox_widget') }}
+                </td>
+                <td>
+                    {% set element = relation.multiple.0  %}
+                    {{ block('content_type_radio_widget') }}
+                </td>
+                <td>
+                    {% set element = relation.multiple.1  %}
+                    {{ block('content_type_radio_widget') }}
+                </td>
+                <td>
+                    <div class="checkbox">
+                        {{ form_widget(relation.required) }}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endspaceless %}
+{% endblock %}
+
+{% block translatable_text_widget %}
+{% spaceless %}
+    {% for field in form %}
+        <div class="input-group" style="margin-bottom: 15px">
+            <span class="input-group-addon">
+                {{ field.vars.label }}
+            </span>
+            {{ form_widget(field) }}
+        </div>
+    {% endfor %}
+{% endspaceless %}
+{%  endblock %}
+
+{% block translatable_textarea_widget %}
+    {% spaceless %}
+        {% for field in form %}
+            <div class="input-group" style="margin-bottom: 15px">
+            <span class="input-group-addon">
+                {{ field.vars.label }}
+            </span>
+                {{ form_widget(field) }}
+            </div>
+        {% endfor %}
+    {% endspaceless %}
+{%  endblock %}
+
+{% block content_type_checkbox_widget %}
+    {% spaceless %}
+        <div class="checkbox">
+            {% if element.vars.label is not sameas(false) %}
+                <label for="{{ element.vars.id }}">
+                    <input id="{{ element.vars.id }}" name="{{ element.vars.full_name  }}" type="checkbox" {% if element.vars.value is defined %} value="{{ element.vars.value }}"{% endif %}{% if element.vars.checked %} checked="checked"{% endif %}/>
+                    {{ element.vars.label|trans({}, translation_domain) }}
+                </label>
+            {% else %}
+                {{ form_widget(field) }}
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block content_type_radio_widget %}
+    {% spaceless %}
+        <div class="radio">
+            {% if element.vars.label is not sameas(false) %}
+                <label for="{{ element.vars.id }}">
+                    <input id="{{ element.vars.id }}" name="{{ element.vars.full_name  }}" type="radio" {% if element.vars.value is defined %} value="{{ element.vars.value }}"{% endif %}{% if element.vars.checked %} checked="checked"{% endif %}/>
+                    {{ element.vars.label|trans({}, translation_domain) }}
+                </label>
+            {% else %}
+                {{ form_widget(field) }}
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_relations_row %}
+    <div class="form-relations" style="display: none;">
+        {{ block('base_form_row') }}
+    </div>
+{% endblock %}

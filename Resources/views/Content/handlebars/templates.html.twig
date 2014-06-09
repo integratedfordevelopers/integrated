@@ -1,0 +1,94 @@
+{% autoescape 'js' %}
+{% verbatim %}
+<script id="options-template" type="text/x-handlebars-template">
+    <h4>{{this.title}} <small>({{pagination.numFound}})</small></h4>
+    <ul class="media-list">
+            {{#each items}}
+        <li class="media">
+            <div class="checkbox">
+                <label>
+                        {{#checked this.id ../selected }}
+                    <input type="checkbox" checked="checked" value="{{this.id}}"  />
+                        {{else}}
+                            <input type="checkbox" value="{{this.id}}"  />
+                        {{/checked}}
+                        {{this.title}}
+                    </label>
+            </div>
+        </li>
+            {{else}}
+            <li class="media">
+            No items found
+        </li>
+            {{/each}}
+        </ul>
+</script>
+<script id="selected-template" type="text/x-handlebars-template">
+        {{#hasItems pagination.numFound}}
+    <h4>{{this.title}} <small>({{pagination.numFound}})</small></h4>
+    <ul class="media-list">
+            {{#each items}}
+        <li class="media">
+            <a href="#" data-remove="{{this.id}}"><span class="glyphicon glyphicon-remove"></span></a>
+                {{this.title}}
+            </li>
+            {{else}}
+            <li class="media">
+            No items selected
+        </li>
+            {{/each}}
+        </ul>
+        {{/hasItems}}
+    </script>
+<script id="pagination-template" type="text/xhandlebars-template">
+        {{#hasPages pagination.pageCount}}
+    <ul class="pagination">
+            {{#if pagination.previous}}
+        <li>
+            <a href="{{pagination.previous.href}}">&laquo;</a>
+        </li>
+            {{else}}
+            <li class="disabled">
+            <span>&laquo;</span>
+        </li>
+            {{/if}}
+            {{#each pagination.pages}}
+            {{#equals ../pagination.page @key }}
+        <li class="active">
+            <span>{{@key}}</span>
+        </li>
+            {{else}}
+            <li>
+            <a href="{{this.href}}">{{@key}}</a>
+        </li>
+            {{/equals}}
+            {{/each}}
+            {{#if pagination.next}}
+        <li>
+            <a href="{{pagination.next.href}}">&raquo;</a>
+        </li>
+            {{else}}
+            <li class="disabled">
+            <span>&raquo;</span>
+        </li>
+            {{/if}}
+        </ul>
+        {{/hasPages}}
+    </script>
+{% endverbatim %}
+<script>
+    $.fn.relation = function() {
+        return this.each(function(){
+            var rel = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}");
+            rel.loadOptions();
+        });
+    };
+
+    $('.form-relations input[data-relation]').relation();
+
+    $('#relations-search').submit(function(ev){
+        ev.preventDefault();
+        $('.form-relations input[data-relation]').relation();
+    });
+</script>
+{% endautoescape %}

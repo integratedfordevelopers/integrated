@@ -1,0 +1,6 @@
+{
+    "name": "integrated-content-bundle",
+    "dependencies": {
+        "handlebars" : "~2.0"
+    }
+}

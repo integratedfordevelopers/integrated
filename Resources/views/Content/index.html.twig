@@ -1,0 +1,122 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+
+{#
+    <div class="filters_row">
+        <ul class="nav nav-pills">
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" role="button" id="drop_1">Dropdown <b class="caret"></b></a>
+                <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
+                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Action</a></li>
+                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Another action</a></li>
+                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Something else here</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown">
+                <a href="#" data-toggle="dropdown" role="button" id="drop_1">Dropdown <b class="caret"></b></a>
+                <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
+                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Action</a></li>
+                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Another action</a></li>
+                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Something else here</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div><!-- filters_row -->
+#}
+
+    <div class="content_columns_holder">
+        <div class="col-sm-8 content_column">
+            <div class="content_column_inner">
+
+                {% for content in pager %}
+
+                    <div class="item_row">
+                        <h3 class="title">
+                            <a href="{{ path('integrated_content_content_edit', {id: content.type_id}) }}">
+                                {{ content.title }}
+                            </a>
+                        </h3>
+
+                        {% if locks[content.type_id] is defined %}
+
+                            {% if locks[content.type_id].user is defined %}
+
+                        <div class="alert alert-danger">
+                            {% trans %}This item is locked by{% endtrans %} {{ locks[content.type_id].user }}
+                        </div>
+
+                            {% else %}
+
+                        <div class="alert alert-danger">
+                            {% trans %}This item is locked{% endtrans %}
+                        </div>
+
+                            {% endif %}
+
+                        {% endif %}
+
+                        {% if content.content is defined %}
+                            {% if content.content|join('...')|trim is not empty %}
+                                <p>{{ content.content|join('...')|slice(1, 200)|striptags|raw }}</p>
+                            {% endif %}
+                        {% endif %}
+                        <ul class="status_info_list">
+                            <li>
+                                {% if contentTypes[content.type_name] is defined %}
+                                    {{ contentTypes[content.type_name] }}
+                                {% else %}
+                                    {{ content.type_name }}
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+
+                {% else %}
+
+                    <div class="item_row">
+                        <p class="text-danger">{% trans %}No items found{% endtrans %}</p>
+                    </div>
+
+                {% endfor %}
+
+                <div class="item_row">
+                    <div class="pull-right">
+                        {{ knp_pagination_render(pager) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4 sidebar_right">
+            <div class="content_column_inner">
+                <form>
+                    {% for key, facet in facets %}
+                        <div class="item_row">
+                            <h3 class="title">
+                                {{ key|capitalize }}
+                            </h3>
+                            <ul class="filters_list">
+                                {% for title, count in facet %}
+                                <li>
+                                    <label>
+                                        <input {% if title in active %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
+                                        {% if key == 'contenttypes' %}
+                                            {% if contentTypes[title] is defined %}
+                                                {{ contentTypes[title] }}
+                                            {% else %}
+                                                {{ title }}
+                                            {% endif %}
+                                        {% endif %}
+                                        <span class="value">{{ count }}</span>
+                                    </label>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

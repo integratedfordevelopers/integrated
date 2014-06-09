@@ -1,0 +1,67 @@
+<?php
+
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Integrated\Bundle\ContentBundle\Form\Type;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Integrated\Common\ContentType\Mapping\Metadata;
+
+/**
+ * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ */
+class ContentType extends AbstractType
+{
+    /**
+     * @var Metadata\ContentType
+     */
+    protected $contentType;
+
+    /**
+     * @param Metadata\ContentType $contentType
+     */
+    public function __construct(Metadata\ContentType $contentType)
+    {
+        $this->contentType = $contentType;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            'class',
+            'hidden'
+        );
+
+        $builder->add(
+            'name',
+            'text',
+            array(
+                'label' => 'Name',
+            )
+        );
+
+        $builder->add(
+            'fields',
+            new ContentTypeFieldCollection($this->contentType->getFields())
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'content_type';
+    }
+}

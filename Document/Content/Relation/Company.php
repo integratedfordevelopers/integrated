@@ -1,4 +1,5 @@
 <?php
+
 /*
 * This file is part of the Integrated package.
 *
@@ -7,26 +8,57 @@
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
+
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM,
-    Integrated\Bundle\ContentBundle\Document\Content\File,
-    Integrated\Bundle\ContentBundle\Mapping\Annotations as Content;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Bundle\ContentBundle\Document\Content\File;
 
 /**
  * Document type Relation\Company
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content")
- * @Content\Document("Company")
+ *
+ * @ODM\Document
+ * @Type\Document("Company")
  */
-class Company extends AbstractRelation
+class Company extends Relation
 {
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field
+     */
+    protected $name;
+
     /**
      * @var File
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
      */
     protected $logo;
+
+    /**
+     * Get the name of the document
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the name of the document
+     *
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 
     /**
      * Get the file of the document
@@ -48,6 +80,13 @@ class Company extends AbstractRelation
     {
         $this->logo = $logo;
         return $this;
+    }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }

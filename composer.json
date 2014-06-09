@@ -14,19 +14,30 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@bitbucket.org:eactive-integrated/library.git"
+            "url": "git@bitbucket.org:eactive/integrated-library.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
         }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "2.3.*",
+        "symfony/symfony": "~2.4",
         "symfony/framework-bundle": "~2.2",
-        "doctrine/mongodb": "1.0.*",
-        "doctrine/mongodb-odm": "1.0.*",
-        "doctrine/mongodb-odm-bundle": "3.0.*",
-        "integrated/library": "dev-master"
+		"doctrine/doctrine-fixtures-bundle": "dev-master",
+        "doctrine/mongodb": ">=1.0.0",
+        "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
+        "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
+        "integrated/library": "dev-develop",
+        "integrated/formtype-bundle": "dev-develop",
+        "integrated/locking-bundle": "dev-develop",
+		"knplabs/knp-paginator-bundle": "dev-master",
+		"nelmio/alice": "1.*",
+        "braincrafted/bootstrap-bundle": "~2.0",
+        "twbs/bootstrap": "3.*"
     },
     "autoload":{
         "psr-0":{

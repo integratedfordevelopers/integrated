@@ -1,4 +1,5 @@
 <?php
+
 /*
 * This file is part of the Integrated package.
 *
@@ -7,17 +8,25 @@
 * For the full copyright and license information, please view the LICENSE
 * file that was distributed with this source code.
 */
+
 namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Integrated\Common\ContentType\ContentTypeRelationInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
+use Integrated\Common\ContentType\ContentTypeInterface;
 
 /**
  * Document ContentType
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="contenttype")
+ * @ODM\Document(collection="content_type", repositoryClass="ContentTypeRepository")
+ * @MongoDBUnique(fields="type")
  */
-class ContentType
+class ContentType implements ContentTypeInterface
 {
     /**
      * @var string
@@ -26,29 +35,37 @@ class ContentType
     protected $id;
 
     /**
-     * @var string The class name of the document type
+     * @var string The class of the content type
      * @ODM\String
+     * @Assert\NotBlank()
      */
-    protected $type;
+    protected $class;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Assert\NotBlank()
+     */
+    protected $name;
 
     /**
      * @var string
      * @ODM\String
      * @ODM\UniqueIndex
      */
-    protected $name;
+    protected $type;
 
     /**
-     * @var array Embedded\Field
-     * @ODM\EmbedMany(targetDocument="FMS\Bundle\ContentTypeBundle\Document\Embedded\Field", strategy="set")
+     * @var Embedded\Field[]
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field")
      */
     protected $fields = array();
 
     /**
-     * @var array Embedded\Reference
-     * @ODM\EmbedMany(targetDocument="FMS\Bundle\ContentTypeBundle\Document\Embedded\Reference", strategy="set")
+     * @var Embedded\Relation[]
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Relation")
      */
-    protected $references = array();
+    protected $relations;
 
     /**
      * @var \DateTime
@@ -62,10 +79,22 @@ class ContentType
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->relations = new ArrayCollection();
     }
 
     /**
-     * Get the id of the document
+     * {@inheritdoc}
+     */
+    public function create()
+    {
+        $instance = new $this->class();
+        $instance->setContentType($this->type);
+
+        return $instance;
+    }
+
+    /**
+     * Get the id of the content type
      *
      * @return string
      */
@@ -75,7 +104,7 @@ class ContentType
     }
 
     /**
-     * Set the id of the document
+     * Set the id of the content type
      *
      * @param string $id
      * @return $this
@@ -87,9 +116,53 @@ class ContentType
     }
 
     /**
-     * Get the type of the document
+     * {@inheritdoc}
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
+     * Set the class of the content type
      *
-     * @return string The class name of the document type
+     * @param string $class The class of the content type
+     * @return $this
+     */
+    public function setClass($class)
+    {
+        $this->class = $class;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the name of content type
+     *
+     * @param $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        // TODO use sluggable extension
+        if (null === $this->type) {
+            $this->setType(trim(strtolower(str_replace(' ', '_', $this->name))));
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -97,9 +170,9 @@ class ContentType
     }
 
     /**
-     * Set the type of the document
+     * Set the type of the content type
      *
-     * @param string $type The class name of the document type
+     * @param string $type
      * @return $this
      */
     public function setType($type)
@@ -109,31 +182,7 @@ class ContentType
     }
 
     /**
-     * Get the name of the document
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set the name of the document
-     *
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * Get the fields of the document
-     *
-     * @return array Embedded\Field
+     * {@inheritdoc}
      */
     public function getFields()
     {
@@ -141,9 +190,37 @@ class ContentType
     }
 
     /**
-     * Set the fields of the document
+     * {@inheritdoc}
+     */
+    public function getField($name)
+    {
+        foreach ($this->getFields() as $field) {
+            if ($field->getName() == $name) {
+                return $field;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasField($name)
+    {
+        foreach ($this->getFields() as $field) {
+            if ($field->getName() == $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Set the fields of the content type
      *
-     * @param array $fields Embedded\Field
+     * @param array $fields
      * @return $this
      */
     public function setFields(array $fields)
@@ -153,29 +230,82 @@ class ContentType
     }
 
     /**
-     * Get the references of the document
-     *
-     * @return array Embedded\Reference
+     * {@inheritdoc}
      */
-    public function getReferences()
+    public function getRelations()
     {
-        return $this->references;
+        return $this->relations;
     }
 
     /**
-     * Set the references of the document
+     * Set the relations of the content type
      *
-     * @param array $references Embedded\Reference
+     * @param Collection $relations
      * @return $this
      */
-    public function setReferences(array $references)
+    public function setRelations(Collection $relations)
     {
-        $this->references = $references;
+        $this->relations = $relations;
         return $this;
     }
 
     /**
-     * Get the createdAt of the document
+     * @param ContentTypeRelationInterface $relation
+     * @return bool TRUE if Relation is added FALSE otherwise
+     */
+    public function addRelation(ContentTypeRelationInterface $relation)
+    {
+        if ($this->hasRelation($relation)) {
+            return false;
+        }
+
+        return $this->relations->add($relation);
+    }
+
+    /**
+     * @param ContentTypeRelationInterface $relation
+     * @return bool TRUE if Relation is removed FALSE otherwise
+     */
+    public function removeRelation(ContentTypeRelationInterface $relation)
+    {
+        if (!$this->hasRelation($relation)) {
+            return false;
+        }
+
+        return $this->relations->removeElement($relation);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRelation($id)
+    {
+        foreach ($this->getRelations() as $relation) {
+            if ($relation->getId() == $id) {
+                return $relation;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasRelation(ContentTypeRelationInterface $relation)
+    {
+        /** @var $item ContentTypeRelationInterface */
+        foreach ($this->getRelations() as $item) {
+            if ($item->getId() == $relation->getId()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the createdAt of the content type
      *
      * @return \DateTime
      */
@@ -185,12 +315,14 @@ class ContentType
     }
 
     /**
-     * Set the createdAt of the document
+     * Set the createdAt of the content type
      *
      * @param \DateTime $createdAt
+     * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 }
