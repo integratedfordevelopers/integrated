@@ -20,7 +20,7 @@
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "integrated/library": "~0.1",
-		"integrated/content-bundle": "~0.1",
+        "integrated/content-bundle": "~0.1",
         "integrated/formtype-bundle": "~0.1",
         "integrated/solr-bundle": "~0.1",
         "sp/bower-bundle": "~0.9",
