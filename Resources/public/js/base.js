@@ -27,20 +27,36 @@ function typeheadSearch() {
 
 
 function showMore() {
-    $('.btn_more').on('click', function(e){
+    $('.btn_show_more').on('click', function(e){
         e.preventDefault();
-        $(this).toggleClass('up').prev().find('.to_show').slideToggle();
+        $(this).closest('.item_row').find('.to_show').slideToggle(200);
     });
 }
 
 
+function fluidSearchField() {
+    $('header .typehead_search').focus(function(){
+        if ($(window).width() >= 768) {
+            var elemWidth = $('header .typehead_search').outerWidth();
+            $(this).closest('.search_field_holder').stop().animate({width: "100%"}, 300, function(){
+                $('header .typehead_search').blur(function(){
+                    $(this).closest('.search_field_holder').stop().animate({width: elemWidth}, 300);
+                });
+            });
+        }
+    });
+}
 
 
 $(document).ready(function(){
 
     typeheadSearch();
 
+    fluidSearchField();
+
     showMore();
+
+    $('.popover_trigger').popover();
 
 });
 
