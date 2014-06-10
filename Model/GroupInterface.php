@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\UserBundle\Model;
 
 //use Serializable;
-use Symfony\Component\Security\Core\Role\Role;
+//use Symfony\Component\Security\Core\Role\Role;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -25,6 +25,13 @@ interface GroupInterface /* extends Serializable */
 	 * @return string
 	 */
 	public function getId();
+
+	/**
+	 * Set the name of the group
+	 *
+	 * @param string $name
+	 */
+	public function setName($name);
 
 	/**
 	 * Returns the name of the group
@@ -43,7 +50,7 @@ interface GroupInterface /* extends Serializable */
 	 * }
 	 * </code>
 	 *
-	 * @return Role[] The user roles
+	 * @return \Symfony\Component\Security\Core\Role\Role[] The user roles
 	 */
 	public function getRoles();
 } 

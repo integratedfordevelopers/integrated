@@ -1,0 +1,26 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+    <div class="content_columns_holder">
+        <div class="content_column_inner">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Delete{% endtrans %}</li>
+            </ol>
+
+            <div class="page-header">
+                <h1>{% trans %}Delete{% endtrans %} <small>{% trans %}group{% endtrans %}</small></h1>
+            </div>
+
+            <div class="row">
+                <div class="col-md-9">
+                    <p>
+                        {% trans with {'%name%':  group.name} %}You are about to delete the group "%name%", click the delete button below to confirm the action.{% endtrans %}
+                    </p>
+                    {{ form(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

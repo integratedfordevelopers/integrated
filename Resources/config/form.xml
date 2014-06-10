@@ -6,15 +6,48 @@
 
 	<parameters>
 
-		<parameter key="integrated_user.form.login.type.class">Integrated\Bundle\UserBundle\Form\Type\LoginType</parameter>
+		<parameter key="integrated_user.form.proxy.type.class">Integrated\Common\Form\Type\ProxyType</parameter>
+
+		<parameter key="integrated_user.form.profile.choice.type.class">Integrated\Bundle\UserBundle\Form\Type\ProfileType</parameter>
+		<parameter key="integrated_user.form.group.choice.type.class">Integrated\Bundle\UserBundle\Form\Type\GroupType</parameter>
+		<parameter key="integrated_user.form.role.choice.type.class">Integrated\Bundle\UserBundle\Form\Type\RoleType</parameter>
+
+		<parameter key="integrated_user.form.login.type.class">Integrated\Bundle\UserBundle\Form\Type\LoginFormType</parameter>
+		<parameter key="integrated_user.form.profile.type.class">Integrated\Bundle\UserBundle\Form\Type\ProfileFormType</parameter>
+		<parameter key="integrated_user.form.group.type.class">Integrated\Bundle\UserBundle\Form\Type\GroupFormType</parameter>
+		<parameter key="integrated_user.form.delete.type.class">Integrated\Bundle\UserBundle\Form\Type\DeleteFormType</parameter>
 
 	</parameters>
 
 	<services>
 
 		<service id="integrated_user.form.login.type" class="%integrated_user.form.login.type.class%">
-			<argument type="service" id="service_container"/>
+			<argument type="service" id="request_stack"/>
 		</service>
+
+		<service id="integrated_user.form.profile.type" class="%integrated_user.form.profile.type.class%">
+			<argument type="service" id="integrated_user.user.manager"/>
+			<argument type="service" id="security.secure_random"/>
+			<argument type="service" id="security.encoder_factory"/>
+		</service>
+
+		<service id="integrated_user.form.profile.choice.type" class="%integrated_user.form.profile.choice.type.class%">
+			<argument type="service" id="integrated_user.user.manager"/>
+		</service>
+
+		<service id="integrated_user.form.group.type" class="%integrated_user.form.group.type.class%">
+			<argument type="service" id="integrated_user.group.manager"/>
+		</service>
+
+		<service id="integrated_user.form.group.choice.type" class="%integrated_user.form.group.choice.type.class%">
+			<argument type="service" id="integrated_user.group.manager"/>
+		</service>
+
+		<service id="integrated_user.form.role.choice.type" class="%integrated_user.form.role.choice.type.class%">
+			<argument type="service" id="integrated_user.role.manager"/>
+		</service>
+
+		<service id="integrated_user.form.delete.type" class="%integrated_user.form.delete.type.class%" />
 
 	</services>
 

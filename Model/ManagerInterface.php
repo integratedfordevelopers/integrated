@@ -11,25 +11,45 @@
 
 namespace Integrated\Bundle\UserBundle\Model;
 
+use Countable;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ManagerInterface
+interface ManagerInterface /* extends Countable */
 {
+//	/**
+//	 * Create a user object
+//	 *
+//	 * @return object
+//	 */
 //	public function create();
 //
-//	public function insert(UserInterface $user);
+//	/**
+//	 * Change or add the object to the manager
+//	 *
+//	 * @param object $object
+//	 */
+//	public function persist($object);
 //
-//	public function remove(UserInterface $user);
-//
-//	public function update(UserInterface $user);
-//
-//	public function refresh(UserInterface $user);
+//	/**
+//	 * Remove the object from the manager
+//	 *
+//	 * @param object $object
+//	 */
+//	public function remove($object);
 
 	/**
 	 * Delete all the managed objects.
 	 */
 	public function clear();
+
+//	/**
+//	 * Returns total number of managed objects
+//	 *
+//	 * @return int
+//	 */
+//	public function count();
 
 	/**
 	 * Finds the object by its identifier.

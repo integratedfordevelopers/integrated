@@ -38,9 +38,15 @@ class IntegratedUserExtension extends Extension
 		$loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
 		$loader->load('form.xml');
+		$loader->load('form.profile.xml');
+		$loader->load('form.group.xml');
+		$loader->load('form.role.xml');
+
 		$loader->load('manager.xml');
 		$loader->load('manager.doctrine.xml');
+
 		$loader->load('security.xml');
+		$loader->load('extension.xml');
 
 		$configuration = new Configuration();
 		$config = $this->processConfiguration($configuration, $configs);
