@@ -76,7 +76,7 @@ class Article extends Content
     /**
      * @var string
      * @ODM\String
-     * @Type\Field(type="textarea")
+     * @Type\Field(type="integrated_tinymce")
      */
     protected $content;
 
