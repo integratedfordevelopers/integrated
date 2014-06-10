@@ -80,14 +80,15 @@ The <info>%command.name%</info> command starts a full index of the site.
 	{
 		// @todo make it flexible so that is really indexes everything
 
-		$cursor = $this->getDocumentManager()->getRepository('Integrated\Bundle\ContentBundle\Document\Content\Content')->findBy([]);
+		$result = $this->getDocumentManager()->getUnitOfWork()->getDocumentPersister('Integrated\Bundle\ContentBundle\Document\Content\Content')->loadAll();
+        $count = count($result);
 
 		/** @var $progress ProgressHelper */
 		$progress = $this->getHelperSet()->get('progress');
-		$progress->setRedrawFrequency(min(max(floor($cursor->count() / 250), 1), 100));
+		$progress->setRedrawFrequency(min(max(floor($count / 250), 1), 100));
 		$progress->setFormat(ProgressHelper::FORMAT_VERBOSE);
 
-		$progress->start($output, $cursor->count());
+		$progress->start($output, $count);
 
 		// get the current time as it will be required at the end for the solr clean up.
 
@@ -99,7 +100,7 @@ The <info>%command.name%</info> command starts a full index of the site.
 			$this->count = 0;
 			$this->getQueue()->clear();
 
-			foreach($cursor as $document) {
+			foreach($result as $document) {
 				$progress->advance();
 
 				$job = new Job('ADD');

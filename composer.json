@@ -22,7 +22,7 @@
     "require": {
         "php": ">=5.4",
 		"symfony/symfony": "~2.4",
-        "integrated/library": "dev-develop"
+        "integrated/library": "~0.1"
     },
     "autoload":{
         "psr-0":{
@@ -32,7 +32,7 @@
     "target-dir": "Integrated/Bundle/SolrBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-develop": "0.1.x-dev"
         }
     }
 }
