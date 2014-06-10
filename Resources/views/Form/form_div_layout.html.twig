@@ -13,3 +13,31 @@
 {% block integrated_wysihtml5x_widget  %}
         <textarea {{ block('widget_attributes') }}   class="form-control integrated_wysihtml5x"> {% if value is not empty %} {{ value }} {% endif %}  </textarea>
 {% endblock %}
+
+{% block integrated_tinymce_widget  %}
+    {% spaceless %}
+        <textarea id="{{ id }}" name="{{ full_name }}" class="form-control integrated_tinymce">{% if value is not empty %}{{ value }}{% endif %}</textarea>
+        <script type="text/javascript">
+            require(["{{ asset('bundles/integratedformtype/components/tinymce/tinymce.min.js') }}"],
+                    function () {
+                        tinymce.init({
+                            selector: "textarea#{{ id }}",
+                            theme: "modern",
+                            plugins: [
+                                ["advlist autolink link image lists charmap hr anchor pagebreak"],
+                                ["searchreplace wordcount visualchars fullscreen media nonbreaking"],
+                                ["table contextmenu directionality template paste"]
+                            ],
+                            add_unload_trigger: false,
+                            schema: "html5",
+                            toolbar: "styleselect | bold italic | alignleft alignright | bullist numlist outdent indent | link image print preview media fullpage",
+                            statusbar: false,
+                            width: "100%",
+                            height: "300",
+                            removed_menuitems: 'newdocument'
+                        });
+                    }
+            );
+            </script>
+    {% endspaceless %}
+{% endblock %}
