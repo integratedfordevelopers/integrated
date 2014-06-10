@@ -72,7 +72,8 @@ package { [git]:
 class {'apache':
 	default_vhost => false,
 	mpm_module    => 'prefork',
-	servername    => 'development'
+	servername    => 'development',
+	user          => 'vagrant'
 }
 
 class {'apache::mod::php': }

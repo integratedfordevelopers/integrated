@@ -42,14 +42,29 @@ assetic:
         integrated_css:
             inputs:
                 - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css
+                - @IntegratedFormTypeBundle/Resources/public/components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.css
         integrated_js:
             inputs:
                 - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
+                - @IntegratedFormTypeBundle/Resources/public/components/handlebars/handlebars.runtime.min.js
+                - @IntegratedFormTypeBundle/Resources/public/components/wysihtml5x/parser_rules/advanced.js
+                - @IntegratedFormTypeBundle/Resources/public/components/wysihtml5x/dist/wysihtml5x-0.4.3.js
+                - @IntegratedFormTypeBundle/Resources/public/components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js
+                - @IntegratedFormTypeBundle/Resources/public/js/wysihtml5x.js
+                - @IntegratedFormTypeBundle/Resources/public/js/*
+        bootstrap_css:
+            inputs:
+                - @IntegratedContentBundle/Resources/public/less/styles.less
+            filters:
+                - less
+            output: css/bootstrap.css
 
 # Bootstrap configuration
 braincrafted_bootstrap:
     less_filter: less
     jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.js
+#    customize:
+#        variables_file: %kernel.root_dir%/../vendor/integrated/content-bundle/Integrated/Bundle/ContentBundle/Resources/public/less/variables.less
 
 # Doctrine Configuration
 doctrine:
