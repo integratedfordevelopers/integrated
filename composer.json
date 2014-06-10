@@ -19,10 +19,10 @@
         "sensio/framework-extra-bundle": "2.3.*",
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
-        "integrated/library": "dev-develop",
-		"integrated/content-bundle": "dev-develop",
-        "integrated/formtype-bundle": "dev-develop",
-        "integrated/solr-bundle": "dev-develop",
+        "integrated/library": "~0.1",
+		"integrated/content-bundle": "~0.1",
+        "integrated/formtype-bundle": "~0.1",
+        "integrated/solr-bundle": "~0.1",
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*"
     },
@@ -56,6 +56,7 @@
         "bin-dir": "bin"
     },
     "minimum-stability": "dev",
+    "prefer-stability":
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
