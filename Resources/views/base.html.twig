@@ -15,6 +15,14 @@
 
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 
+	<script src="{{ asset('bundles/integratedformtype/components/requirejs/require.js') }}"></script>
+	<script>
+	    requirejs.config({
+	        baseUrl: '{{ asset('/') }}'
+	    });
+	    // ...
+	</script>
+
 {% endblock style %}
 
 </head>
