@@ -59,11 +59,12 @@
 
                         {% endif %}
 
-                        {% if content.content is defined %}
-                            {% if content.content|join('...')|trim is not empty %}
-                                <p>{{ content.content|join('...')|slice(0, 200)|striptags|raw }}</p>
-                            {% endif %}
+                        {% if content.intro is defined and content.intro|join('...')|trim is not empty %}
+                             <p>{{ content.intro|join('...')|slice(0, 200)|striptags|raw }}</p>
+                        {% elseif content.content is defined and content.content|join('...')|trim is not empty %}
+                             <p>{{ content.content|join('...')|slice(0, 200)|striptags|raw }}</p>
                         {% endif %}
+
                         <ul class="status_info_list">
                             <li>
                                 {% if contentTypes[content.type_name] is defined %}
