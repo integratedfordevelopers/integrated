@@ -5,6 +5,9 @@ convert:
 #      type_name: '$.contenttype.value()'
 #      type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Content"'
 #      type_id: '$.id.value()'
+#      pub_time: $.publishedAt.raw()
+#      pub_created: $.createdAt.raw()
+#      pub_edited: $.updatedAt.raw()
 #    id: id
 
   - class: Integrated\Bundle\ContentBundle\Document\Content\Article
@@ -14,11 +17,16 @@ convert:
       type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Article"'
       type_id: '$.id.value()'
       title: ~
+      title_sort: '$.title.value()'
       subtitle: ~
       author: '$.authors[].person.concat(" ", ["@prefix", "@firstName", "@lastName"]).value()'
       source: ~
+      intro: ~
       content: ~
       locale: ~
+      pub_time: $.publishedAt.raw()
+      pub_created: $.createdAt.raw()
+      pub_edited: $.updatedAt.raw()
     id: id
 
   - class: Integrated\Bundle\ContentBundle\Document\Content\File
@@ -28,8 +36,13 @@ convert:
       type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\File"'
       type_id: '$.id.value()'
       title: ~
+      title_sort: '$.title.value()'
       description: ~
+      intro: ~
       content: '$.description.value()'
+      pub_time: $.publishedAt.raw()
+      pub_created: $.createdAt.raw()
+      pub_edited: $.updatedAt.raw()
     id: id
 
   - class: Integrated\Bundle\ContentBundle\Document\Content\Taxonomy
@@ -39,8 +52,13 @@ convert:
       type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Taxonomy"'
       type_id: '$.id.value()'
       title: ~
+      title_sort: '$.title.value()'
       description: ~
+      intro: ~
       content: '$.description.value()'
+      pub_time: $.publishedAt.raw()
+      pub_created: $.createdAt.raw()
+      pub_edited: $.updatedAt.raw()
     id: id
 
 #  - class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
@@ -63,12 +81,17 @@ convert:
       type_name: '$.contenttype.value()'
       type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Company"'
       type_id: '$.id.value()'
-      title:  '$.name.value()'
+      title: '$.name.value()'
+      title_sort: '$.name.value()'
       description: ~
+      intro: ~
       content: '$.description.value()'
       phonenumber_text: '$.phonenumbers[].value()'
       email_text: '$.email.value()'
       address_text: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
+      pub_time: $.publishedAt.raw()
+      pub_created: $.createdAt.raw()
+      pub_edited: $.updatedAt.raw()
     id: id
 
   - class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
@@ -77,10 +100,15 @@ convert:
       type_name: '$.contenttype.value()'
       type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Person"'
       type_id: '$.id.value()'
-      title:  '$.concat(" ", ["@prefix", "@firstName", "@lastName"]).value()'
+      title: '$.concat(" ", ["@prefix", "@firstName", "@lastName"]).value()'
+      title_sort: '$.concat(" ", ["@prefix", "@firstName", "@lastName"]).value()'
       description: ~
+      intro: ~
       content: '$.description.value()'
       phonenumber_text: '$.phonenumbers[].value()'
       email_text: '$.email.value()'
       address_text: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
+      pub_time: $.publishedAt.raw()
+      pub_created: $.createdAt.raw()
+      pub_edited: $.updatedAt.raw()
     id: id
