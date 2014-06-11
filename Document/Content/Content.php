@@ -320,7 +320,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
      * @param \DateTime $publishedAt
      * @return $this
      */
-    public function setPublishedAt(\DateTime $publishedAt)
+    public function setPublishedAt(\DateTime $publishedAt = null)
     {
         $this->publishedAt = $publishedAt;
         return $this;

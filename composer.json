@@ -30,9 +30,10 @@
 		"doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
-        "doctrine/mongodb-odm-bundle": "3.0.x-dev",
-        "integrated/library": "dev-develop",
-        "integrated/formtype-bundle": "dev-develop",
+        "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
+        "integrated/library": "~0.1",
+        "integrated/formtype-bundle": "~0.1",
+        "integrated/locking-bundle": "~0.1",
 		"knplabs/knp-paginator-bundle": "dev-master",
 		"nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",
@@ -46,7 +47,7 @@
     "target-dir": "Integrated/Bundle/ContentBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-develop": "0.1.1-dev"
         }
     }
 }
