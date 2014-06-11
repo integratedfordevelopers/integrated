@@ -1,29 +1,32 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
 
-{#
     <div class="filters_row">
         <ul class="nav nav-pills">
+
             <li class="dropdown">
-                <a href="#" data-toggle="dropdown" role="button" id="drop_1">Dropdown <b class="caret"></b></a>
-                <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
-                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Action</a></li>
-                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Another action</a></li>
-                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Something else here</a></li>
+                <a href data-toggle="dropdown" role="button" id="sorting-list">Ordering <b class="caret"></b></a>
+
+                <ul aria-labelledby="sorting-list" role="menu" class="dropdown-menu" id="sorting-menu">
+
+                    <li {% if params.sort is null %}class="active" {% endif %}role="presentation">
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': null})) }}" tabindex="-1" role="menuitem">Date modified</a>
+                    </li>
+                    <li {% if params.sort == 'created' %}class="active" {% endif %}role="presentation">
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': 'created'})) }}" tabindex="-1" role="menuitem">Date created</a>
+                    </li>
+                    <li {% if params.sort == 'time' %}class="active" {% endif %}role="presentation">
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': 'time'})) }}" tabindex="-1" role="menuitem">Publication date</a>
+                    </li>
+                    <li {% if params.sort == 'title' %}class="active" {% endif %}role="presentation">
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': 'title'})) }}" tabindex="-1" role="menuitem">Title</a>
+                    </li>
+
                 </ul>
             </li>
 
-            <li class="dropdown">
-                <a href="#" data-toggle="dropdown" role="button" id="drop_1">Dropdown <b class="caret"></b></a>
-                <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
-                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Action</a></li>
-                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Another action</a></li>
-                    <li role="presentation"><a href="#" tabindex="-1" role="menuitem">Something else here</a></li>
-                </ul>
-            </li>
         </ul>
-    </div><!-- filters_row -->
-#}
+    </div>
 
     <div class="content_columns_holder">
         <div class="col-sm-8 content_column">
@@ -58,7 +61,7 @@
 
                         {% if content.content is defined %}
                             {% if content.content|join('...')|trim is not empty %}
-                                <p>{{ content.content|join('...')|slice(1, 200)|striptags|raw }}</p>
+                                <p>{{ content.content|join('...')|slice(0, 200)|striptags|raw }}</p>
                             {% endif %}
                         {% endif %}
                         <ul class="status_info_list">

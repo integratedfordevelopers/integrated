@@ -127,24 +127,44 @@ class ContentController extends Controller
             $query->setQuery($q);
         }
 
-        // Execute the query
-        $result = $client->select($query);
+		// sorting
+
+		$sort_default = 'changed';
+		$sort_options = [
+			'changed' => 'pub_edited',
+			'created' => 'pub_created',
+			'time'    => 'pub_time',
+			'title'   => 'title_sort'
+		];
+
+		$sort = $request->query->get('sort', $sort_default);
+		$sort = trim(strtolower($sort));
+		$sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
+
+		$query->addSort($sort_options[$sort], $request->query->get('desc', false) ? 'desc' : 'asc');
+
+		$sort = $sort == $sort_default ? null : $sort; // default sorting does not need to added to the url
+
+		// Execute the query
+		$result = $client->select($query);
 
 		/** @var $paginator \Knp\Component\Pager\Paginator */
 		$paginator = $this->get('knp_paginator');
 		$paginator = $paginator->paginate(
             array($client, $query),
 			$request->query->get('page', 1),
-			$request->query->get('limit', 15)
+			$request->query->get('limit', 15),
+			['sortFieldParameterName' => null]
 		);
 
 		return array(
-			'types' => $types,
-			'pager' => $paginator,
+			'types'        => $types,
+			'params'       => ['sort' => $sort],
+			'pager'        => $paginator,
             'contentTypes' => $displayTypes,
-            'active' => $contentType,
-            'facets' => $result->getFacetSet()->getFacets(),
-			'locks' => $this->getLocks($paginator)
+            'active'       => $contentType,
+            'facets'       => $result->getFacetSet()->getFacets(),
+			'locks'        => $this->getLocks($paginator)
 		);
 	}
 
