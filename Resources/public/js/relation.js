@@ -44,7 +44,7 @@ var Relation = function(id, url) {
             ev.preventDefault();
             parent.loadSelected($(this).attr('href'));
         });
-        container.find('a[data-remove]').click(function(ev){
+        container.find('*[data-remove]').click(function(ev){
             ev.preventDefault();
             parent.removeOption($(this).data('remove'));
         })
@@ -125,10 +125,10 @@ var Relation = function(id, url) {
     }
 
     this.getSelectedContainer = function() {
-        if ($('#relations-selected div[data-relation="' + this.id + '"').length > 0) {
-            return $('#relations-selected div[data-relation="' + this.id + '"');
+        if ($('#relations-selected li[data-relation="' + this.id + '"').length > 0) {
+            return $('#relations-selected li[data-relation="' + this.id + '"');
         } else {
-            var container = $('<div data-relation="' + this.id +'"></div>');
+            var container = $('<li data-relation="' + this.id +'"></li>');
             $('#relations-selected').append(container);
             return container;
         }
