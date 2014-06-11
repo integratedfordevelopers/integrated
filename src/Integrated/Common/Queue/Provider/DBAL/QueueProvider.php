@@ -92,10 +92,10 @@ class QueueProvider implements QueueProviderInterface
 //		);
 
 		$query = '
-			SELECT id, payload,	attempts
+			SELECT id, payload,	attempts, priority
 			FROM %s
 			WHERE channel = ? AND time_execute <= ?
-			ORDER BY priority, time_execute, id
+			ORDER BY priority DESC, time_execute, id
 		';
 
 		$query = sprintf(
