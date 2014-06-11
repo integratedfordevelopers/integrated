@@ -21,7 +21,7 @@ class QueueMessageTest extends \PHPUnit_Framework_TestCase
 {
 	public function testInterface()
 	{
-		$message = new QueueMessage(null, 0, function() {});
+		$message = new QueueMessage(null, 0, 0, function() {});
 
 		$this->assertInstanceOf('Integrated\Common\Queue\QueueMessageInterface', $message);
 	}
@@ -29,16 +29,23 @@ class QueueMessageTest extends \PHPUnit_Framework_TestCase
 	public function testGetPayload()
 	{
 		$payload = new stdClass();
-		$message = new QueueMessage($payload, 0, function() {});
+		$message = new QueueMessage($payload, 0, 0, function() {});
 
 		$this->assertSame($message->getPayload(), $payload);
 	}
 
 	public function testGetAttempts()
 	{
-		$message = new QueueMessage(null, 42, function() {});
+		$message = new QueueMessage(null, 42, 0, function() {});
 
 		$this->assertEquals(42, $message->getAttempts());
+	}
+
+	public function testGetPriority()
+	{
+		$message = new QueueMessage(null, 0, 10, function() {});
+
+		$this->assertEquals(10, $message->getPriority());
 	}
 
 	public function testRelease()
@@ -47,7 +54,7 @@ class QueueMessageTest extends \PHPUnit_Framework_TestCase
 		$mock->expects($this->once())
 			->method('callback');
 
-		$message = new QueueMessage(null, 0, function() use ($mock) { $mock->callback(); });
+		$message = new QueueMessage(null, 0, 0, function() use ($mock) { $mock->callback(); });
 
 		$message->release();
 		$message->release();
@@ -59,7 +66,7 @@ class QueueMessageTest extends \PHPUnit_Framework_TestCase
 		$mock->expects($this->never())
 			->method('callback');
 
-		$message = new QueueMessage(null, 0, function() use ($mock) { $mock->callback(); });
+		$message = new QueueMessage(null, 0, 0, function() use ($mock) { $mock->callback(); });
 
 		$message->delete();
 		$message->release();

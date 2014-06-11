@@ -21,6 +21,44 @@ use Integrated\Common\Queue\Exception\UnexpectedTypeException;
  */
 class Queue implements QueueInterface
 {
+//	/**
+//	 * Lowest priority in the queue.
+//	 *
+//	 * message marked with this priority will be handled last
+//	 */
+//	const PRIORITY_LOW         = -10;
+//
+//	/**
+//	 * Medium-low priority in the queue.
+//	 *
+//	 * This is a priority in between low and medium.
+//	 */
+//	const PRIORITY_MEDIUM_LOW  = -5;
+//
+//	/**
+//	 * Medium priority in the queue.
+//	 *
+//	 * Message marked with this priority will be handled after the high
+//	 * priority messages are handled but before the low priority.
+//	 *
+//	 * This is the default priority if none is given.
+//	 */
+//	const PRIORITY_MEDIUM      = 0;
+//
+//	/**
+//	 * Medium-high priority in the queue.
+//	 *
+//	 * This is a priority in between medium and high.
+//	 */
+//	const PRIORITY_MEDIUM_HIGH = 5;
+//
+//	/**
+//	 * Highest priority in the queue.
+//	 *
+//	 * Messages marked with this priority will be handled first.
+//	 */
+//	const PRIORITY_HIGH        = 10;
+
 	/**
 	 * @var string
 	 */
@@ -50,9 +88,9 @@ class Queue implements QueueInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function push($payload, $delay = 0)
+	public function push($payload, $delay = 0, $priority = self::PRIORITY_MEDIUM)
 	{
-		$this->provider->push($this->channel, $payload, $delay);
+		$this->provider->push($this->channel, $payload, $delay, $priority);
 	}
 
 	/**

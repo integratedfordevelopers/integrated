@@ -119,6 +119,14 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
+	 * @inheritdoc
+	 */
+	public function getPriority()
+	{
+		return (int) $this->data['priority'];
+	}
+
+	/**
 	 * Get all the message data
 	 *
 	 * @return array

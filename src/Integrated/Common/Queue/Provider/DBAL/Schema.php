@@ -53,13 +53,14 @@ final class Schema extends BaseSchema
 	{
 		$table = $this->createTable($this->options['queue_table_name']);
 
-		$table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => 'auto'));
-		$table->addColumn('channel', 'string', array('length' => 50));
+		$table->addColumn('id', 'integer', ['unsigned' => true, 'autoincrement' => 'auto']);
+		$table->addColumn('channel', 'string', ['length' => 50]);
 		$table->addColumn('payload', 'text');
-		$table->addColumn('attempts', 'smallint', array('unsigned' => true));
-		$table->addColumn('time_created', 'integer', array('unsigned' => true));
-		$table->addColumn('time_updated', 'integer', array('unsigned' => true));
-		$table->addColumn('time_execute', 'integer', array('unsigned' => true));
+		$table->addColumn('priority', 'smallint');
+		$table->addColumn('attempts', 'smallint', ['unsigned' => true]);
+		$table->addColumn('time_created', 'integer', ['unsigned' => true]);
+		$table->addColumn('time_updated', 'integer', ['unsigned' => true]);
+		$table->addColumn('time_execute', 'integer', ['unsigned' => true]);
 
 		$table->setPrimaryKey(array('id'));
 

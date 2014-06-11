@@ -40,6 +40,13 @@ class QueueTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Integrated\Common\Queue\QueueInterface', $this->queue);
 	}
 
+	public function testPriorityConstants()
+	{
+		$this->assertEquals(-10, Queue::PRIORITY_LOW);
+		$this->assertEquals(0, Queue::PRIORITY_MEDIUM);
+		$this->assertEquals(10, Queue::PRIORITY_HIGH);
+	}
+
 	public function testGetChannel()
 	{
 		$this->assertEquals('channel', $this->queue->getChannel());
@@ -56,7 +63,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
 
 		$this->provider->expects($this->once())
 			->method('push')
-			->with($this->identicalTo('channel'), $this->identicalTo($payload), $this->identicalTo(0));
+			->with($this->identicalTo('channel'), $this->identicalTo($payload), $this->identicalTo(0), $this->identicalTo(0));
 
 		$this->queue->push($payload);
 	}
@@ -67,9 +74,20 @@ class QueueTest extends \PHPUnit_Framework_TestCase
 
 		$this->provider->expects($this->once())
 			->method('push')
-			->with($this->identicalTo('channel'), $this->identicalTo($payload), $this->identicalTo(42));
+			->with($this->identicalTo('channel'), $this->identicalTo($payload), $this->identicalTo(42), $this->identicalTo(0));
 
 		$this->queue->push($payload, 42);
+	}
+
+	public function testPushWithPriority()
+	{
+		$payload = new \stdClass();
+
+		$this->provider->expects($this->once())
+			->method('push')
+			->with($this->identicalTo('channel'), $this->identicalTo($payload), $this->identicalTo(0), $this->identicalTo(10));
+
+		$this->queue->push($payload, 0, Queue::PRIORITY_HIGH);
 	}
 
 	public function testPull()

@@ -50,17 +50,19 @@ class QueueProvider implements QueueProviderInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function push($channel, $payload, $delay = 0)
+	public function push($channel, $payload, $delay = 0, $priority = 0)
 	{
 		$channel = (string) $channel;
 		$payload = serialize($payload);
 		$timestamp = time();
 		$delay = (int) $delay;
+		$priority = min(max((int) $priority, -10), 10);
 
 		$this->connection->insert($this->options['queue_table_name'], [
-			'channel' => $channel,
-			'payload' => $payload,
-			'attempts' => 0,
+			'channel'      => $channel,
+			'payload'      => $payload,
+			'priority'     => $priority,
+			'attempts'     => 0,
 			'time_created' => $timestamp,
 			'time_updated' => $timestamp,
 			'time_execute' => $timestamp + $delay,
@@ -93,7 +95,7 @@ class QueueProvider implements QueueProviderInterface
 			SELECT id, payload,	attempts
 			FROM %s
 			WHERE channel = ? AND time_execute <= ?
-			ORDER BY time_execute, id
+			ORDER BY priority, time_execute, id
 		';
 
 		$query = sprintf(

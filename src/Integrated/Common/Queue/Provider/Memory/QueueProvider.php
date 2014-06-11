@@ -23,17 +23,18 @@ class QueueProvider implements QueueProviderInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function push($channel, $payload, $delay = 0)
+	public function push($channel, $payload, $delay = 0, $priority = 0)
 	{
 		// this is a in memory queue so delay is ignored.
+		// TODO: for now also ignore priority
 
 		$channel = (string) $channel;
 
 		if (!isset($this->queue[$channel])) {
-			$this->queue[$channel] = array();
+			$this->queue[$channel] = [];
 		}
 
-		$this->queue[$channel][] = array('payload' => $payload, 'attempts' => 0);
+		$this->queue[$channel][] = ['payload' => $payload, 'attempts' => 0, 'priority' => min(max((int) $priority, -10), 10)];
 	}
 
 	/**
@@ -44,13 +45,13 @@ class QueueProvider implements QueueProviderInterface
 		$channel = (string) $channel;
 
 		if (!isset($this->queue[$channel])) {
-			return array();
+			return [];
 		}
 
 		$limit = (int) $limit;
 		$limit = $limit > 1 ? $limit : 1;
 
-		$results = array();
+		$results = [];
 
 		foreach (array_splice($this->queue[$channel], 0, $limit) as $row) {
 			$release = function() use ($channel, $row) {
@@ -58,7 +59,7 @@ class QueueProvider implements QueueProviderInterface
 				array_unshift($this->queue[$channel], $row);
 			};
 
-			$results[] = new QueueMessage($row['payload'], $row['attempts'], $release);
+			$results[] = new QueueMessage($row['payload'], $row['attempts'], $row['priority'], $release);
 		}
 
 		return $results;
@@ -69,7 +70,7 @@ class QueueProvider implements QueueProviderInterface
 	 */
 	public function clear($channel)
 	{
-		$this->queue[$channel] = array();
+		$this->queue[$channel] = [];
 	}
 
 	/**
