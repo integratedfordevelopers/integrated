@@ -135,7 +135,7 @@
                 <div class="btn-block">
                     <div class="search_field_holder">
                         <form action="{{ path('integrated_content_content_index') }}">
-                            <input type="text" value="{{ app.request.query.get('q')|trim }}" class="form-control typehead_search" placeholder="{% trans %}Search here...{% endtrans %}" autocomplete="off" />
+                            <input type="text" name="q" value="{{ app.request.query.get('q')|trim }}" class="form-control typehead_search" placeholder="{% trans %}Search here...{% endtrans %}" autocomplete="off" />
                             <button type="button" class="submit_btn"><i class="glyphicon glyphicon-search"></i></button>
                         </form>
                     </div>
