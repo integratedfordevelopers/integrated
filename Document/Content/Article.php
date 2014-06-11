@@ -246,7 +246,7 @@ class Article extends Content
      * @param \DateTime $publishedUntil
      * @return $this
      */
-    public function setPublishedUntil(\DateTime $publishedUntil)
+    public function setPublishedUntil(\DateTime $publishedUntil = null)
     {
         $this->publishedUntil = $publishedUntil;
         return $this;
