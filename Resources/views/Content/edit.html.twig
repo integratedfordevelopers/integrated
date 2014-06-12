@@ -1,12 +1,14 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
 
+    {% block crumbs %}
     <ol class="breadcrumb">
         <li>
             <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
         </li>
         <li class="active">{% trans %}Edit{% endtrans %}</li>
     </ol>
+    {% endblock %}
 
     <div class="filters_row">
         {#<ul class="nav nav-pills">#}
@@ -32,7 +34,11 @@
 
     <div class="content_columns_holder">
         <div class="col-sm-12 col-md-6 content_column margin_botom_in_mobile">
-            <h3 class="title">{% trans %}Edit{% endtrans %} {{ type.name }}</h3>
+            <h3 class="title">
+                {% block pageTitle %}
+                {% trans %}Edit{% endtrans %} {{ type.name }}
+                {% endblock %}
+            </h3>
             <div class="content_column_inner">
                 <div class="item_row">
                     {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
