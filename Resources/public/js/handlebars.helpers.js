@@ -6,6 +6,11 @@ Handlebars.registerHelper('equals', function(v1, v2, options) {
 });
 
 Handlebars.registerHelper('checked', function(id, selected, options) {
+
+    if (selected == undefined) {
+        return options.inverse(this);
+    }
+
     if (selected.indexOf(id) >= 0) {
         return options.fn(this);
     } else {

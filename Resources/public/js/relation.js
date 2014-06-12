@@ -18,13 +18,19 @@ var Relation = function(id, url) {
             ev.preventDefault();
             parent.loadOptions($(this).attr('href'));
         });
-        container.find('input').click(function(){
+
+        container.find('input').click(function() {
             if ($(this).is(':checked')) {
                 parent.addOption($(this).val());
             } else {
                 parent.removeOption($(this).val());
             }
-        })
+        });
+
+        container.find('a[data-value]').click(function(ev) {
+            ev.preventDefault();
+            parent.addOption($(this).data('value'));
+        });
 
         if (parent.loadedSelected === false) {
             parent.loadSelected();
