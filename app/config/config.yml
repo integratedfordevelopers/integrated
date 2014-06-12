@@ -115,6 +115,7 @@ integrated_solr:
 sp_bower:
     bundles:
         IntegratedFormTypeBundle: ~
+        IntegratedContentBundle: ~
     bin: %bower_bin%
     install_on_warmup: true
     assetic:
