@@ -17,6 +17,7 @@ use Integrated\Common\Solr\Converter\Object\ObjectWrapper;
 use Integrated\Common\Solr\Converter\Object\WrapperInterface;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -53,7 +54,7 @@ class Converter implements ConverterInterface
 	 */
 	public function getFields($object)
 	{
-		$specs = $this->resolver->getSpecification(get_class($object));
+		$specs = $this->resolver->getSpecification(ClassUtils::getRealClass($object));
 
 		if (!$specs) {
 			return null;
@@ -71,7 +72,7 @@ class Converter implements ConverterInterface
 
 	public function getField($object, $field)
 	{
-		$specs = $this->resolver->getSpecification(get_class($object));
+		$specs = $this->resolver->getSpecification(ClassUtils::getRealClass($object));
 
 		if (!$specs) {
 			return null;
@@ -112,7 +113,7 @@ class Converter implements ConverterInterface
 	 */
 	public function getId($object)
 	{
-		$specs = $this->resolver->getSpecification(get_class($object));
+		$specs = $this->resolver->getSpecification(ClassUtils::getRealClass($object));
 
 		if (!$specs) {
 			return null;
