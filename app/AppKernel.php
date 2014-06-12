@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Integrated\Bundle\FormTypeBundle\IntegratedFormTypeBundle(),
             new Integrated\Bundle\SolrBundle\IntegratedSolrBundle(),
             new Integrated\Bundle\UserBundle\IntegratedUserBundle(),
+            new Integrated\Bundle\LockingBundle\IntegratedLockingBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Sp\BowerBundle\SpBowerBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
