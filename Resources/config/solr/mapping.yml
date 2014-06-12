@@ -24,9 +24,9 @@ convert:
       intro: ~
       content: ~
       locale: ~
-      pub_time: $.publishedAt.raw()
-      pub_created: $.createdAt.raw()
-      pub_edited: $.updatedAt.raw()
+      pub_time: '$.publishedAt.raw()'
+      pub_created: '$.createdAt.raw()'
+      pub_edited: '$.updatedAt.raw()'
     id: id
 
   - class: Integrated\Bundle\ContentBundle\Document\Content\File
@@ -40,9 +40,9 @@ convert:
       description: ~
       intro: ~
       content: '$.description.value()'
-      pub_time: $.publishedAt.raw()
-      pub_created: $.createdAt.raw()
-      pub_edited: $.updatedAt.raw()
+      pub_time: '$.publishedAt.raw()'
+      pub_created: '$.createdAt.raw()'
+      pub_edited: '$.updatedAt.raw()'
     id: id
 
   - class: Integrated\Bundle\ContentBundle\Document\Content\Taxonomy
@@ -56,9 +56,9 @@ convert:
       description: ~
       intro: ~
       content: '$.description.value()'
-      pub_time: $.publishedAt.raw()
-      pub_created: $.createdAt.raw()
-      pub_edited: $.updatedAt.raw()
+      pub_time: '$.publishedAt.raw()'
+      pub_created: '$.createdAt.raw()'
+      pub_edited: '$.updatedAt.raw()'
     id: id
 
 #  - class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
@@ -89,9 +89,9 @@ convert:
       phonenumber_text: '$.phonenumbers[].value()'
       email_text: '$.email.value()'
       address_text: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
-      pub_time: $.publishedAt.raw()
-      pub_created: $.createdAt.raw()
-      pub_edited: $.updatedAt.raw()
+      pub_time: '$.publishedAt.raw()'
+      pub_created: '$.createdAt.raw()'
+      pub_edited: '$.updatedAt.raw()'
     id: id
 
   - class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
@@ -108,7 +108,7 @@ convert:
       phonenumber_text: '$.phonenumbers[].value()'
       email_text: '$.email.value()'
       address_text: '$.addresses[].concat(" ", ["@address1", "@address2", "@zipcode", "@city", "@state", "@country"]).value()'
-      pub_time: $.publishedAt.raw()
-      pub_created: $.createdAt.raw()
-      pub_edited: $.updatedAt.raw()
+      pub_time: '$.publishedAt.raw()'
+      pub_created: '$.createdAt.raw()'
+      pub_edited: '$.updatedAt.raw()'
     id: id
