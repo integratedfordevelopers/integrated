@@ -102,6 +102,15 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($mock, $this->subscriber->getConverter());
 	}
 
+	public function testSetAndGetPriority()
+	{
+		$this->assertSame(0, $this->subscriber->getPriority());
+
+		$this->subscriber->setPriority(42);
+
+		$this->assertSame(42, $this->subscriber->getPriority());
+	}
+
 	public function testGetSubscribedEvents()
 	{
 		$this->assertEquals([Events::postPersist, Events::postUpdate, Events::postRemove], $this->subscriber->getSubscribedEvents());
@@ -122,7 +131,7 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
 				&& $value->getOption('document.data') === 'this-is-the-data' && $value->getOption('document.class') === get_class($document) && $value->getOption('document.format') === 'json';
 		};
 
-		$this->queue->expects($this->once())->method('push')->with($this->callback($callback));
+		$this->queue->expects($this->once())->method('push')->with($this->callback($callback), $this->identicalTo(0), $this->identicalTo(0));
 
 		$this->subscriber->postPersist($event);
 	}
@@ -142,7 +151,7 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
 				&& $value->getOption('document.data') === 'this-is-the-data' && $value->getOption('document.class') === get_class($document) && $value->getOption('document.format') === 'json';
 		};
 
-		$this->queue->expects($this->once())->method('push')->with($this->callback($callback));
+		$this->queue->expects($this->once())->method('push')->with($this->callback($callback), $this->identicalTo(0), $this->identicalTo(0));
 
 		$this->subscriber->postUpdate($event);
 	}
@@ -160,8 +169,25 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
 			return $value instanceof \Integrated\Common\Solr\Indexer\JobInterface && strtolower($value->getAction()) === 'delete' && $value->getOption('id') === 'this-is-the-id';
 		};
 
-		$this->queue->expects($this->once())->method('push')->with($this->callback($callback));
+		$this->queue->expects($this->once())->method('push')->with($this->callback($callback), $this->identicalTo(0), $this->identicalTo(0));
 
 		$this->subscriber->postRemove($event);
 	}
+
+	public function testPriority()
+	{
+		$document = $this->getMock('Integrated\Common\Content\ContentInterface');
+
+		$event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')->disableOriginalConstructor()->getMock();
+		$event->expects($this->atLeastOnce())->method('getDocument')->will($this->returnValue($document));
+
+		$this->converter->expects($this->any())->method('getId')->will($this->returnValue('this-is-the-id'));
+
+		$this->queue->expects($this->once())->method('push')->with($this->anything(), $this->identicalTo(0), $this->identicalTo(42));
+
+		$this->subscriber->setPriority(42);
+		$this->subscriber->postRemove($event); // remove requires the least setup
+	}
+
+
 }
