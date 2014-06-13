@@ -53,15 +53,22 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 	private $converter;
 
 	/**
+	 * @var int
+	 */
+	private $priority = 0;
+
+	/**
 	 * @param QueueInterface $queue
 	 * @param SerializerInterface $serializer
 	 * @param ConverterInterface $converter
+	 * @param int $priority
 	 */
-	public function __construct(QueueInterface $queue, SerializerInterface $serializer, ConverterInterface $converter)
+	public function __construct(QueueInterface $queue, SerializerInterface $serializer, ConverterInterface $converter, $priority = 0)
 	{
 		$this->setQueue($queue);
 		$this->setSerializer($serializer);
 		$this->setConverter($converter);
+		$this->setPriority($priority);
 	}
 
 	/**
@@ -133,6 +140,22 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 	}
 
 	/**
+	 * @param int $priority
+	 */
+	public function setPriority($priority)
+	{
+		$this->priority = (int) $priority;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPriority()
+	{
+		return $this->priority;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function getSubscribedEvents()
@@ -184,6 +207,6 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 				break;
 		}
 
-		$this->getQueue()->push($job);
+		$this->getQueue()->push($job, 0, $this->priority);
 	}
 }
