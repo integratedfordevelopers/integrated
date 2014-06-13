@@ -46,6 +46,9 @@ use Solarium\QueryType\Update\Query\Document\Document;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -84,6 +87,103 @@ class Indexer implements IndexerInterface
 	 */
 	private $batch = null;
 
+	/**
+	 * @var OptionsResolver
+	 */
+	private $resolver = null;
+
+	/**
+	 * @var array
+	 */
+	private $options;
+
+	/**
+	 * @param array $options
+	 */
+	public function __construct(array $options = [])
+	{
+		$this->setOptions($options);
+	}
+
+	/**
+	 * Replace the options with a new set op options
+	 *
+	 * @param array $options
+	 */
+	public function setOptions(array $options)
+	{
+		$this->options = $this->getResolver()->resolve($options);
+	}
+
+	/**
+	 * Get all the options
+	 *
+	 * @return array
+	 */
+	public function getOptions()
+	{
+		return $this->options;
+	}
+
+	/**
+	 * Set the value for the given key
+	 *
+	 * @param $key
+	 * @param $value
+	 */
+	public function setOption($key, $value)
+	{
+		$options = $this->getOptions();
+		$options[$key] = $value;
+
+		$this->setOptions($options);
+	}
+
+	/**
+	 * @param string $key
+	 * @return bool
+	 */
+	public function hasOption($key)
+	{
+		return isset($this->options[$key]);
+	}
+
+	/**
+	 * Get the option or return the default if none is set
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function getOption($key)
+	{
+		return $this->options[$key];
+	}
+
+	/**
+	 * Get the option resolver
+	 *
+	 * @return OptionsResolver
+	 */
+	protected function getResolver()
+	{
+		if ($this->resolver === null) {
+			$this->resolver = new OptionsResolver();
+
+			// config the resolver
+
+			$this->resolver->setDefaults([
+				'queue.size' => 1000,
+				'batch.size' => 10,
+			]);
+
+			$this->resolver->setAllowedTypes([
+				'queue.size' => 'integer',
+				'batch.size' => 'integer',
+			]);
+		}
+
+		return $this->resolver;
+	}
 
 	/**
 	 * Set the event dispatcher
@@ -226,7 +326,7 @@ class Indexer implements IndexerInterface
 			$this->getEventDispatcher()->dispatch(Events::PRE_EXECUTE, new IndexerEvent($this));
 
 			try {
-				foreach ($this->getQueue()->pull(1000) /* @TODO make $limit configurable */ as $message) {
+				foreach ($this->getQueue()->pull($this->getOption('queue.size')) as $message) {
 					$this->batch($message);
 				}
 
@@ -274,7 +374,7 @@ class Indexer implements IndexerInterface
 		$batch = $this->getBatch();
 		$batch->add(clone $operation);
 
-		if ($batch->count() >= 10 /* @TODO make the count configurable */) {
+		if ($batch->count() >= $this->getOption('batch.size')) {
 			$this->send();
 		}
 	}
