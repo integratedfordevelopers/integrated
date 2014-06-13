@@ -30,7 +30,7 @@ final class Schema extends BaseSchema
 	{
 		$schemaConfig = $connection ? null : $connection->getSchemaManager()->createSchema();
 
-		parent::__construct(array(), array(), $schemaConfig);
+		parent::__construct([], [], $schemaConfig);
 
 		$this->options = $options;
 

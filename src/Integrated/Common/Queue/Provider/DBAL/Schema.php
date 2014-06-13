@@ -34,7 +34,7 @@ final class Schema extends BaseSchema
 	{
 		$schemaConfig = $connection ? null : $connection->getSchemaManager()->createSchema();
 
-		parent::__construct(array(), array(), $schemaConfig);
+		parent::__construct([], [], $schemaConfig);
 
 		$this->options = $options;
 
@@ -90,9 +90,9 @@ final class Schema extends BaseSchema
 		$table->addColumn('time_updated', 'integer', ['unsigned' => true]);
 		$table->addColumn('time_execute', 'integer', ['unsigned' => true]);
 
-		$table->setPrimaryKey(array('id'));
+		$table->setPrimaryKey(['id']);
 
-		$table->addIndex(array('channel'));
-		$table->addIndex(array('time_execute'));
+		$table->addIndex(['channel']);
+		$table->addIndex(['time_execute']);
 	}
 }
