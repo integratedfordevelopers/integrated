@@ -88,7 +88,7 @@ doctrine_mongodb:
     connections:
         default:
             server: %mongodb_server%
-            options: {}
+            options: %mongodb_options%
     default_database: %mongodb_database%
     document_managers:
         default:
