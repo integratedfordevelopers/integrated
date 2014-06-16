@@ -213,6 +213,12 @@ class ContentController extends Controller
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('A new %s is created', $type->getType()->getType()));
 
+				if ($this->has('integrated_solr.indexer')) {
+					$indexer = $this->get('integrated_solr.indexer');
+					$indexer->setOption('queue.size', 1);
+					$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+				}
+
                 return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 		}
@@ -287,6 +293,12 @@ class ContentController extends Controller
 
 	                // Set flash message
 	                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to %s are saved', $type->getType()->getType()));
+
+					if ($this->has('integrated_solr.indexer')) {
+						$indexer = $this->get('integrated_solr.indexer');
+						$indexer->setOption('queue.size', 1);
+						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+					}
 
 	                return $this->redirect($this->generateUrl('integrated_content_content_index'));
 				}
@@ -391,6 +403,12 @@ class ContentController extends Controller
 					$dm->flush();
 
 					$this->get('braincrafted_bootstrap.flash')->notice(sprintf('The %s is removed', $type->getType()));
+
+					if ($this->has('integrated_solr.indexer')) {
+						$indexer = $this->get('integrated_solr.indexer');
+						$indexer->setOption('queue.size', 1);
+						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+					}
 
 					return $this->redirect($this->generateUrl('integrated_content_content_index'));
 				}
