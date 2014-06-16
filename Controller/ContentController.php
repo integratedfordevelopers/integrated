@@ -243,13 +243,30 @@ class ContentController extends Controller
 		$type = $this->get('integrated.form.factory')->getType($content);
 
 		// get a lock on this content resource.
-		$lock = $this->getLock($content, 60);
-		$lock['locked'] = (bool) ($lock['lock'] && $lock['user'] !== $this->getUser());
+
+		$locking = $this->getLock($content, 60);
+		$locking['locked'] = $locking['lock'] ? true : false;
+
+		if ($locking['lock'] && $locking['owner']) {
+
+			if ($request->query->has('lock') && $locking['lock']->getId() == $request->query->get('lock')) {
+				$locking['locked'] = false;
+			}
+
+			if ($locking['new']) {
+				if ($request->isMethod('get')) {
+					return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]));
+				}
+
+				$locking['locked'] = false;
+			}
+
+		}
 
 		// load a different set of buttons based bases on the locking stat for this
 		// content object
 
-		if ($lock['locked']) {
+		if ($locking['locked']) {
 			$buttons = [
 				'reload' => ['type' => 'submit', 'options' => ['label' => 'Reload']],
 				'reload_changed' => ['type' => 'submit', 'options' => ['label' => 'Reload (keep changes)', 'attr' => ['type' => 'default']]],
@@ -263,11 +280,11 @@ class ContentController extends Controller
 		}
 
 		$form = $this->createForm($type, $content, [
-			'action' => $this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]),
+			'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
 			'method' => 'PUT',
 
 			// don't display error's when the content is locked as the user can't save in the first place
-			'validation_groups' => $lock['locked'] ? false : null
+			'validation_groups' => $locking['locked'] ? false : null
 		], $buttons);
 
 		if ($request->isMethod('put')) {
@@ -278,6 +295,10 @@ class ContentController extends Controller
 			$actions = $form->get('actions');
 
 			if ($actions->get('cancel')->isClicked()) {
+				if (!$locking['locked']) {
+					$locking['release']();
+				}
+
 				return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 
@@ -286,7 +307,7 @@ class ContentController extends Controller
 			}
 
 			if ($actions->has('save') && $actions->get('save')->isClicked()) {
-				if (!$lock['locked'] && $form->isValid()) {
+				if (!$locking['locked'] && $form->isValid()) {
 					/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
 					$dm = $this->get('doctrine_mongodb')->getManager();
 					$dm->flush();
@@ -300,6 +321,10 @@ class ContentController extends Controller
 						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 					}
 
+					if (!$locking['locked']) {
+						$locking['release']();
+					}
+
 	                return $this->redirect($this->generateUrl('integrated_content_content_index'));
 				}
 			}
@@ -308,17 +333,19 @@ class ContentController extends Controller
 			// not lost and there is a new change to get a lock on the content.
 		}
 
-		if ($lock['locked']) {
-			// The current user is not the owner of the lock so display a error message
-			// explaining that the user can not edit the page while this lock is in effect.
+		if ($locking['locked']) {
+			// the document is locked so display display a error message explaining that
+			// the user can not edit this page will the lock is there.
 
-			if ($lock['user']) {
-				$user = $lock['user']->getUsername();
+			if ($locking['owner']) {
+				$text = 'The document is currently locked by your self in a different browser or tab and can not be edited until this lock is released.';
+			} else if ($locking['user']) {
+				$user = $locking['user']->getUsername();
 
 				// we got a basic user name now try to get a better one
 
-				if (method_exists($lock['user'], 'getRelation')) {
-					if ($relation = $lock['user']->getRelation()) {
+				if (method_exists($locking['user'], 'getRelation')) {
+					if ($relation = $locking['user']->getRelation()) {
 						if (method_exists($relation,'__toString')) {
 							$user = (string) $relation;
 						}
@@ -337,7 +364,7 @@ class ContentController extends Controller
 			'type'    => $type->getType(),
 			'form'    => $form->createView(),
 			'content' => $content,
-			'lock'    => $lock
+			'locking' => $locking
 		);
 	}
 
@@ -355,13 +382,30 @@ class ContentController extends Controller
 		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getContentType());
 
 		// get a lock on this content resource.
-		$lock = $this->getLock($content, 60);
-		$lock['locked'] = (bool) ($lock['lock'] && $lock['user'] !== $this->getUser());
+
+		$locking = $this->getLock($content, 60);
+		$locking['locked'] = $locking['lock'] ? true : false;
+
+		if ($locking['lock'] && $locking['owner']) {
+
+			if ($request->query->has('lock') && $locking['lock']->getId() == $request->query->get('lock')) {
+				$locking['locked'] = false;
+			}
+
+			if ($locking['new']) {
+				if ($request->isMethod('get')) {
+					return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]));
+				}
+
+				$locking['locked'] = false;
+			}
+
+		}
 
 		// load a different set of buttons based bases on the locking stat for this
 		// content object
 
-		if ($lock['locked']) {
+		if ($locking['locked']) {
 			$buttons = [
 				'reload' => ['type' => 'submit', 'options' => ['label' => 'Retry']],
 				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
@@ -387,6 +431,10 @@ class ContentController extends Controller
 
 			// check for back click else its a submit
 			if ($actions->get('cancel')->isClicked()) {
+				if (!$locking['locked']) {
+					$locking['release']();
+				}
+
 				return $this->redirect($this->generateUrl('integrated_content_content_index'));
 			}
 
@@ -395,7 +443,7 @@ class ContentController extends Controller
 			}
 
 			if ($actions->has('delete') && $actions->get('delete')->isClicked()) {
-				if (!$lock['locked'] && $form->isValid()) {
+				if (!$locking['locked'] && $form->isValid()) {
 					/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
 					$dm = $this->get('doctrine_mongodb')->getManager();
 
@@ -410,22 +458,28 @@ class ContentController extends Controller
 						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 					}
 
+					if (!$locking['locked']) {
+						$locking['release']();
+					}
+
 					return $this->redirect($this->generateUrl('integrated_content_content_index'));
 				}
 			}
 		}
 
-		if ($lock['locked']) {
-			// The current user is not the owner of the lock so display a error message
-			// explaining that the user can not edit the page while this lock is in effect.
+		if ($locking['locked']) {
+			// the document is locked so display display a error message explaining that
+			// the user can not edit this page will the lock is there.
 
-			if ($lock['user']) {
-				$user = $lock['user']->getUsername();
+			if ($locking['owner']) {
+				$text = 'The document is currently locked by your self in a different browser or tab and can not be deleted until this lock is released.';
+			} else if ($locking['user']) {
+				$user = $locking['user']->getUsername();
 
 				// we got a basic user name now try to get a better one
 
-				if (method_exists($lock['user'], 'getRelation')) {
-					if ($relation = $lock['user']->getRelation()) {
+				if (method_exists($locking['user'], 'getRelation')) {
+					if ($relation = $locking['user']->getRelation()) {
 						if (method_exists($relation,'__toString')) {
 							$user = (string) $relation;
 						}
@@ -444,7 +498,7 @@ class ContentController extends Controller
 			'type'    => $type,
 			'form'    => $form->createView(),
 			'content' => $content,
-			'lock'    => $lock
+			'locking' => $locking
 		);
 	}
 
@@ -465,8 +519,11 @@ class ContentController extends Controller
 	{
 		if (!$this->has('integrated_locking.dbal.manager')) {
 			return [
-				'lock' => null,
-				'user' => null,
+				'lock'    => null,
+				'user'    => null,
+				'owner'   => false,
+				'new'     => false,
+				'release' => function() {}
 			];
 		}
 
@@ -487,8 +544,13 @@ class ContentController extends Controller
 
 			if ($lock = $service->acquire($request)) {
 				return [
-					'lock' => $lock,
-					'user' => $this->getUser(),
+					'lock'    => $lock,
+					'user'    => $this->getUser(),
+					'owner'   => true,
+					'new'     => true,
+					'release' => function() use ($service, $lock) {
+						$service->release($lock);
+					}
 				];
 			}
 		} // can not acquire a lock if not logged in.
@@ -498,8 +560,13 @@ class ContentController extends Controller
 
 			if ($owner && $owner->equals($lock->getRequest()->getOwner())) {
 				return [
-					'lock' => $lock,
-					'user' => $this->getUser(),
+					'lock'    => $lock,
+					'user'    => $this->getUser(),
+					'owner'   => true,
+					'new'     => false,
+					'release' => function() use ($service, $lock) {
+						$service->release($lock);
+					}
 				];
 			}
 
@@ -518,14 +585,22 @@ class ContentController extends Controller
 			}
 
 			return [
-				'lock' => $lock,
-				'user' => $user,
+				'lock'    => $lock,
+				'user'    => $user,
+				'owner'   => false,
+				'new'     => false,
+				'release' => function() use ($service, $lock) {
+					$service->release($lock);
+				}
 			];
 		}
 
 		return [
-			'lock' => null,
-			'user' => null,
+			'lock'  => null,
+			'user'  => null,
+			'owner' => false,
+			'new'   => false,
+			'release' => function() {}
 		];
 	}
 
@@ -536,7 +611,6 @@ class ContentController extends Controller
 		if (!$this->has('integrated_locking.dbal.manager')) {
 			return $results;
 		}
-
 
 		$filter = new Locks\Filter();
 

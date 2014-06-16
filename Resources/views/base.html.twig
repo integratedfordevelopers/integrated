@@ -170,8 +170,8 @@
     {% endjavascripts %}
 
     {% block locking %}
-        {% if lock.lock is defined and lock.locked == false %}
-            {% include 'IntegratedLockingBundle::locking.refresh.html.twig' with { 'lock': lock.lock } %}
+        {% if locking is defined and locking.lock is defined and locking.locked == false %}
+            {% include 'IntegratedLockingBundle::locking.refresh.html.twig' with { 'lock': locking.lock } %}
         {% endif %}
     {% endblock locking %}
 
