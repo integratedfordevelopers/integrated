@@ -129,21 +129,20 @@ class ContentController extends Controller
 
 		// sorting
 
-		$sort_default = 'changed';
+		$sort_default = 'rel';
 		$sort_options = [
-			'changed' => 'pub_edited',
-			'created' => 'pub_created',
-			'time'    => 'pub_time',
-			'title'   => 'title_sort'
+			'rel'     => ['name' => 'rel', 'field' => 'score', 'label' => 'relevance'],
+			'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified'],
+			'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created'],
+			'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date'],
+			'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title']
 		];
 
 		$sort = $request->query->get('sort', $sort_default);
 		$sort = trim(strtolower($sort));
 		$sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-		$query->addSort($sort_options[$sort], $request->query->get('desc', false) ? 'desc' : 'asc');
-
-		$sort = $sort == $sort_default ? null : $sort; // default sorting does not need to added to the url
+		$query->addSort($sort_options[$sort]['field'], $request->query->get('desc', false) ? 'desc' : 'asc');
 
 		// Execute the query
 		$result = $client->select($query);
@@ -159,7 +158,7 @@ class ContentController extends Controller
 
 		return array(
 			'types'        => $types,
-			'params'       => ['sort' => $sort],
+			'params'       => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
 			'pager'        => $paginator,
             'contentTypes' => $displayTypes,
             'active'       => $contentType,
