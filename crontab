@@ -1,0 +1,2 @@
+* * * * * php app/console solr:indexer:run
+* * * * * php app/console locking:dbal:clean
