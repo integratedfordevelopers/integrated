@@ -16,8 +16,8 @@
     "require": {
         "php": ">=5.4",
 		"symfony/symfony": "~2.4",
-		"doctrine/orm": "~2.2,>=2.2.3",
-		"doctrine/doctrine-bundle": "~1.2",
+		"doctrine/orm": "dev-master",
+		"doctrine/doctrine-bundle": "~1.3",
 		"braincrafted/bootstrap-bundle": "~2.0, >=2.0.1, !=2.0.x-dev"
     },
     "autoload":{
@@ -28,7 +28,7 @@
     "target-dir": "Integrated/Bundle/UserBundle",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-develop": "0.1.x-dev"
         }
     }
 }
