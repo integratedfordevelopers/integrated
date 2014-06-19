@@ -59,7 +59,9 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 			$field = $metadata->newField('User');
 
 			$field->setType('user_profile');
+
 			$field->setOption('mapped', false);
+			$field->setOption('optional', true);
 
 			$metadata->addField($field);
 		}

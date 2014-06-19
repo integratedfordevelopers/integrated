@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
 use Integrated\Common\Content\Extension\Event;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Symfony\Component\Form\FormEvent;
@@ -82,12 +83,18 @@ class UserProfilePasswordListener implements EventSubscriberInterface
      */
     public function onPostSubmit(FormEvent $event)
     {
+		$form = $event->getForm();
+
+		if ($form->has('enabled') && $form->get('enabled')->getData() == false)	{
+			return;
+		}
+
 		$user = $event->getForm()->getData();
 
 		// if a password is entered it need to be encoded and stored in
 		// the user model.
 
-		if ($password = $event->getForm()->get('password')->getData()) {
+		if ($password = $form->get('password')->getData()) {
 			$salt = base64_encode($this->getGenerator()->nextBytes(72));
 
 			$user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
