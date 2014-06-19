@@ -164,6 +164,38 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 		$this->assertNull($this->getIndexer()->getClient());
 	}
 
+	public function testSetAndGetOptions()
+	{
+		$this->indexer = $this->getIndexer();
+		$this->indexer->setOptions(['queue.size' => 42, 'batch.size' => 42]);
+
+		$options = $this->indexer->getOptions();
+
+		$this->assertCount(2, $options);
+		$this->assertSame(42, $options['queue.size']);
+		$this->assertSame(42, $options['batch.size']);
+	}
+
+	public function testGetDefaultOptions()
+	{
+		$this->indexer = $this->getIndexer();
+
+		$options = $this->indexer->getOptions();
+
+		$this->assertCount(2, $options);
+		$this->assertSame(1000, $options['queue.size']);
+		$this->assertSame(10, $options['batch.size']);
+	}
+
+	public function testSetAndGetOption()
+	{
+		$this->indexer = $this->getIndexer();
+		$this->indexer->setOption('queue.size', 42);
+
+		$this->assertSame(42, $this->indexer->getOption('queue.size'));
+		$this->assertSame(10, $this->indexer->getOption('batch.size'));
+	}
+
 	public function testGetBatch()
 	{
 		$this->indexer = $this->getIndexer();
@@ -181,6 +213,20 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 		$this->queue->expects($this->once())->method('pull')->with($this->identicalTo(1000))->will($this->returnValue([]));
 
 		$this->indexer = $this->getIndexer(['batch'], true);
+		$this->indexer->expects($this->never())->method('batch');
+
+		$this->indexer->execute();
+	}
+
+	public function testExecuteQueueSize()
+	{
+		$this->dispatcher->expects($this->exactly(2))->method('dispatch');
+
+		$this->queue->expects($this->once())->method('pull')->with($this->identicalTo(42))->will($this->returnValue([]));
+
+		$this->indexer = $this->getIndexer(['batch'], true);
+		$this->indexer->setOption('queue.size', 42);
+
 		$this->indexer->expects($this->never())->method('batch');
 
 		$this->indexer->execute();
@@ -463,6 +509,27 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 		}
 
 		$this->assertEquals(10, $this->invoke($this->indexer, 'getBatch')->count());
+	}
+
+	public function testBatchSizeNoneDefault()
+	{
+		// same as above but then set with a batch size of 2
+
+		$message = $this->getMock('Integrated\Common\Queue\QueueMessageInterface');
+		$message->expects($this->any())->method('getPayload')->will($this->returnValue($this->getMock('Integrated\Common\Solr\Indexer\JobInterface')));
+
+		$this->indexer = $this->getIndexer(['convert', 'delete', 'send'], true);
+		$this->indexer->setOption('batch.size', 2);
+
+		$this->indexer->expects($this->any())->method('convert')->will($this->returnValue($this->getMock('Solarium\QueryType\Update\Query\Command\Command')));
+		$this->indexer->expects($this->never())->method('delete');
+		$this->indexer->expects($this->once())->method('send');
+
+		for ($i = 0; $i < 2; $i++) {
+			$this->invoke($this->indexer, 'batch', $message);
+		}
+
+		$this->assertEquals(2, $this->invoke($this->indexer, 'getBatch')->count());
 	}
 
 	/**

@@ -111,7 +111,7 @@ class Manager implements ManagerInterface
 		// maybe check first if the lock exist ?
 
 		try {
-			$this->connection->delete($this->options['lock_table_name'], $lock);
+			$this->connection->delete($this->options['lock_table_name'], ['id' => $lock]);
 		} catch (DBALException $e) {
 			// could not be removed ...
 		}

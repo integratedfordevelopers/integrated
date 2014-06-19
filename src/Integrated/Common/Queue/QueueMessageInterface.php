@@ -43,4 +43,11 @@ interface QueueMessageInterface
 	 * @return mixed
 	 */
 	public function getPayload();
+
+	/**
+	 * Get the message priority
+	 *
+	 * @return int
+	 */
+	public function getPriority();
 }

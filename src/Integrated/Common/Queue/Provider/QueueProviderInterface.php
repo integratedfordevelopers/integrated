@@ -25,11 +25,12 @@ interface QueueProviderInterface
 	 * The payload needs to be serializable or it could give problems
 	 * with providers that need to store that payload as a string.
 	 *
-	 * @param string $channel The channel to push the message to
-	 * @param mixed  $payload The payload
-	 * @param int    $delay   The delay in seconds
+	 * @param string $channel  The channel to push the message to
+	 * @param mixed  $payload  The payload
+	 * @param int    $delay    The delay in seconds
+	 * @param int    $priority The priority ranging from -10 to 10
 	 */
-	public function push($channel, $payload, $delay = 0);
+	public function push($channel, $payload, $delay = 0, $priority = 0);
 
 	/**
 	 * Pull one or more messaged from the queue

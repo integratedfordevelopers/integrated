@@ -23,12 +23,15 @@ class QueueMessage implements QueueMessageInterface
 
 	private $attempts;
 
+	private $priority;
+
 	private $release = null;
 
-	public function __construct($payload, $attempts, Closure $release)
+	public function __construct($payload, $attempts, $priority, Closure $release)
 	{
 		$this->payload = $payload;
 		$this->attempts = $attempts;
+		$this->priority = $priority;
 
 		$this->release = $release;
 	}
@@ -72,5 +75,14 @@ class QueueMessage implements QueueMessageInterface
 	{
 		return $this->payload;
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getPriority()
+	{
+		return $this->priority;
+	}
+
 
 }

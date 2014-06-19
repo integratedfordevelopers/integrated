@@ -11,21 +11,26 @@
 
 namespace Integrated\Common\Locks\Provider\DBAL;
 
-use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema as BaseSchema;
+use Doctrine\DBAL\Schema\SchemaDiff;
+use Doctrine\DBAL\Connection;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 final class Schema extends BaseSchema
 {
+	/**
+	 * @var array
+	 */
 	private $options;
 
 	public function __construct(array $options, Connection $connection = null)
 	{
 		$schemaConfig = $connection ? null : $connection->getSchemaManager()->createSchema();
 
-		parent::__construct(array(), array(), $schemaConfig);
+		parent::__construct([], [], $schemaConfig);
 
 		$this->options = $options;
 
@@ -33,18 +38,38 @@ final class Schema extends BaseSchema
 	}
 
 	/**
-	 * Merges Locking schema with the given schema.
+	 * Return a schema diff.
+	 *
+	 * @param BaseSchema $schema
+	 * @return SchemaDiff
+	 */
+	public function compare(BaseSchema $schema)
+	{
+		$self = clone $this;
+		$self->merge($schema);
+
+		return Comparator::compareSchemas($schema, $self);
+	}
+
+	/**
+	 * Merge the given schema into this one.
+	 *
+	 * This schema is leading in case of a conflict.
 	 *
 	 * @param BaseSchema $schema
 	 */
-	public function addToSchema(BaseSchema $schema)
+	public function merge(BaseSchema $schema)
 	{
-		foreach ($this->getTables() as $table) {
-			$schema->_addTable($table);
+		foreach ($schema->getTables() as $table) {
+			if (!$this->hasTable($table->getName())) {
+				$this->_addTable(clone $table);
+			}
 		}
 
-		foreach ($this->getSequences() as $sequence) {
-			$schema->_addSequence($sequence);
+		foreach ($schema->getSequences() as $sequence) {
+			if (!$this->hasSequence($sequence->getName())) {
+				$this->_addSequence(clone $sequence);
+			}
 		}
 	}
 
