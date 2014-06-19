@@ -12,9 +12,14 @@
 namespace Integrated\Bundle\SolrBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Doctrine\DBAL\Schema\SchemaException;
+
+use Doctrine\DBAL\Connection;
+
+use Integrated\Common\Queue\Provider\DBAL\Schema;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -26,16 +31,35 @@ class InitQueueCommand extends ContainerAwareCommand
      */
     protected function configure()
     {
-        $this
-            ->setName('init:queue')
-            ->setDescription('Mounts queue tables in the database')
-            ->setHelp(<<<EOF
-The <info>%command.name%</info> command mounts ACL tables in the database.
+		$this
+			->setName('init:queue')
+			->setDescription('Mounts queue tables in the database.')
+			->setDefinition([
+				new InputOption(
+					'dump-sql', null, InputOption::VALUE_NONE,
+					'Dumps the generated SQL statements to the screen (does not execute them).'
+				),
+				new InputOption(
+					'force', null, InputOption::VALUE_NONE,
+					'Causes the generated SQL statements to be physically executed against your database.'
+				),
+			]);
 
-<info>php %command.full_name%</info>
-EOF
-            )
-        ;
+ 			$this->setHelp(<<<EOT
+The <info>%command.name%</info> command generates the SQL needed to
+synchronize the database schema with the Queue tables schema.
+
+<info>%command.name% --dump-sql</info>
+
+Alternatively, you can execute the generated queries:
+
+<info>%command.name% --force</info>
+
+If both options are specified, the queries are output and then executed:
+
+<info>%command.name% --dump-sql --force</info>
+EOT
+			);
     }
 
     /**
@@ -43,23 +67,69 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $container = $this->getContainer();
+        $connection = $this->getConnection();
 
-        $connection = $container->get('integrated_queue.dbal.connection');
-        $schema = $container->get('integrated_queue.dbal.schema');
+		$diff = $this->getSchema()->compare($connection->getSchemaManager()->createSchema());
+		$diff = $diff->toSaveSql($connection->getDatabasePlatform());
 
-        try {
-            $schema->addToSchema($connection->getSchemaManager()->createSchema());
-        } catch (SchemaException $e) {
-            $output->writeln("Aborting: ".$e->getMessage());
+		if (0 === count($diff)) {
+			$output->writeln('Nothing to update - your database is already in sync with the Queue tables schema.');
 
-            return 1;
-        }
+			return 0;
+		}
 
-        foreach ($schema->toSql($connection->getDatabasePlatform()) as $sql) {
-            $connection->exec($sql);
-        }
+		$dump  = true === $input->getOption('dump-sql');
+		$force = true === $input->getOption('force');
 
-        $output->writeln('Queue tables have been initialized successfully.');
+		if ($dump) {
+			$output->writeln(implode(';' . PHP_EOL, $diff) . ';');
+		}
+
+		if ($force) {
+			if ($dump) {
+				$output->writeln('');
+			}
+
+			$output->writeln('Updating database schema...');
+
+			foreach ($diff as $sql) {
+				$connection->exec($sql);
+			}
+
+			$output->writeln(sprintf('Database schema updated successfully! "<info>%s</info>" queries were executed', count($diff)));
+		}
+
+		if ($dump || $force) {
+			return 0;
+		}
+
+		$output->writeln('<comment>ATTENTION</comment>: This operation should not be executed in a production environment.');
+		$output->writeln('           Use the incremental update to detect changes during development and use');
+		$output->writeln('           the SQL DDL provided to manually update your database in production.');
+		$output->writeln('');
+
+		$output->writeln(sprintf('The Schema-Tool would execute <info>"%s"</info> queries to update the database.', count($diff)));
+		$output->writeln('Please run the operation by passing one - or both - of the following options:');
+
+		$output->writeln(sprintf('    <info>%s --force</info> to execute the command', $this->getName()));
+		$output->writeln(sprintf('    <info>%s --dump-sql</info> to dump the SQL statements to the screen', $this->getName()));
+
+		return 1;
     }
+
+	/**
+	 * @return Connection
+	 */
+	protected function getConnection()
+	{
+		return $this->getContainer()->get('integrated_queue.dbal.connection');
+	}
+
+	/**
+	 * @return Schema
+	 */
+	protected function getSchema()
+	{
+		return $this->getContainer()->get('integrated_queue.dbal.schema');
+	}
 }
