@@ -76,7 +76,7 @@ class Article extends Content
     /**
      * @var string
      * @ODM\String
-     * @Type\Field(type="textarea")
+     * @Type\Field(type="integrated_tinymce")
      */
     protected $content;
 
@@ -246,7 +246,7 @@ class Article extends Content
      * @param \DateTime $publishedUntil
      * @return $this
      */
-    public function setPublishedUntil(\DateTime $publishedUntil)
+    public function setPublishedUntil(\DateTime $publishedUntil = null)
     {
         $this->publishedUntil = $publishedUntil;
         return $this;

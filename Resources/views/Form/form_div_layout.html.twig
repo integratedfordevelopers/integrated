@@ -126,3 +126,18 @@
         {{ block('base_form_row') }}
     </div>
 {% endblock %}
+
+{% block integrated_image_row %}
+    {% spaceless %}
+        <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
+            {{ form_label(form) }}
+            <div class="col-sm-8">
+                {% if (form.parent.vars.value.fileExtension is not empty) %}
+                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ form.parent.vars.value.getWebPath() }}" />
+                {% endif %}
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
