@@ -5,22 +5,17 @@
         <ul class="nav nav-pills">
 
             <li class="dropdown">
-                <a href data-toggle="dropdown" role="button" id="sorting-list">Ordering <b class="caret"></b></a>
+                <a href data-toggle="dropdown" role="button" id="sorting-list">Ordering: {{ params.sort.options[params.sort.current].label }}<b class="caret"></b></a>
 
                 <ul aria-labelledby="sorting-list" role="menu" class="dropdown-menu" id="sorting-menu">
 
-                    <li {% if params.sort is null %}class="active" {% endif %}role="presentation">
-                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': null})) }}" tabindex="-1" role="menuitem">Date modified</a>
+                {% for sort in params.sort.options %}
+
+                    <li {% if sort.name == params.sort.current %}class="active" {% endif %}role="presentation">
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': sort.name == params.sort.default ? null : sort.name })) }}" tabindex="-1" role="menuitem">{{ sort.label|capitalize }}</a>
                     </li>
-                    <li {% if params.sort == 'created' %}class="active" {% endif %}role="presentation">
-                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': 'created'})) }}" tabindex="-1" role="menuitem">Date created</a>
-                    </li>
-                    <li {% if params.sort == 'time' %}class="active" {% endif %}role="presentation">
-                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': 'time'})) }}" tabindex="-1" role="menuitem">Publication date</a>
-                    </li>
-                    <li {% if params.sort == 'title' %}class="active" {% endif %}role="presentation">
-                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': 'title'})) }}" tabindex="-1" role="menuitem">Title</a>
-                    </li>
+
+                {% endfor %}
 
                 </ul>
             </li>

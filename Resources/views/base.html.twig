@@ -15,13 +15,30 @@
 
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 
-	<script src="{{ asset('bundles/integratedcontent/components/requirejs/require.js') }}"></script>
-	<script>
-	    requirejs.config({
-	        baseUrl: '{{ asset('/') }}'
-	    });
-	    // ...
-	</script>
+    <script>
+        function require(url, callback){
+
+            var script = document.createElement("script")
+            script.type = "text/javascript";
+
+            if (script.readyState){  //IE
+                script.onreadystatechange = function(){
+                    if (script.readyState == "loaded" ||
+                            script.readyState == "complete"){
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else {  //Others
+                script.onload = function(){
+                    callback();
+                };
+            }
+
+            script.src = url;
+            document.getElementsByTagName("head")[0].appendChild(script);
+        }
+    </script>
 
 {% endblock style %}
 
@@ -175,8 +192,8 @@
     {% endjavascripts %}
 
     {% block locking %}
-        {% if lock.lock is defined and lock.locked == false %}
-            {% include 'IntegratedLockingBundle::locking.refresh.html.twig' with { 'lock': lock.lock } %}
+        {% if locking is defined and locking.lock is defined and locking.locked == false %}
+            {% include 'IntegratedLockingBundle::locking.refresh.html.twig' with { 'lock': locking.lock } %}
         {% endif %}
     {% endblock locking %}
 
