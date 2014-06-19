@@ -4,6 +4,7 @@
         "jquery": "~2.0",
         "smalot-bootstrap-datetimepicker": "2.2.0",
         "wysihtml5x": "0.4.3",
-        "bootstrap3-wysihtml5-bower": "0.3.0-alpha.5"
+        "bootstrap3-wysihtml5-bower": "0.3.0-alpha.5",
+        "tinymce": "4.0.28"
 }
 }
