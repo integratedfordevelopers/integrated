@@ -7,20 +7,18 @@
         <ul class="custom_list">
             {{#each items}}
                 {{#if this.image  }}
-                <li class="media">
-                    <a href="#" class="pull-left">
-                        <img src="{{ this.image }}" alt="">
-                    </a>
-                    <div class="media-body">
-                        <a href="#">{{ this.title }}</a>
-                    </div>
-                </li>
+                    <li class="media">
+                        <a href="#" data-value="{{this.id}}" class="pull-left">
+                            <img src="{{this.image}}" alt="{{this.title}}" width="60" />
+                        </a>
+                        <div class="media-body">
+                            <a href="#" data-value="{{this.id}}">{{ this.title }}</a>
+                        </div>
+                    </li>
                 {{else}}
                     <li>
                         <label class="pseudo_checkbox_holder">
-
-                            <img width="20" src="{{ this.image }}" />
-                            {{#checked this.id ../selected }}
+                            {{#checked this.id ../../selected }}
                             <input type="checkbox" checked="checked" value="{{this.id}}"  />
                             {{else}}
                                 <input type="checkbox" value="{{this.id}}"  />
