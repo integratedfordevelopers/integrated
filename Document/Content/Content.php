@@ -35,6 +35,7 @@ use Integrated\Common\ContentType\Mapping\Annotations as Type;
  * @ODM\Document(collection="content", indexes={@ODM\Index(keys={"class"="asc"})})
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
+ * @ODM\HasLifecycleCallbacks
  */
 class Content implements ContentInterface, ExtensibleInterface, MetadatableInterface
 {
@@ -373,4 +374,12 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
 		$this->metadata = $metadata;
 		return $this;
 	}
+
+    /**
+     * @ODM\PreUpdate
+     */
+    public function updateUpdatedAtOnPreUpdate()
+    {
+        $this->updatedAt = new \DateTime();
+    }
 }
