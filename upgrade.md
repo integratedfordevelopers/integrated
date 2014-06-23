@@ -1,5 +1,8 @@
 # Update instructions #
 
+## From 0.1.1.6 to 0.1.1.7 ##
+- php5-intl is now required
+- Update config.yml: services section has been added for Twig_Extensions_Extension_Intl
 
 ## From 0.1.1.5 to 0.1.1.6 ##
 
