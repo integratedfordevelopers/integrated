@@ -210,9 +210,12 @@ class ContentController extends Controller
 				$dm->flush();
 
                 // Set flash message
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('A new %s is created', $type->getType()->getType()));
+                $this->get('braincrafted_bootstrap.flash')->success(
+                    $this->get('translator')->trans('The document %name% has been created'),
+                    array('%name%' => $type->getType()->getName())
+                );
 
-				if ($this->has('integrated_solr.indexer')) {
+                if ($this->has('integrated_solr.indexer')) {
 					$indexer = $this->get('integrated_solr.indexer');
 					$indexer->setOption('queue.size', 4);
 					$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
@@ -312,7 +315,10 @@ class ContentController extends Controller
 					$dm->flush();
 
 	                // Set flash message
-	                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to %s are saved', $type->getType()->getType()));
+	                $this->get('braincrafted_bootstrap.flash')->success(
+                        $this->get('translator')->trans('The changes to %name% are saved'),
+                        array('%name%' => $type->getType()->getName())
+                    );
 
 					if ($this->has('integrated_solr.indexer')) {
 						$indexer = $this->get('integrated_solr.indexer');
@@ -449,7 +455,11 @@ class ContentController extends Controller
 					$dm->remove($content);
 					$dm->flush();
 
-					$this->get('braincrafted_bootstrap.flash')->notice(sprintf('The %s is removed', $type->getType()));
+                    // Set flash message
+                    $this->get('braincrafted_bootstrap.flash')->success(
+                        $this->get('translator')->trans('The document %name% has been deleted'),
+                        array('%name%' => $type->getName())
+                    );
 
 					if ($this->has('integrated_solr.indexer')) {
 						$indexer = $this->get('integrated_solr.indexer');
