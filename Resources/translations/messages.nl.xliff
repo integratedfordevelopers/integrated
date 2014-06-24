@@ -285,23 +285,23 @@
             </trans-unit>
             <trans-unit id="71">
                 <source>relevance</source>
-                <target>Relevantie</target>
+                <target>relevantie</target>
             </trans-unit>
             <trans-unit id="72">
                 <source>date modified</source>
-                <target>Datum gewijzigd</target>
+                <target>datum gewijzigd</target>
             </trans-unit>
             <trans-unit id="73">
                 <source>date created</source>
-                <target>Datum aangemaakt</target>
+                <target>datum aangemaakt</target>
             </trans-unit>
             <trans-unit id="74">
                 <source>publication date</source>
-                <target>Publicatiedatum</target>
+                <target>publicatiedatum</target>
             </trans-unit>
             <trans-unit id="75">
                 <source>title</source>
-                <target>Titel</target>
+                <target>titel</target>
             </trans-unit>
         </body>
     </file>
