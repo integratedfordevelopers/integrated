@@ -120,29 +120,34 @@ class ContentController extends Controller
             }
         }
 
+        // sorting
+        $sort_default = 'changed';
+        $sort_options = [
+            'rel'     => ['name' => 'rel', 'field' => 'score', 'label' => 'relevance', 'order' => 'desc'],
+            'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified', 'order' => 'desc'],
+            'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
+            'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
+            'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc']
+        ];
+
         if ($q = $request->get('q')) {
             $dismax = $query->getDisMax();
             $dismax->setQueryFields('title content');
 
             $query->setQuery($q);
+
+            $sort_default = 'rel';
         }
-
-		// sorting
-
-		$sort_default = 'rel';
-		$sort_options = [
-			'rel'     => ['name' => 'rel', 'field' => 'score', 'label' => 'relevance'],
-			'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified'],
-			'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created'],
-			'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date'],
-			'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title']
-		];
+        else {
+            //relevance only available when sorting on specific query
+            unset($sort_options['rel']);
+        }
 
 		$sort = $request->query->get('sort', $sort_default);
 		$sort = trim(strtolower($sort));
 		$sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-		$query->addSort($sort_options[$sort]['field'], $request->query->get('desc', false) ? 'desc' : 'asc');
+		$query->addSort($sort_options[$sort]['field'], $sort_options[$sort]['order']);
 
 		// Execute the query
 		$result = $client->select($query);
@@ -211,8 +216,7 @@ class ContentController extends Controller
 
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success(
-                    $this->get('translator')->trans('The document %name% has been created'),
-                    array('%name%' => $type->getType()->getName())
+                    $this->get('translator')->trans('The document %name% has been created', array('%name%' => $type->getType()->getName()))
                 );
 
                 if ($this->has('integrated_solr.indexer')) {
@@ -316,8 +320,7 @@ class ContentController extends Controller
 
 	                // Set flash message
 	                $this->get('braincrafted_bootstrap.flash')->success(
-                        $this->get('translator')->trans('The changes to %name% are saved'),
-                        array('%name%' => $type->getType()->getName())
+                        $this->get('translator')->trans('The changes to %name% are saved', array('%name%' => $type->getType()->getName()))
                     );
 
 					if ($this->has('integrated_solr.indexer')) {
@@ -457,8 +460,7 @@ class ContentController extends Controller
 
                     // Set flash message
                     $this->get('braincrafted_bootstrap.flash')->success(
-                        $this->get('translator')->trans('The document %name% has been deleted'),
-                        array('%name%' => $type->getName())
+                        $this->get('translator')->trans('The document %name% has been deleted', array('%name%' => $type->getName()))
                     );
 
 					if ($this->has('integrated_solr.indexer')) {

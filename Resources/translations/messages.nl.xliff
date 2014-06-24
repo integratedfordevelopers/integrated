@@ -279,6 +279,30 @@
                 <source>The document %name% has been created</source>
                 <target>Het document %name% is aangemaakt</target>
             </trans-unit>
+            <trans-unit id="70">
+                <source>Sort by</source>
+                <target>Sorteren op</target>
+            </trans-unit>
+            <trans-unit id="71">
+                <source>relevance</source>
+                <target>Relevantie</target>
+            </trans-unit>
+            <trans-unit id="72">
+                <source>date modified</source>
+                <target>Datum gewijzigd</target>
+            </trans-unit>
+            <trans-unit id="73">
+                <source>date created</source>
+                <target>Datum aangemaakt</target>
+            </trans-unit>
+            <trans-unit id="74">
+                <source>publication date</source>
+                <target>Publicatiedatum</target>
+            </trans-unit>
+            <trans-unit id="75">
+                <source>title</source>
+                <target>Titel</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
