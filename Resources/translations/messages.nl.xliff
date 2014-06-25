@@ -28,7 +28,7 @@
             </trans-unit>
             <trans-unit id="7">
                 <source>Bad credentials</source>
-                <target>De combinatie van gebruikersnaam en wachtwoord is niet correct of u heeft nog geen account</target>
+                <target>De combinatie van gebruikersnaam en wachtwoord is niet correct</target>
             </trans-unit>
             <trans-unit id="8">
                 <source>Password will only be changed if a new password is entered</source>
