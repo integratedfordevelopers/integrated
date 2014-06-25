@@ -26,6 +26,10 @@
                 <source>User</source>
                 <target>Gebruiker</target>
             </trans-unit>
+            <trans-unit id="7">
+                <source>Bad credentials</source>
+                <target>De combinatie van gebruikersnaam en wachtwoord is niet correct of u heeft nog geen account</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
