@@ -75,8 +75,9 @@ class ProfileFormType extends AbstractType
 	{
 		if ($options['optional']) {
 			$builder->add('enabled', 'checkbox', [
-				'label' => 'Enable login',
-				'mapped' => false
+				'mapped' => false,
+				'required' => false,
+				'label' => 'Enable login'
 			]);
 
 			// this has to be a event listener as data will not be mapped to this
@@ -102,6 +103,7 @@ class ProfileFormType extends AbstractType
 
 		if (!$options['optional']) {
 			$builder->add('enabled', 'checkbox', [
+				'required' => false,
 				'label' => 'Enable login'
 			]);
 		}
@@ -125,12 +127,18 @@ class ProfileFormType extends AbstractType
 			'optional'    => false, // everything can be left empty if enabled is not checked
 
 			'data_class'  => $this->getManager()->getClassName(),
-			'empty_data'  => function(FormInterface $form) {
-				if ($form->has('enabled') && $form->get('enabled')->getData() == false)	{
-					return null;
+			'empty_data'  => function (Options $options, $previous) {
+				if (!$options['optional']) {
+					return $this->getManager()->create(); // if not optional then it should always return a user
 				}
 
-				return $this->getManager()->create();
+				return function(FormInterface $form) {
+					if ($form->has('enabled') && $form->get('enabled')->getData() == false) {
+						return null;
+					}
+
+					return $this->getManager()->create();
+				};
 			},
 
 			'constraints' => new UniqueUser($this->manager),
