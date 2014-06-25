@@ -21,6 +21,8 @@ use Symfony\Component\HttpFoundation\File\File as UploadedFile;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
  * @ODM\Document
+ * @ODM\HasLifecycleCallbacks
+ *
  * @Type\Document("File")
  */
 class File extends Content
@@ -33,14 +35,15 @@ class File extends Content
 	/**
 	 * @var UploadFile
 	 * @Type\Field(type="file")
+     * @ODM\Field
 	 */
 	protected $file;
 
 	/**
 	 * @var string
-	 * @ODM\Field(type="string", name="file")
+	 * @ODM\Field
 	 */
-	protected $path;
+	protected $fileExtension;
 
 	/**
 	 * @var string
@@ -70,7 +73,7 @@ class File extends Content
 		if (is_file($this->getAbsolutePath())) {
 			$this->temp = $this->getAbsolutePath();
 		} else {
-			$this->path = 'initial';
+			$this->fileExtension = 'initial';
 		}
 
 		return $this;
@@ -113,7 +116,7 @@ class File extends Content
 	 */
 	public function getAbsolutePath()
 	{
-		return null === $this->path ? null : $this->getUploadRootDir() . '/' . $this->id . '.' . $this->path;
+		return null === $this->fileExtension ? null : $this->getUploadRootDir() . '/' . $this->id . '.' . $this->fileExtension;
 	}
 
 	/**
@@ -123,7 +126,7 @@ class File extends Content
 	 */
 	public function getWebPath()
 	{
-		return null === $this->path ? null : $this->getUploadDir() . '/' . $this->path;
+		return null === $this->fileExtension ? null : '/' . $this->getUploadDir() . '/' . $this->id . '.' . $this->fileExtension;
 	}
 
 	/**
@@ -133,7 +136,7 @@ class File extends Content
 	public function preUpload()
 	{
 		if (null !== $this->getFile()) {
-			$this->path = $this->getFile()->guessExtension();
+			$this->fileExtension = $this->getFile()->guessExtension();
 		}
 	}
 
@@ -155,10 +158,10 @@ class File extends Content
         }
 
         // Set path
-        $this->path = $this->getFile()->guessExtension();
+        $this->fileExtension = $this->getFile()->guessExtension();
 
         // Move file
-        $this->getFile()->move($this->getUploadRootDir(), $this->id . '.' . $this->path);
+        $this->getFile()->move($this->getUploadRootDir(), $this->id . '.' . $this->fileExtension);
 
         // Unset file
 		$this->setFile(null);
@@ -226,6 +229,24 @@ class File extends Content
 		$this->description = $description;
 		return $this;
 	}
+
+    /**
+     * @param string $fileExtension
+     * @return $this
+     */
+    public function setFileExtension($fileExtension)
+    {
+        $this->fileExtension = $fileExtension;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileExtension()
+    {
+        return $this->fileExtension;
+    }
 
     /**
      * @return string

@@ -18,13 +18,19 @@ var Relation = function(id, url) {
             ev.preventDefault();
             parent.loadOptions($(this).attr('href'));
         });
-        container.find('input').click(function(){
+
+        container.find('input').click(function() {
             if ($(this).is(':checked')) {
                 parent.addOption($(this).val());
             } else {
                 parent.removeOption($(this).val());
             }
-        })
+        });
+
+        container.find('a[data-value]').click(function(ev) {
+            ev.preventDefault();
+            parent.addOption($(this).data('value'));
+        });
 
         if (parent.loadedSelected === false) {
             parent.loadSelected();
@@ -44,7 +50,7 @@ var Relation = function(id, url) {
             ev.preventDefault();
             parent.loadSelected($(this).attr('href'));
         });
-        container.find('a[data-remove]').click(function(ev){
+        container.find('*[data-remove]').click(function(ev){
             ev.preventDefault();
             parent.removeOption($(this).data('remove'));
         })
@@ -125,10 +131,10 @@ var Relation = function(id, url) {
     }
 
     this.getSelectedContainer = function() {
-        if ($('#relations-selected div[data-relation="' + this.id + '"').length > 0) {
-            return $('#relations-selected div[data-relation="' + this.id + '"');
+        if ($('#relations-selected li[data-relation="' + this.id + '"').length > 0) {
+            return $('#relations-selected li[data-relation="' + this.id + '"');
         } else {
-            var container = $('<div data-relation="' + this.id +'"></div>');
+            var container = $('<li data-relation="' + this.id +'"></li>');
             $('#relations-selected').append(container);
             return container;
         }

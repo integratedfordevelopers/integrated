@@ -151,9 +151,9 @@
             <div class="fluid_search_field">
                 <div class="btn-block">
                     <div class="search_field_holder">
-                        <form action="{{ path('integrated_content_content_index') }}">
+                        <form action="{{ path('integrated_content_content_index') }}" method="get">
                             <input type="text" name="q" value="{{ app.request.query.get('q')|trim }}" class="form-control typehead_search" placeholder="{% trans %}Search here...{% endtrans %}" autocomplete="off" />
-                            <button type="button" class="submit_btn"><i class="glyphicon glyphicon-search"></i></button>
+                            <button type="submit" class="submit_btn"><i class="glyphicon glyphicon-search"></i></button>
                         </form>
                     </div>
                 </div>
@@ -182,7 +182,12 @@
     <script src="//code.jquery.com/jquery.js"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
 
-    {% javascripts "@integrated_js" %}
+    {% javascripts
+        '@integrated_js'
+        '@IntegratedContentBundle/Resources/public/components/typeahead.js/dist/typeahead.bundle.min.js'
+        '@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.min.js'
+        '@IntegratedContentBundle/Resources/public/js/base.js'
+    %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 

@@ -45,6 +45,23 @@ convert:
       pub_edited: '$.updatedAt.raw()'
     id: id
 
+  - class: Integrated\Bundle\ContentBundle\Document\Content\Image
+    fields:
+      id: '"image-" ~ $.id.value()'
+      type_name: '$.contenttype.value()'
+      type_class: '"Integrated\\Bundle\\ContentBundle\\Document\\Content\\File"'
+      type_id: '$.id.value()'
+      title: ~
+      title_sort: '$.title.value()'
+      description: ~
+      intro: ~
+      content: '$.description.value()'
+      pub_time: $.publishedAt.raw()
+      pub_created: $.createdAt.raw()
+      pub_edited: $.updatedAt.raw()
+      image_text: $.getWebPath().raw()
+    id: id
+
   - class: Integrated\Bundle\ContentBundle\Document\Content\Taxonomy
     fields:
       id: '"taxonomy-" ~ $.id.value()'

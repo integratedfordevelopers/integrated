@@ -235,6 +235,74 @@
                 <source>Published at</source>
                 <target>Publiceren op</target>
             </trans-unit>
+            <trans-unit id="59">
+                <source>Content navigator</source>
+                <target>Content navigator</target>
+            </trans-unit>
+            <trans-unit id="60">
+                <source>Linked items</source>
+                <target>Gekoppelde items</target>
+            </trans-unit>
+            <trans-unit id="61">
+                <source>Author</source>
+                <target>Auteur</target>
+            </trans-unit>
+            <trans-unit id="62">
+                <source>The changes to %name% are saved</source>
+                <target>De wijzigingen in %name% zijn opgeslagen</target>
+            </trans-unit>
+            <trans-unit id="63">
+                <source>The document is currently locked by your self in a different browser or tab and can not be edited until this lock is released.</source>
+                <target>Het document is op dit moment in gebruik bij u zelf in een ander venster. Sluit het venster af of wacht tot het document weer beschikbaar komt.</target>
+            </trans-unit>
+            <trans-unit id="64">
+                <source>Reload</source>
+                <target>Verversen</target>
+            </trans-unit>
+            <trans-unit id="65">
+                <source>Reload (keep changes)</source>
+                <target>Verversen (behoud wijzigingen)</target>
+            </trans-unit>
+            <trans-unit id="66">
+                <source>The document is currently locked by %s, the document can not be edited until this lock is released.</source>
+                <target>Het document is op dit moment in gebruik bij %s en kan daarom niet worden bewerkt.</target>
+            </trans-unit>
+            <trans-unit id="67">
+                <source>The document is currently locked and can not be edited until this lock is released.</source>
+                <target>Het document is op dit moment in gebruik en kan daarom niet worden bewerkt.</target>
+            </trans-unit>
+            <trans-unit id="68">
+                <source>The document %name% has been deleted</source>
+                <target>Het document %name% is verwijderd</target>
+            </trans-unit>
+            <trans-unit id="69">
+                <source>The document %name% has been created</source>
+                <target>Het document %name% is aangemaakt</target>
+            </trans-unit>
+            <trans-unit id="70">
+                <source>Sort by</source>
+                <target>Sorteren op</target>
+            </trans-unit>
+            <trans-unit id="71">
+                <source>relevance</source>
+                <target>relevantie</target>
+            </trans-unit>
+            <trans-unit id="72">
+                <source>date modified</source>
+                <target>datum gewijzigd</target>
+            </trans-unit>
+            <trans-unit id="73">
+                <source>date created</source>
+                <target>datum aangemaakt</target>
+            </trans-unit>
+            <trans-unit id="74">
+                <source>publication date</source>
+                <target>publicatiedatum</target>
+            </trans-unit>
+            <trans-unit id="75">
+                <source>title</source>
+                <target>titel</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

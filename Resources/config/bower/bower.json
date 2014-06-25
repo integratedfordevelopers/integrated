@@ -1,6 +1,7 @@
 {
     "name": "integrated-content-bundle",
     "dependencies": {
+        "typeahead.js": "0.10.*",
         "handlebars" : "~2.0",
         "requirejs": "2.1.14"
     }

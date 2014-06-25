@@ -12,6 +12,8 @@
         <parameter key="integrated_content.form.relations.class">Integrated\Bundle\ContentBundle\Form\Type\Relations</parameter>
 		<parameter key="integrated_content.form.relations.listener.class">Integrated\Bundle\ContentBundle\EventListener\RelationsFormSubscriber</parameter>
 
+        <parameter key="integrated_content.form_type_image.class">Integrated\Bundle\ContentBundle\Form\Type\Image</parameter>
+
 	</parameters>
 
 	<services>
@@ -42,6 +44,10 @@
 
 			<tag name="integrated_content.form.event_subscriber" />
 		</service>
+
+        <service id="integrated_content.form_type_image" class="%integrated_content.form_type_image.class%">
+            <tag name="form.type" alias="integrated_image" />
+        </service>
 
 	</services>
 
