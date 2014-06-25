@@ -30,6 +30,10 @@
                 <source>Bad credentials</source>
                 <target>De combinatie van gebruikersnaam en wachtwoord is niet correct of u heeft nog geen account</target>
             </trans-unit>
+            <trans-unit id="8">
+                <source>Password will only be changed if a new password is entered</source>
+                <target>Het wachtwoord wordt alleen gewijzigd als u een nieuw wachtwoord invult</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
