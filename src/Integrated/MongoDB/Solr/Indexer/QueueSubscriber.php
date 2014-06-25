@@ -213,6 +213,9 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
         $queue = $this->getQueue();
         if ($this->priority >= $queue::PRIORITY_MEDIUM_HIGH) {
             $this->getQueue()->push(new Job('COMMIT'), 0, $this->priority);
+
+            //Do this only one time
+            $this->setPriority($queue::PRIORITY_MEDIUM);
         }
 
 	}
