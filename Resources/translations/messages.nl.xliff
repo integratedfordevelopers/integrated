@@ -303,6 +303,10 @@
                 <source>title</source>
                 <target>titel</target>
             </trans-unit>
+            <trans-unit id="76">
+                <source>Updated</source>
+                <target>Gewijzigd</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
