@@ -413,7 +413,7 @@ class ContentController extends Controller
 		// load a different set of buttons based bases on the locking stat for this
 		// content object
 
-		if ($locking['locked']) {
+		if ($locking['locked'] && (!$request->isMethod('delete'))) {
 			$buttons = [
 				'reload' => ['type' => 'submit', 'options' => ['label' => 'Retry']],
 				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
