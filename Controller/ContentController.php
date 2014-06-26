@@ -120,29 +120,34 @@ class ContentController extends Controller
             }
         }
 
+        // sorting
+        $sort_default = 'changed';
+        $sort_options = [
+            'rel'     => ['name' => 'rel', 'field' => 'score', 'label' => 'relevance', 'order' => 'desc'],
+            'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified', 'order' => 'desc'],
+            'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
+            'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
+            'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc']
+        ];
+
         if ($q = $request->get('q')) {
             $dismax = $query->getDisMax();
             $dismax->setQueryFields('title content');
 
             $query->setQuery($q);
+
+            $sort_default = 'rel';
         }
-
-		// sorting
-
-		$sort_default = 'rel';
-		$sort_options = [
-			'rel'     => ['name' => 'rel', 'field' => 'score', 'label' => 'relevance'],
-			'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified'],
-			'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created'],
-			'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date'],
-			'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title']
-		];
+        else {
+            //relevance only available when sorting on specific query
+            unset($sort_options['rel']);
+        }
 
 		$sort = $request->query->get('sort', $sort_default);
 		$sort = trim(strtolower($sort));
 		$sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-		$query->addSort($sort_options[$sort]['field'], $request->query->get('desc', false) ? 'desc' : 'asc');
+		$query->addSort($sort_options[$sort]['field'], $sort_options[$sort]['order']);
 
 		// Execute the query
 		$result = $client->select($query);
@@ -210,9 +215,11 @@ class ContentController extends Controller
 				$dm->flush();
 
                 // Set flash message
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('A new %s is created', $type->getType()->getType()));
+                $this->get('braincrafted_bootstrap.flash')->success(
+                    $this->get('translator')->trans('The document %name% has been created', array('%name%' => $type->getType()->getName()))
+                );
 
-				if ($this->has('integrated_solr.indexer')) {
+                if ($this->has('integrated_solr.indexer')) {
 					$indexer = $this->get('integrated_solr.indexer');
 					$indexer->setOption('queue.size', 4);
 					$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
@@ -312,7 +319,9 @@ class ContentController extends Controller
 					$dm->flush();
 
 	                // Set flash message
-	                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to %s are saved', $type->getType()->getType()));
+	                $this->get('braincrafted_bootstrap.flash')->success(
+                        $this->get('translator')->trans('The changes to %name% are saved', array('%name%' => $type->getType()->getName()))
+                    );
 
 					if ($this->has('integrated_solr.indexer')) {
 						$indexer = $this->get('integrated_solr.indexer');
@@ -393,7 +402,7 @@ class ContentController extends Controller
 
 			if ($locking['new']) {
 				if ($request->isMethod('get')) {
-					return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]));
+					return $this->redirect($this->generateUrl('integrated_content_content_delete', ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]));
 				}
 
 				$locking['locked'] = false;
@@ -404,7 +413,7 @@ class ContentController extends Controller
 		// load a different set of buttons based bases on the locking stat for this
 		// content object
 
-		if ($locking['locked']) {
+		if ($locking['locked'] && (!$request->isMethod('delete'))) {
 			$buttons = [
 				'reload' => ['type' => 'submit', 'options' => ['label' => 'Retry']],
 				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
@@ -442,14 +451,17 @@ class ContentController extends Controller
 			}
 
 			if ($actions->has('delete') && $actions->get('delete')->isClicked()) {
-				if (!$locking['locked'] && $form->isValid()) {
+				if ($form->isValid()) {
 					/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
 					$dm = $this->get('doctrine_mongodb')->getManager();
 
 					$dm->remove($content);
 					$dm->flush();
 
-					$this->get('braincrafted_bootstrap.flash')->notice(sprintf('The %s is removed', $type->getType()));
+                    // Set flash message
+                    $this->get('braincrafted_bootstrap.flash')->success(
+                        $this->get('translator')->trans('The document %name% has been deleted', array('%name%' => $type->getName()))
+                    );
 
 					if ($this->has('integrated_solr.indexer')) {
 						$indexer = $this->get('integrated_solr.indexer');
