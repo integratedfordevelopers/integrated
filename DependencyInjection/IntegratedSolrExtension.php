@@ -42,6 +42,10 @@ class IntegratedSolrExtension extends Extension
 		$loader->load('queue.xml');
 		$loader->load('solarium.xml');
 
+        if ($container->getParameter('kernel.debug')) {
+            $loader->load('collector.xml');
+        }
+
 		$configuration = new Configuration();
 		$config = $this->processConfiguration($configuration, $configs);
 
@@ -55,5 +59,12 @@ class IntegratedSolrExtension extends Extension
 		}
 
 		$container->setDefinition('solarium.client', new Definition('%integrated_solr.solarium.client.class%', array(array('endpoint' => $endpoints))));
+
+        if ($container->getParameter('kernel.debug')) {
+            $container->getDefinition('solarium.client')->addMethodCall(
+                'registerPlugin',
+                array('solarium.client.logger', new Reference('integrated_solr.solarium.data_collector'))
+            );
+        }
     }
 }
