@@ -451,7 +451,7 @@ class ContentController extends Controller
 			}
 
 			if ($actions->has('delete') && $actions->get('delete')->isClicked()) {
-				if (!$locking['locked'] && $form->isValid()) {
+				if ($form->isValid()) {
 					/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
 					$dm = $this->get('doctrine_mongodb')->getManager();
 
