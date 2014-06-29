@@ -676,6 +676,41 @@ class ContentController extends Controller
 		return $results;
 	}
 
+    /**
+     * @Template()
+     * @return array
+     */
+    public function navdropdownsAction()
+    {
+
+        $session = $this->getRequest()->getSession();
+
+        $queuecount = (int) $this->container->get('integrated_queue.dbal.provider')->count();
+        $queuepercentage = 100;
+        if ($queuecount > 0) {
+            $queuemaxcount = max($queuecount,$session->get('queuemaxcount'));
+            $session->set('queuemaxcount',$queuemaxcount);
+            $queuepercentage = round(($queuemaxcount-$queuecount) / $queuemaxcount);
+        }
+        else {
+            $session->remove('queuemaxcount');
+        }
+
+        $email = '';
+        if ($this->getUser()->getRelation() && $email = $this->getUser()->getRelation()->getEmail()) {
+
+        }
+
+        $avatarurl = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
+
+        return array(
+            'avatarurl' => $avatarurl,
+            'queuecount' => $queuecount,
+            'queuepercentage' => $queuepercentage,
+        );
+
+    }
+
 	/**
 	 * @inheritdoc
 	 */
