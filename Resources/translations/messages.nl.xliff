@@ -315,6 +315,14 @@
                 <source>Complete</source>
                 <target>Voltooid</target>
             </trans-unit>
+            <trans-unit id="79">
+                <source>Male</source>
+                <target>Man</target>
+            </trans-unit>
+            <trans-unit id="80">
+                <source>Female</source>
+                <target>Vrouw</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
