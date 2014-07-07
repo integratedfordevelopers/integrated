@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission" table="workflow_state_permissions">
+
+		<lifecycle-callbacks>
+			<lifecycle-callback type="preFlush" method="doPermissionFix" />
+		</lifecycle-callbacks>
+
+		<id name="state" association-key="true" />
+		<id name="group" column="group_id" type="string" />
+
+		<field name="mask" column="mask" type="integer" />
+
+		<many-to-one field="state" target-entity="Integrated\Bundle\WorkflowBundle\Entity\Definition\State" inversed-by="permissions">
+			<join-column name="state_id" referenced-column-name="id" on-delete="CASCADE" on-update="CASCADE" />
+		</many-to-one>
+
+    </entity>
+
+</doctrine-mapping>

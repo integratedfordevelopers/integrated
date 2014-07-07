@@ -1,0 +1,36 @@
+{
+    "name": "integrated/workflow-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Workflow Bundle",
+    "keywords": ["Integrated", "Workflow"],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "~2.4",
+        "symfony/framework-bundle": "~2.2",
+		"doctrine/doctrine-fixtures-bundle": "dev-master",
+        "integrated/library": "~0.1",
+		"integrated/content-bundle": "~0.1",
+		"knplabs/knp-paginator-bundle": "dev-master"
+    },
+    "autoload":{
+        "psr-0":{
+            "Integrated\\Bundle\\WorkflowBundle": ""
+        }
+    },
+    "target-dir": "Integrated/Bundle/WorkflowBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.1.1-dev"
+        }
+    }
+}
