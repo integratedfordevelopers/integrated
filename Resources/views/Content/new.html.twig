@@ -1,52 +1,12 @@
-{% extends 'IntegratedContentBundle::base.html.twig' %}
-{% block content %}
-    <div class="content_columns_holder">
-        <div class="content_column_inner">
-            <ol class="breadcrumb">
-                <li>
-                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
-                </li>
-                <li class="active">{% trans %}New{% endtrans %}</li>
-            </ol>
-
-            <div class="page-header">
-                <h1>{% trans %}New{% endtrans %} <small>{{ type.name }}</small></h1>
-            </div>
-
-            <div class="row">
-                <div class="col-md-8">
-                    {{ form(form, { 'style': 'horizontal' }) }}
-                </div>
-                <div class="col-md-2">
-                    <h3>{% trans %}Link to{% endtrans %}</h3>
-                    <form role="form" id="relations-search">
-                        <div class="input-group">
-                            <input id="relations-q" class="form-control" type="search" />
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit">
-                                    <span class="glyphicon glyphicon-search"></span>&nbsp;
-                                </button>
-                            </span>
-                        </div>
-                    </form>
-                    <div id="relations-result"></div>
-                </div>
-                <div class="col-md-2">
-                    <h3>{% trans %}Linked to{% endtrans %}</h3>
-                    <div id="relations-selected"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+{% extends 'IntegratedContentBundle:Content:edit.html.twig' %}
+{% block crumbs %}
+    <ol class="breadcrumb">
+        <li>
+            <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
+        </li>
+        <li class="active">{% trans %}New{% endtrans %}</li>
+    </ol>
 {% endblock %}
-{% block javascript %}
-    {{ parent() }}
-    {% javascripts
-    "@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.min.js"
-    "@IntegratedContentBundle/Resources/public/js/handlebars.helpers.js"
-    "@IntegratedContentBundle/Resources/public/js/relation.js"
-    %}
-    <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-    {{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
-{% endblock javascript %}
+{% block pageTitle %}
+    {% trans %}New{% endtrans %} {{ type.name }}
+{% endblock %}
