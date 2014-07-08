@@ -44,6 +44,16 @@ class ContentController extends Controller
         // Store contentTypes in array
         $displayTypes = array();
 
+        //remember search state
+        $session = $request->getSession();
+        if ($request->query->get('remember') && $session->has('content_index_view')) {
+            $request->query->add(unserialize($session->get('content_index_view')));
+            $request->query->remove('remember');
+        }
+        elseif (!$request->query->has('_format')) {
+            $session->set('content_index_view',serialize($request->query->all()));
+        }
+
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
 		foreach ($this->get('integrated.form.resolver')->getTypes() as $type) {
 			$types[$type->getClass()][$type->getType()] = $type;
@@ -202,7 +212,7 @@ class ContentController extends Controller
 
 			// check for back click else its a submit
 			if ($form->get('actions')->get('cancel')->isClicked()) {
-				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+				return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 			}
 
 			if ($form->isValid()) {
@@ -225,7 +235,7 @@ class ContentController extends Controller
 					$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 				}
 
-                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 			}
 		}
 
@@ -305,7 +315,7 @@ class ContentController extends Controller
 					$locking['release']();
 				}
 
-				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+				return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 			}
 
 			if ($actions->has('reload') && $actions->get('reload')->isClicked()) {
@@ -333,7 +343,7 @@ class ContentController extends Controller
 						$locking['release']();
 					}
 
-	                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+	                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 				}
 			}
 
@@ -443,7 +453,7 @@ class ContentController extends Controller
 					$locking['release']();
 				}
 
-				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+				return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 			}
 
 			if ($actions->has('reload') && $actions->get('reload')->isClicked()) {
@@ -473,7 +483,7 @@ class ContentController extends Controller
 						$locking['release']();
 					}
 
-					return $this->redirect($this->generateUrl('integrated_content_content_index'));
+					return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 				}
 			}
 		}
