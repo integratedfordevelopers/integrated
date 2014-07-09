@@ -162,19 +162,6 @@
                 <source>Link to</source>
                 <target>Koppelen aan</target>
             </trans-unit>
-
-            <trans-unit id="41">
-                <source>Link to</source>
-                <target>Koppelen aan</target>
-            </trans-unit>
-            <trans-unit id="42">
-                <source>Linked to</source>
-                <target>Gekoppeld aan</target>
-            </trans-unit>
-            <trans-unit id="43">
-                <source>Link to</source>
-                <target>Koppelen aan</target>
-            </trans-unit>
             <trans-unit id="44">
                 <source>No items found</source>
                 <target>Geen items gevonden</target>
