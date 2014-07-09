@@ -139,6 +139,10 @@ class ContentController extends Controller
             'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
             'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc']
         ];
+        $order_options = [
+            'asc' => 'asc',
+            'desc' => 'desc'
+        ];
 
         if ($q = $request->get('q')) {
             $dismax = $query->getDisMax();
@@ -157,7 +161,7 @@ class ContentController extends Controller
 		$sort = trim(strtolower($sort));
 		$sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-		$query->addSort($sort_options[$sort]['field'], $sort_options[$sort]['order']);
+        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'),$order_options) ? $request->query->get('order') : $sort_options[$sort]['order'] );
 
 		// Execute the query
 		$result = $client->select($query);
