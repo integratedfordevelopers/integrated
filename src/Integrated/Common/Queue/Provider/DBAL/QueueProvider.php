@@ -133,15 +133,19 @@ class QueueProvider implements QueueProviderInterface
 	/**
 	 * @inheritdoc
 	 */
-	public function count($channel)
+	public function count($channel = null)
 	{
-		$channel = (string) $channel;
 
-		$query = 'SELECT COUNT(id) AS count FROM %s WHERE channel = ?';
+		$query = 'SELECT COUNT(id) AS count FROM %s';
 		$query = sprintf(
 			$query,
 			$this->platform->quoteIdentifier($this->options['queue_table_name'])
 		);
+
+        if ($channel) {
+            $channel = (string) $channel;
+            $query .= ' WHERE channel = ?';
+        }
 
 		return $this->connection->fetchColumn($query, [$channel]);
 	}

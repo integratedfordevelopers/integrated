@@ -43,7 +43,8 @@
 			"Integrated\\Common\\Form\\": "src/",
 			"Integrated\\Common\\Locks\\": "src/",
 			"Integrated\\Common\\Queue\\": "src/",
-			"Integrated\\Common\\Solr\\": "src/"
+			"Integrated\\Common\\Solr\\": "src/",
+			"Integrated\\Common\\Validator\\": "src/"
 		}
 	},
     "extra": {
