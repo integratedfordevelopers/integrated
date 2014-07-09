@@ -19,6 +19,9 @@ use Symfony\Component\Form\FormInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -29,9 +32,14 @@ class StateType extends AbstractType
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('name', 'text');
-		$builder->add('publishable', 'checkbox', ['required' => false]);
+		$builder->add('name', 'text', [
+			'constraints' => [
+				new NotBlank(),
+				new Length(['min' => 3])
+			]
+		]);
 
+		$builder->add('publishable', 'checkbox', ['required' => false]);
 		$builder->add('permissions', 'workflow_definition_permissions', ['required' => false]);
 
 //		$builder->add('transitions', 'choice', ['required' => false]);
