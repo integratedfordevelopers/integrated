@@ -98,6 +98,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->publishedAt = new \DateTime();
         $this->relations = new ArrayCollection();
         $this->updatedAt = new \DateTime();
     }
