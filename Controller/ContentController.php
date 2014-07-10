@@ -264,7 +264,7 @@ class ContentController extends Controller
 
 		// get a lock on this content resource.
 
-		$locking = $this->getLock($content, 60);
+		$locking = $this->getLock($content, 15);
 		$locking['locked'] = $locking['lock'] ? true : false;
 
 		if ($locking['lock'] && $locking['owner']) {
@@ -405,7 +405,7 @@ class ContentController extends Controller
 
 		// get a lock on this content resource.
 
-		$locking = $this->getLock($content, 60);
+		$locking = $this->getLock($content, 15);
 		$locking['locked'] = $locking['lock'] ? true : false;
 
 		if ($locking['lock'] && $locking['owner']) {
@@ -554,6 +554,9 @@ class ContentController extends Controller
 
 		/** @var Locks\ManagerInterface $service */
 		$service = $this->get('integrated_locking.dbal.manager');
+
+        // Remove expired locks
+        $service->clean();
 
 		$object = Locks\Resource::fromObject($object);
 		$owner = null;
