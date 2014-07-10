@@ -23,6 +23,10 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
+use Symfony\Component\Validator\DefaultTranslator;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -34,16 +38,31 @@ class LoginFormType extends AbstractType
 	private $request;
 
 	/**
+	 * @var TranslatorInterface
+	 */
+	private $translator;
+
+	/**
+	 * @var string
+	 */
+	private $translationDomain;
+
+	/**
 	 * Create a login form type used for authentication.
 	 *
 	 * The container is used to retrieve the request so that the errors
 	 * and last username can be extracted from it.
 	 *
 	 * @param RequestStack $request
+	 * @param TranslatorInterface $translator
+	 * @param null $translationDomain
 	 */
-	public function __construct(RequestStack $request)
+	public function __construct(RequestStack $request, TranslatorInterface $translator = null, $translationDomain = null)
 	{
 		$this->request = $request;
+
+		$this->translator = $translator;
+		$this->translationDomain = $translationDomain;
 	}
 
 	/**
@@ -71,8 +90,8 @@ class LoginFormType extends AbstractType
 
 		$builder->add('login', 'submit');
 
-		if ($request = $this->getRequest()) {
-			$builder->addEventSubscriber(new SecurityLoginListener($request));
+		if ($request = $this->getRequest($options)) {
+			$builder->addEventSubscriber(new SecurityLoginListener($request, $this->getTranslator($options), $this->getTranslationDomain($options)));
 		}
 	}
 
@@ -101,6 +120,14 @@ class LoginFormType extends AbstractType
 			'auth_remember'    => true,
 			'auth_target_path' => null
 		]);
+
+		$resolver->setOptional(['request', 'translator', 'translation_domain']);
+
+		$resolver->setAllowedTypes([
+			'request' => ['null', 'Symfony\\Component\\HttpFoundation\\Request'],
+			'translator' => ['null', 'Symfony\\Component\\Translation\\TranslatorInterface'],
+			'translation_domain' => ['null', 'string'],
+		]);
 	}
 
 	/**
@@ -112,10 +139,63 @@ class LoginFormType extends AbstractType
 	}
 
 	/**
-	 * @return Request | null
+	 * Get the request object.
+	 *
+	 * This will first look if the there is a request object in the
+	 * options and if not uses the one from the request stack. If null
+	 * is supplied as request object in the options then the request
+	 * object will be disabled
+	 *
+	 * @param array $options
+	 * @return null | Request
 	 */
-	protected function getRequest()
+	protected function getRequest(array $options = [])
 	{
+		if (array_key_exists('request', $options)) {
+			return $options['request'];
+		}
+
 		return $this->request->getCurrentRequest();
+	}
+
+	/**
+	 * Get the translator object.
+	 *
+	 * This will first look if there is a translator object in the
+	 * options and if not uses the injected one. if none is present
+	 * then a dummy will be returned.
+	 *
+	 * @param array $options
+	 * @return TranslatorInterface
+	 */
+	protected function getTranslator(array $options = [])
+	{
+		if (array_key_exists('translator', $options)) {
+			return $options['translator'] ? $options['translator'] : new DefaultTranslator(); // in case of null return a dummy
+		}
+
+		if ($this->translator === null) {
+			$this->translator = new DefaultTranslator();
+		}
+
+		return $this->translator;
+	}
+
+	/**
+	 * Get the translation domain.
+	 *
+	 * This will first look if there is a translation domain in the
+	 * options and if not uses the injected on.
+	 *
+	 * @param array $options
+	 * @return null | string
+	 */
+	protected function getTranslationDomain(array $options = [])
+	{
+		if (array_key_exists('translation_domain', $options)) {
+			return $options['translation_domain'];
+		}
+
+		return $this->translationDomain;
 	}
 }

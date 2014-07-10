@@ -23,6 +23,8 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContext;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -33,9 +35,22 @@ class SecurityLoginListener implements EventSubscriberInterface
 	 */
 	private $request;
 
-	public function __construct(Request $request)
+	/**
+	 * @var TranslatorInterface
+	 */
+	private $translator;
+
+	/**
+	 * @var string
+	 */
+	private $translationDomain;
+
+	public function __construct(Request $request, TranslatorInterface $translator, $translationDomain = null)
 	{
 		$this->request = $request;
+
+		$this->translator = $translator;
+		$this->translationDomain = $translationDomain;
 	}
 
 	public function preSetData(FormEvent $event)
@@ -52,7 +67,13 @@ class SecurityLoginListener implements EventSubscriberInterface
 		}
 
 		if ($error instanceof AuthenticationException) {
-			$event->getForm()->addError(new FormError($error->getMessage()));
+			$event->getForm()->addError(new FormError(
+				$this->translator->trans($error->getMessage(), [], $this->translationDomain),
+				$error->getMessage(),
+				[],
+				null,
+				$error
+			));
 		}
 
 		$event->setData(['_username' => $session && $session->has(SecurityContext::LAST_USERNAME) ? $session->get(SecurityContext::LAST_USERNAME) : '']);
@@ -72,6 +93,22 @@ class SecurityLoginListener implements EventSubscriberInterface
 	protected function getSession()
 	{
 		return $this->request->getSession();
+	}
+
+	/**
+	 * @return TranslatorInterface
+	 */
+	protected function getTranslator()
+	{
+		return $this->translator;
+	}
+
+	/**
+	 * @return null | string
+	 */
+	protected function getTranslationDomain()
+	{
+		return $this->translationDomain;
 	}
 
 	/**

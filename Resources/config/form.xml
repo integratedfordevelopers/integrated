@@ -22,29 +22,31 @@
 	<services>
 
 		<service id="integrated_user.form.login.type" class="%integrated_user.form.login.type.class%">
-			<argument type="service" id="request_stack"/>
+			<argument type="service" id="request_stack" />
+			<argument type="service" id="translator" />
+			<argument>%validator.translation_domain%</argument>
 		</service>
 
 		<service id="integrated_user.form.profile.type" class="%integrated_user.form.profile.type.class%">
-			<argument type="service" id="integrated_user.user.manager"/>
-			<argument type="service" id="security.secure_random"/>
-			<argument type="service" id="security.encoder_factory"/>
+			<argument type="service" id="integrated_user.user.manager" />
+			<argument type="service" id="security.secure_random" />
+			<argument type="service" id="security.encoder_factory" />
 		</service>
 
 		<service id="integrated_user.form.profile.choice.type" class="%integrated_user.form.profile.choice.type.class%">
-			<argument type="service" id="integrated_user.user.manager"/>
+			<argument type="service" id="integrated_user.user.manager" />
 		</service>
 
 		<service id="integrated_user.form.group.type" class="%integrated_user.form.group.type.class%">
-			<argument type="service" id="integrated_user.group.manager"/>
+			<argument type="service" id="integrated_user.group.manager" />
 		</service>
 
 		<service id="integrated_user.form.group.choice.type" class="%integrated_user.form.group.choice.type.class%">
-			<argument type="service" id="integrated_user.group.manager"/>
+			<argument type="service" id="integrated_user.group.manager" />
 		</service>
 
 		<service id="integrated_user.form.role.choice.type" class="%integrated_user.form.role.choice.type.class%">
-			<argument type="service" id="integrated_user.role.manager"/>
+			<argument type="service" id="integrated_user.role.manager" />
 		</service>
 
 		<service id="integrated_user.form.delete.type" class="%integrated_user.form.delete.type.class%" />
