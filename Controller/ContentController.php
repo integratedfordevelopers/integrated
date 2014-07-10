@@ -692,12 +692,13 @@ class ContentController extends Controller
 
     /**
      * @Template()
+     * @param Request $request
      * @return array
      */
-    public function navdropdownsAction()
+    public function navdropdownsAction(Request $request)
     {
 
-        $session = $this->getRequest()->getSession();
+        $session = $request->getSession();
 
         $queuecount = (int) $this->container->get('integrated_queue.dbal.provider')->count();
         $queuepercentage = 100;
@@ -711,9 +712,9 @@ class ContentController extends Controller
         }
 
         $email = '';
-        if ($this->getUser()->getRelation() && $email = $this->getUser()->getRelation()->getEmail()) {
-
-        }
+//        if ($this->getUser()->getRelation() && $email = $this->getUser()->getRelation()->getEmail()) {
+//
+//        }
 
         $avatarurl = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
 
