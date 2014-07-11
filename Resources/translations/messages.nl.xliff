@@ -310,6 +310,10 @@
                 <source>Female</source>
                 <target>Vrouw</target>
             </trans-unit>
+            <trans-unit id="81">
+                <source>Used by</source>
+                <target>Gebruikt door</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
