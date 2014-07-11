@@ -75,6 +75,7 @@
                 </div>
             </div>
             {% endif %}
+            <div class="item_row" id="used-by"></div>
 
             {#<div class="item_row">#}
                 {#<h3 class="title">Info</h3>#}
@@ -135,5 +136,43 @@
 %}
 <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
+<script>
+    $(function() {
+
+        var cnt = $('#used-by');
+
+        var handleUsedBy = function(data) {
+            var optionsTemplateSource = $('#used-by-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
+            var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
+
+            data.title = "{% trans %}Used by{% endtrans %}";
+
+            cnt.html(optionsTemplate(data)).find('.content_column_inner').append(paginationTemplate(data));
+            cnt.find('.pagination a').click(function(ev){
+                ev.preventDefault();
+                loadUsedBy($(this).attr('href'));
+            });
+        };
+
+        var loadUsedBy = function(url) {
+            cnt.find('.pagination a').unbind('click').click(function(ev){
+                ev.preventDefault();
+            });
+
+            $.ajax({
+                url: url,
+                data: {
+                    '_format': 'json',
+                    'limit': 5
+                },
+                success: handleUsedBy
+            });
+        };
+
+        loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id}) }}');
+    });
+
+
+</script>
 {{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
 {% endblock javascript %}
