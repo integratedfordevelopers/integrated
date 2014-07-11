@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Doctrine\Common\Util\Debug;
 use Traversable;
 
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
@@ -300,7 +301,12 @@ class ContentController extends Controller
 		}
 
 		$form = $this->createForm($type, $content, [
-			'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
+			'action' => $this->generateUrl(
+                    'integrated_content_content_edit',
+                    $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(),
+                    //'lock' => $locking['lock']->getId()
+                    ]
+                ),
 			'method' => 'PUT',
 
 			// don't display error's when the content is locked as the user can't save in the first place
@@ -726,7 +732,38 @@ class ContentController extends Controller
             'queuecount' => $queuecount,
             'queuepercentage' => $queuepercentage,
         );
+    }
 
+    /**
+     * @param Content $content
+     * @param Request $request
+     * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+     * @return array
+     * @Template()
+     */
+    public function usedByAction(Content $content, Request $request)
+    {
+        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $qb = $dm->createQueryBuilder('IntegratedContentBundle:Content\Content');
+        $qb
+            ->field('relations.references.$id')->equals($content->getId())
+        ;
+
+        $query = $qb->getQuery();
+
+        /** @var $paginator \Knp\Component\Pager\Paginator */
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->get('page', 1),
+            $request->query->get('limit', 15)
+        );
+
+        return array(
+            'content' => $content,
+            'pagination' => $pagination
+        );
     }
 
 	/**
