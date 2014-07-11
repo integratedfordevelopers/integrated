@@ -42,7 +42,7 @@
 </script>
 <script id="selected-template" type="text/x-handlebars-template">
     {{#hasItems pagination.numFound}}
-        <h4 class="sub_title">{{ this.title }} <small>({{pagination.numFound}})</small></h4>
+        <h4 class="sub_title">{{this.title}} <small>({{pagination.numFound}})</small></h4>
         {{#each items}}
             <p class="alert-dismissable closable" data-remove="{{ this.id }}">
                 <button aria-hidden="true" data-dismiss="alert" class="close glyphicon glyphicon-remove" type="button"></button>
@@ -53,6 +53,22 @@
                 No items selected
             </p>
         {{/each}}
+    {{/hasItems}}
+</script>
+<script id="used-by-template" type="text/x-handlebars-template">
+    {{#hasItems pagination.numFound}}
+    <h3 class="title">{{this.title}} <small>({{pagination.numFound}})</small></h3>
+    <div class="content_column_inner">
+        <ul class="custom_list li_with_margin">
+            {{#each items}}
+            <li>
+                <a href="{{this.href}}" target="_blank">
+                    {{this.title}}
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
     {{/hasItems}}
 </script>
 <script id="pagination-template" type="text/xhandlebars-template">
@@ -105,5 +121,8 @@
         ev.preventDefault();
         $('.form-relations input[data-relation]').relation();
     });
+
+
+
 </script>
 {% endautoescape %}
