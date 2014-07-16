@@ -43,7 +43,12 @@ class ObjectWrapper implements WrapperInterface
 		return $this->value;
 	}
 
-	public function multi()
+    public function int()
+    {
+        return (int) $this->value;
+    }
+
+    public function multi()
 	{
 		// check if its a array else nothing changes..
 
