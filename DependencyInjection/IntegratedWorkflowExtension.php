@@ -37,6 +37,8 @@ class IntegratedWorkflowExtension extends Extension
 	{
 		$loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
+		$loader->load('extension.xml');
+
 		$loader->load('form.xml');
 		$loader->load('form.definition.xml');
 		$loader->load('form.workflow.xml');
