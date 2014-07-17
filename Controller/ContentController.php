@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Doctrine\Common\Util\Debug;
 use Traversable;
 
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
@@ -301,12 +300,7 @@ class ContentController extends Controller
 		}
 
 		$form = $this->createForm($type, $content, [
-			'action' => $this->generateUrl(
-                    'integrated_content_content_edit',
-                    $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(),
-                    //'lock' => $locking['lock']->getId()
-                    ]
-                ),
+            'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
 			'method' => 'PUT',
 
 			// don't display error's when the content is locked as the user can't save in the first place
