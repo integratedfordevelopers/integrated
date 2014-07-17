@@ -3,10 +3,10 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Integrated\Bundle\WorkflowBundle\Entity\Definition\State" table="workflow_states">
+    <entity name="Integrated\Bundle\WorkflowBundle\Entity\Definition\State" table="workflow_definition_states">
 
 		<unique-constraints>
-			<unique-constraint columns="id,name" />
+			<unique-constraint columns="workflow_id,name" />
 		</unique-constraints>
 
 		<lifecycle-callbacks>
@@ -35,7 +35,7 @@
 		</many-to-one>
 
 		<many-to-many field="transitions" target-entity="Integrated\Bundle\WorkflowBundle\Entity\Definition\State">
-			<join-table name="workflow_state_transitions">
+			<join-table name="workflow_definition_state_transitions">
 				<join-columns>
 					<join-column name="state_id" referenced-column-name="id" on-delete="CASCADE" on-update="CASCADE" />
 				</join-columns>

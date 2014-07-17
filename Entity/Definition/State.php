@@ -97,15 +97,13 @@ class State
 	 */
 	public function setWorkflow(Definition $workflow = null)
 	{
-		if ($this->workflow !== $workflow && $this->workflow !== null)
-		{
+		if ($this->workflow !== $workflow && $this->workflow !== null) {
 			$this->workflow->removeState($this);
 		}
 
 		$this->workflow = $workflow;
 
-		if ($this->workflow)
-		{
+		if ($this->workflow) {
 			$this->workflow->addState($this);
 		}
 

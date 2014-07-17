@@ -3,7 +3,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission" table="workflow_state_permissions">
+    <entity name="Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission" table="workflow_definition_state_permissions">
 
 		<lifecycle-callbacks>
 			<lifecycle-callback type="preFlush" method="doPermissionFix" />
