@@ -136,6 +136,8 @@
 %}
 <script src="{{ asset_url }}"></script>
 {% endjavascripts %}
+
+{% if content is defined %}
 <script>
     $(function() {
 
@@ -171,8 +173,8 @@
 
         loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id}) }}');
     });
-
-
 </script>
+{% endif %}
+
 {{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
 {% endblock javascript %}
