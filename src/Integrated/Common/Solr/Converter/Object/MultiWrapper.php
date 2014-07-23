@@ -81,6 +81,23 @@ class MultiWrapper implements WrapperInterface
 		return new MultiWrapper($values);
 	}
 
+	public function combine($glue, $pieces = null, $keepempty = false)
+	{
+		$values = array();
+
+		foreach ($this->values as $value) {
+			$result = $value->combine($glue, $pieces, $keepempty);
+
+			if ($result instanceof self) {
+				$values = array_merge($result->values); // yeah cheating :P
+			} else {
+				$values[] = $result;
+			}
+		}
+
+		return new MultiWrapper($values);
+	}
+
 	public function isEmpty()
 	{
 		return empty($this->values);
