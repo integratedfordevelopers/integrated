@@ -112,6 +112,82 @@ class ObjectWrapper implements WrapperInterface
 		return new self(implode($glue, $values));
 	}
 
+	public function combine($glue, $pieces = null, $keepempty = false)
+	{
+		// variable argument order stuff
+		// so check and reorder variables if required.
+
+		switch (func_num_args()) {
+			case 1:
+				$pieces = $glue;
+				$glue = '';
+
+				break;
+
+			case 2:
+
+				if (!is_array($pieces)) {
+					$keepempty = $pieces;
+					$pieces = $glue;
+					$glue = '';
+				}
+
+				break;
+		}
+
+		$glue = (string) $glue;
+		$pieces = (array) $pieces;
+		$keepempty = (bool) $keepempty;
+
+		// combine all the variables in to a concated array
+
+		$values = array(
+			$this->value()
+		);
+
+		while ($piece = array_shift($pieces)) {
+			$left = $values;
+
+			if ($piece instanceof WrapperInterface) {
+				$right = $piece->value();
+			} else {
+				$right = $piece;
+			}
+
+			if (!is_array($right)) {
+				$right = array($right);
+			}
+
+			$values = array();
+
+			foreach ($left as $left_value) {
+				foreach ($right as $right_value) {
+					$values[] = $left_value . $glue . $right_value;
+				}
+			}
+		}
+
+		$values = array_map('trim', $values);
+
+		if (!$keepempty) {
+			$values = array_filter($values);
+		}
+
+		// put all of it together
+
+		$result = array();
+
+		foreach ($values as $value) {
+			$result[] = new self($value);
+		}
+
+		if (count($result) > 0) {
+			return new MultiWrapper($result);
+		}
+
+		return new self(null);
+	}
+
 	public function isEmpty()
 	{
 		return empty($this->value);

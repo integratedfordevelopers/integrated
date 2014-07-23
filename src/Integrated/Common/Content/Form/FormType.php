@@ -56,7 +56,6 @@ class FormType implements FormTypeInterface
 	/**
 	 * @param ContentTypeInterface $contentType
      * @param MetadataInterface $metadata
-     * @param RelationsTypeInterface $relationsType
 	 * @param EventDispatcherInterface $dispatcher
 	 */
 	public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata, EventDispatcherInterface $dispatcher = null)

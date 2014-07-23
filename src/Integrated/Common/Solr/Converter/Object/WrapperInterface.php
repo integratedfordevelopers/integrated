@@ -56,6 +56,16 @@ interface WrapperInterface extends ArrayAccess
 	public function concat($glue, $pieces = null, $keepempty = false);
 
 	/**
+	 * @param $glue
+	 * @param null $pieces
+	 * @param bool $keepempty
+	 * @return mixed
+	 */
+	public function combine($glue, $pieces = null, $keepempty = false);
+
+//	public function flatten();
+
+	/**
 	 * check if the value is empty
 	 *
 	 * @return bool
