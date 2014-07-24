@@ -13,7 +13,7 @@ var Relation = function(id, url) {
         data.title = parent.getTitle();
         data.selected = parent.getSelected();
 
-        var container = parent.getOptionsContainer().html(optionsTemplate(data)).append(paginationTemplate(data));
+        var container = parent.getOptionsContainer().html(optionsTemplate(data)).find('.options-cnt').append(paginationTemplate(data));
         container.find('.pagination a').click(function(ev){
             ev.preventDefault();
             parent.loadOptions($(this).attr('href'));
@@ -124,7 +124,7 @@ var Relation = function(id, url) {
         if ($('#relations-result div[data-relation="' + this.id + '"').length > 0) {
             return $('#relations-result div[data-relation="' + this.id + '"');
         } else {
-            var container = $('<div data-relation="' + this.id +'"></div>');
+            var container = $('<div class="item_row" data-relation="' + this.id +'"></div>');
             $('#relations-result').append(container);
             return container;
         }

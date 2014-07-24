@@ -2,11 +2,11 @@
 {% verbatim %}
 <script id="options-template" type="text/x-handlebars-template">
 
-    <div class="item_row">
+    <div class="options-cnt">
         <h4 class="sub_title">{{this.title}} <small>({{pagination.numFound}})</small></h4>
         <ul class="custom_list">
             {{#each items}}
-                {{#if this.image  }}
+                {{#if this.image}}
                     <li class="media">
                         <a href="#" data-value="{{this.id}}" class="pull-left">
                             <img src="{{this.image}}" alt="{{this.title}}" width="60" />
@@ -33,11 +33,6 @@
             </li>
             {{/each}}
         </ul>
-
-        <!--<div class="btn-group btn-group-justified btn_group">-->
-            <!--<a href="#" class="btn btn_show_more">Show 5 more</a>-->
-            <!--<a href="#" class="btn">Click to add</a>-->
-        <!--</div>-->
     </div>
 </script>
 <script id="selected-template" type="text/x-handlebars-template">
@@ -121,8 +116,5 @@
         ev.preventDefault();
         $('.form-relations input[data-relation]').relation();
     });
-
-
-
 </script>
 {% endautoescape %}
