@@ -65,6 +65,26 @@ class ProxyType implements FormTypeInterface
 	public function finishView(FormView $view, FormInterface $form, array $options)
 	{
 		$this->type->finishView($view, $form, $options);
+
+		if (!$this->type->getName()) {
+			return;
+		}
+
+		$name = $this->getName() ? $this->name : $this->getParent();
+
+		// add the original name to the block_prefixed after the proxy name
+
+		$blocks = [];
+
+		foreach ($view->vars['block_prefixes'] as $prefix) {
+			$blocks[] = $prefix;
+
+			if ($prefix == $name) {
+				$blocks[] = $this->type->getName();
+			}
+		}
+
+		$view->vars['block_prefixes'] = $blocks;
 	}
 
 	/**
