@@ -6,11 +6,18 @@
 
 	<services>
 
-		<service id="integrated_user.group.choice.type" class="%integrated_user.form.proxy.type.class%">
-			<argument type="service" id="integrated_user.form.group.choice.type" />
+		<service id="integrated_user.choice.type" class="%integrated_user.form.proxy.type.class%">
+			<argument type="service" id="integrated_user.form.profile.choice.type" />
+			<argument type="string">user_choice</argument>
+
+			<tag name="form.type" alias="user_choice" />
+		</service>
+
+		<service id="integrated_user.profile.choice.type" class="%integrated_user.form.proxy.type.class%">
+			<argument type="service" id="integrated_user.form.profile.choice.type" />
 			<argument type="string">user_profile_choice</argument>
 
-			<tag name="form.type" alias="user_group_choice" />
+			<tag name="form.type" alias="user_profile_choice" />
 		</service>
 
 		<service id="integrated_user.profile.form.type" class="%integrated_user.form.proxy.type.class%">
