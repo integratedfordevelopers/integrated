@@ -21,6 +21,8 @@ use Integrated\Bundle\UserBundle\Model\UserInterface;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
+use Integrated\Common\Content\ContentInterface;
+
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
@@ -37,6 +39,21 @@ class State
 	 * @var Definition\State
 	 */
 	private $state;
+
+	/**
+	 * @var string
+	 */
+	private $content_id;
+
+	/**
+	 * @var string
+	 */
+	private $content_class;
+
+	/**
+	 * @var null | ContentInterface
+	 */
+	private $content_instance = null;
 
 	/**
 	 * @var string
@@ -82,7 +99,7 @@ class State
 	}
 
 	/**
-	 * @return State
+	 * @return Definition\State
 	 */
 	public function getState()
 	{
@@ -97,6 +114,49 @@ class State
 	{
 		$this->state = $state;
 		return $this;
+	}
+
+	/**
+	 * @return ContentInterface
+	 */
+	public function getContent()
+	{
+		return $this->content_instance;
+	}
+
+	/**
+	 * @param ContentInterface $content
+	 * @return $this
+	 */
+	public function setContent($content)
+	{
+		$this->content_id = null;
+		$this->content_class = null;
+		$this->content_instance = null;
+
+		if ($content instanceof ContentInterface) {
+			$this->content_id = $content->getId();
+			$this->content_class = ClassUtils::getRealClass($content);
+			$this->content_instance = $content;
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getContentId()
+	{
+		return $this->content_id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getContentClass()
+	{
+		return $this->content_class;
 	}
 
 	/**
@@ -209,7 +269,7 @@ class State
 			// first add the log to the state then set the state else
 			// there would be a infinite loop
 
-			$log->setState($this);
+			$log->setOwner($this);
 		}
 
 		return $this;
@@ -222,7 +282,7 @@ class State
 	public function removeLog(Log $log)
 	{
 		if ($this->logs->removeElement($log)) {
-			$log->setState(null);
+			$log->setOwner(null);
 		}
 
 		return $this;

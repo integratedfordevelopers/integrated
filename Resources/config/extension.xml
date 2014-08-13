@@ -12,6 +12,8 @@
 
 	<services>
 
+		<service id="integrated_workflow.extension.doctrine.object_manager" alias="doctrine.orm.entity_manager" /> <!-- config option -->
+
 		<service id="integrated_workflow.extension" class="%integrated_workflow.extension.class%">
 			<call method="setContainer">
 				<argument type="service" id="service_container"/>

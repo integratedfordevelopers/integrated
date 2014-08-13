@@ -13,8 +13,9 @@ namespace Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use DateTime;
 
-use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\Security\Core\Util\ClassUtils;
 
+use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 
 /**
@@ -30,7 +31,7 @@ class Log
 	/**
 	 * @var State
 	 */
-	private $state;
+	private $owner;
 
 	/**
 	 * @var DateTime
@@ -53,6 +54,11 @@ class Log
 	private $user_instance;
 
 	/**
+	 * @var Definition\State
+	 */
+	private $state;
+
+	/**
 	 * @var string
 	 */
 	private $comment = null;
@@ -61,6 +67,11 @@ class Log
 	 * @var DateTime
 	 */
 	private $deadline = null;
+
+	public function __construct()
+	{
+		$this->timestamp = new DateTime();
+	}
 
 	/**
 	 * @return int
@@ -73,7 +84,7 @@ class Log
 	/**
 	 * @return State
 	 */
-	public function getState()
+	public function getOwner()
 	{
 		return $this->state;
 	}
@@ -82,20 +93,22 @@ class Log
 	 * @param State $state
 	 * @return $this
 	 */
-	public function setState(State $state = null)
+	public function setOwner(State $state = null)
 	{
-		if ($this->state !== $state && $this->state !== null) {
-			$this->state->removeLog($this);
+		if ($this->owner !== $state && $this->owner !== null) {
+			$this->owner->removeLog($this);
 		}
 
-		$this->state = $state;
+		$this->owner = $state;
 
-		if ($this->state) {
-			$this->state->addLog($this);
+		if ($this->owner) {
+			$this->owner->addLog($this);
 		}
 
 		return $this;
 	}
+
+
 
 	/**
 	 * @return DateTime
@@ -156,6 +169,22 @@ class Log
 	public function getUserClass()
 	{
 		return $this->user_class;
+	}
+
+	/**
+	 * @return Definition\State
+	 */
+	public function getState()
+	{
+		return $this->state;
+	}
+
+	/**
+	 * @param Definition\State $state
+	 */
+	public function setState(Definition\State $state = null)
+	{
+		$this->state = $state;
 	}
 
 	/**

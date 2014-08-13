@@ -7,35 +7,35 @@
 	<services>
 
 		<service id="integrated_workflow.definition.permissions.type" class="%integrated_workflow.form.proxy.type.class%">
-			<argument type="service" id="integrated_workflow.form.permissions.type" />
+			<argument type="service" id="integrated_workflow.form.definition.permissions.type" />
 			<argument type="string">workflow_definition_permissions</argument>
 
 			<tag name="form.type" alias="workflow_definition_permissions" />
 		</service>
 
 		<service id="integrated_workflow.definition.state.type" class="%integrated_workflow.form.proxy.type.class%">
-			<argument type="service" id="integrated_workflow.form.state.type" />
+			<argument type="service" id="integrated_workflow.form.definition.state.type" />
 			<argument type="string">workflow_definition_state</argument>
 
 			<tag name="form.type" alias="workflow_definition_state" />
 		</service>
 
 		<service id="integrated_workflow.definition.choice.type" class="%integrated_workflow.form.proxy.type.class%">
-			<argument type="service" id="integrated_workflow.form.workflow.choice.type" />
+			<argument type="service" id="integrated_workflow.form.definition.choice.type" />
 			<argument type="string">workflow_definition_choice</argument>
 
 			<tag name="form.type" alias="workflow_definition_choice" />
 		</service>
 
 		<service id="integrated_workflow.definition.edit.form.type" class="%integrated_workflow.form.proxy.type.class%">
-			<argument type="service" id="integrated_workflow.form.workflow.type" />
+			<argument type="service" id="integrated_workflow.form.definition.type" />
 			<argument type="string">workflow_definition_new</argument>
 
 			<tag name="form.type" alias="workflow_definition_new" />
 		</service>
 
 		<service id="integrated_workflow.definition.new.form.type" class="%integrated_workflow.form.proxy.type.class%">
-			<argument type="service" id="integrated_workflow.form.workflow.type" />
+			<argument type="service" id="integrated_workflow.form.definition.type" />
 			<argument type="string">workflow_definition_edit</argument>
 
 			<tag name="form.type" alias="workflow_definition_edit" />

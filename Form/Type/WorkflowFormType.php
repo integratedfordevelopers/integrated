@@ -11,9 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
-use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
-use Integrated\Bundle\WorkflowBundle\Form\EventListener\CurrentStateListener;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,23 +22,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkflowType extends AbstractType
+class WorkflowFormType extends AbstractType
 {
 	/**
 	 * @inheritdoc
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$builder->add('comment', 'text');
+		$builder->add('comment', 'textarea', ['required' => false]);
 
-		$builder->add('state', 'text', ['read_only' => true]);
+		$builder->add('state', 'workflow_state', ['workflow' => $options['workflow'], 'label' => 'Next state']);
 
-		$builder->add('action', 'workflow_actions', ['workflow' => $options['workflow']]);
-
-		$builder->add('assigned', 'user_choice');
-		$builder->add('deadline', 'datetime');
-
-		$builder->addEventSubscriber(new CurrentStateListener());
+		$builder->add('assigned', 'user_choice', ['empty_value' => 'Not Assigned', 'empty_data'  => null, 'required' => false]);
+		$builder->add('deadline', 'integrated_datetime');
 	}
 
 	/**
@@ -48,10 +42,10 @@ class WorkflowType extends AbstractType
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
-		$resolver->setDefaults(array(
-			'empty_data' => function(FormInterface $form) { return new State(); },
-			'data_class' => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State',
-		));
+		$resolver->setDefaults([
+//			'empty_data' => function(FormInterface $form) { return new State(); },
+//			'data_class' => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State',
+		]);
 
 		$resolver->setRequired([
 			'workflow'

@@ -11,8 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
-use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
-
+use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\DefinitionTransformer;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 
 use Symfony\Component\Form\AbstractType;
@@ -56,6 +55,10 @@ class DefinitionType extends AbstractType
 		if ($options['multiple']) {
 			$builder->addViewTransformer(new CollectionToArrayTransformer(), true);
 		}
+
+		if ($options['data_type'] != 'object') {
+			$builder->addModelTransformer(new DefinitionTransformer());
+		}
 	}
 
 	/**
@@ -63,12 +66,20 @@ class DefinitionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
+			'empty_value' => 'None',
+			'empty_data'  => null,
+			'required'    => false,
+
 			'choices'     => null,
 			'choice_list' => function(Options $options) { return $this->getChoiceList(); },
 			'multiple'    => false,
-			'expanded'    => false
-		));
+			'expanded'    => false,
+
+			'data_type'   => 'object'
+		]);
+
+		$resolver->addAllowedValues(['data_type' => ['scalar', 'object']]);
     }
 
 	/**
@@ -97,13 +108,5 @@ class DefinitionType extends AbstractType
 		}
 
 		return $this->choiceList;
-	}
-
-	/**
-	 * @return GroupManagerInterface
-	 */
-	public function getManager()
-	{
-		return $this->manager;
 	}
 }

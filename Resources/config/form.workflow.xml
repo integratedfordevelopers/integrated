@@ -4,4 +4,29 @@
 		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
+	<services>
+
+		<service id="integrated_workflow.workflow.form.type" class="%integrated_workflow.form.proxy.type.class%">
+			<argument type="service" id="integrated_workflow.form.workflow.type" />
+			<argument type="string">workflow</argument>
+
+			<tag name="form.type" alias="workflow" />
+		</service>
+
+		<service id="integrated_workflow.workflow.state.type" class="%integrated_workflow.form.proxy.type.class%">
+			<argument type="service" id="integrated_workflow.form.workflow.state.type" />
+			<argument type="string">workflow_state</argument>
+
+			<tag name="form.type" alias="workflow_state" />
+		</service>
+
+		<service id="integrated_workflow.workflow.state.choice.type" class="%integrated_workflow.form.proxy.type.class%">
+			<argument type="service" id="integrated_workflow.form.workflow.state.choice.type" />
+			<argument type="string">workflow_state_choice</argument>
+
+			<tag name="form.type" alias="workflow_state_choice" />
+		</service>
+
+	</services>
+
 </container>

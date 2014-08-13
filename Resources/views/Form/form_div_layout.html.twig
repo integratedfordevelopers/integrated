@@ -1,0 +1,15 @@
+{% block workflow_row  %}
+    {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' workflow')|trim }) %}
+
+    <div {{ block('widget_container_attributes') }}>
+        {{ block('form_rows') }}
+    </div>
+{% endblock %}
+
+{% block workflow_state_row  %}
+    {{ block('form_rows') }}
+{% endblock %}
+
+{% block workflow_state_text_widget  %}
+    {{ value }}
+{% endblock %}

@@ -14,8 +14,7 @@ namespace Integrated\Bundle\WorkflowBundle\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -25,7 +24,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class IntegratedWorkflowExtension extends Extension
+class IntegratedWorkflowExtension extends Extension implements PrependExtensionInterface
 {
 	/**
 	 * Load the configuration
@@ -37,6 +36,7 @@ class IntegratedWorkflowExtension extends Extension
 	{
 		$loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
+		$loader->load('doctrine.xml');
 		$loader->load('extension.xml');
 
 		$loader->load('form.xml');
@@ -45,5 +45,29 @@ class IntegratedWorkflowExtension extends Extension
 
 		$configuration = new Configuration();
 		$config = $this->processConfiguration($configuration, $configs);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function prepend(ContainerBuilder $container)
+	{
+		$this->configureTwigBundle($container);
+	}
+
+	/**
+	 * @param ContainerBuilder $container The service container
+	 *
+	 * @return void
+	 */
+	protected function configureTwigBundle(ContainerBuilder $container)
+	{
+		foreach ($container->getExtensions() as $name => $extension) {
+			switch ($name) {
+				case 'twig':
+					$container->prependExtensionConfig($name,['form'  => ['resources' => ['IntegratedWorkflowBundle:Form:form_div_layout.html.twig']]]);
+					break;
+			}
+		}
 	}
 }

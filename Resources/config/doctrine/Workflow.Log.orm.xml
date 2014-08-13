@@ -11,15 +11,17 @@
 
 		<field name="timestamp" column="timestamp" type="datetime" />
 
-		<field name="user_id" column="user_id" type="string" length="50" />
+		<field name="user_id" column="user_id" type="string" length="50" nullable="true" />
 
-		<field name="user_class" column="user_class" type="string" length="255" />
+		<field name="user_class" column="user_class" type="string" length="255" nullable="true" />
 
-		<field name="comment" column="comment" type="text" />
+		<field name="comment" column="comment" type="text" nullable="true" />
 
-		<field name="deadline" column="deadline" type="datetime" />
+		<field name="deadline" column="deadline" type="datetime" nullable="true" />
 
-		<many-to-one field="state" target-entity="Integrated\Bundle\WorkflowBundle\Entity\Workflow\State" inversed-by="logs" />
+		<many-to-one field="owner" target-entity="Integrated\Bundle\WorkflowBundle\Entity\Workflow\State" inversed-by="logs" />
+
+		<many-to-one field="state" target-entity="Integrated\Bundle\WorkflowBundle\Entity\Definition\State" />
 
     </entity>
 
