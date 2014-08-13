@@ -91,7 +91,7 @@ class ProfileType extends AbstractType
 	public function getChoiceList()
 	{
 		if ($this->choiceList === null) {
-			$this->choiceList = new ObjectChoiceList($this->getManager()->findAll(), 'name', [], null, 'id');
+			$this->choiceList = new ObjectChoiceList($this->getManager()->findAll(), 'username', [], null, 'id');
 		}
 
 		return $this->choiceList;
