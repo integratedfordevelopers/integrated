@@ -165,50 +165,6 @@ class ContentSubscriber implements ContentSubscriberInterface
 			$state->addLog($log);
 		}
 
-//		$changed = [];
-//
-//		if ($data['comment']) {
-//			$changed[] = 'comment';
-//		}
-//
-//		// log the old settings if changed
-//
-//		if ($data['state'] !== $state->getState()) {
-//			$changed[] = 'state';
-//		}
-//
-//		if ($data['assigned'] !== $state->getAssigned()) {
-//			$changed[] = 'assigned';
-//		}
-//
-//		if ($data['deadline'] !== $state->getDeadline()) {
-//			$changed[] = 'deadline';
-//		}
-//
-//		if ($changed) {
-//			$log = new Log();
-//			$log->setUser($this->getUser());
-//
-//			foreach ($changed as $field) {
-//				switch ($field) {
-//					case 'comment':
-//						$log->setComment($data[$field]);
-//						break;
-//
-//					case 'state':
-//					case 'assigned':
-//					case 'deadline':
-//						$log->{'set' . $field}($state->{'get' . $field}());
-//						$state->{'set' . $field}($data['state']);
-//						break;
-//				}
-//			}
-//
-//			$this->getManager()->persist($log);
-//
-//			$state->addLog($log);
-//		}
-
 		$this->getManager()->flush($state);
 
 		// also add the current workflow state to the content metadata
