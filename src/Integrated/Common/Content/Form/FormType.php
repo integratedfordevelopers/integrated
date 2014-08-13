@@ -51,7 +51,7 @@ class FormType implements FormTypeInterface
 	/**
 	 * @var string
 	 */
-	protected $name = null;
+	private $name = null;
 
 	/**
 	 * @param ContentTypeInterface $contentType
@@ -120,6 +120,11 @@ class FormType implements FormTypeInterface
 				$dispatcher->dispatch(Events::POST_BUILD_FIELD, $event);
 			}
         }
+
+		// custom workflow logic for now
+		if ($this->metadata->hasOption('workflow') && $this->contentType->hasOption('workflow')) {
+			$builder->add('extension_workflow', 'workflow', ['property_path' => 'extensions[integrated.extension.workflow]', 'workflow' => $this->contentType->getOption('workflow')]);
+		}
 
 		// allow events to add fields at the end of the form
 		if ($dispatcher->hasListeners(Events::POST_BUILD)) {
