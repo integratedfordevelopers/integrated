@@ -29,12 +29,12 @@ class WorkflowStateListener implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return [
-			FormEvents::PRE_SET_DATA => 'onPreSetData',
-			FormEvents::SUBMIT  => 'onSubmit'
+			FormEvents::POST_SET_DATA => 'onPostSetData',
+			FormEvents::SUBMIT => 'onSubmit'
 		];
 	}
 
-	public function onPreSetData(FormEvent $event)
+	public function onPostSetData(FormEvent $event)
 	{
 		if (!$data = $event->getData()) {
 			return;
