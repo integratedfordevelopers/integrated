@@ -14,24 +14,32 @@ namespace Integrated\Common\ContentType\Mapping;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface MetadataFieldEditorInterface extends MetadataFieldInterface
+interface AttributeInterface
 {
 	/**
-	 * @param string $type
-	 * @return self
+	 * @return string
 	 */
-	public function setType($type);
+	public function getName();
 
 	/**
-	 * @param array $options
-	 * @return self
+	 * @return string
 	 */
-	public function setOptions(array $options);
+	public function getType();
+
+	/**
+	 * @return array
+	 */
+	public function getOptions();
 
 	/**
 	 * @param string $name
-	 * @param mixed $value
-	 * @return self
+	 * @return mixed
 	 */
-	public function setOption($name, $value);
+	public function getOption($name);
+
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	public function hasOption($name);
 }

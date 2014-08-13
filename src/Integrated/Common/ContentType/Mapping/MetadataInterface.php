@@ -41,13 +41,13 @@ interface MetadataInterface
 	public function getType();
 
 	/**
-	 * @return MetadataFieldInterface[]
+	 * @return AttributeInterface[]
 	 */
 	public function getFields();
 
 	/**
 	 * @param string $name
-	 * @return MetadataFieldInterface
+	 * @return AttributeInterface
 	 */
 	public function getField($name);
 
@@ -56,4 +56,21 @@ interface MetadataInterface
 	 * @return bool
 	 */
 	public function hasField($name);
+
+	/**
+	 * @return AttributeInterface[]
+	 */
+	public function getOptions();
+
+	/**
+	 * @param string $name
+	 * @return AttributeInterface
+	 */
+	public function getOption($name);
+
+	/**
+	 * @param string $name
+	 * @return bool
+	 */
+	public function hasOption($name);
 }

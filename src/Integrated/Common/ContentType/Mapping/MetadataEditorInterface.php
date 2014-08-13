@@ -24,13 +24,25 @@ interface MetadataEditorInterface extends MetadataInterface
 
 	/**
 	 * @param string $name
-	 * @return MetadataFieldEditorInterface
+	 * @return AttributeEditorInterface
 	 */
 	public function newField($name);
 
 	/**
-	 * @param MetadataFieldInterface $field
+	 * @param AttributeInterface $field
 	 * @return self
 	 */
-	public function addField(MetadataFieldInterface $field);
+	public function addField(AttributeInterface $field);
+
+	/**
+	 * @param string $name
+	 * @return AttributeEditorInterface
+	 */
+	public function newOption($name);
+
+	/**
+	 * @param AttributeInterface $option
+	 * @return self
+	 */
+	public function addOption(AttributeInterface $option);
 }

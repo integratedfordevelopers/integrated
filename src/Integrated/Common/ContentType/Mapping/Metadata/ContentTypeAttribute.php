@@ -11,14 +11,14 @@
 
 namespace Integrated\Common\ContentType\Mapping\Metadata;
 
-use Integrated\Common\ContentType\Mapping\MetadataFieldEditorInterface;
+use Integrated\Common\ContentType\Mapping\AttributeEditorInterface;
 
 /**
  * Class for storing metadata properties of a field
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeField implements MetadataFieldEditorInterface
+class ContentTypeAttribute implements AttributeEditorInterface
 {
     /**
      * @var string
