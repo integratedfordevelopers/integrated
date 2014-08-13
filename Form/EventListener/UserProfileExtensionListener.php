@@ -59,7 +59,7 @@ class UserProfileExtensionListener implements EventSubscriberInterface
         $content = $parent->getNormData();
 
 		if ($content instanceof ExtensibleInterface) {
-			$event->setData($content->getExtension($this->getName()));
+			$event->setData($content->getExtensions()->get($this->getName()));
 		}
     }
 
@@ -75,7 +75,7 @@ class UserProfileExtensionListener implements EventSubscriberInterface
 		$content = $parent->getNormData();
 
 		if ($content instanceof ExtensibleInterface) {
-			$content->setExtension($this->getName(), $event->getForm()->getData()); // should not be required
+			$content->getExtensions()->set($this->getName(), $event->getForm()->getData()); // should not be required
 		}
     }
 
