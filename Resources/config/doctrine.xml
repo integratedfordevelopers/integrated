@@ -6,15 +6,16 @@
 
 	<parameters>
 
-		<parameter key="integrated_workflow.doctrine.state_assigned.listener.class">Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\WorkflowStateAssignedInjectionListener</parameter>
-		<parameter key="integrated_workflow.doctrine.log_user.listener.class">Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\WorkflowLogUserInjectionListener</parameter>
+		<parameter key="integrated_workflow.doctrine.state_instance_injection.listener.class">Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\WorkflowStateInstanceInjectionListener</parameter>
+		<parameter key="integrated_workflow.doctrine.log_user.listener.class">Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\WorkflowLogInstanceInjectionListener</parameter>
 
 	</parameters>
 
 	<services>
 
-		<service id="integrated_workflow.doctrine.state_assigned.listener" class="%integrated_workflow.doctrine.state_assigned.listener.class%">
+		<service id="integrated_workflow.doctrine.state_instance_injection.listener" class="%integrated_workflow.doctrine.state_instance_injection.listener.class%">
 			<argument type="service" id="doctrine" on-invalid="ignore" />
+			<argument type="service" id="doctrine_mongodb" on-invalid="ignore" />
 
 			<tag name="doctrine.event_subscriber" connection="default" />
 		</service>

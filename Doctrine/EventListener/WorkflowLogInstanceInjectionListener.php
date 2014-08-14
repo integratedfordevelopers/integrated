@@ -22,7 +22,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkflowLogUserInjectionListener implements EventSubscriber
+class WorkflowLogInstanceInjectionListener implements EventSubscriber
 {
 	/**
 	 * @var ManagerRegistry

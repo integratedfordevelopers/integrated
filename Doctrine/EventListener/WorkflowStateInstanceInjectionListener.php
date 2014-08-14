@@ -22,16 +22,22 @@ use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkflowStateAssignedInjectionListener implements EventSubscriber
+class WorkflowStateInstanceInjectionListener implements EventSubscriber
 {
 	/**
 	 * @var ManagerRegistry
 	 */
-	protected $dm;
+	protected $orm;
 
-	public function __construct(ManagerRegistry $dm)
+	/**
+	 * @var ManagerRegistry
+	 */
+	protected $odm;
+
+	public function __construct(ManagerRegistry $orm, ManagerRegistry $odm)
 	{
-		$this->dm = $dm;
+		$this->orm = $orm;
+		$this->odm = $odm;
 	}
 
 	/**
@@ -56,6 +62,8 @@ class WorkflowStateAssignedInjectionListener implements EventSubscriber
 
 		$metadata = $args->getEntityManager()->getClassMetadata(get_class($object));
 
+		// first the assigned object
+
 		$prop = $metadata->getReflectionClass()->getProperty('assigned_class');
 		$prop->setAccessible(true);
 
@@ -68,12 +76,39 @@ class WorkflowStateAssignedInjectionListener implements EventSubscriber
 
 		$prop = $metadata->getReflectionClass()->getProperty('assigned_instance');
 		$prop->setAccessible(true);
-		$prop->setValue($object, $this->getInstance($class, $id));
+		$prop->setValue($object, $this->getORMInstance($class, $id));
+
+		// now the content object
+
+		$prop = $metadata->getReflectionClass()->getProperty('content_class');
+		$prop->setAccessible(true);
+
+		$class = $prop->getValue($object);
+
+		$prop = $metadata->getReflectionClass()->getProperty('content_id');
+		$prop->setAccessible(true);
+
+		$id = $prop->getValue($object);
+
+		$prop = $metadata->getReflectionClass()->getProperty('content_instance');
+		$prop->setAccessible(true);
+		$prop->setValue($object, $this->getODMInstance($class, $id));
 	}
 
-	protected function getInstance($class, $id)
+	protected function getORMInstance($class, $id)
 	{
-		$manager = $this->dm->getManagerForClass($class);
+		$manager = $this->orm->getManagerForClass($class);
+
+		if (method_exists($manager, 'getReference')) {
+			return $manager->getReference($class, $id);
+		}
+
+		return $manager->getRepository($class)->find($id);
+	}
+
+	public function getODMInstance($class, $id)
+	{
+		$manager = $this->odm->getManagerForClass($class);
 
 		if (method_exists($manager, 'getReference')) {
 			return $manager->getReference($class, $id);
