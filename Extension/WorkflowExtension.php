@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Extension;
 
-use Integrated\Bundle\WorkflowBundle\Extension\Subscriber\ContentSubscriber;
-use Integrated\Bundle\WorkflowBundle\Extension\Subscriber\MetadataSubscriber;
+use Integrated\Bundle\WorkflowBundle\Extension\EventListener\ContentSubscriber;
+use Integrated\Bundle\WorkflowBundle\Extension\EventListener\MetadataSubscriber;
 
 use Integrated\Common\Content\Extension\ExtensionInterface;
 

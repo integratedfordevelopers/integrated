@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WorkflowBundle\Extension\Subscriber;
+namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
 use Integrated\Common\Content\Extension\Event\MetadataEvent;
 use Integrated\Common\Content\Extension\Event\Subscriber\MetadataSubscriberInterface;

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WorkflowBundle\Doctrine;
+namespace Integrated\Bundle\WorkflowBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -17,12 +17,12 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 
-use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
+use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class OrmAssignedSubscriber implements EventSubscriber
+class WorkflowLogUserInjectionListener implements EventSubscriber
 {
 	/**
 	 * @var ManagerRegistry
@@ -50,23 +50,23 @@ class OrmAssignedSubscriber implements EventSubscriber
 	{
 		$object = $args->getEntity();
 
-		if (!$object instanceof State) {
+		if (!$object instanceof Log) {
 			return;
 		}
 
 		$metadata = $args->getEntityManager()->getClassMetadata(get_class($object));
 
-		$prop = $metadata->getReflectionClass()->getProperty('assigned_class');
+		$prop = $metadata->getReflectionClass()->getProperty('user_class');
 		$prop->setAccessible(true);
 
 		$class = $prop->getValue($object);
 
-		$prop = $metadata->getReflectionClass()->getProperty('assigned_id');
+		$prop = $metadata->getReflectionClass()->getProperty('user_id');
 		$prop->setAccessible(true);
 
 		$id = $prop->getValue($object);
 
-		$prop = $metadata->getReflectionClass()->getProperty('assigned_instance');
+		$prop = $metadata->getReflectionClass()->getProperty('user_instance');
 		$prop->setAccessible(true);
 		$prop->setValue($object, $this->getInstance($class, $id));
 	}

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WorkflowBundle\Extension\Subscriber;
+namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
 

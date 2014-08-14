@@ -6,20 +6,22 @@
 
 	<parameters>
 
-		<parameter key="integrated_workflow.doctrine.state_assigned.subscriber.class">Integrated\Bundle\WorkflowBundle\Doctrine\OrmAssignedSubscriber</parameter>
-		<parameter key="integrated_workflow.doctrine.log_user.subscriber.class">Integrated\Bundle\WorkflowBundle\Doctrine\OrmUserSubscriber</parameter>
+		<parameter key="integrated_workflow.doctrine.state_assigned.listener.class">Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\WorkflowStateAssignedInjectionListener</parameter>
+		<parameter key="integrated_workflow.doctrine.log_user.listener.class">Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\WorkflowLogUserInjectionListener</parameter>
 
 	</parameters>
 
 	<services>
 
-		<service id="integrated_workflow.doctrine.state_assigned.subscriber" class="%integrated_workflow.doctrine.state_assigned.subscriber.class%">
+		<service id="integrated_workflow.doctrine.state_assigned.listener" class="%integrated_workflow.doctrine.state_assigned.listener.class%">
 			<argument type="service" id="doctrine" on-invalid="ignore" />
+
 			<tag name="doctrine.event_subscriber" connection="default" />
 		</service>
 
-		<service id="integrated_workflow.doctrine.log_user.subscriber" class="%integrated_workflow.doctrine.log_user.subscriber.class%">
+		<service id="integrated_workflow.doctrine.log_user.listener" class="%integrated_workflow.doctrine.log_user.listener.class%">
 			<argument type="service" id="doctrine" on-invalid="ignore" />
+
 			<tag name="doctrine.event_subscriber" connection="default" />
 		</service>
 
