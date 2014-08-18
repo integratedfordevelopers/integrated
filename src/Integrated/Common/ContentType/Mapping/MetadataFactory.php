@@ -111,7 +111,7 @@ class MetadataFactory implements MetadataFactoryInterface
 
 	/**
 	 * @param string $class
-	 * @return ContentType
+	 * @return MetadataEditorInterface
 	 */
 	protected function loadMetadata($class)
 	{

@@ -11,8 +11,6 @@
 
 namespace Integrated\Common\ContentType\Mapping;
 
-use Integrated\Common\ContentType\Mapping\Metadata\ContentType;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -20,12 +18,12 @@ interface MetadataFactoryInterface
 {
 	/**
 	 * @param string $class
-	 * @return ContentType
+	 * @return MetadataInterface
 	 */
 	public function getMetadata($class);
 
 	/**
-	 * @return ContentType[]
+	 * @return MetadataInterface[]
 	 */
 	public function getAllMetadata();
 }
