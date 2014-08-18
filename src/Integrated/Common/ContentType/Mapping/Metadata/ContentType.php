@@ -11,7 +11,8 @@
 
 namespace Integrated\Common\ContentType\Mapping\Metadata;
 
-use Integrated\Common\ContentType\Mapping\MetadataFieldInterface;
+use Integrated\Common\ContentType\Mapping\AttributeEditorInterface;
+use Integrated\Common\ContentType\Mapping\AttributeInterface;
 use Integrated\Common\ContentType\Mapping\MetadataEditorInterface;
 
 use ReflectionClass;
@@ -39,9 +40,14 @@ class ContentType implements MetadataEditorInterface
     protected $type;
 
     /**
-     * @var MetadataFieldInterface[]
+     * @var AttributeInterface[]
      */
     protected $fields = [];
+
+	/**
+	 * @var AttributeInterface[]
+	 */
+	protected $options = [];
 
 	/**
 	 * @param $class
@@ -128,15 +134,56 @@ class ContentType implements MetadataEditorInterface
 	 */
 	public function newField($name)
 	{
-		return new ContentTypeField($name);
+		return new ContentTypeAttribute($name);
 	}
 
     /**
      * @inheritdoc
      */
-    public function addField(MetadataFieldInterface $field)
+    public function addField(AttributeInterface $field)
     {
         $this->fields[$field->getName()] = $field;
         return $this;
     }
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getOptions()
+	{
+		return $this->options;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function getOption($name)
+	{
+		return $this->hasOption($name) ? $this->options[$name] : null;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function hasOption($name)
+	{
+		return isset($this->options[$name]);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function newOption($name)
+	{
+		return new ContentTypeAttribute($name);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function addOption(AttributeInterface $option)
+	{
+		$this->options[$option->getName()] = $option;
+		return $this;
+	}
 }

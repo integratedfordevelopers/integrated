@@ -93,4 +93,27 @@ interface ContentTypeInterface
 	 * @return bool
 	 */
 	public function hasRelation(ContentTypeRelationInterface $relation);
+
+	/**
+	 * Get all the options of this content type.
+	 *
+	 * @return string[]
+	 */
+	public function getOptions();
+
+	/**
+	 * Get the value of the specified key.
+	 *
+	 * @param string $name
+	 * @return string
+	 */
+	public function getOption($name);
+
+	/**
+	 * Check if the option exist in the content type.
+	 *
+	 * @param string $name
+	 * @return bool
+	 */
+	public function hasOption($name);
 }

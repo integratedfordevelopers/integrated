@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class FormFactory implements FormFactoryInterface
 {
     /**
-     * @var \Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface
+     * @var ContentTypeResolverInterface
      */
     private $resolver;
 

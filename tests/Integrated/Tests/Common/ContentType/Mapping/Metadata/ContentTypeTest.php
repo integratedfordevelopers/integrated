@@ -54,7 +54,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testFields()
     {
-        // Mock ContentTypeField
+        // Mock ContentTypeAttribute
         $field1 = $this->getMock('Integrated\Common\ContentType\Mapping\Metadata\ContentTypeField');
         $field2 = $this->getMock('Integrated\Common\ContentType\Mapping\Metadata\ContentTypeField');
 
