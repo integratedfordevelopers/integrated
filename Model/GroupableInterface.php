@@ -33,7 +33,7 @@ interface GroupableInterface
 	public function hasGroup(GroupInterface $group);
 
 	/**
-	 * @inheritdoc
+	 * @return GroupInterface[]
 	 */
 	public function getGroups();
 

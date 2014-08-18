@@ -212,7 +212,7 @@ class User implements UserInterface
 	 */
 	public function getGroups()
 	{
-		return $this->groups;
+		return $this->groups->toArray();
 	}
 
 	/**
