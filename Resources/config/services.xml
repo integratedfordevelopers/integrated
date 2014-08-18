@@ -5,12 +5,15 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+
         <parameter key="integrated_formtype_form_type_datetime.class">Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType</parameter>
         <parameter key="integrated_formtype_form_type_wysihtml5x.class">Integrated\Bundle\FormTypeBundle\Form\Type\WysiHtml5xType</parameter>
         <parameter key="integrated_formtype_form_type_TinyMCE.class">Integrated\Bundle\FormTypeBundle\Form\Type\TinyMCEType</parameter>
+
     </parameters>
 
-    <services>
+	<services>
+
         <service id="integrated_formtype_form_type_datetime" class="%integrated_formtype_form_type_datetime.class%">
             <tag name="form.type" alias="integrated_datetime" />
         </service>
@@ -20,6 +23,7 @@
         <service id="integrated_formtype_form_type_wysihtml5x" class="%integrated_formtype_form_type_wysihtml5x.class%">
             <tag name="form.type" alias="integrated_wysihtml5x" />
         </service>
+
     </services>
 
 </container>
