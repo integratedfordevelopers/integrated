@@ -19,7 +19,11 @@ else you get errors when adding the entities.
 
 	php app/console doctrine:schema:update
 
-* There are no config options for now
+* There are no config options for now but it is recommend to add this to the security config
+
+    access_decision_manager:
+        # strategy can be: affirmative, unanimous or consensus
+        strategy: unanimous
 
 Well that is it.
 

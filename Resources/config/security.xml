@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<parameters>
+
+		<parameter key="integrated_workflow.security.voter.workflow.class">Integrated\Bundle\WorkflowBundle\Security\WorkflowVoter</parameter>
+
+	</parameters>
+
+	<services>
+
+		<service id="integrated_workflow.security.voter.workflow" class="%integrated_workflow.security.voter.workflow.class%">
+			<argument type="service" id="doctrine" on-invalid="ignore" />
+			<argument type="service" id="integrated_content.resolver.priority"/>
+			<argument type="service" id="integrated_content.metadata.factory"/>
+
+			<tag name="security.voter" />
+		</service>
+
+	</services>
+
+</container>
