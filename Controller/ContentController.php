@@ -13,17 +13,22 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Traversable;
 
-use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-use Integrated\Common\Locks;
-
-//use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+
+use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
+
+use Integrated\Common\Locks;
+use Integrated\Common\Security\Permissions;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormError;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -198,9 +203,15 @@ class ContentController extends Controller
 		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
 		$type = $this->get('integrated.form.factory')->getType($request->get('class'), $request->get('type'));
 
+		$content = $type->getType()->create();
+
+		if (!$this->get('security.context')->isGranted(Permissions::CREATE, $content)) {
+			throw new AccessDeniedException();
+		}
+
 		$form = $this->createForm(
 			$type,
-			$type->getType()->create(),
+			$content,
 			[
 				'action' => $this->generateUrl('integrated_content_content_new', ['class' => $request->get('class'), 'type' => $request->get('type')]),
 				'method' => 'POST',
@@ -222,8 +233,6 @@ class ContentController extends Controller
 			if ($form->isValid()) {
 				/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
 				$dm = $this->get('doctrine_mongodb')->getManager();
-
-				$content = $form->getData();
 
 				$dm->persist($content);
 				$dm->flush();
@@ -261,6 +270,10 @@ class ContentController extends Controller
 	{
 		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
 		$type = $this->get('integrated.form.factory')->getType($content);
+
+		if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
+			throw new AccessDeniedException();
+		}
 
 		// get a lock on this content resource.
 
@@ -402,6 +415,10 @@ class ContentController extends Controller
 	{
 		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
 		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getContentType());
+
+		if (!$this->get('security.context')->isGranted(Permissions::DELETE, $content)) {
+			throw new AccessDeniedException();
+		}
 
 		// get a lock on this content resource.
 
@@ -739,10 +756,9 @@ class ContentController extends Controller
     {
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
+
         $qb = $dm->createQueryBuilder('IntegratedContentBundle:Content\Content');
-        $qb
-            ->field('relations.references.$id')->equals($content->getId())
-        ;
+        $qb->field('relations.references.$id')->equals($content->getId());
 
         $query = $qb->getQuery();
 
