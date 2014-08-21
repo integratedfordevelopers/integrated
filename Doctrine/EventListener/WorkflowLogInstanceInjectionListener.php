@@ -27,11 +27,11 @@ class WorkflowLogInstanceInjectionListener implements EventSubscriber
 	/**
 	 * @var ManagerRegistry
 	 */
-	protected $dm;
+	protected $manager;
 
-	public function __construct(ManagerRegistry $dm)
+	public function __construct(ManagerRegistry $manager)
 	{
-		$this->dm = $dm;
+		$this->manager = $manager;
 	}
 
 	/**
@@ -73,7 +73,7 @@ class WorkflowLogInstanceInjectionListener implements EventSubscriber
 
 	protected function getInstance($class, $id)
 	{
-		$manager = $this->dm->getManagerForClass($class);
+		$manager = $this->manager->getManagerForClass($class);
 
 		if (method_exists($manager, 'getReference')) {
 			return $manager->getReference($class, $id);
