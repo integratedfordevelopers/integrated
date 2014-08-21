@@ -43,6 +43,7 @@
 			"Integrated\\Common\\Form\\": "src/",
 			"Integrated\\Common\\Locks\\": "src/",
 			"Integrated\\Common\\Queue\\": "src/",
+			"Integrated\\Common\\Security\\": "src/",
 			"Integrated\\Common\\Solr\\": "src/",
 			"Integrated\\Common\\Validator\\": "src/"
 		}
