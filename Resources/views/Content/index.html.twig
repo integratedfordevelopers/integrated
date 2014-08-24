@@ -114,7 +114,11 @@
                     {% for key, facet in facets %}
                         <div class="item_row">
                             <h3 class="title">
-                                {{ key|capitalize }}
+                                {% if key == 'contenttypes' %}
+                                    {% trans %}Content types{% endtrans %}
+                                {% else %}
+                                    {{ key|capitalize }}
+                                {% endif %}
                             </h3>
                             <ul class="filters_list">
                                 {% for title, count in facet %}

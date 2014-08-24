@@ -1,4 +1,4 @@
-{% use "IntegratedFormTypeBundle:Form:form_div_layout.html.twig" with form_row as base_form_row %}
+{% use "IntegratedFormTypeBundle:Form:form_div_layout.html.twig" %}
 
 {% block content_type_field_collection_widget %}
 {% spaceless %}
@@ -123,7 +123,7 @@
 
 {% block integrated_relations_row %}
     <div class="form-relations" style="display: none;">
-        {{ block('base_form_row') }}
+        {{ block('form_row') }}
     </div>
 {% endblock %}
 

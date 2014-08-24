@@ -22,14 +22,14 @@ use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeField as Tra
 class ContentTypeField extends AbstractType
 {
     /**
-     * @var Metadata\ContentTypeField
+     * @var Metadata\ContentTypeAttribute
      */
     protected $contentTypeField;
 
     /**
-     * @param Metadata\ContentTypeField $contentTypeField
+     * @param Metadata\ContentTypeAttribute $contentTypeField
      */
-    public function __construct(Metadata\ContentTypeField $contentTypeField)
+    public function __construct(Metadata\ContentTypeAttribute $contentTypeField)
     {
         $this->contentTypeField = $contentTypeField;
     }

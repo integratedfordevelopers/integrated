@@ -22,7 +22,7 @@ use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeFieldCollect
 class ContentTypeFieldCollection extends AbstractType
 {
     /**
-     * @var Metadata\ContentTypeField[]
+     * @var Metadata\ContentTypeAttribute[]
      */
     protected $fields;
 

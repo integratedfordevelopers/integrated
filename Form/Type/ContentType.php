@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\DefinitionTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Integrated\Common\ContentType\Mapping\Metadata;
@@ -38,23 +39,17 @@ class ContentType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'class',
-            'hidden'
-        );
+        $builder->add('class', 'hidden');
+        $builder->add('name', 'text', ['label' => 'Name']);
 
-        $builder->add(
-            'name',
-            'text',
-            array(
-                'label' => 'Name',
-            )
-        );
+        $builder->add('fields', new ContentTypeFieldCollection($this->contentType->getFields()));
 
-        $builder->add(
-            'fields',
-            new ContentTypeFieldCollection($this->contentType->getFields())
-        );
+		foreach ($this->contentType->getOptions() as $option) {
+			$ype = $builder->create('options_' . $option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
+				->setPropertyPath('options[' . $option->getName() . ']');
+
+			$builder->add($ype);
+		}
     }
 
     /**

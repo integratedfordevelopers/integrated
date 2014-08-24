@@ -21,10 +21,10 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
-use Integrated\Common\Content\MetadatableInterface;
-use Integrated\Common\Content\ContentInterface;
-
 use Integrated\Common\Content\MetadataInterface;
+use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Content\RegistryInterface;
+
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 
 /**
@@ -37,7 +37,7 @@ use Integrated\Common\ContentType\Mapping\Annotations as Type;
  * @ODM\DiscriminatorField(fieldName="class")
  * @ODM\HasLifecycleCallbacks
  */
-class Content implements ContentInterface, ExtensibleInterface, MetadatableInterface
+class Content implements ContentInterface, ExtensibleInterface, MetadataInterface
 {
 	use ExtensibleTrait;
 
@@ -98,6 +98,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->publishedAt = new \DateTime();
         $this->relations = new ArrayCollection();
         $this->updatedAt = new \DateTime();
     }
@@ -365,7 +366,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadatableInter
 	/**
 	 * @inheritdoc
 	 */
-	public function setMetadata(MetadataInterface $metadata = null)
+	public function setMetadata(RegistryInterface $metadata = null)
 	{
 		if ($metadata !== null && !$metadata instanceof Metadata) {
 			$metadata = new Metadata($metadata->toArray());

@@ -21,14 +21,14 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 class ContentTypeField implements DataTransformerInterface
 {
     /**
-     * @var Metadata\ContentTypeField
+     * @var Metadata\ContentTypeAttribute
      */
     private $contentTypeField;
 
     /**
-     * @param Metadata\ContentTypeField $contentTypeField
+     * @param Metadata\ContentTypeAttribute $contentTypeField
      */
-    public function __construct(Metadata\ContentTypeField $contentTypeField)
+    public function __construct(Metadata\ContentTypeAttribute $contentTypeField)
     {
         $this->contentTypeField = $contentTypeField;
     }
@@ -50,7 +50,6 @@ class ContentTypeField implements DataTransformerInterface
         }
 
         return array();
-
     }
 
     /**
