@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="integrated_content_channel_index" path="/" methods="GET">
+        <default key="_controller">IntegratedContentBundle:Channel:index</default>
+    </route>
+
+    <route id="integrated_content_channel_new" path="/new" methods="GET">
+        <default key="_controller">IntegratedContentBundle:Channel:new</default>
+    </route>
+
+    <route id="integrated_content_channel_create" path="/" methods="POST">
+        <default key="_controller">IntegratedContentBundle:Channel:create</default>
+    </route>
+
+    <route id="integrated_content_channel_edit" path="/{id}/edit" methods="GET">
+        <default key="_controller">IntegratedContentBundle:Channel:edit</default>
+    </route>
+
+    <route id="integrated_content_channel_update" path="/{id}" methods="PUT">
+        <default key="_controller">IntegratedContentBundle:Channel:update</default>
+    </route>
+
+    <route id="integrated_content_channel_delete" path="/{id}" methods="DELETE">
+        <default key="_controller">IntegratedContentBundle:Channel:delete</default>
+    </route>
+
+
+    <route id="integrated_content_channel_show" path="/{id}" methods="GET">
+        <default key="_controller">IntegratedContentBundle:Channel:show</default>
+    </route>
+
+</routes>
