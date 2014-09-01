@@ -93,6 +93,12 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     protected $metadata = null;
 
     /**
+     * @var Collection
+     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
+     */
+    protected $channels;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -101,6 +107,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         $this->publishedAt = new \DateTime();
         $this->relations = new ArrayCollection();
         $this->updatedAt = new \DateTime();
+        $this->channels = new ArrayCollection();
     }
 
     /**
@@ -375,6 +382,24 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 		$this->metadata = $metadata;
 		return $this;
 	}
+
+    /**
+     * @param Collection $channels
+     * @return $this
+     */
+    public function setChannels(Collection $channels)
+    {
+        $this->channels = $channels;
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChannels()
+    {
+        return $this->channels;
+    }
 
     /**
      * @ODM\PreUpdate
