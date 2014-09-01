@@ -81,53 +81,6 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addReference function
-     */
-    public function testAddReferenceFunction()
-    {
-        /* @var $content \Integrated\Common\Content\ContentInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $content = $this->getMock('Integrated\Common\Content\ContentInterface');
-
-        // Stub getContentType
-        $content->expects($this->once())
-            ->method('getContentType')
-            ->will($this->returnValue('contentType'));
-
-        // Asserts
-        $this->assertSame($this->content, $this->content->addReference($content));
-        $this->assertSame($content, $this->content->getRelation('contentType')->getReferences()->first());
-    }
-
-    /**
-     * Test addReference function with two contentTypes
-     */
-    public function testAddReferenceFunctionWithTwoContentTypes()
-    {
-        /* @var $content1 \Integrated\Common\Content\ContentInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $content1 = $this->getMock('Integrated\Common\Content\ContentInterface');
-
-        // Stub getContentType
-        $content1->expects($this->once())
-            ->method('getContentType')
-            ->will($this->returnValue('contentType1'));
-
-        $this->content->addReference($content1);
-
-        /* @var $content2 \Integrated\Common\Content\ContentInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $content2 = $this->getMock('Integrated\Common\Content\ContentInterface');
-
-        // Stub getContentType
-        $content2->expects($this->once())
-            ->method('getContentType')
-            ->will($this->returnValue('contentType2'));
-
-        $this->content->addReference($content2);
-
-        // Asserts
-        $this->assertCount(2, $this->content->getRelations());
-    }
-
-    /**
      * Test removeReference function
      */
     public function testRemoveRelationFunction()
@@ -185,44 +138,17 @@ class ContentTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetMetadataFunction()
     {
-        $metadata = array('key' => 'value');
+        /* @var $metadata \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata | \PHPUnit_Framework_MockObject_MockObject */
+        $metadata = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata');
         $this->assertSame($metadata, $this->content->setMetadata($metadata)->getMetadata());
     }
 
     /**
-     * Test addMetadata function
+     * Test get- and setChannelsFunction
      */
-    public function testAddMetadataFunction()
+    public function testGetAndSetChannelsFunction()
     {
-        $metadata = array('key' => 'value');
-
-        $this->assertSame($this->content, $this->content->setMetadata($metadata));
-        $this->assertSame($this->content, $this->content->addMetadata('key2', 'value2'));
-        $this->assertCount(2, $this->content->getMetadata());
-    }
-
-    /**
-     * Test removeMetadata function
-     */
-    public function testRemoveMetadataFunction()
-    {
-        $metadata = array('key' => 'value');
-
-        $this->assertSame($this->content, $this->content->setMetadata($metadata));
-        $this->assertSame('value', $this->content->removeMetadata('key'));
-        $this->assertCount(0, $this->content->getMetadata());
-    }
-
-    /**
-     * Test removeMetadata function with invalid metadata key
-     */
-    public function testRemoveMetadataFunctionWithInvalidMetadataKey()
-    {
-        // Set metadata
-        $metadata = array('key' => 'value');
-        $this->content->setMetadata($metadata);
-
-        // Asserts
-        $this->assertFalse($this->content->removeMetadata('key2'));
+        $channels = new ArrayCollection();
+        $this->assertSame($channels, $this->content->setChannels($channels)->getChannels());
     }
 }
