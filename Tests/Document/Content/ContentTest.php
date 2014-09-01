@@ -138,44 +138,8 @@ class ContentTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetMetadataFunction()
     {
-        $metadata = array('key' => 'value');
+        /* @var $metadata \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata | \PHPUnit_Framework_MockObject_MockObject */
+        $metadata = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata');
         $this->assertSame($metadata, $this->content->setMetadata($metadata)->getMetadata());
-    }
-
-    /**
-     * Test addMetadata function
-     */
-    public function testAddMetadataFunction()
-    {
-        $metadata = array('key' => 'value');
-
-        $this->assertSame($this->content, $this->content->setMetadata($metadata));
-        $this->assertSame($this->content, $this->content->addMetadata('key2', 'value2'));
-        $this->assertCount(2, $this->content->getMetadata());
-    }
-
-    /**
-     * Test removeMetadata function
-     */
-    public function testRemoveMetadataFunction()
-    {
-        $metadata = array('key' => 'value');
-
-        $this->assertSame($this->content, $this->content->setMetadata($metadata));
-        $this->assertSame('value', $this->content->removeMetadata('key'));
-        $this->assertCount(0, $this->content->getMetadata());
-    }
-
-    /**
-     * Test removeMetadata function with invalid metadata key
-     */
-    public function testRemoveMetadataFunctionWithInvalidMetadataKey()
-    {
-        // Set metadata
-        $metadata = array('key' => 'value');
-        $this->content->setMetadata($metadata);
-
-        // Asserts
-        $this->assertFalse($this->content->removeMetadata('key2'));
     }
 }
