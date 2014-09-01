@@ -142,4 +142,13 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $metadata = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata');
         $this->assertSame($metadata, $this->content->setMetadata($metadata)->getMetadata());
     }
+
+    /**
+     * Test get- and setChannelsFunction
+     */
+    public function testGetAndSetChannelsFunction()
+    {
+        $channels = new ArrayCollection();
+        $this->assertSame($channels, $this->content->setChannels($channels)->getChannels());
+    }
 }
