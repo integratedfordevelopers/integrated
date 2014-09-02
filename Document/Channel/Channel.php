@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Common\Content\ChannelInterface;
 
 /**
  * Channel document
@@ -21,7 +22,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *
  * @ODM\Document(collection="channels")
  */
-class Channel
+class Channel implements ChannelInterface
 {
     /**
      * @var string

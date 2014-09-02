@@ -19,6 +19,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 
+use Integrated\Common\Content\ChannelableInterface;
+use Integrated\Common\Content\ChannelInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
 use Integrated\Common\Content\MetadataInterface;
@@ -37,7 +39,7 @@ use Integrated\Common\ContentType\Mapping\Annotations as Type;
  * @ODM\DiscriminatorField(fieldName="class")
  * @ODM\HasLifecycleCallbacks
  */
-class Content implements ContentInterface, ExtensibleInterface, MetadataInterface
+class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
 {
 	use ExtensibleTrait;
 
@@ -384,8 +386,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 	}
 
     /**
-     * @param Collection $channels
-     * @return $this
+     * {@inheritdoc}
      */
     public function setChannels(Collection $channels)
     {
@@ -394,11 +395,31 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @return Collection
+     * {@inheritdoc}
      */
     public function getChannels()
     {
         return $this->channels;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addChannel(ChannelInterface $channel)
+    {
+        if (!$this->channels->contains($channel)) {
+            $this->channels->add($channel);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeChannel(ChannelInterface $channel)
+    {
+        return $this->channels->removeElement($channel);
     }
 
     /**
