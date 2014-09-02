@@ -47,7 +47,7 @@ interface ChannelableInterface
      * Remove Channel of the document
      *
      * @param ChannelInterface $channel
-     * @return $this
+     * @return returns true if channel is removed, false otherwise
      */
     public function removeChannel(ChannelInterface $channel);
 }
