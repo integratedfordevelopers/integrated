@@ -144,11 +144,53 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setChannelsFunction
+     * Test get- and setChannels function
      */
     public function testGetAndSetChannelsFunction()
     {
         $channels = new ArrayCollection();
         $this->assertSame($channels, $this->content->setChannels($channels)->getChannels());
+    }
+
+    /**
+     * Test addChannel function
+     */
+    public function testAddChannelFunction()
+    {
+        /* @var $channel \Integrated\Common\Content\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $channel = $this->getMock('Integrated\Common\Content\ChannelInterface');
+
+        // Check if we can add
+        $this->content->addChannel($channel);
+        $this->assertContains($channel, $this->content->getChannels());
+
+        // Duplicate check
+        $this->content->addChannel($channel);
+        $this->assertCount(1, $this->content->getChannels());
+    }
+
+    /**
+     * Test removeChannel function
+     */
+    public function testRemoveChannelFunction()
+    {
+        /* @var $channel1 \Integrated\Common\Content\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $channel1 = $this->getMock('Integrated\Common\Content\ChannelInterface');
+
+        /* @var $channel2 \Integrated\Common\Content\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $channel2 = $this->getMock('Integrated\Common\Content\ChannelInterface');
+
+        // Add channels
+        $this->content->addChannel($channel1)->addChannel($channel2);
+        $this->assertCount(2, $this->content->getChannels());
+
+        // Remove channel2
+        $this->assertTrue($this->content->removeChannel($channel2));
+
+        // Channel1 should not be removed
+        $this->assertContains($channel1, $this->content->getChannels());
+
+        // Removal of channel that is not added should return false
+        $this->assertFalse($this->content->removeChannel($channel2));
     }
 }
