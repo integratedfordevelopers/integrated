@@ -97,7 +97,7 @@ interface ContentTypeInterface
 	/**
 	 * Get all the options of this content type.
 	 *
-	 * @return string[]
+	 * @return mixed[]
 	 */
 	public function getOptions();
 
@@ -105,7 +105,7 @@ interface ContentTypeInterface
 	 * Get the value of the specified key.
 	 *
 	 * @param string $name
-	 * @return string
+	 * @return mixed
 	 */
 	public function getOption($name);
 
