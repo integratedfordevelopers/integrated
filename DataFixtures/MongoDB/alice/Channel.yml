@@ -1,0 +1,4 @@
+Integrated\Bundle\ContentBundle\Document\Channel\Channel:
+  channel{1..5}:
+    name (unique): <domainName()>
+    domains: [<url()>]
