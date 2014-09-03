@@ -43,6 +43,9 @@ class ContentType extends AbstractType
         $builder->add('name', 'text', ['label' => 'Name']);
 
         $builder->add('fields', new ContentTypeFieldCollection($this->contentType->getFields()));
+//		$builder->add('fields', 'content_type_fields', ['fields' => $this->contentType->getFields()]);
+
+		$builder->add('channels', 'content_type_channels', ['property_path' => 'options[channels]']);
 
 		foreach ($this->contentType->getOptions() as $option) {
 			$ype = $builder->create('options_' . $option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
