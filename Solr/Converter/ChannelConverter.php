@@ -41,5 +41,7 @@ class ChannelConverter extends Converter
                 }
             }
         }
+
+        return $fields;
     }
 }
