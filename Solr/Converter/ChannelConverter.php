@@ -27,17 +27,19 @@ class ChannelConverter extends Converter
      */
     public function getFields($object)
     {
-        $fields = parent::getFields($object);
+        if (!$fields = parent::getFields($object)) {
+            return null;
+        }
 
         if ($object instanceof ChannelableInterface) {
 
-            if (!isset($fields['facet_channels'])) {
+            if (!array_key_exists('facet_channels', $fields)) {
                 $fields['facet_channels'] = array();
-            }
 
-            foreach ($object->getChannels() as $channel) {
-                if ($channel instanceof ChannelInterface) {
-                    $fields['facet_channels'][] = $channel->getId();
+                foreach ($object->getChannels() as $channel) {
+                    if ($channel instanceof ChannelInterface) {
+                        $fields['facet_channels'][] = $channel->getId();
+                    }
                 }
             }
         }
