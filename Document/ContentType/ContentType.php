@@ -68,7 +68,7 @@ class ContentType implements ContentTypeInterface
     protected $relations;
 
 	/**
-	 * @var string[]
+	 * @var mixed[]
 	 * @ODM\Hash
 	 */
 	protected $options = [];
@@ -351,7 +351,7 @@ class ContentType implements ContentTypeInterface
 	 * Set the value of the specified key.
 	 *
 	 * @param string $name
-	 * @param null | string $value
+	 * @param null | mixed $value
 	 * @return $this
 	 */
 	public function setOption($name, $value = null)
@@ -359,7 +359,7 @@ class ContentType implements ContentTypeInterface
 		if ($value === null) {
 			unset($this->options[$name]);
 		} else {
-			$this->options[$name] = (string) $value;
+			$this->options[$name] = $value;
 		}
 
 		return $this;
