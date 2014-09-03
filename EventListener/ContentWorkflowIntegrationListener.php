@@ -27,7 +27,7 @@ class ContentWorkflowIntegrationListener implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return [
-			Events::POST_BUILD => ['buildForm', 99]
+			Events::POST_BUILD => ['buildForm', -90]
 		];
 	}
 
