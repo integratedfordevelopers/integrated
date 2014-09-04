@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\EventListener;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelDefaultDataListener;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelEnforcerListener;
 
 use Integrated\Common\Content\Form\Event\BuilderEvent;
@@ -119,6 +120,7 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
 				$type->addViewTransformer(new CollectionToArrayTransformer(), true);
 
 				$builder->add($type);
+				$builder->addEventSubscriber(new ChannelDefaultDataListener($default));
 			}
 
 			$builder->addEventSubscriber(new ChannelEnforcerListener($enforce, $operand));
