@@ -173,9 +173,9 @@ class { 'mysql::bindings':
 	require => Class['apache::mod::php']
 }
 
-mysql::db { 'website':
-	user     => 'website',
-	password => 'password',
+mysql::db { 'integrated':
+	user     => 'root',
+	password => '',
 	host     => 'localhost',
 	grant    => ['all'],
 }
