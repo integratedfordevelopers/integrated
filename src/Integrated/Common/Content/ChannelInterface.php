@@ -24,4 +24,18 @@ interface ChannelInterface
      * @return string
      */
     public function getId();
+
+    /**
+     * Return the name of the Channel document
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * Return the short name of the Channel document
+     *
+     * @return string
+     */
+    public function getShortName();
 }
