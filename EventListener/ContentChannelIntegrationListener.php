@@ -148,8 +148,10 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
 	 * @param array $ids
 	 * @return Channel[]
 	 */
-	protected function getChannels(array $ids = [])
+	protected function getChannels(array $ids = null)
 	{
+		if ($ids === []) { return []; }
+
 		$criteria = [];
 
 		if ($ids) {
