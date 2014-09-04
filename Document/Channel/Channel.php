@@ -70,9 +70,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * Get the id of the channel
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -108,7 +106,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -124,7 +122,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getShortName()
     {
