@@ -9,10 +9,18 @@
 		<parameter key="integrated_content.form.factory.event_dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
 		<parameter key="integrated_content.form.factory.class">Integrated\Common\Content\Form\FormFactory</parameter>
 
+		<parameter key="integrated_content.form.proxy.type.class">Integrated\Common\Form\Type\ProxyType</parameter>
+
+		<parameter key="integrated_content.form.content_type.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType</parameter>
+		<parameter key="integrated_content.form.content_type.field.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldCollectionType</parameter>
+		<parameter key="integrated_content.form.content_type.field.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldType</parameter>
+
         <parameter key="integrated_content.form.relations.class">Integrated\Bundle\ContentBundle\Form\Type\Relations</parameter>
 		<parameter key="integrated_content.form.relations.listener.class">Integrated\Bundle\ContentBundle\EventListener\RelationsFormSubscriber</parameter>
 
         <parameter key="integrated_content.form_type_image.class">Integrated\Bundle\ContentBundle\Form\Type\Image</parameter>
+
+		<parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
 
 	</parameters>
 
@@ -48,6 +56,12 @@
         <service id="integrated_content.form_type_image" class="%integrated_content.form_type_image.class%">
             <tag name="form.type" alias="integrated_image" />
         </service>
+
+		<service id="integrated_content.form.content_type.type" class="%integrated_content.form.content_type.type.class%" />
+		<service id="integrated_content.form.content_type.field.collection.type" class="%integrated_content.form.content_type.field.collection.type.class%" />
+		<service id="integrated_content.form.content_type.field.type" class="%integrated_content.form.content_type.field.type.class%" />
+
+		<service id="integrated_content.form.delete.type" class="%integrated_content.form.delete.type.class%" />
 
 	</services>
 

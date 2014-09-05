@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<services>
+
+		<service id="integrated_content.content_type.field.collection.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.content_type.field.collection.type" />
+			<argument type="string">content_type_field_collection</argument>
+
+			<tag name="form.type" alias="content_type_field_collection" />
+		</service>
+
+		<service id="integrated_content.content_type.field.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.content_type.field.type" />
+			<argument type="string">content_type_field</argument>
+
+			<tag name="form.type" alias="content_type_field" />
+		</service>
+
+		<service id="integrated_content.content_type.edit.form.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.content_type.type" />
+			<argument type="string">content_type_new</argument>
+
+			<tag name="form.type" alias="content_type_new" />
+		</service>
+
+		<service id="integrated_content.content_type.new.form.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.content_type.type" />
+			<argument type="string">content_type_edit</argument>
+
+			<tag name="form.type" alias="content_type_edit" />
+		</service>
+
+		<service id="integrated_content.content_type.delete.form.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.delete.type" />
+			<argument type="string">content_type_delete</argument>
+
+			<tag name="form.type" alias="content_type_delete" />
+		</service>
+
+	</services>
+
+</container>

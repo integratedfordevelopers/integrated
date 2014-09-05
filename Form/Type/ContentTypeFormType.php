@@ -11,40 +11,32 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\DefinitionTransformer;
+use Integrated\Common\ContentType\Mapping\MetadataInterface;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Integrated\Common\ContentType\Mapping\Metadata;
+
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentType extends AbstractType
+class ContentTypeFormType extends AbstractType
 {
-    /**
-     * @var Metadata\ContentType
-     */
-    protected $contentType;
-
-    /**
-     * @param Metadata\ContentType $contentType
-     */
-    public function __construct(Metadata\ContentType $contentType)
-    {
-        $this->contentType = $contentType;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * @inheritdoc
+	 */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+		/** @var MetadataInterface $metadata */
+		$metadata = $options['metadata'];
+
         $builder->add('class', 'hidden');
         $builder->add('name', 'text', ['label' => 'Name']);
 
-        $builder->add('fields', new ContentTypeFieldCollection($this->contentType->getFields()));
+		$builder->add('fields', 'content_type_field_collection', ['metadata' => $metadata]);
 
-		foreach ($this->contentType->getOptions() as $option) {
+		foreach ($metadata->getOptions() as $option) {
 			$ype = $builder->create('options_' . $option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
 				->setPropertyPath('options[' . $option->getName() . ']');
 
@@ -52,11 +44,20 @@ class ContentType extends AbstractType
 		}
     }
 
-    /**
-     * {@inheritdoc}
-     */
+	/**
+	 * @inheritdoc
+	 */
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
+	{
+		$resolver->setRequired(['metadata']);
+		$resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\ContentType\\Mapping\\MetadataInterface']);
+	}
+
+	/**
+	 * @inheritdoc
+	 */
     public function getName()
     {
-        return 'content_type';
+        return 'integrated_content_type';
     }
 }
