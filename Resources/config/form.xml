@@ -23,6 +23,8 @@
         <parameter key="integrated_content.form_type_image.class">Integrated\Bundle\ContentBundle\Form\Type\Image</parameter>
         <parameter key="integrated_content.form.type.csv_array.class">Integrated\Bundle\ContentBundle\Form\Type\CsvArray</parameter>
 
+        <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\Channel</parameter>
+
 	</parameters>
 
 	<services>
@@ -84,6 +86,10 @@
 			<argument type="service" id="integrated_content.form.content_type.channel.repository" />
 		</service>
 		<service id="integrated_content.form.content_type.channel.type" class="%integrated_content.form.content_type.channel.type.class%" />
+
+        <service id="integrated_content.form.type.channel" class="%integrated_content.form.type.channel.class%">
+            <tag name="form.type" alias="channel" />
+        </service>
 
 	</services>
 
