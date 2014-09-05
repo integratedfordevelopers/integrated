@@ -16,6 +16,7 @@
                 <thead>
                 <tr>
                     <th>{% trans %}Name{% endtrans %}</th>
+                    <th>{% trans %}Short name{% endtrans %}</th>
                     <th>{% trans %}Domains{% endtrans %}</th>
                     <th>{% trans %}Created{% endtrans %}</th>
                     <th>{% trans %}Actions{% endtrans %}</th>
@@ -28,6 +29,9 @@
                             <a href="{{ path('integrated_content_channel_show', {'id': document.id}) }}">
                                 {{ document.name }}
                             </a>
+                        </td>
+                        <td>
+                            {{ document.shortName }}
                         </td>
                         <td>
                             {{ document.domains|join(', ') }}

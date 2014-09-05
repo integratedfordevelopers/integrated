@@ -204,7 +204,7 @@ class ChannelController extends Controller
     protected function createCreateForm(Channel $channel)
     {
         $form = $this->createForm(
-            new Form\Channel(),
+            $this->get('integrated_content.form.type.channel'),
             $channel,
             array(
                 'action' => $this->generateUrl('integrated_content_channel_create'),
@@ -226,7 +226,7 @@ class ChannelController extends Controller
     protected function createEditForm(Channel $channel)
     {
         $form = $this->createForm(
-            new Form\Channel(),
+            $this->get('integrated_content.form.type.channel'),
             $channel,
             array(
                 'action' => $this->generateUrl('integrated_content_channel_update', array('id' => $channel->getId())),

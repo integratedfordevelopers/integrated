@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<services>
+
+		<service id="integrated_content.content_type.channels.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.content_type.channels.type" />
+			<argument type="string">content_type_channels</argument>
+
+			<tag name="form.type" alias="content_type_channels" />
+		</service>
+
+		<service id="integrated_content.content_type.channel.collection.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.content_type.channel.collection.type" />
+			<argument type="string">content_type_channel_collection</argument>
+
+			<tag name="form.type" alias="content_type_channel_collection" />
+		</service>
+
+		<service id="integrated_content.content_type.channel.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.content_type.channel.type" />
+			<argument type="string">content_type_channel</argument>
+
+			<tag name="form.type" alias="content_type_channel" />
+		</service>
+
+	</services>
+
+</container>

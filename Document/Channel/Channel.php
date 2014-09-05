@@ -11,7 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Integrated\Common\Content\ChannelInterface;
 
@@ -21,6 +24,7 @@ use Integrated\Common\Content\ChannelInterface;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
  * @ODM\Document(collection="channels")
+ * @MongoDBUnique(fields="shortName")
  */
 class Channel implements ChannelInterface
 {
@@ -32,16 +36,30 @@ class Channel implements ChannelInterface
 
     /**
      * @var string the name of the channel
+     * @Assert\NotBlank()
      * @ODM\String
      * @ODM\Index
      */
     protected $name;
 
     /**
+     * @var string the unique name of the channel
+     * @ODM\String
+     * @ODM\UniqueIndex
+     */
+    protected $shortName;
+
+    /**
      * @var array
      * @ODM\Collection
      */
     protected $domains;
+
+    /**
+     * @var mixed[]
+     * @ODM\Hash
+     */
+    protected $options = [];
 
     /**
      * @var \DateTime
@@ -58,9 +76,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * Get the id of the channel
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -86,15 +102,37 @@ class Channel implements ChannelInterface
     public function setName($name)
     {
         $this->name = $name;
+
+        // TODO use sluggable extension
+        if (null === $this->shortName) {
+            $this->setShortName(trim(strtolower(str_replace(' ', '_', $this->name))));
+        }
+
         return $this;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $shortName
+     */
+    public function setShortName($shortName)
+    {
+        $this->shortName = $shortName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShortName()
+    {
+        return $this->shortName;
     }
 
     /**
@@ -113,6 +151,70 @@ class Channel implements ChannelInterface
     public function getDomains()
     {
         return $this->domains;
+    }
+
+    /**
+     * @return \mixed[]
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Overrider all the option with a new set of values for this content type
+     *
+     * @param string[] $options
+     * @return $this
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = [];
+
+        foreach ($options as $name => $value) {
+            $this->setOption($name, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param $name
+     * @return mixed|null
+     */
+    public function getOption($name)
+    {
+        if (isset($this->options[$name])) {
+            return $this->options[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Set the value of the specified key.
+     *
+     * @param string $name
+     * @param null | mixed $value
+     * @return $this
+     */
+    public function setOption($name, $value = null)
+    {
+        if ($value === null) {
+            unset($this->options[$name]);
+        } else {
+            $this->options[$name] = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasOption($name)
+    {
+        return isset($this->options[$name]);
     }
 
     /**
