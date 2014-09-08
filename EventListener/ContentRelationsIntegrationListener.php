@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RelationsFormSubscriber implements EventSubscriberInterface
+class ContentRelationsIntegrationListener implements EventSubscriberInterface
 {
 	/**
 	 * @var string
@@ -47,12 +47,12 @@ class RelationsFormSubscriber implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return [
-			Events::POST_BUILD => ['buildForm', 99]
+			Events::POST_BUILD => ['buildForm', 90]
 		];
 	}
 
 	public function buildForm(BuilderEvent $event)
 	{
-		$event->getBuilder()->add($this->name, $this->type, ['relations' => $event->getContentType()->getRelations()]);
+		$event->getBuilder()->add($this->name, $this->type, ['content_type' => $event->getContentType()]);
 	}
 }

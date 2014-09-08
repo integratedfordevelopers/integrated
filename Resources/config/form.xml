@@ -9,14 +9,16 @@
 		<parameter key="integrated_content.form.factory.event_dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
 		<parameter key="integrated_content.form.factory.class">Integrated\Common\Content\Form\FormFactory</parameter>
 
+		<parameter key="integrated_content.form.relations.listener.class">Integrated\Bundle\ContentBundle\EventListener\ContentRelationsIntegrationListener</parameter>
+
 		<parameter key="integrated_content.form.proxy.type.class">Integrated\Common\Form\Type\ProxyType</parameter>
+
+		<parameter key="integrated_content.form.content.relations.type.class">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</parameter>
 
 		<parameter key="integrated_content.form.content_type.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType</parameter>
 		<parameter key="integrated_content.form.content_type.field.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldCollectionType</parameter>
 		<parameter key="integrated_content.form.content_type.field.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldType</parameter>
-
-        <parameter key="integrated_content.form.relations.class">Integrated\Bundle\ContentBundle\Form\Type\Relations</parameter>
-		<parameter key="integrated_content.form.relations.listener.class">Integrated\Bundle\ContentBundle\EventListener\RelationsFormSubscriber</parameter>
+		<parameter key="integrated_content.form.content_type.relation.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeRelationFormType</parameter>
 
         <parameter key="integrated_content.form_type_image.class">Integrated\Bundle\ContentBundle\Form\Type\Image</parameter>
 
@@ -40,15 +42,9 @@
 		<service id="integrated.form.resolver" alias="integrated_content.resolver.priority" />
 		<service id="integrated.form.factory" alias="integrated_content.form.factory" />
 
-		<service id="integrated_content.form.relations" class="%integrated_content.form.relations.class%">
-			<argument type="service" id="doctrine_mongodb"/>
-
-			<tag name="form.type" alias="integrated_relations" />
-		</service>
-
 		<service id="integrated_content.form.relations.listener" class="%integrated_content.form.relations.listener.class%">
 			<argument type="string">relations</argument>
-			<argument type="string">integrated_relations</argument>
+			<argument type="string">content_relations</argument>
 
 			<tag name="integrated_content.form.event_subscriber" />
 		</service>
@@ -57,9 +53,14 @@
             <tag name="form.type" alias="integrated_image" />
         </service>
 
+		<service id="integrated_content.form.content.relations.type" class="%integrated_content.form.content.relations.type.class%">
+			<argument type="service" id="doctrine_mongodb"/>
+		</service>
+
 		<service id="integrated_content.form.content_type.type" class="%integrated_content.form.content_type.type.class%" />
 		<service id="integrated_content.form.content_type.field.collection.type" class="%integrated_content.form.content_type.field.collection.type.class%" />
 		<service id="integrated_content.form.content_type.field.type" class="%integrated_content.form.content_type.field.type.class%" />
+		<service id="integrated_content.form.content_type.relation.type" class="%integrated_content.form.content_type.relation.type.class%" />
 
 		<service id="integrated_content.form.delete.type" class="%integrated_content.form.delete.type.class%" />
 

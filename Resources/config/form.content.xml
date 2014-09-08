@@ -6,7 +6,14 @@
 
 	<services>
 
-		<service id="integrated_workflow.definition.delete.form.type" class="%integrated_workflow.form.proxy.type.class%">
+		<service id="integrated_content.content.relations.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.content.relations.type" />
+			<argument type="string">content_relations</argument>
+
+			<tag name="form.type" alias="content_relations" />
+		</service>
+
+		<service id="integrated_content.content.delete.form.type" class="%integrated_content.form.proxy.type.class%">
 			<argument type="service" id="integrated_content.form.delete.type" />
 			<argument type="string">content_delete</argument>
 
