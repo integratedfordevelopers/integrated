@@ -142,7 +142,8 @@ class ContentTypeController extends Controller
      */
     public function createAction(Request $request)
     {
-		$metadata = $this->getMetadata()->getMetadata($request->get('content_type')['class']);
+		// @TODO: this should be passed by a query variable instead of this way
+		$metadata = $this->getMetadata()->getMetadata($request->get('content_type_new')['class']);
 
         if (!$metadata) {
             return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
@@ -321,7 +322,7 @@ class ContentTypeController extends Controller
 			$contentType,
 			[
 				'action'   => $this->generateUrl('integrated_content_content_type_update', ['id' => $contentType->getId()]),
-				'method'   => 'POST',
+				'method'   => 'PUT',
 				'metadata' => $metadata
 			],
 			[
