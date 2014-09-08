@@ -7,13 +7,13 @@
 	<parameters>
 
 		<parameter key="integrated_content.odm.mongo.manager_configurator.class">Integrated\Bundle\ContentBundle\Configurator\ManagerConfigurator</parameter>
-        <parameter key="integrated_content.odm.mongo.cleanreferences.subscriber.class">Integrated\Bundle\ContentBundle\EventListener\CleanReferencesSubscriber</parameter>
+        <parameter key="integrated_content.odm.mongo.cleanreferences.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CleanReferencesListener</parameter>
 
 	</parameters>
 
 	<services>
 
-        <service id="integrated_content.odm.mongo.cleanreferences.subscriber" class="%integrated_content.odm.mongo.cleanreferences.subscriber.class%">
+        <service id="integrated_content.odm.mongo.cleanreferences.listener" class="%integrated_content.odm.mongo.cleanreferences.listener.class%">
             <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
         </service>
 
