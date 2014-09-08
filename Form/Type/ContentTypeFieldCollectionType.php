@@ -35,7 +35,7 @@ class ContentTypeFieldCollectionType extends AbstractType
 
 		foreach ($metadata->getFields() as $field) {
 			$builder->add($field->getName(), 'content_type_field', [
-				'label' => $field->getOption('label'),
+				'label' => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
 				'field' => $field,
 			]);
         }

@@ -35,7 +35,7 @@ class ContentTypeFieldType extends AbstractType
 
 		$builder->add('enabled', 'checkbox', [
 			'required' => false,
-			'label'    => $field->getOption('label'),
+			'label'    => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
 		]);
 
 		$builder->add('required', 'checkbox', ['required' => false]);
