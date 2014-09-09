@@ -25,19 +25,19 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class IntegratedLockingExtension extends Extension
 {
-	/**
-	 * Load the configuration
-	 *
-	 * @param array $configs
-	 * @param ContainerBuilder $container
-	 */
-	public function load(array $configs, ContainerBuilder $container)
-	{
-		$loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+    /**
+     * Load the configuration
+     *
+     * @param array $configs
+     * @param ContainerBuilder $container
+     */
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-		$loader->load('locking.xml');
+        $loader->load('locking.xml');
 
-		$configuration = new Configuration();
-		$config = $this->processConfiguration($configuration, $configs);
-	}
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+    }
 }

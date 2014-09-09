@@ -23,66 +23,66 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ApiController extends Controller
 {
-	public function refreshAction(Request $request)
-	{
-		if (!$this->has('integrated_locking.dbal.manager')) {
-			$response = [
-				'code'    => 403,
-				'message' => 'Locking is not enabled'
-			];
+    public function refreshAction(Request $request)
+    {
+        if (!$this->has('integrated_locking.dbal.manager')) {
+            $response = [
+                'code' => 403,
+                'message' => 'Locking is not enabled'
+            ];
 
-			return new JsonResponse($response, $response['code']);
-		}
+            return new JsonResponse($response, $response['code']);
+        }
 
-		if (!$owner = $this->getUser()) {
-			$response = [
-				'code'    => 401,
-				'message' => 'Valid user is required'
-			];
+        if (!$owner = $this->getUser()) {
+            $response = [
+                'code' => 401,
+                'message' => 'Valid user is required'
+            ];
 
-			return new JsonResponse($response, $response['code']);
-		}
+            return new JsonResponse($response, $response['code']);
+        }
 
-		$owner = Locks\Resource::fromAccount($owner);
+        $owner = Locks\Resource::fromAccount($owner);
 
-		// get the lock and check if the lock is set by the current use else do nothing
+        // get the lock and check if the lock is set by the current use else do nothing
 
-		if (!$lock = $request->query->get('lock')) {
-			$response = [
-				'code'    => 400,
-				'message' => 'Missing lock identifier'
-			];
+        if (!$lock = $request->query->get('lock')) {
+            $response = [
+                'code' => 400,
+                'message' => 'Missing lock identifier'
+            ];
 
-			return new JsonResponse($response, $response['code']);
-		}
+            return new JsonResponse($response, $response['code']);
+        }
 
-		/** @var Locks\ManagerInterface $service */
-		$service = $this->get('integrated_locking.dbal.manager');
+        /** @var Locks\ManagerInterface $service */
+        $service = $this->get('integrated_locking.dbal.manager');
 
-		if (!$lock = $service->find($lock)) {
-			$response = [
-				'code' => 404,
-				'message' => 'The lock could not be found'
-			];
+        if (!$lock = $service->find($lock)) {
+            $response = [
+                'code' => 404,
+                'message' => 'The lock could not be found'
+            ];
 
-			return new JsonResponse($response, $response['code']);
-		}
+            return new JsonResponse($response, $response['code']);
+        }
 
-		$response = [
-			'code'    => 200,
-			'message' => 'The lock could not be extended',
-			'lock'    => null
-		];
+        $response = [
+            'code' => 200,
+            'message' => 'The lock could not be extended',
+            'lock' => null
+        ];
 
-		if ($owner->equals($lock->getRequest()->getOwner())) {
-			// only the owner can extends the lock.
+        if ($owner->equals($lock->getRequest()->getOwner())) {
+            // only the owner can extends the lock.
 
-			if ($lock = $service->refresh($lock)) {
-				$response['message'] = 'The lock is extended';
-				$response['lock'] = $lock->getId();
-			}
-		}
+            if ($lock = $service->refresh($lock)) {
+                $response['message'] = 'The lock is extended';
+                $response['lock'] = $lock->getId();
+            }
+        }
 
-		return new JsonResponse($response, $response['code']);
-	}
+        return new JsonResponse($response, $response['code']);
+    }
 } 
