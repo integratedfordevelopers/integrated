@@ -9,13 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content;
+namespace Integrated\Common\Content\Channel;
 
 /**
  * Interface for Channel documents
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-interface ChannelInterface extends Channel\ChannelInterface
+interface ChannelInterface
 {
+    /**
+     * Return the id of the Channel document
+     *
+     * @return string
+     */
+    public function getId();
 }
