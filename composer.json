@@ -59,7 +59,7 @@
         "bin-dir": "bin"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
+    "prefer-stable": false,
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
