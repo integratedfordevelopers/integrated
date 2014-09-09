@@ -9,6 +9,8 @@
         <parameter key="integrated_formtype_form_type_datetime.class">Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType</parameter>
         <parameter key="integrated_formtype_form_type_wysihtml5x.class">Integrated\Bundle\FormTypeBundle\Form\Type\WysiHtml5xType</parameter>
         <parameter key="integrated_formtype_form_type_TinyMCE.class">Integrated\Bundle\FormTypeBundle\Form\Type\TinyMCEType</parameter>
+        <parameter key="integrated_formtype_form_type_select2.class">Integrated\Bundle\FormTypeBundle\Form\Type\Select2Type</parameter>
+        <parameter key="integrated_formtype_form_type_author.class">Integrated\Bundle\FormTypeBundle\Form\Type\AuthorType</parameter>
 
     </parameters>
 
@@ -22,6 +24,14 @@
         </service>
         <service id="integrated_formtype_form_type_wysihtml5x" class="%integrated_formtype_form_type_wysihtml5x.class%">
             <tag name="form.type" alias="integrated_wysihtml5x" />
+        </service>
+        <service id="integrated_formtype_form_type_select2" class="%integrated_formtype_form_type_select2.class%">
+            <tag name="form.type" alias="integrated_select2" />
+        </service>
+        <service id="integrated_formtype_form_type_author" class="%integrated_formtype_form_type_author.class%" scope="request">
+            <argument type="service" id="doctrine_mongodb" />
+            <argument type="service" id="request" />
+            <tag name="form.type" alias="integrated_author" />
         </service>
 
     </services>
