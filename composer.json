@@ -24,7 +24,7 @@
 		"symfony/security": "~2.4",
 		"symfony/serializer": "~2.4",
 		"symfony/validator": "~2.4",
-		"doctrine/orm": "dev-master",
+		"doctrine/orm": "~2.4",
 		"doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
         "solarium/solarium": "3.2.0"
