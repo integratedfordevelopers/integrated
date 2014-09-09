@@ -1,3 +1,10 @@
+## 0.2.2 ##
+
+Other
+<ul>
+<li>Fixed another dependency problem</li>
+</ul>
+
 ## 0.2.1 ##
 
 Other
