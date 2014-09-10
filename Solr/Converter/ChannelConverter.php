@@ -38,7 +38,7 @@ class ChannelConverter extends Converter
 
                 foreach ($object->getChannels() as $channel) {
                     if ($channel instanceof ChannelInterface) {
-                        $fields['facet_channels'][] = $channel->getId();
+                        $fields['facet_channels'][] = $channel->getShortName();
                     }
                 }
             }

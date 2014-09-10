@@ -36,8 +36,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ContentController extends Controller
 {
 	/**
-	 *
-	 *
 	 * @Template()
 	 * @return array
 	 */
@@ -75,6 +73,7 @@ class ContentController extends Controller
 
         $facetSet = $query->getFacetSet();
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
+        $facetSet->createFacetField('channels')->setField('facet_channels');
 
         // TODO this code should be somewhere else
         $relation = $request->query->get('relation');
@@ -112,6 +111,24 @@ class ContentController extends Controller
                     ->setQuery('type_name: ((%1%))', [implode(') OR (', array_map($filter, $contentType))]);
             }
         }
+
+        // TODO this should be somewhere else:
+        $channels = $request->query->get('channels');
+        if (is_array($channels)) {
+
+            if (count($channels)) {
+                $helper = $query->getHelper();
+                $filter = function($param) use($helper) {
+                    return $helper->escapePhrase($param);
+                };
+
+                $query
+                    ->createFilterQuery('channels')
+                    ->addTag('channels')
+                    ->setQuery('facet_channels: ((%1%))', [implode(') OR (', array_map($filter, $channels))]);
+            }
+        }
+
 
         if ($request->isMethod('post')) {
             $id = (array) $request->get('id');
@@ -185,7 +202,7 @@ class ContentController extends Controller
 			'params'       => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
 			'pager'        => $paginator,
             'contentTypes' => $displayTypes,
-            'active'       => $contentType,
+            'active'       => array('contenttypes' => $contentType, 'channels' => $channels),
             'facets'       => $result->getFacetSet()->getFacets(),
 			'locks'        => $this->getLocks($paginator)
 		);
