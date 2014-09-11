@@ -131,6 +131,12 @@
                                             {% else %}
                                                 {{ title }}
                                             {% endif %}
+                                        {% elseif key == 'channels' %}
+                                            {% if channels[title] is defined %}
+                                                {{ channels[title] }}
+                                            {% else %}
+                                                {{ title }}
+                                            {% endif %}
                                         {% else %}
                                             {{ title }}
                                         {% endif %}

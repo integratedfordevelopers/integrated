@@ -113,10 +113,10 @@ class ContentController extends Controller
         }
 
         // TODO this should be somewhere else:
-        $channels = $request->query->get('channels');
-        if (is_array($channels)) {
+        $activeChannels = $request->query->get('channels');
+        if (is_array($activeChannels)) {
 
-            if (count($channels)) {
+            if (count($activeChannels)) {
                 $helper = $query->getHelper();
                 $filter = function($param) use($helper) {
                     return $helper->escapePhrase($param);
@@ -125,7 +125,7 @@ class ContentController extends Controller
                 $query
                     ->createFilterQuery('channels')
                     ->addTag('channels')
-                    ->setQuery('facet_channels: ((%1%))', [implode(') OR (', array_map($filter, $channels))]);
+                    ->setQuery('facet_channels: ((%1%))', [implode(') OR (', array_map($filter, $activeChannels))]);
             }
         }
 
@@ -197,12 +197,23 @@ class ContentController extends Controller
 			['sortFieldParameterName' => null]
 		);
 
+        /** @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $channels = array();
+        if ($channelResult = $dm->getRepository('Integrated\Bundle\ContentBundle\Document\Channel\Channel')->findAll()) {
+            /** @var $channel \Integrated\Bundle\ContentBundle\Document\Channel\Channel */
+            foreach ($channelResult as $channel) {
+                $channels[$channel->getShortName()] = $channel->getName();
+            }
+        }
+
 		return array(
 			'types'        => $types,
 			'params'       => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
 			'pager'        => $paginator,
             'contentTypes' => $displayTypes,
-            'active'       => array('contenttypes' => $contentType, 'channels' => $channels),
+            'active'       => array('contenttypes' => $contentType, 'channels' => $activeChannels),
+            'channels'     => $channels,
             'facets'       => $result->getFacetSet()->getFacets(),
 			'locks'        => $this->getLocks($paginator)
 		);
