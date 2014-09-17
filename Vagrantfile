@@ -17,24 +17,28 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
 
-  # currently rsync is used as default for performance reasons, although a sync
+  config.vm.synced_folder ".", "/vagrant", id: "share_id"
+
+  # on a Mac you can use nfs for performance reasons
+  # config.vm.synced_folder ".", "/vagrant", type: "nfs", :mount_options => ["dmode=777","fmode=777"]
+
+  # rsync is much better on Windows for performance reasons, although a sync
   # is not a very good option. This should be changed in the future when a better
   # solution becomes available
-  # config.vm.synced_folder ".", "/vagrant", type: "nfs", :mount_options => ["dmode=777","fmode=777"]
-  config.vm.synced_folder ".", "/vagrant", id: "share_id", type: "rsync", rsync__exclude: [
-    ".git",
-    ".idea",
-    "app/bootstrap.php.cache",
-    "app/cache/",
-    "app/logs/",
-    "build/",
-    "web/assetic",
-    "web/bundles/",
-    "web/css/",
-    "web/js/",
-    "web/uploads",
-    "web/cache"
-  ]
+  # config.vm.synced_folder ".", "/vagrant", id: "share_id", type: "rsync", rsync__exclude: [
+  #  ".git",
+  #  ".idea",
+  #  "app/bootstrap.php.cache",
+  #  "app/cache/",
+  #  "app/logs/",
+  #  "build/",
+  #  "web/assetic",
+  #  "web/bundles/",
+  #  "web/css/",
+  #  "web/js/",
+  #  "web/uploads",
+  #  "web/cache"
+  #]
 
   # folder for configuration files
   config.vm.synced_folder "conf.d", "/svr/conf.d"
