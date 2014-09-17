@@ -31,11 +31,4 @@ interface ChannelInterface
 	 * @return string
 	 */
 	public function getName();
-
-	/**
-	 * Return the short name of the Channel
-	 *
-	 * @return string
-	 */
-	public function getShortName();
 }
