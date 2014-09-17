@@ -61,8 +61,21 @@ class ContentTypeController extends Controller
         $dm = $this->get('doctrine_mongodb')->getManager();
         $documents = $dm->getRepository($this->contentTypeClass)->findAll();
 
+        $documentTypes = $this->getMetadata()->getAllMetadata();
+        $count         = array();
+
+        foreach($documents as $document) {
+            foreach($documentTypes as $type) {
+                if($document->getClass() == $type->getClass()) {
+                    $count[$document->getClass()] = true;
+                }
+            }
+        }
+
         return array(
-            'documents' => $documents
+            'documents'     => $documents,
+            'count'         => $count,
+            'documentTypes' => $documentTypes
         );
     }
 

@@ -1,11 +1,22 @@
-{% for document in documents %}
+{% for documentType in documentTypes %}
+    {% if documentType.type and count[documentType.class] is defined %}
     <li>
-        <a tabindex="-1" role="menuitem" href="{{ path('integrated_content_content_new', {'class': document.class, 'type': document.type}) }}">
-            {{ document.name }}
-        </a>
+        <ul>
+            <li class="dropdown-header">{{ documentType.type }}</li>
+            {% for document in documents %}
+                {% if document.class == documentType.class %}
+            <li>
+                <a tabindex="-1" role="menuitem" href="{{ path('integrated_content_content_new', {'class': document.class, 'type': document.type}) }}">
+                    {{ document.name }}
+                </a>
+            </li>
+                {% endif %}
+            {% else %}
+            <li>
+                {% trans %}No content types added{% endtrans %}
+            </li>
+            {% endfor %}
+        </ul>
     </li>
-{% else %}
-    <li>
-        {% trans %}No content types added{% endtrans %}
-    </li>
+    {% endif %}
 {% endfor %}
