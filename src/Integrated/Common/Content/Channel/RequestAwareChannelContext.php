@@ -15,6 +15,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
+ * Channel context that will change based on the current request.
+ *
+ * This context will store the channel in the request object. This will
+ * allows separate request to have there own channel. It is not recommended
+ * to retrieve the channel directly from the request object as only the
+ * channel id is stored.
+ *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class RequestAwareChannelContext implements ChannelContextInterface
@@ -72,7 +79,7 @@ class RequestAwareChannelContext implements ChannelContextInterface
 		$request = $this->getRequest();
 
 		if (!$request) {
-			return;
+			return; // no request so can not store the channel
 		}
 
 		if ($channel) {
@@ -83,6 +90,8 @@ class RequestAwareChannelContext implements ChannelContextInterface
 	}
 
 	/**
+	 * Get the current request object
+	 *
 	 * @return null | Request
 	 */
 	protected function getRequest()

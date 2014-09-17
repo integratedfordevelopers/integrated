@@ -19,21 +19,21 @@ namespace Integrated\Common\Content\Channel;
 interface ChannelInterface
 {
 	/**
-	 * Return the id of the Channel document
+	 * Return the id of the Channel
 	 *
 	 * @return string
 	 */
 	public function getId();
 
 	/**
-	 * Return the name of the Channel document
+	 * Return the name of the Channel
 	 *
 	 * @return string
 	 */
 	public function getName();
 
 	/**
-	 * Return the short name of the Channel document
+	 * Return the short name of the Channel
 	 *
 	 * @return string
 	 */
