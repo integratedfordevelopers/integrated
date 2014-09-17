@@ -174,8 +174,8 @@ class { 'mysql::bindings':
 }
 
 mysql::db { 'integrated':
-	user     => 'root',
-	password => '',
+	user     => 'integrated',
+	password => 'integrated',
 	host     => 'localhost',
 	grant    => ['all'],
 }
