@@ -38,6 +38,7 @@
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
             "php app/console assetic:dump web/",
             "php app/console doctrine:mongodb:schema:create",
+            "php app/console doctrine:schema:create",
             "php app/console init:queue --force",
             "php app/console init:locking --force"
         ],
@@ -51,6 +52,7 @@
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
             "php app/console assetic:dump web/",
             "php app/console doctrine:mongodb:schema:create",
+            "php app/console doctrine:schema:update --force",
             "php app/console init:queue --force",
             "php app/console init:locking --force"
         ]
