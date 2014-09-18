@@ -2,7 +2,7 @@
     <li class="dropdown for_mobile">
         <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
 
-        <ul role="menu" class="dropdown-menu">
+        <ul class="dropdown-menu dropdown-menu-large row" style="right: 0; left: auto; margin-right: 0;">
             {{ render(controller('IntegratedContentBundle:ContentType:list', {'_format': 'ul'})) }}
         </ul>
     </li>
@@ -64,7 +64,7 @@
                     <h4 class="user_email">{{ app.user.getRelation.getEmail|default('') }}</h4>
                     {% endif %}
                 </li>
-                {# <li><a href="{ { path('integrated_user_profile_edit', {id: app.user.id}) }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-edit"></i>{% trans %}My profile{% endtrans %}</a></li> #}
+                <li><a href="{{ path('integrated_user_profile_edit', {id: app.user.id}) }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-edit"></i>{% trans %}My profile{% endtrans %}</a></li>
                 <li class="divider" role="presentation"></li>
                 <li><a href="{{ path('integrated_user_logout') }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-lock"></i>{% trans %}Log out{% endtrans %}</a></li>
             </ul>
