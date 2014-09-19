@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class DeleteFormType extends AbstractType
 {
 	/**
-	 * {@inheritdoc}
+	 * @inheritdoc
 	 */
 	public function getName()
 	{

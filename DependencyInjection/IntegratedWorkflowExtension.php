@@ -44,9 +44,6 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
 		$loader->load('form.workflow.xml');
 
 		$loader->load('security.xml');
-
-		$configuration = new Configuration();
-		$config = $this->processConfiguration($configuration, $configs);
 	}
 
 	/**

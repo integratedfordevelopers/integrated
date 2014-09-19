@@ -24,7 +24,6 @@
 
 	<services>
 
-
 		<service id="integrated_workflow.form.definition.repository"
 				 class="Doctrine\Common\Persistence\ObjectRepository"
 				 factory-service="doctrine.orm.entity_manager"

@@ -34,6 +34,9 @@ class WorkflowStateListener implements EventSubscriberInterface
 		];
 	}
 
+	/**
+	 * @param FormEvent $event
+	 */
 	public function onPostSetData(FormEvent $event)
 	{
 		if (!$data = $event->getData()) {
@@ -58,6 +61,9 @@ class WorkflowStateListener implements EventSubscriberInterface
 		$form->get('next')->setData($data->getName());
 	}
 
+	/**
+	 * @param FormEvent $event
+	 */
 	public function onSubmit(FormEvent $event)
 	{
 		$form = $event->getForm()->get('next');

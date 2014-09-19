@@ -26,9 +26,6 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('integrated_workflow');
-
-        return $treeBuilder;
+        return new TreeBuilder();
     }
 }

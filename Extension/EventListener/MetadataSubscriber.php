@@ -44,11 +44,17 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 		];
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function getExtension()
 	{
 		return $this->extension;
 	}
 
+	/**
+	 * @param MetadataEvent $event
+	 */
 	public function process(MetadataEvent $event)
 	{
 		$metadata = $event->getMetadata();

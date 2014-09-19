@@ -81,6 +81,9 @@ class ContentSubscriber implements ContentSubscriberInterface
 		];
 	}
 
+	/**
+	 * @param ContentEvent $event
+	 */
 	public function read(ContentEvent $event)
 	{
 		$content = $event->getContent();
@@ -111,6 +114,9 @@ class ContentSubscriber implements ContentSubscriberInterface
 		$event->setData($data);
 	}
 
+	/**
+	 * @param ContentEvent $event
+	 */
 	public function update(ContentEvent $event)
 	{
 		$content = $event->getContent();
@@ -232,6 +238,10 @@ class ContentSubscriber implements ContentSubscriberInterface
 		return $user;
 	}
 
+	/**
+	 * @param $object
+	 * @return bool
+	 */
 	protected function isSupported($object)
 	{
 		if (!$object instanceof ContentInterface) {
@@ -250,7 +260,7 @@ class ContentSubscriber implements ContentSubscriberInterface
 	}
 
 	/**
-	 * @return ExtensionInterface
+	 * @inheritdoc
 	 */
 	public function getExtension()
 	{

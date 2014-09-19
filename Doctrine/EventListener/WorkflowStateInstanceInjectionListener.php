@@ -34,6 +34,10 @@ class WorkflowStateInstanceInjectionListener implements EventSubscriber
 	 */
 	protected $odm;
 
+	/**
+	 * @param ManagerRegistry $orm
+	 * @param ManagerRegistry $odm
+	 */
 	public function __construct(ManagerRegistry $orm, ManagerRegistry $odm)
 	{
 		$this->orm = $orm;
@@ -52,6 +56,12 @@ class WorkflowStateInstanceInjectionListener implements EventSubscriber
 		];
 	}
 
+	/**
+	 * Add the user and content instance or a proxy of the instances to the State
+	 * entity.
+	 *
+	 * @param LifecycleEventArgs $args
+	 */
 	public function postLoad(LifecycleEventArgs $args)
 	{
 		$object = $args->getEntity();
@@ -95,6 +105,15 @@ class WorkflowStateInstanceInjectionListener implements EventSubscriber
 		$prop->setValue($object, $this->getODMInstance($class, $id));
 	}
 
+	/**
+	 * Try to get a reference to the user object else fetch it immediately from the
+	 * repository.
+	 *
+	 * @param string $class
+	 * @param string $id
+	 *
+	 * @return object
+	 */
 	protected function getORMInstance($class, $id)
 	{
 		$manager = $this->orm->getManagerForClass($class);
@@ -106,6 +125,15 @@ class WorkflowStateInstanceInjectionListener implements EventSubscriber
 		return $manager->getRepository($class)->find($id);
 	}
 
+	/**
+	 * Try to get a reference to the content object else fetch it immediately from the
+	 * repository.
+	 *
+	 * @param string $class
+	 * @param string $id
+	 *
+	 * @return object
+	 */
 	public function getODMInstance($class, $id)
 	{
 		$manager = $this->odm->getManagerForClass($class);

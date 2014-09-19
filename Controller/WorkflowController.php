@@ -13,9 +13,7 @@ namespace Integrated\Bundle\WorkflowBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
 
-use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
-use Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionFormType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -24,18 +22,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormBuilder;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 
 /**
- * Configuration class for ContentBundle
- *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class WorkflowController extends Controller
 {
 	/**
-	 *
+	 * Generate a list of workflow definitions
 	 *
 	 * @Template
 	 *
@@ -61,7 +55,7 @@ class WorkflowController extends Controller
 	}
 
 	/**
-	 *
+	 * Create a new workflow definition
 	 *
 	 * @Template
 	 *
@@ -108,12 +102,13 @@ class WorkflowController extends Controller
 	}
 
 	/**
-	 *
+	 * Edit a workflow definition
 	 *
 	 * @Template
 	 *
 	 * @param Request $request
 	 * @return array | Response
+	 *
 	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
 	 */
 	public function editAction(Request $request)
@@ -165,7 +160,7 @@ class WorkflowController extends Controller
 	}
 
 	/**
-	 *
+	 * Delete a workflow definition
 	 *
 	 * @Template
 	 *
@@ -175,9 +170,9 @@ class WorkflowController extends Controller
 	public function deleteAction(Request $request)
 	{
 		$workflow = $this->getDoctrine()
-				->getManager()
-				->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
-				->find($request->get('id'));
+			->getManager()
+			->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
+			->find($request->get('id'));
 
 		if (!$workflow) {
 			return $this->redirect($this->generateUrl('integrated_workflow_index')); // workflow is already gone

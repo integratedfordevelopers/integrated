@@ -38,15 +38,10 @@ class WorkflowFormType extends AbstractType
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritdoc
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
-		$resolver->setDefaults([
-//			'empty_data' => function(FormInterface $form) { return new State(); },
-//			'data_class' => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State',
-		]);
-
 		$resolver->setRequired([
 			'workflow'
 		]);

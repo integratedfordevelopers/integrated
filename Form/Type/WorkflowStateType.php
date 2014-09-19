@@ -47,13 +47,16 @@ class WorkflowStateType extends AbstractType
 		$builder->addEventSubscriber(new WorkflowStateListener());
 	}
 
+	/**
+	 * @inheritdoc
+	 */
 	public function finishView(FormView $view, FormInterface $form, array $options)
 	{
 		// the current field is just a text field but to give it the possibility
 		// to style is differently a new block prefix will be added just before
 		// the last one. So one can use the integrated_workflow_state_text_widget
-		// or workflow_state_text_widget block to style this text differently from
-		// other text fields.
+		// or workflow_state_text_widget block to use a different template for this
+		// field.
 
 		$child = $view->children['current'];
 
@@ -63,7 +66,7 @@ class WorkflowStateType extends AbstractType
 		$child->vars['block_prefixes'][] = 'integrated_workflow_state_text';
 		$child->vars['block_prefixes'][] = $last;
 
-		// filter out the current field if there is no current state is set
+		// filter out the current field if there is no current state set
 
 		if (!$child->vars['value']) {
 			unset($view->children['current']);
@@ -71,7 +74,7 @@ class WorkflowStateType extends AbstractType
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritdoc
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{

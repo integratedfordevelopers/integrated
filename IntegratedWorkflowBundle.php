@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\WorkflowBundle;
 
 use Integrated\Bundle\WorkflowBundle\DependencyInjection\IntegratedWorkflowExtension;
+
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**

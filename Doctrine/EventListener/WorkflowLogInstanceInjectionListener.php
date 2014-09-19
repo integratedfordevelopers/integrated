@@ -35,9 +35,7 @@ class WorkflowLogInstanceInjectionListener implements EventSubscriber
 	}
 
 	/**
-	 * Returns an array of events this subscriber wants to listen to.
-	 *
-	 * @return array
+	 * @inheritdoc
 	 */
 	public function getSubscribedEvents()
 	{
@@ -46,6 +44,11 @@ class WorkflowLogInstanceInjectionListener implements EventSubscriber
 		];
 	}
 
+	/**
+	 * Add the user instance or a proxy to this user instance to the Log entity
+	 *
+	 * @param LifecycleEventArgs $args
+	 */
 	public function postLoad(LifecycleEventArgs $args)
 	{
 		$object = $args->getEntity();
@@ -71,6 +74,15 @@ class WorkflowLogInstanceInjectionListener implements EventSubscriber
 		$prop->setValue($object, $this->getInstance($class, $id));
 	}
 
+	/**
+	 * Try to get a reference to the user object else fetch it immediately from the
+	 * repository.
+	 *
+	 * @param string $class
+	 * @param string $id
+	 *
+	 * @return object
+	 */
 	protected function getInstance($class, $id)
 	{
 		$manager = $this->manager->getManagerForClass($class);
