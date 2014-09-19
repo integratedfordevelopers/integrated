@@ -14,11 +14,11 @@ namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
@@ -34,12 +34,12 @@ class PermissionsType extends AbstractType
 	{
 		$builder->addViewTransformer(new PermissionTransformer());
 
-		$builder->add('read', 'user_group_choice', ['required' => false]);
-		$builder->add('write', 'user_group_choice', ['required' => false]);
+		$builder->add('read', 'user_group_choice', ['required' => false, 'expanded' => false]);
+		$builder->add('write', 'user_group_choice', ['required' => false, 'expanded' => false]);
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritdoc
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
