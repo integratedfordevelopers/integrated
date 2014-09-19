@@ -231,7 +231,7 @@ class State
 	 */
 	public function getTransitions()
 	{
-		return $this->transitions;
+		return $this->transitions->toArray();
 	}
 
 	/**

@@ -13,6 +13,10 @@ namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
+use Integrated\Bundle\WorkflowBundle\Form\EventListener\DefinitionStateTransitionsDataExtractionListener;
+use Integrated\Bundle\WorkflowBundle\Form\EventListener\DefinitionStateTransitionsFormExtractionListener;
+
+use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromDataListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -42,18 +46,38 @@ class StateType extends AbstractType
 		$builder->add('publishable', 'checkbox', ['required' => false]);
 		$builder->add('permissions', 'workflow_definition_permissions', ['required' => false]);
 
-//		$builder->add('transitions', 'choice', ['required' => false]);
+		if ($options['transitions'] == 'data') {
+			$builder->addEventSubscriber(new ExtractTransitionsFromDataListener());
+		}
+
+		if ($options['transitions'] == 'empty') {
+			$builder->add('transitions', 'choice', [
+				'required' => false,
+				'mapped'   => false,
+
+				'choices'  => [],
+
+				'multiple' => true,
+				'expanded' => false,
+			]);
+		}
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @inheritdoc
 	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
-		$resolver->setDefaults(array(
-			'empty_data' => function(FormInterface $form) { return new State(); },
-			'data_class' => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State',
-		));
+		$resolver->setDefaults([
+			'empty_data'  => function(FormInterface $form) { return new State(); },
+			'data_class'  => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State',
+
+			'transitions' => 'data',
+		]);
+
+		$resolver->setAllowedValues([
+			'transitions' => ['data', 'empty', 'none']
+		]);
 	}
 
 	/**
