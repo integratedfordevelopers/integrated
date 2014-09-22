@@ -85,6 +85,10 @@ class WorkflowLogInstanceInjectionListener implements EventSubscriber
 	 */
 	protected function getInstance($class, $id)
 	{
+		if (!$class || !$id) {
+			return null;
+		}
+
 		$manager = $this->manager->getManagerForClass($class);
 
 		if (method_exists($manager, 'getReference')) {
