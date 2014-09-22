@@ -31,7 +31,7 @@ class WorkflowFormType extends AbstractType
 	{
 		$builder->add('comment', 'textarea', ['required' => false]);
 
-		$builder->add('state', 'workflow_state', ['workflow' => $options['workflow'], 'label' => 'Next state']);
+		$builder->add('state', 'workflow_state', ['workflow' => $options['workflow']]);
 
 		$builder->add('assigned', 'user_choice', ['empty_value' => 'Not Assigned', 'empty_data'  => null, 'required' => false]);
 		$builder->add('deadline', 'integrated_datetime');

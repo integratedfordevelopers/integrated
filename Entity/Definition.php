@@ -114,6 +114,15 @@ class Definition
 
 	/**
 	 * @param State $state
+	 * @return bool
+	 */
+	public function hasState(State $state)
+	{
+		return $this->states->contains($state);
+	}
+
+	/**
+	 * @param State $state
 	 * @return $this
 	 */
 	public function removeState(State $state)
