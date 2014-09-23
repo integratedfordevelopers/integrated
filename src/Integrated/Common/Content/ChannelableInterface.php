@@ -13,6 +13,8 @@ namespace Integrated\Common\Content;
 
 use Doctrine\Common\Collections\Collection;
 
+use Integrated\Common\Content\Channel\ChannelInterface;
+
 /**
  * Interface for Content documents with Channels
  *
