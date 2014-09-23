@@ -12,7 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Solr\Converter;
 
 use Integrated\Common\Solr\Converter\Converter;
-use Integrated\Common\Content\ChannelInterface;
+
+use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
 
 /**
@@ -38,7 +39,7 @@ class ChannelConverter extends Converter
 
                 foreach ($object->getChannels() as $channel) {
                     if ($channel instanceof ChannelInterface) {
-                        $fields['facet_channels'][] = $channel->getShortName();
+                        $fields['facet_channels'][] = $channel->getId();
                     }
                 }
             }

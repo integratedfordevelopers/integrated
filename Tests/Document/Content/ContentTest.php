@@ -157,8 +157,8 @@ class ContentTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddChannelFunction()
     {
-        /* @var $channel \Integrated\Common\Content\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $channel = $this->getMock('Integrated\Common\Content\ChannelInterface');
+        /* @var $channel \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $channel = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
 
         // Check if we can add
         $this->content->addChannel($channel);
@@ -174,11 +174,11 @@ class ContentTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveChannelFunction()
     {
-        /* @var $channel1 \Integrated\Common\Content\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $channel1 = $this->getMock('Integrated\Common\Content\ChannelInterface');
+        /* @var $channel1 \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $channel1 = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
 
-        /* @var $channel2 \Integrated\Common\Content\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $channel2 = $this->getMock('Integrated\Common\Content\ChannelInterface');
+        /* @var $channel2 \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $channel2 = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
 
         // Add channels
         $this->content->addChannel($channel1)->addChannel($channel2);
