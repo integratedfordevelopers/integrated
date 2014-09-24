@@ -2,7 +2,7 @@
     <li class="dropdown for_mobile">
         <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
 
-        <ul class="dropdown-menu dropdown-menu-large row" style="right: 0; left: auto; margin-right: 0;">
+        <ul class="dropdown-menu dropdown-menu-large dropdown-right row">
             {{ render(controller('IntegratedContentBundle:ContentType:list', {'_format': 'ul'})) }}
         </ul>
     </li>

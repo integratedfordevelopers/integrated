@@ -1,8 +1,8 @@
 {% for documentType in documentTypes %}
-    {% if documentType.type and count[documentType.class] is defined %}
+    {% if documentType.type and category[documentType.class] is defined %}
     <li>
         <ul>
-            <li class="dropdown-header">{{ documentType.type }}</li>
+            <li class="dropdown-header">{{ category[documentType.class] }}</li>
             {% for document in documents %}
                 {% if document.class == documentType.class %}
             <li>

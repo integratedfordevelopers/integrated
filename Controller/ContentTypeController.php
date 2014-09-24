@@ -58,23 +58,26 @@ class ContentTypeController extends Controller
     public function listAction()
     {
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $documents = $dm->getRepository($this->contentTypeClass)->findAll();
+        $dm        = $this->get('doctrine_mongodb')->getManager();
+        $documents = $dm->getRepository($this->contentTypeClass)->findBy(array(), array('name' => 'ASC'));
 
         $documentTypes = $this->getMetadata()->getAllMetadata();
-        $count         = array();
+        $category      = array();
 
         foreach($documents as $document) {
             foreach($documentTypes as $type) {
                 if($document->getClass() == $type->getClass()) {
-                    $count[$document->getClass()] = true;
+                    $parts = explode('\\', $document->getClass());
+                    $count = count($parts);
+
+                    $category[$document->getClass()] = $parts[$count - 2] == 'Relation' ? $parts[$count - 2] : $parts[$count - 1];
                 }
             }
         }
 
         return array(
             'documents'     => $documents,
-            'count'         => $count,
+            'category'      => $category,
             'documentTypes' => $documentTypes
         );
     }
