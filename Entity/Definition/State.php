@@ -59,6 +59,11 @@ class State
      */
     protected $transitions;
 
+    /**
+     * @var boolean
+     */
+    protected $default = false;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -137,7 +142,7 @@ class State
     }
 
     /**
-     * @param bool $publish
+     * @param boolean $publish
      * @return $this
      */
     public function setPublishable($publishable)
@@ -254,6 +259,24 @@ class State
     public function removeTransition(State $state)
     {
         $this->transitions->removeElement($state);
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * @param boolean $default
+     * @return $this
+     */
+    public function setDefault($default)
+    {
+        $this->default = $default;
         return $this;
     }
 
