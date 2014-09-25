@@ -24,285 +24,285 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition;
  */
 class State
 {
-	/**
-	 * @var int
-	 */
-	protected $id = null;
+    /**
+     * @var int
+     */
+    protected $id = null;
 
-	/**
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * @var string
+     */
+    protected $name;
 
-	/**
-	 * @var null | Definition
-	 */
-	protected $workflow = null;
+    /**
+     * @var null | Definition
+     */
+    protected $workflow = null;
 
-	/**
-	 * @var int
-	 */
-	protected $order = 0;
+    /**
+     * @var int
+     */
+    protected $order = 0;
 
-	/**
-	 * @var bool
-	 */
-	protected $publishable = false;
+    /**
+     * @var bool
+     */
+    protected $publishable = false;
 
-	/**
-	 * @var Collection | Permission[]
-	 */
-	protected $permissions;
+    /**
+     * @var Collection | Permission[]
+     */
+    protected $permissions;
 
-	/**
-	 * @var Collection | State[]
-	 */
-	protected $transitions;
+    /**
+     * @var Collection | State[]
+     */
+    protected $transitions;
 
-	public function __construct()
-	{
-		$this->permissions = new ArrayCollection();
-		$this->transitions = new ArrayCollection();
-	}
+    public function __construct()
+    {
+        $this->permissions = new ArrayCollection();
+        $this->transitions = new ArrayCollection();
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function setName($name)
-	{
-		$this->name = (string) $name;
-		return $this;
-	}
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = (string) $name;
+        return $this;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @param Definition|null $workflow
-	 * @return $this
-	 */
-	public function setWorkflow(Definition $workflow = null)
-	{
-		if ($this->workflow !== $workflow && $this->workflow !== null) {
-			$this->workflow->removeState($this);
-		}
+    /**
+     * @param Definition|null $workflow
+     * @return $this
+     */
+    public function setWorkflow(Definition $workflow = null)
+    {
+        if ($this->workflow !== $workflow && $this->workflow !== null) {
+            $this->workflow->removeState($this);
+        }
 
-		$this->workflow = $workflow;
+        $this->workflow = $workflow;
 
-		if ($this->workflow) {
-			$this->workflow->addState($this);
-		}
+        if ($this->workflow) {
+            $this->workflow->addState($this);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return Definition|null
-	 */
-	public function getWorkflow()
-	{
-		return $this->workflow;
-	}
+    /**
+     * @return Definition|null
+     */
+    public function getWorkflow()
+    {
+        return $this->workflow;
+    }
 
-	/**
-	 * @param int $order
-	 * @return $this
-	 */
-	public function setOrder($order)
-	{
-		$this->order = (int) $order;
-		return $this;
-	}
+    /**
+     * @param int $order
+     * @return $this
+     */
+    public function setOrder($order)
+    {
+        $this->order = (int) $order;
+        return $this;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getOrder()
-	{
-		return $this->order;
-	}
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
 
-	/**
-	 * @param bool $publish
-	 * @return $this
-	 */
-	public function setPublishable($publishable)
-	{
-		$this->publishable = (bool) $publishable;
-		return $this;
-	}
+    /**
+     * @param bool $publish
+     * @return $this
+     */
+    public function setPublishable($publishable)
+    {
+        $this->publishable = (bool) $publishable;
+        return $this;
+    }
 
-	/**
-	 * @return boolean
-	 */
-	public function isPublishable()
-	{
-		return $this->publishable;
-	}
+    /**
+     * @return boolean
+     */
+    public function isPublishable()
+    {
+        return $this->publishable;
+    }
 
-	/**
-	 * @param Permission[] $permissions
-	 * @return $this
-	 */
-	public function setPermissions(Collection $permissions)
-	{
-		foreach ($this->permissions as $permission) {
-			$this->removePermission($permission);
-		}
+    /**
+     * @param Permission[] $permissions
+     * @return $this
+     */
+    public function setPermissions(Collection $permissions)
+    {
+        foreach ($this->permissions as $permission) {
+            $this->removePermission($permission);
+        }
 
-		foreach ($permissions as $permission) {
-			$this->addPermission($permission);
-		}
+        foreach ($permissions as $permission) {
+            $this->addPermission($permission);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return Permission[]
-	 */
-	public function getPermissions()
-	{
-		return $this->permissions;
-	}
+    /**
+     * @return Permission[]
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
+    }
 
-	/**
-	 * @param Permission $permission
-	 * @return $this
-	 */
-	public function addPermission(Permission $permission)
-	{
-		if (!$this->permissions->contains($permission)) {
-			$this->permissions->add($permission);
+    /**
+     * @param Permission $permission
+     * @return $this
+     */
+    public function addPermission(Permission $permission)
+    {
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions->add($permission);
 
-			// first add the permission to the state then set the state else
-			// there would be a infinite loop
+            // first add the permission to the state then set the state else
+            // there would be a infinite loop
 
-			$permission->setState($this);
-		}
+            $permission->setState($this);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param Permission $permission
-	 * @return $this
-	 */
-	public function removePermission(Permission $permission)
-	{
-		if ($this->permissions->removeElement($permission)) {
-			$permission->setState(null);
-		}
+    /**
+     * @param Permission $permission
+     * @return $this
+     */
+    public function removePermission(Permission $permission)
+    {
+        if ($this->permissions->removeElement($permission)) {
+            $permission->setState(null);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param Collection $transitions
-	 * @return $this
-	 */
-	public function setTransitions(Collection $transitions)
-	{
-		$this->transitions->clear();
-		$this->transitions = new ArrayCollection();
+    /**
+     * @param Collection $transitions
+     * @return $this
+     */
+    public function setTransitions(Collection $transitions)
+    {
+        $this->transitions->clear();
+        $this->transitions = new ArrayCollection();
 
-		foreach ($transitions as $transition) {
-			$this->addTransition($transition); // type check
-		}
+        foreach ($transitions as $transition) {
+            $this->addTransition($transition); // type check
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return State[]
-	 */
-	public function getTransitions()
-	{
-		return $this->transitions->toArray();
-	}
+    /**
+     * @return State[]
+     */
+    public function getTransitions()
+    {
+        return $this->transitions->toArray();
+    }
 
-	/**
-	 * @param State $state
-	 * @return $this
-	 */
-	public function addTransition(State $state)
-	{
-		if (!$this->transitions->contains($state)) {
-			$this->transitions->add($state);
-		}
+    /**
+     * @param State $state
+     * @return $this
+     */
+    public function addTransition(State $state)
+    {
+        if (!$this->transitions->contains($state)) {
+            $this->transitions->add($state);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param State $state
-	 * @return $this
-	 */
-	public function removeTransition(State $state)
-	{
-		$this->transitions->removeElement($state);
-		return $this;
-	}
+    /**
+     * @param State $state
+     * @return $this
+     */
+    public function removeTransition(State $state)
+    {
+        $this->transitions->removeElement($state);
+        return $this;
+    }
 
-	/**
-	 * Fix issues with primary key constraints errors because deletes are execute
-	 * after updates and inserts.
-	 *
-	 * @param PreFlushEventArgs $event
-	 */
-	public function doPermissionFix(PreFlushEventArgs $event)
-	{
-		// if not a PersistentCollection then its probably is a new entity else check if
-		// data from the database is loaded or not.
+    /**
+     * Fix issues with primary key constraints errors because deletes are execute
+     * after updates and inserts.
+     *
+     * @param PreFlushEventArgs $event
+     */
+    public function doPermissionFix(PreFlushEventArgs $event)
+    {
+        // if not a PersistentCollection then its probably is a new entity else check if
+        // data from the database is loaded or not.
 
-		if (!$this->permissions instanceof PersistentCollection || !$this->permissions->isInitialized()) {
-			return;
-		}
+        if (!$this->permissions instanceof PersistentCollection || !$this->permissions->isInitialized()) {
+            return;
+        }
 
-		$em = $event->getEntityManager();
-		$uow = $em->getUnitOfWork();
+        $em = $event->getEntityManager();
+        $uow = $em->getUnitOfWork();
 
-		/** @var Permission $permission */
-		/** @var Permission $found */
+        /** @var Permission $permission */
+        /** @var Permission $found */
 
-		foreach ($this->permissions as $permission) {
+        foreach ($this->permissions as $permission) {
 
-			// see if there is already a entity in de identity map with this primary key. If so
-			// then use that one and removed the one in the collection from the identity map. But
-			// only when the state is null or a entity matching $this else the permission is
-			// moved to an other state. (could give a problem if inserts are done before updates)
-			//
-			// NOTE: This also means that all the changes to the entity that is removed from
-			// the collection wont be recorded by doctrine anymore.
+            // see if there is already a entity in de identity map with this primary key. If so
+            // then use that one and removed the one in the collection from the identity map. But
+            // only when the state is null or a entity matching $this else the permission is
+            // moved to an other state. (could give a problem if inserts are done before updates)
+            //
+            // NOTE: This also means that all the changes to the entity that is removed from
+            // the collection wont be recorded by doctrine anymore.
 
-			if ($found = $uow->tryGetById([$permission->getGroup(), $this->getId()], get_class($permission))) {
-				if ($found !== $permission && ($found->getState() === null || $found->getState() === $this)) {
-					$this->permissions->removeElement($permission);
-					$this->permissions->add($found);
+            if ($found = $uow->tryGetById([$permission->getGroup(), $this->getId()], get_class($permission))) {
+                if ($found !== $permission && ($found->getState() === null || $found->getState() === $this)) {
+                    $this->permissions->removeElement($permission);
+                    $this->permissions->add($found);
 
-					if ($uow->isInIdentityMap($permission)) {
-						$uow->detach($permission);
-					}
+                    if ($uow->isInIdentityMap($permission)) {
+                        $uow->detach($permission);
+                    }
 
-					$found->setState($this);
-					$found->setMask($permission->getMask());
+                    $found->setState($this);
+                    $found->setMask($permission->getMask());
 
-					$uow->persist($found);
-				}
-			}
-		}
-	}
+                    $uow->persist($found);
+                }
+            }
+        }
+    }
 }
