@@ -49,7 +49,7 @@ class WorkflowStateType extends AbstractType
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		// The content of this from type is solely based on state that is not set yet. So
+		// The content of this form type is solely based on state that is not set yet. So
 		// the only thing that is added is a listener that will update this type with more
 		// fields based on the set state.
 		//
