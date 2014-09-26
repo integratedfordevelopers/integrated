@@ -60,25 +60,20 @@ class ContentTypeController extends Controller
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm        = $this->get('doctrine_mongodb')->getManager();
         $documents = $dm->getRepository($this->contentTypeClass)->findBy(array(), array('name' => 'ASC'));
-
-        $documentTypes = $this->getMetadata()->getAllMetadata();
-        $category      = array();
+        $category  = array();
 
         foreach($documents as $document) {
-            foreach($documentTypes as $type) {
-                if($document->getClass() == $type->getClass()) {
-                    $parts = explode('\\', $document->getClass());
-                    $count = count($parts);
+            $parts = explode('\\', $document->getClass());
+            $count = count($parts);
+            $title = $parts[$count - 2] != 'Content' ? $parts[$count - 2] : $parts[$count - 1];
 
-                    $category[$document->getClass()] = $parts[$count - 2] == 'Relation' ? $parts[$count - 2] : $parts[$count - 1];
-                }
-            }
+            $category[$title][] = $document;
         }
 
+        ksort($category);
+
         return array(
-            'documents'     => $documents,
-            'category'      => $category,
-            'documentTypes' => $documentTypes
+            'category' => $category,
         );
     }
 
