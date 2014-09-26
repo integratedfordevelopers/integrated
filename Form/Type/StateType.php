@@ -31,60 +31,62 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class StateType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		$builder->add('name', 'text', [
-			'constraints' => [
-				new NotBlank(),
-				new Length(['min' => 3])
-			]
-		]);
+    /**
+     * @inheritdoc
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('name', 'text', [
+            'constraints' => [
+                new NotBlank(),
+                new Length(['min' => 3])
+            ]
+        ]);
 
-		$builder->add('publishable', 'checkbox', ['required' => false]);
-		$builder->add('permissions', 'workflow_definition_permissions', ['required' => false]);
+        $builder->add('publishable', 'checkbox', ['required' => false]);
+        $builder->add('permissions', 'workflow_definition_permissions', ['required' => false]);
 
-		if ($options['transitions'] == 'data') {
-			$builder->addEventSubscriber(new ExtractTransitionsFromDataListener());
-		}
+        if ($options['transitions'] == 'data') {
+            $builder->addEventSubscriber(new ExtractTransitionsFromDataListener());
+        }
 
-		if ($options['transitions'] == 'empty') {
-			$builder->add('transitions', 'choice', [
-				'required' => false,
-				'mapped'   => false,
+        if ($options['transitions'] == 'empty') {
+            $builder->add('transitions', 'choice', [
+                'required' => false,
+                'mapped'   => false,
 
-				'choices'  => [],
+                'choices'  => [],
 
-				'multiple' => true,
-				'expanded' => false,
-			]);
-		}
-	}
+                'multiple' => true,
+                'expanded' => false,
+            ]);
+        }
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setDefaults([
-			'empty_data'  => function(FormInterface $form) { return new State(); },
-			'data_class'  => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State',
+    /**
+     * @inheritdoc
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults([
+            'empty_data' => function (FormInterface $form) {
+                return new State();
+            },
+            'data_class'  => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State',
 
-			'transitions' => 'data',
-		]);
+            'transitions' => 'data',
+        ]);
 
-		$resolver->setAllowedValues([
-			'transitions' => ['data', 'empty', 'none']
-		]);
-	}
+        $resolver->setAllowedValues([
+            'transitions' => ['data', 'empty', 'none']
+        ]);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getName()
-	{
-		return 'integrated_workflow_definition_state';
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getName()
+    {
+        return 'integrated_workflow_definition_state';
+    }
 }
