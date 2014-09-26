@@ -27,26 +27,26 @@ class Author implements DataTransformerInterface
      */
     public function transform($authors)
     {
-        if (null === $authors) {
-            return "";
+        if ($authors === NULL) {
+            return array('data', 'type_div');
         }
 
         $array = array();
         $div   = false;
 
         foreach($authors as $author) {
+            if(!$author->getPerson()->getId()) {
+                continue;
+            }
+
             $array[] = array(
                 'id'   => $author->getPerson()->getId(),
                 'text' => $author->getPerson()->getNickName()
             );
 
-            $div .= '<div id="type_' . $author->getPerson()->getId() . '" style="margin-top: 10px;" class="input-group input-group-sm">
-                        <span class="input-group-addon">' . $author->getPerson()->getNickName() . '</span>
-                        <input type="text" class="form-control type-text" name="' . $author->getPerson()->getId() . '_type" value="' . $author->getType() . '" placeholder="Type">
-                    </div>';
+            $div .= '<div id="type_' . $author->getPerson()->getId() . '" style="margin-top: 10px;" class="input-group input-group-sm"><span class="input-group-addon">' . $author->getPerson()->getNickName() . '</span><input type="text" class="form-control type-text" name="' . $author->getPerson()->getId() . '_type" value="' . $author->getType() . '" placeholder="Type"></div>';
         }
 
-        //return $array;
         return array(
             'data'     => json_encode($array),
             'type_div' => $div

@@ -28,7 +28,7 @@ class Select2Type extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return 'choice';
     }
 
     /**
