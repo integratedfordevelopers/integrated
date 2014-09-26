@@ -21,8 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormBuilder;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -30,8 +28,6 @@ class WorkflowController extends Controller
 {
 	/**
 	 * Generate a list of workflow definitions
-	 *
-	 * @Template
 	 *
 	 * @param Request $request
 	 * @return array
@@ -49,15 +45,11 @@ class WorkflowController extends Controller
 			15
 		);
 
-		return array(
-			'pager' => $pager
-		);
+        return $this->render('IntegratedWorkflowBundle:Workflow:index.html.twig', ['pager' => $pager]);
 	}
 
 	/**
 	 * Create a new workflow definition
-	 *
-	 * @Template
 	 *
 	 * @param Request $request
 	 * @return array | Response
@@ -96,15 +88,11 @@ class WorkflowController extends Controller
 			}
 		}
 
-		return array(
-			'form' => $form->createView()
-		);
+        return $this->render('IntegratedWorkflowBundle:Workflow:new.html.twig', ['form' => $form->createView()]);
 	}
 
 	/**
 	 * Edit a workflow definition
-	 *
-	 * @Template
 	 *
 	 * @param Request $request
 	 * @return array | Response
@@ -113,10 +101,11 @@ class WorkflowController extends Controller
 	 */
 	public function editAction(Request $request)
 	{
+        /** @var Definition $workflow */
 		$workflow = $this->getDoctrine()
-				->getManager()
-				->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
-				->find($request->get('id'));
+            ->getManager()
+            ->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
+            ->find($request->get('id'));
 
 		if (!$workflow) {
 			throw $this->createNotFoundException();
@@ -153,22 +142,21 @@ class WorkflowController extends Controller
 			}
 		}
 
-		return array(
-			'workflow' => $workflow,
-			'form' => $form->createView()
-		);
+        return $this->render('IntegratedWorkflowBundle:Workflow:edit.html.twig', [
+            'workflow' => $workflow,
+            'form' => $form->createView()
+        ]);
 	}
 
 	/**
 	 * Delete a workflow definition
-	 *
-	 * @Template
 	 *
 	 * @param Request $request
 	 * @return array | Response
 	 */
 	public function deleteAction(Request $request)
 	{
+        /** @var Definition $workflow */
 		$workflow = $this->getDoctrine()
 			->getManager()
 			->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
@@ -210,14 +198,14 @@ class WorkflowController extends Controller
 			}
 		}
 
-		return array(
-			'workflow' => $workflow,
-			'form' => $form->createView()
-		);
+        return $this->render('IntegratedWorkflowBundle:Workflow:delete.html.twig', [
+            'workflow' => $workflow,
+            'form' => $form->createView()
+        ]);
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function createForm($type, $data = null, array $options = [], array $buttons = [])
 	{
