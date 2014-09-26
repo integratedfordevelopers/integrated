@@ -21,107 +21,107 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
  */
 class Definition
 {
-	/**
-	 * @var int
-	 */
-	protected $id = null;
+    /**
+     * @var int
+     */
+    protected $id = null;
 
-	/**
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * @var string
+     */
+    protected $name;
 
-	/**
-	 * @var Collection | State[]
-	 */
-	protected $states;
+    /**
+     * @var Collection | State[]
+     */
+    protected $states;
 
-	public function __construct()
-	{
-		$this->states = new ArrayCollection();
-	}
+    public function __construct()
+    {
+        $this->states = new ArrayCollection();
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function setName($name)
-	{
-		$this->name = (string) $name;
-		return $this;
-	}
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = (string) $name;
+        return $this;
+    }
 
-	/**
-	 * @return State[]
-	 */
-	public function getStates()
-	{
-		return $this->states->toArray();
-	}
+    /**
+     * @return State[]
+     */
+    public function getStates()
+    {
+        return $this->states->toArray();
+    }
 
-	/**
-	 * @param State[] $states
-	 * @return $this
-	 */
-	public function setStates(Collection $states)
-	{
-		foreach ($this->states as $state) {
-			$this->removeState($state);
-		}
+    /**
+     * @param State[] $states
+     * @return $this
+     */
+    public function setStates(Collection $states)
+    {
+        foreach ($this->states as $state) {
+            $this->removeState($state);
+        }
 
-		$this->states = new ArrayCollection();
+        $this->states = new ArrayCollection();
 
-		foreach ($states as $state) {
-			$this->addState($state); // type check
-		}
+        foreach ($states as $state) {
+            $this->addState($state); // type check
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param State $state
-	 * @return $this
-	 */
-	public function addState(State $state)
-	{
-		if (!$this->states->contains($state)) {
-			$this->states->add($state);
+    /**
+     * @param State $state
+     * @return $this
+     */
+    public function addState(State $state)
+    {
+        if (!$this->states->contains($state)) {
+            $this->states->add($state);
 
-			// first add the state to the workflow then set the workflow else
-			// there would be a infinite loop
+            // first add the state to the workflow then set the workflow else
+            // there would be a infinite loop
 
-			$state->setWorkflow($this);
-		}
+            $state->setWorkflow($this);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param State $state
-	 * @return $this
-	 */
-	public function removeState(State $state)
-	{
-		if ($this->states->removeElement($state)) {
-			$state->setWorkflow(null);
-		}
+    /**
+     * @param State $state
+     * @return $this
+     */
+    public function removeState(State $state)
+    {
+        if ($this->states->removeElement($state)) {
+            $state->setWorkflow(null);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 }
