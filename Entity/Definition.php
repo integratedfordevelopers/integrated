@@ -36,6 +36,11 @@ class Definition
      */
     protected $states;
 
+    /**
+     * @var State
+     */
+    protected $default;
+
     public function __construct()
     {
         $this->states = new ArrayCollection();
@@ -122,6 +127,24 @@ class Definition
             $state->setWorkflow(null);
         }
 
+        return $this;
+    }
+
+    /**
+     * @return State
+     */
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * @param State $default
+     * @return $this
+     */
+    public function setDefault(State $default)
+    {
+        $this->default = $default;
         return $this;
     }
 }
