@@ -130,9 +130,7 @@ class WorkflowStateListener implements EventSubscriberInterface
 		// Data is not a state or is not a state in the given workflow. So fail silently and pick
 		// the default state instead.
 
-		$states = $this->workflow->getStates();
-
-		return array_shift($states);
+		return $this->workflow->getDefault();
 	}
 
 	/**
