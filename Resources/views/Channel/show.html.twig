@@ -13,16 +13,16 @@
             </div>
             <dl>
                 <dt>
+                    {% trans %}Id{% endtrans %}
+                </dt>
+                <dd>
+                    {{ channel.id }}
+                </dd>
+                <dt>
                     {% trans %}Name{% endtrans %}
                 </dt>
                 <dd>
                     {{ channel.name }}
-                </dd>
-                <dt>
-                    {% trans %}Short name{% endtrans %}
-                </dt>
-                <dd>
-                    {{ channel.shortName }}
                 </dd>
                 <dt>
                     {% trans %}Domains{% endtrans %}

@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
-use Integrated\Common\Content\ChannelInterface;
+use Integrated\Common\Content\Channel\ChannelInterface;
 
 /**
  * Channel document
@@ -24,15 +24,15 @@ use Integrated\Common\Content\ChannelInterface;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
  * @ODM\Document(collection="channels")
- * @MongoDBUnique(fields="shortName")
+ * @MongoDBUnique(fields="id")
  */
 class Channel implements ChannelInterface
 {
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
+     * @ODM\Id(strategy="NONE")
      */
-    protected $id;
+    protected $id = null;
 
     /**
      * @var string the name of the channel
@@ -41,13 +41,6 @@ class Channel implements ChannelInterface
      * @ODM\Index
      */
     protected $name;
-
-    /**
-     * @var string the unique name of the channel
-     * @ODM\String
-     * @ODM\UniqueIndex
-     */
-    protected $shortName;
 
     /**
      * @var array
@@ -91,7 +84,12 @@ class Channel implements ChannelInterface
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = null;
+
+		if ($id) {
+			$this->id = $id;
+		}
+
         return $this;
     }
 
@@ -103,10 +101,9 @@ class Channel implements ChannelInterface
     {
         $this->name = $name;
 
-        // TODO use sluggable extension
-        if (null === $this->shortName) {
-            $this->setShortName(trim(strtolower(str_replace(' ', '_', $this->name))));
-        }
+		if (null === $this->id) {
+			$this->setId(trim(strtolower(str_replace(' ', '_', $this->name))));
+		}
 
         return $this;
     }
@@ -117,22 +114,6 @@ class Channel implements ChannelInterface
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $shortName
-     */
-    public function setShortName($shortName)
-    {
-        $this->shortName = $shortName;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShortName()
-    {
-        return $this->shortName;
     }
 
     /**
