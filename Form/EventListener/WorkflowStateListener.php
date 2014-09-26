@@ -38,9 +38,9 @@ class WorkflowStateListener implements EventSubscriberInterface
 		$this->workflow = $workflow;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public static function getSubscribedEvents()
 	{
 		return [

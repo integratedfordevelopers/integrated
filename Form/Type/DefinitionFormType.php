@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class DefinitionFormType extends AbstractType
 {
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
@@ -68,9 +68,9 @@ class DefinitionFormType extends AbstractType
 		$builder->get('states')->addEventSubscriber(new ExtractTransitionsFromCollectionListener());
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function finishView(FormView $view, FormInterface $form, array $options)
 	{
 		$child = $view->children['states'];
@@ -84,9 +84,9 @@ class DefinitionFormType extends AbstractType
 		$child->vars['block_prefixes'][] = $last;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setDefaults(array(
@@ -97,9 +97,9 @@ class DefinitionFormType extends AbstractType
 		));
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getName()
 	{
 		return 'integrated_workflow_definition';

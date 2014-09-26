@@ -44,9 +44,9 @@ class WorkflowStateType extends AbstractType
 		$this->repository = $repository;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		// The content of this form type is solely based on state that is not set yet. So
@@ -60,9 +60,9 @@ class WorkflowStateType extends AbstractType
 		$builder->addEventSubscriber(new WorkflowStateListener($options['workflow']));
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function finishView(FormView $view, FormInterface $form, array $options)
 	{
 		if (!$form->has('current')) {
@@ -83,9 +83,9 @@ class WorkflowStateType extends AbstractType
 		$child->vars['block_prefixes'][] = $last;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$workflowNormalizer = function(Options $options, $workflow) {
@@ -122,9 +122,9 @@ class WorkflowStateType extends AbstractType
 		]);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getName()
 	{
 		return 'integrated_workflow_state';

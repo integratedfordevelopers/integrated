@@ -68,9 +68,9 @@ class ContentSubscriber implements ContentSubscriberInterface
 		$this->container = $container;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public static function getSubscribedEvents()
 	{
 		return [
@@ -181,6 +181,9 @@ class ContentSubscriber implements ContentSubscriberInterface
 		}
 	}
 
+    /**
+     * @param ContentEvent $event
+     */
 	public function delete(ContentEvent $event)
 	{
 		$content = $event->getContent();
@@ -259,9 +262,9 @@ class ContentSubscriber implements ContentSubscriberInterface
 		return false;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getExtension()
 	{
 		return $this->extension;

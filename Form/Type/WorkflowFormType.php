@@ -24,9 +24,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class WorkflowFormType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('comment', 'textarea', ['required' => false]);
@@ -37,9 +37,9 @@ class WorkflowFormType extends AbstractType
 		$builder->add('deadline', 'integrated_datetime');
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setRequired([
@@ -51,9 +51,9 @@ class WorkflowFormType extends AbstractType
 		]);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getName()
 	{
 		return 'integrated_workflow';

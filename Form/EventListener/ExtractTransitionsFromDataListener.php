@@ -28,9 +28,9 @@ use Symfony\Component\Form\FormEvents;
  */
 class ExtractTransitionsFromDataListener implements EventSubscriberInterface
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public static function getSubscribedEvents()
 	{
 		return [

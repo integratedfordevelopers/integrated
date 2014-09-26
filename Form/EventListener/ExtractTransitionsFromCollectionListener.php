@@ -45,9 +45,9 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
 		$this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public static function getSubscribedEvents()
 	{
 		return [

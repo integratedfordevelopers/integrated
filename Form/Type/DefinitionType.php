@@ -47,9 +47,9 @@ class DefinitionType extends AbstractType
 		$this->repository = $repository;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		if ($options['multiple']) {
@@ -61,9 +61,9 @@ class DefinitionType extends AbstractType
 		}
 	}
 
-	/**
-     * @inheritdoc
-     */
+    /**
+   	 * {@inheritdoc}
+   	 */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
 		$resolver->setDefaults([
@@ -82,17 +82,17 @@ class DefinitionType extends AbstractType
 		$resolver->addAllowedValues(['data_type' => ['scalar', 'object']]);
     }
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getParent()
 	{
 		return 'choice';
 	}
 
-	/**
-     * @inheritdoc
-     */
+    /**
+   	 * {@inheritdoc}
+   	 */
     public function getName()
     {
         return 'integrated_workflow_definition_type';

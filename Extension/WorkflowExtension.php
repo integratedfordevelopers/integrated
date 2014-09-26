@@ -31,9 +31,9 @@ class WorkflowExtension implements ExtensionInterface, ContainerAwareInterface
 	 */
 	private $container = null;
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getSubscribers()
 	{
 		return [
@@ -42,9 +42,9 @@ class WorkflowExtension implements ExtensionInterface, ContainerAwareInterface
 		];
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getName()
 	{
 		return 'integrated.extension.workflow';

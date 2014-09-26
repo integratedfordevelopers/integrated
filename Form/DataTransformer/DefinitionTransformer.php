@@ -23,9 +23,9 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class DefinitionTransformer implements DataTransformerInterface
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function transform($value)
 	{
 		if ($value === null || $value === '') {
@@ -39,9 +39,9 @@ class DefinitionTransformer implements DataTransformerInterface
 		return new ArrayObject(['id' => $value], ArrayObject::ARRAY_AS_PROPS);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function reverseTransform($value)
 	{
 		if ($value === null || $value === '') {

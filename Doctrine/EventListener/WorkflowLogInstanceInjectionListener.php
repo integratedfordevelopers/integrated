@@ -29,14 +29,17 @@ class WorkflowLogInstanceInjectionListener implements EventSubscriber
 	 */
 	protected $manager;
 
+    /**
+     * @param ManagerRegistry $manager
+     */
 	public function __construct(ManagerRegistry $manager)
 	{
 		$this->manager = $manager;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getSubscribedEvents()
 	{
 		return [

@@ -27,9 +27,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class PermissionsType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->addViewTransformer(new PermissionTransformer());
@@ -38,9 +38,9 @@ class PermissionsType extends AbstractType
 		$builder->add('write', 'user_group_choice', ['required' => false, 'expanded' => false]);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setDefaults(array(
@@ -49,9 +49,9 @@ class PermissionsType extends AbstractType
 		));
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getName()
 	{
 		return 'integrated_workflow_definition_permissions';
