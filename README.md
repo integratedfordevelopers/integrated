@@ -33,4 +33,4 @@ The console command **workflow:worker:run** is recommanded to be scheduled to ru
 minute**. This needs to be done to done to make sure that changed to workflows reflect into the reindex 
 of the affected content.
 
-**Pro tip:** active the quite mode to suppress output.
+**Pro tip:** activate the quite mode to suppress output.
