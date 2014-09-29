@@ -27,3 +27,10 @@ else you get errors when adding the entities.
 
 Well that is it.
 
+## Scheduled Tasks ##
+
+The console command **workflow:worker:run** is recommanded to be scheduled to run atleast **once every 
+minute**. This needs to be done to done to make sure that changed to workflows reflect into the reindex 
+of the affected content.
+
+**Pro tip:** active the quite mode to suppress output.
