@@ -44,6 +44,7 @@ class StateType extends AbstractType
         ]);
 
         $builder->add('publishable', 'checkbox', ['required' => false]);
+        $builder->add('default', 'checkbox', ['required' => false, 'mapped' => false]);
         $builder->add('permissions', 'workflow_definition_permissions', ['required' => false]);
 
         if ($options['transitions'] == 'data') {
