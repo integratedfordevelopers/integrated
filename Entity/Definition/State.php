@@ -59,11 +59,6 @@ class State
      */
     protected $transitions;
 
-    /**
-     * @var boolean
-     */
-    protected $default = false;
-
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
@@ -267,17 +262,11 @@ class State
      */
     public function isDefault()
     {
-        return $this->default;
-    }
+        if (isset($this->workflow)) {
+            return ($this === $this->workflow->getDefault());
+        }
 
-    /**
-     * @param boolean $default
-     * @return $this
-     */
-    public function setDefault($default)
-    {
-        $this->default = $default;
-        return $this;
+        return false;
     }
 
     /**

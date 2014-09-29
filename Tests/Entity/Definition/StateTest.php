@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Tests\Entity\Definition;
 
+use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 /**
@@ -19,28 +20,21 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 class StateTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test setDefault function
-     */
-    public function testSetDefault()
-    {
-        $state = $this->getInstance();
-
-        // Set default must return itself
-        $this->assertSame($state, $state->setDefault(false));
-    }
-
-    /**
      * Test isDefault function
      */
     public function testIsDefault()
     {
-        $state = $this->getInstance();
+        $state1 = $this->getInstance();
+        $state2 = $this->getInstance();
 
-        // Default must be false
-        $this->assertFalse($state->isDefault());
+        $definition = new Definition();
+        $state1->setWorkflow($definition);
+        $state2->setWorkflow($definition);
 
-        // Set default to true and check if it is
-        $this->assertTrue($state->setDefault(true)->isDefault());
+        $definition->setDefault($state1);
+
+        $this->assertTrue($state1->isDefault());
+        $this->assertFalse($state2->isDefault());
     }
 
     /**
