@@ -11,12 +11,20 @@
 
 		<field name="name" column="name" type="string" length="255" unique="true" />
 
+
 		<one-to-many field="states" target-entity="Integrated\Bundle\WorkflowBundle\Entity\Definition\State" mapped-by="workflow" orphan-removal="true">
 			<cascade>
 				<cascade-persist />
 				<cascade-remove />
 			</cascade>
 		</one-to-many>
+
+        <many-to-one
+                field="default"
+                target-entity="Integrated\Bundle\WorkflowBundle\Entity\Definition\State">
+
+            <join-column name="default_state_id" referenced-column-name="id" nullable="false" />
+        </many-to-one>
 
     </entity>
 
