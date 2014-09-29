@@ -147,4 +147,13 @@ class Definition
         $this->default = $default;
         return $this;
     }
+
+    /**
+     * @return $this
+     */
+    public function removeDefault()
+    {
+        $this->default = null;
+        return $this;
+    }
 }
