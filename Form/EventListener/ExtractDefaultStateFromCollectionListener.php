@@ -42,8 +42,7 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
      */
     public function onPreSubmit(FormEvent $event)
     {
-        $form = $event->getForm();
-        $definition = $form->getData();
+        $definition = $event->getForm()->getData();
 
         if ($definition instanceof Definition) {
             $definition->setDefault();
