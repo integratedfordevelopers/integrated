@@ -51,7 +51,6 @@ class StateTest extends \PHPUnit_Framework_TestCase
      */
     protected function getInstance()
     {
-        $instance = new State();
-        return $instance;
+        return new State();
     }
 }
