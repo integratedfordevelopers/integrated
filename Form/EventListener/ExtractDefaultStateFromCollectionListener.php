@@ -86,25 +86,28 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
         $form = $event->getForm();
         $definition = $event->getData();
 
-        if ($definition instanceof Definition) {
+        if (!$definition instanceof Definition) {
+            return;
+        }
 
-            if (!$form->has('states')) {
-                return;
+        if (!$form->has('states')) {
+            return;
+        }
+
+        $states = $form->get('states');
+        foreach ($states->all() as $child) {
+
+            $state = $child->getData();
+            if (!$state instanceof State) {
+                continue;
             }
 
-            $states = $form->get('states');
-            foreach ($states->all() as $child) {
+            if (!$child->has('default')) {
+                continue;
+            }
 
-                $state = $child->getData();
-                if (!$state instanceof State) {
-                    continue;
-                }
-
-                if ($child->has('default')) {
-                    if (true === $child->get('default')->getData()) {
-                        $definition->setDefault($state);
-                    }
-                }
+            if (true === $child->get('default')->getData()) {
+                $definition->setDefault($state);
             }
         }
     }
