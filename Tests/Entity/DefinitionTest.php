@@ -65,7 +65,6 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getInstance()
     {
-        $instance = new Definition();
-        return $instance;
+        return new Definition();
     }
 }
