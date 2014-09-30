@@ -11,7 +11,7 @@
 
         <property name="default">
             <constraint name="NotNull">
-                <option name="message">At least one state should be selected as default</option>
+                <option name="message">Select one state as the default state</option>
             </constraint>
         </property>
 
