@@ -13,9 +13,6 @@ namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
-use Integrated\Bundle\WorkflowBundle\Form\EventListener\DefinitionStateTransitionsDataExtractionListener;
-use Integrated\Bundle\WorkflowBundle\Form\EventListener\DefinitionStateTransitionsFormExtractionListener;
-
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromDataListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,7 +29,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class StateType extends AbstractType
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -65,7 +62,7 @@ class StateType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -84,7 +81,7 @@ class StateType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {

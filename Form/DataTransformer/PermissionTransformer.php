@@ -26,9 +26,9 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class PermissionTransformer implements DataTransformerInterface
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function transform($value)
 	{
 		$data = [
@@ -67,9 +67,9 @@ class PermissionTransformer implements DataTransformerInterface
 		return $data;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function reverseTransform($value)
 	{
 		/** @var Permission[] $permissions */

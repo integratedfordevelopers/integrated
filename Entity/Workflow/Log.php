@@ -41,17 +41,17 @@ class Log
 	/**
 	 * @var string
 	 */
-	private $user_id;
+	private $user_id = null;
 
 	/**
 	 * @var string
 	 */
-	private $user_class;
+	private $user_class = null;
 
 	/**
 	 * @var UserInterface
 	 */
-	private $user_instance;
+	private $user_instance = null;
 
 	/**
 	 * @var Definition\State
