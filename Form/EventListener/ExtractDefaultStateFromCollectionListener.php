@@ -31,7 +31,7 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
         return [
             FormEvents::PRE_SUBMIT => 'onPreSubmit',
             FormEvents::POST_SET_DATA => 'onPostSetData',
-            FormEvents::POST_SUBMIT => 'onPostSubmit'
+            FormEvents::SUBMIT => 'onSubmit'
         ];
     }
 
@@ -81,10 +81,10 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
      *
      * @param FormEvent $event
      */
-    public function onPostSubmit(FormEvent $event)
+    public function onSubmit(FormEvent $event)
     {
         $form = $event->getForm();
-        $definition = $form->getData();
+        $definition = $event->getData();
 
         if ($definition instanceof Definition) {
 

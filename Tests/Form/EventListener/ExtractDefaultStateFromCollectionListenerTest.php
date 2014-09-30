@@ -106,11 +106,11 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onPostSubmit function
+     * Test onSubmit function
      */
-    public function testOnPostSubmit()
+    public function testOnSubmit()
     {
-        // TODO test onPostSubmit function
+        // TODO test onSubmit function
         $this->markTestIncomplete('This test has not been implemented yet.');
     }
 
