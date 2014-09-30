@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Tests\Entity\Definition;
 
-use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 /**
@@ -24,15 +23,25 @@ class StateTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsDefault()
     {
+        // Create two states
         $state1 = $this->getInstance();
         $state2 = $this->getInstance();
 
-        $definition = new Definition();
+        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition | \PHPUnit_Framework_MockObject_MockObject $definition */
+        $definition = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition');
+
+        // Set workflow Mock for the two states
         $state1->setWorkflow($definition);
         $state2->setWorkflow($definition);
 
-        $definition->setDefault($state1);
+        // Stub getDefault function
+        $definition
+            ->expects($this->exactly(2))
+            ->method('getDefault')
+            ->will($this->returnValue($state1))
+        ;
 
+        // Asserts
         $this->assertTrue($state1->isDefault());
         $this->assertFalse($state2->isDefault());
     }
