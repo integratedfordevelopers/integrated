@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Tests\Form\EventListener;
 
-use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractDefaultStateFromCollectionListener;
+
 use Symfony\Component\Form\FormEvents;
 
 /**
@@ -31,7 +31,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     private $event;
 
     /**
-     * @var Definition
+     * @var \Integrated\Bundle\WorkflowBundle\Entity\Definition | \PHPUnit_Framework_MockObject_MockObject
      */
     private $definition;
 
@@ -42,7 +42,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     {
         $this->event = $this->getMock('Symfony\Component\Form\FormEvent', [], [], '', false);
         $this->form = $this->getMock('Symfony\Component\Form\FormInterface');
-        $this->definition = new Definition();
+        $this->definition = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition');
     }
 
     /**
@@ -91,17 +91,16 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
             ->will($this->returnValue($this->definition))
         ;
 
-        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state */
-        $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
-
-        // Set default state
-        $this->definition->setDefault($state);
+        // Stub setDefault
+        $this->definition
+            ->expects($this->once())
+            ->method('setDefault')
+            ->with(null)
+            ->willReturn(null)
+        ;
 
         // Fire event
         $instance->onPreSubmit($this->event);
-
-        // Asserts
-        $this->assertNull($this->definition->getDefault());
     }
 
     /**
