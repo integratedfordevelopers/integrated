@@ -23,13 +23,11 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDefault()
     {
-        // Get instance
         $instance = $this->getInstance();
 
-        // Mock State
+        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state */
         $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
 
-        // Asserts
         $this->assertSame($instance, $instance->setDefault($state));
     }
 
@@ -38,31 +36,27 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDefault()
     {
-        // Get instance
         $instance = $this->getInstance();
 
-        // Mock State
+        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state */
         $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
 
-        // Set default
         $instance->setDefault($state);
 
-        // Asserts
         $this->assertSame($state, $instance->getDefault());
     }
 
     public function testRemoveDefault()
     {
-        // Get instance
         $instance = $this->getInstance();
 
-        // Mock State
+        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state */
         $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
 
-        // Set default
+        // First add the state and then remove it with the setDefault function
+        $instance->setDefault($state);
         $instance->setDefault();
 
-        // Asserts
         $this->assertNull($instance->getDefault());
     }
 
