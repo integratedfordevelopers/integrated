@@ -159,7 +159,6 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
      */
     protected function getInstance()
     {
-        $instance = new ExtractDefaultStateFromCollectionListener();
-        return $instance;
+        return new ExtractDefaultStateFromCollectionListener();
     }
 }
