@@ -60,10 +60,9 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
         $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
 
         // Set default
-        $instance->setDefault($state);
+        $instance->setDefault();
 
         // Asserts
-        $this->assertSame($instance, $instance->removeDefault());
         $this->assertNull($instance->getDefault());
     }
 

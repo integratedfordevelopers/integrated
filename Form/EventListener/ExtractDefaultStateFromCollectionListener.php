@@ -46,7 +46,7 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
         $definition = $form->getData();
 
         if ($definition instanceof Definition) {
-            $definition->removeDefault();
+            $definition->setDefault();
         }
     }
 
@@ -88,8 +88,6 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
         $definition = $form->getData();
 
         if ($definition instanceof Definition) {
-
-            $definition->removeDefault();
 
             if (!$form->has('states')) {
                 return;
