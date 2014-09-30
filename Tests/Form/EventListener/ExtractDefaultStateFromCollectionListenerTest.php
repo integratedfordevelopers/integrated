@@ -104,6 +104,39 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
+     * Test onPreSubmit with no definition
+     */
+    public function testOnPreSubmitWithNoDefinition()
+    {
+        $instance = $this->getInstance();
+
+        // Stub getForm function
+        $this->event
+            ->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($this->form))
+        ;
+
+        // Stub getData function
+        $this->form
+            ->expects($this->once())
+            ->method('getData')
+            ->willReturn(null)
+        ;
+
+        // Stub setDefault
+        $this->definition
+            ->expects($this->never())
+            ->method('setDefault')
+            ->with(null)
+            ->willReturn(null)
+        ;
+
+        // Fire event
+        $instance->onPreSubmit($this->event);
+    }
+
+    /**
      * Test onPostSetData function
      */
     public function testOnPostSetData()
