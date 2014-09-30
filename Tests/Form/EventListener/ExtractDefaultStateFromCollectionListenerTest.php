@@ -13,6 +13,7 @@ namespace Integrated\Bundle\WorkflowBundle\Tests\Form\EventListener;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractDefaultStateFromCollectionListener;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -59,7 +60,14 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     public function testGetSubscribedEvents()
     {
         $instance = $this->getInstance();
-        $this->assertCount(3, $instance::getSubscribedEvents());
+
+        $events = array(
+            FormEvents::PRE_SUBMIT => 'onPreSubmit',
+            FormEvents::POST_SET_DATA => 'onPostSetData',
+            FormEvents::SUBMIT => 'onSubmit'
+        );
+
+        $this->assertSame($events, $instance::getSubscribedEvents());
     }
 
     /**
