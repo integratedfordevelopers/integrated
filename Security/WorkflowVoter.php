@@ -91,17 +91,17 @@ class WorkflowVoter implements VoterInterface
 		return $resolver;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function supportsAttribute($attribute)
 	{
 		return in_array($attribute, $this->permissions);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function supportsClass($class)
 	{
 		if (is_object($class)) {
@@ -111,9 +111,9 @@ class WorkflowVoter implements VoterInterface
 		return is_subclass_of($class, 'Integrated\\Bundle\\UserBundle\\Model\\GroupableInterface');
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function vote(TokenInterface $token, $object, array $attributes)
 	{
 		if (!$object instanceof ContentInterface) {

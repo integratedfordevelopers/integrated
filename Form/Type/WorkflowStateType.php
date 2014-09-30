@@ -20,7 +20,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -28,35 +32,47 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class WorkflowStateType extends AbstractType
 {
 	/**
-	 * @inheritdoc
+	 * @var ObjectRepository
 	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		$builder->add('current', 'text', [
-			'read_only' => true,
-			'mapped' => false,
-			'label' => 'State'
-		]);
-
-		$builder->add('next', 'workflow_state_choice', [
-			'workflow' => $options['workflow'],
-			'mapped' => false,
-			'label' => 'Next state'
-		]);
-
-		$builder->addEventSubscriber(new WorkflowStateListener());
-	}
+	private $repository;
 
 	/**
-	 * @inheritdoc
+	 * @param ObjectRepository $repository
 	 */
+	public function __construct(ObjectRepository $repository)
+	{
+		$this->repository = $repository;
+	}
+
+    /**
+   	 * {@inheritdoc}
+   	 */
+	public function buildForm(FormBuilderInterface $builder, array $options)
+	{
+		// The content of this form type is solely based on state that is not set yet. So
+		// the only thing that is added is a listener that will update this type with more
+		// fields based on the set state.
+		//
+		// The fields that can be added are "current" and "next". The "current" field holds
+		// a read only text representation of the current state and the "next" field lets
+		// the user select the next state to move to.
+
+		$builder->addEventSubscriber(new WorkflowStateListener($options['workflow']));
+	}
+
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function finishView(FormView $view, FormInterface $form, array $options)
 	{
-		// the current field is just a text field but to give it the possibility
-		// to style is differently a new block prefix will be added just before
-		// the last one. So one can use the integrated_workflow_state_text_widget
-		// or workflow_state_text_widget block to use a different template for this
-		// field.
+		if (!$form->has('current')) {
+			return;
+		}
+
+		// The current field is just a text field but to give it the possibility to style is
+		// differently a new block prefix will be added just before the last one. So one can
+		// use the integrated_workflow_state_text_widget or workflow_state_text_widget block
+		// to use a different template for this field.
 
 		$child = $view->children['current'];
 
@@ -65,19 +81,29 @@ class WorkflowStateType extends AbstractType
 		$child->vars['block_prefixes'][] = 'workflow_state_text';
 		$child->vars['block_prefixes'][] = 'integrated_workflow_state_text';
 		$child->vars['block_prefixes'][] = $last;
-
-		// filter out the current field if there is no current state set
-
-		if (!$child->vars['value']) {
-			unset($view->children['current']);
-		}
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
+		$workflowNormalizer = function(Options $options, $workflow) {
+			if (is_string($workflow)) {
+				$workflow = $this->repository->find($workflow);
+			}
+
+			if (!$workflow instanceof Definition) {
+				throw new InvalidOptionsException(sprintf(
+					'The option "%s" could not be normalized to a valid "%s" object',
+					'workflow',
+					'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition'
+				));
+			}
+
+			return $workflow;
+		};
+
 		$resolver->setDefaults([
 			'empty_data' => null,
 			'data_class' => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State',
@@ -87,14 +113,18 @@ class WorkflowStateType extends AbstractType
 			'workflow'
 		]);
 
+		$resolver->setNormalizers([
+			'workflow' => $workflowNormalizer
+		]);
+
 		$resolver->setAllowedTypes([
 			'workflow' => ['string', 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition']
 		]);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getName()
 	{
 		return 'integrated_workflow_state';

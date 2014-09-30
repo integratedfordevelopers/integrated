@@ -31,9 +31,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class StateType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('name', 'text', [
@@ -63,9 +63,9 @@ class StateType extends AbstractType
 		}
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setDefaults([
@@ -80,9 +80,9 @@ class StateType extends AbstractType
 		]);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getName()
 	{
 		return 'integrated_workflow_definition_state';

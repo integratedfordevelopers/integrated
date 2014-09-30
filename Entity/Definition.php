@@ -22,7 +22,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 class Definition
 {
 	/**
-	 * @var int
+	 * @var string
 	 */
 	protected $id = null;
 
@@ -42,7 +42,7 @@ class Definition
 	}
 
 	/**
-	 * @return int
+	 * @return string
 	 */
 	public function getId()
 	{
@@ -65,6 +65,18 @@ class Definition
 	{
 		$this->name = (string) $name;
 		return $this;
+	}
+
+	/**
+	 * return State
+	 */
+	public function getDefault()
+	{
+		if (!$this->states->isEmpty()) {
+			return $this->states->first();
+		}
+
+		return null;
 	}
 
 	/**
@@ -110,6 +122,15 @@ class Definition
 		}
 
 		return $this;
+	}
+
+	/**
+	 * @param State $state
+	 * @return bool
+	 */
+	public function hasState(State $state)
+	{
+		return $this->states->contains($state);
 	}
 
 	/**
