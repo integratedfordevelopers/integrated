@@ -55,7 +55,7 @@
 
 {% block integrated_author_widget  %}
     <div class="input-group">
-        <input type="hidden" id="{{ id }}" name="{{ full_name }}" class="col-md-12 integrated_select2" style="width: 100%; padding: 0;" />
+        <input type="hidden" id="{{ id }}" name="{{ full_name }}[persons]" class="col-md-12 integrated_select2" style="width: 100%; padding: 0;" />
         <span class="input-group-btn">
             <button id="types-btn" class="btn btn-default" type="button" style="padding: 5px 10px;"><span class="caret"></span></button>
         </span>
@@ -66,59 +66,65 @@
     <div id="authorTypes">
         {% if value.type_div is not empty %}
             {% autoescape false %}
-            {{ value.type_div }}
+                {{ value.type_div }}
             {% endautoescape %}
         {% endif %}
     </div>
 
     <script type="text/javascript">
         require(["{{ asset('bundles/integratedformtype/components/select2/select2.js') }}"],
-                function () {
-                    $("#{{ id }}").select2({
-                        minimumInputLength: 1,
-                        multiple: true,
-                        ajax: {
-                            url: "{{path('integrated_content_content_index', { 'contenttypes[]': 'person' })}}",
-                            dataType: 'json',
-                            data: function (term, page) {
-                                return {
-                                    q: term,
-                                    _format: 'json',
-                                    page_limit: 10
-                                };
-                            },
-                            results: function (data, page) {
-                                return {
-                                    results: $.map(data.items, function (item) {
-                                        return {
-                                            text: item.title,
-                                            id: item.id
-                                        }
-                                    })
-                                };
-                            }
+            function () {
+                $(".change-name-author").each(function() {
+                    var id = $(this).attr('name');
+
+                    $(this).attr('name', '{{ full_name }}[types][' + id + ']');
+                });
+
+                $("#{{ id }}").select2({
+                    minimumInputLength: 1,
+                    multiple: true,
+                    ajax: {
+                        url: "{{path('integrated_content_content_index', { 'contenttypes[]': 'person' })}}",
+                        dataType: 'json',
+                        data: function (term, page) {
+                            return {
+                                q: term,
+                                _format: 'json',
+                                page_limit: 10
+                            };
                         },
-                        dropdownCssClass: "bigdrop"
-                    }).on("change", function(e) {
-                        if(e.hasOwnProperty('added')) {
-                            $("#authorTypes").append('<div id="type_' + e.added.id + '" style="margin-top: 10px;" class="input-group input-group"><span class="input-group-addon">' + e.added.text + '</span><input type="text" class="form-control type-text" name="' + e.added.id + '_type" placeholder="Type" /></div>');
+                        results: function (data, page) {
+                            return {
+                                results: $.map(data.items, function (item) {
+                                    return {
+                                        text: item.title,
+                                        id: item.id
+                                    }
+                                })
+                            };
                         }
+                    },
+                    dropdownCssClass: "bigdrop"
+                }).on("change", function(e) {
+                    if(e.hasOwnProperty('added')) {
+                        $("#authorTypes").append('<div id="type_' + e.added.id + '" style="margin-top: 10px;" class="input-group input-group"><span class="input-group-addon">' + e.added.text + '</span><input type="text" class="form-control type-text" name="{{ full_name }}[types][' + e.added.id + ']" placeholder="Type" /></div>');
+                    }
 
-                        if(e.hasOwnProperty('removed')) {
-                            $("#type_" + e.removed.id).remove();
-                        }
-                    });
+                    if(e.hasOwnProperty('removed')) {
+                        $("#type_" + e.removed.id).remove();
+                    }
+                });
 
-                    $('#types-btn').on("click", function(e) {
-                        $('#authorTypes').toggle();
-                    });
+                $('#types-btn').on("click", function(e) {
+                    $('#authorTypes').toggle();
+                });
 
-                    {% if value.data is not empty %}
+                {% if value.data is not empty %}
                     {% autoescape false %}
-                    $("#{{ id }}").select2('data', {{ value.data }});
+                        $("#{{ id }}").select2('data', {{ value.data }});
                     {% endautoescape %}
-                    {% endif %}
-                }
+                {% endif %}
+            }
         );
     </script>
 {% endblock %}
