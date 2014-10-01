@@ -19,30 +19,17 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 class DefinitionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test setDefault function
+     * Test get- and setDefault function
      */
-    public function testSetDefault()
+    public function testGetAndSetDefault()
     {
         $instance = $this->getInstance();
 
         /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state */
         $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
+
 
         $this->assertSame($instance, $instance->setDefault($state));
-    }
-
-    /**
-     * Test getDefault function
-     */
-    public function testGetDefault()
-    {
-        $instance = $this->getInstance();
-
-        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state */
-        $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
-
-        $instance->setDefault($state);
-
         $this->assertSame($state, $instance->getDefault());
     }
 
