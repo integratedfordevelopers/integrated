@@ -12,69 +12,71 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 
 class Author implements DataTransformerInterface
 {
-    public function __construct($om, $request)
+    public function __construct(ManagerRegistry $om)
     {
-        $this->om      = $om;
-        $this->request = $request;
+        $this->om = $om;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transform($authors)
+    public function transform($array)
     {
-        if ($authors === NULL) {
-            return array('data', 'type_div');
+        if($array == null) {
+            return array('data', 'type_div',);
         }
 
-        $array = array();
-        $div   = false;
+        $collection = array(
+            'authors' => array(),
+            'types'   => array(),
+        );
 
-        foreach($authors as $author) {
-            if(!$author->getPerson()->getId()) {
+        foreach($array as $author) {
+            if(!$author->getPerson()) {
                 continue;
             }
 
-            $array[] = array(
+            $collection['authors'][] = array(
                 'id'   => $author->getPerson()->getId(),
-                'text' => $author->getPerson()->getNickName()
+                'text' => $author->getPerson()->getFirstName() . ' ' . $author->getPerson()->getLastName()
             );
 
-            $div .= '<div id="type_' . $author->getPerson()->getId() . '" style="margin-top: 10px;" class="input-group input-group-sm"><span class="input-group-addon">' . $author->getPerson()->getNickName() . '</span><input type="text" class="form-control type-text" name="' . $author->getPerson()->getId() . '_type" value="' . $author->getType() . '" placeholder="Type"></div>';
+            $collection['types'][] = '<div id="type_' . $author->getPerson()->getId() . '" style="margin-top: 10px;" class="input-group input-group-sm"><span class="input-group-addon">' . $author->getPerson()->getFirstName() . ' ' . $author->getPerson()->getLastName() . '</span><input type="text" class="form-control type-text change-name-author" name="' . $author->getPerson()->getId() . '" value="' . $author->getType() . '" placeholder="Type"></div>';
         }
 
         return array(
-            'data'     => json_encode($array),
-            'type_div' => $div
+            'data'     => json_encode($collection['authors']),
+            'type_div' => implode($collection['types'])
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($string)
+    public function reverseTransform($array)
     {
-        $dm      = $this->om->getManager();
-        $persons = explode(',', $string);
-        $array   = array();
+        $dm         = $this->om->getManager();
+        $collection = array();
 
-        foreach($persons as $person) {
-            $result     = $dm->getRepository('IntegratedContentBundle:Content\Relation\Person')->find($person);
-            $type       = $this->request->get($person . '_type');
+        if(is_array($array) && isset($array['persons']) && isset($array['types']) && is_array($array['types'])) {
+            foreach(explode(',', $array['persons']) as $person) {
+                $result = $dm->getRepository('IntegratedContentBundle:Content\Relation\Person')->find($person);
 
-            if($result) {
-                $author = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author();
-                $author->setType($type);
-                $author->setPerson($result);
+                if($result && isset($array['types'][$person])) {
+                    $author = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author();
+                    $author->setType($array['types'][$person]);
+                    $author->setPerson($result);
 
-                $array[] = $author;
+                    $collection[] = $author;
+                }
             }
         }
 
-        return new ArrayCollection($array);
+        return new ArrayCollection($collection);
     }
 }
