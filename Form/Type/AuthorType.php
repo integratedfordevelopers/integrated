@@ -11,32 +11,24 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\Author;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 class AuthorType extends AbstractType
 {
     /**
-     * @var ObjectManager
+     * @var ManagerRegistry
      */
     private $om;
 
     /**
-     * @var Request
+     * @param ManagerRegistry $om
      */
-    private $request;
-
-    /**
-     * @param $om
-     * @param Request $request
-     */
-    public function __construct($om, Request $request)
+    public function __construct(ManagerRegistry $om)
     {
-        $this->om      = $om;
-        $this->request = $request;
+        $this->om = $om;
     }
 
     /**
@@ -44,7 +36,7 @@ class AuthorType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new Author($this->om, $this->request);
+        $transformer = new Author($this->om);
         $builder->addModelTransformer($transformer);
     }
 
