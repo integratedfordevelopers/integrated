@@ -30,7 +30,6 @@
         </service>
         <service id="integrated_formtype_form_type_author" class="%integrated_formtype_form_type_author.class%" scope="request">
             <argument type="service" id="doctrine_mongodb" />
-            <argument type="service" id="request" />
             <tag name="form.type" alias="integrated_author" />
         </service>
 
