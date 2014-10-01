@@ -65,6 +65,8 @@ The <info>%command.name%</info> command starts a index of the site.
 
 	/**
 	 * {@inheritdoc}
+     *
+     * @throws InvalidArgumentException
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
@@ -96,6 +98,8 @@ The <info>%command.name%</info> command starts a index of the site.
 	 * @param OutputInterface $output
 	 *
 	 * @return int
+     *
+     * @throws InvalidArgumentException
 	 */
 	protected function executeValidation(InputInterface $input, OutputInterface $output)
 	{
@@ -192,7 +196,6 @@ The <info>%command.name%</info> command starts a index of the site.
 			// get the current time as it will be required at the end for the solr clean up.
 
 			$date = new DateTime();
-			$date->setTimezone(new DateTimeZone('UTC'));
 
 			$this->doIndex($result, $progress);
 			$this->doIndexCleanup($input->getArgument('id'), $date);
@@ -264,6 +267,9 @@ The <info>%command.name%</info> command starts a index of the site.
 		}
 
 		if ($date) {
+            $date = clone $date;
+            $date->setTimezone(new DateTimeZone('UTC'));
+
 			$query[] = '-_time_:[' . $date->format('Y-m-d\TG:i:s\Z') . ' TO *]';
 		}
 
