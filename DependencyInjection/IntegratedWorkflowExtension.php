@@ -38,12 +38,15 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
 
 		$loader->load('doctrine.xml');
 		$loader->load('extension.xml');
+		$loader->load('repository.xml');
 
 		$loader->load('form.xml');
 		$loader->load('form.definition.xml');
 		$loader->load('form.workflow.xml');
 
 		$loader->load('security.xml');
+
+		$loader->load('queue.xml');
 	}
 
 	/**
@@ -56,7 +59,6 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
 
 	/**
 	 * @param ContainerBuilder $container The service container
-	 *
 	 * @return void
 	 */
 	protected function configureTwigBundle(ContainerBuilder $container)
