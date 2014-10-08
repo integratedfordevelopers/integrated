@@ -117,8 +117,6 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
 					'expanded' => true,
 				]);
 
-				$type->addViewTransformer(new CollectionToArrayTransformer(), true);
-
 				$builder->add($type);
 				$builder->addEventSubscriber(new ChannelDefaultDataListener($default));
 			}

@@ -390,7 +390,13 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      */
     public function setChannels(Collection $channels)
     {
-        $this->channels = $channels;
+        $this->channels->clear();
+        $this->channels = new ArrayCollection();
+
+        foreach ($channels as $channel) {
+            $this->addChannel($channel); // type check
+        }
+
         return $this;
     }
 
@@ -399,7 +405,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      */
     public function getChannels()
     {
-        return $this->channels;
+        return $this->channels->toArray();
     }
 
     /**
@@ -417,9 +423,18 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * {@inheritdoc}
      */
+   	public function hasChannel(ChannelInterface $channel)
+   	{
+   		return $this->channels->contains($channel);
+   	}
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeChannel(ChannelInterface $channel)
     {
-        return $this->channels->removeElement($channel);
+        $this->channels->removeElement($channel);
+        return $this;
     }
 
     /**
