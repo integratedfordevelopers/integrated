@@ -200,10 +200,10 @@ class ContentController extends Controller
         /** @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
         $channels = array();
-        if ($channelResult = $dm->getRepository('Integrated\Bundle\ContentBundle\Document\Channel\Channel')->findAll()) {
+        if ($channelResult = $dm->getRepository('Integrated\\Bundle\\ContentBundle\\Document\\Channel\\Channel')->findAll()) {
             /** @var $channel \Integrated\Bundle\ContentBundle\Document\Channel\Channel */
             foreach ($channelResult as $channel) {
-                $channels[$channel->getShortName()] = $channel->getName();
+                $channels[$channel->getId()] = $channel->getName();
             }
         }
 
