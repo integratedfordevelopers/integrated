@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Traversable;
 
-use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
@@ -456,7 +455,7 @@ class ContentController extends Controller
 			];
 		}
 
-		$form = $this->createForm(new DeleteFormType(), $content, [
+		$form = $this->createForm('content_delete', $content, [
 			'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
 			'method' => 'DELETE',
 		], $buttons);

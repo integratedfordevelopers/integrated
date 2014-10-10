@@ -43,6 +43,8 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 		$loader->load('extensions.xml');
 
 		$loader->load('form.xml');
+		$loader->load('form.content.xml');
+		$loader->load('form.content-type.xml');
 
 		$loader->load('metadata.xml');
 		$loader->load('mongo.xml');
