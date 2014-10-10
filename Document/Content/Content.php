@@ -19,6 +19,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 
+use Integrated\Common\Content\Channel\ChannelInterface;
+use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
 use Integrated\Common\Content\MetadataInterface;
@@ -37,7 +39,7 @@ use Integrated\Common\ContentType\Mapping\Annotations as Type;
  * @ODM\DiscriminatorField(fieldName="class")
  * @ODM\HasLifecycleCallbacks
  */
-class Content implements ContentInterface, ExtensibleInterface, MetadataInterface
+class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
 {
 	use ExtensibleTrait;
 
@@ -93,6 +95,12 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     protected $metadata = null;
 
     /**
+     * @var Collection
+     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
+     */
+    protected $channels;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -101,6 +109,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         $this->publishedAt = new \DateTime();
         $this->relations = new ArrayCollection();
         $this->updatedAt = new \DateTime();
+        $this->channels = new ArrayCollection();
     }
 
     /**
@@ -375,6 +384,58 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 		$this->metadata = $metadata;
 		return $this;
 	}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setChannels(Collection $channels)
+    {
+        $this->channels->clear();
+        $this->channels = new ArrayCollection();
+
+        foreach ($channels as $channel) {
+            $this->addChannel($channel); // type check
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChannels()
+    {
+        return $this->channels->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addChannel(ChannelInterface $channel)
+    {
+        if (!$this->channels->contains($channel)) {
+            $this->channels->add($channel);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+   	public function hasChannel(ChannelInterface $channel)
+   	{
+   		return $this->channels->contains($channel);
+   	}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeChannel(ChannelInterface $channel)
+    {
+        $this->channels->removeElement($channel);
+        return $this;
+    }
 
     /**
      * @ODM\PreUpdate

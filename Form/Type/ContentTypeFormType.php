@@ -36,6 +36,8 @@ class ContentTypeFormType extends AbstractType
 
 		$builder->add('fields', 'content_type_field_collection', ['metadata' => $metadata]);
 
+        $builder->add('channels', 'content_type_channels', ['property_path' => 'options[channels]']);
+
 		foreach ($metadata->getOptions() as $option) {
 			$ype = $builder->create('options_' . $option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
 				->setPropertyPath('options[' . $option->getName() . ']');

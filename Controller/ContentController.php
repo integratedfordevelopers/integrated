@@ -35,8 +35,6 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ContentController extends Controller
 {
 	/**
-	 *
-	 *
 	 * @Template()
 	 * @return array
 	 */
@@ -74,6 +72,7 @@ class ContentController extends Controller
 
         $facetSet = $query->getFacetSet();
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
+        $facetSet->createFacetField('channels')->setField('facet_channels');
 
         // TODO this code should be somewhere else
         $relation = $request->query->get('relation');
@@ -111,6 +110,24 @@ class ContentController extends Controller
                     ->setQuery('type_name: ((%1%))', [implode(') OR (', array_map($filter, $contentType))]);
             }
         }
+
+        // TODO this should be somewhere else:
+        $activeChannels = $request->query->get('channels');
+        if (is_array($activeChannels)) {
+
+            if (count($activeChannels)) {
+                $helper = $query->getHelper();
+                $filter = function($param) use($helper) {
+                    return $helper->escapePhrase($param);
+                };
+
+                $query
+                    ->createFilterQuery('channels')
+                    ->addTag('channels')
+                    ->setQuery('facet_channels: ((%1%))', [implode(') OR (', array_map($filter, $activeChannels))]);
+            }
+        }
+
 
         if ($request->isMethod('post')) {
             $id = (array) $request->get('id');
@@ -179,12 +196,23 @@ class ContentController extends Controller
 			['sortFieldParameterName' => null]
 		);
 
+        /** @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $channels = array();
+        if ($channelResult = $dm->getRepository('Integrated\\Bundle\\ContentBundle\\Document\\Channel\\Channel')->findAll()) {
+            /** @var $channel \Integrated\Bundle\ContentBundle\Document\Channel\Channel */
+            foreach ($channelResult as $channel) {
+                $channels[$channel->getId()] = $channel->getName();
+            }
+        }
+
 		return array(
 			'types'        => $types,
 			'params'       => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
 			'pager'        => $paginator,
             'contentTypes' => $displayTypes,
-            'active'       => $contentType,
+            'active'       => array('contenttypes' => $contentType, 'channels' => $activeChannels),
+            'channels'     => $channels,
             'facets'       => $result->getFacetSet()->getFacets(),
 			'locks'        => $this->getLocks($paginator)
 		);

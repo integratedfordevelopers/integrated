@@ -64,6 +64,29 @@
 			<tag name="form.type" alias="content_type_relation_delete" />
 		</service>
 
+        <!-- channels -->
+
+        <service id="integrated_content.content_type.channels.type" class="%integrated_content.form.proxy.type.class%">
+      			<argument type="service" id="integrated_content.form.content_type.channels.type" />
+      			<argument type="string">content_type_channels</argument>
+      
+      			<tag name="form.type" alias="content_type_channels" />
+      		</service>
+      
+      		<service id="integrated_content.content_type.channel.collection.type" class="%integrated_content.form.proxy.type.class%">
+      			<argument type="service" id="integrated_content.form.content_type.channel.collection.type" />
+      			<argument type="string">content_type_channel_collection</argument>
+      
+      			<tag name="form.type" alias="content_type_channel_collection" />
+      		</service>
+      
+      		<service id="integrated_content.content_type.channel.type" class="%integrated_content.form.proxy.type.class%">
+      			<argument type="service" id="integrated_content.form.content_type.channel.type" />
+      			<argument type="string">content_type_channel</argument>
+      
+      			<tag name="form.type" alias="content_type_channel" />
+      		</service>
+
 	</services>
 
 </container>
