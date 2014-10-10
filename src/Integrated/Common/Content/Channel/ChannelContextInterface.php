@@ -29,4 +29,4 @@ interface ChannelContextInterface
 	 * @param ChannelInterface $channel
 	 */
 	public function setChannel(ChannelInterface $channel = null);
-} 
+}

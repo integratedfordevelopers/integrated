@@ -13,6 +13,8 @@ namespace Integrated\Common\Content;
 
 use Doctrine\Common\Collections\Collection;
 
+use Integrated\Common\Content\Channel\ChannelInterface;
+
 /**
  * Interface for Content documents with Channels
  *
@@ -21,22 +23,22 @@ use Doctrine\Common\Collections\Collection;
 interface ChannelableInterface
 {
     /**
-     * Return the Channels of the document
+     * Return the current channels
      *
-     * @return Collection
+     * @return ChannelInterface[]
      */
     public function getChannels();
 
     /**
-     * Set the Channels of the document
+     * Set the current channels
      *
-     * @param Collection $channels
+     * @param ChannelInterface[] $channels
      * @return $this
      */
     public function setChannels(Collection $channels);
 
     /**
-     * Add a Channel to the document
+     * Add a channel
      *
      * @param ChannelInterface $channel
      * @return $this
@@ -44,10 +46,18 @@ interface ChannelableInterface
     public function addChannel(ChannelInterface $channel);
 
     /**
-     * Remove Channel of the document
+     * Check if a channel is added
      *
      * @param ChannelInterface $channel
-     * @return bool returns true if channel is removed, false otherwise
+     * @return bool
+     */
+    public function hasChannel(ChannelInterface $channel);
+
+    /**
+     * Remove a channel
+     *
+     * @param ChannelInterface $channel
+     * @return $this
      */
     public function removeChannel(ChannelInterface $channel);
 }

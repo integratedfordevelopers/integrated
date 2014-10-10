@@ -12,6 +12,8 @@
 namespace Integrated\Common\Content\Channel;
 
 /**
+ * Simple channel context to current channel in
+ *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class ChannelContext implements ChannelContextInterface
