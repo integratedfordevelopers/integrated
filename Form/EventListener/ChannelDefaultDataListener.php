@@ -76,7 +76,7 @@ class ChannelDefaultDataListener implements EventSubscriberInterface
 			// channel Collection or array is empty
 
 			if (($channels instanceof Collection && $channels->isEmpty()) || empty($channels)) {
-				$form->get('channels')->setData(new ArrayCollection($this->channels));
+				$form->get('channels')->setData($this->channels);
 			}
 		}
 
@@ -84,7 +84,7 @@ class ChannelDefaultDataListener implements EventSubscriberInterface
 		// other checks and just set the default channels
 
 		if ($data === null || $data === "") {
-			$form->get('channels')->setData(new ArrayCollection($this->channels));
+			$form->get('channels')->setData($this->channels);
 		}
 	}
 }
