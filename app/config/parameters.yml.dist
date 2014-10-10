@@ -3,8 +3,8 @@ parameters:
     database_host:     127.0.0.1
     database_port:     ~
     database_name:     integrated
-    database_user:     root
-    database_password: ~
+    database_user:     integrated
+    database_password: integrated
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
