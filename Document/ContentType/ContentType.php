@@ -67,11 +67,11 @@ class ContentType implements ContentTypeInterface
      */
     protected $relations;
 
-	/**
-	 * @var mixed[]
-	 * @ODM\Hash
-	 */
-	protected $options = [];
+    /**
+     * @var mixed[]
+     * @ODM\Hash
+     */
+    protected $options = [];
 
     /**
      * @var \DateTime
@@ -235,7 +235,7 @@ class ContentType implements ContentTypeInterface
         return $this;
     }
 
-	/**
+    /**
      * {@inheritdoc}
      */
     public function getRelations()
@@ -310,68 +310,68 @@ class ContentType implements ContentTypeInterface
         return false;
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getOptions()
-	{
-		return $this->options;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
-	/**
-	 * Overrider all the option with a new set of values for this content type
-	 *
-	 * @param string[] $options
-	 * @return $this
-	 */
-	public function setOptions(array $options)
-	{
-		$this->options = [];
+    /**
+     * Overrider all the option with a new set of values for this content type
+     *
+     * @param string[] $options
+     * @return $this
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = [];
 
-		foreach ($options as $name => $value) {
-			$this->setOption($name, $value);
-		}
+        foreach ($options as $name => $value) {
+            $this->setOption($name, $value);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getOption($name)
-	{
-		if (isset($this->options[$name])) {
-			return $this->options[$name];
-		}
+    /**
+     * @inheritdoc
+     */
+    public function getOption($name)
+    {
+        if (isset($this->options[$name])) {
+            return $this->options[$name];
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * Set the value of the specified key.
-	 *
-	 * @param string $name
-	 * @param null | mixed $value
-	 * @return $this
-	 */
-	public function setOption($name, $value = null)
-	{
-		if ($value === null) {
-			unset($this->options[$name]);
-		} else {
-			$this->options[$name] = $value;
-		}
+    /**
+     * Set the value of the specified key.
+     *
+     * @param string $name
+     * @param null | mixed $value
+     * @return $this
+     */
+    public function setOption($name, $value = null)
+    {
+        if ($value === null) {
+            unset($this->options[$name]);
+        } else {
+            $this->options[$name] = $value;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function hasOption($name)
-	{
-		return isset($this->options[$name]);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function hasOption($name)
+    {
+        return isset($this->options[$name]);
+    }
 
     /**
      * Get the createdAt of the content type
