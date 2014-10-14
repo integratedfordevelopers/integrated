@@ -26,56 +26,56 @@ use Integrated\Common\ContentType\ContentTypeInterface;
  */
 class RelationsType extends AbstractType
 {
-	/**
-	 * @var ManagerRegistry
-	 */
-	private $manager;
+    /**
+     * @var ManagerRegistry
+     */
+    private $manager;
 
-	/**
-	 * @param ManagerRegistry $manager
-	 */
-	public function __construct(ManagerRegistry $manager)
-	{
-		$this->manager = $manager;
-	}
+    /**
+     * @param ManagerRegistry $manager
+     */
+    public function __construct(ManagerRegistry $manager)
+    {
+        $this->manager = $manager;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		/** @var ContentTypeInterface $type */
-		$type = $options['content_type'];
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        /** @var ContentTypeInterface $type */
+        $type = $options['content_type'];
 
-		foreach ($type->getRelations() as $relation) {
-			$url = [];
+        foreach ($type->getRelations() as $relation) {
+            $url = [];
 
-			foreach ($relation->getContentTypes() as $contentType) {
-				$url[] = $contentType->getType();
-			}
+            foreach ($relation->getContentTypes() as $contentType) {
+                $url[] = $contentType->getType();
+            }
 
-			$builder->add($relation->getId(), 'hidden', [
-				'attr' => [
-					'data-title'    => $relation->getName(),
-					'data-relation' => $relation->getId(),
-					'data-url'      => implode('&', $url),
-					'data-multiple' => $relation->getMultiple()
-				]
-			]);
-		}
+            $builder->add($relation->getId(), 'hidden', [
+                'attr' => [
+                    'data-title'    => $relation->getName(),
+                    'data-relation' => $relation->getId(),
+                    'data-url'      => implode('&', $url),
+                    'data-multiple' => $relation->getMultiple()
+                ]
+            ]);
+        }
 
-		$builder->addModelTransformer(new RelationsTransformer($type->getRelations(), $this->manager->getManager()));
-	}
+        $builder->addModelTransformer(new RelationsTransformer($type->getRelations(), $this->manager->getManager()));
+    }
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setDefaults(['data_class' => null]);
-		$resolver->setRequired(['content_type']);
-		$resolver->setAllowedTypes(['content_type' => 'Integrated\\Common\\ContentType\\ContentTypeInterface']);
-	}
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(['data_class' => null]);
+        $resolver->setRequired(['content_type']);
+        $resolver->setAllowedTypes(['content_type' => 'Integrated\\Common\\ContentType\\ContentTypeInterface']);
+    }
 
-	public function getName()
-	{
-		return 'integrated_content_relations';
-	}
+    public function getName()
+    {
+        return 'integrated_content_relations';
+    }
 }
