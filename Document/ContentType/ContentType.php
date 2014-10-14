@@ -11,19 +11,18 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Integrated\Common\ContentType\ContentTypeRelationInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Integrated\Common\ContentType\ContentTypeInterface;
 
 /**
  * Document ContentType
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content_type", repositoryClass="ContentTypeRepository")
+ * @ODM\Document(collection="content_type")
  * @MongoDBUnique(fields="type")
  */
 class ContentType implements ContentTypeInterface
@@ -62,12 +61,6 @@ class ContentType implements ContentTypeInterface
     protected $fields = [];
 
     /**
-     * @var Embedded\Relation[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Relation")
-     */
-    protected $relations;
-
-    /**
      * @var mixed[]
      * @ODM\Hash
      */
@@ -85,7 +78,6 @@ class ContentType implements ContentTypeInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->relations = new ArrayCollection();
     }
 
     /**
@@ -233,81 +225,6 @@ class ContentType implements ContentTypeInterface
     {
         $this->fields = $fields;
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRelations()
-    {
-        return $this->relations;
-    }
-
-    /**
-     * Set the relations of the content type
-     *
-     * @param Collection $relations
-     * @return $this
-     */
-    public function setRelations(Collection $relations)
-    {
-        $this->relations = $relations;
-        return $this;
-    }
-
-    /**
-     * @param ContentTypeRelationInterface $relation
-     * @return bool TRUE if Relation is added FALSE otherwise
-     */
-    public function addRelation(ContentTypeRelationInterface $relation)
-    {
-        if ($this->hasRelation($relation)) {
-            return false;
-        }
-
-        return $this->relations->add($relation);
-    }
-
-    /**
-     * @param ContentTypeRelationInterface $relation
-     * @return bool TRUE if Relation is removed FALSE otherwise
-     */
-    public function removeRelation(ContentTypeRelationInterface $relation)
-    {
-        if (!$this->hasRelation($relation)) {
-            return false;
-        }
-
-        return $this->relations->removeElement($relation);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRelation($id)
-    {
-        foreach ($this->getRelations() as $relation) {
-            if ($relation->getId() == $id) {
-                return $relation;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasRelation(ContentTypeRelationInterface $relation)
-    {
-        /** @var $item ContentTypeRelationInterface */
-        foreach ($this->getRelations() as $item) {
-            if ($item->getId() == $relation->getId()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     /**
