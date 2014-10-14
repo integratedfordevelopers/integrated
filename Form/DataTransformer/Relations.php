@@ -31,7 +31,7 @@ class Relations implements DataTransformerInterface
     const REPOSITORY = 'Integrated\Bundle\ContentBundle\Document\Content\Content';
 
     /**
-     * @var ContentTypeRelationInterface[]
+     * @var RelationInterface[]
      */
     protected $relations;
 
@@ -41,7 +41,7 @@ class Relations implements DataTransformerInterface
     protected $om;
 
     /**
-     * @param ContentTypeRelationInterface[] $relations
+     * @param RelationInterface[] $relations
      * @param ObjectManager $om
      */
     public function __construct($relations, $om)
@@ -91,7 +91,8 @@ class Relations implements DataTransformerInterface
 
                     $model = new Model();
                     $model->setRelationId($contentTypeRelation->getId());
-                    $model->setRelationType($contentTypeRelation->getType());
+                    // TODO new relation must have a type
+                    //$model->setRelationType($contentTypeRelation->getType());
 
                     if (null !== $references) {
                         $references = array_filter(explode(',', $references));
