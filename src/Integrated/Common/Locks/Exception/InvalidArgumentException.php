@@ -14,6 +14,6 @@ namespace Integrated\Common\Locks\Exception;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class InvalidArgumentException extends \InvalidArgumentException implements ExtensionInterface
+class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
 }
