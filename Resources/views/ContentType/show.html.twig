@@ -63,7 +63,7 @@
                     {% trans %}Relations{% endtrans %}
                 </dt>
                 <dd>
-                    {{ render(controller("IntegratedContentBundle:ContentTypeRelation:index", {'contentType': contentType})) }}
+                    {{ render(controller("IntegratedContentBundle:Relation:index", {'contentType': contentType.id, '_format': 'inline.html'})) }}
                 </dd>
             </dl>
             <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_content_type_edit', {'id': contentType.id}) }}">

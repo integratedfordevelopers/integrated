@@ -13,41 +13,7 @@
 
     <div class="content_columns_holder">
         <div class="content_column_inner">
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>{% trans %}Name{% endtrans %}</th>
-                        <th>{% trans %}Created{% endtrans %}</th>
-                        <th>{% trans %}Actions{% endtrans %}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for document in documents %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('integrated_content_relation_show', {'id': document.id}) }}">
-                                {{ document.name }}
-                            </a>
-                        </td>
-                        <td>
-                            {{ document.createdAt|date }}
-                        </td>
-                        <td>
-                            <a href="{{ path('integrated_content_relation_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
-                                {{ icon('pencil') }}
-                            </a>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="4">
-                            {% trans %}No relations added{% endtrans %}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {{ include('IntegratedContentBundle:Relation:partial/list.html.twig', { 'documents': documents }) }}
         </div>
     </div>
 {% endblock %}
