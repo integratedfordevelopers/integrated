@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Traversable;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -34,6 +35,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class ContentController extends Controller
 {
+    /**
+     * @var string
+     */
+    protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
+
     /**
      * @Template()
      * @return array
@@ -80,15 +86,13 @@ class ContentController extends Controller
 
             $contentType = array();
 
-            /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-            foreach ($this->get('integrated.form.resolver')->getTypes() as $type) {
-                foreach ($type->getRelations() as $typeRelation) {
-                    if ($typeRelation->getId() == $relation) {
-                        foreach ($typeRelation->getContentTypes() as $relationContentType) {
-                            $contentType[] = $relationContentType->getType();
-                        }
-                        break;
-                    }
+            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+            $dm = $this->get('doctrine_mongodb')->getManager();
+
+            /** @var Relation $relation */
+            if ($relation = $dm->getRepository($this->relationClass)->find($relation)) {
+                foreach ($relation->getTargets() as $target) {
+                    $contentType[] = $target->getType();
                 }
             }
 
@@ -281,7 +285,8 @@ class ContentController extends Controller
 
         return array(
             'type' => $type->getType(),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'hasRelations' => (bool) $form->get('relations')->count()
         );
     }
 
@@ -425,6 +430,7 @@ class ContentController extends Controller
         return array(
             'type'    => $type->getType(),
             'form'    => $form->createView(),
+            'hasRelations' => (bool) $form->get('relations')->count(),
             'content' => $content,
             'locking' => $locking
         );
