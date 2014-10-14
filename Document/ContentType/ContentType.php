@@ -394,4 +394,12 @@ class ContentType implements ContentTypeInterface
         $this->createdAt = $createdAt;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
