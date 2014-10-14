@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 
+use Doctrine\Common\Util\Debug;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -26,6 +28,11 @@ use Integrated\Common\ContentType\ContentTypeInterface;
  */
 class RelationsType extends AbstractType
 {
+    /**
+     * @var string
+     */
+    const REPOSITORY = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
+
     /**
      * @var ManagerRegistry
      */
@@ -47,10 +54,12 @@ class RelationsType extends AbstractType
         /** @var ContentTypeInterface $type */
         $type = $options['content_type'];
 
-        foreach ($type->getRelations() as $relation) {
-            $url = [];
+        /** @var Relation[] $relations */
+        $relations = $this->manager->getRepository(self::REPOSITORY)->findBy(array('sources.$id' => $type->getId()));
 
-            foreach ($relation->getContentTypes() as $contentType) {
+        foreach ($relations as $relation) {
+
+            foreach ($relation->getTargets() as $contentType) {
                 $url[] = $contentType->getType();
             }
 
@@ -59,12 +68,12 @@ class RelationsType extends AbstractType
                     'data-title'    => $relation->getName(),
                     'data-relation' => $relation->getId(),
                     'data-url'      => implode('&', $url),
-                    'data-multiple' => $relation->getMultiple()
+                    'data-multiple' => $relation->isMultiple()
                 ]
             ]);
         }
 
-        $builder->addModelTransformer(new RelationsTransformer($type->getRelations(), $this->manager->getManager()));
+        $builder->addModelTransformer(new RelationsTransformer($relations, $this->manager->getManager()));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
