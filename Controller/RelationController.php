@@ -33,11 +33,17 @@ class RelationController extends Controller
      * @Template()
      * @return array
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
-        $documents = $dm->getRepository($this->relationClass)->findAll();
+        $qb = $dm->createQueryBuilder($this->relationClass);
+
+        if ($contentType = $request->get('contentType')) {
+            $qb->field('sources.$id')->in([(string) $contentType]);
+        }
+
+        $documents = $qb->getQuery()->execute();
 
         return ['documents' => $documents];
     }
