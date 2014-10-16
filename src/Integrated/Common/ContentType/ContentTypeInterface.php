@@ -70,31 +70,6 @@ interface ContentTypeInterface
     public function hasField($name);
 
     /**
-     * Get all the relations this content type has.
-     *
-     * @return ContentTypeRelationInterface[]
-     */
-    public function getRelations();
-
-    /**
-     * Get relation based on id
-     *
-     * @param string $id
-     *
-     * @return false|ContentTypeRelationInterface
-     */
-    public function getRelation($id);
-
-    /**
-     * Check if a relation exist with this content type
-     *
-     * @param ContentTypeRelationInterface $relation
-     *
-     * @return bool
-     */
-    public function hasRelation(ContentTypeRelationInterface $relation);
-
-    /**
      * Get all the options of this content type.
      *
      * @return mixed[]
