@@ -11,16 +11,6 @@
             "homepage": "http://www.e-active.nl"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:eactive/integrated-library.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
@@ -32,10 +22,10 @@
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
         "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
-        "integrated/library": "~0.1",
+        "integrated/library": "dev-INTEGRATED-35-change-relations-to-multi-",
         "integrated/formtype-bundle": "~0.1",
-        "integrated/locking-bundle": "~0.1",
-		"knplabs/knp-paginator-bundle": "dev-master",
+        "integrated/locking-bundle": "dev-INTEGRATED-35-change-relations-to-multi-",
+		"knplabs/knp-paginator-bundle": "~2.4",
 		"nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",
         "twbs/bootstrap": "3.*"
