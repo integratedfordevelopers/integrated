@@ -16,6 +16,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Integrated\Common\Content\Relation\RelationInterface;
@@ -27,6 +29,7 @@ use Integrated\Common\ContentType\ContentTypeInterface;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
  * @ODM\Document(collection="relation")
+ * @MongoDBUnique(fields="type")
  */
 class Relation implements RelationInterface
 {
@@ -43,6 +46,14 @@ class Relation implements RelationInterface
      * @ODM\Index
      */
     protected $name;
+
+    /**
+     * @var string
+     * @Assert\NotBlank
+     * @ODM\String
+     * @ODM\UniqueIndex
+     */
+    protected $type;
 
     /**
      * @var ContentTypeInterface[]
@@ -103,6 +114,24 @@ class Relation implements RelationInterface
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
         return $this;
     }
 

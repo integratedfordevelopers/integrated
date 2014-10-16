@@ -2,6 +2,7 @@
     <thead>
     <tr>
         <th>{% trans %}Name{% endtrans %}</th>
+        <th>{% trans %}Type{% endtrans %}</th>
         <th>{% trans %}Created{% endtrans %}</th>
         <th>{% trans %}Actions{% endtrans %}</th>
     </tr>
@@ -13,6 +14,9 @@
                 <a href="{{ path('integrated_content_relation_show', {'id': document.id}) }}">
                     {{ document.name }}
                 </a>
+            </td>
+            <td>
+                {{ document.type }}
             </td>
             <td>
                 {{ document.createdAt|date }}

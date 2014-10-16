@@ -27,6 +27,7 @@ class RelationType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('type')
             ->add('sources')
             ->add('targets')
             ->add(
