@@ -155,7 +155,7 @@ class Relation implements RelationInterface
     }
 
     /**
-     * @return ContentTypeInterface[]
+     * {@inheritdoc}
      */
     public function getSources()
     {
@@ -200,7 +200,7 @@ class Relation implements RelationInterface
     }
 
     /**
-     * @return ContentTypeInterface[]
+     * {@inheritdoc}
      */
     public function getTargets()
     {
@@ -240,7 +240,7 @@ class Relation implements RelationInterface
     }
 
     /**
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isMultiple()
     {
@@ -258,7 +258,7 @@ class Relation implements RelationInterface
     }
 
     /**
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isRequired()
     {
