@@ -52,12 +52,7 @@ assetic:
         integrated_js:
             inputs:
                 - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
-                - @IntegratedFormTypeBundle/Resources/public/components/handlebars/handlebars.runtime.min.js
-                - @IntegratedFormTypeBundle/Resources/public/components/wysihtml5x/parser_rules/advanced.js
-                - @IntegratedFormTypeBundle/Resources/public/components/wysihtml5x/dist/wysihtml5x-0.4.3.js
-                - @IntegratedFormTypeBundle/Resources/public/components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.all.min.js
-                - @IntegratedFormTypeBundle/Resources/public/js/wysihtml5x.js
-                - @IntegratedFormTypeBundle/Resources/public/js/*
+                - @IntegratedFormTypeBundle/Resources/public/js/datetimepicker.js
         bootstrap_css:
             inputs:
                 - @IntegratedContentBundle/Resources/public/less/styles.less
@@ -120,8 +115,12 @@ integrated_solr:
 # Bower configuration
 sp_bower:
     bundles:
-        IntegratedFormTypeBundle: ~
-        IntegratedContentBundle: ~
+        IntegratedContentBundle:
+            cache:
+                %kernel.cache_dir%/../sp_bower/IntegratedContentBundle
+        IntegratedFormTypeBundle:
+            cache:
+                %kernel.cache_dir%/../sp_bower/IntegratedFormTypeBundle
     bin: %bower_bin%
     install_on_warmup: true
     assetic:
