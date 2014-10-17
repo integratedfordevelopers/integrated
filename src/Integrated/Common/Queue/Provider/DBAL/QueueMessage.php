@@ -53,7 +53,7 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function delete()
 	{
@@ -71,7 +71,7 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function release($delay = 0)
 	{
@@ -82,7 +82,7 @@ class QueueMessage implements QueueMessageInterface
 
 		$this->release = null;
 
-		// delete should be cleared as the message has been released so control
+		// delete should be cleared as the message has been released the control
 		// is given back to the provider.
 
 		$this->delete = null;
@@ -99,7 +99,7 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function getAttempts()
 	{
@@ -107,7 +107,7 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function getPayload()
 	{
@@ -119,7 +119,7 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function getPriority()
 	{

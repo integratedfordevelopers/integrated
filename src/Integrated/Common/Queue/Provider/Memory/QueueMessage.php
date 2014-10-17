@@ -19,14 +19,32 @@ use Integrated\Common\Queue\QueueMessageInterface;
  */
 class QueueMessage implements QueueMessageInterface
 {
+	/**
+	 * @var mixed
+	 */
 	private $payload;
 
+	/**
+	 * @var int
+	 */
 	private $attempts;
 
+	/**
+	 * @var int
+	 */
 	private $priority;
 
+	/**
+	 * @var Closure | null
+	 */
 	private $release = null;
 
+	/**
+	 * @param mixed $payload
+	 * @param int $attempts
+	 * @param int $priority
+	 * @param callable $release
+	 */
 	public function __construct($payload, $attempts, $priority, Closure $release)
 	{
 		$this->payload = $payload;
@@ -37,7 +55,7 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function delete()
 	{
@@ -48,7 +66,7 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function release($delay = 0)
 	{
@@ -61,7 +79,7 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function getAttempts()
 	{
@@ -69,7 +87,7 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function getPayload()
 	{
@@ -77,12 +95,10 @@ class QueueMessage implements QueueMessageInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function getPriority()
 	{
 		return $this->priority;
 	}
-
-
 }
