@@ -17,7 +17,10 @@ namespace Integrated\Common\Converter\Config;
 interface ConfigResolverInterface
 {
     /**
+     * Get the config for the $class.
+     *
      * @param string $class
+     *
      * @return null | ConfigInterface
      */
     public function getConfig($class);

@@ -40,9 +40,13 @@ class Converter implements ConverterInterface
     private $factory;
 
     /**
+     * Constructor.
+     *
      * @param RegistryInterface         $registry
      * @param ConfigResolverInterface   $resolver
-     * @param ContainerFactoryInterface $factory
+     * @param ContainerFactoryInterface $factory  if no factory is given then a ContainerFactory is created
+     *
+     * @see ContainerFactory
      */
     public function __construct(RegistryInterface $registry, ConfigResolverInterface $resolver, ContainerFactoryInterface $factory = null)
     {
@@ -54,6 +58,8 @@ class Converter implements ConverterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @trows UnexpectedTypeException if $data is not a object
      */
     public function convert($data)
     {

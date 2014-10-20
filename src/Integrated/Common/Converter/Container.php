@@ -97,8 +97,13 @@ class Container implements ContainerInterface
     }
 
     /**
+     * Check if the value is one of the allowed types or throw a exception
+     *
      * @param mixed $value
-     * @return string | float | int | bool
+     *
+     * @return null | string | float | int | bool
+     *
+     * @trows UnexpectedTypeException if $value is not a scalar type
      */
     protected static function validateAndReturn($value)
     {

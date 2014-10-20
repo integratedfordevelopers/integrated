@@ -18,6 +18,8 @@ class ResolvedTypeFactory implements ResolvedTypeFactoryInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @return ResolvedType
      */
     public function createType(TypeInterface $type, array $extensions)
     {

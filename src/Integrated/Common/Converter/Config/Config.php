@@ -27,8 +27,10 @@ class Config implements ConfigInterface
     private $parent = null;
 
     /**
+     * Constructor.
+     *
      * @param TypeConfigInterface[] $types
-     * @param ConfigInterface $parent
+     * @param ConfigInterface       $parent
      */
     public function __construct(array $types, ConfigInterface $parent = null)
     {

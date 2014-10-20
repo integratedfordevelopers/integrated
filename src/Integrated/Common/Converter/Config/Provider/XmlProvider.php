@@ -23,11 +23,17 @@ use Symfony\Component\Finder\SplFileInfo;
 use SimpleXMLElement;
 
 /**
+ * This provider contains all the logic required to parse the xml config files.
+ *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class XmlProvider extends AbstractFileProvider
 {
     /**
+     * Constructor.
+     *
+     * The xml provider will parse all the xml files found by the finder.
+     *
      * @param Finder $finder
      */
     public function __construct(Finder $finder)
@@ -42,9 +48,9 @@ class XmlProvider extends AbstractFileProvider
     {
         $types = [];
 
-        // There should be a xsd to validate the xml so we can assume the xml is valid when it is returned
-        // by getElement. So no need to check if field exist or not and if there are in the correct order
-        // or not.
+        // There should be a xsd to validate the xml so we can assume the xml is valid when it is
+        // returned by getElement. So no need to check if field exist or if they are in the correct
+        // order.
 
         foreach ($this->getElement($file)->class as $class) {
             $name = (string) $class['name'];
@@ -60,7 +66,10 @@ class XmlProvider extends AbstractFileProvider
     }
 
     /**
+     * Parse the content of the <class> tag.
+     *
      * @param SimpleXMLElement $element
+     *
      * @return TypeConfigInterface[]
      */
     protected function parseTypes(SimpleXMLElement $element)
@@ -81,7 +90,10 @@ class XmlProvider extends AbstractFileProvider
     }
 
     /**
+     * Parse the content of the <options> tag.
+     *
      * @param SimpleXMLElement $element
+     *
      * @return array
      */
     protected function parseOptions(SimpleXMLElement $element)
@@ -91,13 +103,19 @@ class XmlProvider extends AbstractFileProvider
         }
 
         $child = $element->children();
-        $child = $child[0]; // can only contain 1 child
+        $child = $child[0]; // options root can only contain 1 child
 
         return $this->parsePrimitive($child);
     }
 
     /**
+     * Parse the <null>, <array>, <string>, <int>, <float>, and <bool> tags.
+     *
+     * Of the parsed tags only the <array> tag is allowed to have children. The nesting of the array
+     * tags is unlimited.
+     *
      * @param SimpleXMLElement $element
+     *
      * @return null | array | string | int | float | bool
      */
     protected function parsePrimitive(SimpleXMLElement $element)
@@ -139,26 +157,31 @@ class XmlProvider extends AbstractFileProvider
     }
 
     /**
+     * Load the file into a SimpleXMLElement.
+     *
      * @param SplFileInfo $file
+     *
      * @return SimpleXMLElement
      *
-     * @trows RuntimeException if file can not be read or parsed
+     * @trows RuntimeException if $file can not be read or parsed
      */
     protected function getElement(SplFileInfo $file)
     {
-        $previous = libxml_use_internal_errors(true);
-
-        $error = null;
-        $xml = null;
+        $content = null;
 
         try {
-            if (!$xml = simplexml_load_string($file->getContents())) {
-                $error = libxml_get_last_error();
-                $error = $error->message;
-            }
+            $content = $file->getContents();
         }
         catch (Exception $e) {
-            $error = $e->getMessage();
+            throw new RuntimeException($e->getMessage(), 0, $e);
+        }
+
+        $previous = libxml_use_internal_errors(true);
+        $error = null;
+
+        if (!$xml = simplexml_load_string($content)) {
+            $error = libxml_get_last_error();
+            $error = $error->message;
         }
 
         libxml_clear_errors();

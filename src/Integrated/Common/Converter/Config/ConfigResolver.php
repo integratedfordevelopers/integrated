@@ -27,11 +27,15 @@ class ConfigResolver implements ConfigResolverInterface
     private $provider;
 
     /**
+     * config instances cache
+     *
      * @var ConfigInterface[]
      */
     private $resolved = [];
 
     /**
+     * Constructor.
+     *
      * @param TypeProviderInterface $provider
      */
     public function __construct(TypeProviderInterface $provider)
@@ -41,6 +45,8 @@ class ConfigResolver implements ConfigResolverInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @trows UnexpectedTypeException if $class is not a string
      */
     public function getConfig($class)
     {
@@ -61,15 +67,23 @@ class ConfigResolver implements ConfigResolverInterface
             return $this->setInstance($class, null);
         }
 
-        // Always set the instance as reflection does give the correct class name with the
-        // correct caps but that does not mean that the $class was written correctly. so also
-        // add it with the given class name in case its different
+        // Always set he instance as reflection gives back the class name as defined in the PHP
+        // file. However classes in PHP are case insensitive so the $class could be different from
+        // the actual class name and still be correct. So also add the instance under the given
+        // class name in case its different from the actual class name.
 
         return $this->setInstance($class, $this->resolve($reflection));
     }
 
     /**
+     * Get the type config for the given class and its parent classes.
+     *
+     * The parents are resolved before the actual class. if a class does not have any type configs then
+     * the config for the parent is returned instead. If the given class and its parent do not have any
+     * associated type configs then null is returned.
+     *
      * @param ReflectionClass $reflection
+     *
      * @return null | ConfigInterface
      */
     protected function resolve(ReflectionClass $reflection)
@@ -77,6 +91,8 @@ class ConfigResolver implements ConfigResolverInterface
         if ($this->hasInstance($reflection->name)) {
             return $this->getInstance($reflection->name);
         }
+
+        // resolve the parent first
 
         if ($parent = $reflection->getParentClass()) {
             $parent = $this->resolve($parent);
@@ -92,12 +108,12 @@ class ConfigResolver implements ConfigResolverInterface
     }
 
     /**
-     * Add a new config to the to the resolved instances
+     * Add a new config to the to the resolved instances cache.
      *
      * @param string $class
      * @param ConfigInterface $config
      *
-     * @return ConfigInterface
+     * @return null | ConfigInterface
      */
     protected function setInstance($class, ConfigInterface $config = null)
     {
@@ -105,7 +121,7 @@ class ConfigResolver implements ConfigResolverInterface
     }
 
     /**
-     * This will create a new config instance and added it to the other resolved instances.
+     * Create a new config instance and added it to the other resolved instances cache.
      *
      * @param string $class
      * @param TypeConfigInterface[] $types
@@ -119,9 +135,10 @@ class ConfigResolver implements ConfigResolverInterface
     }
 
     /**
-     * Check if the class got a resolved version of the config.
+     * Check if the class is already resolved.
      *
      * @param string $class
+     *
      * @return bool
      */
     protected function hasInstance($class)
@@ -133,13 +150,14 @@ class ConfigResolver implements ConfigResolverInterface
     }
 
     /**
-     * Get the config for the given class or null if not found.
+     * Get the config instance form the resolved instances cache.
      *
      * Note: null does not mean that the class is not resolved yet as it could also mean that
      * there was no config for the class. So always check with hasInstance if the class is
      * already resolved or not.
      *
      * @param string $class
+     *
      * @return null | ConfigInterface
      */
     protected function getInstance($class)

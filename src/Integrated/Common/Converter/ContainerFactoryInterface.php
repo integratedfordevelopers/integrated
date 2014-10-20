@@ -17,6 +17,8 @@ namespace Integrated\Common\Converter;
 interface ContainerFactoryInterface
 {
     /**
+     * Create a container.
+     *
      * @return ContainerInterface
      */
     public function createContainer();

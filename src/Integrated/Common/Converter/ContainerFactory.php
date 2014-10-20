@@ -18,6 +18,8 @@ class ContainerFactory implements ContainerFactoryInterface
 {
     /**
      * {@inheritdoc}
+     *
+     * @return Container
      */
     public function createContainer()
     {

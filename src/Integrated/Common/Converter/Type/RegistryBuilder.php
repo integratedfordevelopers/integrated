@@ -19,7 +19,7 @@ class RegistryBuilder implements RegistryBuilderInterface
     /**
      * @var ResolvedTypeFactoryInterface
      */
-    private $factory;
+    private $factory = null;
 
     /**
      * @var TypeInterface[]
@@ -85,6 +85,12 @@ class RegistryBuilder implements RegistryBuilderInterface
 
     /**
      * {@inheritdoc}
+     *
+     * If no resolved type factory is set then a ResolvedTypeFactory is create by default.
+     *
+     * @return Registry
+     *
+     * @see ResolvedTypeFactory
      */
     public function getRegistry()
     {

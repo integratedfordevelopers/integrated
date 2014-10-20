@@ -17,16 +17,22 @@ namespace Integrated\Common\Converter\Config;
 interface TypeConfigInterface
 {
     /**
+     * Get the type name.
+     *
      * @return string
      */
     public function getName();
 
     /**
+     * Check if the type has options.
+     *
      * @return bool
      */
     public function hasOptions();
 
     /**
+     * Get the type options.
+     *
      * @return null | array
      */
     public function getOptions();

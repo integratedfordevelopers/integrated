@@ -77,7 +77,10 @@ class XmlProviderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetTypesNonExistingFile()
     {
-         $this->getInstance($this->getFinder(['mapping.does-not-exist.xml']))->getTypes('class');
+        // This should probably not happen since it would be weird for the finder to return a not
+        // existing file. But it is in theory possible so test for it anyways.
+
+        $this->getInstance($this->getFinder(['mapping.does-not-exist.xml']))->getTypes('class');
     }
 
     /**

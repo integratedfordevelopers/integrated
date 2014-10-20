@@ -17,16 +17,22 @@ namespace Integrated\Common\Converter\Config;
 interface ConfigInterface
 {
     /**
+     * Get all the types form the config.
+     *
      * @return TypeConfigInterface[]
      */
     public function getTypes();
 
     /**
+     * Check if the config has a parent.
+     *
      * @return bool
      */
     public function hasParent();
 
     /**
+     * Get the parent of the config.
+     *
      * @return null | ConfigInterface
      */
     public function getParent();

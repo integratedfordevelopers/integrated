@@ -27,8 +27,10 @@ class TypeConfig implements TypeConfigInterface
     private $options;
 
     /**
+     * Constructor.
+     *
      * @param string $name
-     * @param array $options
+     * @param array  $options
      */
     public function __construct($name, array $options = null)
     {

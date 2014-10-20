@@ -17,36 +17,53 @@ namespace Integrated\Common\Converter\Type;
 interface RegistryBuilderInterface
 {
     /**
+     * Set the resolved type factory
+     *
      * @param ResolvedTypeFactoryInterface $factory
-     * @return self
+     *
+     * @return RegistryBuilderInterface
      */
     public function setResolvedTypeFactory(ResolvedTypeFactoryInterface $factory);
 
     /**
+     * Add the type to the builder
+     *
      * @param TypeInterface $type
-     * @return self
+     *
+     * @return RegistryBuilderInterface
      */
     public function addType(TypeInterface $type);
 
     /**
+     * Add the types to the builder
+     *
      * @param TypeInterface[] $types
-     * @return self
+     *
+     * @return RegistryBuilderInterface
      */
     public function addTypes(array $types);
 
     /**
+     * Add the type extension to the builder
+     *
      * @param TypeExtensionInterface $extension
-     * @return self
+     *
+     * @return RegistryBuilderInterface
      */
     public function addTypeExtension(TypeExtensionInterface $extension);
 
     /**
+     * Add the type extensions to the builder
+     *
      * @param TypeExtensionInterface[] $extensions
-     * @return self
+     *
+     * @return RegistryBuilderInterface
      */
     public function addTypeExtensions(array $extensions);
 
     /**
+     * Create a registry from the current builder configuration.
+     *
      * @return RegistryInterface
      */
     public function getRegistry();

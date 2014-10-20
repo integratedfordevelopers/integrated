@@ -19,16 +19,22 @@ use Integrated\Common\Converter\Exception\RuntimeException;
 interface RegistryInterface
 {
     /**
+     * Check if there is a type with the $name in the registry
+     *
      * @param string $name
+     *
      * @return bool
      */
     public function hasType($name);
 
     /**
+     * Get the type with the $name from the registry
+     *
      * @param string $name
+     *
      * @return ResolvedTypeInterface
      *
-     * @trows InvalidArgumentException if type can not be found
+     * @trows InvalidArgumentException if the type can not be found
      */
     public function getType($name);
 }

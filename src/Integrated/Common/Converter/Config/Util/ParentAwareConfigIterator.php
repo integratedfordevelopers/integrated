@@ -17,6 +17,11 @@ use Integrated\Common\Converter\Config\TypeConfigInterface;
 use Iterator;
 
 /**
+ * This iterator will iterate over the types in the config starting at the root parent
+ * and then moving up.
+ *
+ * @see ConfigIterator
+ *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class ParentAwareConfigIterator implements Iterator
@@ -27,6 +32,8 @@ class ParentAwareConfigIterator implements Iterator
     private $iterators = [];
 
     /**
+     * null means the iterator reached its end.
+     *
      * @var ConfigIterator
      */
     private $current = null;
@@ -37,6 +44,8 @@ class ParentAwareConfigIterator implements Iterator
     private $counter = 0;
 
     /**
+     * Constructor.
+     *
      * @param ConfigInterface $config
      */
     public function __construct(ConfigInterface $config)
@@ -51,6 +60,8 @@ class ParentAwareConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return TypeConfigInterface
      */
     public function current()
@@ -59,6 +70,8 @@ class ParentAwareConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return void
      */
     public function next()
@@ -74,6 +87,8 @@ class ParentAwareConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return int
      */
     public function key()
@@ -82,6 +97,8 @@ class ParentAwareConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return bool
      */
     public function valid()
@@ -90,6 +107,8 @@ class ParentAwareConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return void
      */
     public function rewind()

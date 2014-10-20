@@ -19,14 +19,16 @@ use Integrated\Common\Converter\ContainerInterface;
 interface TypeExtensionInterface
 {
     /**
+     * Extract and manipulated the data from the $data object en add them to the $container.
+     *
      * @param ContainerInterface $container
-     * @param mixed $data
-     * @param array $options
+     * @param object             $data
+     * @param array              $options
      */
     public function build(ContainerInterface $container, $data, array $options = []);
 
     /**
-     * Get the name of the type to extend
+     * Get the name of the type to extend.
      *
      * @return string
      */

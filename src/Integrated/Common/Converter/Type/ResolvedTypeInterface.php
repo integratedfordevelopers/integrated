@@ -19,31 +19,33 @@ use Integrated\Common\Converter\ContainerInterface;
 interface ResolvedTypeInterface
 {
     /**
+     * Extract and manipulated the data from the $data object en add them to the $container.
+     *
      * This build method will first execute the build method of the inner type and then the
      * build methods of all the extensions.
      *
      * @param ContainerInterface $container
-     * @param mixed $data
-     * @param array $options
+     * @param object             $data
+     * @param array              $options
      */
     public function build(ContainerInterface $container, $data, array $options = []);
 
     /**
-     * Get the type name
+     * Get the type name.
      *
      * @return string
      */
     public function getName();
 
     /**
-     * Get the inner type
+     * Get the inner type.
      *
      * @return TypeInterface
      */
     public function getType();
 
     /**
-     * Get all the type extensions
+     * Get all the type extensions.
      *
      * @return TypeExtensionInterface[]
      */

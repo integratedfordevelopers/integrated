@@ -17,9 +17,10 @@ namespace Integrated\Common\Converter;
 interface ConverterInterface
 {
     /**
-     * Convert $data to a flat array container
+     * Convert the object to a array container.
      *
      * @param object $data
+     *
      * @return ContainerInterface
      */
     public function convert($data);

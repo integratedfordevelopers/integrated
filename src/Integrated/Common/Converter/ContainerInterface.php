@@ -17,28 +17,29 @@ namespace Integrated\Common\Converter;
 interface ContainerInterface extends \Countable, \IteratorAggregate
 {
     /**
-   	 * Add the value to the container
+   	 * Add the value to the given container key.
    	 *
    	 * @param null | string | float | int | bool $value
-   	 * @return self
+     *
+   	 * @return ContainerInterface
    	 */
     public function add($key, $value);
 
     /**
-   	 * Set the value for the given key
+   	 * Set the value for the given container key.
    	 *
    	 * @param string $key
    	 * @param null | string | float | int | bool $value
      *
-   	 * @return self
+   	 * @return ContainerInterface
    	 */
     public function set($key, $value);
 
     /**
-   	 * Remove the value for the given key
+   	 * Remove the value for the given container key.
    	 *
    	 * @param $key
-   	 * @return self
+   	 * @return ContainerInterface
    	 */
     public function remove($key);
 
@@ -51,7 +52,7 @@ interface ContainerInterface extends \Countable, \IteratorAggregate
     public function has($key);
 
     /**
-   	 * Get the value from the given key
+   	 * Get the value from the given container key.
    	 *
    	 * @param $key
    	 * @return mixed[]
@@ -59,13 +60,15 @@ interface ContainerInterface extends \Countable, \IteratorAggregate
     public function get($key);
 
     /**
-   	 * Clear all the container data
+   	 * Clear all the container data.
    	 *
-   	 * @return self
+   	 * @return ContainerInterface
    	 */
     public function clear();
 
     /**
+     * Return the container data as a associative array.
+     *
    	 * @return array
    	 */
     public function toArray();

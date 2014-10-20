@@ -19,6 +19,8 @@ use Integrated\Common\Converter\Config\ConfigInterface;
 interface TraceableConfigInterface extends ConfigInterface
 {
     /**
+     * The class name this config belongs to.
+     *
      * @return string
      */
     public function getClass();

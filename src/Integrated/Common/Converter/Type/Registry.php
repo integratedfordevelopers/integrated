@@ -25,6 +25,8 @@ class Registry implements RegistryInterface
     private $resolved = [];
 
     /**
+     * Constructor.
+     *
      * @param ResolvedTypeInterface[] $resolved
      */
     public function __construct(array $resolved)
@@ -34,6 +36,8 @@ class Registry implements RegistryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @trows UnexpectedTypeException if $name is not a string
      */
     public function hasType($name)
     {
@@ -50,6 +54,8 @@ class Registry implements RegistryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @trows UnexpectedTypeException if $name is not a string
      */
     public function getType($name)
     {

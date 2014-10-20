@@ -17,6 +17,8 @@ use Integrated\Common\Converter\Config\TypeConfigInterface;
 use Iterator;
 
 /**
+ * This iterator will iterate over the types in the given config.
+ *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class ConfigIterator implements Iterator
@@ -27,6 +29,8 @@ class ConfigIterator implements Iterator
     private $types = [];
 
     /**
+     * Constructor.
+     *
      * @param ConfigInterface $config
      */
     public function __construct(ConfigInterface $config)
@@ -35,6 +39,8 @@ class ConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return TypeConfigInterface
      */
     public function current()
@@ -43,6 +49,8 @@ class ConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return void
      */
     public function next()
@@ -51,6 +59,8 @@ class ConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return int
      */
     public function key()
@@ -59,6 +69,8 @@ class ConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return bool
      */
     public function valid()
@@ -67,6 +79,8 @@ class ConfigIterator implements Iterator
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @return void
      */
     public function rewind()

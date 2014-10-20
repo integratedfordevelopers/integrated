@@ -17,9 +17,9 @@ namespace Integrated\Common\Converter\Type;
 interface ResolvedTypeFactoryInterface
 {
     /**
-     * Create a resolved type from the given type and extensions
+     * Create a resolved type from the given type and extensions.
      *
-     * @param TypeInterface $type
+     * @param TypeInterface            $type
      * @param TypeExtensionInterface[] $extensions
      *
      * @return ResolvedTypeInterface

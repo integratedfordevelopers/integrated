@@ -33,8 +33,14 @@ abstract class AbstractFileProvider implements TypeProviderInterface
     private $types = null;
 
     /**
-     * @param Finder $finder
-     * @param string $extension
+     * Constructor.
+     *
+     * While it is not really required for a file to have a correct extension its is still enforced by
+     * this provider. This way its clear which files are picked up and which not with in the configured
+     * directories.
+     *
+     * @param Finder $finder    the finder is cloned so the original is not modified.
+     * @param string $extension the file extension that the finder wil iterator over.
      */
     protected function __construct(Finder $finder, $extension)
     {
@@ -59,7 +65,7 @@ abstract class AbstractFileProvider implements TypeProviderInterface
     }
 
     /**
-     * Load the types if not already loaded
+     * Load the types if not already loaded.
      */
     protected function initialize()
     {
@@ -73,9 +79,10 @@ abstract class AbstractFileProvider implements TypeProviderInterface
     }
 
     /**
-     * Load the types from the given file
+     * Load all the types from the given file.
      *
      * @param SplFileInfo $file
+     *
      * @return TypeConfigInterface[]
      */
     abstract protected function load(SplFileInfo $file);

@@ -17,7 +17,10 @@ namespace Integrated\Common\Converter\Config;
 interface TypeProviderInterface
 {
     /**
+     * Get the type config for the $class.
+     *
      * @param string $class
+     *
      * @return TypeConfigInterface[]
      */
     public function getTypes($class);

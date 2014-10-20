@@ -38,7 +38,7 @@ class ChainProvider implements TypeProviderInterface
     }
 
     /**
-     * Add the provider to the chain
+     * Add the provider to the chain.
      *
      * @param TypeProviderInterface $provider
      */
@@ -50,9 +50,10 @@ class ChainProvider implements TypeProviderInterface
     }
 
     /**
-     * Check if the provider is added to the chain
+     * Check if the provider is added to the chain.
      *
      * @param TypeProviderInterface $provider
+     *
      * @return bool
      */
     public function hasProvider(TypeProviderInterface $provider)
@@ -65,7 +66,7 @@ class ChainProvider implements TypeProviderInterface
     }
 
     /**
-     * Remove the provider from the chain
+     * Remove the provider from the chain.
      *
      * @param TypeProviderInterface $provider
      */
@@ -79,7 +80,7 @@ class ChainProvider implements TypeProviderInterface
     }
 
     /**
-     * Get all the chained providers
+     * Get all the chained providers.
      *
      * @return TypeProviderInterface[]
      */
@@ -89,7 +90,7 @@ class ChainProvider implements TypeProviderInterface
     }
 
     /**
-     * Clear all the providers from the chain
+     * Clear all the providers from the chain.
      */
     public function clearProviders()
     {
