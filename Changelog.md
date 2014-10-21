@@ -1,3 +1,42 @@
+## 0.2.5 ##
+
+Other
+<ul>
+<li>Form layout fixes</li>
+</ul>
+
+## 0.2.4 ##
+
+New feature
+<ul>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-117'>INTEGRATED-117</a>] -         Create Channel Document
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-118'>INTEGRATED-118</a>] -         Add config options for channels in ContentType edit page
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-119'>INTEGRATED-119</a>] -         Channel form option
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-120'>INTEGRATED-120</a>] -         Channel Solr index
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-122'>INTEGRATED-122</a>] -         Channel activator
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-124'>INTEGRATED-124</a>] -         Content channel relation
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-125'>INTEGRATED-125</a>] -         CRUD for Channel
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-126'>INTEGRATED-126</a>] -         Channel interface
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-127'>INTEGRATED-127</a>] -         Implement Channel interfaces in ContentBundle
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-128'>INTEGRATED-128</a>] -         Create fixtures for Channel
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-129'>INTEGRATED-129</a>] -         Channels must have a Internal name, same as ContentType logic
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-130'>INTEGRATED-130</a>] -         Add options to Channel document
+</li>
+<li>[<a href='https://eactive.atlassian.net/browse/INTEGRATED-131'>INTEGRATED-131</a>] -         Channel form type must be a service
+</li>
+</ul>
+
 ## 0.2.1 ##
 
 Other
