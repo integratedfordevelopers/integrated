@@ -10,6 +10,8 @@
  */
 
 namespace Integrated\Common\ContentType\Resolver;
+
+use Integrated\Common\ContentType\ContentTypeResolverInterface;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
 
 /**

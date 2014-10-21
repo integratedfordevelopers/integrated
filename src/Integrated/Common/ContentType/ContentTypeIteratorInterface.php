@@ -20,6 +20,7 @@ interface ContentTypeIteratorInterface extends \Iterator
 	 * Return the current content type
 	 *
 	 * @link http://php.net/manual/en/iterator.current.php
+     *
 	 * @return ContentTypeInterface.
 	 */
 	public function current();
@@ -28,7 +29,8 @@ interface ContentTypeIteratorInterface extends \Iterator
 	 * Move forward to next content type
 	 *
 	 * @link http://php.net/manual/en/iterator.next.php
-	 * @return void Any returned value is ignored.
+     *
+	 * @return void
 	 */
 	public function next();
 
@@ -36,6 +38,7 @@ interface ContentTypeIteratorInterface extends \Iterator
 	 * Return the key of the current content type
 	 *
 	 * @link http://php.net/manual/en/iterator.key.php
+     *
 	 * @return mixed scalar on success, or null on failure.
 	 */
 	public function key();
@@ -44,7 +47,8 @@ interface ContentTypeIteratorInterface extends \Iterator
 	 * Checks if current position is valid
 	 *
 	 * @link http://php.net/manual/en/iterator.valid.php
-	 * @return boolean Returns true on success or false on failure.
+     *
+	 * @return boolean
 	 */
 	public function valid();
 
@@ -52,7 +56,8 @@ interface ContentTypeIteratorInterface extends \Iterator
 	 * Rewind the Iterator to the first content type
 	 *
 	 * @link http://php.net/manual/en/iterator.rewind.php
-	 * @return void Any returned value is ignored.
+     *
+	 * @return void
 	 */
 	public function rewind();
-} 
+}
