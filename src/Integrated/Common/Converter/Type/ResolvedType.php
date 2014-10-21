@@ -34,7 +34,7 @@ class ResolvedType implements ResolvedTypeInterface
      * @param TypeInterface            $type       the inner type
      * @param TypeExtensionInterface[] $extensions the type extensions for the inner type
      */
-    public function __construct($type, array $extensions = [])
+    public function __construct(TypeInterface $type, array $extensions = [])
     {
         $this->type = $type;
         $this->extensions = $extensions;
