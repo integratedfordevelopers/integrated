@@ -17,206 +17,182 @@ use Doctrine\Common\EventSubscriber;
 
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Queue\QueueAwareInterface;
-
-use Integrated\Common\Solr\Converter\ConverterAwareInterface;
-use Integrated\Common\Solr\Converter\ConverterInterface;
+use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Solr\Indexer\Job;
 
+use Symfony\Component\Security\Core\Util\ClassUtils;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-
-use Integrated\Common\Queue\QueueInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class QueueSubscriber implements EventSubscriber, QueueAwareInterface, SerializerAwareInterface, ConverterAwareInterface
+class QueueSubscriber implements EventSubscriber, QueueAwareInterface, SerializerAwareInterface
 {
-	/**
-	 * @var QueueInterface
-	 */
-	private $queue;
+    /**
+     * @var QueueInterface
+     */
+    private $queue;
 
-	/**
-	 * @var SerializerInterface
-	 */
-	private $serializer;
+    /**
+     * @var SerializerInterface
+     */
+    private $serializer;
 
-	/**
-	 * @var string
-	 */
-	private $format = null;
+    /**
+     * @var string
+     */
+    private $format = null;
 
-	/**
-	 * @var ConverterInterface
-	 */
-	private $converter;
+    /**
+     * @var int
+     */
+    private $priority = 0;
 
-	/**
-	 * @var int
-	 */
-	private $priority = 0;
+    /**
+     * @param QueueInterface $queue
+     * @param SerializerInterface $serializer
+     * @param int $priority
+     */
+    public function __construct(QueueInterface $queue, SerializerInterface $serializer, $priority = 0)
+    {
+        $this->setQueue($queue);
+        $this->setSerializer($serializer);
+        $this->setPriority($priority);
+    }
 
-	/**
-	 * @param QueueInterface $queue
-	 * @param SerializerInterface $serializer
-	 * @param ConverterInterface $converter
-	 * @param int $priority
-	 */
-	public function __construct(QueueInterface $queue, SerializerInterface $serializer, ConverterInterface $converter, $priority = 0)
-	{
-		$this->setQueue($queue);
-		$this->setSerializer($serializer);
-		$this->setConverter($converter);
-		$this->setPriority($priority);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function setQueue(QueueInterface $queue)
+    {
+        $this->queue = $queue;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setQueue(QueueInterface $queue)
-	{
-		$this->queue = $queue;
-	}
+    /**
+     * @return QueueInterface
+     */
+    public function getQueue()
+    {
+        return $this->queue;
+    }
 
-	/**
-	 * @return QueueInterface
-	 */
-	public function getQueue()
-	{
-		return $this->queue;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function setSerializer(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setSerializer(SerializerInterface $serializer)
-	{
-		$this->serializer = $serializer;
-	}
+    /**
+     * @return SerializerInterface
+     */
+    public function getSerializer()
+    {
+        return $this->serializer;
+    }
 
-	/**
-	 * @return SerializerInterface
-	 */
-	public function getSerializer()
-	{
-		return $this->serializer;
-	}
+    /**
+     * @param string $format
+     */
+    public function setSerializerFormat($format)
+    {
+        $this->format = $format;
+    }
 
-	/**
-	 * @param string $format
-	 */
-	public function setSerializerFormat($format)
-	{
-		$this->format = $format;
-	}
+    /**
+     * @return string
+     */
+    public function getSerializerFormat()
+    {
+        if ($this->format === null) {
+            $this->format = 'json';
+        }
 
-	/**
-	 * @return string
-	 */
-	public function getSerializerFormat()
-	{
-		if ($this->format === null) {
-			$this->format = 'json';
-		}
+        return $this->format;
+    }
 
-		return $this->format;
-	}
+    /**
+     * @param int $priority
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = (int) $priority;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setConverter(ConverterInterface $converter)
-	{
-		$this->converter = $converter;
-	}
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
 
-	/**
-	 * @return ConverterInterface
-	 */
-	public function getConverter()
-	{
-		return $this->converter;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            Events::postPersist,
+            Events::postUpdate,
+            Events::postRemove,
+        ];
+    }
 
-	/**
-	 * @param int $priority
-	 */
-	public function setPriority($priority)
-	{
-		$this->priority = (int) $priority;
-	}
+    public function postPersist(LifecycleEventArgs $event)
+    {
+        $this->process('ADD', $event);
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getPriority()
-	{
-		return $this->priority;
-	}
+    public function postUpdate(LifecycleEventArgs $event)
+    {
+        $this->process('ADD', $event);
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getSubscribedEvents()
-	{
-		return array(
-			Events::postPersist,
-			Events::postUpdate,
-			Events::postRemove,
-		);
-	}
+    public function postRemove(LifecycleEventArgs $event)
+    {
+        $this->process('DELETE', $event);
+    }
 
-	public function postPersist(LifecycleEventArgs $event)
-	{
-		$this->process('ADD', $event);
-	}
+    protected function process($action, LifecycleEventArgs $event)
+    {
+        $document = $event->getDocument();
 
-	public function postUpdate(LifecycleEventArgs $event)
-	{
-		$this->process('ADD', $event);
-	}
+        // @codeCoverageIgnoreStart
+        if (!$document instanceof ContentInterface) {
+            return;
+        }
+        // @codeCoverageIgnoreEnd
 
-	public function postRemove(LifecycleEventArgs $event)
-	{
-		$this->process('DELETE', $event);
-	}
+        $job = new Job($action);
 
-	protected function process($action, LifecycleEventArgs $event)
-	{
-		// @todo find better solution for this
-		// @codeCoverageIgnoreStart
-		if (!$event->getDocument() instanceof ContentInterface) {
-			return;
-		}
-		// @codeCoverageIgnoreEnd
+        switch ($job->getAction()) {
+            case 'ADD':
 
-		$job = new Job($action);
+                // probably should make a solr document id generator service or something like that
+                $job->setOption('document.id', $document->getContentType() . '-' . $document->getId());
 
-		switch($job->getAction()) {
-			case 'ADD':
-				$job->setOption('document.id', $this->getConverter()->getId($event->getDocument()));
+                $job->setOption('document.data', $this->getSerializer()->serialize($document, $this->getSerializerFormat()));
+                $job->setOption('document.class', ClassUtils::getRealClass($document));
+                $job->setOption('document.format', $this->getSerializerFormat());
 
-				$job->setOption('document.data', $this->getSerializer()->serialize($event->getDocument(), $this->getSerializerFormat()));
-				$job->setOption('document.class', get_class($event->getDocument()));
-				$job->setOption('document.format', $this->getSerializerFormat());
-				break;
+                break;
 
-			case 'DELETE':
-				$job->setOption('id', $this->getConverter()->getId($event->getDocument()));
-				break;
-		}
+            case 'DELETE':
+                // probably should make a solr document id generator service or something like that
+                $job->setOption('id', $document->getContentType() . '-' . $document->getId());
+                break;
+        }
 
-		$this->getQueue()->push($job, 0, $this->priority);
+        $this->getQueue()->push($job, 0, $this->priority);
 
-        // Do immediate commit for higher prio's
-        $queue = $this->getQueue();
-        if ($this->priority >= $queue::PRIORITY_MEDIUM_HIGH) {
+        if ($this->priority >= QueueInterface::PRIORITY_MEDIUM_HIGH) {
             $this->getQueue()->push(new Job('COMMIT', ['softcommit' => 'true']), 0, $this->priority);
 
             //Do this only one time
-            $this->setPriority($queue::PRIORITY_MEDIUM);
+            $this->setPriority(QueueInterface::PRIORITY_MEDIUM);
         }
-
-	}
+    }
 }
