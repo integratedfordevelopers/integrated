@@ -13,12 +13,12 @@ namespace Integrated\Common\Solr\Indexer;
 
 use Exception;
 
+use Integrated\Common\Converter\ConverterInterface;
+
 use Integrated\Common\Queue\Queue;
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Queue\QueueMessageInterface;
 use Integrated\Common\Queue\Provider\Memory\QueueProvider;
-
-use Integrated\Common\Solr\Converter\ConverterInterface;
 
 use Integrated\Common\Solr\Indexer\Event\BatchEvent;
 use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
@@ -420,9 +420,9 @@ class Indexer implements IndexerInterface
 						throw new SerializerException($e->getMessage(), $e->getCode(), $e);
 					}
 
-                    if ($document !== null && ($document = $this->getConverter()->getFields($document))) {
+                    if ($document !== null && ($document = $this->getConverter()->convert($document)) && $document->count()) {
                         $command = new Add();
-                        $command->addDocument(new Document($document));
+                        $command->addDocument(new Document($document->toArray()));
 
                         if ($job->hasOption('overwrite')) {
                             $command->setOverwrite((bool) $job->getOption('overwrite'));
