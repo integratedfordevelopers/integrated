@@ -48,7 +48,7 @@ class QueueProvider implements QueueProviderInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function push($channel, $payload, $delay = 0, $priority = 0)
 	{
@@ -70,7 +70,7 @@ class QueueProvider implements QueueProviderInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function pull($channel, $limit = 1)
 	{
@@ -78,18 +78,6 @@ class QueueProvider implements QueueProviderInterface
 
 		$limit = (int) $limit;
 		$limit = $limit > 1 ? $limit : 1;
-
-//		$query = '
-//			UPDATE %s
-//			SET attempts = attempts + 1
-//			WHERE channel = ? AND time_execute <= ?
-//			ORDER BY time_execute, id
-//		';
-//
-//		$query = sprintf(
-//			$this->platform->modifyLimitQuery($query, $limit),
-//			$this->platform->quoteIdentifier($this->options['queue_table_name'])
-//		);
 
 		$query = '
 			SELECT id, payload,	attempts, priority
@@ -121,7 +109,7 @@ class QueueProvider implements QueueProviderInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function clear($channel)
 	{
@@ -131,11 +119,10 @@ class QueueProvider implements QueueProviderInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function count($channel = null)
 	{
-
 		$query = 'SELECT COUNT(id) AS count FROM %s';
 		$query = sprintf(
 			$query,
@@ -150,11 +137,14 @@ class QueueProvider implements QueueProviderInterface
 		return $this->connection->fetchColumn($query, [$channel]);
 	}
 
+	/**
+	 * Delete the message from the queue
+	 *
+	 * @param string $id
+	 */
 	protected function delete($id)
 	{
-		$id = (string) $id;
-
-		$this->connection->delete($this->options['queue_table_name'], ['id' => $id]);
+		$this->connection->delete($this->options['queue_table_name'], ['id' => (string) $id]);
 	}
 
 	protected function release($id, $delay = 0)

@@ -16,5 +16,11 @@ namespace Integrated\Common\Queue;
  */
 interface QueueFactoryInterface
 {
+	/**
+	 * Get a queue instance for the given channel
+	 *
+	 * @param string $channel
+	 * @return QueueInterface
+	 */
 	public function getQueue($channel);
 }
