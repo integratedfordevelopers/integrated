@@ -27,7 +27,7 @@ class CheckboxType extends BaseCheckboxType
 		parent::buildView($view, $form, $options);
 
 		if ($options['align'] && !in_array('choice', $view->parent->vars['block_prefixes'])) {
-			$view->vars['attr']['align_with_widget'] = true;
+            $view->vars['attr']['align_widget'] = true;
 		}
 	}
 

@@ -41,3 +41,25 @@
             </script>
     {% endspaceless %}
 {% endblock %}
+
+{% block checkbox_row %}
+    {% spaceless %}
+        {% set style = style|default(bootstrap_get_style()) %}
+        {% if style == 'horizontal' and (align_widget is defined or attr.align_widget is defined) %}
+            {% set align_with_widget = true %}
+        {% endif %}
+
+        {{ parent() }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block radio_row %}
+    {% spaceless %}
+        {% set style = style|default(bootstrap_get_style()) %}
+        {% if style == 'horizontal' and (align_widget is defined or attr.align_widget is defined) %}
+            {% set align_with_widget = true %}
+        {% endif %}
+
+        {{ parent() }}
+    {% endspaceless %}
+{% endblock %}
