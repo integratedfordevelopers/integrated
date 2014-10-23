@@ -53,6 +53,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 		$loader->load('metadata.xml');
 		$loader->load('mongo.xml');
         $loader->load('resolvers.xml');
+        $loader->load('solr.xml');
         $loader->load('twig.xml');
 
 		$loader->load('security.xml');

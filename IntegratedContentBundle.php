@@ -41,7 +41,6 @@ class IntegratedContentBundle extends Bundle
 		$container->addCompilerPass(new ExtensionRegistryBuilderPass());
 		$container->addCompilerPass(new FormFactoryEventDispatcherPass());
 		$container->addCompilerPass(new MetadataEventDispatcherPass());
-        $container->addCompilerPass(new SolrConverterChannelConverterPass());
 		$container->addCompilerPass(new TemplatingPass());
 	}
 
