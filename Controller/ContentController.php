@@ -1,4 +1,4 @@
-f<?php
+<?php
 
 /*
  * This file is part of the Integrated package.
