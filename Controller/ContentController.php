@@ -271,7 +271,7 @@ class ContentController extends Controller
 
                 if ($this->has('integrated_solr.indexer')) {
 					$indexer = $this->get('integrated_solr.indexer');
-					$indexer->setOption('queue.size', 4);
+					$indexer->setOption('queue.size', 2);
 					$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 				}
 
@@ -379,7 +379,7 @@ class ContentController extends Controller
 
 					if ($this->has('integrated_solr.indexer')) {
 						$indexer = $this->get('integrated_solr.indexer');
-						$indexer->setOption('queue.size', 4);
+						$indexer->setOption('queue.size', 2);
 						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 					}
 
@@ -523,7 +523,7 @@ class ContentController extends Controller
 
 					if ($this->has('integrated_solr.indexer')) {
 						$indexer = $this->get('integrated_solr.indexer');
-						$indexer->setOption('queue.size', 4);
+						$indexer->setOption('queue.size', 2);
 						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 					}
 
