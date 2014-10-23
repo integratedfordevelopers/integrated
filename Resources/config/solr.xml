@@ -13,6 +13,8 @@
     <services>
 
         <service id="integrated_workflow.solr.workflow.extension" class="%integrated_workflow.solr.workflow.extension.class%">
+            <argument type="service" id="service_container"/>
+
             <tag name="integrated_solr.type_extension" />
         </service>
 
