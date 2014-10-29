@@ -213,7 +213,12 @@ class Relation implements RelationInterface
      */
     public function setTargets(Collection $targets)
     {
-        $this->targets = $targets;
+        $this->targets = new ArrayCollection();
+
+        foreach ($targets as $target) {
+            $this->addTarget($target);
+        }
+
         return $this;
     }
 
