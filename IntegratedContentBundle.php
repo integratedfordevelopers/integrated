@@ -16,7 +16,6 @@ use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegist
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\FormFactoryEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\MetadataEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\TemplatingPass;
-use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\SolrConverterChannelConverterPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\IntegratedContentExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
