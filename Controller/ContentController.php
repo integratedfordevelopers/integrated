@@ -752,7 +752,7 @@ class ContentController extends Controller
         if ($queuecount > 0) {
             $queuemaxcount = max($queuecount,$session->get('queuemaxcount'));
             $session->set('queuemaxcount',$queuemaxcount);
-            $queuepercentage = round(($queuemaxcount-$queuecount) / $queuemaxcount);
+            $queuepercentage = round(($queuemaxcount-$queuecount) / $queuemaxcount * 100);
         }
         else {
             $session->remove('queuemaxcount');
