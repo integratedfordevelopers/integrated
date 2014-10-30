@@ -30,7 +30,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class IntegratedContentBundle extends Bundle
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
@@ -44,7 +44,7 @@ class IntegratedContentBundle extends Bundle
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getContainerExtension()
     {
