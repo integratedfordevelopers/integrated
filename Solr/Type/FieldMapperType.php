@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\SolrBundle\Solr\Type;
 
+use AppendIterator;
+use ArrayIterator;
+
 use DateTime;
 use DateTimeZone;
 
@@ -54,10 +57,27 @@ class FieldMapperType implements TypeInterface
      */
     public function build(ContainerInterface $container, $data, array $options = [])
     {
-        foreach ($options as $field => $path) {
+        $fields = [];
+
+        // first group the options by field name
+
+        foreach ($options as $field => $value) {
+            if (is_array($value)) {
+                $field = $value[$index = isset($value['name']) ? 'name' : key($value)];
+                unset($value[$index]);
+            } else {
+                $value = ['@' . $value]; // convert simple config to advance config
+            }
+
+            foreach ($value as $config) {
+                $fields[$field][] = $config;
+            }
+        }
+
+        foreach ($fields as $field => $config) {
             $this->remove($container, $field);
 
-            foreach ($this->read($data, $path) as $value) {
+            foreach ($this->read($data, $config) as $value) {
                 $this->append($container, $field, $value);
             }
         }
@@ -98,36 +118,54 @@ class FieldMapperType implements TypeInterface
     }
 
     /**
-     * @param object         $data
-     * @param string | array $path
+     * @param object $data
+     * @param array  $paths
      *
-     * @return array
+     * @return Traversable
      */
-    protected function read($data, $path)
+    protected function read($data, array $paths)
     {
-        if (!is_array($path)) {
-            return [$this->readScalar($data, $path)];
+        $result = new AppendIterator();
+
+        foreach ($paths as $path) {
+            if (is_array($path)) {
+                $result->append(new ArrayIterator($this->readArray($data, $path)));
+            } else {
+                $result->append(new ArrayIterator([$this->readString($data, $path)]));
+            }
         }
 
-        return $this->readArray($data, $path, ' ');
+        return $result;
     }
 
     /**
-     * @param object $data
-     * @param array  $path
+     * @param mixed  $data
+     * @param array  $paths
      * @param string $separator
      *
-     * @return array
+     * @return string[]
      */
-    protected function readArray($data, array $path, $separator = ' ')
+    protected function readArray($data, array $paths, $separator = ' ')
     {
-        $separator = $this->extractSeparator($path, $separator);
         $extracted = [];
 
-        foreach ($path as $key => $path_child) {
-            if (is_array($path_child)) {
+        // Check if there is a separator in the path config and if so extract it and then remove it
+        // from the path config.
+
+        if (array_key_exists('separator', $paths) && !is_array($paths['separator'])) {
+            $separator = (string) $paths['separator'];
+            unset($paths['separator']);
+        }
+
+        foreach ($paths as $index => $path) {
+            if (is_array($path)) {
+
+                // Since $path is a array the $index with be treated as a path and the result of that
+                // path is treated as a array. If the result is not a array then it will be placed in
+                // a array to simulate that the result is a array.
+
                 try {
-                    $array = $this->accessor->getValue($data, (string) $key);
+                    $array = $this->accessor->getValue($data, (string) $index);
 
                     if (!is_array($array) && !$array instanceof Traversable) {
                         $array = [$array];
@@ -138,32 +176,107 @@ class FieldMapperType implements TypeInterface
 
                 $results = [];
 
-                foreach ($array as $array_data) {
-                    if ($result = $this->readArray($array_data, $path_child, $separator)) {
-                        if (is_array($result)) {
-                            $results = array_merge($results, $result);
-                        } else {
-                            $results[] = $result;
+                foreach ($array as $value) {
+                    if ($path) {
+                        $results = array_merge($results, $this->readArray($value, $path, $separator));
+                    } else {
+                        if ($value = $this->convert($value)) {
+                            $results[] = $value;
                         }
                     }
                 }
 
                 $extracted[] = $results;
             } else {
-                $extracted[] = ($path_child[0] == '@') ? $this->readScalar($data, substr($path_child, 1)) : $path;
+                $extracted[] = $this->readString($data, $path);
             }
         }
 
-        $results = array_shift($extracted);
+        // The data is extracted so now its time to combine all the data into strings.
+
+        return $this->combine($extracted, $separator);
+    }
+
+    /**
+     * @param mixed  $data
+     * @param string $path
+     *
+     * @return null | string
+     */
+    protected function readString($data, $path)
+    {
+        $path = (string) $path;
+
+        if (!$path) {
+            return null;
+        }
+
+        if ($path[0] != '@') {
+            return $path; // static string
+        }
+
+        $path = substr($path, 1);
+
+        // Use the property accessor so extract the value from the data. If the path does not exist in the
+        // data then don't return a error but just null.
+
+        try {
+            return $this->convert($this->accessor->getValue($data, (string) $path));
+        } catch (ExceptionInterface $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Convert the data to a string.
+     *
+     * If the value can not be converted to a string then return null.
+     *
+     * @param mixed $data
+     *
+     * @return null | string
+     */
+    protected function convert($data)
+    {
+        if ($data instanceof DateTime) {
+            $data = clone $data; // don't change to original value
+            return $data->setTimezone($this->timezone)->format('Y-m-d\TG:i:s\Z');
+        }
+
+        if (is_object($data) && !method_exists($data, '__toString')) {
+            return null; // can't convert object to a string.
+        }
+
+        if (is_array($data)) {
+            return null; // can't convert a array to a string.
+        }
+
+        return $data !== null ? (string) $data : null;
+    }
+
+    /**
+     * Combine all the data into strings.
+     *
+     * For every array in the data all strings will be multiplied by the number of items in that
+     * array to cover every possible string combination.
+     *
+     * @param array  $data
+     * @param string $separator
+     *
+     * @return string[]
+     */
+    protected function combine(array $data, $separator)
+    {
+        $results = array_shift($data);
         $results = is_array($results) ? $results : [$results];
 
-        while ($value = array_shift($extracted)) {
+        while ($value = array_shift($data)) {
             if (is_array($value)) {
                 $replacement = [];
 
                 foreach ($value as $array_value) {
                     foreach ($results as $result_value) {
-                        $replacement = $result_value . $separator . $array_value;
+                        $replacement[] = $result_value . $separator . $array_value;
                     }
                 }
 
@@ -175,50 +288,6 @@ class FieldMapperType implements TypeInterface
             }
         }
 
-        return $results;
-    }
-
-    /**
-     * @param mixed  $data
-     * @param string $path
-     *
-     * @return null | string
-     */
-    protected function readScalar($data, $path)
-    {
-        try {
-            $value = $this->accessor->getValue($data, (string) $path);
-        } catch (ExceptionInterface $e) {
-            return null;
-        }
-
-        if ($value instanceof DateTime) {
-            $value = clone $value; // don't change to original value
-            return $value->setTimezone($this->timezone)->format('Y-m-d\TG:i:s\Z');
-        }
-
-        if (is_object($value) && !method_exists($value, '__toString')) {
-            return null; // cant convert to a string so ignore.
-        }
-
-        return $value !== null ? (string) $value : null;
-    }
-
-    /**
-     * @param array  $path
-     * @param string $default
-     *
-     * @return string
-     */
-    protected function extractSeparator(array &$path, $default)
-    {
-        $separator = $default;
-
-        if (array_key_exists('separator', $path) && !is_array($path['separator'])) {
-            $separator = (string) $path['separator'];
-            unset($path['separator']);
-        }
-
-        return $separator;
+        return array_filter($results);
     }
 }
