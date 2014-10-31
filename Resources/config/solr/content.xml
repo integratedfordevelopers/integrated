@@ -8,19 +8,15 @@
         <type name="integrated.fields">
             <options>
 
-                <array>
+                <string key="title">title</string>
+                <string key="title_sort">title</string>
 
-                    <string key="title">title</string>
-                    <string key="title_sort">title</string>
+                <string key="intro">intro</string>
+                <string key="content">content</string>
 
-                    <string key="intro">intro</string>
-                    <string key="content">content</string>
-
-                    <string key="pub_time">publishedAt</string>
-                    <string key="pub_created">createdAt</string>
-                    <string key="pub_edited">updatedAt</string>
-
-                </array>
+                <string key="pub_time">publishedAt</string>
+                <string key="pub_created">createdAt</string>
+                <string key="pub_edited">updatedAt</string>
 
             </options>
         </type>
@@ -32,22 +28,21 @@
         <type name="integrated.fields">
             <options>
 
+                <string key="subtitle">subtitle</string>
+
                 <array>
-
-                    <string key="subtitle">subtitle</string>
-
-                    <array key="author">
+                    <string key="name">author</string>
+                    <array>
                         <array key="authors">
                             <string>@person.prefix</string>
                             <string>@person.firstName</string>
                             <string>@person.lastName</string>
                         </array>
                     </array>
-
-                    <string key="source">source</string>
-                    <string key="locale">locale</string>
-
                 </array>
+
+                <string key="source">source</string>
+                <string key="locale">locale</string>
 
             </options>
         </type>
@@ -59,12 +54,8 @@
         <type name="integrated.fields">
             <options>
 
-                <array>
-
-                    <string key="content">description</string>
-                    <string key="description">description</string>
-
-                </array>
+                <string key="content">description</string>
+                <string key="description">description</string>
 
             </options>
         </type>
@@ -76,14 +67,10 @@
         <type name="integrated.fields">
             <options>
 
-                <array>
+                <string key="content">description</string>
+                <string key="description">description</string>
 
-                    <string key="content">description</string>
-                    <string key="description">description</string>
-
-                    <string key="image_text">webpath</string>
-
-                </array>
+                <string key="image_text">webpath</string>
 
             </options>
         </type>
@@ -95,12 +82,8 @@
         <type name="integrated.fields">
             <options>
 
-                <array>
-
-                    <string key="content">description</string>
-                    <string key="description">description</string>
-
-                </array>
+                <string key="content">description</string>
+                <string key="description">description</string>
 
             </options>
         </type>
