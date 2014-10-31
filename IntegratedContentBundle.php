@@ -16,7 +16,6 @@ use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegist
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\FormFactoryEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\MetadataEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\TemplatingPass;
-use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\SolrConverterChannelConverterPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\IntegratedContentExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -30,25 +29,25 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class IntegratedContentBundle extends Bundle
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function build(ContainerBuilder $container)
-	{
-		parent::build($container);
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
 
-		$container->addCompilerPass(new DoctrineMongoDBMetadataFactoryPass());
-		$container->addCompilerPass(new ExtensionRegistryBuilderPass());
-		$container->addCompilerPass(new FormFactoryEventDispatcherPass());
-		$container->addCompilerPass(new MetadataEventDispatcherPass());
-		$container->addCompilerPass(new TemplatingPass());
-	}
+        $container->addCompilerPass(new DoctrineMongoDBMetadataFactoryPass());
+        $container->addCompilerPass(new ExtensionRegistryBuilderPass());
+        $container->addCompilerPass(new FormFactoryEventDispatcherPass());
+        $container->addCompilerPass(new MetadataEventDispatcherPass());
+        $container->addCompilerPass(new TemplatingPass());
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getContainerExtension()
-	{
-		return new IntegratedContentExtension();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getContainerExtension()
+    {
+        return new IntegratedContentExtension();
+    }
 }
