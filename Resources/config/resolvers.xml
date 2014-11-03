@@ -32,7 +32,7 @@
 			</call>
 		</service>
 
-		<service id="integrated_content.resolver" alias="integrated_content.resolver.mongodb" />
+		<service id="integrated_content.resolver" alias="integrated_content.resolver.priority" />
 
 	</services>
 
