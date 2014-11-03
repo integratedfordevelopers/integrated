@@ -13,7 +13,9 @@
     <services>
 
         <service id="integrated_workflow.solr.workflow.extension" class="%integrated_workflow.solr.workflow.extension.class%">
-            <argument type="service" id="service_container"/>
+            <argument type="service" id="integrated_content.resolver" on-invalid="ignore" />
+            <argument type="service" id="integrated_workflow.repository.workflow" />
+            <argument type="service" id="integrated_workflow.repository.definition" />
 
             <tag name="integrated_solr.type_extension" />
         </service>

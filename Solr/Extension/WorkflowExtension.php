@@ -11,13 +11,15 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Solr\Extension;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
-use Integrated\Common\Content\ContentInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
 
+use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
+
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
+
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
@@ -26,17 +28,34 @@ use Symfony\Component\Security\Core\Util\ClassUtils;
 class WorkflowExtension implements TypeExtensionInterface
 {
     /**
-   	 * @var \Symfony\Component\DependencyInjection\ContainerInterface
-   	 */
-   	private $container;
+     * @var ContentTypeResolverInterface
+     */
+    private $resolver;
 
-   	/**
-   	 * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-   	 */
-   	public function __construct(\Symfony\Component\DependencyInjection\ContainerInterface $container)
-   	{
-   		$this->container = $container;
-   	}
+    /**
+     * @var ObjectRepository
+     */
+    private $workflow;
+
+    /**
+     * @var ObjectRepository
+     */
+    private $definition;
+
+    /**
+     * Constructor.
+     *
+     * @param ContentTypeResolverInterface $resolver
+     * @param ObjectRepository             $workflow
+     * @param ObjectRepository             $definition
+     */
+    public function __construct(ContentTypeResolverInterface $resolver, ObjectRepository $workflow, ObjectRepository $definition)
+    {
+        $this->resolver = $resolver;
+
+        $this->workflow = $workflow;
+        $this->definition = $definition;
+    }
 
     /**
      * {@inheritdoc}
@@ -47,11 +66,22 @@ class WorkflowExtension implements TypeExtensionInterface
             return; // only process content
         }
 
-        if (!$state = $this->resolveState($data)) {
-            return; // got not workflow
+        $container->remove('security_workflow_read');
+        $container->remove('security_workflow_write');
+
+        if (!$state = $this->getState($data)) {
+            return; // got no workflow
         }
 
-        $container;
+        foreach ($state->getPermissions() as $permission) {
+            if ($permission->hasMask($permission::READ)) {
+                $container->add('security_workflow_read', $permission->getGroup());
+            }
+
+            if ($permission->hasMask($permission::WRITE)) {
+                $container->add('security_workflow_write', $permission->getGroup());
+            }
+        }
     }
 
     /**
@@ -63,31 +93,20 @@ class WorkflowExtension implements TypeExtensionInterface
     }
 
     /**
-   	 * @return ObjectManager
-   	 */
-   	protected function getManager()
-   	{
-   		return $this->container->get('integrated_workflow.extension.doctrine.object_manager');
-   	}
-
-   	/**
-   	 * @return ContentTypeResolverInterface
-   	 */
-   	protected function getResolver()
-   	{
-        return $this->container->get('integrated.form.resolver');
-   	}
-
-    /**
+     * Get the workflow state for the content.
+     *
+     * If not workflow is connected to the content type or none can be found then null will
+     * be returned.
+     *
    	 * @param ContentInterface $content
      *
    	 * @return null | State
    	 */
-   	protected function resolveState(ContentInterface $content)
-   	{
+    protected function getState(ContentInterface $content)
+    {
 		// does this content even have a workflow connected ?
 
-		if (!$type = $this->getResolver()->getType(ClassUtils::getRealClass($content), $content->getContentType())) {
+		if (!$type = $this->resolver->getType(ClassUtils::getRealClass($content), $content->getContentType())) {
             return null;
 		}
 
@@ -95,20 +114,21 @@ class WorkflowExtension implements TypeExtensionInterface
             return null;
         }
 
-   		$repository = $this->getManager()->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
+        // check if there is a state for this content else get the default state for this
+        // workflow.
 
-   		if ($entity = $repository->findOneBy(['content' => $content])) {
-   			return $entity;
-   		}
+        if ($entity = $this->workflow->findOneBy(['content' => $content])) {
+            if ($entity = $entity->getState()) {
+                return $entity;
+            }
 
-        // get default workflow
+            // seams that the workflow state does not have a definition state connected.
+        }
 
-        $repository = $this->getManager()->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
-
-        if ($entity = $repository->find($type->getOption('workflow'))) {
+        if ($entity = $this->definition->find($type->getOption('workflow'))) {
             return $entity->getDefault();
         }
 
    		return null;
-   	}
+    }
 }
