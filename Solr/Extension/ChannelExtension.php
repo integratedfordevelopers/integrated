@@ -31,6 +31,8 @@ class ChannelExtension implements TypeExtensionInterface
             return;
         }
 
+        $container->remove('facet_channels');
+
         foreach ($data->getChannels() as $channel) {
             if ($channel instanceof ChannelInterface) {
                 $container->add('facet_channels', $channel->getId());

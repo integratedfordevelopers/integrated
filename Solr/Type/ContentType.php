@@ -46,4 +46,4 @@ class ContentType implements TypeInterface
     {
         return 'integrated.content';
     }
-} 
+}
