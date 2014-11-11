@@ -41,7 +41,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
      */
     public function setUp()
     {
-        $this->event = $this->getMock('Symfony\Component\Form\FormEvent', [], [], '', false);
+        $this->event = $this->getMockBuilder('Symfony\Component\Form\FormEvent')->disableOriginalConstructor()->getMock();
         $this->form = $this->getMock('Symfony\Component\Form\FormInterface');
         $this->definition = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition');
 
@@ -104,24 +104,23 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onPreSubmit with no Definition
+     * Test onPreSubmit with inValid Definition
      */
-    public function testOnPreSubmitWithNoDefinition()
+    public function testOnPreSubmitWithInvalidDefinition()
     {
         $instance = $this->getInstance();
+
+        $invalidDefinition = $this->getMock('stdClass');
+        $invalidDefinition
+            ->expects($this->never())
+            ->method($this->anything())
+        ;
 
         // Stub getData, returns null
         $this->form
             ->expects($this->once())
             ->method('getData')
-            ->willReturn(null)
-        ;
-
-        // Stub setDefault, never called
-        $this->definition
-            ->expects($this->never())
-            ->method('setDefault')
-            ->with(null)
+            ->willReturn($invalidDefinition)
         ;
 
         // Fire event
@@ -147,7 +146,6 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
         $this->form
             ->expects($this->never())
             ->method('get')
-            ->with('states')
         ;
 
         // Fire event
@@ -155,9 +153,9 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onPostSetData function with different states
+     * Test onPostSetData function with states
      */
-    public function testOnPostSetDataWithDifferentStates()
+    public function testOnPostSetDataWithStates()
     {
         $instance = $this->getInstance();
 
@@ -176,14 +174,15 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
         $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
 
         // Get three different form types
-        $child1 = $this->getFormChildWithNoData();
-        $child2 = $this->getFormChildWithNoDefault($state);
-        $child3 = $this->getFormChildWithDefault($state);
+        $child1 = $this->getFormChild();
+        $child2 = $this->getFormChild($state);
+        $child3 = $this->getFormChild($state, true, 'set');
 
         // Stub isDefault, must be called once
         $state
             ->expects($this->once())
             ->method('isDefault')
+            ->willReturn(true)
         ;
 
         // Stub all, returns array with states
@@ -223,13 +222,15 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
         $this->form
             ->expects($this->never())
             ->method('has')
-            ->with('states')
         ;
 
         // Fire event
         $instance->onSubmit($this->event);
     }
 
+    /**
+     * Test onSubmit function with no states
+     */
     public function testOnSubmitWithNoStates()
     {
         $instance = $this->getInstance();
@@ -253,15 +254,16 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
         $this->form
             ->expects($this->never())
             ->method('get')
-            ->with('states')
         ;
 
         // Fire event
         $instance->onSubmit($this->event);
     }
 
-
-    public function testOnSubmitWithDifferentStates()
+    /**
+     * Test onSubmit function with states
+     */
+    public function testOnSubmitWithStates()
     {
         $instance = $this->getInstance();
 
@@ -283,20 +285,26 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
         /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $states */
         $states = $this->getMock('Symfony\Component\Form\FormInterface');
 
-        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state */
-        $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
+        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state1 */
+        $state1 = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
+
+        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state2 */
+        $state2 = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
+
+        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state3 */
+        $state3 = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
 
         // Get three different form types
-        $child1 = $this->getFormChildWithNoData();
-        $child2 = $this->getFormChildWithNoDefault($state);
-        $child3 = $this->getFormChildWithDefaultFalse($state);
-        $child4 = $this->getFormChildWithDefaultTrue($state);
+        $child1 = $this->getFormChild();
+        $child2 = $this->getFormChild($state1);
+        $child3 = $this->getFormChild($state2, false);
+        $child4 = $this->getFormChild($state3, true);
 
         // Stub setDefault, must be called once with $state
         $this->definition
             ->expects($this->once())
             ->method('setDefault')
-            ->with($state)
+            ->with($this->identicalTo($state3))
         ;
 
         // Stub all, must return states
@@ -319,117 +327,16 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * @return \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @param State $state
+     * @param null $withDefaultState
+     * @param string $getOrSet
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getFormChildWithNoData()
+    protected function getFormChild(State $state = null, $withDefaultState = null, $getOrSet = 'get')
     {
         /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $child1 */
         $child = $this->getMock('Symfony\Component\Form\FormInterface');
 
-        // Stub getData, returns null
-        $child
-            ->expects($this->once())
-            ->method('getData')
-            ->willReturn(null)
-        ;
-
-        // Stub has, must never be called
-        $child
-            ->expects($this->never())
-            ->method('has')
-            ->with('default')
-        ;
-
-        return $child;
-    }
-
-    /**
-     * @param State $state
-     * @return \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getFormChildWithNoDefault(State $state)
-    {
-        /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $child2 */
-        $child = $this->getMock('Symfony\Component\Form\FormInterface');
-
-        // Stub getData, return $state
-        $child
-            ->expects($this->once())
-            ->method('getData')
-            ->willReturn($state)
-        ;
-
-        // Stub has, returns false
-        $child
-            ->expects($this->once())
-            ->method('has')
-            ->with('default')
-            ->willReturn(false)
-        ;
-
-        // Stub get, must never be called
-        $child
-            ->expects($this->never())
-            ->method('get')
-            ->with('default')
-        ;
-
-        return $child;
-    }
-
-    /**
-     * @param State $state
-     * @return \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getFormChildWithDefault(State $state)
-    {
-        /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $child3 */
-        $child = $this->getMock('Symfony\Component\Form\FormInterface');
-
-        // Stub getData, return $state
-        $child
-            ->expects($this->once())
-            ->method('getData')
-            ->willReturn($state)
-        ;
-
-        // Stub has, returns true
-        $child
-            ->expects($this->once())
-            ->method('has')
-            ->with('default')
-            ->willReturn(true)
-        ;
-
-        /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $default */
-        $default = $this->getMock('Symfony\Component\Form\FormInterface');
-
-        // Stub get, returns $default
-        $child
-            ->expects($this->once())
-            ->method('get')
-            ->with('default')
-            ->willReturn($default)
-        ;
-
-        // Stub setData, must be called once
-        $default
-            ->expects($this->once())
-            ->method('setData')
-        ;
-
-        return $child;
-    }
-
-    /**
-     * @param State $state
-     * @return \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getFormChildWithDefaultFalse(State $state)
-    {
-        /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $child3 */
-        $child = $this->getMock('Symfony\Component\Form\FormInterface');
-
         // Stub getData, returns $state
         $child
             ->expects($this->once())
@@ -437,76 +344,70 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
             ->willReturn($state)
         ;
 
-        // Stub has, returns true
-        $child
-            ->expects($this->once())
-            ->method('has')
-            ->with('default')
-            ->willReturn(true)
-        ;
+        if (null === $state) {
 
-        /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $default */
-        $default = $this->getMock('Symfony\Component\Form\FormInterface');
+            // Stub has, must never be called when state is null
+            $child
+                ->expects($this->never())
+                ->method('has')
+            ;
 
-        // Stub get, returns $default
-        $child
-            ->expects($this->once())
-            ->method('get')
-            ->with('default')
-            ->willReturn($default)
-        ;
+        } else {
 
-        // Stub getData, returns false
-        $default
-            ->expects($this->once())
-            ->method('getData')
-            ->willReturn(false)
-        ;
+            if (null === $withDefaultState) {
 
-        return $child;
-    }
+                // Stub has, returns false
+                $child
+                    ->expects($this->once())
+                    ->method('has')
+                    ->with('default')
+                    ->willReturn(false)
+                ;
 
-    /**
-     * @param $state
-     * @return \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject
-     */
-    private function getFormChildWithDefaultTrue(State $state)
-    {
-        /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $child4 */
-        $child = $this->getMock('Symfony\Component\Form\FormInterface');
+                // Stub get, must never be called
+                $child
+                    ->expects($this->never())
+                    ->method('get')
+                ;
 
-        // Stub getData, returns $state
-        $child
-            ->expects($this->once())
-            ->method('getData')
-            ->willReturn($state)
-        ;
+            } else {
 
-        // Stub has, returns true
-        $child
-            ->expects($this->once())
-            ->method('has')
-            ->with('default')
-            ->willReturn(true)
-        ;
+                // Stub has, returns true
+                $child
+                    ->expects($this->once())
+                    ->method('has')
+                    ->with('default')
+                    ->willReturn(true)
+                ;
 
-        /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $default1 */
-        $default = $this->getMock('Symfony\Component\Form\FormInterface');
+                /** @var \Symfony\Component\Form\FormInterface | \PHPUnit_Framework_MockObject_MockObject $default */
+                $default = $this->getMock('Symfony\Component\Form\FormInterface');
 
-        // Stub get, returns $default
-        $child
-            ->expects($this->once())
-            ->method('get')
-            ->with('default')
-            ->willReturn($default)
-        ;
+                // Stub get, returns $default
+                $child
+                    ->expects($this->once())
+                    ->method('get')
+                    ->with('default')
+                    ->willReturn($default)
+                ;
 
-        // Stub getData, returns true
-        $default
-            ->expects($this->once())
-            ->method('getData')
-            ->willReturn(true)
-        ;
+                // Stub get or setData
+                if ($getOrSet == 'get') {
+                    $default
+                        ->expects($this->once())
+                        ->method('getData')
+                        ->willReturn($withDefaultState)
+                    ;
+                } else {
+                    $default
+                        ->expects($this->once())
+                        ->method('setData')
+                        ->with(true)
+                    ;
+
+                }
+            }
+        }
 
         return $child;
     }
