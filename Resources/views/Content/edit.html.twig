@@ -34,7 +34,7 @@
 
     <div class="content_columns_holder">
         {% set colWidth = 'col-md-9' %}
-        {% if hasRelations %}
+        {% if form.offsetGet('relations').count() %}
             {% set colWidth = 'col-md-6' %}
         {% endif %}
         <div class="col-sm-12 {{ colWidth }} content_column margin_botom_in_mobile">
@@ -49,7 +49,7 @@
                 </div>
             </div>
         </div>
-        {% if hasRelations %}
+        {% if form.offsetGet('relations').count() %}
         <div class="col-sm-6 col-md-3 side_column margin_botom_in_mobile">
             <h3 class="title">{% trans %}Link to{% endtrans %}</h3>
             <div class="content_column_inner">
@@ -67,7 +67,7 @@
         {% endif %}
 
         <div class="col-sm-6 col-md-3 sidebar_right margin_botom_in_mobile">
-            {% if hasRelations %}
+            {% if form.offsetGet('relations').count() %}
             <div class="item_row">
                 <h3 class="title">{% trans %}Linked items{% endtrans %}</h3>
                 <div class="content_column_inner">

@@ -285,8 +285,7 @@ class ContentController extends Controller
 
         return array(
             'type' => $type->getType(),
-            'form' => $form->createView(),
-            'hasRelations' => (bool) $form->get('relations')->count()
+            'form' => $form->createView()
         );
     }
 
@@ -430,7 +429,6 @@ class ContentController extends Controller
         return array(
             'type'    => $type->getType(),
             'form'    => $form->createView(),
-            'hasRelations' => (bool) $form->get('relations')->count(),
             'content' => $content,
             'locking' => $locking
         );
