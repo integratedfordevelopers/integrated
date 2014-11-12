@@ -80,6 +80,9 @@ class ContentController extends Controller
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels');
 
+
+        // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
+        // to filter on these targets.
         // TODO this code should be somewhere else
         $relation = $request->query->get('relation');
         if (null !== $relation) {
