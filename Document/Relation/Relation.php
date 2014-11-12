@@ -228,11 +228,20 @@ class Relation implements RelationInterface
      */
     public function addTarget(ContentTypeInterface $contentType)
     {
-        if (!$this->targets->contains($contentType)) {
+        if (!$this->hasTarget($contentType)) {
             $this->targets->add($contentType);
         }
 
         return $this;
+    }
+
+    /**
+     * @param ContentTypeInterface $contentType
+     * @return boolean true if the collection contains the element, false otherwise.
+     */
+    public function hasTarget(ContentTypeInterface $contentType)
+    {
+        return $this->targets->contains($contentType);
     }
 
     /**
