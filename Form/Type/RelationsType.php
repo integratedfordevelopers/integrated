@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 
-use Doctrine\Common\Util\Debug;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
