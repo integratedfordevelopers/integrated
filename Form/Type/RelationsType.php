@@ -66,7 +66,6 @@ class RelationsType extends AbstractType
                 'attr' => [
                     'data-title'    => $relation->getName(),
                     'data-relation' => $relation->getId(),
-                    'data-url'      => implode('&', $url),
                     'data-multiple' => $relation->isMultiple()
                 ]
             ]);
