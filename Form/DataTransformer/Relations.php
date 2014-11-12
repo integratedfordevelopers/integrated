@@ -52,6 +52,8 @@ class Relations implements DataTransformerInterface
     }
 
     /**
+     * Transform an array with EmbeddedRelation to an array with relations containing comma separated references
+     *
      * {@inheritdoc}
      */
     public function transform($value)
@@ -79,6 +81,9 @@ class Relations implements DataTransformerInterface
     }
 
     /**
+     * Transform an array with relations containing comma separated references to an ArrayCollection with
+     * EmbeddedRelation
+     *
      * {@inheritdoc}
      */
     public function reverseTransform($value)
