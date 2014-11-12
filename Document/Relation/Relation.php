@@ -183,11 +183,20 @@ class Relation implements RelationInterface
      */
     public function addSource(ContentTypeInterface $contentType)
     {
-        if (!$this->sources->contains($contentType)) {
+        if (!$this->hasSource($contentType)) {
             $this->sources->add($contentType);
         }
 
         return $this;
+    }
+
+    /**
+     * @param ContentTypeInterface $contentType
+     * @return boolean true if the collection contains the element, false otherwise.
+     */
+    public function hasSource(ContentTypeInterface $contentType)
+    {
+        return $this->sources->contains($contentType);
     }
 
     /**
