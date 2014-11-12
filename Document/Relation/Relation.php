@@ -142,6 +142,7 @@ class Relation implements RelationInterface
     {
         return $this->name;
     }
+
     /**
      * Set the name of the Relation
      *
