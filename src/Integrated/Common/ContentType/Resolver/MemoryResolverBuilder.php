@@ -32,7 +32,7 @@ class MemoryResolverBuilder
      */
     public function addContentType(ContentTypeInterface $type)
     {
-        $this->types[json_encode(['class' => $type->getClass(), 'type' => $type->getType()])] = $type;
+        $this->types[$type->getType()] = $type;
 
         return $this;
     }

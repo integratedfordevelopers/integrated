@@ -17,12 +17,11 @@ use Integrated\Common\ContentType\Exception\UnexpectedTypeException;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ContentTypeResolverInterface
+interface ResolverInterface
 {
     /**
      * Returns the content type.
      *
-     * @param string $class A fully qualified class name of type ContentInterface
      * @param string $type The content type name
      *
      * @return ContentTypeInterface
@@ -30,24 +29,23 @@ interface ContentTypeResolverInterface
      * @throws UnexpectedTypeException  if the passed arguments are not strings
      * @throws InvalidArgumentException if the content type can not be found
      */
-    public function getType($class, $type);
+    public function getType($type);
 
     /**
      * check if the content type exists
      *
-     * @param string $class A fully qualified class name of type ContentInterface
      * @param string $type The content type name
      *
      * @return bool
      *
      * @throws UnexpectedTypeException  if the passed arguments are not strings
      */
-    public function hasType($class, $type);
+    public function hasType($type);
 
     /**
      * Get a list of all the content types.
      *
-     * @return ContentTypeIteratorInterface
+     * @return IteratorInterface
      */
     public function getTypes();
 }

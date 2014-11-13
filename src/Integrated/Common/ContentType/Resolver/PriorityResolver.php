@@ -11,23 +11,23 @@
 
 namespace Integrated\Common\ContentType\Resolver;
 
-use Integrated\Common\ContentType\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class PriorityResolver implements ContentTypeResolverInterface
+class PriorityResolver implements ResolverInterface
 {
     /**
-     * @var ContentTypeResolverInterface[]
+     * @var ResolverInterface[]
      */
     private $resolvers;
 
     /**
      * Constructor.
      *
-     * @param ContentTypeResolverInterface[] $resolvers
+     * @param ResolverInterface[] $resolvers
      */
     public function __construct(array $resolvers)
     {
@@ -37,25 +37,19 @@ class PriorityResolver implements ContentTypeResolverInterface
     /**
      * Check is a resolver is added to the priority list.
      *
-     * @param ContentTypeResolverInterface $resolver The resolver to check
+     * @param ResolverInterface $resolver The resolver to check
      *
      * @return bool
      */
-    public function hasResolver(ContentTypeResolverInterface $resolver)
+    public function hasResolver(ResolverInterface $resolver)
     {
-        foreach ($this->resolvers as $resolvers) {
-            if (false !== array_search($resolver, $resolvers, true)) {
-                return true;
-            }
-        }
-
-        return false;
+        return (bool) (false !== array_search($resolver, $this->resolvers, true));
     }
 
     /**
      * Get all the registered resolvers.
      *
-     * @return ContentTypeResolverInterface[]
+     * @return ResolverInterface[]
      */
     public function getResolvers()
     {
@@ -65,15 +59,14 @@ class PriorityResolver implements ContentTypeResolverInterface
     /**
      * Find the first resolver that has the requested type.
      *
-     * @param string $class
      * @param string $type
      *
-     * @return ContentTypeResolverInterface
+     * @return ResolverInterface
      */
-    private function findResolver($class, $type)
+    private function findResolver($type)
     {
         foreach ($this->resolvers as $resolver) {
-            if ($resolver->hasType($class, $type)) {
+            if ($resolver->hasType($type)) {
                 return $resolver;
             }
         }
@@ -84,21 +77,21 @@ class PriorityResolver implements ContentTypeResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function getType($class, $type)
+    public function getType($type)
     {
-        if ($resolver = $this->findResolver($class, $type)) {
-            return $resolver->getType($class, $type);
+        if ($resolver = $this->findResolver($type)) {
+            return $resolver->getType($type);
         }
 
-        throw new  InvalidArgumentException(sprintf('Could not resolve the content type based on the given class "%s" and type "%s"', $class, $type));
+        throw new InvalidArgumentException(sprintf('Could not resolve the content type based on the given type "%s"', $type));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasType($class, $type)
+    public function hasType($type)
     {
-        if ($this->findResolver($class, $type)) {
+        if ($this->findResolver($type)) {
             return true;
         }
 

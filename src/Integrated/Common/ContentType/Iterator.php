@@ -16,6 +16,6 @@ use ArrayIterator;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContentTypeIterator extends ArrayIterator implements ContentTypeIteratorInterface
+class Iterator extends ArrayIterator implements IteratorInterface
 {
 }

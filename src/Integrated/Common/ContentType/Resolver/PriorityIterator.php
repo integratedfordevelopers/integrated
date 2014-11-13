@@ -11,15 +11,15 @@
 
 namespace Integrated\Common\ContentType\Resolver;
 
-use Integrated\Common\ContentType\ContentTypeIteratorInterface;
-use Integrated\Common\ContentType\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\IteratorInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 
 use AppendIterator;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class PriorityIterator implements ContentTypeIteratorInterface
+class PriorityIterator implements IteratorInterface
 {
     /**
      * @var AppendIterator
@@ -32,14 +32,9 @@ class PriorityIterator implements ContentTypeIteratorInterface
     private $accepted = [];
 
     /**
-     * @var int
-     */
-    private $counter = 0;
-
-    /**
      * Constructor.
      *
-     * @param ContentTypeResolverInterface[] $resolvers
+     * @param ResolverInterface[] $resolvers
      */
     public function __construct(array $resolvers)
     {
@@ -69,7 +64,6 @@ class PriorityIterator implements ContentTypeIteratorInterface
             return;
         }
 
-        $this->counter++;
         $this->iterator->next();
 
         $this->validate();
@@ -80,7 +74,7 @@ class PriorityIterator implements ContentTypeIteratorInterface
      */
     public function key()
     {
-        return $this->iterator->valid() ? $this->counter : null;
+        return $this->iterator->valid() ? $this->iterator->key() : null;
     }
 
     /**
@@ -97,8 +91,6 @@ class PriorityIterator implements ContentTypeIteratorInterface
     public function rewind()
     {
         $this->accepted = [];
-        $this->counter = 0;
-
         $this->iterator->rewind();
 
         $this->validate();
@@ -112,11 +104,10 @@ class PriorityIterator implements ContentTypeIteratorInterface
     private function validate()
     {
         while ($this->iterator->valid()) {
-            $cur = $this->current();
-            $cur = json_encode(['class' => $cur->getClass(), 'type' => $cur->getType()]);
+            $type = $this->current()->getType();
 
-            if (!array_key_exists($cur, $this->accepted)) {
-                $this->accepted[$cur] = $this->counter;
+            if (!array_key_exists($type, $this->accepted)) {
+                $this->accepted[$type] = true;
 
                 return;
             }

@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\ContentType\Resolver;
 
-use Integrated\Common\ContentType\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -19,7 +19,7 @@ use Integrated\Common\ContentType\ContentTypeResolverInterface;
 class PriorityResolverBuilder
 {
     /**
-     * @var ContentTypeResolverInterface[][]
+     * @var ResolverInterface[][]
      */
     private $resolvers = [];
 
@@ -29,16 +29,16 @@ class PriorityResolverBuilder
      * If the resolver is already in the list then if will first be removed and
      * then added with the new priority.
      *
-     * @param ContentTypeResolverInterface $resolver
-     * @param int $priority
+     * @param ResolverInterface $resolver
+     * @param int               $priority
      *
      * @return PriorityResolverBuilder
      */
-    public function addResolver(ContentTypeResolverInterface $resolver, $priority = 0)
+    public function addResolver(ResolverInterface $resolver, $priority = 0)
     {
-        foreach ($this->resolvers as $priority => $resolvers) {
+        foreach ($this->resolvers as $index => $resolvers) {
             if (false !== ($key = array_search($resolver, $resolvers, true))) {
-                unset($this->resolvers[$priority][$key]);
+                unset($this->resolvers[$index][$key]);
             }
         }
 
@@ -50,7 +50,7 @@ class PriorityResolverBuilder
     /**
      * Create a resolver from the current builder configuration.
      *
-     * @return ContentTypePriorityResolver
+     * @return PriorityResolver
      */
     public function getResolver()
     {

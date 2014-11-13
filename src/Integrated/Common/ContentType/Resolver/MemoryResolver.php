@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\ContentType\Resolver;
 
-use Integrated\Common\ContentType\ContentTypeIterator;
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\Iterator;
+use Integrated\Common\ContentType\ResolverInterface;
 
 use Integrated\Common\ContentType\Exception\ExceptionInterface;
 use Integrated\Common\ContentType\Exception\UnexpectedTypeException;
@@ -22,7 +22,7 @@ use Integrated\Common\ContentType\Exception\InvalidArgumentException;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class MemoryResolver implements ContentTypeResolverInterface
+class MemoryResolver implements ResolverInterface
 {
     /**
      * @var ContentTypeInterface[]
@@ -42,32 +42,26 @@ class MemoryResolver implements ContentTypeResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function getType($class, $type)
+    public function getType($type)
     {
-        if (!is_string($class)) {
-            throw new UnexpectedTypeException($class, 'string');
-        }
-
         if (!is_string($type)) {
             throw new UnexpectedTypeException($type, 'string');
         }
 
-        $key = json_encode(['class' => $class, 'type' => $type]);
-
-        if (isset($this->types[$key])) {
-            return $this->types[$key];
+        if (isset($this->types[$type])) {
+            return $this->types[$type];
         }
 
-        throw new InvalidArgumentException(sprintf('Could not resolve the content type based on the given class "%s" and type "%s"', $class, $type));
+        throw new InvalidArgumentException(sprintf('Could not resolve the content type based on the given type "%s"', $type));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function hasType($class, $type)
+    public function hasType($type)
     {
         try {
-            $this->getType($class, $type);
+            $this->getType($type);
         } catch (UnexpectedTypeException $e) {
             throw $e;
         } catch (ExceptionInterface $e) {
@@ -82,6 +76,6 @@ class MemoryResolver implements ContentTypeResolverInterface
      */
     public function getTypes()
     {
-        return new ContentTypeIterator(array_values($this->types));
+        return new Iterator($this->types);
     }
 }
