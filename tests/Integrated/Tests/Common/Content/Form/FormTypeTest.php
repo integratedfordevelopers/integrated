@@ -590,7 +590,9 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
 
         $callback = function($argument) use ($object) {
             self::assertEquals('the-class-name', $argument['data_class']);
-//            self::assertSame($object, $argument['empty_data']($this->getForm())); // this give a problem as seams phpunit checks arguments 2 times
+
+// this give a problem as seams phpunit checks arguments 2 times
+//            self::assertSame($object, $argument['empty_data']($this->getForm()));
 
             return true;
         };
