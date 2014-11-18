@@ -1,0 +1,37 @@
+{
+    "name": "integrated/website-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Website Bundle",
+    "keywords": ["Integrated", "website"],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "ext-mongo": "~1.2",
+        "symfony/symfony": "~2.4",
+        "symfony/framework-bundle": "~2.2",
+		"doctrine/doctrine-fixtures-bundle": "dev-master",
+        "doctrine/mongodb": ">=1.0.0",
+        "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
+        "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
+        "integrated/content-bundle": "~0.1",
+		"knplabs/knp-paginator-bundle": "dev-master",
+		"nelmio/alice": "1.*",
+        "braincrafted/bootstrap-bundle": "~2.0",
+        "twbs/bootstrap": "3.*"
+    },
+    "autoload":{
+        "psr-0":{
+            "Integrated\\Bundle\\WebsiteBundle": ""
+        }
+    },
+    "target-dir": "Integrated/Bundle/WebsiteBundle"
+}
