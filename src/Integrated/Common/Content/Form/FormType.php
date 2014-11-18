@@ -72,7 +72,7 @@ class FormType implements FormTypeInterface
 	{
 		$dispatcher = $this->getEventDispatcher();
 
-		// allow events to change the options or add fields at the start of the form
+		// Allow events to change the options or add fields at the start of the form
 		if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
 			$event = new BuilderEvent($this->contentType, $this->metadata, $builder);
 			$event->setOptions($options);
@@ -84,44 +84,47 @@ class FormType implements FormTypeInterface
 
         foreach ($this->metadata->getFields() as $field) {
 
-			$ignored = $this->contentType->hasField($field->getName());
-
-			// allow events to add fields before the supplied field
+			// Allow events to add fields before the supplied field
 			if ($dispatcher->hasListeners(Events::PRE_BUILD_FIELD)) {
-				$event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field->getName(), $ignored);
+				$event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field->getName());
 				$event->setOptions($options);
 
 				$dispatcher->dispatch(Events::PRE_BUILD_FIELD, $event);
 			}
 
 			if ($this->contentType->hasField($field->getName())) {
-				$field = $this->contentType->getField($field->getName());
+				$config = $this->contentType->getField($field->getName());
 
-				// allow events to change the supplied field options or even remove it from the form
+				// Allow events to change the supplied field options or even remove it from the form
 				if ($dispatcher->hasListeners(Events::BUILD_FIELD)) {
 					$event = new FieldEvent($this->contentType, $this->metadata);
-					$event->setField(clone $field);
+                    $event->setOptions($options);
+					$event->setField(clone $config); // don't allow the original to be changed.
 
 					$dispatcher->dispatch(Events::BUILD_FIELD, $event);
 
-					$field = $event->isIgnored() ? null : $event->getField();
+                    $config = $event->isIgnored() ? null : $event->getField();
 				}
 
-				if ($field) {
-					$builder->add($builder->create($field->getName(), $field->getType(), $field->getOptions()));
+				if ($config) {
+                    // The config could be changed but even though it possible don't accept a new field
+                    // name. The correct way to change the field name is to ignore this field and add a
+                    // new field before or after this field by using the PRE or POST_BUILD_FIELD event.
+
+					$builder->add($field->getName(), $config->getType(), $config->getOptions());
 				}
 			}
 
-			// allow events to add fields after the supplied field
+			// Allow events to add fields after the supplied field
 			if ($dispatcher->hasListeners(Events::POST_BUILD_FIELD)) {
-				$event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field);
+				$event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field->getName());
 				$event->setOptions($options);
 
 				$dispatcher->dispatch(Events::POST_BUILD_FIELD, $event);
 			}
         }
 
-		// allow events to add fields at the end of the form
+		// Allow events to add fields at the end of the form
 		if ($dispatcher->hasListeners(Events::POST_BUILD)) {
 			$event = new BuilderEvent($this->contentType, $this->metadata, $builder);
 			$event->setOptions($options);
@@ -203,7 +206,7 @@ class FormType implements FormTypeInterface
 	public function getName()
 	{
 		if (null === $this->name) {
-			$this->name = preg_replace('#[^a-zA-Z0-9\-_]#', '_', $this->contentType->getClass() . '__' . $this->contentType->getType());
+			$this->name = preg_replace('#[^a-zA-Z0-9\-_]#', '', 'integrated_content_form_' . $this->contentType->getType());
 			$this->name = strtolower($this->name);
 		}
 

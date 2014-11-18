@@ -25,4 +25,4 @@ interface FormTypeInterface extends BaseFormTypeInterface
 	 * @return ContentTypeInterface the content type
 	 */
 	public function getType();
-} 
+}
