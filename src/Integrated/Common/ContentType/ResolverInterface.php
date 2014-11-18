@@ -26,7 +26,7 @@ interface ResolverInterface
      *
      * @return ContentTypeInterface
      *
-     * @throws UnexpectedTypeException  if the passed arguments are not strings
+     * @throws UnexpectedTypeException  if the passed argument is not a string
      * @throws InvalidArgumentException if the content type can not be found
      */
     public function getType($type);
