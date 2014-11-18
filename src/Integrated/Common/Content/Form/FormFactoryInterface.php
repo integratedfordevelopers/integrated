@@ -12,8 +12,9 @@
 namespace Integrated\Common\Content\Form;
 
 use Integrated\Common\Content\Exception\UnexpectedTypeException;
-use Integrated\Common\Content\Exception\InvalidArgumentException;
 use Integrated\Common\Content\ContentInterface;
+
+use Integrated\Common\ContentType\Exception\InvalidArgumentException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -23,16 +24,12 @@ interface FormFactoryInterface
 	/**
 	 * Returns a form type used to create a form.
 	 *
-	 * If $type is null and $class is a object then the type is extracted from the $class else
-	 * a type has to be specified.
-	 *
-	 * @param string|ContentInterface $class A object or a fully qualified class name of type ContentInterface
-	 * @param string                  $type  The content type name
+	 * @param string|ContentInterface $type A content object or a content type name
 	 *
 	 * @return FormTypeInterface
 	 *
-	 * @throws UnexpectedTypeException  if passed document is not a subclass ContentInterface
+	 * @throws UnexpectedTypeException  if the passed argument is not a string or content object
 	 * @throws InvalidArgumentException if the type does not exist
 	 */
-	public function getType($class, $type = null);
+	public function getType($type);
 }
