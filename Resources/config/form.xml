@@ -31,6 +31,8 @@
 
 		<parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
 
+		<parameter key="integrated_content.form.search_selection.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType</parameter>
+
 	</parameters>
 
 	<services>
@@ -101,6 +103,10 @@
 
 		<service id="integrated_content.form.delete.type" class="%integrated_content.form.delete.type.class%" />
 
-	</services>
+        <service id="integrated_content.form.search_selection.type" class="%integrated_content.form.search_selection.type.class%">
+            <argument type="service" id="security.context" />
+        </service>
+
+    </services>
 
 </container>
