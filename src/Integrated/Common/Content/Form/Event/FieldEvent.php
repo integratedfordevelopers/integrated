@@ -36,7 +36,7 @@ class FieldEvent extends FormEvent
 	/**
 	 * @param ContentTypeFieldInterface $field
 	 */
-	public function setField($field)
+	public function setField(ContentTypeFieldInterface $field)
 	{
 		$this->field = $field;
 	}

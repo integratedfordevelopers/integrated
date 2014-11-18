@@ -32,11 +32,6 @@ class BuilderEvent extends FormEvent
 	private $field = null;
 
 	/**
-	 * @var bool
-	 */
-	private $ignore = null;
-
-	/**
 	 * @var array
 	 */
 	private $options = [];
@@ -52,7 +47,7 @@ class BuilderEvent extends FormEvent
 		parent::__construct($contentType, $metadata);
 
 		$this->builder = $builder;
-		$this->field = $field;
+		$this->field = $field !== null ? (string) $field : null;
 	}
 
 	/**
