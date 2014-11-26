@@ -39,23 +39,24 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-		$loader->load('channel.xml');
-		$loader->load('converters.xml');
-		$loader->load('extensions.xml');
+        $loader->load('channel.xml');
+        $loader->load('converters.xml');
+        $loader->load('extensions.xml');
 
-		$loader->load('form.xml');
-		$loader->load('form.content.xml');
-		$loader->load('form.content-type.xml');
+        $loader->load('form.xml');
+        $loader->load('form.content.xml');
+        $loader->load('form.content-type.xml');
 
-		$loader->load('manager.xml');
-		$loader->load('manager.doctrine.xml');
+        $loader->load('manager.xml');
+        $loader->load('manager.doctrine.xml');
 
-		$loader->load('metadata.xml');
-		$loader->load('mongo.xml');
+        $loader->load('metadata.xml');
+        $loader->load('mongo.xml');
         $loader->load('resolvers.xml');
+        $loader->load('solr.xml');
         $loader->load('twig.xml');
 
-		$loader->load('security.xml');
+        $loader->load('security.xml');
 
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);

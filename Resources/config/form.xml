@@ -40,7 +40,7 @@
 		<service id="integrated_content.form.factory.event_dispatcher" class="%integrated_content.form.factory.event_dispatcher.class%" public="false" />
 
 		<service id="integrated_content.form.factory" class="%integrated_content.form.factory.class%">
-			<argument type="service" id="integrated_content.resolver.priority"/>
+			<argument type="service" id="integrated_content.resolver"/>
             <argument type="service" id="integrated_content.metadata.factory"/>
 
 			<call method="setEventDispatcher">
