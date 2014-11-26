@@ -245,7 +245,7 @@ class ContentController extends Controller
 			],
 			[
 				'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
 			]
 		);
 
@@ -330,12 +330,12 @@ class ContentController extends Controller
 			$buttons = [
 				'reload' => ['type' => 'submit', 'options' => ['label' => 'Reload']],
 				'reload_changed' => ['type' => 'submit', 'options' => ['label' => 'Reload (keep changes)', 'attr' => ['type' => 'default']]],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
 			];
 		} else {
 			$buttons = [
 				'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
 			];
 		}
 
@@ -474,12 +474,12 @@ class ContentController extends Controller
 		if ($locking['locked'] && (!$request->isMethod('delete'))) {
 			$buttons = [
 				'reload' => ['type' => 'submit', 'options' => ['label' => 'Retry']],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
 			];
 		} else {
 			$buttons = [
 				'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
 			];
 		}
 
@@ -752,7 +752,7 @@ class ContentController extends Controller
         if ($queuecount > 0) {
             $queuemaxcount = max($queuecount,$session->get('queuemaxcount'));
             $session->set('queuemaxcount',$queuemaxcount);
-            $queuepercentage = round(($queuemaxcount-$queuecount) / $queuemaxcount);
+            $queuepercentage = round(($queuemaxcount-$queuecount) / $queuemaxcount * 100);
         }
         else {
             $session->remove('queuemaxcount');
