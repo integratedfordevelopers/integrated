@@ -228,7 +228,7 @@ class ContentController extends Controller
 	public function newAction(Request $request)
 	{
 		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
-		$type = $this->get('integrated.form.factory')->getType($request->get('class'), $request->get('type'));
+		$type = $this->get('integrated.form.factory')->getType($request->get('type'));
 
 		$content = $type->getType()->create();
 
@@ -441,7 +441,7 @@ class ContentController extends Controller
 	public function deleteAction(Request $request, Content $content)
 	{
 		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getContentType());
+		$type = $this->get('integrated.form.resolver')->getType($content->getContentType());
 
 		if (!$this->get('security.context')->isGranted(Permissions::DELETE, $content)) {
 			throw new AccessDeniedException();
