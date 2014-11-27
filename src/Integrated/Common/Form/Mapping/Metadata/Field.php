@@ -35,13 +35,13 @@ class Field implements AttributeEditorInterface
      */
     protected $options = [];
 
-	/**
-	 * @param string $name
-	 */
-	public function __construct($name)
-	{
-		$this->name = $name;
-	}
+    /**
+     * @param string $name
+     */
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
 
     /**
      * @inheritdoc
@@ -85,32 +85,32 @@ class Field implements AttributeEditorInterface
         return $this;
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getOption($name)
-	{
-		return $this->hasOption($name) ? $this->options[$name] : null;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getOption($name)
+    {
+        return $this->hasOption($name) ? $this->options[$name] : null;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function hasOption($name)
-	{
-		return isset($this->options[$name]);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function hasOption($name)
+    {
+        return isset($this->options[$name]);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setOption($name, $value)
-	{
-		$this->options[$name] = $value;
-		return $this;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = $value;
+        return $this;
+    }
 
-	/**
+    /**
      * Shortcut to get the label of an element
      *
      * @return string
