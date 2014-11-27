@@ -16,7 +16,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 
-use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Nelmio\Alice\Fixtures;
 
 use Symfony\Component\DependencyInjection\ContainerAware;

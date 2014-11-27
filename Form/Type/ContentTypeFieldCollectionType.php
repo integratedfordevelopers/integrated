@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeFieldCollection as ContentTypeFieldCollectionTransformer;
 
-use Integrated\Common\ContentType\Mapping\MetadataInterface;
+use Integrated\Common\Form\Mapping\MetadataInterface;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -49,7 +49,7 @@ class ContentTypeFieldCollectionType extends AbstractType
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setRequired(['metadata']);
-		$resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\ContentType\\Mapping\\MetadataInterface']);
+		$resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\Form\\Mapping\\MetadataInterface']);
 	}
 
 	/**

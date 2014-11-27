@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Integrated\Common\ContentType\Mapping\Metadata;
+use Integrated\Common\Form\Mapping\Metadata;
 use Integrated\Bundle\ContentBundle\Form\Type as Form;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Relation;

@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\Common\ContentType\Mapping\Metadata;
+use Integrated\Common\Form\Mapping\Metadata;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 
 /**

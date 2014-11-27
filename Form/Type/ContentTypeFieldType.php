@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeField as ContentTypeFieldTransformer;
 
-use Integrated\Common\ContentType\Mapping\AttributeInterface;
+use Integrated\Common\Form\Mapping\AttributeInterface;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -49,7 +49,7 @@ class ContentTypeFieldType extends AbstractType
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$resolver->setRequired(['field']);
-		$resolver->setAllowedTypes(['field' => 'Integrated\\Common\\ContentType\\Mapping\\AttributeInterface']);
+		$resolver->setAllowedTypes(['field' => 'Integrated\\Common\\Form\\Mapping\\AttributeInterface']);
 	}
 
 	/**

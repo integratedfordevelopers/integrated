@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Debug;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\Common\ContentType\Mapping\Metadata;
+use Integrated\Common\Form\Mapping\Metadata;
 use Integrated\Common\ContentType\ContentTypeRelationInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as Model;

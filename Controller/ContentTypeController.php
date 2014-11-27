@@ -12,8 +12,8 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 
-use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
-use Integrated\Common\ContentType\Mapping\MetadataInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
+use Integrated\Common\Form\Mapping\MetadataInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 

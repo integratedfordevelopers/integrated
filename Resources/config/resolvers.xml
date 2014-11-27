@@ -26,11 +26,11 @@
 			<argument type="service" id="integrated_content.resolver.mongodb.repository"/>
 		</service>
 
-		<service id="integrated_content.resolver.priority" class="%integrated_content.resolver.priority.class%">
-			<call method="addResolver">
-				<argument type="service" id="integrated_content.resolver.mongodb" />
-			</call>
-		</service>
+        <service id="integrated_content.resolver.priority" class="%integrated_content.resolver.priority.class%">
+            <argument type="collection">
+                <argument type="service" id="integrated_content.resolver.mongodb" />
+            </argument>
+        </service>
 
 		<service id="integrated_content.resolver" alias="integrated_content.resolver.priority" />
 

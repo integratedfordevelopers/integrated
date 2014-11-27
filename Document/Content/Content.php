@@ -27,7 +27,7 @@ use Integrated\Common\Content\MetadataInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\RegistryInterface;
 
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * Abstract base class for document types
