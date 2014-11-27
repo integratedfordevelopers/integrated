@@ -20,8 +20,8 @@ use Integrated\Common\Content\Form\FormType;
 
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Mapping\AttributeInterface;
-use Integrated\Common\ContentType\Mapping\MetadataInterface;
+use Integrated\Common\Form\Mapping\AttributeInterface;
+use Integrated\Common\Form\Mapping\MetadataInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -56,7 +56,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
         $this->type = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
-        $this->metadata = $this->getMock('Integrated\\Common\\ContentType\\Mapping\\MetadataInterface');
+        $this->metadata = $this->getMock('Integrated\\Common\\Form\\Mapping\\MetadataInterface');
         $this->dispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 	}
 
@@ -730,7 +730,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getAttribute($name)
     {
-        $mock = $this->getMock('Integrated\\Common\\ContentType\\Mapping\\AttributeInterface');
+        $mock = $this->getMock('Integrated\\Common\\Form\\Mapping\\AttributeInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getName')
             ->willReturn($name);

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\Common\ContentType\Mapping\Driver;
+namespace Integrated\Tests\Common\Form\Mapping\Driver;
 
-use Integrated\Common\ContentType\Mapping\Metadata\ContentTypeAttribute;
+use Integrated\Common\Form\Mapping\Metadata\ContentTypeAttribute;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

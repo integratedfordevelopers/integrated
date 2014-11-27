@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Mapping\Event;
+namespace Integrated\Common\Form\Mapping\Event;
 
-use Integrated\Common\ContentType\Mapping\MetadataEditorInterface;
+use Integrated\Common\Form\Mapping\MetadataEditorInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**

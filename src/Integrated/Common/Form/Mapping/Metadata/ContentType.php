@@ -9,11 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Mapping\Metadata;
+namespace Integrated\Common\Form\Mapping\Metadata;
 
-use Integrated\Common\ContentType\Mapping\AttributeEditorInterface;
-use Integrated\Common\ContentType\Mapping\AttributeInterface;
-use Integrated\Common\ContentType\Mapping\MetadataEditorInterface;
+use Integrated\Common\Form\Mapping\AttributeInterface;
+use Integrated\Common\Form\Mapping\MetadataEditorInterface;
 
 use ReflectionClass;
 
@@ -57,13 +56,24 @@ class ContentType implements MetadataEditorInterface
 		$this->class = $class;
 	}
 
-	/**
-	 * @return bool
-	 */
-	public function isContent()
+    /**
+     * @inheritdoc
+     */
+	public function isTypeOf($class)
 	{
+        if (null === $class) {
+            return true;
+        }
+
 		$reflection = $this->getReflection();
-		return $reflection->implementsInterface(self::CONTENT) && $reflection->isInstantiable();
+
+		return (
+                (interface_exists($class) && $reflection->implementsInterface($class)) ||
+                $reflection->isSubclassOf($class) ||
+                (class_exists($class) && $reflection->isInstance(new $class))
+            )
+            &&
+            $reflection->isInstantiable();
 	}
 
 	/**

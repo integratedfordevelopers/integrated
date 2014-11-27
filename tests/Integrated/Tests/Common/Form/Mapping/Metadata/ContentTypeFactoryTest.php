@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\Common\ContentType\Mapping\Metadata;
+namespace Integrated\Tests\Common\Form\Mapping\Metadata;
 
-use Integrated\Common\ContentType\Mapping\Driver;
-use Integrated\Common\ContentType\Mapping\Metadata\ContentTypeFactory;
+use Integrated\Common\Form\Mapping\Driver;
+use Integrated\Common\Form\Mapping\Metadata\ContentTypeFactory;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -35,7 +35,7 @@ class ContentTypeFactoryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         // Mock Driver\DriverInterface
-        $this->driver = $this->getMock('Integrated\Common\ContentType\Mapping\Driver\DriverInterface');
+        $this->driver = $this->getMock('Integrated\Common\Form\Mapping\Driver\DriverInterface');
 
         // Create ContentTypeFactory
         $this->factory = new ContentTypeFactory($this->driver);

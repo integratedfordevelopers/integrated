@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\Common\ContentType\Mapping\Driver;
+namespace Integrated\Tests\Common\Form\Mapping\Driver;
 
-use Integrated\Common\ContentType\Mapping\Metadata\ContentType;
+use Integrated\Common\Form\Mapping\Metadata\ContentType;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -55,8 +55,8 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     public function testFields()
     {
         // Mock ContentTypeAttribute
-        $field1 = $this->getMock('Integrated\Common\ContentType\Mapping\Metadata\ContentTypeField');
-        $field2 = $this->getMock('Integrated\Common\ContentType\Mapping\Metadata\ContentTypeField');
+        $field1 = $this->getMock('Integrated\Common\Form\Mapping\Metadata\ContentTypeField');
+        $field2 = $this->getMock('Integrated\Common\Form\Mapping\Metadata\ContentTypeField');
 
         // Set fields
         $fields = array(

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Mapping;
+namespace Integrated\Common\Form\Mapping;
 
-use Integrated\Common\ContentType\Mapping\Event\MetadataEvent;
-use Integrated\Common\ContentType\Mapping\Metadata\ContentType;
+use Integrated\Common\Form\Mapping\Event\MetadataEvent;
+use Integrated\Common\Form\Mapping\Metadata\ContentType;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,13 +33,19 @@ class MetadataFactory implements MetadataFactoryInterface
 	private $driver;
 
 	/**
+	 * @var string
+	 */
+	private $type;
+
+	/**
 	 * @var MetadataInterface[]
 	 */
 	protected $data = array();
 
-	public function __construct(DriverInterface $driver)
+	public function __construct(DriverInterface $driver, $type = null)
 	{
 		$this->driver = $driver;
+		$this->type = $type;
 	}
 
 	/**
@@ -80,7 +86,7 @@ class MetadataFactory implements MetadataFactoryInterface
 		foreach ($this->driver->getAllClassNames() as $class) {
 			$data = $this->getMetadata($class);
 
-			if ($data->isContent()) {
+			if ($data->isTypeOf($this->type)) {
 				$metadata[] = $data;
 			}
 		}
@@ -117,7 +123,7 @@ class MetadataFactory implements MetadataFactoryInterface
 	{
 		$metadata = $this->newMetadata($class);
 
-		if ($metadata->isContent())	{
+		if ($metadata->isTypeOf($this->type)) {
 			$this->driver->loadMetadataForClass($class, $metadata);
 			$this->getEventDispatcher()->dispatch(Events::METADATA, new MetadataEvent($metadata));
 		}

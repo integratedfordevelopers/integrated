@@ -9,25 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Mapping\Annotations;
+namespace Integrated\Common\Form\Mapping\Annotations;
 
 /**
- * Annotation for defining field options for properties of a document
+ * Annotation for defining metadata for a document
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @Annotation
  */
-class Field
+class Document
 {
     /**
      * @var string
      */
-    protected $type = 'text';
-
-    /**
-     * @var array
-     */
-    protected $options = array();
+    protected $name;
 
     /**
      * Constructor
@@ -37,6 +32,11 @@ class Field
      */
     public function __construct(array $data)
     {
+        if (isset($data['value'])) {
+            $data['name'] = $data['value'];
+            unset($data['value']);
+        }
+
         foreach ($data as $key => $value) {
             $method = 'set'.str_replace('_', '', $key);
             if (!method_exists($this, $method)) {
@@ -47,46 +47,24 @@ class Field
     }
 
     /**
-     * Get the type of the field
+     * Get the name of the document
      *
      * @return string
      */
-    public function getType()
+    public function getName()
     {
-        return $this->type;
+        return $this->name;
     }
 
     /**
-     * Set the type of the field
+     * Set the name of the document
      *
-     * @param string $type
+     * @param string $name
      * @return $this
      */
-    public function setType($type)
+    public function setName($name)
     {
-        $this->type = $type;
-        return $this;
-    }
-
-    /**
-     * Get the options of the field
-     *
-     * @return array
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * Set the label of the field
-     *
-     * @param array $options
-     * @return $this
-     */
-    public function setOptions(array $options)
-    {
-        $this->options = $options;
+        $this->name = $name;
         return $this;
     }
 }

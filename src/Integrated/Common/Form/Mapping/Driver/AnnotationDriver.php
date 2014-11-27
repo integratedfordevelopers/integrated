@@ -9,25 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Mapping\Driver;
+namespace Integrated\Common\Form\Mapping\Driver;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
 
-use Integrated\Common\ContentType\Mapping\Annotations\Document;
-use Integrated\Common\ContentType\Mapping\Annotations\Field;
+use Integrated\Common\Form\Mapping\Annotations\Document;
+use Integrated\Common\Form\Mapping\Annotations\Field;
 
-use Integrated\Common\ContentType\Mapping\DriverInterface;
-use Integrated\Common\ContentType\Mapping\MetadataEditorInterface;
+use Integrated\Common\Form\Mapping\DriverInterface;
+use Integrated\Common\Form\Mapping\MetadataEditorInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class AnnotationDriver implements DriverInterface
 {
-	const DOCUMENT_CLASS = 'Integrated\\Common\\ContentType\\Mapping\\Annotations\\Document';
+	const DOCUMENT_CLASS = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Document';
 
-	const FIELD_CLASS    = 'Integrated\\Common\\ContentType\\Mapping\\Annotations\\Field';
+	const FIELD_CLASS    = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Field';
 
 	/**
 	 * @var MappingDriver

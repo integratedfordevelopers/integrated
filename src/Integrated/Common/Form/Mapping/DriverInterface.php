@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Mapping;
+namespace Integrated\Common\Form\Mapping;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

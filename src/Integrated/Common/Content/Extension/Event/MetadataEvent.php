@@ -12,7 +12,7 @@
 namespace Integrated\Common\Content\Extension\Event;
 
 use Integrated\Common\Content\Extension\Event;
-use Integrated\Common\ContentType\Mapping\MetadataEditorInterface;
+use Integrated\Common\Form\Mapping\MetadataEditorInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

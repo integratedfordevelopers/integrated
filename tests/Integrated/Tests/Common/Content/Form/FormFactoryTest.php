@@ -14,7 +14,7 @@ namespace Integrated\Tests\Common\Content\Form;
 use Integrated\Common\Content\Form\FormFactory;
 
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
-use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 
 /**
@@ -35,7 +35,7 @@ class FormFactoryTest extends \PHPUnit_Framework_TestCase
 	protected function setUp()
 	{
 		$this->resolver = $this->getMock('Integrated\\Common\\ContentType\\ResolverInterface');
-        $this->metadata = $this->getMock('Integrated\\Common\\ContentType\\Mapping\MetadataFactoryInterface');
+        $this->metadata = $this->getMock('Integrated\\Common\\Form\\Mapping\MetadataFactoryInterface');
 	}
 
 	public function testInterface()
@@ -76,7 +76,7 @@ class FormFactoryTest extends \PHPUnit_Framework_TestCase
         $this->metadata->expects($this->once())
             ->method('getMetadata')
             ->with($this->equalTo('Integrated\\Common\\ContentType\\ContentTypeInterface'))
-            ->willReturn($this->getMock('Integrated\\Common\\ContentType\\Mapping\\MetadataInterface'));
+            ->willReturn($this->getMock('Integrated\\Common\\Form\\Mapping\\MetadataInterface'));
 
         self::assertInstanceOf('Integrated\\Common\\Content\\Form\\FormType', $this->getInstance()->getType($argument));
     }

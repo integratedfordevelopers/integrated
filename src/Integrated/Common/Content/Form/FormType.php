@@ -17,7 +17,7 @@ use Integrated\Common\Content\Form\Event\OptionsEvent;
 use Integrated\Common\Content\Form\Event\ViewEvent;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Mapping\MetadataInterface;
+use Integrated\Common\Form\Mapping\MetadataInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

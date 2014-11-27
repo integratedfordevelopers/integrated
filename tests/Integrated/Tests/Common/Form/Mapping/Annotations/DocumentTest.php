@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\Common\ContentType\Mapping\Annotations;
+namespace Integrated\Tests\Common\Form\Mapping\Annotations;
 
-use Integrated\Common\ContentType\Mapping\Annotations\Document;
+use Integrated\Common\Form\Mapping\Annotations\Document;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

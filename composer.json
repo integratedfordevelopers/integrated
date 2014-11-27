@@ -38,6 +38,7 @@
 			"Integrated\\MongoDB\\ContentType\\": "src/",
 			"Integrated\\MongoDB\\Serializer\\": "src/",
 			"Integrated\\MongoDB\\Solr\\": "src/",
+			"Integrated\\Common\\Block\\": "src/",
 			"Integrated\\Common\\Content\\": "src/",
 			"Integrated\\Common\\ContentType\\": "src/",
             "Integrated\\Common\\Converter\\": "src/",

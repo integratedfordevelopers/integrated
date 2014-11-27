@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\Common\ContentType\Mapping\Driver;
+namespace Integrated\Tests\Common\Form\Mapping\Driver;
 
 use Doctrine\Common\Annotations\Reader;
-use Integrated\Common\ContentType\Mapping\Annotations\Document;
-use Integrated\Common\ContentType\Mapping\Annotations\Field;
-use Integrated\Common\ContentType\Mapping\Driver\AnnotationsDriver;
+use Integrated\Common\Form\Mapping\Annotations\Document;
+use Integrated\Common\Form\Mapping\Annotations\Field;
+use Integrated\Common\Form\Mapping\Driver\AnnotationsDriver;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -71,7 +71,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($field));
 
         // Assert
-        $this->assertInstanceOf('Integrated\Common\ContentType\Mapping\Metadata\ContentType', $this->driver->loadMetadataForClass($class));
+        $this->assertInstanceOf('Integrated\Common\Form\Mapping\Metadata\ContentType', $this->driver->loadMetadataForClass($class));
     }
 
     /**

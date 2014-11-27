@@ -14,7 +14,7 @@ namespace Integrated\Common\Content\Form;
 use Integrated\Common\Content\Exception\UnexpectedTypeException;
 use Integrated\Common\Content\ContentInterface;
 
-use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;

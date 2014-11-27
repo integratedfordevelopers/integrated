@@ -9,20 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Mapping\Annotations;
+namespace Integrated\Common\Form\Mapping\Annotations;
 
 /**
- * Annotation for defining metadata for a document
+ * Annotation for defining field options for properties of a document
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @Annotation
  */
-class Document
+class Field
 {
     /**
      * @var string
      */
-    protected $name;
+    protected $type = 'text';
+
+    /**
+     * @var array
+     */
+    protected $options = array();
 
     /**
      * Constructor
@@ -32,11 +37,6 @@ class Document
      */
     public function __construct(array $data)
     {
-        if (isset($data['value'])) {
-            $data['name'] = $data['value'];
-            unset($data['value']);
-        }
-
         foreach ($data as $key => $value) {
             $method = 'set'.str_replace('_', '', $key);
             if (!method_exists($this, $method)) {
@@ -47,24 +47,46 @@ class Document
     }
 
     /**
-     * Get the name of the document
+     * Get the type of the field
      *
      * @return string
      */
-    public function getName()
+    public function getType()
     {
-        return $this->name;
+        return $this->type;
     }
 
     /**
-     * Set the name of the document
+     * Set the type of the field
      *
-     * @param string $name
+     * @param string $type
      * @return $this
      */
-    public function setName($name)
+    public function setType($type)
     {
-        $this->name = $name;
+        $this->type = $type;
+        return $this;
+    }
+
+    /**
+     * Get the options of the field
+     *
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    /**
+     * Set the label of the field
+     *
+     * @param array $options
+     * @return $this
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
         return $this;
     }
 }

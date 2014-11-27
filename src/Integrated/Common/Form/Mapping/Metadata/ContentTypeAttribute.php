@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType\Mapping\Metadata;
+namespace Integrated\Common\Form\Mapping\Metadata;
 
-use Integrated\Common\ContentType\Mapping\AttributeEditorInterface;
+use Integrated\Common\Form\Mapping\AttributeEditorInterface;
 
 /**
  * Class for storing metadata properties of a field
