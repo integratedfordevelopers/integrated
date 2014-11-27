@@ -18,7 +18,7 @@ use Integrated\Common\Form\Mapping\AttributeEditorInterface;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeAttribute implements AttributeEditorInterface
+class Field implements AttributeEditorInterface
 {
     /**
      * @var string

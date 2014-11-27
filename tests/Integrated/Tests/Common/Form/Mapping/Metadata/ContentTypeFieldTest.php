@@ -11,7 +11,7 @@
 
 namespace Integrated\Tests\Common\Form\Mapping\Driver;
 
-use Integrated\Common\Form\Mapping\Metadata\ContentTypeAttribute;
+use Integrated\Common\Form\Mapping\Metadata\Field;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -19,7 +19,7 @@ use Integrated\Common\Form\Mapping\Metadata\ContentTypeAttribute;
 class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ContentTypeAttribute
+     * @var Field
      */
     private $contentTypeField;
 
@@ -28,7 +28,7 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->contentTypeField = new ContentTypeAttribute();
+        $this->contentTypeField = new Field('');
     }
 
     /**

@@ -71,7 +71,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($field));
 
         // Assert
-        $this->assertInstanceOf('Integrated\Common\Form\Mapping\Metadata\ContentType', $this->driver->loadMetadataForClass($class));
+        $this->assertInstanceOf('Integrated\Common\Form\Mapping\Metadata\Document', $this->driver->loadMetadataForClass($class));
     }
 
     /**

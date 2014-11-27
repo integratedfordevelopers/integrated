@@ -12,7 +12,7 @@
 namespace Integrated\Tests\Common\Form\Mapping\Metadata;
 
 use Integrated\Common\Form\Mapping\Driver;
-use Integrated\Common\Form\Mapping\Metadata\ContentTypeFactory;
+use Integrated\Common\Form\Mapping\MetadataFactory;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -25,7 +25,7 @@ class ContentTypeFactoryTest extends \PHPUnit_Framework_TestCase
     private $driver;
 
     /**
-     * @var ContentTypeFactory
+     * @var MetadataFactory
      */
     private $factory;
 
@@ -38,7 +38,7 @@ class ContentTypeFactoryTest extends \PHPUnit_Framework_TestCase
         $this->driver = $this->getMock('Integrated\Common\Form\Mapping\Driver\DriverInterface');
 
         // Create ContentTypeFactory
-        $this->factory = new ContentTypeFactory($this->driver);
+        $this->factory = new MetadataFactory($this->driver);
     }
 
     /**

@@ -21,12 +21,12 @@ use ReflectionClass;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentType implements MetadataEditorInterface
+class Document implements MetadataEditorInterface
 {
-	/**
-	 * @var ReflectionClass
-	 */
-	private $reflection = null;
+    /**
+     * @var ReflectionClass
+     */
+    private $reflection = null;
 
     /**
      * @var string
@@ -43,50 +43,50 @@ class ContentType implements MetadataEditorInterface
      */
     protected $fields = [];
 
-	/**
-	 * @var AttributeInterface[]
-	 */
-	protected $options = [];
+    /**
+     * @var AttributeInterface[]
+     */
+    protected $options = [];
 
-	/**
-	 * @param $class
-	 */
-	public function __construct($class)
-	{
-		$this->class = $class;
-	}
+    /**
+     * @param $class
+     */
+    public function __construct($class)
+    {
+        $this->class = $class;
+    }
 
     /**
      * @inheritdoc
      */
-	public function isTypeOf($class)
-	{
+    public function isTypeOf($class)
+    {
         if (null === $class) {
             return true;
         }
 
-		$reflection = $this->getReflection();
+        $reflection = $this->getReflection();
 
-		return (
+        return (
                 (interface_exists($class) && $reflection->implementsInterface($class)) ||
                 $reflection->isSubclassOf($class) ||
                 (class_exists($class) && $reflection->isInstance(new $class))
             )
             &&
             $reflection->isInstantiable();
-	}
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getReflection()
-	{
-		if ($this->reflection === null) {
-			$this->reflection = new ReflectionClass($this->class);
-		}
+    /**
+     * @inheritdoc
+     */
+    public function getReflection()
+    {
+        if ($this->reflection === null) {
+            $this->reflection = new ReflectionClass($this->class);
+        }
 
-		return $this->reflection;
-	}
+        return $this->reflection;
+    }
 
     /**
      * Get the class of the Document
@@ -123,29 +123,29 @@ class ContentType implements MetadataEditorInterface
         return $this->fields;
     }
 
-	/**
-  	 * @inheritdoc
-  	 */
+    /**
+     * @inheritdoc
+     */
     public function getField($name)
     {
-		return $this->hasField($name) ? $this->fields[$name] : null;
+        return $this->hasField($name) ? $this->fields[$name] : null;
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function hasField($name)
-	{
-		return isset($this->fields[$name]);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function hasField($name)
+    {
+        return isset($this->fields[$name]);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function newField($name)
-	{
-		return new ContentTypeAttribute($name);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function newField($name)
+    {
+        return new Field($name);
+    }
 
     /**
      * @inheritdoc
@@ -156,44 +156,44 @@ class ContentType implements MetadataEditorInterface
         return $this;
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getOptions()
-	{
-		return $this->options;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getOption($name)
-	{
-		return $this->hasOption($name) ? $this->options[$name] : null;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getOption($name)
+    {
+        return $this->hasOption($name) ? $this->options[$name] : null;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function hasOption($name)
-	{
-		return isset($this->options[$name]);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function hasOption($name)
+    {
+        return isset($this->options[$name]);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function newOption($name)
-	{
-		return new ContentTypeAttribute($name);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function newOption($name)
+    {
+        return new Field($name);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function addOption(AttributeInterface $option)
-	{
-		$this->options[$option->getName()] = $option;
-		return $this;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function addOption(AttributeInterface $option)
+    {
+        $this->options[$option->getName()] = $option;
+        return $this;
+    }
 }

@@ -11,7 +11,7 @@
 
 namespace Integrated\Tests\Common\Form\Mapping\Driver;
 
-use Integrated\Common\Form\Mapping\Metadata\ContentType;
+use Integrated\Common\Form\Mapping\Metadata\Document;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -19,7 +19,7 @@ use Integrated\Common\Form\Mapping\Metadata\ContentType;
 class ContentTypeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ContentType
+     * @var Document
      */
     private $contentType;
 
@@ -28,7 +28,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->contentType = new ContentType();
+        $this->contentType = new Document('');
     }
 
     /**
@@ -54,9 +54,9 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testFields()
     {
-        // Mock ContentTypeAttribute
-        $field1 = $this->getMock('Integrated\Common\Form\Mapping\Metadata\ContentTypeField');
-        $field2 = $this->getMock('Integrated\Common\Form\Mapping\Metadata\ContentTypeField');
+        // Mock Field
+        $field1 = $this->getMock('Integrated\Common\Form\Mapping\Metadata\Field');
+        $field2 = $this->getMock('Integrated\Common\Form\Mapping\Metadata\Field');
 
         // Set fields
         $fields = array(

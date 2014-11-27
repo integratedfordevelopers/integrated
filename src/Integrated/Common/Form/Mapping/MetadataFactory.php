@@ -12,7 +12,7 @@
 namespace Integrated\Common\Form\Mapping;
 
 use Integrated\Common\Form\Mapping\Event\MetadataEvent;
-use Integrated\Common\Form\Mapping\Metadata\ContentType;
+use Integrated\Common\Form\Mapping\Metadata\Document;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -22,112 +22,112 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class MetadataFactory implements MetadataFactoryInterface
 {
-	/**
-	 * @var EventDispatcherInterface
-	 */
-	private $dispatcher = null;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $dispatcher = null;
 
-	/**
-	 * @var DriverInterface
-	 */
-	private $driver;
+    /**
+     * @var DriverInterface
+     */
+    private $driver;
 
-	/**
-	 * @var string
-	 */
-	private $type;
+    /**
+     * @var string
+     */
+    private $type;
 
-	/**
-	 * @var MetadataInterface[]
-	 */
-	protected $data = array();
+    /**
+     * @var MetadataInterface[]
+     */
+    protected $data = array();
 
-	public function __construct(DriverInterface $driver, $type = null)
-	{
-		$this->driver = $driver;
-		$this->type = $type;
-	}
+    public function __construct(DriverInterface $driver, $type = null)
+    {
+        $this->driver = $driver;
+        $this->type = $type;
+    }
 
-	/**
-	 * @return EventDispatcherInterface
-	 */
-	public function getEventDispatcher()
-	{
-		if ($this->dispatcher === null) {
-			$this->dispatcher = new EventDispatcher();
-		}
+    /**
+     * @return EventDispatcherInterface
+     */
+    public function getEventDispatcher()
+    {
+        if ($this->dispatcher === null) {
+            $this->dispatcher = new EventDispatcher();
+        }
 
-		return $this->dispatcher;
-	}
+        return $this->dispatcher;
+    }
 
-	/**
-	 * @param EventDispatcherInterface $dispatcher
-	 */
-	public function setEventDispatcher(EventDispatcherInterface $dispatcher)
-	{
-		$this->dispatcher = $dispatcher;
-	}
+    /**
+     * @param EventDispatcherInterface $dispatcher
+     */
+    public function setEventDispatcher(EventDispatcherInterface $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
 
-	/**
-	 * @return DriverInterface
-	 */
-	public function getDriver()
-	{
-		return $this->driver;
-	}
+    /**
+     * @return DriverInterface
+     */
+    public function getDriver()
+    {
+        return $this->driver;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getAllMetadata()
-	{
-		$metadata = [];
+    /**
+     * @inheritdoc
+     */
+    public function getAllMetadata()
+    {
+        $metadata = [];
 
-		foreach ($this->driver->getAllClassNames() as $class) {
-			$data = $this->getMetadata($class);
+        foreach ($this->driver->getAllClassNames() as $class) {
+            $data = $this->getMetadata($class);
 
-			if ($data->isTypeOf($this->type)) {
-				$metadata[] = $data;
-			}
-		}
+            if ($data->isTypeOf($this->type)) {
+                $metadata[] = $data;
+            }
+        }
 
-		return $metadata;
-	}
+        return $metadata;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getMetadata($class)
-	{
-		if (isset($this->data[$class])) {
-			return $this->data[$class];
-		}
+    /**
+     * @inheritdoc
+     */
+    public function getMetadata($class)
+    {
+        if (isset($this->data[$class])) {
+            return $this->data[$class];
+        }
 
-		return $this->data[$class] = $this->loadMetadata($class);
-	}
+        return $this->data[$class] = $this->loadMetadata($class);
+    }
 
-	/**
-	 * @param string $class
-	 * @return MetadataEditorInterface
-	 */
-	public function newMetadata($class)
-	{
-		return new ContentType($class);
-	}
+    /**
+     * @param string $class
+     * @return MetadataEditorInterface
+     */
+    public function newMetadata($class)
+    {
+        return new Document($class);
+    }
 
-	/**
-	 * @param string $class
-	 * @return MetadataEditorInterface
-	 */
-	protected function loadMetadata($class)
-	{
-		$metadata = $this->newMetadata($class);
+    /**
+     * @param string $class
+     * @return MetadataEditorInterface
+     */
+    protected function loadMetadata($class)
+    {
+        $metadata = $this->newMetadata($class);
 
-		if ($metadata->isTypeOf($this->type)) {
-			$this->driver->loadMetadataForClass($class, $metadata);
-			$this->getEventDispatcher()->dispatch(Events::METADATA, new MetadataEvent($metadata));
-		}
+        if ($metadata->isTypeOf($this->type)) {
+            $this->driver->loadMetadataForClass($class, $metadata);
+            $this->getEventDispatcher()->dispatch(Events::METADATA, new MetadataEvent($metadata));
+        }
 
-		return $metadata;
-	}
+        return $metadata;
+    }
 }
