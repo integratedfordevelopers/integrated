@@ -58,6 +58,6 @@ class SearchSelectionType extends AbstractType
      */
     public function getName()
     {
-        return 'search_selection';
+        return 'integrated_search_selection';
     }
 }
