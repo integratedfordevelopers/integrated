@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_website.form.block.type.class">Integrated\Common\Form\Type\MetadataType</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_website.form.block.type" class="%integrated_website.form.block.type.class%">
+            <argument type="service" id="integrated_website.metadata.factory" />
+            <argument>integrated_website_block</argument><!-- form name -->
+        </service>
+
+    </services>
+
+</container>
