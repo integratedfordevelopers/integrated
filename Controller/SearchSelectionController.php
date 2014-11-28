@@ -118,6 +118,7 @@ class SearchSelectionController extends Controller
         }
 
         return [
+            'searchSelection' => $searchSelection,
             'form' => $form->createView(),
         ];
     }
@@ -161,7 +162,7 @@ class SearchSelectionController extends Controller
             )
         );
 
-        $form->add('submit', 'submit', array('label' => 'Save'));
+        $form->add('submit', 'submit', ['label' => 'Save']);
 
         return $form;
     }
@@ -178,12 +179,12 @@ class SearchSelectionController extends Controller
             $this->get('integrated_content.form.search_selection.type'),
             $searchSelection,
             array(
-                'action' => $this->generateUrl('integrated_content_search_selection_edit', array('id' => $searchSelection->getId())),
+                'action' => $this->generateUrl('integrated_content_search_selection_edit', ['id' => $searchSelection->getId()]),
                 'method' => 'PUT',
             )
         );
 
-        $form->add('submit', 'submit', array('label' => 'Save'));
+        $form->add('submit', 'submit', ['label' => 'Save']);
 
         return $form;
     }
@@ -198,9 +199,9 @@ class SearchSelectionController extends Controller
     {
         return $this
             ->createFormBuilder()
-            ->setAction($this->generateUrl('integrated_content_search_selection_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('integrated_content_search_selection_delete', ['id' => $id]))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> array('class' => 'btn-danger')))
+            ->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
             ->getForm();
     }
 

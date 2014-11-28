@@ -35,5 +35,6 @@ class ManagerConfigurator
 		// TODO: make it configurable
 
 		$manager->getMetadataFactory()->addManagedClass('Integrated\Bundle\ContentBundle\Document\Content\Content');
+		$manager->getMetadataFactory()->addManagedClass('Integrated\Bundle\WebsiteBundle\Document\Block\Block');
 	}
 } 
