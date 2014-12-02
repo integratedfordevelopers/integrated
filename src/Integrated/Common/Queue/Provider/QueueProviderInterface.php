@@ -41,7 +41,7 @@ interface QueueProviderInterface
 	 * @param string $channel The channel to pull the message from
 	 * @param int    $limit   Number of message to pull
 	 *
-	 * @return QueueMessageInterface
+	 * @return QueueMessageInterface[]
 	 */
 	public function pull($channel, $limit = 1);
 

@@ -11,10 +11,12 @@
 
 namespace Integrated\Tests\MongoDB\Solr\Indexer;
 
+use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Queue\QueueInterface;
-use Integrated\Common\Solr\Converter\ConverterInterface;
+
 use Integrated\MongoDB\Solr\Indexer\QueueSubscriber;
 
 use Symfony\Component\Serializer\SerializerInterface;
@@ -24,170 +26,198 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $queue;
+    /**
+     * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $queue;
 
-	/**
-	 * @var SerializerInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $serializer;
+    /**
+     * @var SerializerInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $serializer;
 
-	/**
-	 * @var ConverterInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $converter;
+    /**
+     * @var QueueSubscriber
+     */
+    private $subscriber;
 
-	/**
-	 * @var QueueSubscriber
-	 */
-	private $subscriber;
+    protected function setUp()
+    {
+        $this->queue = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
+        $this->serializer = $this->getMock('Symfony\\Component\\Serializer\\SerializerInterface');
 
-	protected function setUp()
-	{
-		$this->queue = $this->getMock('Integrated\Common\Queue\QueueInterface');
-		$this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
-		$this->converter = $this->getMock('Integrated\Common\Solr\Converter\ConverterInterface');
+        $this->subscriber = new QueueSubscriber($this->queue, $this->serializer);
+    }
 
-		$this->subscriber = new QueueSubscriber($this->queue, $this->serializer, $this->converter);
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Doctrine\\Common\\EventSubscriber', $this->subscriber);
+        $this->assertInstanceOf('Integrated\\Common\\Queue\\QueueAwareInterface', $this->subscriber);
+        $this->assertInstanceOf('Symfony\\Component\\Serializer\\SerializerAwareInterface', $this->subscriber);
+    }
 
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Doctrine\Common\EventSubscriber', $this->subscriber);
-		$this->assertInstanceOf('Integrated\Common\Queue\QueueAwareInterface', $this->subscriber);
-		$this->assertInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface', $this->subscriber);
-		$this->assertInstanceOf('Integrated\Common\Solr\Converter\ConverterAwareInterface', $this->subscriber);
-	}
+    public function testSetAndGetQueue()
+    {
+        $this->assertSame($this->queue, $this->subscriber->getQueue());
 
-	public function testSetAndGetQueue()
-	{
-		$this->assertSame($this->queue, $this->subscriber->getQueue());
+        $mock = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
+        $this->subscriber->setQueue($mock);
 
-		$mock = $this->getMock('Integrated\Common\Queue\QueueInterface');
-		$this->subscriber->setQueue($mock);
+        $this->assertSame($mock, $this->subscriber->getQueue());
+    }
 
-		$this->assertSame($mock, $this->subscriber->getQueue());
-	}
+    public function testSetAndGetSerializer()
+    {
+        $this->assertSame($this->serializer, $this->subscriber->getSerializer());
 
-	public function testSetAndGetSerializer()
-	{
-		$this->assertSame($this->serializer, $this->subscriber->getSerializer());
+        $mock = $this->getMock('Symfony\\Component\\Serializer\\SerializerInterface');
+        $this->subscriber->setSerializer($mock);
 
-		$mock = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
-		$this->subscriber->setSerializer($mock);
+        $this->assertSame($mock, $this->subscriber->getSerializer());
+    }
 
-		$this->assertSame($mock, $this->subscriber->getSerializer());
-	}
+    public function testSetAndGetSerializerFormat()
+    {
+        $this->subscriber->setSerializerFormat('format');
+        $this->assertEquals('format', $this->subscriber->getSerializerFormat());
+    }
 
-	public function testSetAndGetSerializerFormat()
-	{
-		$this->subscriber->setSerializerFormat('format');
-		$this->assertEquals('format', $this->subscriber->getSerializerFormat());
-	}
+    public function testGetDefaultSerializerFormat()
+    {
+        $this->assertEquals('json', $this->subscriber->getSerializerFormat());
+    }
 
-	public function testGetDefaultSerializerFormat()
-	{
-		$this->assertEquals('json', $this->subscriber->getSerializerFormat());
-	}
+    public function testSetAndGetPriority()
+    {
+        $this->assertSame(0, $this->subscriber->getPriority());
 
-	public function testSetAndGetConverter()
-	{
-		$this->assertSame($this->converter, $this->subscriber->getConverter());
+        $this->subscriber->setPriority(42);
 
-		$mock = $this->getMock('Integrated\Common\Solr\Converter\ConverterInterface');
-		$this->subscriber->setConverter($mock);
+        $this->assertSame(42, $this->subscriber->getPriority());
+    }
 
-		$this->assertSame($mock, $this->subscriber->getConverter());
-	}
+    public function testGetSubscribedEvents()
+    {
+        $this->assertEquals([Events::postPersist, Events::postUpdate, Events::postRemove],
+                $this->subscriber->getSubscribedEvents());
+    }
 
-	public function testSetAndGetPriority()
-	{
-		$this->assertSame(0, $this->subscriber->getPriority());
+    public function testPostPersist()
+    {
+        $document = $this->getDocument('this-is-the-id', 'this-is-the-type');
+        $event = $this->getEvent($document);
 
-		$this->subscriber->setPriority(42);
+        $this->serializer->expects($this->atLeastOnce())
+            ->method('serialize')
+            ->with($this->identicalTo($document), $this->identicalTo('json'))
+            ->willReturn('this-is-the-data');
 
-		$this->assertSame(42, $this->subscriber->getPriority());
-	}
+        $callback = function ($value) use ($document) {
+            return $value instanceof \Integrated\Common\Solr\Indexer\JobInterface
+                && strtolower($value->getAction()) === 'add'
+                && $value->getOption('document.id') === 'this-is-the-type-this-is-the-id'
+                && $value->getOption('document.data') === 'this-is-the-data'
+                && $value->getOption('document.class') === get_class($document)
+                && $value->getOption('document.format') === 'json';
+        };
 
-	public function testGetSubscribedEvents()
-	{
-		$this->assertEquals([Events::postPersist, Events::postUpdate, Events::postRemove], $this->subscriber->getSubscribedEvents());
-	}
+        $this->queue->expects($this->once())
+            ->method('push')
+            ->with($this->callback($callback), $this->identicalTo(0), $this->identicalTo(0));
 
-	public function testPostPersist()
-	{
-		$document = $this->getMock('Integrated\Common\Content\ContentInterface');
+        $this->subscriber->postPersist($event);
+    }
 
-		$event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')->disableOriginalConstructor()->getMock();
-		$event->expects($this->atLeastOnce())->method('getDocument')->will($this->returnValue($document));
+    public function testPostUpdate()
+    {
+        $document = $this->getDocument('this-is-the-id', 'this-is-the-type');
+        $event = $this->getEvent($document);
 
-		$this->converter->expects($this->atLeastOnce())->method('getId')->will($this->returnValue('this-is-the-id'));
-		$this->serializer->expects($this->atLeastOnce())->method('serialize')->with($this->identicalTo($document), $this->identicalTo('json'))->will($this->returnValue('this-is-the-data'));
+        $this->serializer->expects($this->atLeastOnce())
+            ->method('serialize')
+            ->with($this->identicalTo($document), $this->identicalTo('json'))
+            ->willReturn('this-is-the-data');
 
-		$callback = function($value) use ($document) {
-			return $value instanceof \Integrated\Common\Solr\Indexer\JobInterface && strtolower($value->getAction()) === 'add' && $value->getOption('document.id') === 'this-is-the-id'
-				&& $value->getOption('document.data') === 'this-is-the-data' && $value->getOption('document.class') === get_class($document) && $value->getOption('document.format') === 'json';
-		};
+        $callback = function ($value) use ($document) {
+            return $value instanceof \Integrated\Common\Solr\Indexer\JobInterface
+                && strtolower($value->getAction()) === 'add'
+                && $value->getOption('document.id') === 'this-is-the-type-this-is-the-id'
+                && $value->getOption('document.data') === 'this-is-the-data'
+                && $value->getOption('document.class') === get_class($document)
+                && $value->getOption('document.format') === 'json';
+        };
 
-		$this->queue->expects($this->once())->method('push')->with($this->callback($callback), $this->identicalTo(0), $this->identicalTo(0));
+        $this->queue->expects($this->once())
+            ->method('push')
+            ->with($this->callback($callback), $this->identicalTo(0), $this->identicalTo(0));
 
-		$this->subscriber->postPersist($event);
-	}
+        $this->subscriber->postUpdate($event);
+    }
 
-	public function testPostUpdate()
-	{
-		$document = $this->getMock('Integrated\Common\Content\ContentInterface');
+    public function testPostRemove()
+    {
+        $event = $this->getEvent($this->getDocument('this-is-the-id', 'this-is-the-type'));
 
-		$event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')->disableOriginalConstructor()->getMock();
-		$event->expects($this->atLeastOnce())->method('getDocument')->will($this->returnValue($document));
+        $callback = function ($value) {
+            return $value instanceof \Integrated\Common\Solr\Indexer\JobInterface
+                && strtolower($value->getAction()) === 'delete'
+                && $value->getOption('id') === 'this-is-the-type-this-is-the-id';
+        };
 
-		$this->converter->expects($this->atLeastOnce())->method('getId')->will($this->returnValue('this-is-the-id'));
-		$this->serializer->expects($this->atLeastOnce())->method('serialize')->with($this->identicalTo($document), $this->identicalTo('json'))->will($this->returnValue('this-is-the-data'));
+        $this->queue->expects($this->once())
+            ->method('push')
+            ->with($this->callback($callback), $this->identicalTo(0), $this->identicalTo(0));
 
-		$callback = function($value) use ($document) {
-			return $value instanceof \Integrated\Common\Solr\Indexer\JobInterface && strtolower($value->getAction()) === 'add' && $value->getOption('document.id') === 'this-is-the-id'
-				&& $value->getOption('document.data') === 'this-is-the-data' && $value->getOption('document.class') === get_class($document) && $value->getOption('document.format') === 'json';
-		};
+        $this->subscriber->postRemove($event);
+    }
 
-		$this->queue->expects($this->once())->method('push')->with($this->callback($callback), $this->identicalTo(0), $this->identicalTo(0));
+    public function testPriority()
+    {
+        $event = $this->getEvent($this->getDocument('this-is-the-id', 'this-is-the-type'));
 
-		$this->subscriber->postUpdate($event);
-	}
+        $this->queue->expects($this->once())
+            ->method('push')
+            ->with($this->anything(), $this->identicalTo(0), $this->identicalTo(42));
 
-	public function testPostRemove()
-	{
-		$document = $this->getMock('Integrated\Common\Content\ContentInterface');
+        $this->subscriber->setPriority(42);
+        $this->subscriber->postRemove($event); // remove requires the least setup
+    }
 
-		$event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')->disableOriginalConstructor()->getMock();
-		$event->expects($this->atLeastOnce())->method('getDocument')->will($this->returnValue($document));
+    /**
+     * @param string $id
+     * @param string $type
+     *
+     * @return ContentInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getDocument($id, $type)
+    {
+        $mock = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $mock->expects($this->atLeastOnce())
+            ->method('getId')
+            ->willReturn($id);
 
-		$this->converter->expects($this->atLeastOnce())->method('getId')->will($this->returnValue('this-is-the-id'));
+        $mock->expects($this->atLeastOnce())
+            ->method('getContentType')
+            ->willReturn($type);
 
-		$callback = function($value) {
-			return $value instanceof \Integrated\Common\Solr\Indexer\JobInterface && strtolower($value->getAction()) === 'delete' && $value->getOption('id') === 'this-is-the-id';
-		};
+        return $mock;
+    }
 
-		$this->queue->expects($this->once())->method('push')->with($this->callback($callback), $this->identicalTo(0), $this->identicalTo(0));
+    /**
+     * @param object $document
+     *
+     * @return LifecycleEventArgs | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getEvent($document)
+    {
+        $mock = $this->getMockBuilder('Doctrine\\ODM\MongoDB\\Event\\LifecycleEventArgs')
+            ->disableOriginalConstructor()
+            ->getMock();
 
-		$this->subscriber->postRemove($event);
-	}
+        $mock->expects($this->atLeastOnce())
+            ->method('getDocument')
+            ->willReturn($document);
 
-	public function testPriority()
-	{
-		$document = $this->getMock('Integrated\Common\Content\ContentInterface');
-
-		$event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')->disableOriginalConstructor()->getMock();
-		$event->expects($this->atLeastOnce())->method('getDocument')->will($this->returnValue($document));
-
-		$this->converter->expects($this->any())->method('getId')->will($this->returnValue('this-is-the-id'));
-
-		$this->queue->expects($this->once())->method('push')->with($this->anything(), $this->identicalTo(0), $this->identicalTo(42));
-
-		$this->subscriber->setPriority(42);
-		$this->subscriber->postRemove($event); // remove requires the least setup
-	}
-
-
+        return $mock;
+    }
 }

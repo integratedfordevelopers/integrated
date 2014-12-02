@@ -11,7 +11,8 @@
 
 namespace Integrated\Tests\Common\Solr\Indexer;
 
-use Integrated\Common\Solr\Converter\ConverterInterface;
+use Integrated\Common\Converter\ContainerInterface;
+use Integrated\Common\Converter\ConverterInterface;
 
 use Integrated\Common\Solr\Indexer\Batch;
 use Integrated\Common\Solr\Indexer\BatchOperation;
@@ -67,16 +68,16 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
 	protected function setUp()
 	{
-		$this->dispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-		$this->queue = $this->getMock('Integrated\Common\Queue\QueueInterface');
-		$this->serializer = $this->getMock('Symfony\Component\Serializer\SerializerInterface');
-		$this->converter = $this->getMock('Integrated\Common\Solr\Converter\ConverterInterface');
-		$this->client = $this->getMock('Solarium\Core\Client\Client');
+		$this->dispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+		$this->queue = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
+		$this->serializer = $this->getMock('Symfony\\Component\\Serializer\\SerializerInterface');
+		$this->converter = $this->getMock('Integrated\\Common\\Converter\\ConverterInterface');
+		$this->client = $this->getMock('Solarium\\Core\\Client\\Client');
 	}
 
 	public function testInterface()
 	{
-		$this->assertInstanceOf('Integrated\Common\Solr\Indexer\IndexerInterface', $this->getIndexer());
+		$this->assertInstanceOf('Integrated\\Common\\Solr\\Indexer\\IndexerInterface', $this->getIndexer());
 	}
 
 	public function testSetAndGetEventDispatcher()
@@ -93,7 +94,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
 		$temp = $this->indexer->getEventDispatcher();
 
-		$this->assertInstanceOf('Symfony\Component\EventDispatcher\EventDispatcher', $temp);
+		$this->assertInstanceOf('Symfony\\Component\\EventDispatcher\\EventDispatcher', $temp);
 		$this->assertSame($temp, $this->indexer->getEventDispatcher());
 	}
 
@@ -111,7 +112,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
 		$temp = $this->indexer->getQueue();
 
-		$this->assertInstanceOf('Integrated\Common\Queue\Queue', $temp);
+		$this->assertInstanceOf('Integrated\\Common\\Queue\\Queue', $temp);
 		$this->assertSame($temp, $this->indexer->getQueue());
 	}
 
@@ -129,7 +130,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
 		$temp = $this->indexer->getSerializer();
 
-		$this->assertInstanceOf('Symfony\Component\Serializer\Serializer', $temp);
+		$this->assertInstanceOf('Symfony\\Component\\Serializer\\Serializer', $temp);
 		$this->assertSame($temp, $this->indexer->getSerializer());
 	}
 
@@ -147,7 +148,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
 		$temp = $this->indexer->getConverter();
 
-		$this->assertInstanceOf('Integrated\Common\Solr\Converter\Converter', $temp);
+		$this->assertInstanceOf('Integrated\\Common\\Converter\\Converter', $temp);
 		$this->assertSame($temp, $this->indexer->getConverter());
 	}
 
@@ -202,7 +203,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
 		$temp = $this->invoke($this->indexer, 'getBatch');
 
-		$this->assertInstanceOf('Integrated\Common\Solr\Indexer\Batch', $temp);
+		$this->assertInstanceOf('Integrated\\Common\\Solr\\Indexer\\Batch', $temp);
 		$this->assertSame($temp, $this->invoke($this->indexer, 'getBatch'));
 	}
 
@@ -273,7 +274,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 		// called 5 times. After everything is done send need to be called atleast
 		// once.
 
-		$message = $this->getMock('Integrated\Common\Queue\QueueMessageInterface');
+		$message = $this->getMock('Integrated\\Common\\Queue\\QueueMessageInterface');
 
 		$this->queue->expects($this->once())->method('pull')->will($this->returnValue([$message, $message, $message, $message, $message]));
 
@@ -294,13 +295,13 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 		// test that after a error occurs the the indexer handles it gracefully and
 		// cleans it self up.
 
-		$this->queue->expects($this->once())->method('pull')->will($this->returnValue([$this->getMock('Integrated\Common\Queue\QueueMessageInterface')]));
+		$this->queue->expects($this->once())->method('pull')->will($this->returnValue([$this->getMock('Integrated\\Common\\Queue\\QueueMessageInterface')]));
 
 		$this->dispatcher->expects($this->exactly(2))->method('dispatch');
 
 		$this->indexer = $this->getIndexer(['batch', 'send', 'clean'], true);
 
-		$this->indexer->expects($this->any())->method('batch')->will($this->throwException($this->getMock('Integrated\Common\Solr\Exception\RuntimeException')));
+		$this->indexer->expects($this->any())->method('batch')->will($this->throwException($this->getMock('Integrated\\Common\\Solr\\Exception\\RuntimeException')));
 		$this->indexer->expects($this->never())->method('send');
 		$this->indexer->expects($this->atLeastOnce())->method('clean');
 
@@ -317,13 +318,13 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 		// event handling. For the event test on PRE_EXECUTE and POST_EXECUTE
 		// see the test testExecuteEventDispatch.
 
-		$exception = $this->getMock('Integrated\Common\Solr\Exception\RuntimeException');
+		$exception = $this->getMock('Integrated\\Common\\Solr\\Exception\\RuntimeException');
 
 		$callback = function($value) use ($exception) {
 			return $value instanceof \Integrated\Common\Solr\Indexer\Event\ErrorEvent && $value->getIndexer() === $this->indexer && $value->getException() === $exception;
 		};
 
-		$this->queue->expects($this->once())->method('pull')->will($this->returnValue([$this->getMock('Integrated\Common\Queue\QueueMessageInterface')]));
+		$this->queue->expects($this->once())->method('pull')->will($this->returnValue([$this->getMock('Integrated\\Common\\Queue\\QueueMessageInterface')]));
 
 		$this->dispatcher->expects($this->at(0))->method('dispatch')->with($this->identicalTo(Events::PRE_EXECUTE));
 		$this->dispatcher->expects($this->at(1))->method('dispatch')->with($this->identicalTo(Events::ERROR), $this->callback($callback));
@@ -336,13 +337,13 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
 	public function testBatch()
 	{
-		$message = $this->getMock('Integrated\Common\Queue\QueueMessageInterface');
-		$message->expects($this->once())->method('getPayload')->will($this->returnValue($this->getMock('Integrated\Common\Solr\Indexer\JobInterface')));
+		$message = $this->getMock('Integrated\\Common\\Queue\\QueueMessageInterface');
+		$message->expects($this->once())->method('getPayload')->will($this->returnValue($this->getMock('Integrated\\Common\\Solr\\Indexer\\JobInterface')));
 
 		$this->dispatcher->expects($this->once())->method('dispatch');
 
 		$this->indexer = $this->getIndexer(['convert'], true);
-		$this->indexer->expects($this->once())->method('convert')->will($this->returnValue($this->getMock('Solarium\QueryType\Update\Query\Command\Command')));
+		$this->indexer->expects($this->once())->method('convert')->will($this->returnValue($this->getMock('Solarium\\QueryType\\Update\\Query\\Command\\Command')));
 
 		$this->invoke($this->indexer, 'batch', $message);
 
@@ -356,10 +357,10 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 		// to the batch method and the command should be the same as returned
 		// by de convert mock.
 
-		$message = $this->getMock('Integrated\Common\Queue\QueueMessageInterface');
-		$message->expects($this->once())->method('getPayload')->will($this->returnValue($this->getMock('Integrated\Common\Solr\Indexer\JobInterface')));
+		$message = $this->getMock('Integrated\\Common\\Queue\\QueueMessageInterface');
+		$message->expects($this->once())->method('getPayload')->will($this->returnValue($this->getMock('Integrated\\Common\\Solr\\Indexer\\JobInterface')));
 
-		$command = $this->getMock('Solarium\QueryType\Update\Query\Command\Command');
+		$command = $this->getMock('Solarium\\QueryType\\Update\\Query\\Command\\Command');
 
 		$callback = function($value) use ($message, $command) {
 			return $value instanceof \Integrated\Common\Solr\Indexer\Event\BatchEvent && $value->getIndexer() === $this->indexer
@@ -557,9 +558,12 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 		$this->serializer->expects($this->once())
 			->method('deserialize')
 			->with($this->identicalTo('data'), $this->identicalTo('class'), $this->identicalTo('format'))
-			->will($this->returnValue($document));
+			->willReturn($document);
 
-		$this->converter->expects($this->once())->method('getFields')->with($this->identicalTo($document))->will($this->returnValue(['key' => 'value']));
+		$this->converter->expects($this->once())
+            ->method('convert')
+            ->with($this->identicalTo($document))
+            ->willReturn($this->getContainer(['key' => ['value']]));
 
 		$this->indexer = $this->getIndexer(null, true);
 
@@ -568,13 +572,13 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Solarium\QueryType\Update\Query\Command\Add', $command);
 		$this->assertEmpty($command->getOptions());
 		$this->assertCount(1, $command->getDocuments());
-		$this->assertEquals(['key' => 'value'], $command->getDocuments()[0]->getFields());
+		$this->assertEquals(['key' => ['value']], $command->getDocuments()[0]->getFields());
 	}
 
 	public function testConvertAddWithOption()
 	{
-		$this->serializer->expects($this->once())->method('deserialize')->will($this->returnValue(new \stdClass()));
-		$this->converter->expects($this->once())->method('getFields')->will($this->returnValue(['key' => 'value']));
+		$this->serializer->expects($this->once())->method('deserialize')->willReturn(new \stdClass());
+		$this->converter->expects($this->once())->method('convert')->willReturn($this->getContainer(['key' => ['value']]));
 
 		$this->indexer = $this->getIndexer(null, true);
 
@@ -589,8 +593,8 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
 	public function testConvertAddWithOptionNoneBool()
 	{
-		$this->serializer->expects($this->once())->method('deserialize')->will($this->returnValue(new \stdClass()));
-		$this->converter->expects($this->once())->method('getFields')->will($this->returnValue(['key' => 'value']));
+        $this->serializer->expects($this->once())->method('deserialize')->willReturn(new \stdClass());
+        $this->converter->expects($this->once())->method('convert')->willReturn($this->getContainer(['key' => ['value']]));
 
 		$this->indexer = $this->getIndexer(null, true);
 
@@ -1034,7 +1038,8 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 	 * Queue, Serializer, Converter and Solarium Client will be inserted.
 	 *
 	 * @param array $methods
-	 * @param bool $addDependencies
+	 * @param bool  $addDependencies
+     *
 	 * @return Indexer | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	protected function getIndexer($methods = [], $addDependencies = false)
@@ -1056,4 +1061,23 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
 		return $indexer;
 	}
+
+    /**
+     * @param array $data
+     *
+     * @return ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getContainer(array $data = [])
+    {
+        $mock = $this->getMock('Integrated\\Common\\Converter\\ContainerInterface');
+        $mock->expects($this->any())
+            ->method('toArray')
+            ->willReturn($data);
+
+        $mock->expects($this->any())
+            ->method('count')
+            ->willReturn(count($data));
+
+        return $mock;
+    }
 }

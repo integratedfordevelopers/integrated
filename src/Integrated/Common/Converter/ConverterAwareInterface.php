@@ -9,18 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Queue;
+namespace Integrated\Common\Converter;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface QueueFactoryInterface
+interface ConverterAwareInterface
 {
-	/**
-	 * Get a queue instance for the given channel
-	 *
-	 * @param string $channel
-	 * @return QueueInterface
-	 */
-	public function getQueue($channel);
+    /**
+     * Set the converter object.
+     *
+     * @param ConverterInterface $converter
+     */
+    public function setConverter(ConverterInterface $converter);
 }
