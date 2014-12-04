@@ -13,17 +13,21 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Traversable;
 
-use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-use Integrated\Common\Locks;
-
-//use Integrated\Common\Content\ContentInterface;
-use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+
+use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
+
+use Integrated\Common\Locks;
+use Integrated\Common\Security\Permissions;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormError;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -31,8 +35,6 @@ use Symfony\Component\HttpFoundation\Response;
 class ContentController extends Controller
 {
 	/**
-	 *
-	 *
 	 * @Template()
 	 * @return array
 	 */
@@ -43,6 +45,16 @@ class ContentController extends Controller
 
         // Store contentTypes in array
         $displayTypes = array();
+
+        //remember search state
+        $session = $request->getSession();
+        if ($request->query->get('remember') && $session->has('content_index_view')) {
+            $request->query->add(unserialize($session->get('content_index_view')));
+            $request->query->remove('remember');
+        }
+        elseif (!$request->query->has('_format')) {
+            $session->set('content_index_view',serialize($request->query->all()));
+        }
 
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
 		foreach ($this->get('integrated.form.resolver')->getTypes() as $type) {
@@ -60,6 +72,7 @@ class ContentController extends Controller
 
         $facetSet = $query->getFacetSet();
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
+        $facetSet->createFacetField('channels')->setField('facet_channels');
 
         // TODO this code should be somewhere else
         $relation = $request->query->get('relation');
@@ -98,6 +111,24 @@ class ContentController extends Controller
             }
         }
 
+        // TODO this should be somewhere else:
+        $activeChannels = $request->query->get('channels');
+        if (is_array($activeChannels)) {
+
+            if (count($activeChannels)) {
+                $helper = $query->getHelper();
+                $filter = function($param) use($helper) {
+                    return $helper->escapePhrase($param);
+                };
+
+                $query
+                    ->createFilterQuery('channels')
+                    ->addTag('channels')
+                    ->setQuery('facet_channels: ((%1%))', [implode(') OR (', array_map($filter, $activeChannels))]);
+            }
+        }
+
+
         if ($request->isMethod('post')) {
             $id = (array) $request->get('id');
             if (is_array($id)) {
@@ -129,6 +160,10 @@ class ContentController extends Controller
             'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
             'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc']
         ];
+        $order_options = [
+            'asc' => 'asc',
+            'desc' => 'desc'
+        ];
 
         if ($q = $request->get('q')) {
             $dismax = $query->getDisMax();
@@ -147,7 +182,7 @@ class ContentController extends Controller
 		$sort = trim(strtolower($sort));
 		$sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-		$query->addSort($sort_options[$sort]['field'], $sort_options[$sort]['order']);
+        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'),$order_options) ? $request->query->get('order') : $sort_options[$sort]['order'] );
 
 		// Execute the query
 		$result = $client->select($query);
@@ -161,12 +196,23 @@ class ContentController extends Controller
 			['sortFieldParameterName' => null]
 		);
 
+        /** @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $channels = array();
+        if ($channelResult = $dm->getRepository('Integrated\\Bundle\\ContentBundle\\Document\\Channel\\Channel')->findAll()) {
+            /** @var $channel \Integrated\Bundle\ContentBundle\Document\Channel\Channel */
+            foreach ($channelResult as $channel) {
+                $channels[$channel->getId()] = $channel->getName();
+            }
+        }
+
 		return array(
 			'types'        => $types,
 			'params'       => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
 			'pager'        => $paginator,
             'contentTypes' => $displayTypes,
-            'active'       => $contentType,
+            'active'       => array('contenttypes' => $contentType, 'channels' => $activeChannels),
+            'channels'     => $channels,
             'facets'       => $result->getFacetSet()->getFacets(),
 			'locks'        => $this->getLocks($paginator)
 		);
@@ -184,9 +230,15 @@ class ContentController extends Controller
 		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
 		$type = $this->get('integrated.form.factory')->getType($request->get('class'), $request->get('type'));
 
+		$content = $type->getType()->create();
+
+		if (!$this->get('security.context')->isGranted(Permissions::CREATE, $content)) {
+			throw new AccessDeniedException();
+		}
+
 		$form = $this->createForm(
 			$type,
-			$type->getType()->create(),
+			$content,
 			[
 				'action' => $this->generateUrl('integrated_content_content_new', ['class' => $request->get('class'), 'type' => $request->get('type')]),
 				'method' => 'POST',
@@ -202,14 +254,12 @@ class ContentController extends Controller
 
 			// check for back click else its a submit
 			if ($form->get('actions')->get('cancel')->isClicked()) {
-				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+				return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 			}
 
 			if ($form->isValid()) {
 				/* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
 				$dm = $this->get('doctrine_mongodb')->getManager();
-
-				$content = $form->getData();
 
 				$dm->persist($content);
 				$dm->flush();
@@ -221,11 +271,11 @@ class ContentController extends Controller
 
                 if ($this->has('integrated_solr.indexer')) {
 					$indexer = $this->get('integrated_solr.indexer');
-					$indexer->setOption('queue.size', 4);
+					$indexer->setOption('queue.size', 2);
 					$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 				}
 
-                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 			}
 		}
 
@@ -248,9 +298,13 @@ class ContentController extends Controller
 		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
 		$type = $this->get('integrated.form.factory')->getType($content);
 
+		if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
+			throw new AccessDeniedException();
+		}
+
 		// get a lock on this content resource.
 
-		$locking = $this->getLock($content, 60);
+		$locking = $this->getLock($content, 15);
 		$locking['locked'] = $locking['lock'] ? true : false;
 
 		if ($locking['lock'] && $locking['owner']) {
@@ -286,7 +340,7 @@ class ContentController extends Controller
 		}
 
 		$form = $this->createForm($type, $content, [
-			'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
+            'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
 			'method' => 'PUT',
 
 			// don't display error's when the content is locked as the user can't save in the first place
@@ -305,7 +359,7 @@ class ContentController extends Controller
 					$locking['release']();
 				}
 
-				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+				return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 			}
 
 			if ($actions->has('reload') && $actions->get('reload')->isClicked()) {
@@ -325,7 +379,7 @@ class ContentController extends Controller
 
 					if ($this->has('integrated_solr.indexer')) {
 						$indexer = $this->get('integrated_solr.indexer');
-						$indexer->setOption('queue.size', 4);
+						$indexer->setOption('queue.size', 2);
 						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 					}
 
@@ -333,7 +387,7 @@ class ContentController extends Controller
 						$locking['release']();
 					}
 
-	                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+	                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 				}
 			}
 
@@ -389,9 +443,13 @@ class ContentController extends Controller
 		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
 		$type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getContentType());
 
+		if (!$this->get('security.context')->isGranted(Permissions::DELETE, $content)) {
+			throw new AccessDeniedException();
+		}
+
 		// get a lock on this content resource.
 
-		$locking = $this->getLock($content, 60);
+		$locking = $this->getLock($content, 15);
 		$locking['locked'] = $locking['lock'] ? true : false;
 
 		if ($locking['lock'] && $locking['owner']) {
@@ -425,7 +483,7 @@ class ContentController extends Controller
 			];
 		}
 
-		$form = $this->createForm(new DeleteFormType(), $content, [
+		$form = $this->createForm('content_delete', $content, [
 			'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
 			'method' => 'DELETE',
 		], $buttons);
@@ -443,7 +501,7 @@ class ContentController extends Controller
 					$locking['release']();
 				}
 
-				return $this->redirect($this->generateUrl('integrated_content_content_index'));
+				return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 			}
 
 			if ($actions->has('reload') && $actions->get('reload')->isClicked()) {
@@ -465,7 +523,7 @@ class ContentController extends Controller
 
 					if ($this->has('integrated_solr.indexer')) {
 						$indexer = $this->get('integrated_solr.indexer');
-						$indexer->setOption('queue.size', 4);
+						$indexer->setOption('queue.size', 2);
 						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 					}
 
@@ -473,7 +531,7 @@ class ContentController extends Controller
 						$locking['release']();
 					}
 
-					return $this->redirect($this->generateUrl('integrated_content_content_index'));
+					return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
 				}
 			}
 		}
@@ -540,6 +598,9 @@ class ContentController extends Controller
 
 		/** @var Locks\ManagerInterface $service */
 		$service = $this->get('integrated_locking.dbal.manager');
+
+        // Remove expired locks
+        $service->clean();
 
 		$object = Locks\Resource::fromObject($object);
 		$owner = null;
@@ -675,6 +736,72 @@ class ContentController extends Controller
 
 		return $results;
 	}
+
+    /**
+     * @Template()
+     * @param Request $request
+     * @return array
+     */
+    public function navdropdownsAction(Request $request)
+    {
+
+        $session = $request->getSession();
+
+        $queuecount = (int) $this->container->get('integrated_queue.dbal.provider')->count();
+        $queuepercentage = 100;
+        if ($queuecount > 0) {
+            $queuemaxcount = max($queuecount,$session->get('queuemaxcount'));
+            $session->set('queuemaxcount',$queuemaxcount);
+            $queuepercentage = round(($queuemaxcount-$queuecount) / $queuemaxcount);
+        }
+        else {
+            $session->remove('queuemaxcount');
+        }
+
+        $email = '';
+//        if ($this->getUser()->getRelation() && $email = $this->getUser()->getRelation()->getEmail()) {
+//
+//        }
+
+        $avatarurl = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
+
+        return array(
+            'avatarurl' => $avatarurl,
+            'queuecount' => $queuecount,
+            'queuepercentage' => $queuepercentage,
+        );
+    }
+
+    /**
+     * @param Content $content
+     * @param Request $request
+     * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+     * @return array
+     * @Template()
+     */
+    public function usedByAction(Content $content, Request $request)
+    {
+        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+        $dm = $this->get('doctrine_mongodb')->getManager();
+
+        $qb = $dm->createQueryBuilder('IntegratedContentBundle:Content\Content');
+        $qb->field('relations.references.$id')->equals($content->getId());
+
+        $query = $qb->getQuery();
+
+        /** @var $paginator \Knp\Component\Pager\Paginator */
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->get('page', 1),
+            $request->query->get('limit', 15)
+        );
+
+        return array(
+            'content' => $content,
+            'pagination' => $pagination
+        );
+    }
 
 	/**
 	 * @inheritdoc

@@ -32,4 +32,8 @@
 		<default key="_controller">IntegratedContentBundle:Content:delete</default>
 	</route>
 
+    <route id="integrated_content_content_used_by" path="/{id}/used-by"  methods="GET">
+        <default key="_controller">IntegratedContentBundle:Content:usedBy</default>
+    </route>
+
 </routes>

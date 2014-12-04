@@ -79,7 +79,7 @@ class ContentTypeRelationController extends Controller
     public function newAction(ContentType $contentType)
     {
         // Create form
-        $form = $this->createCreateForm($contentType);
+        $form = $this->createNewForm($contentType);
 
         return array(
             'contentType' => $contentType,
@@ -99,7 +99,7 @@ class ContentTypeRelationController extends Controller
     public function createAction(Request $request, ContentType $contentType)
     {
         // Create form
-        $form = $this->createCreateForm($contentType);
+        $form = $this->createNewForm($contentType);
 
         // Validate request
         $form->handleRequest($request);
@@ -243,18 +243,19 @@ class ContentTypeRelationController extends Controller
      * @param ContentType $contentType
      * @return \Symfony\Component\Form\Form
      */
-    private function createCreateForm(ContentType $contentType)
+    private function createNewForm(ContentType $contentType)
     {
         $form = $this->createForm(
-            new Form\ContentTypeRelation(),
+            'content_type_relation_new',
             null,
-            array(
+            [
                 'action' => $this->generateUrl('integrated_content_content_type_relation_create', array('contentType' => $contentType->getId())),
                 'method' => 'POST',
-            )
+            ],
+			[
+				'submit' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+			]
         );
-
-        $form->add('submit', 'submit', array('label' => 'Save'));
 
         return $form;
     }
@@ -269,15 +270,16 @@ class ContentTypeRelationController extends Controller
     private function createEditForm(ContentType $contentType, Relation $relation)
     {
         $form = $this->createForm(
-            new Form\ContentTypeRelation(),
+			'content_type_relation_edit',
             $relation,
-            array(
+            [
                 'action' => $this->generateUrl('integrated_content_content_type_relation_update', array('contentType' => $contentType->getId(), 'id' => $relation->getId())),
                 'method' => 'PUT',
-            )
+            ],
+			[
+				'submit' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+			]
         );
-
-        $form->add('submit', 'submit', array('label' => 'Save'));
 
         return $form;
     }
@@ -291,11 +293,35 @@ class ContentTypeRelationController extends Controller
      */
     private function createDeleteForm(ContentType $contentType, Relation $relation)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('integrated_content_content_type_relation_delete', array('contentType' => $contentType->getId(), 'id' => $relation->getId())))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> array('class' => 'btn-danger')))
-            ->getForm()
-        ;
+		$form = $this->createForm(
+			'content_type_relation_delete',
+			$contentType,
+			[
+				'action' => $this->generateUrl('integrated_content_content_type_relation_delete', ['contentType' => $contentType->getId(), 'id' => $relation->getId()]),
+				'method' => 'DELETE',
+			],
+			[
+				'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]],
+			]
+		);
+
+		return $form;
     }
+
+	/**
+	 * @inheritdoc
+	 */
+	public function createForm($type, $data = null, array $options = [], array $buttons = [])
+	{
+		/** @var FormBuilder $form */
+		$form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+
+		if ($buttons) {
+			$form->add('actions', 'form_actions', [
+				'buttons' => $buttons
+			]);
+		}
+
+		return $form->getForm();
+	}
 }

@@ -162,19 +162,6 @@
                 <source>Link to</source>
                 <target>Koppelen aan</target>
             </trans-unit>
-
-            <trans-unit id="41">
-                <source>Link to</source>
-                <target>Koppelen aan</target>
-            </trans-unit>
-            <trans-unit id="42">
-                <source>Linked to</source>
-                <target>Gekoppeld aan</target>
-            </trans-unit>
-            <trans-unit id="43">
-                <source>Link to</source>
-                <target>Koppelen aan</target>
-            </trans-unit>
             <trans-unit id="44">
                 <source>No items found</source>
                 <target>Geen items gevonden</target>
@@ -306,6 +293,26 @@
             <trans-unit id="76">
                 <source>Updated</source>
                 <target>Gewijzigd</target>
+            </trans-unit>
+            <trans-unit id="77">
+                <source>Background indexing</source>
+                <target>Bezig met indexeren</target>
+            </trans-unit>
+            <trans-unit id="78">
+                <source>Complete</source>
+                <target>Voltooid</target>
+            </trans-unit>
+            <trans-unit id="79">
+                <source>Male</source>
+                <target>Man</target>
+            </trans-unit>
+            <trans-unit id="80">
+                <source>Female</source>
+                <target>Vrouw</target>
+            </trans-unit>
+            <trans-unit id="81">
+                <source>Used by</source>
+                <target>Gebruikt door</target>
             </trans-unit>
         </body>
     </file>

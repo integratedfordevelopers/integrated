@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 use ArrayIterator;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\Content\MetadataInterface;
+use Integrated\Common\Content\Registry;
 
 /**
  * Embedded document Metadata
@@ -21,139 +21,11 @@ use Integrated\Common\Content\MetadataInterface;
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  * @ODM\EmbeddedDocument
  */
-class Metadata implements MetadataInterface
+class Metadata extends Registry
 {
 	/**
 	 * @var array
 	 * @ODM\Hash
 	 */
-	private $data;
-
-	/**
-	 * @param array $data
-	 */
-	public function __construct(array $data = [])
-	{
-		$this->data = $data;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function toArray()
-	{
-		return $this->data;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function add($value)
-	{
-		if ($value === null) {
-			return $this;
-		}
-
-		$this->data[] = $value;
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function set($key, $value)
-	{
-		if ($value === null) {
-			return $this->remove($key);
-		}
-
-		$this->data[$key] = $value;
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function get($key)
-	{
-		return $this->data[$key];
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function remove($key)
-	{
-		unset($this->data[$key]);
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function has($key)
-	{
-		return isset($this->data[$key]);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function clear()
-	{
-		$this->data = [];
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function count()
-	{
-		return count($this->data);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getIterator()
-	{
-		return new ArrayIterator($this->data);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function offsetExists($offset)
-	{
-		return $this->has($offset);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function offsetGet($offset)
-	{
-		return $this->get($offset);
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function offsetSet($offset, $value)
-	{
-		if ($offset === null) {
-			$this->add($value);
-		} else {
-			$this->set($offset, $value);
-		}
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function offsetUnset($offset)
-	{
-		$this->remove($offset);
-	}
+	protected $data;
 }

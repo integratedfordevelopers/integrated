@@ -1,0 +1,74 @@
+<ul class="nav" id="top_menu_for_desktop">
+    <li class="dropdown for_mobile">
+        <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
+
+        <ul role="menu" class="dropdown-menu">
+            {{ render(controller('IntegratedContentBundle:ContentType:list', {'_format': 'ul'})) }}
+        </ul>
+    </li>
+
+    {#<li class="dropdown hidden-xs">
+            <a data-toggle="dropdown" class="dropdown-toggle with_badge" role="button" href="#"><i class="glyphicon glyphicon-tasks"></i><span class="badge">4</span></a>
+            <ul role="menu" class="dropdown-menu with_icons">
+                <li class="dropdown_title">Taken:</li>
+                <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-plus-sign"></i><span class="when">5 min</span><span class="item_name">Lorum Ipsum</span></a></li>
+                <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-plus-sign"></i><span class="when">5 min</span><span class="item_name">Lorum Ipsum</span></a></li>
+                <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-plus-sign"></i><span class="when">5 min</span><span class="item_name">Lorum Ipsum</span></a></li>
+                <!-- <li class="divider" role="presentation"></li> -->
+                <li class="dropdown_title">Bekijk alle taken</li>
+            </ul>
+        </li>
+
+        <li class="dropdown hidden-xs">
+            <a data-toggle="dropdown" class="dropdown-toggle with_badge" role="button" href="#"><i class="glyphicon glyphicon-bell"></i><span class="badge label-danger">3</span></a>
+            <ul role="menu" class="dropdown-menu with_icons">
+                <li class="dropdown_title">U heeft 3 nieuwe notificaties:</li>
+                <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-plus-sign"></i><span class="when">5 min</span><span class="item_name">Lorum Ipsum</span></a></li>
+                <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-plus-sign"></i><span class="when">5 min</span><span class="item_name">Lorum Ipsum</span></a></li>
+                <li><a href="#" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-plus-sign"></i><span class="when">5 min</span><span class="item_name">Lorum Ipsum</span></a></li>
+                <!-- <li class="divider" role="presentation"></li> -->
+                <li class="dropdown_title">Bekijk alle notificaties</li>
+            </ul>
+        </li>
+#}
+    {% if queuecount > 0 and is_granted('ROLE_ADMIN') %}
+        <li class="dropdown hidden-xs">
+            <a data-toggle="dropdown" class="dropdown-toggle with_badge" role="button" href="#"><i class="glyphicon glyphicon-hdd"></i><span class="badge">{{ queuecount }}</span></a>
+            <ul role="menu" class="dropdown-menu with_padding">
+                <li>
+                    <p>{% trans %}Background indexing{% endtrans %}... <span class="pull-right">{{ queuepercentage }}%</span></p>
+                    <div class="progress progress-striped">
+                        <div style="width: {{ queuepercentage }}%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="{{ queuepercentage }}" role="progressbar" class="progress-bar progress-bar-success">
+                            <span class="sr-only">{{ queuepercentage }}% {% trans %}Complete{% endtrans %}</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    {% endif %}
+
+    {% if app.user %}
+        <li class="dropdown dropdown_profile hidden-xs">
+            <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">
+                <img src="{{  avatarurl }}" class="userpic" />
+                <span class="glyphicon glyphicon-chevron-down arrow"></span>
+            </a>
+            <ul role="menu" class="dropdown-menu with_icons">
+                <li class="user_info">
+                    {% if app.user.getRelation.getLastname is defined %}
+                    <h3 class="user_name">{{ app.user.getRelation.getFirstname|default('') }} {{ app.user.getRelation.getLastname|default('') }}</h3>
+                    {% else %}
+                    <h3 class="user_name">{{ app.user.username|default('') }}</h3>
+                    {% endif %}
+                    {% if app.user.getRelation.getEmail is defined %}
+                    <h4 class="user_email">{{ app.user.getRelation.getEmail|default('') }}</h4>
+                    {% endif %}
+                </li>
+                {# <li><a href="{ { path('integrated_user_profile_edit', {id: app.user.id}) }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-edit"></i>{% trans %}My profile{% endtrans %}</a></li> #}
+                <li class="divider" role="presentation"></li>
+                <li><a href="{{ path('integrated_user_logout') }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-lock"></i>{% trans %}Log out{% endtrans %}</a></li>
+            </ul>
+        </li>
+    {% endif %}
+
+</ul>

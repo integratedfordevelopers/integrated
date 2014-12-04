@@ -1,4 +1,4 @@
-{% use "IntegratedFormTypeBundle:Form:form_div_layout.html.twig" with form_row as base_form_row %}
+{% use "IntegratedFormTypeBundle:Form:form_div_layout.html.twig" %}
 
 {% block content_type_field_collection_widget %}
 {% spaceless %}
@@ -18,7 +18,7 @@
                 </td>
                 <td>
                     <div class="checkbox">
-                        {{ form_widget(field.required) }}
+                        <label>{{ form_widget(field.required) }}</label>
                     </div>
                 </td>
             </tr>
@@ -121,9 +121,9 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block integrated_relations_row %}
+{% block content_relations_row %}
     <div class="form-relations" style="display: none;">
-        {{ block('base_form_row') }}
+        {{ block('form_row') }}
     </div>
 {% endblock %}
 
@@ -140,4 +140,45 @@
             </div>
         </div>
     {% endspaceless %}
+{% endblock %}
+
+{% block content_type_channels_widget  %}
+    {% for element in form %}
+        {% set label_attr = element.vars.label_attr|merge({'class': (element.vars.label_attr.class|default('') ~ ' sr-only')|trim}) %}
+        {{ form_row(element, {widget_col: '12', label_col: '12', label_attr: label_attr}) }}
+    {% endfor %}
+{% endblock %}
+
+{% block content_type_channel_collection_widget %}
+{% spaceless %}
+    <table class="table">
+        <colgroup>
+            <col style="width:40%" />
+            <col />
+        </colgroup>
+
+        <thead>
+            <tr>
+                <th>{% trans %}Default{% endtrans %}</th>
+                <th>{% trans %}Enforce{% endtrans %}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for channel in form %}
+            <tr>
+                <td>
+                    {% set element = channel.selected  %}
+                    {{ block('content_type_checkbox_widget') }}
+                </td>
+                <td>
+                    <div class="checkbox">
+                        <label>{{ form_widget(channel.enforce) }}</label>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endspaceless %}
 {% endblock %}

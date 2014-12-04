@@ -13,47 +13,28 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Integrated\Common\ContentType\Mapping\Metadata;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentType extends AbstractType
+class Channel extends AbstractType
 {
-    /**
-     * @var Metadata\ContentType
-     */
-    protected $contentType;
-
-    /**
-     * @param Metadata\ContentType $contentType
-     */
-    public function __construct(Metadata\ContentType $contentType)
-    {
-        $this->contentType = $contentType;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add(
-            'class',
-            'hidden'
+            'name'
         );
 
         $builder->add(
-            'name',
-            'text',
+            'domains',
+            'integrated_csv_array',
             array(
-                'label' => 'Name',
+                'label' => 'Domains (comma separated)'
             )
-        );
-
-        $builder->add(
-            'fields',
-            new ContentTypeFieldCollection($this->contentType->getFields())
         );
     }
 
@@ -62,6 +43,6 @@ class ContentType extends AbstractType
      */
     public function getName()
     {
-        return 'content_type';
+        return 'channel';
     }
 }

@@ -81,53 +81,6 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addReference function
-     */
-    public function testAddReferenceFunction()
-    {
-        /* @var $content \Integrated\Common\Content\ContentInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $content = $this->getMock('Integrated\Common\Content\ContentInterface');
-
-        // Stub getContentType
-        $content->expects($this->once())
-            ->method('getContentType')
-            ->will($this->returnValue('contentType'));
-
-        // Asserts
-        $this->assertSame($this->content, $this->content->addReference($content));
-        $this->assertSame($content, $this->content->getRelation('contentType')->getReferences()->first());
-    }
-
-    /**
-     * Test addReference function with two contentTypes
-     */
-    public function testAddReferenceFunctionWithTwoContentTypes()
-    {
-        /* @var $content1 \Integrated\Common\Content\ContentInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $content1 = $this->getMock('Integrated\Common\Content\ContentInterface');
-
-        // Stub getContentType
-        $content1->expects($this->once())
-            ->method('getContentType')
-            ->will($this->returnValue('contentType1'));
-
-        $this->content->addReference($content1);
-
-        /* @var $content2 \Integrated\Common\Content\ContentInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $content2 = $this->getMock('Integrated\Common\Content\ContentInterface');
-
-        // Stub getContentType
-        $content2->expects($this->once())
-            ->method('getContentType')
-            ->will($this->returnValue('contentType2'));
-
-        $this->content->addReference($content2);
-
-        // Asserts
-        $this->assertCount(2, $this->content->getRelations());
-    }
-
-    /**
      * Test removeReference function
      */
     public function testRemoveRelationFunction()
@@ -185,44 +138,59 @@ class ContentTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetMetadataFunction()
     {
-        $metadata = array('key' => 'value');
+        /* @var $metadata \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata | \PHPUnit_Framework_MockObject_MockObject */
+        $metadata = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata');
         $this->assertSame($metadata, $this->content->setMetadata($metadata)->getMetadata());
     }
 
     /**
-     * Test addMetadata function
+     * Test get- and setChannels function
      */
-    public function testAddMetadataFunction()
+    public function testGetAndSetChannelsFunction()
     {
-        $metadata = array('key' => 'value');
-
-        $this->assertSame($this->content, $this->content->setMetadata($metadata));
-        $this->assertSame($this->content, $this->content->addMetadata('key2', 'value2'));
-        $this->assertCount(2, $this->content->getMetadata());
+        $channels = new ArrayCollection();
+        $this->assertSame($channels, $this->content->setChannels($channels)->getChannels());
     }
 
     /**
-     * Test removeMetadata function
+     * Test addChannel function
      */
-    public function testRemoveMetadataFunction()
+    public function testAddChannelFunction()
     {
-        $metadata = array('key' => 'value');
+        /* @var $channel \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $channel = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
 
-        $this->assertSame($this->content, $this->content->setMetadata($metadata));
-        $this->assertSame('value', $this->content->removeMetadata('key'));
-        $this->assertCount(0, $this->content->getMetadata());
+        // Check if we can add
+        $this->content->addChannel($channel);
+        $this->assertContains($channel, $this->content->getChannels());
+
+        // Duplicate check
+        $this->content->addChannel($channel);
+        $this->assertCount(1, $this->content->getChannels());
     }
 
     /**
-     * Test removeMetadata function with invalid metadata key
+     * Test removeChannel function
      */
-    public function testRemoveMetadataFunctionWithInvalidMetadataKey()
+    public function testRemoveChannelFunction()
     {
-        // Set metadata
-        $metadata = array('key' => 'value');
-        $this->content->setMetadata($metadata);
+        /* @var $channel1 \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $channel1 = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
 
-        // Asserts
-        $this->assertFalse($this->content->removeMetadata('key2'));
+        /* @var $channel2 \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $channel2 = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
+
+        // Add channels
+        $this->content->addChannel($channel1)->addChannel($channel2);
+        $this->assertCount(2, $this->content->getChannels());
+
+        // Remove channel2
+        $this->assertTrue($this->content->removeChannel($channel2));
+
+        // Channel1 should not be removed
+        $this->assertContains($channel1, $this->content->getChannels());
+
+        // Removal of channel that is not added should return false
+        $this->assertFalse($this->content->removeChannel($channel2));
     }
 }

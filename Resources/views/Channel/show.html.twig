@@ -1,0 +1,40 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+    <div class="content_columns_holder">
+        <div class="content_column_inner">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_channel_index') }}">{% trans %}Home{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Show{% endtrans %}</li>
+            </ol>
+            <div class="page-header">
+                <h1>{% trans %}Show{% endtrans %}</h1>
+            </div>
+            <dl>
+                <dt>
+                    {% trans %}Id{% endtrans %}
+                </dt>
+                <dd>
+                    {{ channel.id }}
+                </dd>
+                <dt>
+                    {% trans %}Name{% endtrans %}
+                </dt>
+                <dd>
+                    {{ channel.name }}
+                </dd>
+                <dt>
+                    {% trans %}Domains{% endtrans %}
+                </dt>
+                <dd>
+                    {{ channel.domains|join(', ') }}
+                </dd>
+            </dl>
+            <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_channel_edit', {'id': channel.id}) }}">
+                {% trans %}Edit{% endtrans %}
+            </a>
+            {{ form(form, { 'style': 'inline' }) }}
+        </div>
+    </div>
+{% endblock %}

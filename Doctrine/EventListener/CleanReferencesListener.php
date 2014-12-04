@@ -9,10 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\EventListener;
+namespace Integrated\Bundle\ContentBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
+
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\Events;
+
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 /**
@@ -20,16 +23,16 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class CleanReferencesSubscriber implements EventSubscriber
+class CleanReferencesListener implements EventSubscriber
 {
     /**
      * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
-        return array(
-            'preRemove'
-        );
+        return [
+			Events::preRemove,
+        ];
     }
 
     /**
@@ -49,7 +52,7 @@ class CleanReferencesSubscriber implements EventSubscriber
                 ->update()
                 ->multiple(true)
                 ->field('relations.references.$id')->equals($document->getId())
-                ->field('relations.$.references')->pull(array('$id' => $document->getId()))
+                ->field('relations.$.references')->pull(['$id' => $document->getId()])
                 ->getQuery()
                 ->execute();
         }
