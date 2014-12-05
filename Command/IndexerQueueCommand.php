@@ -283,14 +283,13 @@ The <info>%command.name%</info> command starts a index of the site.
 	}
 
 	/**
-	 * close up with a optimize and a commit
+	 * close up with a commit
 	 */
 	protected function doIndexCommit()
 	{
 		$queue = $this->getQueue();
 
-		$queue->push(new Job('OPTIMIZE'), 2);
-		$queue->push(new Job('COMMIT'), 3);
+		$queue->push(new Job('COMMIT', ['softcommit' => 'true']), 2);
 	}
 
 	/**
