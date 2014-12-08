@@ -121,8 +121,8 @@ var Relation = function(id, url) {
     }
 
     this.getOptionsContainer = function() {
-        if ($('#relations-result div[data-relation="' + this.id + '"').length > 0) {
-            return $('#relations-result div[data-relation="' + this.id + '"');
+        if ($('#relations-result div[data-relation="' + this.id + '"]').length > 0) {
+            return $('#relations-result div[data-relation="' + this.id + '"]');
         } else {
             var container = $('<div class="item_row" data-relation="' + this.id +'"></div>');
             $('#relations-result').append(container);
@@ -131,8 +131,8 @@ var Relation = function(id, url) {
     }
 
     this.getSelectedContainer = function() {
-        if ($('#relations-selected li[data-relation="' + this.id + '"').length > 0) {
-            return $('#relations-selected li[data-relation="' + this.id + '"');
+        if ($('#relations-selected li[data-relation="' + this.id + '"]').length > 0) {
+            return $('#relations-selected li[data-relation="' + this.id + '"]');
         } else {
             var container = $('<li data-relation="' + this.id +'"></li>');
             $('#relations-selected').append(container);
