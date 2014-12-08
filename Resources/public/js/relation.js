@@ -104,11 +104,11 @@ var Relation = function(id, url) {
     }
 
     this.getOptionsUrl = function() {
-        return this.url + '?relation=' + this.id + '&limit=5&q=' + $('#relations-q').val() + '&_format=json';
+        return this.url + '?relation=' + this.id + '&limit=5&q=' + $('#relations-q').val() + '&sort=title&_format=json';
     }
 
     this.getSelectedUrl = function() {
-        return this.url + '?limit=5&_format=json';
+        return this.url + '?limit=5&sort=title&_format=json';
     }
 
     this.getSelected = function() {
