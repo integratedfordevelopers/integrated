@@ -19,6 +19,46 @@ var Relation = function(id, url) {
             parent.loadOptions($(this).attr('href'));
         });
 
+        container.append(
+            '<a href="#" data-modal="/app_dev.php/admin/content/new?class=Integrated%5CBundle%5CContentBundle%5CDocument%5CContent%5CArticle&type=blog&_format=iframe.html" class="btn btn-primary">Click to add</a>'
+        );
+
+        if ($('#relation-add').length == 0) {
+            $('body').append(
+                '<div id="relation-add" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">' +
+                '<div class="modal-dialog modal-lg">' +
+                '<div class="modal-content">' +
+                '<iframe frameborder="none" width="100%" height="400" src="">Loading</iframe>' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            );
+        }
+
+        container.find('a[data-modal]').click(function(ev){
+
+            $('#relation-add').modal('show');
+            var iFrame =  $('#relation-add').find('iframe');
+            iFrame.hide().attr('src', $(this).data('modal')).load(function(){
+                console.log('Loaded');
+                $(this).show();
+
+                var height = $(window).height() - 200;
+                if (($(this).contents().height() + 200) < $(window).height()) {
+                    height = $(this).contents().height() + 200;
+                }
+                iFrame.attr('height', height);
+
+                iFrame.contents().find('*[data-dismiss="modal"]').click(function(ev){
+                    ev.preventDefault();
+                    $('#relation-add').modal('hide');
+                })
+
+            })
+        });
+
+
+
         container.find('input').click(function() {
             if ($(this).is(':checked')) {
                 parent.addOption($(this).val());
