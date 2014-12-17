@@ -182,3 +182,63 @@
     </table>
 {% endspaceless %}
 {% endblock %}
+
+{% block integrated_website_grid_grid_row %}
+{% spaceless %}
+    {% for grid in form %}
+        <div class="section">
+            {{ form_widget(grid) }}
+
+            <a href="" class="btn btn-primary">Add block</a>
+            <a href="" class="btn btn-primary">Add columns</a>
+        </div>
+    {% endfor %}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_website_grid_item_row %}
+{% spaceless %}
+    {% for item in form %}
+        {{ form_widget(item) }}
+    {% endfor %}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_website_grid_block_widget %}
+{% spaceless %}
+    {% if form.vars.value is not empty %}
+        {{ form_widget(form) }}
+
+        <div class="block"></div>
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_website_grid_row_widget %}
+{% spaceless %}
+    {% for row in form %}
+
+        {% if row.vars.value|length %}
+            <div class="row">
+                {{ form_widget(row) }}
+            </div>
+        {% endif %}
+
+    {% endfor %}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_website_grid_column_row %}
+{% spaceless %}
+    <div class="col-xs-{{ form.size.vars.value }}">
+        {{ form_widget(form.size) }}
+
+        <div class="section">
+            {{ form_widget(form.items) }}
+
+            <a href="" class="btn btn-primary">Add block</a>
+            <a href="" class="btn btn-primary">Add columns</a>
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock %}
