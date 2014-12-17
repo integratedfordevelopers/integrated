@@ -67,7 +67,7 @@ abstract class Block implements BlockInterface
      *      }
      * )
      */
-    protected $disabled;
+    protected $disabled = false;
 
     /**
      * @var string
@@ -97,6 +97,8 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Get the id of the document
+     *
      * @return string
      */
     public function getId()
@@ -105,7 +107,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the createdAt of the document
+     * Get the created at of the document
      *
      * @return \DateTime
      */
@@ -115,7 +117,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Set the createdAt of the document
+     * Set the created at of the document
      *
      * @param \DateTime $createdAt
      * @return $this
@@ -127,7 +129,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the updatedAt of the document
+     * Get the updated a of the document
      *
      * @return \DateTime
      */
@@ -137,7 +139,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Set the updatedAt of the document
+     * Set the updated at of the document
      *
      * @param \DateTime $updatedAt
      * @return $this
@@ -149,7 +151,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the publishedAt of the document
+     * Get the published at of the document
      *
      * @return \DateTime
      */
@@ -159,7 +161,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Set the publishedAt of the document
+     * Set the published at of the document
      *
      * @param \DateTime $publishedAt
      * @return $this
@@ -193,6 +195,8 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Get the title of the document
+     *
      * @return string
      */
     public function getTitle()
@@ -201,6 +205,8 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Set the title of the document
+     *
      * @param string $title
      * @return $this
      */
@@ -211,6 +217,8 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Get the short name of the document
+     *
      * @return string
      */
     public function getShortName()
@@ -219,6 +227,8 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Set the short name of the document
+     *
      * @param string $shortName
      * @return $this
      */
@@ -229,6 +239,8 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Get the class of the document
+     *
      * @return string
      */
     public function getClass()

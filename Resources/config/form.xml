@@ -7,6 +7,7 @@
     <parameters>
 
         <parameter key="integrated_website.form.block.type.class">Integrated\Common\Form\Type\MetadataType</parameter>
+        <parameter key="integrated_website.form.page.type.class">Integrated\Bundle\WebsiteBundle\Form\Type\PageType</parameter>
 
     </parameters>
 
@@ -15,6 +16,11 @@
         <service id="integrated_website.form.block.type" class="%integrated_website.form.block.type.class%">
             <argument type="service" id="integrated_website.metadata.factory" />
             <argument>integrated_website_block</argument><!-- form name -->
+        </service>
+
+        <service id="integrated_website.form.page.type" class="%integrated_website.form.page.type.class%">
+            <argument type="service" id="doctrine_mongodb" />
+            <tag name="form.type" alias="integrated_website_page" />
         </service>
 
     </services>

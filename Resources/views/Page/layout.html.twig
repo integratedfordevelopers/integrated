@@ -1,0 +1,82 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block content %}
+
+    <div class="content_columns_holder">
+        <div class="content_column_inner">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_website_page_index') }}">{% trans %}Home{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Layout{% endtrans %}</li>
+            </ol>
+
+            <div class="row">
+                <div class="col-xs-10">
+                    <dl>
+                        <dt>Page title</dt>
+                        <dd>{{ page.title }}</dd>
+
+                        <dt>Layout</dt>
+                        <dd>{{ page.layout }}</dd>
+
+                        <dt>URL</dt>
+                        <dd>{{ page.slug }}</dd>
+                    </dl>
+                </div>
+                <div class="col-xs-2">
+                    <a href="{{ path('integrated_website_page_edit', { 'id': page.id }) }}" class="btn btn-primary pull-right">Edit</a>
+                </div>
+            </div>
+
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <ul class="nav navbar-nav">
+                        {% for nav in pages %}
+
+                            <li{% if nav.id == page.id %} class="active"{% endif %}>
+                                <a href="{{ path('integrated_website_page_layout', { 'id': nav.id }) }}">{{ nav.title }}</a>
+                            </li>
+
+                        {% endfor %}
+                    </ul>
+
+                    <a href="{{ path('integrated_website_page_new') }}" class="btn btn-primary navbar-btn">Add item</a>
+                </div>
+            </nav>
+
+            {% for grid in page.grids %}
+                <div class="section">
+                    {{ _self.grid_items(grid) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% macro grid_items(grid) %}
+
+    {% for item in grid.items %}
+        {% if item.block %}
+
+            <div class="block"></div>
+
+        {% elseif item.row %}
+            <div class="row">
+
+                {% for column in item.row.columns %}
+                    <div class="col-xs-{{ column.size }}">
+
+                        <div class="section">
+                            {{ _self.grid_items(column) }}
+                        </div>
+
+                    </div>
+                {% endfor %}
+
+            </div>
+        {% endif %}
+    {% endfor %}
+
+{% endmacro %}
