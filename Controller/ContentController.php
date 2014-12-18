@@ -243,18 +243,26 @@ class ContentController extends Controller
             throw new AccessDeniedException();
         }
 
-		$form = $this->createForm(
-			$type,
-			$content,
-			[
-				'action' => $this->generateUrl('integrated_content_content_new', ['class' => $request->get('class'), 'type' => $request->get('type')]),
-				'method' => 'POST',
-			],
-			[
-				'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-			]
-		);
+        $form = $this->createForm(
+            $type,
+            $content,
+            [
+                'action' => $this->generateUrl(
+                    'integrated_content_content_new',
+                    [
+                        'class' => $request->get('class'),
+                        'type' => $request->get('type'),
+                        '_format' => $request->getRequestFormat()
+                    ]
+                ),
+                'method' => 'POST',
+            ],
+            [
+                'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
+                'cancel' => ['type' => 'submit', 'options' => [
+                    'label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
+            ]
+        );
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
