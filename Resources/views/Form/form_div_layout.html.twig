@@ -189,8 +189,10 @@
         <div class="section">
             {{ form_widget(grid) }}
 
-            <a href="" class="btn btn-primary">Add block</a>
-            <a href="" class="btn btn-primary">Add columns</a>
+            {% if grid.vars.allow_add %}
+                <a href="javascript:;" class="btn btn-primary" data-action="add" data-collection-id="{{ form.items.vars.id }}" data-prototype-name="{{ grid.vars.prototype.vars.name }}">Add block</a>
+                {#<a href="" class="btn btn-primary">Add columns</a>#}
+            {% endif %}
         </div>
     {% endfor %}
 {% endspaceless %}
@@ -206,11 +208,10 @@
 
 {% block integrated_website_grid_block_widget %}
 {% spaceless %}
-    {% if form.vars.value is not empty %}
+    <div id="{{ form.vars.id }}_element" class="block">
         {{ form_widget(form) }}
-
-        <div class="block"></div>
-    {% endif %}
+        <a href="javascript:;" class="btn btn-danger" data-action="remove" data-element-id="{{ form.vars.id }}_element">Remove block</a>
+    </div>
 {% endspaceless %}
 {% endblock %}
 
@@ -236,8 +237,10 @@
         <div class="section">
             {{ form_widget(form.items) }}
 
-            <a href="" class="btn btn-primary">Add block</a>
-            <a href="" class="btn btn-primary">Add columns</a>
+            {#{% if form.vars.allow_add %}#}
+                {#<a href="javascript:;" class="btn btn-primary" data-action="add" data-collection="{{ form.items.vars.id }}">Add block</a>#}
+                {#<a href="" class="btn btn-primary">Add columns</a>#}
+            {#{% endif %}#}
         </div>
     </div>
 {% endspaceless %}
