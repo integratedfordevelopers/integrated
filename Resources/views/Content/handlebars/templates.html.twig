@@ -103,14 +103,19 @@
     </script>
 {% endverbatim %}
 <script>
+    var relations = [];
+
     $.fn.relation = function() {
-        return this.each(function(){
-            var rel = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}");
-            rel.loadOptions();
-        });
+
+        relations[$(this).data('relation')] = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}");
+        relations[$(this).data('relation')].loadOptions();
+
+        return relations[$(this).data('relation')];
     };
 
-    $('.form-relations input[data-relation]').relation();
+    $('.form-relations input[data-relation]').each(function() {
+        $(this).relation();
+    });
 
     $('#relations-search').submit(function(ev){
         ev.preventDefault();
