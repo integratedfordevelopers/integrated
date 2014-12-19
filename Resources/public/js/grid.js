@@ -2,16 +2,27 @@
 
     $(document).on('click', '[data-action="add"]', function(e) {
 
-        var collection = $('#' + $(this).attr('data-collection-id'));
+        e.preventDefault();
 
-        var prototype = collection.attr('data-prototype');
+        var element = $(this);
 
-        var form = prototype.replace(new RegExp($(this).attr('data-prototype-name'), 'g'), collection.children().length);
+        var collection = $('#' + element.attr('data-collection-id'));
+
+        var index = parseInt(element.attr('data-index')) || collection.children().length;
+
+        var prototype = element.attr('data-prototype');
+        var prototypeName = element.attr('data-prototype-name');
+
+        var form = prototype.replace(new RegExp(prototypeName, 'g'), index);
 
         collection.append(form);
+
+        element.attr('data-index', ++index);
     });
 
     $(document).on('click', '[data-action="remove"]', function(e) {
+
+        e.preventDefault();
 
         $('#' + $(this).attr('data-element-id')).remove();
     });

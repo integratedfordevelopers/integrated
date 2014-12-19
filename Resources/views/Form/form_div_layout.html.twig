@@ -185,62 +185,88 @@
 
 {% block integrated_website_grid_grid_row %}
 {% spaceless %}
-    {% for grid in form %}
-        <div class="section">
-            {{ form_widget(grid) }}
+    <div class="section">
+        <div id="{{ form.vars.id }}">
+            {% for item in form.items.children %}
 
-            {% if grid.vars.allow_add %}
-                <a href="javascript:;" class="btn btn-primary" data-action="add" data-collection-id="{{ form.items.vars.id }}" data-prototype-name="{{ grid.vars.prototype.vars.name }}">Add block</a>
-                {#<a href="" class="btn btn-primary">Add columns</a>#}
-            {% endif %}
+                {% if item.block.vars.value is not empty %}
+                    {{ form_row(item.block) }}
+                {% endif %}
+
+                {% if item.row.vars.value is not empty %}
+                    {{ form_row(item.row) }}
+                {% endif %}
+
+            {% endfor %}
         </div>
-    {% endfor %}
-{% endspaceless %}
-{% endblock %}
 
-{% block integrated_website_grid_item_row %}
-{% spaceless %}
-    {% for item in form %}
-        {{ form_widget(item) }}
-    {% endfor %}
-{% endspaceless %}
-{% endblock %}
+        {% if form.items.vars.allow_add %}
+            <a href="javascript:;"
+               class="btn btn-primary"
+               data-action="add"
+               data-collection-id="{{ form.vars.id }}"
+               data-prototype="{{ form_row(form.items.vars.prototype.block)|e }}"
+               data-prototype-name="{{ form.items.vars.prototype.vars.name }}">
+                Add block
+            </a>
 
-{% block integrated_website_grid_block_widget %}
-{% spaceless %}
-    <div id="{{ form.vars.id }}_element" class="block">
-        {{ form_widget(form) }}
-        <a href="javascript:;" class="btn btn-danger" data-action="remove" data-element-id="{{ form.vars.id }}_element">Remove block</a>
+            <a href="javascript:;"
+               class="btn btn-primary"
+               data-action="add"
+               data-collection-id="{{ form.vars.id }}"
+               data-prototype="{{ form_row(form.items.vars.prototype.row)|e }}"
+               data-prototype-name="{{ form.items.vars.prototype.vars.name }}">
+                Add row
+            </a>
+        {% endif %}
     </div>
 {% endspaceless %}
 {% endblock %}
 
-{% block integrated_website_grid_row_widget %}
+{% block integrated_website_grid_block_row %}
 {% spaceless %}
-    {% for row in form %}
+    <div id="{{ form.vars.id }}_block" class="block">
+        {{ form_widget(form) }}
 
-        {% if row.vars.value|length %}
-            <div class="row">
-                {{ form_widget(row) }}
-            </div>
-        {% endif %}
+        <a href="javascript:;"
+           class="btn btn-danger"
+           data-action="remove"
+           data-element-id="{{ form.vars.id }}_block">
+            Remove block
+        </a>
+    </div>
+{% endspaceless %}
+{% endblock %}
 
-    {% endfor %}
+{% block integrated_website_grid_row_row %}
+{% spaceless %}
+    <div id="{{ form.vars.id }}" class="row">
+        <a href="javascript:;"
+           class="btn btn-primary"
+           data-action="add"
+           data-collection-id="{{ form.columns.vars.id }}"
+           data-prototype="{{ form_row(form.columns.vars.prototype)|e }}"
+           data-prototype-name="{{ form.columns.vars.prototype.vars.name }}">
+            Add column
+        </a>
+
+        {{ form_widget(form.columns) }}
+    </div>
 {% endspaceless %}
 {% endblock %}
 
 {% block integrated_website_grid_column_row %}
 {% spaceless %}
-    <div class="col-xs-{{ form.size.vars.value }}">
-        {{ form_widget(form.size) }}
-
+    <div id="{{ form.vars.id }}" class="col-xs-{{ form.size.vars.value|default(2) }}">
         <div class="section">
-            {{ form_widget(form.items) }}
+            {{ form_widget(form.size) }}
 
-            {#{% if form.vars.allow_add %}#}
-                {#<a href="javascript:;" class="btn btn-primary" data-action="add" data-collection="{{ form.items.vars.id }}">Add block</a>#}
-                {#<a href="" class="btn btn-primary">Add columns</a>#}
-            {#{% endif %}#}
+            <a href="javascript:;"
+               class="btn btn-danger"
+               data-action="remove"
+               data-element-id="{{ form.vars.id }}">
+                Remove column
+            </a>
         </div>
     </div>
 {% endspaceless %}
