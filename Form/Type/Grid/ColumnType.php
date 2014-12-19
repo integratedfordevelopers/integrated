@@ -44,8 +44,8 @@ class ColumnType extends AbstractType
 
         $builder->add('items', 'collection', [
             'type'         => new ItemType($this->dm),
-            'allow_add'    => true,
-            'allow_delete' => true,
+//            'allow_add'    => true,
+//            'allow_delete' => true,
         ]);
     }
 

@@ -56,13 +56,13 @@
 {% endblock %}
 
 {% macro grid_items(grid) %}
-
     {% for item in grid.items %}
+
         {% if item.block %}
-
             <div class="block"></div>
+        {% endif %}
 
-        {% elseif item.row %}
+        {% if item.row %}
             <div class="row">
 
                 {% for column in item.row.columns %}
@@ -77,6 +77,6 @@
 
             </div>
         {% endif %}
-    {% endfor %}
 
+    {% endfor %}
 {% endmacro %}

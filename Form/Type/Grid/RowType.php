@@ -41,7 +41,10 @@ class RowType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('columns', 'collection', [
-            'type' => new ColumnType($this->dm),
+            'type'           => new ColumnType($this->dm),
+            'allow_add'      => true,
+            'allow_delete'   => true,
+            'prototype_name' => '__index__',
         ]);
     }
 
