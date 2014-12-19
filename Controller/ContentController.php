@@ -85,6 +85,7 @@ class ContentController extends Controller
         // to filter on these targets.
         // TODO this code should be somewhere else
         $relation = $request->query->get('relation');
+        $relations = array();
         if (null !== $relation) {
 
             $contentType = array();
@@ -96,6 +97,10 @@ class ContentController extends Controller
             if ($relation = $dm->getRepository($this->relationClass)->find($relation)) {
                 foreach ($relation->getTargets() as $target) {
                     $contentType[] = $target->getType();
+                    $relations[] = array(
+                        'href' => $this->generateUrl('integrated_content_content_new', array('class' => $target->getClass(), 'type' => $target->getType(), 'relation' => $relation->getId())),
+                        'name' => $target->getName()
+                    );
                 }
             }
 
@@ -221,7 +226,8 @@ class ContentController extends Controller
             'active'       => array('contenttypes' => $contentType, 'channels' => $activeChannels),
             'channels'     => $channels,
             'facets'       => $result->getFacetSet()->getFacets(),
-            'locks'        => $this->getLocks($paginator)
+            'locks'        => $this->getLocks($paginator),
+            'relations'    => $relations
         );
     }
 
@@ -252,7 +258,8 @@ class ContentController extends Controller
                     [
                         'class' => $request->get('class'),
                         'type' => $request->get('type'),
-                        '_format' => $request->getRequestFormat()
+                        '_format' => $request->getRequestFormat(),
+                        'relation' => $request->get('relation')
                     ]
                 ),
                 'method' => 'POST',
@@ -279,16 +286,26 @@ class ContentController extends Controller
                 $dm->persist($content);
                 $dm->flush();
 
+                if ($this->has('integrated_solr.indexer')) {
+                    $indexer = $this->get('integrated_solr.indexer');
+                    $indexer->setOption('queue.size', 2);
+                    $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+                }
+
+                if ($request->getRequestFormat() == 'iframe.html') {
+                    return $this->render(
+                        'IntegratedContentBundle:Content:saved.iframe.html.twig',
+                        array(
+                            'id' => $content->getId(),
+                            'relation' => $request->get('relation')
+                        )
+                    );
+                }
+
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success(
                     $this->get('translator')->trans('The document %name% has been created', array('%name%' => $type->getType()->getName()))
                 );
-
-                if ($this->has('integrated_solr.indexer')) {
-					$indexer = $this->get('integrated_solr.indexer');
-					$indexer->setOption('queue.size', 2);
-					$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-				}
 
                 return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
             }

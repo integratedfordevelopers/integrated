@@ -1,0 +1,25 @@
+{% extends 'IntegratedContentBundle:Content:new.html.twig' %}
+{% block header %}
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">
+            {% trans %}Saved{% endtrans %}
+        </h4>
+    </div>
+{% endblock %}
+{% block crumbs %}{% endblock %}
+{% block filters %}{% endblock %}
+{% block pageTitle %}{% endblock %}
+{% block content %}{% endblock %}
+{% block javascript %}
+    <script>
+        parent.$(function() {
+            if (parent.relations['{{ relation }}'] != undefined) {
+                parent.relations['{{ relation }}'].loadOptions();
+                parent.relations['{{ relation }}'].addOption('{{ id }}');
+
+                parent.relations['{{ relation }}'].getModal().modal('hide');
+            }
+        });
+    </script>
+{% endblock javascript %}
