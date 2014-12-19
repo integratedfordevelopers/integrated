@@ -3,78 +3,101 @@ var Relation = function(id, url) {
     this.id = id;
     this.url = url;
     this.loadedSelected = false;
+    this.modal = false;
 
-    var parent = this;
+    var element = this;
+
+    this.getModal = function() {
+        if (element.modal === false) {
+            element.modal = $('<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" />');
+            element.modal.append(
+                '<div class="modal-dialog modal-lg">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>' +
+                '<h4 class="modal-title">Add</h4>' +
+                '</div>' +
+                '<iframe frameborder="none" width="100%" height="400" src="">Loading</iframe>' +
+                '</div>' +
+                '</div>'
+            );
+
+            element.modal.on('hide.bs.modal', function(ev) {
+                element.modal.find('iframe').hide();
+                console.log('close it');
+            });
+
+            element.modal.on('show.bs.modal', function(ev) {
+                console.log(ev);
+                console.log(element);
+                console.log('open it');
+            });
+        }
+
+        return element.modal;
+    }
 
     this.handleOptions = function(data) {
         var optionsTemplateSource = $('#options-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
         var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
+        var addTemplateSource = $('#add-template').html(), addTemplate = Handlebars.compile(addTemplateSource);
 
-        data.title = parent.getTitle();
-        data.selected = parent.getSelected();
+        data.title = element.getTitle();
+        data.selected = element.getSelected();
 
-        var container = parent.getOptionsContainer().html(optionsTemplate(data)).find('.options-cnt').append(paginationTemplate(data));
+        var container = element.getOptionsContainer().html(optionsTemplate(data)).find('.options-cnt').append(paginationTemplate(data));
         container.find('.pagination a').click(function(ev){
             ev.preventDefault();
-            parent.loadOptions($(this).attr('href'));
+            element.loadOptions($(this).attr('href'));
         });
 
-        container.append(
-            '<a href="#" data-modal="/app_dev.php/admin/content/new?class=Integrated%5CBundle%5CContentBundle%5CDocument%5CContent%5CArticle&type=blog&_format=iframe.html" class="btn btn-primary">Click to add</a>'
-        );
+        container.append(addTemplate(data));
 
-        if ($('#relation-add').length == 0) {
-            $('body').append(
-                '<div id="relation-add" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">' +
-                '<div class="modal-dialog modal-lg">' +
-                '<div class="modal-content">' +
-                '<iframe frameborder="none" width="100%" height="400" src="">Loading</iframe>' +
-                '</div>' +
-                '</div>' +
-                '</div>'
-            );
-        }
-
+        container.append(element.getModal());
         container.find('a[data-modal]').click(function(ev){
 
-            $('#relation-add').modal('show');
-            var iFrame =  $('#relation-add').find('iframe');
-            iFrame.hide().attr('src', $(this).data('modal')).load(function(){
-                console.log('Loaded');
+            ev.preventDefault();
+            element.modal.find('.modal-title').text($(this).data('title'));
+
+            var iFrame =  element.modal.find('iframe');
+            iFrame.hide().attr('src', $(this).attr('href') + '&_format=iframe.html').load(function(ev){
+
+                iFrame.unbind('load');
+                console.log('LOAD IFRAME');
+                console.log(ev);
+                element.modal.modal('show');
                 $(this).show();
 
-                var height = $(window).height() - 200;
-                if (($(this).contents().height() + 200) < $(window).height()) {
-                    height = $(this).contents().height() + 200;
+                var height = $(window).height() - 120;
+                if (($(this).contents().height() + 20) < $(window).height()) {
+                    height = $(this).contents().height() -100;
                 }
+
                 iFrame.attr('height', height);
 
                 iFrame.contents().find('*[data-dismiss="modal"]').click(function(ev){
                     ev.preventDefault();
-                    $('#relation-add').modal('hide');
-                })
-
-            })
+                    element.modal.modal('hide');
+                });
+            });
         });
-
-
 
         container.find('input').click(function() {
             if ($(this).is(':checked')) {
-                parent.addOption($(this).val());
+                element.addOption($(this).val());
             } else {
-                parent.removeOption($(this).val());
+                element.removeOption($(this).val());
             }
         });
 
         container.find('a[data-value]').click(function(ev) {
             ev.preventDefault();
-            parent.addOption($(this).data('value'));
+            element.addOption($(this).data('value'));
         });
 
-        if (parent.loadedSelected === false) {
-            parent.loadSelected();
-            parent.loadedSelected = true;
+        if (element.loadedSelected === false) {
+            element.loadSelected();
+            element.loadedSelected = true;
         }
     }
 
@@ -82,17 +105,17 @@ var Relation = function(id, url) {
         var optionsTemplateSource = $('#selected-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
         var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
 
-        data.title = parent.getTitle();
-        data.selected = parent.getSelected();
+        data.title = element.getTitle();
+        data.selected = element.getSelected();
 
-        var container = parent.getSelectedContainer().html(optionsTemplate(data)).append(paginationTemplate(data));
+        var container = element.getSelectedContainer().html(optionsTemplate(data)).append(paginationTemplate(data));
         container.find('.pagination a').click(function(ev){
             ev.preventDefault();
-            parent.loadSelected($(this).attr('href'));
+            element.loadSelected($(this).attr('href'));
         });
         container.find('*[data-remove]').click(function(ev){
             ev.preventDefault();
-            parent.removeOption($(this).data('remove'));
+            element.removeOption($(this).data('remove'));
         })
     }
 
@@ -152,12 +175,14 @@ var Relation = function(id, url) {
     }
 
     this.getSelected = function() {
-        var selected = this.getInputElement().val().split(',');
-        selected = $.grep(selected,function(n){
-            return(n);
-        });
+        if (this.getInputElement().val() != undefined) {
+            var selected = this.getInputElement().val().split(',');
+            selected = $.grep(selected, function (n) {
+                return (n);
+            });
 
-        return selected;
+            return selected;
+        }
     }
 
     this.getOptionsContainer = function() {
