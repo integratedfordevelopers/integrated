@@ -131,7 +131,14 @@ augeas { '/etc/php5/conf.d/xdebug.ini':
 	context => '/files/etc/php5/conf.d/xdebug.ini',
 	changes => [
 		'set Xdebug/xdebug.max_nesting_level 250',
-		'set Xdebug/xdebug.var_display_max_depth 8'
+		'set Xdebug/xdebug.var_display_max_depth 8',
+    'set Xdebug/xdebug.remote_enable 1',
+    'set Xdebug/xdebug.remote_handler dbgp',
+    'set Xdebug/xdebug.remote_host 10.0.2.2',
+    'set Xdebug/xdebug.remote_port 9000',
+    'set Xdebug/xdebug.remote_autostart 0',
+    'set Xdebug/xdebug.profiler_enable_trigger 1',
+    'set Xdebug/xdebug.profiler_output_dir /vagrant'
 	],
 	require => Package['php5-xdebug'],
 	notify  => Service['httpd'],
