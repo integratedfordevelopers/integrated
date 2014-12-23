@@ -94,11 +94,11 @@
 <script id="add-template" type="text/xhandlebars-template">
     {{#if relations}}
         {{#equals relations.length 1}}
-        <a data-title="Add {{relations.0.name}}" class="btn btn-default" style="font-size: 13px;" href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
+        <a data-title="Add {{relations.0.name}}" class="btn btn-default add-relation" style="font-size: 13px;" href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
             Add
         </a>
         {{else}}
-        <div class="btn-group">
+        <div class="btn-group add-relation">
             <button type="button" class="btn btn-default dropdown-toggle" style="font-size: 13px;" data-toggle="dropdown" aria-expanded="false">
                 Add <span class="caret"></span>
             </button>
@@ -113,30 +113,6 @@
             </ul>
         </div>
         {{/equals}}
-    {{/if}}
-</script>
-<script id="modal-template" type="text/xhandlebars-template">
-    {{#if relations}}
-    {{#equals relations.length 1}}
-    <a data-title="Add {{relations.0.name}}" class="btn btn-default" href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
-        Add
-    </a>
-    {{else}}
-    <div class="btn-group">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            Add <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu" role="menu">
-            {{#each relations}}
-            <li>
-                <a data-title="Add {{this.name}}" href="{{this.href}}" target="_blank" data-modal="add-modal">
-                    {{this.name}}
-                </a>
-            </li>
-            {{/each}}
-        </ul>
-    </div>
-    {{/equals}}
     {{/if}}
 </script>
 {% endverbatim %}
