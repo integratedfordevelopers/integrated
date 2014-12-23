@@ -186,39 +186,7 @@
 {% block integrated_website_grid_grid_row %}
 {% spaceless %}
     <div class="section">
-        <div id="{{ form.vars.id }}">
-            {% for item in form.items.children %}
-
-                {% if item.block.vars.value is not empty %}
-                    {{ form_row(item.block) }}
-                {% endif %}
-
-                {% if item.row.vars.value is not empty %}
-                    {{ form_row(item.row) }}
-                {% endif %}
-
-            {% endfor %}
-        </div>
-
-        {% if form.items.vars.allow_add %}
-            <a href="javascript:;"
-               class="btn btn-primary"
-               data-action="add"
-               data-collection-id="{{ form.vars.id }}"
-               data-prototype="{{ form_row(form.items.vars.prototype.block)|e }}"
-               data-prototype-name="{{ form.items.vars.prototype.vars.name }}">
-                Add block
-            </a>
-
-            <a href="javascript:;"
-               class="btn btn-primary"
-               data-action="add"
-               data-collection-id="{{ form.vars.id }}"
-               data-prototype="{{ form_row(form.items.vars.prototype.row)|e }}"
-               data-prototype-name="{{ form.items.vars.prototype.vars.name }}">
-                Add row
-            </a>
-        {% endif %}
+        {{ _self.integrated_website_grid_items(form) }}
     </div>
 {% endspaceless %}
 {% endblock %}
@@ -241,14 +209,16 @@
 {% block integrated_website_grid_row_row %}
 {% spaceless %}
     <div id="{{ form.vars.id }}" class="row">
-        <a href="javascript:;"
-           class="btn btn-primary"
-           data-action="add"
-           data-collection-id="{{ form.columns.vars.id }}"
-           data-prototype="{{ form_row(form.columns.vars.prototype)|e }}"
-           data-prototype-name="{{ form.columns.vars.prototype.vars.name }}">
-            Add column
-        </a>
+        {% if form.columns.vars.allow_add %}
+            <a href="javascript:;"
+               class="btn btn-primary"
+               data-action="add"
+               data-collection-id="{{ form.columns.vars.id }}"
+               data-prototype="{{ form_row(form.columns.vars.prototype)|e }}"
+               data-prototype-name="{{ form.columns.vars.prototype.vars.name }}">
+                Add column
+            </a>
+        {% endif %}
 
         {{ form_widget(form.columns) }}
     </div>
@@ -257,7 +227,7 @@
 
 {% block integrated_website_grid_column_row %}
 {% spaceless %}
-    <div id="{{ form.vars.id }}" class="col-xs-{{ form.size.vars.value|default(2) }}">
+    <div id="{{ form.vars.id }}" class="col-xs-{{ form.size.vars.value|default(12) }}">
         <div class="section">
             {{ form_widget(form.size) }}
 
@@ -267,7 +237,49 @@
                data-element-id="{{ form.vars.id }}">
                 Remove column
             </a>
+
+            {{ _self.integrated_website_grid_items(form) }}
         </div>
     </div>
 {% endspaceless %}
 {% endblock %}
+
+{% macro integrated_website_grid_items(form) %}
+{% spaceless %}
+    <div id="{{ form.vars.id }}_items">
+        {% for item in form.items %}
+
+            {% if item.block.vars.value|default %}
+                {{ form_row(item.block) }}
+            {% endif %}
+
+            {% if item.row.vars.value|default %}
+                {{ form_row(item.row) }}
+            {% endif %}
+
+        {% endfor %}
+    </div>
+
+    {% if form.items.vars.allow_add %}
+        <a href="javascript:;"
+           class="btn btn-primary"
+           data-action="add"
+           data-collection-id="{{ form.vars.id }}_items"
+           data-prototype="{{ form_row(form.items.vars.prototype.block)|e }}"
+           data-prototype-name="{{ form.items.vars.prototype.vars.name }}">
+            Add block
+        </a>
+
+        {% if form.items.vars.prototype.row|default %}
+            <a href="javascript:;"
+               class="btn btn-primary"
+               data-action="add"
+               data-collection-id="{{ form.vars.id }}_items"
+               data-prototype="{{ form_row(form.items.vars.prototype.row)|e }}"
+               data-prototype-name="{{ form.items.vars.prototype.vars.name }}">
+                Add row
+            </a>
+        {% endif %}
+    {% endif %}
+{% endspaceless %}
+{% endmacro %}
