@@ -28,11 +28,18 @@ class ItemType extends AbstractType
     protected $dm;
 
     /**
-     * @param DocumentManager $dm
+     * @var int
      */
-    public function __construct(DocumentManager $dm)
+    protected $depth;
+
+    /**
+     * @param DocumentManager $dm
+     * @param int $depth
+     */
+    public function __construct(DocumentManager $dm, $depth = 1)
     {
         $this->dm = $dm;
+        $this->depth = $depth;
     }
 
     /**
@@ -42,7 +49,9 @@ class ItemType extends AbstractType
     {
         $builder->add('block', new BlockType($this->dm));
 
-        $builder->add('row', new RowType($this->dm));
+        if ($this->depth <= $options['max_nested']) {
+            $builder->add('row', new RowType($this->dm, $this->depth + 1));
+        }
     }
 
     /**
@@ -52,6 +61,7 @@ class ItemType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Item',
+            'max_nested' => 2, // allow max 2 nesting levels
         ));
     }
 

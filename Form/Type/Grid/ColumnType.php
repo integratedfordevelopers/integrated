@@ -28,11 +28,18 @@ class ColumnType extends AbstractType
     protected $dm;
 
     /**
-     * @param DocumentManager $dm
+     * @var int
      */
-    public function __construct(DocumentManager $dm)
+    protected $depth;
+
+    /**
+     * @param DocumentManager $dm
+     * @param int $depth
+     */
+    public function __construct(DocumentManager $dm, $depth = 1)
     {
         $this->dm = $dm;
+        $this->depth = $depth;
     }
 
     /**
@@ -43,9 +50,10 @@ class ColumnType extends AbstractType
         $builder->add('size', 'integer');
 
         $builder->add('items', 'collection', [
-            'type'         => new ItemType($this->dm),
-//            'allow_add'    => true,
-//            'allow_delete' => true,
+            'type'           => new ItemType($this->dm, $this->depth),
+            'allow_add'      => true,
+            'allow_delete'   => true,
+            'prototype_name' => '__name' . $this->depth . '__',
         ]);
     }
 
