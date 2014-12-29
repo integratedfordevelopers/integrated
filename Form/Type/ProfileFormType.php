@@ -90,7 +90,8 @@ class ProfileFormType extends AbstractType
 			'constraints' => [
 				new NotBlank(),
 				new Length(['min' => 3])
-			]
+			],
+            'attr' => ['autocomplete' => 'off']
 		]);
 
 		$builder->add('password', 'password', [
@@ -98,7 +99,8 @@ class ProfileFormType extends AbstractType
 			'constraints' => [
 				new NotBlank(),
 				new Length(['min' => 6])
-			]
+			],
+            'attr' => ['autocomplete' => 'off']
 		]);
 
 		if (!$options['optional']) {
