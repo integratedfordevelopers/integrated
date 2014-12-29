@@ -111,7 +111,7 @@
         <div class="col-sm-4 sidebar_right">
             <div class="content_column_inner">
                 <form>
-                    <input type="hidden" value="{{ app.request.query.get('q')|trim }}" name="q" />
+                    <input type="hidden" value="{{ app.request.query.get('q') }}" name="q" />
                     {% for key, facet in facets %}
                         <div class="item_row">
                             <h3 class="title">
