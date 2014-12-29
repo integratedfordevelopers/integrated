@@ -83,7 +83,7 @@ class RelationController extends Controller
     /**
      * Creates a new Relation document
      *
-     * @Template()
+     * @Template("IntegratedContentBundle:Relation:new.html.twig")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
@@ -130,7 +130,7 @@ class RelationController extends Controller
     /**
      * Edits an existing Relation document
      *
-     * @Template()
+     * @Template("IntegratedContentBundle:Relation:edit.html.twig")
      * @param Request $request
      * @param Relation $relation
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
