@@ -11,19 +11,15 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
-use Symfony\Component\Debug\Debug;
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\HttpFoundation\File\File;
-
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class Image implements DataTransformerInterface
+class FileTransformer implements DataTransformerInterface
 {
     /**
-     * @param mixed $value
-     * @return mixed
+     * {@inheritdoc}
      */
     public function transform($value)
     {
@@ -31,8 +27,7 @@ class Image implements DataTransformerInterface
     }
 
     /**
-     * @param mixed $value
-     * @return mixed|File
+     * {@inheritdoc}
      */
     public function reverseTransform($value)
     {

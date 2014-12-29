@@ -24,7 +24,7 @@
       	<parameter key="integrated_content.form.content_type.channel.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType</parameter>
       	<parameter key="integrated_content.form.content_type.channel.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType</parameter>
         
-        <parameter key="integrated_content.form_type_image.class">Integrated\Bundle\ContentBundle\Form\Type\Image</parameter>
+        <parameter key="integrated_content.form.type.image.class">Integrated\Bundle\ContentBundle\Form\Type\ImageType</parameter>
         <parameter key="integrated_content.form.type.csv_array.class">Integrated\Bundle\ContentBundle\Form\Type\CsvArray</parameter>
 
         <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\Channel</parameter>
@@ -32,6 +32,7 @@
 		<parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
 
 		<parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
+		<parameter key="integrated_content.form.type.file.class">Integrated\Bundle\ContentBundle\Form\Type\FileType</parameter>
 
 	</parameters>
 
@@ -73,7 +74,7 @@
 			<tag name="integrated_content.form.event_subscriber" />
 		</service>
 
-        <service id="integrated_content.form_type_image" class="%integrated_content.form_type_image.class%">
+        <service id="integrated_content.form.type.image" class="%integrated_content.form.type.image.class%">
             <tag name="form.type" alias="integrated_image" />
         </service>
 
@@ -105,6 +106,10 @@
 
         <service id="integrated_content.form.type.relation" class="%integrated_content.form.type.relation.class%">
             <tag name="form.type" alias="integrated_relation" />
+        </service>
+
+		<service id="integrated_content.form.type.file" class="%integrated_content.form.type.file.class%">
+            <tag name="form.type" alias="integrated_file" />
         </service>
 
 	</services>
