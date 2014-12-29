@@ -34,7 +34,7 @@ class File extends Content
 
     /**
      * @var UploadFile
-     * @Type\Field(type="file")
+     * @Type\Field(type="integrated_file")
      * @ODM\Field
      */
     protected $file;
