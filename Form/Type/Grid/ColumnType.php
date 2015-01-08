@@ -17,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
+use Integrated\Bundle\WebsiteBundle\Form\EventListener\ItemOrderListener;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -28,18 +30,11 @@ class ColumnType extends AbstractType
     protected $dm;
 
     /**
-     * @var int
-     */
-    protected $depth;
-
-    /**
      * @param DocumentManager $dm
-     * @param int $depth
      */
-    public function __construct(DocumentManager $dm, $depth = 1)
+    public function __construct(DocumentManager $dm)
     {
         $this->dm = $dm;
-        $this->depth = $depth;
     }
 
     /**
@@ -50,11 +45,13 @@ class ColumnType extends AbstractType
         $builder->add('size', 'integer');
 
         $builder->add('items', 'collection', [
-            'type'           => new ItemType($this->dm, $this->depth),
-            'allow_add'      => true,
-            'allow_delete'   => true,
-            'prototype_name' => '__name' . $this->depth . '__',
+            'type'         => new ItemType($this->dm),
+            'allow_add'    => true,
+            'allow_delete' => true,
+            'prototype'    => false,
         ]);
+
+        $builder->addEventSubscriber(new ItemOrderListener());
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

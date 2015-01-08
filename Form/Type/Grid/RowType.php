@@ -28,18 +28,11 @@ class RowType extends AbstractType
     protected $dm;
 
     /**
-     * @var int
-     */
-    protected $depth;
-
-    /**
      * @param DocumentManager $dm
-     * @param int $depth
      */
-    public function __construct(DocumentManager $dm, $depth = 1)
+    public function __construct(DocumentManager $dm)
     {
         $this->dm = $dm;
-        $this->depth = $depth;
     }
 
     /**
@@ -48,10 +41,10 @@ class RowType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('columns', 'collection', [
-            'type'           => new ColumnType($this->dm, $this->depth),
-            'allow_add'      => true,
-            'allow_delete'   => true,
-            'prototype_name' => '__index' . $this->depth . '__',
+            'type'         => new ColumnType($this->dm),
+            'allow_add'    => true,
+            'allow_delete' => true,
+            'prototype'    => false,
         ]);
     }
 

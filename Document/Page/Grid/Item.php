@@ -25,6 +25,12 @@ use Integrated\Bundle\WebsiteBundle\Document\Block\Block;
 class Item
 {
     /**
+     * @var int
+     * @ODM\Int
+     */
+    protected $order;
+
+    /**
      * @var Block
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\WebsiteBundle\Document\Block\Block")
      */
@@ -35,6 +41,24 @@ class Item
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Row")
      */
     protected $row;
+
+    /**
+     * @return int
+     */
+    public function getOrder()
+    {
+        return $this->order;
+    }
+
+    /**
+     * @param int $order
+     * @return Item
+     */
+    public function setOrder($order)
+    {
+        $this->order = (int) $order;
+        return $this;
+    }
 
     /**
      * @return Block

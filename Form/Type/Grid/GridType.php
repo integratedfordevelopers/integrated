@@ -17,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
+use Integrated\Bundle\WebsiteBundle\Form\EventListener\ItemOrderListener;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -44,7 +46,10 @@ class GridType extends AbstractType
             'type'         => new ItemType($this->dm),
             'allow_add'    => true,
             'allow_delete' => true,
+            'prototype'    => false,
         ]);
+
+        $builder->addEventSubscriber(new ItemOrderListener());
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

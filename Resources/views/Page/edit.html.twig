@@ -19,4 +19,28 @@
         </div>
     </div>
 
+    <script id="block-template" type="text/x-handlebars-template">
+        <div id="{% raw %}{{id}}{% endraw %}_block_element" class="block">
+            <input type="number" id="{% raw %}{{id}}{% endraw %}_order" name="{% raw %}{{name}}{% endraw %}[order]" data-field="order" class="form-control" value="{% raw %}{{index}}{% endraw %}" />
+            <input type="text" id="{% raw %}{{id}}{% endraw %}_block" name="{% raw %}{{name}}{% endraw %}[block]" data-field="block" class="form-control" value="{% raw %}{{value}}{% endraw %}" />
+        </div>
+    </script>
+
+    <script id="columns-template" type="text/x-handlebars-template">
+        <div id="{% raw %}{{ id }}{% endraw %}_row" class="row">
+            <input type="number" id="{% raw %}{{id}}{% endraw %}_order" name="{% raw %}{{name}}{% endraw %}[order]" data-field="order" class="form-control" value="{% raw %}{{index}}{% endraw %}" />
+
+            <div id="{% raw %}{{id}}{% endraw %}_row_columns">
+                {% raw %}{{#each columns}}{% endraw %}
+                    <div id="{% raw %}{{id}}{% endraw %}_row_columns_{% raw %}{{index}}{% endraw %}" class="col-xs-{% raw %}{{ size }}{% endraw %}">
+                        <input type="number" id="{% raw %}{{id}}{% endraw %}_row_columns_{% raw %}{{index}}{% endraw %}_size" name="{% raw %}{{name}}{% endraw %}[row][columns][{% raw %}{{index}}{% endraw %}][size]" class="form-control" value="{% raw %}{{size}}{% endraw %}">
+                        <div class="section">
+                            <div id="{% raw %}{{id}}{% endraw %}_row_columns_{% raw %}{{index}}{% endraw %}_items" class="sortable" data-name="{% raw %}{{name}}{% endraw %}[row][columns][{% raw %}{{index}}{% endraw %}][items]"></div>
+                        </div>
+                    </div>
+                {% raw %}{{/each}}{% endraw %}
+            </div>
+        </div>
+    </script>
+
 {% endblock %}
