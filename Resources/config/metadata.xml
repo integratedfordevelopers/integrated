@@ -6,15 +6,15 @@
 
     <parameters>
 
-        <parameter key="integrated_website.metadata.factory.type.class">Integrated\Common\Block\BlockInterface</parameter>
+        <parameter key="integrated_page.metadata.factory.type.class">Integrated\Common\Block\BlockInterface</parameter>
 
     </parameters>
 
     <services>
 
-        <service id="integrated_website.metadata.factory" class="%integrated_content.metadata.factory.class%">
+        <service id="integrated_page.metadata.factory" class="%integrated_content.metadata.factory.class%">
             <argument type="service" id="integrated_content.metadata.driver" />
-            <argument>%integrated_website.metadata.factory.type.class%</argument>
+            <argument>%integrated_page.metadata.factory.type.class%</argument>
 
             <call method="setEventDispatcher">
                 <argument type="service" id="integrated_content.metadata.factory.event_dispatcher" />

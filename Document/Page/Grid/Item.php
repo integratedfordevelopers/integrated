@@ -9,11 +9,11 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\WebsiteBundle\Document\Page\Grid;
+namespace Integrated\Bundle\PageBundle\Document\Page\Grid;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
-use Integrated\Bundle\WebsiteBundle\Document\Block\Block;
+use Integrated\Bundle\PageBundle\Document\Block\Block;
 
 /**
  * Item document
@@ -32,13 +32,13 @@ class Item
 
     /**
      * @var Block
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\WebsiteBundle\Document\Block\Block")
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\PageBundle\Document\Block\Block")
      */
     protected $block;
 
     /**
      * @var Row
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Row")
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Row")
      */
     protected $row;
 

@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\WebsiteBundle\Controller;
+namespace Integrated\Bundle\PageBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Integrated\Common\Block\BlockInterface;
-use Integrated\Bundle\WebsiteBundle\Document\Block\Block;
+use Integrated\Bundle\PageBundle\Document\Block\Block;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -31,7 +31,7 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedWebsiteBundle:Block\Block');
+        $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedPageBundle:Block\Block');
 
         $pagination = $this->getPaginator()->paginate(
             $builder,
@@ -70,7 +70,7 @@ class BlockController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Block created');
 
-            return $this->redirect($this->generateUrl('integrated_website_block_index'));
+            return $this->redirect($this->generateUrl('integrated_page_block_index'));
         }
 
         return [
@@ -92,7 +92,7 @@ class BlockController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Block updated');
 
-            return $this->redirect($this->generateUrl('integrated_website_block_index'));
+            return $this->redirect($this->generateUrl('integrated_page_block_index'));
         }
 
         return [
@@ -117,7 +117,7 @@ class BlockController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Block deleted');
 
-            return $this->redirect($this->generateUrl('integrated_website_block_index'));
+            return $this->redirect($this->generateUrl('integrated_page_block_index'));
         }
 
         return [
@@ -135,10 +135,10 @@ class BlockController extends Controller
         $class = get_class($block);
 
         $form = $this->createForm(
-            $this->get('integrated_website.form.block.type'),
+            $this->get('integrated_page.form.block.type'),
             $block,
             [
-                'action' => $this->generateUrl('integrated_website_block_new', ['class' => $class]),
+                'action' => $this->generateUrl('integrated_page_block_new', ['class' => $class]),
                 'method' => 'POST',
                 'data_class' => $class,
             ]
@@ -156,10 +156,10 @@ class BlockController extends Controller
     protected function createEditForm(BlockInterface $block)
     {
         $form = $this->createForm(
-            $this->get('integrated_website.form.block.type'),
+            $this->get('integrated_page.form.block.type'),
             $block,
             [
-                'action' => $this->generateUrl('integrated_website_block_edit', ['id' => $block->getId()]),
+                'action' => $this->generateUrl('integrated_page_block_edit', ['id' => $block->getId()]),
                 'method' => 'PUT',
                 'data_class' => get_class($block),
             ]
@@ -178,7 +178,7 @@ class BlockController extends Controller
     {
         $builder = $this->createFormBuilder();
 
-        $builder->setAction($this->generateUrl('integrated_website_block_delete', ['id' => $id]));
+        $builder->setAction($this->generateUrl('integrated_page_block_delete', ['id' => $id]));
         $builder->setMethod('DELETE');
         $builder->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 
@@ -206,6 +206,6 @@ class BlockController extends Controller
      */
     protected function getFactory()
     {
-        return $this->get('integrated_website.metadata.factory');
+        return $this->get('integrated_page.metadata.factory');
     }
 }

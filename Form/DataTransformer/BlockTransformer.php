@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WebsiteBundle\Form\DataTransformer;
+namespace Integrated\Bundle\PageBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -50,6 +50,6 @@ class BlockTransformer implements DataTransformerInterface
      */
     public function reverseTransform($id)
     {
-        return $this->dm->getRepository('IntegratedWebsiteBundle:Block\Block')->find($id);
+        return $this->dm->getRepository('IntegratedPageBundle:Block\Block')->find($id);
     }
 }

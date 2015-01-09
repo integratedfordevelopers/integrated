@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WebsiteBundle\Form\Type\Grid;
+namespace Integrated\Bundle\PageBundle\Form\Type\Grid;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\WebsiteBundle\Form\EventListener\ItemOrderListener;
+use Integrated\Bundle\PageBundle\Form\EventListener\ItemOrderListener;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -66,6 +66,6 @@ class ColumnType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_website_grid_column';
+        return 'integrated_page_grid_column';
     }
 }

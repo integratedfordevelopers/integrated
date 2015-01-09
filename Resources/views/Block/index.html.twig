@@ -9,7 +9,7 @@
                 <ul role="menu" class="dropdown-menu">
                     {% for metadata in factory.allMetadata %}
                         <li role="presentation">
-                            <a href="{{ path('integrated_website_block_new') }}?class={{ metadata.class }}">{{ metadata.type|default(metadata.class) }}</a>
+                            <a href="{{ path('integrated_page_block_new') }}?class={{ metadata.class }}">{{ metadata.type|default(metadata.class) }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -47,10 +47,10 @@
                             {{ metadata.type|default(block.class) }}
                         </td>
                         <td>
-                            <a href="{{ path('integrated_website_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">
+                            <a href="{{ path('integrated_page_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">
                                 {{ icon('pencil') }}
                             </a>
-                            <a href="{{ path('integrated_website_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                            <a href="{{ path('integrated_page_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
                                 {{ icon('remove-circle') }}
                             </a>
                         </td>

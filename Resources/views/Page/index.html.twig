@@ -8,7 +8,7 @@
                 <a href="#" data-toggle="dropdown" role="button">Options <b class="caret"></b></a>
                 <ul role="menu" class="dropdown-menu">
                     <li role="presentation">
-                        <a href="{{ path('integrated_website_page_new') }}" tabindex="-1" role="menuitem">New</a>
+                        <a href="{{ path('integrated_page_page_new') }}" tabindex="-1" role="menuitem">New</a>
                     </li>
                 </ul>
             </li>
@@ -38,16 +38,16 @@
 
                     <tr>
                         <td>
-                            <a href="{{ path('integrated_website_page_layout', { 'id': page.id }) }}">{{ page.title }}</a>
+                            <a href="{{ path('integrated_page_page_layout', { 'id': page.id }) }}">{{ page.title }}</a>
                         </td>
                         <td>
                             {{ page.slug }}
                         </td>
                         <td>
-                            <a href="{{ path('integrated_website_page_edit', { 'id': page.id }) }}" title="{% trans %}Edit{% endtrans %}">
+                            <a href="{{ path('integrated_page_page_edit', { 'id': page.id }) }}" title="{% trans %}Edit{% endtrans %}">
                                 {{ icon('pencil') }}
                             </a>
-                            <a href="{{ path('integrated_website_page_delete', { 'id': page.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                            <a href="{{ path('integrated_page_page_delete', { 'id': page.id }) }}" title="{% trans %}Delete{% endtrans %}">
                                 {{ icon('remove-circle') }}
                             </a>
                         </td>

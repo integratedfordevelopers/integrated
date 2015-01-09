@@ -9,14 +9,14 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\WebsiteBundle\Controller;
+namespace Integrated\Bundle\PageBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Integrated\Bundle\WebsiteBundle\Document\Page\Page;
+use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -28,7 +28,7 @@ class PageController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedWebsiteBundle:Page\Page');
+        $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedPageBundle:Page\Page');
 
         $pagination = $this->getPaginator()->paginate(
             $builder,
@@ -60,7 +60,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page created');
 
-            return $this->redirect($this->generateUrl('integrated_website_page_layout', ['id' => $page->getId()]));
+            return $this->redirect($this->generateUrl('integrated_page_page_layout', ['id' => $page->getId()]));
         }
 
         return [
@@ -82,7 +82,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 
-            return $this->redirect($this->generateUrl('integrated_website_page_layout', ['id' => $page->getId()]));
+            return $this->redirect($this->generateUrl('integrated_page_page_layout', ['id' => $page->getId()]));
         }
 
         return [
@@ -107,7 +107,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page deleted');
 
-            return $this->redirect($this->generateUrl('integrated_website_page_index'));
+            return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
 
         return [
@@ -121,27 +121,27 @@ class PageController extends Controller
      */
     public function layoutAction(Page $page)
     {
-        $pages = $this->getDocumentManager()->getRepository('IntegratedWebsiteBundle:Page\Page')->findAll();
+        $pages = $this->getDocumentManager()->getRepository('IntegratedPageBundle:Page\Page')->findAll();
 
-//        $block = $this->getDocumentManager()->getRepository('IntegratedWebsiteBundle:Block\Block')->findOneBy(['shortName' => 'test']);
+//        $block = $this->getDocumentManager()->getRepository('IntegratedPageBundle:Block\Block')->findOneBy(['shortName' => 'test']);
 //
-//        $item1 = new \Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Item();
+//        $item1 = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Item();
 //        $item1->setBlock($block);
 //
-//        $column1 = new \Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Column();
+//        $column1 = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Column();
 //        $column1->setSize(8);
 //        $column1->setItems([$item1]);
 //
-//        $column2 = new \Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Column();
+//        $column2 = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Column();
 //        $column2->setSize(4);
 //
-//        $row = new \Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Row();
+//        $row = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Row();
 //        $row->setColumns([$column1, $column2]);
 //
-//        $item2 = new \Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Item();
+//        $item2 = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Item();
 //        $item2->setRow($row);
 //
-//        $grid = new \Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Grid('main');
+//        $grid = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Grid('main');
 //        $grid->setItems([$item1, $item2]);
 //
 //        $page->setGrids([$grid]);
@@ -161,10 +161,10 @@ class PageController extends Controller
     protected function createCreateForm(Page $page)
     {
         $form = $this->createForm(
-            'integrated_website_page',
+            'integrated_page_page',
             $page,
             [
-                'action' => $this->generateUrl('integrated_website_page_new'),
+                'action' => $this->generateUrl('integrated_page_page_new'),
                 'method' => 'POST',
             ]
         );
@@ -181,10 +181,10 @@ class PageController extends Controller
     protected function createEditForm(Page $page)
     {
         $form = $this->createForm(
-            'integrated_website_page',
+            'integrated_page_page',
             $page,
             [
-                'action' => $this->generateUrl('integrated_website_page_edit', ['id' => $page->getId()]),
+                'action' => $this->generateUrl('integrated_page_page_edit', ['id' => $page->getId()]),
                 'method' => 'PUT',
             ]
         );
@@ -202,7 +202,7 @@ class PageController extends Controller
     {
         $builder = $this->createFormBuilder();
 
-        $builder->setAction($this->generateUrl('integrated_website_page_delete', ['id' => $id]));
+        $builder->setAction($this->generateUrl('integrated_page_page_delete', ['id' => $id]));
         $builder->setMethod('DELETE');
         $builder->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 

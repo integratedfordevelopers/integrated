@@ -4,6 +4,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/block.xml" prefix="/block" />
-    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/page.xml" prefix="/page" />
+    <import resource="@IntegratedPageBundle/Resources/config/routing/block.xml" prefix="/block" />
+    <import resource="@IntegratedPageBundle/Resources/config/routing/page.xml" prefix="/page" />
 </routes>

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WebsiteBundle\Form\Type\Grid;
+namespace Integrated\Bundle\PageBundle\Form\Type\Grid;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -60,6 +60,6 @@ class RowType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_website_grid_row';
+        return 'integrated_page_grid_row';
     }
 }

@@ -1,3 +1,3 @@
-# IntegratedWebsiteBundle
+# IntegratedPageBundle
 
 TODO

@@ -9,13 +9,13 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\WebsiteBundle;
+namespace Integrated\Bundle\PageBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class IntegratedWebsiteBundle extends Bundle
+class IntegratedPageBundle extends Bundle
 {
 }

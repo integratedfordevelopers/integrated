@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\WebsiteBundle\DependencyInjection;
+namespace Integrated\Bundle\PageBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -25,7 +25,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('integrated_website');
+        $rootNode = $treeBuilder->root('integrated_page');
 
         return $treeBuilder;
     }

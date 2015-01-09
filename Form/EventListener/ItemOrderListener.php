@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WebsiteBundle\Form\EventListener;
+namespace Integrated\Bundle\PageBundle\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-use Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Column;
-use Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Grid;
-use Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Item;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Column;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

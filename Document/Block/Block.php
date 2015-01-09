@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\WebsiteBundle\Document\Block;
+namespace Integrated\Bundle\PageBundle\Document\Block;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WebsiteBundle\Form\Type;
+namespace Integrated\Bundle\PageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Integrated\Bundle\WebsiteBundle\Form\Type\Grid\GridType;
+use Integrated\Bundle\PageBundle\Form\Type\Grid\GridType;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -70,6 +70,6 @@ class PageType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_website_page';
+        return 'integrated_page_page';
     }
 }

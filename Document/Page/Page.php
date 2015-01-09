@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\WebsiteBundle\Document\Page;
+namespace Integrated\Bundle\PageBundle\Document\Page;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,7 +17,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
-use Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Grid;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 
 /**
  * Page document
@@ -59,7 +59,7 @@ class Page
 
     /**
      * @var array
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Grid")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Grid")
      */
     protected $grids;
 

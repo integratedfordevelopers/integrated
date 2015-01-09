@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\WebsiteBundle\Document\Page\Grid;
+namespace Integrated\Bundle\PageBundle\Document\Page\Grid;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,7 +25,7 @@ class Row
 {
     /**
      * @var array
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Column")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Column")
      */
     protected $columns;
 
