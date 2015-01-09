@@ -183,13 +183,13 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block integrated_website_grid_grid_row %}
+{% block integrated_page_grid_grid_row %}
 {% spaceless %}
-    {{ _self.integrated_website_grid_section(form) }}
+    {{ _self.integrated_page_grid_section(form) }}
 {% endspaceless %}
 {% endblock %}
 
-{% block integrated_website_grid_block_row %}
+{% block integrated_page_grid_block_row %}
 {% spaceless %}
     <div id="{{ form.vars.id }}_element" class="block">
         {{ form_widget(form.parent.order, { 'attr': { 'data-field': 'order' } }) }}
@@ -198,7 +198,7 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block integrated_website_grid_row_row %}
+{% block integrated_page_grid_row_row %}
 {% spaceless %}
     <div id="{{ form.vars.id }}" class="row">
         {{ form_widget(form.parent.order, { 'attr': { 'data-field': 'order' } }) }}
@@ -207,16 +207,16 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block integrated_website_grid_column_row %}
+{% block integrated_page_grid_column_row %}
 {% spaceless %}
     <div id="{{ form.vars.id }}" class="col-xs-{{ form.size.vars.value }}">
         {{ form_widget(form.size) }}
-        {{ _self.integrated_website_grid_section(form) }}
+        {{ _self.integrated_page_grid_section(form) }}
     </div>
 {% endspaceless %}
 {% endblock %}
 
-{% macro integrated_website_grid_section(form) %}
+{% macro integrated_page_grid_section(form) %}
 {% spaceless %}
     <div class="section">
         <div id="{{ form.vars.id }}_items" class="sortable" data-name="{{ form.items.vars.full_name }}">

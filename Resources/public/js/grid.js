@@ -8,19 +8,19 @@
             .append('<a href="javascript:;" class="btn btn-primary" data-action="add-columns" data-collection-id="' + element.attr('id') + '">Add columns</a>');
     });
 
-    $('.block').each(function(index, item) {
+    $('.sortable .block').each(function(index, item) {
 
         var element = $(item);
         element.prepend('<a href="javascript:;" class="btn btn-danger" data-action="remove" data-element-id="' + element.attr('id') + '">Remove block</a>');
     });
 
-    $('.row').each(function(index, item) {
+    $('.sortable .row').each(function(index, item) {
 
         var element = $(item);
         element.prepend('<a href="javascript:;" class="btn btn-danger" data-action="remove" data-element-id="' + element.attr('id') + '">Remove row</a>');
     });
 
-    $('.row [class^="col-"]').each(function(index, item) {
+    $('.sortable .row [class^="col-"]').each(function(index, item) {
 
         var element = $(item);
         element.prepend('<a href="javascript:;" class="btn btn-danger" data-action="remove" data-element-id="' + element.attr('id') + '">Remove column</a>');
