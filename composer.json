@@ -1,8 +1,8 @@
 {
-    "name": "integrated/website-bundle",
+    "name": "integrated/page-bundle",
     "type": "symfony-bundle",
-    "description": "Integrated Website Bundle",
-    "keywords": ["Integrated", "website"],
+    "description": "Integrated Page Bundle",
+    "keywords": ["Integrated", "page"],
     "homepage": "http://www.e-active.nl",
     "license": "MIT",
     "authors": [
@@ -30,8 +30,8 @@
     },
     "autoload":{
         "psr-0":{
-            "Integrated\\Bundle\\WebsiteBundle": ""
+            "Integrated\\Bundle\\PageBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/WebsiteBundle"
+    "target-dir": "Integrated/Bundle/PageBundle"
 }
