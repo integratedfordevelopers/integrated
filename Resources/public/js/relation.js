@@ -77,6 +77,7 @@ var Relation = function(id, url) {
 
                 var height = $(window).height() - 120;
                 if ((iFrame.contents().height() + 20) < $(window).height()) {
+                    // todo: this does not work in IE
                     height = iFrame.contents().height() -100;
                 }
 
