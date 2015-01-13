@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_website.routing.page_loader.class">Integrated\Bundle\WebsiteBundle\Routing\PageLoader</parameter>
+
+        <parameter key="integrated_website.twig.grid_extension.class">Integrated\Bundle\WebsiteBundle\Twig\Extension\GridExtension</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_website.routing.page_loader" class="%integrated_website.routing.page_loader.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="routing.loader" />
+        </service>
+
+        <service id="integrated_website.twig.grid_extension" class="%integrated_website.twig.grid_extension.class%">
+            <argument type="service" id="twig" />
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+</container>
