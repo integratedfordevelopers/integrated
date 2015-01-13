@@ -29,4 +29,11 @@ interface BlockInterface
      * @return string
      */
     public function getShortName();
+
+    /**
+     * Return the controller of the block
+     *
+     * @return string
+     */
+    public function getController();
 }
