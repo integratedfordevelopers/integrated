@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_page.template_locator.class">Integrated\Bundle\PageBundle\Locator\TemplateLocator</parameter>
+        <parameter key="integrated_page.twig.grid_extension.class">Integrated\Bundle\PageBundle\Twig\Extension\GridExtension</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_page.template_locator" class="%integrated_page.template_locator.class%">
+            <argument type="service" id="kernel" />
+        </service>
+
+        <service id="integrated_page.twig.grid_extension" class="%integrated_page.twig.grid_extension.class%">
+            <argument type="service" id="twig.form.renderer" />
+            <argument type="service" id="form.factory" />
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+</container>

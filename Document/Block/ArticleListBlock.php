@@ -146,4 +146,12 @@ class ArticleListBlock extends Block
         $this->readMoreUrl = $readMoreUrl;
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getController()
+    {
+        return '';
+    }
 }

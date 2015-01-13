@@ -36,11 +36,9 @@ class Grid
     protected $items;
 
     /**
-     * @param string $id
      */
-    public function __construct($id)
+    public function __construct()
     {
-        $this->id = $id;
         $this->items = new ArrayCollection();
     }
 
@@ -50,6 +48,16 @@ class Grid
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param string $id
+     * @return Grid
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**

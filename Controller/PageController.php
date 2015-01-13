@@ -60,7 +60,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page created');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_layout', ['id' => $page->getId()]));
+            return $this->redirect($this->generateUrl('integrated_page_page_edit', ['id' => $page->getId()]));
         }
 
         return [
@@ -86,6 +86,7 @@ class PageController extends Controller
         }
 
         return [
+            'page' => $page,
             'form' => $form->createView(),
         ];
     }
@@ -122,31 +123,6 @@ class PageController extends Controller
     public function layoutAction(Page $page)
     {
         $pages = $this->getDocumentManager()->getRepository('IntegratedPageBundle:Page\Page')->findAll();
-
-//        $block = $this->getDocumentManager()->getRepository('IntegratedPageBundle:Block\Block')->findOneBy(['shortName' => 'test']);
-//
-//        $item1 = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Item();
-//        $item1->setBlock($block);
-//
-//        $column1 = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Column();
-//        $column1->setSize(8);
-//        $column1->setItems([$item1]);
-//
-//        $column2 = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Column();
-//        $column2->setSize(4);
-//
-//        $row = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Row();
-//        $row->setColumns([$column1, $column2]);
-//
-//        $item2 = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Item();
-//        $item2->setRow($row);
-//
-//        $grid = new \Integrated\Bundle\PageBundle\Document\Page\Grid\Grid('main');
-//        $grid->setItems([$item1, $item2]);
-//
-//        $page->setGrids([$grid]);
-//
-//        $this->getDocumentManager()->flush();
 
         return [
             'page'  => $page,

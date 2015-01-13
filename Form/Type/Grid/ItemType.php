@@ -53,7 +53,7 @@ class ItemType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Item',
+            'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\Grid\Item',
         ));
     }
 

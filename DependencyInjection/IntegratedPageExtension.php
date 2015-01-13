@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Loader;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class IntegratedWebsiteExtension extends Extension
+class IntegratedPageExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -31,6 +31,7 @@ class IntegratedWebsiteExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
+        $loader->load('services.xml');
         $loader->load('metadata.xml');
         $loader->load('form.xml');
     }

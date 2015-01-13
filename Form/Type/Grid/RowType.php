@@ -51,7 +51,7 @@ class RowType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Row',
+            'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\Grid\Row',
         ));
     }
 

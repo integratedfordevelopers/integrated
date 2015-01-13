@@ -49,4 +49,12 @@ class TextBlock extends Block
         $this->content = $content;
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getController()
+    {
+        return '';
+    }
 }

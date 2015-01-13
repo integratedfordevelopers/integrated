@@ -42,6 +42,8 @@ class GridType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('id', 'text');
+
         $builder->add('items', 'collection', [
             'type'         => new ItemType($this->dm),
             'allow_add'    => true,
@@ -55,7 +57,7 @@ class GridType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Integrated\Bundle\WebsiteBundle\Document\Page\Grid\Grid',
+            'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\Grid\Grid',
         ));
     }
 

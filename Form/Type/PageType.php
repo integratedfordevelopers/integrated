@@ -14,10 +14,10 @@ namespace Integrated\Bundle\PageBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Integrated\Bundle\PageBundle\Form\Type\Grid\GridType;
-
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Doctrine\ODM\MongoDB\DocumentManager;
+
+use Integrated\Bundle\PageBundle\Form\Type\Grid\GridType;
+use Integrated\Bundle\PageBundle\Locator\TemplateLocator;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -30,11 +30,18 @@ class PageType extends AbstractType
     protected $dm;
 
     /**
-     * @param ManagerRegistry $mr
+     * @var TemplateLocator
      */
-    public function __construct(ManagerRegistry $mr)
+    protected $locator;
+
+    /**
+     * @param DocumentManager $dm
+     * @param TemplateLocator $locator
+     */
+    public function __construct(DocumentManager $dm, TemplateLocator $locator)
     {
-        $this->dm = $mr->getManager();
+        $this->dm = $dm;
+        $this->locator = $locator;
     }
 
     /**
@@ -47,10 +54,7 @@ class PageType extends AbstractType
         $builder->add('slug', 'text');
 
         $builder->add('layout', 'choice', [
-            'choices' => [
-                'example1' => 'Example 1',
-                'example2' => 'Example 2',
-            ],
+            'choices' => $this->getTemplates(),
         ]);
 
         $builder->add('publishedAt', 'integrated_datetime');
@@ -60,8 +64,11 @@ class PageType extends AbstractType
         ]);
 
         $builder->add('grids', 'collection', [
-            'type'     => new GridType($this->dm),
-            'required' => false,
+            'type'         => new GridType($this->dm),
+            'allow_add'    => true,
+            'allow_delete' => true,
+            'prototype'    => false,
+            'required'     => false,
         ]);
     }
 
@@ -71,5 +78,15 @@ class PageType extends AbstractType
     public function getName()
     {
         return 'integrated_page_page';
+    }
+
+    /**
+     * @return array
+     */
+    protected function getTemplates()
+    {
+        $templates = $this->locator->getTemplates();
+
+        return array_combine($templates, $templates);
     }
 }

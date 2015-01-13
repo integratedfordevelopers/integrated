@@ -15,32 +15,32 @@
                 <h1>{% trans %}Edit{% endtrans %} <small>Page</small></h1>
             </div>
 
-            {{ form(form, { 'style': 'horizontal' }) }}
+            {{ form_start(form, { 'style': 'horizontal' }) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.title) }}
+            {{ form_row(form.slug) }}
+
+            <div class="form-group">
+                {{ form_label(form.layout) }}
+                <div class="col-lg-10">
+                    <input type="text" name="integrated_page_page[layout]" class="form-control" value="{{ page.layout }}" readonly="readonly" />
+                </div>
+            </div>
+
+            {{ form_row(form.publishedAt) }}
+            {{ form_row(form.disabled) }}
+
+            {% block grids %}
+                {{ include(page.layout|replace({ '.html.twig': '.grid.html.twig' })) }}
+            {% endblock %}
+
+            {{ form_row(form._token) }}
+            {{ form_row(form.submit) }}
+            {{ form_end(form, { 'render_rest': false }) }}
         </div>
     </div>
 
-    <script id="block-template" type="text/x-handlebars-template">
-        <div id="{% raw %}{{id}}{% endraw %}_block_element" class="block">
-            <input type="number" id="{% raw %}{{id}}{% endraw %}_order" name="{% raw %}{{name}}{% endraw %}[order]" data-field="order" class="form-control" value="{% raw %}{{index}}{% endraw %}" />
-            <input type="text" id="{% raw %}{{id}}{% endraw %}_block" name="{% raw %}{{name}}{% endraw %}[block]" data-field="block" class="form-control" value="{% raw %}{{value}}{% endraw %}" />
-        </div>
-    </script>
-
-    <script id="columns-template" type="text/x-handlebars-template">
-        <div id="{% raw %}{{ id }}{% endraw %}_row" class="row">
-            <input type="number" id="{% raw %}{{id}}{% endraw %}_order" name="{% raw %}{{name}}{% endraw %}[order]" data-field="order" class="form-control" value="{% raw %}{{index}}{% endraw %}" />
-
-            <div id="{% raw %}{{id}}{% endraw %}_row_columns">
-                {% raw %}{{#each columns}}{% endraw %}
-                    <div id="{% raw %}{{id}}{% endraw %}_row_columns_{% raw %}{{index}}{% endraw %}" class="col-xs-{% raw %}{{ size }}{% endraw %}">
-                        <input type="number" id="{% raw %}{{id}}{% endraw %}_row_columns_{% raw %}{{index}}{% endraw %}_size" name="{% raw %}{{name}}{% endraw %}[row][columns][{% raw %}{{index}}{% endraw %}][size]" class="form-control" value="{% raw %}{{size}}{% endraw %}">
-                        <div class="section">
-                            <div id="{% raw %}{{id}}{% endraw %}_row_columns_{% raw %}{{index}}{% endraw %}_items" class="sortable" data-name="{% raw %}{{name}}{% endraw %}[row][columns][{% raw %}{{index}}{% endraw %}][items]"></div>
-                        </div>
-                    </div>
-                {% raw %}{{/each}}{% endraw %}
-            </div>
-        </div>
-    </script>
+    {{ include('IntegratedPageBundle::handlebars.html.twig') }}
 
 {% endblock %}

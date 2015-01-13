@@ -221,6 +221,33 @@ class Page
     }
 
     /**
+     * Get index of the grid
+     *
+     * @param Grid $grid
+     * @return int
+     */
+    public function indexOf(Grid $grid)
+    {
+        return $this->grids->indexOf($grid);
+    }
+
+    /**
+     * Get grid by id
+     *
+     * @param string $id
+     * @return Grid
+     */
+    public function getGrid($id)
+    {
+        foreach ($this->grids as $grid) {
+
+            if ($grid instanceof Grid && $grid->getId() == $id) {
+                return $grid;
+            }
+        }
+    }
+
+    /**
      * Get the created at of the document
      *
      * @return \DateTime
