@@ -77,7 +77,7 @@
 
             for (var i = 0; i < total; i++) {
 
-                var size = parseInt(prompt('Size of column ' + i + 1 + '?'));
+                var size = parseInt(prompt('Size of column ' + (i+1) + '?'));
 
                 columns.push({
                     id   : name.replace(/]\[/g, '_').replace('[', '_').replace(/]$/, ''),

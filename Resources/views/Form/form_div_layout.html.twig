@@ -185,6 +185,7 @@
 
 {% block integrated_page_grid_grid_row %}
 {% spaceless %}
+    {{ form_widget(form.id) }}
     {{ _self.integrated_page_grid_section(form) }}
 {% endspaceless %}
 {% endblock %}
