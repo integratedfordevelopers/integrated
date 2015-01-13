@@ -70,19 +70,19 @@ class GridExtension extends \Twig_Extension
                     return $this->renderer->searchAndRenderBlock($grid, 'row');
                 }
             }
-        }
 
-        if (isset($context['page']) && ($page = $context['page']) instanceof Page) {
-            /** @var Page $page */
+            if (isset($form->vars['value']) && ($page = $form->vars['value']) instanceof Page) {
+                /** @var Page $page */
 
-            $grid = new Grid();
-            $grid->setId($id);
+                $grid = new Grid();
+                $grid->setId($id);
 
-            $page->addGrid($grid);
+                $page->addGrid($grid);
 
-            $form = $this->form->create('integrated_page_page', $page)->createView();
+                $form = $this->form->create('integrated_page_page', $page)->createView();
 
-            return $this->renderer->searchAndRenderBlock($form->offsetGet('grids')->offsetGet($page->indexOf($grid)), 'row');
+                return $this->renderer->searchAndRenderBlock($form->offsetGet('grids')->offsetGet($page->indexOf($grid)), 'row');
+            }
         }
     }
 
