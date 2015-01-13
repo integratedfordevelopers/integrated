@@ -29,7 +29,6 @@ use Integrated\Common\ContentType\ContentTypeInterface;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
  * @ODM\Document(collection="relation")
- * @MongoDBUnique(fields="type")
  */
 class Relation implements RelationInterface
 {
@@ -51,7 +50,6 @@ class Relation implements RelationInterface
      * @var string
      * @Assert\NotBlank
      * @ODM\String
-     * @ODM\UniqueIndex
      */
     protected $type;
 
