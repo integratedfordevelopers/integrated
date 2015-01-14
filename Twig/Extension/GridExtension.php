@@ -1,18 +1,17 @@
 <?php
 
-/*
-* This file is part of the Integrated package.
-*
-* (c) e-Active B.V. <integrated@e-active.nl>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+/**
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
 use Integrated\Bundle\PageBundle\Document\Page\Page;
-use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

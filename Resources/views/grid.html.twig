@@ -5,7 +5,7 @@
 
         {% if item.block %}
             <div class="block">
-
+                {{ render(controller(item.block.controller)) }}
             </div>
         {% endif %}
 
