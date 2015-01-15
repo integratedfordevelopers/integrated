@@ -26,7 +26,6 @@
       "Integrated\\Bundle\\MenuBundle": ""
     }
   },
-  "target-dir": "Integrated/Bundle/ContentBundle",
   "extra": {
     "branch-alias": {
       "dev-develop": "0.1.1-dev"
