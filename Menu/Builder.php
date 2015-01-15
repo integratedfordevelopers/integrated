@@ -21,7 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class MenuBuilder
+class Builder
 {
     /**
      * @var FactoryInterface
