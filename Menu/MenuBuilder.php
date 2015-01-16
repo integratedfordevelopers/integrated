@@ -44,12 +44,12 @@ class MenuBuilder
     }
 
     /**
+     * @param string $menu
      * @return ItemInterface
      */
-    public function build()
+    public function build($menu)
     {
-        // Todo multiple menu's + menu from config?
-        $menu = $this->factory->createItem('root');
+        $menu = $this->factory->createItem($menu);
 
         // Dispatch configure event
         $this->eventDispatcher->dispatch(ConfigureMenuEvent::CONFIGURE, new ConfigureMenuEvent($this->factory, $menu));
