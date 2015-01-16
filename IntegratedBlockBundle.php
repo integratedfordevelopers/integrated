@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -12,10 +12,22 @@
 namespace Integrated\Bundle\BlockBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+use Integrated\Bundle\BlockBundle\DependencyInjection\Compiler\BlockHandlerRegistryPass;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class IntegratedBlockBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new BlockHandlerRegistryPass());
+    }
 }

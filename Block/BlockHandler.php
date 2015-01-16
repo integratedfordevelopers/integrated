@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -9,22 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\BlockBundle\Controller;
+namespace Integrated\Bundle\BlockBundle\Block;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Integrated\Common\Block\BlockHandlerInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ArticleListBlockController extends Controller
+abstract class BlockHandler implements BlockHandlerInterface
 {
     /**
-     * @Template
+     * @param OptionsResolver $resolver
      */
-    public function indexAction()
+    public function setDefaults(OptionsResolver $resolver)
     {
-        return [];
     }
 }

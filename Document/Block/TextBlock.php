@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -53,8 +53,8 @@ class TextBlock extends Block
     /**
      * {@inheritdoc}
      */
-    public function getController()
+    public function getType()
     {
-        return 'IntegratedBlockBundle:TextBlock:index';
+        return 'text';
     }
 }

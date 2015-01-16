@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_block.form.block_type.class">Integrated\Common\Form\Type\MetadataType</parameter>
+
+        <parameter key="integrated_block.twig.block_extension.class">Integrated\Bundle\BlockBundle\Twig\Extension\BlockExtension</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_block.form.block_type" class="%integrated_block.form.block_type.class%">
+            <argument type="service" id="integrated_block.metadata.factory" />
+            <argument>integrated_block_block</argument><!-- form name -->
+        </service>
+
+        <service id="integrated_block.twig.grid_extension" class="%integrated_block.twig.block_extension.class%">
+            <argument type="service" id="integrated_block.registry.block_handler" />
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+</container>

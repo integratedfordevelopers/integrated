@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -14,7 +14,6 @@ namespace Integrated\Bundle\BlockBundle\Document\Block;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
@@ -27,8 +26,6 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  * @ODM\Document(collection="block", indexes={@ODM\Index(keys={"class"="asc"})})
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
- *
- * @MongoDBUnique(fields="shortName", message="This value should be unique.")
  */
 abstract class Block implements BlockInterface
 {
@@ -37,6 +34,14 @@ abstract class Block implements BlockInterface
      * @ODM\Id(strategy="UUID")
      */
     protected $id;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Assert\NotBlank
+     * @Type\Field
+     */
+    protected $title;
 
     /**
      * @var \DateTime
@@ -58,6 +63,13 @@ abstract class Block implements BlockInterface
     protected $publishedAt;
 
     /**
+     * @var \DateTime
+     * @ODM\Date
+     * @Type\Field(type="integrated_datetime")
+     */
+    protected $publishedUntil;
+
+    /**
      * @var bool
      * @ODM\Boolean
      * @Type\Field(
@@ -68,23 +80,6 @@ abstract class Block implements BlockInterface
      * )
      */
     protected $disabled = false;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @Assert\NotBlank
-     * @Type\Field
-     */
-    protected $title;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
-     * @Assert\NotBlank
-     * @Type\Field
-     */
-    protected $shortName;
 
     /**
      * Constructor
@@ -104,6 +99,28 @@ abstract class Block implements BlockInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get the title of the document
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the title of the document
+     *
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
     }
 
     /**
@@ -173,6 +190,28 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * Get the published until of the document
+     *
+     * @return \DateTime
+     */
+    public function getPublishedUntil()
+    {
+        return $this->publishedUntil;
+    }
+
+    /**
+     * Set the published until of the document
+     *
+     * @param \DateTime $publishedUntil
+     * @return Block
+     */
+    public function setPublishedUntil(\DateTime $publishedUntil = null)
+    {
+        $this->publishedUntil = $publishedUntil;
+        return $this;
+    }
+
+    /**
      * Get the disabled of the document
      *
      * @return bool
@@ -192,59 +231,5 @@ abstract class Block implements BlockInterface
     {
         $this->disabled = (bool) $disabled;
         return $this;
-    }
-
-    /**
-     * Get the title of the document
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set the title of the document
-     *
-     * @param string $title
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * Get the short name of the document
-     *
-     * @return string
-     */
-    public function getShortName()
-    {
-        return $this->shortName;
-    }
-
-    /**
-     * Set the short name of the document
-     *
-     * @param string $shortName
-     * @return $this
-     */
-    public function setShortName($shortName)
-    {
-        $this->shortName = $shortName;
-        return $this;
-    }
-
-    /**
-     * Get the class of the document
-     *
-     * @return string
-     */
-    public function getClass()
-    {
-        return get_class($this);
     }
 }
