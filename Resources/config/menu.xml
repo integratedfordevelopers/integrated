@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_menu.menu.builder.class">Integrated\Bundle\MenuBundle\Menu\Builder</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_menu.builder" class="%integrated_menu.menu.builder.class%">
+            <argument type="service" id="knp_menu.factory" />
+        </service>
+
+    </services>
+
+</container>

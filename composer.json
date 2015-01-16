@@ -23,10 +23,9 @@
   },
   "autoload":{
     "psr-4":{
-      "Integrated\\Bundle\\MenuBundle": ""
+      "Integrated\\Bundle\\MenuBundle\\": ""
     }
   },
-  "target-dir": "Integrated/Bundle/ContentBundle",
   "extra": {
     "branch-alias": {
       "dev-develop": "0.1.1-dev"
