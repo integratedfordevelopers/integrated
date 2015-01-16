@@ -14,26 +14,23 @@ namespace Integrated\Common\Block;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-interface BlockInterface
+interface BlockHandlerRegistryInterface
 {
     /**
-     * Get the block id
-     *
-     * @return string
+     * @param string $type
+     * @param BlockHandlerInterface $block
      */
-    public function getId();
+    public function registerHandler($type, BlockHandlerInterface $block);
 
     /**
-     * Get the block title
-     *
-     * @return string
+     * @param string $type
+     * @return bool
      */
-    public function getTitle();
+    public function hasHandler($type);
 
     /**
-     * Get the block type
-     *
-     * @return string
+     * @param string $type
+     * @return BlockHandlerInterface
      */
-    public function getType();
+    public function getHandler($type);
 }
