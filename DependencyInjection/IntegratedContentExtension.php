@@ -58,6 +58,8 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 
         $loader->load('security.xml');
 
+        $loader->load('block.xml');
+
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);
     }
