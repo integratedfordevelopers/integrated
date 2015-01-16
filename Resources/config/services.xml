@@ -6,21 +6,31 @@
 
     <parameters>
 
-        <parameter key="integrated_page.template_locator.class">Integrated\Bundle\PageBundle\Locator\TemplateLocator</parameter>
+        <parameter key="integrated_page.form.page_type.class">Integrated\Bundle\PageBundle\Form\Type\PageType</parameter>
+
         <parameter key="integrated_page.twig.grid_extension.class">Integrated\Bundle\PageBundle\Twig\Extension\GridExtension</parameter>
+
+        <parameter key="integrated_page.template_locator.class">Integrated\Bundle\PageBundle\Locator\TemplateLocator</parameter>
 
     </parameters>
 
     <services>
 
-        <service id="integrated_page.template_locator" class="%integrated_page.template_locator.class%">
-            <argument type="service" id="kernel" />
+        <service id="integrated_page.form.page_type" class="%integrated_page.form.page_type.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.template_locator" />
+            <tag name="form.type" alias="integrated_page_page" />
         </service>
+
 
         <service id="integrated_page.twig.grid_extension" class="%integrated_page.twig.grid_extension.class%">
             <argument type="service" id="twig.form.renderer" />
             <argument type="service" id="form.factory" />
             <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_page.template_locator" class="%integrated_page.template_locator.class%">
+            <argument type="service" id="kernel" />
         </service>
 
     </services>

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -30,9 +30,6 @@ class IntegratedPageExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
         $loader->load('services.xml');
-        $loader->load('metadata.xml');
-        $loader->load('form.xml');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -13,7 +13,7 @@ namespace Integrated\Bundle\PageBundle\Document\Page\Grid;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
-use Integrated\Bundle\PageBundle\Document\Block\Block;
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
 /**
  * Item document
@@ -32,7 +32,7 @@ class Item
 
     /**
      * @var Block
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\PageBundle\Document\Block\Block")
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\BlockBundle\Document\Block\Block")
      */
     protected $block;
 

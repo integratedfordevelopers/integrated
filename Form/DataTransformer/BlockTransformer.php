@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -50,6 +50,6 @@ class BlockTransformer implements DataTransformerInterface
      */
     public function reverseTransform($id)
     {
-        return $this->dm->getRepository('IntegratedPageBundle:Block\Block')->find($id);
+        return $this->dm->getRepository('IntegratedBlockBundle:Block\Block')->find($id);
     }
 }

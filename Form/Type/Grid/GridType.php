@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>

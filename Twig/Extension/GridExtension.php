@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -49,7 +49,7 @@ class GridExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_grid', [$this, 'grid'], ['is_safe' => ['html'], 'needs_context' => true]),
+            new \Twig_SimpleFunction('integrated_grid_form', [$this, 'renderGridForm'], ['is_safe' => ['html'], 'needs_context' => true]),
         ];
     }
 
@@ -58,7 +58,7 @@ class GridExtension extends \Twig_Extension
      * @param string $id
      * @return string
      */
-    public function grid($context, $id)
+    public function renderGridForm($context, $id)
     {
         if (isset($context['form']) && ($form = $context['form']) instanceof FormView) {
             /** @var FormView $form */

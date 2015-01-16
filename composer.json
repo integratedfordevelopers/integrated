@@ -28,6 +28,9 @@
         "braincrafted/bootstrap-bundle": "~2.0",
         "twbs/bootstrap": "3.*"
     },
+    "suggest": {
+        "integrated/website-bundle": "dev-master"
+    },
     "autoload":{
         "psr-0":{
             "Integrated\\Bundle\\PageBundle": ""
