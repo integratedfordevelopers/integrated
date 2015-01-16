@@ -13,6 +13,7 @@ namespace Integrated\Bundle\MenuBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use Knp\Menu\Provider\MenuProviderInterface;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
 
@@ -21,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class Builder
+class Provider implements MenuProviderInterface
 {
     /**
      * @var FactoryInterface
@@ -34,6 +35,11 @@ class Builder
     protected $eventDispatcher;
 
     /**
+     * @var ItemInterface[]
+     */
+    protected $menus = array();
+
+    /**
      * @param FactoryInterface $factory
      * @param EventDispatcherInterface $eventDispatcher
      */
@@ -44,16 +50,31 @@ class Builder
     }
 
     /**
-     * @param string $menu
-     * @return ItemInterface
+     * {@inheritdoc}
      */
-    public function build($menu)
+    public function get($name, array $options = array())
     {
-        $menu = $this->factory->createItem($menu);
+        if (!$this->has($name, $options)) {
+            throw new \InvalidArgumentException(sprintf('The menu "%s" is not defined.', $name));
+        }
 
-        // Dispatch configure event
-        $this->eventDispatcher->dispatch(ConfigureMenuEvent::CONFIGURE, new ConfigureMenuEvent($this->factory, $menu));
+        if (!isset($this->menus[$name])) {
+            $this->menus[$name] = $this->factory->createItem($name);
+        }
 
-        return $menu;
+        $this->eventDispatcher->dispatch(
+            ConfigureMenuEvent::CONFIGURE,
+            new ConfigureMenuEvent($this->factory, $this->menus[$name])
+        );
+
+        return $this->menus[$name];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function has($name, array $options = array())
+    {
+        return (strpos($name, 'integrated_') === 0);
     }
 }
