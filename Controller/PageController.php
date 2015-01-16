@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -22,6 +22,8 @@ class PageController extends Controller
 {
     public function showAction(Page $page)
     {
+        $this->get('integrated_block.registry.block_handler');
+
         return $this->render($page->getLayout(), ['page' => $page]);
     }
 }

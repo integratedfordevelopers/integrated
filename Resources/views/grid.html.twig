@@ -4,9 +4,7 @@
     {% for item in grid.items %}
 
         {% if item.block %}
-            <div class="block">
-                {{ render(controller(item.block.controller)) }}
-            </div>
+            {{ integrated_block(item.block) }}
         {% endif %}
 
         {% if item.row %}
