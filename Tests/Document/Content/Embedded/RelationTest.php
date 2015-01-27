@@ -41,15 +41,6 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setContentType function
-     */
-    public function testGetAndSetContentTypeFunction()
-    {
-        $contentType = 'contentType';
-        $this->assertSame($contentType, $this->relation->setContentType($contentType)->getContentType());
-    }
-
-    /**
      * Test get- and setReferences functions
      */
     public function testGetAndSetReferencesFunction()

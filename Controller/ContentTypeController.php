@@ -10,14 +10,20 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Integrated\Bundle\ContentBundle\Form\Type as Form;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-use Integrated\Common\ContentType\Mapping\Metadata;
 
+use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
+use Integrated\Common\ContentType\Mapping\MetadataInterface;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ */
 class ContentTypeController extends Controller
 {
     /**
@@ -103,7 +109,7 @@ class ContentTypeController extends Controller
     public function showAction(ContentType $contentType)
     {
         // Create form
-        $form = $this->createDeleteForm($contentType->getId());
+        $form = $this->createDeleteForm($contentType);
 
         return array(
             'form' => $form->createView(),
@@ -131,7 +137,7 @@ class ContentTypeController extends Controller
         $contentType->setClass($metadata->getClass());
 
         // Create form
-        $form = $this->createCreateForm($contentType, $metadata);
+        $form = $this->createNewForm($contentType, $metadata);
 
         return array(
             'form' => $form->createView()
@@ -147,7 +153,8 @@ class ContentTypeController extends Controller
      */
     public function createAction(Request $request)
     {
-		$metadata = $this->getMetadata()->getMetadata($request->get('content_type')['class']);
+		// @TODO: this should be passed by a query variable instead of this way
+		$metadata = $this->getMetadata()->getMetadata($request->get('content_type_new')['class']);
 
         if (!$metadata) {
             return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
@@ -158,7 +165,7 @@ class ContentTypeController extends Controller
         $contentType->setClass($metadata->getClass());
 
         // Create form
-        $form = $this->createCreateForm($contentType, $metadata);
+        $form = $this->createNewForm($contentType, $metadata);
 
         // Validate request
         $form->handleRequest($request);
@@ -244,7 +251,7 @@ class ContentTypeController extends Controller
      */
     public function deleteAction(Request $request, ContentType $contentType)
     {
-        $form = $this->createDeleteForm($contentType->getId());
+        $form = $this->createDeleteForm($contentType);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -291,21 +298,23 @@ class ContentTypeController extends Controller
      * Creates a form to create a ContentType document
      *
      * @param ContentType $contentType
-     * @param Metadata\ContentType $metadata
+     * @param MetadataInterface $metadata
      * @return \Symfony\Component\Form\Form
      */
-	protected function createCreateForm(ContentType $contentType, Metadata\ContentType $metadata)
+	protected function createNewForm(ContentType $contentType, MetadataInterface $metadata)
     {
         $form = $this->createForm(
-            new Form\ContentType($metadata),
+			'content_type_new',
             $contentType,
-            array(
-                'action' => $this->generateUrl('integrated_content_content_type_create'),
-                'method' => 'POST',
-            )
+			[
+				'action'   => $this->generateUrl('integrated_content_content_type_create'),
+     			'method'   => 'POST',
+				'metadata' => $metadata
+			],
+			[
+				'submit' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+			]
         );
-
-        $form->add('submit', 'submit', array('label' => 'Save'));
 
         return $form;
     }
@@ -314,38 +323,65 @@ class ContentTypeController extends Controller
      * Creates a form to edit a ContentType document.
      *
      * @param ContentType $contentType
-     * @param Metadata\ContentType $metadata
+     * @param MetadataInterface $metadata
      * @return \Symfony\Component\Form\Form
      */
-	protected function createEditForm(ContentType $contentType, Metadata\ContentType $metadata)
+	protected function createEditForm(ContentType $contentType, MetadataInterface $metadata)
     {
-        $form = $this->createForm(
-            new Form\ContentType($metadata),
-            $contentType,
-            array(
-                'action' => $this->generateUrl('integrated_content_content_type_update', array('id' => $contentType->getId())),
-                'method' => 'PUT',
-            )
-        );
-
-        $form->add('submit', 'submit', array('label' => 'Save'));
+		$form = $this->createForm(
+			'content_type_edit',
+			$contentType,
+			[
+				'action'   => $this->generateUrl('integrated_content_content_type_update', ['id' => $contentType->getId()]),
+				'method'   => 'PUT',
+				'metadata' => $metadata
+			],
+			[
+				'submit' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+			]
+		);
 
         return $form;
     }
 
     /**
-     * Creates a form to delete a Kitty entity by id.
+     * Creates a form to delete a ContentType document.
      *
      * @param mixed $id The entity id
      *
      * @return \Symfony\Component\Form\Form The form
      */
-	protected function createDeleteForm($id)
+	protected function createDeleteForm(ContentType $contentType)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('integrated_content_content_type_delete', array('id' => $id)))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> array('class' => 'btn-danger')))
-            ->getForm();
+		$form = $this->createForm(
+			'content_type_delete',
+			$contentType,
+			[
+				'action' => $this->generateUrl('integrated_content_content_type_delete', ['id' => $contentType->getId()]),
+				'method' => 'DELETE',
+			],
+			[
+				'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]],
+			]
+		);
+
+		return $form;
     }
+
+	/**
+	 * @inheritdoc
+	 */
+	public function createForm($type, $data = null, array $options = [], array $buttons = [])
+	{
+		/** @var FormBuilder $form */
+		$form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+
+		if ($buttons) {
+			$form->add('actions', 'form_actions', [
+				'buttons' => $buttons
+			]);
+		}
+
+		return $form->getForm();
+	}
 }

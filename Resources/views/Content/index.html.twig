@@ -124,13 +124,21 @@
                                 {% for title, count in facet %}
                                 <li>
                                     <label>
-                                        <input {% if title in active %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
+                                        <input {% if title in active[key] %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
                                         {% if key == 'contenttypes' %}
                                             {% if contentTypes[title] is defined %}
                                                 {{ contentTypes[title] }}
                                             {% else %}
                                                 {{ title }}
                                             {% endif %}
+                                        {% elseif key == 'channels' %}
+                                            {% if channels[title] is defined %}
+                                                {{ channels[title] }}
+                                            {% else %}
+                                                {{ title }}
+                                            {% endif %}
+                                        {% else %}
+                                            {{ title }}
                                         {% endif %}
                                         <span class="value">{{ count }}</span>
                                     </label>

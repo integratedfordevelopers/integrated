@@ -11,6 +11,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
     source: 40%? <sentence()>
     locale: <locale()>
     location: 20%? @location_embed*
+    channels: <numberBetween(1, 5)>x @channel*
 
   blog{1..50}:
     contentType: blog
@@ -23,6 +24,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
     content: <paragraphs(rand(3, 10), true)>
     locale: <locale()>
     location: 20%? @location_embed*
+    channels: <numberBetween(1, 5)>x @channel*
 
 Integrated\Bundle\ContentBundle\Document\Content\Relation\Person:
   author{1..15}:
@@ -36,11 +38,12 @@ Integrated\Bundle\ContentBundle\Document\Content\Relation\Person:
     addresses: [75%? @address_person_embed*]
 
     gender: <randomElement(['male', 'female'])>
-    prefix: <prefix()>
+    prefix: <title(@self->gender)>
     nickname: 15%? <username()>
     firstName: <firstname()>
     lastName: <lastname()>
     jobs: <randomElement([0,0,1,1,1,1,1,2])>x @job_embed*
+    channels: <numberBetween(1, 5)>x @channel*
 #    picture
 
 Integrated\Bundle\ContentBundle\Document\Content\Relation\Company:
@@ -55,6 +58,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Relation\Company:
     addresses: <randomElement([1,1,1,1,1,1,1,2])>x @address_company_embed*
 
     name (unique): <company()>
+    channels: <numberBetween(1, 5)>x @channel*
 #    logo:
 
 # -------------------------------------------- #

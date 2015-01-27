@@ -12,8 +12,10 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\Collection;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
 use Integrated\Common\Content\ContentInterface;
 
 /**
@@ -25,14 +27,14 @@ use Integrated\Common\Content\ContentInterface;
 class Relation
 {
     /**
-     * @var string id of the ContentType\Embedded\Relation
+     * @var string id of the Relation document
      * @ODM\String
      * @ODM\Index
      */
     protected $relationId;
 
     /**
-     * @var string type of the ContentType\Embedded\Relation
+     * @var string type of the Relation document
      * @ODM\String
      * @ODM\Index
      */
@@ -90,6 +92,7 @@ class Relation
 
     /**
      * Set references of Relations
+     *
      * @param Collection $references
      * @return $this
      */
@@ -101,7 +104,8 @@ class Relation
 
     /**
      * Get references of Relation
-     * @return ArrayCollection
+     *
+     * @return ContentInterface[]
      */
     public function getReferences()
     {
@@ -125,6 +129,7 @@ class Relation
 
     /**
      * Add reference to references collection
+     *
      * @param ContentInterface $reference
      * @return $this
      */
