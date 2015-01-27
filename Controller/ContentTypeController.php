@@ -68,12 +68,15 @@ class ContentTypeController extends Controller
         $documents = $dm->getRepository($this->contentTypeClass)->findBy(array(), array('name' => 'ASC'));
         $category  = array();
 
-        foreach($documents as $document) {
-            $parts = explode('\\', $document->getClass());
-            $count = count($parts);
-            $title = $parts[$count - 2] != 'Content' ? $parts[$count - 2] : $parts[$count - 1];
+        foreach ($documents as $document) {
+            $function = new \ReflectionClass($document->getClass());
 
-            $category[$title][] = $document;
+            if ($function->inNamespace()) {
+                $parts = array_reverse(explode('\\', $function->getName()));
+                $pos   = array_search('Content', $parts);
+
+                $category[$parts[$pos - 1]][] = $document;
+            }
         }
 
         ksort($category);
