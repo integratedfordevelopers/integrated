@@ -75,7 +75,9 @@ class ContentTypeController extends Controller
                 $parts = array_reverse(explode('\\', $function->getName()));
                 $pos   = array_search('Content', $parts);
 
-                $category[$parts[$pos - 1]][] = $document;
+                if (isset($parts[$pos - 1])) {
+                    $category[$parts[$pos - 1]][] = $document;
+                }
             }
         }
 
