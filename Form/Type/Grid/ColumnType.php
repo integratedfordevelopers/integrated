@@ -42,7 +42,7 @@ class ColumnType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('size', 'integer');
+        $builder->add('size', 'hidden');
 
         $builder->add('items', 'collection', [
             'type'         => new ItemType($this->dm),

@@ -40,7 +40,7 @@ class ItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('order', 'integer');
+        $builder->add('order', 'hidden');
 
         $builder->add('block', new BlockType($this->dm));
 

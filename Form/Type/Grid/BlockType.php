@@ -49,7 +49,7 @@ class BlockType extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return 'hidden';
     }
 
     /**

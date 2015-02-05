@@ -42,7 +42,7 @@ class GridType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'text');
+        $builder->add('id', 'hidden');
 
         $builder->add('items', 'collection', [
             'type'         => new ItemType($this->dm),
