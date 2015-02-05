@@ -1,0 +1,12 @@
+body {
+    overflow-x:hidden;
+}
+
+.section {
+    position: relative;
+}
+
+[data-action="remove"] {
+    position: absolute;
+    right: 0;
+}

@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 
@@ -20,10 +21,69 @@ use Integrated\Bundle\PageBundle\Document\Page\Page;
  */
 class PageController extends Controller
 {
+    /**
+     * @param Page $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function showAction(Page $page)
     {
-        $this->get('integrated_block.registry.block_handler');
+        return $this->render($page->getLayout(), [
+            'page' => $page,
+        ]);
+    }
 
-        return $this->render($page->getLayout(), ['page' => $page]);
+    /**
+     * @param Request $request
+     * @param Page $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, Page $page)
+    {
+        // @todo security check
+
+        $form = $this->createEditForm($page);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+
+            $this->getDocumentManager()->flush();
+
+            $this->get('braincrafted_bootstrap.flash')->success('Page updated');
+
+            return $this->redirect($this->generateUrl('integrated_website_page_edit', ['id' => $page->getId()]));
+        }
+
+        return $this->render($page->getLayout(), [
+            'page' => $page,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @param Page $page
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function createEditForm(Page $page)
+    {
+        $form = $this->createForm(
+            'integrated_page_page',
+            $page,
+            [
+                'action' => $this->generateUrl('integrated_website_page_edit', ['id' => $page->getId()]),
+                'method' => 'PUT',
+            ]
+        );
+
+        $form->add('submit', 'submit', ['label' => 'Save']);
+
+        return $form;
+    }
+
+    /**
+     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     */
+    protected function getDocumentManager()
+    {
+        return $this->get('doctrine_mongodb')->getManager();
     }
 }

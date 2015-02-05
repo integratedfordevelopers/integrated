@@ -12,7 +12,7 @@
                 {% for column in item.row.columns %}
 
                     <div class="col-xs-{{ column.size }}">
-                        {{ include('IntegratedWebsiteBundle::grid.html.twig', { 'grid': column }) }}
+                        {{ include('IntegratedWebsiteBundle:Page:grid.html.twig', { 'grid': column }) }}
                     </div>
 
                 {% endfor %}

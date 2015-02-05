@@ -1,16 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% block title %}Untitled{% endblock %}</title>
+    <title>{% block title page.title|default('Untitled') %}</title>
     <meta charset="UTF-8" />
 
-    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/integratedwebsite/css/styles.css') }}" />
 </head>
 <body>
 
-<div class="container">
-    {{ integrated_grid('main') }}
-</div>
+    <div class="container">
+        {{ integrated_grid('main') }}
+    </div>
+
+    {{ include('IntegratedWebsiteBundle::handlebars.html.twig') }}
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="{{ asset('bundles/integratedwebsite/js/grid.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/integratedcontent/components/handlebars/handlebars.min.js') }}"></script>
 
 </body>
 </html>
