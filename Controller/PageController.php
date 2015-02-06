@@ -48,9 +48,7 @@ class PageController extends Controller
 
             $this->getDocumentManager()->flush();
 
-            $this->get('braincrafted_bootstrap.flash')->success('Page updated');
-
-            return $this->redirect($this->generateUrl('integrated_website_page_edit', ['id' => $page->getId()]));
+            return $this->redirect($this->generateUrl('integrated_website_page_' . $page->getId()));
         }
 
         return $this->render($page->getLayout(), [
@@ -65,18 +63,14 @@ class PageController extends Controller
      */
     protected function createEditForm(Page $page)
     {
-        $form = $this->createForm(
-            'integrated_page_page',
+        return $this->createForm(
+            'integrated_website_page',
             $page,
             [
                 'action' => $this->generateUrl('integrated_website_page_edit', ['id' => $page->getId()]),
                 'method' => 'PUT',
             ]
         );
-
-        $form->add('submit', 'submit', ['label' => 'Save']);
-
-        return $form;
     }
 
     /**

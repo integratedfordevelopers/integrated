@@ -11,7 +11,7 @@
     $('.sortable .block').each(function(index, item) {
 
         var element = $(item);
-        element.prepend('<a href="javascript:;" class="btn btn-danger" data-action="remove" data-element-id="' + element.attr('id') + '">Remove block</a>');
+        element.find('.options').prepend('<a href="javascript:;" class="btn btn-danger" data-action="remove-block" data-element-id="' + element.attr('id') + '">Remove block</a>');
     });
 
     /*$('.sortable .row').each(function(index, item) {
@@ -28,7 +28,11 @@
 
     $('.sortable').sortable({
         connectWith: '.sortable',
-        helper: 'clone',
+        placeholder: 'placeholder',
+
+        start: function(e, ui) {
+            ui.placeholder.height(ui.helper.outerHeight());
+        },
 
         stop: function(e, ui) {
 
@@ -109,13 +113,20 @@
         }
     });
 
-    $(document).on('click', '[data-action="remove"]', function(e) {
+    $(document).on('click', '[data-action="remove-block"]', function(e) {
 
         e.preventDefault();
 
         if (confirm('Are you sure?')) {
             $('#' + $(this).attr('data-element-id')).remove();
         }
+    });
+
+    $(document).on('click', '[data-action="save"]', function(e) {
+
+        e.preventDefault();
+
+        $('#' + $(this).attr('data-element-id')).submit();
     });
 
 }(window.jQuery);

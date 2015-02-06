@@ -2,11 +2,23 @@ body {
     overflow-x:hidden;
 }
 
+.navbar-height {
+    height: 51px;
+}
+
 .section {
     position: relative;
 }
 
-[data-action="remove"] {
+.sortable {
+    min-height: 100px;
+}
+
+.placeholder {
+    background: #f5f5f5;
+}
+
+[data-action="remove-block"] {
     position: absolute;
     right: 0;
 }

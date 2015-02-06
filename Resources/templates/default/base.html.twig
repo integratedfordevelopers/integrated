@@ -9,9 +9,21 @@
 </head>
 <body>
 
+    {# auto generate #}
+    {% if form is defined %}
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+    {% endif %}
+
     <div class="container">
         {{ integrated_grid('main') }}
     </div>
+
+    {# auto generate #}
+    {% if form is defined %}
+        {{ form_row(form._token) }}
+        {{ form_end(form, { 'render_rest': false }) }}
+    {% endif %}
 
     {{ include('IntegratedWebsiteBundle::handlebars.html.twig') }}
 

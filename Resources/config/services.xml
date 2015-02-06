@@ -12,6 +12,8 @@
 
         <parameter key="integrated_website.page_toolbar.class">Integrated\Bundle\WebsiteBundle\EventListener\PageToolbarListener</parameter>
 
+        <parameter key="integrated_website.form.page_type.class">Integrated\Bundle\WebsiteBundle\Form\Type\PageType</parameter>
+
     </parameters>
 
     <services>
@@ -31,6 +33,11 @@
         <service id="integrated_website.page_toolbar" class="%integrated_website.page_toolbar.class%">
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="twig" />
+        </service>
+
+        <service id="integrated_website.form.page_type" class="%integrated_website.form.page_type.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="form.type" alias="integrated_website_page" />
         </service>
 
     </services>
