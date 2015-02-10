@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 
-class Author implements DataTransformerInterface
+class AuthorTransformer implements DataTransformerInterface
 {
     public function __construct(ManagerRegistry $om)
     {
