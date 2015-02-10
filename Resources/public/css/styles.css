@@ -10,15 +10,31 @@ body {
     position: relative;
 }
 
+.section .row .section {
+    border: 1px #bbb dotted;
+    margin: -1px -1px 20px -1px;
+}
+
 .sortable {
     min-height: 100px;
 }
 
 .placeholder {
     background: #f5f5f5;
+    margin-bottom: 20px;
+}
+
+.icon {
+    margin: 6px;
+    z-index: 2;
 }
 
 [data-action="remove-block"] {
     position: absolute;
     right: 0;
+}
+
+[data-action="configure-columns"] {
+    position: absolute;
+    margin-left: -8px;
 }
