@@ -25,7 +25,7 @@ class Row
 {
     /**
      * @var array
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Column")
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Column", strategy="set")
      */
     protected $columns;
 
