@@ -14,45 +14,39 @@ namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
 
 class AuthorTransformer implements DataTransformerInterface
 {
-    public function __construct(ManagerRegistry $om)
+    public function __construct(ManagerRegistry $mr)
     {
-        $this->om = $om;
+        $this->mr = $mr;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transform($array)
+    public function transform($arrayCollection)
     {
-        if($array == null) {
-            return array('data', 'type_div',);
+        if ($arrayCollection == null) {
+            return array();
         }
 
-        $collection = array(
-            'authors' => array(),
-            'types'   => array(),
-        );
+        $collection = array();
 
-        foreach($array as $author) {
-            if(!$author->getPerson()) {
+        foreach ($arrayCollection as $author) {
+            if (!($author instanceof Author) || !$author->getPerson()) {
                 continue;
             }
 
-            $collection['authors'][] = array(
+            $collection[] = array(
                 'id'   => $author->getPerson()->getId(),
-                'text' => $author->getPerson()->getFirstName() . ' ' . $author->getPerson()->getLastName()
+                'text' => (string) $author->getPerson(),
+                'type' => $author->getType()
             );
-
-            $collection['types'][] = '<div id="type_' . $author->getPerson()->getId() . '" style="margin-top: 10px;" class="input-group input-group-sm"><span class="input-group-addon">' . $author->getPerson()->getFirstName() . ' ' . $author->getPerson()->getLastName() . '</span><input type="text" class="form-control type-text change-name-author" name="' . $author->getPerson()->getId() . '" value="' . $author->getType() . '" placeholder="Type"></div>';
         }
 
-        return array(
-            'data'     => json_encode($collection['authors']),
-            'type_div' => implode($collection['types'])
-        );
+        return $collection;
     }
 
     /**
@@ -60,12 +54,12 @@ class AuthorTransformer implements DataTransformerInterface
      */
     public function reverseTransform($array)
     {
-        $dm         = $this->om->getManager();
+        $mr         = $this->mr->getManager();
         $collection = array();
 
         if(is_array($array) && isset($array['persons']) && isset($array['types']) && is_array($array['types'])) {
             foreach(explode(',', $array['persons']) as $person) {
-                $result = $dm->getRepository('IntegratedContentBundle:Content\Relation\Person')->find($person);
+                $result = $mr->getRepository('IntegratedContentBundle:Content\Relation\Person')->find($person);
 
                 if($result && isset($array['types'][$person])) {
                     $author = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author();
