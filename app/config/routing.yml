@@ -1,3 +1,14 @@
+integrated_website:
+    resource: "@IntegratedWebsiteBundle/Resources/config/routing.xml"
+
+integrated_block:
+    resource: "@IntegratedBlockBundle/Resources/config/routing.xml"
+    prefix: "/admin"
+
+integrated_page:
+    resource: "@IntegratedPageBundle/Resources/config/routing.xml"
+    prefix: "/admin"
+
 integrated_content:
     resource: "@IntegratedContentBundle/Resources/config/routing.xml"
     prefix: "/admin"

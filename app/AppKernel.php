@@ -17,15 +17,18 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Sp\BowerBundle\SpBowerBundle(),
+            new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+
             new Integrated\Bundle\ContentBundle\IntegratedContentBundle(),
             new Integrated\Bundle\FormTypeBundle\IntegratedFormTypeBundle(),
             new Integrated\Bundle\SolrBundle\IntegratedSolrBundle(),
             new Integrated\Bundle\UserBundle\IntegratedUserBundle(),
             new Integrated\Bundle\LockingBundle\IntegratedLockingBundle(),
-            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new Sp\BowerBundle\SpBowerBundle(),
-            new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
-
+            new Integrated\Bundle\PageBundle\IntegratedPageBundle(),
+            new Integrated\Bundle\BlockBundle\IntegratedBlockBundle(),
+            new Integrated\Bundle\WebsiteBundle\IntegratedWebsiteBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

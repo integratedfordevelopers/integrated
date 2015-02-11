@@ -3,7 +3,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
-
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }
@@ -27,12 +26,14 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    form_themes:
+        - 'IntegratedWebsiteBundle:Form:form_div_layout.html.twig'
 
 services:
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
         tags:
-                - { name: twig.extension }
+            - { name: twig.extension }
 
 # Assetic Configuration
 assetic:
