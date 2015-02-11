@@ -34,7 +34,6 @@
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
@@ -43,12 +42,13 @@
             "php app/console doctrine:mongodb:schema:create",
             "php app/console doctrine:schema:create",
             "php app/console init:queue --force",
-            "php app/console init:locking --force"
+            "php app/console init:locking --force",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "php app/console cache:clear --env=prod"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
@@ -57,7 +57,9 @@
             "php app/console doctrine:mongodb:schema:create",
             "php app/console doctrine:schema:update --force",
             "php app/console init:queue --force",
-            "php app/console init:locking --force"
+            "php app/console init:locking --force",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "php app/console cache:clear --env=prod"
         ]
     },
     "config": {
