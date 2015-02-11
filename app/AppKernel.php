@@ -29,6 +29,8 @@ class AppKernel extends Kernel
             new Integrated\Bundle\PageBundle\IntegratedPageBundle(),
             new Integrated\Bundle\BlockBundle\IntegratedBlockBundle(),
             new Integrated\Bundle\WebsiteBundle\IntegratedWebsiteBundle(),
+
+            new AppBundle\AppBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

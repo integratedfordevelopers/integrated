@@ -19,6 +19,8 @@
         "sensio/framework-extra-bundle": "~2.3",
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
+        "sp/bower-bundle": "~0.9",
+        "components/jquery": "1.10.*",
         "integrated/library": "dev-feature/block as 0.9.x-dev",
         "integrated/content-bundle": "dev-feature/block as 0.9.x-dev",
         "integrated/formtype-bundle": "~0.2",
@@ -26,9 +28,7 @@
         "integrated/user-bundle": "~0.2",
         "integrated/page-bundle": "dev-master",
         "integrated/block-bundle": "dev-master",
-        "integrated/website-bundle": "dev-master",
-        "sp/bower-bundle": "~0.9",
-        "components/jquery": "1.10.*"
+        "integrated/website-bundle": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
