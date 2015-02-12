@@ -43,8 +43,7 @@
                             {{ block.title }}
                         </td>
                         <td>
-                            {#{% set metadata = factory.metadata(block.class) %}#}
-                            {#{{ metadata.type|default(block.class) }}#}
+                            {{ block.type }}
                         </td>
                         <td>
                             <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">

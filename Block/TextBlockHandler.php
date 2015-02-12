@@ -36,7 +36,7 @@ class TextBlockHandler extends BlockHandler
      */
     public function execute(BlockInterface $block)
     {
-        return $this->twig->render('@IntegratedBlockBundle/Resources/blocks/text.html.twig', [
+        return $this->twig->render('IntegratedBlockBundle:templates/default:blocks/text/default.html.twig', [
             'block' => $block,
         ]);
     }
