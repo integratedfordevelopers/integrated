@@ -21,7 +21,7 @@ use Integrated\Bundle\PageBundle\Document\Page\Page;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class PageToolbarListener implements EventSubscriberInterface
+class WebsiteToolbarListener implements EventSubscriberInterface
 {
     /**
      * @var \Twig_Environment
@@ -66,12 +66,12 @@ class PageToolbarListener implements EventSubscriberInterface
         $pos = stripos($content, '<body');
 
         if (false !== $pos) {
-            $toolbar = $this->twig->render('IntegratedWebsiteBundle:Page:toolbar.html.twig', [
+            $toolbar = $this->twig->render('IntegratedWebsiteBundle::toolbar.html.twig', [
                 'page' => $page,
             ]);
 
             $end = stripos($content, '>', $pos) + 1;
-            $content = substr_replace($content, "\n".$toolbar, $end, 0);
+            $content = substr_replace($content, "\n" . $toolbar, $end, 0);
 
             $response->setContent($content);
         }

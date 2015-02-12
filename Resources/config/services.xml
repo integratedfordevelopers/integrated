@@ -10,7 +10,7 @@
 
         <parameter key="integrated_website.twig.grid_extension.class">Integrated\Bundle\WebsiteBundle\Twig\Extension\GridExtension</parameter>
 
-        <parameter key="integrated_website.page_toolbar.class">Integrated\Bundle\WebsiteBundle\EventListener\PageToolbarListener</parameter>
+        <parameter key="integrated_website.website_toolbar.class">Integrated\Bundle\WebsiteBundle\EventListener\WebsiteToolbarListener</parameter>
 
         <parameter key="integrated_website.form.page_type.class">Integrated\Bundle\WebsiteBundle\Form\Type\PageType</parameter>
 
@@ -30,7 +30,7 @@
             <tag name="twig.extension" />
         </service>
 
-        <service id="integrated_website.page_toolbar" class="%integrated_website.page_toolbar.class%">
+        <service id="integrated_website.website_toolbar" class="%integrated_website.website_toolbar.class%">
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="twig" />
         </service>

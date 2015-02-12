@@ -1,28 +1,24 @@
 {% verbatim %}
 
-    <script id="block-template" type="text/x-handlebars-template">
-        <div id="{{id}}_block_element" class="block">
-            <div class="helper">
-                <input type="hidden" id="{{id}}_order" name="{{name}}[order]" data-field="order" value="{{index}}" />
-                <input type="hidden" id="{{id}}_block" name="{{name}}[block]" data-field="block" value="{{value}}" />
-            </div>
+    <script id="integrated_website_template_block" type="text/x-handlebars-template">
+        <div id="{{id}}_block_element" class="integrated-website-block">
+            <input type="hidden" id="{{id}}_order" name="{{name}}[order]" data-field="integrated-website-item-order" value="{{index}}" />
+            <input type="hidden" id="{{id}}_block" name="{{name}}[block]" data-field="integrated-website-block" value="{{value}}" />
 
-            <div class="element">{{{element}}}</div>
+            <div class="integrated-website-block-element">{{{element}}}</div>
         </div>
     </script>
 
-    <script id="columns-template" type="text/x-handlebars-template">
-        <div id="{{id}}_row" class="row">
-            <div class="helper">
-                <input type="hidden" id="{{id}}_order" name="{{name}}[order]" data-field="order" value="{{index}}" />
-            </div>
+    <script id="integrated_website_template_cols" type="text/x-handlebars-template">
+        <div id="{{id}}_row" class="row integrated-website-row">
+            <input type="hidden" id="{{id}}_order" name="{{name}}[order]" data-field="integrated-website-item-order" value="{{index}}" />
 
-            <div id="{{id}}_row_columns" class="columns">
+            <div id="{{id}}_row_columns" class="integrated-website-cols">
                 {{#each columns}}
-                <div id="{{id}}_row_columns_{{index}}" class="col col-xs-{{ size }}">
-                    <input type="hidden" id="{{id}}_row_columns_{{index}}_size" name="{{name}}[row][columns][{{index}}][size]" data-field="size" value="{{size}}">
-                    <div class="section">
-                        <div id="{{id}}_row_columns_{{index}}_items" class="sortable" data-name="{{name}}[row][columns][{{index}}][items]"></div>
+                <div id="{{id}}_row_columns_{{index}}" class="col-xs-{{ size }} integrated-website-col">
+                    <input type="hidden" id="{{id}}_row_columns_{{index}}_size" name="{{name}}[row][columns][{{index}}][size]" data-field="integrated-website-col-size" value="{{size}}">
+                    <div class="integrated-website-section">
+                        <div id="{{id}}_row_columns_{{index}}_items" class="integrated-website-sortable" data-name="{{name}}[row][columns][{{index}}][items]"></div>
                     </div>
                 </div>
                 {{/each}}

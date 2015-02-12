@@ -1,7 +1,7 @@
 !function($) {
 
     var createBlock = function(name, index, value, element) {
-        var template = Handlebars.compile($('#block-template').html());
+        var template = Handlebars.compile($('#integrated_website_template_block').html());
 
         var html = template({
             id: getId(name),
@@ -36,21 +36,34 @@
     }
 
     var addRemoveButton = function(element) {
-        element.find('.helper').prepend('<a href="javascript:;" class="icon" data-action="remove-block" data-element-id="' + element.attr('id') + '" title="Remove block"><span class="glyphicon glyphicon-remove"></span></a>');
+        element.find('.integrated-website-block-element').before(
+            '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" data-element-id="' + element.attr('id') + '" title="Remove block">' +
+                '<span class="glyphicon glyphicon-remove"></span>' +
+            '</a>'
+        );
     }
 
     var addButtons = function(collection) {
-        collection.parent()
-            .append('<a href="javascript:;" class="icon" data-action="add-block" data-collection-id="' + collection.attr('id') + '" title="Add block"><span class="glyphicon glyphicon-plus"></span></a>')
-            .append('<a href="javascript:;" class="icon" data-action="add-columns" data-collection-id="' + collection.attr('id') + '" title="Add columns"><span class="glyphicon glyphicon-th-large"></span></a>');
+        collection.after(
+            '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-add" data-collection-id="' + collection.attr('id') + '" title="Add block">' +
+                '<span class="glyphicon glyphicon-plus"></span>' +
+            '</a>' +
+            '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-add" data-collection-id="' + collection.attr('id') + '" title="Add columns">' +
+                '<span class="glyphicon glyphicon-th-large"></span>' +
+            '</a>'
+        );
     }
 
     var addConfigButton = function(row) {
-        row.append('<a href="javascript:;" class="icon" data-action="configure-columns" title="Configure columns"><span class="glyphicon glyphicon-wrench"></span></a>');
+        row.append(
+            '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-config" title="Configure columns">' +
+                '<span class="glyphicon glyphicon-wrench"></span>' +
+            '</a>'
+        );
     }
 
     var getCollection = function(element) {
-        var button = element.closest('.section').children('[data-action="add-block"]');
+        var button = element.closest('.integrated-website-section').children('[data-action="integrated-website-block-add"]');
 
         return $('#' + button.attr('data-collection-id'));
     }
@@ -70,13 +83,13 @@
     var updateOrder = function(collection) {
         collection.children().each(function(index, element) {
 
-            $(element).children('.helper').children('input[data-field="order"]').val(index);
+            $(element).children('input[data-field="integrated-website-item-order"]').val(index);
         });
     }
 
-    $('.sortable').sortable({
-        connectWith: '.sortable',
-        placeholder: 'placeholder',
+    $('.integrated-website-sortable').sortable({
+        connectWith: '.integrated-website-sortable',
+        placeholder: 'integrated-website-item-placeholder',
         forcePlaceholderSize: true,
         scroll: false,
         opacity: 0.8,
@@ -84,13 +97,13 @@
         stop: function(e, ui) {
             var collection = getCollection(ui.item);
 
-            if (ui.item.hasClass('block')) {
+            if (ui.item.hasClass('integrated-website-block')) {
 
                 var index = incrementIndex(collection);
                 var name = collection.attr('data-name') + '[' + index + ']';
 
-                var value = ui.item.find('input[data-field="block"]').val();
-                var element = ui.item.find('.element').html();
+                var value = ui.item.find('input[data-field="integrated-website-block"]').val();
+                var element = ui.item.find('.integrated-website-block-element').html();
 
                 var block = createBlock(name, index, value, element);
 
@@ -103,17 +116,17 @@
         }
     });
 
-    $('.sortable .block').each(function(index, item) {
+    $('.integrated-website-sortable .integrated-website-block').each(function(index, item) {
         addRemoveButton($(item));
     });
 
-    $('.sortable').each(function(index, item) {
+    $('.integrated-website-sortable').each(function(index, item) {
         addButtons($(item));
     });
 
-    addConfigButton($('.section .row'));
+    addConfigButton($('.integrated-website-section .integrated-website-row'));
 
-    $(document).on('click', '[data-action="add-block"]', function(e) {
+    $(document).on('click', '[data-action="integrated-website-block-add"]', function(e) {
         e.preventDefault();
 
         var value = prompt('Please provide the id');
@@ -126,7 +139,7 @@
         }
     });
 
-    $(document).on('click', '[data-action="remove-block"]', function(e) {
+    $(document).on('click', '[data-action="integrated-website-block-remove"]', function(e) {
         e.preventDefault();
 
         if (confirm('Are you sure?')) {
@@ -134,13 +147,13 @@
         }
     });
 
-    $(document).on('click', '[data-action="save"]', function(e) {
+    $(document).on('click', '[data-action="integrated-website-save"]', function(e) {
         e.preventDefault();
 
         $('#' + $(this).attr('data-element-id')).submit();
     });
 
-    $(document).on('click', '[data-action="add-columns"]', function(e) {
+    $(document).on('click', '[data-action="integrated-website-cols-add"]', function(e) {
         e.preventDefault();
 
         var collection = $('#' + $(this).attr('data-collection-id'));
@@ -171,7 +184,7 @@
 
             if (total == data.length) {
 
-                var template = Handlebars.compile($('#columns-template').html());
+                var template = Handlebars.compile($('#integrated_website_template_cols').html());
 
                 var html = template({
                     id: id,
@@ -186,7 +199,7 @@
 
                 updateOrder(collection);
 
-                html.find('.sortable').each(function(index, item) {
+                html.find('.integrated-website-sortable').each(function(index, item) {
                     addButtons($(item));
                 });
 
@@ -197,14 +210,14 @@
         }
     });
 
-    $(document).on('click', '[data-action="configure-columns"]', function(e) {
+    $(document).on('click', '[data-action="integrated-website-cols-config"]', function(e) {
         e.preventDefault();
 
-        var oldRow = $(this).closest('.row');
-        var oldColumns = oldRow.children('.columns').children('.col');
+        var oldRow = $(this).closest('.integrated-website-row');
+        var oldColumns = oldRow.children('.integrated-website-cols').children('.integrated-website-col');
 
         var collection = getCollection(oldRow);
-        var index = parseInt(oldRow.children('.helper').children('input[data-field="order"]').val());
+        var index = parseInt(oldRow.children('input[data-field="integrated-website-item-order"]').val());
         var name = collection.attr('data-name') + '[' + index + ']';
         var id = getId(name);
 
@@ -219,7 +232,7 @@
 
             for (var i = 0; i < total; i++) {
 
-                var oldSize = $(oldColumns[i]).children('input[data-field="size"]').val();
+                var oldSize = $(oldColumns[i]).children('input[data-field="integrated-website-col-size"]').val();
 
                 var size = parseInt(prompt('Size of column ' + (i+1) + '?', oldSize));
 
@@ -236,7 +249,7 @@
 
             if (total == data.length) {
 
-                var template = Handlebars.compile($('#columns-template').html());
+                var template = Handlebars.compile($('#integrated_website_template_cols').html());
 
                 var html = template({
                     id: id,
@@ -247,11 +260,11 @@
 
                 html = $(html);
 
-                var newColumns = html.children('.columns').children('.col');
+                var newColumns = html.children('.integrated-website-cols').children('.integrated-website-col');
 
                 for (i = 0; i < total; i++) {
-                    $(newColumns[i]).children('.section').children('.sortable').append(
-                        $(oldColumns[i]).children('.section').children('.sortable').children()
+                    $(newColumns[i]).children('.integrated-website-section').children('.integrated-website-sortable').append(
+                        $(oldColumns[i]).children('.integrated-website-section').children('.integrated-website-sortable').children()
                     );
                 }
 
@@ -259,11 +272,11 @@
 
                 updateOrder(collection);
 
-                html.find('.sortable').each(function(index, item) {
+                html.find('.integrated-website-sortable').each(function(index, item) {
                     addButtons($(item));
                 });
 
-                addConfigButton(html.closest('.row'));
+                addConfigButton(html.closest('.integrated-website-row'));
 
                 //$('.sortable').sortable('refresh');
             }

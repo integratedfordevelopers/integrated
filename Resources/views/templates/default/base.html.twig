@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title page.title|default('Untitled') %}</title>
+    <meta charset="UTF-8" />
+
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+
+    {% block stylesheets %}
+        {# filter='uglifycss' #}
+        {% stylesheets output='css/styles.css'
+        '@IntegratedWebsiteBundle/Resources/public/less/styles.less' %}
+        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+</head>
+<body>
+
+{# auto generate #}
+{% if form is defined %}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+{% endif %}
+
+<div class="container">
+    {{ integrated_grid('main') }}
+</div>
+
+{# auto generate #}
+{% if form is defined %}
+    {{ form_row(form._token) }}
+    {{ form_end(form, { 'render_rest': false }) }}
+{% endif %}
+
+{{ include('IntegratedWebsiteBundle::handlebars.html.twig') }}
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ asset('bundles/integratedcontent/components/handlebars/handlebars.min.js') }}"></script>
+
+{% block javascripts %}
+    {# filter='uglifyjs' #}
+    {% javascripts output='js/scripts.js'
+    '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+</body>
+</html>
