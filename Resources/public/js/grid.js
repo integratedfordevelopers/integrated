@@ -80,6 +80,10 @@
         return index;
     }
 
+    var getIndex = function(element) {
+        return parseInt(element.children('input[data-field="integrated-website-item-order"]').attr('data-index'));
+    }
+
     var updateOrder = function(collection) {
         collection.children().each(function(index, element) {
 
@@ -99,11 +103,11 @@
 
             if (ui.item.hasClass('integrated-website-block')) {
 
-                var index = incrementIndex(collection);
+                var index = getIndex(ui.item);
                 var name = collection.attr('data-name') + '[' + index + ']';
 
-                var value = ui.item.find('input[data-field="integrated-website-block"]').val();
-                var element = ui.item.find('.integrated-website-block-element').html();
+                var value = ui.item.children('input[data-field="integrated-website-block"]').val();
+                var element = ui.item.children('.integrated-website-block-element').html();
 
                 var block = createBlock(name, index, value, element);
 
@@ -217,7 +221,7 @@
         var oldColumns = oldRow.children('.integrated-website-cols').children('.integrated-website-col');
 
         var collection = getCollection(oldRow);
-        var index = parseInt(oldRow.children('input[data-field="integrated-website-item-order"]').val());
+        var index = getIndex(oldRow);
         var name = collection.attr('data-name') + '[' + index + ']';
         var id = getId(name);
 

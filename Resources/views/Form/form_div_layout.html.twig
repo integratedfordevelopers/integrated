@@ -8,7 +8,7 @@
 {% block integrated_page_grid_block_row %}
 {% spaceless %}
     <div id="{{ form.vars.id }}_element" class="integrated-website-block">
-        {{ form_widget(form.parent.order, { 'attr': { 'data-field': 'integrated-website-item-order' } }) }}
+        {{ form_widget(form.parent.order, { 'attr': { 'data-field': 'integrated-website-item-order', 'data-index': form.parent.order.vars.value } }) }}
         {{ form_widget(form, { 'attr': { 'data-field': 'integrated-website-block' } }) }}
 
         <div class="integrated-website-block-element">
@@ -21,7 +21,7 @@
 {% block integrated_page_grid_row_row %}
 {% spaceless %}
     <div id="{{ form.vars.id }}" class="row integrated-website-row">
-        {{ form_widget(form.parent.order, { 'attr': { 'data-field': 'integrated-website-item-order' } }) }}
+        {{ form_widget(form.parent.order, { 'attr': { 'data-field': 'integrated-website-item-order', 'data-index': form.parent.order.vars.value } }) }}
         {{ form_widget(form.columns, { 'attr': { 'class': 'integrated-website-cols' } }) }}
     </div>
 {% endspaceless %}
