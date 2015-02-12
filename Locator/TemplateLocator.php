@@ -20,11 +20,6 @@ use Symfony\Component\Finder\Finder;
 class TemplateLocator
 {
     /**
-     * @var string
-     */
-    private $directory = '/Resources/templates';
-
-    /**
      * @var Kernel
      */
     private $kernel;
@@ -50,21 +45,19 @@ class TemplateLocator
         if (null === $this->templates) {
             $this->templates = [];
 
-            // @todo: support app/Resources/templates
-
             foreach ($this->kernel->getBundles() as $bundle) {
 
-                $path = $bundle->getPath().$this->directory;
+                $path = $bundle->getPath() . '/Resources/views/templates';
 
                 if (is_dir($path)) {
 
                     $finder = new Finder();
-                    $finder->files()->in($path)->name('*.html.twig')->notName('*.grid.html.twig');
+                    $finder->files()->in($path)->name('*.html.twig');
 
                     /** @var \Symfony\Component\Finder\SplFileInfo $file */
                     foreach ($finder as $file) {
 
-                        $this->templates[] = '@'.$bundle->getName().$this->directory.'/'.$file->getRelativePathname();
+                        $this->templates[] = $bundle->getName() . ':templates:' .  $file->getRelativePathname();
                     }
                 }
             }
