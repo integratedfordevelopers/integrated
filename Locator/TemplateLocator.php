@@ -43,6 +43,7 @@ class TemplateLocator
     public function getTemplates()
     {
         if (null === $this->templates) {
+
             $this->templates = [];
 
             foreach ($this->kernel->getBundles() as $bundle) {
@@ -52,7 +53,7 @@ class TemplateLocator
                 if (is_dir($path)) {
 
                     $finder = new Finder();
-                    $finder->files()->in($path)->name('*.html.twig');
+                    $finder->files()->in($path)->depth(1)->name('*.html.twig');
 
                     /** @var \Symfony\Component\Finder\SplFileInfo $file */
                     foreach ($finder as $file) {

@@ -13,6 +13,7 @@ namespace Integrated\Bundle\PageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
@@ -54,7 +55,7 @@ class PageType extends AbstractType
         $builder->add('slug', 'text');
 
         $builder->add('layout', 'choice', [
-            'choices' => $this->getTemplates(),
+            'choice_list' => $this->getChoiceList(),
         ]);
 
         $builder->add('publishedAt', 'integrated_datetime');
@@ -73,20 +74,20 @@ class PageType extends AbstractType
     }
 
     /**
+     * @return array
+     */
+    protected function getChoiceList()
+    {
+        $templates = $this->locator->getTemplates();
+
+        return new ChoiceList($templates, $templates);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getName()
     {
         return 'integrated_page_page';
-    }
-
-    /**
-     * @return array
-     */
-    protected function getTemplates()
-    {
-        $templates = $this->locator->getTemplates();
-
-        return array_combine($templates, $templates);
     }
 }
