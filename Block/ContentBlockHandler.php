@@ -17,7 +17,7 @@ use Integrated\Common\Block\BlockInterface;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ArticleListBlockHandler extends BlockHandler
+class ContentBlockHandler extends BlockHandler
 {
     /**
      * @var \Twig_Environment
@@ -37,7 +37,7 @@ class ArticleListBlockHandler extends BlockHandler
      */
     public function execute(BlockInterface $block)
     {
-        return $this->twig->render('@IntegratedContentBundle/Resources/blocks/article_list.html.twig', [
+        return $this->twig->render('IntegratedContentBundle:templates/default:blocks/content/default.html.twig', [
             'block' => $block,
         ]);
     }

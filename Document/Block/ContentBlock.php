@@ -18,14 +18,14 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 
 /**
- * ArticleListBlock document
+ * ContentBlock document
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
  * @ODM\Document
- * @Type\Document("Article list block")
+ * @Type\Document("Content block")
  */
-class ArticleListBlock extends Block
+class ContentBlock extends Block
 {
     /**
      * @var SearchSelection
@@ -38,13 +38,9 @@ class ArticleListBlock extends Block
      * @var string
      * @ODM\String
      * @Type\Field(
-     *      type="choice",
+     *      type="integrated_block_layout_choice",
      *      options={
-     *          "empty_value"="",
-     *          "choices"={
-     *              "layout1"="Layout 1",
-     *              "layout2"="Layout 2"
-     *          }
+     *          "type"="content"
      *      }
      * )
      */
@@ -153,6 +149,6 @@ class ArticleListBlock extends Block
      */
     public function getType()
     {
-        return 'article_list';
+        return 'content';
     }
 }

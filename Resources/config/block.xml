@@ -6,15 +6,15 @@
 
     <parameters>
 
-        <parameter key="integrated_content.block_handler.article_list.class">Integrated\Bundle\ContentBundle\Block\ArticleListBlockHandler</parameter>
+        <parameter key="integrated_content.block_handler.content.class">Integrated\Bundle\ContentBundle\Block\ContentBlockHandler</parameter>
 
     </parameters>
 
     <services>
 
-        <service id="integrated_content.block_handler.article_list" class="%integrated_content.block_handler.article_list.class%">
+        <service id="integrated_content.block_handler.content" class="%integrated_content.block_handler.content.class%">
             <argument type="service" id="twig" />
-            <tag name="integrated.block" type="article_list" />
+            <tag name="integrated.block" type="content" />
         </service>
 
     </services>
