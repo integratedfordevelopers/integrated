@@ -44,6 +44,12 @@ abstract class Block implements BlockInterface
     protected $title;
 
     /**
+     * @var string
+     * @ODM\String
+     */
+    protected $layout;
+
+    /**
      * @var \DateTime
      * @ODM\Date
      */
@@ -82,7 +88,6 @@ abstract class Block implements BlockInterface
     protected $disabled = false;
 
     /**
-     * Constructor
      */
     public function __construct()
     {
@@ -92,9 +97,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the id of the document
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -102,9 +105,7 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the title of the document
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getTitle()
     {
@@ -112,8 +113,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Set the title of the document
-     *
      * @param string $title
      * @return $this
      */
@@ -124,8 +123,24 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the created at of the document
-     *
+     * {@inheritdoc}
+     */
+    public function getLayout()
+    {
+        return $this->layout;
+    }
+
+    /**
+     * @param string $layout
+     * @return $this
+     */
+    public function setLayout($layout)
+    {
+        $this->layout = $layout;
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -134,8 +149,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Set the created at of the document
-     *
      * @param \DateTime $createdAt
      * @return $this
      */
@@ -146,8 +159,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the updated a of the document
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -156,8 +167,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Set the updated at of the document
-     *
      * @param \DateTime $updatedAt
      * @return $this
      */
@@ -168,8 +177,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the published at of the document
-     *
      * @return \DateTime
      */
     public function getPublishedAt()
@@ -178,8 +185,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Set the published at of the document
-     *
      * @param \DateTime $publishedAt
      * @return $this
      */
@@ -190,8 +195,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the published until of the document
-     *
      * @return \DateTime
      */
     public function getPublishedUntil()
@@ -200,8 +203,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Set the published until of the document
-     *
      * @param \DateTime $publishedUntil
      * @return Block
      */
@@ -212,8 +213,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Get the disabled of the document
-     *
      * @return bool
      */
     public function getDisabled()
@@ -222,8 +221,6 @@ abstract class Block implements BlockInterface
     }
 
     /**
-     * Set the disabled of the document
-     *
      * @param bool $disabled
      * @return $this
      */

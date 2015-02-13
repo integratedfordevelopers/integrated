@@ -17,7 +17,6 @@
         <service id="integrated_block.registry.block_handler" class="%integrated_block.registry.block_handler.class%" />
 
         <service id="integrated_block.block_handler.text" class="%integrated_block.block_handler.text.class%">
-            <argument type="service" id="twig" />
             <tag name="integrated.block" type="text" />
         </service>
 

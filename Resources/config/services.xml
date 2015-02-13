@@ -6,9 +6,6 @@
 
     <parameters>
 
-        <parameter key="integrated_block.form.block_type.class">Integrated\Common\Form\Type\MetadataType</parameter>
-        <parameter key="integrated_block.form.layout_choice_type.class">Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType</parameter>
-
         <parameter key="integrated_block.twig.block_extension.class">Integrated\Bundle\BlockBundle\Twig\Extension\BlockExtension</parameter>
 
         <parameter key="integrated_block.layout_locator.class">Integrated\Bundle\BlockBundle\Locator\LayoutLocator</parameter>
@@ -17,18 +14,10 @@
 
     <services>
 
-        <service id="integrated_block.form.block_type" class="%integrated_block.form.block_type.class%">
-            <argument type="service" id="integrated_block.metadata.factory" />
-            <argument>integrated_block_block</argument><!-- form name -->
-        </service>
-
-        <service id="integrated_block.form.layout_choice_type" class="%integrated_block.form.layout_choice_type.class%">
-            <argument type="service" id="integrated_block.layout_locator" />
-            <tag name="form.type" alias="integrated_block_layout_choice" />
-        </service>
-
-        <service id="integrated_block.twig.grid_extension" class="%integrated_block.twig.block_extension.class%">
+        <service id="integrated_block.twig.block_extension" class="%integrated_block.twig.block_extension.class%">
             <argument type="service" id="integrated_block.registry.block_handler" />
+            <argument type="service" id="integrated_block.layout_locator" />
+            <argument type="service" id="templating.name_parser" />
             <tag name="twig.extension" />
         </service>
 

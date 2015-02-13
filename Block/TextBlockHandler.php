@@ -19,24 +19,11 @@ use Integrated\Common\Block\BlockInterface;
 class TextBlockHandler extends BlockHandler
 {
     /**
-     * @var \Twig_Environment
-     */
-    private $twig;
-
-    /**
-     * @param \Twig_Environment $twig
-     */
-    public function __construct(\Twig_Environment $twig)
-    {
-        $this->twig = $twig;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function execute(BlockInterface $block)
     {
-        return $this->twig->render('IntegratedBlockBundle:templates/default:blocks/text/default.html.twig', [
+        return $this->render([
             'block' => $block,
         ]);
     }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_block.form.type.block.class">Integrated\Common\Form\Type\MetadataType</parameter>
+
+        <parameter key="integrated_block.form.type.layout_choice.class">Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_block.form.type.block" class="%integrated_block.form.type.block.class%">
+            <argument type="service" id="integrated_block.metadata.factory" />
+            <argument>integrated_block_block</argument><!-- form name -->
+        </service>
+
+        <service id="integrated_block.form.type.layout_choice" class="%integrated_block.form.type.layout_choice.class%">
+            <argument type="service" id="integrated_block.layout_locator" />
+            <tag name="form.type" alias="integrated_block_layout_choice" />
+        </service>
+
+    </services>
+</container>

@@ -32,7 +32,7 @@ class LayoutLocator
     /**
      * @var array
      */
-    private $templates;
+    private $themes;
 
     /**
      * @param Kernel $kernel
@@ -52,9 +52,9 @@ class LayoutLocator
 
             $this->layouts[$type] = [];
 
-            foreach ($this->getTemplates() as $template) {
+            foreach ($this->getThemes() as $theme) {
 
-                $path = $template . '/blocks/' . $type;
+                $path = $theme . '/blocks/' . $type;
 
                 if (is_dir($path)) {
 
@@ -68,24 +68,25 @@ class LayoutLocator
                     }
                 }
             }
+
+            $this->layouts[$type] = array_unique($this->layouts[$type]);
         }
 
         return $this->layouts[$type];
     }
 
-
     /**
      * @return array
      */
-    protected function getTemplates()
+    protected function getThemes()
     {
-        if (null === $this->templates) {
+        if (null === $this->themes) {
 
-            $this->templates = [];
+            $this->themes = [];
 
             foreach ($this->kernel->getBundles() as $bundle) {
 
-                $path = $bundle->getPath() . '/Resources/views/templates';
+                $path = $bundle->getPath() . '/Resources/views/themes';
 
                 if (is_dir($path)) {
 
@@ -95,12 +96,12 @@ class LayoutLocator
                     /** @var \Symfony\Component\Finder\SplFileInfo $file */
                     foreach ($finder as $file) {
 
-                        $this->templates[] = $file->getPathname();
+                        $this->themes[] = $file->getPathname();
                     }
                 }
             }
         }
 
-        return $this->templates;
+        return $this->themes;
     }
 }

@@ -42,9 +42,7 @@ class LayoutChoiceType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'choice_list' => function(Options $options) {
-                return $this->getChoiceList($options['type']);
-            },
+            'choice_list' => function(Options $options) { return $this->getChoiceList($options['type']); },
         ]);
 
         $resolver->setRequired([
@@ -53,7 +51,8 @@ class LayoutChoiceType extends AbstractType
     }
 
     /**
-     * @return array
+     * @param string $type
+     * @return ChoiceList
      */
     protected function getChoiceList($type)
     {
@@ -77,5 +76,4 @@ class LayoutChoiceType extends AbstractType
     {
         return 'integrated_block_layout_choice';
     }
-
 }

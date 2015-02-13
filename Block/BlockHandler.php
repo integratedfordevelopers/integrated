@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\BlockBundle\Block;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Integrated\Common\Block\BlockHandlerInterface;
 
 /**
@@ -21,9 +19,49 @@ use Integrated\Common\Block\BlockHandlerInterface;
 abstract class BlockHandler implements BlockHandlerInterface
 {
     /**
-     * @param OptionsResolver $resolver
+     * @var \Twig_Environment
      */
-    public function setDefaults(OptionsResolver $resolver)
+    private $twig;
+
+    /**
+     * @var string
+     */
+    private $template;
+
+    /**
+     * @param \Twig_Environment $twig
+     * @return $this
+     */
+    public function setTwig(\Twig_Environment $twig)
     {
+        $this->twig = $twig;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * @param string $template
+     * @return $this
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+        return $this;
+    }
+
+    /**
+     * @param array $parameters
+     * @return string
+     */
+    public function render(array $parameters = [])
+    {
+        return $this->twig->render($this->getTemplate(), $parameters);
     }
 }

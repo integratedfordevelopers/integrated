@@ -135,7 +135,7 @@ class BlockController extends Controller
         $class = get_class($block);
 
         $form = $this->createForm(
-            $this->get('integrated_block.form.block_type'),
+            $this->get('integrated_block.form.type.block'),
             $block,
             [
                 'action' => $this->generateUrl('integrated_block_block_new', ['class' => $class]),
@@ -143,6 +143,10 @@ class BlockController extends Controller
                 'data_class' => $class,
             ]
         );
+
+        $form->add('layout', 'integrated_block_layout_choice', [
+            'type' => $block->getType(),
+        ]);
 
         $form->add('submit', 'submit', ['label' => 'Save']);
 
@@ -156,7 +160,7 @@ class BlockController extends Controller
     protected function createEditForm(BlockInterface $block)
     {
         $form = $this->createForm(
-            $this->get('integrated_block.form.block_type'),
+            $this->get('integrated_block.form.type.block'),
             $block,
             [
                 'action' => $this->generateUrl('integrated_block_block_edit', ['id' => $block->getId()]),
@@ -164,6 +168,10 @@ class BlockController extends Controller
                 'data_class' => get_class($block),
             ]
         );
+
+        $form->add('layout', 'integrated_block_layout_choice', [
+            'type' => $block->getType(),
+        ]);
 
         $form->add('submit', 'submit', ['label' => 'Save']);
 

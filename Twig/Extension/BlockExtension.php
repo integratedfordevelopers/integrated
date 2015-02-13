@@ -11,8 +11,12 @@
 
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
+use Symfony\Bundle\FrameworkBundle\Templating\TemplateNameParser;
+
 use Integrated\Common\Block\BlockHandlerRegistryInterface;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Bundle\BlockBundle\Block\BlockHandler;
+use Integrated\Bundle\BlockBundle\Locator\LayoutLocator;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -25,11 +29,25 @@ class BlockExtension extends \Twig_Extension
     private $registry;
 
     /**
-     * @param BlockHandlerRegistryInterface $registry
+     * @var LayoutLocator
      */
-    public function __construct(BlockHandlerRegistryInterface $registry)
+    private $locator;
+
+    /**
+     * @var TemplateNameParser
+     */
+    private $parser;
+
+    /**
+     * @param BlockHandlerRegistryInterface $registry
+     * @param LayoutLocator $locator
+     * @param TemplateNameParser $parser
+     */
+    public function __construct(BlockHandlerRegistryInterface $registry, LayoutLocator $locator, TemplateNameParser $parser)
     {
         $this->registry = $registry;
+        $this->locator = $locator;
+        $this->parser = $parser;
     }
 
     /**
@@ -38,24 +56,60 @@ class BlockExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html'], 'needs_environment' => true]),
         ];
     }
 
     /**
-     * @todo: render as sub-request?
-     * @param BlockInterface|string $block  Block instance or id
+     * @param \Twig_Environment $environment
+     * @param BlockInterface $block
+     * @param string $template
      * @return string
      */
-    public function renderBlock($block)
+    public function renderBlock(\Twig_Environment $environment, $block, $template = null)
     {
-        if (is_string($block)) {
-            // @todo: find block by id
-        }
-
         if ($block instanceof BlockInterface) {
 
-            if ($handler = $this->registry->getHandler($block->getType())) {
+            $handler = $this->registry->getHandler($block->getType());
+
+            if ($handler instanceof BlockHandler) {
+                $handler->setTwig($environment);
+
+                $layouts = $this->locator->getLayouts($block->getType());
+
+
+                var_dump($layouts);
+
+
+                if (null === $template) {
+                    //$template = $block->getLayout();
+
+                    // find matching templates
+                }
+
+                //$template = 'AppBundle:themes:gim/blocks/text/base.html.twig';
+
+                $reference = $this->parser->parse($template);
+
+                var_dump($reference);
+
+                if (preg_match('|(.+)/blocks/(.+)/(.+)|i', $reference->get('name'), $match)) {
+
+
+                    var_dump($match);
+
+                }
+
+
+
+
+                // check block layout
+                // check site theme > add block layout
+
+                // search in AppBundle:themes:gim:view > *:themes:gim:view > *:themes:default:view > *:themes:default:default
+
+                //$handler->setTemplate($reference->getLogicalName());
+
                 return $handler->execute($block);
             }
         }
