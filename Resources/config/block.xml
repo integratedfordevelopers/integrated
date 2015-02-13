@@ -13,7 +13,6 @@
     <services>
 
         <service id="integrated_content.block_handler.content" class="%integrated_content.block_handler.content.class%">
-            <argument type="service" id="twig" />
             <tag name="integrated.block" type="content" />
         </service>
 

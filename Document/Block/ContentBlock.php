@@ -35,18 +35,6 @@ class ContentBlock extends Block
     protected $searchSelection;
 
     /**
-     * @var string
-     * @ODM\String
-     * @Type\Field(
-     *      type="integrated_block_layout_choice",
-     *      options={
-     *          "type"="content"
-     *      }
-     * )
-     */
-    protected $layout;
-
-    /**
      * @var int
      * @ODM\Int
      * @Type\Field(
@@ -87,24 +75,6 @@ class ContentBlock extends Block
     public function setSearchSelection(SearchSelection $searchSelection = null)
     {
         $this->searchSelection = $searchSelection;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLayout()
-    {
-        return $this->layout;
-    }
-
-    /**
-     * @param string $layout
-     * @return $this
-     */
-    public function setLayout($layout)
-    {
-        $this->layout = $layout;
         return $this;
     }
 
