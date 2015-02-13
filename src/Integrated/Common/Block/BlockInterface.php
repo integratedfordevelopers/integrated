@@ -31,6 +31,13 @@ interface BlockInterface
     public function getTitle();
 
     /**
+     * Get the block layout
+     *
+     * @return string
+     */
+    public function getLayout();
+
+    /**
      * Get the block type
      *
      * @return string
