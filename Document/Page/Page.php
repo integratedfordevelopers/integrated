@@ -88,7 +88,6 @@ class Page
     protected $disabled = false;
 
     /**
-     * Constructor
      */
     public function __construct()
     {
@@ -99,8 +98,6 @@ class Page
     }
 
     /**
-     * Get the id of the document
-     *
      * @return string
      */
     public function getId()
@@ -109,8 +106,6 @@ class Page
     }
 
     /**
-     * Get the title of the document
-     *
      * @return string
      */
     public function getTitle()
@@ -119,8 +114,6 @@ class Page
     }
 
     /**
-     * Set the title of the document
-     *
      * @param string $title
      * @return $this
      */
@@ -131,8 +124,6 @@ class Page
     }
 
     /**
-     * Get the slug of the document
-     *
      * @return string
      */
     public function getSlug()
@@ -141,8 +132,6 @@ class Page
     }
 
     /**
-     * Set the slug of the document
-     *
      * @param string $slug
      * @return $this
      */
@@ -153,8 +142,6 @@ class Page
     }
 
     /**
-     * Get the layout of the document
-     *
      * @return string
      */
     public function getLayout()
@@ -163,8 +150,6 @@ class Page
     }
 
     /**
-     * Set the layout of the document
-     *
      * @param string $layout
      * @return $this
      */
@@ -175,8 +160,6 @@ class Page
     }
 
     /**
-     * Get the grids of the document
-     *
      * @return array
      */
     public function getGrids()
@@ -185,8 +168,6 @@ class Page
     }
 
     /**
-     * Set the grids of the document
-     *
      * @param array $grids
      * @return $this
      */
@@ -197,8 +178,6 @@ class Page
     }
 
     /**
-     * Add grid to the document
-     *
      * @param Grid $grid
      * @return $this
      */
@@ -209,8 +188,6 @@ class Page
     }
 
     /**
-     * Remove grid of the document
-     *
      * @param Grid $grid
      * @return $this
      */
@@ -221,8 +198,6 @@ class Page
     }
 
     /**
-     * Get index of the grid
-     *
      * @param Grid $grid
      * @return int
      */
@@ -232,8 +207,6 @@ class Page
     }
 
     /**
-     * Get grid by id
-     *
      * @param string $id
      * @return Grid
      */
@@ -248,8 +221,6 @@ class Page
     }
 
     /**
-     * Get the created at of the document
-     *
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -258,8 +229,6 @@ class Page
     }
 
     /**
-     * Set the created at of the document
-     *
      * @param \DateTime $createdAt
      * @return $this
      */
@@ -270,8 +239,6 @@ class Page
     }
 
     /**
-     * Get the updated at of the document
-     *
      * @return \DateTime
      */
     public function getUpdatedAt()
@@ -280,8 +247,6 @@ class Page
     }
 
     /**
-     * Set the updated at of the document
-     *
      * @param \DateTime $updatedAt
      * @return $this
      */
@@ -292,8 +257,6 @@ class Page
     }
 
     /**
-     * Get the published at of the document
-     *
      * @return \DateTime
      */
     public function getPublishedAt()
@@ -302,8 +265,6 @@ class Page
     }
 
     /**
-     * Set the published at of the document
-     *
      * @param \DateTime $publishedAt
      * @return $this
      */
@@ -314,8 +275,6 @@ class Page
     }
 
     /**
-     * Get the disabled of the document
-     *
      * @return bool
      */
     public function getDisabled()
@@ -324,8 +283,6 @@ class Page
     }
 
     /**
-     * Set the disabled of the document
-     *
      * @param bool $disabled
      * @return $this
      */

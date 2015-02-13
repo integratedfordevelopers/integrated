@@ -6,21 +6,21 @@
 
     <parameters>
 
-        <parameter key="integrated_page.form.page_type.class">Integrated\Bundle\PageBundle\Form\Type\PageType</parameter>
+        <parameter key="integrated_page.form.type.page.class">Integrated\Bundle\PageBundle\Form\Type\PageType</parameter>
 
-        <parameter key="integrated_page.template_locator.class">Integrated\Bundle\PageBundle\Locator\TemplateLocator</parameter>
+        <parameter key="integrated_page.layout_locator.class">Integrated\Bundle\PageBundle\Locator\LayoutLocator</parameter>
 
     </parameters>
 
     <services>
 
-        <service id="integrated_page.form.page_type" class="%integrated_page.form.page_type.class%">
+        <service id="integrated_page.form.type.page" class="%integrated_page.form.type.page.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <argument type="service" id="integrated_page.template_locator" />
+            <argument type="service" id="integrated_page.layout_locator" />
             <tag name="form.type" alias="integrated_page_page" />
         </service>
 
-        <service id="integrated_page.template_locator" class="%integrated_page.template_locator.class%">
+        <service id="integrated_page.layout_locator" class="%integrated_page.layout_locator.class%">
             <argument type="service" id="kernel" />
         </service>
 

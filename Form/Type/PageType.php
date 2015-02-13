@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\PageBundle\Form\Type\Grid\GridType;
-use Integrated\Bundle\PageBundle\Locator\TemplateLocator;
+use Integrated\Bundle\PageBundle\Locator\LayoutLocator;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -31,15 +31,15 @@ class PageType extends AbstractType
     protected $dm;
 
     /**
-     * @var TemplateLocator
+     * @var LayoutLocator
      */
     protected $locator;
 
     /**
      * @param DocumentManager $dm
-     * @param TemplateLocator $locator
+     * @param LayoutLocator $locator
      */
-    public function __construct(DocumentManager $dm, TemplateLocator $locator)
+    public function __construct(DocumentManager $dm, LayoutLocator $locator)
     {
         $this->dm = $dm;
         $this->locator = $locator;
@@ -74,13 +74,13 @@ class PageType extends AbstractType
     }
 
     /**
-     * @return array
+     * @return ChoiceList
      */
     protected function getChoiceList()
     {
-        $templates = $this->locator->getTemplates();
+        $layouts = $this->locator->getLayouts();
 
-        return new ChoiceList($templates, $templates);
+        return new ChoiceList($layouts, $layouts);
     }
 
     /**

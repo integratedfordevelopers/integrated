@@ -17,7 +17,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class TemplateLocator
+class LayoutLocator
 {
     /**
      * @var Kernel
@@ -27,7 +27,7 @@ class TemplateLocator
     /**
      * @var array
      */
-    private $templates;
+    private $layouts;
 
     /**
      * @param Kernel $kernel
@@ -40,15 +40,15 @@ class TemplateLocator
     /**
      * @return array
      */
-    public function getTemplates()
+    public function getLayouts()
     {
-        if (null === $this->templates) {
+        if (null === $this->layouts) {
 
-            $this->templates = [];
+            $this->layouts = [];
 
             foreach ($this->kernel->getBundles() as $bundle) {
 
-                $path = $bundle->getPath() . '/Resources/views/templates';
+                $path = $bundle->getPath() . '/Resources/views/themes';
 
                 if (is_dir($path)) {
 
@@ -58,12 +58,12 @@ class TemplateLocator
                     /** @var \Symfony\Component\Finder\SplFileInfo $file */
                     foreach ($finder as $file) {
 
-                        $this->templates[] = $bundle->getName() . ':templates:' .  $file->getRelativePathname();
+                        $this->layouts[] = $bundle->getName() . ':themes:' . $file->getRelativePathname();
                     }
                 }
             }
         }
 
-        return $this->templates;
+        return $this->layouts;
     }
 }
