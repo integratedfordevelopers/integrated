@@ -12,7 +12,7 @@
 
         <parameter key="integrated_website.website_toolbar.class">Integrated\Bundle\WebsiteBundle\EventListener\WebsiteToolbarListener</parameter>
 
-        <parameter key="integrated_website.form.page_type.class">Integrated\Bundle\WebsiteBundle\Form\Type\PageType</parameter>
+        <parameter key="integrated_website.form.type.page.class">Integrated\Bundle\WebsiteBundle\Form\Type\PageType</parameter>
 
     </parameters>
 
@@ -24,7 +24,6 @@
         </service>
 
         <service id="integrated_website.twig.grid_extension" class="%integrated_website.twig.grid_extension.class%">
-            <argument type="service" id="twig" />
             <argument type="service" id="twig.form.renderer" />
             <argument type="service" id="form.factory" />
             <tag name="twig.extension" />
@@ -35,7 +34,7 @@
             <argument type="service" id="twig" />
         </service>
 
-        <service id="integrated_website.form.page_type" class="%integrated_website.form.page_type.class%">
+        <service id="integrated_website.form.type.page" class="%integrated_website.form.type.page.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="form.type" alias="integrated_website_page" />
         </service>

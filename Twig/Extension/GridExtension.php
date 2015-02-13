@@ -24,11 +24,6 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 class GridExtension extends \Twig_Extension
 {
     /**
-     * @var \Twig_Environment
-     */
-    private $environment;
-
-    /**
      * @var TwigRendererInterface
      */
     private $renderer;
@@ -39,11 +34,11 @@ class GridExtension extends \Twig_Extension
     private $form;
 
     /**
-     * @param \Twig_Environment $environment
+     * @param TwigRendererInterface $renderer
+     * @param FormFactory $form
      */
-    public function __construct(\Twig_Environment $environment, TwigRendererInterface $renderer, FormFactory $form)
+    public function __construct(TwigRendererInterface $renderer, FormFactory $form)
     {
-        $this->environment = $environment;
         $this->renderer = $renderer;
         $this->form = $form;
     }
@@ -54,17 +49,18 @@ class GridExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_grid', [$this, 'renderGrid'], ['is_safe' => ['html'], 'needs_context' => true]),
+            new \Twig_SimpleFunction('integrated_grid', [$this, 'renderGrid'], ['is_safe' => ['html'], 'needs_environment' => true, 'needs_context' => true]),
         ];
     }
 
     /**
+     * @param \Twig_Environment $environment
      * @param array $context
      * @param string $id
      * @param string $template
      * @return string
      */
-    public function renderGrid($context, $id, $template = 'IntegratedWebsiteBundle:Page:grid.html.twig')
+    public function renderGrid(\Twig_Environment $environment, $context, $id, $template = 'IntegratedWebsiteBundle:Page:grid.html.twig')
     {
         if (isset($context['form']) && ($form = $context['form']) instanceof FormView) {
             /** @var FormView $form */
@@ -93,7 +89,7 @@ class GridExtension extends \Twig_Extension
 
         if (isset($context['page']) && ($page = $context['page']) instanceof Page) {
             /** @var Page $page */
-            return $this->environment->render($template, ['grid' => $page->getGrid($id)]);
+            return $environment->render($template, ['page' => $page, 'grid' => $page->getGrid($id)]);
         }
     }
 
