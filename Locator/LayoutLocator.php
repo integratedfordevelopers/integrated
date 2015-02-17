@@ -48,7 +48,7 @@ class LayoutLocator
 
             foreach ($this->kernel->getBundles() as $bundle) {
 
-                $path = $bundle->getPath() . '/Resources/views/themes';
+                $path = $bundle->getPath() . '/Resources/views/themes'; // @todo config option
 
                 if (is_dir($path)) {
 
