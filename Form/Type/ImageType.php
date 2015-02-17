@@ -12,34 +12,25 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\Image as Transformer;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class Image extends AbstractType
+class ImageType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->addModelTransformer(new Transformer());
-    }
-
-    /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
         return 'integrated_image';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
-        return 'file';
+        return 'integrated_file';
     }
 }

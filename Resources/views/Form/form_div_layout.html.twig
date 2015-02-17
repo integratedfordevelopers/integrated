@@ -127,6 +127,23 @@
     </div>
 {% endblock %}
 
+{% block integrated_file_row %}
+    {% spaceless %}
+        <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
+            {{ form_label(form) }}
+            <div class="col-sm-8">
+                {% if (form.parent.vars.value.fileExtension is not empty) %}
+                    <a href="{{ form.parent.vars.value.getWebPath() }}" target="_blank">
+                        {% trans %}Download{% endtrans %}
+                    </a>
+                {% endif %}
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
 {% block integrated_image_row %}
     {% spaceless %}
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">

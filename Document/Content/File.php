@@ -27,125 +27,125 @@ use Symfony\Component\HttpFoundation\File\File as UploadedFile;
  */
 class File extends Content
 {
-	/**
-	 * @var string
-	 */
-	private $temp;
+    /**
+     * @var string
+     */
+    private $temp;
 
-	/**
-	 * @var UploadFile
-	 * @Type\Field(type="file")
+    /**
+     * @var UploadFile
+     * @Type\Field(type="integrated_file")
      * @ODM\Field
-	 */
-	protected $file;
+     */
+    protected $file;
 
-	/**
-	 * @var string
-	 * @ODM\Field
-	 */
-	protected $fileExtension;
+    /**
+     * @var string
+     * @ODM\Field
+     */
+    protected $fileExtension;
 
-	/**
-	 * @var string
-	 * @ODM\String
-	 * @Type\Field
-	 */
-	protected $title;
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field
+     */
+    protected $title;
 
-	/**
-	 * @var string
-	 * @ODM\String
-	 * @Type\Field
-	 */
-	protected $description;
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field
+     */
+    protected $description;
 
-	/**
-	 * Set the file of the document
-	 *
-	 * @param UploadedFile $file
-	 * @return $this
-	 */
-	public function setFile(UploadedFile $file = null)
-	{
-		$this->file = $file;
+    /**
+     * Set the file of the document
+     *
+     * @param UploadedFile $file
+     * @return $this
+     */
+    public function setFile(UploadedFile $file = null)
+    {
+        $this->file = $file;
 
-		// Check if there is an old file and store it in temp so it can be deleted after update
-		if (is_file($this->getAbsolutePath())) {
-			$this->temp = $this->getAbsolutePath();
-		} else {
-			$this->fileExtension = 'initial';
-		}
+        // Check if there is an old file and store it in temp so it can be deleted after update
+        if (is_file($this->getAbsolutePath())) {
+            $this->temp = $this->getAbsolutePath();
+        } else {
+            $this->fileExtension = 'initial';
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * Get the file of the document
-	 *
-	 * @return UploadedFile
-	 */
-	public function getFile()
-	{
-		return $this->file;
-	}
+    /**
+     * Get the file of the document
+     *
+     * @return UploadedFile
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
 
-	/**
-	 * Get the absolute path where uploaded files should be saved
-	 *
-	 * @return string
-	 */
-	protected function getUploadRootDir()
-	{
-		return __DIR__ . '/../../../../../../../../web/' . $this->getUploadDir();
-	}
+    /**
+     * Get the absolute path where uploaded files should be saved
+     *
+     * @return string
+     */
+    protected function getUploadRootDir()
+    {
+        return __DIR__ . '/../../../../../../../../web/' . $this->getUploadDir();
+    }
 
-	/**
-	 * Get the upload dir for displaying uploaded files in the view
-	 *
-	 * @return string
-	 */
-	protected function getUploadDir()
-	{
-		return 'uploads/documents';
-	}
+    /**
+     * Get the upload dir for displaying uploaded files in the view
+     *
+     * @return string
+     */
+    protected function getUploadDir()
+    {
+        return 'uploads/documents';
+    }
 
-	/**
-	 * Get the absolute path of an uploaded file
-	 *
-	 * @return null|string
-	 */
-	public function getAbsolutePath()
-	{
-		return null === $this->fileExtension ? null : $this->getUploadRootDir() . '/' . $this->id . '.' . $this->fileExtension;
-	}
+    /**
+     * Get the absolute path of an uploaded file
+     *
+     * @return null|string
+     */
+    public function getAbsolutePath()
+    {
+        return null === $this->fileExtension ? null : $this->getUploadRootDir() . '/' . $this->id . '.' . $this->fileExtension;
+    }
 
-	/**
-	 * Get the public/web path of an uploaded file
-	 *
-	 * @return null|string
-	 */
-	public function getWebPath()
-	{
-		return null === $this->fileExtension ? null : '/' . $this->getUploadDir() . '/' . $this->id . '.' . $this->fileExtension;
-	}
+    /**
+     * Get the public/web path of an uploaded file
+     *
+     * @return null|string
+     */
+    public function getWebPath()
+    {
+        return null === $this->fileExtension ? null : '/' . $this->getUploadDir() . '/' . $this->id . '.' . $this->fileExtension;
+    }
 
-	/**
-	 * @ODM\PrePersist()
-	 * @ODM\PreUpdate()
-	 */
-	public function preUpload()
-	{
-		if (null !== $this->getFile()) {
-			$this->fileExtension = $this->getFile()->guessExtension();
-		}
-	}
+    /**
+     * @ODM\PrePersist()
+     * @ODM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->getFile()) {
+            $this->fileExtension = $this->getFile()->guessExtension();
+        }
+    }
 
-	/**
-	 * @ODM\PostPersist()
-	 * @ODM\PostUpdate()
-	 */
-	public function upload()
-	{
+    /**
+     * @ODM\PostPersist()
+     * @ODM\PostUpdate()
+     */
+    public function upload()
+    {
         // Only upload if we got a file
         if (null === $this->getFile()) {
             return;
@@ -164,71 +164,71 @@ class File extends Content
         $this->getFile()->move($this->getUploadRootDir(), $this->id . '.' . $this->fileExtension);
 
         // Unset file
-		$this->setFile(null);
-	}
+        $this->setFile(null);
+    }
 
-	/**
-	 * @ODM\PreRemove()
-	 */
-	public function storeFilenameForRemove()
-	{
-		$this->temp = $this->getAbsolutePath();
-	}
+    /**
+     * @ODM\PreRemove()
+     */
+    public function storeFilenameForRemove()
+    {
+        $this->temp = $this->getAbsolutePath();
+    }
 
-	/**
-	 * @ODM\PostRemove()
-	 */
-	public function removeUpload()
-	{
-		if (isset($this->temp)) {
-			unlink($this->temp);
-			$this->temp = null;
-		}
-	}
+    /**
+     * @ODM\PostRemove()
+     */
+    public function removeUpload()
+    {
+        if (isset($this->temp)) {
+            unlink($this->temp);
+            $this->temp = null;
+        }
+    }
 
-	/**
-	 * Get the title of the document
-	 *
-	 * @return string
-	 */
-	public function getTitle()
-	{
-		return $this->title;
-	}
+    /**
+     * Get the title of the document
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 
-	/**
-	 * Set the title of the document
-	 *
-	 * @param string $title
-	 * @return $this
-	 */
-	public function setTitle($title)
-	{
-		$this->title = $title;
-		return $this;
-	}
+    /**
+     * Set the title of the document
+     *
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
 
-	/**
-	 * Get the description of the document
-	 *
-	 * @return string
-	 */
-	public function getDescription()
-	{
-		return $this->description;
-	}
+    /**
+     * Get the description of the document
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * Set the description of the document
-	 *
-	 * @param string $description
-	 * @return $this
-	 */
-	public function setDescription($description)
-	{
-		$this->description = $description;
-		return $this;
-	}
+    /**
+     * Set the description of the document
+     *
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
 
     /**
      * @param string $fileExtension
