@@ -77,38 +77,25 @@ class BlockExtension extends \Twig_Extension
 
                 $layouts = $this->locator->getLayouts($block->getType());
 
+                if ($template) {
 
-                var_dump($layouts);
+                    //$template = 'AppBundle:themes:gim/blocks/text/base.html.twig';
 
+                    $reference = $this->parser->parse($template);
 
-                if (null === $template) {
-                    //$template = $block->getLayout();
+                    if (preg_match('|(.+)/blocks/(.+)/(.+)|i', $reference->get('name'), $match)) {
 
-                    // find matching templates
+                    } else {
+                        // form website page theme
+                    }
+
+                    // check block layout
+                    // check site theme > add block layout
+
+                    // search in AppBundle:themes:gim:view > *:themes:gim:view > *:themes:default:view > *:themes:default:default
+
+                    //$handler->setTemplate($reference->getLogicalName());
                 }
-
-                //$template = 'AppBundle:themes:gim/blocks/text/base.html.twig';
-
-                $reference = $this->parser->parse($template);
-
-                var_dump($reference);
-
-                if (preg_match('|(.+)/blocks/(.+)/(.+)|i', $reference->get('name'), $match)) {
-
-
-                    var_dump($match);
-
-                }
-
-
-
-
-                // check block layout
-                // check site theme > add block layout
-
-                // search in AppBundle:themes:gim:view > *:themes:gim:view > *:themes:default:view > *:themes:default:default
-
-                //$handler->setTemplate($reference->getLogicalName());
 
                 return $handler->execute($block);
             }

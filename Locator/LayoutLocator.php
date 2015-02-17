@@ -52,7 +52,7 @@ class LayoutLocator
 
             $this->layouts[$type] = [];
 
-            foreach ($this->getThemes() as $theme) {
+            foreach ($this->getThemes() as $bundle => $theme) {
 
                 $path = $theme . '/blocks/' . $type;
 
@@ -64,12 +64,10 @@ class LayoutLocator
                     /** @var \Symfony\Component\Finder\SplFileInfo $file */
                     foreach ($finder as $file) {
 
-                        $this->layouts[$type][] = $file->getRelativePathname();
+                        $this->layouts[$type][$bundle . '/blocks/' . $type . '/' . $file->getRelativePathname()] = $file->getRelativePathname();
                     }
                 }
             }
-
-            $this->layouts[$type] = array_unique($this->layouts[$type]);
         }
 
         return $this->layouts[$type];
@@ -86,7 +84,7 @@ class LayoutLocator
 
             foreach ($this->kernel->getBundles() as $bundle) {
 
-                $path = $bundle->getPath() . '/Resources/views/themes';
+                $path = $bundle->getPath() . '/Resources/views/themes'; // @todo config option
 
                 if (is_dir($path)) {
 
@@ -96,7 +94,7 @@ class LayoutLocator
                     /** @var \Symfony\Component\Finder\SplFileInfo $file */
                     foreach ($finder as $file) {
 
-                        $this->themes[] = $file->getPathname();
+                        $this->themes[$bundle->getName() . ':themes:' . $file->getRelativePathname()] = $file->getPathname();
                     }
                 }
             }
