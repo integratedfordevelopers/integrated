@@ -1,32 +1,32 @@
-<div class="navbar navbar-fixed-top integrated-website-toolbar">
-    <div class="container">
+{% if app.user %}
+    <div class="navbar navbar-fixed-top integrated-website-toolbar">
+        <div class="container">
 
-        <div class="navbar-header">
-            <a href="{{ path('integrated_content_content_index') }}" class="navbar-brand">Integrated</a>
-        </div>
+            <div class="navbar-header">
+                <a href="{{ path('integrated_content_content_index') }}" class="navbar-brand">Integrated</a>
+            </div>
 
-        <div class="pull-right">
+            <div class="pull-right">
+                {% if app.request.attributes.get('_route') == 'integrated_website_page_edit' %}
 
-            {% if app.request.attributes.get('_route') == 'integrated_website_page_edit' %}
+                    <a href="javascript:;" class="btn btn-default navbar-btn" data-action="integrated-website-save" data-element-id="integrated_website_page">
+                        Save
+                    </a>
 
-                <a href="javascript:;" class="btn btn-default navbar-btn" data-action="integrated-website-save" data-element-id="integrated_website_page">
-                    Save
-                </a>
+                    <a href="{{ path('integrated_website_page_' ~  page.id) }}" class="btn btn-default navbar-btn">
+                        Cancel
+                    </a>
 
-                <a href="{{ path('integrated_website_page_' ~  page.id) }}" class="btn btn-default navbar-btn">
-                    Cancel
-                </a>
+                {% else %}
 
-            {% else %}
+                    <a href="{{ path('integrated_website_page_edit', { 'id': page.id }) }}" class="btn btn-default navbar-btn">
+                        Edit
+                    </a>
 
-                <a href="{{ path('integrated_website_page_edit', { 'id': page.id }) }}" class="btn btn-default navbar-btn">
-                    Edit
-                </a>
-
-            {% endif %}
-
+                {% endif %}
+            </div>
         </div>
     </div>
-</div>
 
-<div class="integrated-website-body-margin-top"></div>
+    <div class="integrated-website-body-margin-top"></div>
+{% endif %}

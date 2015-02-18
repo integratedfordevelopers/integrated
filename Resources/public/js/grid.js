@@ -96,7 +96,7 @@
         placeholder: 'integrated-website-item-placeholder',
         forcePlaceholderSize: true,
         scroll: false,
-        opacity: 0.8,
+        opacity: 0.7,
 
         stop: function(e, ui) {
             var collection = getCollection(ui.item);

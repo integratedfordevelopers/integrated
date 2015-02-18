@@ -89,7 +89,7 @@ class GridExtension extends \Twig_Extension
 
         if (isset($context['page']) && ($page = $context['page']) instanceof Page) {
             /** @var Page $page */
-            return $environment->render($template, ['page' => $page, 'grid' => $page->getGrid($id)]);
+            return $environment->render($template, ['grid' => $page->getGrid($id)]);
         }
     }
 
