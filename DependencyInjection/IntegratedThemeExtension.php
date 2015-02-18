@@ -31,5 +31,12 @@ class IntegratedThemeExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.xml');
+
+        $definition = $container->getDefinition('integrated_theme.templating.theme_manager');
+
+        foreach ($config['themes'] as $id => $theme) {
+
+            $definition->addMethodCall('registerTheme', [$id, $theme['paths'], $theme['fallback']]);
+        }
     }
 }

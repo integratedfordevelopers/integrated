@@ -27,6 +27,25 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('integrated_theme');
 
+        $rootNode
+            ->children()
+                ->arrayNode('themes')
+                    ->prototype('array')
+                        ->children()
+                            ->arrayNode('paths')
+                                ->prototype('scalar')->end()
+                                ->isRequired()
+                                ->requiresAtLeastOneElement()
+                            ->end()
+                            ->arrayNode('fallback')
+                                ->prototype('scalar')->end()
+                                ->defaultValue(['default'])
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end();
+
         return $treeBuilder;
     }
 }
