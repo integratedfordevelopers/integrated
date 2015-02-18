@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use Integrated\Bundle\BlockBundle\DependencyInjection\Compiler\BlockHandlerRegistryPass;
+use Integrated\Bundle\BlockBundle\DependencyInjection\Compiler\ThemeManagerPass;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -29,5 +30,6 @@ class IntegratedBlockBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new BlockHandlerRegistryPass());
+        $container->addCompilerPass(new ThemeManagerPass());
     }
 }

@@ -8,21 +8,14 @@
 
         <parameter key="integrated_block.twig.block_extension.class">Integrated\Bundle\BlockBundle\Twig\Extension\BlockExtension</parameter>
 
-        <parameter key="integrated_block.layout_locator.class">Integrated\Bundle\BlockBundle\Locator\LayoutLocator</parameter>
-
     </parameters>
 
     <services>
 
         <service id="integrated_block.twig.block_extension" class="%integrated_block.twig.block_extension.class%">
             <argument type="service" id="integrated_block.registry.block_handler" />
-            <argument type="service" id="integrated_block.layout_locator" />
-            <argument type="service" id="templating.name_parser" />
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
             <tag name="twig.extension" />
-        </service>
-
-        <service id="integrated_block.layout_locator" class="%integrated_block.layout_locator.class%">
-            <argument type="service" id="kernel" />
         </service>
 
     </services>

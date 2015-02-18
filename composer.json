@@ -22,6 +22,7 @@
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
         "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
+        "integrated/theme-bundle": "dev-master",
 		"knplabs/knp-paginator-bundle": "dev-master",
 		"nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",

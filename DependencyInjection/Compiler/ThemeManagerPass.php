@@ -18,24 +18,19 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class BlockHandlerRegistryPass implements CompilerPassInterface
+class ThemeManagerPass implements CompilerPassInterface
 {
 	/**
 	 * {@inheritdoc}
 	 */
 	public function process(ContainerBuilder $container)
 	{
-		if (!$container->hasDefinition('integrated_block.registry.block_handler')) {
-			return;
-		}
+        if (!$container->hasDefinition('integrated_theme.templating.theme_manager')) {
+            return;
+        }
 
-        $definition = $container->getDefinition('integrated_block.registry.block_handler');
+        $definition = $container->getDefinition('integrated_theme.templating.theme_manager');
 
-		foreach ($container->findTaggedServiceIds('integrated.block') as $id => $attributes) {
-
-            if (isset($attributes[0]['type'])) {
-                $definition->addMethodCall('registerHandler', [$attributes[0]['type'], new Reference($id)]);
-            }
-		}
+        $definition->addMethodCall('registerPath', ['default', '@IntegratedBlockBundle/Resources/views/themes/default']);
 	}
 }
