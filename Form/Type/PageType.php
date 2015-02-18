@@ -13,12 +13,10 @@ namespace Integrated\Bundle\PageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\PageBundle\Form\Type\Grid\GridType;
-use Integrated\Bundle\PageBundle\Locator\LayoutLocator;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -31,18 +29,11 @@ class PageType extends AbstractType
     protected $dm;
 
     /**
-     * @var LayoutLocator
-     */
-    protected $locator;
-
-    /**
      * @param DocumentManager $dm
-     * @param LayoutLocator $locator
      */
-    public function __construct(DocumentManager $dm, LayoutLocator $locator)
+    public function __construct(DocumentManager $dm)
     {
         $this->dm = $dm;
-        $this->locator = $locator;
     }
 
     /**
@@ -54,9 +45,7 @@ class PageType extends AbstractType
 
         $builder->add('slug', 'text');
 
-        $builder->add('layout', 'choice', [
-            'choice_list' => $this->getChoiceList(),
-        ]);
+        $builder->add('layout', 'integrated_page_layout_choice');
 
         $builder->add('publishedAt', 'integrated_datetime');
 
@@ -71,16 +60,6 @@ class PageType extends AbstractType
             'prototype'    => false,
             'required'     => false,
         ]);
-    }
-
-    /**
-     * @return ChoiceList
-     */
-    protected function getChoiceList()
-    {
-        $layouts = $this->locator->getLayouts();
-
-        return new ChoiceList($layouts, $layouts);
     }
 
     /**
