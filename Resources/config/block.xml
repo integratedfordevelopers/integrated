@@ -13,6 +13,8 @@
     <services>
 
         <service id="integrated_content.block_handler.content" class="%integrated_content.block_handler.content.class%">
+            <argument type="service" id="solarium.client" />
+            <argument type="service" id="request_stack" />
             <tag name="integrated.block" type="content" />
         </service>
 
