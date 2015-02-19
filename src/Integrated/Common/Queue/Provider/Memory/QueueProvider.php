@@ -21,7 +21,7 @@ class QueueProvider implements QueueProviderInterface
 	private $queue = array();
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function push($channel, $payload, $delay = 0, $priority = 0)
 	{
@@ -38,7 +38,7 @@ class QueueProvider implements QueueProviderInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function pull($channel, $limit = 1)
 	{
@@ -66,7 +66,7 @@ class QueueProvider implements QueueProviderInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function clear($channel)
 	{
@@ -74,7 +74,7 @@ class QueueProvider implements QueueProviderInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
 	public function count($channel)
 	{

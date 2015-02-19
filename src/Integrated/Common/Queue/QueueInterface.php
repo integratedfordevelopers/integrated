@@ -72,7 +72,7 @@ interface QueueInterface extends Countable
 	 * Pull one or more messages from the queue
 	 *
 	 * @param int $limit
-	 * @return QueueMessageInterface
+	 * @return QueueMessageInterface[]
 	 */
 	public function pull($limit = 1);
 

@@ -17,8 +17,6 @@ use Integrated\Common\Converter\Config\Util\ParentAwareConfigIterator;
 use Integrated\Common\Converter\Exception\UnexpectedTypeException;
 use Integrated\Common\Converter\Type\RegistryInterface;
 
-use Symfony\Component\Security\Core\Util\ClassUtils;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -73,7 +71,7 @@ class Converter implements ConverterInterface
 
         $container = $this->factory->createContainer();
 
-        if ($config = $this->resolver->getConfig(ClassUtils::getRealClass($data))) {
+        if ($config = $this->resolver->getConfig(get_class($data))) {
             /** @var TypeConfigInterface $type */
             foreach (new ParentAwareConfigIterator($config) as $type) {
                 $this->registry->getType($type->getName())->build($container, $data, $type->getOptions() ?: []);

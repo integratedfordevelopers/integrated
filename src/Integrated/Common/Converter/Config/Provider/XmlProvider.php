@@ -102,10 +102,29 @@ class XmlProvider extends AbstractFileProvider
             return []; // empty array if options contains no data
         }
 
-        $child = $element->children();
-        $child = $child[0]; // options root can only contain 1 child
+        return $this->parseArray($element);
+    }
 
-        return $this->parsePrimitive($child);
+    /**
+     * Parse the content as a <array> tag.
+     *
+     * @param SimpleXMLElement $element
+     *
+     * @return array
+     */
+    protected function parseArray(SimpleXMLElement $element)
+    {
+        $result = [];
+
+        foreach ($element->children() as $child) {
+            if (isset($child['key'])) {
+                $result[(string) $child['key']] = $this->parsePrimitive($child);
+            } else {
+                $result[] = $this->parsePrimitive($child);
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -122,17 +141,7 @@ class XmlProvider extends AbstractFileProvider
     {
         switch ($element->getName()) {
             case 'array';
-                $result = [];
-
-                foreach ($element->children() as $child) {
-                    if (isset($child['key'])) {
-                        $result[(string) $child['key']] = $this->parsePrimitive($child);
-                    } else {
-                        $result[] = $this->parsePrimitive($child);
-                    }
-                }
-
-                return $result;
+                return $this->parseArray($element);
 
             case 'string':
                 return (string) $element;

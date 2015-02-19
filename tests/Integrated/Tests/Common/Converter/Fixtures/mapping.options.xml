@@ -5,21 +5,21 @@
 
         <type name="array">
             <options>
+
                 <array>
-                    <array>
-                        <null />
-                    </array>
-                    <array>
-                        <string>string</string>
-                    </array>
-                    <array>
-                        <int>1.1</int>
-                        <float>1.1</float>
-                    </array>
-                    <array>
-                        <bool>false</bool>
-                    </array>
+                    <null />
                 </array>
+                <array>
+                    <string>string</string>
+                </array>
+                <array>
+                    <int>1.1</int>
+                    <float>1.1</float>
+                </array>
+                <array>
+                    <bool>false</bool>
+                </array>
+
             </options>
         </type>
 
@@ -29,11 +29,11 @@
 
         <type name="string">
             <options>
-                <array>
-                    <string>string 1</string>
-                    <string>string 2</string>
-                    <string>string 3</string>
-                </array>
+
+                <string>string 1</string>
+                <string>string 2</string>
+                <string>string 3</string>
+
             </options>
         </type>
 
@@ -43,11 +43,11 @@
 
         <type name="int">
             <options>
-                <array>
-                    <int>1.1</int>
-                    <int>2.2</int>
-                    <int>3.3</int>
-                </array>
+
+                <int>1.1</int>
+                <int>2.2</int>
+                <int>3.3</int>
+
             </options>
         </type>
 
@@ -57,11 +57,11 @@
 
         <type name="float">
             <options>
-                <array>
-                    <float>1.1</float>
-                    <float>2.2</float>
-                    <float>3.3</float>
-                </array>
+
+                <float>1.1</float>
+                <float>2.2</float>
+                <float>3.3</float>
+
             </options>
         </type>
 
@@ -71,14 +71,14 @@
 
         <type name="bool">
             <options>
-                <array>
-                    <bool>1</bool>
-                    <bool>0</bool>
-                    <bool>TRUE</bool>
-                    <bool>FALSE</bool>
-                    <bool>true</bool>
-                    <bool>false</bool>
-                </array>
+
+                <bool>1</bool>
+                <bool>0</bool>
+                <bool>TRUE</bool>
+                <bool>FALSE</bool>
+                <bool>true</bool>
+                <bool>false</bool>
+
             </options>
         </type>
 
@@ -88,11 +88,11 @@
 
         <type name="null">
             <options>
-                <array>
-                    <null />
-                    <null />
-                    <null />
-                </array>
+
+                <null />
+                <null />
+                <null />
+
             </options>
         </type>
 
