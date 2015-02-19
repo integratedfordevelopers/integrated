@@ -11,8 +11,9 @@
 
 namespace Integrated\Bundle\BlockBundle\Locator;
 
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Finder\Finder;
+
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -20,9 +21,9 @@ use Symfony\Component\Finder\Finder;
 class LayoutLocator
 {
     /**
-     * @var Kernel
+     * @var ThemeManager
      */
-    private $kernel;
+    private $themeManager;
 
     /**
      * @var array
@@ -30,16 +31,11 @@ class LayoutLocator
     private $layouts;
 
     /**
-     * @var array
+     * @param ThemeManager $themeManager
      */
-    private $themes;
-
-    /**
-     * @param Kernel $kernel
-     */
-    public function __construct(Kernel $kernel)
+    public function __construct(ThemeManager $themeManager)
     {
-        $this->kernel = $kernel;
+        $this->themeManager = $themeManager;
     }
 
     /**
@@ -52,54 +48,29 @@ class LayoutLocator
 
             $this->layouts[$type] = [];
 
-            foreach ($this->getThemes() as $bundle => $theme) {
+            foreach ($this->themeManager->getThemes() as $id => $theme) {
 
-                $path = $theme . '/blocks/' . $type;
+                foreach ($theme->getPaths() as $path) {
 
-                if (is_dir($path)) {
+                    $path = $this->themeManager->locateResource($path) . '/blocks/' . $type;
 
-                    $finder = new Finder();
-                    $finder->files()->in($path)->name('*.html.twig');
+                    if (is_dir($path)) {
 
-                    /** @var \Symfony\Component\Finder\SplFileInfo $file */
-                    foreach ($finder as $file) {
+                        $finder = new Finder();
+                        $finder->files()->in($path)->name('*.html.twig');
 
-                        $this->layouts[$type][$bundle . '/blocks/' . $type . '/' . $file->getRelativePathname()] = $file->getRelativePathname();
+                        /** @var \Symfony\Component\Finder\SplFileInfo $file */
+                        foreach ($finder as $file) {
+
+                            $this->layouts[$type][] = $file->getRelativePathname();
+                        }
                     }
                 }
             }
+
+            $this->layouts[$type] = array_unique($this->layouts[$type]);
         }
 
         return $this->layouts[$type];
-    }
-
-    /**
-     * @return array
-     */
-    protected function getThemes()
-    {
-        if (null === $this->themes) {
-
-            $this->themes = [];
-
-            foreach ($this->kernel->getBundles() as $bundle) {
-
-                $path = $bundle->getPath() . '/Resources/views/themes'; // @todo config option
-
-                if (is_dir($path)) {
-
-                    $finder = new Finder();
-                    $finder->directories()->in($path)->depth(0);
-
-                    /** @var \Symfony\Component\Finder\SplFileInfo $file */
-                    foreach ($finder as $file) {
-
-                        $this->themes[$bundle->getName() . ':themes:' . $file->getRelativePathname()] = $file->getPathname();
-                    }
-                }
-            }
-        }
-
-        return $this->themes;
     }
 }

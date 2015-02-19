@@ -20,7 +20,7 @@
         </service>
 
         <service id="integrated_block.form.type.layout_choice" class="%integrated_block.form.type.layout_choice.class%">
-            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <argument type="service" id="integrated_block.layout_locator" />
             <tag name="form.type" alias="integrated_block_layout_choice" />
         </service>
 
