@@ -81,7 +81,7 @@ class GridExtension extends \Twig_Extension
 
                 $page->addGrid($grid);
 
-                $form = $this->form->create('integrated_page_page', $page)->createView();
+                $form = $this->form->create('integrated_website_page', $page)->createView();
 
                 return $this->renderer->searchAndRenderBlock($form->offsetGet('grids')->offsetGet($page->indexOf($grid)), 'row');
             }
