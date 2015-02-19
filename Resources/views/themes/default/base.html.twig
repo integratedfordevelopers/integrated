@@ -9,7 +9,7 @@
     {% block stylesheets %}
         {# filter='uglifycss' #}
         {% stylesheets output='css/styles.css'
-        '@IntegratedWebsiteBundle/Resources/public/less/styles.less' %}
+        '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
         <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
