@@ -27,6 +27,11 @@ use Symfony\Component\Finder\Finder;
  */
 class LoadFixtureData extends ContainerAware implements FixtureInterface
 {
+    /**
+     * @var string
+     */
+    protected $path = __DIR__;
+
 	/**
 	 * @var MetadataFactoryInterface
 	 */
@@ -39,7 +44,7 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
 	{
 		$files = array();
 
-		foreach (Finder::create()->in(__DIR__ . DIRECTORY_SEPARATOR . 'alice')->name('*.yml') as $file) {
+		foreach (Finder::create()->in($this->path . '/alice')->name('*.yml') as $file) {
 			$files[] = $file->getRealpath();
 		}
 
