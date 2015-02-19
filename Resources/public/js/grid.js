@@ -103,7 +103,7 @@
 
             if (ui.item.hasClass('integrated-website-block')) {
 
-                var index = getIndex(ui.item);
+                var index = incrementIndex(collection);
                 var name = collection.attr('data-name') + '[' + index + ']';
 
                 var value = ui.item.children('input[data-field="integrated-website-block"]').val();
