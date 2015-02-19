@@ -21,17 +21,17 @@ class ThemeManager // @todo interface
     /**
      * @var Kernel
      */
-    protected $kernel;
+    private $kernel;
 
     /**
      * @var array
      */
-    protected $themes = [];
+    private $themes = [];
 
     /**
      * @var string
      */
-    protected $activeTheme = 'default';
+    private $activeTheme = 'default';
 
     /**
      * @param Kernel $kernel
@@ -97,7 +97,7 @@ class ThemeManager // @todo interface
     }
 
     /**
-     * @return array
+     * @return Theme[]
      */
     public function getThemes()
     {
@@ -131,22 +131,33 @@ class ThemeManager // @todo interface
      * @param string $theme
      * @return string
      */
-    public function locateResource($template, $theme = null)
+    public function locateTemplate($template, $theme = null)
     {
         $theme = $this->getTheme(null === $theme ? $this->getActiveTheme() : $theme);
 
         foreach ($theme->getPaths() as $path) {
 
-            if (file_exists($this->kernel->locateResource($path) . '/' . $template)) {
+            if (file_exists($this->locateResource($path) . '/' . $template)) {
                 return $path . '/' . $template;
             }
         }
 
         foreach ($theme->getFallback() as $fallback) {
 
-            if ($resource = $this->locateResource($template, $fallback)) {
+            if ($resource = $this->locateTemplate($template, $fallback)) {
                 return $resource;
             }
         }
+    }
+
+    /**
+     * @param string $name
+     * @param string $dir
+     * @param bool $first
+     * @return mixed
+     */
+    public function locateResource($name, $dir = null, $first = true)
+    {
+        return $this->kernel->locateResource($name, $dir, $first);
     }
 }
