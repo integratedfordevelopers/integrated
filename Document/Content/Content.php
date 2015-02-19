@@ -86,7 +86,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      * @ODM\Boolean
      * @Type\Field(type="checkbox")
      */
-    protected $disabled;
+    protected $disabled = false;
 
     /**
      * @var Metadata

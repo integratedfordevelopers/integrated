@@ -1,0 +1,19 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+
+    <div class="filters_row">
+        <ul class="nav nav-pills">
+            <li>
+                <a href="{{ path('integrated_content_relation_new') }}">
+                    {% trans %}Create new{% endtrans %}
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="content_columns_holder">
+        <div class="content_column_inner">
+            {{ include('IntegratedContentBundle:Relation:partial/list.html.twig', { 'documents': documents }) }}
+        </div>
+    </div>
+{% endblock %}

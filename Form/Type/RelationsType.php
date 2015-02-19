@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -26,56 +27,62 @@ use Integrated\Common\ContentType\ContentTypeInterface;
  */
 class RelationsType extends AbstractType
 {
-	/**
-	 * @var ManagerRegistry
-	 */
-	private $manager;
+    /**
+     * @var string
+     */
+    const REPOSITORY = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
 
-	/**
-	 * @param ManagerRegistry $manager
-	 */
-	public function __construct(ManagerRegistry $manager)
-	{
-		$this->manager = $manager;
-	}
+    /**
+     * @var ManagerRegistry
+     */
+    private $manager;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		/** @var ContentTypeInterface $type */
-		$type = $options['content_type'];
+    /**
+     * @param ManagerRegistry $manager
+     */
+    public function __construct(ManagerRegistry $manager)
+    {
+        $this->manager = $manager;
+    }
 
-		foreach ($type->getRelations() as $relation) {
-			$url = [];
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        /** @var ContentTypeInterface $type */
+        $type = $options['content_type'];
 
-			foreach ($relation->getContentTypes() as $contentType) {
-				$url[] = $contentType->getType();
-			}
+        /** @var Relation[] $relations */
+        $relations = $this->manager->getRepository(self::REPOSITORY)->findBy(array('sources.$id' => $type->getId()));
 
-			$builder->add($relation->getId(), 'hidden', [
-				'attr' => [
-					'data-title'    => $relation->getName(),
-					'data-relation' => $relation->getId(),
-					'data-url'      => implode('&', $url),
-					'data-multiple' => $relation->getMultiple()
-				]
-			]);
-		}
+        foreach ($relations as $relation) {
 
-		$builder->addModelTransformer(new RelationsTransformer($type->getRelations(), $this->manager->getManager()));
-	}
+            foreach ($relation->getTargets() as $contentType) {
+                $url[] = $contentType->getType();
+            }
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setDefaults(['data_class' => null]);
-		$resolver->setRequired(['content_type']);
-		$resolver->setAllowedTypes(['content_type' => 'Integrated\\Common\\ContentType\\ContentTypeInterface']);
-	}
+            $builder->add($relation->getId(), 'hidden', [
+                'attr' => [
+                    'data-title'    => $relation->getName(),
+                    'data-relation' => $relation->getId(),
+                    'data-multiple' => $relation->isMultiple()
+                ]
+            ]);
+        }
 
-	public function getName()
-	{
-		return 'integrated_content_relations';
-	}
+        $builder->addModelTransformer(new RelationsTransformer($relations, $this->manager->getManager()));
+    }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(['data_class' => null]);
+        $resolver->setRequired(['content_type']);
+        $resolver->setAllowedTypes(['content_type' => 'Integrated\\Common\\ContentType\\ContentTypeInterface']);
+    }
+
+    public function getName()
+    {
+        return 'integrated_content_relations';
+    }
 }

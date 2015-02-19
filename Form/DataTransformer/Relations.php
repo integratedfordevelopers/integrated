@@ -12,13 +12,14 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\Debug;
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\Common\Form\Mapping\Metadata;
-use Integrated\Common\ContentType\ContentTypeRelationInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as Model;
+
+use Symfony\Component\Form\DataTransformerInterface;
+
+use Integrated\Common\ContentType\Mapping\Metadata;
+use Integrated\Common\Content\Relation\RelationInterface;
+
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -31,7 +32,7 @@ class Relations implements DataTransformerInterface
     const REPOSITORY = 'Integrated\Bundle\ContentBundle\Document\Content\Content';
 
     /**
-     * @var ContentTypeRelationInterface[]
+     * @var RelationInterface[]
      */
     protected $relations;
 
@@ -41,16 +42,18 @@ class Relations implements DataTransformerInterface
     protected $om;
 
     /**
-     * @param ContentTypeRelationInterface[] $relations
+     * @param RelationInterface[] $relations
      * @param ObjectManager $om
      */
-    public function __construct($relations, $om)
+    public function __construct($relations, ObjectManager $om)
     {
         $this->relations = $relations;
         $this->om = $om;
     }
 
     /**
+     * Transform an array with EmbeddedRelation to an array with relations containing comma separated references
+     *
      * {@inheritdoc}
      */
     public function transform($value)
@@ -58,17 +61,17 @@ class Relations implements DataTransformerInterface
         $return = array();
         if (is_array($value) || $value instanceof \Traversable) {
 
-            foreach ($value as $relation) {
+            foreach ($value as $embeddedRelation) {
 
-                if ($relation instanceof \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation) {
+                if ($embeddedRelation instanceof EmbeddedRelation) {
 
-                    if ($contentTypeRelation = $this->getContentTypeRelation($relation->getRelationId())) {
+                    if ($relation = $this->getRelation($embeddedRelation->getRelationId())) {
                         $references = array();
-                        foreach ($relation->getReferences() as $content) {
+                        foreach ($embeddedRelation->getReferences() as $content) {
                             $references[] = $content->getId();
                         }
 
-                        $return[$relation->getRelationId()] = implode(',', $references);
+                        $return[$relation->getId()] = implode(',', $references);
                     }
                 }
             }
@@ -78,6 +81,9 @@ class Relations implements DataTransformerInterface
     }
 
     /**
+     * Transform an array with relations containing comma separated references to an ArrayCollection with
+     * EmbeddedRelation
+     *
      * {@inheritdoc}
      */
     public function reverseTransform($value)
@@ -85,24 +91,26 @@ class Relations implements DataTransformerInterface
         $relations = new ArrayCollection();
 
         if (is_array($value)) {
-            foreach ($value as $contentTypeRelation => $references) {
 
-                if ($contentTypeRelation = $this->getContentTypeRelation($contentTypeRelation)) {
+            foreach ($value as $relationId => $references) {
 
-                    $model = new Model();
-                    $model->setRelationId($contentTypeRelation->getId());
-                    $model->setRelationType($contentTypeRelation->getType());
+                if ($relation = $this->getRelation($relationId)) {
+
+                    $embeddedRelation = new EmbeddedRelation();
+                    $embeddedRelation->setRelationId($relation->getId());
+                    $embeddedRelation->setRelationType($relation->getType());
 
                     if (null !== $references) {
+
                         $references = array_filter(explode(',', $references));
                         foreach ($references as $reference) {
 
                             if ($content = $this->om->getRepository(self::REPOSITORY)->find($reference)) {
-                                $model->addReference($content);
+                                $embeddedRelation->addReference($content);
                             }
                         }
 
-                        $relations->add($model);
+                        $relations->add($embeddedRelation);
                     }
                 }
             }
@@ -113,9 +121,9 @@ class Relations implements DataTransformerInterface
 
     /**
      * @param string $relationId
-     * @return bool|ContentTypeRelationInterface
+     * @return bool|RelationInterface
      */
-    protected function getContentTypeRelation($relationId)
+    protected function getRelation($relationId)
     {
         foreach ($this->relations as $relation) {
             if ($relation->getId() == $relationId) {

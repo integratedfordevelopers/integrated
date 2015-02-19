@@ -11,19 +11,18 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Integrated\Common\ContentType\ContentTypeRelationInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Integrated\Common\ContentType\ContentTypeInterface;
 
 /**
  * Document ContentType
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\Document(collection="content_type", repositoryClass="ContentTypeRepository")
+ * @ODM\Document(collection="content_type")
  * @MongoDBUnique(fields="type")
  */
 class ContentType implements ContentTypeInterface
@@ -62,16 +61,10 @@ class ContentType implements ContentTypeInterface
     protected $fields = [];
 
     /**
-     * @var Embedded\Relation[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Relation")
+     * @var mixed[]
+     * @ODM\Hash
      */
-    protected $relations;
-
-	/**
-	 * @var mixed[]
-	 * @ODM\Hash
-	 */
-	protected $options = [];
+    protected $options = [];
 
     /**
      * @var \DateTime
@@ -85,7 +78,6 @@ class ContentType implements ContentTypeInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->relations = new ArrayCollection();
     }
 
     /**
@@ -235,143 +227,68 @@ class ContentType implements ContentTypeInterface
         return $this;
     }
 
-	/**
-     * {@inheritdoc}
+    /**
+     * @inheritdoc
      */
-    public function getRelations()
+    public function getOptions()
     {
-        return $this->relations;
+        return $this->options;
     }
 
     /**
-     * Set the relations of the content type
+     * Overrider all the option with a new set of values for this content type
      *
-     * @param Collection $relations
+     * @param string[] $options
      * @return $this
      */
-    public function setRelations(Collection $relations)
+    public function setOptions(array $options)
     {
-        $this->relations = $relations;
+        $this->options = [];
+
+        foreach ($options as $name => $value) {
+            $this->setOption($name, $value);
+        }
+
         return $this;
     }
 
     /**
-     * @param ContentTypeRelationInterface $relation
-     * @return bool TRUE if Relation is added FALSE otherwise
+     * @inheritdoc
      */
-    public function addRelation(ContentTypeRelationInterface $relation)
+    public function getOption($name)
     {
-        if ($this->hasRelation($relation)) {
-            return false;
+        if (isset($this->options[$name])) {
+            return $this->options[$name];
         }
 
-        return $this->relations->add($relation);
+        return null;
     }
 
     /**
-     * @param ContentTypeRelationInterface $relation
-     * @return bool TRUE if Relation is removed FALSE otherwise
+     * Set the value of the specified key.
+     *
+     * @param string $name
+     * @param null | mixed $value
+     * @return $this
      */
-    public function removeRelation(ContentTypeRelationInterface $relation)
+    public function setOption($name, $value = null)
     {
-        if (!$this->hasRelation($relation)) {
-            return false;
+        if ($value === null) {
+            unset($this->options[$name]);
+        } else {
+            $this->options[$name] = $value;
         }
 
-        return $this->relations->removeElement($relation);
+        return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function getRelation($id)
+    public function hasOption($name)
     {
-        foreach ($this->getRelations() as $relation) {
-            if ($relation->getId() == $id) {
-                return $relation;
-            }
-        }
-
-        return false;
+        return isset($this->options[$name]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasRelation(ContentTypeRelationInterface $relation)
-    {
-        /** @var $item ContentTypeRelationInterface */
-        foreach ($this->getRelations() as $item) {
-            if ($item->getId() == $relation->getId()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getOptions()
-	{
-		return $this->options;
-	}
-
-	/**
-	 * Overrider all the option with a new set of values for this content type
-	 *
-	 * @param string[] $options
-	 * @return $this
-	 */
-	public function setOptions(array $options)
-	{
-		$this->options = [];
-
-		foreach ($options as $name => $value) {
-			$this->setOption($name, $value);
-		}
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function getOption($name)
-	{
-		if (isset($this->options[$name])) {
-			return $this->options[$name];
-		}
-
-		return null;
-	}
-
-	/**
-	 * Set the value of the specified key.
-	 *
-	 * @param string $name
-	 * @param null | mixed $value
-	 * @return $this
-	 */
-	public function setOption($name, $value = null)
-	{
-		if ($value === null) {
-			unset($this->options[$name]);
-		} else {
-			$this->options[$name] = $value;
-		}
-
-		return $this;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function hasOption($name)
-	{
-		return isset($this->options[$name]);
-	}
 
     /**
      * Get the createdAt of the content type
@@ -393,5 +310,13 @@ class ContentType implements ContentTypeInterface
     {
         $this->createdAt = $createdAt;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 }

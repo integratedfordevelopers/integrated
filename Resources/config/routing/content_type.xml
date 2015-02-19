@@ -41,7 +41,4 @@
         <default key="_controller">IntegratedContentBundle:ContentType:show</default>
     </route>
 
-    <import resource="@IntegratedContentBundle/Resources/config/routing/content_type_relation.xml" prefix="/{contentType}/relation/" />
-
-
 </routes>
