@@ -11,8 +11,9 @@
 
 namespace Integrated\Bundle\PageBundle\Locator;
 
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Finder\Finder;
+
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -20,9 +21,9 @@ use Symfony\Component\Finder\Finder;
 class LayoutLocator
 {
     /**
-     * @var Kernel
+     * @var ThemeManager
      */
-    private $kernel;
+    private $themeManager;
 
     /**
      * @var array
@@ -30,11 +31,11 @@ class LayoutLocator
     private $layouts;
 
     /**
-     * @param Kernel $kernel
+     * @param ThemeManager $themeManager
      */
-    public function __construct(Kernel $kernel)
+    public function __construct(ThemeManager $themeManager)
     {
-        $this->kernel = $kernel;
+        $this->themeManager = $themeManager;
     }
 
     /**
@@ -46,19 +47,22 @@ class LayoutLocator
 
             $this->layouts = [];
 
-            foreach ($this->kernel->getBundles() as $bundle) {
+            foreach ($this->themeManager->getThemes() as $id => $theme) {
 
-                $path = $bundle->getPath() . '/Resources/views/themes'; // @todo config option
+                foreach ($theme->getPaths() as $resource) {
 
-                if (is_dir($path)) {
+                    $path = $this->themeManager->locateResource($resource);
 
-                    $finder = new Finder();
-                    $finder->files()->in($path)->depth(1)->name('*.html.twig');
+                    if (is_dir($path)) {
 
-                    /** @var \Symfony\Component\Finder\SplFileInfo $file */
-                    foreach ($finder as $file) {
+                        $finder = new Finder();
+                        $finder->files()->in($path)->depth(0)->name('*.html.twig');
 
-                        $this->layouts[] = $bundle->getName() . ':themes:' . $file->getRelativePathname();
+                        /** @var \Symfony\Component\Finder\SplFileInfo $file */
+                        foreach ($finder as $file) {
+
+                            $this->layouts[] = $resource . '/' . $file->getRelativePathname();
+                        }
                     }
                 }
             }

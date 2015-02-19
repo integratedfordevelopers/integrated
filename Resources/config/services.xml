@@ -10,6 +10,8 @@
 
         <parameter key="integrated_page.form.type.layout_choice.class">Integrated\Bundle\PageBundle\Form\Type\LayoutChoiceType</parameter>
 
+        <parameter key="integrated_page.layout_locator.class">Integrated\Bundle\PageBundle\Locator\LayoutLocator</parameter>
+
     </parameters>
 
     <services>
@@ -20,8 +22,12 @@
         </service>
 
         <service id="integrated_page.form.type.layout_choice" class="%integrated_page.form.type.layout_choice.class%">
-            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <argument type="service" id="integrated_page.layout_locator" />
             <tag name="form.type" alias="integrated_page_layout_choice" />
+        </service>
+
+        <service id="integrated_page.layout_locator" class="%integrated_page.layout_locator.class%">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
         </service>
 
     </services>

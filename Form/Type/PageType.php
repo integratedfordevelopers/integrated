@@ -52,14 +52,6 @@ class PageType extends AbstractType
         $builder->add('disabled', 'checkbox', [
             'required' => false,
         ]);
-
-        $builder->add('grids', 'collection', [
-            'type'         => new GridType($this->dm),
-            'allow_add'    => true,
-            'allow_delete' => true,
-            'prototype'    => false,
-            'required'     => false,
-        ]);
     }
 
     /**

@@ -60,7 +60,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page created');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_edit', ['id' => $page->getId()]));
+            return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
 
         return [
@@ -82,7 +82,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_layout', ['id' => $page->getId()]));
+            return $this->redirect($this->generateUrl('integrated_page_page_index'));
         }
 
         return [
@@ -114,19 +114,6 @@ class PageController extends Controller
         return [
             'page' => $page,
             'form' => $form->createView(),
-        ];
-    }
-
-    /**
-     * @Template
-     */
-    public function layoutAction(Page $page)
-    {
-        $pages = $this->getDocumentManager()->getRepository('IntegratedPageBundle:Page\Page')->findAll();
-
-        return [
-            'page'  => $page,
-            'pages' => $pages,
         ];
     }
 

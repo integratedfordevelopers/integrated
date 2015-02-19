@@ -15,32 +15,8 @@
                 <h1>{% trans %}Edit{% endtrans %} <small>Page</small></h1>
             </div>
 
-            {{ form_start(form, { 'style': 'horizontal' }) }}
-            {{ form_errors(form) }}
-
-            {{ form_row(form.title) }}
-            {{ form_row(form.slug) }}
-
-            <div class="form-group">
-                {{ form_label(form.layout) }}
-                <div class="col-lg-10">
-                    <input type="text" name="integrated_page_page[layout]" class="form-control" value="{{ page.layout }}" readonly="readonly" />
-                </div>
-            </div>
-
-            {{ form_row(form.publishedAt) }}
-            {{ form_row(form.disabled) }}
-
-            {% block grids %}
-                {{ include(page.layout|replace({ '.html.twig': '.grid.html.twig' })) }}
-            {% endblock %}
-
-            {{ form_row(form._token) }}
-            {{ form_row(form.submit) }}
-            {{ form_end(form, { 'render_rest': false }) }}
+            {{ form(form, { 'style': 'horizontal' }) }}
         </div>
     </div>
-
-    {{ include('IntegratedPageBundle::handlebars.html.twig') }}
 
 {% endblock %}

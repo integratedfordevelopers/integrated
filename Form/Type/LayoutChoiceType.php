@@ -16,7 +16,7 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
 
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
+use Integrated\Bundle\PageBundle\Locator\LayoutLocator;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -24,16 +24,16 @@ use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 class LayoutChoiceType extends AbstractType
 {
     /**
-     * @var ThemeManager
+     * @var LayoutLocator
      */
-    private $themeManager;
+    private $locator;
 
     /**
-     * @param ThemeManager $themeManager
+     * @param LayoutLocator $locator
      */
-    public function __construct(ThemeManager $themeManager)
+    public function __construct(LayoutLocator $locator)
     {
-        $this->themeManager = $themeManager;
+        $this->locator = $locator;
     }
 
     /**
@@ -51,7 +51,9 @@ class LayoutChoiceType extends AbstractType
      */
     protected function getChoiceList()
     {
-        return new ChoiceList([], []);
+        $layout = $this->locator->getLayouts();
+
+        return new ChoiceList($layout, $layout);
     }
 
     /**
