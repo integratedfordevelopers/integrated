@@ -12,10 +12,22 @@
 namespace Integrated\Bundle\WebsiteBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+use Integrated\Bundle\WebsiteBundle\DependencyInjection\Compiler\ThemeManagerPass;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class IntegratedWebsiteBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new ThemeManagerPass());
+    }
 }
