@@ -57,12 +57,12 @@ class PageLoader implements LoaderInterface
         /** @var \Integrated\Bundle\PageBundle\Document\Page\Page $page */
         foreach ($pages as $page) {
 
-            $route = new Route($page->getSlug(), [
+            $route = new Route($page->getPath(), [
                 '_controller' => 'IntegratedWebsiteBundle:Page:show', // @todo config option
                 'id' => $page->getId(),
             ]);
 
-            $routes->add('integrated_website_page_'.$page->getId(), $route);
+            $routes->add('integrated_website_page_' . $page->getId(), $route);
         }
 
         return $routes;
