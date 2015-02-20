@@ -43,7 +43,9 @@ class PageType extends AbstractType
     {
         $builder->add('title', 'text');
 
-        $builder->add('slug', 'text');
+        $builder->add('path', 'text', [
+            'label' => 'URL',
+        ]);
 
         $builder->add('layout', 'integrated_page_layout_choice');
 

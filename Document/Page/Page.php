@@ -25,7 +25,7 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
  * @ODM\Document(collection="page")
- * @MongoDBUnique(fields="slug", message="This value should be unique.")
+ * @MongoDBUnique(fields="path", message="This value should be unique.")
  */
 class Page
 {
@@ -48,7 +48,7 @@ class Page
      * @ODM\UniqueIndex(sparse=true)
      * @Assert\NotBlank
      */
-    protected $slug;
+    protected $path;
 
     /**
      * @var string
@@ -126,18 +126,18 @@ class Page
     /**
      * @return string
      */
-    public function getSlug()
+    public function getPath()
     {
-        return $this->slug;
+        return $this->path;
     }
 
     /**
-     * @param string $slug
+     * @param string $path
      * @return $this
      */
-    public function setSlug($slug)
+    public function setPath($path)
     {
-        $this->slug = $slug;
+        $this->path = $path;
         return $this;
     }
 
