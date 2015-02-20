@@ -235,7 +235,7 @@ class ContentController extends Controller
     public function newAction(Request $request)
     {
         /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
-        $type = $this->get('integrated.form.factory')->getType($request->get('class'), $request->get('type'));
+        $type = $this->get('integrated.form.factory')->getType($request->get('type'));
 
         $content = $type->getType()->create();
 
