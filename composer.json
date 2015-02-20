@@ -1,0 +1,27 @@
+{
+    "name": "integrated/slug-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Slug Bundle",
+    "keywords": ["Integrated", "slug"],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "~2.4",
+        "symfony/framework-bundle": "~2.2"
+    },
+    "autoload":{
+        "psr-0":{
+            "Integrated\\Bundle\\SlugBundle": ""
+        }
+    },
+    "target-dir": "Integrated/Bundle/SlugBundle"
+}
