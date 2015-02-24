@@ -34,7 +34,13 @@ class ClassTreeMapResolver implements DiscriminatorMapResolverInterface
     private $map = null;
 
     /**
+     * Constructor.
+     *
+     * The order of the class map roots is important if it contain classes that also
+     * have a parent class in the list.
+     *
      * @param ClassLocatorInterface $locator
+     * @param string[]              $roots
      */
     public function __construct(ClassLocatorInterface $locator, array $roots)
     {
@@ -73,6 +79,8 @@ class ClassTreeMapResolver implements DiscriminatorMapResolverInterface
     }
 
     /**
+     * Find the first map root for the given class.
+     *
      * @param string $class
      *
      * @return null | string
