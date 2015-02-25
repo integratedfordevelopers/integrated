@@ -32,7 +32,7 @@
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
         "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
-        "integrated/library": "~0.1",
+        "integrated/library": "dev-feature/discriminator-map-rework",
         "integrated/formtype-bundle": "~0.1",
         "integrated/locking-bundle": "~0.1",
         "knplabs/knp-paginator-bundle": "~2.4",
