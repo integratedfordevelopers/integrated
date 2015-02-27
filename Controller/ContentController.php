@@ -16,6 +16,7 @@ use Traversable;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
+use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
 use Integrated\Common\Locks;
@@ -115,6 +116,28 @@ class ContentController extends Controller
                     ->createFilterQuery('contenttypes')
                     ->addTag('contenttypes')
                     ->setQuery('type_name: ((%1%))', [implode(') OR (', array_map($filter, $contentType))]);
+            }
+        }
+
+        // If the workflow bundle is loaded then only display the results that the user
+        // has read rights to
+
+        if ($this->has('integrated_workflow.solr.workflow.extension')) {
+            $filter = [];
+
+            if (($user = $this->getUser()) && $user instanceof GroupableInterface) {
+                foreach ($user->getGroups() as $group) {
+                    $filter[] = $group->getId();
+                }
+            }
+
+            $fq = $query->createFilterQuery('workflow')
+                ->addTag('workflow')
+                ->addTag('security')
+                ->setQuery('(*:* -security_workflow_read:[* TO *])'); // empty fields only
+
+            if ($filter) {
+                $fq->setQuery($fq->getQuery() . ' OR security_workflow_read: ((%1%))', [implode(') OR (', $filter)]);
             }
         }
 

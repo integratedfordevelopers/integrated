@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<converter-mapping>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Content">
+
+        <type name="integrated.content" />
+        <type name="integrated.fields">
+            <options>
+
+                <string key="title">title</string>
+                <string key="title_sort">title</string>
+
+                <string key="intro">intro</string>
+                <string key="content">content</string>
+
+                <string key="pub_time">publishedAt</string>
+                <string key="pub_created">createdAt</string>
+                <string key="pub_edited">updatedAt</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Article">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="subtitle">subtitle</string>
+
+                <array>
+                    <string key="name">author</string>
+                    <array>
+                        <array key="authors">
+                            <string>@person.prefix</string>
+                            <string>@person.firstName</string>
+                            <string>@person.lastName</string>
+                        </array>
+                    </array>
+                </array>
+
+                <string key="source">source</string>
+                <string key="locale">locale</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\File">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="content">description</string>
+                <string key="description">description</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Image">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="content">description</string>
+                <string key="description">description</string>
+
+                <string key="image_text">webpath</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="content">description</string>
+                <string key="description">description</string>
+
+            </options>
+        </type>
+
+    </class>
+
+</converter-mapping>
