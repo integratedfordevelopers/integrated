@@ -39,7 +39,7 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
 	{
 		$files = array();
 
-		foreach (Finder::create()->in(__DIR__ . DIRECTORY_SEPARATOR . 'alice')->name('*.yml') as $file) {
+		foreach (Finder::create()->in(__DIR__ . DIRECTORY_SEPARATOR . 'alice')->name('*.yml')->sortByName() as $file) {
 			$files[] = $file->getRealpath();
 		}
 
