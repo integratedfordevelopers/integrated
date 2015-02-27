@@ -60,7 +60,7 @@ class ContentBlockHandler extends BlockHandler
             $request->query->add($selection->getFilters());
         }
 
-        $query = $this->getQuery($request);
+        $query = $this->getQuery($request, $block->getMaxNrOfItems());
 
         return $this->render([
             'block'     => $block,
@@ -71,11 +71,13 @@ class ContentBlockHandler extends BlockHandler
     /**
      * @todo create class (copied from ContentController)
      * @param Request $request
+     * @param int $limit
      * @return \Solarium\QueryType\Select\Query\Query
      */
-    protected function getQuery(Request $request)
+    protected function getQuery(Request $request, $limit = 10)
     {
         $query = $this->solr->createSelect();
+        $query->setRows($limit);
 
         $facetSet = $query->getFacetSet();
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
