@@ -24,6 +24,9 @@
 		"symfony/symfony": "~2.4",
         "integrated/library": "~0.1"
     },
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*"
+    },
     "autoload":{
         "psr-0":{
             "Integrated\\Bundle\\SolrBundle": ""

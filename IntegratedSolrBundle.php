@@ -11,7 +11,8 @@
 
 namespace Integrated\Bundle\SolrBundle;
 
-use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterConverterFileReaderMappingPass;
+use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterConfigFileProviderPass;
+use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterTypePass;
 use Integrated\Bundle\SolrBundle\DependencyInjection\IntegratedSolrExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,13 +23,16 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class IntegratedSolrBundle extends Bundle
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function build(ContainerBuilder $container)
-	{
-		$container->addCompilerPass(new RegisterConverterFileReaderMappingPass());
-	}
+    /**
+     * @inheritdoc
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new RegisterConfigFileProviderPass());
+        $container->addCompilerPass(new RegisterTypePass());
+    }
 
     /**
      * @inheritdoc

@@ -14,6 +14,7 @@ namespace Integrated\Bundle\SolrBundle\Command;
 use DateTime;
 use DateTimeZone;
 
+use Integrated\Common\Content\ContentInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Helper\ProgressHelper;
@@ -233,12 +234,14 @@ The <info>%command.name%</info> command starts a index of the site.
 		$count = 0;
 		$manager = $this->getDocumentManager();
 
-		foreach($cursor as $document) {
+        /** @var ContentInterface $document */
+
+        foreach($cursor as $document) {
 			$progress->advance();
 
 			$job = new Job('ADD');
 
-			$job->setOption('document.id', $this->getConverter()->getId($document));
+			$job->setOption('document.id', $document->getContentType() . '-' . $document->getId());
 
 			$job->setOption('document.data', $this->getSerializer()->serialize($document, 'json'));
 			$job->setOption('document.class', get_class($document));
@@ -314,14 +317,6 @@ The <info>%command.name%</info> command starts a index of the site.
 	protected function getDocumentManager()
 	{
 		return $this->getContainer()->get('doctrine_mongodb.odm.document_manager');
-	}
-
-	/**
-	 * @return ConverterInterface
-	 */
-	protected function getConverter()
-	{
-		return $this->getContainer()->get('integrated_solr.converter');
 	}
 
 	/**
