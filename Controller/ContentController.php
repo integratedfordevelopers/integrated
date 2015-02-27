@@ -86,6 +86,7 @@ class ContentController extends Controller
         // to filter on these targets.
         // TODO this code should be somewhere else
         $relation = $request->query->get('relation');
+        $relations = array();
         if (null !== $relation) {
 
             $contentType = array();
@@ -97,6 +98,10 @@ class ContentController extends Controller
             if ($relation = $dm->getRepository($this->relationClass)->find($relation)) {
                 foreach ($relation->getTargets() as $target) {
                     $contentType[] = $target->getType();
+                    $relations[] = array(
+                        'href' => $this->generateUrl('integrated_content_content_new', array('class' => $target->getClass(), 'type' => $target->getType(), 'relation' => $relation->getId())),
+                        'name' => $target->getName()
+                    );
                 }
             }
 
@@ -244,7 +249,8 @@ class ContentController extends Controller
             'active'       => array('contenttypes' => $contentType, 'channels' => $activeChannels),
             'channels'     => $channels,
             'facets'       => $result->getFacetSet()->getFacets(),
-            'locks'        => $this->getLocks($paginator)
+            'locks'        => $this->getLocks($paginator),
+            'relations'    => $relations
         );
     }
 
@@ -266,18 +272,31 @@ class ContentController extends Controller
             throw new AccessDeniedException();
         }
 
-		$form = $this->createForm(
-			$type,
-			$content,
-			[
-				'action' => $this->generateUrl('integrated_content_content_new', ['class' => $request->get('class'), 'type' => $request->get('type')]),
-				'method' => 'POST',
-			],
-			[
-				'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-			]
-		);
+        $attr = ['formnovalidate' => 'formnovalidate'];
+        if ($request->getRequestFormat() == 'iframe.html') {
+            $attr['data-dismiss'] = 'modal';
+        }
+
+        $form = $this->createForm(
+            $type,
+            $content,
+            [
+                'action' => $this->generateUrl(
+                    'integrated_content_content_new',
+                    [
+                        'class' => $request->get('class'),
+                        'type' => $request->get('type'),
+                        '_format' => $request->getRequestFormat(),
+                        'relation' => $request->get('relation')
+                    ]
+                ),
+                'method' => 'POST',
+            ],
+            [
+                'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
+                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => $attr]],
+            ]
+        );
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -294,16 +313,26 @@ class ContentController extends Controller
                 $dm->persist($content);
                 $dm->flush();
 
+                if ($this->has('integrated_solr.indexer')) {
+                    $indexer = $this->get('integrated_solr.indexer');
+                    $indexer->setOption('queue.size', 2);
+                    $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+                }
+
+                if ($request->getRequestFormat() == 'iframe.html') {
+                    return $this->render(
+                        'IntegratedContentBundle:Content:saved.iframe.html.twig',
+                        array(
+                            'id' => $content->getId(),
+                            'relation' => $request->get('relation')
+                        )
+                    );
+                }
+
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success(
                     $this->get('translator')->trans('The document %name% has been created', array('%name%' => $type->getType()->getName()))
                 );
-
-                if ($this->has('integrated_solr.indexer')) {
-					$indexer = $this->get('integrated_solr.indexer');
-					$indexer->setOption('queue.size', 2);
-					$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-				}
 
                 return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
             }
@@ -356,18 +385,18 @@ class ContentController extends Controller
         // load a different set of buttons based bases on the locking stat for this
         // content object
 
-		if ($locking['locked']) {
-			$buttons = [
-				'reload' => ['type' => 'submit', 'options' => ['label' => 'Reload']],
-				'reload_changed' => ['type' => 'submit', 'options' => ['label' => 'Reload (keep changes)', 'attr' => ['type' => 'default']]],
+        if ($locking['locked']) {
+            $buttons = [
+                'reload' => ['type' => 'submit', 'options' => ['label' => 'Reload']],
+                'reload_changed' => ['type' => 'submit', 'options' => ['label' => 'Reload (keep changes)', 'attr' => ['type' => 'default']]],
                 'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-			];
-		} else {
-			$buttons = [
-				'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+            ];
+        } else {
+            $buttons = [
+                'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
                 'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-			];
-		}
+            ];
+        }
 
         $form = $this->createForm($type, $content, [
             'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
@@ -407,11 +436,11 @@ class ContentController extends Controller
                         $this->get('translator')->trans('The changes to %name% are saved', array('%name%' => $type->getType()->getName()))
                     );
 
-					if ($this->has('integrated_solr.indexer')) {
-						$indexer = $this->get('integrated_solr.indexer');
-						$indexer->setOption('queue.size', 2);
-						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-					}
+                    if ($this->has('integrated_solr.indexer')) {
+                        $indexer = $this->get('integrated_solr.indexer');
+                        $indexer->setOption('queue.size', 2);
+                        $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+                    }
 
                     if (!$locking['locked']) {
                         $locking['release']();
@@ -501,17 +530,17 @@ class ContentController extends Controller
         // load a different set of buttons based bases on the locking stat for this
         // content object
 
-		if ($locking['locked'] && (!$request->isMethod('delete'))) {
-			$buttons = [
-				'reload' => ['type' => 'submit', 'options' => ['label' => 'Retry']],
+        if ($locking['locked'] && (!$request->isMethod('delete'))) {
+            $buttons = [
+                'reload' => ['type' => 'submit', 'options' => ['label' => 'Retry']],
                 'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-			];
-		} else {
-			$buttons = [
-				'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
+            ];
+        } else {
+            $buttons = [
+                'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
                 'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-			];
-		}
+            ];
+        }
 
         $form = $this->createForm('content_delete', $content, [
             'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
@@ -551,11 +580,11 @@ class ContentController extends Controller
                         $this->get('translator')->trans('The document %name% has been deleted', array('%name%' => $type->getName()))
                     );
 
-					if ($this->has('integrated_solr.indexer')) {
-						$indexer = $this->get('integrated_solr.indexer');
-						$indexer->setOption('queue.size', 2);
-						$indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-					}
+                    if ($this->has('integrated_solr.indexer')) {
+                        $indexer = $this->get('integrated_solr.indexer');
+                        $indexer->setOption('queue.size', 2);
+                        $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+                    }
 
                     if (!$locking['locked']) {
                         $locking['release']();

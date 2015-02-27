@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        parent.$(function() {
+            if (parent.relations['{{ relation }}'] != undefined) {
+                parent.relations['{{ relation }}'].loadOptions();
+                parent.relations['{{ relation }}'].addOption('{{ id }}');
+
+                parent.relations['{{ relation }}'].getModal().modal('hide');
+            }
+        });
+    </script>
+</head>
+<body>
+</body>
+</html>
