@@ -319,6 +319,24 @@ class Article extends Content
     }
 
     /**
+     * Get the relative cover image URL for article
+     *
+     * @return string
+     */
+    public function getCoverUrl()
+    {
+        $items = $this->getReferencesByRelationType('embedded');
+        if ($items) {
+            foreach ($items as $item) {
+                if ($item instanceof Image) {
+                    return $item->getWebPath();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
