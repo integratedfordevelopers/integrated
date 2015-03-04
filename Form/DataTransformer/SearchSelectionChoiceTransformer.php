@@ -23,7 +23,7 @@ use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 class SearchSelectionChoiceTransformer implements DataTransformerInterface
 {
     /**
-     * @var \Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository
+     * @var DocumentRepository
      */
     private $repository;
 
@@ -36,7 +36,7 @@ class SearchSelectionChoiceTransformer implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function transform($searchSelection)
     {
@@ -46,7 +46,7 @@ class SearchSelectionChoiceTransformer implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function reverseTransform($id)
     {

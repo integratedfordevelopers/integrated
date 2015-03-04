@@ -32,69 +32,70 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
      */
     protected $path = __DIR__;
 
-	/**
-	 * @var MetadataFactoryInterface
-	 */
-	private $metadata = null;
+    /**
+     * @var MetadataFactoryInterface
+     */
+    private $metadata = null;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function load(ObjectManager $manager)
-	{
-		$files = array();
+    /**
+     * @inheritdoc
+     */
+    public function load(ObjectManager $manager)
+    {
+        $files = array();
 
-		foreach (Finder::create()->in($this->path . '/alice')->name('*.yml') as $file) {
-			$files[] = $file->getRealpath();
-		}
+        /** @var \Symfony\Component\Finder\SplFileInfo $file */
+        foreach (Finder::create()->in($this->path . DIRECTORY_SEPARATOR  . 'alice')->name('*.yml') as $file) {
+            $files[] = $file->getRealpath();
+        }
 
-		Fixtures::load($files, $manager, array('providers' => array($this)));
-	}
+        Fixtures::load($files, $manager, array('providers' => array($this)));
+    }
 
-	/**
-	 * create a list of field based on the class.
-	 *
-	 * The field list will always reflect the current field configuration of the
-	 * class. It is possible to supply a list of fields that are required and that
-	 * should be ignored.
-	 *
-	 * @param $class
-	 * @param array $required set the required flag for these fields
-	 * @param array $ignore don't add these fields
-	 * @return Field[]
-	 */
-	public function classfields($class, array $required = [], array $ignore = [])
-	{
-		$fields = [];
+    /**
+     * create a list of field based on the class.
+     *
+     * The field list will always reflect the current field configuration of the
+     * class. It is possible to supply a list of fields that are required and that
+     * should be ignored.
+     *
+     * @param $class
+     * @param array $required set the required flag for these fields
+     * @param array $ignore don't add these fields
+     * @return Field[]
+     */
+    public function classfields($class, array $required = [], array $ignore = [])
+    {
+        $fields = [];
 
-		if (!$metadata = $this->getMetadata()->getMetadata($class)) {
-			return $fields;
-		}
+        if (!$metadata = $this->getMetadata()->getMetadata($class)) {
+            return $fields;
+        }
 
-		$required = array_map('strtolower', $required);
-		$ignore = array_map('strtolower', $ignore);
+        $required = array_map('strtolower', $required);
+        $ignore = array_map('strtolower', $ignore);
 
-		foreach ($metadata->getFields() as $field) {
-			if (in_array(strtolower($field->getName()), $ignore)) { continue; }
+        foreach ($metadata->getFields() as $field) {
+            if (in_array(strtolower($field->getName()), $ignore)) { continue; }
 
-			$fields[$field->getName()] = (new Field())
-					->setName($field->getName())
-					->setType($field->getType())
-					->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
-		}
+            $fields[$field->getName()] = (new Field())
+                    ->setName($field->getName())
+                    ->setType($field->getType())
+                    ->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
+        }
 
-		return $fields;
-	}
+        return $fields;
+    }
 
-	/**
-	 * @return MetadataFactoryInterface
-	 */
-	protected function getMetadata()
-	{
-		if ($this->metadata === null) {
-			$this->metadata = $this->container->get('integrated_content.metadata.factory');
-		}
+    /**
+     * @return MetadataFactoryInterface
+     */
+    protected function getMetadata()
+    {
+        if ($this->metadata === null) {
+            $this->metadata = $this->container->get('integrated_content.metadata.factory');
+        }
 
-		return $this->metadata;
-	}
+        return $this->metadata;
+    }
 }

@@ -21,6 +21,8 @@ use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 use Solarium\Client;
 
 /**
+ * Content block handler
+ *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class ContentBlockHandler extends BlockHandler
@@ -36,7 +38,7 @@ class ContentBlockHandler extends BlockHandler
     private $requestStack;
 
     /**
-     * @param Client $solr
+     * @param Client       $solr
      * @param RequestStack $requestStack
      */
     public function __construct(Client $solr, RequestStack $requestStack)
@@ -54,7 +56,13 @@ class ContentBlockHandler extends BlockHandler
             return;
         }
 
-        $request = $this->requestStack->getCurrentRequest()->duplicate(); // don't change original request
+        $currentRequest = $this->requestStack->getCurrentRequest();
+
+        if (!$currentRequest instanceof Request) {
+            return;
+        }
+
+        $request = $currentRequest->duplicate(); // don't change original request
 
         if ($selection = $block->getSearchSelection()) {
             $request->query->add($selection->getFilters());
@@ -69,13 +77,15 @@ class ContentBlockHandler extends BlockHandler
     }
 
     /**
-     * @todo create class (copied from ContentController)
      * @param Request $request
-     * @param int $limit
+     * @param int     $limit
+     *
      * @return \Solarium\QueryType\Select\Query\Query
      */
     protected function getQuery(Request $request, $limit = 10)
     {
+        // TODO create class (copied from ContentController)
+
         $query = $this->solr->createSelect();
         $query->setRows($limit);
 
@@ -109,7 +119,7 @@ class ContentBlockHandler extends BlockHandler
 
             if (count($contentType)) {
                 $helper = $query->getHelper();
-                $filter = function($param) use($helper) {
+                $filter = function ($param) use ($helper) {
                     return $helper->escapePhrase($param);
                 };
 
@@ -126,7 +136,7 @@ class ContentBlockHandler extends BlockHandler
 
             if (count($activeChannels)) {
                 $helper = $query->getHelper();
-                $filter = function($param) use($helper) {
+                $filter = function ($param) use ($helper) {
                     return $helper->escapePhrase($param);
                 };
 
@@ -138,15 +148,15 @@ class ContentBlockHandler extends BlockHandler
         }
 
         // sorting
-        $sort_default = 'changed';
-        $sort_options = [
+        $sortDefault = 'changed';
+        $sortOptions = [
             'rel'     => ['name' => 'rel', 'field' => 'score', 'label' => 'relevance', 'order' => 'desc'],
             'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified', 'order' => 'desc'],
             'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
             'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
             'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc']
         ];
-        $order_options = [
+        $orderOptions = [
             'asc' => 'asc',
             'desc' => 'desc'
         ];
@@ -157,18 +167,17 @@ class ContentBlockHandler extends BlockHandler
 
             $query->setQuery($q);
 
-            $sort_default = 'rel';
-        }
-        else {
+            $sortDefault = 'rel';
+        } else {
             //relevance only available when sorting on specific query
-            unset($sort_options['rel']);
+            unset($sortOptions['rel']);
         }
 
-        $sort = $request->query->get('sort', $sort_default);
+        $sort = $request->query->get('sort', $sortDefault);
         $sort = trim(strtolower($sort));
-        $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
+        $sort = array_key_exists($sort, $sortOptions) ? $sort : $sortDefault;
 
-        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
+        $query->addSort($sortOptions[$sort]['field'], in_array($request->query->get('order'), $orderOptions) ? $request->query->get('order') : $sortOptions[$sort]['order']);
 
         return $query;
     }

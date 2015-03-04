@@ -22,7 +22,9 @@ class SearchSelectionRepository extends DocumentRepository
 {
     /**
      * @param int $id
-     * @return array
+     *
+     * @return mixed
+     *
      * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     public function findPublicByUserId($id)

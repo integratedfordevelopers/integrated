@@ -14,12 +14,12 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\SearchSelectionChoiceTransformer;
-use Integrated\Bundle\UserBundle\Model\UserInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -32,18 +32,18 @@ class SearchSelectionChoiceType extends AbstractType
     private $repository;
 
     /**
-     * @var SecurityContext
+     * @var TokenStorageInterface
      */
-    private $securityContext;
+    private $tokenStorage;
 
     /**
-     * @param ManagerRegistry $manager
-     * @param SecurityContext $securityContext
+     * @param DocumentManager       $manager
+     * @param TokenStorageInterface $tokenStorage
      */
-    public function __construct(ManagerRegistry $manager, SecurityContext $securityContext)
+    public function __construct(DocumentManager $manager, TokenStorageInterface $tokenStorage)
     {
-        $this->repository = $manager->getManager()->getRepository('IntegratedContentBundle:SearchSelection\SearchSelection');
-        $this->securityContext = $securityContext;
+        $this->repository = $manager->getRepository('IntegratedContentBundle:SearchSelection\SearchSelection');
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -75,11 +75,11 @@ class SearchSelectionChoiceType extends AbstractType
     }
 
     /**
-     * @return UserInterface
+     * @return UserInterface|null
      */
     private function getUser()
     {
-        if ($token = $this->securityContext->getToken()) {
+        if ($token = $this->tokenStorage->getToken()) {
             $user = $token->getUser();
 
             if ($user instanceof UserInterface) {

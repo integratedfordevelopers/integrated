@@ -27,6 +27,10 @@ class SearchSelectionController extends Controller
      * Lists all the SearchSelection documents.
      *
      * @Template
+     *
+     * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request)
     {
@@ -43,6 +47,10 @@ class SearchSelectionController extends Controller
      * Creates a new SearchSelection document.
      *
      * @Template
+     *
+     * @param Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction(Request $request)
     {
@@ -73,6 +81,11 @@ class SearchSelectionController extends Controller
      * Edits an existing SearchSelection document.
      *
      * @Template
+     *
+     * @param Request $request
+     * @param SearchSelection $searchSelection
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction(Request $request, SearchSelection $searchSelection)
     {
@@ -99,6 +112,11 @@ class SearchSelectionController extends Controller
      * Deletes a SearchSelection document.
      *
      * @Template
+     *
+     * @param Request $request
+     * @param SearchSelection $searchSelection
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, SearchSelection $searchSelection)
     {
@@ -130,15 +148,17 @@ class SearchSelectionController extends Controller
      */
     public function menuAction()
     {
-        /** @var Request $masterRequest */
+        /** @var Request $request */
         $request = $this->get('request_stack')->getMasterRequest();
 
         /** @var \Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository $repo */
         $repo = $this->getDocumentManager()->getRepository('IntegratedContentBundle:SearchSelection\SearchSelection');
 
+        $user = $this->getUser();
+
         return [
-            'filters' => $request->query->all(),
-            'searchSelections' => $repo->findPublicByUserId($this->getUser()->getId()),
+            'filters' => $request ? $request->query->all() : [],
+            'searchSelections' => $user ? $repo->findPublicByUserId($user->getId()) : [],
         ];
     }
 
@@ -150,14 +170,14 @@ class SearchSelectionController extends Controller
      */
     protected function createCreateForm(SearchSelection $searchSelection)
     {
-        /** @var Request $masterRequest */
+        /** @var Request $request */
         $request = $this->get('request_stack')->getCurrentRequest();
 
         $form = $this->createForm(
             $this->get('integrated_content.form.search_selection.type'),
             $searchSelection,
             array(
-                'action' => $this->generateUrl('integrated_content_search_selection_new', $request->query->all()),
+                'action' => $this->generateUrl('integrated_content_search_selection_new', $request ? $request->query->all() : []),
                 'method' => 'POST',
             )
         );

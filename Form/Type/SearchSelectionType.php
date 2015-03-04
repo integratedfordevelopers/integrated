@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -21,16 +21,16 @@ use Symfony\Component\Security\Core\SecurityContext;
 class SearchSelectionType extends AbstractType
 {
     /**
-     * @var SecurityContext
+     * @var AuthorizationCheckerInterface
      */
-    protected $securityContext;
+    protected $authorizationChecker;
 
     /**
-     * @param SecurityContext $securityContext
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(SecurityContext $securityContext)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->securityContext = $securityContext;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -40,7 +40,7 @@ class SearchSelectionType extends AbstractType
     {
         $builder->add('title', 'text');
 
-        if ($this->securityContext->isGranted('ROLE_ADMIN')) {
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
 
             $builder->add('public', 'choice', [
                 'label' => 'Available for',
