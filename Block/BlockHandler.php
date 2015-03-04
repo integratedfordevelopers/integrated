@@ -58,7 +58,7 @@ abstract class BlockHandler implements BlockHandlerInterface
 
     /**
      * @param array $parameters
-     * @return string
+     * @return string|null
      */
     public function render(array $parameters = [])
     {
