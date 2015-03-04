@@ -11,8 +11,6 @@
 
 namespace Integrated\Common\Block;
 
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -22,7 +20,8 @@ interface BlockHandlerInterface
      * Execute block logic
      *
      * @param BlockInterface $block
-     * @return Response
+     *
+     * @return string|null
      */
     public function execute(BlockInterface $block);
 }
