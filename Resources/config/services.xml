@@ -6,13 +6,36 @@
 
     <parameters>
 
-        <parameter key="integrated.slugger.class">Integrated\Bundle\SlugBundle\Slugger\Slugger</parameter>
+        <parameter key="integrated_slug.slugger.class">Integrated\Bundle\SlugBundle\Slugger\Slugger</parameter>
+
+        <parameter key="integrated_slug.metadata.annotation_driver.class">Integrated\Bundle\SlugBundle\Mapping\Driver\AnnotationDriver</parameter>
+        <parameter key="integrated_slug.metadata.xml_driver.class">Integrated\Bundle\SlugBundle\Mapping\Driver\XmlDriver</parameter>
+        <parameter key="integrated_slug.metadata.yaml_driver.class">Integrated\Bundle\SlugBundle\Mapping\Driver\YamlDriver</parameter>
+
+        <parameter key="integrated_slug.metadata_factory.class">Metadata\MetadataFactory</parameter>
+
+        <parameter key="integrated_slug.event_listener.sluggable_subscriber.class">Integrated\Bundle\SlugBundle\EventListener\SluggableSubscriber</parameter>
 
     </parameters>
 
     <services>
 
-        <service id="integrated.slugger" class="%integrated.slugger.class%" />
+        <service id="integrated_slug.slugger" class="%integrated_slug.slugger.class%" />
+
+        <service id="integrated_slug.metadata.annotation_driver" class="%integrated_slug.metadata.annotation_driver.class%" public="false">
+            <argument type="service" id="annotation_reader" />
+        </service>
+
+        <service id="integrated_slug.metadata_factory" class="%integrated_slug.metadata_factory.class%" public="false">
+            <argument type="service" id="integrated_slug.metadata.annotation_driver" />
+        </service>
+
+        <service id="integrated_slug.event_listener.sluggable_subscriber.slugger" class="%integrated_slug.event_listener.sluggable_subscriber.class%">
+            <argument type="service" id="integrated_slug.metadata_factory" />
+            <argument type="service" id="integrated_slug.slugger" />
+            <tag name="doctrine_mongodb.odm.event_subscriber" />
+            <tag name="doctrine.event_subscriber" />
+        </service>
 
     </services>
 </container>

@@ -9,20 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\SlugBundle\Slugger;
+namespace Integrated\Bundle\SlugBundle\Mapping\Driver;
+
+use Metadata\Driver\DriverInterface;
 
 /**
- * Slugger interface
+ * XML driver
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-interface SluggerInterface
+class XmlDriver implements DriverInterface
 {
     /**
-     * @param string $string
-     * @param string $delimiter
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function slugify($string, $delimiter = '-');
+    public function loadMetadataForClass(\ReflectionClass $class)
+    {
+        throw new \RuntimeException('Not implemented yet'); // @todo
+    }
 }

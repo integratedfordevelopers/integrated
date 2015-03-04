@@ -9,20 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\SlugBundle\Slugger;
+namespace Integrated\Bundle\SlugBundle\Mapping\Metadata;
+
+use Metadata\PropertyMetadata as BasePropertyMetadata;
 
 /**
- * Slugger interface
+ * Property metadata with slug fields
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-interface SluggerInterface
+class PropertyMetadata extends BasePropertyMetadata
 {
     /**
-     * @param string $string
-     * @param string $delimiter
-     *
-     * @return string
+     * @var array
      */
-    public function slugify($string, $delimiter = '-');
+    public $slugFields = [];
 }

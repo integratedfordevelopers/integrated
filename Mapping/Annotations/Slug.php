@@ -9,20 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\SlugBundle\Slugger;
+namespace Integrated\Bundle\SlugBundle\Mapping\Annotations;
+
+use Doctrine\Common\Annotations\Annotation;
 
 /**
- * Slugger interface
+ * Slug annotation
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
+ *
+ * @Annotation
+ * @Target({"PROPERTY"})
  */
-interface SluggerInterface
+final class Slug extends Annotation
 {
     /**
-     * @param string $string
-     * @param string $delimiter
-     *
-     * @return string
+     * @var array
      */
-    public function slugify($string, $delimiter = '-');
+    public $fields = [];
 }
