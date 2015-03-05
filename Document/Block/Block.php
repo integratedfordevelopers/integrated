@@ -17,6 +17,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Block document
@@ -42,6 +43,20 @@ abstract class Block implements BlockInterface
      * @Type\Field
      */
     protected $title;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex(sparse=true)
+     * @Slug(fields={"title"})
+     * @Type\Field(
+     *      type="text",
+     *      options={
+     *          "required"=false
+     *      }
+     * )
+     */
+    protected $slug;
 
     /**
      * @var string
@@ -119,6 +134,24 @@ abstract class Block implements BlockInterface
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
         return $this;
     }
 

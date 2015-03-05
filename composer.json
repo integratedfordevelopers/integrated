@@ -21,9 +21,10 @@
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
         "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
-        "integrated/library": "dev-feature/block",
+        "integrated/library": "dev-feature/block as 0.*-dev",
+        "integrated/slug-bundle": "dev-master",
         "integrated/theme-bundle": "dev-master",
-		"knplabs/knp-paginator-bundle": "dev-master"
+        "knplabs/knp-paginator-bundle": "dev-master"
     },
     "autoload":{
         "psr-0":{
