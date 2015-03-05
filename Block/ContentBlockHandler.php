@@ -14,6 +14,8 @@ namespace Integrated\Bundle\ContentBundle\Block;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 
+use Knp\Component\Pager\Paginator;
+
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
@@ -33,17 +35,24 @@ class ContentBlockHandler extends BlockHandler
     private $solr;
 
     /**
+     * @var Paginator
+     */
+    private $paginator;
+
+    /**
      * @var RequestStack
      */
     private $requestStack;
 
     /**
      * @param Client       $solr
+     * @param Paginator    $paginator
      * @param RequestStack $requestStack
      */
-    public function __construct(Client $solr, RequestStack $requestStack)
+    public function __construct(Client $solr, Paginator $paginator, RequestStack $requestStack)
     {
         $this->solr = $solr;
+        $this->paginator = $paginator;
         $this->requestStack = $requestStack;
     }
 
@@ -68,26 +77,44 @@ class ContentBlockHandler extends BlockHandler
             $request->query->add($selection->getFilters());
         }
 
-        $query = $this->getQuery($request, $block->getMaxNrOfItems());
+        $parameterName = $block->getSlug() . '-page';
+
+        $page = (int) $request->query->get($parameterName);
+
+        if ($page < 1) {
+            $page = 1;
+        }
+
+        $pagination = $this->paginator->paginate(
+            [
+                $this->solr,
+                $this->getQuery($request),
+            ],
+            $page,
+            $block->getItemsPerPage(),
+            [
+                'pageParameterName' => $parameterName,
+                'maxItems' => $block->getMaxItems(),
+            ]
+        );
 
         return $this->render([
-            'block'     => $block,
-            'documents' => $this->solr->execute($query),
+            'block'      => $block,
+            'pagination' => $pagination,
         ]);
     }
 
     /**
      * @param Request $request
-     * @param int     $limit
      *
      * @return \Solarium\QueryType\Select\Query\Query
      */
-    protected function getQuery(Request $request, $limit = 10)
+    protected function getQuery(Request $request)
     {
-        // TODO create class (copied from ContentController)
+        // TODO cleanup or create class (copied from ContentController)
+        // TODO filter by active channel and publication filters
 
         $query = $this->solr->createSelect();
-        $query->setRows($limit);
 
         $facetSet = $query->getFacetSet();
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');

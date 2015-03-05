@@ -46,7 +46,22 @@ class ContentBlock extends Block
      *      }
      * )
      */
-    protected $maxNrOfItems = 10;
+    protected $itemsPerPage = 10;
+
+    /**
+     * @var int
+     * @ODM\Int
+     * @Type\Field(
+     *      type="integer",
+     *      options={
+     *          "required"=false,
+     *          "attr"={
+     *              "min"=0,
+     *          }
+     *      }
+     * )
+     */
+    protected $maxItems;
 
     /**
      * @var string
@@ -81,18 +96,36 @@ class ContentBlock extends Block
     /**
      * @return int
      */
-    public function getMaxNrOfItems()
+    public function getItemsPerPage()
     {
-        return $this->maxNrOfItems;
+        return $this->itemsPerPage;
     }
 
     /**
-     * @param int $maxNrOfItems
+     * @param int $itemsPerPage
      * @return $this
      */
-    public function setMaxNrOfItems($maxNrOfItems)
+    public function setItemsPerPage($itemsPerPage)
     {
-        $this->maxNrOfItems = (int) $maxNrOfItems;
+        $this->itemsPerPage = $itemsPerPage;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxItems()
+    {
+        return $this->maxItems;
+    }
+
+    /**
+     * @param int $maxItems
+     * @return $this
+     */
+    public function setMaxItems($maxItems)
+    {
+        $this->maxItems = $maxItems;
         return $this;
     }
 
