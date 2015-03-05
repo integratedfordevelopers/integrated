@@ -14,7 +14,9 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
 use Integrated\Common\Form\Mapping\Annotations as Type;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 
@@ -62,6 +64,15 @@ class Person extends Relation
      * @Type\Field(options={"label"="Last name"})
      */
     protected $lastName;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex(sparse=true)
+     * @Slug(fields={"firstName", "lastName"})
+     * @Type\Field
+     */
+    protected $slug;
 
     /**
      * @var Collection Job[]
@@ -191,6 +202,28 @@ class Person extends Relation
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+        return $this;
+    }
+
+    /**
+     * Get the slug of the document
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the slug of the document
+     *
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
         return $this;
     }
 

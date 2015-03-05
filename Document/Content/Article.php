@@ -130,6 +130,8 @@ class Article extends Content
     }
 
     /**
+     * Get the slug of the document
+     *
      * @return string
      */
     public function getSlug()
@@ -138,6 +140,8 @@ class Article extends Content
     }
 
     /**
+     * Set the slug of the document
+     *
      * @param string $slug
      * @return $this
      */

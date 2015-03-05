@@ -12,7 +12,9 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
 use Integrated\Common\Form\Mapping\Annotations as Type;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Document type Taxonomy
@@ -30,6 +32,15 @@ class Taxonomy extends Content
      * @Type\Field
      */
     protected $title;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex(sparse=true)
+     * @Slug(fields={"title"})
+     * @Type\Field
+     */
+    protected $slug;
 
     /**
      * @var string
@@ -57,6 +68,28 @@ class Taxonomy extends Content
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get the slug of the document
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the slug of the document
+     *
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
         return $this;
     }
 
