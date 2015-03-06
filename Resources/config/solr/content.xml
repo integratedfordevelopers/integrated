@@ -13,20 +13,6 @@
 
                 <string key="slug">slug</string>
 
-                <array>
-                    <string key="name">url</string>
-
-                    <array>
-                        <string key="separator" />
-
-                        <string>/content/</string>
-                        <string>@contentType</string>
-                        <string>/</string>
-                        <string>@slug</string>
-                        <string>.html</string>
-                    </array>
-                </array>
-
                 <string key="intro">intro</string>
                 <string key="content">content</string>
 
@@ -59,6 +45,15 @@
 
                 <string key="source">source</string>
                 <string key="locale">locale</string>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/article/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
 
             </options>
         </type>
@@ -115,6 +110,15 @@
                 <string key="end_date">endDate</string>
                 <string key="website">website</string>
 
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/event/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
+
             </options>
         </type>
 
@@ -137,6 +141,15 @@
                         <string>@contact.prefix</string>
                         <string>@contact.firstName</string>
                         <string>@contact.lastName</string>
+                    </array>
+                </array>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/job-posting/</string>
+                        <string>@slug</string>
                     </array>
                 </array>
 
