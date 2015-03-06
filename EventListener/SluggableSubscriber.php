@@ -12,19 +12,23 @@
 namespace Integrated\Bundle\SlugBundle\EventListener;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs as ODMPreUpdateEventArgs;
 use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 
 use Doctrine\ORM\Event\PreUpdateEventArgs as ORMPreUpdateEventArgs;
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 
 use Metadata\MetadataFactoryInterface;
 use Metadata\MergeableClassMetadata;
@@ -50,6 +54,11 @@ class SluggableSubscriber implements EventSubscriber
     private $slugger;
 
     /**
+     * @var PropertyAccessor
+     */
+    private $propertyAccessor;
+
+    /**
      * @param MetadataFactoryInterface $metadataFactory
      * @param SluggerInterface         $slugger
      */
@@ -57,6 +66,7 @@ class SluggableSubscriber implements EventSubscriber
     {
         $this->metadataFactory = $metadataFactory;
         $this->slugger = $slugger;
+        $this->propertyAccessor = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -100,8 +110,19 @@ class SluggableSubscriber implements EventSubscriber
 
             if ($propertyMetadata instanceof PropertyMetadata && count($propertyMetadata->slugFields)) {
 
-                // try to generate custom slug
-                $slug = $this->generateSlugFromField($args, $propertyMetadata, $object);
+                if ($args instanceof ODMPreUpdateEventArgs || $args instanceof ORMPreUpdateEventArgs) {
+
+                    if ($args->hasChangedField($propertyMetadata->name)) {
+                        // generate custom slug
+                        $slug = $this->slugger->slugify($args->getNewValue($propertyMetadata->name));
+
+                    } else {
+                        return; // no changes
+                    }
+
+                } else {
+                    $slug = $propertyMetadata->getValue($object);
+                }
 
                 if (!trim($slug)) {
                     // generate slug from the sluggable fields
@@ -109,31 +130,11 @@ class SluggableSubscriber implements EventSubscriber
                 }
 
                 // generate unique slug
-                $slug = $this->generateSlugFromSimilar($om, get_class($object), $propertyMetadata->name, $slug);
+                $slug = $this->generateUniqueSlug($om, get_class($object), $propertyMetadata->name, $slug);
 
                 $propertyMetadata->setValue($object, $slug);
                 $this->recomputeSingleObjectChangeSet($om, $object);
             }
-        }
-    }
-
-    /**
-     * @param LifecycleEventArgs|ODMPreUpdateEventArgs|ORMPreUpdateEventArgs $args
-     * @param PropertyMetadata                                               $propertyMetadata
-     * @param object                                                         $object
-     *
-     * @return string|null
-     */
-    protected function generateSlugFromField(LifecycleEventArgs $args, $propertyMetadata, $object)
-    {
-        if ($args instanceof ODMPreUpdateEventArgs || $args instanceof ORMPreUpdateEventArgs) {
-
-            if ($args->hasChangedField($propertyMetadata->name)) {
-                // generate slug value
-                return $this->slugger->slugify($args->getNewValue($propertyMetadata->name));
-            }
-
-            return $propertyMetadata->getValue($object);
         }
     }
 
@@ -176,39 +177,35 @@ class SluggableSubscriber implements EventSubscriber
      *
      * @return string
      */
-    protected function generateSlugFromSimilar(ObjectManager $om, $class, $field, $slug)
+    protected function generateUniqueSlug(ObjectManager $om, $class, $field, $slug)
     {
-        $uow = $om->getUnitOfWork();
-        $accessor = PropertyAccess::createPropertyAccessor();
-
-        $objects = [];
-
-        if ($uow instanceof ODMUnitOfWork) {
-
-            $objects = $om->getRepository($class)->findBy([
-                $field => new \MongoRegex('/^' . preg_quote($slug, '/') . '(-\d+)?$/i')
-            ]);
-
-        } elseif ($uow instanceof ORMUnitOfWork) {
-
-            throw new \RuntimeException('Not implemented yet'); // @todo
+        if ($this->isUniqueSlug($om, $class, $field, $slug)) {
+            return $slug;
         }
+
+        // slug with counter pattern
+        $pattern = '/(.+)-(\d+)$/i';
+
+        if (preg_match($pattern, $slug, $match)) {
+            // remove counter from slug
+            $slug = $match[1];
+        }
+
+        $objects = $this->findSimilarSlugs($om, $class, $field, $slug);
 
         if (count($objects)) {
 
-            $slugs = [];
+            $positions = [];
 
             foreach ($objects as $object) {
 
-                $value = $accessor->getValue($object, $field);
-                $index = (int) str_replace($slug, 1, str_replace($slug . '-', '', $value));
-
-                $slugs[$index] = $value;
+                $value = $this->propertyAccessor->getValue($object, $field);
+                $positions[preg_match($pattern, $value, $match) ? (int) $match[2] : 1] = true;
             }
 
-            for ($i = 1; $i <= (max(array_keys($slugs)) + 1); $i++) {
+            for ($i = 1; $i <= (max(array_keys($positions)) + 1); $i++) {
 
-                if (!isset($slugs[$i])) {
+                if (!isset($positions[$i])) {
                     // first available slug
                     return $slug . ($i > 1 ? '-' . $i : '');
                 }
@@ -216,6 +213,81 @@ class SluggableSubscriber implements EventSubscriber
         }
 
         return $slug;
+    }
+
+    /**
+     * @param ObjectManager|DocumentManager|EntityManager $om
+     * @param string                                      $class
+     * @param string                                      $field
+     * @param string                                      $slug
+     *
+     * @return bool
+     */
+    protected function isUniqueSlug(ObjectManager $om, $class, $field, $slug)
+    {
+        $uow = $om->getUnitOfWork();
+
+        if ($uow instanceof ODMUnitOfWork) {
+
+            $builder = $this->getRepository($om, $class)->createQueryBuilder();
+            $builder->field($field)->equals(new \MongoRegex('/^' . preg_quote($slug, '/') . '$/i'));
+
+            $query = $builder->count()->getQuery();
+
+            return ($query->execute() === 0);
+
+        } elseif ($uow instanceof ORMUnitOfWork) {
+            throw new \RuntimeException('Not implemented yet'); // @todo
+        }
+    }
+
+    /**
+     * @param ObjectManager|DocumentManager|EntityManager $om
+     * @param string                                      $class
+     * @param string                                      $field
+     * @param string                                      $slug
+     *
+     * @return array
+     */
+    protected function findSimilarSlugs(ObjectManager $om, $class, $field, $slug)
+    {
+        $uow = $om->getUnitOfWork();
+
+        if ($uow instanceof ODMUnitOfWork) {
+
+            return $this->getRepository($om, $class)->findBy([
+                $field => new \MongoRegex('/^' . preg_quote($slug, '/') . '(-\d+)?$/i') // counter is optional
+            ]);
+
+        } elseif ($uow instanceof ORMUnitOfWork) {
+            throw new \RuntimeException('Not implemented yet'); // @todo
+        }
+    }
+
+    /**
+     * @param ObjectManager|DocumentManager|EntityManager $om
+     * @param string                                      $class
+     *
+     * @return ObjectRepository|DocumentRepository|EntityRepository
+     */
+    protected function getRepository(ObjectManager $om, $class)
+    {
+        $uow = $om->getUnitOfWork();
+
+        if ($uow instanceof ODMUnitOfWork) {
+
+            $classMetadata = $om->getClassMetadata($class);
+
+            if (count($classMetadata->parentClasses)) {
+                // get parent class
+                $class = end($classMetadata->parentClasses);
+            }
+
+            return $om->getRepository($class);
+
+        } elseif ($uow instanceof ORMUnitOfWork) {
+            throw new \RuntimeException('Not implemented yet'); // @todo
+        }
     }
 
     /**
