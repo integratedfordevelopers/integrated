@@ -67,29 +67,19 @@
     {{/hasItems}}
 </script>
 <script id="pagination-template" type="text/xhandlebars-template">
-        {{#hasPages pagination.pageCount}}
-    <ul class="pagination">
-            {{#if pagination.previous}}
+    {{#hasPages pagination.pageCount}}
+    <ul class="pagination pull-left">
+        {{#if pagination.previous}}
         <li>
             <a href="{{pagination.previous.href}}">&laquo;</a>
         </li>
-            {{else}}
+        {{else}}
             <li class="disabled">
             <span>&laquo;</span>
         </li>
-            {{/if}}
-            {{#each pagination.pages}}
-            {{#equals ../pagination.page @key }}
-        <li class="active">
-            <span>{{@key}}</span>
-        </li>
-            {{else}}
-            <li>
-            <a href="{{this.href}}">{{@key}}</a>
-        </li>
-            {{/equals}}
-            {{/each}}
-            {{#if pagination.next}}
+        {{/if}}
+
+        {{#if pagination.next}}
         <li>
             <a href="{{pagination.next.href}}">&raquo;</a>
         </li>
@@ -98,19 +88,48 @@
             <span>&raquo;</span>
         </li>
             {{/if}}
-        </ul>
-        {{/hasPages}}
-    </script>
+    </ul>
+    {{/hasPages}}
+</script>
+<script id="add-template" type="text/xhandlebars-template">
+    {{#if relations}}
+        {{#equals relations.length 1}}
+        <a data-title="Add {{relations.0.name}}" class="btn btn-default add-relation" style="font-size: 13px;" href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
+            Add
+        </a>
+        {{else}}
+        <div class="btn-group add-relation">
+            <button type="button" class="btn btn-default dropdown-toggle" style="font-size: 13px;" data-toggle="dropdown" aria-expanded="false">
+                Add <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                {{#each relations}}
+                <li>
+                    <a data-title="Add {{this.name}}" href="{{this.href}}" target="_blank" data-modal="add-modal">
+                        {{this.name}}
+                    </a>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        {{/equals}}
+    {{/if}}
+</script>
 {% endverbatim %}
 <script>
+    var relations = [];
+
     $.fn.relation = function() {
-        return this.each(function(){
-            var rel = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}");
-            rel.loadOptions();
-        });
+
+        relations[$(this).data('relation')] = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}");
+        relations[$(this).data('relation')].loadOptions();
+
+        return relations[$(this).data('relation')];
     };
 
-    $('.form-relations input[data-relation]').relation();
+    $('.form-relations input[data-relation]').each(function() {
+        $(this).relation();
+    });
 
     $('#relations-search').submit(function(ev){
         ev.preventDefault();

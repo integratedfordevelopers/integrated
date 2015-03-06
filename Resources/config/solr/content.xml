@@ -45,6 +45,7 @@
 
                 <string key="source">source</string>
                 <string key="locale">locale</string>
+                <string key="cover">cover</string>
 
                 <array>
                     <string key="name">url</string>

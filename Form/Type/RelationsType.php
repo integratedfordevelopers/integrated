@@ -13,11 +13,12 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Bundle\ContentBundle\Validator\Constraints\RelationNotNull;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\Relations as RelationsTransformer;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
@@ -62,13 +63,22 @@ class RelationsType extends AbstractType
                 $url[] = $contentType->getType();
             }
 
+            $constraints = [];
+            if ($relation->isRequired()) {
+                $constraints[] = new RelationNotNull([
+                    'relation' => $relation->getName()
+                ]);
+            }
+
             $builder->add($relation->getId(), 'hidden', [
                 'attr' => [
                     'data-title'    => $relation->getName(),
                     'data-relation' => $relation->getId(),
                     'data-multiple' => $relation->isMultiple()
-                ]
+                ],
+                'constraints' => $constraints,
             ]);
+
         }
 
         $builder->addModelTransformer(new RelationsTransformer($relations, $this->manager->getManager()));
