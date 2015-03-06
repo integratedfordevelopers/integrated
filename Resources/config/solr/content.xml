@@ -11,6 +11,22 @@
                 <string key="title">title</string>
                 <string key="title_sort">title</string>
 
+                <string key="slug">slug</string>
+
+                <array>
+                    <string key="name">url</string>
+
+                    <array>
+                        <string key="separator" />
+
+                        <string>/content/</string>
+                        <string>@contentType</string>
+                        <string>/</string>
+                        <string>@slug</string>
+                        <string>.html</string>
+                    </array>
+                </array>
+
                 <string key="intro">intro</string>
                 <string key="content">content</string>
 
@@ -84,6 +100,45 @@
 
                 <string key="content">description</string>
                 <string key="description">description</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Event">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="start_date">startDate</string>
+                <string key="end_date">endDate</string>
+                <string key="website">website</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\JobPosting">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="job_title">jobTitle</string>
+                <string key="salary">salary</string>
+                <string key="apply_url">applyUrl</string>
+
+                <string key="company">company.name</string>
+
+                <array>
+                    <string key="name">contact</string>
+                    <array>
+                        <string>@contact.prefix</string>
+                        <string>@contact.firstName</string>
+                        <string>@contact.lastName</string>
+                    </array>
+                </array>
 
             </options>
         </type>

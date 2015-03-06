@@ -41,7 +41,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  */
 class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
 {
-	use ExtensibleTrait;
+    use ExtensibleTrait;
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * @var string the type of the ContentType
      * @ODM\String
-	 * @ODM\Index
+     * @ODM\Index
      */
     protected $contentType;
 
@@ -90,7 +90,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @var Metadata
-	 * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
      */
     protected $metadata = null;
 
@@ -231,7 +231,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
                 }
             }
 
-			return false;
+            return false;
         })->first();
     }
 
@@ -360,30 +360,30 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         return $this;
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getMetadata()
-	{
-		if ($this->metadata === null) {
-			$this->metadata = new Metadata();
-		}
+    /**
+     * @inheritdoc
+     */
+    public function getMetadata()
+    {
+        if ($this->metadata === null) {
+            $this->metadata = new Metadata();
+        }
 
-		return $this->metadata;
-	}
+        return $this->metadata;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setMetadata(RegistryInterface $metadata = null)
-	{
-		if ($metadata !== null && !$metadata instanceof Metadata) {
-			$metadata = new Metadata($metadata->toArray());
-		}
+    /**
+     * @inheritdoc
+     */
+    public function setMetadata(RegistryInterface $metadata = null)
+    {
+        if ($metadata !== null && !$metadata instanceof Metadata) {
+            $metadata = new Metadata($metadata->toArray());
+        }
 
-		$this->metadata = $metadata;
-		return $this;
-	}
+        $this->metadata = $metadata;
+        return $this;
+    }
 
     /**
      * {@inheritdoc}
@@ -423,10 +423,10 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * {@inheritdoc}
      */
-   	public function hasChannel(ChannelInterface $channel)
-   	{
-   		return $this->channels->contains($channel);
-   	}
+    public function hasChannel(ChannelInterface $channel)
+    {
+        return $this->channels->contains($channel);
+    }
 
     /**
      * {@inheritdoc}

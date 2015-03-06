@@ -92,10 +92,10 @@ class Article extends Content
     protected $content;
 
     /**
-     * @var Embedded\Location
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location")
+     * @var Embedded\Address
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address")
      */
-    protected $location;
+    protected $address;
 
     /**
      * Constructor
@@ -330,24 +330,24 @@ class Article extends Content
     }
 
     /**
-     * Get the location of the document
+     * Get the address of the document
      *
-     * @return Embedded\Location
+     * @return Embedded\Address
      */
-    public function getLocation()
+    public function getAddress()
     {
-        return $this->location;
+        return $this->address;
     }
 
     /**
-     * Set the location of the document
+     * Set the address of the document
      *
-     * @param Embedded\Location $location
+     * @param Embedded\Address $address
      * @return $this
      */
-    public function setLocation(Embedded\Location $location = null)
+    public function setAddress(Embedded\Address $address = null)
     {
-        $this->location = $location;
+        $this->address = $address;
         return $this;
     }
 
