@@ -17,12 +17,15 @@ use Integrated\Bundle\FormTypeBundle\Form\ViewTransformer\AuthorTransformer as V
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @author Jurre de Jongh <jurre@e-active.nl>
+ */
 class AuthorType extends AbstractType
 {
     /**
      * @var ManagerRegistry
      */
-    private $om;
+    private $mr;
 
     /**
      * @param ManagerRegistry $mr
@@ -39,6 +42,7 @@ class AuthorType extends AbstractType
     {
         $transformer     = new AuthorTransformer($this->mr);
         $viewTransformer = new ViewAuthorTransformer($this->mr);
+
         $builder->addModelTransformer($transformer);
         $builder->addViewTransformer($viewTransformer);
     }

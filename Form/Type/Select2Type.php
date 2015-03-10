@@ -14,15 +14,11 @@ namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
+/**
+ * @author Jurre de Jongh <jurre@e-active.nl>
+ */
 class Select2Type extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-    }
-
     /**
      * {@inheritdoc}
      */
