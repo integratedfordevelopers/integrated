@@ -4,13 +4,16 @@
     <title>{% block title page.title|default('Untitled') %}</title>
     <meta charset="UTF-8" />
 
+    {% if page.description|default %}
+        <meta name="description" content="{{ page.description }}">
+    {% endif %}
+
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 
     {% block stylesheets %}
-        {# filter='uglifycss' #}
-        {% stylesheets output='css/styles.css'
-        '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
+        {% stylesheets output='css/styles.css' filter='?uglifycss'
+            '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
+            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
 </head>
@@ -44,10 +47,9 @@
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
 {% block javascripts %}
-    {# filter='uglifyjs' #}
-    {% javascripts output='js/scripts.js'
-    '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
-    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% javascripts output='js/scripts.js' filter='?uglifyjs'
+        '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 
