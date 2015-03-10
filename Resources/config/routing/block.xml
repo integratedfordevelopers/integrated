@@ -9,13 +9,13 @@
         <option key="expose">true</option>
     </route>
 
+    <route id="integrated_block_block_new" path="/new" methods="GET|POST">
+        <default key="_controller">IntegratedBlockBundle:Block:new</default>
+    </route>
+
     <route id="integrated_block_block_show" path="/{id}" methods="GET">
         <default key="_controller">IntegratedBlockBundle:Block:show</default>
         <option key="expose">true</option>
-    </route>
-
-    <route id="integrated_block_block_new" path="/new" methods="GET|POST">
-        <default key="_controller">IntegratedBlockBundle:Block:new</default>
     </route>
 
     <route id="integrated_block_block_edit" path="/{id}/edit" methods="GET|PUT">
