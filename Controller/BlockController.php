@@ -25,9 +25,11 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
 class BlockController extends Controller
 {
     /**
-     * Lists all the Block documents.
-     *
      * @Template
+     *
+     * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request)
     {
@@ -36,7 +38,7 @@ class BlockController extends Controller
         $pagination = $this->getPaginator()->paginate(
             $builder,
             $request->query->get('page', 1),
-            20
+            $request->query->get('limit', 20)
         );
 
         return [
@@ -47,6 +49,24 @@ class BlockController extends Controller
 
     /**
      * @Template
+     *
+     * @param Block $block
+     *
+     * @return array
+     */
+    public function showAction(Block $block)
+    {
+        return [
+            'block' => $block,
+        ];
+    }
+
+    /**
+     * @Template
+     *
+     * @param Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction(Request $request)
     {
@@ -80,6 +100,11 @@ class BlockController extends Controller
 
     /**
      * @Template
+     *
+     * @param Request $request
+     * @param Block $block
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction(Request $request, Block $block)
     {
@@ -102,6 +127,11 @@ class BlockController extends Controller
 
     /**
      * @Template
+     *
+     * @param Request $request
+     * @param Block $block
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, Block $block)
     {
@@ -128,6 +158,7 @@ class BlockController extends Controller
 
     /**
      * @param BlockInterface $block
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createCreateForm(BlockInterface $block)
@@ -155,6 +186,7 @@ class BlockController extends Controller
 
     /**
      * @param BlockInterface $block
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createEditForm(BlockInterface $block)
@@ -180,6 +212,7 @@ class BlockController extends Controller
 
     /**
      * @param string $id
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createDeleteForm($id)

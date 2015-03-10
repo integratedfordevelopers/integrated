@@ -65,6 +65,8 @@ class BlockExtension extends \Twig_Extension
             if ($handler instanceof BlockHandler) {
                 $handler->setTwig($environment);
 
+                $this->themeManager->setActiveTheme('gim'); // @todo
+
                 if ($template = $this->themeManager->locateTemplate('blocks/' . $block->getType() . '/' . $block->getLayout())) {
                     $handler->setTemplate($template);
                 }

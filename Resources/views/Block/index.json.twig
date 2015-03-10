@@ -1,0 +1,13 @@
+{% spaceless %}
+{% set data = [] %}
+
+{% for block in blocks %}
+    {% set data = data|merge([{
+        'id'   : block.id,
+        'title': block.title,
+        'type' : block.type
+    }]) %}
+{% endfor %}
+
+{{ data|json_encode|raw }}
+{% endspaceless %}

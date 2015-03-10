@@ -1,0 +1,10 @@
+{% spaceless %}
+{% set data = {
+    'id'   : block.id,
+    'title': block.title,
+    'type' : block.type,
+    'html' : integrated_block(block)
+} %}
+
+{{ data|json_encode|raw }}
+{% endspaceless %}
