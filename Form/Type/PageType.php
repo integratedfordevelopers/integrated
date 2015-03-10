@@ -43,6 +43,10 @@ class PageType extends AbstractType
     {
         $builder->add('title', 'text');
 
+        $builder->add('description', 'textarea', [
+            'required' => false,
+        ]);
+
         $builder->add('path', 'text', [
             'label' => 'URL',
         ]);
