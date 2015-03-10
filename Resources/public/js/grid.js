@@ -1,6 +1,21 @@
 !function($) {
 
     var createBlock = function(name, index, value, element) {
+
+        if (element == undefined) {
+
+            $.ajax({
+                url: Routing.generate('integrated_block_block_show', { 'id': value, '_format': 'json' }),
+                dataType: 'json',
+                async: false,
+                success: function(data) {
+                    element = data.html;
+                }
+            });
+
+            // @todo error handling
+        }
+
         var template = Handlebars.compile($('#integrated_website_template_block').html());
 
         var html = template({
@@ -133,14 +148,33 @@
     $(document).on('click', '[data-action="integrated-website-block-add"]', function(e) {
         e.preventDefault();
 
-        var value = prompt('Please provide the id');
+        var collection = $('#' + $(this).attr('data-collection-id'));
 
-        if (value) {
-            var collection = $('#' + $(this).attr('data-collection-id'));
-            var element = '<div class="panel panel-default"><div class="panel-heading">[block]</div><div class="panel-body"></div></div>'; // @todo
+        $.ajax({
+            url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 999 }), // @todo paging
+            dataType: 'json',
+            success: function(data) {
 
-            addBlock(collection, value, element);
-        }
+                var template = Handlebars.compile($('#integrated_website_template_modal_block_add').html());
+
+                var html = $(template({
+                    blocks: data
+                }));
+
+                var dialog = bootbox.dialog({
+                    title: 'Add block',
+                    message: html
+                });
+
+                html.find('[data-action="integrated-website-block-choose"]').click(function() {
+
+                    addBlock(collection, $(this).attr('data-id'));
+                    dialog.modal('hide');
+                });
+            }
+        });
+
+        // @todo error handling
     });
 
     $(document).on('click', '[data-action="integrated-website-block-remove"]', function(e) {
@@ -190,14 +224,12 @@
 
                 var template = Handlebars.compile($('#integrated_website_template_cols').html());
 
-                var html = template({
+                var html = $(template({
                     id: id,
                     name: name,
                     index: index,
                     columns: data
-                });
-
-                html = $(html);
+                }));
 
                 collection.append(html);
 
@@ -209,7 +241,7 @@
 
                 addConfigButton(html.closest('.row'));
 
-                //$('.sortable').sortable('refresh');
+                // @todo bind sortable
             }
         }
     });
@@ -255,14 +287,12 @@
 
                 var template = Handlebars.compile($('#integrated_website_template_cols').html());
 
-                var html = template({
+                var html = $(template({
                     id: id,
                     name: name,
                     index: index,
                     columns: data
-                });
-
-                html = $(html);
+                }));
 
                 var newColumns = html.children('.integrated-website-cols').children('.integrated-website-col');
 
@@ -282,7 +312,7 @@
 
                 addConfigButton(html.closest('.integrated-website-row'));
 
-                //$('.sortable').sortable('refresh');
+                // @todo bind sortable
             }
         }
     });

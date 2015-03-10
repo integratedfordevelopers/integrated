@@ -26,4 +26,18 @@
         </div>
     </script>
 
+    <script id="integrated_website_template_modal_block_add" type="text/x-handlebars-template">
+        {{#each blocks}}
+        <div class="row form-group">
+            <div class="col-sm-8">
+                <b>{{ title }}</b>
+                <p>{{ type }}</p>
+            </div>
+            <div class="col-sm-4">
+                <a href="javascript:;" data-action="integrated-website-block-choose" data-id="{{ id }}" class="btn btn-default pull-right">Choose</a>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+
 {% endverbatim %}

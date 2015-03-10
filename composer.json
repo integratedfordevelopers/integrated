@@ -24,6 +24,7 @@
         "integrated/content-bundle": "dev-feature/block as 0.*-dev",
         "integrated/page-bundle": "dev-master",
 		"knplabs/knp-paginator-bundle": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "1.5.*",
         "twbs/bootstrap": "3.*"
     },
     "autoload":{

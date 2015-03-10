@@ -27,7 +27,7 @@ class PageController extends Controller
      */
     public function showAction(Page $page)
     {
-        $this->get('integrated_theme.templating.theme_manager')->setActiveTheme('gim');
+        $this->get('integrated_theme.templating.theme_manager')->setActiveTheme('gim'); // @todo
 
         return $this->render($page->getLayout(), [
             'page' => $page,
@@ -41,7 +41,7 @@ class PageController extends Controller
      */
     public function editAction(Request $request, Page $page)
     {
-        $this->get('integrated_theme.templating.theme_manager')->setActiveTheme('gim');
+        $this->get('integrated_theme.templating.theme_manager')->setActiveTheme('gim'); // @todo
 
         // @todo security check
 

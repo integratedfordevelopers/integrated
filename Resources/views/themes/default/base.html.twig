@@ -4,7 +4,7 @@
     <title>{% block title page.title|default('Untitled') %}</title>
     <meta charset="UTF-8" />
 
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 
     {% block stylesheets %}
         {# filter='uglifycss' #}
@@ -16,8 +16,8 @@
 </head>
 <body>
 
-{# auto generate #}
 {% if form is defined %}
+    {# TODO: auto generate #}
     {{ form_start(form) }}
     {{ form_errors(form) }}
 {% endif %}
@@ -26,18 +26,22 @@
     {{ integrated_grid('main') }}
 </div>
 
-{# auto generate #}
 {% if form is defined %}
+    {# TODO: auto generate #}
     {{ form_row(form._token) }}
     {{ form_end(form, { 'render_rest': false }) }}
-{% endif %}
 
-{{ include('IntegratedWebsiteBundle::handlebars.html.twig') }}
+    {{ include('IntegratedWebsiteBundle::handlebars.html.twig') }}
+{% endif %}
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="{{ asset('bundles/integratedcontent/components/handlebars/handlebars.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/integratedwebsite/components/bootbox/bootbox.js') }}"></script>
+
+<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
 {% block javascripts %}
     {# filter='uglifyjs' #}
