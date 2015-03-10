@@ -13,6 +13,7 @@ namespace Integrated\Bundle\PageBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Finder\Finder;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -25,6 +26,10 @@ class PageController extends Controller
 {
     /**
      * @Template
+     *
+     * @param Request $request
+     *
+     * @return array
      */
     public function indexAction(Request $request)
     {
@@ -43,6 +48,10 @@ class PageController extends Controller
 
     /**
      * @Template
+     *
+     * @param Request $request
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction(Request $request)
     {
@@ -58,6 +67,8 @@ class PageController extends Controller
             $dm->persist($page);
             $dm->flush();
 
+            $this->clearRoutingCache();
+
             $this->get('braincrafted_bootstrap.flash')->success('Page created');
 
             return $this->redirect($this->generateUrl('integrated_page_page_index'));
@@ -70,6 +81,11 @@ class PageController extends Controller
 
     /**
      * @Template
+     *
+     * @param Request $request
+     * @param Page $page
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function editAction(Request $request, Page $page)
     {
@@ -79,6 +95,8 @@ class PageController extends Controller
         if ($form->isValid()) {
 
             $this->getDocumentManager()->flush();
+
+            $this->clearRoutingCache();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 
@@ -93,6 +111,11 @@ class PageController extends Controller
 
     /**
      * @Template
+     *
+     * @param Request $request
+     * @param Page $page
+     *
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, Page $page)
     {
@@ -105,6 +128,8 @@ class PageController extends Controller
 
             $dm->remove($page);
             $dm->flush();
+
+            $this->clearRoutingCache();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page deleted');
 
@@ -119,6 +144,7 @@ class PageController extends Controller
 
     /**
      * @param Page $page
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createCreateForm(Page $page)
@@ -139,6 +165,7 @@ class PageController extends Controller
 
     /**
      * @param Page $page
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createEditForm(Page $page)
@@ -159,6 +186,7 @@ class PageController extends Controller
 
     /**
      * @param string $id
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createDeleteForm($id)
@@ -170,6 +198,20 @@ class PageController extends Controller
         $builder->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 
         return $builder->getForm();
+    }
+
+    /**
+     */
+    protected function clearRoutingCache()
+    {
+        $pattern = '/^app(Dev|Prod)Url(Matcher|Generator).php/';
+
+        $finder = new Finder();
+
+        /** @var \Symfony\Component\Finder\SplFileInfo $file */
+        foreach ($finder->files()->in($this->get('kernel')->getCacheDir())->depth(0)->name($pattern) as $file) {
+            @unlink($file->getRealPath());
+        }
     }
 
     /**
