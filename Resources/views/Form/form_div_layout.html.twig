@@ -96,7 +96,7 @@
                         dropdownCssClass: "bigdrop"
                     }).on("change", function(e) {
                         if(e.hasOwnProperty('added')) {
-                            $("#authorTypes").append('<div id="type_' + e.added.id + '" style="margin-top: 10px;" class="input-group input-group"><span class="input-group-addon">' + e.added.name + '</span><input type="text" class="form-control type-text" name="{{ full_name }}[types][' + e.added.id + ']" placeholder="Type" /></div>');
+                            $("#authorTypes").append('<div id="type_' + e.added.id + '" style="margin-top: 10px;" class="input-group input-group"><span class="input-group-addon">' + e.added.text + '</span><input type="text" class="form-control type-text" name="{{ full_name }}[types][' + e.added.id + ']" placeholder="Type" /></div>');
                         }
 
                         if(e.hasOwnProperty('removed')) {
