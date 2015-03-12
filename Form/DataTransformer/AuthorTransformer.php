@@ -16,6 +16,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\DataTransformerInterface;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
 
+/**
+ * @author Jurre de Jongh <jurre@e-active.nl>
+ */
 class AuthorTransformer implements DataTransformerInterface
 {
     public function __construct(ManagerRegistry $mr)
