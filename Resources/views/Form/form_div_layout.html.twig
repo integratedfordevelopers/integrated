@@ -53,10 +53,10 @@
     <div style="clear: both;"></div>
 
     <div id="authorTypes">
-        {% if value.html is not empty %}
-            {% autoescape false %}
-                {{ value.html }}
-            {% endautoescape %}
+        {% if value is not empty %}
+            {% for item in value %}
+                <div id="type_{{ item.id }}" style="margin-top: 10px;" class="input-group input-group"><span class="input-group-addon">{{ item.text }}</span><input type="text" class="form-control type-text" name="{{ full_name }}[types][{{ item.id }}]" placeholder="Type" /></div>
+            {% endfor %}
         {% endif %}
     </div>
 
@@ -108,10 +108,10 @@
                         $('#authorTypes').toggle();
                     });
 
-                    {% if value.data is not empty %}
-                    {% autoescape false %}
-                    $("#{{ id }}").select2('data', {{ value.data }});
-                    {% endautoescape %}
+                    {% if value is not empty %}
+                        {% autoescape false %}
+                            $("#{{ id }}").select2('data', {{ value|json_encode() }});
+                        {% endautoescape %}
                     {% endif %}
                 }
         );

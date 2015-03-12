@@ -57,11 +57,11 @@ class AuthorTransformer implements DataTransformerInterface
         $mr         = $this->mr->getManager();
         $collection = array();
 
-        if(is_array($array) && isset($array['persons']) && isset($array['types']) && is_array($array['types'])) {
-            foreach(explode(',', $array['persons']) as $person) {
+        if (is_array($array) && isset($array['persons'], $array['types']) && is_array($array['types'])) {
+            foreach (explode(',', $array['persons']) as $person) {
                 $result = $mr->getRepository('IntegratedContentBundle:Content\Relation\Person')->find($person);
 
-                if($result && isset($array['types'][$person])) {
+                if ($result && isset($array['types'][$person])) {
                     $author = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author();
                     $author->setType($array['types'][$person]);
                     $author->setPerson($result);
