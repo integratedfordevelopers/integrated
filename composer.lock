@@ -4,21 +4,21 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a0d7480251eb7e42c7dcbd0ca9f3cc4a",
+    "hash": "63073f57b79db183b61907a45237ed19",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "target-dir": "Braincrafted/Bundle/BootstrapBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/braincrafted/bootstrap-bundle.git",
-                "reference": "2dc17466f95a035869b51c845024f6a92bc1d6d1"
+                "reference": "c301bae8ba91b1a6f1045919b16f9cb9b62c7e7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/braincrafted/bootstrap-bundle/zipball/2dc17466f95a035869b51c845024f6a92bc1d6d1",
-                "reference": "2dc17466f95a035869b51c845024f6a92bc1d6d1",
+                "url": "https://api.github.com/repos/braincrafted/bootstrap-bundle/zipball/c301bae8ba91b1a6f1045919b16f9cb9b62c7e7b",
+                "reference": "c301bae8ba91b1a6f1045919b16f9cb9b62c7e7b",
                 "shasum": ""
             },
             "require": {
@@ -64,7 +64,7 @@
             "keywords": [
                 "bootstrap"
             ],
-            "time": "2015-01-31 10:32:31"
+            "time": "2015-03-06 12:14:13"
         },
         {
             "name": "components/jquery",
@@ -524,16 +524,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "v1.3.0",
+            "version": "v1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "3beb3a780485ab01f86941f4892cd23ef8c39c6b"
+                "reference": "1986ff3a945b584c6505d07eae92d77e41131078"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/3beb3a780485ab01f86941f4892cd23ef8c39c6b",
-                "reference": "3beb3a780485ab01f86941f4892cd23ef8c39c6b",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/1986ff3a945b584c6505d07eae92d77e41131078",
+                "reference": "1986ff3a945b584c6505d07eae92d77e41131078",
                 "shasum": ""
             },
             "require": {
@@ -542,17 +542,15 @@
                 "jdorn/sql-formatter": "~1.1",
                 "php": ">=5.3.2",
                 "symfony/doctrine-bridge": "~2.2",
-                "symfony/framework-bundle": "~2.2"
+                "symfony/framework-bundle": "~2.3"
             },
             "require-dev": {
                 "doctrine/orm": "~2.3",
-                "phpunit/php-code-coverage": "~1.2",
-                "phpunit/phpunit": "~3.7",
-                "phpunit/phpunit-mock-objects": "~1.2",
+                "phpunit/phpunit": "~4",
                 "satooshi/php-coveralls": "~0.6.1",
                 "symfony/validator": "~2.2",
                 "symfony/yaml": "~2.2",
-                "twig/twig": "~1"
+                "twig/twig": "~1.10"
             },
             "suggest": {
                 "doctrine/orm": "The Doctrine ORM integration is optional in the bundle.",
@@ -561,7 +559,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.3.x-dev"
+                    "dev-master": "1.4.x-dev"
                 }
             },
             "autoload": {
@@ -599,7 +597,7 @@
                 "orm",
                 "persistence"
             ],
-            "time": "2014-11-28 08:32:03"
+            "time": "2015-02-28 11:04:45"
         },
         {
             "name": "doctrine/doctrine-cache-bundle",
@@ -866,20 +864,20 @@
         },
         {
             "name": "doctrine/mongodb",
-            "version": "1.1.7",
+            "version": "1.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb.git",
-                "reference": "3b97082b1526406a3e8ddc294713b89d6f460f59"
+                "reference": "5cd7ab2aeb6783b9f2345a47767b5c0b2d2b3305"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/mongodb/zipball/3b97082b1526406a3e8ddc294713b89d6f460f59",
-                "reference": "3b97082b1526406a3e8ddc294713b89d6f460f59",
+                "url": "https://api.github.com/repos/doctrine/mongodb/zipball/5cd7ab2aeb6783b9f2345a47767b5c0b2d2b3305",
+                "reference": "5cd7ab2aeb6783b9f2345a47767b5c0b2d2b3305",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": ">=2.1.0,<2.5-dev",
+                "doctrine/common": "~2.1",
                 "ext-mongo": ">=1.2.12,<1.7-dev",
                 "php": ">=5.3.2"
             },
@@ -890,11 +888,6 @@
                 "jmikola/geojson": "Support GeoJSON geometry objects in 2dsphere queries"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2.x-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Doctrine\\MongoDB": "lib/"
@@ -929,7 +922,7 @@
                 "mongodb",
                 "persistence"
             ],
-            "time": "2015-01-30 15:43:45"
+            "time": "2015-02-25 00:38:50"
         },
         {
             "name": "doctrine/mongodb-odm",
@@ -1154,6 +1147,64 @@
             "time": "2014-12-16 13:45:01"
         },
         {
+            "name": "friendsofsymfony/jsrouting-bundle",
+            "version": "1.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfSymfony/FOSJsRoutingBundle.git",
+                "reference": "539a6ac0c1fb6b010f92a1c877426a4caa5abba1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfSymfony/FOSJsRoutingBundle/zipball/539a6ac0c1fb6b010f92a1c877426a4caa5abba1",
+                "reference": "539a6ac0c1fb6b010f92a1c877426a4caa5abba1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2",
+                "symfony/console": "~2.0",
+                "symfony/framework-bundle": "~2.0",
+                "symfony/serializer": "~2.0",
+                "willdurand/jsonp-callback-validator": "~1.0"
+            },
+            "require-dev": {
+                "symfony/expression-language": "~2.4"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FOS\\JsRoutingBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "FriendsOfSymfony Community",
+                    "homepage": "https://github.com/friendsofsymfony/FOSJsRoutingBundle/contributors"
+                },
+                {
+                    "name": "William Durand",
+                    "email": "william.durand1@gmail.com"
+                }
+            ],
+            "description": "A pretty nice way to expose your Symfony2 routing to client applications.",
+            "homepage": "http://friendsofsymfony.github.com",
+            "keywords": [
+                "Js Routing",
+                "javascript",
+                "routing"
+            ],
+            "time": "2015-01-23 02:44:26"
+        },
+        {
             "name": "fzaninotto/faker",
             "version": "v1.4.0",
             "source": {
@@ -1259,23 +1310,27 @@
             "target-dir": "Integrated/Bundle/BlockBundle",
             "source": {
                 "type": "git",
-                "url": "git@bitbucket.org:eactive/integrated-block-bundle.git",
-                "reference": "6b92979bdb1f3ac4b27f8fb241d15ceb055b7bda"
+                "url": "https://bitbucket.org/eactive/integrated-block-bundle.git",
+                "reference": "30e0b83bdadb2c52a61f9d6e9e4aab82201ebc62"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/eactive/integrated-block-bundle/get/30e0b83bdadb2c52a61f9d6e9e4aab82201ebc62.zip",
+                "reference": "30e0b83bdadb2c52a61f9d6e9e4aab82201ebc62",
+                "shasum": ""
             },
             "require": {
-                "braincrafted/bootstrap-bundle": "~2.0",
-                "doctrine/doctrine-fixtures-bundle": "dev-master",
                 "doctrine/mongodb": ">=1.0.0",
                 "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
                 "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
                 "ext-mongo": "~1.2",
-                "integrated/content-bundle": "~0.1",
+                "integrated/library": "dev-feature/block as 0.*-dev",
+                "integrated/slug-bundle": "dev-master",
+                "integrated/theme-bundle": "dev-master",
                 "knplabs/knp-paginator-bundle": "dev-master",
-                "nelmio/alice": "1.*",
                 "php": ">=5.4",
                 "symfony/framework-bundle": "~2.2",
-                "symfony/symfony": "~2.4",
-                "twbs/bootstrap": "3.*"
+                "symfony/symfony": "~2.4"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -1283,6 +1338,7 @@
                     "Integrated\\Bundle\\BlockBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1298,7 +1354,7 @@
                 "Integrated",
                 "block"
             ],
-            "time": "2015-01-14 09:29:33"
+            "time": "2015-03-13 09:37:11"
         },
         {
             "name": "integrated/content-bundle",
@@ -1307,12 +1363,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-content-bundle.git",
-                "reference": "79858cdaaadab00ab298975512a6e5a9bac5fd9d"
+                "reference": "c9c066af3f46d435ea9da1308fa213f4dd8b7e9d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/79858cdaaadab00ab298975512a6e5a9bac5fd9d.zip",
-                "reference": "79858cdaaadab00ab298975512a6e5a9bac5fd9d",
+                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/c9c066af3f46d435ea9da1308fa213f4dd8b7e9d.zip",
+                "reference": "c9c066af3f46d435ea9da1308fa213f4dd8b7e9d",
                 "shasum": ""
             },
             "require": {
@@ -1324,8 +1380,9 @@
                 "ext-mongo": "~1.2",
                 "integrated/block-bundle": "dev-master",
                 "integrated/formtype-bundle": "~0.1",
-                "integrated/library": "~0.1",
+                "integrated/library": "dev-feature/block as 0.*-dev",
                 "integrated/locking-bundle": "~0.1",
+                "integrated/slug-bundle": "dev-master",
                 "knplabs/knp-paginator-bundle": "~2.4",
                 "nelmio/alice": "1.*",
                 "php": ">=5.4",
@@ -1367,7 +1424,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2015-02-05 16:29:52"
+            "time": "2015-03-13 11:05:47"
         },
         {
             "name": "integrated/formtype-bundle",
@@ -1429,12 +1486,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-library.git",
-                "reference": "9001a5d70835ebc0e50d62e8d2106ff259572d25"
+                "reference": "3d9f99ebe0be8ea3ad5ac7a8fec0543308432810"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-library/get/9001a5d70835ebc0e50d62e8d2106ff259572d25.zip",
-                "reference": "9001a5d70835ebc0e50d62e8d2106ff259572d25",
+                "url": "https://bitbucket.org/eactive/integrated-library/get/3d9f99ebe0be8ea3ad5ac7a8fec0543308432810.zip",
+                "reference": "3d9f99ebe0be8ea3ad5ac7a8fec0543308432810",
                 "shasum": ""
             },
             "require": {
@@ -1496,7 +1553,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2015-01-16 13:34:00"
+            "time": "2015-03-05 08:26:30"
         },
         {
             "name": "integrated/locking-bundle",
@@ -1557,23 +1614,28 @@
             "target-dir": "Integrated/Bundle/PageBundle",
             "source": {
                 "type": "git",
-                "url": "git@bitbucket.org:eactive/integrated-page-bundle.git",
-                "reference": "735761de29d6d851de727a4a2034e4a99053298c"
+                "url": "https://bitbucket.org/eactive/integrated-page-bundle.git",
+                "reference": "4234522df2f0e269ada6fa6d7d24d9b5a0d6de90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/eactive/integrated-page-bundle/get/4234522df2f0e269ada6fa6d7d24d9b5a0d6de90.zip",
+                "reference": "4234522df2f0e269ada6fa6d7d24d9b5a0d6de90",
+                "shasum": ""
             },
             "require": {
-                "braincrafted/bootstrap-bundle": "~2.0",
-                "doctrine/doctrine-fixtures-bundle": "dev-master",
                 "doctrine/mongodb": ">=1.0.0",
                 "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
                 "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
                 "ext-mongo": "~1.2",
                 "integrated/block-bundle": "dev-master",
                 "knplabs/knp-paginator-bundle": "dev-master",
-                "nelmio/alice": "1.*",
                 "php": ">=5.4",
                 "symfony/framework-bundle": "~2.2",
-                "symfony/symfony": "~2.4",
-                "twbs/bootstrap": "3.*"
+                "symfony/symfony": "~2.4"
+            },
+            "suggest": {
+                "integrated/website-bundle": "dev-master"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -1581,6 +1643,7 @@
                     "Integrated\\Bundle\\PageBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1596,27 +1659,75 @@
                 "Integrated",
                 "page"
             ],
-            "time": "2015-01-14 09:35:34"
+            "time": "2015-03-10 13:01:19"
+        },
+        {
+            "name": "integrated/slug-bundle",
+            "version": "dev-master",
+            "target-dir": "Integrated/Bundle/SlugBundle",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/eactive/integrated-slug-bundle.git",
+                "reference": "ae5d79e80ec173d623945a2750159d239c9d69b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/eactive/integrated-slug-bundle/get/ae5d79e80ec173d623945a2750159d239c9d69b5.zip",
+                "reference": "ae5d79e80ec173d623945a2750159d239c9d69b5",
+                "shasum": ""
+            },
+            "require": {
+                "jms/metadata": "1.5.*",
+                "php": ">=5.4",
+                "symfony/framework-bundle": "~2.2",
+                "symfony/symfony": "~2.4"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Integrated\\Bundle\\SlugBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "e-Active",
+                    "homepage": "http://www.e-active.nl"
+                }
+            ],
+            "description": "Integrated Slug Bundle",
+            "homepage": "http://www.e-active.nl",
+            "keywords": [
+                "Integrated",
+                "slug"
+            ],
+            "time": "2015-03-06 14:38:59"
         },
         {
             "name": "integrated/solr-bundle",
-            "version": "0.2.7",
+            "version": "dev-feature/convert-refactor",
             "target-dir": "Integrated/Bundle/SolrBundle",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-solr-bundle.git",
-                "reference": "e9ef6132ebfaffd2c9070fe86eb93e8d7bbe45bc"
+                "reference": "4ebf3ae4f6099702d9579aae2ab15b50656bf295"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-solr-bundle/get/e9ef6132ebfaffd2c9070fe86eb93e8d7bbe45bc.zip",
-                "reference": "e9ef6132ebfaffd2c9070fe86eb93e8d7bbe45bc",
+                "url": "https://bitbucket.org/eactive/integrated-solr-bundle/get/4ebf3ae4f6099702d9579aae2ab15b50656bf295.zip",
+                "reference": "4ebf3ae4f6099702d9579aae2ab15b50656bf295",
                 "shasum": ""
             },
             "require": {
                 "integrated/library": "~0.1",
                 "php": ">=5.4",
                 "symfony/symfony": "~2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.2.*"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1645,7 +1756,51 @@
                 "Integrated",
                 "solr"
             ],
-            "time": "2014-12-05 08:18:05"
+            "time": "2014-11-13 08:19:48"
+        },
+        {
+            "name": "integrated/theme-bundle",
+            "version": "dev-master",
+            "target-dir": "Integrated/Bundle/ThemeBundle",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/eactive/integrated-theme-bundle.git",
+                "reference": "99d75b1a08bf7c5ce5bc7d945fbf339fd783fefa"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/eactive/integrated-theme-bundle/get/99d75b1a08bf7c5ce5bc7d945fbf339fd783fefa.zip",
+                "reference": "99d75b1a08bf7c5ce5bc7d945fbf339fd783fefa",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "symfony/framework-bundle": "~2.2",
+                "symfony/symfony": "~2.4"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-0": {
+                    "Integrated\\Bundle\\ThemeBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "e-Active",
+                    "homepage": "http://www.e-active.nl"
+                }
+            ],
+            "description": "Integrated Theme Bundle",
+            "homepage": "http://www.e-active.nl",
+            "keywords": [
+                "Integrated",
+                "theme"
+            ],
+            "time": "2015-03-04 08:22:20"
         },
         {
             "name": "integrated/user-bundle",
@@ -1704,20 +1859,24 @@
             "target-dir": "Integrated/Bundle/WebsiteBundle",
             "source": {
                 "type": "git",
-                "url": "git@bitbucket.org:eactive/integrated-website-bundle.git",
-                "reference": "588edfd9c5cae2c27d7062295405e6f5e5f65f43"
+                "url": "https://bitbucket.org/eactive/integrated-website-bundle.git",
+                "reference": "149a32878066dee1242a4814d3f97bc03acd5585"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/eactive/integrated-website-bundle/get/149a32878066dee1242a4814d3f97bc03acd5585.zip",
+                "reference": "149a32878066dee1242a4814d3f97bc03acd5585",
+                "shasum": ""
             },
             "require": {
-                "braincrafted/bootstrap-bundle": "~2.0",
-                "doctrine/doctrine-fixtures-bundle": "dev-master",
                 "doctrine/mongodb": ">=1.0.0",
                 "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
                 "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
                 "ext-mongo": "~1.2",
-                "integrated/content-bundle": "~0.1",
+                "friendsofsymfony/jsrouting-bundle": "1.5.*",
+                "integrated/content-bundle": "dev-feature/block as 0.*-dev",
                 "integrated/page-bundle": "dev-master",
                 "knplabs/knp-paginator-bundle": "dev-master",
-                "nelmio/alice": "1.*",
                 "php": ">=5.4",
                 "symfony/framework-bundle": "~2.2",
                 "symfony/symfony": "~2.4",
@@ -1729,6 +1888,7 @@
                     "Integrated\\Bundle\\WebsiteBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1744,7 +1904,7 @@
                 "Integrated",
                 "website"
             ],
-            "time": "2015-01-14 09:35:34"
+            "time": "2015-03-10 13:01:20"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -1795,6 +1955,58 @@
                 "sql"
             ],
             "time": "2014-01-12 16:20:24"
+        },
+        {
+            "name": "jms/metadata",
+            "version": "1.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/schmittjoh/metadata.git",
+                "reference": "22b72455559a25777cfd28c4ffda81ff7639f353"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/schmittjoh/metadata/zipball/22b72455559a25777cfd28c4ffda81ff7639f353",
+                "reference": "22b72455559a25777cfd28c4ffda81ff7639f353",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "doctrine/cache": "~1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Metadata\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache"
+            ],
+            "authors": [
+                {
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "https://github.com/schmittjoh",
+                    "role": "Developer of wrapped JMSSerializerBundle"
+                }
+            ],
+            "description": "Class/method/property metadata management in PHP",
+            "keywords": [
+                "annotations",
+                "metadata",
+                "xml",
+                "yaml"
+            ],
+            "time": "2014-07-12 07:13:19"
         },
         {
             "name": "knplabs/knp-components",
@@ -2001,16 +2213,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.12.0",
+            "version": "1.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "1fbe8c2641f2b163addf49cc5e18f144bec6b19f"
+                "reference": "c31a2c4e8db5da8b46c74cf275d7f109c0f249ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1fbe8c2641f2b163addf49cc5e18f144bec6b19f",
-                "reference": "1fbe8c2641f2b163addf49cc5e18f144bec6b19f",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/c31a2c4e8db5da8b46c74cf275d7f109c0f249ac",
+                "reference": "c31a2c4e8db5da8b46c74cf275d7f109c0f249ac",
                 "shasum": ""
             },
             "require": {
@@ -2027,6 +2239,7 @@
                 "phpunit/phpunit": "~4.0",
                 "raven/raven": "~0.5",
                 "ruflin/elastica": "0.90.*",
+                "swiftmailer/swiftmailer": "~5.3",
                 "videlalvaro/php-amqplib": "~2.4"
             },
             "suggest": {
@@ -2043,7 +2256,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.12.x-dev"
+                    "dev-master": "1.13.x-dev"
                 }
             },
             "autoload": {
@@ -2069,7 +2282,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-12-29 21:29:35"
+            "time": "2015-03-09 09:58:04"
         },
         {
             "name": "nelmio/alice",
@@ -2212,17 +2425,17 @@
         },
         {
             "name": "sensio/distribution-bundle",
-            "version": "v2.3.9",
+            "version": "v2.3.11",
             "target-dir": "Sensio/Bundle/DistributionBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioDistributionBundle.git",
-                "reference": "ac4893621b30faf8f970758afea7640122767817"
+                "reference": "374bbea795fa69a85b1623048798a89aebffe62b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/ac4893621b30faf8f970758afea7640122767817",
-                "reference": "ac4893621b30faf8f970758afea7640122767817",
+                "url": "https://api.github.com/repos/sensiolabs/SensioDistributionBundle/zipball/374bbea795fa69a85b1623048798a89aebffe62b",
+                "reference": "374bbea795fa69a85b1623048798a89aebffe62b",
                 "shasum": ""
             },
             "require": {
@@ -2254,7 +2467,7 @@
                 "configuration",
                 "distribution"
             ],
-            "time": "2015-02-01 05:39:51"
+            "time": "2015-02-27 12:58:18"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -2964,19 +3177,59 @@
                 "templating"
             ],
             "time": "2015-01-25 17:32:08"
+        },
+        {
+            "name": "willdurand/jsonp-callback-validator",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/willdurand/JsonpCallbackValidator.git",
+                "reference": "1a7d388bb521959e612ef50c5c7b1691b097e909"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/willdurand/JsonpCallbackValidator/zipball/1a7d388bb521959e612ef50c5c7b1691b097e909",
+                "reference": "1a7d388bb521959e612ef50c5c7b1691b097e909",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "JsonpCallbackValidator": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "William Durand",
+                    "email": "william.durand1@gmail.com",
+                    "homepage": "http://www.willdurand.fr"
+                }
+            ],
+            "description": "JSONP callback validator.",
+            "time": "2014-01-20 22:35:06"
         }
     ],
     "packages-dev": [],
     "aliases": [
         {
-            "alias": "0.9.x-dev",
-            "alias_normalized": "0.9.9999999.9999999-dev",
+            "alias": "0.*-dev",
+            "alias_normalized": "0.9999999.9999999.9999999-dev",
             "version": "dev-feature/block",
             "package": "integrated/library"
         },
         {
-            "alias": "0.9.x-dev",
-            "alias_normalized": "0.9.9999999.9999999-dev",
+            "alias": "0.*-dev",
+            "alias_normalized": "0.9999999.9999999.9999999-dev",
             "version": "dev-feature/block",
             "package": "integrated/content-bundle"
         }
@@ -2988,11 +3241,11 @@
         "symfony/monolog-bundle": 0,
         "integrated/library": 20,
         "integrated/content-bundle": 20,
-        "integrated/page-bundle": 20,
-        "integrated/block-bundle": 20,
+        "integrated/solr-bundle": 20,
         "integrated/website-bundle": 20
     },
     "prefer-stable": true,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3.3"
     },

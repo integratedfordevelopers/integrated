@@ -1,6 +1,3 @@
-integrated_website:
-    resource: "@IntegratedWebsiteBundle/Resources/config/routing.xml"
-
 integrated_block:
     resource: "@IntegratedBlockBundle/Resources/config/routing.xml"
     prefix: "/admin"
@@ -20,3 +17,9 @@ integrated_user:
 integrated_security:
     resource: "@IntegratedUserBundle/Resources/config/routing.security.xml"
     prefix: "/admin"
+
+integrated_website:
+    resource: "@IntegratedWebsiteBundle/Resources/config/routing.xml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
