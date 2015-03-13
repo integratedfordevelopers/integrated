@@ -8,6 +8,8 @@
 
         <parameter key="integrated_content.block_handler.content.class">Integrated\Bundle\ContentBundle\Block\ContentBlockHandler</parameter>
 
+        <parameter key="integrated_content.block_handler.facet.class">Integrated\Bundle\ContentBundle\Block\FacetBlockHandler</parameter>
+
     </parameters>
 
     <services>
@@ -16,6 +18,10 @@
             <argument type="service" id="integrated_content.provider.solarium" />
             <argument type="service" id="request_stack" />
             <tag name="integrated.block" type="content" />
+        </service>
+
+        <service id="integrated_content.block_handler.facet" class="%integrated_content.block_handler.facet.class%">
+            <tag name="integrated.block" type="facet" />
         </service>
 
     </services>

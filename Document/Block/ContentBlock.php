@@ -18,7 +18,7 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 
 /**
- * ContentBlock document
+ * Content block document
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
