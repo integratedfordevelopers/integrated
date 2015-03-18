@@ -71,13 +71,6 @@ class Article extends Content
     protected $locale;
 
     /**
-     * @var \DateTime
-     * @ODM\Date
-     * @Type\Field(type="integrated_datetime", options={"label"="Published until"})
-     */
-    protected $publishedUntil;
-
-    /**
      * @var string
      * @ODM\String
      * @Type\Field(type="textarea")
@@ -260,28 +253,6 @@ class Article extends Content
     public function setLocale($locale)
     {
         $this->locale = $locale;
-        return $this;
-    }
-
-    /**
-     * Get the publishedUntil of the document
-     *
-     * @return \DateTime
-     */
-    public function getPublishedUntil()
-    {
-        return $this->publishedUntil;
-    }
-
-    /**
-     * Set the publishedUntil of the document
-     *
-     * @param \DateTime $publishedUntil
-     * @return $this
-     */
-    public function setPublishedUntil(\DateTime $publishedUntil = null)
-    {
-        $this->publishedUntil = $publishedUntil;
         return $this;
     }
 

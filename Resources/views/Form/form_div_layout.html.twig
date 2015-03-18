@@ -199,3 +199,22 @@
     </table>
 {% endspaceless %}
 {% endblock %}
+
+{% block integrated_publishtime_widget  %}
+{% spaceless %}
+    <div class="col-sm-6">
+        <div class="form-group">
+            {{ form_widget(form.startDate) }}
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="form-group">
+            {{ form_widget(form.endDate) }}
+        </div>
+    </div>
+
+    {{ form_errors(form.startDate) }}
+    {{ form_errors(form.endDate) }}
+{% endspaceless %}
+{% endblock %}

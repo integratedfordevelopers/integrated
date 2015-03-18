@@ -18,6 +18,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
@@ -75,11 +76,17 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     protected $updatedAt;
 
     /**
-     * @var \DateTime
-     * @ODM\Date
-     * @Type\Field(type="integrated_datetime", options={"label" = "Published at"})
+     * @var PublishTime
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime")
+     * @Type\Field(type="integrated_publishtime")
      */
-    protected $publishedAt;
+    protected $publishTime;
+
+    /**
+     * @var bool
+     * @ODM\Boolean
+     */
+    protected $publish = true;
 
     /**
      * @var bool
@@ -92,7 +99,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      * @var Metadata
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
      */
-    protected $metadata = null;
+    protected $metadata;
 
     /**
      * @var Collection
@@ -106,7 +113,6 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->publishedAt = new \DateTime();
         $this->relations = new ArrayCollection();
         $this->updatedAt = new \DateTime();
         $this->channels = new ArrayCollection();
@@ -224,7 +230,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      */
     public function getRelation($relationId)
     {
-        return $this->relations->filter(function($relation) use($relationId) {
+        return $this->relations->filter(function ($relation) use ($relationId) {
             if ($relation instanceof Relation) {
                 if ($relation->getRelationId() == $relationId) {
                     return true;
@@ -241,7 +247,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      */
     public function getRelationsByRelationType($relationType)
     {
-        return $this->relations->filter(function($relation) use($relationType) {
+        return $this->relations->filter(function ($relation) use ($relationType) {
             if ($relation instanceof Relation) {
                 if ($relation->getRelationType() == $relationType) {
                     return true;
@@ -317,24 +323,46 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Get the publishedAt of the document
+     * Get the publish time of the document
      *
-     * @return \DateTime
+     * @return PublishTime
      */
-    public function getPublishedAt()
+    public function getPublishTime()
     {
-        return $this->publishedAt;
+        return $this->publishTime;
     }
 
     /**
-     * Set the publishedAt of the document
+     * Set the publish time of the document
      *
-     * @param \DateTime $publishedAt
+     * @param PublishTime $publishTime
      * @return $this
      */
-    public function setPublishedAt(\DateTime $publishedAt = null)
+    public function setPublishTime(PublishTime $publishTime)
     {
-        $this->publishedAt = $publishedAt;
+        $this->publishTime = $publishTime;
+        return $this;
+    }
+
+    /**
+     * Get the publish of the document
+     *
+     * @return bool
+     */
+    public function getPublish()
+    {
+        return $this->publish;
+    }
+
+    /**
+     * Set the publish of the document
+     *
+     * @param bool $publish
+     * @return $this
+     */
+    public function setPublish($publish)
+    {
+        $this->publish = $publish;
         return $this;
     }
 
@@ -443,5 +471,14 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function updateUpdatedAtOnPreUpdate()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @ODM\PrePersist
+     * @ODM\PreUpdate
+     */
+    public function updatePublishOnPreUpdate()
+    {
+        $this->setPublish($this->disabled);
     }
 }
