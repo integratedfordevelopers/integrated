@@ -76,6 +76,20 @@ class ContentBlock extends Block
     protected $readMoreUrl;
 
     /**
+     * @var array
+     * @ODM\Collection
+     * @Type\Field(
+     *      type="bootstrap_collection",
+     *      options={
+     *          "allow_add"=true,
+     *          "allow_delete"=true,
+     *          "required"=false,
+     *      }
+     * )
+     */
+    protected $facetFields = [];
+
+    /**
      * @return SearchSelection
      */
     public function getSearchSelection()
@@ -144,6 +158,24 @@ class ContentBlock extends Block
     public function setReadMoreUrl($readMoreUrl)
     {
         $this->readMoreUrl = $readMoreUrl;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFacetFields()
+    {
+        return $this->facetFields;
+    }
+
+    /**
+     * @param array $facetFields
+     * @return $this
+     */
+    public function setFacetFields(array $facetFields = [])
+    {
+        $this->facetFields = $facetFields;
         return $this;
     }
 

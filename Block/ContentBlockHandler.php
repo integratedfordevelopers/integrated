@@ -37,6 +37,11 @@ class ContentBlockHandler extends BlockHandler
     private $requestStack;
 
     /**
+     * @var array
+     */
+    private $registry = [];
+
+    /**
      * @param SolariumProvider $provider
      * @param RequestStack $requestStack
      */
@@ -55,28 +60,52 @@ class ContentBlockHandler extends BlockHandler
             return;
         }
 
-        $currentRequest = $this->requestStack->getCurrentRequest();
+        $request = $this->requestStack->getCurrentRequest();
 
-        if (!$currentRequest instanceof Request) {
+        if (!$request instanceof Request) {
             return;
         }
 
-        $request = $currentRequest->duplicate(); // don't change original request
+        $pagination = $this->getPagination($block, $request);
 
-        if ($selection = $block->getSearchSelection()) {
-            $request->query->add($selection->getFilters());
+        if (!count($pagination)) {
+            return;
         }
-
-        $pagination = $this->provider->execute(
-            $request,
-            $block->getItemsPerPage(),
-            $block->getMaxItems(),
-            $block->getSlug() . '-page'
-        );
 
         return $this->render([
             'block'      => $block,
             'pagination' => $pagination,
         ]);
+    }
+
+    /**
+     * @param ContentBlock $block
+     * @param Request $request
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function getPagination(ContentBlock $block, Request $request)
+    {
+        $id = $block->getId();
+
+        if (!isset($this->registry[$id])) {
+
+            $request = $request->duplicate(); // don't change original request
+
+            if ($selection = $block->getSearchSelection()) {
+                $request->query->add($selection->getFilters());
+            }
+
+            $pagination = $this->provider->execute(
+                $request,
+                $block->getItemsPerPage(),
+                $block->getMaxItems(),
+                $block->getSlug() . '-page',
+                $block->getFacetFields()
+            );
+
+            $this->registry[$id] = $pagination;
+        }
+
+        return $this->registry[$id];
     }
 }

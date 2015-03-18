@@ -53,9 +53,11 @@ class SolariumProvider // @todo interface
      * @param int $limit
      * @param int $maxItems
      * @param string $parameterName
+     * @param array $facetFields
+     *
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
-    public function execute(Request $request, $limit = 10, $maxItems = 0, $parameterName = 'page')
+    public function execute(Request $request, $limit = 10, $maxItems = 0, $parameterName = 'page', array $facetFields = [])
     {
         $page = (int) $request->query->get($parameterName);
 
@@ -68,7 +70,7 @@ class SolariumProvider // @todo interface
         $pagination = $this->paginator->paginate(
             [
                 $this->client,
-                $this->getQuery($request),
+                $this->getQuery($request, $facetFields),
             ],
             $page,
             $limit,
@@ -88,79 +90,50 @@ class SolariumProvider // @todo interface
 
     /**
      * @param Request $request
+     * @param array $facetFields
      *
      * @return \Solarium\QueryType\Select\Query\Query
      */
-    protected function getQuery(Request $request)
+    protected function getQuery(Request $request, array $facetFields = [])
     {
-        // TODO cleanup (copied from ContentController)
         // TODO filter by active channel and publication filters
 
         $query = $this->client->createSelect();
 
-        $facetSet = $query->getFacetSet();
-        $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
-        $facetSet->createFacetField('channels')->setField('facet_channels');
+        $helper = $query->getHelper();
 
-        // TODO this code should be somewhere else
-        $relation = $request->query->get('relation');
-        if (null !== $relation) {
+        $filter = function ($param) use ($helper) {
+            return $helper->escapePhrase($param);
+        };
 
-            $contentType = array();
+        if (count($facetFields)) {
 
-            /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-            foreach ($this->get('integrated.form.resolver')->getTypes() as $type) {
-                foreach ($type->getRelations() as $typeRelation) {
-                    if ($typeRelation->getId() == $relation) {
-                        foreach ($typeRelation->getContentTypes() as $relationContentType) {
-                            $contentType[] = $relationContentType->getType();
-                        }
-                        break;
-                    }
+            $facetSet = $query->getFacetSet();
+
+            foreach ($facetFields as $field) {
+
+                $facetSet
+                    ->createFacetField($field)
+                    ->setMinCount(1)
+                    ->setField($field)
+                    ->addExclude($field);
+
+                if ($param = $request->query->get($field)) {
+
+                    $query
+                        ->createFilterQuery($field)
+                        ->setQuery($field . ': (%1%)', [implode(' OR ', array_map($filter, $param))])
+                        ->addTag($field);
                 }
             }
-
-        } else {
-            $contentType = $request->query->get('contenttypes');
         }
 
-        if (is_array($contentType)) {
-
-            if (count($contentType)) {
-                $helper = $query->getHelper();
-                $filter = function ($param) use ($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
-                $bind = [implode(') OR (', array_map($filter, $contentType))];
-
-                if (count($this->registry)) {
-                    $bind[] = implode('") OR ("', array_keys($this->registry));
-                }
-
-                $query
-                    ->createFilterQuery('contenttypes')
-                    ->addTag('contenttypes')
-                    ->setQuery('type_name: ((%1%))' . (count($this->registry) ? ' AND -type_id: (("%2%"))' : ''), $bind);
-            }
+        if (count($this->registry)) {
+            // exclude items
+            $query->setQuery($query->getQuery() . ' AND -type_id: (%1%)', [implode(' OR ', array_map($filter, array_keys($this->registry)))]);
         }
 
-        // TODO this should be somewhere else:
-        $activeChannels = $request->query->get('channels');
-        if (is_array($activeChannels)) {
-
-            if (count($activeChannels)) {
-                $helper = $query->getHelper();
-                $filter = function ($param) use ($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
-                $query
-                    ->createFilterQuery('channels')
-                    ->addTag('channels')
-                    ->setQuery('facet_channels: ((%1%))', [implode(') OR (', array_map($filter, $activeChannels))]);
-            }
-        }
+        // TODO cleanup (copied from ContentController)
 
         // sorting
         $sortDefault = 'changed';
@@ -175,18 +148,6 @@ class SolariumProvider // @todo interface
             'asc' => 'asc',
             'desc' => 'desc'
         ];
-
-        if ($q = $request->get('q')) {
-            $dismax = $query->getDisMax();
-            $dismax->setQueryFields('title content');
-
-            $query->setQuery($q);
-
-            $sortDefault = 'rel';
-        } else {
-            //relevance only available when sorting on specific query
-            unset($sortOptions['rel']);
-        }
 
         $sort = $request->query->get('sort', $sortDefault);
         $sort = trim(strtolower($sort));

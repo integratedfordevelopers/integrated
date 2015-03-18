@@ -70,7 +70,8 @@ class SearchSelectionChoiceType extends AbstractType
         }
 
         $resolver->setDefaults([
-            'choices' => $choices,
+            'choices'     => $choices,
+            'placeholder' => '',
         ]);
     }
 

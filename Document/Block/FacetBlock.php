@@ -15,7 +15,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
-use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 
 /**
  * Facet block document
@@ -27,6 +26,63 @@ use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
  */
 class FacetBlock extends Block
 {
+    /**
+     * @var ContentBlock
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Block\ContentBlock")
+     * @Type\Field(
+     *      type="document",
+     *      options={
+     *          "class"="IntegratedContentBundle:Block\ContentBlock",
+     *          "property"="title",
+     *          "placeholder"=""
+     *      }
+     * )
+     */
+    protected $block;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field(type="text")
+     */
+    protected $field;
+
+    /**
+     * @return ContentBlock
+     */
+    public function getBlock()
+    {
+        return $this->block;
+    }
+
+    /**
+     * @param ContentBlock $block
+     * @return $this
+     */
+    public function setBlock(ContentBlock $block)
+    {
+        $this->block = $block;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
+
+    /**
+     * @param string $field
+     * @return $this
+     */
+    public function setField($field)
+    {
+        $this->field = $field;
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */

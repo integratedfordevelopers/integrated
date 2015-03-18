@@ -21,6 +21,8 @@
         </service>
 
         <service id="integrated_content.block_handler.facet" class="%integrated_content.block_handler.facet.class%">
+            <argument type="service" id="integrated_block.registry.block_handler" />
+            <argument type="service" id="request_stack" />
             <tag name="integrated.block" type="facet" />
         </service>
 
