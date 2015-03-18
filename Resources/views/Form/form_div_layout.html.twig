@@ -14,31 +14,49 @@
         <textarea {{ block('widget_attributes') }}   class="form-control integrated_wysihtml5x"> {% if value is not empty %} {{ value }} {% endif %}  </textarea>
 {% endblock %}
 
-{% block integrated_tinymce_widget  %}
+{% block integrated_tinymce_row  %}
     {% spaceless %}
-        <textarea id="{{ id }}" name="{{ full_name }}" class="form-control integrated_tinymce">{% if value is not empty %}{{ value }}{% endif %}</textarea>
-        <script type="text/javascript">
-            require(["{{ asset('bundles/integratedformtype/components/tinymce/tinymce.min.js') }}"],
-                    function () {
-                        tinymce.init({
-                            selector: "textarea#{{ id }}",
-                            theme: "modern",
-                            plugins: [
-                                ["advlist autolink link image lists charmap hr anchor pagebreak"],
-                                ["searchreplace wordcount visualchars fullscreen media nonbreaking"],
-                                ["table contextmenu directionality template paste"]
-                            ],
-                            add_unload_trigger: false,
-                            schema: "html5",
-                            toolbar: "styleselect | bold italic | alignleft alignright | bullist numlist outdent indent | link image print preview media fullpage",
-                            statusbar: false,
-                            width: "100%",
-                            height: "300",
-                            removed_menuitems: 'newdocument'
-                        });
-                    }
-            );
-            </script>
+    
+    {# @todo to this include with a Twig extension #}
+    <link href="/bundles/integratedformtype/css/tinymce.editor.js" rel="stylesheet" type="text/css" />
+
+    <div class="form-group">
+      <div class="col-sm-12">
+	    <div id="{{ id }}_container">
+	        <textarea id="{{ id }}" name="{{ full_name }}" class="form-control integrated_tinymce">{% if value is not empty %}{{ value }}{% endif %}</textarea>
+	    </div>
+	  </div>
+	</div>
+    <script type="text/javascript">
+        require(["{{ asset('bundles/integratedformtype/components/tinymce/tinymce.min.js') }}"],
+                function () {
+                    tinymce.init({
+                        selector: "textarea#{{ id }}",
+                        theme: "modern",
+                        plugins: [
+                            ["advlist autolink link image lists charmap hr anchor pagebreak"],
+                            ["searchreplace wordcount visualchars fullscreen media nonbreaking"],
+                            ["table contextmenu directionality template paste wordcount autoresize"]
+                        ],
+                        add_unload_trigger: false,
+                        schema: "html5",
+                        menubar: false,
+                        toolbar: "formatselect | bold italic underline | bullist numlist | link image print preview media fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
+                        statusbar: true,
+                        statusbar_size: "small",
+                        width: "100%",
+                        height: "0",
+                        autoresize_min_height: 300,
+                        autoresize_max_height: (window.innerHeight-64),
+                        browser_spellcheck : true,
+                        autoresize_bottom_margin: "0px",
+                        
+                        content_css: "/bundles/integratedformtype/css/tinymce.content.css"
+
+                    });
+                }
+        );
+        </script>
     {% endspaceless %}
 {% endblock %}
 
