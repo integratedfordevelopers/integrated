@@ -21,8 +21,9 @@ use Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use Integrated\Common\Content\ContentInterface;
 
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
+
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
 use Integrated\Common\ContentType\Mapping\MetadataInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 
