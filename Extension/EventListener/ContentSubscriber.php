@@ -25,7 +25,8 @@ use Integrated\Common\Content\Extension\Events;
 use Integrated\Common\Content\Extension\ExtensionInterface;
 use Integrated\Common\Content\MetadataInterface;
 
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\ResolverInterface;
+use Integrated\Common\ContentType\Exception\ExceptionInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -54,7 +55,7 @@ class ContentSubscriber implements ContentSubscriberInterface
 	private $manager = null;
 
 	/**
-	 * @var ContentTypeResolverInterface
+	 * @var ResolverInterface
 	 */
 	private $resolver = null;
 
@@ -251,13 +252,19 @@ class ContentSubscriber implements ContentSubscriberInterface
 			return false;
 		}
 
-		// does this content even have a workflow connected ?
+		// resolve the object to a content type and check if it got a workflow connected.
 
-		if ($type = $this->getResolver()->getType(ClassUtils::getRealClass($object), $object->getContentType())) {
-			if ($type->getOption('workflow')) {
-				return true;
-			}
-		}
+        $type = $object->getContentType();
+
+        if (!$this->getResolver()->hasType($type)) {
+            return false;
+        }
+
+        $type = $this->getResolver()->getType($type);
+
+        if ($type->getOption('workflow')) {
+            return true;
+        }
 
 		return false;
 	}
@@ -291,7 +298,7 @@ class ContentSubscriber implements ContentSubscriberInterface
 	}
 
 	/**
-	 * @return ContentTypeResolverInterface
+	 * @return ResolverInterface
 	 */
 	protected function getResolver()
 	{

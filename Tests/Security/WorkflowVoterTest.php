@@ -23,7 +23,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 use Integrated\Bundle\WorkflowBundle\Security\WorkflowVoter;
 
 use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 
 use Integrated\Common\Security\Permissions;
 
@@ -41,7 +41,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     private $manager;
 
     /**
-     * @var ContentTypeResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 
@@ -71,7 +71,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->manager = $this->getMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
-        $this->resolver = $this->getMock('Integrated\\Common\\ContentType\\Resolver\\ContentTypeResolverInterface');
+        $this->resolver = $this->getMock('Integrated\\Common\\ContentType\\ResolverInterface');
         $this->metadata = $this->getMock('Integrated\\Common\\ContentType\\Mapping\\MetadataFactoryInterface');
     }
 
@@ -89,7 +89,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
             ->willReturn($metadata);
     }
 
-    protected function setUpResolver($class, $exists = true)
+    protected function setUpResolver($exists = true)
     {
         $type = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $type->expects($this->atLeastOnce())
@@ -109,12 +109,12 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver->expects($this->atLeastOnce())
             ->method('hasType')
-                ->with($class, 'type')
+            ->with('type')
             ->willReturn(true);
 
         $this->resolver->expects($this->atLeastOnce())
             ->method('getType')
-            ->with($class, 'type')
+            ->with('type')
             ->willReturn($type);
     }
 
@@ -258,7 +258,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $class = get_class($content);
 
         $this->setUpMetadata($class);
-        $this->setUpResolver($class, false);
+        $this->setUpResolver(false);
 
         $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $this->getInstance()->vote($this->getToken(), $content, []));
     }
@@ -276,7 +276,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver->expects($this->atLeastOnce())
             ->method('hasType')
-            ->with($class, 'type')
+            ->with('type')
             ->willReturn(false);
 
         $this->resolver->expects($this->never())
@@ -295,7 +295,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $class = get_class($content);
 
         $this->setUpMetadata($class);
-        $this->setUpResolver($class);
+        $this->setUpResolver();
         $this->setUpRepositoryWorkflow(false);
         $this->setUpManager();
 
@@ -312,7 +312,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $class = get_class($content);
 
         $this->setUpMetadata($class);
-        $this->setUpResolver($class);
+        $this->setUpResolver();
         $this->setUpRepositoryState(false);
         $this->setUpManager();
 
@@ -337,7 +337,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $class = get_class($content);
 
         $this->setUpMetadata($class);
-        $this->setUpResolver($class);
+        $this->setUpResolver();
         $this->setUpRepositoryState(false);
         $this->setUpManager();
 
@@ -362,7 +362,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $class = get_class($content);
 
         $this->setUpMetadata($class);
-        $this->setUpResolver($class);
+        $this->setUpResolver();
 
         $workflow = $this->getWorkflow();
         $workflow->expects($this->once())
@@ -392,7 +392,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $class = get_class($content);
 
         $this->setUpMetadata($class);
-        $this->setUpResolver($class);
+        $this->setUpResolver();
         $this->setUpManager();
 
         $this->assertEquals($expected, $this->getInstance()->vote($token, $content, $attributes));
@@ -426,7 +426,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $class = get_class($content);
 
         $this->setUpMetadata($class);
-        $this->setUpResolver($class);
+        $this->setUpResolver();
         $this->setUpManager();
 
         $voter = $this->getInstance();
