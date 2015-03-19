@@ -96,9 +96,15 @@ class SolariumProvider // @todo interface
      */
     protected function getQuery(Request $request, array $facetFields = [])
     {
-        // TODO filter by active channel and publication filters
-
         $query = $this->client->createSelect();
+
+        $channel = $request->attributes->get('_channel');
+
+        // @todo check channel
+
+        $query
+            ->createFilterQuery('pub')
+            ->setQuery('pub_active: 1 AND pub_time:[* TO NOW] AND pub_end:[NOW TO *] AND facet_channels: ("%1%")', [$channel]);
 
         $helper = $query->getHelper();
 
@@ -133,7 +139,7 @@ class SolariumProvider // @todo interface
             $query->setQuery($query->getQuery() . ' AND -type_id: (%1%)', [implode(' OR ', array_map($filter, array_keys($this->registry)))]);
         }
 
-        // TODO cleanup (copied from ContentController)
+        // @todo cleanup (copied from ContentController)
 
         // sorting
         $sortDefault = 'changed';

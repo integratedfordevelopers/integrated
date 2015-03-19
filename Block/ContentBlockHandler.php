@@ -69,7 +69,7 @@ class ContentBlockHandler extends BlockHandler
         $pagination = $this->getPagination($block, $request);
 
         if (!count($pagination)) {
-            return;
+            return; // @todo show block in edit mode
         }
 
         return $this->render([
