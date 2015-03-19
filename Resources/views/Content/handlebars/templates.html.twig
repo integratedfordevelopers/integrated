@@ -133,7 +133,9 @@
 
     $('#relations-search').submit(function(ev){
         ev.preventDefault();
-        $('.form-relations input[data-relation]').relation();
+        $('.form-relations input[data-relation]').each(function() {
+            $(this).relation();
+        });
     });
 </script>
 {% endautoescape %}
