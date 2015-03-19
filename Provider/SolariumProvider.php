@@ -100,7 +100,9 @@ class SolariumProvider // @todo interface
 
         $channel = $request->attributes->get('_channel');
 
-        // @todo check channel
+        if (!$channel) {
+            throw new \RuntimeException('Channel is required'); // @todo improve
+        }
 
         $query
             ->createFilterQuery('pub')
