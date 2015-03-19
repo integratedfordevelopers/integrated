@@ -86,7 +86,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      * @var bool
      * @ODM\Boolean
      */
-    protected $publish = true;
+    protected $published = true;
 
     /**
      * @var bool
@@ -115,6 +115,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         $this->createdAt = new \DateTime();
         $this->relations = new ArrayCollection();
         $this->updatedAt = new \DateTime();
+        $this->publishTime = new PublishTime();
         $this->channels = new ArrayCollection();
     }
 
@@ -345,24 +346,24 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Get the publish of the document
+     * Get the published of the document
      *
      * @return bool
      */
-    public function getPublish()
+    public function getPublished()
     {
-        return $this->publish;
+        return $this->published;
     }
 
     /**
-     * Set the publish of the document
+     * Set the published of the document
      *
-     * @param bool $publish
+     * @param bool $published
      * @return $this
      */
-    public function setPublish($publish)
+    public function setPublished($published)
     {
-        $this->publish = $publish;
+        $this->published = $published;
         return $this;
     }
 
@@ -477,8 +478,23 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      * @ODM\PrePersist
      * @ODM\PreUpdate
      */
-    public function updatePublishOnPreUpdate()
+    public function updatePublishedOnPreUpdate()
     {
-        $this->setPublish($this->disabled);
+        $this->setPublished(!$this->disabled);
+    }
+
+    /**
+     * @ODM\PrePersist
+     * @ODM\PreUpdate
+     */
+    public function updatePublishTimeOnPreUpdate()
+    {
+        if (!$this->publishTime->getStartDate() instanceof \DateTime) {
+            $this->publishTime->setStartDate($this->createdAt);
+        }
+
+        if (!$this->publishTime->getEndDate() instanceof \DateTime) {
+            $this->publishTime->setEndDate(new \DateTime(PublishTime::DATE_MAX));
+        }
     }
 }

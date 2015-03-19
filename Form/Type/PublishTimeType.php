@@ -17,6 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\PublishTimeTransformer;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
 /**
@@ -30,7 +31,11 @@ class PublishTimeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('startDate', 'integrated_datetime');
-        $builder->add('endDate', 'integrated_datetime');
+
+        $builder->add(
+            $builder->create('endDate', 'integrated_datetime')
+                ->addModelTransformer(new PublishTimeTransformer())
+        );
     }
 
     /**
@@ -49,7 +54,9 @@ class PublishTimeType extends AbstractType
                 if ($startDate instanceof \DateTime && $endDate instanceof \DateTime) {
 
                     if ($endDate < $startDate) {
-                        $context->buildViolation("The end date can't be earlier than the begin date")->atPath('endDate')->addViolation();
+
+                        $context->buildViolation("The end date can't be earlier than the begin date")
+                            ->atPath('endDate')->addViolation();
                     }
                 }
             }),

@@ -21,6 +21,11 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class PublishTime
 {
     /**
+     * @var string
+     */
+    const DATE_MAX = '9999-12-31 00:00:00'; // @todo find a better way
+
+    /**
      * @var \DateTime
      * @ODM\Date
      */
