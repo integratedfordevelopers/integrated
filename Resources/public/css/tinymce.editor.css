@@ -23,9 +23,9 @@
   display: none;
 }
 .mce-panel {
-border: 1px solid #ccc;
-border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 .mce-toolbar-grp {
-border: none;
+  border: none;
 }
