@@ -8,17 +8,7 @@
     "authors": [
         {
             "name": "e-Active",
-            "homepage": "http://www.e-active.nl"
-        }
-    ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:eactive/integrated-library.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
+            "homepage": "http://www.integratedfordevelopers.com"
         }
     ],
     "minimum-stability": "dev",
@@ -43,8 +33,8 @@
         "twbs/bootstrap": "3.*"
     },
     "suggest": {
-        "integrated/page-bundle": "dev-master",
-        "integrated/website-bundle": "dev-master"
+        "integrated/page-bundle": "~0.2",
+        "integrated/website-bundle": "~0.2"
     },
     "require-dev": {
         "phpunit/phpunit": "4.2.*"
@@ -57,7 +47,7 @@
     "target-dir": "Integrated/Bundle/ContentBundle",
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.1.1-dev"
+            "dev-develop": "0.9.9-dev"
         }
     }
 }
