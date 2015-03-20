@@ -31,5 +31,9 @@
             "Integrated\\Bundle\\PageBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/PageBundle"
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.9-dev"
+        }
+    }
 }
