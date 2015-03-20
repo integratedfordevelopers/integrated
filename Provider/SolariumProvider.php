@@ -114,6 +114,14 @@ class SolariumProvider // @todo interface
             return $helper->escapePhrase($param);
         };
 
+        $contentTypes = $request->query->get('contenttypes');
+
+        if (count($contentTypes) && !in_array('type_name', $facetFields)) {
+
+            $facetFields[] = 'type_name';
+            $request->query->set('type_name', $contentTypes); // @hack
+        }
+
         if (count($facetFields)) {
 
             $facetSet = $query->getFacetSet();
