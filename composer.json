@@ -30,5 +30,10 @@
             "Integrated\\Bundle\\BlockBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/BlockBundle"
+    "target-dir": "Integrated/Bundle/BlockBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.9-dev"
+        }
+    }
 }
