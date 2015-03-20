@@ -15,14 +15,13 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "ext-mongo": "~1.2",
-        "symfony/symfony": "~2.4",
-        "symfony/framework-bundle": "~2.2",
+        "symfony/symfony": ">=2.4",
+        "symfony/framework-bundle": ">=2.2",
         "doctrine/mongodb": ">=1.0.0",
-        "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
-        "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
-        "integrated/block-bundle": "dev-master",
-		"knplabs/knp-paginator-bundle": "dev-master"
+        "doctrine/mongodb-odm": "*",
+        "doctrine/mongodb-odm-bundle": "*",
+        "integrated/block-bundle": "~0.2",
+		"knplabs/knp-paginator-bundle": ">=2.4"
     },
     "suggest": {
         "integrated/website-bundle": "dev-master"
