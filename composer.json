@@ -24,7 +24,7 @@
 		"knplabs/knp-paginator-bundle": ">=2.4"
     },
     "suggest": {
-        "integrated/website-bundle": "dev-master"
+        "integrated/website-bundle": "~0.2"
     },
     "autoload":{
         "psr-0":{
