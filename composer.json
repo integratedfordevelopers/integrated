@@ -20,7 +20,7 @@
         "symfony/framework-bundle": "~2.2",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/mongodb": ">=1.0.0",
-        "doctrine/mongodb-odm": ">=1.0.0-BETA10@dev",
+        "doctrine/mongodb-odm": "*",
         "doctrine/mongodb-odm-bundle": ">=v3.0.0-BETA6@dev",
         "integrated/library": "~0.2",
         "integrated/formtype-bundle": "~0.2",
