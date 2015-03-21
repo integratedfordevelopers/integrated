@@ -30,7 +30,7 @@
     "target-dir": "Integrated/Bundle/FormTypeBundle",
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.1.x-dev"
+            "dev-develop": "0.9.9-dev"
         }
     }
 }
