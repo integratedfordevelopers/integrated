@@ -32,5 +32,10 @@
             "Integrated\\Bundle\\WebsiteBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/WebsiteBundle"
+    "target-dir": "Integrated/Bundle/WebsiteBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.9-dev"
+        }
+    }
 }
