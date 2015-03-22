@@ -34,6 +34,7 @@ class FacetBlock extends Block
      *      options={
      *          "class"="IntegratedContentBundle:Block\ContentBlock",
      *          "property"="title",
+	 *          "expanded"=true,
      *          "placeholder"=""
      *      }
      * )
