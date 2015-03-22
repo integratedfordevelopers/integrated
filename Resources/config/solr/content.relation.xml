@@ -64,6 +64,34 @@
                     </array>
                 </array>
 
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/person/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/company/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
+
             </options>
         </type>
 

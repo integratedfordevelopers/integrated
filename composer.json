@@ -8,17 +8,7 @@
     "authors": [
         {
             "name": "e-Active",
-            "homepage": "http://www.e-active.nl"
-        }
-    ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:eactive/integrated-library.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
+            "homepage": "http://www.integratedfordevelopers.com"
         }
     ],
     "minimum-stability": "dev",
@@ -30,21 +20,21 @@
         "symfony/framework-bundle": "~2.2",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/mongodb": ">=1.0.0",
-        "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
-        "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
-        "integrated/library": "dev-feature/block as 0.*-dev",
-        "integrated/formtype-bundle": "~0.1",
-        "integrated/locking-bundle": "~0.1",
-        "integrated/block-bundle": "dev-master",
-        "integrated/slug-bundle": "dev-master",
+        "doctrine/mongodb-odm": "*",
+        "doctrine/mongodb-odm-bundle": ">=v3.0.0-BETA6@dev",
+        "integrated/library": "~0.2",
+        "integrated/formtype-bundle": "~0.2",
+        "integrated/locking-bundle": "~0.2",
+        "integrated/block-bundle": "~0.2",
+        "integrated/slug-bundle": "~0.2",
         "knplabs/knp-paginator-bundle": "~2.4",
         "nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",
         "twbs/bootstrap": "3.*"
     },
     "suggest": {
-        "integrated/page-bundle": "dev-master",
-        "integrated/website-bundle": "dev-master"
+        "integrated/page-bundle": "~0.2",
+        "integrated/website-bundle": "~0.2"
     },
     "require-dev": {
         "phpunit/phpunit": "4.2.*"
@@ -57,7 +47,7 @@
     "target-dir": "Integrated/Bundle/ContentBundle",
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.1.1-dev"
+            "dev-develop": "0.9.9-dev"
         }
     }
 }
