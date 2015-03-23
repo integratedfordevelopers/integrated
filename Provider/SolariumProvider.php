@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Solarium\Client;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+
 use Knp\Component\Pager\Paginator;
 
 /**
@@ -30,6 +32,11 @@ class SolariumProvider // @todo interface
     private $client;
 
     /**
+     * @var DocumentManager
+     */
+    protected $dm;
+
+    /**
      * @var Paginator
      */
     private $paginator;
@@ -41,10 +48,13 @@ class SolariumProvider // @todo interface
 
     /**
      * @param Client $client
+     * @param DocumentManager $dm
+     * @param Paginator $paginator
      */
-    public function __construct(Client $client, Paginator $paginator)
+    public function __construct(Client $client, DocumentManager $dm, Paginator $paginator)
     {
         $this->client = $client;
+        $this->dm = $dm;
         $this->paginator = $paginator;
     }
 
