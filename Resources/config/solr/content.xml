@@ -112,6 +112,7 @@
                 <string key="start_date">startDate</string>
                 <string key="end_date">endDate</string>
                 <string key="website">website</string>
+                <string key="addressName">address.name</string>
 
                 <array>
                     <string key="name">url</string>
