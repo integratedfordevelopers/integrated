@@ -327,12 +327,13 @@ class Article extends Content
      *
      * @return string
      */
-    public function getCoverUrl()
+    public function getCover()
     {
         $items = $this->getReferencesByRelationType('embedded');
         if ($items) {
             foreach ($items as $item) {
                 if ($item instanceof Image) {
+                	if (!$item->getWebPath()) continue;
                     return $item->getWebPath();
                 }
             }
