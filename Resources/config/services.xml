@@ -9,6 +9,8 @@
         <parameter key="integrated_formtype_form_type_datetime.class">Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType</parameter>
         <parameter key="integrated_formtype_form_type_wysihtml5x.class">Integrated\Bundle\FormTypeBundle\Form\Type\WysiHtml5xType</parameter>
         <parameter key="integrated_formtype_form_type_TinyMCE.class">Integrated\Bundle\FormTypeBundle\Form\Type\TinyMCEType</parameter>
+        <parameter key="integrated_formtype_form_type_sortable_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType</parameter>
+        <parameter key="integrated_formtype_form_type_address.class">Integrated\Bundle\FormTypeBundle\Form\AddressType</parameter>
 
     </parameters>
 
@@ -22,6 +24,13 @@
         </service>
         <service id="integrated_formtype_form_type_wysihtml5x" class="%integrated_formtype_form_type_wysihtml5x.class%">
             <tag name="form.type" alias="integrated_wysihtml5x" />
+        </service>
+        <service id="integrated_formtype_form_type_sortable_collection" class="%integrated_formtype_form_type_sortable_collection.class%">
+            <tag name="form.type" alias="sortable_collection"/>
+        </service>
+
+        <service id="integrated_formtype_form_type_address" class="%integrated_formtype_form_type_address.class%">
+            <tag name="form.type" alias="address"/>
         </service>
 
     </services>
