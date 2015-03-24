@@ -38,7 +38,7 @@ class Relation extends Content
     /**
      * @var string
      * @ODM\String
-     * @Type\Field
+     * @Type\Field(type="integrated_tinymce")
      */
     protected $description;
 
