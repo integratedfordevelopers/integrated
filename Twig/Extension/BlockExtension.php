@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
+use Doctrine\ODM\MongoDB\DocumentNotFoundException;
+
 use Integrated\Common\Block\BlockHandlerRegistryInterface;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
@@ -60,7 +62,14 @@ class BlockExtension extends \Twig_Extension
     {
         if ($block instanceof BlockInterface) {
 
-            $handler = $this->blockRegistry->getHandler($block->getType());
+            try {
+                $handler = $this->blockRegistry->getHandler($block->getType());
+
+            } catch (DocumentNotFoundException $e) {
+                // @todo log errors
+
+                return;
+            }
 
             if ($handler instanceof BlockHandler) {
                 $handler->setTwig($environment);
