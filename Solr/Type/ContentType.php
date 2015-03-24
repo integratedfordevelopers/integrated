@@ -11,12 +11,16 @@
 
 namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Common\Content\ContentInterface;
 
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
 
+use MongoDBODMProxies\__CG__\Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Symfony\Component\Security\Core\Util\ClassUtils;
+
+use Document\Content\Image;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -37,6 +41,34 @@ class ContentType implements TypeInterface
         $container->set('type_name', $data->getContentType());
         $container->set('type_class', ClassUtils::getRealClass($data)); // could be a doctrine proxy object but we need the actual class name.
         $container->set('type_id', $data->getId());
+
+        //Add properties
+        if ($data instanceof Article) {
+            $items = $data->getReferencesByRelationType('embedded');
+            if ($items) {
+                foreach ($items as $item) {
+                    if ($item instanceof Image) {
+                        $container->add('facet_properties', 'Has image');
+                        return;
+                    }
+                }
+            }
+            $container->add('facet_properties', 'Don\'t has images');
+        }
+
+        //Relation field and facet field for taxonomy and commercial relations
+        $items = array_merge($data->getRelationsByRelationType('taxonomy')->toArray(),$data->getRelationsByRelationType('commercial')->toArray());
+        dump($items);
+        foreach ($items as $relation) {
+            dump($relation->getReferences()->toArray());
+            foreach ($relation->getReferences()->toArray() as $content) {
+                if ($content instanceof Taxonomy) {
+                    $container->add('facet_' . $relation->getRelationId(), $content->getTitle());
+                    $container->add('taxonomy_' . $relation->getRelationId() . '_string', $content->getTitle());
+                }
+            }
+        }
+
     }
 
     /**

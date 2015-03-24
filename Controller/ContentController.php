@@ -80,6 +80,7 @@ class ContentController extends Controller
         $facetSet = $query->getFacetSet();
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels');
+		$facetSet->createFacetField('properties')->setField('facet_properties');
 
 
         // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
@@ -103,11 +104,44 @@ class ContentController extends Controller
                         'name' => $target->getName()
                     );
                 }
+
             }
 
         } else {
             $contentType = $request->query->get('contenttypes');
         }
+
+
+        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+        $dm = $this->get('doctrine_mongodb')->getManager();
+
+        $active = [];
+
+        /** @var Relation $relation */
+        foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
+
+            $helper = $query->getHelper();
+            $filter = function($param) use($helper) {
+                return $helper->escapePhrase($param);
+            };
+
+            $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
+
+            //create relation facet field
+            $facetSet->createFacetField($name)->setField('facet_' . $relation->getId());
+            $relationfilter = $request->query->get($name);
+
+            if (is_array($relationfilter)) {
+                $query
+                    ->createFilterQuery($name)
+                    ->addTag($name)
+                    ->setQuery('facet_' . $relation->getId() . ': ((%1%))', [implode(') OR (', array_map($filter, $relationfilter))]);
+
+                $active[$name] = $relationfilter;
+            }
+
+        }
+
 
         if (is_array($contentType)) {
 
@@ -241,12 +275,15 @@ class ContentController extends Controller
             }
         }
 
+        $active['contenttypes'] = $contentType;
+        $active['channels'] = $activeChannels;
+
         return array(
             'types'        => $types,
             'params'       => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
             'pager'        => $paginator,
             'contentTypes' => $displayTypes,
-            'active'       => array('contenttypes' => $contentType, 'channels' => $activeChannels),
+            'active'       => $active,
             'channels'     => $channels,
             'facets'       => $result->getFacetSet()->getFacets(),
             'locks'        => $this->getLocks($paginator),
