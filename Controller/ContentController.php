@@ -117,6 +117,26 @@ class ContentController extends Controller
 
         $active = [];
 
+        // If the request query contains a properties parameter we need to fetch all the targets of the relation in order
+        // to filter on these targets.
+        // TODO this code should be somewhere else
+        $propertiesfilter = $request->query->get('properties');
+        if (is_array($propertiesfilter)) {
+
+            $helper = $query->getHelper();
+            $filter = function($param) use($helper) {
+                return $helper->escapePhrase($param);
+            };
+
+            $query
+                ->createFilterQuery('properties')
+                ->addTag('properties')
+                ->setQuery('facet_properties: ((%1%))', [implode(') OR (', array_map($filter, $propertiesfilter))]);
+
+            $active['properties'] = $propertiesfilter;
+        }
+
+
         /** @var Relation $relation */
         foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
 

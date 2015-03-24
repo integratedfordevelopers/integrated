@@ -17,6 +17,8 @@ use Solarium\Client;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+
 use Knp\Component\Pager\Paginator;
 
 /**
@@ -124,12 +126,36 @@ class SolariumProvider // @todo interface
             return $helper->escapePhrase($param);
         };
 
+        //@todo: provide facet filters from service
         $contentTypes = $request->query->get('contenttypes');
-
         if (count($contentTypes) && !in_array('type_name', $facetFields)) {
 
             $facetFields[] = 'type_name';
             $request->query->set('type_name', $contentTypes); // @hack
+        }
+
+        $properties = $request->query->get('properties');
+        if (count($properties) && !in_array('facet_properties', $facetFields)) {
+
+            $facetFields[] = 'facet_properties';
+            $request->query->set('facet_properties', $properties); // @hack
+        }
+
+        foreach ($this->dm->getRepository('Integrated\Bundle\ContentBundle\Document\Relation\Relation')->findAll() as $relation) {
+
+            $helper = $query->getHelper();
+            $filter = function($param) use($helper) {
+                return $helper->escapePhrase($param);
+            };
+
+            $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
+
+            $filters = $request->query->get($name);
+            if (count($filters) && !in_array('facet_' . $relation->getId(), $facetFields)) {
+                $facetFields[] = 'facet_' . $relation->getId();
+                $request->query->set('facet_' . $relation->getId(), $filters); // @hack
+            }
+
         }
 
         if (count($facetFields)) {

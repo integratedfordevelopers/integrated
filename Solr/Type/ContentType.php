@@ -17,7 +17,7 @@ use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
 
-use MongoDBODMProxies\__CG__\Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
+use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
 use Document\Content\Image;
