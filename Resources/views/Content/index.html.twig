@@ -33,7 +33,7 @@
                     <div class="item_row">
                         <h3 class="title">
                             <a href="{{ path('integrated_content_content_edit', {id: content.type_id}) }}">
-                                {{ content.title }}
+                                {{ content.title|default }}
                             </a>
                         </h3>
 

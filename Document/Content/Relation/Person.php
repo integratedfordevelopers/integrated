@@ -83,6 +83,7 @@ class Person extends Relation
     /**
      * @var File
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
+     * @Type\Field(type="integrated_image_choice")
      */
     protected $picture;
 
