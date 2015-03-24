@@ -58,9 +58,7 @@ class ContentType implements TypeInterface
 
         //Relation field and facet field for taxonomy and commercial relations
         $items = array_merge($data->getRelationsByRelationType('taxonomy')->toArray(),$data->getRelationsByRelationType('commercial')->toArray());
-        dump($items);
         foreach ($items as $relation) {
-            dump($relation->getReferences()->toArray());
             foreach ($relation->getReferences()->toArray() as $content) {
                 if ($content instanceof Taxonomy) {
                     $container->add('facet_' . $relation->getRelationId(), $content->getTitle());
