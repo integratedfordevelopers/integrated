@@ -6,6 +6,7 @@
         "wysihtml5x": "0.4.3",
         "bootstrap3-wysihtml5-bower": "0.3.0-alpha.5",
         "tinymce": "4.1.9",
-        "select2-bootstrap-css": "1.4.*"
+        "select2": "~3.5.1"
+        "select2-bootstrap-css": "~1.4.1"
     }
 }
