@@ -14,6 +14,6 @@ class SortableCollectionType extends BootstrapCollectionType
      */
     public function getName()
     {
-        return 'sortable_collection';
+        return 'integrated_sortable_collection';
     }
 }
