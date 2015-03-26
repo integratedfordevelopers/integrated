@@ -59,9 +59,9 @@ class Relation extends Content
      * @var Address[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address")
      * @Type\Field(
-     *      type="sortable_collection",
+     *      type="integrated_sortable_collection",
      *      options={
-     *          "type"="address",
+     *          "type"="integrated_address",
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }

@@ -33,6 +33,7 @@
 
 		<parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
 		<parameter key="integrated_content.form.type.file.class">Integrated\Bundle\ContentBundle\Form\Type\FileType</parameter>
+        <parameter key="integrated_content.form.type.address.class">Integrated\Bundle\ContentBundle\Form\Type\AddressType</parameter>
 
 	</parameters>
 
@@ -110,6 +111,10 @@
 
 		<service id="integrated_content.form.type.file" class="%integrated_content.form.type.file.class%">
             <tag name="form.type" alias="integrated_file" />
+        </service>
+
+        <service id="integrated_content.form.type.address" class="%integrated_content.form.type.address.class%">
+            <tag name="form.type" alias="integrated_address"/>
         </service>
 
 	</services>
