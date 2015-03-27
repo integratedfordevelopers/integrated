@@ -54,6 +54,7 @@ class Article extends Content
     /**
      * @var ArrayCollection Embedded\Author[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author")
+     * @Type\Field(type="integrated_author", options={"label" = "Authors"})
      */
     protected $authors;
 
