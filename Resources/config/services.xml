@@ -15,8 +15,7 @@
     <services>
 
         <service id="integrated_block.twig.block_extension" class="%integrated_block.twig.block_extension.class%">
-            <argument type="service" id="integrated_block.registry.block_handler" />
-            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <argument type="service" id="service_container" />
             <tag name="twig.extension" />
         </service>
 

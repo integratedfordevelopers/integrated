@@ -11,12 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
-use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-
-use Integrated\Common\Block\BlockHandlerRegistryInterface;
-use Integrated\Common\Block\BlockInterface;
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Integrated\Bundle\BlockBundle\Block\BlockHandler;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -24,23 +19,16 @@ use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 class BlockExtension extends \Twig_Extension
 {
     /**
-     * @var BlockHandlerRegistryInterface
+     * @var ContainerInterface
      */
-    private $blockRegistry;
+    private $container;
 
     /**
-     * @var ThemeManager
+     * @param ContainerInterface $container
      */
-    private $themeManager;
-
-    /**
-     * @param BlockHandlerRegistryInterface $blockRegistry
-     * @param ThemeManager $themeManager
-     */
-    public function __construct(BlockHandlerRegistryInterface $blockRegistry, ThemeManager $themeManager)
+    public function __construct(ContainerInterface $container)
     {
-        $this->blockRegistry = $blockRegistry;
-        $this->themeManager = $themeManager;
+        $this->container = $container; // @todo remove service container
     }
 
     /**
@@ -49,40 +37,18 @@ class BlockExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html']]),
         ];
     }
 
     /**
-     * @param \Twig_Environment $environment
-     * @param BlockInterface $block
-     * @return string
+     * @param \Integrated\Common\Block\BlockInterface|string $block
+     *
+     * @return null|string
      */
-    public function renderBlock(\Twig_Environment $environment, $block)
+    public function renderBlock($block)
     {
-        if ($block instanceof BlockInterface) {
-
-            try {
-                $handler = $this->blockRegistry->getHandler($block->getType());
-
-            } catch (DocumentNotFoundException $e) {
-                // @todo log errors
-
-                return;
-            }
-
-            if ($handler instanceof BlockHandler) {
-                $handler->setTwig($environment);
-
-                $this->themeManager->setActiveTheme('gim'); // @todo
-
-                if ($template = $this->themeManager->locateTemplate('blocks/' . $block->getType() . '/' . $block->getLayout())) {
-                    $handler->setTemplate($template);
-                }
-
-                return $handler->execute($block);
-            }
-        }
+        return $this->container->get('integrated_block.templating.block_renderer')->render($block);
     }
 
     /**
