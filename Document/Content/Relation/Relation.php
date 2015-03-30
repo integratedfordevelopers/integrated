@@ -58,6 +58,14 @@ class Relation extends Content
     /**
      * @var Address[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address")
+     * @Type\Field(
+     *      type="integrated_sortable_collection",
+     *      options={
+     *          "type"="integrated_address",
+     *          "allow_add"=true,
+     *          "allow_delete"=true
+     *      }
+     * )
      */
     protected $addresses;
 
