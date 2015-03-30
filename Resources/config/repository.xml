@@ -14,6 +14,14 @@
 			<argument type="string">Integrated\Bundle\WorkflowBundle\Entity\Definition</argument>
 		</service>
 
+        <service id="integrated_workflow.repository.workflow"
+                 class="Doctrine\Common\Persistence\ObjectRepository"
+                 factory-service="doctrine.orm.entity_manager"
+                 factory-method="getRepository"
+                >
+            <argument type="string">Integrated\Bundle\WorkflowBundle\Entity\Workflow\State</argument>
+        </service>
+
 	</services>
 
 </container>

@@ -47,6 +47,7 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
 		$loader->load('security.xml');
 
 		$loader->load('queue.xml');
+        $loader->load('solr.xml');
 	}
 
 	/**
