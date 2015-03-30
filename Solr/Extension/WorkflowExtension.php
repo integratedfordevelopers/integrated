@@ -16,7 +16,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 use Integrated\Common\Content\ContentInterface;
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\ResolverInterface;
+use Integrated\Common\ContentType\Exception\ExceptionInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
 
@@ -45,11 +46,11 @@ class WorkflowExtension implements TypeExtensionInterface
     /**
      * Constructor.
      *
-     * @param ContentTypeResolverInterface $resolver
+     * @param ResolverInterface            $resolver
      * @param ObjectRepository             $workflow
      * @param ObjectRepository             $definition
      */
-    public function __construct(ContentTypeResolverInterface $resolver, ObjectRepository $workflow, ObjectRepository $definition)
+    public function __construct(ResolverInterface $resolver, ObjectRepository $workflow, ObjectRepository $definition)
     {
         $this->resolver = $resolver;
 
@@ -98,17 +99,21 @@ class WorkflowExtension implements TypeExtensionInterface
      * If not workflow is connected to the content type or none can be found then null will
      * be returned.
      *
-   	 * @param ContentInterface $content
+     * @param ContentInterface $content
      *
-   	 * @return null | State
-   	 */
+     * @return null | State
+     */
     protected function getState(ContentInterface $content)
     {
-		// does this content even have a workflow connected ?
+        // does this content even have a workflow connected ?
 
-		if (!$type = $this->resolver->getType(ClassUtils::getRealClass($content), $content->getContentType())) {
-            return null;
-		}
+        $type = $content->getContentType();
+
+        if (!$this->resolver->hasType($type)) {
+            return false;
+        }
+
+        $type = $this->resolver->getType($type);
 
         if (!$type->getOption('workflow')) {
             return null;
@@ -129,6 +134,6 @@ class WorkflowExtension implements TypeExtensionInterface
             return $entity->getDefault();
         }
 
-   		return null;
+        return null;
     }
 }
