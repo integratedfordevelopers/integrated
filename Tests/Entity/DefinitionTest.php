@@ -19,18 +19,39 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 class DefinitionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test get- and setDefault function
+     * @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject
      */
-    public function testGetAndSetDefault()
+    private $state;
+
+    /**
+     * Set up the test
+     */
+    public function setup()
+    {
+        $this->state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
+    }
+
+    /**
+     * Test setDefault function
+     * @return Definition
+     */
+    public function testSetDefault()
     {
         $instance = $this->getInstance();
 
-        /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition\State | \PHPUnit_Framework_MockObject_MockObject $state */
-        $state = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition\State');
+        $this->assertSame($instance, $instance->setDefault($this->state));
 
+        return $instance;
+    }
 
-        $this->assertSame($instance, $instance->setDefault($state));
-        $this->assertSame($state, $instance->getDefault());
+    /**
+     * Test getDefault function
+     * @depends testSetDefault
+     * @param Definition $instance
+     */
+    public function testGetDefault(Definition $instance)
+    {
+        $this->assertEquals($this->state, $instance->getDefault());
     }
 
     public function testRemoveDefault()
