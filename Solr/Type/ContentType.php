@@ -20,7 +20,7 @@ use Integrated\Common\Converter\Type\TypeInterface;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
-use Document\Content\Image;
+use Integrated\Bundle\ContentBundle\Document\Content\Image;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -44,16 +44,21 @@ class ContentType implements TypeInterface
 
         //Add properties
         if ($data instanceof Article) {
+            $found = false;
             $items = $data->getReferencesByRelationType('embedded');
             if ($items) {
                 foreach ($items as $item) {
                     if ($item instanceof Image) {
-                        $container->add('facet_properties', 'Has image');
-                        return;
+                        $found = true;
                     }
                 }
             }
-            $container->add('facet_properties', 'Don\'t has images');
+            if ($found) {
+                $container->add('facet_properties', 'Has image');
+            }
+            else {
+                $container->add('facet_properties', 'Don\'t has images');
+            }
         }
 
         //Relation field and facet field for taxonomy and commercial relations
