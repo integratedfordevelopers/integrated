@@ -10,6 +10,7 @@
         <parameter key="integrated_formtype_form_type_wysihtml5x.class">Integrated\Bundle\FormTypeBundle\Form\Type\WysiHtml5xType</parameter>
         <parameter key="integrated_formtype_form_type_TinyMCE.class">Integrated\Bundle\FormTypeBundle\Form\Type\TinyMCEType</parameter>
         <parameter key="integrated_formtype_form_type_select2.class">Integrated\Bundle\FormTypeBundle\Form\Type\Select2Type</parameter>
+        <parameter key="integrated_formtype_form_type_sortable_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType</parameter>
 
     </parameters>
 
@@ -23,6 +24,9 @@
         </service>
         <service id="integrated_formtype_form_type_wysihtml5x" class="%integrated_formtype_form_type_wysihtml5x.class%">
             <tag name="form.type" alias="integrated_wysihtml5x" />
+        </service>
+        <service id="integrated_formtype_form_type_sortable_collection" class="%integrated_formtype_form_type_sortable_collection.class%">
+            <tag name="form.type" alias="integrated_sortable_collection"/>
         </service>
         <service id="integrated_formtype_form_type_select2" class="%integrated_formtype_form_type_select2.class%">
             <tag name="form.type" alias="integrated_select2" />
