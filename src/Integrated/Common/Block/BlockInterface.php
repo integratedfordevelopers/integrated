@@ -31,13 +31,6 @@ interface BlockInterface
     public function getTitle();
 
     /**
-     * Get the block slug
-     *
-     * @return string
-     */
-    public function getSlug();
-
-    /**
      * Get the block layout
      *
      * @return string
