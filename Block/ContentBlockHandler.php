@@ -99,7 +99,7 @@ class ContentBlockHandler extends BlockHandler
                 $request,
                 $block->getItemsPerPage(),
                 $block->getMaxItems(),
-                $block->getSlug() . '-page',
+                $block->getId() . '-page',
                 $block->getFacetFields()
             );
 
