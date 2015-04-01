@@ -32,7 +32,9 @@ abstract class Block implements BlockInterface
 {
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
+     * @ODM\Id(strategy="NONE")
+     * @ODM\UniqueIndex
+     * @Slug(fields={"title"})
      */
     protected $id;
 
@@ -43,20 +45,6 @@ abstract class Block implements BlockInterface
      * @Type\Field
      */
     protected $title;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
-     * @Slug(fields={"title"})
-     * @Type\Field(
-     *      type="text",
-     *      options={
-     *          "required"=false
-     *      }
-     * )
-     */
-    protected $slug;
 
     /**
      * @var string
@@ -120,6 +108,16 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * @param string $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getTitle()
@@ -134,24 +132,6 @@ abstract class Block implements BlockInterface
     public function setTitle($title)
     {
         $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     * @return $this
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
         return $this;
     }
 

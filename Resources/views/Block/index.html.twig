@@ -24,12 +24,14 @@
                 <colgroup>
                     <col />
                     <col />
+                    <col />
                     <col style="width: 5em" />
                 </colgroup>
 
                 <thead>
                     <tr>
                         <th>{% trans %}Block name{% endtrans %}</th>
+                        <th>{% trans %}Short code{% endtrans %}</th>
                         <th>{% trans %}Type{% endtrans %}</th>
                         <th>{% trans %}Actions{% endtrans %}</th>
                     </tr>
@@ -41,6 +43,9 @@
                     <tr>
                         <td>
                             {{ block.title }}
+                        </td>
+                        <td>
+                            {{ block.id }}
                         </td>
                         <td>
                             {{ block.type }}

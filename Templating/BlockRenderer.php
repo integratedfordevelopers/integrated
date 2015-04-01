@@ -71,7 +71,7 @@ class BlockRenderer
     {
         if (is_string($block)) {
 
-            $block = $this->repository->findOneBy(['slug' => $block]);
+            $block = $this->repository->find($block);
         }
 
         if ($block instanceof BlockInterface) {
