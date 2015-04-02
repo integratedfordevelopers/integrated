@@ -17,7 +17,11 @@
                     </li>
                 {{else}}
                     <li>
+                        {{#if this.disabled}}
+                        <label class="pseudo_checkbox_holder text-disabled">
+                        {{else}}
                         <label class="pseudo_checkbox_holder">
+                        {{/if}}
                             {{#checked this.id ../../selected }}
                             <input type="checkbox" checked="checked" value="{{this.id}}"  />
                             {{else}}
