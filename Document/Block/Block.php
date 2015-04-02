@@ -33,7 +33,6 @@ abstract class Block implements BlockInterface
     /**
      * @var string
      * @ODM\Id(strategy="NONE")
-     * @ODM\UniqueIndex
      * @Slug(fields={"title"})
      */
     protected $id;
