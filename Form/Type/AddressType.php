@@ -27,44 +27,44 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('type', 'choice', array(
-            'choices' => [
+            'choices' => array(
                 'postal' => 'Postal address',
                 'visiting' => 'Visiting address',
-                'mailing' => 'Mailing address'
-            ]
+                'mailing' => 'Mailing address',
+            )
         ));
 
         $builder->add('country', 'country', array(
-            'constraints' => [
+            'constraints' => array(
                 new NotBlank(),
-            ]
+            )
         ));
 
         $builder->add('address1', 'text', array(
             'label' => 'Address line 1',
-            'constraints' => [
+            'constraints' => array(
                 new NotBlank(),
-            ]
+            )
         ));
 
         $builder->add('address2', 'text', array(
             'label' => 'Address line 2',
-            'constraints' => [
+            'constraints' => array(
                 new NotBlank(),
-            ]
+            )
         ));
 
         $builder->add('zipcode', 'text', array(
-            'constraints' => [
+            'constraints' => array(
                 new NotBlank(),
-            ]
+            )
         ));
 
-        $builder->add('city', 'text', [
-            'constraints' => [
+        $builder->add('city', 'text', array(
+            'constraints' => array(
                 new NotBlank(),
-            ]
-        ]);
+            )
+        ));
     }
 
     /**
