@@ -166,7 +166,7 @@ class BlockController extends Controller
         $class = get_class($block);
 
         $form = $this->createForm(
-            $this->get('integrated_block.form.type.block'),
+            $this->get('integrated_block.form.metadata.type.block'),
             $block,
             [
                 'action' => $this->generateUrl('integrated_block_block_new', ['class' => $class]),
@@ -192,7 +192,7 @@ class BlockController extends Controller
     protected function createEditForm(BlockInterface $block)
     {
         $form = $this->createForm(
-            $this->get('integrated_block.form.type.block'),
+            $this->get('integrated_block.form.metadata.type.block'),
             $block,
             [
                 'action' => $this->generateUrl('integrated_block_block_edit', ['id' => $block->getId()]),

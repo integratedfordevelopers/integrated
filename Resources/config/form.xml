@@ -6,15 +6,18 @@
 
     <parameters>
 
-        <parameter key="integrated_block.form.type.block.class">Integrated\Common\Form\Type\MetadataType</parameter>
+        <parameter key="integrated_block.form.metadata.type.block.class">Integrated\Common\Form\Type\MetadataType</parameter>
 
         <parameter key="integrated_block.form.type.layout_choice.class">Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType</parameter>
+
+        <parameter key="integrated_block.form.type.block.class">Integrated\Bundle\BlockBundle\Form\Type\BlockType</parameter>
+        <parameter key="integrated_block.form.type.block_size.class">Integrated\Bundle\BlockBundle\Form\Type\BlockSizeType</parameter>
 
     </parameters>
 
     <services>
 
-        <service id="integrated_block.form.type.block" class="%integrated_block.form.type.block.class%">
+        <service id="integrated_block.form.metadata.type.block" class="%integrated_block.form.metadata.type.block.class%">
             <argument type="service" id="integrated_block.metadata.factory" />
             <argument>integrated_block_block</argument><!-- form name -->
         </service>
@@ -22,6 +25,15 @@
         <service id="integrated_block.form.type.layout_choice" class="%integrated_block.form.type.layout_choice.class%">
             <argument type="service" id="integrated_block.layout_locator" />
             <tag name="form.type" alias="integrated_block_layout_choice" />
+        </service>
+
+        <service id="integrated_block.form.type.block" class="%integrated_block.form.type.block.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="form.type" alias="integrated_block" />
+        </service>
+
+        <service id="integrated_block.form.type.block_size" class="%integrated_block.form.type.block_size.class%">
+            <tag name="form.type" alias="integrated_block_size" />
         </service>
 
     </services>

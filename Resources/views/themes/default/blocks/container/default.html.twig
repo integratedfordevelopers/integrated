@@ -1,0 +1,9 @@
+<div class="row">
+{% for item in block.items %}
+
+    <div class="col-sm-{{ item.size|default(12) }}">
+        {{ integrated_block(item.block) }}
+    </div>
+
+{% endfor %}
+</div>
