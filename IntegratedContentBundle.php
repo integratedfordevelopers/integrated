@@ -19,7 +19,6 @@ use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\FormFactoryEven
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\MetadataEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\TemplatingPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ThemeManagerPass;
-use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\SolrConverterChannelConverterPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\IntegratedContentExtension;
 
 /**
@@ -40,7 +39,6 @@ class IntegratedContentBundle extends Bundle
 		$container->addCompilerPass(new ExtensionRegistryBuilderPass());
 		$container->addCompilerPass(new FormFactoryEventDispatcherPass());
 		$container->addCompilerPass(new MetadataEventDispatcherPass());
-        $container->addCompilerPass(new SolrConverterChannelConverterPass());
 		$container->addCompilerPass(new TemplatingPass());
         $container->addCompilerPass(new ThemeManagerPass());
 	}
