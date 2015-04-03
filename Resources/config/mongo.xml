@@ -36,6 +36,11 @@
             <call method="addClass">
                 <argument type="string">Integrated\Bundle\ContentBundle\Document\Content\Content</argument>
             </call>
+
+            <call method="addClass">
+                <argument type="string">Integrated\Bundle\BlockBundle\Document\Block\Block</argument>
+            </call>
+
         </service>
 
         <service id="integrated_content.odm.mongo.mapping.discriminator_map.resolver"
