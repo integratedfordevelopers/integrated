@@ -135,6 +135,10 @@ class BlockController extends Controller
      */
     public function deleteAction(Request $request, Block $block)
     {
+        if ($block->getLocked()) {
+            throw $this->createNotFoundException(sprintf('Block "%s" is locked.', $block->getId()));
+        }
+
         $form = $this->createDeleteForm($block->getId());
         $form->handleRequest($request);
 

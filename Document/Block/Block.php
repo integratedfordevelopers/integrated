@@ -90,6 +90,12 @@ abstract class Block implements BlockInterface
     protected $disabled = false;
 
     /**
+     * @var bool
+     * @ODM\Boolean
+     */
+    protected $locked = false;
+
+    /**
      */
     public function __construct()
     {
@@ -239,6 +245,24 @@ abstract class Block implements BlockInterface
     public function setDisabled($disabled)
     {
         $this->disabled = (bool) $disabled;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLocked()
+    {
+        return $this->locked;
+    }
+
+    /**
+     * @param bool $locked
+     * @return Block
+     */
+    public function setLocked($locked)
+    {
+        $this->locked = (bool) $locked;
         return $this;
     }
 }

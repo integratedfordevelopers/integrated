@@ -54,9 +54,11 @@
                             <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">
                                 {{ icon('pencil') }}
                             </a>
-                            <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
-                                {{ icon('remove-circle') }}
-                            </a>
+                            {% if not block.locked %}
+                                <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                                    {{ icon('remove-circle') }}
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
 
