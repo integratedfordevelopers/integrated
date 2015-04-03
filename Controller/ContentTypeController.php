@@ -77,6 +77,8 @@ class ContentTypeController extends Controller
 
                 if (isset($parts[$pos - 1])) {
                     $category[$parts[$pos - 1]][] = $document;
+                } else {
+                    $category[reset($parts)][] = $document;
                 }
             }
         }
