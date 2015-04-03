@@ -20,6 +20,8 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory as BaseClassMetadataFactory;
 
 /**
+ * @deprecated will be removed asap.
+ *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class ClassMetadataFactory extends BaseClassMetadataFactory
