@@ -32,31 +32,31 @@ class DiscriminatorMapMetadataSubscriber implements EventSubscriber
      *
      * @param DiscriminatorMapResolverInterface $resolver
      */
-	public function __construct(DiscriminatorMapResolverInterface $resolver)
-	{
+    public function __construct(DiscriminatorMapResolverInterface $resolver)
+    {
         $this->resolver = $resolver;
-	}
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getSubscribedEvents()
-	{
-		return [
-			Events::loadClassMetadata
-		];
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            Events::loadClassMetadata
+        ];
+    }
 
-	/**
-	 * Resolve and replace the discriminator map.
+    /**
+     * Resolve and replace the discriminator map.
      *
      * This will try to resolve the discriminator map and if found it will replace the current
      * discriminator map and subclasses config in the given metadata.
-	 *
-	 * @param LoadClassMetadataEventArgs $event
-	 */
-	public function loadClassMetadata(LoadClassMetadataEventArgs $event)
-	{
+     *
+     * @param LoadClassMetadataEventArgs $event
+     */
+    public function loadClassMetadata(LoadClassMetadataEventArgs $event)
+    {
         $metadata = $event->getClassMetadata();
 
         if (!$metadata instanceof ClassMetadataInfo) {
@@ -68,12 +68,12 @@ class DiscriminatorMapMetadataSubscriber implements EventSubscriber
             // actually add methods.
             // NOTE: doctrine doc comments claim these properties are read only
 
-            $metadata->discriminatorMap = array();
+            $metadata->discriminatorMap = [];
             $metadata->discriminatorValue = null;
 
             $metadata->subClasses = [];
 
             $metadata->setDiscriminatorMap($map); // also set subclasses
         }
-	}
+    }
 }
