@@ -36,8 +36,7 @@ class ClassTreeMapResolver implements DiscriminatorMapResolverInterface
     /**
      * Constructor.
      *
-     * The order of the class map roots is important if it contain classes that also
-     * have a parent class in the list.
+     * The order of the class map roots is important, it will use the first match as class root.
      *
      * @param ClassLocatorInterface $locator
      * @param string[]              $roots
