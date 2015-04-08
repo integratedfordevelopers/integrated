@@ -46,7 +46,7 @@ class CopyType implements TypeInterface
             $this->remove($container, $to);
 
             foreach (new RecursiveIteratorIterator(new RecursiveArrayIterator($from)) as $field) {
-                foreach ($container->get($field) as $value) {
+                foreach ((array) $container->get($field) as $value) {
                     $this->append($container, $to, $value);
                 }
             }
