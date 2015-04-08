@@ -489,6 +489,10 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      */
     public function updatePublishTimeOnPreUpdate()
     {
+        if (!$this->publishTime instanceof PublishTime) {
+            return;
+        }
+
         if (!$this->publishTime->getStartDate() instanceof \DateTime) {
             $this->publishTime->setStartDate($this->createdAt);
         }
