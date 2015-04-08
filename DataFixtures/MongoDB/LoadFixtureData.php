@@ -33,6 +33,11 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
     protected $path = __DIR__;
 
     /**
+     * @var string
+     */
+    protected $locale = 'en_US';
+
+    /**
      * @var MetadataFactoryInterface
      */
     private $metadata = null;
@@ -49,7 +54,7 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
             $files[] = $file->getRealpath();
         }
 
-        Fixtures::load($files, $manager, array('providers' => array($this)));
+        Fixtures::load($files, $manager, ['providers' => [$this], 'locale' => $this->locale]);
     }
 
     /**
