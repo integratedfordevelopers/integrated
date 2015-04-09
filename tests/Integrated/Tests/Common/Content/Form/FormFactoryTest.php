@@ -12,7 +12,10 @@
 namespace Integrated\Tests\Common\Content\Form;
 
 use Integrated\Common\Content\Form\FormFactory;
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+
+use Integrated\Common\ContentType\Exception\InvalidArgumentException;
+use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -20,110 +23,112 @@ use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
 class FormFactoryTest extends \PHPUnit_Framework_TestCase
 {
 	/**
-	 * @var ContentTypeResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+	 * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $resolver;
 
     /**
-     * @var \Integrated\Common\Content\Reader\Document | \PHPUnit_Framework_MockObject_MockObject
+     * @var MetadataFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
      */
-    private $reader;
-
-	/**
-	 * @var FormFactory
-	 */
-	private $factory;
+    private $metadata;
 
 	protected function setUp()
 	{
-		$this->resolver = $this->getMock('Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface');
-        $this->reader = $this->getMock('Integrated\Common\Content\Reader\Document', array(), array(), '', false);
-		$this->factory = new FormFactory($this->resolver, $this->reader);
-
+		$this->resolver = $this->getMock('Integrated\\Common\\ContentType\\ResolverInterface');
+        $this->metadata = $this->getMock('Integrated\\Common\\ContentType\\Mapping\MetadataFactoryInterface');
 	}
 
 	public function testInterface()
 	{
-		$this->assertInstanceOf('Integrated\Common\Content\Form\FormFactoryInterface', $this->factory);
+		$this->assertInstanceOf('Integrated\\Common\\Content\\Form\\FormFactoryInterface', $this->getInstance());
 	}
 
-	public function testGetType()
-	{
-		$class = $this->getMockClass('Integrated\Common\Content\ContentInterface');
+    public function testSetAndGetEventDispatcher()
+    {
+        $dispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
 
-		$this->resolver->expects($this->once())
-			->method('getType')
-			->with($this->identicalTo($class), $this->identicalTo('type'))
-			->will($this->returnValue($this->getMock('Integrated\Common\ContentType\ContentTypeInterface')));
+        $factory = $this->getInstance();
+        $factory->setEventDispatcher($dispatcher);
 
-		$this->assertInstanceOf('Integrated\Common\Content\Form\FormType', $this->factory->getType($class, 'type'));
-	}
+        self::assertSame($dispatcher, $factory->getEventDispatcher());
+    }
 
-	/**
-	 * @expectedException \Integrated\Common\Content\Exception\UnexpectedTypeException
-	 */
-	public function testGetTypeNoType()
-	{
-		$this->factory->getType($this->getMockClass('Integrated\Common\Content\ContentInterface'));
-	}
+    public function testGetEventDispatcherDefault()
+    {
+        self::assertInstanceOf('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface', $this->getInstance()->getEventDispatcher());
+    }
 
-	public function testGetTypeWithContentType()
-	{
-		$content = $this->getMock('Integrated\Common\Content\ContentInterface');
+    /**
+     * @dataProvider getTypeProvider
+     */
+    public function testGetType($argument)
+    {
+        $type = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        $type->expects($this->once())
+            ->method('getClass')
+            ->willReturn('Integrated\\Common\\ContentType\\ContentTypeInterface');
 
-		$this->resolver->expects($this->once())
-			->method('getType')
-			->with($this->identicalTo(get_class($content)), $this->identicalTo('type'))
-			->will($this->returnValue($this->getMock('Integrated\Common\ContentType\ContentTypeInterface')));
+        $this->resolver->expects($this->once())
+            ->method('getType')
+            ->with($this->equalTo('content-type'))
+            ->willReturn($type);
 
-		$this->assertInstanceOf('Integrated\Common\Content\Form\FormType', $this->factory->getType($content, 'type'));
-	}
+        $this->metadata->expects($this->once())
+            ->method('getMetadata')
+            ->with($this->equalTo('Integrated\\Common\\ContentType\\ContentTypeInterface'))
+            ->willReturn($this->getMock('Integrated\\Common\\ContentType\\Mapping\\MetadataInterface'));
 
-	public function testGetTypeWithContentTypeAndNoType()
-	{
-		$content = $this->getMock('Integrated\Common\Content\ContentInterface');
-		$content->expects($this->once())
-			->method('getContentType')
-			->will($this->returnValue('type'));
+        self::assertInstanceOf('Integrated\\Common\\Content\\Form\\FormType', $this->getInstance()->getType($argument));
+    }
 
-		$this->resolver->expects($this->once())
-			->method('getType')
-			->with($this->identicalTo(get_class($content)), $this->identicalTo('type'))
-			->will($this->returnValue($this->getMock('Integrated\Common\ContentType\ContentTypeInterface')));
+    public function getTypeProvider()
+    {
+        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content->expects($this->atLeastOnce())
+            ->method('getContentType')
+            ->willReturn('content-type');
 
-		$this->assertInstanceOf('Integrated\Common\Content\Form\FormType', $this->factory->getType($content));
-	}
+        return [
+            ['content-type'],
+            [$content]
+        ];
+    }
 
-	/**
-	 * @expectedException \Integrated\Common\Content\Exception\UnexpectedTypeException
-	 */
-	public function testGetTypeInvalidClass()
-	{
-		$this->factory->getType(10, 'type');
-	}
+    /**
+     * @expectedException \Integrated\Common\Content\Exception\ExceptionInterface
+     */
+    public function testGetTypeNoString()
+    {
+        $this->resolver->expects($this->never())
+            ->method($this->anything());
 
-	/**
-	 * @expectedException \Integrated\Common\Content\Exception\UnexpectedTypeException
-	 */
-	public function testGetTypeInvalidType()
-	{
-		$this->factory->getType($this->getMockClass('Integrated\Common\Content\ContentInterface'), 10);
-	}
+        $this->metadata->expects($this->never())
+            ->method($this->anything());
 
-	/**
-	 * @expectedException \Integrated\Common\Content\Exception\InvalidArgumentException
-	 */
-	public function testGetTypeStringNotSubClass()
-	{
-		$this->factory->getType(new \stdClass());
-	}
+        $this->getInstance()->getType(['not a string']);
+    }
 
-	/**
-	 * @expectedException \Integrated\Common\Content\Exception\InvalidArgumentException
-	 */
-	public function testGetTypeObjectNotSubClass()
-	{
-		$this->factory->getType('stdClass');
-	}
+    /**
+     * @expectedException \Integrated\Common\ContentType\Exception\ExceptionInterface
+     */
+    public function testGetTypeNotFound()
+    {
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('getType')
+            ->willThrowException(new InvalidArgumentException());
+
+        $this->metadata->expects($this->never())
+            ->method($this->anything());
+
+        $this->getInstance()->getType('not found');
+    }
+
+    /**
+     * @return FormFactory
+     */
+    protected function getInstance()
+    {
+        return new FormFactory($this->resolver, $this->metadata);
+    }
 }
  

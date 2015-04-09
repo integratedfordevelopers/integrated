@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\MongoDB\ContentType\Resolver;
+namespace Integrated\Common\ContentType\Resolver;
 
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 
 use Integrated\Common\ContentType\Exception\ExceptionInterface;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
@@ -22,9 +22,9 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContentTypeResolver implements ContentTypeResolverInterface
+class MongoDBResolver implements ResolverInterface
 {
-	const CONTENT_TYPE_INTERFACE = 'Integrated\Common\ContentType\ContentTypeInterface';
+	const CONTENT_TYPE_INTERFACE = 'Integrated\\Common\\ContentType\\ContentTypeInterface';
 
 	/**
 	 * @var DocumentRepository
@@ -32,6 +32,8 @@ class ContentTypeResolver implements ContentTypeResolverInterface
 	protected $repository;
 
 	/**
+     * Content type caching array
+     *
 	 * @var array
 	 */
 	protected $types = array();
@@ -60,36 +62,30 @@ class ContentTypeResolver implements ContentTypeResolverInterface
 	/**
 	 * {@inheritdoc}
 	 */
-	public function getType($class, $type)
+	public function getType($type)
 	{
-		if (!is_string($class)) {
-			throw new UnexpectedTypeException($class, 'string');
-  		}
-
 		if (!is_string($type)) {
 			throw new UnexpectedTypeException($type, 'string');
   		}
 
-		$key = json_encode(['class' => $class, 'type' => $type]);
-
-		if (!isset($this->types[$key])) {
-			if (null === ($type = $this->repository->findOneBy(['class' => $class, 'type' => $type]))) {
-				throw new InvalidArgumentException(sprintf('Could not load content type bases on the given class "%s" and type "%s"', $class, $type));
+		if (!isset($this->types[$type])) {
+			if (null === ($document = $this->repository->findOneBy(['type' => $type]))) {
+				throw new InvalidArgumentException(sprintf('Could not load content type bases on the given type "%s"', $type));
 			}
 
-			$this->types[$key] = $type;
+			$this->types[$type] = $document;
 		}
 
-		return $this->types[$key];
+		return $this->types[$type];
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	public function hasType($class, $type)
+	public function hasType($type)
 	{
 		try {
-			$this->getType($class, $type);
+			$this->getType($type);
 		} catch (UnexpectedTypeException $e) {
 			throw $e;
 		} catch (ExceptionInterface $e) {
@@ -104,6 +100,6 @@ class ContentTypeResolver implements ContentTypeResolverInterface
 	 */
 	public function getTypes()
 	{
-		return new ContentTypeIterator($this->repository->findAll());
+		return new MongoDBIterator($this->repository->findAll());
 	}
 }

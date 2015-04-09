@@ -12,11 +12,10 @@
 namespace Integrated\Common\Content\Form;
 
 use Integrated\Common\Content\Exception\UnexpectedTypeException;
-use Integrated\Common\Content\Exception\InvalidArgumentException;
 use Integrated\Common\Content\ContentInterface;
 
-use Integrated\Common\ContentType\Mapping\MetadataFactory;
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -27,12 +26,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class FormFactory implements FormFactoryInterface
 {
     /**
-     * @var ContentTypeResolverInterface
+     * @var ResolverInterface
      */
     private $resolver;
 
     /**
-     * @var MetadataFactory
+     * @var MetadataFactoryInterface
      */
     private $metadata;
 
@@ -42,10 +41,10 @@ class FormFactory implements FormFactoryInterface
 	private $dispatcher = null;
 
     /**
-     * @param ContentTypeResolverInterface $resolver
-     * @param MetadataFactory $metadata
+     * @param ResolverInterface        $resolver
+     * @param MetadataFactoryInterface $metadata
      */
-    public function __construct(ContentTypeResolverInterface $resolver, MetadataFactory $metadata)
+    public function __construct(ResolverInterface $resolver, MetadataFactoryInterface $metadata)
 	{
 		$this->resolver = $resolver;
         $this->metadata = $metadata;
@@ -71,27 +70,19 @@ class FormFactory implements FormFactoryInterface
 		return $this->dispatcher;
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getType($class, $type = null)
-	{
-		if ($type === null && $class instanceof ContentInterface) {
-			$type = $class->getContentType();
-		}
+    /**
+   	 * {@inheritdoc}
+   	 */
+    public function getType($type)
+    {
+        if ($type instanceof ContentInterface) {
+            $type = $type->getContentType();
+        }
 
-		if ($class instanceof ContentInterface) {
-			$class = get_class($class);
-		} elseif (!is_string($class)) {
-			throw new UnexpectedTypeException($class, 'string or Integrated\Common\Content\ContentInterface');
-		} elseif (!class_exists($class) || !is_subclass_of($class, 'Integrated\Common\Content\ContentInterface')) {
-			throw new InvalidArgumentException(sprintf('The content class "%s" is not a valid class or not subclass of Integrated\Common\Content\ContentInterface.', $class));
-		}
+        if (!is_string($type)) {
+            throw new UnexpectedTypeException($type, 'string or Integrated\\Common\\Content\\ContentInterface');
+        }
 
-		if (!is_string($type)) {
-			throw new UnexpectedTypeException($type, 'string');
-  		}
-
-		return new FormType($this->resolver->getType($class, $type), $this->metadata->getMetadata($class), $this->getEventDispatcher());
-	}
+        return new FormType($type = $this->resolver->getType($type), $this->metadata->getMetadata($type->getClass()), $this->getEventDispatcher());
+    }
 }
