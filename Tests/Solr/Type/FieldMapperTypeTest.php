@@ -173,6 +173,22 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
     public function buildStringConversionProvider()
     {
         return [
+            'boolean, false' => [
+                ['field' => 'bool0'],
+                ['field' => ['0']],
+            ],
+            'boolean, true' => [
+                ['field' => 'bool1'],
+                ['field' => ['1']],
+            ],
+            'integer' => [
+                ['field' => 'int'],
+                ['field' => ['42']],
+            ],
+            'float' => [
+                ['field' => 'float'],
+                ['field' => ['4.2']],
+            ],
             'datatime' => [
                 ['field' => 'datetime'],
                 ['field' => ['2013-12-31T23:30:00Z']],
@@ -224,6 +240,11 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
 class TestObject
 {
     public $datetime;
+
+    public $bool0 = false;
+    public $bool1 = true;
+    public $int   = 42;
+    public $float = 4.2;
 
     protected $field1 = 'field1';
     protected $field2 = 'field2';

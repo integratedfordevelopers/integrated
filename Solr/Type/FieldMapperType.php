@@ -251,6 +251,10 @@ class FieldMapperType implements TypeInterface
             return null; // can't convert a array to a string.
         }
 
+        if (is_bool($data)) {
+            return $data ? '1' : '0'; // would otherwise be empty if converted to a string
+        }
+
         return $data !== null ? (string) $data : null;
     }
 
