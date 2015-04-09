@@ -6,8 +6,8 @@
 
 	<parameters>
 
-		<parameter key="integrated_content.resolver.priority.class">Integrated\Common\ContentType\Resolver\ContentTypePriorityResolver</parameter>
-		<parameter key="integrated_content.resolver.mongodb.class">Integrated\MongoDB\ContentType\Resolver\ContentTypeResolver</parameter>
+		<parameter key="integrated_content.resolver.priority.class">Integrated\Common\ContentType\Resolver\PriorityResolver</parameter>
+		<parameter key="integrated_content.resolver.mongodb.class">Integrated\Common\ContentType\Resolver\MongoDBResolver</parameter>
 
 	</parameters>
 
