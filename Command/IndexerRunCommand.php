@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Filesystem\LockHandler;
 
 use Exception;
 
@@ -62,9 +63,16 @@ The <info>%command.name%</info> command starts a indexer run.
 	private function runInternal(InputInterface $input, OutputInterface $output)
 	{
 		try	{
+
+            $lock = new LockHandler('Integrated\Bundle\SolrBundle\Command\IndexerRunCommand');
+            if (!$lock->lock()) {
+                throw new Exception('Indexer already running');
+            }
+
 			/** @var IndexerInterface $indexer */
 			$indexer = $this->getContainer()->get('integrated_solr.indexer');
 			$indexer->execute();
+
 		} catch (Exception $e) {
 			$output->writeln("Aborting: " . $e->getMessage());
 
