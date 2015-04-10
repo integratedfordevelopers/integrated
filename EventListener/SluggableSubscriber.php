@@ -75,15 +75,15 @@ class SluggableSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            'prePersist',
-            'preUpdate',
+            'postPersist',
+            'postUpdate',
         ];
     }
 
     /**
      * @param LifecycleEventArgs $args
      */
-    public function prePersist(LifecycleEventArgs $args)
+    public function postPersist(LifecycleEventArgs $args)
     {
         $this->handleEvent($args);
     }
@@ -91,7 +91,7 @@ class SluggableSubscriber implements EventSubscriber
     /**
      * @param LifecycleEventArgs $args
      */
-    public function preUpdate(LifecycleEventArgs $args)
+    public function postUpdate(LifecycleEventArgs $args)
     {
         $this->handleEvent($args);
     }
@@ -126,7 +126,7 @@ class SluggableSubscriber implements EventSubscriber
 
                 if (!trim($slug)) {
                     // generate slug from the sluggable fields
-                    $slug = $this->generateSlugFromMetadata($classMetadata, $propertyMetadata->slugFields, $object);
+                    $slug = $this->generateSlugFromMetadata($propertyMetadata->slugFields, $object);
                 }
 
                 // generate unique slug
@@ -139,30 +139,17 @@ class SluggableSubscriber implements EventSubscriber
     }
 
     /**
-     * @param MergeableClassMetadata $classMetadata
-     * @param array                  $fields
-     * @param object                 $object
+     * @param array  $fields
+     * @param object $object
      *
      * @return string
-     *
-     * @throws MappingException
      */
-    protected function generateSlugFromMetadata(MergeableClassMetadata $classMetadata, array $fields, $object)
+    protected function generateSlugFromMetadata(array $fields, $object)
     {
         $values = [];
 
         foreach ($fields as $field) {
-
-            if (!isset($classMetadata->propertyMetadata[$field])) {
-                throw new MappingException(sprintf('Field "%s" does not exist.', $field));
-            }
-
-            $metadata = $classMetadata->propertyMetadata[$field];
-
-            if ($metadata instanceof \Metadata\PropertyMetadata) {
-                // get sluggable value
-                $values[] = $metadata->getValue($object);
-            }
+            $values[] = $this->propertyAccessor->getValue($object, $field);
         }
 
         // generate slug value
