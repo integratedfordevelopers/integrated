@@ -16,7 +16,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\Common\Persistence\Mapping\MappingException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -31,7 +30,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 
 use Metadata\MetadataFactoryInterface;
-use Metadata\MergeableClassMetadata;
 
 use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
@@ -75,9 +73,18 @@ class SluggableSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
+            'prePersist',
             'postPersist',
             'postUpdate',
         ];
+    }
+
+    /**
+     * @param LifecycleEventArgs $args
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $this->handleEvent($args);
     }
 
     /**
