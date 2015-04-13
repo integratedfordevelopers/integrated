@@ -72,4 +72,17 @@ class PublishTime
         $this->endDate = $endDate;
         return $this;
     }
+
+    /**
+     * @param \DateTime $date
+     * @return bool
+     */
+    public function isPublished(\DateTime $date = null)
+    {
+        if (!$date) {
+            $date = new \DateTime();
+        }
+
+        return ($this->startDate <= $date && $this->endDate >= $date);
+    }
 }
