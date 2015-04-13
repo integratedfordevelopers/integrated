@@ -312,6 +312,21 @@ class ContentController extends Controller
     }
 
     /**
+     * Show a document
+     *
+     * @Template
+     *
+     * @param Content $content
+     * @return array
+     */
+    public function showAction(Content $content)
+    {
+        return [
+            'document' => $content,
+        ];
+    }
+
+    /**
      * Create a new document
      *
      * @Template()

@@ -326,6 +326,15 @@
                             more: (page * data.pagination.numItemsPerPage) < data.pagination.numFound
                         };
                     }
+                },
+                initSelection: function (element, callback) {
+                    if (element.val()) {
+                        $.ajax('{{ path('integrated_content_content_index') }}' + element.val() + '/show?_format=json', {
+                            dataType: 'json'
+                        }).done(function(data) {
+                            callback({id: data.id, text: data.title});
+                        });
+                    }
                 }
             });
         });

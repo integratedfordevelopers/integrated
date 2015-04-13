@@ -36,4 +36,8 @@
         <default key="_controller">IntegratedContentBundle:Content:usedBy</default>
     </route>
 
+    <route id="integrated_content_content_show" path="/{id}/show"  methods="GET">
+        <default key="_controller">IntegratedContentBundle:Content:show</default>
+    </route>
+
 </routes>
