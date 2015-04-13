@@ -34,6 +34,7 @@
         var name = collection.attr('data-name') + '[' + index + ']';
 
         var block = createBlock(name, index, value, element);
+        block.find('script').remove(); // @todo find a way to insert javascript elements
 
         addRemoveButton(block);
 
