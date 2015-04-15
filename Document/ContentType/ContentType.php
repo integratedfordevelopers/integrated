@@ -23,6 +23,7 @@ use Integrated\Common\ContentType\ContentTypeInterface;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\Document(collection="content_type")
+ * @MongoDBUnique(fields="type")
  */
 class ContentType implements ContentTypeInterface
 {
@@ -49,6 +50,7 @@ class ContentType implements ContentTypeInterface
     /**
      * @var string
      * @ODM\String
+     * @ODM\UniqueIndex
      */
     protected $type;
 
