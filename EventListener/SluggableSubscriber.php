@@ -74,7 +74,7 @@ class SluggableSubscriber implements EventSubscriber
     {
         return [
             'prePersist',
-            'postPersist',
+            //'postPersist',
             'postUpdate',
         ];
     }
