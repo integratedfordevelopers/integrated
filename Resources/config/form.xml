@@ -43,6 +43,8 @@
         <parameter key="integrated_content.form.type.address.class">Integrated\Bundle\ContentBundle\Form\Type\AddressType</parameter>
         <parameter key="integrated_content.form.publishtime.type.class">Integrated\Bundle\ContentBundle\Form\Type\PublishTimeType</parameter>
 
+        <parameter key="integrated_content.form.type.phonenumber.class">Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType</parameter>
+
         <parameter key="integrated_formtype_form_type_author.class">Integrated\Bundle\ContentBundle\Form\Type\AuthorType</parameter>
 
     </parameters>
@@ -126,6 +128,10 @@
 
         <service id="integrated_content.form.type.file" class="%integrated_content.form.type.file.class%">
             <tag name="form.type" alias="integrated_file" />
+        </service>
+
+        <service id="integrated_content.form.type.phonenumber" class="%integrated_content.form.type.phonenumber.class%">
+            <tag name="form.type" alias="integrated_phonenumber" />
         </service>
 
         <service id="integrated_content.form.type.address" class="%integrated_content.form.type.address.class%">
