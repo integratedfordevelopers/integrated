@@ -73,6 +73,8 @@
                     </array>
                 </array>
 
+                <string key="cover">cover</string>
+
             </options>
         </type>
 
