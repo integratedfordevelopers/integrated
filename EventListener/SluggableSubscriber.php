@@ -141,7 +141,7 @@ class SluggableSubscriber implements EventSubscriber
                 }
 
                 // generate unique slug
-                $slug = $this->generateUniqueSlug($om, get_class($object), $propertyMetadata->name, $slug);
+                $slug = $this->generateUniqueSlug($om, $object, $propertyMetadata->name, $slug);
 
                 $propertyMetadata->setValue($object, $slug);
                 $this->recomputeSingleObjectChangeSet($om, $object);
@@ -169,15 +169,15 @@ class SluggableSubscriber implements EventSubscriber
 
     /**
      * @param ObjectManager|DocumentManager|EntityManager $om
-     * @param string                                      $class
+     * @param object                                      $object
      * @param string                                      $field
      * @param string                                      $slug
      *
      * @return string
      */
-    protected function generateUniqueSlug(ObjectManager $om, $class, $field, $slug)
+    protected function generateUniqueSlug(ObjectManager $om, $object, $field, $slug)
     {
-        // @todo exclude self
+        $class = get_class($object);
 
         if ($this->isUniqueSlug($om, $class, $field, $slug)) {
             return $slug;
@@ -195,19 +195,26 @@ class SluggableSubscriber implements EventSubscriber
 
         if (count($objects)) {
 
+            $oid = spl_object_hash($object);
             $positions = [];
 
-            foreach ($objects as $object) {
+            foreach ($objects as $object2) {
 
-                $value = $this->propertyAccessor->getValue($object, $field);
-                $positions[preg_match($pattern, $value, $match) ? (int) $match[2] : 1] = true;
+                if (property_exists($object2, $field) && $oid !== spl_object_hash($object2)) {
+
+                    $value = $this->propertyAccessor->getValue($object2, $field);
+                    $positions[preg_match($pattern, $value, $match) ? (int) $match[2] : 1] = true;
+                }
             }
 
-            for ($i = 1; $i <= (max(array_keys($positions)) + 1); $i++) {
+            if (!empty($positions)) {
 
-                if (!isset($positions[$i])) {
-                    // first available slug
-                    return $slug . ($i > 1 ? '-' . $i : '');
+                for ($i = 1; $i <= (max(array_keys($positions)) + 1); $i++) {
+
+                    if (!isset($positions[$i])) {
+                        // first available slug
+                        return $slug . ($i > 1 ? '-' . $i : '');
+                    }
                 }
             }
         }
