@@ -19,12 +19,10 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 
-use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs as ODMPreUpdateEventArgs;
 use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
-use Doctrine\ORM\Event\PreUpdateEventArgs as ORMPreUpdateEventArgs;
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
@@ -74,7 +72,7 @@ class SluggableSubscriber implements EventSubscriber
     {
         return [
             'prePersist',
-            //'postPersist', // @todo
+            'postPersist',
             'preUpdate',
             //'onFlush', // @todo implement to support update after a persist
         ];
@@ -86,7 +84,7 @@ class SluggableSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         // used for slug as id
-        $this->handleEvent($args);
+        $this->handleEvent($args, 'prePersist');
     }
 
     /**
@@ -95,7 +93,7 @@ class SluggableSubscriber implements EventSubscriber
     public function postPersist(LifecycleEventArgs $args)
     {
         // used for id in slug
-        $this->handleEvent($args);
+        $this->handleEvent($args, 'postPersist');
     }
 
     /**
@@ -103,31 +101,42 @@ class SluggableSubscriber implements EventSubscriber
      */
     public function preUpdate(LifecycleEventArgs $args)
     {
-        $this->handleEvent($args);
+        $this->handleEvent($args, 'preUpdate');
     }
 
     /**
      * @param LifecycleEventArgs $args
+     * @param string             $event
      */
-    protected function handleEvent(LifecycleEventArgs $args)
+    protected function handleEvent(LifecycleEventArgs $args, $event)
     {
         $object = $args->getObject();
         $om = $args->getObjectManager();
+        $class = get_class($object);
 
-        $classMetadata = $this->metadataFactory->getMetadataForClass(get_class($object));
+        $classMetadata = $this->metadataFactory->getMetadataForClass($class);
+        $classMetadataInfo = $om->getClassMetadata($class);
+
+        $identifierFields = $classMetadataInfo->getIdentifierFieldNames();
 
         foreach ($classMetadata->propertyMetadata as $propertyMetadata) {
 
             if ($propertyMetadata instanceof PropertyMetadata && count($propertyMetadata->slugFields)) {
 
-                if ($args instanceof ODMPreUpdateEventArgs || $args instanceof ORMPreUpdateEventArgs) {
+                $hasIdentifierFields = count(array_intersect($identifierFields, $propertyMetadata->slugFields)) > 0;
+
+                if ($event == 'prePersist' && $hasIdentifierFields || $event == 'postPersist' && !$hasIdentifierFields) {
+                    continue; // generate slug in another event
+                }
+
+                if ($event == 'preUpdate') {
 
                     if ($args->hasChangedField($propertyMetadata->name)) {
                         // generate custom slug
                         $slug = $this->slugger->slugify($args->getNewValue($propertyMetadata->name));
 
                     } else {
-                        return; // no changes
+                        continue; // no changes
                     }
 
                 } else {
