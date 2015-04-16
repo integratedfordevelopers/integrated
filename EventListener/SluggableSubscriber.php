@@ -74,8 +74,9 @@ class SluggableSubscriber implements EventSubscriber
     {
         return [
             'prePersist',
-            //'postPersist',
-            'postUpdate',
+            //'postPersist', // @todo
+            'preUpdate',
+            //'onFlush', // @todo implement to support update after a persist
         ];
     }
 
@@ -84,6 +85,7 @@ class SluggableSubscriber implements EventSubscriber
      */
     public function prePersist(LifecycleEventArgs $args)
     {
+        // used for slug as id
         $this->handleEvent($args);
     }
 
@@ -92,13 +94,14 @@ class SluggableSubscriber implements EventSubscriber
      */
     public function postPersist(LifecycleEventArgs $args)
     {
+        // used for id in slug
         $this->handleEvent($args);
     }
 
     /**
      * @param LifecycleEventArgs $args
      */
-    public function postUpdate(LifecycleEventArgs $args)
+    public function preUpdate(LifecycleEventArgs $args)
     {
         $this->handleEvent($args);
     }
@@ -128,7 +131,8 @@ class SluggableSubscriber implements EventSubscriber
                     }
 
                 } else {
-                    $slug = $propertyMetadata->getValue($object);
+                    // generate custom slug
+                    $slug = $this->slugger->slugify($propertyMetadata->getValue($object));
                 }
 
                 if (!trim($slug)) {
@@ -173,6 +177,8 @@ class SluggableSubscriber implements EventSubscriber
      */
     protected function generateUniqueSlug(ObjectManager $om, $class, $field, $slug)
     {
+        // @todo exclude self
+
         if ($this->isUniqueSlug($om, $class, $field, $slug)) {
             return $slug;
         }
@@ -219,8 +225,17 @@ class SluggableSubscriber implements EventSubscriber
      */
     protected function isUniqueSlug(ObjectManager $om, $class, $field, $slug)
     {
+        // check in document manager
+        foreach ($this->getScheduledObjects($om) as $object) {
+
+            if (property_exists($object, $field) && $slug === $this->propertyAccessor->getValue($object, $field)) {
+                return false;
+            }
+        }
+
         $uow = $om->getUnitOfWork();
 
+        // check in database
         if ($uow instanceof ODMUnitOfWork) {
 
             $builder = $this->getRepository($om, $class)->createQueryBuilder();
@@ -245,16 +260,34 @@ class SluggableSubscriber implements EventSubscriber
      */
     protected function findSimilarSlugs(ObjectManager $om, $class, $field, $slug)
     {
+        $objects = $this->getScheduledObjects($om);
         $uow = $om->getUnitOfWork();
 
         if ($uow instanceof ODMUnitOfWork) {
 
-            return $this->getRepository($om, $class)->findBy([
+            return array_merge($objects, $this->getRepository($om, $class)->findBy([
                 $field => new \MongoRegex('/^' . preg_quote($slug, '/') . '(-\d+)?$/i') // counter is optional
-            ]);
+            ]));
 
         } elseif ($uow instanceof ORMUnitOfWork) {
             throw new \RuntimeException('Not implemented yet'); // @todo
+        }
+    }
+
+    /**
+     * @param ObjectManager $om
+     *
+     * @return array
+     */
+    protected function getScheduledObjects(ObjectManager $om)
+    {
+        $uow = $om->getUnitOfWork();
+
+        if ($uow instanceof ODMUnitOfWork) {
+            return array_merge($uow->getScheduledDocumentInsertions(), $uow->getScheduledDocumentUpdates());
+
+        } elseif ($uow instanceof ORMUnitOfWork) {
+            return array_merge($uow->getScheduledEntityInsertions(), $uow->getScheduledEntityUpdates());
         }
     }
 
