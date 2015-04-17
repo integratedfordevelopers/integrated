@@ -348,11 +348,29 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * Get the published of the document
      *
+     * @deprecated
      * @return bool
      */
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * Get the published of the document
+     *
+     * @param bool $checkPublishTime
+     * @return bool
+     */
+    public function isPublished($checkPublishTime = true)
+    {
+        $published = true;
+
+        if ($checkPublishTime && $this->publishTime instanceof PublishTime) {
+            $published = $this->publishTime->isPublished();
+        }
+
+        return ($published && $this->published);
     }
 
     /**
@@ -370,9 +388,20 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * Get the disabled of the document
      *
+     * @deprecated
      * @return bool
      */
     public function getDisabled()
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * Get the disabled of the document
+     *
+     * @return bool
+     */
+    public function isDisabled()
     {
         return $this->disabled;
     }
@@ -390,7 +419,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMetadata()
     {
@@ -402,7 +431,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setMetadata(RegistryInterface $metadata = null)
     {
