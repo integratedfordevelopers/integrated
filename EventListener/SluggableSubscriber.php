@@ -186,6 +186,10 @@ class SluggableSubscriber implements EventSubscriber
      */
     protected function generateUniqueSlug(ObjectManager $om, $object, $field, $slug)
     {
+        if (!trim($slug)) {
+            return null;
+        }
+
         $class = get_class($object);
 
         if ($this->isUniqueSlug($om, $class, $field, $slug)) {
