@@ -135,7 +135,7 @@ class BlockController extends Controller
      */
     public function deleteAction(Request $request, Block $block)
     {
-        if ($block->getLocked()) {
+        if ($block->isLocked()) {
             throw $this->createNotFoundException(sprintf('Block "%s" is locked.', $block->getId()));
         }
 

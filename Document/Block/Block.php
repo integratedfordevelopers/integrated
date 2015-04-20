@@ -233,7 +233,7 @@ abstract class Block implements BlockInterface
     /**
      * @return bool
      */
-    public function getDisabled()
+    public function isDisabled()
     {
         return $this->disabled;
     }
@@ -251,7 +251,7 @@ abstract class Block implements BlockInterface
     /**
      * @return bool
      */
-    public function getLocked()
+    public function isLocked()
     {
         return $this->locked;
     }
