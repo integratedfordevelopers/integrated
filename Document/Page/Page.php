@@ -17,6 +17,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 
 /**
@@ -31,7 +32,8 @@ class Page
 {
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
+     * @ODM\Id(strategy="NONE")
+     * @Slug(fields={"title"})
      */
     protected $id;
 
@@ -92,6 +94,12 @@ class Page
      * @ODM\Boolean
      */
     protected $disabled = false;
+
+    /**
+     * @var bool
+     * @ODM\Boolean
+     */
+    protected $locked = false;
 
     /**
      */
@@ -301,7 +309,7 @@ class Page
     /**
      * @return bool
      */
-    public function getDisabled()
+    public function isDisabled()
     {
         return $this->disabled;
     }
@@ -313,6 +321,24 @@ class Page
     public function setDisabled($disabled)
     {
         $this->disabled = (bool) $disabled;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLocked()
+    {
+        return $this->locked;
+    }
+
+    /**
+     * @param bool $locked
+     * @return $this
+     */
+    public function setLocked($locked)
+    {
+        $this->locked = (bool) $locked;
         return $this;
     }
 }

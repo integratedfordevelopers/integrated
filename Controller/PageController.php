@@ -119,6 +119,10 @@ class PageController extends Controller
      */
     public function deleteAction(Request $request, Page $page)
     {
+        if ($page->isLocked()) {
+            throw $this->createNotFoundException(sprintf('Page "%s" is locked.', $page->getId()));
+        }
+
         $form = $this->createDeleteForm($page->getId());
         $form->handleRequest($request);
 

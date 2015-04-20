@@ -47,9 +47,11 @@
                             <a href="{{ path('integrated_page_page_edit', { 'id': page.id }) }}" title="{% trans %}Edit{% endtrans %}">
                                 {{ icon('pencil') }}
                             </a>
-                            <a href="{{ path('integrated_page_page_delete', { 'id': page.id }) }}" title="{% trans %}Delete{% endtrans %}">
-                                {{ icon('remove-circle') }}
-                            </a>
+                            {% if not page.locked %}
+                                <a href="{{ path('integrated_page_page_delete', { 'id': page.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                                    {{ icon('remove-circle') }}
+                                </a>
+                            {% endif %}
                         </td>
                     </tr>
 
