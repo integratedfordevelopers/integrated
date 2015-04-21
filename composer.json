@@ -1,0 +1,23 @@
+{
+    "name": "integrated/channels-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Channels Bundle",
+    "keywords": ["integrated", "channels"],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload":{
+        "psr-4":{
+            "Integrated\\Bundle\\ChannelsBundle\\": ""
+        }
+    }
+}
