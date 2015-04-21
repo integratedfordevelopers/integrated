@@ -353,7 +353,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      */
     public function getPublished()
     {
-        return $this->published;
+        return $this->isPublished();
     }
 
     /**
