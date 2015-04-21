@@ -36,6 +36,13 @@
                     </array>
                 </array>
 
+                <string key="address_address1">addresses.first.address1</string>
+                <string key="address_address2">addresses.first.address2</string>
+                <string key="address_zipcode">addresses.first.zipcode</string>
+                <string key="address_city">addresses.first.city</string>
+                <string key="address_state">addresses.first.state</string>
+                <string key="address_country">addresses.first.country</string>
+
             </options>
         </type>
 
