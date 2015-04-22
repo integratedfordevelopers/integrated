@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_channel.connector.config.resolver.memory.class">Integrated\Common\Channel\Connector\Config\Resolver\MemoryResolver</parameter>
+        <parameter key="integrated_channel.connector.config.resolver.memory_builder.class">Integrated\Common\Channel\Connector\Config\Resolver\MemoryResolverBuilder</parameter>
+
+        <parameter key="integrated_channel.connector.config.resolver.priority.class">Integrated\Common\Channel\Connector\Config\Resolver\PriorityResolver</parameter>
+        <parameter key="integrated_channel.connector.config.resolver.priority_builder.class">Integrated\Common\Channel\Connector\Config\Resolver\PriorityResolverBuilder</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_channel.connector.config.resolver.memory_builder" class="%integrated_channel.connector.config.resolver.memory_builder.class%" />
+
+        <service id="integrated_channel.connector.config.resolver.memory"
+                 class="%integrated_channel.connector.config.resolver.memory.class%"
+                 factory-service="integrated_channel.connector.config.resolver.memory_builder"
+                 factory-method="getResolver">
+
+            <tag name="integrated_channel.config.resolver" priority="10" />
+        </service>
+
+        <service id="integrated_channel.connector.config.resolver.priority_builder" class="%integrated_channel.connector.config.resolver.priority_builder.class%" />
+
+        <service id="integrated_channel.connector.config.resolver.priority"
+                 class="%integrated_channel.connector.config.resolver.priority.class%"
+                 factory-service="integrated_channel.connector.config.resolver.priority_builder"
+                 factory-method="getResolver" />
+
+        <service id="integrated_channel.connector.config.resolver" alias="integrated_channel.connector.config.resolver.priority" />
+
+    </services>
+
+</container>
