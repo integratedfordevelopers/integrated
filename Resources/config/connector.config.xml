@@ -6,6 +6,9 @@
 
     <parameters>
 
+        <parameter key="integrated_channel.connector.config.class">Integrated\Common\Channel\Connector\Config\Config</parameter>
+        <parameter key="integrated_channel.connector.config.options.class">Integrated\Common\Channel\Connector\Config\Options</parameter>
+
         <parameter key="integrated_channel.connector.config.resolver.memory.class">Integrated\Common\Channel\Connector\Config\Resolver\MemoryResolver</parameter>
         <parameter key="integrated_channel.connector.config.resolver.memory_builder.class">Integrated\Common\Channel\Connector\Config\Resolver\MemoryResolverBuilder</parameter>
 

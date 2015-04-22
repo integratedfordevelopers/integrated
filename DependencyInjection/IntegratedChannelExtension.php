@@ -36,5 +36,61 @@ class IntegratedChannelExtension extends Extension
         $loader->load('connector.config.xml');
 
         $config = $this->processConfiguration(new Configuration(), $config);
+
+        if (isset($config['configs'])) {
+            $this->loadConfigs($config, $container);
+        }
+    }
+
+    /**
+     * Process the adaptor config configuration.
+     *
+     * @param array $config
+     * @param ContainerBuilder $container
+     */
+    protected function loadConfigs(array $config, ContainerBuilder $container)
+    {
+        foreach ($config['configs'] as $name => $arguments) {
+            if (!$arguments['enabled']) {
+                continue;
+            }
+
+            $id = 'integrated_channel.config.' . $name;
+
+            if ($container->hasDefinition($id)) {
+                continue;
+            }
+
+            // first create the options and for that we need a unique service id
+
+            do {
+                $id_options = $id . '.options.' . uniqid();
+            } while ($container->hasDefinition($id_options));
+
+            $definition = new Definition('%integrated_channel.connector.config.options.class%');
+            $definition->setPublic(false);
+            $definition->setArguments([$arguments['options']]);
+
+            $container->setDefinition($id_options, $definition);
+
+            // create the config it self
+
+            $definition = new Definition('%integrated_channel.connector.config.class%');
+            $definition->setArguments([
+                $name,
+                $arguments['adaptor'],
+                new Reference($id_options)
+            ]);
+
+            if ($arguments['channel']) {
+                foreach ($arguments['channel'] as $channel) {
+                    $definition->addTag('integrated_channel.config', ['channel' => $channel]);
+                }
+            } else {
+                $definition->addTag('integrated_channel.config');
+            }
+
+            $container->setDefinition($id, $definition);
+        }
     }
 }
