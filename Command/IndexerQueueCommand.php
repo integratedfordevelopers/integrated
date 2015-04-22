@@ -15,6 +15,10 @@ use DateTime;
 use DateTimeZone;
 
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\ContentType\ResolverInterface;
+use Integrated\Common\Solr\Indexer\Job;
+use Integrated\Common\Queue\QueueInterface;
+
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Helper\ProgressHelper;
@@ -28,11 +32,6 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Cursor;
-
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
-use Integrated\Common\Solr\Converter\ConverterInterface;
-use Integrated\Common\Solr\Indexer\Job;
-use Integrated\Common\Queue\QueueInterface;
 
 use InvalidArgumentException;
 
@@ -336,7 +335,7 @@ The <info>%command.name%</info> command starts a index of the site.
 	}
 
 	/**
-	 * @return ContentTypeResolverInterface
+	 * @return ResolverInterface
 	 */
 	protected function getResolver()
 	{
