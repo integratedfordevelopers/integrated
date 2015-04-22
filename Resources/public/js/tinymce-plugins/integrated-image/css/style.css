@@ -1,0 +1,27 @@
+.xsanisty-loading-overlay{
+    background: white !important;
+}
+#thumbnail-container{
+    height: 450px;
+    overflow-y: auto;
+    overflow-x: hidden
+}
+.thumbnail-img {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+}
+.thumbnail-img img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    height: 100%;
+    width: auto;
+    -webkit-transform: translate(-50%,-50%);
+        -ms-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+}
+.thumbnail img.portrait {
+    width: 100%;
+    height: auto;
+}

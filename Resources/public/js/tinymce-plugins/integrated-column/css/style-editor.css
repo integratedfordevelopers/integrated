@@ -1,0 +1,21 @@
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('/bundles/integratedformtype/js/tinymce-plugins/integrated-column/font/fontawesome-webfont.eot?v=4.3.0');
+    src: url('/bundles/integratedformtype/js/tinymce-plugins/integrated-column/font/fontawesome-webfont.eot?#iefix&v=4.3.0') format('embedded-opentype'), url('/bundles/integratedformtype/js/tinymce-plugins/integrated-column/font/fontawesome-webfont.woff2?v=4.3.0') format('woff2'), url('/bundles/integratedformtype/js/tinymce-plugins/integrated-column/font/fontawesome-webfont.woff?v=4.3.0') format('woff'), url('/bundles/integratedformtype/js/tinymce-plugins/integrated-column/font/fontawesome-webfont.ttf?v=4.3.0') format('truetype'), url('/bundles/integratedformtype/js/tinymce-plugins/integrated-column/font/fontawesome-webfont.svg?v=4.3.0#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+i.mce-i-columns:before {
+    content: "\f0db";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: inherit;
+    color: #000;
+    font-size: 1.5em;
+    padding-right: 0.5em;
+    position: absolute;
+    top: 6px;
+    left: 11px;
+    font-size: 17px;
+}

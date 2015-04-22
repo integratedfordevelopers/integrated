@@ -17,9 +17,6 @@
 {% block integrated_tinymce_row  %}
     {% spaceless %}
     
-    {# @todo to this include with a Twig extension #}
-    <link href="/bundles/integratedformtype/css/tinymce.editor.js" rel="stylesheet" type="text/css" />
-
     <div class="form-group">
       <div class="col-sm-12">
 	    <div id="{{ id }}_container">
@@ -36,12 +33,16 @@
                         plugins: [
                             ["advlist autolink link image lists charmap hr anchor pagebreak"],
                             ["searchreplace wordcount visualchars fullscreen media nonbreaking"],
-                            ["table contextmenu directionality template paste wordcount autoresize"]
+                            ["table contextmenu directionality template paste wordcount autoresize code"]
                         ],
+                        external_plugins: {
+                            "integratedImage": "/bundles/integratedformtype/js/tinymce-plugins/integrated-image/plugin.js",
+                            "integratedColumn": "/bundles/integratedformtype/js/tinymce-plugins/integrated-column/plugin.js"
+                        },
                         add_unload_trigger: false,
                         schema: "html5",
                         menubar: false,
-                        toolbar: "formatselect | bold italic underline | bullist numlist | link image print preview media fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
+                        toolbar: "formatselect | bold italic underline | bullist numlist | link integratedImage print preview media fullpage | integratedColumn table | charmap pagebreak | pastetext searchreplace fullscreen code",
                         statusbar: true,
                         statusbar_size: "small",
                         width: "100%",
@@ -50,9 +51,10 @@
                         autoresize_max_height: (window.innerHeight-64),
                         browser_spellcheck : true,
                         autoresize_bottom_margin: "0px",
-                        
-                        content_css: "/bundles/integratedformtype/css/tinymce.content.css"
-
+                        content_css: "/bundles/integratedformtype/css/tinymce.content.css",
+                        cleanup: false,
+                        verify_html: false,
+                        convert_urls: false
                     });
                 }
         );
