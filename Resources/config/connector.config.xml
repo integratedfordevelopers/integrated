@@ -18,20 +18,17 @@
 
         <service id="integrated_channel.connector.config.resolver.memory_builder" class="%integrated_channel.connector.config.resolver.memory_builder.class%" />
 
-        <service id="integrated_channel.connector.config.resolver.memory"
-                 class="%integrated_channel.connector.config.resolver.memory.class%"
-                 factory-service="integrated_channel.connector.config.resolver.memory_builder"
-                 factory-method="getResolver">
+        <service id="integrated_channel.connector.config.resolver.memory" class="%integrated_channel.connector.config.resolver.memory.class%">
+            <factory service="integrated_channel.connector.config.resolver.memory_builder" method="getResolver" />
 
             <tag name="integrated_channel.config.resolver" priority="10" />
         </service>
 
         <service id="integrated_channel.connector.config.resolver.priority_builder" class="%integrated_channel.connector.config.resolver.priority_builder.class%" />
 
-        <service id="integrated_channel.connector.config.resolver.priority"
-                 class="%integrated_channel.connector.config.resolver.priority.class%"
-                 factory-service="integrated_channel.connector.config.resolver.priority_builder"
-                 factory-method="getResolver" />
+        <service id="integrated_channel.connector.config.resolver.priority" class="%integrated_channel.connector.config.resolver.priority.class%">
+            <factory service="integrated_channel.connector.config.resolver.priority_builder" method="getResolver" />
+        </service>
 
         <service id="integrated_channel.connector.config.resolver" alias="integrated_channel.connector.config.resolver.priority" />
 
