@@ -1,8 +1,8 @@
 {
-    "name": "integrated/channels-bundle",
+    "name": "integrated/channel-bundle",
     "type": "symfony-bundle",
-    "description": "Integrated Channels Bundle",
-    "keywords": ["integrated", "channels"],
+    "description": "Integrated Channel Bundle",
+    "keywords": ["integrated", "channel"],
     "homepage": "http://www.e-active.nl",
     "license": "MIT",
     "authors": [
@@ -17,7 +17,7 @@
     },
     "autoload":{
         "psr-4":{
-            "Integrated\\Bundle\\ChannelsBundle\\": ""
+            "Integrated\\Bundle\\ChannelBundle\\": ""
         }
     }
 }
