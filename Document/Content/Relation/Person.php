@@ -300,6 +300,19 @@ class Person extends Relation
     }
 
     /**
+     * Get the relative cover image URL for person (picture)
+     *
+     * @return string
+     */
+    public function getCover()
+    {
+        if ($this->getPicture()) {
+          return $this->getPicture()->getWebPath();
+        }
+        return null;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
