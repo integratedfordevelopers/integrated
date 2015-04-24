@@ -202,10 +202,21 @@ class SolariumProvider // @todo interface
         ];
 
         $sort = $request->query->get('sort', $sortDefault);
-        $sort = trim(strtolower($sort));
-        $sort = array_key_exists($sort, $sortOptions) ? $sort : $sortDefault;
 
-        $query->addSort($sortOptions[$sort]['field'], in_array($request->query->get('order'), $orderOptions) ? $request->query->get('order') : $sortOptions[$sort]['order']);
+        //support for custom query in database, while waiting for a better solution
+        if (strpos($sort,'custom:') === 0) {
+
+            $query->addParam('sort', substr($sort,7));
+
+        }
+        else {
+
+            $sort = trim(strtolower($sort));
+            $sort = array_key_exists($sort, $sortOptions) ? $sort : $sortDefault;
+
+            $query->addSort($sortOptions[$sort]['field'], in_array($request->query->get('order'), $orderOptions) ? $request->query->get('order') : $sortOptions[$sort]['order']);
+
+        }
 
         return $query;
     }

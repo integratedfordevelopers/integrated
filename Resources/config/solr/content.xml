@@ -114,6 +114,9 @@
                 <string key="website">website</string>
                 <string key="addressName">address.name</string>
 
+                <string key="start_sort_date">startDate</string>
+                <string key="end_sort_date">endDate</string>
+
                 <array>
                     <string key="name">url</string>
                     <array>
