@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
+use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -91,8 +92,13 @@ class ContentBlockHandler extends BlockHandler
 
             $request = $request->duplicate(); // don't change original request
 
-            if ($selection = $block->getSearchSelection()) {
-                $request->query->add($selection->getFilters());
+            try {
+                if ($selection = $block->getSearchSelection()) {
+                    $request->query->add($selection->getFilters());
+                }
+
+            } catch (DocumentNotFoundException $e) {
+                // search selection is removed
             }
 
             $pagination = $this->provider->execute(
