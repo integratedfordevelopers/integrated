@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Channel\Connector\Adaptor;
+namespace Integrated\Common\Channel\Connector\Adapter;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

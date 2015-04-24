@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Channel\Connector\Adaptor;
+namespace Integrated\Common\Channel\Connector\Adapter;
 
-use Integrated\Common\Channel\Connector\AdaptorInterface;
+use Integrated\Common\Channel\Connector\AdapterInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -21,19 +21,19 @@ interface RegistryInterface
     /**
      * @param string $name
      *
-     * @return AdaptorInterface
+     * @return AdapterInterface
      */
-    public function getAdaptor($name);
+    public function getAdapter($name);
 
     /**
      * @param string $name
      *
      * @return bool
      */
-    public function hasAdaptor($name);
+    public function hasAdapter($name);
 
     /**
-     * @return AdaptorInterface[]
+     * @return AdapterInterface[]
      */
-    public function getAdaptors();
+    public function getAdapters();
 }

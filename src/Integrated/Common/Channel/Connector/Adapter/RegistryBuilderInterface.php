@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Channel\Connector\Adaptor;
+namespace Integrated\Common\Channel\Connector\Adapter;
 
-use Integrated\Common\Channel\Connector\AdaptorInterface;
+use Integrated\Common\Channel\Connector\AdapterInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -19,18 +19,18 @@ use Integrated\Common\Channel\Connector\AdaptorInterface;
 interface RegistryBuilderInterface
 {
     /**
-     * @param AdaptorInterface $factory
+     * @param AdapterInterface $adapter
      *
      * @return RegistryBuilderInterface
      */
-    public function addAdaptor(AdaptorInterface $factory);
+    public function addAdapter(AdapterInterface $adapter);
 
     /**
-     * @param AdaptorInterface[] $factories
+     * @param AdapterInterface[] $adapters
      *
      * @return RegistryBuilderInterface
      */
-    public function addAdaptors(array $factories);
+    public function addAdapters(array $adapters);
 
     /**
      * @return RegistryInterface

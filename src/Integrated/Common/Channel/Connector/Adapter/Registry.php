@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Channel\Connector\Adaptor;
+namespace Integrated\Common\Channel\Connector\Adapter;
 
-use Integrated\Common\Channel\Connector\AdaptorInterface;
+use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Exception\InvalidArgumentException;
 use Integrated\Common\Channel\Exception\UnexpectedTypeException;
 
@@ -21,18 +21,18 @@ use Integrated\Common\Channel\Exception\UnexpectedTypeException;
 class Registry implements RegistryInterface
 {
     /**
-     * @var AdaptorInterface[]
+     * @var AdapterInterface[]
      */
-    private $adaptors;
+    private $adapters;
 
     /**
      * Constructor.
      *
-     * @param AdaptorInterface[] $adaptors
+     * @param AdapterInterface[] $adapters
      */
-    public function __construct(array $adaptors)
+    public function __construct(array $adapters)
     {
-        $this->adaptors = $adaptors;
+        $this->adapters = $adapters;
     }
 
     /**
@@ -40,14 +40,14 @@ class Registry implements RegistryInterface
      *
      * @trows UnexpectedTypeException if $name is not a string
      */
-    public function getAdaptor($name)
+    public function getAdapter($name)
     {
         if (!is_string($name)) {
             throw new UnexpectedTypeException($name, 'string');
         }
 
-        if ($this->hasAdaptor($name)) {
-            return $this->adaptors[$name];
+        if ($this->hasAdapter($name)) {
+            return $this->adapters[$name];
         }
 
         throw new InvalidArgumentException(sprintf('Could not load adaptor "%s"', $name));
@@ -58,13 +58,13 @@ class Registry implements RegistryInterface
      *
      * @trows UnexpectedTypeException if $name is not a string
      */
-    public function hasAdaptor($name)
+    public function hasAdapter($name)
     {
         if (!is_string($name)) {
             throw new UnexpectedTypeException($name, 'string');
         }
 
-        if (isset($this->adaptors[$name])) {
+        if (isset($this->adapters[$name])) {
             return true;
         }
 
@@ -74,8 +74,8 @@ class Registry implements RegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getAdaptors()
+    public function getAdapters()
     {
-        return $this->adaptors;
+        return $this->adapters;
     }
 }

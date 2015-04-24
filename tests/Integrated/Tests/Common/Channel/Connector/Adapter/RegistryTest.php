@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\Common\Channel\Connector\Adaptor;
+namespace Integrated\Tests\Common\Channel\Connector\Adapter;
 
-use Integrated\Common\Channel\Connector\Adaptor\Registry;
-use Integrated\Common\Channel\Connector\AdaptorInterface;
+use Integrated\Common\Channel\Connector\Adapter\Registry;
+use Integrated\Common\Channel\Connector\AdapterInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -21,19 +21,19 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterface()
     {
-        self::assertInstanceOf('Integrated\\Common\\Channel\\Connector\\Adaptor\\RegistryInterface', $this->getInstance());
+        self::assertInstanceOf('Integrated\\Common\\Channel\\Connector\\Adapter\\RegistryInterface', $this->getInstance());
     }
 
     public function testHasAdaptor()
     {
         $registry = $this->getInstance([
-            'test1' => $this->getAdaptor(),
-            'test2' => $this->getAdaptor()
+            'test1' => $this->getAdapter(),
+            'test2' => $this->getAdapter()
         ]);
 
-        self::assertTrue($registry->hasAdaptor('test1'));
-        self::assertTrue($registry->hasAdaptor('test2'));
-        self::assertFalse($registry->hasAdaptor('test3'));
+        self::assertTrue($registry->hasAdapter('test1'));
+        self::assertTrue($registry->hasAdapter('test2'));
+        self::assertFalse($registry->hasAdapter('test3'));
     }
 
     /**
@@ -41,14 +41,14 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasAdaptorInvalidArgument()
     {
-        $this->getInstance()->hasAdaptor(42);
+        $this->getInstance()->hasAdapter(42);
     }
 
     public function testGetAdaptor()
     {
-        $adaptor = $this->getAdaptor();
+        $adaptor = $this->getAdapter();
 
-        self::assertSame($adaptor, $this->getInstance(['test' => $adaptor])->getAdaptor('test'));
+        self::assertSame($adaptor, $this->getInstance(['test' => $adaptor])->getAdapter('test'));
     }
 
     /**
@@ -56,7 +56,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAdaptorInvalidArgument()
     {
-        $this->getInstance()->getAdaptor(42);
+        $this->getInstance()->getAdapter(42);
     }
 
     /**
@@ -65,21 +65,21 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAdaptorNotFound()
     {
-        $this->getInstance()->getAdaptor('this-is-a-adaptor-that-does-not-exist');
+        $this->getInstance()->getAdapter('this-is-a-adaptor-that-does-not-exist');
     }
 
     public function testGetAdaptors()
     {
         $adaptors = [
-            'test1' => $this->getAdaptor(),
-            'test2' => $this->getAdaptor()
+            'test1' => $this->getAdapter(),
+            'test2' => $this->getAdapter()
         ];
 
-        self::assertSame($adaptors, $this->getInstance($adaptors)->getAdaptors());
+        self::assertSame($adaptors, $this->getInstance($adaptors)->getAdapters());
     }
 
     /**
-     * @param AdaptorInterface[] $adaptors
+     * @param AdapterInterface[] $adaptors
      * @return Registry
      */
     protected function getInstance(array $adaptors = [])
@@ -88,10 +88,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return AdaptorInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return AdapterInterface | \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getAdaptor()
+    protected function getAdapter()
     {
-        return $this->getMock('Integrated\\Common\\Channel\\Connector\\AdaptorInterface');
+        return $this->getMock('Integrated\\Common\\Channel\\Connector\\AdapterInterface');
     }
 }

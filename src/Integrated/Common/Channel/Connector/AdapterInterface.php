@@ -11,12 +11,12 @@
 
 namespace Integrated\Common\Channel\Connector;
 
-use Integrated\Common\Channel\Connector\Adaptor\ManifestInterface;
+use Integrated\Common\Channel\Connector\Adapter\ManifestInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface AdaptorInterface
+interface AdapterInterface
 {
     /**
      * @return ManifestInterface

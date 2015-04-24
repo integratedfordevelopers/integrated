@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Channel\Connector\Adaptor;
+namespace Integrated\Common\Channel\Connector\Adapter;
 
-use Integrated\Common\Channel\Connector\AdaptorInterface;
+use Integrated\Common\Channel\Connector\AdapterInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -19,16 +19,16 @@ use Integrated\Common\Channel\Connector\AdaptorInterface;
 class RegistryBuilder implements RegistryBuilderInterface
 {
     /**
-     * @var AdaptorInterface[]
+     * @var AdapterInterface[]
      */
-    private $adaptors = [];
+    private $adapters = [];
 
     /**
      * {@inheritdoc}
      */
-    public function addAdaptor(AdaptorInterface $adaptor)
+    public function addAdapter(AdapterInterface $adapter)
     {
-        $this->adaptors[$adaptor->getManifest()->getName()] = $adaptor;
+        $this->adapters[$adapter->getManifest()->getName()] = $adapter;
 
         return $this;
     }
@@ -36,10 +36,10 @@ class RegistryBuilder implements RegistryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function addAdaptors(array $adaptors)
+    public function addAdapters(array $adapters)
     {
-        foreach ($adaptors as $adaptor) {
-            $this->addAdaptor($adaptor);
+        foreach ($adapters as $adapter) {
+            $this->addAdapter($adapter);
         }
 
         return $this;
@@ -50,6 +50,6 @@ class RegistryBuilder implements RegistryBuilderInterface
      */
     public function getRegistry()
     {
-        return new Registry($this->adaptors);
+        return new Registry($this->adapters);
     }
 }
