@@ -23,7 +23,7 @@ use Integrated\Common\Content\Channel\ChannelInterface;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document(collection="channels")
+ * @ODM\Document(collection="channel")
  * @MongoDBUnique(fields="id")
  */
 class Channel implements ChannelInterface

@@ -254,17 +254,17 @@ class ContentController extends Controller
         );
     }
 
-    /**
-     * Create a new document
-     *
-     * @Template()
-     * @param Request $request
-     * @return array | Response
-     */
-    public function newAction(Request $request)
-    {
-        /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
-        $type = $this->get('integrated.form.factory')->getType($request->get('class'), $request->get('type'));
+	/**
+	 * Create a new document
+	 *
+	 * @Template()
+	 * @param Request $request
+	 * @return array | Response
+	 */
+	public function newAction(Request $request)
+	{
+		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
+		$type = $this->get('integrated.form.factory')->getType($request->get('type'));
 
         $content = $type->getType()->create();
 
@@ -489,18 +489,18 @@ class ContentController extends Controller
         );
     }
 
-    /**
-     * Delete a document
-     *
-     * @Template()
-     * @param Request $request
-     * @param Content $content
-     * @return array | Response
-     */
-    public function deleteAction(Request $request, Content $content)
-    {
-        /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-        $type = $this->get('integrated.form.resolver')->getType(get_class($content), $content->getContentType());
+	/**
+	 * Delete a document
+	 *
+	 * @Template()
+	 * @param Request $request
+	 * @param Content $content
+	 * @return array | Response
+	 */
+	public function deleteAction(Request $request, Content $content)
+	{
+		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
+		$type = $this->get('integrated.form.resolver')->getType($content->getContentType());
 
         if (!$this->get('security.context')->isGranted(Permissions::DELETE, $content)) {
             throw new AccessDeniedException();

@@ -33,15 +33,18 @@
 
 		<parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
 		<parameter key="integrated_content.form.type.file.class">Integrated\Bundle\ContentBundle\Form\Type\FileType</parameter>
+        <parameter key="integrated_content.form.type.address.class">Integrated\Bundle\ContentBundle\Form\Type\AddressType</parameter>
 
-	</parameters>
+        <parameter key="integrated_formtype_form_type_author.class">Integrated\Bundle\ContentBundle\Form\Type\AuthorType</parameter>
+
+    </parameters>
 
 	<services>
 
 		<service id="integrated_content.form.factory.event_dispatcher" class="%integrated_content.form.factory.event_dispatcher.class%" public="false" />
 
 		<service id="integrated_content.form.factory" class="%integrated_content.form.factory.class%">
-			<argument type="service" id="integrated_content.resolver.priority"/>
+			<argument type="service" id="integrated_content.resolver"/>
             <argument type="service" id="integrated_content.metadata.factory"/>
 
 			<call method="setEventDispatcher">
@@ -110,6 +113,15 @@
 
 		<service id="integrated_content.form.type.file" class="%integrated_content.form.type.file.class%">
             <tag name="form.type" alias="integrated_file" />
+        </service>
+
+        <service id="integrated_formtype_form_type_author" class="%integrated_formtype_form_type_author.class%" scope="request">
+            <argument type="service" id="doctrine_mongodb" />
+            <tag name="form.type" alias="integrated_author" />
+        </service>
+
+        <service id="integrated_content.form.type.address" class="%integrated_content.form.type.address.class%">
+            <tag name="form.type" alias="integrated_address"/>
         </service>
 
 	</services>
