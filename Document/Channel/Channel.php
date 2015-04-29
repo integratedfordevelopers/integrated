@@ -17,6 +17,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Channel document
@@ -31,8 +32,9 @@ class Channel implements ChannelInterface
     /**
      * @var string
      * @ODM\Id(strategy="NONE")
+     * @Slug(fields={"name"}, separator="_")
      */
-    protected $id = null;
+    protected $id;
 
     /**
      * @var string the name of the channel
@@ -77,34 +79,12 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * Set the id of the channel
-     *
-     * @param string $id
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = null;
-
-		if ($id) {
-			$this->id = $id;
-		}
-
-        return $this;
-    }
-
-    /**
      * @param string $name
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
-
-		if (null === $this->id) {
-			$this->setId(trim(strtolower(str_replace(' ', '_', $this->name))));
-		}
-
         return $this;
     }
 
