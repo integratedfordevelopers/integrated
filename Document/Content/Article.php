@@ -88,6 +88,7 @@ class Article extends Content
     /**
      * @var Embedded\Address
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address")
+     * @Type\Field(type="integrated_address")
      */
     protected $address;
 
