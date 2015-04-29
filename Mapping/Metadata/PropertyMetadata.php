@@ -14,7 +14,7 @@ namespace Integrated\Bundle\SlugBundle\Mapping\Metadata;
 use Metadata\PropertyMetadata as BasePropertyMetadata;
 
 /**
- * Property metadata with slug fields
+ * Property metadata with slug properties
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -24,4 +24,9 @@ class PropertyMetadata extends BasePropertyMetadata
      * @var array
      */
     public $slugFields = [];
+
+    /**
+     * @var string
+     */
+    public $slugSeparator = '-';
 }

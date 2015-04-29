@@ -133,7 +133,7 @@ class SluggableSubscriber implements EventSubscriber
 
                     if ($args->hasChangedField($propertyMetadata->name)) {
                         // generate custom slug
-                        $slug = $this->slugger->slugify($args->getNewValue($propertyMetadata->name));
+                        $slug = $this->slugger->slugify($args->getNewValue($propertyMetadata->name), $propertyMetadata->slugSeparator);
 
                     } else {
                         continue; // no changes
@@ -141,12 +141,12 @@ class SluggableSubscriber implements EventSubscriber
 
                 } else {
                     // generate custom slug
-                    $slug = $this->slugger->slugify($propertyMetadata->getValue($object));
+                    $slug = $this->slugger->slugify($propertyMetadata->getValue($object), $propertyMetadata->slugSeparator);
                 }
 
                 if (!trim($slug)) {
                     // generate slug from the sluggable fields
-                    $slug = $this->generateSlugFromMetadata($propertyMetadata->slugFields, $object);
+                    $slug = $this->generateSlugFromMetadata($object, $propertyMetadata->slugFields, $propertyMetadata->slugSeparator);
                 }
 
                 // generate unique slug
@@ -159,12 +159,13 @@ class SluggableSubscriber implements EventSubscriber
     }
 
     /**
-     * @param array  $fields
      * @param object $object
+     * @param array  $fields
+     * @param string $separator
      *
      * @return string
      */
-    protected function generateSlugFromMetadata(array $fields, $object)
+    protected function generateSlugFromMetadata($object, array $fields, $separator = '-')
     {
         $values = [];
 
@@ -173,7 +174,7 @@ class SluggableSubscriber implements EventSubscriber
         }
 
         // generate slug value
-        return $this->slugger->slugify(implode(' ', $values));
+        return $this->slugger->slugify(implode(' ', $values), $separator);
     }
 
     /**

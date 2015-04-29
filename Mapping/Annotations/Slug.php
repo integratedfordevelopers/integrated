@@ -27,4 +27,9 @@ final class Slug extends Annotation
      * @var array
      */
     public $fields = [];
+
+    /**
+     * @var string
+     */
+    public $separator = '-';
 }
