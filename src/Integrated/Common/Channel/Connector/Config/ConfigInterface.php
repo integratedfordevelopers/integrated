@@ -24,7 +24,7 @@ interface ConfigInterface
     /**
      * @return string
      */
-    public function getAdaptor();
+    public function getAdapter();
 
     /**
      * @return OptionsInterface

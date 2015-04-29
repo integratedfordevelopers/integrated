@@ -41,7 +41,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAdaptor()
     {
-        self::assertEquals('adaptor', $this->getInstance()->getAdaptor());
+        self::assertEquals('adapter', $this->getInstance()->getAdapter());
     }
 
     public function testGetOptions()
@@ -51,6 +51,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     protected function getInstance()
     {
-        return new Config('name', 'adaptor', $this->options);
+        return new Config('name', 'adapter', $this->options);
     }
 }

@@ -53,7 +53,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getAdaptor()
+    public function getAdapter()
     {
         return $this->adaptor;
     }
