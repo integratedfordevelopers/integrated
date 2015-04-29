@@ -62,6 +62,8 @@ abstract class BlockHandler implements BlockHandlerInterface
      */
     public function render(array $parameters = [])
     {
-        return $this->twig->render($this->getTemplate(), $parameters);
+        if ($this->template) {
+            return $this->twig->render($this->template, $parameters);
+        }
     }
 }
