@@ -49,6 +49,14 @@
                 <string key="locale">locale</string>
                 <string key="cover">cover</string>
 
+                <string key="address_name">address.name</string>
+                <string key="address_address1">address.address1</string>
+                <string key="address_address2">address.address2</string>
+                <string key="address_zipcode">address.zipcode</string>
+                <string key="address_city">address.city</string>
+                <string key="address_state">address.state</string>
+                <string key="address_country">address.country</string>
+
                 <array>
                     <string key="name">url</string>
                     <array>
@@ -112,7 +120,6 @@
                 <string key="start_date">startDate</string>
                 <string key="end_date">endDate</string>
                 <string key="website">website</string>
-                <string key="addressName">address.name</string>
 
                 <string key="start_sort_date">startDate</string>
                 <string key="end_sort_date">endDate</string>

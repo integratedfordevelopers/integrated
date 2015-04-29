@@ -36,6 +36,7 @@
                     </array>
                 </array>
 
+                <string key="address_name">addresses.first.name</string>
                 <string key="address_address1">addresses.first.address1</string>
                 <string key="address_address2">addresses.first.address2</string>
                 <string key="address_zipcode">addresses.first.zipcode</string>

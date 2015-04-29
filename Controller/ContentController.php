@@ -426,6 +426,11 @@ class ContentController extends Controller
      */
     public function editAction(Request $request, Content $content)
     {
+        if (function_exists('dump')) {
+            // @todo create solr converter collector for solr profiler
+            dump($this->get('integrated_solr.converter')->convert($content)); // for now use this
+        }
+
         /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
         $type = $this->get('integrated.form.factory')->getType($content);
 
@@ -451,7 +456,6 @@ class ContentController extends Controller
 
                 $locking['locked'] = false;
             }
-
         }
 
         // load a different set of buttons based bases on the locking stat for this
