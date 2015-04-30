@@ -125,6 +125,9 @@
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
 
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+
     {% javascripts
         '@integrated_js'
         '@IntegratedContentBundle/Resources/public/components/typeahead.js/dist/typeahead.bundle.min.js'

@@ -6,6 +6,7 @@
 
 	<route id="integrated_content_content_index" path="/" methods="GET, POST">
 		<default key="_controller">IntegratedContentBundle:Content:index</default>
+        <option key="expose">true</option>
 	</route>
 
 	<route id="integrated_content_content_new" path="/new">

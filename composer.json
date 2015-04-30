@@ -30,7 +30,8 @@
         "knplabs/knp-paginator-bundle": "~2.4",
         "nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",
-        "twbs/bootstrap": "3.*"
+        "twbs/bootstrap": "3.*",
+        "friendsofsymfony/jsrouting-bundle": "~1.5"
     },
     "suggest": {
         "integrated/page-bundle": "~0.2",
