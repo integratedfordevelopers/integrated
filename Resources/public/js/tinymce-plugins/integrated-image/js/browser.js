@@ -137,7 +137,7 @@ $(document).ready(function(){
      */
     $('#btn-search').click(function(){
         var keyword = $('#txt-search').val();
-        var url     = '/admin/content/?contenttypes[]=image&_format=json&q='+keyword;
+        var url     = Routing.generate('integrated_content_content_index', {"contenttypes[]": "image", "_format": "json", "q": keyword});
 
         $('#thumbnail-container').loader('show');
         $.get(url, function(data){
@@ -157,7 +157,7 @@ $(document).ready(function(){
     var previousCall = null;
     $('#txt-search').keyup(function(){
         var keyword = $(this).val();
-        var url     = '/admin/content/?contenttypes[]=image&_format=json&q='+keyword;
+        var url     = Routing.generate('integrated_content_content_index', {"contenttypes[]": "image", "_format": "json", "q": keyword});
 
         $('#thumbnail-container').loader('show');
         if(previousCall !== null){
@@ -223,7 +223,7 @@ $(document).ready(function(){
      */
     $('#thumbnail-container').loader('show');
 
-    $.get('/admin/content/?contenttypes[]=image&_format=json', function(data){
+    $.get(Routing.generate('integrated_content_content_index', {"contenttypes[]": "image", "_format": "json"}), function(data){
         renderImage(data.items);
         renderPagination(data.pagination);
         $('#thumbnail-container').loader('hide');

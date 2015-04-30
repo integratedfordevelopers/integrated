@@ -31,7 +31,7 @@
                         selector: "textarea#{{ id }}",
                         theme: "modern",
                         plugins: [
-                            {% if form.vars.freehtml %}
+                            {% if form.vars.mode == "advanced" %}
                             ["advlist autolink link image lists charmap hr anchor pagebreak"],
                             ["searchreplace wordcount visualchars fullscreen media nonbreaking"],
                             ["table contextmenu directionality template paste wordcount autoresize code"]
@@ -41,7 +41,7 @@
                             ["table contextmenu directionality template paste wordcount autoresize"]
                             {% endif %}
                         ],
-                        {% if form.vars.freehtml %}
+                        {% if form.vars.mode == "advanced" %}
                         external_plugins: {
                             "integratedImage": "/bundles/integratedformtype/js/tinymce-plugins/integrated-image/plugin.js",
                             "integratedColumn": "/bundles/integratedformtype/js/tinymce-plugins/integrated-column/plugin.js"
@@ -50,7 +50,7 @@
                         add_unload_trigger: false,
                         schema: "html5",
                         menubar: false,
-                        {% if form.vars.freehtml %}
+                        {% if form.vars.mode == "advanced" %}
                         toolbar: "formatselect | bold italic underline | bullist numlist | link integratedImage print preview media fullpage | integratedColumn table | charmap pagebreak | pastetext searchreplace fullscreen code",
                         {% else %}
                         toolbar: "formatselect | bold italic underline | bullist numlist | link print preview fullpage | charmap pagebreak | pastetext searchreplace fullscreen",

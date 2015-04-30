@@ -33,16 +33,16 @@ class TinyMCEType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'freehtml' => false,
+            'mode' => "basic",
         ));
 
         $resolver->setAllowedTypes(array(
-            'freehtml' => 'bool',
+            'mode' => 'string',
         ));
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['freehtml'] = $options['freehtml'];
+        $view->vars['mode'] = $options['mode'];
     }
 }
