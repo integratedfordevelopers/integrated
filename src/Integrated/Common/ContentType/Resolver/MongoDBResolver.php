@@ -24,82 +24,82 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
  */
 class MongoDBResolver implements ResolverInterface
 {
-	const CONTENT_TYPE_INTERFACE = 'Integrated\\Common\\ContentType\\ContentTypeInterface';
+    const CONTENT_TYPE_INTERFACE = 'Integrated\\Common\\ContentType\\ContentTypeInterface';
 
-	/**
-	 * @var DocumentRepository
-	 */
-	protected $repository;
+    /**
+     * @var DocumentRepository
+     */
+    protected $repository;
 
-	/**
+    /**
      * Content type caching array
      *
-	 * @var array
-	 */
-	protected $types = array();
+     * @var array
+     */
+    protected $types = array();
 
-	/**
-	 * Create a ContentTypeResolver based on a MongoDB DocumentRepository
-	 *
-	 * The DocumentRepository should be of a class that implements ContentTypeInterface
-	 * or else the ContentTypeResolver will throw a exception.
-	 *
-	 * @param DocumentRepository $repository
-	 *
-	 * @throws InvalidArgumentException if the document class does implement the correct interface
-	 */
-	public function __construct(DocumentRepository $repository)
-	{
-		$reflection = new \ReflectionClass($repository->getClassName());
+    /**
+     * Create a ContentTypeResolver based on a MongoDB DocumentRepository
+     *
+     * The DocumentRepository should be of a class that implements ContentTypeInterface
+     * or else the ContentTypeResolver will throw a exception.
+     *
+     * @param DocumentRepository $repository
+     *
+     * @throws InvalidArgumentException if the document class does implement the correct interface
+     */
+    public function __construct(DocumentRepository $repository)
+    {
+        $reflection = new \ReflectionClass($repository->getClassName());
 
-		if (!$reflection->implementsInterface(self::CONTENT_TYPE_INTERFACE)) {
-			throw new InvalidArgumentException(sprintf('The document class "%s" of the DocumentRepository does not implement the "%s" interface.', $repository->getClassName(), self::CONTENT_TYPE_INTERFACE));
-		}
+        if (!$reflection->implementsInterface(self::CONTENT_TYPE_INTERFACE)) {
+            throw new InvalidArgumentException(sprintf('The document class "%s" of the DocumentRepository does not implement the "%s" interface.', $repository->getClassName(), self::CONTENT_TYPE_INTERFACE));
+        }
 
-		$this->repository = $repository;
-	}
+        $this->repository = $repository;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getType($type)
-	{
-		if (!is_string($type)) {
-			throw new UnexpectedTypeException($type, 'string');
-  		}
+    /**
+     * {@inheritdoc}
+     */
+    public function getType($type)
+    {
+        if (!is_string($type)) {
+            throw new UnexpectedTypeException($type, 'string');
+        }
 
-		if (!isset($this->types[$type])) {
-			if (null === ($document = $this->repository->findOneBy(['type' => $type]))) {
-				throw new InvalidArgumentException(sprintf('Could not load content type bases on the given type "%s"', $type));
-			}
+        if (!isset($this->types[$type])) {
+            if (null === ($document = $this->repository->findOneBy(['id' => $type]))) {
+                throw new InvalidArgumentException(sprintf('Could not load content type bases on the given type "%s"', $type));
+            }
 
-			$this->types[$type] = $document;
-		}
+            $this->types[$type] = $document;
+        }
 
-		return $this->types[$type];
-	}
+        return $this->types[$type];
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function hasType($type)
-	{
-		try {
-			$this->getType($type);
-		} catch (UnexpectedTypeException $e) {
-			throw $e;
-		} catch (ExceptionInterface $e) {
-			return false;
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function hasType($type)
+    {
+        try {
+            $this->getType($type);
+        } catch (UnexpectedTypeException $e) {
+            throw $e;
+        } catch (ExceptionInterface $e) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getTypes()
-	{
-		return new MongoDBIterator($this->repository->findAll());
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getTypes()
+    {
+        return new MongoDBIterator($this->repository->findAll());
+    }
 }
