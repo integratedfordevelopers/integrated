@@ -19,6 +19,13 @@ use Integrated\Common\Content\ContentInterface;
 interface ContentTypeInterface
 {
     /**
+     * Get the id of the content type
+     *
+     * @return string
+     */
+    public function getId();
+
+    /**
      * Get the class of the content type
      *
      * @return string
@@ -31,13 +38,6 @@ interface ContentTypeInterface
      * @return string
      */
     public function getName();
-
-    /**
-     * Get the type of the content type
-     *
-     * @return string
-     */
-    public function getType();
 
     /**
      * Get a new instance of this content type
