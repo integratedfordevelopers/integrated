@@ -12,6 +12,10 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class TinyMCEType extends AbstractType
 {
@@ -26,4 +30,19 @@ class TinyMCEType extends AbstractType
         return 'integrated_tinymce';
     }
 
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'freehtml' => false,
+        ));
+
+        $resolver->setAllowedTypes(array(
+            'freehtml' => 'bool',
+        ));
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['freehtml'] = $options['freehtml'];
+    }
 }
