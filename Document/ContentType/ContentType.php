@@ -17,19 +17,22 @@ use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Document ContentType
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ *
  * @ODM\Document(collection="content_type")
- * @MongoDBUnique(fields="type")
+ * @MongoDBUnique(fields="id")
  */
 class ContentType implements ContentTypeInterface
 {
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
+     * @ODM\Id(strategy="NONE")
+     * @Slug(fields={"name"}, separator="_")
      */
     protected $id;
 
@@ -46,13 +49,6 @@ class ContentType implements ContentTypeInterface
      * @Assert\NotBlank()
      */
     protected $name;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex
-     */
-    protected $type;
 
     /**
      * @var Embedded\Field[]
@@ -85,10 +81,7 @@ class ContentType implements ContentTypeInterface
      */
     public function create()
     {
-        $instance = new $this->class();
-        $instance->setContentType($this->type);
-
-        return $instance;
+        return new $this->class();
     }
 
     /**
@@ -150,33 +143,15 @@ class ContentType implements ContentTypeInterface
     public function setName($name)
     {
         $this->name = $name;
-
-        // TODO use sluggable extension
-        if (null === $this->type) {
-            $this->setType(trim(strtolower(str_replace(' ', '_', $this->name))));
-        }
-
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @deprecated use getId() instead
      */
     public function getType()
     {
-        return $this->type;
-    }
-
-    /**
-     * Set the type of the content type
-     *
-     * @param string $type
-     * @return $this
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-        return $this;
+        return $this->getId();
     }
 
     /**

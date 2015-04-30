@@ -28,6 +28,7 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
  * @ODM\Document(collection="relation")
+ * @MongoDBUnique(fields="id")
  */
 class Relation implements RelationInterface
 {
@@ -93,6 +94,16 @@ class Relation implements RelationInterface
         $this->sources = new ArrayCollection();
         $this->targets = new ArrayCollection();
         $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * @param string $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
     }
 
     /**

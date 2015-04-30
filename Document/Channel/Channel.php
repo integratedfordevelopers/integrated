@@ -71,6 +71,16 @@ class Channel implements ChannelInterface
     }
 
     /**
+     * @param string $id
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getId()
