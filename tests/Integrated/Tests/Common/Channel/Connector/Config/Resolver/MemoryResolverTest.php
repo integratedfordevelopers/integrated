@@ -97,22 +97,6 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
         self::assertSame(['config4' => $configs['config4']], iterator_to_array($iterator));
     }
 
-    public function testGetIterator()
-    {
-        $configs = [
-            'config1' => $this->getConfig('config1'),
-            'config2' => $this->getConfig('config2'),
-            'config3' => $this->getConfig('config3'),
-            'config4' => $this->getConfig('config4'),
-            'config5' => $this->getConfig('config5'),
-        ];
-
-        $iterator = $this->getInstance($configs)->getIterator();
-
-        self::assertInstanceOf('Iterator', $iterator);
-        self::assertSame($configs, iterator_to_array($iterator));
-    }
-
     /**
      * @param ConfigInterface[] $configs
      * @param array             $channels

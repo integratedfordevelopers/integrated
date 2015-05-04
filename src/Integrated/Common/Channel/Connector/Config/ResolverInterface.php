@@ -20,7 +20,7 @@ use IteratorAggregate;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ResolverInterface extends IteratorAggregate
+interface ResolverInterface
 {
     /**
      * Check if there is a config with the $name in any of the resolvers
@@ -50,11 +50,4 @@ interface ResolverInterface extends IteratorAggregate
      * @return ConfigInterface[] | Iterator
      */
     public function getConfigs(ChannelInterface $channel);
-
-    /**
-     * Get a iterator to iterator over all the configs in this resolver
-     *
-     * @return ConfigInterface[] | Iterator
-     */
-    public function getIterator();
 }
