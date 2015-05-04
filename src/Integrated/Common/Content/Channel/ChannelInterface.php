@@ -11,24 +11,13 @@
 
 namespace Integrated\Common\Content\Channel;
 
+use Integrated\Common\Channel\ChannelInterface as BaseChannelInterface;
+
 /**
  * Interface for Channel documents
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-interface ChannelInterface
+interface ChannelInterface extends BaseChannelInterface
 {
-	/**
-	 * Return the id of the Channel
-	 *
-	 * @return string
-	 */
-	public function getId();
-
-	/**
-	 * Return the name of the Channel
-	 *
-	 * @return string
-	 */
-	public function getName();
 }

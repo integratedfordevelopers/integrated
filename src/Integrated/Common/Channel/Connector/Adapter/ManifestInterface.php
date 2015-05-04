@@ -17,16 +17,29 @@ namespace Integrated\Common\Channel\Connector\Adapter;
 interface ManifestInterface
 {
     /**
+     * Returns the adaptor name.
+     *
    	 * @return string
    	 */
    	public function getName();
 
+    /**
+     * Returns the adaptor display name.
+     *
+     * @return string
+     */
+    public function getLabel();
+
    	/**
+     * Returns the adaptor description.
+     *
    	 * @return string
    	 */
    	public function getDescription();
 
    	/**
+     * Returns the adaptor version
+     *
    	 * @return string
    	 */
    	public function getVersion();

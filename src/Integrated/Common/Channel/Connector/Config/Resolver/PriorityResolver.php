@@ -89,18 +89,4 @@ class PriorityResolver implements ResolverInterface
 
         return new UniqueConfigIterator($iterator);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator()
-    {
-        $iterator = new AppendIterator();
-
-        foreach ($this->resolvers as $resolver) {
-            $iterator->append($resolver->getIterator());
-        }
-
-        return new UniqueConfigIterator($iterator);
-    }
 }

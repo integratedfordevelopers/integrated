@@ -9,25 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Channel\Connector\Config;
+namespace Integrated\Common\Channel\Connector;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ConfigInterface
+interface ConfigurableInterface
 {
     /**
-     * @return string
+     * @return ConfigurationInterface
      */
-    public function getName();
-
-    /**
-     * @return string
-     */
-    public function getAdapter();
-
-    /**
-     * @return OptionsInterface
-     */
-    public function getOptions();
+    public function getConfiguration();
 }

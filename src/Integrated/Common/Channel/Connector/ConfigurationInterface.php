@@ -9,25 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Channel\Connector\Config;
+namespace Integrated\Common\Channel\Connector;
+
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ConfigInterface
+interface ConfigurationInterface
 {
     /**
-     * @return string
+     * Get the configuration form.
+     *
+     * This can be a string or a form type object.
+     *
+     * @return string | FormTypeInterface
      */
-    public function getName();
-
-    /**
-     * @return string
-     */
-    public function getAdapter();
-
-    /**
-     * @return OptionsInterface
-     */
-    public function getOptions();
+    public function getForm();
 }

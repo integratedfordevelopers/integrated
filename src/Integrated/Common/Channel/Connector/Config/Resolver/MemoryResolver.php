@@ -93,12 +93,4 @@ class MemoryResolver implements ResolverInterface
 
         return new ConfigIterator($configs);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator()
-    {
-        return new ConfigIterator($this->configs);
-    }
 }
