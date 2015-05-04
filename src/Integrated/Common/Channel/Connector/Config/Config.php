@@ -16,6 +16,9 @@ namespace Integrated\Common\Channel\Connector\Config;
  */
 class Config implements ConfigInterface
 {
+    /**
+     * @var string
+     */
     private $name;
 
     /**
