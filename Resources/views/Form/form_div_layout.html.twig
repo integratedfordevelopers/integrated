@@ -102,10 +102,10 @@
             {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
         {% endif %}
         <div {{ block('widget_container_attributes') }}>
-            <ul class="bc-collection panel-group sortable-collection">
+            <ul class="bc-collection panel-group sortable-collection ui-sortable">
                 {% for field in form %}
 
-                    <li>
+                    <li class="ui-sortable-handle">
                         <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
