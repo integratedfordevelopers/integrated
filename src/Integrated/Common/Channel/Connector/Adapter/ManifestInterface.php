@@ -43,9 +43,4 @@ interface ManifestInterface
    	 * @return string
    	 */
    	public function getVersion();
-
-//    /**
-//     * @return FeatureSet
-//     */
-//    public function getFeatures();
 }

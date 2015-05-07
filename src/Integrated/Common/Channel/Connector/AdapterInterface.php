@@ -22,9 +22,4 @@ interface AdapterInterface
      * @return ManifestInterface
      */
     public function getManifest();
-
-//    /**
-//     * @return ConfigInterface
-//     */
-//    public function getConfig();
 }
