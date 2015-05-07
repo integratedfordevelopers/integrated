@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Channel\Connector\Persistence;
-
-use Integrated\Common\Channel\Connector\Config\ConfigInterface;
+namespace Integrated\Common\Channel\Connector\Config;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
