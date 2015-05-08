@@ -11,6 +11,8 @@
 
 namespace Integrated\Common\Channel;
 
+use Integrated\Common\Content\Channel\ChannelInterface as ContentChannelInterface;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -28,14 +30,14 @@ interface ChannelManagerInterface
    	 *
    	 * @param ChannelInterface $channel
    	 */
-   	public function persist(ChannelInterface $channel);
+   	public function persist(ContentChannelInterface $channel);
 
    	/**
    	 * Remove the channel from the manager
    	 *
    	 * @param ChannelInterface $channel
    	 */
-   	public function remove(ChannelInterface $channel);
+   	public function remove(ContentChannelInterface $channel);
 
    	/**
    	 * Delete all the managed channels.
