@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_channel.odm.doctrine.distributionListener.listener.class">Integrated\Bundle\ChannelBundle\EventListener\Doctrine\ChannelDistributionListener</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_channel.odm.doctrine" alias="doctrine_mongodb.odm.document_manager" />
+        <service id="integrated_channel.orm.doctrine" alias="doctrine.orm.entity_manager" />
+
+    </services>
+
+</container>

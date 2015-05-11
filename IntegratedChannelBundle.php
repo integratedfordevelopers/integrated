@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ChannelBundle;
 
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+
 use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterConfigPass;
 use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterConfigResolverPass;
 use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterConnectorPass;
@@ -29,6 +31,8 @@ class IntegratedChannelBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver([__DIR__ . '/Resources/config/model' => 'Integrated\Bundle\ChannelBundle\Model']));
+
         $container->addCompilerPass(new RegisterConfigPass());
         $container->addCompilerPass(new RegisterConfigResolverPass());
         $container->addCompilerPass(new RegisterConnectorPass());
