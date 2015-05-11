@@ -25,11 +25,11 @@ class RegisterConfigResolverPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('integrated_channel.connector.config.resolver.priority_builder')) {
+        if (!$container->hasDefinition('integrated_channel.config.resolver.priority_builder')) {
             return;
         }
 
-        $definition = $container->getDefinition('integrated_channel.connector.config.resolver.priority_builder');
+        $definition = $container->getDefinition('integrated_channel.config.resolver.priority_builder');
 
         foreach ($container->findTaggedServiceIds('integrated_channel.config.resolver') as $service => $tags) {
             $arguments = [new Reference($service)];

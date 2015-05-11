@@ -18,21 +18,21 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RegisterConnectorPass implements CompilerPassInterface
+class RegisterAdapterPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('integrated_channel.connector.adaptor.registry_builder')) {
+        if (!$container->hasDefinition('integrated_channel.adapter.registry_builder')) {
             return;
         }
 
-        $definition = $container->getDefinition('integrated_channel.connector.adaptor.registry_builder');
+        $definition = $container->getDefinition('integrated_channel.adapter.registry_builder');
 
         foreach ($container->findTaggedServiceIds('integrated_channel.connector') as $service => $tags) {
-            $definition->addMethodCall('addAdaptor', [new Reference($service)]);
+            $definition->addMethodCall('addAdapter', [new Reference($service)]);
         }
     }
 }

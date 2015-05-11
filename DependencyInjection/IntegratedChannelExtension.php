@@ -32,8 +32,13 @@ class IntegratedChannelExtension extends Extension
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        $loader->load('connector.adaptors.xml');
-        $loader->load('connector.config.xml');
+        $loader->load('adapters.xml');
+        $loader->load('config.xml');
+
+        $loader->load('doctrine.xml');
+
+        $loader->load('manager.xml');
+        $loader->load('repository.xml');
 
         $config = $this->processConfiguration(new Configuration(), $config);
 
@@ -55,7 +60,7 @@ class IntegratedChannelExtension extends Extension
                 continue;
             }
 
-            $id = 'integrated_channel.config.' . $name;
+            $id = 'integrated_channel.config.memory.' . $name;
 
             if ($container->hasDefinition($id)) {
                 continue;
@@ -67,7 +72,7 @@ class IntegratedChannelExtension extends Extension
                 $id_options = $id . '.options.' . uniqid();
             } while ($container->hasDefinition($id_options));
 
-            $definition = new Definition('%integrated_channel.connector.config.options.class%');
+            $definition = new Definition('%integrated_channel.config.options.class%');
             $definition->setPublic(false);
             $definition->setArguments([$arguments['options']]);
 
@@ -75,7 +80,7 @@ class IntegratedChannelExtension extends Extension
 
             // create the config it self
 
-            $definition = new Definition('%integrated_channel.connector.config.class%');
+            $definition = new Definition('%integrated_channel.config.class%');
             $definition->setArguments([
                 $name,
                 $arguments['adaptor'],

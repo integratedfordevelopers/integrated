@@ -25,11 +25,11 @@ class RegisterConfigPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('integrated_channel.connector.config.resolver.memory_builder')) {
+        if (!$container->hasDefinition('integrated_channel.config.resolver.memory_builder')) {
             return;
         }
 
-        $definition = $container->getDefinition('integrated_channel.connector.config.resolver.memory_builder');
+        $definition = $container->getDefinition('integrated_channel.config.resolver.memory_builder');
 
         foreach ($container->findTaggedServiceIds('integrated_channel.config') as $service => $tags) {
             $channels = [];

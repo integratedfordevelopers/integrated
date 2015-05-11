@@ -15,7 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappi
 
 use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterConfigPass;
 use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterConfigResolverPass;
-use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterConnectorPass;
+use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterAdapterPass;
 use Integrated\Bundle\ChannelBundle\DependencyInjection\IntegratedChannelExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -35,7 +35,7 @@ class IntegratedChannelBundle extends Bundle
 
         $container->addCompilerPass(new RegisterConfigPass());
         $container->addCompilerPass(new RegisterConfigResolverPass());
-        $container->addCompilerPass(new RegisterConnectorPass());
+        $container->addCompilerPass(new RegisterAdapterPass());
     }
 
     /**
