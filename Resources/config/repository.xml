@@ -12,6 +12,12 @@
             <argument type="string">Integrated\Bundle\ChannelBundle\Model\Config</argument>
         </service>
 
+        <service id="integrated_channel.repository.channel" class="Doctrine\Common\Persistence\ObjectRepository">
+            <factory service="integrated_channel.odm.doctrine" method="getRepository" />
+
+            <argument type="string">Integrated\Bundle\ContentBundle\Document\Channel\Channel</argument>
+        </service>
+
 	</services>
 
 </container>

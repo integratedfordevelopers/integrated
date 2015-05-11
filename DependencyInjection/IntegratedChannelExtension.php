@@ -37,6 +37,10 @@ class IntegratedChannelExtension extends Extension
 
         $loader->load('doctrine.xml');
 
+        $loader->load('form.xml');
+        $loader->load('form.actions.xml');
+        $loader->load('form.config.xml');
+
         $loader->load('manager.xml');
         $loader->load('repository.xml');
 
