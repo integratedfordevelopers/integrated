@@ -36,8 +36,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class ChannelChoiceType extends AbstractType
 {
     /**
-   	 * @var ObjectRepository
-   	 */
+     * @var ObjectRepository
+     */
     private $repository;
 
     /**
@@ -101,12 +101,12 @@ class ChannelChoiceType extends AbstractType
     }
 
     /**
-   	 * @inheritdoc
-   	 */
-   	public function getParent()
-   	{
-   		return 'choice';
-   	}
+     * @inheritdoc
+     */
+    public function getParent()
+    {
+        return 'choice';
+    }
 
     /**
      * {@inheritdoc}

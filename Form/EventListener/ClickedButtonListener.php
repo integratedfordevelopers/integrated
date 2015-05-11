@@ -23,19 +23,19 @@ use Symfony\Component\Form\FormEvents;
 class ClickedButtonListener implements EventSubscriberInterface
 {
     /**
-   	 * @inheritdoc
-   	 */
-   	public static function getSubscribedEvents()
-   	{
-   		return [
-   			FormEvents::SUBMIT => 'onSubmit'
-   		];
-   	}
+     * @inheritdoc
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            FormEvents::SUBMIT => 'onSubmit'
+        ];
+    }
 
     /**
-   	 * @param FormEvent $event
-   	 */
-   	public function onSubmit(FormEvent $event)
+     * @param FormEvent $event
+     */
+    public function onSubmit(FormEvent $event)
     {
         foreach ($event->getForm() as $child) {
             if ($child instanceof SubmitButton && $child->isClicked()) {

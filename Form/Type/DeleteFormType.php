@@ -19,10 +19,10 @@ use Symfony\Component\Form\AbstractType;
 class DeleteFormType extends AbstractType
 {
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getName()
-	{
-		return 'integrated_channel_delete';
-	}
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'integrated_channel_delete';
+    }
 }

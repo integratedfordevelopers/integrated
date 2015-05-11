@@ -37,9 +37,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class ConfigFormType extends AbstractType
 {
     /**
-   	 * @var RegistryInterface
-   	 */
-   	private $registry;
+     * @var RegistryInterface
+     */
+    private $registry;
 
     /**
      * Constructor.

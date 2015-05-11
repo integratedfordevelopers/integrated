@@ -49,27 +49,27 @@ class ExportCommand extends Command
      */
     protected function configure()
     {
-		$this
-			->setName('channel:export')
+        $this
+            ->setName('channel:export')
 
             ->addOption('full', 'f',InputOption::VALUE_NONE, 'Keep running until the queue is empty')
             ->addOption('daemon', 'd', InputOption::VALUE_NONE, 'Keep running until the programme is manually closed, this option overwrites --full')
             ->addOption('wait', 'w', InputOption::VALUE_REQUIRED, 'Time in milliseconds to wait between runs (in combination with --full or --daemon)', 0)
 
-			->setDescription('Execute a channel exporter run');
+            ->setDescription('Execute a channel exporter run');
     }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-   	protected function execute(InputInterface $input, OutputInterface $output)
-   	{
-   		if ($input->getOption('full') || $input->getOption('daemon')) {
-   			return $this->runExternal($input, $output);
-   		}
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        if ($input->getOption('full') || $input->getOption('daemon')) {
+            return $this->runExternal($input, $output);
+        }
 
-   		return $this->runInternal($input, $output);
-   	}
+        return $this->runInternal($input, $output);
+    }
 
     /**
      * @param InputInterface  $input
@@ -77,18 +77,18 @@ class ExportCommand extends Command
      *
      * @return int
      */
-   	private function runInternal(InputInterface $input, OutputInterface $output)
-   	{
-   		try	{
-   			$this->exporter->execute();
-   		} catch (Exception $e) {
-   			$output->writeln("Aborting: " . $e->getMessage());
+    private function runInternal(InputInterface $input, OutputInterface $output)
+    {
+        try	{
+            $this->exporter->execute();
+        } catch (Exception $e) {
+            $output->writeln("Aborting: " . $e->getMessage());
 
-   			return 1;
-   		}
+            return 1;
+        }
 
-   		return 0;
-   	}
+        return 0;
+    }
 
     /**
      * @param InputInterface  $input
@@ -96,26 +96,26 @@ class ExportCommand extends Command
      *
      * @return int
      */
-   	private function runExternal(InputInterface $input, OutputInterface $output)
-   	{
-   		$wait = (int) $input->getOption('wait');
-   		$wait = $wait * 1000; // convert from milli to micro
+    private function runExternal(InputInterface $input, OutputInterface $output)
+    {
+        $wait = (int) $input->getOption('wait');
+        $wait = $wait * 1000; // convert from milli to micro
 
-   		while (true) {
-   			$process = new Process('php app/console channel:export -e ' . $input->getOption('env'), getcwd(), null, null, null);
-   			$process->run();
+        while (true) {
+            $process = new Process('php app/console channel:export -e ' . $input->getOption('env'), getcwd(), null, null, null);
+            $process->run();
 
-   			if (!$process->isSuccessful()) {
-   				break; // terminate when there is a error
-   			}
+            if (!$process->isSuccessful()) {
+                break; // terminate when there is a error
+            }
 
-   			if (!$input->getOption('daemon')) {
-   				if (!$this->exporter->getQueue()->count()) { break; }
-   			}
+            if (!$input->getOption('daemon')) {
+                if (!$this->exporter->getQueue()->count()) { break; }
+            }
 
-   			usleep($wait);
-   		}
+            usleep($wait);
+        }
 
-   		return 0;
-   	}
+        return 0;
+    }
 }

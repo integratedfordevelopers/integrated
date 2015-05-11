@@ -10,26 +10,26 @@
 
     <route id="integrated_channel_config_new" path="/new/{adapter}">
         <default key="_controller">integrated_channel.controller.config:newAction</default>
-   	</route>
+    </route>
 
     <route id="integrated_channel_config_new_rest" path="/{adapter}" methods="POST">
-   		<default key="_controller">integrated_channel.controller.config:newAction</default>
-   	</route>
+        <default key="_controller">integrated_channel.controller.config:newAction</default>
+    </route>
 
     <route id="integrated_channel_config_edit" path="/{id}"  methods="GET">
-   		<default key="_controller">integrated_channel.controller.config:editAction</default>
-   	</route>
+        <default key="_controller">integrated_channel.controller.config:editAction</default>
+    </route>
 
-   	<route id="integrated_channel_config_edit_rest" path="/{id}" methods="PUT">
-   		<default key="_controller">integrated_channel.controller.config:editAction</default>
-   	</route>
+    <route id="integrated_channel_config_edit_rest" path="/{id}" methods="PUT">
+        <default key="_controller">integrated_channel.controller.config:editAction</default>
+    </route>
 
     <route id="integrated_channel_config_delete" path="/{id}/delete">
-   		<default key="_controller">integrated_channel.controller.config:deleteAction</default>
-   	</route>
+        <default key="_controller">integrated_channel.controller.config:deleteAction</default>
+    </route>
 
-   	<route id="integrated_channel_config_delete_rest" path="/{id}" methods="DELETE">
-   		<default key="_controller">integrated_channel.controller.config:deleteAction</default>
-   	</route>
+    <route id="integrated_channel_config_delete_rest" path="/{id}" methods="DELETE">
+        <default key="_controller">integrated_channel.controller.config:deleteAction</default>
+    </route>
 
 </routes>

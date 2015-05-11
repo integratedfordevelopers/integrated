@@ -111,10 +111,10 @@ class IntegratedChannelExtension extends Extension implements PrependExtensionIn
     }
 
     /**
-   	 * {@inheritDoc}
-   	 */
-   	public function prepend(ContainerBuilder $container)
-   	{
+     * {@inheritDoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
         foreach ($container->getExtensions() as $name => $extension) {
             switch ($name) {
                 case 'twig':
@@ -122,5 +122,5 @@ class IntegratedChannelExtension extends Extension implements PrependExtensionIn
                     break;
             }
         }
-   	}
+    }
 }
