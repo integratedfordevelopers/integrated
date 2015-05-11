@@ -15,6 +15,13 @@
         <service id="integrated_channel.odm.doctrine" alias="doctrine_mongodb.odm.document_manager" />
         <service id="integrated_channel.orm.doctrine" alias="doctrine.orm.entity_manager" />
 
+        <service id="integrated_channel.odm.doctrine.distributionListener.listener" class="%integrated_channel.odm.doctrine.distributionListener.listener.class%">
+            <argument type="service" id="integrated_channel.queue" />
+            <argument type="service" id="integrated_channel.queue.serializer" />
+
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
     </services>
 
 </container>

@@ -35,12 +35,15 @@ class IntegratedChannelExtension extends Extension implements PrependExtensionIn
 
         $loader->load('adapters.xml');
         $loader->load('config.xml');
+        $loader->load('exporter.xml');
 
         $loader->load('doctrine.xml');
 
         $loader->load('form.xml');
         $loader->load('form.actions.xml');
         $loader->load('form.config.xml');
+
+        $loader->load('queue.xml');
 
         $loader->load('manager.xml');
         $loader->load('repository.xml');
