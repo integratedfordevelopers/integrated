@@ -27,12 +27,12 @@ class RequestSerializer implements RequestSerializerInterface
     /**
    	 * @var SerializerInterface
    	 */
-   	private $serializer;
+   	protected $serializer = null;
 
     /**
      * @var ChannelManagerInterface
      */
-    private $manager;
+    protected $manager = null;
 
     /**
      * Constructor.
@@ -47,13 +47,29 @@ class RequestSerializer implements RequestSerializerInterface
     }
 
     /**
+     * @return SerializerInterface
+     */
+    protected function getSerializer()
+    {
+        return $this->serializer;
+    }
+
+    /**
+     * @return ChannelManagerInterface
+     */
+    protected function getManager()
+    {
+        return $this->manager;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function serialize(Request $data)
     {
         return json_encode([
             'content' => [
-                'data' => $this->serializer->serialize($data->content, 'json'),
+                'data' => $this->getSerializer()->serialize($data->content, 'json'),
                 'type' => ClassUtils::getRealClass($data->content)
             ],
             'state' => $data->state,
@@ -75,9 +91,9 @@ class RequestSerializer implements RequestSerializerInterface
         $request = new Request();
 
         try {
-            $request->content = $this->serializer->deserialize($data['content']['data'], $data['content']['type'], 'json');
+            $request->content = $this->getSerializer()->deserialize($data['content']['data'], $data['content']['type'], 'json');
             $request->state = (string) $data['state'];
-            $request->channel = $this->manager->find($data['channel']);
+            $request->channel = $this->getManager()->find($data['channel']);
         } catch (Exception $e) {
             return null;
         }

@@ -35,12 +35,12 @@ class RequestSerializerTest extends \PHPUnit_Framework_TestCase
     /**
    	 * @var SerializerInterface | \PHPUnit_Framework_MockObject_MockObject
    	 */
-   	private $serializer;
+   	protected $serializer;
 
     /**
      * @var ChannelManagerInterface | \PHPUnit_Framework_MockObject_MockObject
      */
-    private $manager;
+    protected $manager;
 
     protected function setUp()
     {
