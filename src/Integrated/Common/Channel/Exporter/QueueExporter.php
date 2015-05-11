@@ -54,7 +54,31 @@ class QueueExporter implements ExporterInterface
     }
 
     /**
-     *
+     * @return QueueInterface
+     */
+    public function getQueue()
+    {
+        return $this->queue;
+    }
+
+    /**
+     * @return RequestSerializerInterface
+     */
+    public function getSerializer()
+    {
+        return $this->serializer;
+    }
+
+    /**
+     * @return ExporterInterface
+     */
+    public function getExporter()
+    {
+        return $this->exporter;
+    }
+
+    /**
+     * Execute a queued exporter run
      */
     public function execute()
     {

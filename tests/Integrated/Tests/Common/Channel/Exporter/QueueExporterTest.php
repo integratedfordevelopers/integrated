@@ -61,6 +61,21 @@ class QueueExporterTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf('Integrated\\Common\\Channel\\Exporter\\ExporterInterface', $this->getInstance());
     }
 
+    public function testGetQueue()
+    {
+        self::assertSame($this->queue, $this->getInstance()->getQueue());
+    }
+
+    public function testGetSerializer()
+    {
+        self::assertSame($this->serializer, $this->getInstance()->getSerializer());
+    }
+
+    public function testGetExporter()
+    {
+        self::assertSame($this->exporter, $this->getInstance()->getExporter());
+    }
+
     public function testExecute()
     {
         $message1 = $this->getMessage();
