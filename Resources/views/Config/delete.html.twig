@@ -1,0 +1,25 @@
+{% extends 'IntegratedChannelBundle::base.html.twig' %}
+
+{% block body %}
+
+<ol class="breadcrumb">
+    <li>
+        <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
+    </li>
+    <li class="active">{% trans %}Delete{% endtrans %}</li>
+</ol>
+
+<div class="page-header">
+    <h1>{% trans %}Delete{% endtrans %} <small>{{ adapter.manifest.label|default(data.adapter) }} {% trans %}configuration{% endtrans %}</small></h1>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <p>
+            {% trans with {'%name%':  data.name} %}You are about to delete the configuration "%name%", click the delete button below to confirm the action.{% endtrans %}
+        </p>
+        {{ form(form) }}
+    </div>
+</div>
+
+{% endblock %}
