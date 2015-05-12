@@ -2,13 +2,47 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class SortableCollectionType extends BootstrapCollectionType
+class SortableCollectionType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars = array_replace(
+            $view->vars,
+            array(
+                'default_title' => $options['default_title']
+            )
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'default_title' => 'Item'
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent()
+    {
+        return 'bootstrap_collection';
+    }
+
     /**
      * @return string
      */
