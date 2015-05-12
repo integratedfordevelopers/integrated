@@ -62,6 +62,7 @@ class Relation extends Content
      *      type="integrated_sortable_collection",
      *      options={
      *          "type"="integrated_address",
+     *          "default_title"="New address",
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }

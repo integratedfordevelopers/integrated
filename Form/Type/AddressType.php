@@ -49,9 +49,7 @@ class AddressType extends AbstractType
 
         $builder->add('address2', 'text', array(
             'label' => 'Address line 2',
-            'constraints' => array(
-                new NotBlank(),
-            )
+            'required' => false
         ));
 
         $builder->add('zipcode', 'text', array(
