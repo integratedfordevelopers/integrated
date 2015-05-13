@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Symfony\Component\Filesystem\LockHandler;
 use Traversable;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -503,6 +504,13 @@ class ContentController extends Controller
 
             if ($actions->has('save') && $actions->get('save')->isClicked()) {
                 if (!$locking['locked'] && $form->isValid()) {
+
+                    if ($this->has('integrated_solr.indexer')) {
+                        //higher priority for content edited in Integrated
+                        $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
+                        $subscriber->setPriority(9);
+                    }
+
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                     $dm = $this->get('doctrine_mongodb')->getManager();
                     $dm->flush();
@@ -513,9 +521,15 @@ class ContentController extends Controller
                     );
 
                     if ($this->has('integrated_solr.indexer')) {
+
+                        $solrlock = new LockHandler('content:edited:solr');
+                        $solrlock->lock(true);
+
                         $indexer = $this->get('integrated_solr.indexer');
                         $indexer->setOption('queue.size', 2);
                         $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+
+                        $solrlock->release();
                     }
 
                     if (!$locking['locked']) {
