@@ -21,7 +21,6 @@
 		<service id="integrated_solr.indexer.mongodb.subscriber" class="%integrated_solr.indexer.mongodb.subscriber.class%">
 			<argument type="service" id="integrated_queue.solr_indexer" /> <!-- should be a config option -->
 			<argument type="service" id="integrated_solr.indexer.serializer" />
-			<argument type="string">9</argument>
 
 			<tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
 		</service>
