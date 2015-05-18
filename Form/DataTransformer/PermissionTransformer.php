@@ -56,11 +56,11 @@ class PermissionTransformer implements DataTransformerInterface
 			// The object choice list needs a object with a id property.
 
 			if ($permission->hasMask(Permission::READ)) {
-				$data['read'][] = new ArrayObject(['id' => $group], ArrayObject::ARRAY_AS_PROPS);
+				$data['read'][] = $group;
 			}
 
 			if ($permission->hasMask(Permission::WRITE)) {
-				$data['write'][] = new ArrayObject(['id' => $group], ArrayObject::ARRAY_AS_PROPS);
+				$data['write'][] = $group;
 			}
 		}
 
@@ -84,14 +84,12 @@ class PermissionTransformer implements DataTransformerInterface
 		}
 
 		foreach ($value['read'] as $group) {
-			$hash = spl_object_hash($group);
-
-			if (!isset($permissions[$hash])) {
-				$permissions[$hash] = new Permission();
-				$permissions[$hash]->setGroup($group);
+			if (!isset($permissions[$group])) {
+				$permissions[$group] = new Permission();
+				$permissions[$group]->setGroup($group);
 			}
 
-			$permissions[$hash]->addMask(Permission::READ);
+			$permissions[$group]->addMask(Permission::READ);
 		}
 
 		if (!isset($value['write']) || $value['write'] === '' || $value['write'] === null) {
@@ -103,14 +101,12 @@ class PermissionTransformer implements DataTransformerInterface
 		}
 
 		foreach ($value['write'] as $group) {
-			$hash = spl_object_hash($group);
-
-			if (!isset($permissions[$hash])) {
-				$permissions[$hash] = new Permission();
-				$permissions[$hash]->setGroup($group);
+			if (!isset($permissions[$group])) {
+				$permissions[$group] = new Permission();
+				$permissions[$group]->setGroup($group);
 			}
 
-			$permissions[$hash]->addMask(Permission::WRITE);
+			$permissions[$group]->addMask(Permission::WRITE);
 		}
 
 		return new ArrayCollection(array_values($permissions));

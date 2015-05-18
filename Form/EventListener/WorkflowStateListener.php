@@ -16,7 +16,6 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -79,10 +78,10 @@ class WorkflowStateListener implements EventSubscriberInterface
 		}
 
 		$form->add('current', 'text', [
-			'read_only'   => true,
-			'mapped'      => false,
-			'data'        => $data->getName(),
-			'label'       => 'State'
+			'read_only' => true,
+			'mapped' => false,
+			'data' => $data->getName(),
+			'label' => 'State'
 		]);
 
 		$choices = $this->getChoices($data);
@@ -92,14 +91,18 @@ class WorkflowStateListener implements EventSubscriberInterface
 		}
 
 		$form->add('next', 'choice', [
-			'mapped'      => false,
-			'label'       => 'Next state',
+			'label' => 'Next state',
 
-			'choice_list' => new ObjectChoiceList($choices, 'name', [], null, 'id'),
-			'expanded'    => true,
+			'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_value' => 'id',
+            'choice_label' => 'name',
 
-			'empty_value' => 'Don\'t change',
-			'empty_data'  => $data,
+            'placeholder' => 'Don\'t change',
+
+			'expanded' => true,
+            'mapped' => false,
+			'empty_data' => $data,
 		]);
 	}
 

@@ -20,9 +20,9 @@ use Integrated\Common\Validator\Constraints\UniqueEntry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
@@ -89,14 +89,10 @@ class DefinitionFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'empty_data' => function (FormInterface $form) {
-                return new Definition();
-            },
-            'data_class' => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition'
-        ));
+        $resolver->setDefault('empty_data', function (FormInterface $form) { return new Definition(); });
+        $resolver->setDefault('data_class', 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
     }
 
     /**

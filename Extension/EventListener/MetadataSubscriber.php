@@ -62,7 +62,7 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 		$attr = $metadata->newOption('workflow');
 
 		$attr->setType('workflow_definition_choice');
-		$attr->setOption('data_type', 'scalar');
+		$attr->setOption('choice_data', 'scalar');
 
 		$metadata->addOption($attr);
 	}
