@@ -15,7 +15,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "~2.4",
+        "symfony/symfony": "~2.7",
         "symfony/framework-bundle": "~2.2",
 		"doctrine/doctrine-fixtures-bundle": "dev-master",
         "integrated/library": "~0.1",
@@ -27,11 +27,10 @@
 		"phpunit/phpunit": "4.2.*"
 	},
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\WorkflowBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\WorkflowBundle\\": ""
         }
     },
-    "target-dir": "Integrated/Bundle/WorkflowBundle",
     "extra": {
         "branch-alias": {
             "dev-develop": "0.1.1-dev"
