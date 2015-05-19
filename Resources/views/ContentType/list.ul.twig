@@ -5,7 +5,7 @@
 
             {% for document in types %}
                 <li>
-                    <a tabindex="-1" role="menuitem" href="{{ path('integrated_content_content_new', {'class': document.class, 'type': document.type}) }}">
+                    <a tabindex="-1" role="menuitem" href="{{ path('integrated_content_content_new', {'type': document.type}) }}">
                         {{ document.name }}
                     </a>
                 </li>
