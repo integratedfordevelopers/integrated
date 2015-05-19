@@ -11,73 +11,23 @@
 
 namespace Integrated\Bundle\ChannelBundle\Form\Type;
 
-use Integrated\Bundle\ChannelBundle\Form\EventListener\ClickedButtonListener;
-
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Integrated\Common\Form\Type\ActionsType as BaseActionsType;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ActionsType extends AbstractType
+class ActionsType extends BaseActionsType
 {
     /**
-     * @var array
+     * Constructor.
      */
-    protected $buttons = [
-        'create' => ['type' => 'submit', 'options' => ['label' => 'form.actions.create', 'translation_domain' => 'IntegratedChannelBundle']],
-        'save'   => ['type' => 'submit', 'options' => ['label' => 'form.actions.save', 'translation_domain' => 'IntegratedChannelBundle']],
-        'delete' => ['type' => 'submit', 'options' => ['label' => 'form.actions.delete', 'translation_domain' => 'IntegratedChannelBundle']],
-        'cancel' => ['type' => 'submit', 'options' => ['label' => 'form.actions.cancel', 'translation_domain' => 'IntegratedChannelBundle', 'button_class' => 'default']],
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function __construct()
     {
-        $builder->addEventSubscriber(new ClickedButtonListener());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $buttonsNormalizer = function(Options $options, $buttons) {
-            $normalized = [];
-
-            foreach ($buttons as $button) {
-                if (!isset($this->buttons[$button])) {
-                    throw new InvalidOptionsException(sprintf('The value "%s" for the option "%s" is missing a valid button configuration', $button, 'buttons'));
-                }
-
-                $normalized[$button] = $this->buttons[$button];
-            }
-
-            return $normalized;
-        };
-
-        $resolver->setNormalizer('buttons', $buttonsNormalizer);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'form_actions';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'integrated_channel_actions';
+        parent::__construct('integrated_channel_actions', [
+            'create' => ['type' => 'submit', 'options' => ['label' => 'form.actions.create', 'translation_domain' => 'IntegratedChannelBundle']],
+            'save'   => ['type' => 'submit', 'options' => ['label' => 'form.actions.save', 'translation_domain' => 'IntegratedChannelBundle']],
+            'delete' => ['type' => 'submit', 'options' => ['label' => 'form.actions.delete', 'translation_domain' => 'IntegratedChannelBundle']],
+            'cancel' => ['type' => 'submit', 'options' => ['label' => 'form.actions.cancel', 'translation_domain' => 'IntegratedChannelBundle', 'button_class' => 'default']],
+        ]);
     }
 }
