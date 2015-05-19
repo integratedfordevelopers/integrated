@@ -111,7 +111,10 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
 				$type = $builder->create('channels', 'choice', [
 					'required' => false,
 
-					'choice_list' => new ObjectChoiceList($choices, 'name', [], null, 'id'),
+                    'choices' => $choices,
+                    'choices_as_values' => true,
+                    'choice_value' => 'id',
+                    'choice_label' => 'name',
 
 					'multiple' => true,
 					'expanded' => true,
