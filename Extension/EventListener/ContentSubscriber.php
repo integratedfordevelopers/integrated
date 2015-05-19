@@ -17,6 +17,7 @@ use Integrated\Bundle\UserBundle\Model\UserInterface;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
+use Integrated\Bundle\WorkflowBundle\Entity\Definition\State as Definition;
 
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Extension\Event\ContentEvent;
@@ -26,11 +27,8 @@ use Integrated\Common\Content\Extension\ExtensionInterface;
 use Integrated\Common\Content\MetadataInterface;
 
 use Integrated\Common\ContentType\ResolverInterface;
-use Integrated\Common\ContentType\Exception\ExceptionInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -76,8 +74,10 @@ class ContentSubscriber implements ContentSubscriberInterface
 	{
 		return [
 			Events::POST_READ   => 'read',
-			Events::POST_CREATE => 'update',
-			Events::PRE_UPDATE  => 'update',
+            Events::PRE_CREATE  => 'preUpdate',
+            Events::POST_CREATE => 'postUpdate',
+            Events::PRE_UPDATE  => 'preUpdate',
+			Events::POST_UPDATE => 'postUpdate',
 			Events::POST_DELETE => 'delete'
 		];
 	}
@@ -115,10 +115,32 @@ class ContentSubscriber implements ContentSubscriberInterface
 		$event->setData($data);
 	}
 
+    /**
+     * @param ContentEvent $event
+     */
+    public function preUpdate(ContentEvent $event)
+    {
+        $content = $event->getContent();
+
+        if (!$this->isSupported($content)) {
+            return;
+        }
+
+        /** @var Definition $state */
+        $state = $event->getData()['state'];
+
+        if ($content instanceof MetadataInterface) {
+            $content->getMetadata()->set('workflow', $state->getWorkflow()->getId());
+            $content->getMetadata()->set('workflow_state', $state->getId());
+        }
+
+        $content->setDisabled(!$state->isPublishable()); // hax: setDisabled is not in the interface
+    }
+
 	/**
 	 * @param ContentEvent $event
 	 */
-	public function update(ContentEvent $event)
+	public function postUpdate(ContentEvent $event)
 	{
 		$content = $event->getContent();
 
@@ -173,13 +195,6 @@ class ContentSubscriber implements ContentSubscriberInterface
 		}
 
 		$this->getManager()->flush($state);
-
-		// also add the current workflow state to the content metadata
-
-		if ($content instanceof MetadataInterface) {
-			$content->getMetadata()->set('workflow', $state->getState()->getWorkflow()->getId());
-			$content->getMetadata()->set('workflow_state', $state->getState()->getId());
-		}
 	}
 
     /**
@@ -201,7 +216,7 @@ class ContentSubscriber implements ContentSubscriberInterface
 
 		if ($content instanceof MetadataInterface) {
 			$content->getMetadata()->remove('workflow');
-			$content->getMetadata()->remove('workflow.state');
+			$content->getMetadata()->remove('workflow_state');
 		}
 	}
 
