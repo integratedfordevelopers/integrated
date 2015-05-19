@@ -14,8 +14,9 @@ namespace Integrated\Bundle\ChannelBundle\Form\Type;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 use Integrated\Bundle\ChannelBundle\Form\ChoiceList\ChannelChoiceLoader;
-use Integrated\Bundle\ChannelBundle\Form\DataTransformer\ValuesToChoicesTransformer;
-use Integrated\Bundle\ChannelBundle\Form\DataTransformer\ValueToChoiceTransformer;
+
+use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
+use Integrated\Common\Form\DataTransformer\ValueToChoiceTransformer;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Factory\CachingFactoryDecorator;
