@@ -103,9 +103,9 @@ class ContentBlockHandler extends BlockHandler
 
             $pagination = $this->provider->execute(
                 $request,
+                $block->getId(),
                 $block->getItemsPerPage(),
                 $block->getMaxItems(),
-                $block->getId() . '-page',
                 $block->getFacetFields()
             );
 
