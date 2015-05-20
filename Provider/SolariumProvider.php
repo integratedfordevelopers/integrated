@@ -62,16 +62,16 @@ class SolariumProvider // @todo interface
 
     /**
      * @param Request $request
+     * @param string $blockId
      * @param int $limit
      * @param int $maxItems
-     * @param string $parameterName
      * @param array $facetFields
      *
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
-    public function execute(Request $request, $limit = 10, $maxItems = 0, $parameterName = 'page', array $facetFields = [])
+    public function execute(Request $request, $blockId, $limit = 10, $maxItems = 0, array $facetFields = [])
     {
-        $page = (int) $request->query->get($parameterName);
+        $page = (int) $request->query->get($blockId . '-page');
 
         if ($page < 1) {
             $page = 1;
@@ -82,12 +82,12 @@ class SolariumProvider // @todo interface
         $pagination = $this->paginator->paginate(
             [
                 $this->client,
-                $this->getQuery($request, $facetFields),
+                $this->getQuery($request, $blockId, $facetFields),
             ],
             $page,
             $limit,
             [
-                'pageParameterName' => $parameterName,
+                'pageParameterName' => $blockId . '-page',
                 'maxItems' => $maxItems,
             ]
         );
@@ -102,11 +102,12 @@ class SolariumProvider // @todo interface
 
     /**
      * @param Request $request
+     * @param string $blockId
      * @param array $facetFields
      *
      * @return \Solarium\QueryType\Select\Query\Query
      */
-    protected function getQuery(Request $request, array $facetFields = [])
+    protected function getQuery(Request $request, $blockId, array $facetFields = [])
     {
         $query = $this->client->createSelect();
 
@@ -119,6 +120,10 @@ class SolariumProvider // @todo interface
         $query
             ->createFilterQuery('pub')
             ->setQuery('pub_active: 1 AND pub_time:[* TO NOW] AND pub_end:[NOW TO *] AND facet_channels: ("%1%")', [$channel]);
+
+        if ($search = $request->query->get($blockId . '-search')) {
+            $query->setQuery('title:(%1%*)', [$search]);
+        }
 
         $helper = $query->getHelper();
 
