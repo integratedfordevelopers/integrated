@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 
@@ -90,6 +91,15 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
         }
 
         return $fields;
+    }
+
+    /**
+     * @param array $elements
+     * @return ArrayCollection
+     */
+    public function arrayCollection(array $elements)
+    {
+        return new ArrayCollection($elements);
     }
 
     /**
