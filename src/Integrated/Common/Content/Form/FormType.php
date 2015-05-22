@@ -22,16 +22,17 @@ use Integrated\Common\Form\Mapping\MetadataInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class FormType implements FormTypeInterface
+class FormType extends AbstractType implements FormTypeInterface
 {
     /**
      * @var ContentTypeInterface
@@ -163,26 +164,26 @@ class FormType implements FormTypeInterface
 		}
 	}
 
-	/**
+    /**
 	 * {@inheritdoc}
 	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$dispatcher = $this->getEventDispatcher();
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $dispatcher = $this->getEventDispatcher();
 
-		if ($dispatcher->hasListeners(Events::PRE_OPTIONS)) {
-			$dispatcher->dispatch(Events::PRE_OPTIONS, new OptionsEvent($this->contentType, $this->metadata, $resolver));
-		}
+        if ($dispatcher->hasListeners(Events::PRE_OPTIONS)) {
+            $dispatcher->dispatch(Events::PRE_OPTIONS, new OptionsEvent($this->contentType, $this->metadata, $resolver));
+        }
 
-		$resolver->setDefaults([
-			'data_class' => $this->contentType->getClass(),
-			'empty_data' => function(FormInterface $form) { return $this->contentType->create(); },
-		]);
+        $resolver->setDefaults([
+            'data_class' => $this->contentType->getClass(),
+            'empty_data' => function(FormInterface $form) { return $this->contentType->create(); },
+        ]);
 
-		if ($dispatcher->hasListeners(Events::POST_OPTIONS)) {
-			$dispatcher->dispatch(Events::POST_OPTIONS, new OptionsEvent($this->contentType, $this->metadata, $resolver));
-		}
-	}
+        if ($dispatcher->hasListeners(Events::POST_OPTIONS)) {
+            $dispatcher->dispatch(Events::POST_OPTIONS, new OptionsEvent($this->contentType, $this->metadata, $resolver));
+        }
+    }
 
 	/**
 	 * {@inheritdoc}

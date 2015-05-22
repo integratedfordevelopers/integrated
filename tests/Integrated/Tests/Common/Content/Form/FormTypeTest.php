@@ -27,7 +27,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use stdClass;
 
@@ -716,11 +716,11 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return OptionsResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return OptionsResolver | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getResolver()
     {
-        return $this->getMock('Symfony\\Component\\OptionsResolver\\OptionsResolverInterface');
+        return $this->getMock('Symfony\\Component\\OptionsResolver\\OptionsResolver');
     }
 
     /**

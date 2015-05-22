@@ -11,17 +11,18 @@
 
 namespace Integrated\Common\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ProxyType implements FormTypeInterface
+class ProxyType extends AbstractType
 {
 	/**
 	 * @var FormTypeInterface
@@ -43,25 +44,25 @@ class ProxyType implements FormTypeInterface
 		$this->name = $name ? (string) $name : null;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$this->type->buildForm($builder, $options);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function buildView(FormView $view, FormInterface $form, array $options)
 	{
 		$this->type->buildView($view, $form, $options);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function finishView(FormView $view, FormInterface $form, array $options)
 	{
 		$this->type->finishView($view, $form, $options);
@@ -88,24 +89,24 @@ class ProxyType implements FormTypeInterface
 	}
 
 	/**
-	 * @inheritdoc
+	 * {@inheritdoc}
 	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$this->type->setDefaultOptions($resolver);
-	}
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $this->type->setDefaultOptions($resolver);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getParent()
 	{
 		return $this->type->getParent();
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getName()
 	{
 		return $this->name === null ? $this->type->getName() : $this->name;
