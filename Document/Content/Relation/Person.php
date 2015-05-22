@@ -33,7 +33,7 @@ class Person extends Relation
     /**
      * @var string
      * @ODM\String
-     * @Type\Field(type="choice", options={"choices"={"Male", "Female"}})
+     * @Type\Field(type="choice", options={"choices"={"Male"="Male", "Female"="Female"}})
      */
     protected $gender;
 
