@@ -11,75 +11,79 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
 /**
- * Facet block document
+ * Form block document
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
  * @ODM\Document
- * @Type\Document("Facet block")
+ * @Type\Document("Form block")
  */
-class FacetBlock extends Block
+class FormBlock extends Block
 {
     /**
-     * @var ContentBlock
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Block\ContentBlock")
+     * @var ContentType
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType")
      * @Type\Field(
      *      type="document",
      *      options={
-     *          "class"="IntegratedContentBundle:Block\ContentBlock",
-     *          "property"="title",
+     *          "class"="IntegratedContentBundle:ContentType\ContentType",
+     *          "property"="name",
      *          "placeholder"=""
      *      }
      * )
      */
-    protected $block;
+    protected $contentType;
 
     /**
      * @var string
      * @ODM\String
-     * @Type\Field(type="text")
+     * @Assert\NotBlank
+     * @Type\Field
      */
-    protected $field;
+    protected $returnUrl;
 
     /**
-     * @return ContentBlock
+     * @return ContentType
      */
-    public function getBlock()
+    public function getContentType()
     {
-        return $this->block;
+        return $this->contentType;
     }
 
     /**
-     * @param ContentBlock $block
+     * @param ContentType $contentType
      * @return $this
      */
-    public function setBlock(ContentBlock $block)
+    public function setContentType(ContentType $contentType)
     {
-        $this->block = $block;
+        $this->contentType = $contentType;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getField()
+    public function getReturnUrl()
     {
-        return $this->field;
+        return $this->returnUrl;
     }
 
     /**
-     * @param string $field
+     * @param string $returnUrl
      * @return $this
      */
-    public function setField($field)
+    public function setReturnUrl($returnUrl)
     {
-        $this->field = $field;
+        $this->returnUrl = $returnUrl;
         return $this;
     }
 
@@ -88,6 +92,6 @@ class FacetBlock extends Block
      */
     public function getType()
     {
-        return 'facet';
+        return 'form';
     }
 }

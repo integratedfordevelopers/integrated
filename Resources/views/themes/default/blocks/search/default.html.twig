@@ -1,0 +1,12 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {{ block.title }}
+    </div>
+
+    <div class="panel-body">
+        <form method="get">
+            <input type="text" name="{{ block.block.id }}-search" value="{{ app.request.get(block.block.id ~ '-search') }}" />
+            <input type="submit" />
+        </form>
+    </div>
+</div>

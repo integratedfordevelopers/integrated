@@ -1,8 +1,8 @@
 <ul class="nav" id="top_menu_for_desktop">
-    <li class="dropdown for_mobile">
+    <li class="dropdown dropdown-large for_mobile">
         <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
 
-        <ul class="dropdown-menu dropdown-menu-large dropdown-right row">
+        <ul class="dropdown-menu dropdown-menu-large row">
             {{ render(controller('IntegratedContentBundle:ContentType:list', {'_format': 'ul'})) }}
         </ul>
     </li>

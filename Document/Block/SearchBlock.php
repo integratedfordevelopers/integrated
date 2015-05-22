@@ -17,14 +17,14 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
 /**
- * Facet block document
+ * Search block document
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
  * @ODM\Document
- * @Type\Document("Facet block")
+ * @Type\Document("Search block")
  */
-class FacetBlock extends Block
+class SearchBlock extends Block
 {
     /**
      * @var ContentBlock
@@ -39,13 +39,6 @@ class FacetBlock extends Block
      * )
      */
     protected $block;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @Type\Field(type="text")
-     */
-    protected $field;
 
     /**
      * @return ContentBlock
@@ -66,28 +59,10 @@ class FacetBlock extends Block
     }
 
     /**
-     * @return string
-     */
-    public function getField()
-    {
-        return $this->field;
-    }
-
-    /**
-     * @param string $field
-     * @return $this
-     */
-    public function setField($field)
-    {
-        $this->field = $field;
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getType()
     {
-        return 'facet';
+        return 'search';
     }
 }

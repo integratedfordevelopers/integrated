@@ -230,7 +230,6 @@
                 });
 
                 $("#{{ id }}").select2({
-                    minimumInputLength: 1,
                     multiple: true,
                     ajax: {
                         url: "{{path('integrated_content_content_index', { 'contenttypes[]': 'person' })}}",
