@@ -21,181 +21,177 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Translation\TranslatorInterface;
-
-use Symfony\Component\Validator\DefaultTranslator;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class LoginFormType extends AbstractType
 {
-	/**
-	 * @var RequestStack
-	 */
-	private $request;
+    /**
+     * @var RequestStack
+     */
+    private $request;
 
-	/**
-	 * @var TranslatorInterface
-	 */
-	private $translator;
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
 
-	/**
-	 * @var string
-	 */
-	private $translationDomain;
+    /**
+     * @var string
+     */
+    private $translationDomain;
 
-	/**
-	 * Create a login form type used for authentication.
-	 *
-	 * The container is used to retrieve the request so that the errors
-	 * and last username can be extracted from it.
-	 *
-	 * @param RequestStack $request
-	 * @param TranslatorInterface $translator
-	 * @param null $translationDomain
-	 */
-	public function __construct(RequestStack $request, TranslatorInterface $translator = null, $translationDomain = null)
-	{
-		$this->request = $request;
+    /**
+     * Create a login form type used for authentication.
+     *
+     * The container is used to retrieve the request so that the errors
+     * and last username can be extracted from it.
+     *
+     * @param RequestStack $request
+     * @param TranslatorInterface $translator
+     * @param null $translationDomain
+     */
+    public function __construct(RequestStack $request, TranslatorInterface $translator = null, $translationDomain = null)
+    {
+        $this->request = $request;
 
-		$this->translator = $translator;
-		$this->translationDomain = $translationDomain;
-	}
+        $this->translator = $translator;
+        $this->translationDomain = $translationDomain;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		$builder->add('_username', 'text');
-		$builder->add('_password', 'password');
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('_username', 'text');
+        $builder->add('_password', 'password');
 
-		if ($options['auth_remember']) {
-			$builder->add('_remember_me', 'checkbox', ['required' => false]);
-		}
+        if ($options['auth_remember']) {
+            $builder->add('_remember_me', 'checkbox', ['required' => false]);
+        }
 
-		if ($options['auth_target_path']) {
-			$config = [];
+        if ($options['auth_target_path']) {
+            $config = [];
 
-			if ($options['auth_target_path'] === (string) $options['auth_target_path']) {
-				$config['data'] = $options['auth_target_path'];
-				$config['mapped'] = false;
-			}
+            if ($options['auth_target_path'] === (string) $options['auth_target_path']) {
+                $config['data'] = $options['auth_target_path'];
+                $config['mapped'] = false;
+            }
 
-			$builder->add('_target_path', 'hidden', $config);
-		}
+            $builder->add('_target_path', 'hidden', $config);
+        }
 
-		$builder->add('login', 'submit');
+        $builder->add('login', 'submit');
 
-		if ($request = $this->getRequest($options)) {
-			$builder->addEventSubscriber(new SecurityLoginListener($request, $this->getTranslator($options), $this->getTranslationDomain($options)));
-		}
-	}
+        if ($request = $this->getRequest($options)) {
+            $builder->addEventSubscriber(new SecurityLoginListener($request, $this->getTranslator($options), $this->getTranslationDomain($options)));
+        }
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function buildView(FormView $view, FormInterface $form, array $options)
-	{
-		$view->vars['full_name'] = ''; // field names should not be prefixed
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['full_name'] = ''; // field names should not be prefixed
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		// form_login csrf token name is by default "_csrf_token"
-		// and the intention is by default "authenticate" so set
-		// those values as default for this form.
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('method', 'post');
 
-		$resolver->setDefaults([
-			'method'           => 'post',
-			'csrf_field_name'  => '_csrf_token',
-			'intention'        => 'authenticate',
+        // form_login csrf token name is by default "_csrf_token"
+        // and the intention is by default "authenticate" so set
+        // those values as default for this form.
 
-			'auth_remember'    => true,
-			'auth_target_path' => null
-		]);
+        $resolver->setDefault('csrf_field_name', '_csrf_token');
+        $resolver->setDefault('intention', 'authenticate');
 
-		$resolver->setOptional(['request', 'translator', 'translation_domain']);
+        $resolver->setDefault('auth_remember', true);
+        $resolver->setDefault('auth_target_path', null);
 
-		$resolver->setAllowedTypes([
-			'request' => ['null', 'Symfony\\Component\\HttpFoundation\\Request'],
-			'translator' => ['null', 'Symfony\\Component\\Translation\\TranslatorInterface'],
-			'translation_domain' => ['null', 'string'],
-		]);
-	}
+        $resolver->setDefined(['request', 'translator', 'translation_domain']);
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getName()
-	{
-		return 'integrated_user_security_login_form';
-	}
+        $resolver->setAllowedTypes('request', ['null', 'Symfony\\Component\\HttpFoundation\\Request']);
+        $resolver->setAllowedTypes('translator', ['null', 'Symfony\\Component\\Translation\\TranslatorInterface']);
+        $resolver->setAllowedTypes('translation_domain', ['null', 'string']);
+    }
 
-	/**
-	 * Get the request object.
-	 *
-	 * This will first look if the there is a request object in the
-	 * options and if not uses the one from the request stack. If null
-	 * is supplied as request object in the options then the request
-	 * object will be disabled
-	 *
-	 * @param array $options
-	 * @return null | Request
-	 */
-	protected function getRequest(array $options = [])
-	{
-		if (array_key_exists('request', $options)) {
-			return $options['request'];
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'integrated_user_security_login_form';
+    }
 
-		return $this->request->getCurrentRequest();
-	}
+    /**
+     * Get the request object.
+     *
+     * This will first look if the there is a request object in the
+     * options and if not uses the one from the request stack. If null
+     * is supplied as request object in the options then the request
+     * object will be disabled
+     *
+     * @param array $options
+     * @return null | Request
+     */
+    protected function getRequest(array $options = [])
+    {
+        if (array_key_exists('request', $options)) {
+            return $options['request'];
+        }
 
-	/**
-	 * Get the translator object.
-	 *
-	 * This will first look if there is a translator object in the
-	 * options and if not uses the injected one. if none is present
-	 * then a dummy will be returned.
-	 *
-	 * @param array $options
-	 * @return TranslatorInterface
-	 */
-	protected function getTranslator(array $options = [])
-	{
-		if (array_key_exists('translator', $options)) {
-			return $options['translator'] ? $options['translator'] : new DefaultTranslator(); // in case of null return a dummy
-		}
+        return $this->request->getCurrentRequest();
+    }
 
-		if ($this->translator === null) {
-			$this->translator = new DefaultTranslator();
-		}
+    /**
+     * Get the translator object.
+     *
+     * This will first look if there is a translator object in the
+     * options and if not uses the injected one. if none is present
+     * then a dummy will be returned.
+     *
+     * @param array $options
+     * @return TranslatorInterface
+     */
+    protected function getTranslator(array $options = [])
+    {
+        if (array_key_exists('translator', $options)) {
+            return $options['translator'] ? $options['translator'] : new IdentityTranslator(); // in case of null return a dummy
+        }
 
-		return $this->translator;
-	}
+        if ($this->translator === null) {
+            $this->translator = new IdentityTranslator();
+        }
 
-	/**
-	 * Get the translation domain.
-	 *
-	 * This will first look if there is a translation domain in the
-	 * options and if not uses the injected on.
-	 *
-	 * @param array $options
-	 * @return null | string
-	 */
-	protected function getTranslationDomain(array $options = [])
-	{
-		if (array_key_exists('translation_domain', $options)) {
-			return $options['translation_domain'];
-		}
+        return $this->translator;
+    }
 
-		return $this->translationDomain;
-	}
+    /**
+     * Get the translation domain.
+     *
+     * This will first look if there is a translation domain in the
+     * options and if not uses the injected on.
+     *
+     * @param array $options
+     * @return null | string
+     */
+    protected function getTranslationDomain(array $options = [])
+    {
+        if (array_key_exists('translation_domain', $options)) {
+            return $options['translation_domain'];
+        }
+
+        return $this->translationDomain;
+    }
 }

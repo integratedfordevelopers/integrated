@@ -18,7 +18,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -28,46 +28,44 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class GroupFormType extends AbstractType
 {
-	/**
-	 * @var GroupManagerInterface
-	 */
-	private $manager;
+    /**
+     * @var GroupManagerInterface
+     */
+    private $manager;
 
-	/**
-	 * @param GroupManagerInterface $manager
-	 */
-	public function __construct(GroupManagerInterface $manager)
-	{
-		$this->manager = $manager;
-	}
+    /**
+     * @param GroupManagerInterface $manager
+     */
+    public function __construct(GroupManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$builder->add('name', 'text', [
-			'required' => false,
-			'constraints' => [
-				new NotBlank(),
-				new Length(['min' => 3])
-			]
-		]);
+        $builder->add('name', 'text', [
+            'required' => false,
+            'constraints' => [
+                new NotBlank(),
+                new Length(['min' => 3])
+            ]
+        ]);
 
-		$builder->add('roles', 'user_role_choice');
+        $builder->add('roles', 'user_role_choice');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-			'empty_data' => function(FormInterface $form) { return $this->getManager()->create(); },
-            'data_class' => $this->getManager()->getClassName(),
+        $resolver->setDefault('empty_data', function(FormInterface $form) { return $this->getManager()->create(); });
+        $resolver->setDefault('data_class', $this->getManager()->getClassName());
 
-			'constraints' => new UniqueGroup($this->manager)
-        ));
+        $resolver->setDefault('constraints', new UniqueGroup($this->manager));
     }
 
     /**
@@ -78,11 +76,11 @@ class GroupFormType extends AbstractType
         return 'integrated_user_group_form';
     }
 
-	/**
-	 * @return GroupManagerInterface
-	 */
-	public function getManager()
-	{
-		return $this->manager;
-	}
+    /**
+     * @return GroupManagerInterface
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
 }
