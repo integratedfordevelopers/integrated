@@ -25,19 +25,19 @@ class UserMapper extends PropertyPathMapper
      */
     public function mapFormsToData($forms, &$data)
     {
-		// we only want properties to be mapped back when the form is enabled else nothing should
-		// be written to the $data.
+        // we only want properties to be mapped back when the form is enabled else nothing should
+        // be written to the $data.
 
-		$enabled = true;
+        $enabled = true;
 
-		foreach ($forms as $form) {
-			if ($form instanceof FormInterface && $form->getName() == 'enabled') {
-				$enabled = $form->getData();
-			}
-		}
+        foreach ($forms as $form) {
+            if ($form instanceof FormInterface && $form->getName() == 'enabled') {
+                $enabled = $form->getData();
+            }
+        }
 
-		if ($enabled) {
-			parent::mapFormsToData($forms, $data);
-		}
+        if ($enabled) {
+            parent::mapFormsToData($forms, $data);
+        }
     }
 }

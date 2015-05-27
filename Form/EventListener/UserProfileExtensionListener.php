@@ -26,18 +26,18 @@ class UserProfileExtensionListener implements EventSubscriberInterface
     /**
      * @var string
      */
-	private $name;
+    private $name;
 
-	/**
-	 * @param $name
-	 */
-	public function __construct($name)
+    /**
+     * @param $name
+     */
+    public function __construct($name)
     {
         $this->name = $name;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -53,14 +53,14 @@ class UserProfileExtensionListener implements EventSubscriberInterface
     public function preSetData(FormEvent $event)
     {
         if (!$parent = $event->getForm()->getParent()) {
-			return;
-		}
+            return;
+        }
 
         $content = $parent->getNormData();
 
-		if ($content instanceof ExtensibleInterface) {
-			$event->setData($content->getExtensions()->get($this->getName()));
-		}
+        if ($content instanceof ExtensibleInterface) {
+            $event->setData($content->getExtensions()->get($this->getName()));
+        }
     }
 
     /**
@@ -68,22 +68,22 @@ class UserProfileExtensionListener implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
-		if (!$parent = $event->getForm()->getParent()) {
-			return;
-		}
+        if (!$parent = $event->getForm()->getParent()) {
+            return;
+        }
 
-		$content = $parent->getNormData();
+        $content = $parent->getNormData();
 
-		if ($content instanceof ExtensibleInterface) {
-			$content->getExtensions()->set($this->getName(), $event->getForm()->getData()); // should not be required
-		}
+        if ($content instanceof ExtensibleInterface) {
+            $content->getExtensions()->set($this->getName(), $event->getForm()->getData()); // should not be required
+        }
     }
 
-	/**
-	 * @return string
-	 */
-	protected function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * @return string
+     */
+    protected function getName()
+    {
+        return $this->name;
+    }
 }

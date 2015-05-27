@@ -26,42 +26,45 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 class UserProfileOptionalListener implements EventSubscriberInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return array(
-			FormEvents::POST_SET_DATA => 'onPostSetData',
+            FormEvents::POST_SET_DATA => 'onPostSetData',
             FormEvents::POST_SUBMIT => 'onPostSubmit'
         );
     }
 
-	public function onPostSetData(FormEvent $event)
-	{
-		$data = $event->getData();
+    /**
+     * @param FormEvent $event
+     */
+    public function onPostSetData(FormEvent $event)
+    {
+        $data = $event->getData();
 
-		if ($data === null) {
-			return;
-		}
+        if ($data === null) {
+            return;
+        }
 
-		if ($data instanceof AdvancedUserInterface) {
-			$event->getForm()->get('enabled')->setData($data->isEnabled());
-		}
-	}
+        if ($data instanceof AdvancedUserInterface) {
+            $event->getForm()->get('enabled')->setData($data->isEnabled());
+        }
+    }
 
     /**
      * @param FormEvent $event
      */
     public function onPostSubmit(FormEvent $event)
     {
-		$data = $event->getData();
+        $data = $event->getData();
 
-		if ($data === null) {
-			return;
-		}
+        if ($data === null) {
+            return;
+        }
 
-		if ($data instanceof AdvancedUserInterface) {
-			$data->setEnabled($event->getForm()->get('enabled')->getData());
-		}
+        if ($data instanceof AdvancedUserInterface) {
+            $data->setEnabled($event->getForm()->get('enabled')->getData());
+        }
     }
 }
