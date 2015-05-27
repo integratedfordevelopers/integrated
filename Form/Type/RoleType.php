@@ -44,7 +44,7 @@ class RoleType extends AbstractType
         $resolver->setDefault('class', $this->manager->getClassName());
 
         $resolver->setDefault('choice_value', 'id');
-        $resolver->setDefault('choice_label', 'username');
+        $resolver->setDefault('choice_label', 'role');
 
         $resolver->setDefault('multiple', true);
         $resolver->setDefault('expanded', true);
