@@ -112,7 +112,10 @@ class ProfileFormType extends AbstractType
             ]);
         }
 
-        $builder->add('groups', 'user_group_choice');
+        $builder->add('groups', 'user_group_choice', [
+            'multiple' => true,
+            'expanded' => true
+        ]);
 
         $builder->addEventSubscriber(new UserProfilePasswordListener($this->generator, $this->encoderFactory));
         $builder->addEventSubscriber(new UserProfileExtensionListener('integrated.extension.user'));
