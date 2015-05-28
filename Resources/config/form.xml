@@ -14,7 +14,9 @@
 
         <parameter key="integrated_content.form.proxy.type.class">Integrated\Common\Form\Type\ProxyType</parameter>
 
-        <parameter key="integrated_content.form.content.relations.type.class">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</parameter>
+        <parameter key="integrated_content.form.actions.type.class">Integrated\Bundle\ContentBundle\Form\Type\ActionsType</parameter>
+
+		<parameter key="integrated_content.form.content.relations.type.class">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</parameter>
 
         <parameter key="integrated_content.form.content_type.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType</parameter>
         <parameter key="integrated_content.form.content_type.field.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldCollectionType</parameter>
@@ -31,9 +33,6 @@
         <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\Channel</parameter>
 
         <parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
-        
-        <parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
-        <parameter key="integrated_content.form.type.file.class">Integrated\Bundle\ContentBundle\Form\Type\FileType</parameter>
         
         <parameter key="integrated_content.form.search_selection.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType</parameter>
         <parameter key="integrated_content.form.search_selection_choice.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType</parameter>
@@ -99,10 +98,12 @@
         <service id="integrated_content.form.type.csv_array" class="%integrated_content.form.type.csv_array.class%">
             <tag name="form.type" alias="integrated_csv_array" />
         </service>
-        
-        <service id="integrated_content.form.content.relations.type" class="%integrated_content.form.content.relations.type.class%">
-            <argument type="service" id="doctrine_mongodb" />
-        </service>
+
+        <service id="integrated_content.form.actions.type" class="%integrated_content.form.actions.type.class%" />
+
+		<service id="integrated_content.form.content.relations.type" class="%integrated_content.form.content.relations.type.class%">
+			<argument type="service" id="doctrine_mongodb"/>
+		</service>
 
         <service id="integrated_content.form.content_type.channel.repository" alias="integrated_content.form.channel.repository" />
 

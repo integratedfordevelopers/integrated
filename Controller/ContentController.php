@@ -11,15 +11,15 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
-use Symfony\Component\Filesystem\LockHandler;
 use Traversable;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
 
@@ -29,8 +29,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Filesystem\LockHandler;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -105,7 +106,6 @@ class ContentController extends Controller
                         'name' => $target->getName()
                     );
                 }
-
             }
 
         } else {
@@ -326,18 +326,18 @@ class ContentController extends Controller
             'document' => $content,
         ];
     }
-
-    /**
-     * Create a new document
-     *
-     * @Template()
-     * @param Request $request
-     * @return array | Response
-     */
-    public function newAction(Request $request)
-    {
-        /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
-        $type = $this->get('integrated.form.factory')->getType($request->get('type'));
+    
+	/**
+	 * Create a new document
+	 *
+	 * @Template()
+	 * @param Request $request
+	 * @return array | Response
+	 */
+	public function newAction(Request $request)
+	{
+		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
+		$type = $this->get('integrated.form.factory')->getType($request->get('type'));
 
         $content = $type->getType()->create();
 
@@ -345,37 +345,13 @@ class ContentController extends Controller
             throw new AccessDeniedException();
         }
 
-        $attr = ['formnovalidate' => 'formnovalidate'];
-        if ($request->getRequestFormat() == 'iframe.html') {
-            $attr['data-dismiss'] = 'modal';
-        }
-
-        $form = $this->createForm(
-            $type,
-            $content,
-            [
-                'action' => $this->generateUrl(
-                    'integrated_content_content_new',
-                    [
-                        'class' => $request->get('class'),
-                        'type' => $request->get('type'),
-                        '_format' => $request->getRequestFormat(),
-                        'relation' => $request->get('relation')
-                    ]
-                ),
-                'method' => 'POST',
-            ],
-            [
-                'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
-                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => $attr]],
-            ]
-        );
+        $form = $this->createNewForm($type, $content, $request);
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
 
             // check for back click else its a submit
-            if ($form->get('actions')->get('cancel')->isClicked()) {
+            if ($form->get('actions')->getData() == 'cancel') {
                 return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
             }
 
@@ -393,13 +369,7 @@ class ContentController extends Controller
                 }
 
                 if ($request->getRequestFormat() == 'iframe.html') {
-                    return $this->render(
-                        'IntegratedContentBundle:Content:saved.iframe.html.twig',
-                        array(
-                            'id' => $content->getId(),
-                            'relation' => $request->get('relation')
-                        )
-                    );
+                    return $this->render('IntegratedContentBundle:Content:saved.iframe.html.twig',['id' => $content->getId(), 'relation' => $request->get('relation')]);
                 }
 
                 // Set flash message
@@ -430,7 +400,7 @@ class ContentController extends Controller
         /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
         $type = $this->get('integrated.form.factory')->getType($content);
 
-        if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
+        if (!$this->get('security.context')->isGranted(Permissions::VIEW, $content)) {
             throw new AccessDeniedException();
         }
 
@@ -440,7 +410,6 @@ class ContentController extends Controller
         $locking['locked'] = $locking['lock'] ? true : false;
 
         if ($locking['lock'] && $locking['owner']) {
-
             if ($request->query->has('lock') && $locking['lock']->getId() == $request->query->get('lock')) {
                 $locking['locked'] = false;
             }
@@ -454,38 +423,14 @@ class ContentController extends Controller
             }
         }
 
-        // load a different set of buttons based bases on the locking stat for this
-        // content object
-
-        if ($locking['locked']) {
-            $buttons = [
-                'reload' => ['type' => 'submit', 'options' => ['label' => 'Reload']],
-                'reload_changed' => ['type' => 'submit', 'options' => ['label' => 'Reload (keep changes)', 'attr' => ['type' => 'default']]],
-                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-            ];
-        } else {
-            $buttons = [
-                'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
-                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-            ];
-        }
-
-        $form = $this->createForm($type, $content, [
-            'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
-            'method' => 'PUT',
-
-            // don't display error's when the content is locked as the user can't save in the first place
-            'validation_groups' => $locking['locked'] ? false : null
-        ], $buttons);
+        $form = $this->createEditForm($type, $content, $locking);
 
         if ($request->isMethod('put')) {
             $form->handleRequest($request);
 
-            // possible actions are cancel, reload, reload_changed and save
+            // possible actions are cancel, back, reload, reload_changed and save
 
-            $actions = $form->get('actions');
-
-            if ($actions->get('cancel')->isClicked()) {
+            if ($form->get('actions')->getData() == 'cancel' || $form->get('actions')->getData() == 'back') {
                 if (!$locking['locked']) {
                     $locking['release']();
                 }
@@ -493,13 +438,17 @@ class ContentController extends Controller
                 return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
             }
 
-            if ($actions->has('reload') && $actions->get('reload')->isClicked()) {
+            if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
+                throw new AccessDeniedException();
+            }
+
+            if ($form->get('actions')->getData() == 'reload') {
                 return $this->redirect($this->generateUrl('integrated_content_content_edit', ['id' => $content->getId()]));
             }
 
-            if ($actions->has('save') && $actions->get('save')->isClicked()) {
+            // this is not rest compatible since a button click is required to save
+            if ($form->get('actions')->getData() == 'save') {
                 if (!$locking['locked'] && $form->isValid()) {
-
                     if ($this->has('integrated_solr.indexer')) {
                         //higher priority for content edited in Integrated
                         $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
@@ -516,7 +465,6 @@ class ContentController extends Controller
                     );
 
                     if ($this->has('integrated_solr.indexer')) {
-
                         $solrlock = new LockHandler('content:edited:solr');
                         $solrlock->lock(true);
 
@@ -574,18 +522,18 @@ class ContentController extends Controller
         );
     }
 
-    /**
-     * Delete a document
-     *
-     * @Template()
-     * @param Request $request
-     * @param Content $content
-     * @return array | Response
-     */
-    public function deleteAction(Request $request, Content $content)
-    {
-        /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-        $type = $this->get('integrated.form.resolver')->getType($content->getContentType());
+	/**
+	 * Delete a document
+	 *
+	 * @Template()
+	 * @param Request $request
+	 * @param Content $content
+	 * @return array | Response
+	 */
+	public function deleteAction(Request $request, Content $content)
+	{
+		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
+		$type = $this->get('integrated.form.resolver')->getType($content->getContentType());
 
         if (!$this->get('security.context')->isGranted(Permissions::DELETE, $content)) {
             throw new AccessDeniedException();
@@ -612,35 +560,14 @@ class ContentController extends Controller
 
         }
 
-        // load a different set of buttons based bases on the locking stat for this
-        // content object
-
-        if ($locking['locked'] && (!$request->isMethod('delete'))) {
-            $buttons = [
-                'reload' => ['type' => 'submit', 'options' => ['label' => 'Retry']],
-                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-            ];
-        } else {
-            $buttons = [
-                'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
-                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-            ];
-        }
-
-        $form = $this->createForm('content_delete', $content, [
-            'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
-            'method' => 'DELETE',
-        ], $buttons);
+        $form = $this->createDeleteForm($content, $locking);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
 
             // possible actions are cancel, reload and delete
 
-            $actions = $form->get('actions');
-
-            // check for back click else its a submit
-            if ($actions->get('cancel')->isClicked()) {
+            if ($form->get('actions')->getData() == 'cancel') {
                 if (!$locking['locked']) {
                     $locking['release']();
                 }
@@ -648,11 +575,12 @@ class ContentController extends Controller
                 return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
             }
 
-            if ($actions->has('reload') && $actions->get('reload')->isClicked()) {
+            if ($form->get('actions')->getData() == 'reload') {
                 return $this->redirect($this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]));
             }
 
-            if ($actions->has('delete') && $actions->get('delete')->isClicked()) {
+            // this is not rest compatible since a button click is required to save
+            if ($form->get('actions')->getData() == 'delete') {
                 if ($form->isValid()) {
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                     $dm = $this->get('doctrine_mongodb')->getManager();
@@ -730,7 +658,7 @@ class ContentController extends Controller
      */
     protected function getLock($object, $timeout = null)
     {
-        if (!$this->has('integrated_locking.dbal.manager')) {
+        if (!$this->has('integrated_locking.dbal.manager') || !$this->get('security.context')->isGranted(Permissions::EDIT, $object)) {
             return [
                 'lock'    => null,
                 'user'    => null,
@@ -820,6 +748,11 @@ class ContentController extends Controller
         ];
     }
 
+    /**
+     * @param Traversable $iterator
+     *
+     * @return array
+     */
     protected function getLocks(Traversable $iterator)
     {
         $results = [];
@@ -948,19 +881,71 @@ class ContentController extends Controller
     }
 
     /**
-     * @inheritdoc
+     * @param FormTypeInterface $type
+     * @param ContentInterface  $content
+     * @param Request           $request
+     *
+     * @return \Symfony\Component\Form\Form
      */
-    public function createForm($type, $data = null, array $options = [], array $buttons = [])
+    protected function createNewForm(FormTypeInterface $type, ContentInterface $content, Request $request)
     {
-        /** @var FormBuilder $form */
-        $form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+        $form = $this->createForm($type, $content,[
+            'action' => $this->generateUrl('integrated_content_content_new', ['type' => $request->get('type'), '_format' => $request->getRequestFormat(), 'relation' => $request->get('relation')]),
+            'method' => 'POST',
+        ]);
 
-        if ($buttons) {
-            $form->add('actions', 'form_actions', [
-                'buttons' => $buttons
-            ]);
+        return $form->add('actions', 'content_actions', ['buttons' => ['create', 'cancel']]);
+    }
+
+    /**
+     * @param FormTypeInterface $type
+     * @param ContentInterface  $content
+     * @param array             $locking
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function createEditForm(FormTypeInterface $type, ContentInterface $content, array $locking)
+    {
+        $form = $this->createForm($type, $content,[
+            'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId(), 'lock' => $locking['lock']->getId()] : ['id' => $content->getId()]),
+            'method' => 'PUT',
+
+            // don't display error's when the content is locked as the user can't save in the first place
+            'validation_groups' => $locking['locked'] ? false : null
+        ]);
+
+        // load a different set of buttons based on the permissions and locking state
+
+        if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
+            return $form->add('actions', 'content_actions', ['buttons' => ['back']]);
         }
 
-        return $form->getForm();
+        if ($locking['locked']) {
+            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'reload_changed', 'cancel']]);
+        }
+
+        return $form->add('actions', 'content_actions', ['buttons' => ['save', 'cancel']]);
+    }
+
+    /**
+     * @param ContentInterface $content
+     * @param array            $locking
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function createDeleteForm(ContentInterface $content, array $locking)
+    {
+        $form = $this->createForm('content_delete', $content, [
+            'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
+            'method' => 'DELETE',
+        ]);
+
+        // load a different set of buttons based on the locking state
+
+        if ($locking['locked']) {
+            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'cancel']]);
+        }
+
+        return $form->add('actions', 'content_actions', ['buttons' => ['delete', 'cancel']]);
     }
 }
