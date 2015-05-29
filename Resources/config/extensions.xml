@@ -20,11 +20,9 @@
 
 		<service id="integrated_content.extension.registry.builder" class="%integrated_content.extension.registry.builder.class%" />
 
-		<service id="integrated_content.extension.registry"
-				 class="%integrated_content.extension.registry.class%"
-				 factory-service="integrated_content.extension.registry.builder"
-				 factory-method="getRegistry"
-				/>
+        <service id="integrated_content.extension.registry" class="%integrated_content.extension.registry.class%">
+            <factory service="integrated_content.extension.registry.builder" method="getRegistry" />
+        </service>
 
 		<service id="integrated_content.extension.dispatcher" class="%integrated_content.extension.dispatcher.class%">
 			<argument type="service" id="integrated_content.extension.registry" />

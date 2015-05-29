@@ -64,12 +64,9 @@
         <service id="integrated.form.resolver" alias="integrated_content.resolver.priority" />
         <service id="integrated.form.factory" alias="integrated_content.form.factory" />
 
-        <service id="integrated_content.form.channel.repository"
-                 class="Doctrine\Common\Persistence\ObjectRepository"
-                 factory-service="doctrine_mongodb"
-                 factory-method="getRepository"
-                 public="false"
-                >
+        <service id="integrated_content.form.channel.repository" class="Doctrine\Common\Persistence\ObjectRepository" public="false">
+            <factory service="doctrine_mongodb" method="getRepository" />
+
             <argument type="string">Integrated\Bundle\ContentBundle\Document\Channel\Channel</argument>
         </service>
 
