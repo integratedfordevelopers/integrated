@@ -113,7 +113,9 @@ class WorkflowStateListener implements EventSubscriberInterface
 	 */
 	public function onSubmit(FormEvent $event)
 	{
-		$event->setData($this->getData($event));
+        if ($state = $this->getData($event)) {
+            $event->setData($state);
+        }
 	}
 
 	/**
@@ -147,7 +149,7 @@ class WorkflowStateListener implements EventSubscriberInterface
 		$form = $event->getForm();
 
 		if (!$form->has('next')) {
-			return null;
+            return null;
 		}
 
 		$form = $form->get('next');
