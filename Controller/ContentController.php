@@ -907,7 +907,7 @@ class ContentController extends Controller
     protected function createEditForm(FormTypeInterface $type, ContentInterface $content, array $locking)
     {
         $form = $this->createForm($type, $content,[
-            'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId(), 'lock' => $locking['lock']->getId()] : ['id' => $content->getId()]),
+            'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
             'method' => 'PUT',
 
             // don't display error's when the content is locked as the user can't save in the first place
