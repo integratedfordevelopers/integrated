@@ -356,6 +356,12 @@ class ContentController extends Controller
             }
 
             if ($form->isValid()) {
+                if ($this->has('integrated_solr.indexer')) {
+                    //higher priority for content edited in Integrated
+                    $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
+                    $subscriber->setPriority(9);
+                }
+
                 /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                 $dm = $this->get('doctrine_mongodb')->getManager();
 
