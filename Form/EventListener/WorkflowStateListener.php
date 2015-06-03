@@ -43,8 +43,9 @@ class WorkflowStateListener implements EventSubscriberInterface
 	public static function getSubscribedEvents()
 	{
 		return [
-			FormEvents::PRE_SET_DATA => [['onPrepareData', 10], ['onPrepareForm']],
-			FormEvents::SUBMIT       => 'onSubmit'
+			FormEvents::PRE_SET_DATA  => [['onPrepareData', 10], ['onPrepareForm']],
+            FormEvents::POST_SET_DATA => 'onPostData',
+			FormEvents::SUBMIT        => 'onSubmit'
 		];
 	}
 
@@ -105,6 +106,28 @@ class WorkflowStateListener implements EventSubscriberInterface
 			'empty_data' => $data,
 		]);
 	}
+
+    /**
+   	 * Force the placeholder to be selected
+   	 *
+   	 * @param FormEvent $event
+   	 */
+   	public function onPostData(FormEvent $event)
+   	{
+        $form = $event->getForm();
+
+        if (!$form->has('next')) {
+            return;
+        }
+
+        $form = $form->get('next');
+
+        if (!$form->has('placeholder')) {
+            return;
+        }
+
+        $form->get('placeholder')->setData(true);
+   	}
 
 	/**
 	 * Set the state
