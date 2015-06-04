@@ -11,12 +11,12 @@
 
 namespace Integrated\Tests\Common\Converter;
 
-use Integrated\Common\Converter\ContainerFactory;
+use Integrated\Common\Converter\FilterContainerFactory;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
+class FilterContainerFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterface()
     {
@@ -25,15 +25,14 @@ class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateContainer()
     {
-        self::assertInstanceOf('Integrated\\Common\\Converter\\Container', $this->getInstance()->createContainer());
+        self::assertInstanceOf('Integrated\\Common\\Converter\\FilterContainer', $this->getInstance()->createContainer());
     }
 
     /**
-     * @return ContainerFactory
+     * @return FilterContainerFactory
      */
     protected function getInstance()
     {
-        return new ContainerFactory();
+        return new FilterContainerFactory();
     }
 }
- 
