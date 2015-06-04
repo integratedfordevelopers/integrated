@@ -23,7 +23,7 @@ class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf('Integrated\\Common\\Converter\\ContainerFactoryInterface', $this->getInstance());
     }
 
-    public function testCreateType()
+    public function testCreateContainer()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Container', $this->getInstance()->createContainer());
     }
