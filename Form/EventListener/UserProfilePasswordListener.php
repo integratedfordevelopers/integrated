@@ -74,7 +74,10 @@ class UserProfilePasswordListener implements EventSubscriberInterface
         $event->getForm()->add('password', 'password', [
             'mapped' => false,
             'required' => false,
-            'attr' => ['help_text' => 'Password will only be changed if a new password is entered'],
+            'attr' => [
+                'help_text'    => 'Password will only be changed if a new password is entered',
+                'autocomplete' => 'off'
+            ],
             'constraints' => [
                 new Length(['min' => 6])
             ]
@@ -88,17 +91,13 @@ class UserProfilePasswordListener implements EventSubscriberInterface
     {
         $form = $event->getForm();
 
-        if ($form->has('enabled') && $form->get('enabled')->getData() == false)	{
-            return;
-        }
-
-        $user = $event->getForm()->getData();
-
         // if a password is entered it need to be encoded and stored in
         // the user model.
 
         if ($password = $form->get('password')->getData()) {
             $salt = base64_encode($this->getGenerator()->nextBytes(72));
+
+            $user = $form->getData();
 
             $user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
             $user->setSalt($salt);
