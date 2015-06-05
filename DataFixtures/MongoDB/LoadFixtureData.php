@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 
@@ -66,10 +67,10 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
      *
      * @param $class
      * @param array $required set the required flag for these fields
-     * @param array $ignore don't add these fields
+     * @param array | bool specific fields in array, true or false to ignore all or none of the not required fields
      * @return Field[]
      */
-    public function classfields($class, array $required = [], array $ignore = [])
+    public function classfields($class, array $required = [], $ignore = false)
     {
         $fields = [];
 
@@ -78,18 +79,31 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
         }
 
         $required = array_map('strtolower', $required);
-        $ignore = array_map('strtolower', $ignore);
+        if (is_array($ignore)) {
+            $ignore = array_map('strtolower', $ignore);
+        }
 
         foreach ($metadata->getFields() as $field) {
-            if (in_array(strtolower($field->getName()), $ignore)) { continue; }
+            if ($ignore === true || (is_array($ignore) && in_array(strtolower($field->getName()), $ignore))) {
+                continue;
+            }
 
             $fields[$field->getName()] = (new Field())
-                    ->setName($field->getName())
-                    ->setType($field->getType())
-                    ->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
+                ->setName($field->getName())
+                ->setType($field->getType())
+                ->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
         }
 
         return $fields;
+    }
+
+    /**
+     * @param array $elements
+     * @return ArrayCollection
+     */
+    public function arrayCollection(array $elements)
+    {
+        return new ArrayCollection($elements);
     }
 
     /**
