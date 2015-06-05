@@ -942,7 +942,7 @@ class ContentController extends Controller
     protected function createDeleteForm(ContentInterface $content, array $locking)
     {
         $form = $this->createForm('content_delete', $content, [
-            'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
+            'action' => $this->generateUrl('integrated_content_content_delete', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
             'method' => 'DELETE',
         ]);
 
