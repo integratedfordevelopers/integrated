@@ -42,6 +42,14 @@
             </call>
         </service>
 
+        <service id="integrated_content.metadata.factory.all_types" class="%integrated_content.metadata.factory.class%">
+            <argument type="service" id="integrated_content.metadata.driver" />
+
+            <call method="setEventDispatcher">
+                <argument type="service" id="integrated_content.metadata.factory.event_dispatcher" />
+            </call>
+        </service>
+
     </services>
 
 </container>
