@@ -66,12 +66,12 @@ The <info>%command.name%</info> .
 							$data['args'] = array_filter(array_map('trim', $data['args']));
 
 							if ($data['args']) {
-								$this->executeCommand($input, $output, 'workflow:queue:index', array_merge(['--ignore'], $data['args']));
+								$this->executeCommand($input, $output, 'workflow:index', array_merge(['--ignore'], $data['args']));
 							}
 							break;
 
 						case 'index-full':
-							$this->executeCommand($input, $output, 'workflow:queue:index', ['--full']);
+							$this->executeCommand($input, $output, 'workflow:index', ['--full']);
 							break;
 
 						default:
@@ -102,7 +102,7 @@ The <info>%command.name%</info> .
 	protected function executeCommand(InputInterface $input, OutputInterface $output, $command, array $arguments = [])
 	{
 		// run in a different process for isolation like memory issues.
-		$process = new Process('php app/console solr:indexer:run ' . $command . ' -e ' . $input->getOption('env') . ' '  . implode(' ', $arguments), getcwd(), null, null, null);
+		$process = new Process('php app/console ' . $command . ' -e ' . $input->getOption('env') . ' '  . implode(' ', $arguments), getcwd(), null, null, null);
 		$process->run();
 
 		$process->run(function($type, $buffer) use ($output) {

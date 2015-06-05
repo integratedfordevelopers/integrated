@@ -45,7 +45,7 @@ class IndexCommand extends ContainerAwareCommand
 
 			->addArgument('id', InputArgument::IS_ARRAY, 'One or more workflow ids that need to be indexed')
 
-			->addOption('full', 'f', InputOption::VALUE_NONE, 'Do a full index of all the workflow this will override any given workflow ids')
+			->addOption('full', 'f', InputOption::VALUE_NONE, 'Do a full index of all the workflow, this will override any given workflow ids')
 			->addOption('ignore', 'i', InputOption::VALUE_NONE, 'Ignore workflow ids that do not exist')
 
 			->setDescription('Queue the solr indexing of content items of one or more workflow\'s')
