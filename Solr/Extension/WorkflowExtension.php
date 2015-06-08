@@ -83,6 +83,16 @@ class WorkflowExtension implements TypeExtensionInterface
                 $container->add('security_workflow_write', $permission->getGroup());
             }
         }
+
+        if (($state) && (method_exists($state,"getState"))) {
+            $container->add('facet_workflow_state', $state->getState()->getName());
+        }
+
+        if (($state) && (method_exists($state,"getAssignedId"))) {
+            $container->add('workflow_assigned', $state->getAssignedId());
+            $container->add('facet_workflow_assigned', $state->getAssignedId());
+        }
+
     }
 
     /**
