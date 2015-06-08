@@ -82,6 +82,8 @@ class ContentController extends Controller
         $facetSet = $query->getFacetSet();
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels');
+        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state');
+        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned');
 		$facetSet->createFacetField('properties')->setField('facet_properties');
 
 
@@ -215,6 +217,40 @@ class ContentController extends Controller
                     ->createFilterQuery('channels')
                     ->addTag('channels')
                     ->setQuery('facet_channels: ((%1%))', [implode(') OR (', array_map($filter, $activeChannels))]);
+            }
+        }
+
+
+        $activeStates = $request->query->get('workflow_state');
+        if (is_array($activeStates)) {
+
+            if (count($activeStates)) {
+                $helper = $query->getHelper();
+                $filter = function($param) use($helper) {
+                    return $helper->escapePhrase($param);
+                };
+
+                $query
+                    ->createFilterQuery('workflow_state')
+                    ->addTag('workflow_state')
+                    ->setQuery('facet_workflow_state: ((%1%))', [implode(') OR (', array_map($filter, $activeStates))]);
+            }
+        }
+
+
+        $activeAssigned = $request->query->get('workflow_assigned');
+        if (is_array($activeAssigned)) {
+
+            if (count($activeStates)) {
+                $helper = $query->getHelper();
+                $filter = function($param) use($helper) {
+                    return $helper->escapePhrase($param);
+                };
+
+                $query
+                    ->createFilterQuery('workflow_assigned')
+                    ->addTag('workflow_assigned')
+                    ->setQuery('facet_workflow_assigned: ((%1%))', [implode(') OR (', array_map($filter, $activeAssigned))]);
             }
         }
 
@@ -848,10 +884,33 @@ class ContentController extends Controller
 
         $avatarurl = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
 
+
+        /** @var $client \Solarium\Client */
+        //
+        // Get documents assigned to this user
+        //
+        $client = $this->get('solarium.client');
+        $query = $client->createSelect();
+
+        if ($user = $this->getUser()) {
+            $userid = $user->getId();
+
+            $query
+                ->createFilterQuery('workflow_assigned_id')
+                ->setQuery('facet_workflow_assigned_id:' . $userid . '');
+
+            $result = $client->select($query);
+
+
+            $assingedcontent = $result->getDocuments();
+        }
+
+
         return array(
             'avatarurl' => $avatarurl,
             'queuecount' => $queuecount,
             'queuepercentage' => $queuepercentage,
+            'assingedcontent' => $assingedcontent,
         );
     }
 

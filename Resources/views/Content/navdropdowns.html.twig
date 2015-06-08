@@ -7,6 +7,18 @@
         </ul>
     </li>
 
+    {% if assingedcontent|length > 0 %}
+        <li class="dropdown hidden-xs">
+            <a data-toggle="dropdown" class="dropdown-toggle with_badge" role="button" href="#"><i class="glyphicon glyphicon-tasks"></i><span class="badge">{{ assingedcontent|length }}</span></a>
+            <ul role="menu" class="dropdown-menu with_icons">
+                <li class="dropdown_title">{% trans %}Assigned to me{% endtrans %}:</li>
+                {% for doc in assingedcontent %}
+                    <li><a href="{{ path('integrated_content_content_edit', {id: doc.type_id}) }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-plus-sign"></i><span class="item_name">{{ doc.title }}</span></a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
+
     {#<li class="dropdown hidden-xs">
             <a data-toggle="dropdown" class="dropdown-toggle with_badge" role="button" href="#"><i class="glyphicon glyphicon-tasks"></i><span class="badge">4</span></a>
             <ul role="menu" class="dropdown-menu with_icons">
