@@ -13,6 +13,8 @@ namespace Integrated\Bundle\WorkflowBundle\Solr\Extension;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
+use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 use Integrated\Common\Content\ContentInterface;
@@ -84,13 +86,13 @@ class WorkflowExtension implements TypeExtensionInterface
             }
         }
 
-        if (($state) && (method_exists($state,"getState"))) {
-            $container->add('facet_workflow_state', $state->getState()->getName());
-        }
+        $container->add('facet_workflow_state', $state->getName());
 
-        if (($state) && (method_exists($state,"getAssignedId"))) {
-            $container->add('workflow_assigned', $state->getAssignedId());
-            $container->add('facet_workflow_assigned', $state->getAssignedId());
+        if ($assignee = $this->getAssigned($data) && isset($assignee) && $assignee instanceof User) {
+            if ($relation = $assignee->getRelation() && isset($relation) && $relation instanceof Person) {
+                $container->add('facet_workflow_assigned', $relation->getFirstname() . ' ' . $relation->getLastname());
+            }
+            $container->add('workflow_assigned', $assignee->getId());
         }
 
     }
@@ -146,4 +148,39 @@ class WorkflowExtension implements TypeExtensionInterface
 
         return null;
     }
+
+
+    /**
+     * Get the workflow assignee for the content.
+     *
+     * @param ContentInterface $content
+     *
+     * @return null | State
+     */
+    protected function getAssigned(ContentInterface $content)
+    {
+        // does this content even have a workflow connected ?
+
+        $type = $content->getContentType();
+
+        if (!$this->resolver->hasType($type)) {
+            return false;
+        }
+
+        $type = $this->resolver->getType($type);
+
+        if (!$type->getOption('workflow')) {
+            return null;
+        }
+
+
+        // return the assigned instance
+
+        if ($entity = $this->workflow->findOneBy(['content' => $content])) {
+            return $entity->getAssigned();
+        }
+
+        return null;
+    }
+
 }
