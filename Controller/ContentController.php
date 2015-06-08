@@ -241,7 +241,7 @@ class ContentController extends Controller
         $activeAssigned = $request->query->get('workflow_assigned');
         if (is_array($activeAssigned)) {
 
-            if (count($activeStates)) {
+            if (count($activeAssigned)) {
                 $helper = $query->getHelper();
                 $filter = function($param) use($helper) {
                     return $helper->escapePhrase($param);
@@ -334,6 +334,8 @@ class ContentController extends Controller
 
         $active['contenttypes'] = $contentType;
         $active['channels'] = $activeChannels;
+        $active['workflow_state'] = $activeStates;
+        $active['workflow_assigned'] = $activeAssigned;
 
         return array(
             'types'        => $types,
