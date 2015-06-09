@@ -119,6 +119,8 @@
                             <h3 class="title">
                                 {% if key == 'contenttypes' %}
                                     {% trans %}Content types{% endtrans %}
+                                {% elseif facetTitles[key]|default %}
+                                    {{ facetTitles[key]|default|trans }}
                                 {% else %}
                                     {{ key|capitalize }}
                                 {% endif %}

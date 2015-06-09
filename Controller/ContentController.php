@@ -55,6 +55,9 @@ class ContentController extends Controller
         // Store contentTypes in array
         $displayTypes = array();
 
+        // Store facetTitles in array
+        $facetTitles = array();
+
         //remember search state
         $session = $request->getSession();
         if ($request->query->get('remember') && $session->has('content_index_view')) {
@@ -83,7 +86,9 @@ class ContentController extends Controller
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels');
         $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state');
+        $facetTitles['workflow_state'] = 'Workflow state';
         $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned');
+        $facetTitles['workflow_state'] = 'Assigned user';
 		$facetSet->createFacetField('properties')->setField('facet_properties');
 
 
@@ -152,6 +157,7 @@ class ContentController extends Controller
 
             //create relation facet field
             $facetSet->createFacetField($name)->setField('facet_' . $relation->getId());
+            $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
 
             if (is_array($relationfilter)) {
@@ -346,7 +352,8 @@ class ContentController extends Controller
             'channels'     => $channels,
             'facets'       => $result->getFacetSet()->getFacets(),
             'locks'        => $this->getLocks($paginator),
-            'relations'    => $relations
+            'relations'    => $relations,
+            'facetTitles'  => $facetTitles
         );
     }
 
