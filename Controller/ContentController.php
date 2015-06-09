@@ -88,7 +88,7 @@ class ContentController extends Controller
         $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state');
         $facetTitles['workflow_state'] = 'Workflow state';
         $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned');
-        $facetTitles['workflow_state'] = 'Assigned user';
+        $facetTitles['workflow_assigned'] = 'Assigned user';
 		$facetSet->createFacetField('properties')->setField('facet_properties');
 
 
