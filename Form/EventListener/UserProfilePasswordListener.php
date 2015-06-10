@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
+use Integrated\Bundle\UserBundle\Model\UserInterface;
+
 use Integrated\Common\Content\Extension\Event;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -20,6 +22,7 @@ use Symfony\Component\Form\FormEvents;
 
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+
 use Symfony\Component\Security\Core\Util\SecureRandomInterface;
 
 use Symfony\Component\Validator\Constraints\Length;
@@ -90,14 +93,17 @@ class UserProfilePasswordListener implements EventSubscriberInterface
     public function onPostSubmit(FormEvent $event)
     {
         $form = $event->getForm();
+        $user = $form->getData();
+
+        if (!$user instanceof UserInterface) {
+            return; // not a user so nothing to encode
+        }
 
         // if a password is entered it need to be encoded and stored in
         // the user model.
 
         if ($password = $form->get('password')->getData()) {
             $salt = base64_encode($this->getGenerator()->nextBytes(72));
-
-            $user = $form->getData();
 
             $user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
             $user->setSalt($salt);
