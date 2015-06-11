@@ -39,6 +39,7 @@
                     <colgroup>
                         <col style="width: 3em" />
                         <col />
+                        <col />
                         <col style="width: 5em" />
                     </colgroup>
 
@@ -46,6 +47,7 @@
                         <tr>
                             <th>#</th>
                             <th>Username</th>
+                            <th>Relation</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -57,6 +59,10 @@
                         <tr>
                             <td>{{ user.id }}</td>
                             <td>{{ user.username }}</td>
+                            <td>{% if user.relation.id|default %}
+                                    <a href="{{ path('integrated_content_content_edit', {id: user.relation.id}) }}">{{ user.relation.name|default }} {{ user.relation.firstname|default }} {{ user.relation.lastname|default }}</a>
+                                {% endif %}
+                            </td>
                             <td>
                                 <a href="{{ path('integrated_user_profile_edit', {'id': user.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
                                 <a href="{{ path('integrated_user_profile_delete', {'id': user.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
