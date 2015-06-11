@@ -84,7 +84,8 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
         }
 
         foreach ($metadata->getFields() as $field) {
-            if ($ignore === true || (is_array($ignore) && in_array(strtolower($field->getName()), $ignore))) {
+            if (($ignore === true && !in_array(strtolower($field->getName()), $required))
+                || (is_array($ignore) && in_array(strtolower($field->getName()), $ignore))) {
                 continue;
             }
 
