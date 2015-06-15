@@ -24,6 +24,7 @@
         "integrated/formtype-bundle": "~0.2",
         "integrated/solr-bundle": "~0.2",
         "integrated/user-bundle": "~0.2",
+        "integrated/menu-bundle": "~0.1",
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*"
     },
