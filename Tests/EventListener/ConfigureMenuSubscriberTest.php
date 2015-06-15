@@ -111,6 +111,12 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
             ->willReturn($subMenu)
         ;
 
+        // Stub menu addChild, this function should not be called
+        $menu
+            ->expects($this->never())
+            ->method('addChild')
+        ;
+
         // Stub sub menu addChild
         $subMenu
             ->expects($this->atLeastOnce())
