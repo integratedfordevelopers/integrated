@@ -149,8 +149,10 @@ class SluggableSubscriber implements EventSubscriber
                     $slug = $this->generateSlugFromMetadata($object, $propertyMetadata->slugFields, $propertyMetadata->slugSeparator);
                 }
 
+                $id = $event == 'preUpdate' && method_exists($object, 'getId') ? $object->getId() : null;
+
                 // generate unique slug
-                $slug = $this->generateUniqueSlug($om, $object, $propertyMetadata->name, $slug);
+                $slug = $this->generateUniqueSlug($om, $object, $propertyMetadata->name, $slug, $id);
 
                 $propertyMetadata->setValue($object, $slug);
                 $this->recomputeSingleObjectChangeSet($om, $object);
@@ -182,10 +184,11 @@ class SluggableSubscriber implements EventSubscriber
      * @param object                                      $object
      * @param string                                      $field
      * @param string                                      $slug
+     * @param string                                      $id
      *
      * @return string
      */
-    protected function generateUniqueSlug(ObjectManager $om, $object, $field, $slug)
+    protected function generateUniqueSlug(ObjectManager $om, $object, $field, $slug, $id = null)
     {
         if (!trim($slug)) {
             return null;
@@ -193,12 +196,14 @@ class SluggableSubscriber implements EventSubscriber
 
         $class = get_class($object);
 
-        if ($this->isUniqueSlug($om, $class, $field, $slug)) {
+        if ($this->isUniqueSlug($om, $class, $field, $slug, $id)) {
             return $slug;
         }
 
         // slug with counter pattern
         $pattern = '/(.+)-(\d+)$/i';
+
+        // @todo fix slug with integer at the end (not the unique counter)
 
         if (preg_match($pattern, $slug, $match)) {
             // remove counter from slug
@@ -241,13 +246,16 @@ class SluggableSubscriber implements EventSubscriber
      * @param string                                      $class
      * @param string                                      $field
      * @param string                                      $slug
+     * @param string                                      $id
      *
      * @return bool
      */
-    protected function isUniqueSlug(ObjectManager $om, $class, $field, $slug)
+    protected function isUniqueSlug(ObjectManager $om, $class, $field, $slug, $id = null)
     {
         // check in document manager
         foreach ($this->getScheduledObjects($om) as $object) {
+
+            // @todo check $id
 
             if (property_exists($object, $field) && $slug === $this->propertyAccessor->getValue($object, $field)) {
                 return false;
@@ -260,7 +268,12 @@ class SluggableSubscriber implements EventSubscriber
         if ($uow instanceof ODMUnitOfWork) {
 
             $builder = $this->getRepository($om, $class)->createQueryBuilder();
-            $builder->field($field)->equals(new \MongoRegex('/^' . preg_quote($slug, '/') . '$/i'));
+            $builder->field($field)->equals($slug);
+
+            if (null !== $id) {
+                // exclude current document
+                $builder->field('id')->notEqual($id);
+            }
 
             $query = $builder->count()->getQuery();
 
@@ -287,7 +300,7 @@ class SluggableSubscriber implements EventSubscriber
         if ($uow instanceof ODMUnitOfWork) {
 
             return array_merge($objects, $this->getRepository($om, $class)->findBy([
-                $field => new \MongoRegex('/^' . preg_quote($slug, '/') . '(-\d+)?$/i') // counter is optional
+                $field => new \MongoRegex('/^' . preg_quote($slug, '/') . '(-\d+)?$/') // counter is optional
             ]));
 
         } elseif ($uow instanceof ORMUnitOfWork) {
