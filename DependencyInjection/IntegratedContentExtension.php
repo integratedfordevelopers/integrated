@@ -55,7 +55,6 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('resolvers.xml');
         $loader->load('solr.xml');
         $loader->load('twig.xml');
-        $loader->load('event_listeners.xml');
 
         $loader->load('security.xml');
 

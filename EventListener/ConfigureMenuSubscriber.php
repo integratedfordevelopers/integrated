@@ -21,8 +21,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class ConfigureMenuSubscriber implements EventSubscriberInterface
 {
-    const MENU_CONTENT = 'integrated_menu.content';
-    const MENU_MANAGE = 'integrated_menu.manage';
+    const MENU = 'integrated_menu';
+    const SUB_MENU = 'content';
 
     /**
      * {@inheritdoc}
@@ -40,14 +40,14 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
     public function onMenuConfigure(ConfigureMenuEvent $event)
     {
         $menu = $event->getMenu();
-
-        if (self::MENU_CONTENT === $menu->getName()) {
-            $menu->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
+        if ($menu->getName() !== self::MENU) {
+            return;
         }
 
-        if (self::MENU_MANAGE === $menu->getName()) {
-            $menu->addChild('Content types', array('route' => 'integrated_content_content_type_index'));
-            $menu->addChild('Relations', array('route' => 'integrated_content_relation_index'));
+        if (!$subMenu = $menu->getChild(self::SUB_MENU)) {
+            $subMenu = $menu->addChild(self::SUB_MENU);
         }
+
+        $subMenu->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
     }
 }

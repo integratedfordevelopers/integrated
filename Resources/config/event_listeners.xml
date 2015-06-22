@@ -15,6 +15,7 @@
         <service id="integrated_content.event_listener.configure_menu_subscriber" class="%integrated_content.event_listener.configure_menu_subscriber.class%">
             <tag name="kernel.event_subscriber" />
         </service>
+
     </services>
 
 </container>
