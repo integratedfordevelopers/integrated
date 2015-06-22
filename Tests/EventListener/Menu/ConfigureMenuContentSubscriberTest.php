@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Tests\EventListener;
+namespace Integrated\Bundle\ContentBundle\Tests\EventListener\Menu;
 
-use Integrated\Bundle\ContentBundle\EventListener\ConfigureMenuContentSubscriber;
+use Integrated\Bundle\ContentBundle\EventListener\Menu\ConfigureMenuContentSubscriber;
 
 /**
  * Test for ConfigureMenuSubscriber

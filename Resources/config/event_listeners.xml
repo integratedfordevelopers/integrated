@@ -6,13 +6,13 @@
 
     <parameters>
 
-        <parameter key="integrated_content.event_listener.configure_content_menu_subscriber.class">Integrated\Bundle\ContentBundle\EventListener\ConfigureContentMenuSubscriber</parameter>
+        <parameter key="integrated_content.event_listener.menu.configure_menu_content_subscriber.class">Integrated\Bundle\ContentBundle\EventListener\Menu\ConfigureMenuContentSubscriber</parameter>
 
     </parameters>
 
     <services>
 
-        <service id="integrated_content.event_listener.configure_content_menu_subscriber" class="%integrated_content.event_listener.configure_content_menu_subscriber.class%">
+        <service id="integrated_content.event_listener.menu.configure_menu_content_subscriber" class="%integrated_content.event_listener.menu.configure_menu_content_subscriber.class%">
             <tag name="kernel.event_subscriber" />
         </service>
 

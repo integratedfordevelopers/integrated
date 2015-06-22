@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\EventListener;
+namespace Integrated\Bundle\ContentBundle\EventListener\Menu;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
