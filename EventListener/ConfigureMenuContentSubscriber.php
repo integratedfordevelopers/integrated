@@ -19,10 +19,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ConfigureMenuSubscriber implements EventSubscriberInterface
+class ConfigureMenuContentSubscriber implements EventSubscriberInterface
 {
-    const MENU = 'integrated_menu';
-    const SUB_MENU = 'content';
+    const MENU = 'integrated_menu.content';
 
     /**
      * {@inheritdoc}
@@ -44,10 +43,6 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$subMenu = $menu->getChild(self::SUB_MENU)) {
-            $subMenu = $menu->addChild(self::SUB_MENU);
-        }
-
-        $subMenu->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
+        $menu->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
     }
 }
