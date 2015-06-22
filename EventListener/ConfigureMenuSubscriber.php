@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\EventListener\Menu;
+namespace Integrated\Bundle\ContentBundle\EventListener;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,9 +19,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ConfigureMenuContentSubscriber implements EventSubscriberInterface
+class ConfigureMenuSubscriber implements EventSubscriberInterface
 {
-    const MENU = 'integrated_menu.content';
+    const MENU_CONTENT = 'integrated_menu.content';
+    const MENU_MANAGE = 'integrated_menu.manage';
 
     /**
      * {@inheritdoc}
@@ -39,10 +40,14 @@ class ConfigureMenuContentSubscriber implements EventSubscriberInterface
     public function onMenuConfigure(ConfigureMenuEvent $event)
     {
         $menu = $event->getMenu();
-        if ($menu->getName() !== self::MENU) {
-            return;
+
+        if (self::MENU_CONTENT === $menu->getName()) {
+            $menu->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
         }
 
-        $menu->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
+        if (self::MENU_MANAGE === $menu->getName()) {
+            $menu->addChild('Content types', array('route' => 'integrated_content_content_type_index'));
+            $menu->addChild('Relations', array('route' => 'integrated_content_relation_index'));
+        }
     }
 }

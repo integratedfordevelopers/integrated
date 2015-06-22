@@ -10,7 +10,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\EventListener\Menu;
 
-use Integrated\Bundle\ContentBundle\EventListener\Menu\ConfigureMenuContentSubscriber;
+use Integrated\Bundle\ContentBundle\EventListener\ConfigureMenuSubscriber;
 
 /**
  * Test for ConfigureMenuSubscriber
@@ -20,7 +20,7 @@ use Integrated\Bundle\ContentBundle\EventListener\Menu\ConfigureMenuContentSubsc
 class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ConfigureMenuContentSubscriber
+     * @var ConfigureMenuSubscriber
      */
     protected $subscriber;
 
@@ -29,7 +29,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function setup()
     {
-        $this->subscriber = new ConfigureMenuContentSubscriber();
+        $this->subscriber = new ConfigureMenuSubscriber();
     }
 
     /**
@@ -37,7 +37,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSubscribedEventsFunction()
     {
-        $this->assertArrayHasKey('integrated_menu.configure', ConfigureMenuContentSubscriber::getSubscribedEvents());
+        $this->assertArrayHasKey('integrated_menu.configure', ConfigureMenuSubscriber::getSubscribedEvents());
     }
 
     /**
@@ -60,7 +60,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
 
         // Stub menu getName
         $menu
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getName')
             ->willReturn('invalid_menu_name')
         ;
@@ -76,9 +76,9 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test onMenuConfigure function with valid menu and valid sub menu
+     * Test onMenuConfigure function with content menu
      */
-    public function testOnMenuConfigureFunctionWithValidMenu()
+    public function testOnMenuConfigureFunctionWithContentMenu()
     {
         /** @var \Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent | \PHPUnit_Framework_MockObject_MockObject $event */
         $event = $this->getMock('Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent', [], [], '', false);
@@ -95,9 +95,44 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
 
         // Stub menu getName
         $menu
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getName')
-            ->willReturn(ConfigureMenuContentSubscriber::MENU)
+            ->willReturn(ConfigureMenuSubscriber::MENU_CONTENT)
+        ;
+
+        // Stub sub menu addChild
+        $menu
+            ->expects($this->atLeastOnce())
+            ->method('addChild')
+        ;
+
+        // Fire the event
+        $this->subscriber->onMenuConfigure($event);
+    }
+
+    /**
+     * Test onMenuConfigure function with manage menu
+     */
+    public function testOnMenuConfigureFunctionWithManageMenu()
+    {
+        /** @var \Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent | \PHPUnit_Framework_MockObject_MockObject $event */
+        $event = $this->getMock('Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent', [], [], '', false);
+
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        $menu = $this->getMock('Knp\Menu\ItemInterface');
+
+        // Stub event getMenu
+        $event
+            ->expects($this->once())
+            ->method('getMenu')
+            ->willReturn($menu)
+        ;
+
+        // Stub menu getName
+        $menu
+            ->expects($this->exactly(2))
+            ->method('getName')
+            ->willReturn(ConfigureMenuSubscriber::MENU_MANAGE)
         ;
 
         // Stub sub menu addChild
