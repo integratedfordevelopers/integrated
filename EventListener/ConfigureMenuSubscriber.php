@@ -12,7 +12,9 @@
 namespace Integrated\Bundle\ContentBundle\EventListener;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Event subscriber for adding menu items to integrated_menu
@@ -22,7 +24,22 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ConfigureMenuSubscriber implements EventSubscriberInterface
 {
     const MENU = 'integrated_menu';
-    const SUB_MENU = 'content';
+    const MENU_CONTENT = 'Content';
+    const MENU_MANAGE = 'Manage';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
+    /**
+     * @var AuthorizationCheckerInterface
+     */
+    protected $authorizationChecker;
+
+    /**
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     */
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
+    {
+        $this->authorizationChecker = $authorizationChecker;
+    }
 
     /**
      * {@inheritdoc}
@@ -44,10 +61,19 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$subMenu = $menu->getChild(self::SUB_MENU)) {
-            $subMenu = $menu->addChild(self::SUB_MENU);
+        if (!$menuContent = $menu->getChild(self::MENU_CONTENT)) {
+            $menuContent = $menu->addChild(self::MENU_CONTENT);
         }
 
-        $subMenu->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
+        $menuContent->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
+
+        if ($this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
+            if (!$menuManage = $menu->getChild(self::MENU_MANAGE)) {
+                $menuManage = $menu->addChild(self::MENU_MANAGE);
+            }
+
+            $menuManage->addChild('Content types', array('route' => 'integrated_content_content_type_index'));
+            $menuManage->addChild('Relations', array('route' => 'integrated_content_relation_index'));
+        }
     }
 }
