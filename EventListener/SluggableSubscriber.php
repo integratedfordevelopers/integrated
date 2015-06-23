@@ -129,13 +129,15 @@ class SluggableSubscriber implements EventSubscriber
                     continue; // generate slug in another event
                 }
 
+                $slug = null;
+
                 if ($event == 'preUpdate') {
 
                     if ($args->hasChangedField($propertyMetadata->name)) {
                         // generate custom slug
                         $slug = $this->slugger->slugify($args->getNewValue($propertyMetadata->name), $propertyMetadata->slugSeparator);
 
-                    } else {
+                    } elseif (null !== $propertyMetadata->getValue($object)) {
                         continue; // no changes
                     }
 
@@ -298,6 +300,8 @@ class SluggableSubscriber implements EventSubscriber
         $uow = $om->getUnitOfWork();
 
         if ($uow instanceof ODMUnitOfWork) {
+
+            // @todo fix slug separator
 
             return array_merge($objects, $this->getRepository($om, $class)->findBy([
                 $field => new \MongoRegex('/^' . preg_quote($slug, '/') . '(-\d+)?$/') // counter is optional
