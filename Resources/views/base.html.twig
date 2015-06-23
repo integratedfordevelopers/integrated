@@ -52,31 +52,7 @@
             <ul class="nav pull-left">
                 <li class="dropdown dropdown-large">
                     <a href="#" class="dropdown-toggle left_menu_toggle glyphicon glyphicon-th" data-toggle="dropdown"></a>
-
-                    <ul class="dropdown-menu dropdown-menu-large row">
-                        <li>
-                            <ul>
-                                <li class="dropdown-header">{% trans %}Content{% endtrans %}</li>
-                                <li><a href="{{ path('integrated_content_content_index') }}">{% trans %}Content navigator{% endtrans %}</a></li>
-                            </ul>
-                        </li>
-{#
-                        <li class="divider"></li>
-#}
-                        <li>
-                            <ul>
-                                {% if is_granted('ROLE_ADMIN') %}
-                                <li class="dropdown-header">{% trans %}Manage{% endtrans %}</li>
-                                <li><a href="{{ path('integrated_content_content_type_index') }}">{% trans %}Content types{% endtrans %}</a></li>
-                                <li><a href="{{ path('integrated_content_relation_index') }}">{% trans %}Relations{% endtrans %}</a></li>
-                                <li><a href="{{ path('integrated_user_profile_index') }}">{% trans %}Users{% endtrans %}</a></li>
-                                <li><a href="{{ path('integrated_user_group_index') }}">{% trans %}Groups{% endtrans %}</a></li>
-                                {% endif %}
-                            </ul>
-                        </li>
-
-                    </ul>
-
+                    {{ knp_menu_render('integrated_menu', {'template': 'IntegratedContentBundle:Menu:menu.html.twig'}) }}
                 </li>
             </ul>
 
