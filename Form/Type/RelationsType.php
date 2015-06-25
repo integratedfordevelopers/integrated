@@ -55,7 +55,7 @@ class RelationsType extends AbstractType
         $type = $options['content_type'];
 
         /** @var Relation[] $relations */
-        $relations = $this->manager->getRepository(self::REPOSITORY)->findBy(array('sources.$id' => $type->getId()));
+        $relations = $this->manager->getRepository(self::REPOSITORY)->findBy(array('sources.$id' => $type->getId()), array('name' => 'ASC'));
 
         foreach ($relations as $relation) {
             foreach ($relation->getTargets() as $contentType) {
