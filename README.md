@@ -18,3 +18,9 @@ routing.yml
 
     integrated_website:
         resource: "@IntegratedWebsiteBundle/Resources/config/routing.xml"
+        
+config.yml
+    
+    twig:
+        form_themes:
+            - 'IntegratedWebsiteBundle:Form:form_div_layout.html.twig'
