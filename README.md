@@ -24,3 +24,10 @@ config.yml
     twig:
         form_themes:
             - 'IntegratedWebsiteBundle:Form:form_div_layout.html.twig'
+    ...   
+    sp_bower:
+        bundles:
+            IntegratedWebsiteBundle:
+                cache:
+                    %kernel.cache_dir%/../sp_bower/IntegratedWebsiteBundle
+
