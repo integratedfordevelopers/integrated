@@ -20,6 +20,8 @@ use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 
 /**
+ * @deprecated will be removed asap.
+ *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class DiscriminatorMapBuilderSubscriber implements EventSubscriber

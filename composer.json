@@ -38,6 +38,7 @@
 			"Integrated\\MongoDB\\ContentType\\": "src/",
 			"Integrated\\MongoDB\\Serializer\\": "src/",
 			"Integrated\\MongoDB\\Solr\\": "src/",
+            "Integrated\\Doctrine\\": "src/",
 			"Integrated\\Common\\Content\\": "src/",
 			"Integrated\\Common\\ContentType\\": "src/",
             "Integrated\\Common\\Converter\\": "src/",
@@ -52,6 +53,7 @@
     "autoload-dev": {
         "psr-0": {
             "Integrated\\Tests\\MongoDB\\": "tests/",
+            "Integrated\\Tests\\Doctrine\\": "tests/",
             "Integrated\\Tests\\Common\\": "tests/"
         }
     },
