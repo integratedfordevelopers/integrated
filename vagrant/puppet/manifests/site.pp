@@ -219,3 +219,8 @@ exec {'npm install bower':
     command => 'npm install -g bower',
     require => Package['npm'],
 }
+
+# Install sass
+exec {'gem install sass':
+  command => 'gem install sass'
+}
