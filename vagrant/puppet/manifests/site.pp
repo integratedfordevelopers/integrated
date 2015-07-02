@@ -7,30 +7,38 @@ Exec {
 Exec["apt_update"] -> Package <| |>
 
 class { 'apt':
-	purge_sources_list   => true,
-	purge_sources_list_d => true,
-	purge_preferences_d  => true
+  purge => {
+    'sources.list' => true,
+    'sources.list.d' => true,
+    'preferences.d' => true
+  }
 }
 
 apt::source { 'debian_stable':
 	location    => 'http://ftp.nl.debian.org/debian/',
 	release     => 'wheezy',
 	repos       => 'main contrib non-free',
-	include_src => true
+  include => {
+    'src' => true
+  }
 }
 
 apt::source { 'debian_stable-security':
 	location    => 'http://security.debian.org/',
 	release     => 'wheezy/updates',
 	repos       => 'main contrib non-free',
-	include_src => true
+  include => {
+    'src' => true
+  }
 }
 
 apt::source { 'debian_stable-updates':
 	location    => 'http://ftp.nl.debian.org/debian/',
 	release     => 'wheezy-updates',
 	repos       => 'main contrib non-free',
-	include_src => true
+  include => {
+    'src' => true
+  }
 }
 
 apt::source { 'debian_stable-backports':
@@ -38,7 +46,9 @@ apt::source { 'debian_stable-backports':
 	release     => 'wheezy-backports',
 	repos       => 'main',
 	pin         => 200,
-	include_src => true
+  include => {
+    'src' => true
+  }
 }
 
 # git
