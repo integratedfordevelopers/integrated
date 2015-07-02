@@ -65,13 +65,14 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
      * class. It is possible to supply a list of fields that are required and that
      * should be ignored.
      *
-     * @param $class
-     * @param array $required set the required flag for these fields
-     * @param array $filter remove specific fields, true or false to ignore all or none of the not required fields
-     * @param bool $blacklist don't add the non required fields
+     * @param string   $class
+     * @param string[] $required  set the required flag for these fields
+     * @param string[] $filter    a list of field that are white or black listed basted on $blacklist
+     * @param bool     $blacklist if true then $filter is a blacklist and a white list if false
+     *
      * @return Field[]
      */
-    public function classfields($class, array $required = [], array $filter = [], $blacklist = false)
+    public function classfields($class, array $required = [], array $filter = [], $blacklist = true)
     {
         $fields = [];
 
@@ -81,9 +82,10 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
 
         $required = array_map('strtolower', $required);
         $filter = array_map('strtolower', $filter);
+        $blacklist = (bool) $blacklist;
 
         foreach ($metadata->getFields() as $field) {
-            if ($blacklist || in_array(strtolower($field->getName()), $filter)) {
+            if ($blacklist === in_array(strtolower($field->getName()), $filter)) {
                 continue;
             }
 
