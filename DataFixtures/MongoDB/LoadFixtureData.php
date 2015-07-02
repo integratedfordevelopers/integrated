@@ -84,6 +84,10 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
         $filter = array_map('strtolower', $filter);
         $blacklist = (bool) $blacklist;
 
+        if (!$blacklist) {
+            $filter = array_merge($filter, $required);
+        }
+
         foreach ($metadata->getFields() as $field) {
             if ($blacklist === in_array(strtolower($field->getName()), $filter)) {
                 continue;
