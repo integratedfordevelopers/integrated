@@ -1,31 +1,26 @@
-# Integrated Content Bundle
+# IntegratedContentBundle #
+This bundle contains all the functionality for the Content layer in Integrated.
 
-TODO: write a readme file ;)
+## Requirements ##
+* >= PHP 5.4
+* See composer require section
 
-### Assetic config
+## Documentation ##
+* [Documentation for master](https://bitbucket.org/eactive/integrated-content-bundle/src/master/Resources/doc/index.md)
+* [Documentation for 0.3](https://bitbucket.org/eactive/integrated-content-bundle/src/0.3/Resources/doc/index.md)
+* [Integrated for Developers](http://integratedfordevelopers.com/ "Integrated for Developers")
 
-Don't forget to do a assetic dump so that the bootstrap css and javascript are generated
+## Installation ##
+All the installation instructions are located in the documentation.
 
-	# Assetic Configuration
-	assetic:
-		debug:          %kernel.debug%
-		use_controller: false
-		filters:
-			less:
-				node: /usr/bin/node
-				node_paths: [/usr/local/lib/node_modules]
-				compress: true
-				apply_to: "\.less$"
-			cssrewrite: ~
-		assets:
-			integrated_css:
-				inputs:
-	#                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css
-			integrated_js:
-				inputs:
-	#                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
-	#                - @IntegratedFormTypeBundle/Resources/public/js/*
+## License ##
+This bundle is under the MIT license. See the complete license in the bundle:
 
-	# Bootstrap configuration
-	braincrafted_bootstrap:
-		less_filter: less
+    Resources/LICENSE
+
+## Contributing ##
+Pull requests are welcome. Please see our [CONTRIBUTING guide](http://integratedfordevelopers.com/contributing "CONTRIBUTING guide").
+
+## About ##
+This bundle is part of the Integrated project. You can read more about this project on the
+[Integrated for Developers](http://integratedfordevelopers.com/ "Integrated for Developers") website.
