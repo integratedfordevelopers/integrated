@@ -43,7 +43,7 @@ class PageController extends Controller
     {
         $this->get('integrated_theme.templating.theme_manager')->setActiveTheme('gim'); // @todo
 
-        // @todo security check
+        // @todo security check (INTEGRATED-383)
 
         $form = $this->createEditForm($page);
         $form->handleRequest($request);

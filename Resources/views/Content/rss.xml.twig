@@ -10,7 +10,7 @@
             <item>
                 <title>{{ document.title|default }}</title>
                 <pubDate>{{ document.pub_created|date('D, d M Y H:i:s O') }}</pubDate>
-                <link>{{ app.request.scheme }}://{{ app.request.httpHost }}/content/{{ document.slug|default }}</link>
+                <link>{{ app.request.schemeAndHttpHost }}/content/{{ document.slug|default }}</link>
             </item>
 
         {% endfor %}
