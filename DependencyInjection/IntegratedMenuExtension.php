@@ -28,6 +28,6 @@ class IntegratedMenuExtension extends Extension
     {
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $loader->load('menu.xml');
+        $loader->load('providers.xml');
     }
 }

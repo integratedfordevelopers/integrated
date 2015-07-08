@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class Provider implements MenuProviderInterface
+class MenuProvider implements MenuProviderInterface
 {
     /**
      * @var FactoryInterface

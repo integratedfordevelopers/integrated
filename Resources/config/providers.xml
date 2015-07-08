@@ -6,13 +6,13 @@
 
     <parameters>
 
-        <parameter key="integrated_menu.provider.class">Integrated\Bundle\MenuBundle\Provider\Provider</parameter>
+        <parameter key="integrated_menu.provider.menu_provider.class">Integrated\Bundle\MenuBundle\Provider\MenuProvider</parameter>
 
     </parameters>
 
     <services>
 
-        <service id="integrated_menu.provider" class="%integrated_menu.provider.class%">
+        <service id="integrated_menu.provider.menu_provider" class="%integrated_menu.provider.menu_provider.class%">
             <argument type="service" id="knp_menu.factory" />
             <argument type="service" id="event_dispatcher" />
             <tag name="knp_menu.provider" />
