@@ -2,7 +2,7 @@
 This bundle contains all the functionality for the Content layer in Integrated.
 
 ## Requirements ##
-* &gt;= PHP 5.4
+* \>= PHP 5.4
 * See composer require section
 
 ## Documentation ##
