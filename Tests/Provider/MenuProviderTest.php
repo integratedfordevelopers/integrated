@@ -10,20 +10,20 @@
 
 namespace Integrated\Bundle\MenuBundle\Tests\Provider;
 
-use Integrated\Bundle\MenuBundle\Provider\Provider;
+use Integrated\Bundle\MenuBundle\Provider\MenuProvider;
 
 /**
  * Test for Provider
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ProviderTest extends \PHPUnit_Framework_TestCase
+class MenuProviderTest extends \PHPUnit_Framework_TestCase
 {
     const VALID_MENU = 'integrated_menu';
     const INVALID_MENU = 'invalid_menu';
 
     /**
-     * @var Provider
+     * @var MenuProvider
      */
     protected $provider;
 
@@ -44,7 +44,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
     {
         $this->factory = $this->getMock('Knp\Menu\FactoryInterface');
         $this->eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $this->provider = new Provider($this->factory, $this->eventDispatcher);
+        $this->provider = new MenuProvider($this->factory, $this->eventDispatcher);
     }
 
     /**
