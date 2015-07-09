@@ -37,7 +37,7 @@ class MenuProvider implements MenuProviderInterface
     /**
      * @var ItemInterface[]
      */
-    protected $menus = array();
+    protected $menus = [];
 
     /**
      * @param FactoryInterface $factory
