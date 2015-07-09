@@ -6,6 +6,8 @@
 
     <parameters>
 
+        <parameter key="integrated_page.form.type.grid.class">Integrated\Bundle\PageBundle\Form\Type\Grid\GridType</parameter>
+
         <parameter key="integrated_page.form.type.page.class">Integrated\Bundle\PageBundle\Form\Type\PageType</parameter>
 
         <parameter key="integrated_page.form.type.layout_choice.class">Integrated\Bundle\PageBundle\Form\Type\LayoutChoiceType</parameter>
@@ -15,6 +17,11 @@
     </parameters>
 
     <services>
+
+        <service id="integrated_page.form.type.grid" class="%integrated_page.form.type.grid.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="form.type" alias="integrated_page_grid_grid" />
+        </service>
 
         <service id="integrated_page.form.type.page" class="%integrated_page.form.type.page.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
