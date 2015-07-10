@@ -11,12 +11,6 @@
             "homepage": "http://www.e-active.nl"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:eactive/integrated-library.git"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
@@ -35,7 +29,7 @@
     "target-dir": "Integrated/Bundle/SolrBundle",
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.1.x-dev"
+            "dev-develop": "0.9.x-dev"
         }
     }
 }
