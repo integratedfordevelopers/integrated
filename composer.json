@@ -1,0 +1,34 @@
+{
+  "name": "integrated/menu-bundle",
+  "type": "symfony-bundle",
+  "description": "Integrated Menu Bundle",
+  "keywords": ["Integrated", "menu"],
+  "homepage": "http://www.e-active.nl",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "e-Active",
+      "homepage": "http://www.e-active.nl"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=5.4",
+    "symfony/framework-bundle": "~2.3",
+    "knplabs/knp-menu-bundle": "~2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.2.*"
+  },
+  "autoload":{
+    "psr-4":{
+      "Integrated\\Bundle\\MenuBundle\\": ""
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.x-dev"
+    }
+  }
+}
