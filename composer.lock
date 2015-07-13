@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6f3573dc122f1731170c78fbeaceca06",
+    "hash": "adfe4ec9ed10aaff61431ebe63466414",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1251,17 +1251,17 @@
         },
         {
             "name": "integrated/content-bundle",
-            "version": "dev-INTEGRATED-142-allow-addition-of-integra",
+            "version": "dev-develop",
             "target-dir": "Integrated/Bundle/ContentBundle",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-content-bundle.git",
-                "reference": "e338900f1275cfc26635d233a9eba0a2bc921de0"
+                "reference": "56c0b2fcd9195b2fa301c81cdadfb9cb24a967b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/e338900f1275cfc26635d233a9eba0a2bc921de0.zip",
-                "reference": "e338900f1275cfc26635d233a9eba0a2bc921de0",
+                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/56c0b2fcd9195b2fa301c81cdadfb9cb24a967b5.zip",
+                "reference": "56c0b2fcd9195b2fa301c81cdadfb9cb24a967b5",
                 "shasum": ""
             },
             "require": {
@@ -1274,12 +1274,12 @@
                 "integrated/formtype-bundle": "~0.1",
                 "integrated/library": "~0.1",
                 "integrated/locking-bundle": "~0.1",
-                "integrated/menu-bundle": "~0.1",
+                "integrated/menu-bundle": "~0.3",
                 "knplabs/knp-paginator-bundle": "~2.4",
                 "nelmio/alice": "1.*",
                 "php": ">=5.4",
                 "symfony/framework-bundle": "~2.2",
-                "symfony/symfony": "~2.4",
+                "symfony/symfony": "~2.6",
                 "twbs/bootstrap": "3.*"
             },
             "require-dev": {
@@ -1288,7 +1288,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "0.1.1-dev"
+                    "dev-develop": "0.9.x-dev"
                 }
             },
             "autoload": {
@@ -1312,7 +1312,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2015-06-15 13:09:44"
+            "time": "2015-07-10 12:18:38"
         },
         {
             "name": "integrated/formtype-bundle",
@@ -1374,12 +1374,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-library.git",
-                "reference": "8919a09b39675b9f43ce355be76b2aa91940651f"
+                "reference": "800678e8255845a31cc9f38f129ac56c78006bad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-library/get/8919a09b39675b9f43ce355be76b2aa91940651f.zip",
-                "reference": "8919a09b39675b9f43ce355be76b2aa91940651f",
+                "url": "https://bitbucket.org/eactive/integrated-library/get/800678e8255845a31cc9f38f129ac56c78006bad.zip",
+                "reference": "800678e8255845a31cc9f38f129ac56c78006bad",
                 "shasum": ""
             },
             "require": {
@@ -1413,6 +1413,7 @@
                     "Integrated\\MongoDB\\ContentType\\": "src/",
                     "Integrated\\MongoDB\\Serializer\\": "src/",
                     "Integrated\\MongoDB\\Solr\\": "src/",
+                    "Integrated\\Doctrine\\": "src/",
                     "Integrated\\Common\\Content\\": "src/",
                     "Integrated\\Common\\ContentType\\": "src/",
                     "Integrated\\Common\\Converter\\": "src/",
@@ -1440,7 +1441,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2015-04-09 15:39:58"
+            "time": "2015-07-02 14:25:39"
         },
         {
             "name": "integrated/locking-bundle",
@@ -1497,16 +1498,16 @@
         },
         {
             "name": "integrated/menu-bundle",
-            "version": "dev-master",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-menu-bundle.git",
-                "reference": "4d5d671c118230a7c17e9a0db429cfa74e22068f"
+                "reference": "adc25f146ac0f90204f7445c573bdeac7c482289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-menu-bundle/get/4d5d671c118230a7c17e9a0db429cfa74e22068f.zip",
-                "reference": "4d5d671c118230a7c17e9a0db429cfa74e22068f",
+                "url": "https://bitbucket.org/eactive/integrated-menu-bundle/get/adc25f146ac0f90204f7445c573bdeac7c482289.zip",
+                "reference": "adc25f146ac0f90204f7445c573bdeac7c482289",
                 "shasum": ""
             },
             "require": {
@@ -1520,7 +1521,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.1.x-dev"
+                    "dev-develop": "0.9.x-dev"
                 }
             },
             "autoload": {
@@ -1544,7 +1545,7 @@
                 "Integrated",
                 "menu"
             ],
-            "time": "2015-06-15 08:10:19"
+            "time": "2015-07-10 09:12:29"
         },
         {
             "name": "integrated/solr-bundle",
@@ -1553,12 +1554,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-solr-bundle.git",
-                "reference": "17fd0161601c4404695d7f6230ada5408605ea5e"
+                "reference": "5860478a9d5c52caf4217754d18d920b3d17ca25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-solr-bundle/get/17fd0161601c4404695d7f6230ada5408605ea5e.zip",
-                "reference": "17fd0161601c4404695d7f6230ada5408605ea5e",
+                "url": "https://bitbucket.org/eactive/integrated-solr-bundle/get/5860478a9d5c52caf4217754d18d920b3d17ca25.zip",
+                "reference": "5860478a9d5c52caf4217754d18d920b3d17ca25",
                 "shasum": ""
             },
             "require": {
@@ -1572,7 +1573,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-develop": "0.1.x-dev"
+                    "dev-develop": "0.9.x-dev"
                 }
             },
             "autoload": {
@@ -1596,7 +1597,7 @@
                 "Integrated",
                 "solr"
             ],
-            "time": "2015-05-13 06:40:35"
+            "time": "2015-07-10 12:18:08"
         },
         {
             "name": "integrated/user-bundle",
@@ -2995,34 +2996,12 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [
-        {
-            "alias": "0.2.x-dev",
-            "alias_normalized": "0.2.9999999.9999999-dev",
-            "version": "dev-develop",
-            "package": "integrated/library"
-        },
-        {
-            "alias": "0.2.x-dev",
-            "alias_normalized": "0.2.9999999.9999999-dev",
-            "version": "dev-INTEGRATED-142-allow-addition-of-integra",
-            "package": "integrated/content-bundle"
-        },
-        {
-            "alias": "0.2.x-dev",
-            "alias_normalized": "0.2.9999999.9999999-dev",
-            "version": "dev-develop",
-            "package": "integrated/solr-bundle"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "symfony/assetic-bundle": 0,
         "symfony/swiftmailer-bundle": 0,
-        "symfony/monolog-bundle": 0,
-        "integrated/library": 20,
-        "integrated/content-bundle": 20,
-        "integrated/solr-bundle": 20
+        "symfony/monolog-bundle": 0
     },
     "prefer-stable": true,
     "prefer-lowest": false,
