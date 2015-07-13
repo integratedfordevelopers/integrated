@@ -1657,12 +1657,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-workflow-bundle.git",
-                "reference": "9ea09463b885cd5669fe5894813c4676e40983e5"
+                "reference": "1f6511e0b6f9c85a52755b9fa51551693f19b282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-workflow-bundle/get/9ea09463b885cd5669fe5894813c4676e40983e5.zip",
-                "reference": "9ea09463b885cd5669fe5894813c4676e40983e5",
+                "url": "https://bitbucket.org/eactive/integrated-workflow-bundle/get/1f6511e0b6f9c85a52755b9fa51551693f19b282.zip",
+                "reference": "1f6511e0b6f9c85a52755b9fa51551693f19b282",
                 "shasum": ""
             },
             "require": {
@@ -1706,7 +1706,7 @@
                 "Integrated",
                 "workflow"
             ],
-            "time": "2015-07-13 10:45:27"
+            "time": "2015-07-13 12:22:08"
         },
         {
             "name": "jdorn/sql-formatter",
