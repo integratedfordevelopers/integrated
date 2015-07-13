@@ -201,7 +201,7 @@ exec {'create node symlink':
 }
 
 exec {'npm install lessc':
-    command => 'npm install -g less',
+    command => 'npm install -g less@1.7.5',
     require => Package['npm'],
 }
 

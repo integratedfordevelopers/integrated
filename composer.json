@@ -8,7 +8,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "symfony/symfony": "~2.4@stable",
+        "symfony/symfony": "2.6.*",
         "doctrine/orm": "~2.4",
         "doctrine/doctrine-bundle": "~1.3",
         "twig/extensions": "1.0.*",
@@ -19,10 +19,10 @@
         "sensio/framework-extra-bundle": "~2.3",
         "sensio/generator-bundle": "~2.3",
         "incenteev/composer-parameter-handler": "~2.0",
-        "integrated/library": "~0.2",
-        "integrated/content-bundle": "~0.2",
+        "integrated/library": "~0.3",
+        "integrated/content-bundle": "~0.3",
         "integrated/formtype-bundle": "~0.2",
-        "integrated/solr-bundle": "~0.2",
+        "integrated/solr-bundle": "~0.3",
         "integrated/user-bundle": "~0.2",
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*"
