@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "adfe4ec9ed10aaff61431ebe63466414",
+    "hash": "95d46e23bb16eb2c07874896f24b1474",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1651,6 +1651,64 @@
             "time": "2014-12-29 13:56:27"
         },
         {
+            "name": "integrated/workflow-bundle",
+            "version": "dev-INTEGRATED-379-reimplement-navigation-it",
+            "target-dir": "Integrated/Bundle/WorkflowBundle",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/eactive/integrated-workflow-bundle.git",
+                "reference": "9ea09463b885cd5669fe5894813c4676e40983e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/eactive/integrated-workflow-bundle/get/9ea09463b885cd5669fe5894813c4676e40983e5.zip",
+                "reference": "9ea09463b885cd5669fe5894813c4676e40983e5",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/doctrine-fixtures-bundle": "~2.2",
+                "integrated/content-bundle": "~0.3",
+                "integrated/library": "~0.1",
+                "integrated/menu-bundle": "~0.3",
+                "integrated/user-bundle": "~0.1",
+                "knplabs/knp-paginator-bundle": "~2.4",
+                "php": ">=5.4",
+                "symfony/framework-bundle": "~2.2",
+                "symfony/symfony": "~2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.2.*"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Integrated\\Bundle\\WorkflowBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "e-Active",
+                    "homepage": "http://www.e-active.nl"
+                }
+            ],
+            "description": "Integrated Workflow Bundle",
+            "homepage": "http://www.e-active.nl",
+            "keywords": [
+                "Integrated",
+                "workflow"
+            ],
+            "time": "2015-07-13 10:45:27"
+        },
+        {
             "name": "jdorn/sql-formatter",
             "version": "v1.2.17",
             "source": {
@@ -2996,12 +3054,20 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "0.3.x-dev",
+            "alias_normalized": "0.3.9999999.9999999-dev",
+            "version": "dev-INTEGRATED-379-reimplement-navigation-it",
+            "package": "integrated/workflow-bundle"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "symfony/assetic-bundle": 0,
         "symfony/swiftmailer-bundle": 0,
-        "symfony/monolog-bundle": 0
+        "symfony/monolog-bundle": 0,
+        "integrated/workflow-bundle": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
