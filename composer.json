@@ -19,8 +19,9 @@
         "symfony/framework-bundle": "~2.2",
 		"doctrine/doctrine-fixtures-bundle": "~2.2",
         "integrated/library": "~0.1",
-		"integrated/content-bundle": "~0.1",
+		"integrated/content-bundle": "~0.3",
 		"integrated/user-bundle": "~0.1",
+        "integrated/menu-bundle": "~0.3",
 		"knplabs/knp-paginator-bundle": "~2.4"
     },
 	"require-dev": {
