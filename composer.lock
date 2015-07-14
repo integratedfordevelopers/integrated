@@ -1606,12 +1606,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-user-bundle.git",
-                "reference": "7cb598d4f71ec680e920d969044db7ef4fdc2e6a"
+                "reference": "5ff04e7e4d996015691bb32dd8a51f12ae434959"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-user-bundle/get/7cb598d4f71ec680e920d969044db7ef4fdc2e6a.zip",
-                "reference": "7cb598d4f71ec680e920d969044db7ef4fdc2e6a",
+                "url": "https://bitbucket.org/eactive/integrated-user-bundle/get/5ff04e7e4d996015691bb32dd8a51f12ae434959.zip",
+                "reference": "5ff04e7e4d996015691bb32dd8a51f12ae434959",
                 "shasum": ""
             },
             "require": {
@@ -1621,6 +1621,9 @@
                 "integrated/menu-bundle": "~0.3",
                 "php": ">=5.4",
                 "symfony/symfony": "~2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.2.*"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1649,7 +1652,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2015-07-13 13:08:31"
+            "time": "2015-07-14 12:10:55"
         },
         {
             "name": "integrated/workflow-bundle",
