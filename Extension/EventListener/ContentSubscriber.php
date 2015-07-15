@@ -210,10 +210,9 @@ class ContentSubscriber implements ContentSubscriberInterface
                     if ($person->getEmail()) {
 
                         $title = 'unknown';
-                        if (method_exists($content,"getTitle")) {
+                        if (method_exists($content, "getTitle")) {
                             $title = $content->getTitle();
-                        }
-                        elseif (method_exists($content,"getName")) {
+                        } elseif (method_exists($content, "getName")) {
                             $title = $content->getName();
                         }
 
@@ -227,8 +226,7 @@ class ContentSubscriber implements ContentSubscriberInterface
 Name: ' . $title . '
 E-mail: ' . $person->getEmail() . '',
                                 'text/plain'
-                            )
-                        ;
+                            );
                         $this->getContainer()->get('mailer')->send($message);
 
                     }
