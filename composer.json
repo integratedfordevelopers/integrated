@@ -34,7 +34,7 @@
     "target-dir": "Integrated/Bundle/WorkflowBundle",
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.1.1-dev"
+            "dev-develop": "0.9.x-dev"
         }
     }
 }
