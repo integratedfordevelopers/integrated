@@ -11,7 +11,7 @@
             <div class="row">
                 {% for column in item.row.columns %}
 
-                    <div class="col-xs-{{ column.size }}">
+                    <div class="col-sm-{{ column.size }}">
                         {{ include('IntegratedWebsiteBundle:Page:grid.html.twig', { 'grid': column }) }}
                     </div>
 

@@ -20,7 +20,7 @@
 <body>
 
 {% if form is defined %}
-    {# TODO: auto generate #}
+    {# TODO: auto generate (INTEGRATED-384) #}
     {{ form_start(form) }}
     {{ form_errors(form) }}
 {% endif %}
@@ -30,7 +30,7 @@
 </div>
 
 {% if form is defined %}
-    {# TODO: auto generate #}
+    {# TODO: auto generate (INTEGRATED-384) #}
     {{ form_row(form._token) }}
     {{ form_end(form, { 'render_rest': false }) }}
 
@@ -47,7 +47,7 @@
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
 {% block javascripts %}
-    {% javascripts output='js/scripts.js' filter='?uglifyjs'
+    {% javascripts output='js/scripts.js' filter='?uglifyjs2'
         '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
