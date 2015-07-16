@@ -347,9 +347,8 @@ class ContentTypeController extends Controller
     /**
      * Creates a form to delete a ContentType document.
      *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @param ContentType $contentType
+     * @return \Symfony\Component\Form\Form
      */
     protected function createDeleteForm(ContentType $contentType)
     {
