@@ -39,6 +39,13 @@ class Company extends Relation
     protected $logo;
 
     /**
+     * @var string
+     * @ODM\String
+     * @Type\Field
+     */
+    protected $website;
+
+    /**
      * Get the name of the document
      *
      * @return string
@@ -79,6 +86,28 @@ class Company extends Relation
     public function setLogo(File $logo)
     {
         $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * Get the website of the document
+     *
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * Set the website of the document
+     *
+     * @param string $website
+     * @return $this
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
         return $this;
     }
 
