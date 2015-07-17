@@ -6,12 +6,16 @@
 
         {% spaceless %}
         {% for document in documents %}
+            {% set content = document.content|default %}
+            {% if content is iterable %}
+                {% set content = content|first %}
+            {% endif %}
 
             <item>
                 <title>{{ document.title|default }}</title>
                 <pubDate>{{ document.pub_created|date('D, d M Y H:i:s O') }}</pubDate>
                 <link>{{ app.request.schemeAndHttpHost }}{{ document.url|default }}</link>
-                <description>{{ document.content|first|default }}</description>
+                <description><![CDATA[ {{ content|raw }}]]></description>
             </item>
 
         {% endfor %}
