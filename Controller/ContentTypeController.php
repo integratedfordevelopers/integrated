@@ -58,37 +58,6 @@ class ContentTypeController extends Controller
     }
 
     /**
-     * @Template()
-     * @return array
-     */
-    public function listAction()
-    {
-        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm        = $this->get('doctrine_mongodb')->getManager();
-        $documents = $dm->getRepository($this->contentTypeClass)->findBy(array(), array('name' => 'ASC'));
-        $category  = array();
-
-        foreach ($documents as $document) {
-            $function = new \ReflectionClass($document->getClass());
-
-            if ($function->inNamespace()) {
-                $parts = array_reverse(explode('\\', $function->getName()));
-                $pos   = array_search('Content', $parts);
-
-                if (isset($parts[$pos - 1])) {
-                    $category[$parts[$pos - 1]][] = $document;
-                }
-            }
-        }
-
-        ksort($category);
-
-        return array(
-            'category' => $category,
-        );
-    }
-
-    /**
      * Display a list of Content documents
      *
      * @Template()
