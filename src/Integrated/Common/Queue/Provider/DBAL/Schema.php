@@ -21,78 +21,77 @@ use Doctrine\DBAL\Connection;
  */
 final class Schema extends BaseSchema
 {
-	/**
-	 * @var array
-	 */
-	private $options;
+    /**
+     * @var array
+     */
+    private $options;
 
-	/**
-	 * @param array $options
-	 * @param Connection $connection
-	 */
-	public function __construct(array $options, Connection $connection = null)
-	{
-		$schemaConfig = $connection ? null : $connection->getSchemaManager()->createSchema();
+    /**
+     * @param array $options
+     * @param Connection $connection
+     */
+    public function __construct(array $options, Connection $connection = null)
+    {
+        $schemaConfig = $connection ? null : $connection->getSchemaManager()->createSchema();
 
-		parent::__construct([], [], $schemaConfig);
+        parent::__construct([], [], $schemaConfig);
 
-		$this->options = $options;
+        $this->options = $options;
 
-		$this->addQueueTable();
-	}
+        $this->addQueueTable();
+    }
 
-	/**
-	 * Return a schema diff.
-	 *
-	 * @param BaseSchema $schema
-	 * @return SchemaDiff
-	 */
-	public function compare(BaseSchema $schema)
-	{
-		$self = clone $this;
-		$self->merge($schema);
+    /**
+     * Return a schema diff.
+     *
+     * @param BaseSchema $schema
+     * @return SchemaDiff
+     */
+    public function compare(BaseSchema $schema)
+    {
+        $self = clone $this;
+        $self->merge($schema);
 
-		return Comparator::compareSchemas($schema, $self);
-	}
+        return Comparator::compareSchemas($schema, $self);
+    }
 
-	/**
-	 * Merge the given schema into this one.
-	 *
-	 * This schema is leading in case of a conflict.
-	 *
-	 * @param BaseSchema $schema
-	 */
-	public function merge(BaseSchema $schema)
-	{
-		foreach ($schema->getTables() as $table) {
-			if (!$this->hasTable($table->getName())) {
-				$this->_addTable(clone $table);
-			}
-		}
+    /**
+     * Merge the given schema into this one.
+     *
+     * This schema is leading in case of a conflict.
+     *
+     * @param BaseSchema $schema
+     */
+    public function merge(BaseSchema $schema)
+    {
+        foreach ($schema->getTables() as $table) {
+            if (!$this->hasTable($table->getName())) {
+                $this->_addTable(clone $table);
+            }
+        }
 
-		foreach ($schema->getSequences() as $sequence) {
-			if (!$this->hasSequence($sequence->getName())) {
-				$this->_addSequence(clone $sequence);
-			}
-		}
-	}
+        foreach ($schema->getSequences() as $sequence) {
+            if (!$this->hasSequence($sequence->getName())) {
+                $this->_addSequence(clone $sequence);
+            }
+        }
+    }
 
-	protected function addQueueTable()
-	{
-		$table = $this->createTable($this->options['queue_table_name']);
+    protected function addQueueTable()
+    {
+        $table = $this->createTable($this->options['queue_table_name']);
 
-		$table->addColumn('id', 'integer', ['unsigned' => true, 'autoincrement' => 'auto']);
-		$table->addColumn('channel', 'string', ['length' => 50]);
-		$table->addColumn('payload', 'text');
-		$table->addColumn('priority', 'smallint');
-		$table->addColumn('attempts', 'smallint', ['unsigned' => true]);
-		$table->addColumn('time_created', 'integer', ['unsigned' => true]);
-		$table->addColumn('time_updated', 'integer', ['unsigned' => true]);
-		$table->addColumn('time_execute', 'integer', ['unsigned' => true]);
+        $table->addColumn('id', 'integer', ['unsigned' => true, 'autoincrement' => 'auto']);
+        $table->addColumn('channel', 'string', ['length' => 50]);
+        $table->addColumn('payload', 'text');
+        $table->addColumn('priority', 'smallint');
+        $table->addColumn('attempts', 'smallint', ['unsigned' => true]);
+        $table->addColumn('time_created', 'integer', ['unsigned' => true]);
+        $table->addColumn('time_updated', 'integer', ['unsigned' => true]);
+        $table->addColumn('time_execute', 'integer', ['unsigned' => true]);
 
-		$table->setPrimaryKey(['id']);
+        $table->setPrimaryKey(['id']);
 
-		$table->addIndex(['channel']);
-		$table->addIndex(['time_execute']);
-	}
+        $table->addIndex(['channel', 'time_execute', 'priority', 'id']);
+    }
 }
