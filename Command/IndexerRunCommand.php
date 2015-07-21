@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Filesystem\LockHandler;
 
 use Exception;
 
@@ -26,74 +27,81 @@ use Integrated\Common\Solr\Indexer\IndexerInterface;
  */
 class IndexerRunCommand extends ContainerAwareCommand
 {
-	/**
-	 * @see Command
-	 */
-	protected function configure()
-	{
-		$this
-			->setName('solr:indexer:run')
-
-			->addOption('full', 'f',InputOption::VALUE_NONE, 'Keep running until the queue is empty')
-			->addOption('daemon', 'd', InputOption::VALUE_NONE, 'Keep running until the programme is manually closed, this option overwrites --full')
-			->addOption('wait', 'w', InputOption::VALUE_REQUIRED, 'Time in milliseconds to wait between runs (in combination with --full or --daemon)', 0)
-
-			->setDescription('Execute a sol indexer run')
-			->setHelp('
+    /**
+     * @see Command
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('solr:indexer:run')
+            ->addOption('full', 'f', InputOption::VALUE_NONE, 'Keep running until the queue is empty')
+            ->addOption('daemon', 'd', InputOption::VALUE_NONE, 'Keep running until the programme is manually closed, this option overwrites --full')
+            ->addOption('wait', 'w', InputOption::VALUE_REQUIRED, 'Time in milliseconds to wait between runs (in combination with --full or --daemon)', 0)
+            ->setDescription('Execute a sol indexer run')
+            ->setHelp('
 The <info>%command.name%</info> command starts a indexer run.
 
 <info>php %command.full_name%</info>
 '
-		);
-	}
+            );
+    }
 
-	/**
-	 * @see Command::execute()
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		if ($input->getOption('full') || $input->getOption('daemon')) {
-			return $this->runExternal($input, $output);
-		}
+    /**
+     * @see Command::execute()
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        if ($input->getOption('full') || $input->getOption('daemon')) {
+            return $this->runExternal($input, $output);
+        }
 
-		return $this->runInternal($input, $output);
-	}
+        return $this->runInternal($input, $output);
+    }
 
-	private function runInternal(InputInterface $input, OutputInterface $output)
-	{
-		try	{
-			/** @var IndexerInterface $indexer */
-			$indexer = $this->getContainer()->get('integrated_solr.indexer');
-			$indexer->execute();
-		} catch (Exception $e) {
-			$output->writeln("Aborting: " . $e->getMessage());
+    private function runInternal(InputInterface $input, OutputInterface $output)
+    {
+        try {
 
-			return 1;
-		}
+            $lock = new LockHandler('Integrated\Bundle\SolrBundle\Command\IndexerRunCommand');
+            if (!$lock->lock()) {
+                throw new Exception('Indexer already running');
+            }
 
-		return 0;
-	}
+            /** @var IndexerInterface $indexer */
+            $indexer = $this->getContainer()->get('integrated_solr.indexer');
+            $indexer->execute();
 
-	private function runExternal(InputInterface $input, OutputInterface $output)
-	{
-		$wait = (int) $input->getOption('wait');
-		$wait = $wait * 1000; // convert from milli to micro
+        } catch (Exception $e) {
+            $output->writeln("Aborting: " . $e->getMessage());
 
-		while (true) {
-			$process = new Process('php app/console solr:indexer:run -e ' . $input->getOption('env'), getcwd(), null, null, null);
-			$process->run();
+            return 1;
+        }
 
-			if (!$process->isSuccessful()) {
-				break; // terminate when there is a error
-			}
+        return 0;
+    }
 
-			if (!$input->getOption('daemon')) {
-				if (!$this->getContainer()->get('integrated_solr.indexer')->getQueue()->count()) { break; }
-			}
+    private function runExternal(InputInterface $input, OutputInterface $output)
+    {
+        $wait = (int)$input->getOption('wait');
+        $wait = $wait * 1000; // convert from milli to micro
 
-			usleep($wait);
-		}
+        while (true) {
+            $process = new Process('php app/console solr:indexer:run -e ' . $input->getOption('env'), getcwd(), null, null, null);
+            $process->run();
 
-		return 0;
-	}
+            if (!$process->isSuccessful()) {
+                break; // terminate when there is a error
+            }
+
+            if (!$input->getOption('daemon')) {
+                if (!$this->getContainer()->get('integrated_solr.indexer')->getQueue()->count()) {
+                    break;
+                }
+            }
+
+            usleep($wait);
+        }
+
+        return 0;
+    }
 }
