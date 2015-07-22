@@ -25,25 +25,12 @@ use Integrated\Bundle\PageBundle\Form\Type\Grid\GridType;
 class PageType extends AbstractType
 {
     /**
-     * @var DocumentManager
-     */
-    protected $dm;
-
-    /**
-     * @param DocumentManager $dm
-     */
-    public function __construct(DocumentManager $dm)
-    {
-        $this->dm = $dm;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('grids', 'collection', [
-            'type'         => new GridType($this->dm),
+            'type'         => 'integrated_page_grid_grid',
             'allow_add'    => true,
             'allow_delete' => true,
             'prototype'    => false,

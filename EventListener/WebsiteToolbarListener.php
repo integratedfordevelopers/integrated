@@ -45,7 +45,7 @@ class WebsiteToolbarListener implements EventSubscriberInterface
             return;
         }
 
-        // @todo security check
+        // @todo security check (INTEGRATED-383)
 
         $request = $event->getRequest();
 

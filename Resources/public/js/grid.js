@@ -13,7 +13,7 @@
                 }
             });
 
-            // @todo error handling
+            // @todo error handling (INTEGRATED-420)
         }
 
         var template = Handlebars.compile($('#integrated_website_template_block').html());
@@ -34,7 +34,7 @@
         var name = collection.attr('data-name') + '[' + index + ']';
 
         var block = createBlock(name, index, value, element);
-        block.find('script').remove(); // @todo find a way to insert javascript elements
+        block.find('script').remove(); // @todo find a way to insert javascript elements (INTEGRATED-421)
 
         addRemoveButton(block);
 
@@ -152,7 +152,7 @@
         var collection = $('#' + $(this).attr('data-collection-id'));
 
         $.ajax({
-            url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 999 }), // @todo paging
+            url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 999 }), // @todo paging (INTEGRATED-423)
             dataType: 'json',
             success: function(data) {
 
@@ -175,7 +175,7 @@
             }
         });
 
-        // @todo error handling
+        // @todo error handling (INTEGRATED-420)
     });
 
     $(document).on('click', '[data-action="integrated-website-block-remove"]', function(e) {
@@ -242,7 +242,7 @@
 
                 addConfigButton(html.closest('.row'));
 
-                // @todo bind sortable
+                // @todo bind sortable (INTEGRATED-422)
             }
         }
     });
@@ -313,7 +313,7 @@
 
                 addConfigButton(html.closest('.integrated-website-row'));
 
-                // @todo bind sortable
+                // @todo bind sortable (INTEGRATED-422)
             }
         }
     });

@@ -42,7 +42,7 @@ class PageLoader implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function load($resource, $type = null)
     {
@@ -52,13 +52,12 @@ class PageLoader implements LoaderInterface
 
         $routes = new RouteCollection();
 
-        $pages = $this->dm->getRepository('IntegratedPageBundle:Page\Page')->findAll(); // @todo publication filters
+        $pages = $this->dm->getRepository('IntegratedPageBundle:Page\Page')->findAll(); // @todo publication filters (INTEGRATED-425)
 
         /** @var \Integrated\Bundle\PageBundle\Document\Page\Page $page */
         foreach ($pages as $page) {
-
             $route = new Route($page->getPath(), [
-                '_controller' => 'IntegratedWebsiteBundle:Page:show', // @todo config option
+                '_controller' => 'IntegratedWebsiteBundle:Page:show', // @todo config option (INTEGRATED-426)
                 'id' => $page->getId(),
             ]);
 
@@ -69,7 +68,7 @@ class PageLoader implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supports($resource, $type = null)
     {
@@ -77,7 +76,7 @@ class PageLoader implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getResolver()
     {
