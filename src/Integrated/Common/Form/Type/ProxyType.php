@@ -24,91 +24,91 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ProxyType extends AbstractType
 {
-	/**
-	 * @var FormTypeInterface
-	 */
-	private $type;
-
-	/**
-	 * @var string
-	 */
-	private $name = null;
-
-	/**
-	 * @param FormTypeInterface $type
-	 * @param string $name
-	 */
-	public function __construct(FormTypeInterface $type, $name = null)
-	{
-		$this->type = $type;
-		$this->name = $name ? (string) $name : null;
-	}
+    /**
+     * @var FormTypeInterface
+     */
+    private $type;
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		$this->type->buildForm($builder, $options);
-	}
+     * @var string
+     */
+    private $name = null;
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function buildView(FormView $view, FormInterface $form, array $options)
-	{
-		$this->type->buildView($view, $form, $options);
-	}
+     * @param FormTypeInterface $type
+     * @param string $name
+     */
+    public function __construct(FormTypeInterface $type, $name = null)
+    {
+        $this->type = $type;
+        $this->name = $name ? (string) $name : null;
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function finishView(FormView $view, FormInterface $form, array $options)
-	{
-		$this->type->finishView($view, $form, $options);
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $this->type->buildForm($builder, $options);
+    }
 
-		if (!$this->type->getName()) {
-			return;
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $this->type->buildView($view, $form, $options);
+    }
 
-		$name = $this->getName() ? $this->name : $this->getParent();
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $this->type->finishView($view, $form, $options);
 
-		// add the original name to the block_prefixed after the proxy name
+        if (!$this->type->getName()) {
+            return;
+        }
 
-		$blocks = [];
+        $name = $this->getName() ? $this->name : $this->getParent();
 
-		foreach ($view->vars['block_prefixes'] as $prefix) {
-			$blocks[] = $prefix;
+        // add the original name to the block_prefixed after the proxy name
 
-			if ($prefix == $name) {
-				$blocks[] = $this->type->getName();
-			}
-		}
+        $blocks = [];
 
-		$view->vars['block_prefixes'] = $blocks;
-	}
+        foreach ($view->vars['block_prefixes'] as $prefix) {
+            $blocks[] = $prefix;
 
-	/**
-	 * {@inheritdoc}
-	 */
+            if ($prefix == $name) {
+                $blocks[] = $this->type->getName();
+            }
+        }
+
+        $view->vars['block_prefixes'] = $blocks;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $this->type->setDefaultOptions($resolver);
     }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getParent()
-	{
-		return $this->type->getParent();
-	}
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return $this->type->getParent();
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getName()
-	{
-		return $this->name === null ? $this->type->getName() : $this->name;
-	}
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name === null ? $this->type->getName() : $this->name;
+    }
 }
