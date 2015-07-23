@@ -20,7 +20,7 @@
         "doctrine/mongodb": "*",
         "doctrine/mongodb-odm": "*",
         "doctrine/mongodb-odm-bundle": "*",
-        "integrated/library": "~0.2",
+        "integrated/library": "~0.3",
         "integrated/slug-bundle": "~0.2",
         "integrated/theme-bundle": "~0.2",
         "knplabs/knp-paginator-bundle": ">=2.4"
