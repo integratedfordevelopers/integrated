@@ -43,26 +43,153 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test createMenu function without content types
+     * Test createMenu function with invalid content types
      */
-    public function testCreateMenuFunctionWithoutContentTypes()
+    public function testCreateMenuFunctionWithInvalidContentType()
     {
-        $this->markTestIncomplete('Not implemented yet');
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        $menu = $this->getMock('Knp\Menu\ItemInterface');
+
+        $this->factory
+            ->expects($this->once())
+            ->method('createItem')
+            ->with('root')
+            ->willReturn($menu)
+        ;
+
+        $this->objectRepository
+            ->expects($this->once())
+            ->method('findBy')
+            ->willReturn([$this->getMock('\stdClass')])
+        ;
+
+        $this->assertSame($menu, $this->menuBuilder->createMenu());
     }
 
     /**
-     * Test createMenu function with content types
+     * Test createMenu function with item without parent
      */
-    public function testCreateMenuFunctionWithContentTypes()
+    public function testCreateMenuFunctionWithItemWithoutParent()
     {
-        $this->markTestIncomplete('Not implemented yet');
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        $menu = $this->getMock('Knp\Menu\ItemInterface');
+
+        $this->factory
+            ->expects($this->once())
+            ->method('createItem')
+            ->with('root')
+            ->willReturn($menu)
+        ;
+
+        $this->objectRepository
+            ->expects($this->once())
+            ->method('findBy')
+            ->willReturn($this->getItemWithoutParent())
+        ;
+
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child */
+        $child = $this->getMock('Knp\Menu\ItemInterface');
+
+        $child
+            ->expects($this->once())
+            ->method('addChild')
+        ;
+
+        $menu
+            ->expects($this->once())
+            ->method('addChild')
+            ->with('ItemWithoutParent')
+            ->willReturn($child)
+        ;
+
+        $this->assertSame($menu, $this->menuBuilder->createMenu());
     }
 
     /**
-     * Test createMenu function with mulitple categories
+     * Test createMenu function with items
      */
-    public function testCreateMenuFunctionWithMultipleCategories()
+    public function testCreateMenuFunctionWithItems()
     {
-        $this->markTestIncomplete('Not implemented yet');
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        $menu = $this->getMock('Knp\Menu\ItemInterface');
+
+        $this->factory
+            ->expects($this->once())
+            ->method('createItem')
+            ->with('root')
+            ->willReturn($menu)
+        ;
+
+        $this->objectRepository
+            ->expects($this->once())
+            ->method('findBy')
+            ->willReturn($this->getItems())
+        ;
+
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child1 */
+        $child1 = $this->getMock('Knp\Menu\ItemInterface');
+
+        $child1
+            ->expects($this->exactly(2))
+            ->method('addChild')
+        ;
+
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child2 */
+        $child2 = $this->getMock('Knp\Menu\ItemInterface');
+
+        $child2
+            ->expects($this->once())
+            ->method('addChild')
+        ;
+
+        $menu
+            ->expects($this->exactly(2))
+            ->method('addChild')
+            ->withConsecutive(
+                array('ParentWithMultipleLevels'),
+                array('ParentWithOneLevel')
+            )
+            ->willReturnOnConsecutiveCalls($child1, $child2)
+        ;
+
+        $this->assertSame($menu, $this->menuBuilder->createMenu());
+    }
+
+    protected function getItemWithoutParent()
+    {
+        $contentType = $this->getMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
+        $contentType
+            ->expects($this->once())
+            ->method('getClass')
+            ->willReturn('Integrated\Bundle\ContentBundle\Tests\Menu\FakeContent\ItemWithoutParent')
+        ;
+
+        return [$contentType];
+    }
+
+    protected function getItems()
+    {
+        $contentType1 = $this->getMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
+        $contentType1
+            ->expects($this->once())
+            ->method('getClass')
+            ->willReturn('Integrated\Bundle\ContentBundle\Tests\Menu\FakeContent\ParentWithOneLevel\Item')
+        ;
+
+        $contentType2 = $this->getMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
+        $contentType2
+            ->expects($this->once())
+            ->method('getClass')
+            ->willReturn('Integrated\Bundle\ContentBundle\Tests\Menu\FakeContent\ParentWithMultipleLevels\AbstractItemA\ItemA')
+        ;
+
+        $contentType3 = $this->getMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
+        $contentType3
+            ->expects($this->once())
+            ->method('getClass')
+            ->willReturn('Integrated\Bundle\ContentBundle\Tests\Menu\FakeContent\ParentWithMultipleLevels\ItemB')
+        ;
+
+        return [$contentType1, $contentType2, $contentType3];
     }
 }
