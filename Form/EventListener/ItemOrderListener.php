@@ -25,7 +25,7 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
 class ItemOrderListener implements EventSubscriberInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -42,10 +42,9 @@ class ItemOrderListener implements EventSubscriberInterface
         $data = $event->getData();
 
         if ($data instanceof Grid || $data instanceof Column) {
-
             $items = $data->getItems();
 
-            usort($items, function($a, $b) {
+            usort($items, function ($a, $b) {
 
                 if (!$a instanceof Item || !$b instanceof Item || $a->getOrder() == $b->getOrder()) {
                     return 0;

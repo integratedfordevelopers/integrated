@@ -24,7 +24,6 @@
         </service>
 
         <service id="integrated_page.form.type.page" class="%integrated_page.form.type.page.class%">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="form.type" alias="integrated_page_page" />
         </service>
 

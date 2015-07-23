@@ -36,7 +36,7 @@ class BlockTransformer implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function transform($block)
     {
@@ -46,7 +46,7 @@ class BlockTransformer implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function reverseTransform($id)
     {

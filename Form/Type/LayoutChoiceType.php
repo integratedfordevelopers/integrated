@@ -12,9 +12,8 @@
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 
 use Integrated\Bundle\PageBundle\Locator\LayoutLocator;
 
@@ -39,21 +38,21 @@ class LayoutChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choice_list' => function(Options $options) { return $this->getChoiceList(); },
+            'choice_list' => $this->getChoiceList(),
         ]);
     }
 
     /**
-     * @return ChoiceList
+     * @return ArrayChoiceList
      */
     protected function getChoiceList()
     {
         $layout = $this->locator->getLayouts();
 
-        return new ChoiceList($layout, $layout);
+        return new ArrayChoiceList($layout, $layout);
     }
 
     /**

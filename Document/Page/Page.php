@@ -237,7 +237,6 @@ class Page
     public function getGrid($id)
     {
         foreach ($this->grids as $grid) {
-
             if ($grid instanceof Grid && $grid->getId() == $id) {
                 return $grid;
             }

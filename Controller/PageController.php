@@ -61,7 +61,6 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $dm = $this->getDocumentManager();
 
             $dm->persist($page);
@@ -93,7 +92,6 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $this->getDocumentManager()->flush();
 
             $this->clearRoutingCache();
@@ -123,7 +121,6 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $dm = $this->getDocumentManager();
 
             $dm->remove($page);
@@ -201,6 +198,8 @@ class PageController extends Controller
     }
 
     /**
+     * The routing cache needs to be cleared after a change.
+     * This is faster then clearing the cache with the responsible command.
      */
     protected function clearRoutingCache()
     {
