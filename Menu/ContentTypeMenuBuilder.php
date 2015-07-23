@@ -61,10 +61,6 @@ class ContentTypeMenuBuilder
 
             /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType $document */
             foreach ($documents as $document) {
-                if (!is_a($document, self::CONTENT_TYPE_CLASS)) {
-                    continue;
-                }
-
                 $child->addChild(
                     $document->getName(),
                     ['route' => self::ROUTE, 'routeParameters' => ['type' => $document->getType()]]
