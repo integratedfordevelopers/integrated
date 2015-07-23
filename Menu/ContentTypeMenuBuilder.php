@@ -62,11 +62,6 @@ class ContentTypeMenuBuilder
                     ['route' => self::ROUTE, 'routeParameters' => ['type' => $document->getType()]]
                 );
             }
-
-            if (!count($child)) {
-                echo ' AHAHA ';
-                $menu->removeChild($child);
-            }
         }
 
         return $menu;
