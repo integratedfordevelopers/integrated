@@ -23,7 +23,7 @@ class PublishTime
     /**
      * @var string
      */
-    const DATE_MAX = '9999-12-31 00:00:00'; // @todo find a better way
+    const DATE_MAX = '9999-12-31 00:00:00'; // @todo find a better way (INTEGRATED-429)
 
     /**
      * @var \DateTime
@@ -79,7 +79,7 @@ class PublishTime
      */
     public function isPublished(\DateTime $date = null)
     {
-        if (!$date) {
+        if (null === $date) {
             $date = new \DateTime();
         }
 

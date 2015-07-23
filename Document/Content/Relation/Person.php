@@ -307,9 +307,8 @@ class Person extends Relation
     public function getCover()
     {
         if ($this->getPicture()) {
-          return $this->getPicture()->getWebPath();
+            return $this->getPicture()->getWebPath();
         }
-        return null;
     }
 
     /**

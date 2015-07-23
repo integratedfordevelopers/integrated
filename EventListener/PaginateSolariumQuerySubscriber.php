@@ -19,7 +19,7 @@ use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
 
 /**
- * Solarium query pagination
+ * Solarium query pagination (to support max items)
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

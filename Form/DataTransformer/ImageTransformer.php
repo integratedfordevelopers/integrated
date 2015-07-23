@@ -49,6 +49,6 @@ class ImageTransformer implements DataTransformerInterface
      */
     public function reverseTransform($id)
     {
-        return $this->repository->findOneBy(['id' => $id]);
+        return $this->repository->find($id);
     }
 }

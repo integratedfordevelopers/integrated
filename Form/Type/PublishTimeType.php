@@ -17,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\PublishTimeTransformer;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\MaxDateTimeTransformer;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
 /**
@@ -34,7 +34,7 @@ class PublishTimeType extends AbstractType
 
         $builder->add(
             $builder->create('endDate', 'integrated_datetime')
-                ->addModelTransformer(new PublishTimeTransformer())
+                ->addModelTransformer(new MaxDateTimeTransformer())
         );
     }
 
@@ -45,16 +45,12 @@ class PublishTimeType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class'  => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime',
-
             'constraints' => new Callback(function (PublishTime $publishTime, ExecutionContextInterface $context) {
-
                 $startDate = $publishTime->getStartDate();
                 $endDate   = $publishTime->getEndDate();
 
                 if ($startDate instanceof \DateTime && $endDate instanceof \DateTime) {
-
                     if ($endDate < $startDate) {
-
                         $context->buildViolation("The end date can't be earlier than the begin date")
                             ->atPath('endDate')->addViolation();
                     }
@@ -68,6 +64,6 @@ class PublishTimeType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_publishtime';
+        return 'integrated_publish_time';
     }
 }
