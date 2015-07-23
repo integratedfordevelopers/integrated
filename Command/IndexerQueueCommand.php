@@ -40,305 +40,307 @@ use InvalidArgumentException;
  */
 class IndexerQueueCommand extends ContainerAwareCommand
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function configure()
-	{
-		$this
-			->setName('solr:indexer:queue')
-
-			->addArgument('id', InputArgument::IS_ARRAY, 'One or more content types that need to be indexed')
-
-			->addOption('full', 'f', InputOption::VALUE_NONE, 'Do a full index of all the content this will override any given content types')
-			->addOption('delete', null, InputOption::VALUE_NONE, 'Delete all the content for the given content types or if none given clear out the whole index')
-			->addOption('ignore', 'i', InputOption::VALUE_NONE, 'Ignore content types that do not exist')
-
-			->setDescription('Queue all the content of the given content type for solr indexing')
-			->setHelp('
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('solr:indexer:queue')
+            ->addArgument('id', InputArgument::IS_ARRAY, 'One or more content types that need to be indexed')
+            ->addOption('full', 'f', InputOption::VALUE_NONE, 'Do a full index of all the content this will override any given content types')
+            ->addOption('delete', null, InputOption::VALUE_NONE, 'Delete all the content for the given content types or if none given clear out the whole index')
+            ->addOption('ignore', 'i', InputOption::VALUE_NONE, 'Ignore content types that do not exist')
+            ->setDescription('Queue all the content of the given content type for solr indexing')
+            ->setHelp('
 The <info>%command.name%</info> command starts a index of the site.
 
 <info>php %command.full_name%</info>
 '
-			);
-	}
+            );
+    }
 
-	/**
-	 * {@inheritdoc}
+    /**
+     * {@inheritdoc}
      *
      * @throws InvalidArgumentException
-	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		//  validate the content types unless validation is ignored
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        //  validate the content types unless validation is ignored
 
-		if ($input->getArgument('id') && !$input->getOption('ignore')) {
-			$code = $this->executeValidation($input, $output);
+        if ($input->getArgument('id') && !$input->getOption('ignore')) {
+            $code = $this->executeValidation($input, $output);
 
             if ($code) {
-				return $code;
-			}
-		}
+                return $code;
+            }
+        }
 
-		if ($input->getOption('delete')) {
-			return $this->executeDelete($input, $output);
-		}
+        if ($input->getOption('delete')) {
+            return $this->executeDelete($input, $output);
+        }
 
-		if (!$input->getArgument('id') && !$input->getOption('full')) {
-			throw new InvalidArgumentException('You need to give one or more content types or choose the --full or --delete option');
-		}
+        if (!$input->getArgument('id') && !$input->getOption('full')) {
+            throw new InvalidArgumentException('You need to give one or more content types or choose the --full or --delete option');
+        }
 
-		return $this->executeIndex($input, $output);
-	}
+        return $this->executeIndex($input, $output);
+    }
 
-	/**
-	 * validate the ids in de input
-	 *
-	 * @param InputInterface $input
-	 * @param OutputInterface $output
-	 *
-	 * @return int
+    /**
+     * validate the ids in de input
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return int
      *
      * @throws InvalidArgumentException
-	 */
-	protected function executeValidation(InputInterface $input, OutputInterface $output)
-	{
-		$types = [];
+     */
+    protected function executeValidation(InputInterface $input, OutputInterface $output)
+    {
+        $types = [];
 
-		foreach ($this->getResolver()->getTypes() as $type) {
-			$types[$type->getType()] = $type->getType();
-		}
+        foreach ($this->getResolver()->getTypes() as $type) {
+            $types[$type->getType()] = $type->getType();
+        }
 
-		$invalid = [];
+        $invalid = [];
 
-		foreach ($input->getArgument('id') as $id) {
-			if (!isset($types[$id])) { $invalid[] = $id; }
-		}
+        foreach ($input->getArgument('id') as $id) {
+            if (!isset($types[$id])) {
+                $invalid[] = $id;
+            }
+        }
 
-		if ($invalid) {
-			$text = sprintf('The content types "%s" do not exists', implode(', ', $invalid));
+        if ($invalid) {
+            $text = sprintf('The content types "%s" do not exists', implode(', ', $invalid));
 
-			if ($input->getOption('no-interaction')) {
-				throw new InvalidArgumentException($text);
-			}
+            if ($input->getOption('no-interaction')) {
+                throw new InvalidArgumentException($text);
+            }
 
-			// ask the user if he/she want to continue or not.
+            // ask the user if he/she want to continue or not.
 
-			$output->writeln($text);
+            $output->writeln($text);
 
-			if (!$this->getQuestion()->ask($input, $output, new ConfirmationQuestion('Would you want to continue? [y/N] ', false))) {
-				return 1;
-			}
-		}
+            if (!$this->getQuestion()->ask($input, $output, new ConfirmationQuestion('Would you want to continue? [y/N] ', false))) {
+                return 1;
+            }
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	/**
-	 * queue a delete on the solr index
-	 *
-	 * @param InputInterface $input
-	 * @param OutputInterface $output
-	 *
-	 * @return int
-	 */
-	protected function executeDelete(InputInterface $input, OutputInterface $output)
-	{
-		$this->doIndexCleanup($input->getArgument('id'));
-		$this->doIndexCommit();
+    /**
+     * queue a delete on the solr index
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     */
+    protected function executeDelete(InputInterface $input, OutputInterface $output)
+    {
+        $this->doIndexCleanup($input->getArgument('id'));
+        $this->doIndexCommit();
 
-		return 0;
-	}
+        return 0;
+    }
 
-	/**
-	 * queue the indexing of content in to solr
-	 *
-	 * @param InputInterface $input
-	 * @param OutputInterface $output
-	 *
-	 * @return int
-	 */
-	protected function executeIndex(InputInterface $input, OutputInterface $output)
-	{
-		$result = null;
+    /**
+     * queue the indexing of content in to solr
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     *
+     * @return int
+     */
+    protected function executeIndex(InputInterface $input, OutputInterface $output)
+    {
+        $result = null;
 
-		if ($input->getOption('full')) {
-			$result = $this->getDocumentManager()
-				->getUnitOfWork()
-				->getDocumentPersister('Integrated\Bundle\ContentBundle\Document\Content\Content')
-				->loadAll();
+        if ($input->getOption('full')) {
 
-			// The entire site is going to be reindex so everything that is now in the queue
-			// will be redone so just clear it so content is not double indexed.
+            //use createQueryBuilder for performance reasons
+            $qb = $this->getDocumentManager()->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\Content')
+                ->select('id', 'contentType', 'class');
+            $result = $qb->getQuery()->execute();
 
-			$this->getQueue()->clear();
-		} else {
-			$criteria['$or'] = [];
+            // The entire site is going to be reindex so everything that is now in the queue
+            // will be redone so just clear it so content is not double indexed.
 
-			foreach ($input->getArgument('id') as $id) {
-				$criteria['$or'][] = ['contentType' => $id];
-			}
+            $this->getQueue()->clear();
+        } else {
+            $criteria['$or'] = [];
 
-			$result = $this->getDocumentManager()
-				->getUnitOfWork()
-				->getDocumentPersister('Integrated\Bundle\ContentBundle\Document\Content\Content')
-				->loadAll($criteria);
-		}
+            foreach ($input->getArgument('id') as $id) {
+                $criteria['$or'][] = ['contentType' => $id];
+            }
 
-		if ($count = $result->count()) {
-			$progress = $this->getProgress();
+            $result = $this->getDocumentManager()
+                ->getUnitOfWork()
+                ->getDocumentPersister('Integrated\Bundle\ContentBundle\Document\Content\Content')
+                ->loadAll($criteria);
+        }
 
-			$progress->setRedrawFrequency(min(max(floor($count / 250), 1), 100));
-			$progress->setFormat(ProgressHelper::FORMAT_VERBOSE);
+        if ($count = $result->count()) {
+            $progress = $this->getProgress();
 
-			$progress->start($output, $count);
+            $progress->setRedrawFrequency(min(max(floor($count / 250), 1), 100));
+            $progress->setFormat(ProgressHelper::FORMAT_VERBOSE);
 
-			// get the current time as it will be required at the end for the solr clean up.
+            $progress->start($output, $count);
 
-			$date = new DateTime();
+            // get the current time as it will be required at the end for the solr clean up.
 
-			$this->doIndex($result, $progress);
-			$this->doIndexCleanup($input->getArgument('id'), $date);
-			$this->doIndexCommit();
+            $date = new DateTime();
 
-			$progress->display();
-			$progress->finish();
-		} else {
-			// No content was found but that does not mean nothing should be done. As the solr
-			// index should reflect the database so delete all the content for the matching
-			// content types out the solr index.
+            $this->doIndex($result, $progress);
+            $this->doIndexCleanup($input->getArgument('id'), $date);
+            $this->doIndexCommit();
 
-			$this->doIndexCleanup($input->getArgument('id'));
-			$this->doIndexCommit();
-		}
+            $progress->display();
+            $progress->finish();
+        } else {
+            // No content was found but that does not mean nothing should be done. As the solr
+            // index should reflect the database so delete all the content for the matching
+            // content types out the solr index.
 
-		$this->getDocumentManager()->clear();
+            $this->doIndexCleanup($input->getArgument('id'));
+            $this->doIndexCommit();
+        }
 
-		return 0;
-	}
+        $this->getDocumentManager()->clear();
 
-	/**
-	 * Add all the documents in the cursor to the solr queue
-	 *
-	 * @param Cursor $cursor
-	 * @param ProgressHelper $progress
-	 */
-	protected function doIndex(Cursor $cursor, ProgressHelper $progress)
-	{
-		$queue = $this->getQueue();
+        return 0;
+    }
 
-		// the document manager need to be cleared from time to time so this counter keeps
-		// track of that.
+    /**
+     * Add all the documents in the cursor to the solr queue
+     *
+     * @param Cursor $cursor
+     * @param ProgressHelper $progress
+     */
+    protected function doIndex(Cursor $cursor, ProgressHelper $progress)
+    {
+        $queue = $this->getQueue();
 
-		$count = 0;
-		$manager = $this->getDocumentManager();
+        // the document manager need to be cleared from time to time so this counter keeps
+        // track of that.
+
+        $count = 0;
+        $manager = $this->getDocumentManager();
 
         /** @var ContentInterface $document */
 
-        foreach($cursor as $document) {
-			$progress->advance();
+        foreach ($cursor as $document) {
+            $progress->advance();
 
-			$job = new Job('ADD');
+            $job = new Job('ADD');
 
-			$job->setOption('document.id', $document->getContentType() . '-' . $document->getId());
+            $job->setOption('document.id', $document->getContentType() . '-' . $document->getId());
 
-			$job->setOption('document.data', $this->getSerializer()->serialize($document, 'json'));
-			$job->setOption('document.class', get_class($document));
-			$job->setOption('document.format', 'json');
+            $job->setOption('document.data', $this->getSerializer()->serialize($document, 'json'));
+            $job->setOption('document.class', get_class($document));
+            $job->setOption('document.format', 'json');
 
-			$queue->push($job);
+            $queue->push($job);
 
-			if ($count++ % 1000) { $manager->clear(); }
-		}
-	}
+            if (($count++ % 1000) == 0) {
+                $manager->clear();
+            }
+        }
+    }
 
-	/**
-	 * delete all the types or everything if none is given
-	 *
-	 * @param array $types
-	 * @param DateTime $date
-	 */
-	protected function doIndexCleanup(array $types, DateTime $date = null)
-	{
-		$query = [];
+    /**
+     * delete all the types or everything if none is given
+     *
+     * @param array $types
+     * @param DateTime $date
+     */
+    protected function doIndexCleanup(array $types, DateTime $date = null)
+    {
+        $query = [];
 
-		if ($types)	{
-			$query[] = 'type_name:("' . implode('" OR "', $types) . '")';
-		} else {
-			$query[] = '*:*';
-		}
+        if ($types) {
+            $query[] = 'type_name:("' . implode('" OR "', $types) . '")';
+        } else {
+            $query[] = '*:*';
+        }
 
-		if ($date) {
+        if ($date) {
             $date = clone $date;
             $date->setTimezone(new DateTimeZone('UTC'));
 
-			$query[] = '-_time_:[' . $date->format('Y-m-d\TG:i:s\Z') . ' TO *]';
-		}
+            $query[] = '-_time_:[' . $date->format('Y-m-d\TG:i:s\Z') . ' TO *]';
+        }
 
-		// Delete everything else that did not got a update or does not exist anymore in the
-		// database.
+        // Delete everything else that did not got a update or does not exist anymore in the
+        // database.
 
-		$job = new Job('DELETE');
-		$job->setOption('query', implode(' ', $query));
+        $job = new Job('DELETE');
+        $job->setOption('query', implode(' ', $query));
 
-		$this->getQueue()->push($job, 1);
-	}
+        $this->getQueue()->push($job, 1);
+    }
 
-	/**
-	 * close up with a commit
-	 */
-	protected function doIndexCommit()
-	{
-		$queue = $this->getQueue();
+    /**
+     * close up with a commit
+     */
+    protected function doIndexCommit()
+    {
+        $queue = $this->getQueue();
 
-		$queue->push(new Job('COMMIT', ['softcommit' => 'true']), 2);
-	}
+        $queue->push(new Job('COMMIT', ['softcommit' => 'true']), 2);
+    }
 
-	/**
-	 * @return QuestionHelper
-	 */
-	protected function getQuestion()
-	{
-		return $this->getHelper('question');
-	}
+    /**
+     * @return QuestionHelper
+     */
+    protected function getQuestion()
+    {
+        return $this->getHelper('question');
+    }
 
-	/**
-	 * @return ProgressHelper
-	 */
-	protected function getProgress()
-	{
-		return $this->getHelperSet()->get('progress');
-	}
+    /**
+     * @return ProgressHelper
+     */
+    protected function getProgress()
+    {
+        return $this->getHelperSet()->get('progress');
+    }
 
-	/**
-	 * @return DocumentManager
-	 */
-	protected function getDocumentManager()
-	{
-		return $this->getContainer()->get('doctrine_mongodb.odm.document_manager');
-	}
+    /**
+     * @return DocumentManager
+     */
+    protected function getDocumentManager()
+    {
+        return $this->getContainer()->get('doctrine_mongodb.odm.document_manager');
+    }
 
-	/**
-	 * @return SerializerInterface
-	 */
-	protected function getSerializer()
-	{
-		return $this->getContainer()->get('integrated_solr.indexer.serializer');
-	}
+    /**
+     * @return SerializerInterface
+     */
+    protected function getSerializer()
+    {
+        return $this->getContainer()->get('integrated_solr.indexer.serializer');
+    }
 
-	/**
-	 * @return QueueInterface
-	 */
-	protected function getQueue()
-	{
-		return $this->getContainer()->get('integrated_queue.solr_indexer');
-	}
+    /**
+     * @return QueueInterface
+     */
+    protected function getQueue()
+    {
+        return $this->getContainer()->get('integrated_queue.solr_indexer');
+    }
 
-	/**
-	 * @return ResolverInterface
-	 */
-	protected function getResolver()
-	{
-		return $this->getContainer()->get('integrated_content.resolver');
-	}
+    /**
+     * @return ResolverInterface
+     */
+    protected function getResolver()
+    {
+        return $this->getContainer()->get('integrated_content.resolver');
+    }
 }
