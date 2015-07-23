@@ -53,10 +53,6 @@ class ContentTypeMenuBuilder
         $result = $this->repository->findBy(array(), array('name' => 'ASC'));
 
         foreach ($this->group($result) as $key => $documents) {
-            if (!is_array($documents)) {
-                continue;
-            }
-
             $child = $menu->addChild($key);
 
             /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType $document */
@@ -68,6 +64,7 @@ class ContentTypeMenuBuilder
             }
 
             if (!count($child)) {
+                echo ' AHAHA ';
                 $menu->removeChild($child);
             }
         }
