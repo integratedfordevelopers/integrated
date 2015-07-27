@@ -26,50 +26,52 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class IntegratedWorkflowExtension extends Extension implements PrependExtensionInterface
 {
-	/**
-	 * Load the configuration
-	 *
-	 * @param array $configs
-	 * @param ContainerBuilder $container
-	 */
-	public function load(array $configs, ContainerBuilder $container)
-	{
-		$loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+    /**
+     * Load the configuration
+     *
+     * @param array $configs
+     * @param ContainerBuilder $container
+     */
+    public function load(array $configs, ContainerBuilder $container)
+    {
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-		$loader->load('doctrine.xml');
-		$loader->load('extension.xml');
-		$loader->load('repository.xml');
+        $loader->load('doctrine.xml');
+        $loader->load('extension.xml');
+        $loader->load('repository.xml');
 
-		$loader->load('form.xml');
-		$loader->load('form.definition.xml');
-		$loader->load('form.workflow.xml');
+        $loader->load('form.xml');
+        $loader->load('form.definition.xml');
+        $loader->load('form.workflow.xml');
 
-		$loader->load('security.xml');
+        $loader->load('security.xml');
 
-		$loader->load('queue.xml');
+        $loader->load('queue.xml');
         $loader->load('solr.xml');
-	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function prepend(ContainerBuilder $container)
-	{
-		$this->configureTwigBundle($container);
-	}
+        $loader->load('event_listeners.xml');
+    }
 
-	/**
-	 * @param ContainerBuilder $container The service container
-	 * @return void
-	 */
-	protected function configureTwigBundle(ContainerBuilder $container)
-	{
-		foreach ($container->getExtensions() as $name => $extension) {
-			switch ($name) {
-				case 'twig':
-					$container->prependExtensionConfig($name,['form'  => ['resources' => ['IntegratedWorkflowBundle:Form:form_div_layout.html.twig']]]);
-					break;
-			}
-		}
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $this->configureTwigBundle($container);
+    }
+
+    /**
+     * @param ContainerBuilder $container The service container
+     * @return void
+     */
+    protected function configureTwigBundle(ContainerBuilder $container)
+    {
+        foreach ($container->getExtensions() as $name => $extension) {
+            switch ($name) {
+                case 'twig':
+                    $container->prependExtensionConfig($name, ['form'  => ['resources' => ['IntegratedWorkflowBundle:Form:form_div_layout.html.twig']]]);
+                    break;
+            }
+        }
+    }
 }
