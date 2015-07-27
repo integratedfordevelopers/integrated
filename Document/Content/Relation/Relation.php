@@ -42,9 +42,9 @@ class Relation extends Content
      */
     protected $description;
 
-	/**
-	 * @var Phonenumber[] | Collection
-	 * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber")
+    /**
+     * @var Phonenumber[] | Collection
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber")
      * @Type\Field(
      *      type="integrated_sortable_collection",
      *      options={
@@ -53,7 +53,7 @@ class Relation extends Content
      *          "allow_delete"=true
      *      }
      * )
-	 */
+     */
     protected $phonenumbers;
 
     /**

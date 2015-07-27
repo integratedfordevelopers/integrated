@@ -41,7 +41,6 @@ class SearchSelectionType extends AbstractType
         $builder->add('title', 'text');
 
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-
             $builder->add('public', 'choice', [
                 'label' => 'Available for',
                 'expanded' => true,

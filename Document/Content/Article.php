@@ -360,7 +360,10 @@ class Article extends Content
         if ($items) {
             foreach ($items as $item) {
                 if ($item instanceof Image) {
-                	if (!$item->getWebPath()) continue;
+                    if (!$item->getWebPath()) {
+                        continue;
+                    }
+
                     return $item->getWebPath();
                 }
             }

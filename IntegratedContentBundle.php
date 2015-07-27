@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegistryBuilderPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\FormFactoryEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\MetadataEventDispatcherPass;
@@ -18,9 +21,6 @@ use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\PriorityResolve
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\TemplatingPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ThemeManagerPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\IntegratedContentExtension;
-
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Class IntegratedContentBundle
@@ -38,12 +38,12 @@ class IntegratedContentBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new ExtensionRegistryBuilderPass());
-        $container->addCompilerPass(new FormFactoryEventDispatcherPass());
-        $container->addCompilerPass(new MetadataEventDispatcherPass());
+		$container->addCompilerPass(new FormFactoryEventDispatcherPass());
+		$container->addCompilerPass(new MetadataEventDispatcherPass());
         $container->addCompilerPass(new PriorityResolverBuilderPass());
         $container->addCompilerPass(new TemplatingPass());
         $container->addCompilerPass(new ThemeManagerPass());
-    }
+	}
 
     /**
      * {@inheritdoc}

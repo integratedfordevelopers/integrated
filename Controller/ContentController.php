@@ -404,7 +404,8 @@ class ContentController extends Controller
                 if ($this->has('integrated_solr.indexer')) {
                     //higher priority for content edited in Integrated
                     $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
-                    $subscriber->setPriority(9);
+                    $queue = $subscriber->getQueue();
+                    $subscriber->setPriority($queue::PRIORITY_HIGH);
                 }
 
                 /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
@@ -414,9 +415,14 @@ class ContentController extends Controller
                 $dm->flush();
 
                 if ($this->has('integrated_solr.indexer')) {
+                    $solrLock = new LockHandler('content:edited:solr');
+                    $solrLock->lock(true);
+
                     $indexer = $this->get('integrated_solr.indexer');
                     $indexer->setOption('queue.size', 2);
                     $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+
+                    $solrLock->release();
                 }
 
                 if ($request->getRequestFormat() == 'iframe.html') {
@@ -503,7 +509,8 @@ class ContentController extends Controller
                     if ($this->has('integrated_solr.indexer')) {
                         //higher priority for content edited in Integrated
                         $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
-                        $subscriber->setPriority(9);
+                        $queue = $subscriber->getQueue();
+                        $subscriber->setPriority($queue::PRIORITY_HIGH);
                     }
 
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
@@ -516,14 +523,15 @@ class ContentController extends Controller
                     );
 
                     if ($this->has('integrated_solr.indexer')) {
-                        $solrlock = new LockHandler('content:edited:solr');
-                        $solrlock->lock(true);
+
+                        $solrLock = new LockHandler('content:edited:solr');
+                        $solrLock->lock(true);
 
                         $indexer = $this->get('integrated_solr.indexer');
                         $indexer->setOption('queue.size', 2);
                         $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
 
-                        $solrlock->release();
+                        $solrLock->release();
                     }
 
                     if (!$locking['locked']) {

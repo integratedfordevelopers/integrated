@@ -17,7 +17,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class PublishTimeTransformer implements DataTransformerInterface
+class MaxDateTimeTransformer implements DataTransformerInterface
 {
     /**
      * {@inheritdoc}

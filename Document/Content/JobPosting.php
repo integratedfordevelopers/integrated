@@ -123,7 +123,7 @@ class JobPosting extends Article
      * @param Relation\Company $company
      * @return $this
      */
-    public function setCompany(Relation\Company $company)
+    public function setCompany(Relation\Company $company = null)
     {
         $this->company = $company;
         return $this;
@@ -141,7 +141,7 @@ class JobPosting extends Article
      * @param Relation\Person $contact
      * @return $this
      */
-    public function setContact(Relation\Person $contact)
+    public function setContact(Relation\Person $contact = null)
     {
         $this->contact = $contact;
         return $this;

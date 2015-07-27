@@ -12,21 +12,16 @@
 namespace Integrated\Bundle\ContentBundle\Provider;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use Solarium\Client;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
-
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
-
 use Knp\Component\Pager\Paginator;
 
 /**
- * @todo provider system
+ * @todo provider system (INTEGRATED-431)
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class SolariumProvider // @todo interface
+class SolariumProvider // @todo interface (INTEGRATED-431)
 {
     /**
      * @var Client
@@ -36,7 +31,7 @@ class SolariumProvider // @todo interface
     /**
      * @var DocumentManager
      */
-    protected $dm;
+    private $dm;
 
     /**
      * @var Paginator
@@ -67,7 +62,7 @@ class SolariumProvider // @todo interface
      * @param int $maxItems
      * @param array $facetFields
      *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
     public function execute(Request $request, $blockId, $limit = 10, $maxItems = 0, array $facetFields = [])
     {
@@ -77,7 +72,7 @@ class SolariumProvider // @todo interface
             $page = 1;
         }
 
-        // @todo max page
+        // @todo max page (INTEGRATED-431)
 
         $pagination = $this->paginator->paginate(
             [
@@ -94,7 +89,7 @@ class SolariumProvider // @todo interface
 
         /** @var \Solarium\QueryType\Select\Result\Document $document */
         foreach ($pagination as $document) {
-            $this->registry[$document->offsetGet('type_id')] = true; // exclude
+            $this->registry[$document->offsetGet('type_id')] = true; // exclude already shown items
         }
 
         return $pagination;
@@ -114,7 +109,7 @@ class SolariumProvider // @todo interface
         $channel = $request->attributes->get('_channel');
 
         if (!$channel) {
-            throw new \RuntimeException('Channel is required'); // @todo improve
+            throw new \RuntimeException('Channel is required'); // @todo improve (INTEGRATED-431)
         }
 
         $query

@@ -65,12 +65,14 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
      * class. It is possible to supply a list of fields that are required and that
      * should be ignored.
      *
-     * @param $class
-     * @param array $required set the required flag for these fields
-     * @param array $ignore don't add these fields
+     * @param string   $class
+     * @param string[] $required  set the required flag for these fields
+     * @param string[] $filter    a list of field that are white or black listed basted on $blacklist
+     * @param bool     $blacklist if true then $filter is a blacklist and a white list if false
+     *
      * @return Field[]
      */
-    public function classfields($class, array $required = [], array $ignore = [])
+    public function classfields($class, array $required = [], array $filter = [], $blacklist = true)
     {
         $fields = [];
 
@@ -79,15 +81,22 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
         }
 
         $required = array_map('strtolower', $required);
-        $ignore = array_map('strtolower', $ignore);
+        $filter = array_map('strtolower', $filter);
+        $blacklist = (bool) $blacklist;
+
+        if (!$blacklist) {
+            $filter = array_merge($filter, $required);
+        }
 
         foreach ($metadata->getFields() as $field) {
-            if (in_array(strtolower($field->getName()), $ignore)) { continue; }
+            if ($blacklist === in_array(strtolower($field->getName()), $filter)) {
+                continue;
+            }
 
             $fields[$field->getName()] = (new Field())
-                    ->setName($field->getName())
-                    ->setType($field->getType())
-                    ->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
+                ->setName($field->getName())
+                ->setType($field->getType())
+                ->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
         }
 
         return $fields;

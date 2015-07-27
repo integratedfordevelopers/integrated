@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
@@ -37,6 +39,7 @@ class ContentBlock extends Block
     /**
      * @var int
      * @ODM\Int
+     * @Assert\Length(min=0)
      * @Type\Field(
      *      type="integer",
      *      options={
@@ -51,6 +54,7 @@ class ContentBlock extends Block
     /**
      * @var int
      * @ODM\Int
+     * @Assert\Length(min=0)
      * @Type\Field(
      *      type="integer",
      *      options={

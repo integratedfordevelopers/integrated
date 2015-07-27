@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Block;
 
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
+
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -70,7 +71,7 @@ class ContentBlockHandler extends BlockHandler
         $pagination = $this->getPagination($block, $request);
 
         if (!count($pagination)) {
-            return; // @todo show block in edit mode
+            return; // @todo show block in edit mode (INTEGRATED-428)
         }
 
         return $this->render([
@@ -82,14 +83,13 @@ class ContentBlockHandler extends BlockHandler
     /**
      * @param ContentBlock $block
      * @param Request $request
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
     public function getPagination(ContentBlock $block, Request $request)
     {
         $id = $block->getId();
 
         if (!isset($this->registry[$id])) {
-
             $request = $request->duplicate(); // don't change original request
 
             try {

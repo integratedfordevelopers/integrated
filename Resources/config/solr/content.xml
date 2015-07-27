@@ -68,6 +68,7 @@
 
             </options>
         </type>
+        <type name="integrated.property" />
 
     </class>
 

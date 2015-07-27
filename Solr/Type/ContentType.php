@@ -42,25 +42,6 @@ class ContentType implements TypeInterface
         $container->set('type_class', ClassUtils::getRealClass($data)); // could be a doctrine proxy object but we need the actual class name.
         $container->set('type_id', $data->getId());
 
-        //Add properties
-        if ($data instanceof Article) {
-            $found = false;
-            $items = $data->getReferencesByRelationType('embedded');
-            if ($items) {
-                foreach ($items as $item) {
-                    if ($item instanceof Image) {
-                        $found = true;
-                    }
-                }
-            }
-            if ($found) {
-                $container->add('facet_properties', 'Has image');
-            }
-            else {
-                $container->add('facet_properties', 'Don\'t has images');
-            }
-        }
-
         //Relation field and facet field for taxonomy and commercial relations
         $items = array_merge($data->getRelationsByRelationType('taxonomy')->toArray(),$data->getRelationsByRelationType('commercial')->toArray());
         foreach ($items as $relation) {

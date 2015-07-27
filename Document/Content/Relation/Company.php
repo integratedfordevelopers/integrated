@@ -134,7 +134,7 @@ class Company extends Relation
     }
 
     /**
-     * Set the name of the document
+     * Set the website of the document
      *
      * @param string $website
      * @return $this

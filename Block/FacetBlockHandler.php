@@ -94,7 +94,7 @@ class FacetBlockHandler extends BlockHandler
         $facet = $facetSet->getFacet($block->getField());
 
         if (null === $facet || !count($facet)) {
-            return; // @todo show block in edit mode
+            return; // @todo show block in edit mode (INTEGRATED-428)
         }
 
         return $this->render([
