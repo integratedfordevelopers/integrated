@@ -64,9 +64,10 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
      *
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function execute(Request $request, $blockId, $limit = 10, $maxItems = 0, array $facetFields = [])
+    public function execute(Request $request, $blockId = null, $limit = 10, $maxItems = 0, array $facetFields = [])
     {
-        $page = (int) $request->query->get($blockId . '-page');
+        $pageParam = (null !== $blockId ? $blockId . '-' : '') . 'page';
+        $page = (int) $request->query->get($pageParam);
 
         if ($page < 1) {
             $page = 1;
@@ -82,7 +83,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             $page,
             $limit,
             [
-                'pageParameterName' => $blockId . '-page',
+                'pageParameterName' => $pageParam,
                 'maxItems' => $maxItems,
             ]
         );
