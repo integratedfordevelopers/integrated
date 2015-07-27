@@ -26,12 +26,12 @@ class PageLoader implements LoaderInterface
     /**
      * @var bool
      */
-    private $loaded = false;
+    protected $loaded = false;
 
     /**
      * @var DocumentManager
      */
-    private $dm;
+    protected $dm;
 
     /**
      * @param DocumentManager $dm
@@ -83,7 +83,7 @@ class PageLoader implements LoaderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setResolver(LoaderResolverInterface $resolver)
     {
