@@ -383,7 +383,8 @@ class ContentController extends Controller
                 if ($this->has('integrated_solr.indexer')) {
                     //higher priority for content edited in Integrated
                     $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
-                    $subscriber->setPriority(9);
+                    $queue = $subscriber->getQueue();
+                    $subscriber->setPriority($queue::PRIORITY_HIGH);
                 }
 
                 /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
@@ -509,7 +510,8 @@ class ContentController extends Controller
                     if ($this->has('integrated_solr.indexer')) {
                         //higher priority for content edited in Integrated
                         $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
-                        $subscriber->setPriority(9);
+                        $queue = $subscriber->getQueue();
+                        $subscriber->setPriority($queue::PRIORITY_HIGH);
                     }
 
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
