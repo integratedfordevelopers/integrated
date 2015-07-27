@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_storage.event.listener_file">Integrated\Bundle\StorageBundle\Doctrine\EventListener\FileEventListener</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_storage.event.listener_file" class="%integrated_storage.event.listener_file%">
+            <argument type="service" id="integrated_storage.manager" />
+
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+    </services>
+</container>

@@ -1,0 +1,39 @@
+{
+    "name": "integrated/storage-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Storage Bundle",
+    "keywords": ["Integrated", "Storage"],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-library.git"
+        },
+        {
+            "type": "vcs",
+            "url": "git@bitbucket.org:eactive/integrated-content-bundle.git"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "2.7.*",
+        "integrated/library": "~0.4",
+        "integrated/content-bundle": "~0.4",
+        "knplabs/knp-gaufrette-bundle": "~1.7"
+    },
+    "autoload":{
+        "psr-0":{
+            "Integrated\\Bundle\\StorageBundle": ""
+        }
+    },
+    "target-dir": "Integrated/Bundle/StorageBundle"
+}
