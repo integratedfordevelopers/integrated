@@ -14,8 +14,8 @@ namespace Integrated\Common\Content\Extension\Adaptor\Metadata;
 use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
 use Integrated\Common\Content\Extension\Events as ExtensionEvents;
 
-use Integrated\Common\ContentType\Mapping\Event\MetadataEvent;
-use Integrated\Common\ContentType\Mapping\Events as MetadataEvents;
+use Integrated\Common\Form\Mapping\Event\MetadataEvent;
+use Integrated\Common\Form\Mapping\Events as MetadataEvents;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

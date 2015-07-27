@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content\Extension\Event;
+namespace Integrated\Common\Form\Mapping\Event;
 
-use Integrated\Common\Content\Extension\Event;
 use Integrated\Common\Form\Mapping\MetadataEditorInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -22,12 +22,13 @@ class MetadataEvent extends Event
 	/**
 	 * @var MetadataEditorInterface
 	 */
-	private $metadata;
+	protected $metadata;
 
+	/**
+	 * @param MetadataEditorInterface $metadata
+	 */
 	public function __construct(MetadataEditorInterface $metadata)
 	{
-		parent::__construct(self::METADATA);
-
 		$this->metadata = $metadata;
 	}
 

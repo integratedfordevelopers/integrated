@@ -40,13 +40,6 @@ interface ContentTypeInterface
     public function getName();
 
     /**
-     * Get the type of the content type
-     *
-     * @return string
-     */
-    public function getType();
-
-    /**
      * Get a new instance of this content type
      *
      * @return ContentInterface

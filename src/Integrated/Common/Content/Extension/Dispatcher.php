@@ -20,7 +20,7 @@ use Integrated\Common\Content\Extension\Event\Subscriber\ContentSubscriberInterf
 use Integrated\Common\Content\Extension\Event\Subscriber\ContentTypeSubscriberInterface;
 use Integrated\Common\Content\Extension\Event\Subscriber\MetadataSubscriberInterface;
 
-use Integrated\Common\ContentType\Mapping\MetadataEditorInterface;
+use Integrated\Common\Form\Mapping\MetadataEditorInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
 
 use Symfony\Component\EventDispatcher\Event;
