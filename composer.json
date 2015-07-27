@@ -23,8 +23,8 @@
         "integrated/content-bundle": "~0.3",
         "integrated/formtype-bundle": "~0.2",
         "integrated/solr-bundle": "~0.3",
-        "integrated/user-bundle": "dev-INTEGRATED-379-reimplement-navigation-it as 0.3.x-dev",
-        "integrated/workflow-bundle": "dev-INTEGRATED-379-reimplement-navigation-it as 0.3.x-dev",
+        "integrated/user-bundle": "~0.3",
+        "integrated/workflow-bundle": "~0.3",
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*"
     },
