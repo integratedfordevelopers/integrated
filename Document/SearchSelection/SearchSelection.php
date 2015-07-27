@@ -28,25 +28,18 @@ class SearchSelection
 {
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
+     * @ODM\Id(strategy="NONE")
+     * @Slug(fields={"title"})
      */
     protected $id;
 
     /**
      * @var string
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @ODM\String
      * @ODM\Index
      */
     protected $title;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
-     * @Slug(fields={"title"})
-     */
-    protected $slug;
 
     /**
      * @var array
@@ -89,24 +82,6 @@ class SearchSelection
     public function setTitle($title)
     {
         $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     * @return $this
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
         return $this;
     }
 
