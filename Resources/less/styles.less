@@ -1,0 +1,42 @@
+@import "variables";
+
+.integrated-website-toolbar {
+  background-color: @integratedWebsiteToolbarBgColor;
+}
+
+.integrated-website-body-margin-top {
+  height: @integratedWebsiteBodyMarginTop;
+}
+
+.integrated-website-section {
+  position: relative;
+
+  .integrated-website-sortable {
+    min-height: 100px;
+
+    .integrated-website-item-placeholder {
+      background: #f5f5f5;
+      margin-bottom: 20px;
+    }
+  }
+
+  .integrated-website-row .integrated-website-section {
+    border: 1px #bbb dotted;
+    margin: -1px -1px 20px -1px;
+  }
+
+  .integrated-website-helper-icon {
+    margin: 6px;
+    z-index: 2;
+  }
+
+  [data-action="integrated-website-cols-config"] {
+    position: absolute;
+    margin-left: -8px;
+  }
+
+  [data-action="integrated-website-block-remove"] {
+    position: absolute;
+    right: 0;
+  }
+}

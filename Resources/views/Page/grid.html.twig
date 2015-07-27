@@ -1,0 +1,25 @@
+{% spaceless %}
+{% if grid.items is defined %}
+
+    {% for item in grid.items %}
+
+        {% if item.block %}
+            {{ integrated_block(item.block) }}
+        {% endif %}
+
+        {% if item.row %}
+            <div class="row">
+                {% for column in item.row.columns %}
+
+                    <div class="col-sm-{{ column.size }}">
+                        {{ include('IntegratedWebsiteBundle:Page:grid.html.twig', { 'grid': column }) }}
+                    </div>
+
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    {% endfor %}
+
+{% endif %}
+{% endspaceless %}

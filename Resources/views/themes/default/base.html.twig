@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title page.title|default('Untitled') %}</title>
+    <meta charset="UTF-8" />
+
+    {% if page.description|default %}
+        <meta name="description" content="{{ page.description }}">
+    {% endif %}
+
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+
+    {% block stylesheets %}
+        {% stylesheets output='css/styles.css' filter='?uglifycss'
+            '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
+            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+</head>
+<body>
+
+{% if form is defined %}
+    {# TODO: auto generate (INTEGRATED-384) #}
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+{% endif %}
+
+<div class="container">
+    {{ integrated_grid('main') }}
+</div>
+
+{% if form is defined %}
+    {# TODO: auto generate (INTEGRATED-384) #}
+    {{ form_row(form._token) }}
+    {{ form_end(form, { 'render_rest': false }) }}
+
+    {{ include('IntegratedWebsiteBundle::handlebars.html.twig') }}
+{% endif %}
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ asset('bundles/integratedcontent/components/handlebars/handlebars.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/integratedwebsite/components/bootbox/bootbox.js') }}"></script>
+
+<script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
+
+{% block javascripts %}
+    {% javascripts output='js/scripts.js' filter='?uglifyjs2'
+        '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+{% block integrated_page_grid_grid_row %}
+{% spaceless %}
+    {{ form_widget(form.id) }}
+    {{ _self.integrated_page_grid_section(form) }}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_page_grid_block_row %}
+{% spaceless %}
+    <div id="{{ form.vars.id }}_element" class="integrated-website-block">
+        {{ form_widget(form.parent.order, { 'attr': { 'data-field': 'integrated-website-item-order', 'data-index': form.parent.order.vars.value } }) }}
+        {{ form_widget(form, { 'attr': { 'data-field': 'integrated-website-block' } }) }}
+
+        <div class="integrated-website-block-element">
+            {{ integrated_block(form.parent.vars.value.block) }}
+        </div>
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_page_grid_row_row %}
+{% spaceless %}
+    <div id="{{ form.vars.id }}" class="row integrated-website-row">
+        {{ form_widget(form.parent.order, { 'attr': { 'data-field': 'integrated-website-item-order', 'data-index': form.parent.order.vars.value } }) }}
+        {{ form_widget(form.columns, { 'attr': { 'class': 'integrated-website-cols' } }) }}
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_page_grid_column_row %}
+{% spaceless %}
+    <div id="{{ form.vars.id }}" class="col-xs-{{ form.size.vars.value }} integrated-website-col">
+        {{ form_widget(form.size, { 'attr': { 'data-field': 'integrated-website-col-size' } }) }}
+        {{ _self.integrated_page_grid_section(form) }}
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% macro integrated_page_grid_section(form) %}
+{% spaceless %}
+    <div class="integrated-website-section">
+        <div id="{{ form.vars.id }}_items" class="integrated-website-sortable" data-name="{{ form.items.vars.full_name }}" data-index="{{ form.items|length }}">
+            {% for item in form.items %}
+
+                {% if item.block.vars.value|default %}
+                    {{ form_row(item.block) }}
+                {% endif %}
+
+                {% if item.row.vars.value|default %}
+                    {{ form_row(item.row) }}
+                {% endif %}
+
+            {% endfor %}
+        </div>
+    </div>
+{% endspaceless %}
+{% endmacro %}

@@ -16,17 +16,16 @@
     "require": {
         "php": ">=5.4",
         "ext-mongo": "~1.2",
-        "symfony/symfony": "~2.4",
-        "symfony/framework-bundle": "~2.2",
-		"doctrine/doctrine-fixtures-bundle": "dev-master",
+        "symfony/symfony": ">=2.4",
+        "symfony/framework-bundle": ">=2.2",
+        "sensio/framework-extra-bundle": "~2.3",
         "doctrine/mongodb": ">=1.0.0",
-        "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
-        "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
-        "integrated/content-bundle": "~0.1",
-        "integrated/page-bundle": "dev-master",
-		"knplabs/knp-paginator-bundle": "dev-master",
-		"nelmio/alice": "1.*",
-        "braincrafted/bootstrap-bundle": "~2.0",
+        "doctrine/mongodb-odm": "*",
+        "doctrine/mongodb-odm-bundle": "*",
+        "integrated/content-bundle": "~0.3",
+        "integrated/page-bundle": "~0.3",
+        "knplabs/knp-paginator-bundle": ">=2.4",
+        "friendsofsymfony/jsrouting-bundle": "1.5.*",
         "twbs/bootstrap": "3.*"
     },
     "autoload":{
@@ -34,5 +33,10 @@
             "Integrated\\Bundle\\WebsiteBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/WebsiteBundle"
+    "target-dir": "Integrated/Bundle/WebsiteBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.9-dev"
+        }
+    }
 }
