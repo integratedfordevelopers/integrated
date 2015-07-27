@@ -11,16 +11,6 @@
             "homepage": "http://www.e-active.nl"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:eactive/integrated-library.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@bitbucket.org:eactive/integrated-formtype-bundle.git"
-        }
-    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
