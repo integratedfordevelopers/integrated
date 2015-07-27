@@ -15,26 +15,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class ItemType extends AbstractType
 {
-    /**
-     * @var DocumentManager
-     */
-    protected $dm;
-
-    /**
-     * @param DocumentManager $dm
-     */
-    public function __construct(DocumentManager $dm)
-    {
-        $this->dm = $dm;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -42,9 +27,9 @@ class ItemType extends AbstractType
     {
         $builder->add('order', 'hidden');
 
-        $builder->add('block', new BlockType($this->dm));
+        $builder->add('block', 'integrated_page_grid_block');
 
-        $builder->add('row', new RowType($this->dm));
+        $builder->add('row', 'integrated_page_grid_row');
     }
 
     /**

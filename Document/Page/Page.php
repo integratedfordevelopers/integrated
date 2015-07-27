@@ -82,12 +82,6 @@ class Page
     protected $updatedAt;
 
     /**
-     * @var \DateTime
-     * @ODM\Date
-     */
-    protected $publishedAt;
-
-    /**
      * @var bool
      * @ODM\Boolean
      */
@@ -99,7 +93,6 @@ class Page
     {
         $this->grids = new ArrayCollection();
         $this->createdAt = new \DateTime();
-        $this->publishedAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
 
@@ -276,24 +269,6 @@ class Page
     public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getPublishedAt()
-    {
-        return $this->publishedAt;
-    }
-
-    /**
-     * @param \DateTime $publishedAt
-     * @return $this
-     */
-    public function setPublishedAt(\DateTime $publishedAt = null)
-    {
-        $this->publishedAt = $publishedAt;
         return $this;
     }
 

@@ -23,7 +23,7 @@ class LayoutLocator
     /**
      * @var ThemeManager
      */
-    private $themeManager;
+    protected $themeManager;
 
     /**
      * @var array

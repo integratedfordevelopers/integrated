@@ -15,8 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-use Integrated\Bundle\PageBundle\Document\Page\Grid\Column;
-use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\ItemsInterface;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
 
 /**
@@ -41,7 +40,7 @@ class ItemOrderListener implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        if ($data instanceof Grid || $data instanceof Column) {
+        if ($data instanceof ItemsInterface) {
             $items = $data->getItems();
 
             usort($items, function ($a, $b) {

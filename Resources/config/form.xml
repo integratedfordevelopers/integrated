@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_page.form.type.page.class">Integrated\Bundle\PageBundle\Form\Type\PageType</parameter>
+
+        <parameter key="integrated_page.form.type.grid.class">Integrated\Bundle\PageBundle\Form\Type\Grid\GridType</parameter>
+
+        <parameter key="integrated_page.form.type.item.class">Integrated\Bundle\PageBundle\Form\Type\Grid\ItemType</parameter>
+
+        <parameter key="integrated_page.form.type.block.class">Integrated\Bundle\PageBundle\Form\Type\Grid\BlockType</parameter>
+
+        <parameter key="integrated_page.form.type.row.class">Integrated\Bundle\PageBundle\Form\Type\Grid\RowType</parameter>
+
+        <parameter key="integrated_page.form.type.column.class">Integrated\Bundle\PageBundle\Form\Type\Grid\ColumnType</parameter>
+
+        <parameter key="integrated_page.form.type.layout_choice.class">Integrated\Bundle\PageBundle\Form\Type\LayoutChoiceType</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_page.form.type.page" class="%integrated_page.form.type.page.class%">
+            <tag name="form.type" alias="integrated_page_page" />
+        </service>
+
+        <service id="integrated_page.form.type.grid" class="%integrated_page.form.type.grid.class%">
+            <tag name="form.type" alias="integrated_page_grid_grid" />
+        </service>
+
+        <service id="integrated_page.form.type.item" class="%integrated_page.form.type.item.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="form.type" alias="integrated_page_grid_item" />
+        </service>
+
+        <service id="integrated_page.form.type.block" class="%integrated_page.form.type.block.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="form.type" alias="integrated_page_grid_block" />
+        </service>
+
+        <service id="integrated_page.form.type.row" class="%integrated_page.form.type.row.class%">
+            <tag name="form.type" alias="integrated_page_grid_row" />
+        </service>
+
+        <service id="integrated_page.form.type.column" class="%integrated_page.form.type.column.class%">
+            <tag name="form.type" alias="integrated_page_grid_column" />
+        </service>
+
+        <service id="integrated_page.form.type.layout_choice" class="%integrated_page.form.type.layout_choice.class%">
+            <argument type="service" id="integrated_page.layout_locator" />
+            <tag name="form.type" alias="integrated_page_layout_choice" />
+        </service>
+
+    </services>
+</container>

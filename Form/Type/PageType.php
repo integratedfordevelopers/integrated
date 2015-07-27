@@ -36,8 +36,6 @@ class PageType extends AbstractType
 
         $builder->add('layout', 'integrated_page_layout_choice');
 
-        $builder->add('publishedAt', 'integrated_datetime');
-
         $builder->add('disabled', 'checkbox', [
             'required' => false,
         ]);

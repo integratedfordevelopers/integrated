@@ -21,6 +21,7 @@
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "*",
         "doctrine/mongodb-odm-bundle": "*",
+        "integrated/content-bundle": "~0.3",
         "integrated/block-bundle": "~0.3",
         "integrated/theme-bundle": "~0.2",
         "knplabs/knp-paginator-bundle": ">=2.4"

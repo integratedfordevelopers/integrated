@@ -15,8 +15,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\PageBundle\Form\EventListener\ItemOrderListener;
 
 /**
@@ -25,19 +23,6 @@ use Integrated\Bundle\PageBundle\Form\EventListener\ItemOrderListener;
 class GridType extends AbstractType
 {
     /**
-     * @var DocumentManager
-     */
-    protected $dm;
-
-    /**
-     * @param DocumentManager $dm
-     */
-    public function __construct(DocumentManager $dm)
-    {
-        $this->dm = $dm;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -45,7 +30,7 @@ class GridType extends AbstractType
         $builder->add('id', 'hidden');
 
         $builder->add('items', 'collection', [
-            'type'         => new ItemType($this->dm),
+            'type'         => 'integrated_page_grid_item',
             'allow_add'    => true,
             'allow_delete' => true,
             'prototype'    => false,
