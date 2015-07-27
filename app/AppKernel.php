@@ -28,6 +28,7 @@ class AppKernel extends Kernel
             new Integrated\Bundle\UserBundle\IntegratedUserBundle(),
             new Integrated\Bundle\LockingBundle\IntegratedLockingBundle(),
             new Integrated\Bundle\MenuBundle\IntegratedMenuBundle(),
+            new Integrated\Bundle\WorkflowBundle\IntegratedWorkflowBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

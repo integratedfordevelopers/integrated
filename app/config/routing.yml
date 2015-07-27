@@ -9,3 +9,7 @@ integrated_user:
 integrated_security:
     resource: "@IntegratedUserBundle/Resources/config/routing.security.xml"
     prefix: "/admin"
+
+intergrated_workflow:
+    resource: "@IntegratedWorkflowBundle/Resources/config/routing/workflow.xml"
+    prefix: "/admin/workflow"
