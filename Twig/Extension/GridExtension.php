@@ -66,9 +66,7 @@ class GridExtension extends \Twig_Extension
             /** @var FormView $form */
 
             foreach ($form->offsetGet('grids') as $grid) {
-
                 if ($grid->vars['value'] instanceof Grid && $grid->vars['value']->getId() == $id) {
-
                     return $this->renderer->searchAndRenderBlock($grid, 'row');
                 }
             }
@@ -83,6 +81,7 @@ class GridExtension extends \Twig_Extension
 
                 $form = $this->form->create('integrated_website_page', $page)->createView();
 
+                // Render form for the newly added grid
                 return $this->renderer->searchAndRenderBlock($form->offsetGet('grids')->offsetGet($page->indexOf($grid)), 'row');
             }
         }
