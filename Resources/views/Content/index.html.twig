@@ -5,7 +5,7 @@
         <ul class="nav nav-pills">
 
             <li class="dropdown">
-                <a href data-toggle="dropdown" role="button" id="sorting-list">{% trans %}Sort by{% endtrans %}: {{ params.sort.options[params.sort.current].label|trans }}<b class="caret"></b></a>
+                <a href data-toggle="dropdown" role="button" id="sorting-list">{% trans %}Sort by{% endtrans %}: {{ params.sort.options[params.sort.current].label|trans }} <b class="caret"></b></a>
 
                 <ul aria-labelledby="sorting-list" role="menu" class="dropdown-menu" id="sorting-menu">
 
@@ -20,6 +20,7 @@
                 </ul>
             </li>
 
+            {{ render(controller('IntegratedContentBundle:SearchSelection:menu')) }}
         </ul>
     </div>
 
@@ -32,7 +33,7 @@
                     <div class="item_row">
                         <h3 class="title">
                             <a href="{{ path('integrated_content_content_edit', {id: content.type_id}) }}">
-                                {{ content.title }}
+                                {{ content.title|default }}
                             </a>
                         </h3>
 
@@ -113,6 +114,7 @@
                 <form>
                     <input type="hidden" value="{{ app.request.query.get('q') }}" name="q" />
                     {% for key, facet in facets %}
+                        {% if facet|length > 0 %}
                         <div class="item_row">
                             <h3 class="title">
                                 {% if key == 'contenttypes' %}
@@ -125,7 +127,7 @@
                                 {% for title, count in facet %}
                                 <li>
                                     <label>
-                                        <input {% if title in active[key] %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
+                                        <input {% if title in active[key]|default %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
                                         {% if key == 'contenttypes' %}
                                             {% if contentTypes[title] is defined %}
                                                 {{ contentTypes[title] }}
@@ -147,6 +149,7 @@
                                 {% endfor %}
                             </ul>
                         </div>
+                        {% endif %}
                     {% endfor %}
                 </form>
             </div>

@@ -12,7 +12,9 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
+
+use Integrated\Common\Form\Mapping\Annotations as Type;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 
 /**
@@ -33,8 +35,18 @@ class Company extends Relation
     protected $name;
 
     /**
+     * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex(sparse=true)
+     * @Slug(fields={"name"})
+     * @Type\Field
+     */
+    protected $slug;
+
+    /**
      * @var File
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
+     * @Type\Field(type="integrated_image_choice")
      */
     protected $logo;
 
@@ -64,6 +76,28 @@ class Company extends Relation
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get the slug of the document
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the slug of the document
+     *
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
         return $this;
     }
 

@@ -11,9 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Symfony\Component\HttpFoundation\File\File as UploadedFile;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
+use Integrated\Common\Form\Mapping\Annotations as Type;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Document type File
@@ -33,7 +36,7 @@ class File extends Content
     private $temp;
 
     /**
-     * @var UploadFile
+     * @var UploadedFile
      * @Type\Field(type="integrated_file")
      * @ODM\Field
      */
@@ -51,6 +54,15 @@ class File extends Content
      * @Type\Field
      */
     protected $title;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex(sparse=true)
+     * @Slug(fields={"title"})
+     * @Type\Field
+     */
+    protected $slug;
 
     /**
      * @var string
@@ -205,6 +217,28 @@ class File extends Content
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get the slug of the document
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the slug of the document
+     *
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
         return $this;
     }
 

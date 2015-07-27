@@ -11,12 +11,16 @@
 
 namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Common\Content\ContentInterface;
 
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Symfony\Component\Security\Core\Util\ClassUtils;
+
+use Integrated\Bundle\ContentBundle\Document\Content\Image;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -37,6 +41,18 @@ class ContentType implements TypeInterface
         $container->set('type_name', $data->getContentType());
         $container->set('type_class', ClassUtils::getRealClass($data)); // could be a doctrine proxy object but we need the actual class name.
         $container->set('type_id', $data->getId());
+
+        //Relation field and facet field for taxonomy and commercial relations
+        $items = array_merge($data->getRelationsByRelationType('taxonomy')->toArray(),$data->getRelationsByRelationType('commercial')->toArray());
+        foreach ($items as $relation) {
+            foreach ($relation->getReferences()->toArray() as $content) {
+                if ($content instanceof Taxonomy) {
+                    $container->add('facet_' . $relation->getRelationId(), $content->getTitle());
+                    $container->add('taxonomy_' . $relation->getRelationId() . '_string', $content->getTitle());
+                }
+            }
+        }
+
     }
 
     /**

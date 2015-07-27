@@ -18,6 +18,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
@@ -27,7 +28,7 @@ use Integrated\Common\Content\MetadataInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\RegistryInterface;
 
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * Abstract base class for document types
@@ -41,7 +42,7 @@ use Integrated\Common\ContentType\Mapping\Annotations as Type;
  */
 class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
 {
-	use ExtensibleTrait;
+    use ExtensibleTrait;
 
     /**
      * @var string
@@ -52,7 +53,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * @var string the type of the ContentType
      * @ODM\String
-	 * @ODM\Index
+     * @ODM\Index
      */
     protected $contentType;
 
@@ -75,11 +76,17 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     protected $updatedAt;
 
     /**
-     * @var \DateTime
-     * @ODM\Date
-     * @Type\Field(type="integrated_datetime", options={"label" = "Published at"})
+     * @var PublishTime
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime")
+     * @Type\Field(type="integrated_publishtime")
      */
-    protected $publishedAt;
+    protected $publishTime;
+
+    /**
+     * @var bool
+     * @ODM\Boolean
+     */
+    protected $published = true;
 
     /**
      * @var bool
@@ -90,9 +97,9 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @var Metadata
-	 * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
      */
-    protected $metadata = null;
+    protected $metadata;
 
     /**
      * @var Collection
@@ -106,9 +113,9 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->publishedAt = new \DateTime();
         $this->relations = new ArrayCollection();
         $this->updatedAt = new \DateTime();
+        $this->publishTime = new PublishTime();
         $this->channels = new ArrayCollection();
     }
 
@@ -224,14 +231,14 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      */
     public function getRelation($relationId)
     {
-        return $this->relations->filter(function($relation) use($relationId) {
+        return $this->relations->filter(function ($relation) use ($relationId) {
             if ($relation instanceof Relation) {
                 if ($relation->getRelationId() == $relationId) {
                     return true;
                 }
             }
 
-			return false;
+            return false;
         })->first();
     }
 
@@ -241,7 +248,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      */
     public function getRelationsByRelationType($relationType)
     {
-        return $this->relations->filter(function($relation) use($relationType) {
+        return $this->relations->filter(function ($relation) use ($relationType) {
             if ($relation instanceof Relation) {
                 if ($relation->getRelationType() == $relationType) {
                     return true;
@@ -317,25 +324,76 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Get the publishedAt of the document
+     * Get the publish time of the document
      *
-     * @return \DateTime
+     * @return PublishTime
      */
-    public function getPublishedAt()
+    public function getPublishTime()
     {
-        return $this->publishedAt;
+        return $this->publishTime;
     }
 
     /**
-     * Set the publishedAt of the document
+     * Set the publish time of the document
      *
-     * @param \DateTime $publishedAt
+     * @param PublishTime $publishTime
      * @return $this
      */
-    public function setPublishedAt(\DateTime $publishedAt = null)
+    public function setPublishTime(PublishTime $publishTime)
     {
-        $this->publishedAt = $publishedAt;
+        $this->publishTime = $publishTime;
         return $this;
+    }
+
+    /**
+     * Get the published of the document
+     *
+     * @deprecated
+     * @return bool
+     */
+    public function getPublished()
+    {
+        return $this->isPublished();
+    }
+
+    /**
+     * Get the published of the document
+     *
+     * @param bool $checkPublishTime
+     * @return bool
+     */
+    public function isPublished($checkPublishTime = true)
+    {
+        $published = true;
+
+        if ($checkPublishTime && $this->publishTime instanceof PublishTime) {
+            $published = $this->publishTime->isPublished();
+        }
+
+        return ($published && $this->published);
+    }
+
+    /**
+     * Set the published of the document
+     *
+     * @param bool $published
+     * @return $this
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+        return $this;
+    }
+
+    /**
+     * Get the disabled of the document
+     *
+     * @deprecated
+     * @return bool
+     */
+    public function getDisabled()
+    {
+        return $this->disabled;
     }
 
     /**
@@ -343,7 +401,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      *
      * @return bool
      */
-    public function getDisabled()
+    public function isDisabled()
     {
         return $this->disabled;
     }
@@ -360,30 +418,30 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         return $this;
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getMetadata()
-	{
-		if ($this->metadata === null) {
-			$this->metadata = new Metadata();
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetadata()
+    {
+        if ($this->metadata === null) {
+            $this->metadata = new Metadata();
+        }
 
-		return $this->metadata;
-	}
+        return $this->metadata;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setMetadata(RegistryInterface $metadata = null)
-	{
-		if ($metadata !== null && !$metadata instanceof Metadata) {
-			$metadata = new Metadata($metadata->toArray());
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function setMetadata(RegistryInterface $metadata = null)
+    {
+        if ($metadata !== null && !$metadata instanceof Metadata) {
+            $metadata = new Metadata($metadata->toArray());
+        }
 
-		$this->metadata = $metadata;
-		return $this;
-	}
+        $this->metadata = $metadata;
+        return $this;
+    }
 
     /**
      * {@inheritdoc}
@@ -423,10 +481,10 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * {@inheritdoc}
      */
-   	public function hasChannel(ChannelInterface $channel)
-   	{
-   		return $this->channels->contains($channel);
-   	}
+    public function hasChannel(ChannelInterface $channel)
+    {
+        return $this->channels->contains($channel);
+    }
 
     /**
      * {@inheritdoc}
@@ -443,5 +501,33 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function updateUpdatedAtOnPreUpdate()
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @ODM\PrePersist
+     * @ODM\PreUpdate
+     */
+    public function updatePublishedOnPreUpdate()
+    {
+        $this->setPublished(!$this->disabled);
+    }
+
+    /**
+     * @ODM\PrePersist
+     * @ODM\PreUpdate
+     */
+    public function updatePublishTimeOnPreUpdate()
+    {
+        if (!$this->publishTime instanceof PublishTime) {
+            return;
+        }
+
+        if (!$this->publishTime->getStartDate() instanceof \DateTime) {
+            $this->publishTime->setStartDate($this->createdAt);
+        }
+
+        if (!$this->publishTime->getEndDate() instanceof \DateTime) {
+            $this->publishTime->setEndDate(new \DateTime(PublishTime::DATE_MAX));
+        }
     }
 }

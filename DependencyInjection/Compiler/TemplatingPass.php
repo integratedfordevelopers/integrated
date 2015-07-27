@@ -19,15 +19,15 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class TemplatingPass implements CompilerPassInterface
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function process(ContainerBuilder $container)
-	{
-		if (!$container->hasParameter('templating.globals.class')) {
-			return;
-		}
+    /**
+     * @inheritdoc
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->hasParameter('templating.globals.class')) {
+            return;
+        }
 
-		$container->setParameter('templating.globals.class', 'Integrated\\Bundle\\ContentBundle\\Templating\\GlobalVariables');
-	}
+        $container->setParameter('templating.globals.class', 'Integrated\\Bundle\\ContentBundle\\Templating\\GlobalVariables');
+    }
 }
