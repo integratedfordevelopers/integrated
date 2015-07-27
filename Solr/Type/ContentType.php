@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Common\Content\ContentInterface;
 
@@ -42,6 +43,10 @@ class ContentType implements TypeInterface
         $container->set('type_class', ClassUtils::getRealClass($data)); // could be a doctrine proxy object but we need the actual class name.
         $container->set('type_id', $data->getId());
 
+        if ($data instanceof Content) {
+            $container->set('pub_active', $data->isPublished(false));
+        }
+
         //Add properties
         if ($data instanceof Article) {
             $found = false;
@@ -55,8 +60,7 @@ class ContentType implements TypeInterface
             }
             if ($found) {
                 $container->add('facet_properties', 'Has image');
-            }
-            else {
+            } else {
                 $container->add('facet_properties', 'Don\'t has images');
             }
         }
