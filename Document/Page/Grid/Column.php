@@ -21,7 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ODM\EmbeddedDocument
  */
-class Column
+class Column implements ItemsInterface
 {
     /**
      * @var int
@@ -72,7 +72,7 @@ class Column
      * @param array $items
      * @return $this
      */
-    public function setItems(array $items)
+    public function setItems(array $items = [])
     {
         $this->items = new ArrayCollection($items);
         return $this;

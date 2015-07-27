@@ -14,28 +14,11 @@ namespace Integrated\Bundle\PageBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-
-use Integrated\Bundle\PageBundle\Form\Type\Grid\GridType;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class PageType extends AbstractType
 {
-    /**
-     * @var DocumentManager
-     */
-    protected $dm;
-
-    /**
-     * @param DocumentManager $dm
-     */
-    public function __construct(DocumentManager $dm)
-    {
-        $this->dm = $dm;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -52,8 +35,6 @@ class PageType extends AbstractType
         ]);
 
         $builder->add('layout', 'integrated_page_layout_choice');
-
-        $builder->add('publishedAt', 'integrated_datetime');
 
         $builder->add('disabled', 'checkbox', [
             'required' => false,

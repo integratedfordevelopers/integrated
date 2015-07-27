@@ -13,9 +13,7 @@ namespace Integrated\Bundle\PageBundle\Form\Type\Grid;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Integrated\Bundle\PageBundle\Form\EventListener\ItemOrderListener;
 
@@ -25,19 +23,6 @@ use Integrated\Bundle\PageBundle\Form\EventListener\ItemOrderListener;
 class ColumnType extends AbstractType
 {
     /**
-     * @var DocumentManager
-     */
-    protected $dm;
-
-    /**
-     * @param DocumentManager $dm
-     */
-    public function __construct(DocumentManager $dm)
-    {
-        $this->dm = $dm;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -45,7 +30,7 @@ class ColumnType extends AbstractType
         $builder->add('size', 'hidden');
 
         $builder->add('items', 'collection', [
-            'type'         => new ItemType($this->dm),
+            'type'         => 'integrated_page_grid_item',
             'allow_add'    => true,
             'allow_delete' => true,
             'prototype'    => false,
@@ -54,7 +39,7 @@ class ColumnType extends AbstractType
         $builder->addEventSubscriber(new ItemOrderListener());
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\Grid\Column',

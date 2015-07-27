@@ -21,7 +21,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ODM\EmbeddedDocument
  */
-class Grid
+class Grid implements ItemsInterface
 {
     /**
      * @var string
@@ -72,7 +72,7 @@ class Grid
      * @param array $items
      * @return $this
      */
-    public function setItems(array $items)
+    public function setItems(array $items = [])
     {
         $this->items = new ArrayCollection($items);
         return $this;

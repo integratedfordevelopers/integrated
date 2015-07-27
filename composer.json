@@ -17,14 +17,17 @@
         "php": ">=5.4",
         "symfony/symfony": ">=2.4",
         "symfony/framework-bundle": ">=2.2",
+        "sensio/framework-extra-bundle": "~2.3",
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "*",
         "doctrine/mongodb-odm-bundle": "*",
-        "integrated/block-bundle": "~0.2",
-		"knplabs/knp-paginator-bundle": ">=2.4"
+        "integrated/content-bundle": "~0.3",
+        "integrated/block-bundle": "~0.3",
+        "integrated/theme-bundle": "~0.2",
+        "knplabs/knp-paginator-bundle": ">=2.4"
     },
     "suggest": {
-        "integrated/website-bundle": "~0.2"
+        "integrated/website-bundle": "Frontend block management for Integrated"
     },
     "autoload":{
         "psr-0":{

@@ -13,9 +13,7 @@ namespace Integrated\Bundle\PageBundle\Form\Type\Grid;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -23,32 +21,19 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 class RowType extends AbstractType
 {
     /**
-     * @var DocumentManager
-     */
-    protected $dm;
-
-    /**
-     * @param DocumentManager $dm
-     */
-    public function __construct(DocumentManager $dm)
-    {
-        $this->dm = $dm;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('columns', 'collection', [
-            'type'         => new ColumnType($this->dm),
+            'type'         => 'integrated_page_grid_column',
             'allow_add'    => true,
             'allow_delete' => true,
             'prototype'    => false,
         ]);
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\Grid\Row',
