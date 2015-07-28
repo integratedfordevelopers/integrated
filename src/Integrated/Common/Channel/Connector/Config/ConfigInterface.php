@@ -9,11 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content\Channel;
+namespace Integrated\Common\Channel\Connector\Config;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ChannelManagerInterface extends \Integrated\Common\Channel\ChannelManagerInterface
+interface ConfigInterface
 {
+    /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @return string
+     */
+    public function getAdapter();
+
+    /**
+     * @return OptionsInterface
+     */
+    public function getOptions();
 }

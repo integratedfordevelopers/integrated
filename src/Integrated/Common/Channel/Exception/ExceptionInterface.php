@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content\Channel;
+namespace Integrated\Common\Channel\Exception;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ChannelManagerInterface extends \Integrated\Common\Channel\ChannelManagerInterface
+interface ExceptionInterface
 {
 }
