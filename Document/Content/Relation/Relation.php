@@ -127,7 +127,8 @@ class Relation extends Content
     /**
      * Get the phonenumbers of the document
      *
-     * @return Phonenumber[]
+     * @param null $type
+     * @return Collection|Phonenumber[]
      */
     public function getPhonenumbers($type = null)
     {
@@ -149,7 +150,7 @@ class Relation extends Content
     /**
      * Set the phonenumbers of the document
      *
-     * @param Phonenumber[] $phonenumbers
+     * @param Collection $phonenumbers
      * @return $this
      */
     public function setPhonenumbers(Collection $phonenumbers)
@@ -161,7 +162,7 @@ class Relation extends Content
     /**
      * Add phonenumber to phonenumbers collection
      *
-     * @param string|Phonenumber $phonenumber
+     * @param string|null|Phonenumber $phonenumber
      * @param string $type
 	 *
      * @return $this
@@ -233,7 +234,7 @@ class Relation extends Content
     /**
      * Get the addresses of the document
      *
-     * @return Address[]
+     * @return Collection
      */
     public function getAddresses()
     {
@@ -243,7 +244,7 @@ class Relation extends Content
     /**
      * Set the addresses of the document
      *
-     * @param array $addresses
+     * @param Collection $addresses
      * @return $this
      */
     public function setAddresses(Collection $addresses)
