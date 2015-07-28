@@ -13,7 +13,6 @@ namespace Integrated\Bundle\BlockBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
