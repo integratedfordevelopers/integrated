@@ -76,11 +76,17 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function updateContentType($oldClass, $newClass)
     {
-        $this->getCollection('content_type')
-            ->update(
-                ['class' => $oldClass],
-                ['class' => $newClass]
-            );
+        $contentType = $this->getCollection('content_type')
+            ->find(['class' => $oldClass]);
+
+        foreach ($contentType as $row) {
+            $row['class'] = $newClass;
+            $this->getCollection('content_type')
+                ->update(
+                    ['_id' => $row['_id']],
+                    $row
+                );
+        }
     }
 
     /**
