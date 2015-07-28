@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Bundle\StorageBundle\Document\Image;
 use Integrated\Common\ContentType\Mapping\Annotations as Type;
 
 /**
@@ -330,7 +331,7 @@ class Article extends Content
         if ($items) {
             foreach ($items as $item) {
                 if ($item instanceof Image) {
-                    return $item->getWebPath();
+                    return $item->getFile()->getPathname();
                 }
             }
         }

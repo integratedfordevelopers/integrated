@@ -132,8 +132,8 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% if (form.parent.vars.value.fileExtension is not empty) %}
-                    <a href="{{ form.parent.vars.value.getWebPath() }}" target="_blank">
+                {% if (form.parent.vars.value.file is not empty) %}
+                    <a href="{{ form.parent.vars.value.file }}" target="_blank">
                         {% trans %}Download{% endtrans %}
                     </a>
                 {% endif %}
