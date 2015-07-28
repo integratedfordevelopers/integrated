@@ -42,7 +42,8 @@ The bundle makes use of *knplabs/knp-gaufrette-bundle* for configuration and a f
 
 	integrated_storage:
 		resolver:
-			public: /web/uploads/documents
+			local:
+				public: /uploads/documents
 	
 The StorageBundle places the files on all known file systems. The order defined in the configuration will be used to determine its main path. When a file system has no resolver storage (for protected files) the developer must write an own implementation to give access to file. 
 
@@ -55,7 +56,32 @@ Additionally to protected entities from being stored in a public accessible stor
 		decision_map:
 			"Integrated\Bundle\StorageBundle\Document\File": [local]
 
-**The redistribution command does not make use of the decision map and copies file given files in the given storage.** 
+**The redistribution command does not make use of the decision map and copies all files in the given storage.**
+
+#### File identifier ###
+A file requires an unique identifier. By default the identifier is based on the contents of the file. You can write your own implementation of `Integrated\Bundle\StorageBundle\Storage\Identifier\Identifier`. 
+
+	// app/config.yml
+	integrated_storage:
+		// ...
+		identifier_class: FileIdentifier
+
+When no namespace has been given it will look in `Integrated\Bundle\StorageBundle\Storage\Identifier` by default. To provide a class add a backspace in front.  
+
+#### Url Resolver ###
+In some cases you will need to add logic to the URL resolver. You can write your own implementation of `Integrated\Bundle\StorageBundle\Storage\Resolver\ResolverInterface`.
+
+	// app/config.yml
+	integrated_storage:
+		// ..
+		resolver:
+			public:
+				public: /uploads/documents
+				resolver_class: UriResolver
+
+When no namespace has been given it will look in `Integrated\Bundle\StorageBundle\Storage\Resolver` by default.
+
+ 
 
 ## License ##
 This bundle is under the MIT license. See the complete license in the bundle:
