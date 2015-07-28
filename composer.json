@@ -21,7 +21,7 @@
         "sensio/framework-extra-bundle": "~2.3",
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "*",
-        "doctrine/mongodb-odm-bundle": "*",
+        "doctrine/mongodb-odm-bundle": "~3.0",
         "integrated/content-bundle": "~0.3",
         "integrated/page-bundle": "~0.3",
         "knplabs/knp-paginator-bundle": ">=2.4",
