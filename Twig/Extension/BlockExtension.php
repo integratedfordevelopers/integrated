@@ -21,14 +21,14 @@ class BlockExtension extends \Twig_Extension
     /**
      * @var ContainerInterface
      */
-    private $container;
+    protected $container;
 
     /**
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container; // @todo remove service container
+        $this->container = $container; // @todo remove service container (INTEGRATED-445)
     }
 
     /**

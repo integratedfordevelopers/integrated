@@ -20,11 +20,11 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class ThemeManagerPass implements CompilerPassInterface
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process(ContainerBuilder $container)
-	{
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
         if (!$container->hasDefinition('integrated_theme.templating.theme_manager')) {
             return;
         }
@@ -32,5 +32,5 @@ class ThemeManagerPass implements CompilerPassInterface
         $definition = $container->getDefinition('integrated_theme.templating.theme_manager');
 
         $definition->addMethodCall('registerPath', ['default', '@IntegratedBlockBundle/Resources/views/themes/default']);
-	}
+    }
 }

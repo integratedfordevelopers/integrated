@@ -25,7 +25,7 @@ class BlockTransformer implements DataTransformerInterface
     /**
      * @var DocumentRepository
      */
-    private $repository;
+    protected $repository;
 
     /**
      * @param DocumentRepository $repository

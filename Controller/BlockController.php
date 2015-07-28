@@ -82,7 +82,6 @@ class BlockController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $dm = $this->getDocumentManager();
 
             $dm->persist($block);
@@ -112,7 +111,6 @@ class BlockController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $this->getDocumentManager()->flush();
 
             $this->get('braincrafted_bootstrap.flash')->success('Block updated');
@@ -143,7 +141,6 @@ class BlockController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $dm = $this->getDocumentManager();
 
             $dm->remove($block);

@@ -29,22 +29,22 @@ class BlockRenderer
     /**
      * @var BlockHandlerRegistryInterface
      */
-    private $blockRegistry;
+    protected $blockRegistry;
 
     /**
      * @var ThemeManager
      */
-    private $themeManager;
+    protected $themeManager;
 
     /**
      * @var DocumentRepository
      */
-    private $repository;
+    protected $repository;
 
     /**
      * @var \Twig_Environment
      */
-    private $twig;
+    protected $twig;
 
     /**
      * @param BlockHandlerRegistryInterface $blockRegistry
@@ -57,9 +57,9 @@ class BlockRenderer
         $this->blockRegistry = $blockRegistry;
         $this->themeManager = $themeManager;
         $this->repository = $dm->getRepository('IntegratedBlockBundle:Block\Block');
-        $this->twig = $twig; // @todo templating service
+        $this->twig = $twig; // @todo templating service (INTEGRATED-443)
 
-        $this->themeManager->setActiveTheme('gim'); // @todo
+        $this->themeManager->setActiveTheme('gim'); // @todo (INTEGRATED-385)
     }
 
     /**
@@ -70,23 +70,19 @@ class BlockRenderer
     public function render($block)
     {
         if (is_string($block)) {
-
             $block = $this->repository->find($block);
         }
 
         if ($block instanceof BlockInterface) {
-
             try {
                 $handler = $this->blockRegistry->getHandler($block->getType());
 
             } catch (DocumentNotFoundException $e) {
-                // @todo log errors
-
+                // @todo log errors (INTEGRATED-444)
                 return;
             }
 
             if ($handler instanceof BlockHandlerInterface) {
-
                 if ($handler instanceof BlockHandler) {
                     $handler->setTwig($this->twig);
 

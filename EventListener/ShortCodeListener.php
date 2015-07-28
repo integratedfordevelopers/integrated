@@ -23,7 +23,7 @@ class ShortCodeListener
     /**
      * @var BlockRenderer
      */
-    private $blockRenderer;
+    protected $blockRenderer;
 
     /**
      * @param BlockRenderer $blockRenderer
@@ -41,7 +41,6 @@ class ShortCodeListener
         $response = $event->getResponse();
 
         if (preg_match('/\[block id="(.+?)"(.*?)\]/i', $response->getContent(), $match)) {
-
             $response->setContent(str_replace(
                 $match[0],
                 $this->blockRenderer->render($match[1]),

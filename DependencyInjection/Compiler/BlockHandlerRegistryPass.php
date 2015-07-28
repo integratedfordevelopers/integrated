@@ -20,22 +20,21 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class BlockHandlerRegistryPass implements CompilerPassInterface
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function process(ContainerBuilder $container)
-	{
-		if (!$container->hasDefinition('integrated_block.registry.block_handler')) {
-			return;
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('integrated_block.registry.block_handler')) {
+            return;
+        }
 
         $definition = $container->getDefinition('integrated_block.registry.block_handler');
 
-		foreach ($container->findTaggedServiceIds('integrated.block') as $id => $attributes) {
-
+        foreach ($container->findTaggedServiceIds('integrated.block') as $id => $attributes) {
             if (isset($attributes[0]['type'])) {
                 $definition->addMethodCall('registerHandler', [$attributes[0]['type'], new Reference($id)]);
             }
-		}
-	}
+        }
+    }
 }

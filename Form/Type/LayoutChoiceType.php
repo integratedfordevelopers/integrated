@@ -26,7 +26,7 @@ class LayoutChoiceType extends AbstractType
     /**
      * @var LayoutLocator
      */
-    private $locator;
+    protected $locator;
 
     /**
      * @param LayoutLocator $locator
@@ -42,7 +42,9 @@ class LayoutChoiceType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'choice_list' => function(Options $options) { return $this->getChoiceList($options['type']); },
+            'choice_list' => function (Options $options) {
+                return $this->getChoiceList($options['type']);
+            },
         ]);
 
         $resolver->setRequired([
