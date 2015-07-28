@@ -84,9 +84,9 @@ class RedistributeCommand extends Command
         $filesystems = (new FilesystemValidation($this->registry))
             ->isValid($input->getArgument('filesystems'));
 
-        foreach ($this->database->getFiles() as $i => $file) {
+        foreach ($this->database->getObjects() as $i => $file) {
             $file->setFile($this->storage->copy($file->getFile(), $filesystems));
-            $this->database->save($file);
+            $this->database->saveObject($file);
 
             if (0 == ($i % 100)) {
                 $this->database->commit();

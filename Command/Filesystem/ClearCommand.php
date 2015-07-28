@@ -84,7 +84,7 @@ class ClearCommand extends Command
         $filesystems = (new FilesystemValidation($this->registry))
             ->isValid($input->getArgument('filesystems'));
 
-        foreach ($this->database->getFiles() as $i => $file) {
+        foreach ($this->database->getObjects() as $i => $file) {
 
             $_filesystems = [];
             foreach ($filesystems as $filesystem) {
@@ -95,7 +95,7 @@ class ClearCommand extends Command
 
             if (count($_filesystems)) {
                 $file->setFile($this->storage->delete($file->getFile(), $_filesystems));
-                $this->database->save($file);
+                $this->database->saveObject($file);
             }
 
             if (0 == ($i % 100)) {

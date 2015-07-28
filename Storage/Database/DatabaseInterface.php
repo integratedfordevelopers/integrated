@@ -21,16 +21,18 @@ interface DatabaseInterface
     /**
      * @return File[]
      */
-    public function getFiles();
+    public function getObjects();
 
     /**
      * @param File $file
      */
-    public function save(File $file);
+    public function saveObject(File $file);
 
     /**
      * Called occasionally to cleanup/flush the local entities from the manager
      * Can be left empty if not needed (ODM and ORM require it for memory issues)
      */
     public function commit();
+
+    
 }

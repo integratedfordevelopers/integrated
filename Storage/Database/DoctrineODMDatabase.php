@@ -37,7 +37,7 @@ class DoctrineODMDatabase implements DatabaseInterface
     /**
      * @return File[]
      */
-    public function getFiles()
+    public function getObjects()
     {
         return $this->dm->getUnitOfWork()
             ->getDocumentPersister('Integrated\Bundle\StorageBundle\Document\File')
@@ -58,7 +58,7 @@ class DoctrineODMDatabase implements DatabaseInterface
     /**
      * @param File $file
      */
-    public function save(File $file)
+    public function saveObject(File $file)
     {
         $this->dm->persist($file);
     }
