@@ -19,7 +19,7 @@
         "symfony/framework-bundle": ">=2.2"
     },
     "autoload":{
-        "psr-0":{
+        "psr-4":{
             "Integrated\\Bundle\\ThemeBundle": ""
         }
     },

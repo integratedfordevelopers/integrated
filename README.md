@@ -1,24 +1,37 @@
-# IntegratedThemeBundle
+# IntegratedThemeBundle #
+This bundle provides theme support
 
-## Installation
+## Requirements ##
+* See the require section in the composer.json
 
-composer.json
+## Features ##
+* Theme support
 
-    "integrated/theme-bundle": "dev-master",
+## Documentation ##
+* [Integrated for Developers](http://integratedfordevelopers.com/ "Integrated for Developers")
 
-AppKernel.php
+## Installation ##
+This bundle can be installed following these steps:
 
-    $bundles = array(
-        ...
-        new Integrated\Bundle\PageBundle\IntegratedThemeBundle(),
-        ...
-    );
+### Install using composer ###
 
+    $ php composer.phar require integrated/theme-bundle:~0.3
 
-## Configuration
+### Enable the bundle ###
 
-config.yml
+    // app/AppKernel.php
+    public function registerBundles()
+    {
+        return array(
+            // ...
+            new Integrated\Bundle\ThemeBundle\IntegratedThemeBundle()
+            // ...
+        );
+    }
 
+### Configuration ###
+
+    # app/config/config.yml
     integrated_theme:
         themes:
             mytheme1:
@@ -33,3 +46,15 @@ config.yml
                 fallback: 
                     - mytheme1
                     - mytheme3
+
+## License ##
+This bundle is under the MIT license. See the complete license in the bundle:
+
+    LICENSE
+
+## Contributing ##
+Pull requests are welcome. Please see our [CONTRIBUTING guide](http://integratedfordevelopers.com/contributing "CONTRIBUTING guide").
+
+## About ##
+This bundle is part of the Integrated project. You can read more about this project on the
+[Integrated for Developers](http://integratedfordevelopers.com/ "Integrated for Developers") website.

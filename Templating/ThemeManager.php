@@ -152,7 +152,7 @@ class ThemeManager
      * @param string $name
      * @param string $dir
      * @param bool $first
-     * @return mixed
+     * @return string|array
      */
     public function locateResource($name, $dir = null, $first = true)
     {
