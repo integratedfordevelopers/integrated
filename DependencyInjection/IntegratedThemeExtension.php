@@ -35,7 +35,6 @@ class IntegratedThemeExtension extends Extension
         $definition = $container->getDefinition('integrated_theme.templating.theme_manager');
 
         foreach ($config['themes'] as $id => $theme) {
-
             $definition->addMethodCall('registerTheme', [$id, $theme['paths'], $theme['fallback']]);
         }
     }

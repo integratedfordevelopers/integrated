@@ -16,12 +16,12 @@ use Symfony\Component\HttpKernel\Kernel;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ThemeManager // @todo interface
+class ThemeManager
 {
     /**
      * @var Kernel
      */
-    private $kernel;
+    protected $kernel;
 
     /**
      * @var array
@@ -50,7 +50,7 @@ class ThemeManager // @todo interface
     public function registerTheme($id, array $paths, array $fallback = [])
     {
         if ($this->hasTheme($id)) {
-            throw new \InvalidArgumentException(sprintf('Theme "%s" already exists', $id));
+            throw new \InvalidArgumentException(sprintf('Theme "%s" already exists.', $id));
         }
 
         $this->themes[$id] = new Theme($id, $paths, $fallback);
@@ -90,7 +90,7 @@ class ThemeManager // @todo interface
     public function getTheme($id)
     {
         if (!$this->hasTheme($id)) {
-            throw new \InvalidArgumentException(sprintf('Theme "%s" not exists', $id));
+            throw new \InvalidArgumentException(sprintf('Theme "%s" not exists.', $id));
         }
 
         return $this->themes[$id];
@@ -119,7 +119,7 @@ class ThemeManager // @todo interface
     public function setActiveTheme($id)
     {
         if (!$this->hasTheme($id)) {
-            throw new \InvalidArgumentException(sprintf('Theme "%s" not exists', $id));
+            throw new \InvalidArgumentException(sprintf('Theme "%s" not exists.', $id));
         }
 
         $this->activeTheme = $id;
@@ -136,14 +136,12 @@ class ThemeManager // @todo interface
         $theme = $this->getTheme(null === $theme ? $this->getActiveTheme() : $theme);
 
         foreach ($theme->getPaths() as $path) {
-
             if (file_exists($this->locateResource($path) . '/' . $template)) {
                 return $path . '/' . $template;
             }
         }
 
         foreach ($theme->getFallback() as $fallback) {
-
             if ($resource = $this->locateTemplate($template, $fallback)) {
                 return $resource;
             }
