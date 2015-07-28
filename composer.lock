@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0b280a8cb7526c1cc39c8ea037fb15c0",
+    "hash": "41e5476cfbb92f29f126eebcb3b6432f",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1413,17 +1413,17 @@
         },
         {
             "name": "integrated/content-bundle",
-            "version": "dev-feature/block",
+            "version": "dev-develop",
             "target-dir": "Integrated/Bundle/ContentBundle",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-content-bundle.git",
-                "reference": "5605d9063d099068f418888c3f7f71aa96405bf5"
+                "reference": "ab870e9562d7e312038ae556c857845429522987"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/5605d9063d099068f418888c3f7f71aa96405bf5.zip",
-                "reference": "5605d9063d099068f418888c3f7f71aa96405bf5",
+                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/ab870e9562d7e312038ae556c857845429522987.zip",
+                "reference": "ab870e9562d7e312038ae556c857845429522987",
                 "shasum": ""
             },
             "require": {
@@ -1438,12 +1438,13 @@
                 "integrated/formtype-bundle": "~0.2",
                 "integrated/library": "~0.3",
                 "integrated/locking-bundle": "~0.2",
+                "integrated/menu-bundle": "~0.3",
                 "integrated/slug-bundle": "~0.2",
                 "knplabs/knp-paginator-bundle": "~2.4",
                 "nelmio/alice": "1.*",
                 "php": ">=5.4",
                 "symfony/framework-bundle": "~2.2",
-                "symfony/symfony": "~2.4",
+                "symfony/symfony": "~2.6",
                 "twbs/bootstrap": "3.*"
             },
             "require-dev": {
@@ -1480,7 +1481,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2015-07-23 11:35:12"
+            "time": "2015-07-28 08:34:54"
         },
         {
             "name": "integrated/formtype-bundle",
@@ -1538,16 +1539,16 @@
         },
         {
             "name": "integrated/library",
-            "version": "dev-feature/block",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-library.git",
-                "reference": "cec7ffaddf7effd6ef8f3a9aec6ad4b0fc636fb9"
+                "reference": "8af2f1b7891b9930909f742dc8202a3b77ed7924"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-library/get/cec7ffaddf7effd6ef8f3a9aec6ad4b0fc636fb9.zip",
-                "reference": "cec7ffaddf7effd6ef8f3a9aec6ad4b0fc636fb9",
+                "url": "https://bitbucket.org/eactive/integrated-library/get/8af2f1b7891b9930909f742dc8202a3b77ed7924.zip",
+                "reference": "8af2f1b7891b9930909f742dc8202a3b77ed7924",
                 "shasum": ""
             },
             "require": {
@@ -1610,7 +1611,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2015-07-22 14:03:44"
+            "time": "2015-07-27 14:30:15"
         },
         {
             "name": "integrated/locking-bundle",
@@ -1666,32 +1667,86 @@
             "time": "2014-10-14 22:38:17"
         },
         {
+            "name": "integrated/menu-bundle",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/eactive/integrated-menu-bundle.git",
+                "reference": "adc25f146ac0f90204f7445c573bdeac7c482289"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://bitbucket.org/eactive/integrated-menu-bundle/get/adc25f146ac0f90204f7445c573bdeac7c482289.zip",
+                "reference": "adc25f146ac0f90204f7445c573bdeac7c482289",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/knp-menu-bundle": "~2.0",
+                "php": ">=5.4",
+                "symfony/framework-bundle": "~2.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.2.*"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-develop": "0.9.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Integrated\\Bundle\\MenuBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "e-Active",
+                    "homepage": "http://www.e-active.nl"
+                }
+            ],
+            "description": "Integrated Menu Bundle",
+            "homepage": "http://www.e-active.nl",
+            "keywords": [
+                "Integrated",
+                "menu"
+            ],
+            "time": "2015-07-10 09:12:29"
+        },
+        {
             "name": "integrated/page-bundle",
             "version": "dev-develop",
             "target-dir": "Integrated/Bundle/PageBundle",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-page-bundle.git",
-                "reference": "7102c1289caab62e5514ce3c0890a6d898575d49"
+                "reference": "f02d58762cb9d34273e7b03e7a95add25c5e87ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-page-bundle/get/7102c1289caab62e5514ce3c0890a6d898575d49.zip",
-                "reference": "7102c1289caab62e5514ce3c0890a6d898575d49",
+                "url": "https://bitbucket.org/eactive/integrated-page-bundle/get/f02d58762cb9d34273e7b03e7a95add25c5e87ec.zip",
+                "reference": "f02d58762cb9d34273e7b03e7a95add25c5e87ec",
                 "shasum": ""
             },
             "require": {
                 "doctrine/mongodb": ">=1.0.0",
                 "doctrine/mongodb-odm": "*",
                 "doctrine/mongodb-odm-bundle": "*",
-                "integrated/block-bundle": "~0.2",
+                "integrated/block-bundle": "~0.3",
+                "integrated/content-bundle": "~0.3",
+                "integrated/theme-bundle": "~0.2",
                 "knplabs/knp-paginator-bundle": ">=2.4",
                 "php": ">=5.4",
+                "sensio/framework-extra-bundle": "~2.3",
                 "symfony/framework-bundle": ">=2.2",
                 "symfony/symfony": ">=2.4"
             },
             "suggest": {
-                "integrated/website-bundle": "~0.2"
+                "integrated/website-bundle": "Frontend block management for Integrated"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1720,7 +1775,7 @@
                 "Integrated",
                 "page"
             ],
-            "time": "2015-04-20 12:57:56"
+            "time": "2015-07-27 14:17:14"
         },
         {
             "name": "integrated/slug-bundle",
@@ -1932,12 +1987,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-website-bundle.git",
-                "reference": "7b781c5a50090c2cee8a1619fcb0cc3782b16f59"
+                "reference": "6df41dca26d749235291c282303bdabc668caf57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-website-bundle/get/7b781c5a50090c2cee8a1619fcb0cc3782b16f59.zip",
-                "reference": "7b781c5a50090c2cee8a1619fcb0cc3782b16f59",
+                "url": "https://bitbucket.org/eactive/integrated-website-bundle/get/6df41dca26d749235291c282303bdabc668caf57.zip",
+                "reference": "6df41dca26d749235291c282303bdabc668caf57",
                 "shasum": ""
             },
             "require": {
@@ -1982,7 +2037,7 @@
                 "Integrated",
                 "website"
             ],
-            "time": "2015-07-17 09:26:47"
+            "time": "2015-07-27 08:48:51"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -2153,6 +2208,124 @@
                 "paginator"
             ],
             "time": "2014-10-06 10:38:10"
+        },
+        {
+            "name": "knplabs/knp-menu",
+            "version": "v2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/KnpMenu.git",
+                "reference": "5758d0026d7ed00c8dd4727e413918cf2dc74c1a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/5758d0026d7ed00c8dd4727e413918cf2dc74c1a",
+                "reference": "5758d0026d7ed00c8dd4727e413918cf2dc74c1a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "pimple/pimple": "1.0.*",
+                "silex/silex": "1.0.*",
+                "twig/twig": ">=1.2,<2.0-dev"
+            },
+            "suggest": {
+                "pimple/pimple": "for the built-in implementations of the menu provider and renderer provider",
+                "silex/silex": "for the integration with your silex application",
+                "twig/twig": "for the TwigRenderer and the integration with your templates"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Menu\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christophe Coevoet",
+                    "email": "stof@notk.org"
+                },
+                {
+                    "name": "KnpLabs",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/KnpLabs/KnpMenu/contributors"
+                }
+            ],
+            "description": "An object oriented menu library",
+            "homepage": "http://knplabs.com",
+            "keywords": [
+                "menu",
+                "tree"
+            ],
+            "time": "2014-08-01 09:50:16"
+        },
+        {
+            "name": "knplabs/knp-menu-bundle",
+            "version": "v2.0.0",
+            "target-dir": "Knp/Bundle/MenuBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
+                "reference": "bdfc95da5ff7e4e67f948aaa9ea5da835a3a9088"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/bdfc95da5ff7e4e67f948aaa9ea5da835a3a9088",
+                "reference": "bdfc95da5ff7e4e67f948aaa9ea5da835a3a9088",
+                "shasum": ""
+            },
+            "require": {
+                "knplabs/knp-menu": "~2.0",
+                "symfony/framework-bundle": "~2.0"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Knp\\Bundle\\MenuBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Christophe Coevoet",
+                    "email": "stof@notk.org"
+                },
+                {
+                    "name": "KnpLabs",
+                    "homepage": "http://knplabs.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/KnpLabs/KnpMenuBundle/contributors"
+                }
+            ],
+            "description": "This bundle provides an integration of the KnpMenu library",
+            "keywords": [
+                "menu"
+            ],
+            "time": "2014-08-01 09:57:23"
         },
         {
             "name": "knplabs/knp-paginator-bundle",
@@ -3312,27 +3485,12 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [
-        {
-            "alias": "0.9.9-dev",
-            "alias_normalized": "0.9.9.0-dev",
-            "version": "dev-feature/block",
-            "package": "integrated/library"
-        },
-        {
-            "alias": "0.9.9-dev",
-            "alias_normalized": "0.9.9.0-dev",
-            "version": "dev-feature/block",
-            "package": "integrated/content-bundle"
-        }
-    ],
+    "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
         "symfony/assetic-bundle": 0,
         "symfony/swiftmailer-bundle": 0,
-        "symfony/monolog-bundle": 0,
-        "integrated/library": 20,
-        "integrated/content-bundle": 20
+        "symfony/monolog-bundle": 0
     },
     "prefer-stable": true,
     "prefer-lowest": false,
