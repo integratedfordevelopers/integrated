@@ -56,7 +56,7 @@ class DoctrineODMDatabase implements DatabaseInterface
     /**
      * {@inheritdoc}
      */
-    public function getRows($class = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\File')
+    public function getRows($class)
     {
         return $this->getCollection()
             ->find(['class' => $class]);
