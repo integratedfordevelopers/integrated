@@ -20,10 +20,9 @@
     },
     "autoload":{
         "psr-4":{
-            "Integrated\\Bundle\\ThemeBundle": ""
+            "Integrated\\Bundle\\ThemeBundle\\": ""
         }
     },
-    "target-dir": "Integrated/Bundle/ThemeBundle",
     "extra": {
         "branch-alias": {
             "dev-develop": "0.9.9-dev"
