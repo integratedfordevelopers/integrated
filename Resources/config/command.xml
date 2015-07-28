@@ -6,6 +6,7 @@
 
     <parameters>
 
+        <parameter key="integrated_storage.command_migrate">Integrated\Bundle\StorageBundle\Command\MigrateCommand</parameter>
         <parameter key="integrated_storage.command_filesystem_clear">Integrated\Bundle\StorageBundle\Command\Filesystem\ClearCommand</parameter>
         <parameter key="integrated_storage.command_list">Integrated\Bundle\StorageBundle\Command\Filesystem\ListCommand</parameter>
         <parameter key="integrated_storage.command_redistribute">Integrated\Bundle\StorageBundle\Command\Filesystem\RedistributeCommand</parameter>
@@ -32,6 +33,13 @@
         <service id="integrated_storage.command_redistribute" class="%integrated_storage.command_redistribute%">
             <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.manager" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_storage.command_migrate" class="%integrated_storage.command_migrate%">
+            <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.manager" />
 
             <tag name="console.command" />
