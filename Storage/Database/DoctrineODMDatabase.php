@@ -22,16 +22,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DoctrineODMDatabase implements DatabaseInterface
 {
     /**
-     * @var DocumentManager
+     * @var ContainerInterface
      */
-    protected $dm;
+    protected $container;
 
     /**
      * @param ContainerInterface $containerInterface
      */
     public function __construct(ContainerInterface $containerInterface)
     {
-        $this->dm = $containerInterface->get('doctrine_mongodb.odm.document_manager');
+        $this->container = $containerInterface;
     }
 
     /**
@@ -39,20 +39,10 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function getObjects()
     {
-        return $this->dm->getUnitOfWork()
+        return $this->container->get('doctrine_mongodb.odm.document_manager')
+            ->getUnitOfWork()
             ->getDocumentPersister('Integrated\Bundle\StorageBundle\Document\File')
             ->loadAll();
-    }
-
-    /**
-     * @return array
-     */
-    public function getFilesJson()
-    {
-        return $this->dm
-            ->createQueryBuilder('Integrated\Bundle\StorageBundle\Document\File')
-            ->hydrate(false)
-            ->getQuery();
     }
 
     /**
@@ -60,7 +50,8 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function saveObject(File $file)
     {
-        $this->dm->persist($file);
+        $this->container->get('doctrine_mongodb.odm.document_manager')
+            ->persist($file);
     }
 
     /**
@@ -68,7 +59,7 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function commit()
     {
-        $this->dm->flush();
-        $this->dm->clear();
+        $this->container->get('doctrine_mongodb.odm.document_manager')->flush();
+        $this->container->get('doctrine_mongodb.odm.document_manager')->clear();
     }
 }
