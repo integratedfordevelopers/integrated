@@ -13,7 +13,6 @@ namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
 use Integrated\Bundle\StorageBundle\Document\File;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -27,15 +26,15 @@ class DoctrineODMDatabase implements DatabaseInterface
     protected $container;
 
     /**
-     * @param ContainerInterface $containerInterface
+     * {@inheritdoc}
      */
-    public function __construct(ContainerInterface $containerInterface)
+    public function __construct(ContainerInterface $container)
     {
-        $this->container = $containerInterface;
+        $this->container = $container;
     }
 
     /**
-     * @return File[]
+     * {@inheritdoc}
      */
     public function getObjects()
     {
@@ -46,7 +45,7 @@ class DoctrineODMDatabase implements DatabaseInterface
     }
 
     /**
-     * @param File $file
+     * {@inheritdoc}
      */
     public function saveObject(File $file)
     {
@@ -57,9 +56,51 @@ class DoctrineODMDatabase implements DatabaseInterface
     /**
      * {@inheritdoc}
      */
+    public function getRows($class = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\File')
+    {
+        return $this->getCollection()
+            ->find(['class' => $class]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveRow(array $row)
+    {
+        return $this->getCollection()
+            ->update(['_id' => $row['_id']], $row);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateContentType($oldClass, $newClass)
+    {
+        $this->getCollection('content_type')
+            ->update(
+                ['class' => $oldClass],
+                ['class' => $newClass]
+            );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function commit()
     {
         $this->container->get('doctrine_mongodb.odm.document_manager')->flush();
         $this->container->get('doctrine_mongodb.odm.document_manager')->clear();
+    }
+
+    /**
+     * @param string $collection
+     * @return \Doctrine\MongoDB\Collection
+     */
+    protected function getCollection($collection = 'content')
+    {
+        return $this->container->get('doctrine_mongodb.odm.default_connection')
+            // Use parameters for the database
+            ->selectDatabase($this->container->getParameter('database_name'))
+            ->selectCollection($collection);
     }
 }
