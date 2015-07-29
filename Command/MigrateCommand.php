@@ -16,10 +16,9 @@ use Integrated\Bundle\StorageBundle\Storage\Database\DatabaseInterface;
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
 use Integrated\Bundle\StorageBundle\Storage\Manager;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
-use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 
-use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -97,15 +96,43 @@ class MigrateCommand extends Command
             $classes = explode(' ', $input->getOption('class'));
         }
 
-        // Iterate over the rows in the database
-        foreach ($classes as $class) {
-            // Output the current class
-            $output->write(
-                sprintf('<info>%s</info> started on migration.', $class),
-                true
-            );
+        $data = $this->database->getRows();
 
-            foreach ($this->database->getRows($class) as $row) {
+        // Barry progress
+        $progress = new ProgressBar($output, count($data));
+        $progress->start();
+        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %remaining:-6s%');
+        $current = 0;
+
+        foreach ($data as $i => $row) {
+            // Change the relation mapping (if exists) for Integrated
+            if (isset($row['relations'])) {
+                foreach ($row['relations'] as $n => $relation) {
+                    foreach ($relation['references'] as $e => $reference) {
+                        if (in_array($reference['class'], $classes)) {
+                            $row['relations'][$n]['references'][$e]['class'] = self::ClassName;
+                        }
+                    }
+                }
+            }
+            // Walk over (embedded relations) keys
+            foreach ($row as $key => $value) {
+                if (is_array($value)) {
+                    if (isset($row[$key]['$ref']) && isset($row[$key]['$id']) && isset($row[$key]['class'])) {
+                        if (in_array($row[$key]['class'], $classes)) {
+                            $row[$key]['class'] = self::ClassName;
+                        }
+                    }
+                }
+            }
+
+            // Removed fields
+            foreach (['fileExtension', 'slug'] as $key) {
+                unset($row[$key]);
+            }
+
+            // Only perform the action for the listed classes
+            if (in_array($row['class'], $classes)) {
                 // Make a search for a file
                 $finder = Finder::create()
                     ->files()
@@ -119,7 +146,7 @@ class MigrateCommand extends Command
                     /** @var \Symfony\Component\Finder\SplFileInfo $file */
                     $file = $iterator->current();
 
-                    // Make an storage object
+                    // Make a storage object
                     $storage = $this->storage->write(
                         new MemoryReader(
                             $file->getContents(),
@@ -132,10 +159,7 @@ class MigrateCommand extends Command
 
                     // Assign new stuff
                     $row['file'] = (new StorageTranslation($storage))->toArray();
-                    //$row['class'] = self::ClassName;
-
-                    // Write it down, some where
-                    $this->database->saveRow($row);
+                    $row['class'] = self::ClassName;
 
                     // Check for a delete
                     if ($input->getOption('delete')) {
@@ -153,6 +177,18 @@ class MigrateCommand extends Command
                 }
             }
 
+            // Write it down, some where
+            $this->database->saveRow($row);
+
+            // Update the barry progress
+            $progress->setProgress(++$current);
+        }
+
+        // Release the output
+        $progress->finish();
+
+        // Update the content types
+        foreach ($classes as $class) {
             // Change the content type
             $this->database->updateContentType(
                 $class,
