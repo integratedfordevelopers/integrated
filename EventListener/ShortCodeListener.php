@@ -40,12 +40,21 @@ class ShortCodeListener
     {
         $response = $event->getResponse();
 
-        if (preg_match('/\[block id="(.+?)"(.*?)\]/i', $response->getContent(), $match)) {
-            $response->setContent(str_replace(
-                $match[0],
-                $this->blockRenderer->render($match[1]),
+        $response->setContent(
+            preg_replace_callback(
+                '/\[block id="(.+?)"(.*?)\]/i',
+                [$this, 'replaceWithBlock'],
                 $response->getContent()
-            ));
-        }
+            )
+        );
+    }
+
+    /**
+     * @param array $matches
+     * @return null|string
+     */
+    public function replaceWithBlock(array $matches)
+    {
+        return $this->blockRenderer->render($matches[1]);
     }
 }
