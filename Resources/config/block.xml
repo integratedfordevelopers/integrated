@@ -12,8 +12,7 @@
 
         <parameter key="integrated_block.registry.block_handler.class">Integrated\Common\Block\BlockHandlerRegistry</parameter>
 
-        <parameter key="integrated_block.block_handler.text.class">Integrated\Bundle\BlockBundle\Block\TextBlockHandler</parameter>
-        <parameter key="integrated_block.block_handler.container.class">Integrated\Bundle\BlockBundle\Block\ContainerBlockHandler</parameter>
+        <parameter key="integrated_block.block_handler.class">Integrated\Bundle\BlockBundle\Block\BlockHandler</parameter>
 
     </parameters>
 
@@ -33,11 +32,11 @@
 
         <service id="integrated_block.registry.block_handler" class="%integrated_block.registry.block_handler.class%" />
 
-        <service id="integrated_block.block_handler.text" class="%integrated_block.block_handler.text.class%">
+        <service id="integrated_block.block_handler.text" class="%integrated_block.block_handler.class%">
             <tag name="integrated.block" type="text" />
         </service>
 
-        <service id="integrated_block.block_handler.container" class="%integrated_block.block_handler.container.class%">
+        <service id="integrated_block.block_handler.container" class="%integrated_block.block_handler.class%">
             <tag name="integrated.block" type="container" />
         </service>
 

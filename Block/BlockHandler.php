@@ -12,11 +12,12 @@
 namespace Integrated\Bundle\BlockBundle\Block;
 
 use Integrated\Common\Block\BlockHandlerInterface;
+use Integrated\Common\Block\BlockInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-abstract class BlockHandler implements BlockHandlerInterface
+class BlockHandler implements BlockHandlerInterface
 {
     /**
      * @var \Twig_Environment
@@ -65,5 +66,15 @@ abstract class BlockHandler implements BlockHandlerInterface
         if ($this->getTemplate()) {
             return $this->twig->render($this->getTemplate(), $parameters);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function execute(BlockInterface $block)
+    {
+        return $this->render([
+            'block' => $block,
+        ]);
     }
 }
