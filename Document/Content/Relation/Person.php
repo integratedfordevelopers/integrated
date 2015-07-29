@@ -71,7 +71,7 @@ class Person extends Relation
 
     /**
      * @var File
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\StorageBundle\Document\File")
      */
     protected $picture;
 

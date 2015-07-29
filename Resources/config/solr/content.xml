@@ -50,7 +50,7 @@
 
     </class>
 
-    <class name="Integrated\Bundle\ContentBundle\Document\Content\File">
+    <class name="Integrated\Bundle\StorageBundle\Document\File">
 
         <type name="integrated.fields">
             <options>
@@ -63,7 +63,7 @@
 
     </class>
 
-    <class name="Integrated\Bundle\ContentBundle\Document\Content\Image">
+    <class name="Integrated\Bundle\StorageBundle\Document\Image">
 
         <type name="integrated.fields">
             <options>
