@@ -35,10 +35,9 @@ interface DatabaseInterface
     public function saveObject(File $file);
 
     /**
-     * @param string $class
      * @return array[]
      */
-    public function getRows($class);
+    public function getRows();
 
     /**
      * @param array $row

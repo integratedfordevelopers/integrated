@@ -56,10 +56,10 @@ class DoctrineODMDatabase implements DatabaseInterface
     /**
      * {@inheritdoc}
      */
-    public function getRows($class)
+    public function getRows()
     {
         return $this->getCollection()
-            ->find(['class' => $class]);
+            ->find();
     }
 
     /**
