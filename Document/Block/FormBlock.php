@@ -52,6 +52,25 @@ class FormBlock extends Block
     protected $returnUrl;
 
     /**
+     * @var array
+     * @ODM\Collection
+     * @Assert\All({
+     *     @Assert\Email
+     * })
+     * @Type\Field(
+     *      type="bootstrap_collection",
+     *      options={
+     *          "label"="Sent form to e-mail address(es)",
+     *          "type"="email",
+     *          "allow_add"=true,
+     *          "allow_delete"=true,
+     *          "required"=false,
+     *      }
+     * )
+     */
+    protected $emailAddresses = [];
+
+    /**
      * @return ContentType
      */
     public function getContentType()
@@ -84,6 +103,24 @@ class FormBlock extends Block
     public function setReturnUrl($returnUrl)
     {
         $this->returnUrl = $returnUrl;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEmailAddresses()
+    {
+        return $this->emailAddresses;
+    }
+
+    /**
+     * @param array $emailAddresses
+     * @return $this
+     */
+    public function setEmailAddresses(array $emailAddresses = [])
+    {
+        $this->emailAddresses = $emailAddresses;
         return $this;
     }
 

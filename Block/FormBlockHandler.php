@@ -20,6 +20,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\FormBlock;
+use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Form\FormFactory as ContentFormFactory;
 
@@ -51,17 +52,24 @@ class FormBlockHandler extends BlockHandler
     protected $requestStack;
 
     /**
+     * @var FormMailer
+     */
+    protected $formMailer;
+
+    /**
      * @param ContentFormFactory $contentFormFactory
      * @param FormFactory $formFactory
      * @param DocumentManager $documentManager
      * @param RequestStack $requestStack
+     * @param FormMailer $formMailer
      */
-    public function __construct(ContentFormFactory $contentFormFactory, FormFactory $formFactory, DocumentManager $documentManager, RequestStack $requestStack)
+    public function __construct(ContentFormFactory $contentFormFactory, FormFactory $formFactory, DocumentManager $documentManager, RequestStack $requestStack, FormMailer $formMailer)
     {
         $this->contentFormFactory = $contentFormFactory;
         $this->formFactory = $formFactory;
         $this->documentManager = $documentManager;
         $this->requestStack = $requestStack;
+        $this->formMailer = $formMailer;
     }
 
     /**
@@ -92,6 +100,15 @@ class FormBlockHandler extends BlockHandler
                 $this->documentManager->persist($content);
                 $this->documentManager->flush();
 
+                // @todo fix data (INTEGRATED-442)
+                $data = $request->request->get($form->getName());
+
+                // remove irrelevant fields
+                unset($data['actions']);
+                unset($data['_token']);
+
+                $this->formMailer->send($data, $block->getEmailAddresses());
+
                 return new RedirectResponse($block->getReturnUrl());
             }
         }
@@ -108,7 +125,7 @@ class FormBlockHandler extends BlockHandler
      * @param array $options
      * @return \Symfony\Component\Form\Form
      */
-    public function createForm($type, $data = null, array $options = [])
+    protected function createForm($type, $data = null, array $options = [])
     {
         $form = $this->formFactory->createBuilder($type, $data, $options);
 
