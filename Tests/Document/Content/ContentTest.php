@@ -116,13 +116,14 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setPublishedAt function
+     * Test publish time get- and setStartDate function
      */
-    public function testGetAndSetPublishedAtFunction()
+    public function testGetAndSetPublishTimeStartDateFunction()
     {
         $publishedAt = new \DateTime();
-        $this->assertSame($publishedAt, $this->content->setPublishedAt($publishedAt)->getPublishedAt());
+        $this->assertSame($publishedAt, $this->content->getPublishTime()->setStartDate($publishedAt)->getStartDate());
     }
+
 
     /**
      * Test get- and setDisabled function
@@ -149,7 +150,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetChannelsFunction()
     {
         $channels = new ArrayCollection();
-        $this->assertSame($channels, $this->content->setChannels($channels)->getChannels());
+        $this->assertSame($channels->toArray(), $this->content->setChannels($channels)->getChannels());
     }
 
     /**
@@ -185,12 +186,13 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $this->content->getChannels());
 
         // Remove channel2
-        $this->assertTrue($this->content->removeChannel($channel2));
+        $this->assertSame($this->content, $this->content->removeChannel($channel2));
 
         // Channel1 should not be removed
         $this->assertContains($channel1, $this->content->getChannels());
 
-        // Removal of channel that is not added should return false
-        $this->assertFalse($this->content->removeChannel($channel2));
+        // Removal of channel that is not added
+        $this->content->removeChannel($channel2);
+        $this->assertCount(1, $this->content->getChannels());
     }
 }

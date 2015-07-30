@@ -94,7 +94,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetTypeFunction()
     {
         $type = 'Familie De Vries';
-        $this->assertEquals($type, $this->contentType->setType($type)->getType());
+        $this->assertEquals($type, $this->contentType->setId($type)->getId());
     }
 
     /**

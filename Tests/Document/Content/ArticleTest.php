@@ -12,7 +12,10 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -149,12 +152,12 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setPublishedUntil function
+     * Test publish time get- and setEndDate function
      */
-    public function testGetAndSetPublishedUntilFunction()
+    public function testGetAndSetPublishTimeEndDateFunction()
     {
         $publishedUntil = new \DateTime();
-        $this->assertSame($publishedUntil, $this->article->setPublishedUntil($publishedUntil)->getPublishedUntil());
+        $this->assertSame($publishedUntil, $this->article->getPublishTime()->setEndDate($publishedUntil)->getEndDate());
     }
 
     /**
@@ -176,13 +179,14 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setLocation function
+     * Test address get- and setLocation function
      */
-    public function testGetAndSetLocationFunction()
+    public function testGetAndSetAddressLocationFunction()
     {
-        /* @var $location \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location | \PHPUnit_Framework_MockObject_MockObject */
-        $location = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location');
-        $this->assertSame($location, $this->article->setLocation($location)->getLocation());
+        $this->article->setAddress(new Address());
+
+        $location = new Location();
+        $this->assertSame($location, $this->article->getAddress()->setLocation($location)->getLocation());
     }
 
     /**

@@ -201,6 +201,7 @@ class Relation extends Content
      */
     public function removePhonenumber($phonenumber)
     {
+        // @todo (INTEGRATED-452)
         if ($phonenumber instanceof Phonenumber) {
             return $this->phonenumbers->remove($phonenumber);
         }
