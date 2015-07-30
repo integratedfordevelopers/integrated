@@ -28,6 +28,7 @@
         "integrated/menu-bundle": "~0.3",
         "integrated/block-bundle": "~0.2",
         "integrated/slug-bundle": "~0.2",
+        "knplabs/knp-menu-bundle": "~2.0",
         "knplabs/knp-paginator-bundle": "~2.4",
         "nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",
@@ -49,7 +50,7 @@
     "target-dir": "Integrated/Bundle/ContentBundle",
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.9.9-dev"
+            "dev-develop": "0.9.x-dev"
         }
     }
 }
