@@ -388,17 +388,6 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * Get the disabled of the document
      *
-     * @deprecated
-     * @return bool
-     */
-    public function getDisabled()
-    {
-        return $this->disabled;
-    }
-
-    /**
-     * Get the disabled of the document
-     *
      * @return bool
      */
     public function isDisabled()
