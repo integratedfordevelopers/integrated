@@ -50,7 +50,7 @@ class ContentTypeMenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $result = $this->repository->findBy(array(), array('name' => 'ASC'));
+        $result = $this->repository->findBy([], ['name' => 'ASC']);
 
         foreach ($this->group($result) as $key => $documents) {
             $child = $menu->addChild($key);
