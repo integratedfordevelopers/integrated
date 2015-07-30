@@ -30,136 +30,136 @@ use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
  */
 class ContentChannelIntegrationListener implements EventSubscriberInterface
 {
-	/**
-	 * @var ObjectRepository
-	 */
-	private $repository;
+    /**
+     * @var ObjectRepository
+     */
+    private $repository;
 
-	/**
-	 * @param ObjectRepository $repository
-	 */
-	public function __construct(ObjectRepository $repository)
-	{
-		$this->repository = $repository;
-	}
+    /**
+     * @param ObjectRepository $repository
+     */
+    public function __construct(ObjectRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public static function getSubscribedEvents()
-	{
-		return [
-			Events::POST_BUILD => ['buildForm', -60]
-		];
-	}
+    /**
+     * @inheritdoc
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            Events::POST_BUILD => ['buildForm', -60]
+        ];
+    }
 
-	public function buildForm(BuilderEvent $event)
-	{
-		$options = $this->getConfig($event->getContentType()->getOption('channels'));
+    public function buildForm(BuilderEvent $event)
+    {
+        $options = $this->getConfig($event->getContentType()->getOption('channels'));
 
-		if ($options['disabled'] >= 2) {
-			return;
-		}
+        if (isset($options['disabled']) && $options['disabled'] >= 2) {
+            return;
+        }
 
-		$builder = $event->getBuilder();
+        $builder = $event->getBuilder();
 
-		// check if the channels should be a form type or be enforced by a listener
+        // check if the channels should be a form type or be enforced by a listener
 
-		if ($options['disabled'] == 1) {
-			$enforce = [];
+        if (isset($options['disabled']) && $options['disabled'] == 1) {
+            $enforce = [];
 
-			foreach ($options['defaults'] as $channel) {
-				$enforce[$channel['id']] = $channel['id'];
-			}
+            foreach ($options['defaults'] as $channel) {
+                $enforce[$channel['id']] = $channel['id'];
+            }
 
-			$enforce = array_values($enforce);
+            $enforce = array_values($enforce);
 
-			// A empty channel list can also be enforced so no check for a empty
-			// enforce array.
+            // A empty channel list can also be enforced so no check for a empty
+            // enforce array.
 
-			$builder->addEventSubscriber(new ChannelEnforcerListener($this->getChannels($enforce), ChannelEnforcerListener::SET));
-		} else {
-			$channels = [];
+            $builder->addEventSubscriber(new ChannelEnforcerListener($this->getChannels($enforce), ChannelEnforcerListener::SET));
+        } else {
+            $channels = [];
 
-			foreach ($options['defaults'] as $channel) {
-				$channels[$channel['id']] = $channel['enforce'];
-			}
+            foreach ($options['defaults'] as $channel) {
+                $channels[$channel['id']] = isset($channel['enforce']) ? $channel['enforce'] : false;
+            }
 
-			$choices = $this->getChannels();
+            $choices = $this->getChannels();
 
-			$enforce = [];
-			$default = [];
+            $enforce = [];
+            $default = [];
 
-			foreach ($choices as $index => $value) {
-				if (isset($channels[$value->getId()])) {
-					if ($channels[$value->getId()]) {
-						$enforce[$value->getId()] = $value;
-						unset($choices[$index]); // filter out the enforced channels
-					} else {
-						$default[$value->getId()] = $value;
-					}
-				}
-			}
+            foreach ($choices as $index => $value) {
+                if (isset($channels[$value->getId()])) {
+                    if ($channels[$value->getId()]) {
+                        $enforce[$value->getId()] = $value;
+                        unset($choices[$index]); // filter out the enforced channels
+                    } else {
+                        $default[$value->getId()] = $value;
+                    }
+                }
+            }
 
-			unset($channels);
+            unset($channels);
 
-			$operand = ChannelEnforcerListener::SET;
+            $operand = ChannelEnforcerListener::SET;
 
-			if ($choices) {
-				$operand = ChannelEnforcerListener::ADD;
+            if ($choices) {
+                $operand = ChannelEnforcerListener::ADD;
 
-				$type = $builder->create('channels', 'choice', [
-					'required' => false,
+                $type = $builder->create('channels', 'choice', [
+                    'required' => false,
 
-					'choice_list' => new ObjectChoiceList($choices, 'name', [], null, 'id'),
+                    'choice_list' => new ObjectChoiceList($choices, 'name', [], null, 'id'),
 
-					'multiple' => true,
-					'expanded' => true,
-				]);
+                    'multiple' => true,
+                    'expanded' => true,
+                ]);
 
-				$builder->add($type);
-				$builder->addEventSubscriber(new ChannelDefaultDataListener($default));
-			}
+                $builder->add($type);
+                $builder->addEventSubscriber(new ChannelDefaultDataListener($default));
+            }
 
-			$builder->addEventSubscriber(new ChannelEnforcerListener($enforce, $operand));
-		}
-	}
+            $builder->addEventSubscriber(new ChannelEnforcerListener($enforce, $operand));
+        }
+    }
 
-	protected function getConfig($options)
-	{
-		// @TODO should probably validate the options in some way
-		// @TODO should be possible to override the options
+    protected function getConfig($options)
+    {
+        // @TODO should probably validate the options in some way
+        // @TODO should be possible to override the options
 
-		if ($options) {
-			return $options;
-		}
+        if ($options) {
+            return $options;
+        }
 
-		// @TODO make the default options configurable
+        // @TODO make the default options configurable
 
-		return [
-			'disabled' => 0,
-			'defaults' => []
-		];
-	}
+        return [
+            'disabled' => 0,
+            'defaults' => []
+        ];
+    }
 
-	/**
-	 * @param array $ids
-	 * @return Channel[]
-	 */
-	protected function getChannels(array $ids = null)
-	{
-		if ($ids === []) { return []; }
+    /**
+     * @param array $ids
+     * @return Channel[]
+     */
+    protected function getChannels(array $ids = null)
+    {
+        if ($ids === []) { return []; }
 
-		$criteria = [];
+        $criteria = [];
 
-		if ($ids) {
-			$criteria['$or'] = [];
+        if ($ids) {
+            $criteria['$or'] = [];
 
-			foreach ($ids as $id) {
-				$criteria['$or'][] = ['id' => $id];
-			}
-		}
+            foreach ($ids as $id) {
+                $criteria['$or'][] = ['id' => $id];
+            }
+        }
 
-		return $this->repository->findBy($criteria);
-	}
-} 
+        return $this->repository->findBy($criteria);
+    }
+}

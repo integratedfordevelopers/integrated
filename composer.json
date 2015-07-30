@@ -8,7 +8,7 @@
     "authors": [
         {
             "name": "e-Active",
-            "homepage": "http://www.e-active.nl"
+            "homepage": "http://www.integratedfordevelopers.com"
         }
     ],
     "minimum-stability": "dev",
@@ -20,17 +20,25 @@
         "symfony/framework-bundle": "~2.2",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/mongodb": ">=1.0.0",
-        "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
-        "doctrine/mongodb-odm-bundle": "v3.0.0-BETA6@dev",
-        "integrated/library": "~0.1",
-        "integrated/formtype-bundle": "~0.1",
-        "integrated/locking-bundle": "~0.1",
+        "doctrine/mongodb-odm": "*",
+        "doctrine/mongodb-odm-bundle": "~3.0",
+        "integrated/library": "~0.3",
+        "integrated/formtype-bundle": "~0.2",
+        "integrated/locking-bundle": "~0.2",
         "integrated/menu-bundle": "~0.3",
+        "integrated/block-bundle": "~0.2",
+        "integrated/slug-bundle": "~0.2",
         "integrated/storage-bundle": "~0.4",
+        "knplabs/knp-menu-bundle": "~2.0",
         "knplabs/knp-paginator-bundle": "~2.4",
         "nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",
-        "twbs/bootstrap": "3.*"
+        "twbs/bootstrap": "3.*",
+        "friendsofsymfony/jsrouting-bundle": "~1.5"
+    },
+    "suggest": {
+        "integrated/page-bundle": "~0.2",
+        "integrated/website-bundle": "~0.2"
     },
     "require-dev": {
         "phpunit/phpunit": "4.2.*"

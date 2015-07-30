@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Symfony\Component\Filesystem\LockHandler;
 use Traversable;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -80,6 +81,7 @@ class ContentController extends Controller
         $facetSet = $query->getFacetSet();
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels');
+		$facetSet->createFacetField('properties')->setField('facet_properties');
 
 
         // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
@@ -108,6 +110,58 @@ class ContentController extends Controller
         } else {
             $contentType = $request->query->get('contenttypes');
         }
+
+
+        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+        $dm = $this->get('doctrine_mongodb')->getManager();
+
+        $active = [];
+
+        // If the request query contains a properties parameter we need to fetch all the targets of the relation in order
+        // to filter on these targets.
+        // TODO this code should be somewhere else
+        $propertiesfilter = $request->query->get('properties');
+        if (is_array($propertiesfilter)) {
+
+            $helper = $query->getHelper();
+            $filter = function($param) use($helper) {
+                return $helper->escapePhrase($param);
+            };
+
+            $query
+                ->createFilterQuery('properties')
+                ->addTag('properties')
+                ->setQuery('facet_properties: ((%1%))', [implode(') OR (', array_map($filter, $propertiesfilter))]);
+
+            $active['properties'] = $propertiesfilter;
+        }
+
+
+        /** @var Relation $relation */
+        foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
+
+            $helper = $query->getHelper();
+            $filter = function($param) use($helper) {
+                return $helper->escapePhrase($param);
+            };
+
+            $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
+
+            //create relation facet field
+            $facetSet->createFacetField($name)->setField('facet_' . $relation->getId());
+            $relationfilter = $request->query->get($name);
+
+            if (is_array($relationfilter)) {
+                $query
+                    ->createFilterQuery($name)
+                    ->addTag($name)
+                    ->setQuery('facet_' . $relation->getId() . ': ((%1%))', [implode(') OR (', array_map($filter, $relationfilter))]);
+
+                $active[$name] = $relationfilter;
+            }
+
+        }
+
 
         if (is_array($contentType)) {
 
@@ -241,12 +295,15 @@ class ContentController extends Controller
             }
         }
 
+        $active['contenttypes'] = $contentType;
+        $active['channels'] = $activeChannels;
+
         return array(
             'types'        => $types,
             'params'       => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
             'pager'        => $paginator,
             'contentTypes' => $displayTypes,
-            'active'       => array('contenttypes' => $contentType, 'channels' => $activeChannels),
+            'active'       => $active,
             'channels'     => $channels,
             'facets'       => $result->getFacetSet()->getFacets(),
             'locks'        => $this->getLocks($paginator),
@@ -254,17 +311,32 @@ class ContentController extends Controller
         );
     }
 
-	/**
-	 * Create a new document
-	 *
-	 * @Template()
-	 * @param Request $request
-	 * @return array | Response
-	 */
-	public function newAction(Request $request)
-	{
-		/** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
-		$type = $this->get('integrated.form.factory')->getType($request->get('type'));
+    /**
+     * Show a document
+     *
+     * @Template
+     *
+     * @param Content $content
+     * @return array
+     */
+    public function showAction(Content $content)
+    {
+        return [
+            'document' => $content,
+        ];
+    }
+
+    /**
+     * Create a new document
+     *
+     * @Template()
+     * @param Request $request
+     * @return array | Response
+     */
+    public function newAction(Request $request)
+    {
+        /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
+        $type = $this->get('integrated.form.factory')->getType($request->get('type'));
 
         $content = $type->getType()->create();
 
@@ -307,6 +379,13 @@ class ContentController extends Controller
             }
 
             if ($form->isValid()) {
+                if ($this->has('integrated_solr.indexer')) {
+                    //higher priority for content edited in Integrated
+                    $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
+                    $queue = $subscriber->getQueue();
+                    $subscriber->setPriority($queue::PRIORITY_HIGH);
+                }
+
                 /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                 $dm = $this->get('doctrine_mongodb')->getManager();
 
@@ -314,9 +393,14 @@ class ContentController extends Controller
                 $dm->flush();
 
                 if ($this->has('integrated_solr.indexer')) {
+                    $solrLock = new LockHandler('content:edited:solr');
+                    $solrLock->lock(true);
+
                     $indexer = $this->get('integrated_solr.indexer');
                     $indexer->setOption('queue.size', 2);
                     $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+
+                    $solrLock->release();
                 }
 
                 if ($request->getRequestFormat() == 'iframe.html') {
@@ -379,7 +463,6 @@ class ContentController extends Controller
 
                 $locking['locked'] = false;
             }
-
         }
 
         // load a different set of buttons based bases on the locking stat for this
@@ -427,6 +510,14 @@ class ContentController extends Controller
 
             if ($actions->has('save') && $actions->get('save')->isClicked()) {
                 if (!$locking['locked'] && $form->isValid()) {
+
+                    if ($this->has('integrated_solr.indexer')) {
+                        //higher priority for content edited in Integrated
+                        $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
+                        $queue = $subscriber->getQueue();
+                        $subscriber->setPriority($queue::PRIORITY_HIGH);
+                    }
+
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                     $dm = $this->get('doctrine_mongodb')->getManager();
                     $dm->flush();
@@ -437,9 +528,15 @@ class ContentController extends Controller
                     );
 
                     if ($this->has('integrated_solr.indexer')) {
+
+                        $solrLock = new LockHandler('content:edited:solr');
+                        $solrLock->lock(true);
+
                         $indexer = $this->get('integrated_solr.indexer');
                         $indexer->setOption('queue.size', 2);
                         $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+
+                        $solrLock->release();
                     }
 
                     if (!$locking['locked']) {
@@ -489,18 +586,18 @@ class ContentController extends Controller
         );
     }
 
-	/**
-	 * Delete a document
-	 *
-	 * @Template()
-	 * @param Request $request
-	 * @param Content $content
-	 * @return array | Response
-	 */
-	public function deleteAction(Request $request, Content $content)
-	{
-		/** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
-		$type = $this->get('integrated.form.resolver')->getType($content->getContentType());
+    /**
+     * Delete a document
+     *
+     * @Template()
+     * @param Request $request
+     * @param Content $content
+     * @return array | Response
+     */
+    public function deleteAction(Request $request, Content $content)
+    {
+        /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
+        $type = $this->get('integrated.form.resolver')->getType($content->getContentType());
 
         if (!$this->get('security.context')->isGranted(Permissions::DELETE, $content)) {
             throw new AccessDeniedException();

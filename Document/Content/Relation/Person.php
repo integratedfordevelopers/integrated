@@ -14,8 +14,10 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
+use Integrated\Common\Form\Mapping\Annotations as Type;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\StorageBundle\Document\File;
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 
 /**
@@ -31,7 +33,7 @@ class Person extends Relation
     /**
      * @var string
      * @ODM\String
-     * @Type\Field(type="choice", options={"choices"={"Male", "Female"}})
+     * @Type\Field(type="choice", options={"choices"={"Male"="Male", "Female"="Female"}})
      */
     protected $gender;
 
@@ -64,6 +66,15 @@ class Person extends Relation
     protected $lastName;
 
     /**
+     * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex(sparse=true)
+     * @Slug(fields={"firstName", "lastName"})
+     * @Type\Field
+     */
+    protected $slug;
+
+    /**
      * @var Collection Job[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job")
      */
@@ -72,6 +83,7 @@ class Person extends Relation
     /**
      * @var File
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\StorageBundle\Document\File")
+     * @Type\Field(type="integrated_image_choice")
      */
     protected $picture;
 
@@ -195,6 +207,28 @@ class Person extends Relation
     }
 
     /**
+     * Get the slug of the document
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the slug of the document
+     *
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
      * Get the jobs of the document
      *
      * @return Job[]
@@ -263,6 +297,18 @@ class Person extends Relation
     {
         $this->picture = $picture;
         return $this;
+    }
+
+    /**
+     * Get the relative cover image URL for person (picture)
+     *
+     * @return string
+     */
+    public function getCover()
+    {
+        if ($this->getPicture()) {
+            return $this->getPicture()->getWebPath();
+        }
     }
 
     /**

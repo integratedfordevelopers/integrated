@@ -1,100 +1,116 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-	<parameters>
+    <parameters>
 
-		<parameter key="integrated_content.form.factory.event_dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
-		<parameter key="integrated_content.form.factory.class">Integrated\Common\Content\Form\FormFactory</parameter>
+        <parameter key="integrated_content.form.factory.event_dispatcher.class">Symfony\Component\EventDispatcher\EventDispatcher</parameter>
+        <parameter key="integrated_content.form.factory.class">Integrated\Common\Content\Form\FormFactory</parameter>
 
-		<parameter key="integrated_content.form.relations.listener.class">Integrated\Bundle\ContentBundle\EventListener\ContentRelationsIntegrationListener</parameter>
+        <parameter key="integrated_content.form.relations.listener.class">Integrated\Bundle\ContentBundle\EventListener\ContentRelationsIntegrationListener</parameter>
         <parameter key="integrated_content.form.channel.listener.class">Integrated\Bundle\ContentBundle\EventListener\ContentChannelIntegrationListener</parameter>
 
-		<parameter key="integrated_content.form.proxy.type.class">Integrated\Common\Form\Type\ProxyType</parameter>
+        <parameter key="integrated_content.form.proxy.type.class">Integrated\Common\Form\Type\ProxyType</parameter>
 
-		<parameter key="integrated_content.form.content.relations.type.class">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</parameter>
+        <parameter key="integrated_content.form.content.relations.type.class">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</parameter>
 
-		<parameter key="integrated_content.form.content_type.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType</parameter>
-		<parameter key="integrated_content.form.content_type.field.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldCollectionType</parameter>
-		<parameter key="integrated_content.form.content_type.field.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldType</parameter>
-		<parameter key="integrated_content.form.content_type.relation.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeRelationFormType</parameter>
+        <parameter key="integrated_content.form.content_type.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType</parameter>
+        <parameter key="integrated_content.form.content_type.field.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldCollectionType</parameter>
+        <parameter key="integrated_content.form.content_type.field.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldType</parameter>
+        <parameter key="integrated_content.form.content_type.relation.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeRelationFormType</parameter>
         <parameter key="integrated_content.form.content_type.channels.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType</parameter>
-      	<parameter key="integrated_content.form.content_type.channel.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType</parameter>
-      	<parameter key="integrated_content.form.content_type.channel.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType</parameter>
+        <parameter key="integrated_content.form.content_type.channel.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType</parameter>
+        <parameter key="integrated_content.form.content_type.channel.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType</parameter>
         
         <parameter key="integrated_content.form.type.image.class">Integrated\Bundle\ContentBundle\Form\Type\ImageType</parameter>
+        <parameter key="integrated_content.form.type.image_choice.class">Integrated\Bundle\ContentBundle\Form\Type\ImageChoiceType</parameter>
         <parameter key="integrated_content.form.type.csv_array.class">Integrated\Bundle\ContentBundle\Form\Type\CsvArray</parameter>
 
         <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\Channel</parameter>
 
-		<parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
+        <parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
+        
+        <parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
+        <parameter key="integrated_content.form.type.file.class">Integrated\Bundle\ContentBundle\Form\Type\FileType</parameter>
+        
+        <parameter key="integrated_content.form.search_selection.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType</parameter>
+        <parameter key="integrated_content.form.search_selection_choice.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType</parameter>
 
 		<parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
 		<parameter key="integrated_content.form.type.file.class">Integrated\Bundle\ContentBundle\Form\Type\FileType</parameter>
         <parameter key="integrated_content.form.type.address.class">Integrated\Bundle\ContentBundle\Form\Type\AddressType</parameter>
+        <parameter key="integrated_content.form.publish_time.type.class">Integrated\Bundle\ContentBundle\Form\Type\PublishTimeType</parameter>
+
+        <parameter key="integrated_content.form.type.phonenumber.class">Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType</parameter>
 
         <parameter key="integrated_formtype_form_type_author.class">Integrated\Bundle\ContentBundle\Form\Type\AuthorType</parameter>
+        <parameter key="integrated_content.form.type.embed_one.class">Integrated\Bundle\ContentBundle\Form\Type\EmbedOneType</parameter>
 
     </parameters>
 
-	<services>
+    <services>
 
-		<service id="integrated_content.form.factory.event_dispatcher" class="%integrated_content.form.factory.event_dispatcher.class%" public="false" />
+        <service id="integrated_content.form.factory.event_dispatcher" class="%integrated_content.form.factory.event_dispatcher.class%" public="false" />
 
-		<service id="integrated_content.form.factory" class="%integrated_content.form.factory.class%">
-			<argument type="service" id="integrated_content.resolver"/>
+        <service id="integrated_content.form.factory" class="%integrated_content.form.factory.class%">
+            <argument type="service" id="integrated_content.resolver"/>
             <argument type="service" id="integrated_content.metadata.factory"/>
 
-			<call method="setEventDispatcher">
-				<argument type="service" id="integrated_content.form.factory.event_dispatcher" />
-			</call>
-		</service>
+            <call method="setEventDispatcher">
+                <argument type="service" id="integrated_content.form.factory.event_dispatcher" />
+            </call>
+        </service>
 
-		<service id="integrated.form.resolver" alias="integrated_content.resolver.priority" />
-		<service id="integrated.form.factory" alias="integrated_content.form.factory" />
+        <service id="integrated.form.resolver" alias="integrated_content.resolver.priority" />
+        <service id="integrated.form.factory" alias="integrated_content.form.factory" />
 
-		<service id="integrated_content.form.channel.repository"
-				 class="Doctrine\Common\Persistence\ObjectRepository"
-				 factory-service="doctrine_mongodb"
-				 factory-method="getRepository"
-				 public="false"
-				>
-			<argument type="string">Integrated\Bundle\ContentBundle\Document\Channel\Channel</argument>
-		</service>
+        <service id="integrated_content.form.channel.repository"
+                 class="Doctrine\Common\Persistence\ObjectRepository"
+                 factory-service="doctrine_mongodb"
+                 factory-method="getRepository"
+                 public="false"
+                >
+            <argument type="string">Integrated\Bundle\ContentBundle\Document\Channel\Channel</argument>
+        </service>
 
-		<service id="integrated_content.form.channel.listener" class="%integrated_content.form.channel.listener.class%">
-			<argument type="service" id="integrated_content.form.channel.repository" />
+        <service id="integrated_content.form.channel.listener" class="%integrated_content.form.channel.listener.class%">
+            <argument type="service" id="integrated_content.form.channel.repository" />
 
-			<tag name="integrated_content.form.event_subscriber" />
-		</service>
+            <tag name="integrated_content.form.event_subscriber" />
+        </service>
 
-		<service id="integrated_content.form.relations.listener" class="%integrated_content.form.relations.listener.class%">
-			<argument type="string">relations</argument>
-			<argument type="string">content_relations</argument>
+        <service id="integrated_content.form.relations.listener" class="%integrated_content.form.relations.listener.class%">
+            <argument type="string">relations</argument>
+            <argument type="string">content_relations</argument>
 
-			<tag name="integrated_content.form.event_subscriber" />
-		</service>
+            <tag name="integrated_content.form.event_subscriber" />
+        </service>
 
         <service id="integrated_content.form.type.image" class="%integrated_content.form.type.image.class%">
             <tag name="form.type" alias="integrated_image" />
+        </service>
+
+        <service id="integrated_content.form.type.image_choice" class="%integrated_content.form.type.image_choice.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="form.type" alias="integrated_image_choice" />
         </service>
 
         <service id="integrated_content.form.type.csv_array" class="%integrated_content.form.type.csv_array.class%">
             <tag name="form.type" alias="integrated_csv_array" />
         </service>
         
-		<service id="integrated_content.form.content.relations.type" class="%integrated_content.form.content.relations.type.class%">
-			<argument type="service" id="doctrine_mongodb"/>
-		</service>
+        <service id="integrated_content.form.content.relations.type" class="%integrated_content.form.content.relations.type.class%">
+            <argument type="service" id="doctrine_mongodb" />
+        </service>
 
         <service id="integrated_content.form.content_type.channel.repository" alias="integrated_content.form.channel.repository" />
 
-		<service id="integrated_content.form.content_type.type" class="%integrated_content.form.content_type.type.class%" />
-		<service id="integrated_content.form.content_type.field.collection.type" class="%integrated_content.form.content_type.field.collection.type.class%" />
-		<service id="integrated_content.form.content_type.field.type" class="%integrated_content.form.content_type.field.type.class%" />
-		<service id="integrated_content.form.content_type.relation.type" class="%integrated_content.form.content_type.relation.type.class%" />
+        <service id="integrated_content.form.content_type.type" class="%integrated_content.form.content_type.type.class%" />
+        <service id="integrated_content.form.content_type.field.collection.type" class="%integrated_content.form.content_type.field.collection.type.class%" />
+        <service id="integrated_content.form.content_type.field.type" class="%integrated_content.form.content_type.field.type.class%" />
+        <service id="integrated_content.form.content_type.relation.type" class="%integrated_content.form.content_type.relation.type.class%" />
         <service id="integrated_content.form.content_type.channels.type" class="%integrated_content.form.content_type.channels.type.class%" />
         <service id="integrated_content.form.content_type.channel.collection.type" class="%integrated_content.form.content_type.channel.collection.type.class%">
             <argument type="service" id="integrated_content.form.content_type.channel.repository" />
@@ -105,21 +121,45 @@
             <tag name="form.type" alias="channel" />
         </service>
 
-		<service id="integrated_content.form.delete.type" class="%integrated_content.form.delete.type.class%" />
+        <service id="integrated_content.form.delete.type" class="%integrated_content.form.delete.type.class%" />
 
         <service id="integrated_content.form.type.relation" class="%integrated_content.form.type.relation.class%">
             <tag name="form.type" alias="integrated_relation" />
         </service>
 
-        <service id="integrated_formtype_form_type_author" class="%integrated_formtype_form_type_author.class%" scope="request">
-            <argument type="service" id="doctrine_mongodb" />
-            <tag name="form.type" alias="integrated_author" />
+        <service id="integrated_content.form.type.phonenumber" class="%integrated_content.form.type.phonenumber.class%">
+            <tag name="form.type" alias="integrated_phonenumber" />
         </service>
 
         <service id="integrated_content.form.type.address" class="%integrated_content.form.type.address.class%">
             <tag name="form.type" alias="integrated_address"/>
         </service>
 
-	</services>
+        <service id="integrated_formtype_form_type_author" class="%integrated_formtype_form_type_author.class%" scope="request">
+            <argument type="service" id="doctrine_mongodb" />
+            <tag name="form.type" alias="integrated_author" />
+        </service>
+        
+        <service id="integrated_content.form.search_selection.type" class="%integrated_content.form.search_selection.type.class%">
+            <argument type="service" id="security.authorization_checker" />
+        </service>
+
+        <service id="integrated_content.form.search_selection_choice.type" class="%integrated_content.form.search_selection_choice.type.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="security.token_storage" />
+
+            <tag name="form.type" alias="integrated_search_selection_choice" />
+        </service>
+
+        <service id="integrated_content.form.publish_time.type" class="%integrated_content.form.publish_time.type.class%">
+            <tag name="form.type" alias="integrated_publish_time" />
+        </service>
+
+        <service id="integrated_content.form.type.embed_one" class="%integrated_content.form.type.embed_one.class%">
+            <argument type="service" id="integrated_content.metadata.factory.all_types" />
+            <tag name="form.type" alias="integrated_embed_one"/>
+        </service>
+
+    </services>
 
 </container>
