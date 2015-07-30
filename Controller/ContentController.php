@@ -639,7 +639,7 @@ class ContentController extends Controller
             ];
         }
 
-        $form = $this->createForm('content_delete', $content, [
+        $form = $this->createForm('content_delete', null, [
             'action' => $this->generateUrl('integrated_content_content_delete', ['id' => $content->getId()]),
             'method' => 'DELETE',
         ], $buttons);
