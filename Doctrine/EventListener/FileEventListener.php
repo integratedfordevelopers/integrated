@@ -11,13 +11,10 @@
 
 namespace Integrated\Bundle\StorageBundle\Doctrine\EventListener;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Document\File;
-use Integrated\Bundle\StorageBundle\Storage\Command\DeleteCommand;
-use Integrated\Bundle\StorageBundle\Storage\Manager;
+use Integrated\Bundle\StorageBundle\Doctrine\Storage\Storage;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
@@ -28,21 +25,16 @@ use Doctrine\ODM\MongoDB\Events;
 class FileEventListener implements EventSubscriber
 {
     /**
-     * @const Repository class
+     * @var Storage
      */
-    const REPOSITORY = 'Integrated\Bundle\ContentBundle\Document\Content\Content';
+    protected $storage;
 
     /**
-     * @var Manager
+     * @param Storage $manager
      */
-    protected $manager;
-
-    /**
-     * @param Manager $manager
-     */
-    public function __construct(Manager $manager)
+    public function __construct(Storage $manager)
     {
-        $this->manager = $manager;
+        $this->storage = $manager;
     }
 
     /**
@@ -57,6 +49,7 @@ class FileEventListener implements EventSubscriber
     }
 
     /**
+     * This event will be called when a
      * @param LifecycleEventArgs $args
      */
     public function preRemove(LifecycleEventArgs $args)
@@ -65,7 +58,7 @@ class FileEventListener implements EventSubscriber
         $document = $args->getObject();
 
         if ($document instanceof File) {
-            $this->filesystemDelete($args->getDocumentManager(), $document->getFile());
+            $this->storage->delete($document->getFile());
         }
     }
 
@@ -79,31 +72,8 @@ class FileEventListener implements EventSubscriber
 
         foreach ($uow->getScheduledDocumentDeletions() as $entity) {
             if ($entity instanceof Storage) {
-                $this->filesystemDelete($args->getDocumentManager(), $entity);
+                $this->storage->delete($entity);
             }
-        }
-    }
-
-    /**
-     * We can only remove storage objects from the filesystem.
-     *
-     * @param DocumentManager $dm
-     * @param Storage $storage
-     */
-    protected function filesystemDelete(DocumentManager $dm, Storage $storage)
-    {
-        // Query
-        $repository = $dm->getRepository(self::REPOSITORY);
-        $result = $repository->createQueryBuilder()
-            ->field('file.identifier')->equals($storage->getIdentifier())
-            ->getQuery()->execute();
-
-        // Only delete when there is less than 2 documents (1 is the entity to deleted it self)
-        if (2 < $result->count()) {
-            // Lets put the delete command in a bus and send it away
-            $this->manager->handle(
-                new DeleteCommand($storage)
-            );
         }
     }
 }
