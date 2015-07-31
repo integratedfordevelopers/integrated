@@ -10,6 +10,10 @@ integrated_content:
     resource: "@IntegratedContentBundle/Resources/config/routing.xml"
     prefix: "/admin"
 
+integrated_channel:
+    resource: "@IntegratedChannelBundle/Resources/config/routing.xml"
+    prefix: "/admin"
+
 integrated_user:
     resource: "@IntegratedUserBundle/Resources/config/routing.xml"
     prefix: "/admin"

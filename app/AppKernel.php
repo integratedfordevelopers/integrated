@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
             new Integrated\Bundle\ContentBundle\IntegratedContentBundle(),
+            new Integrated\Bundle\ChannelBundle\IntegratedChannelBundle(),
             new Integrated\Bundle\FormTypeBundle\IntegratedFormTypeBundle(),
             new Integrated\Bundle\SolrBundle\IntegratedSolrBundle(),
             new Integrated\Bundle\UserBundle\IntegratedUserBundle(),

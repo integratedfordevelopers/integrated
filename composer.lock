@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "41e5476cfbb92f29f126eebcb3b6432f",
+    "hash": "9bf95d306b972eb06b2690f6884bc909",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1366,7 +1366,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-block-bundle/get/605f2127a2284d5807417c793d70da4c6f58230f.zip",
+                "url": "https://bitbucket.org/eactive/integrated-block-bundle/get/26ccf679bca8ef8d996545a8c3bb0577550ecb1a.zip",
                 "reference": "605f2127a2284d5807417c793d70da4c6f58230f",
                 "shasum": ""
             },
@@ -1412,6 +1412,41 @@
             "time": "2015-07-23 07:10:33"
         },
         {
+            "name": "integrated/channel-bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://bitbucket.org/eactive/integrated-channel-bundle.git",
+                "reference": "397887ea5850ce4f0c9d6f3cdf69ecf9e198b279"
+            },
+            "require": {
+                "php": ">=5.4",
+                "symfony/symfony": "~2.7"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Integrated\\Bundle\\ChannelBundle\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "e-Active",
+                    "homepage": "http://www.e-active.nl"
+                }
+            ],
+            "description": "Integrated Channel Bundle",
+            "homepage": "http://www.e-active.nl",
+            "keywords": [
+                "channel",
+                "integrated"
+            ],
+            "time": "2015-05-19 09:16:24"
+        },
+        {
             "name": "integrated/content-bundle",
             "version": "dev-develop",
             "target-dir": "Integrated/Bundle/ContentBundle",
@@ -1422,7 +1457,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/ab870e9562d7e312038ae556c857845429522987.zip",
+                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/108c16b9600a5459fcbf1ced54abc34dc0746c26.zip",
                 "reference": "ab870e9562d7e312038ae556c857845429522987",
                 "shasum": ""
             },
@@ -1728,7 +1763,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-page-bundle/get/f02d58762cb9d34273e7b03e7a95add25c5e87ec.zip",
+                "url": "https://bitbucket.org/eactive/integrated-page-bundle/get/28149d4222a471eed9b55fabdf99eedb1fca23c0.zip",
                 "reference": "f02d58762cb9d34273e7b03e7a95add25c5e87ec",
                 "shasum": ""
             },
@@ -1838,7 +1873,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-solr-bundle/get/c42f28eaaeaf145cb080aab8d8e869344a7712ce.zip",
+                "url": "https://bitbucket.org/eactive/integrated-solr-bundle/get/4eed433351da4e0d95c7552619cfcd4e20b5702a.zip",
                 "reference": "c42f28eaaeaf145cb080aab8d8e869344a7712ce",
                 "shasum": ""
             },
@@ -1891,7 +1926,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-theme-bundle/get/6f52e90c46ba9f3376f6b8cfa9e87736d7dd1eab.zip",
+                "url": "https://bitbucket.org/eactive/integrated-theme-bundle/get/9cb3659f12106ad46b86f54885405a0541531a22.zip",
                 "reference": "6f52e90c46ba9f3376f6b8cfa9e87736d7dd1eab",
                 "shasum": ""
             },
@@ -1991,7 +2026,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-website-bundle/get/6df41dca26d749235291c282303bdabc668caf57.zip",
+                "url": "https://bitbucket.org/eactive/integrated-website-bundle/get/3ad4d32c5c9c4cfb5e763e6a2fdd9608bb163903.zip",
                 "reference": "6df41dca26d749235291c282303bdabc668caf57",
                 "shasum": ""
             },
@@ -3490,7 +3525,8 @@
     "stability-flags": {
         "symfony/assetic-bundle": 0,
         "symfony/swiftmailer-bundle": 0,
-        "symfony/monolog-bundle": 0
+        "symfony/monolog-bundle": 0,
+        "integrated/channel-bundle": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
