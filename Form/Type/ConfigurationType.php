@@ -32,6 +32,6 @@ class ConfigurationType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_website_website_options';
+        return 'integrated_website_configuration';
     }
 }
