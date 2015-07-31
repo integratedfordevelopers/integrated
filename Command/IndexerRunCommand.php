@@ -61,7 +61,6 @@ The <info>%command.name%</info> command starts a indexer run.
     private function runInternal(InputInterface $input, OutputInterface $output)
     {
         try {
-
             $lock = new LockHandler('Integrated\Bundle\SolrBundle\Command\IndexerRunCommand');
             $attemps = 0;
             while (!$lock->lock()) {
@@ -91,7 +90,7 @@ The <info>%command.name%</info> command starts a indexer run.
         $wait = $wait * 1000; // convert from milli to micro
 
         while (true) {
-            $process = new Process('php app/console solr:indexer:run -e ' . $input->getOption('env'), getcwd(), null, null, null);
+            $process = new Process('php app/console solr:indexer:run -e ' . $input->getOption('env'), $this->getRootDir());
             $process->run();
 
             if (!$process->isSuccessful()) {
@@ -108,5 +107,13 @@ The <info>%command.name%</info> command starts a indexer run.
         }
 
         return 0;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRootDir()
+    {
+        return realpath($this->getContainer()->get('kernel')->getRootDir() . '/..');
     }
 }
