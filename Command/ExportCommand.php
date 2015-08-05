@@ -52,7 +52,7 @@ class ExportCommand extends Command
         $this
             ->setName('channel:export')
 
-            ->addOption('full', 'f',InputOption::VALUE_NONE, 'Keep running until the queue is empty')
+            ->addOption('full', 'f', InputOption::VALUE_NONE, 'Keep running until the queue is empty')
             ->addOption('daemon', 'd', InputOption::VALUE_NONE, 'Keep running until the programme is manually closed, this option overwrites --full')
             ->addOption('wait', 'w', InputOption::VALUE_REQUIRED, 'Time in milliseconds to wait between runs (in combination with --full or --daemon)', 0)
 
@@ -79,7 +79,7 @@ class ExportCommand extends Command
      */
     private function runInternal(InputInterface $input, OutputInterface $output)
     {
-        try	{
+        try {
             $this->exporter->execute();
         } catch (Exception $e) {
             $output->writeln("Aborting: " . $e->getMessage());
@@ -103,14 +103,18 @@ class ExportCommand extends Command
 
         while (true) {
             $process = new Process('php app/console channel:export -e ' . $input->getOption('env'), getcwd(), null, null, null);
-            $process->run();
+            $process->run(function($type, $buffer) use ($output) {
+                $output->write($buffer, false, OutputInterface::OUTPUT_RAW);
+            });
 
             if (!$process->isSuccessful()) {
                 break; // terminate when there is a error
             }
 
             if (!$input->getOption('daemon')) {
-                if (!$this->exporter->getQueue()->count()) { break; }
+                if (!$this->exporter->getQueue()->count()) {
+                    break;
+                }
             }
 
             usleep($wait);

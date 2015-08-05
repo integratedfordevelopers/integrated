@@ -58,7 +58,7 @@ class ChannelChoiceType extends AbstractType
      * @param PropertyAccessorInterface  $accessor
      * @param ChoiceListFactoryInterface $factory
      */
-    function __construct(ObjectRepository $repository, PropertyAccessorInterface $accessor = null, ChoiceListFactoryInterface $factory = null)
+    public function __construct(ObjectRepository $repository, PropertyAccessorInterface $accessor = null, ChoiceListFactoryInterface $factory = null)
     {
         $this->repository = $repository;
 
@@ -85,10 +85,12 @@ class ChannelChoiceType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        // The choice loader is forced to a ChannelChoiceLoader since this is a channel choice
-        // form type so what else would you expect.
+        // This is a child of the choice type so its possible to change the the choice list data. This
+        // is something that is not wanted since this a choice type specifically made to list the current
+        // channels. So the choice_loader is force to a ChannelChoiceLoader no mather the options that
+        // are supplied.
 
-        $choiceLoaderNormalizer = function(Options $options) {
+        $choiceLoaderNormalizer = function (Options $options) {
             return new ChannelChoiceLoader($this->repository, $this->factory);
         };
 

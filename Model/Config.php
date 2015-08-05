@@ -25,32 +25,32 @@ class Config implements ConfigInterface
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      */
-    private $adapter;
+    protected $adapter;
 
     /**
      * @var OptionsInterface
      */
-    private $options = null;
+    protected $options = null;
 
     /**
      * @var string[]
      */
-    private $channels = [];
+    protected $channels = [];
 
     /**
      * @var DateTime
      */
-    private $created;
+    protected $created;
 
     /**
      * @var DateTime
      */
-    private $updated;
+    protected $updated;
 
     /**
      * Constructor.

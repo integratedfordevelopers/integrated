@@ -172,6 +172,10 @@ class ConfigController extends Controller
     {
         $data = $this->manager->find($id);
 
+        // It should always be possible to delete a connector even if the adaptor itself does
+        // not exist anymore. So unlike the new and edit actions this action will not throw a
+        // not found exception when the adaptor does not exist.
+
         if (!$data) {
             return $this->redirect($this->generateUrl('integrated_channel_config_index')); // data is already gone
         }
@@ -195,10 +199,6 @@ class ConfigController extends Controller
                 return $this->redirect($this->generateUrl('integrated_channel_config_index'));
             }
         }
-
-        // It should always be possible to delete a connector even if the adaptor itself does
-        // not exist anymore. So unlike the new and edit actions this action will not throw a
-        // not found exception when the adaptor does not exist.
 
         return $this->render('IntegratedChannelBundle:Config:delete.html.twig', [
             'adapter' => $this->registry->hasAdapter($data->getAdapter()) ? $this->registry->getAdapter($data->getAdapter()) : null,

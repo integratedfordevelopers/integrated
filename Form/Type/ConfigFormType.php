@@ -46,7 +46,7 @@ class ConfigFormType extends AbstractType
      *
      * @param RegistryInterface $registry
      */
-    function __construct(RegistryInterface $registry)
+    public function __construct(RegistryInterface $registry)
     {
         $this->registry = $registry;
     }
@@ -119,7 +119,7 @@ class ConfigFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $adapterNormalizer = function(Options $options, $adapter) {
+        $adapterNormalizer = function (Options $options, $adapter) {
             if (is_string($adapter)) {
                 try {
                     $adapter = $this->registry->getAdapter($adapter);
