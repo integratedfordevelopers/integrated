@@ -41,6 +41,8 @@ class MemoryResolverBuilder
      * @param string | ChannelInterface $channel
      *
      * @return self
+     *
+     * @throws UnexpectedTypeException if passed channel is invalid
      */
     public function addConfig(ConfigInterface $config, $channel = null)
     {
@@ -61,7 +63,7 @@ class MemoryResolverBuilder
 
         if ($channel === null) {
             $this->config_channels[$name] = null;
-        } else if ($this->config_channels[$name] !== null) {
+        } elseif ($this->config_channels[$name] !== null) {
             $this->config_channels[$name][$channel] = $channel;
         }
 
@@ -77,6 +79,8 @@ class MemoryResolverBuilder
      * @param string | ChannelInterface $channel
      *
      * @return self
+     *
+     * @throws UnexpectedTypeException if passed channel is invalid
      */
     public function addConfigs(array $configs, $channel = null)
     {

@@ -88,6 +88,8 @@ class PriorityResolverBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addResolvers([$resolvers[1]]);
         $builder->addResolvers([$resolvers[2]], -1);
         $builder->addResolvers([$resolvers[0]], 20);
+
+        self::assertAttributeSame($resolvers, 'resolvers', $builder->getResolver());
     }
 
     protected function getInstance()

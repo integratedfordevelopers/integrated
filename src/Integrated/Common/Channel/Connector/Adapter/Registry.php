@@ -37,8 +37,6 @@ class Registry implements RegistryInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @trows UnexpectedTypeException if $name is not a string
      */
     public function getAdapter($name)
     {
@@ -55,8 +53,6 @@ class Registry implements RegistryInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @trows UnexpectedTypeException if $name is not a string
      */
     public function hasAdapter($name)
     {

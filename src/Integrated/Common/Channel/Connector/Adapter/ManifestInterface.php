@@ -19,9 +19,9 @@ interface ManifestInterface
     /**
      * Returns the adaptor name.
      *
-   	 * @return string
-   	 */
-   	public function getName();
+     * @return string
+     */
+    public function getName();
 
     /**
      * Returns the adaptor display name.
@@ -30,17 +30,17 @@ interface ManifestInterface
      */
     public function getLabel();
 
-   	/**
+    /**
      * Returns the adaptor description.
      *
-   	 * @return string
-   	 */
-   	public function getDescription();
+     * @return string
+     */
+    public function getDescription();
 
-   	/**
+    /**
      * Returns the adaptor version
      *
-   	 * @return string
-   	 */
-   	public function getVersion();
+     * @return string
+     */
+    public function getVersion();
 }

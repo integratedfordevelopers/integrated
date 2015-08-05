@@ -19,78 +19,78 @@ use Integrated\Common\Content\Channel\ChannelInterface as ContentChannelInterfac
 interface ChannelManagerInterface
 {
     /**
-   	 * Create a channel object
-   	 *
-   	 * @return ChannelInterface
-   	 */
-   	public function create();
+     * Create a channel object
+     *
+     * @return ChannelInterface
+     */
+    public function create();
 
-   	/**
-   	 * Change or add the channel to the manager
-   	 *
-   	 * @param ChannelInterface $channel
-   	 */
-   	public function persist(ContentChannelInterface $channel);
+    /**
+     * Change or add the channel to the manager
+     *
+     * @param ChannelInterface $channel
+     */
+    public function persist(ContentChannelInterface $channel);
 
-   	/**
-   	 * Remove the channel from the manager
-   	 *
-   	 * @param ChannelInterface $channel
-   	 */
-   	public function remove(ContentChannelInterface $channel);
+    /**
+     * Remove the channel from the manager
+     *
+     * @param ChannelInterface $channel
+     */
+    public function remove(ContentChannelInterface $channel);
 
-   	/**
-   	 * Delete all the managed channels.
-   	 */
-   	public function clear();
+    /**
+     * Delete all the managed channels.
+     */
+    public function clear();
 
-   	/**
-   	 * Finds the user by its identifier.
-   	 *
-   	 * @param mixed $id
-   	 *
-   	 * @return ChannelInterface
-   	 */
-   	public function find($id);
+    /**
+     * Finds the user by its identifier.
+     *
+     * @param mixed $id
+     *
+     * @return ChannelInterface
+     */
+    public function find($id);
 
-   	/**
-   	 * Finds all the managed channels.
-   	 *
-   	 * @return ChannelInterface[]
-   	 */
-   	public function findAll();
+    /**
+     * Finds all the managed channels.
+     *
+     * @return ChannelInterface[]
+     */
+    public function findAll();
 
-   	/**
-   	 * Finds the first channel with a matching domain.
-   	 *
-   	 * @param string $criteria
-   	 *
-   	 * @return ChannelInterface
-   	 */
-   	public function findByDomain($criteria);
+    /**
+     * Finds the first channel with a matching domain.
+     *
+     * @param string $criteria
+     *
+     * @return ChannelInterface
+     */
+    public function findByDomain($criteria);
 
-   	/**
-   	 * Finds the channel by its name
-   	 *
-   	 * @param string $criteria
-   	 *
-   	 * @return ChannelInterface
-   	 */
-   	public function findByName($criteria);
+    /**
+     * Finds the channel by its name
+     *
+     * @param string $criteria
+     *
+     * @return ChannelInterface
+     */
+    public function findByName($criteria);
 
-   	/**
-   	 * Finds the channel by a set of criteria.
-   	 *
-   	 * @param array $criteria
-   	 *
-   	 * @return ChannelInterface[]
-   	 */
-   	public function findBy(array $criteria);
+    /**
+     * Finds the channel by a set of criteria.
+     *
+     * @param array $criteria
+     *
+     * @return ChannelInterface[]
+     */
+    public function findBy(array $criteria);
 
-   	/**
-   	 * Returns the class name of the channel object
-   	 *
-   	 * @return string
-   	 */
-   	public function getClassName();
+    /**
+     * Returns the class name of the channel object
+     *
+     * @return string
+     */
+    public function getClassName();
 }

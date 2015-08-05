@@ -12,6 +12,8 @@
 namespace Integrated\Common\Channel\Connector\Adapter;
 
 use Integrated\Common\Channel\Connector\AdapterInterface;
+use Integrated\Common\Channel\Exception\InvalidArgumentException;
+use Integrated\Common\Channel\Exception\UnexpectedTypeException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -22,6 +24,9 @@ interface RegistryInterface
      * @param string $name
      *
      * @return AdapterInterface
+     *
+     * @throws UnexpectedTypeException if $name is not a string
+     * @throws InvalidArgumentException if the adaptor could not be found
      */
     public function getAdapter($name);
 
@@ -29,6 +34,8 @@ interface RegistryInterface
      * @param string $name
      *
      * @return bool
+     *
+     * @throws UnexpectedTypeException if $name is not a string
      */
     public function hasAdapter($name);
 

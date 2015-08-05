@@ -56,7 +56,7 @@ class Exporter implements ExporterInterface
             try {
                 $exporter->export($content, $state, $channel);
             } catch (Exception $e) {
-                // probably should log this somewhere
+                // @todo probably should log this somewhere
             }
         }
     }
@@ -71,7 +71,7 @@ class Exporter implements ExporterInterface
         if (!array_key_exists($channel->getId(), $this->cache)) {
             $exporters = [];
 
-            foreach($this->resolver->getConfigs($channel) as $config) {
+            foreach ($this->resolver->getConfigs($channel) as $config) {
                 try {
                     $adaptor = $this->registry->getAdapter($config->getAdapter());
 
@@ -79,7 +79,7 @@ class Exporter implements ExporterInterface
                         $exporters[] = $adaptor->getExporter($config->getOptions());
                     }
                 } catch (Exception $e) {
-                    // probably should log this somewhere
+                    // @todo probably should log this somewhere
                 }
             }
 

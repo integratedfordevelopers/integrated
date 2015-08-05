@@ -17,28 +17,28 @@ namespace Integrated\Common\Channel\Connector\Config;
 interface ConfigManagerInterface extends ConfigRepositoryInterface
 {
     /**
-   	 * Create a user object
-   	 *
-   	 * @return ConfigInterface
-   	 */
-   	public function create();
+     * Create a user object
+     *
+     * @return ConfigInterface
+     */
+    public function create();
 
     /**
-   	 * Change or add the user to the manager
-   	 *
-   	 * @param ConfigInterface $object
-   	 */
-   	public function persist(ConfigInterface $object);
+     * Change or add the user to the manager
+     *
+     * @param ConfigInterface $object
+     */
+    public function persist(ConfigInterface $object);
 
     /**
-   	 * Remove the user from the manager
-   	 *
-   	 * @param ConfigInterface $object
-   	 */
-   	public function remove(ConfigInterface $object);
+     * Remove the user from the manager
+     *
+     * @param ConfigInterface $object
+     */
+    public function remove(ConfigInterface $object);
 
     /**
-   	 * Delete all the managed objects.
-   	 */
-   	public function clear();
+     * Delete all the managed objects.
+     */
+    public function clear();
 }

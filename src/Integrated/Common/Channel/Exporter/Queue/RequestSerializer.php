@@ -25,9 +25,9 @@ use Symfony\Component\Security\Core\Util\ClassUtils;
 class RequestSerializer implements RequestSerializerInterface
 {
     /**
-   	 * @var SerializerInterface
-   	 */
-   	protected $serializer = null;
+     * @var SerializerInterface
+     */
+    protected $serializer = null;
 
     /**
      * @var ChannelManagerInterface

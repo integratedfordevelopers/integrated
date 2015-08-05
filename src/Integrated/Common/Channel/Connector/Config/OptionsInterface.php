@@ -17,51 +17,51 @@ namespace Integrated\Common\Channel\Connector\Config;
 interface OptionsInterface extends \ArrayAccess, \Countable, \IteratorAggregate
 {
     /**
-   	 * @return array
-   	 */
-   	public function toArray();
+     * @return array
+     */
+    public function toArray();
 
-   	/**
-   	 * Set the value for the given key
-   	 *
-   	 * @param string $key
-   	 * @param mixed $value
+    /**
+     * Set the value for the given key
      *
-   	 * @return self
-   	 */
-   	public function set($key, $value);
-
-   	/**
-   	 * Get the value from the given key
-   	 *
-   	 * @param $key
+     * @param string $key
+     * @param mixed $value
      *
-   	 * @return mixed
-   	 */
-   	public function get($key);
+     * @return self
+     */
+    public function set($key, $value);
 
-   	/**
-   	 * Remove the value for the given key
-   	 *
-   	 * @param $key
+    /**
+     * Get the value from the given key
      *
-   	 * @return self
-   	 */
-   	public function remove($key);
-
-   	/**
-   	 * Check if a option key exists.
-   	 *
-   	 * @param $key
+     * @param $key
      *
-   	 * @return bool
-   	 */
-   	public function has($key);
+     * @return mixed
+     */
+    public function get($key);
 
-   	/**
-   	 * Clear all the options data
-   	 *
-   	 * @return self
-   	 */
-   	public function clear();
-} 
+    /**
+     * Remove the value for the given key
+     *
+     * @param $key
+     *
+     * @return self
+     */
+    public function remove($key);
+
+    /**
+     * Check if a option key exists.
+     *
+     * @param $key
+     *
+     * @return bool
+     */
+    public function has($key);
+
+    /**
+     * Clear all the options data
+     *
+     * @return self
+     */
+    public function clear();
+}

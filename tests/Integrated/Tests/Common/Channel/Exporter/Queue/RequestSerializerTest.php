@@ -33,9 +33,9 @@ class RequestSerializerTest extends \PHPUnit_Framework_TestCase
     const TEST_STATE = 'TEST';
 
     /**
-   	 * @var SerializerInterface | \PHPUnit_Framework_MockObject_MockObject
-   	 */
-   	protected $serializer;
+     * @var SerializerInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $serializer;
 
     /**
      * @var ChannelManagerInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -152,7 +152,7 @@ class RequestSerializerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getInstance()
     {
-       return new RequestSerializer($this->serializer, $this->manager);
+        return new RequestSerializer($this->serializer, $this->manager);
     }
 
     /**
