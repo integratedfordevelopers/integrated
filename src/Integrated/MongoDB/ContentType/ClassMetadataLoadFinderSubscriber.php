@@ -17,6 +17,8 @@ use Doctrine\ODM\MongoDB\Events;
 use Doctrine\Common\EventSubscriber;
 
 /**
+ * @deprecated will be removed asap.
+ *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class ClassMetadataLoadFinderSubscriber implements EventSubscriber

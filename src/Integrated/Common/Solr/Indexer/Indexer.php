@@ -172,8 +172,8 @@ class Indexer implements IndexerInterface
 			// config the resolver
 
 			$this->resolver->setDefaults([
-				'queue.size' => 1000,
-				'batch.size' => 10,
+				'queue.size' => 5000,
+				'batch.size' => 100,
 			]);
 
 			$this->resolver->setAllowedTypes([

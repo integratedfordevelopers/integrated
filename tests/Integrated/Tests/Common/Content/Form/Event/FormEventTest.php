@@ -14,7 +14,7 @@ namespace Integrated\Tests\Common\Content\Form\Event;
 use Integrated\Common\Content\Form\Event\FormEvent;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Mapping\MetadataInterface;
+use Integrated\Common\Form\Mapping\MetadataInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -34,7 +34,7 @@ class FormEventTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->type = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
-        $this->metadata = $this->getMock('Integrated\\Common\\ContentType\\Mapping\\MetadataInterface');
+        $this->metadata = $this->getMock('Integrated\\Common\\Form\\Mapping\\MetadataInterface');
     }
 
     public function testInterface()
