@@ -61,12 +61,7 @@ class ConfigFormType extends AbstractType
 
         $builder->add('name', 'text', [
             'label' => 'form.config.name',
-            'translation_domain' => 'IntegratedChannelBundle',
-
-            'constraints' => [
-                new NotBlank(),
-                new Length(['min' => 3])
-            ]
+            'translation_domain' => 'IntegratedChannelBundle'
         ]);
 
         $builder->add('channels', 'integrated_channel_choice', [
