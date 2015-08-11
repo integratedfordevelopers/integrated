@@ -29,5 +29,10 @@
             "Integrated\\Bundle\\StorageBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/StorageBundle"
+    "target-dir": "Integrated/Bundle/StorageBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.x-dev"
+        }
+    }
 }

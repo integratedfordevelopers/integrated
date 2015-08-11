@@ -12,11 +12,12 @@
 namespace Integrated\Bundle\StorageBundle\Tests\Doctrine\EventListener;
 
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
-
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Events;
+
 use Integrated\Bundle\StorageBundle\Doctrine\EventListener\FileEventListener;
 use Integrated\Bundle\StorageBundle\Document\File;
+use Integrated\Bundle\StorageBundle\Tests\Document\Embedded\StorageTest;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -48,14 +49,13 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $mockEvent = $this->getMockBuilder('Integrated\Bundle\StorageBundle\Doctrine\EventListener\FileEventListener')
+        $mockDeleteStorage = $this->getMockBuilder('Integrated\Bundle\StorageBundle\Doctrine\Storage')
             ->disableOriginalConstructor()
-            ->setMethods(['filesystemDelete'])
             ->getMock();
 
-        $mockEvent
+        $mockDeleteStorage
             ->expects($this->once())
-            ->method('filesystemDelete')
+            ->method('delete')
         ;
 
         $file = new File();
@@ -65,7 +65,8 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
             ->getMock()
         );
 
-        $mockEvent->preRemove(new LifecycleEventArgs(
+        $event = new FileEventListener($mockDeleteStorage);
+        $event->preRemove(new LifecycleEventArgs(
             $file,
             $mockDocumentManager
         ));
@@ -76,27 +77,6 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testOnFlushEvent()
     {
-        /** @var \Integrated\Bundle\StorageBundle\Storage\Manager|\PHPUnit_Framework_MockObject_MockObject $storageManager */
-        $storageManager = $this->getMockBuilder('Integrated\Bundle\StorageBundle\Storage\Manager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        /** @var \PHPUnit_Framework_MockObject_MockObject $mockEvent */
-        $mockEvent = $this->getMockBuilder('Integrated\Bundle\StorageBundle\Doctrine\EventListener\FileEventListener')
-            ->setConstructorArgs([$storageManager])
-            ->setMethods(['filesystemDelete'])
-            ->getMock();
-
-        $mockEvent
-            ->expects($this->once())
-            ->method('filesystemDelete')
-        ;
-
-        /** @var \Integrated\Bundle\StorageBundle\Document\Embedded\Storage|\PHPUnit_Framework_MockObject_MockObject $storageMock */
-        $storageMock = $this->getMockBuilder('Integrated\Bundle\StorageBundle\Document\Embedded\Storage')
-            ->disableOriginalConstructor()
-            ->getMock();
-
         /** @var \Doctrine\ODM\MongoDB\UnitOfWork|\PHPUnit_Framework_MockObject_MockObject $mockUow */
         $mockUow = $this->getMockBuilder('Doctrine\ODM\MongoDB\UnitOfWork')
             ->disableOriginalConstructor()
@@ -105,7 +85,8 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
         $mockUow
             ->expects($this->once())
             ->method('getScheduledDocumentDeletions')
-            ->willReturn([$storageMock]);
+            ->willReturn([StorageTest::createObject($this, 'onFlushEvent')])
+        ;
 
         /** @var \Doctrine\ODM\MongoDB\DocumentManager|\PHPUnit_Framework_MockObject_MockObject $mockDocumentManager */
         $mockDocumentManager = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')
@@ -117,6 +98,16 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getUnitOfWork')
             ->willReturn($mockUow);
 
-        $mockEvent->onFlush(new OnFlushEventArgs($mockDocumentManager));
+        $mockDeleteStorage = $this->getMockBuilder('Integrated\Bundle\StorageBundle\Doctrine\Storage')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockDeleteStorage
+            ->expects($this->once())
+            ->method('delete')
+        ;
+
+        $event = new FileEventListener($mockDeleteStorage);
+        $event->onFlush(new OnFlushEventArgs($mockDocumentManager));
     }
 }

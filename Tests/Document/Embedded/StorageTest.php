@@ -25,25 +25,11 @@ class StorageTest extends \PHPUnit_Framework_TestCase
      */
     public function testPostWriteMethod()
     {
-        /** @var Resolver $resolverMock */
-        $resolverMock =
-            $this->getMockBuilder('Integrated\Bundle\StorageBundle\Storage\Resolver')
-                ->disableOriginalConstructor()
-                ->getMock();
-
-
-        // The storage object must resolve at least on public address
-        $resolverMock
-            ->expects($this->once())
-            ->method('resolve')
-            ->will($this->returnValue($pathname = 'public.com/path'))
-        ;
-
-        // The object to test
-        $storage = Storage::postWrite(
+        $storage = self::createObject(
+            $this,
             $identifier = 'identifier',
             $filesystems = ['filesystem1', 'filesystem2'],
-            $resolverMock,
+            $pathname = 'public.com/path',
             $metadata = new Metadata('ext', 'application/ext')
         );
 
@@ -71,5 +57,39 @@ class StorageTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($filesystems, $mock->getFilesystems());
+    }
+
+    /**
+     * Create a valid storage object
+     * @param \PHPUnit_Framework_TestCase $testCase
+     * @param $identifier
+     * @param array $filesystems
+     * @param string $pathname
+     * @param Metadata|null $metadata
+     * @return Storage
+     */
+    public static function createObject(\PHPUnit_Framework_TestCase $testCase, $identifier, array $filesystems = [], $pathname = 'public.com/path', Metadata $metadata = null)
+    {
+        /** @var Resolver $resolverMock */
+        $resolverMock =
+            $testCase->getMockBuilder('Integrated\Bundle\StorageBundle\Storage\Resolver')
+                ->disableOriginalConstructor()
+                ->getMock();
+
+
+        // The storage object must resolve at least on public address
+        $resolverMock
+            ->expects($testCase->once())
+            ->method('resolve')
+            ->will($testCase->returnValue($pathname))
+        ;
+
+        // The object to test
+        return Storage::postWrite(
+            $identifier,
+            $filesystems,
+            $resolverMock,
+            (null == $metadata ? new Metadata('ext', 'application/ext') : $metadata)
+        );
     }
 }

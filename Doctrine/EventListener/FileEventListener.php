@@ -12,7 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\Doctrine\EventListener;
 
 use Integrated\Bundle\StorageBundle\Document\File;
-use Integrated\Bundle\StorageBundle\Doctrine\Storage\Storage;
+use Integrated\Bundle\StorageBundle\Document\Embedded\Storage as EmbeddedStorage;
+use Integrated\Bundle\StorageBundle\Doctrine\Storage;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
@@ -30,11 +31,11 @@ class FileEventListener implements EventSubscriber
     protected $storage;
 
     /**
-     * @param Storage $manager
+     * @param Storage $storage
      */
-    public function __construct(Storage $manager)
+    public function __construct(Storage $storage)
     {
-        $this->storage = $manager;
+        $this->storage = $storage;
     }
 
     /**
@@ -71,7 +72,7 @@ class FileEventListener implements EventSubscriber
         $uow = $args->getDocumentManager()->getUnitOfWork();
 
         foreach ($uow->getScheduledDocumentDeletions() as $entity) {
-            if ($entity instanceof Storage) {
+            if ($entity instanceof EmbeddedStorage) {
                 $this->storage->delete($entity);
             }
         }

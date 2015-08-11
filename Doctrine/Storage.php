@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\StorageBundle\Doctrine\Storage;
+namespace Integrated\Bundle\StorageBundle\Doctrine;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\StorageBundle\Document\Embedded\Storage as EmbeddedStorage;
