@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Sp\BowerBundle\SpBowerBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
@@ -32,6 +33,7 @@ class AppKernel extends Kernel
             new Integrated\Bundle\PageBundle\IntegratedPageBundle(),
             new Integrated\Bundle\BlockBundle\IntegratedBlockBundle(),
             new Integrated\Bundle\WebsiteBundle\IntegratedWebsiteBundle(),
+            new Integrated\Bundle\MenuBundle\IntegratedMenuBundle(),
 
             new AppBundle\AppBundle(),
         );
