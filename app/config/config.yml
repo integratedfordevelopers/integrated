@@ -3,7 +3,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
-
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }
@@ -27,12 +26,14 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    form_themes:
+        - 'IntegratedWebsiteBundle:Form:form_div_layout.html.twig'
 
 services:
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
         tags:
-                - { name: twig.extension }
+            - { name: twig.extension }
 
 # Assetic Configuration
 assetic:
@@ -121,7 +122,16 @@ sp_bower:
         IntegratedFormTypeBundle:
             cache:
                 %kernel.cache_dir%/../sp_bower/IntegratedFormTypeBundle
+        IntegratedWebsiteBundle:
+            cache:
+                %kernel.cache_dir%/../sp_bower/IntegratedWebsiteBundle
     bin: %bower_bin%
     install_on_warmup: true
     assetic:
         enabled: false
+
+# Theme configuration
+integrated_theme:
+    themes:
+        gim:
+            paths: [@IntegratedWebsiteBundle/Resources/views/themes/default]

@@ -15,24 +15,32 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Sp\BowerBundle\SpBowerBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
+            new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
 
             new Integrated\Bundle\ContentBundle\IntegratedContentBundle(),
             new Integrated\Bundle\FormTypeBundle\IntegratedFormTypeBundle(),
             new Integrated\Bundle\SolrBundle\IntegratedSolrBundle(),
             new Integrated\Bundle\UserBundle\IntegratedUserBundle(),
             new Integrated\Bundle\LockingBundle\IntegratedLockingBundle(),
+            new Integrated\Bundle\SlugBundle\IntegratedSlugBundle(),
+            new Integrated\Bundle\ThemeBundle\IntegratedThemeBundle(),
+            new Integrated\Bundle\PageBundle\IntegratedPageBundle(),
+            new Integrated\Bundle\BlockBundle\IntegratedBlockBundle(),
+            new Integrated\Bundle\WebsiteBundle\IntegratedWebsiteBundle(),
             new Integrated\Bundle\MenuBundle\IntegratedMenuBundle(),
-            new Integrated\Bundle\WorkflowBundle\IntegratedWorkflowBundle(),
+
+            new AppBundle\AppBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
+            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
         }
