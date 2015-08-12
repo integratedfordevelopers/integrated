@@ -1,0 +1,19 @@
+<li class="dropdown">
+    <a href data-toggle="dropdown" role="button">{% trans %}Search selections{% endtrans %} <b class="caret"></b></a>
+
+    <ul role="menu" class="dropdown-menu">
+
+        {% for searchSelection in searchSelections %}
+
+            <li role="presentation">
+                <a href="{{ path('integrated_content_content_index', searchSelection.filters) }}" tabindex="-1" role="menuitem">{{ searchSelection.title }}</a>
+            </li>
+
+        {% endfor %}
+
+        <li role="presentation">
+            <a href="{{ path('integrated_content_search_selection_new', filters) }}" tabindex="-1" role="menuitem"><b>{% trans %}Save current search{% endtrans %}</b></a>
+        </li>
+
+    </ul>
+</li>

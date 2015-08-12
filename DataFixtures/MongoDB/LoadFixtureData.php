@@ -11,12 +11,13 @@
 
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 
-use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Nelmio\Alice\Fixtures;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
@@ -27,69 +28,98 @@ use Symfony\Component\Finder\Finder;
  */
 class LoadFixtureData extends ContainerAware implements FixtureInterface
 {
-	/**
-	 * @var MetadataFactoryInterface
-	 */
-	private $metadata = null;
+    /**
+     * @var string
+     */
+    protected $path = __DIR__;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function load(ObjectManager $manager)
-	{
-		$files = array();
+    /**
+     * @var string
+     */
+    protected $locale = 'en_US';
 
-		foreach (Finder::create()->in(__DIR__ . DIRECTORY_SEPARATOR . 'alice')->name('*.yml')->sortByName() as $file) {
-			$files[] = $file->getRealpath();
-		}
+    /**
+     * @var MetadataFactoryInterface
+     */
+    private $metadata = null;
 
-		Fixtures::load($files, $manager, array('providers' => array($this)));
-	}
+    /**
+     * @inheritdoc
+     */
+    public function load(ObjectManager $manager)
+    {
+        $files = array();
 
-	/**
-	 * create a list of field based on the class.
-	 *
-	 * The field list will always reflect the current field configuration of the
-	 * class. It is possible to supply a list of fields that are required and that
-	 * should be ignored.
-	 *
-	 * @param $class
-	 * @param array $required set the required flag for these fields
-	 * @param array $ignore don't add these fields
-	 * @return Field[]
-	 */
-	public function classfields($class, array $required = [], array $ignore = [])
-	{
-		$fields = [];
+        /** @var \Symfony\Component\Finder\SplFileInfo $file */
+        foreach (Finder::create()->in($this->path . DIRECTORY_SEPARATOR  . 'alice')->name('*.yml')->sortByName() as $file) {
+            $files[] = $file->getRealpath();
+        }
 
-		if (!$metadata = $this->getMetadata()->getMetadata($class)) {
-			return $fields;
-		}
+        Fixtures::load($files, $manager, ['providers' => [$this], 'locale' => $this->locale]);
+    }
 
-		$required = array_map('strtolower', $required);
-		$ignore = array_map('strtolower', $ignore);
+    /**
+     * create a list of field based on the class.
+     *
+     * The field list will always reflect the current field configuration of the
+     * class. It is possible to supply a list of fields that are required and that
+     * should be ignored.
+     *
+     * @param string   $class
+     * @param string[] $required  set the required flag for these fields
+     * @param string[] $filter    a list of field that are white or black listed basted on $blacklist
+     * @param bool     $blacklist if true then $filter is a blacklist and a white list if false
+     *
+     * @return Field[]
+     */
+    public function classfields($class, array $required = [], array $filter = [], $blacklist = true)
+    {
+        $fields = [];
 
-		foreach ($metadata->getFields() as $field) {
-			if (in_array(strtolower($field->getName()), $ignore)) { continue; }
+        if (!$metadata = $this->getMetadata()->getMetadata($class)) {
+            return $fields;
+        }
 
-			$fields[$field->getName()] = (new Field())
-					->setName($field->getName())
-					->setType($field->getType())
-					->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
-		}
+        $required = array_map('strtolower', $required);
+        $filter = array_map('strtolower', $filter);
+        $blacklist = (bool) $blacklist;
 
-		return $fields;
-	}
+        if (!$blacklist) {
+            $filter = array_merge($filter, $required);
+        }
 
-	/**
-	 * @return MetadataFactoryInterface
-	 */
-	protected function getMetadata()
-	{
-		if ($this->metadata === null) {
-			$this->metadata = $this->container->get('integrated_content.metadata.factory');
-		}
+        foreach ($metadata->getFields() as $field) {
+            if ($blacklist === in_array(strtolower($field->getName()), $filter)) {
+                continue;
+            }
 
-		return $this->metadata;
-	}
+            $fields[$field->getName()] = (new Field())
+                ->setName($field->getName())
+                ->setType($field->getType())
+                ->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
+        }
+
+        return $fields;
+    }
+
+    /**
+     * @param array $elements
+     * @return ArrayCollection
+     */
+    public function arrayCollection(array $elements)
+    {
+        return new ArrayCollection($elements);
+    }
+
+    /**
+     * @return MetadataFactoryInterface
+     */
+    protected function getMetadata()
+    {
+        if ($this->metadata === null) {
+            $this->metadata = $this->container->get('integrated_content.metadata.factory');
+        }
+
+        return $this->metadata;
+    }
 }

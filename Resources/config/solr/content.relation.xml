@@ -36,6 +36,14 @@
                     </array>
                 </array>
 
+                <string key="address_name">addresses.first.name</string>
+                <string key="address_address1">addresses.first.address1</string>
+                <string key="address_address2">addresses.first.address2</string>
+                <string key="address_zipcode">addresses.first.zipcode</string>
+                <string key="address_city">addresses.first.city</string>
+                <string key="address_state">addresses.first.state</string>
+                <string key="address_country">addresses.first.country</string>
+
             </options>
         </type>
 
@@ -61,6 +69,38 @@
                         <string>@prefix</string>
                         <string>@firstName</string>
                         <string>@lastName</string>
+                    </array>
+                </array>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/person/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
+
+                <string key="cover">cover</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="logo">logo.webpath</string>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/company/</string>
+                        <string>@slug</string>
                     </array>
                 </array>
 

@@ -10,7 +10,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
     content: <paragraphs(rand(6, 12), true)>
     source: 40%? <sentence()>
     locale: <locale()>
-    location: 20%? @location_embed*
+#    location: 20%? @location_embed*
     channels: <numberBetween(1, 5)>x @channel*
 
   blog{1..50}:
@@ -23,7 +23,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
     intro: 80%? <paragraph()>
     content: <paragraphs(rand(3, 10), true)>
     locale: <locale()>
-    location: 20%? @location_embed*
+#    location: 20%? @location_embed*
     channels: <numberBetween(1, 5)>x @channel*
 
 Integrated\Bundle\ContentBundle\Document\Content\Relation\Person:

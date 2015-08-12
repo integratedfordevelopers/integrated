@@ -13,15 +13,14 @@ namespace Integrated\Bundle\ContentBundle\Document\Relation;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Integrated\Common\Content\Relation\RelationInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Relation document
@@ -29,12 +28,14 @@ use Integrated\Common\ContentType\ContentTypeInterface;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
  * @ODM\Document(collection="relation")
+ * @MongoDBUnique(fields="id")
  */
 class Relation implements RelationInterface
 {
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
+     * @ODM\Id(strategy="NONE")
+     * @Slug(fields={"name"}, separator="_")
      */
     protected $id;
 
@@ -96,16 +97,6 @@ class Relation implements RelationInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set the id of the Relation
-     *
      * @param string $id
      * @return $this
      */
@@ -113,6 +104,14 @@ class Relation implements RelationInterface
     {
         $this->id = $id;
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**

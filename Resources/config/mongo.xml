@@ -6,12 +6,54 @@
 
 	<parameters>
 
-		<parameter key="integrated_content.odm.mongo.manager_configurator.class">Integrated\Bundle\ContentBundle\Configurator\ManagerConfigurator</parameter>
+        <parameter key="integrated_content.odm.mongo.mapping.driver.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriver</parameter>
+        <parameter key="integrated_content.odm.mongo.mapping.locator.class">Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\DoctrineLocator</parameter>
+
+        <parameter key="integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder.class">Integrated\Doctrine\ODM\MongoDB\Mapping\ClassTreeMapResolverBuilder</parameter>
+        <parameter key="integrated_content.odm.mongo.mapping.discriminator_map.resolver.class">Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapResolverInterface</parameter>
+
+        <parameter key="integrated_content.odm.mongo.mapping.discriminator_map.listener.class">Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapMetadataSubscriber</parameter>
+
         <parameter key="integrated_content.odm.mongo.cleanreferences.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CleanReferencesListener</parameter>
 
 	</parameters>
 
 	<services>
+
+        <service id="integrated_content.odm.mongo.mapping.driver"
+                 class="%integrated_content.odm.mongo.mapping.driver.class%"
+                 factory-service="doctrine_mongodb.odm.default_configuration"
+                 factory-method="getMetadataDriverImpl"
+                 public="false" />
+
+        <service id="integrated_content.odm.mongo.mapping.locator" class="%integrated_content.odm.mongo.mapping.locator.class%">
+            <argument type="service" id="integrated_content.odm.mongo.mapping.driver" />
+        </service>
+
+        <service id="integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder" class="%integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder.class%">
+            <argument type="service" id="integrated_content.odm.mongo.mapping.locator" />
+
+            <call method="addClass">
+                <argument type="string">Integrated\Bundle\ContentBundle\Document\Content\Content</argument>
+            </call>
+
+            <call method="addClass">
+                <argument type="string">Integrated\Bundle\BlockBundle\Document\Block\Block</argument>
+            </call>
+
+        </service>
+
+        <service id="integrated_content.odm.mongo.mapping.discriminator_map.resolver"
+                 class="%integrated_content.odm.mongo.mapping.discriminator_map.resolver.class%"
+                 factory-service="integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder"
+                 factory-method="getResolver" />
+
+        <service id="integrated_content.odm.mongo.mapping.discriminator_map.listener" class="%integrated_content.odm.mongo.mapping.discriminator_map.listener.class%">
+            <argument type="service" id="integrated_content.odm.mongo.mapping.discriminator_map.resolver" />
+
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
 
         <service id="integrated_content.odm.mongo.cleanreferences.listener" class="%integrated_content.odm.mongo.cleanreferences.listener.class%">
             <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />

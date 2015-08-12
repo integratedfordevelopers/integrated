@@ -12,8 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\StorageBundle\Document\File;
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
+
+use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * Document type Relation\Company
@@ -33,10 +36,27 @@ class Company extends Relation
     protected $name;
 
     /**
+     * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex(sparse=true)
+     * @Slug(fields={"name"})
+     * @Type\Field
+     */
+    protected $slug;
+
+    /**
      * @var File
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\StorageBundle\Document\File")
+     * @Type\Field(type="integrated_image_choice")
      */
     protected $logo;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field
+     */
+    protected $website;
 
     /**
      * Get the name of the document
@@ -61,6 +81,28 @@ class Company extends Relation
     }
 
     /**
+     * Get the slug of the document
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the slug of the document
+     *
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    /**
      * Get the file of the document
      *
      * @return File
@@ -79,6 +121,28 @@ class Company extends Relation
     public function setLogo(File $logo)
     {
         $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * Get the website of the document
+     *
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * Set the website of the document
+     *
+     * @param string $website
+     * @return $this
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
         return $this;
     }
 

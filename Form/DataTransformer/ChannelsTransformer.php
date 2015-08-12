@@ -18,86 +18,85 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class ChannelsTransformer implements DataTransformerInterface
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function transform($value)
-	{
-		$result = [
-			'options'  => null,
-			'defaults' => []
-		];
+    /**
+     * @inheritdoc
+     */
+    public function transform($value)
+    {
+        $result = [
+            'options'  => null,
+            'defaults' => []
+        ];
 
-		if ($value === null || $value === '') {
-			return $result;
-		}
+        if ($value === null || $value === '') {
+            return $result;
+        }
 
-		if (isset($value['disabled'])){
-			$result['options'] = 'disabled';
+        if (isset($value['disabled'])) {
+            $result['options'] = 'disabled';
 
-			switch ((int) $value['disabled']){
-				case 0:
-					$result['options'] = '';
-					break;
+            switch ((int) $value['disabled']){
+                case 0:
+                    $result['options'] = '';
+                    break;
 
-				case 1:
-					$result['options'] = 'hidden';
-					break;
-			}
-		}
+                case 1:
+                    $result['options'] = 'hidden';
+                    break;
+            }
+        }
 
-		if (isset($value['defaults'])) {
-			$defaults = [];
+        if (isset($value['defaults'])) {
+            $defaults = [];
 
-			// TODO filter out invalid channels
+            // TODO filter out invalid channels
 
-			foreach ($value['defaults'] as $channel) {
-				$defaults[$channel['id']]['selected'] = true;
-				$defaults[$channel['id']]['enforce'] = (bool) $channel['enforce'];
-			}
+            foreach ($value['defaults'] as $channel) {
+                $defaults[$channel['id']]['selected'] = true;
+                $defaults[$channel['id']]['enforce'] = isset($channel['enforce']) ? (bool) $channel['enforce'] : false;
+            }
 
-			$result['defaults'] = $defaults;
-		}
+            $result['defaults'] = $defaults;
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function reverseTransform($value)
-	{
-		$result = [
-			'disabled' => 0,
-			'defaults' => []
-		];
+    /**
+     * @inheritdoc
+     */
+    public function reverseTransform($value)
+    {
+        $result = [
+            'disabled' => 0,
+            'defaults' => []
+        ];
 
-		if ($value === null || $value === '') {
-			return $result;
-		}
+        if ($value === null || $value === '') {
+            return $result;
+        }
 
-		switch ($value['options']) {
-			case 'hidden':
-				$result['disabled'] = 1;
-				break;
+        switch ($value['options']) {
+            case 'hidden':
+                $result['disabled'] = 1;
+                break;
 
-			case 'disabled':
-				$result['disabled'] = 2;
-				break;
-		}
+            case 'disabled':
+                $result['disabled'] = 2;
+                break;
+        }
 
-		foreach ($value['defaults'] as $id => $options) {
-			if ($options['selected']) {
-				$result['defaults'][$id] = [
-					'id' => $id,
-					'enforce' => $options['enforce'] ? true : false
-				];
-			}
-		}
+        foreach ($value['defaults'] as $id => $options) {
+            if ($options['selected']) {
+                $result['defaults'][$id] = [
+                    'id' => $id,
+                    'enforce' => $options['enforce'] ? true : false
+                ];
+            }
+        }
 
-		$result['defaults'] = array_values($result['defaults']);
+        $result['defaults'] = array_values($result['defaults']);
 
-		return $result;
-	}
-
-} 
+        return $result;
+    }
+}
