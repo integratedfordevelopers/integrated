@@ -91,7 +91,11 @@ class DefinitionFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('empty_data', function (FormInterface $form) { return new Definition(); });
+        $emptyData = function (FormInterface $form) {
+            return new Definition();
+        };
+
+        $resolver->setDefault('empty_data', $emptyData);
         $resolver->setDefault('data_class', 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
     }
 

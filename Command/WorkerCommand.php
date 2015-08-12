@@ -29,96 +29,96 @@ use Symfony\Component\Process\Process;
 class WorkerCommand extends ContainerAwareCommand
 {
     /**
-   	 * {@inheritdoc}
-   	 */
-	protected function configure()
-	{
-		$this
-			->setName('workflow:worker:run')
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->setName('workflow:worker:run')
 
-			->addOption('batch', 'b', InputOption::VALUE_REQUIRED, 'The queue batch size to process in one worker run', 10)
+            ->addOption('batch', 'b', InputOption::VALUE_REQUIRED, 'The queue batch size to process in one worker run', 10)
 
-			->setDescription('Process the workflow queue messages')
-			->setHelp('
+            ->setDescription('Process the workflow queue messages')
+            ->setHelp('
 The <info>%command.name%</info> .
 
 <info>php %command.full_name%</info>
 '
-			);
-	}
+            );
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
-		try	{
-			foreach ($this->getQueue()->pull($input->getOption('batch')) as $message) {
-				$data = (array) $message->getPayload();
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        try {
+            foreach ($this->getQueue()->pull($input->getOption('batch')) as $message) {
+                $data = (array) $message->getPayload();
 
-				$data['command'] = isset($data['command']) ? $data['command'] : null;
-				$data['args'] = isset($data['args']) ? $data['args'] : null;
+                $data['command'] = isset($data['command']) ? $data['command'] : null;
+                $data['args'] = isset($data['args']) ? $data['args'] : null;
 
-				if ($data['command']) {
-					switch ($data['command']) {
-						case 'index':
-							$data['args'] = is_array($data['args']) ? $data['args'] : [$data['args']];
-							$data['args'] = array_filter(array_map('trim', $data['args']));
+                if ($data['command']) {
+                    switch ($data['command']) {
+                        case 'index':
+                            $data['args'] = is_array($data['args']) ? $data['args'] : [$data['args']];
+                            $data['args'] = array_filter(array_map('trim', $data['args']));
 
-							if ($data['args']) {
-								$this->executeCommand($input, $output, 'workflow:index', array_merge(['--ignore'], $data['args']));
-							}
-							break;
+                            if ($data['args']) {
+                                $this->executeCommand($input, $output, 'workflow:index', array_merge(['--ignore'], $data['args']));
+                            }
+                            break;
 
-						case 'index-full':
-							$this->executeCommand($input, $output, 'workflow:index', ['--full']);
-							break;
+                        case 'index-full':
+                            $this->executeCommand($input, $output, 'workflow:index', ['--full']);
+                            break;
 
-						default:
-							$output->writeln("Unknow command: " . $data['command']);
-							break;
-					}
-				} // ignore empty commands
+                        default:
+                            $output->writeln("Unknow command: " . $data['command']);
+                            break;
+                    }
+                } // ignore empty commands
 
-				$message->delete();
-			}
-		} catch (Exception $e) {
-			$output->writeln("Aborting: " . $e->getMessage());
+                $message->delete();
+            }
+        } catch (Exception $e) {
+            $output->writeln("Aborting: " . $e->getMessage());
 
-			return 1;
-		}
+            return 1;
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 
-	/**
-	 * @param InputInterface $input
-	 * @param OutputInterface $output
-	 * @param string $command
-	 * @param string[] $arguments
-	 *
-	 * @throws Exception
-	 */
-	protected function executeCommand(InputInterface $input, OutputInterface $output, $command, array $arguments = [])
-	{
-		// run in a different process for isolation like memory issues.
-		$process = new Process('php app/console ' . $command . ' -e ' . $input->getOption('env') . ' '  . implode(' ', $arguments), getcwd(), null, null, null);
-		$process->run();
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param string $command
+     * @param string[] $arguments
+     *
+     * @throws Exception
+     */
+    protected function executeCommand(InputInterface $input, OutputInterface $output, $command, array $arguments = [])
+    {
+        // run in a different process for isolation like memory issues.
+        $process = new Process('php app/console ' . $command . ' -e ' . $input->getOption('env') . ' '  . implode(' ', $arguments), getcwd(), null, null, null);
+        $process->run();
 
-		$process->run(function($type, $buffer) use ($output) {
-			$output->write($buffer, false, $type);
-		});
+        $process->run(function ($type, $buffer) use ($output) {
+            $output->write($buffer, false, $type);
+        });
 
-		if (!$process->isSuccessful()) {
-			throw new Exception($process->getErrorOutput());
-		}
-	}
+        if (!$process->isSuccessful()) {
+            throw new Exception($process->getErrorOutput());
+        }
+    }
 
-	/**
-	 * @return QueueInterface
-	 */
-	public function getQueue()
-	{
-		return $this->getContainer()->get('integrated_queue.workflow');
-	}
-} 
+    /**
+     * @return QueueInterface
+     */
+    public function getQueue()
+    {
+        return $this->getContainer()->get('integrated_queue.workflow');
+    }
+}

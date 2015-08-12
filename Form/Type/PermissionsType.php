@@ -42,7 +42,11 @@ class PermissionsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('empty_data', function(FormInterface $form) { return new ArrayCollection(); });
+        $emptyData = function (FormInterface $form) {
+            return new ArrayCollection();
+        };
+
+        $resolver->setDefault('empty_data', $emptyData);
         $resolver->setDefault('label', false);
     }
 

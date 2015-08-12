@@ -27,88 +27,88 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class PermissionTransformer implements DataTransformerInterface
 {
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function transform($value)
-	{
-		$data = [
-			'read'  => [],
-			'write' => []
-		];
+     * {@inheritdoc}
+     */
+    public function transform($value)
+    {
+        $data = [
+            'read'  => [],
+            'write' => []
+        ];
 
-		if ($value === null || $value === '') {
-			return $data;
-		}
+        if ($value === null || $value === '') {
+            return $data;
+        }
 
-		if (!is_array($value)) {
-			if (!$value instanceof Collection) {
-				throw new TransformationFailedException('Expected a Doctrine\\Common\\Collections\\Collection object.');
-			}
-		}
+        if (!is_array($value)) {
+            if (!$value instanceof Collection) {
+                throw new TransformationFailedException('Expected a Doctrine\\Common\\Collections\\Collection object.');
+            }
+        }
 
-		foreach ($value as $permission) {
-			if (!$permission instanceof Permission) {
-				throw new TransformationFailedException('Expected a collection of Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\Permission objects.');
-			}
+        foreach ($value as $permission) {
+            if (!$permission instanceof Permission) {
+                throw new TransformationFailedException('Expected a collection of Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\Permission objects.');
+            }
 
-			$group = $permission->getGroup();
+            $group = $permission->getGroup();
 
-			// The object choice list needs a object with a id property.
+            // The object choice list needs a object with a id property.
 
-			if ($permission->hasMask(Permission::READ)) {
-				$data['read'][] = $group;
-			}
+            if ($permission->hasMask(Permission::READ)) {
+                $data['read'][] = $group;
+            }
 
-			if ($permission->hasMask(Permission::WRITE)) {
-				$data['write'][] = $group;
-			}
-		}
+            if ($permission->hasMask(Permission::WRITE)) {
+                $data['write'][] = $group;
+            }
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function reverseTransform($value)
-	{
-		/** @var Permission[] $permissions */
-		$permissions = [];
+     * {@inheritdoc}
+     */
+    public function reverseTransform($value)
+    {
+        /** @var Permission[] $permissions */
+        $permissions = [];
 
-		if (!isset($value['read']) || $value['read'] === '' || $value['read'] === null) {
-			$value['read'] = [];
-		}
+        if (!isset($value['read']) || $value['read'] === '' || $value['read'] === null) {
+            $value['read'] = [];
+        }
 
-		if (!$value['read'] instanceof Collection) {
-			$value['read'] = new ArrayCollection((array) $value['read']);
-		}
+        if (!$value['read'] instanceof Collection) {
+            $value['read'] = new ArrayCollection((array) $value['read']);
+        }
 
-		foreach ($value['read'] as $group) {
-			if (!isset($permissions[$group])) {
-				$permissions[$group] = new Permission();
-				$permissions[$group]->setGroup($group);
-			}
+        foreach ($value['read'] as $group) {
+            if (!isset($permissions[$group])) {
+                $permissions[$group] = new Permission();
+                $permissions[$group]->setGroup($group);
+            }
 
-			$permissions[$group]->addMask(Permission::READ);
-		}
+            $permissions[$group]->addMask(Permission::READ);
+        }
 
-		if (!isset($value['write']) || $value['write'] === '' || $value['write'] === null) {
-			$value['write'] = [];
-		}
+        if (!isset($value['write']) || $value['write'] === '' || $value['write'] === null) {
+            $value['write'] = [];
+        }
 
-		if (!$value['write'] instanceof Collection) {
-			$value['write'] = new ArrayCollection((array) $value['write']);
-		}
+        if (!$value['write'] instanceof Collection) {
+            $value['write'] = new ArrayCollection((array) $value['write']);
+        }
 
-		foreach ($value['write'] as $group) {
-			if (!isset($permissions[$group])) {
-				$permissions[$group] = new Permission();
-				$permissions[$group]->setGroup($group);
-			}
+        foreach ($value['write'] as $group) {
+            if (!isset($permissions[$group])) {
+                $permissions[$group] = new Permission();
+                $permissions[$group]->setGroup($group);
+            }
 
-			$permissions[$group]->addMask(Permission::WRITE);
-		}
+            $permissions[$group]->addMask(Permission::WRITE);
+        }
 
-		return new ArrayCollection(array_values($permissions));
-	}
-} 
+        return new ArrayCollection(array_values($permissions));
+    }
+}

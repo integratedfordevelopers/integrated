@@ -64,7 +64,7 @@ class DefinitionType extends AbstractType
 
                 $builder->resetViewTransformers();
 
-                foreach($transformers as $transformer) {
+                foreach ($transformers as $transformer) {
                     $builder->addViewTransformer($transformer);
                 }
 
@@ -81,7 +81,7 @@ class DefinitionType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $classNormalizer = function(Options $options) {
+        $classNormalizer = function (Options $options) {
             return $this->repository->getClassName(); // force the class to always be the same as the repository
         };
 
