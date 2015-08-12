@@ -9,11 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content\Channel;
+namespace Integrated\Common\Channel\Exporter;
+
+use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ChannelManagerInterface extends \Integrated\Common\Channel\ChannelManagerInterface
+interface ExportableInterface
 {
+    /**
+     * @param OptionsInterface $options
+     *
+     * @return ExporterInterface
+     */
+    public function getExporter(OptionsInterface $options);
 }

@@ -9,11 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content\Channel;
+namespace Integrated\Tests\Common\Channel\Fixtures;
+
+use Integrated\Common\Channel\Connector\AdapterInterface;
+use Integrated\Common\Channel\Exporter\ExportableInterface as BaseExportableInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ChannelManagerInterface extends \Integrated\Common\Channel\ChannelManagerInterface
+interface ExportableInterface extends BaseExportableInterface, AdapterInterface
 {
 }

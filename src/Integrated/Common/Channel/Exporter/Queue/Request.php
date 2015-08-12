@@ -9,11 +9,27 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content\Channel;
+namespace Integrated\Common\Channel\Exporter\Queue;
+
+use Integrated\Common\Channel\ChannelInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface ChannelManagerInterface extends \Integrated\Common\Channel\ChannelManagerInterface
+class Request
 {
+    /**
+     * @var object
+     */
+    public $content;
+
+    /**
+     * @var string
+     */
+    public $state;
+
+    /**
+     * @var ChannelInterface
+     */
+    public $channel;
 }
