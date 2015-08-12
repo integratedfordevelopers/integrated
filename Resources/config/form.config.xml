@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_channel.form.config.new.type.proxy" class="%integrated_channel.form.proxy.type.class%">
+            <argument type="service" id="integrated_channel.form.config.type" />
+            <argument type="string">channel_config_new</argument>
+
+            <tag name="form.type" alias="channel_config_new" />
+        </service>
+
+        <service id="integrated_channel.form.config.edit.type.proxy" class="%integrated_channel.form.proxy.type.class%">
+            <argument type="service" id="integrated_channel.form.config.type" />
+            <argument type="string">channel_config_edit</argument>
+
+            <tag name="form.type" alias="channel_config_edit" />
+        </service>
+
+        <service id="integrated_channel.form.config.delete.type.proxy" class="%integrated_channel.form.proxy.type.class%">
+            <argument type="service" id="integrated_channel.form.delete.type" />
+            <argument type="string">channel_config_delete</argument>
+
+            <tag name="form.type" alias="channel_config_delete" />
+        </service>
+
+    </services>
+
+</container>

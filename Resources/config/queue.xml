@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_channel.queue.class">Integrated\Common\Queue\Queue</parameter>
+        <parameter key="integrated_channel.queue.serializer.class">Integrated\Common\Channel\Exporter\Queue\ContainerAwareRequestSerializer</parameter>
+
+    </parameters>
+
+    <services>
+
+        <!-- this is not really a great way to create a queue instance but will have to do for now as there still is no queue bundle -->
+
+        <service id="integrated_channel.queue" class="%integrated_channel.queue.class%">
+            <factory service="integrated_queue.factory" method="getQueue" />
+
+            <argument type="string">channel-distribution</argument>
+        </service>
+
+        <service id="integrated_channel.queue.serializer" class="%integrated_channel.queue.serializer.class%">
+            <argument type="service" id="service_container"/>
+            <argument type="string">integrated_solr.indexer.serializer</argument> <!-- this service should be a more general service -->
+            <argument type="string">integrated_channel.manager.channel</argument>
+        </service>
+
+    </services>
+
+</container>

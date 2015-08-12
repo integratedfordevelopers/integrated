@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_channel.adapter.registry.class">Integrated\Common\Channel\Connector\Adapter\Registry</parameter>
+        <parameter key="integrated_channel.adapter.registry_builder.class">Integrated\Common\Channel\Connector\Adapter\RegistryBuilder</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_channel.adapter.registry_builder" class="%integrated_channel.adapter.registry_builder.class%" />
+
+        <service id="integrated_channel.adapter.registry" class="%integrated_channel.adapter.registry.class%">
+            <factory service="integrated_channel.adapter.registry_builder" method="getRegistry" />
+        </service>
+
+    </services>
+
+</container>

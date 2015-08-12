@@ -1,0 +1,42 @@
+{% block integrated_channel_options_row  %}
+    {% spaceless %}
+
+        {% if attr.style is defined and attr.style is not empty %}
+            {% set style = attr.style %}
+        {% endif %}
+
+        {% set style = style|default(bootstrap_get_style()) %}
+
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+
+        <div class="form-group">
+            {% if style == 'horizontal' %}
+
+                {% if attr.label_col is defined and attr.label_col is not empty %}
+                    {% set label_col = attr.label_col %}
+                {% endif %}
+                {% if attr.widget_col is defined and attr.widget_col is not empty %}
+                    {% set widget_col = attr.widget_col %}
+                {% endif %}
+                {% if attr.col_size is defined and attr.col_size is not empty %}
+                    {% set col_size = attr.col_size %}
+                {% endif %}
+
+                {% set label_col = label_col|default(bootstrap_get_label_col()) %}
+                {% set widget_col = widget_col|default(bootstrap_get_widget_col()) %}
+                {% set col_size = col_size|default(bootstrap_get_col_size()) %}
+
+                <div class="col-{{ col_size }}-{{ widget_col }} col-{{ col_size }}-offset-{{ label_col }}">
+                    <strong>{{ label|trans({}, translation_domain)|raw }}</strong>
+                </div>
+            {% else %}
+                <strong>{{ label|trans({}, translation_domain)|raw }}</strong>
+            {% endif %}
+        </div>
+
+        {{ block('form_rows') }}
+
+    {% endspaceless %}
+{% endblock %}
