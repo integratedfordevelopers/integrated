@@ -11,54 +11,64 @@
 
 namespace Integrated\Bundle\StorageBundle\Document;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
+
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
- * Document type File
- *
  * @author Johnny Borg <johnny@e-active.nl>
- *
- * @ODM\Document
- *
- * @Type\Document("File")
  */
-class File extends Content
+trait FileTrait
 {
-    use FileTrait;
+    /**
+     * @var Storage
+     * @Type\Field(type="integrated_file")
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\StorageBundle\Document\Embedded\Storage")
+     */
+    protected $file;
 
     /**
      * @var string
      * @ODM\String
      * @Type\Field
      */
-    protected $description;
+    protected $title;
 
     /**
-     * @return string
+     * @return Storage|null
      */
-    public function getDescription()
+    public function getFile()
     {
-        return $this->description;
+        return $this->file;
     }
 
     /**
-     * @param string $description
+     * @param Storage $file
      * @return $this
      */
-    public function setDescription($description)
+    public function setFile(Storage $file = null)
     {
-        $this->description = $description;
+        $this->file = $file;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function getTitle()
     {
         return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
     }
 }
