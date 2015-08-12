@@ -26,6 +26,7 @@
         "integrated/formtype-bundle": "~0.1",
         "integrated/locking-bundle": "~0.1",
         "integrated/menu-bundle": "~0.3",
+        "integrated/storage-bundle": "~0.4",
         "knplabs/knp-paginator-bundle": "~2.4",
         "nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",
