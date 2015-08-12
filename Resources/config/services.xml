@@ -10,7 +10,6 @@
         <parameter key="integrated_storage.resolver">Integrated\Bundle\StorageBundle\Storage\Resolver</parameter>
         <parameter key="integrated_storage.decision">Integrated\Bundle\StorageBundle\Storage\Decision</parameter>
         <parameter key="integrated_storage.registry">Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry</parameter>
-        <parameter key="integrated_storage.database_delete">Integrated\Bundle\StorageBundle\Doctrine\Storage</parameter>
 
     </parameters>
 
@@ -43,11 +42,6 @@
 
         <service id="integrated_storage.registry" class="%integrated_storage.registry%">
             <argument type="service" id="knp_gaufrette.filesystem_map" />
-        </service>
-
-        <service id="integrated_storage.database_delete" class="%integrated_storage.database_delete%">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-            <argument type="service" id="integrated_storage.manager" />
         </service>
 
     </services>

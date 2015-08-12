@@ -7,6 +7,7 @@
     <parameters>
 
         <parameter key="integrated_storage.database">Integrated\Bundle\StorageBundle\Storage\Database\DoctrineODMDatabase</parameter>
+        <parameter key="integrated_storage.database_delete">Integrated\Bundle\StorageBundle\Doctrine\Storage</parameter>
 
     </parameters>
 
@@ -18,6 +19,10 @@
                 The class its self is responsible for error checking its dependencies.
              -->
             <argument type="service" id="service_container" />
+        </service>
+
+        <service id="integrated_storage.database_delete" class="%integrated_storage.database_delete%">
+            <argument type="service" id="integrated_storage.manager" />
         </service>
 
     </services>
