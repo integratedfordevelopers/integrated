@@ -15,7 +15,8 @@ use Exception;
 
 use Integrated\Common\Channel\Exporter\QueueExporter;
 
-use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,7 +26,7 @@ use Symfony\Component\Process\Process;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExportCommand extends Command
+class ExportCommand extends ContainerAwareCommand
 {
     /**
      * @var QueueExporter
@@ -101,9 +102,11 @@ class ExportCommand extends Command
         $wait = (int) $input->getOption('wait');
         $wait = $wait * 1000; // convert from milli to micro
 
+        $cwd = realpath($this->getContainer()->get('kernel')->getRootDir() . '/..');
+
         while (true) {
-            $process = new Process('php app/console channel:export -e ' . $input->getOption('env'), getcwd(), null, null, null);
-            $process->run(function($type, $buffer) use ($output) {
+            $process = new Process('php app/console channel:export -e ' . $input->getOption('env'), $cwd, null, null, null);
+            $process->run(function ($type, $buffer) use ($output) {
                 $output->write($buffer, false, OutputInterface::OUTPUT_RAW);
             });
 
