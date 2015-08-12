@@ -13,7 +13,7 @@ namespace Integrated\Bundle\StorageBundle\Document;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Common\Form\Mapping\Annotations as Type;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
