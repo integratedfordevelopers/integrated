@@ -10,7 +10,7 @@
         <parameter key="integrated_storage.resolver">Integrated\Bundle\StorageBundle\Storage\Resolver</parameter>
         <parameter key="integrated_storage.decision">Integrated\Bundle\StorageBundle\Storage\Decision</parameter>
         <parameter key="integrated_storage.registry">Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry</parameter>
-        <parameter key="integrated_storage.database_delete">Integrated\Bundle\StorageBundle\Storage\Doctrine\Storage</parameter>
+        <parameter key="integrated_storage.database_delete">Integrated\Bundle\StorageBundle\Storage</parameter>
 
     </parameters>
 
