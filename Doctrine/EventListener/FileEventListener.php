@@ -60,7 +60,7 @@ class FileEventListener implements EventSubscriber
         $document = $args->getObject();
 
         if ($document instanceof File) {
-            $this->storage->delete($document->getFile());
+            $this->storage->delete($args->getDocumentManager(), $document->getFile());
         }
     }
 
@@ -76,7 +76,7 @@ class FileEventListener implements EventSubscriber
 
         foreach ($uow->getScheduledDocumentDeletions() as $entity) {
             if ($entity instanceof EmbeddedStorage) {
-                $this->storage->delete($entity);
+                $this->storage->delete($args->getDocumentManager(), $entity);
             }
         }
     }

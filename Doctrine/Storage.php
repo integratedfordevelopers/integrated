@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\StorageBundle\Doctrine;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+
 use Integrated\Bundle\StorageBundle\Document\Embedded\Storage as EmbeddedStorage;
 use Integrated\Bundle\StorageBundle\Storage\Command\DeleteCommand;
 use Integrated\Bundle\StorageBundle\Storage\Manager;
@@ -27,33 +28,27 @@ class Storage
     const REPOSITORY = 'Integrated\Bundle\ContentBundle\Document\Content\Content';
 
     /**
-     * @var DocumentManager
-     */
-    protected $documentManager;
-
-    /**
      * @var Manager
      */
     protected $manager;
 
     /**
-     * @param DocumentManager $documentManager
      * @param Manager $manager
      */
-    public function __construct(DocumentManager $documentManager, Manager $manager)
+    public function __construct(Manager $manager)
     {
-        $this->documentManager = $documentManager;
         $this->manager = $manager;
     }
 
     /**
+     * @param DocumentManager $documentManager
      * @param EmbeddedStorage $storage
      */
-    public function delete(EmbeddedStorage $storage)
+    public function delete(DocumentManager $documentManager, EmbeddedStorage $storage)
     {
         // Query
-        $repository = $this->documentManager->getRepository(self::REPOSITORY);
-        $result = $repository->createQueryBuilder()
+        $result = $documentManager->getRepository(self::REPOSITORY)
+            ->createQueryBuilder()
             ->field('file.identifier')->equals($storage->getIdentifier())
             ->getQuery()->execute();
 
