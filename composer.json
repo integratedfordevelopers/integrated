@@ -16,10 +16,8 @@
         "php": ">=5.4",
         "symfony/symfony": "~2.7",
         "integrated/library": "dev-feature/channels",
-        "knplabs/knp-paginator-bundle": "~2.3"
-    },
-    "suggest": {
-        "braincrafted/bootstrap-bundle": "Allows for displaying flash messages"
+        "knplabs/knp-paginator-bundle": "~2.3",
+        "braincrafted/bootstrap-bundle": ">=1.5"
     },
     "autoload":{
         "psr-4":{
