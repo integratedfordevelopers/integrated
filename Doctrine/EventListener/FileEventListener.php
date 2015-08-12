@@ -50,7 +50,8 @@ class FileEventListener implements EventSubscriber
     }
 
     /**
-     * This event will be called when a
+     * This event will be called when a entity is deleted
+     *
      * @param LifecycleEventArgs $args
      */
     public function preRemove(LifecycleEventArgs $args)
@@ -64,6 +65,8 @@ class FileEventListener implements EventSubscriber
     }
 
     /**
+     * This event will be called on any flush to doctrine
+     *
      * @param OnFlushEventArgs $args
      */
     public function onFlush(OnFlushEventArgs $args)
