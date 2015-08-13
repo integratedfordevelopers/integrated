@@ -31,7 +31,7 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorWithInvalidChannels()
     {
-       $this->getInstance([], ['this-is-a-config-that-does-not-exist' => null]);
+        $this->getInstance([], ['this-is-a-config-that-does-not-exist' => null]);
     }
 
     public function testHasConfig()
@@ -69,8 +69,8 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
         ];
 
         // Config5 is not connected to any channel or set as default for every channel. This is
-        // something that is not possible if the builder is used as the channel is required and
-        // if not given is will be added as a channel default.
+        // something that is not possible if the builder is used, as the channel is required and
+        // if not given it will be added as a channel default.
 
         $channels = [
             'config1' => ['channel1'],

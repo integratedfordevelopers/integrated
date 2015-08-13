@@ -15,7 +15,6 @@ use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Exception\InvalidArgumentException;
 
 use Iterator;
-use IteratorAggregate;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

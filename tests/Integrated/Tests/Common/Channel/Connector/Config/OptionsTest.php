@@ -168,6 +168,8 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $data
+     *
      * @return Options
      */
     protected function getInstance(array $data = null)

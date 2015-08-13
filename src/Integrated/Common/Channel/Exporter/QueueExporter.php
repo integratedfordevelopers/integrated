@@ -25,14 +25,14 @@ use Integrated\Common\Queue\QueueMessageInterface;
 class QueueExporter implements ExporterInterface
 {
     /**
-   	 * @var QueueInterface
-   	 */
-   	private $queue;
+     * @var QueueInterface
+     */
+    private $queue;
 
     /**
-   	 * @var RequestSerializerInterface
-   	 */
-   	private $serializer;
+     * @var RequestSerializerInterface
+     */
+    private $serializer;
 
     /**
      * @var ExporterInterface
@@ -103,7 +103,7 @@ class QueueExporter implements ExporterInterface
         try {
             $this->export($request->content, $request->state, $request->channel);
         } catch (Exception $e) {
-            // probably should log this somewhere
+            // @todo probably should log this somewhere
         }
 
         return $message;

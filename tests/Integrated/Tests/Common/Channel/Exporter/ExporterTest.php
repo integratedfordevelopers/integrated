@@ -172,7 +172,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getInstance()
     {
-       return new Exporter($this->registry, $this->resolver);
+        return new Exporter($this->registry, $this->resolver);
     }
 
     /**

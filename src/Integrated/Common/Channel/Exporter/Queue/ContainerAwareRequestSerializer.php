@@ -23,19 +23,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ContainerAwareRequestSerializer extends RequestSerializer
 {
     /**
-   	 * @var ContainerInterface
-   	 */
-   	private $container;
+     * @var ContainerInterface
+     */
+    private $container;
 
     /**
-     * @var string
+     * @var string[]
      */
-    private $service_serializer;
-
-    /**
-     * @var string
-     */
-    private $service_manager;
+    private $services;
 
     /**
      * Constructor.
@@ -44,13 +39,14 @@ class ContainerAwareRequestSerializer extends RequestSerializer
      * @param string             $serializer
      * @param string             $manager
      */
-   	public function __construct(ContainerInterface $container, $serializer, $manager)
-   	{
-   		$this->container = $container;
-
-        $this->service_serializer = $serializer;
-        $this->service_manager = $manager;
-   	}
+    public function __construct(ContainerInterface $container, $serializer, $manager)
+    {
+        $this->container = $container;
+        $this->services = [
+            'serializer' => $serializer,
+            'manager' => $manager
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -58,7 +54,7 @@ class ContainerAwareRequestSerializer extends RequestSerializer
     public function getSerializer()
     {
         if (null === $this->serializer) {
-            $this->serializer = $this->container->get($this->service_serializer);
+            $this->serializer = $this->container->get($this->services['serializer']);
         }
 
         return $this->serializer;
@@ -70,7 +66,7 @@ class ContainerAwareRequestSerializer extends RequestSerializer
     protected function getManager()
     {
         if (null === $this->manager) {
-            $this->manager = $this->container->get($this->service_manager);
+            $this->manager = $this->container->get($this->services['manager']);
         }
 
         return $this->manager;

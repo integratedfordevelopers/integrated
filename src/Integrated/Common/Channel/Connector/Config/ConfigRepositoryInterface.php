@@ -19,29 +19,29 @@ use Integrated\Common\Channel\ChannelInterface;
 interface ConfigRepositoryInterface
 {
     /**
-   	 * Finds the object by its identifier.
-   	 *
-   	 * @param string $id
-   	 *
-   	 * @return ConfigInterface
-   	 */
-   	public function find($id);
+     * Finds the object by its identifier.
+     *
+     * @param string $id
+     *
+     * @return ConfigInterface
+     */
+    public function find($id);
 
-   	/**
-   	 * Finds all the managed objects.
-   	 *
-   	 * @return ConfigInterface[]
-   	 */
-   	public function findAll();
+    /**
+     * Finds all the managed objects.
+     *
+     * @return ConfigInterface[]
+     */
+    public function findAll();
 
-   	/**
-   	 * Finds the objects by a set of criteria.
-   	 *
-   	 * @param array $criteria
-   	 *
-   	 * @return ConfigInterface[]
-   	 */
-   	public function findBy(array $criteria);
+    /**
+     * Finds the objects by a set of criteria.
+     *
+     * @param array $criteria
+     *
+     * @return ConfigInterface[]
+     */
+    public function findBy(array $criteria);
 
     /**
      * Find the object by the given adaptor.
@@ -61,10 +61,10 @@ interface ConfigRepositoryInterface
      */
     public function findByChannel($criteria);
 
-   	/**
-   	 * Returns the class name of the object
-   	 *
-   	 * @return string
-   	 */
-   	public function getClassName();
+    /**
+     * Returns the class name of the object
+     *
+     * @return string
+     */
+    public function getClassName();
 }
