@@ -13,7 +13,6 @@
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
-
     "require": {
         "php": ">=5.4",
         "symfony/symfony": "~2.7",
