@@ -12,10 +12,11 @@
         }
     ],
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=5.4",
         "symfony/symfony": "~2.7",
-        "integrated/library": "dev-feature/channels",
+        "integrated/library": "~0.3",
         "knplabs/knp-paginator-bundle": "~2.3",
         "braincrafted/bootstrap-bundle": ">=1.5"
     },
