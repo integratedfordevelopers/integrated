@@ -18,12 +18,14 @@ use Integrated\Common\Channel\Connector\Adapter\ManifestInterface;
  */
 class WebsiteManifest implements ManifestInterface
 {
+    const NAME = 'website';
+
     /**
      * {@inheritdoc}
      */
     public function getName()
     {
-        return 'website';
+        return self::NAME;
     }
 
     /**
