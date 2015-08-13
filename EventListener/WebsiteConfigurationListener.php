@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
+use Integrated\Bundle\WebsiteBundle\Connector\WebsiteManifest;
+use Integrated\Common\Channel\Connector\Config\ResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -35,13 +37,23 @@ class WebsiteConfigurationListener implements EventSubscriberInterface
     private $themeManager;
 
     /**
+     * @var ResolverInterface
+     */
+    private $resolver;
+
+    /**
      * @param ChannelContextInterface $context
      * @param ThemeManager $themeManager
+     * @param ResolverInterface $resolver
      */
-    public function __construct(ChannelContextInterface $context, ThemeManager $themeManager)
-    {
+    public function __construct(
+        ChannelContextInterface $context,
+        ThemeManager $themeManager,
+        ResolverInterface $resolver
+    ) {
         $this->context = $context;
         $this->themeManager = $themeManager;
+        $this->resolver = $resolver;
     }
 
     /**s
@@ -69,7 +81,16 @@ class WebsiteConfigurationListener implements EventSubscriberInterface
             return;
         }
 
-        $theme = 'default'; // @todo get theme from config
+        $theme = 'default';
+
+        if ($configs = $this->resolver->getConfigs($channel)) {
+            foreach ($configs as $config) {
+                if ($config->getAdapter() === WebsiteManifest::NAME) {
+                    $theme = $config->getOptions()->get('theme');
+                    break;
+                }
+            }
+        }
 
         $this->themeManager->setActiveTheme($theme);
     }
