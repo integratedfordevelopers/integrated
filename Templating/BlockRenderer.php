@@ -58,8 +58,6 @@ class BlockRenderer
         $this->themeManager = $themeManager;
         $this->repository = $dm->getRepository('IntegratedBlockBundle:Block\Block');
         $this->twig = $twig; // @todo templating service (INTEGRATED-443)
-
-        $this->themeManager->setActiveTheme('gim'); // @todo (INTEGRATED-385)
     }
 
     /**
