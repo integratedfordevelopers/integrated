@@ -26,7 +26,7 @@
         "symfony/validator": "~2.4",
         "doctrine/orm": "~2.4",
         "doctrine/mongodb": ">=1.0.0",
-        "doctrine/mongodb-odm": "1.0.0-BETA10@dev",
+        "doctrine/mongodb-odm": "1.0.0-BETA12@dev",
         "solarium/solarium": "3.2.0"
     },
     "require-dev": {
