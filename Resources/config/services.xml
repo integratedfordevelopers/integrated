@@ -8,6 +8,8 @@
 
         <parameter key="integrated_theme.templating.theme_manager.class">Integrated\Bundle\ThemeBundle\Templating\ThemeManager</parameter>
 
+        <parameter key="integrated_theme.form.type.theme_choice.class">Integrated\Bundle\ThemeBundle\Form\Type\ThemeChoiceType</parameter>
+
     </parameters>
 
     <services>
@@ -15,6 +17,11 @@
         <service id="integrated_theme.templating.theme_manager" class="%integrated_theme.templating.theme_manager.class%">
             <argument type="service" id="kernel" />
             <argument type="service" id="templating.name_parser" />
+        </service>
+
+        <service id="integrated_theme.form.type.theme_choice" class="%integrated_theme.form.type.theme_choice.class%">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <tag name="form.type" alias="integrated_theme_theme_choice" />
         </service>
 
     </services>
