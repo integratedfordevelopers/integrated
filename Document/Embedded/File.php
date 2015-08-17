@@ -11,15 +11,33 @@
 
 namespace Integrated\Bundle\StorageBundle\Document\Embedded;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Bundle\StorageBundle\Document\FileTrait;
-
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  *
  * @ODM\EmbeddedDocument
  */
-class File extends Content
+class File
 {
-    use FileTrait;
+    /**
+     * @var Storage
+     */
+    protected $file;
+
+    /**
+     * @return Storage
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param Storage $file
+     * @return $this
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+        return $this;
+    }
 }
