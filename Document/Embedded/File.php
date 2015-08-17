@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Document\Embedded;
 
-use Integrated\Bundle\StorageBundle\Document\File as DocumentFile;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\StorageBundle\Document\FileTrait;
 
 /**
@@ -19,7 +19,7 @@ use Integrated\Bundle\StorageBundle\Document\FileTrait;
  *
  * @ODM\EmbeddedDocument
  */
-class File extends DocumentFile
+class File extends Content
 {
     use FileTrait;
 }
