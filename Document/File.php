@@ -22,7 +22,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @author Johnny Borg <johnny@e-active.nl>
  *
  * @ODM\Document
- *
  * @Type\Document("File")
  */
 class File extends Content

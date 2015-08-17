@@ -7,6 +7,9 @@ namespace Integrated\Bundle\StorageBundle\Document;
  * This empty class is for concrete implementations in the future.
  *
  * @author Johnny Borg <johnny@e-active.nl>
+ *
+ * @ODM\Document
+ * @Type\Document("File")
  */
 class Image extends File
 {
