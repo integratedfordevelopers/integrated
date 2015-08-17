@@ -13,35 +13,18 @@ namespace Integrated\Bundle\WebsiteBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class PageType extends AbstractType
+class ConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('grids', 'collection', [
-            'type'         => 'integrated_page_grid_grid',
-            'allow_add'    => true,
-            'allow_delete' => true,
-            'prototype'    => false,
-            'required'     => false,
-        ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'attr' => ['id' => 'integrated_website_page'],
-        ]);
+        $builder->add('theme', 'integrated_theme_theme_choice');
     }
 
     /**
@@ -49,6 +32,6 @@ class PageType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_website_page';
+        return 'integrated_website_configuration';
     }
 }

@@ -24,16 +24,19 @@
         "doctrine/mongodb-odm-bundle": "~3.0",
         "integrated/content-bundle": "~0.3",
         "integrated/page-bundle": "~0.3",
+        "integrated/theme-bundle": "~0.3",
         "knplabs/knp-paginator-bundle": ">=2.4",
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
         "twbs/bootstrap": "3.*"
     },
+    "suggest": {
+        "integrated/channel-bundle": "Manage channel configuration"
+    },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\WebsiteBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\WebsiteBundle\\": ""
         }
     },
-    "target-dir": "Integrated/Bundle/WebsiteBundle",
     "extra": {
         "branch-alias": {
             "dev-develop": "0.9.9-dev"

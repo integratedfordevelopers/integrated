@@ -27,8 +27,6 @@ class PageController extends Controller
      */
     public function showAction(Page $page)
     {
-        $this->get('integrated_theme.templating.theme_manager')->setActiveTheme('gim'); // @todo INTEGRATED-385
-
         return $this->render($page->getLayout(), [
             'page' => $page,
         ]);
@@ -41,15 +39,12 @@ class PageController extends Controller
      */
     public function editAction(Request $request, Page $page)
     {
-        $this->get('integrated_theme.templating.theme_manager')->setActiveTheme('gim'); // @todo INTEGRATED-385
-
         // @todo security check (INTEGRATED-383)
 
         $form = $this->createEditForm($page);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $this->getDocumentManager()->flush();
 
             return $this->redirect($this->generateUrl('integrated_website_page_' . $page->getId()));
