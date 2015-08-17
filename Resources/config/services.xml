@@ -10,10 +10,6 @@
 
         <parameter key="integrated_website.twig.grid_extension.class">Integrated\Bundle\WebsiteBundle\Twig\Extension\GridExtension</parameter>
 
-        <parameter key="integrated_website.form.type.page.class">Integrated\Bundle\WebsiteBundle\Form\Type\PageType</parameter>
-
-        <parameter key="integrated_website.connector.website_adapter.class">Integrated\Bundle\WebsiteBundle\Connector\WebsiteAdapter</parameter>
-
     </parameters>
 
     <services>
@@ -27,15 +23,6 @@
             <argument type="service" id="twig.form.renderer" />
             <argument type="service" id="form.factory" />
             <tag name="twig.extension" />
-        </service>
-
-        <service id="integrated_website.form.type.page" class="%integrated_website.form.type.page.class%">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <tag name="form.type" alias="integrated_website_page" />
-        </service>
-
-        <service id="integrated_website.connector.website_adapter" class="%integrated_website.connector.website_adapter.class%">
-            <tag name="integrated_channel.connector" />
         </service>
 
     </services>

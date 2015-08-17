@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Connector;
 
+use Integrated\Common\Channel\Connector\Adapter\ManifestInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\ConfigurableInterface;
+use Integrated\Common\Channel\Connector\ConfigurationInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -20,24 +22,30 @@ use Integrated\Common\Channel\Connector\ConfigurableInterface;
 class WebsiteAdapter implements AdapterInterface, ConfigurableInterface
 {
     /**
-     * @var WebsiteManifest
+     * @var ManifestInterface
      */
     private $manifest;
 
     /**
-     * @var WebsiteConfiguration
+     * @var ConfigurationInterface
      */
     private $configuration;
+
+    /**
+     * @param ManifestInterface $manifest
+     * @param ConfigurationInterface $configuration
+     */
+    public function __construct(ManifestInterface $manifest, ConfigurationInterface $configuration)
+    {
+        $this->manifest = $manifest;
+        $this->configuration = $configuration;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function getManifest()
     {
-        if (null === $this->manifest) {
-            $this->manifest = new WebsiteManifest();
-        }
-
         return $this->manifest;
     }
 
@@ -46,10 +54,6 @@ class WebsiteAdapter implements AdapterInterface, ConfigurableInterface
      */
     public function getConfiguration()
     {
-        if (null === $this->configuration) {
-            $this->configuration = new WebsiteConfiguration();
-        }
-
         return $this->configuration;
     }
 }

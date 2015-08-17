@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_website.connector.website_manifest.class">Integrated\Bundle\WebsiteBundle\Connector\WebsiteManifest</parameter>
+        <parameter key="integrated_website.connector.website_configuration.class">Integrated\Bundle\WebsiteBundle\Connector\WebsiteConfiguration</parameter>
+        <parameter key="integrated_website.connector.website_adapter.class">Integrated\Bundle\WebsiteBundle\Connector\WebsiteAdapter</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_website.connector.website_manifest" class="%integrated_website.connector.website_manifest.class%" />
+
+        <service id="integrated_website.connector.website_configuration" class="%integrated_website.connector.website_adapter.class%" />
+
+        <service id="integrated_website.connector.website_adapter" class="%integrated_website.connector.website_adapter.class%">
+            <argument type="service" id="integrated_website.connector.website_manifest" />
+            <argument type="service" id="integrated_website.connector.website_configuration" />
+            <tag name="integrated_channel.connector" />
+        </service>
+
+    </services>
+</container>

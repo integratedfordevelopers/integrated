@@ -33,5 +33,7 @@ class IntegratedWebsiteExtension extends Extension
 
         $loader->load('services.xml');
         $loader->load('event_listeners.xml');
+        $loader->load('form.xml');
+        $loader->load('connector.xml');
     }
 }
