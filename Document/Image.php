@@ -2,6 +2,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Document;
 
+use Integrated\Common\Form\Mapping\Annotations as Type;
+
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
