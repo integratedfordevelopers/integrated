@@ -16,7 +16,7 @@
 
         <service id="integrated_website.connector.website_manifest" class="%integrated_website.connector.website_manifest.class%" />
 
-        <service id="integrated_website.connector.website_configuration" class="%integrated_website.connector.website_adapter.class%" />
+        <service id="integrated_website.connector.website_configuration" class="%integrated_website.connector.website_configuration.class%" />
 
         <service id="integrated_website.connector.website_adapter" class="%integrated_website.connector.website_adapter.class%">
             <argument type="service" id="integrated_website.connector.website_manifest" />
