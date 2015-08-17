@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Document\Embedded;
 
-use Integrated\Bundle\StorageBundle\Document\File;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
