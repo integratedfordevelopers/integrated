@@ -27,7 +27,8 @@
         "integrated/formtype-bundle": "~0.3",
         "integrated/solr-bundle": "~0.3",
         "integrated/user-bundle": "~0.2",
-        "integrated/website-bundle": "~0.3"
+        "integrated/website-bundle": "~0.3",
+        "integrated/workflow-bundle": "~0.3"
     },
     "scripts": {
         "post-install-cmd": [

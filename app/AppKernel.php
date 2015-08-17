@@ -35,6 +35,7 @@ class AppKernel extends Kernel
             new Integrated\Bundle\PageBundle\IntegratedPageBundle(),
             new Integrated\Bundle\BlockBundle\IntegratedBlockBundle(),
             new Integrated\Bundle\WebsiteBundle\IntegratedWebsiteBundle(),
+            new Integrated\Bundle\WorkflowBundle\IntegratedWorkflowBundle(),
 
             new AppBundle\AppBundle(),
         );
