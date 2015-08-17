@@ -23,7 +23,7 @@
         "components/jquery": "1.10.*",
         "integrated/library": "~0.3",
         "integrated/content-bundle": "~0.3",
-        "integrated/channel-bundle": "dev-master",
+        "integrated/channel-bundle": "~0.3",
         "integrated/formtype-bundle": "~0.3",
         "integrated/solr-bundle": "~0.3",
         "integrated/user-bundle": "~0.2",
@@ -69,7 +69,7 @@
         "bin-dir": "bin"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
+    "prefer-stable": false,
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
