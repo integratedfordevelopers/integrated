@@ -35,7 +35,9 @@ class WorkerCommand extends ContainerAwareCommand
     {
         $this
             ->setName('workflow:worker:run')
+
             ->addOption('batch', 'b', InputOption::VALUE_REQUIRED, 'The queue batch size to process in one worker run', 10)
+
             ->setDescription('Process the workflow queue messages')
             ->setHelp('
 The <info>%command.name%</info> .
@@ -52,7 +54,7 @@ The <info>%command.name%</info> .
     {
         try {
             foreach ($this->getQueue()->pull($input->getOption('batch')) as $message) {
-                $data = (array)$message->getPayload();
+                $data = (array) $message->getPayload();
 
                 $data['command'] = isset($data['command']) ? $data['command'] : null;
                 $data['args'] = isset($data['args']) ? $data['args'] : null;
@@ -100,7 +102,7 @@ The <info>%command.name%</info> .
     protected function executeCommand(InputInterface $input, OutputInterface $output, $command, array $arguments = [])
     {
         // run in a different process for isolation like memory issues.
-        $process = new Process('php app/console ' . $command . ' -e ' . $input->getOption('env') . ' ' . implode(' ', $arguments), getcwd(), null, null, null);
+        $process = new Process('php app/console ' . $command . ' -e ' . $input->getOption('env') . ' '  . implode(' ', $arguments), getcwd(), null, null, null);
         $process->run();
 
         $process->run(function ($type, $buffer) use ($output) {
@@ -119,4 +121,4 @@ The <info>%command.name%</info> .
     {
         return $this->getContainer()->get('integrated_queue.workflow');
     }
-} 
+}

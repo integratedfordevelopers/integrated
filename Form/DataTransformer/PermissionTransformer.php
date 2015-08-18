@@ -32,7 +32,7 @@ class PermissionTransformer implements DataTransformerInterface
     public function transform($value)
     {
         $data = [
-            'read' => [],
+            'read'  => [],
             'write' => []
         ];
 
@@ -80,7 +80,7 @@ class PermissionTransformer implements DataTransformerInterface
         }
 
         if (!$value['read'] instanceof Collection) {
-            $value['read'] = new ArrayCollection((array)$value['read']);
+            $value['read'] = new ArrayCollection((array) $value['read']);
         }
 
         foreach ($value['read'] as $group) {
@@ -97,7 +97,7 @@ class PermissionTransformer implements DataTransformerInterface
         }
 
         if (!$value['write'] instanceof Collection) {
-            $value['write'] = new ArrayCollection((array)$value['write']);
+            $value['write'] = new ArrayCollection((array) $value['write']);
         }
 
         foreach ($value['write'] as $group) {
@@ -111,4 +111,4 @@ class PermissionTransformer implements DataTransformerInterface
 
         return new ArrayCollection(array_values($permissions));
     }
-} 
+}

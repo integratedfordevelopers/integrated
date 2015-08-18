@@ -66,7 +66,11 @@ class StateType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('empty_data', function (FormInterface $form) { return new State(); });
+        $emptyData = function (FormInterface $form) {
+            return new State();
+        };
+
+        $resolver->setDefault('empty_data', $emptyData);
         $resolver->setDefault('data_class', 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State');
         $resolver->setDefault('transitions', 'data');
 
