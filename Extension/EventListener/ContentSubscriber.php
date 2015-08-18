@@ -13,6 +13,8 @@ namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
 use Doctrine\Common\Persistence\ObjectManager;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
+use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
@@ -50,7 +52,7 @@ class ContentSubscriber implements ContentSubscriberInterface
     /**
      * @var ObjectManager
      */
-    private $manager = null;
+    private $manager;
 
     /**
      * @var ResolverInterface
@@ -142,8 +144,9 @@ class ContentSubscriber implements ContentSubscriberInterface
 
         $event->setData($data);
 
-        /** @var Definition\State $state */
-
+        /**
+         * @var Definition\State $state
+         */
         $state = $data['state'];
 
         if ($content instanceof MetadataInterface) {
@@ -196,6 +199,40 @@ class ContentSubscriber implements ContentSubscriberInterface
 
         if ($data['assigned'] !== $state->getAssigned()) {
             $state->setAssigned($data['assigned']);
+
+
+            //sent mail when user changed
+
+            if ($data['assigned'] instanceof User) {
+                if ($data['assigned']->getRelation() instanceof Person) {
+                    $person = $data['assigned']->getRelation();
+
+                    if ($person->getEmail()) {
+                        $title = 'unknown';
+                        if (method_exists($content, "getTitle")) {
+                            $title = $content->getTitle();
+                        } elseif (method_exists($content, "getName")) {
+                            $title = $content->getName();
+                        }
+
+                        $message = \Swift_Message::newInstance()
+                            ->setSubject('[Integrated] "' . $title . '" has been assinged to you')
+                            ->setFrom('mailer@integratedforpublishers.com')
+                            ->setTo($person->getEmail())
+                            ->setBody(
+                                'An item has been assinged to you:
+
+Name: ' . $title . '
+E-mail: ' . $person->getEmail() . '',
+                                'text/plain'
+                            );
+                        $this->getContainer()->get('mailer')->send($message);
+
+                    }
+                }
+
+            }
+
         }
 
         if ($data['deadline'] !== $state->getDeadline()) {
