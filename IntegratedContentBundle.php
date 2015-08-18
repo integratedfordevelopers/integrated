@@ -38,12 +38,12 @@ class IntegratedContentBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new ExtensionRegistryBuilderPass());
-		$container->addCompilerPass(new FormFactoryEventDispatcherPass());
-		$container->addCompilerPass(new MetadataEventDispatcherPass());
+        $container->addCompilerPass(new FormFactoryEventDispatcherPass());
+        $container->addCompilerPass(new MetadataEventDispatcherPass());
         $container->addCompilerPass(new PriorityResolverBuilderPass());
         $container->addCompilerPass(new TemplatingPass());
         $container->addCompilerPass(new ThemeManagerPass());
-	}
+    }
 
     /**
      * {@inheritdoc}

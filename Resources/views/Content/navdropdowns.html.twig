@@ -1,10 +1,7 @@
 <ul class="nav" id="top_menu_for_desktop">
     <li class="dropdown dropdown-large for_mobile">
         <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
-
-        <ul class="dropdown-menu dropdown-menu-large row">
-            {{ render(controller('IntegratedContentBundle:ContentType:list', {'_format': 'ul'})) }}
-        </ul>
+        {{ knp_menu_render('content_type', {'template': 'IntegratedContentBundle:Menu:content_type.html.twig'}) }}
     </li>
 
     {% if assingedContent|length > 0 %}

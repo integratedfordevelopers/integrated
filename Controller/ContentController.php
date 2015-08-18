@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Symfony\Component\Filesystem\LockHandler;
 use Traversable;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -31,7 +33,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Filesystem\LockHandler;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -369,7 +370,7 @@ class ContentController extends Controller
             'document' => $content,
         ];
     }
-    
+
     /**
      * Create a new document
      *

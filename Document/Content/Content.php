@@ -78,7 +78,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * @var PublishTime
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime")
-     * @Type\Field(type="integrated_publishtime")
+     * @Type\Field(type="integrated_publish_time")
      */
     protected $publishTime;
 
@@ -383,17 +383,6 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     {
         $this->published = $published;
         return $this;
-    }
-
-    /**
-     * Get the disabled of the document
-     *
-     * @deprecated
-     * @return bool
-     */
-    public function getDisabled()
-    {
-        return $this->disabled;
     }
 
     /**
