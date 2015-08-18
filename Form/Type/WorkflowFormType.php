@@ -11,13 +11,10 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
-use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -25,37 +22,32 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class WorkflowFormType extends AbstractType
 {
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		$builder->add('comment', 'textarea', ['required' => false]);
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('comment', 'textarea', ['required' => false]);
 
-		$builder->add('state', 'workflow_state', ['workflow' => $options['workflow']]);
+        $builder->add('state', 'workflow_state', ['workflow' => $options['workflow']]);
 
-		$builder->add('assigned', 'user_choice', ['empty_value' => 'Not Assigned', 'empty_data'  => null, 'required' => false]);
-		$builder->add('deadline', 'integrated_datetime');
-	}
-
-    /**
-   	 * {@inheritdoc}
-   	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setRequired([
-			'workflow'
-		]);
-
-		$resolver->setAllowedTypes([
-			'workflow' => ['string', 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition']
-		]);
-	}
+        $builder->add('assigned', 'user_choice', ['empty_value' => 'Not Assigned', 'empty_data'  => null, 'required' => false]);
+        $builder->add('deadline', 'integrated_datetime');
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getName()
-	{
-		return 'integrated_workflow';
-	}
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('workflow');
+        $resolver->setAllowedTypes('workflow', ['string', 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'integrated_workflow';
+    }
 }

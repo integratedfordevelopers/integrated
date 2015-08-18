@@ -16,7 +16,6 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -25,158 +24,187 @@ use Symfony\Component\Form\FormEvents;
  */
 class WorkflowStateListener implements EventSubscriberInterface
 {
-	/**
-	 * @var Definition
-	 */
-	private $workflow;
-
-	/**
-	 * @param Definition $workflow
-	 */
-	public function __construct(Definition $workflow)
-	{
-		$this->workflow = $workflow;
-	}
+    /**
+     * @var Definition
+     */
+    private $workflow;
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public static function getSubscribedEvents()
-	{
-		return [
-			FormEvents::PRE_SET_DATA => [['onPrepareData', 10], ['onPrepareForm']],
-			FormEvents::SUBMIT       => 'onSubmit'
-		];
-	}
+     * @param Definition $workflow
+     */
+    public function __construct(Definition $workflow)
+    {
+        $this->workflow = $workflow;
+    }
 
-	/**
-	 * Validate the state
-	 *
-	 * @param FormEvent $event
-	 */
-	public function onPrepareData(FormEvent $event)
-	{
-		$event->setData($this->getState($event));
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            FormEvents::PRE_SET_DATA  => [['onPrepareData', 10], ['onPrepareForm']],
+            FormEvents::POST_SET_DATA => 'onPostData',
+            FormEvents::SUBMIT        => 'onSubmit'
+        ];
+    }
 
-	/**
-	 * Add extra field based on the state
-	 *
-	 * @param FormEvent $event
-	 */
-	public function onPrepareForm(FormEvent $event)
-	{
-		$form = $event->getForm();
+    /**
+     * Validate the state
+     *
+     * @param FormEvent $event
+     */
+    public function onPrepareData(FormEvent $event)
+    {
+        $event->setData($this->getState($event));
+    }
 
-		foreach ($form->all() as $child) {
-			$form->remove($child->getName()); // remove all the children
-		}
+    /**
+     * Add extra field based on the state
+     *
+     * @param FormEvent $event
+     */
+    public function onPrepareForm(FormEvent $event)
+    {
+        $form = $event->getForm();
 
-		$data = $event->getData();
+        foreach ($form->all() as $child) {
+            $form->remove($child->getName()); // remove all the children
+        }
 
-		if (!$data instanceof State) {
-			return; // no valid state found
-		}
+        $data = $event->getData();
 
-		$form->add('current', 'text', [
-			'read_only'   => true,
-			'mapped'      => false,
-			'data'        => $data->getName(),
-			'label'       => 'State'
-		]);
+        if (!$data instanceof State) {
+            return; // no valid state found
+        }
 
-		$choices = $this->getChoices($data);
+        $form->add('current', 'text', [
+            'read_only' => true,
+            'mapped' => false,
+            'data' => $data->getName(),
+            'label' => 'State'
+        ]);
 
-		if (!$choices) {
-			return; // seams there are no next states
-		}
+        $choices = $this->getChoices($data);
 
-		$form->add('next', 'choice', [
-			'mapped'      => false,
-			'label'       => 'Next state',
+        if (!$choices) {
+            return; // seams there are no next states
+        }
 
-			'choice_list' => new ObjectChoiceList($choices, 'name', [], null, 'id'),
-			'expanded'    => true,
+        $form->add('next', 'choice', [
+            'label' => 'Next state',
 
-			'empty_value' => 'Don\'t change',
-			'empty_data'  => $data,
-		]);
-	}
+            'choices' => $choices,
+            'choices_as_values' => true,
+            'choice_value' => 'id',
+            'choice_label' => 'name',
 
-	/**
-	 * Set the state
-	 *
-	 * @param FormEvent $event
-	 */
-	public function onSubmit(FormEvent $event)
-	{
-		$event->setData($this->getData($event));
-	}
+            'placeholder' => 'Don\'t change',
 
-	/**
-	 * Get the current state from the data
-	 *
-	 * @param FormEvent $event
-	 * @return null | State
-	 */
-	protected function getState(FormEvent $event)
-	{
-		$data = $event->getData();
+            'expanded' => true,
+            'mapped' => false,
+            'empty_data' => $data,
+        ]);
+    }
 
-		if ($data instanceof State && $this->workflow->hasState($data)) {
-			return $data;
-		}
+    /**
+     * Force the placeholder to be selected
+     *
+     * @param FormEvent $event
+     */
+    public function onPostData(FormEvent $event)
+    {
+        $form = $event->getForm();
 
-		// Data is not a state or is not a state in the given workflow. So fail silently and pick
-		// the default state instead.
+        if (!$form->has('next')) {
+            return;
+        }
 
-		return $this->workflow->getDefault();
-	}
+        $form = $form->get('next');
 
-	/**
-	 * Get the next state from the form
-	 *
-	 * @param FormEvent $event
-	 * @return null | State
-	 */
-	protected function getData(FormEvent $event)
-	{
-		$form = $event->getForm();
+        if (!$form->has('placeholder')) {
+            return;
+        }
 
-		if (!$form->has('next')) {
-			return null;
-		}
+        $form->get('placeholder')->setData(true);
+    }
 
-		$form = $form->get('next');
+    /**
+     * Set the state
+     *
+     * @param FormEvent $event
+     */
+    public function onSubmit(FormEvent $event)
+    {
+        if ($state = $this->getData($event)) {
+            $event->setData($state);
+        }
+    }
 
-		if (!$data = $form->getData()) {
-			$data = $form->getConfig()->getEmptyData();
-		}
+    /**
+     * Get the current state from the data
+     *
+     * @param FormEvent $event
+     * @return null | State
+     */
+    protected function getState(FormEvent $event)
+    {
+        $data = $event->getData();
 
-		return $data;
-	}
+        if ($data instanceof State && $this->workflow->hasState($data)) {
+            return $data;
+        }
 
-	/**
-	 * Get a array of the transitions for the given state.
-	 *
-	 * @param State $state
-	 * @return array
-	 */
-	protected function getChoices(State $state)
-	{
-		$choices = [];
+        // Data is not a state or is not a state in the given workflow. So fail silently and pick
+        // the default state instead.
 
-		foreach ($state->getTransitions() as $transition) {
-			if ($state === $transition) {
-				// This should not happen as the transitions should not contain the current state
-				// it self but it is possible so check for it anyways
+        return $this->workflow->getDefault();
+    }
 
-				continue;
-			}
+    /**
+     * Get the next state from the form
+     *
+     * @param FormEvent $event
+     * @return null | State
+     */
+    protected function getData(FormEvent $event)
+    {
+        $form = $event->getForm();
 
-			$choices[] = $transition;
-		}
+        if (!$form->has('next')) {
+            return null;
+        }
 
-		return $choices;
-	}
+        $form = $form->get('next');
+
+        if (!$data = $form->getData()) {
+            $data = $form->getConfig()->getEmptyData();
+        }
+
+        return $data;
+    }
+
+    /**
+     * Get a array of the transitions for the given state.
+     *
+     * @param State $state
+     * @return array
+     */
+    protected function getChoices(State $state)
+    {
+        $choices = [];
+
+        foreach ($state->getTransitions() as $transition) {
+            if ($state === $transition) {
+                // This should not happen as the transitions should not contain the current state
+                // it self but it is possible so check for it anyways
+
+                continue;
+            }
+
+            $choices[] = $transition;
+        }
+
+        return $choices;
+    }
 }

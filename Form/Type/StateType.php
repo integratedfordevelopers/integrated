@@ -12,13 +12,13 @@
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
-
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromDataListener;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -64,20 +64,17 @@ class StateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'empty_data' => function (FormInterface $form) {
-                return new State();
-            },
-            'data_class'  => 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State',
+        $emptyData = function (FormInterface $form) {
+            return new State();
+        };
 
-            'transitions' => 'data',
-        ]);
+        $resolver->setDefault('empty_data', $emptyData);
+        $resolver->setDefault('data_class', 'Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State');
+        $resolver->setDefault('transitions', 'data');
 
-        $resolver->setAllowedValues([
-            'transitions' => ['data', 'empty', 'none']
-        ]);
+        $resolver->setAllowedValues('transitions', ['data', 'empty', 'none']);
     }
 
     /**

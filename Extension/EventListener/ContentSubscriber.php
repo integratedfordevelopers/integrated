@@ -17,6 +17,7 @@ use Integrated\Bundle\UserBundle\Model\UserInterface;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
+use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Extension\Event\ContentEvent;
@@ -26,286 +27,321 @@ use Integrated\Common\Content\Extension\ExtensionInterface;
 use Integrated\Common\Content\MetadataInterface;
 
 use Integrated\Common\ContentType\ResolverInterface;
-use Integrated\Common\ContentType\Exception\ExceptionInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class ContentSubscriber implements ContentSubscriberInterface
 {
-	const CONTENT_CLASS = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Relation';
-
-	/**
-	 * @var ExtensionInterface
-	 */
-	private $extension;
-
-	/**
-	 * @var ContainerInterface
-	 */
-	private $container;
-
-	/**
-	 * @var ObjectManager
-	 */
-	private $manager = null;
-
-	/**
-	 * @var ResolverInterface
-	 */
-	private $resolver = null;
-
-	/**
-	 * @param ExtensionInterface $extension
-	 * @param ContainerInterface $container
-	 */
-	public function __construct(ExtensionInterface $extension, ContainerInterface $container)
-	{
-		$this->extension = $extension;
-		$this->container = $container;
-	}
+    const CONTENT_CLASS = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Relation';
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public static function getSubscribedEvents()
-	{
-		return [
-			Events::POST_READ   => 'read',
-			Events::POST_CREATE => 'update',
-			Events::PRE_UPDATE  => 'update',
-			Events::POST_DELETE => 'delete'
-		];
-	}
+     * @var ExtensionInterface
+     */
+    private $extension;
 
-	/**
-	 * @param ContentEvent $event
-	 */
-	public function read(ContentEvent $event)
-	{
-		$content = $event->getContent();
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
 
-		if (!$this->isSupported($content)) {
-			return;
-		}
+    /**
+     * @var ObjectManager
+     */
+    private $manager = null;
 
-		// check if there is a workflow state for this item else just set
-		// everything to empty.
+    /**
+     * @var ResolverInterface
+     */
+    private $resolver = null;
 
-		$data = [
-			'comment'  => '',
-			'state'    => null,
-			'assigned' => null,
-			'deadline' => null,
-		];
+    /**
+     * @param ExtensionInterface $extension
+     * @param ContainerInterface $container
+     */
+    public function __construct(ExtensionInterface $extension, ContainerInterface $container)
+    {
+        $this->extension = $extension;
+        $this->container = $container;
+    }
 
-		if ($state = $this->getState($content)) {
-			$data = [
-				'comment'  => '',
-				'state'    => $state->getState(),
-				'assigned' => $state->getAssignedType() == 'user' ? $state->getAssigned() : null,
-				'deadline' => $state->getDeadline(),
-			];
-		}
-
-		$event->setData($data);
-	}
-
-	/**
-	 * @param ContentEvent $event
-	 */
-	public function update(ContentEvent $event)
-	{
-		$content = $event->getContent();
-
-		if (!$this->isSupported($content)) {
-			return;
-		}
-
-		$data = $event->getData();
-
-		if (!$state = $this->getState($content)) {
-			$state = new State();
-			$state->setContent($content);
-
-			$this->getManager()->persist($state);
-		}
-
-		$persist = false;
-
-		$log = new Log();
-		$log->setUser($this->getUser());
-
-		if ($data['comment']) {
-			$log->setComment($data['comment']);
-
-			$persist = true;
-		}
-
-		// log the old settings if changed
-
-		if ($data['state'] !== $state->getState()) {
-			$log->setState($data['state']);
-			$state->setState($data['state']);
-
-			$persist = true;
-		}
-
-		if ($data['assigned'] !== $state->getAssigned()) {
-			$state->setAssigned($data['assigned']);
-		}
-
-		if ($data['deadline'] !== $state->getDeadline()) {
-			$log->setDeadline($data['deadline']);
-			$state->setDeadline($data['deadline']);
-
-			$persist = true;
-		}
-
-		if ($persist) {
-			$this->getManager()->persist($log);
-
-			$state->addLog($log);
-		}
-
-		$this->getManager()->flush($state);
-
-		// also add the current workflow state to the content metadata
-
-		if ($content instanceof MetadataInterface) {
-			$content->getMetadata()->set('workflow', $state->getState()->getWorkflow()->getId());
-			$content->getMetadata()->set('workflow_state', $state->getState()->getId());
-		}
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            Events::POST_READ   => 'read',
+            Events::PRE_CREATE  => 'preUpdate',
+            Events::POST_CREATE => 'postUpdate',
+            Events::PRE_UPDATE  => 'preUpdate',
+            Events::POST_UPDATE => 'postUpdate',
+            Events::POST_DELETE => 'delete'
+        ];
+    }
 
     /**
      * @param ContentEvent $event
      */
-	public function delete(ContentEvent $event)
-	{
-		$content = $event->getContent();
+    public function read(ContentEvent $event)
+    {
+        $content = $event->getContent();
 
-		if (!$this->isSupported($content)) {
-			return;
-		}
+        if (!$this->getWorkflow($content)) {
+            return;
+        }
 
-		if ($state = $this->getState($content)) {
-			$this->getManager()->remove($state);
-		}
+        // check if there is a workflow state for this item else just set
+        // everything to empty.
 
-		$event->setData(null);
+        $data = [
+            'comment'  => '',
+            'state'    => null,
+            'assigned' => null,
+            'deadline' => null,
+        ];
 
-		if ($content instanceof MetadataInterface) {
-			$content->getMetadata()->remove('workflow');
-			$content->getMetadata()->remove('workflow.state');
-		}
-	}
+        if ($state = $this->getState($content)) {
+            $data = [
+                'comment'  => '',
+                'state'    => $state->getState(),
+                'assigned' => $state->getAssignedType() == 'user' ? $state->getAssigned() : null,
+                'deadline' => $state->getDeadline(),
+            ];
+        }
 
-	/**
-	 * @param ContentInterface $content
-	 * @return State | null
-	 */
-	protected function getState(ContentInterface $content)
-	{
-		$repository = $this->getManager()->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
+        $event->setData($data);
+    }
 
-		if ($entity = $repository->findOneBy(['content' => $content])) {
-			return $entity;
-		}
+    /**
+     * @param ContentEvent $event
+     */
+    public function preUpdate(ContentEvent $event)
+    {
+        $content = $event->getContent();
 
-		return null;
-	}
+        if (!$workflow = $this->getWorkflow($content)) {
+            return;
+        }
 
-	/**
-	 * @return UserInterface | null
-	 */
-	protected function getUser()
-	{
-		if (!$this->container->has('security.context')) {
-			return null;
-		}
+        $data = is_array($data = $event->getData()) ? array_filter($data) : []; // filter out empty fields
+        $data = $data + [
+            'comment'  => '',
+            'state'    => $this->getState($content),
+            'assigned' => null,
+            'deadline' => null,
+        ];
 
-		if (null === $token = $this->container->get('security.context')->getToken()) {
-			return null;
-		}
+        // if there still is no state then load / force the default state
 
-		$user = $token->getUser();
+        if (!$data['state']) {
+            $data['state'] = $workflow->getDefault();
+        }
 
-		if (!$user instanceof UserInterface) {
-			return null;
-		}
+        $event->setData($data);
 
-		return $user;
-	}
+        /** @var Definition\State $state */
 
-	/**
-	 * @param $object
-	 * @return bool
-	 */
-	protected function isSupported($object)
-	{
-		if (!$object instanceof ContentInterface) {
-			return false;
-		}
+        $state = $data['state'];
 
-		// resolve the object to a content type and check if it got a workflow connected.
+        if ($content instanceof MetadataInterface) {
+            $content->getMetadata()->set('workflow', $state->getWorkflow()->getId());
+            $content->getMetadata()->set('workflow_state', $state->getId());
+        }
+
+        $content->setDisabled(!$state->isPublishable()); // hax: setDisabled is not in the interface
+    }
+
+    /**
+     * @param ContentEvent $event
+     */
+    public function postUpdate(ContentEvent $event)
+    {
+        $content = $event->getContent();
+
+        if (!$this->getWorkflow($content)) {
+            return;
+        }
+
+        $data = $event->getData();
+
+        if (!$state = $this->getState($content)) {
+            $state = new State();
+            $state->setContent($content);
+
+            $this->getManager()->persist($state);
+        }
+
+        $persist = false;
+
+        $log = new Log();
+        $log->setUser($this->getUser());
+
+        if ($data['comment']) {
+            $log->setComment($data['comment']);
+
+            $persist = true;
+        }
+
+        // log the old settings if changed
+
+        if ($data['state'] !== $state->getState()) {
+            $log->setState($data['state']);
+            $state->setState($data['state']);
+
+            $persist = true;
+        }
+
+        if ($data['assigned'] !== $state->getAssigned()) {
+            $state->setAssigned($data['assigned']);
+        }
+
+        if ($data['deadline'] !== $state->getDeadline()) {
+            $log->setDeadline($data['deadline']);
+            $state->setDeadline($data['deadline']);
+
+            $persist = true;
+        }
+
+        if ($persist) {
+            $this->getManager()->persist($log);
+
+            $state->addLog($log);
+        }
+
+        $this->getManager()->flush($state);
+    }
+
+    /**
+     * @param ContentEvent $event
+     */
+    public function delete(ContentEvent $event)
+    {
+        $content = $event->getContent();
+
+        if (!$this->getWorkflow($content)) {
+            return;
+        }
+
+        if ($state = $this->getState($content)) {
+            $this->getManager()->remove($state);
+        }
+
+        $event->setData(null);
+
+        if ($content instanceof MetadataInterface) {
+            $content->getMetadata()->remove('workflow');
+            $content->getMetadata()->remove('workflow_state');
+        }
+    }
+
+    /**
+     * @param ContentInterface $content
+     * @return State | null
+     */
+    protected function getState(ContentInterface $content)
+    {
+        $repository = $this->getManager()->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
+
+        if ($entity = $repository->findOneBy(['content' => $content])) {
+            return $entity;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return UserInterface | null
+     */
+    protected function getUser()
+    {
+        if (!$this->container->has('security.context')) {
+            return null;
+        }
+
+        if (null === $token = $this->container->get('security.context')->getToken()) {
+            return null;
+        }
+
+        $user = $token->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    /**
+     * @param object $object
+     * @return Definition | null
+     */
+    protected function getWorkflow($object)
+    {
+        if (!$object instanceof ContentInterface) {
+            return null;
+        }
+
+        // resolve the object to a content type and check if it got a workflow connected.
 
         $type = $object->getContentType();
 
         if (!$this->getResolver()->hasType($type)) {
-            return false;
+            return null;
         }
 
         $type = $this->getResolver()->getType($type);
 
-        if ($type->getOption('workflow')) {
-            return true;
+        if ($workflow = $type->getOption('workflow')) {
+            $repository = $this->getManager()->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
+
+            if ($entity = $repository->find($workflow)) {
+                return $entity;
+            }
         }
 
-		return false;
-	}
+        return null;
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getExtension()
-	{
-		return $this->extension;
-	}
+     * {@inheritdoc}
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
 
-	/**
-	 * @return ContainerInterface
-	 */
-	protected function getContainer()
-	{
-		return $this->container;
-	}
+    /**
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return $this->container;
+    }
 
-	/**
-	 * @return ObjectManager
-	 */
-	protected function getManager()
-	{
-		if ($this->manager === null) {
-			$this->manager = $this->getContainer()->get('integrated_workflow.extension.doctrine.object_manager');
-		}
+    /**
+     * @return ObjectManager
+     */
+    protected function getManager()
+    {
+        if ($this->manager === null) {
+            $this->manager = $this->getContainer()->get('integrated_workflow.extension.doctrine.object_manager');
+        }
 
-		return $this->manager;
-	}
+        return $this->manager;
+    }
 
-	/**
-	 * @return ResolverInterface
-	 */
-	protected function getResolver()
-	{
-		if ($this->resolver === null) {
-			$this->resolver = $this->getContainer()->get('integrated.form.resolver'); // hax
-		}
+    /**
+     * @return ResolverInterface
+     */
+    protected function getResolver()
+    {
+        if ($this->resolver === null) {
+            $this->resolver = $this->getContainer()->get('integrated.form.resolver'); // hax
+        }
 
-		return $this->resolver;
-	}
+        return $this->resolver;
+    }
 }

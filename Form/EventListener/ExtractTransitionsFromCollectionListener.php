@@ -80,19 +80,19 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
 			}
 
 			$child->add('transitions', 'choice', [
-				'required'    => false,
+				'required' => false,
 
 				// The transitions will be "manually" mapped because potential new States that are
 				// created in the SUBMIT events will not be available, as a State object, until the
 				// POST_SUBMIT event. So it is not possible to create a complete and correct list
 				// of States in the execution of the PRE_* events to feed to a view transformer.
 
-				'mapped'      => false,
+				'mapped'   => false,
 
-				'choice_list' => $this->getChoiceList($data, $child->getName()),
+				'choices'  => $this->getChoicesFiltered($data, $child->getName()),
 
-				'multiple'    => true,
-				'expanded'    => false,
+				'multiple' => true,
+				'expanded' => false,
 			]);
 		}
 	}
@@ -247,14 +247,14 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
 	 * @param array $choices
 	 * @param int $current
 	 *
-	 * @return SimpleChoiceList
+	 * @return array
 	 */
-	protected function getChoiceList(array $choices, $current)
+	protected function getChoicesFiltered(array $choices, $current)
 	{
 		if (isset($choices[$current])) {
 			unset($choices[$current]);
 		}
 
-		return new SimpleChoiceList($choices);
+        return $choices;
 	}
 } 

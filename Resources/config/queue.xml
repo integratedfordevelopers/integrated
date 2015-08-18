@@ -14,12 +14,11 @@
 
 		<!-- the next service should be totally dynamically created -->
 
-		<service id="integrated_queue.workflow"
-				 class="%integrated_queue.queue.class%"
-				 factory-service="integrated_queue.factory"
-				 factory-method="getQueue">
-			<argument type="string">workflow-worker</argument> <!-- config option -->
-		</service>
+        <service id="integrated_queue.workflow" class="%integrated_queue.queue.class%">
+            <factory service="integrated_queue.factory" method="getQueue" />
+
+            <argument type="string">workflow-worker</argument> <!-- config option -->
+        </service>
 
     </services>
 

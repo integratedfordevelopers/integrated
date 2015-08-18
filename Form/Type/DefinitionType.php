@@ -11,16 +11,16 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
-use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\DefinitionTransformer;
+use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
+use Integrated\Common\Form\DataTransformer\ValueToChoiceTransformer;
+
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
-
 use Symfony\Component\Form\FormBuilderInterface;
+
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -29,84 +29,90 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 class DefinitionType extends AbstractType
 {
-	/**
-	 * @var ObjectRepository
-	 */
-	private $repository;
-
-	/**
-	 * @var ChoiceListInterface
-	 */
-	private $choiceList;
-
-	/**
-	 * @param ObjectRepository $repository
-	 */
-	public function __construct(ObjectRepository $repository)
-	{
-		$this->repository = $repository;
-	}
+    /**
+     * @var ObjectRepository
+     */
+    private $repository;
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		if ($options['multiple']) {
-			$builder->addViewTransformer(new CollectionToArrayTransformer(), true);
-		}
-
-		if ($options['data_type'] != 'object') {
-			$builder->addModelTransformer(new DefinitionTransformer());
-		}
-	}
-
-    /**
-   	 * {@inheritdoc}
-   	 */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+     * @param ObjectRepository $repository
+     */
+    public function __construct(ObjectRepository $repository)
     {
-		$resolver->setDefaults([
-			'empty_value' => 'None',
-			'empty_data'  => null,
-			'required'    => false,
-
-			'choices'     => null,
-			'choice_list' => function(Options $options) { return $this->getChoiceList(); },
-			'multiple'    => false,
-			'expanded'    => false,
-
-			'data_type'   => 'object'
-		]);
-
-		$resolver->addAllowedValues(['data_type' => ['scalar', 'object']]);
+        $this->repository = $repository;
     }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getParent()
-	{
-		return 'choice';
-	}
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['choice_data'] == 'scalar') {
+            if ($options['multiple']) {
+                // entity adds the CollectionToArrayTransformer and that is fine but we need
+                // to insert a transformer just after that one. That how ever is not possible
+                // so the CollectionToArrayTransformer is first removed and then later added
+                // again after our transformer is added.
+
+                $transformers = [];
+
+                foreach ($builder->getViewTransformers() as $transformer) {
+                    if (!$transformer instanceof CollectionToArrayTransformer) {
+                        $transformers[] = $transformer;
+                    }
+                }
+
+                $builder->resetViewTransformers();
+
+                foreach ($transformers as $transformer) {
+                    $builder->addViewTransformer($transformer);
+                }
+
+                $builder->addViewTransformer(new ValuesToChoicesTransformer($options['choice_list']), true);
+                $builder->addViewTransformer(new CollectionToArrayTransformer(), true);
+            } else {
+                $builder->addViewTransformer(new ValueToChoiceTransformer($options['choice_list']), true);
+            }
+        }
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $classNormalizer = function (Options $options) {
+            return $this->repository->getClassName(); // force the class to always be the same as the repository
+        };
+
+        $resolver->setNormalizer('class', $classNormalizer);
+        $resolver->setDefault('class', $this->repository->getClassName());
+
+        $resolver->setDefault('choice_data', 'object');
+        $resolver->setDefault('choice_value', 'id');
+        $resolver->setDefault('choice_label', 'name');
+
+        $resolver->addAllowedValues('choice_data', ['object', 'scalar']);
+
+        $resolver->setDefault('empty_value', 'None');
+        $resolver->setDefault('empty_data', null);
+
+        $resolver->setDefault('required', false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'entity';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
-        return 'integrated_workflow_definition_type';
+        return 'integrated_workflow_definition_choice';
     }
-
-	/**
-	 * @return ChoiceListInterface
-	 */
-	public function getChoiceList()
-	{
-		if ($this->choiceList === null) {
-			$this->choiceList = new ObjectChoiceList($this->repository->findAll(), 'name', [], null, 'id');
-		}
-
-		return $this->choiceList;
-	}
 }
