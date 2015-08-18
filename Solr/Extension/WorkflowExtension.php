@@ -187,5 +187,4 @@ class WorkflowExtension implements TypeExtensionInterface
 
         return null;
     }
-
 }

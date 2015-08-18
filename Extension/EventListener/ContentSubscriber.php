@@ -52,7 +52,7 @@ class ContentSubscriber implements ContentSubscriberInterface
     /**
      * @var ObjectManager
      */
-    private $manager = null;
+    private $manager;
 
     /**
      * @var ResolverInterface
@@ -144,8 +144,9 @@ class ContentSubscriber implements ContentSubscriberInterface
 
         $event->setData($data);
 
-        /** @var Definition\State $state */
-
+        /**
+         * @var Definition\State $state
+         */
         $state = $data['state'];
 
         if ($content instanceof MetadataInterface) {
@@ -203,12 +204,10 @@ class ContentSubscriber implements ContentSubscriberInterface
             //sent mail when user changed
 
             if ($data['assigned'] instanceof User) {
-
                 if ($data['assigned']->getRelation() instanceof Person) {
-
                     $person = $data['assigned']->getRelation();
-                    if ($person->getEmail()) {
 
+                    if ($person->getEmail()) {
                         $title = 'unknown';
                         if (method_exists($content, "getTitle")) {
                             $title = $content->getTitle();

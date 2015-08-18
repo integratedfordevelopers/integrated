@@ -30,231 +30,231 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class ExtractTransitionsFromCollectionListener implements EventSubscriberInterface
 {
-	/**
-	 * @var PropertyAccessorInterface
-	 */
-	private $accessor;
-
-	/**
-	 * Creates a new transition from collection extractor listener
-	 *
-	 * @param PropertyAccessorInterface $accessor
-	 */
-	public function __construct(PropertyAccessorInterface $accessor = null)
-	{
-		$this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
-	}
+    /**
+     * @var PropertyAccessorInterface
+     */
+    private $accessor;
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public static function getSubscribedEvents()
-	{
-		return [
-			FormEvents::PRE_SET_DATA  => 'onPrepare',
-			FormEvents::PRE_SUBMIT    => 'onPrepare',
+     * Creates a new transition from collection extractor listener
+     *
+     * @param PropertyAccessorInterface $accessor
+     */
+    public function __construct(PropertyAccessorInterface $accessor = null)
+    {
+        $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
+    }
 
-			FormEvents::POST_SET_DATA => 'onSetData',
-			FormEvents::POST_SUBMIT   => 'onGetData'
-		];
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            FormEvents::PRE_SET_DATA => 'onPrepare',
+            FormEvents::PRE_SUBMIT => 'onPrepare',
 
-	/**
-	 * Add the transitions field to children of the collection
-	 *
-	 * @param FormEvent $event
-	 */
-	public function onPrepare(FormEvent $event)
-	{
-		$form = $event->getForm();
+            FormEvents::POST_SET_DATA => 'onSetData',
+            FormEvents::POST_SUBMIT => 'onGetData'
+        ];
+    }
 
-		if (!$form->count()) {
-			return;
-		}
+    /**
+     * Add the transitions field to children of the collection
+     *
+     * @param FormEvent $event
+     */
+    public function onPrepare(FormEvent $event)
+    {
+        $form = $event->getForm();
 
-		$data = $this->getChoices($event->getData());
+        if (!$form->count()) {
+            return;
+        }
 
-		foreach ($form->all() as $child) {
-			if ($child->has('transactions')) {
-				$child->remove('transactions');
-			}
+        $data = $this->getChoices($event->getData());
 
-			$child->add('transitions', 'choice', [
-				'required' => false,
+        foreach ($form->all() as $child) {
+            if ($child->has('transactions')) {
+                $child->remove('transactions');
+            }
 
-				// The transitions will be "manually" mapped because potential new States that are
-				// created in the SUBMIT events will not be available, as a State object, until the
-				// POST_SUBMIT event. So it is not possible to create a complete and correct list
-				// of States in the execution of the PRE_* events to feed to a view transformer.
+            $child->add('transitions', 'choice', [
+                'required' => false,
 
-				'mapped'   => false,
+                // The transitions will be "manually" mapped because potential new States that are
+                // created in the SUBMIT events will not be available, as a State object, until the
+                // POST_SUBMIT event. So it is not possible to create a complete and correct list
+                // of States in the execution of the PRE_* events to feed to a view transformer.
 
-				'choices'  => $this->getChoicesFiltered($data, $child->getName()),
+                'mapped' => false,
 
-				'multiple' => true,
-				'expanded' => false,
-			]);
-		}
-	}
+                'choices' => $this->getChoicesFiltered($data, $child->getName()),
 
-	/**
-	 * Set the view data based on the current state transitions.
-	 *
-	 * This will convert the transitions states to a list of numbers that represent the
-	 * index of the state in the collection. This will be done for all the children in
-	 * the collection.
-	 *
-	 * @param FormEvent $event
-	 */
-	public function onSetData(FormEvent $event)
-	{
-		$form = $event->getForm();
+                'multiple' => true,
+                'expanded' => false,
+            ]);
+        }
+    }
 
-		if (!$form->count()) {
-			return;
-		}
+    /**
+     * Set the view data based on the current state transitions.
+     *
+     * This will convert the transitions states to a list of numbers that represent the
+     * index of the state in the collection. This will be done for all the children in
+     * the collection.
+     *
+     * @param FormEvent $event
+     */
+    public function onSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
 
-		// first build the index then set the data on the children. This can not be done in
-		// one foreach run as the index need to be complete before converting to the view data.
+        if (!$form->count()) {
+            return;
+        }
 
-		$index = [];
+        // first build the index then set the data on the children. This can not be done in
+        // one foreach run as the index need to be complete before converting to the view data.
 
-		foreach ($form->all() as $child) {
-			$data = $child->getData();
+        $index = [];
 
-			if ($data instanceof State) {
-				$index[spl_object_hash($data)] = $child->getName();
-			}
-		}
+        foreach ($form->all() as $child) {
+            $data = $child->getData();
 
-		foreach ($form->all() as $child) {
-			$data = $child->getData();
+            if ($data instanceof State) {
+                $index[spl_object_hash($data)] = $child->getName();
+            }
+        }
 
-			if (!$data instanceof State) {
-				continue;
-			}
+        foreach ($form->all() as $child) {
+            $data = $child->getData();
 
-			if (!$child->has('transitions')) {
-				continue;
-			}
+            if (!$data instanceof State) {
+                continue;
+            }
 
-			// the index got the child keys where every State resides in the collection. So now we
-			// convert the States in the transitions to the child index with in the collection. That
-			// way we can also keep track of new States since those don't have a id yet.
+            if (!$child->has('transitions')) {
+                continue;
+            }
 
-			$selection = [];
+            // the index got the child keys where every State resides in the collection. So now we
+            // convert the States in the transitions to the child index with in the collection. That
+            // way we can also keep track of new States since those don't have a id yet.
 
-			foreach ($data->getTransitions() as $data) {
-				$hash = spl_object_hash($data);
+            $selection = [];
 
-				if (isset($index[$hash])) {
-					$selection[] = $index[$hash];
-				}
-			}
+            foreach ($data->getTransitions() as $data) {
+                $hash = spl_object_hash($data);
 
-			$child->get('transitions')->setData($selection);
-		}
-	}
+                if (isset($index[$hash])) {
+                    $selection[] = $index[$hash];
+                }
+            }
 
-	/**
-	 * Set the state transitions in based on the view data.
-	 *
-	 * This will convert the view data to a set of states to set as the transitions. This
-	 * will be done for all the children in the collection.
-	 *
-	 * @param FormEvent $event
-	 */
-	public function onGetData(FormEvent $event)
-	{
-		$form = $event->getForm();
+            $child->get('transitions')->setData($selection);
+        }
+    }
 
-		if (!$form->count()) {
-			return;
-		}
+    /**
+     * Set the state transitions in based on the view data.
+     *
+     * This will convert the view data to a set of states to set as the transitions. This
+     * will be done for all the children in the collection.
+     *
+     * @param FormEvent $event
+     */
+    public function onGetData(FormEvent $event)
+    {
+        $form = $event->getForm();
 
-		// Build a index with all the State data. This could also be done in one foreach
-		// loop but to slim down on the method calls and instanceof check it is done ones
-		// before converting the view data.
+        if (!$form->count()) {
+            return;
+        }
 
-		$index = [];
+        // Build a index with all the State data. This could also be done in one foreach
+        // loop but to slim down on the method calls and instanceof check it is done ones
+        // before converting the view data.
 
-		foreach ($form->all() as $child) {
-			$data = $child->getData();
+        $index = [];
 
-			if ($data instanceof State) {
-				$index[$child->getName()] = $data;
-			}
-		}
+        foreach ($form->all() as $child) {
+            $data = $child->getData();
 
-		foreach ($form->all() as $child) {
-			$data = $child->getData();
+            if ($data instanceof State) {
+                $index[$child->getName()] = $data;
+            }
+        }
 
-			if (!$data instanceof State) {
-				continue;
-			}
+        foreach ($form->all() as $child) {
+            $data = $child->getData();
 
-			if (!$child->has('transitions')) {
-				continue;
-			}
+            if (!$data instanceof State) {
+                continue;
+            }
 
-			$data->setTransitions(new ArrayCollection()); // clear the current transitions
+            if (!$child->has('transitions')) {
+                continue;
+            }
 
-			// The values in the view represent the index numbers of the State in de index, which
-			// correspond directly to the index of the child in the collection.
+            $data->setTransitions(new ArrayCollection()); // clear the current transitions
 
-			foreach ($child->get('transitions')->getData() as $value) {
-				if (isset($index[$value])) {
-					$data->addTransition($index[$value]);
-				}
-			}
-		}
-	}
+            // The values in the view represent the index numbers of the State in de index, which
+            // correspond directly to the index of the child in the collection.
 
-	/**
-	 * Get a array with choices based on the given data.
-	 *
-	 * The values of the choices are the same as the array keys from the data array and
-	 * the labels is the name field extracted from the data.
-	 *
-	 * @param array $data
-	 *
-	 * @return array
-	 */
-	protected function getChoices(array $data)
-	{
-		$choices = [];
+            foreach ($child->get('transitions')->getData() as $value) {
+                if (isset($index[$value])) {
+                    $data->addTransition($index[$value]);
+                }
+            }
+        }
+    }
 
-		// The data could be a array of objects if its converted from the pre_set_data and
-		// a array of scalars when its converted from the pre_submit. Also the name value
-		// is not guaranteed to be present so a property accessor is used to be on the
-		// safe side.
+    /**
+     * Get a array with choices based on the given data.
+     *
+     * The values of the choices are the same as the array keys from the data array and
+     * the labels is the name field extracted from the data.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function getChoices(array $data)
+    {
+        $choices = [];
 
-		foreach ($data as $index => $value) {
-			$name = $this->accessor->getValue($value, is_object($value) ? 'name' : '[name]');
-			$name = trim($name);
+        // The data could be a array of objects if its converted from the pre_set_data and
+        // a array of scalars when its converted from the pre_submit. Also the name value
+        // is not guaranteed to be present so a property accessor is used to be on the
+        // safe side.
 
-			if ($name) {
-				$choices[$index] = $name;
-			}
-		}
+        foreach ($data as $index => $value) {
+            $name = $this->accessor->getValue($value, is_object($value) ? 'name' : '[name]');
+            $name = trim($name);
 
-		return $choices;
-	}
-
-	/**
-	 * Build a choice list based on the given choice but filter out the current state
-	 *
-	 * @param array $choices
-	 * @param int $current
-	 *
-	 * @return array
-	 */
-	protected function getChoicesFiltered(array $choices, $current)
-	{
-		if (isset($choices[$current])) {
-			unset($choices[$current]);
-		}
+            if ($name) {
+                $choices[$index] = $name;
+            }
+        }
 
         return $choices;
-	}
+    }
+
+    /**
+     * Build a choice list based on the given choice but filter out the current state
+     *
+     * @param array $choices
+     * @param int $current
+     *
+     * @return array
+     */
+    protected function getChoicesFiltered(array $choices, $current)
+    {
+        if (isset($choices[$current])) {
+            unset($choices[$current]);
+        }
+
+        return $choices;
+    }
 } 

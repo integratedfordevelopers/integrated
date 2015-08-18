@@ -24,96 +24,96 @@ use Symfony\Component\Form\FormEvents;
  */
 class WorkflowStateListener implements EventSubscriberInterface
 {
-	/**
-	 * @var Definition
-	 */
-	private $workflow;
-
-	/**
-	 * @param Definition $workflow
-	 */
-	public function __construct(Definition $workflow)
-	{
-		$this->workflow = $workflow;
-	}
+    /**
+     * @var Definition
+     */
+    private $workflow;
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public static function getSubscribedEvents()
-	{
-		return [
-			FormEvents::PRE_SET_DATA  => [['onPrepareData', 10], ['onPrepareForm']],
+     * @param Definition $workflow
+     */
+    public function __construct(Definition $workflow)
+    {
+        $this->workflow = $workflow;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            FormEvents::PRE_SET_DATA => [['onPrepareData', 10], ['onPrepareForm']],
             FormEvents::POST_SET_DATA => 'onPostData',
-			FormEvents::SUBMIT        => 'onSubmit'
-		];
-	}
+            FormEvents::SUBMIT => 'onSubmit'
+        ];
+    }
 
-	/**
-	 * Validate the state
-	 *
-	 * @param FormEvent $event
-	 */
-	public function onPrepareData(FormEvent $event)
-	{
-		$event->setData($this->getState($event));
-	}
+    /**
+     * Validate the state
+     *
+     * @param FormEvent $event
+     */
+    public function onPrepareData(FormEvent $event)
+    {
+        $event->setData($this->getState($event));
+    }
 
-	/**
-	 * Add extra field based on the state
-	 *
-	 * @param FormEvent $event
-	 */
-	public function onPrepareForm(FormEvent $event)
-	{
-		$form = $event->getForm();
+    /**
+     * Add extra field based on the state
+     *
+     * @param FormEvent $event
+     */
+    public function onPrepareForm(FormEvent $event)
+    {
+        $form = $event->getForm();
 
-		foreach ($form->all() as $child) {
-			$form->remove($child->getName()); // remove all the children
-		}
+        foreach ($form->all() as $child) {
+            $form->remove($child->getName()); // remove all the children
+        }
 
-		$data = $event->getData();
+        $data = $event->getData();
 
-		if (!$data instanceof State) {
-			return; // no valid state found
-		}
+        if (!$data instanceof State) {
+            return; // no valid state found
+        }
 
-		$form->add('current', 'text', [
-			'read_only' => true,
-			'mapped' => false,
-			'data' => $data->getName(),
-			'label' => 'State'
-		]);
+        $form->add('current', 'text', [
+            'read_only' => true,
+            'mapped' => false,
+            'data' => $data->getName(),
+            'label' => 'State'
+        ]);
 
-		$choices = $this->getChoices($data);
+        $choices = $this->getChoices($data);
 
-		if (!$choices) {
-			return; // seams there are no next states
-		}
+        if (!$choices) {
+            return; // seams there are no next states
+        }
 
-		$form->add('next', 'choice', [
-			'label' => 'Next state',
+        $form->add('next', 'choice', [
+            'label' => 'Next state',
 
-			'choices' => $choices,
+            'choices' => $choices,
             'choices_as_values' => true,
             'choice_value' => 'id',
             'choice_label' => 'name',
 
             'placeholder' => 'Don\'t change',
 
-			'expanded' => true,
+            'expanded' => true,
             'mapped' => false,
-			'empty_data' => $data,
-		]);
-	}
+            'empty_data' => $data,
+        ]);
+    }
 
     /**
-   	 * Force the placeholder to be selected
-   	 *
-   	 * @param FormEvent $event
-   	 */
-   	public function onPostData(FormEvent $event)
-   	{
+     * Force the placeholder to be selected
+     *
+     * @param FormEvent $event
+     */
+    public function onPostData(FormEvent $event)
+    {
         $form = $event->getForm();
 
         if (!$form->has('next')) {
@@ -127,84 +127,84 @@ class WorkflowStateListener implements EventSubscriberInterface
         }
 
         $form->get('placeholder')->setData(true);
-   	}
+    }
 
-	/**
-	 * Set the state
-	 *
-	 * @param FormEvent $event
-	 */
-	public function onSubmit(FormEvent $event)
-	{
+    /**
+     * Set the state
+     *
+     * @param FormEvent $event
+     */
+    public function onSubmit(FormEvent $event)
+    {
         if ($state = $this->getData($event)) {
             $event->setData($state);
         }
-	}
+    }
 
-	/**
-	 * Get the current state from the data
-	 *
-	 * @param FormEvent $event
-	 * @return null | State
-	 */
-	protected function getState(FormEvent $event)
-	{
-		$data = $event->getData();
+    /**
+     * Get the current state from the data
+     *
+     * @param FormEvent $event
+     * @return null | State
+     */
+    protected function getState(FormEvent $event)
+    {
+        $data = $event->getData();
 
-		if ($data instanceof State && $this->workflow->hasState($data)) {
-			return $data;
-		}
+        if ($data instanceof State && $this->workflow->hasState($data)) {
+            return $data;
+        }
 
-		// Data is not a state or is not a state in the given workflow. So fail silently and pick
-		// the default state instead.
+        // Data is not a state or is not a state in the given workflow. So fail silently and pick
+        // the default state instead.
 
-		return $this->workflow->getDefault();
-	}
+        return $this->workflow->getDefault();
+    }
 
-	/**
-	 * Get the next state from the form
-	 *
-	 * @param FormEvent $event
-	 * @return null | State
-	 */
-	protected function getData(FormEvent $event)
-	{
-		$form = $event->getForm();
+    /**
+     * Get the next state from the form
+     *
+     * @param FormEvent $event
+     * @return null | State
+     */
+    protected function getData(FormEvent $event)
+    {
+        $form = $event->getForm();
 
-		if (!$form->has('next')) {
+        if (!$form->has('next')) {
             return null;
-		}
+        }
 
-		$form = $form->get('next');
+        $form = $form->get('next');
 
-		if (!$data = $form->getData()) {
-			$data = $form->getConfig()->getEmptyData();
-		}
+        if (!$data = $form->getData()) {
+            $data = $form->getConfig()->getEmptyData();
+        }
 
-		return $data;
-	}
+        return $data;
+    }
 
-	/**
-	 * Get a array of the transitions for the given state.
-	 *
-	 * @param State $state
-	 * @return array
-	 */
-	protected function getChoices(State $state)
-	{
-		$choices = [];
+    /**
+     * Get a array of the transitions for the given state.
+     *
+     * @param State $state
+     * @return array
+     */
+    protected function getChoices(State $state)
+    {
+        $choices = [];
 
-		foreach ($state->getTransitions() as $transition) {
-			if ($state === $transition) {
-				// This should not happen as the transitions should not contain the current state
-				// it self but it is possible so check for it anyways
+        foreach ($state->getTransitions() as $transition) {
+            if ($state === $transition) {
+                // This should not happen as the transitions should not contain the current state
+                // it self but it is possible so check for it anyways
 
-				continue;
-			}
+                continue;
+            }
 
-			$choices[] = $transition;
-		}
+            $choices[] = $transition;
+        }
 
-		return $choices;
-	}
+        return $choices;
+    }
 }
