@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Symfony\Component\Filesystem\LockHandler;
 use Traversable;
 
