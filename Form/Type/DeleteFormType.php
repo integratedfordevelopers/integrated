@@ -26,4 +26,4 @@ class DeleteFormType extends AbstractType
 	{
 		return 'integrated_user_delete';
 	}
-} 
+}

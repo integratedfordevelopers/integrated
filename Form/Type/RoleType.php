@@ -13,103 +13,64 @@ namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
 
-use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
-
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
-
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class RoleType extends AbstractType
 {
-	/**
-	 * @var RoleManagerInterface
-	 */
-	private $manager;
-
-	/**
-	 * @var ChoiceListInterface
-	 */
-	private $choiceList;
-
-	/**
-	 * @param RoleManagerInterface $manager
-	 */
-	public function __construct(RoleManagerInterface $manager)
-	{
-		$this->manager = $manager;
-	}
-
-	/**
-	 * @inheritdoc
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		if ($options['multiple']) {
-			$builder->addViewTransformer(new CollectionToArrayTransformer(), true);
-		}
-	}
-
-	/**
-     * @inheritdoc
+    /**
+     * @var RoleManagerInterface
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    private $manager;
+
+    /**
+     * Constructor.
+     *
+     * @param RoleManagerInterface $manager
+     */
+    public function __construct(RoleManagerInterface $manager)
     {
-		$resolver->setDefaults(array(
-			'choices'     => null,
-			'choice_list' => function(Options $options) { return $this->getChoiceList(); },
-			'multiple'    => true,
-			'expanded'    => true
-		));
+        $this->manager = $manager;
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getParent()
-	{
-		return 'choice';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('class', $this->manager->getClassName());
 
-	/**
-     * @inheritdoc
+        $resolver->setDefault('choice_value', 'id');
+        $resolver->setDefault('choice_label', 'role');
+
+        $resolver->setDefault('multiple', true);
+        $resolver->setDefault('expanded', true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'entity';
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getName()
     {
-        return 'integrated_user_role_type';
+        return 'integrated_user_role_choice';
     }
 
-	/**
-	 * @return ChoiceListInterface
-	 */
-	public function getChoiceList()
-	{
-		if ($this->choiceList === null) {
-			$list = [];
-
-			foreach ($this->getManager()->findAll() as $item) {
-				if (!$item->isHidden()) {
-					$list[] = $item;
-				}
-			}
-
-			$this->choiceList = new ObjectChoiceList($list, 'role', [], null, 'id');
-		}
-
-		return $this->choiceList;
-	}
-
-	/**
-	 * @return RoleManagerInterface
-	 */
-	public function getManager()
-	{
-		return $this->manager;
-	}
+    /**
+     * @return RoleManagerInterface
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
 }

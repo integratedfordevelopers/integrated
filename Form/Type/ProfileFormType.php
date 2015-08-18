@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Util\SecureRandomInterface;
@@ -40,164 +40,168 @@ use ReflectionClass;
  */
 class ProfileFormType extends AbstractType
 {
-	/**
-	 * @var UserManagerInterface
-	 */
-	private $manager;
+    /**
+     * @var UserManagerInterface
+     */
+    private $manager;
 
-	/**
-	 * @var SecureRandomInterface
-	 */
-	private $generator;
+    /**
+     * @var SecureRandomInterface
+     */
+    private $generator;
 
-	/**
-	 * @var EncoderFactoryInterface
-	 */
-	private $encoderFactory;
+    /**
+     * @var EncoderFactoryInterface
+     */
+    private $encoderFactory;
 
-	/**
-	 * @param UserManagerInterface $manager
-	 * @param SecureRandomInterface $generator
-	 * @param EncoderFactoryInterface $encoder
-	 */
-	public function __construct(UserManagerInterface $manager, SecureRandomInterface $generator, EncoderFactoryInterface $encoder)
-	{
-		$this->manager = $manager;
+    /**
+     * Constructor.
+     *
+     * @param UserManagerInterface $manager
+     * @param SecureRandomInterface $generator
+     * @param EncoderFactoryInterface $encoder
+     */
+    public function __construct(UserManagerInterface $manager, SecureRandomInterface $generator, EncoderFactoryInterface $encoder)
+    {
+        $this->manager = $manager;
 
-		$this->generator = $generator;
-		$this->encoderFactory = $encoder;
-	}
+        $this->generator = $generator;
+        $this->encoderFactory = $encoder;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		if ($options['optional']) {
-			$builder->add('enabled', 'checkbox', [
-				'mapped' => false,
-				'required' => false,
-				'label' => 'Enable login'
-			]);
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if ($options['optional']) {
+            $builder->add('enabled', 'checkbox', [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Enable login'
+            ]);
 
-			// this has to be a event listener as data will not be mapped to this
-			// field, even if mapped is set to true, when the field value is false.
+            // this has to be a event listener as data will not be mapped to this
+            // field, even if mapped is set to true, when the field value is false.
 
-			$builder->addEventSubscriber(new UserProfileOptionalListener());
-		}
+            $builder->addEventSubscriber(new UserProfileOptionalListener());
+        }
 
-		$builder->add('username', 'text', [
-			'constraints' => [
-				new NotBlank(),
-				new Length(['min' => 3])
-			],
+        $builder->add('username', 'text', [
+            'constraints' => [
+                new NotBlank(),
+                new Length(['min' => 3])
+            ],
             'attr' => ['autocomplete' => 'off']
-		]);
+        ]);
 
-		$builder->add('password', 'password', [
-			'mapped' => false,
-			'constraints' => [
-				new NotBlank(),
-				new Length(['min' => 6])
-			],
+        $builder->add('password', 'password', [
+            'mapped' => false,
+            'constraints' => [
+                new NotBlank(),
+                new Length(['min' => 6])
+            ],
             'attr' => ['autocomplete' => 'off']
-		]);
+        ]);
 
-		if (!$options['optional']) {
-			$builder->add('enabled', 'checkbox', [
-				'required' => false,
-				'label' => 'Enable login'
-			]);
-		}
+        if (!$options['optional']) {
+            $builder->add('enabled', 'checkbox', [
+                'required' => false,
+                'label' => 'Enable login'
+            ]);
+        }
 
-		$builder->add('groups', 'user_group_choice');
+        $builder->add('groups', 'user_group_choice', [
+            'multiple' => true,
+            'expanded' => true
+        ]);
 
-		$builder->addEventSubscriber(new UserProfilePasswordListener($this->generator, $this->encoderFactory));
-		$builder->addEventSubscriber(new UserProfileExtensionListener('integrated.extension.user'));
+        $builder->addEventSubscriber(new UserProfilePasswordListener($this->generator, $this->encoderFactory));
+        $builder->addEventSubscriber(new UserProfileExtensionListener('integrated.extension.user'));
 
-		if ($options['optional']) {
-			$builder->setDataMapper(new UserMapper());
-		}
-	}
+        if ($options['optional']) {
+            $builder->setDataMapper(new UserMapper());
+        }
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setDefaults(array(
-			'optional'    => false, // everything can be left empty if enabled is not checked
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $emptyData = function (Options $options, $previous) {
+            if (!$options['optional']) {
+                return $this->getManager()->create(); // if not optional then it should always return a user
+            }
 
-			'data_class'  => $this->getManager()->getClassName(),
-			'empty_data'  => function (Options $options, $previous) {
-				if (!$options['optional']) {
-					return $this->getManager()->create(); // if not optional then it should always return a user
-				}
+            return function(FormInterface $form) {
+                if ($form->has('enabled') && $form->get('enabled')->getData() == false) {
+                    return null;
+                }
 
-				return function(FormInterface $form) {
-					if ($form->has('enabled') && $form->get('enabled')->getData() == false) {
-						return null;
-					}
+                return $this->getManager()->create();
+            };
+        };
 
-					return $this->getManager()->create();
-				};
-			},
+        $validationGroups = function (Options $options, $previous) {
+            if (!$options['optional']) {
+                return $previous; // does not need all the processing
+            }
 
-			'constraints' => new UniqueUser($this->manager),
-		));
+            // validation should be disabled when enabled is not checked
 
-		$resolver->setAllowedTypes([
-			'optional'    => 'bool'
-		]);
+            return function (FormInterface $form) use ($previous) {
+                $resolve = function (FormInterface $form) use ($previous) {
+                    if ($form->has('enabled') && $form->get('enabled')->getData() == false) {
+                        return false;
+                    }
 
-		$resolver->setDefaults([
-			'validation_groups' => function (Options $options, $previous) {
-				if (!$options['optional']) {
-					return $previous; // does not need all the processing
-				}
+                    return $previous;
+                };
 
-				// validation should be disabled when enabled is not checked
+                if (null !== ($groups = $resolve($form))) {
+                    return $groups;
+                }
 
-				return function (FormInterface $form) use ($previous) {
-					$resolve = function (FormInterface $form) use ($previous) {
-						if ($form->has('enabled') && $form->get('enabled')->getData() == false) {
-							return false;
-						}
+                // yeah now we are going to cheat as we don't want to rewrite what is already
+                // made by someone else.
 
-						return $previous;
-					};
+                $reflection = new ReflectionClass('Symfony\Component\Form\Extension\Validator\Constraints\FormValidator');
 
-					if (null !== ($groups = $resolve($form))) {
-						return $groups;
-					}
+                $method = $reflection->getMethod('getValidationGroups');
+                $method->setAccessible(true);
 
-					// yeah now we are going to cheat as we don't want to rewrite what is already
-					// made by someone else.
+                return $method->invoke(null, $form->getParent());
+            };
+        };
 
- 					$reflection = new ReflectionClass('Symfony\Component\Form\Extension\Validator\Constraints\FormValidator');
+        $resolver->setDefault('data_class', $this->getManager()->getClassName());
+        $resolver->setDefault('empty_data', $emptyData);
 
-					$method = $reflection->getMethod('getValidationGroups');
-					$method->setAccessible(true);
+        $resolver->setDefault('constraints', new UniqueUser($this->manager));
+        $resolver->setDefault('validation_groups', $validationGroups);
 
-					return $method->invoke(null, $form->getParent());
-				};
-			}
-		]);
-	}
+        // everything can be left empty if enabled is not checked
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'integrated_user_profile_form';
-	}
+        $resolver->setDefault('optional', false);
+        $resolver->setAllowedTypes('optional', ['bool']);
 
-	/**
-	 * @return UserManagerInterface
-	 */
-	public function getManager()
-	{
-		return $this->manager;
-	}
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'integrated_user_profile_form';
+    }
+
+    /**
+     * @return UserManagerInterface
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
 }

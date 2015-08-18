@@ -13,15 +13,15 @@ namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
 
+use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
+use Integrated\Common\Form\DataTransformer\ValueToChoiceTransformer;
+
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceListInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
-
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -34,11 +34,6 @@ class GroupType extends AbstractType
 	private $manager;
 
 	/**
-	 * @var ChoiceListInterface
-	 */
-	private $choiceList;
-
-	/**
 	 * @param GroupManagerInterface $manager
 	 */
 	public function __construct(GroupManagerInterface $manager)
@@ -46,56 +41,69 @@ class GroupType extends AbstractType
 		$this->manager = $manager;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		if ($options['multiple']) {
-			$builder->addViewTransformer(new CollectionToArrayTransformer(), true);
-		}
-	}
-
-	/**
-     * @inheritdoc
+    /**
+     * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$resolver->setDefaults(array(
-			'choices'     => null,
-			'choice_list' => function(Options $options) { return $this->getChoiceList(); },
-			'multiple'    => true,
-			'expanded'    => true
-		));
+        if ($options['choice_data'] == 'scalar') {
+            if ($options['multiple']) {
+                // entity adds the CollectionToArrayTransformer and that is fine but we need
+                // to insert a transformer just after that one. That how ever is not possible
+                // so the CollectionToArrayTransformer is first removed and then later added
+                // again after our transformer is added.
+
+                $transformers = [];
+
+                foreach ($builder->getViewTransformers() as $transformer) {
+                    if (!$transformer instanceof CollectionToArrayTransformer) {
+                        $transformers[] = $transformer;
+                    }
+                }
+
+                $builder->resetViewTransformers();
+
+                foreach($transformers as $transformer) {
+                    $builder->addViewTransformer($transformer);
+                }
+
+                $builder->addViewTransformer(new ValuesToChoicesTransformer($options['choice_list']), true);
+                $builder->addViewTransformer(new CollectionToArrayTransformer(), true);
+            } else {
+                $builder->addViewTransformer(new ValueToChoiceTransformer($options['choice_list']), true);
+            }
+        }
     }
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('class', $this->manager->getClassName());
+
+        $resolver->setDefault('choice_data', 'object');
+        $resolver->setDefault('choice_value', 'id');
+        $resolver->setDefault('choice_label', 'name');
+
+        $resolver->addAllowedValues('choice_data', ['object', 'scalar']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
 	public function getParent()
 	{
-		return 'choice';
+		return 'entity';
 	}
 
-	/**
-     * @inheritdoc
+    /**
+     * {@inheritdoc}
      */
     public function getName()
     {
-        return 'integrated_user_group_type';
+        return 'integrated_user_group_choice';
     }
-
-	/**
-	 * @return ChoiceListInterface
-	 */
-	public function getChoiceList()
-	{
-		if ($this->choiceList === null) {
-			$this->choiceList = new ObjectChoiceList($this->getManager()->findAll(), 'name', [], null, 'id');
-		}
-
-		return $this->choiceList;
-	}
 
 	/**
 	 * @return GroupManagerInterface
