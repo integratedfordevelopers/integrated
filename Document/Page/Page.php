@@ -18,6 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 
 /**
@@ -26,7 +27,8 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
  * @ODM\Document(collection="page")
- * @MongoDBUnique(fields="path", message="This value should be unique.")
+ * @todo find a way to fix unique validation (INTEGRATED-474)
+ * @ MongoDBUnique(fields="path", message="This value should be unique.")
  */
 class Page
 {
@@ -53,7 +55,6 @@ class Page
     /**
      * @var string
      * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
      * @Assert\NotBlank
      */
     protected $path;
@@ -94,6 +95,12 @@ class Page
      * @ODM\Boolean
      */
     protected $locked = false;
+
+    /**
+     * @var Channel
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
+     */
+    protected $channel;
 
     /**
      */
@@ -313,6 +320,24 @@ class Page
     public function setLocked($locked)
     {
         $this->locked = (bool) $locked;
+        return $this;
+    }
+
+    /**
+     * @return Channel
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+
+    /**
+     * @param Channel $channel
+     * @return $this
+     */
+    public function setChannel(Channel $channel)
+    {
+        $this->channel = $channel;
         return $this;
     }
 }

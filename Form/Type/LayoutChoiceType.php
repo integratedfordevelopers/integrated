@@ -13,6 +13,7 @@ namespace Integrated\Bundle\PageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\Options;
 
 use Integrated\Bundle\PageBundle\Locator\LayoutLocator;
 
@@ -40,16 +41,18 @@ class LayoutChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => $this->getChoices(),
+            'theme'   => 'default',
+            'choices' => function(Options $options) { return $this->getChoices($options['theme']); },
         ]);
     }
 
     /**
+     * @param string $theme
      * @return array
      */
-    protected function getChoices()
+    protected function getChoices($theme)
     {
-        $layout = $this->locator->getLayouts();
+        $layout = $this->locator->getLayouts($theme);
 
         return array_combine($layout, $layout);
     }

@@ -17,6 +17,7 @@ use Symfony\Component\Finder\Finder;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 /**
@@ -33,7 +34,10 @@ class PageController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $channel = $this->getSelectedChannel();
+
         $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedPageBundle:Page\Page');
+        $builder->field('channel.$id')->equals($channel->getId());
 
         $pagination = $this->getPaginator()->paginate(
             $builder,
@@ -43,6 +47,8 @@ class PageController extends Controller
 
         return [
             'pages' => $pagination,
+            'channels' => $this->getChannels(),
+            'selectedChannel' => $channel,
         ];
     }
 
@@ -61,6 +67,10 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $channel = $this->getSelectedChannel();
+
+            $page->setChannel($channel);
+
             $dm = $this->getDocumentManager();
 
             $dm->persist($page);
@@ -70,7 +80,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page created');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_index'));
+            return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
         }
 
         return [
@@ -92,13 +102,15 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $channel = $this->getSelectedChannel();
+
             $this->getDocumentManager()->flush();
 
             $this->clearRoutingCache();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_index'));
+            return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
         }
 
         return [
@@ -125,6 +137,8 @@ class PageController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+            $channel = $this->getSelectedChannel();
+
             $dm = $this->getDocumentManager();
 
             $dm->remove($page);
@@ -134,7 +148,7 @@ class PageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page deleted');
 
-            return $this->redirect($this->generateUrl('integrated_page_page_index'));
+            return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
         }
 
         return [
@@ -156,6 +170,7 @@ class PageController extends Controller
             [
                 'action' => $this->generateUrl('integrated_page_page_new'),
                 'method' => 'POST',
+                'theme'  => $this->getTheme($this->getSelectedChannel()),
             ]
         );
 
@@ -177,6 +192,7 @@ class PageController extends Controller
             [
                 'action' => $this->generateUrl('integrated_page_page_edit', ['id' => $page->getId()]),
                 'method' => 'PUT',
+                'theme'  => $this->getTheme($page->getChannel()),
             ]
         );
 
@@ -218,6 +234,74 @@ class PageController extends Controller
     }
 
     /**
+     * @return array
+     */
+    protected function getChannels()
+    {
+        $channels = [];
+
+        foreach ($this->getChannelManager()->findAll() as $channel) {
+            if ($configs = $this->getConfigResolver()->getConfigs($channel)) {
+                foreach ($configs as $config) {
+                    if ($config->getAdapter() === 'website') {
+                        $channels[] = $channel;
+                    }
+                }
+            }
+        }
+
+        return $channels;
+    }
+
+    /**
+     * @return \Integrated\Common\Channel\ChannelInterface
+     *
+     * @throws \RuntimeException
+     */
+    protected function getSelectedChannel()
+    {
+        $request = $this->get('request_stack')->getCurrentRequest();
+
+        if (!$request instanceof Request) {
+            throw new \RuntimeException('Unable to get the request');
+        }
+
+        $channel = $this->getChannelManager()->find($request->query->get('channel'));
+
+        if (!$channel instanceof Channel) {
+            $channels = $this->getChannels();
+            $channel  = reset($channels);
+        }
+
+        if (!$channel instanceof Channel) {
+            throw new \RuntimeException('Please configure at least one channel');
+        }
+
+        return $channel;
+    }
+
+    /**
+     * @param Channel $channel
+     *
+     * @return string
+     */
+    protected function getTheme(Channel $channel)
+    {
+        $theme = 'default';
+
+        if ($configs = $this->getConfigResolver()->getConfigs($channel)) {
+            foreach ($configs as $config) {
+                if ($config->getAdapter() === 'website') {
+                    $theme = $config->getOptions()->get('theme');
+                    break;
+                }
+            }
+        }
+
+        return $theme;
+    }
+
+    /**
      * @return \Doctrine\ODM\MongoDB\DocumentManager
      */
     protected function getDocumentManager()
@@ -231,5 +315,21 @@ class PageController extends Controller
     protected function getPaginator()
     {
         return $this->get('knp_paginator');
+    }
+
+    /**
+     * @return \Integrated\Common\Channel\Connector\Config\ResolverInterface
+     */
+    protected function getConfigResolver()
+    {
+        return $this->get('integrated_channel.config.resolver');
+    }
+
+    /**
+     * @return \Integrated\Common\Content\Channel\ChannelManagerInterface
+     */
+    protected function getChannelManager()
+    {
+        return $this->get('integrated_content.channel.manager');
     }
 }

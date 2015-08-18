@@ -39,24 +39,28 @@ class LayoutLocator
     }
 
     /**
+     * @param string $theme
+     *
      * @return array
      */
-    public function getLayouts()
+    public function getLayouts($theme)
     {
         if (null === $this->layouts) {
             $this->layouts = [];
 
-            foreach ($this->themeManager->getThemes() as $id => $theme) {
-                foreach ($theme->getPaths() as $resource) {
-                    $path = $this->themeManager->locateResource($resource);
+            foreach ($this->themeManager->getThemes() as $id => $theme2) {
+                if ($theme === $id) {
+                    foreach ($theme2->getPaths() as $resource) {
+                        $path = $this->themeManager->locateResource($resource);
 
-                    if (is_dir($path)) {
-                        $finder = new Finder();
-                        $finder->files()->in($path)->depth(0)->name('*.html.twig');
+                        if (is_dir($path)) {
+                            $finder = new Finder();
+                            $finder->files()->in($path)->depth(0)->name('*.html.twig');
 
-                        /** @var \Symfony\Component\Finder\SplFileInfo $file */
-                        foreach ($finder as $file) {
-                            $this->layouts[] = $resource . '/' . $file->getRelativePathname();
+                            /** @var \Symfony\Component\Finder\SplFileInfo $file */
+                            foreach ($finder as $file) {
+                                $this->layouts[] = $resource . '/' . $file->getRelativePathname();
+                            }
                         }
                     }
                 }
