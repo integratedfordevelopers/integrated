@@ -914,11 +914,11 @@ class ContentController extends Controller
         $query = $client->createSelect();
 
         if ($user = $this->getUser()) {
-            $userid = $user->getId();
+            $userId = $user->getId();
 
             $query
                 ->createFilterQuery('workflow_assigned_id')
-                ->setQuery('facet_workflow_assigned_id:' . $userid . '');
+                ->setQuery('facet_workflow_assigned_id:' . $userId . '');
 
             $result = $client->select($query);
 
