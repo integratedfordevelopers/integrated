@@ -424,7 +424,13 @@ class ContentController extends Controller
                 }
 
                 if ($request->getRequestFormat() == 'iframe.html') {
-                    return $this->render('IntegratedContentBundle:Content:saved.iframe.html.twig',['id' => $content->getId(), 'relation' => $request->get('relation')]);
+                    return $this->render(
+                        'IntegratedContentBundle:Content:saved.iframe.html.twig',
+                        array(
+                            'id' => $content->getId(),
+                            'relation' => $request->get('relation')
+                        )
+                    );
                 }
 
                 // Set flash message
