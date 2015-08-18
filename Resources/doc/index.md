@@ -20,4 +20,5 @@ This bundle can be installed following these steps:
     }
 
 ## Next steps ##
+* [Configuration](configuration.md)
 * [Relations](relations.md)
