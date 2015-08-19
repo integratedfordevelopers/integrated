@@ -13,6 +13,8 @@ namespace Integrated\Bundle\MenuBundle\Document;
 
 use Knp\Menu\MenuItem as KnpMenuItem;
 
+use Doctrine\Common\Collections\Collection;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -28,5 +30,17 @@ class MenuItem extends KnpMenuItem
         }
 
         parent::addChild($child, $options);
+    }
+
+    /**
+     * @return \Knp\Menu\ItemInterface[]
+     */
+    public function getChildren()
+    {
+        if ($this->children instanceof Collection) {
+            return $this->children->toArray();
+        }
+
+        return $this->children;
     }
 }

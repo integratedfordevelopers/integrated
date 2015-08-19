@@ -44,7 +44,11 @@ class DatabaseMenuProvider implements MenuProviderInterface
      */
     public function get($name, array $options = [])
     {
-        return $this->repository->find($name);
+        if (!isset($this->menus[$name])) {
+            $this->menus[$name] = $this->repository->find($name);
+        }
+
+        return $this->menus[$name];
     }
 
     /**
@@ -52,6 +56,6 @@ class DatabaseMenuProvider implements MenuProviderInterface
      */
     public function has($name, array $options = [])
     {
-        return true;
+        return null !== $this->get($name, $options);
     }
 }
