@@ -16,6 +16,7 @@ use Integrated\Bundle\StorageBundle\Storage\Database\DatabaseInterface;
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
 use Integrated\Bundle\StorageBundle\Storage\Manager;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
+use Integrated\Bundle\StorageBundle\Storage\Reflection\StorageReflection;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -46,6 +47,11 @@ class MigrateCommand extends Command
     protected $storage;
 
     /**
+     * @var array
+     */
+    protected $reflectionClasses = [];
+
+    /**
      * @param DatabaseInterface $database
      * @param Manager $storage
      */
@@ -68,15 +74,20 @@ class MigrateCommand extends Command
             ->setHelp('The <info>%command.name%</info> migrates all the old style notation files into the new notation.')
             ->setDefinition([
                 new InputArgument(
-                    'path', InputArgument::REQUIRED,
+                    'path',
+                    InputArgument::REQUIRED,
                     'A local path where (might have a directroy structure) the files can be resolved'
                 ),
                 new InputOption(
-                    'delete', 'd', InputOption::VALUE_OPTIONAL,
+                    'delete',
+                    'd',
+                    InputOption::VALUE_OPTIONAL,
                     'Delete the local file after placing it in the storage'
                 ),
                 new InputOption(
-                    'class', 'c', InputOption::VALUE_OPTIONAL,
+                    'class',
+                    'c',
+                    InputOption::VALUE_OPTIONAL,
                     'The class to convert, additionally a space separated list may be given.'
                 )
             ]);
@@ -126,59 +137,51 @@ class MigrateCommand extends Command
                 }
             }
 
-            // Removed fields
-            foreach (['fileExtension', 'slug'] as $key) {
-                unset($row[$key]);
-            }
-
             // Only perform the action for the listed classes
             if (in_array($row['class'], $classes)) {
-                // Make a search for a file
-                $finder = Finder::create()
-                    ->files()
-                    ->in($input->getArgument('path'))
-                    ->name(sprintf('%s*', $row['_id']));
+                // Modify the class name for the ORM
+                $row['class'] = self::ClassName;
+            }
 
-                if (1 == $finder->count()) {
-                    // Configure the iterator for the first entry
-                    $iterator = $finder->getIterator();
-                    $iterator->rewind();
-                    /** @var \Symfony\Component\Finder\SplFileInfo $file */
-                    $file = $iterator->current();
+            foreach ($this->getReflectionClass($row['class'])->getStorageProperties() as $property) {
+                // Fix the one -> many property now foreach and so on
+                if ($filename = $property->getFileId($row)) {
+                    if ($file = $this->getFile($input->getArgument('path'), $filename, $row['_id'])) {
 
-                    // Make a storage object
-                    $storage = $this->storage->write(
-                        new MemoryReader(
-                            $file->getContents(),
-                            new Metadata(
-                                $file->getExtension(),
-                                mime_content_type($file->getPathname())
+                        // Make a storage object
+                        $storage = $this->storage->write(
+                            new MemoryReader(
+                                $file->getContents(),
+                                new Metadata(
+                                    $file->getExtension(),
+                                    mime_content_type($file->getPathname())
+                                )
                             )
-                        )
-                    );
+                        );
 
-                    // Assign new stuff
-                    $row['file'] = (new StorageTranslation($storage))->toArray();
-                    $row['class'] = self::ClassName;
+                        $row[$property->getPropertyName()] = (new StorageTranslation($storage))->toArray();
 
-                    // Check for a delete
-                    if ($input->getOption('delete')) {
-                        @unlink($file->getPathname());
+                        // Check for a delete
+                        if ($input->getOption('delete')) {
+                            @unlink($file->getPathname());
+                        }
+                    } else {
+                        var_dump($property);
+                        var_dump($row);
+
+                        // The only valid count is one, what else?
+                        throw new \LogicException(
+                            sprintf(
+                                'The file %s was found zero times, the ID must be unique in the given path and exist.',
+                                $filename
+                            )
+                        );
                     }
-                } else {
-                    // The only valid count is one, what else?
-                    throw new \LogicException(
-                        sprintf(
-                            'The file %s was found %d times, the ID must be unique in the given path and exist.',
-                            $row['_id'],
-                            $finder->count()
-                        )
-                    );
                 }
             }
 
             // Write it down, some where
-            $this->database->saveRow($row);
+//            $this->database->saveRow($row);
 
             // Update the barry progress
             $progress->setProgress(++$current);
@@ -195,5 +198,52 @@ class MigrateCommand extends Command
                 self::ClassName
             );
         }
+    }
+
+    /**
+     * @param $class
+     * @return StorageReflection
+     */
+    protected function getReflectionClass($class)
+    {
+        if (isset($this->reflectionClasses[$class])) {
+            return $this->reflectionClasses[$class];
+        }
+
+        return $this->reflectionClasses[$class] = new StorageReflection($class);
+    }
+
+    /**
+     * @param $path
+     * @param $fileId
+     * @param $documentId
+     * @return bool|\Symfony\Component\Finder\SplFileInfo
+     */
+    protected function getFile($path, $fileId, $documentId)
+    {
+        // Make a search for a file
+        $finder = Finder::create()
+            ->files()
+            ->in($path)
+            ->name(sprintf('%s*', $fileId));
+
+        if (1 == $finder->count()) {
+            // Configure the iterator for the first entry
+            $iterator = $finder->getIterator();
+            $iterator->rewind();
+            return $iterator->current();
+        } elseif (1 < $finder->count()) {
+            // This can not be done
+            throw new \LogicException(
+                sprintf(
+                    'The file %s (for document: %s) has been found %d times on the given path.',
+                    $fileId,
+                    $documentId,
+                    $finder->count()
+                )
+            );
+        }
+
+        return false;
     }
 }
