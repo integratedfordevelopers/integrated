@@ -370,7 +370,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
             $published = $this->publishTime->isPublished();
         }
 
-        return ($published && $this->published);
+        return ($published && !$this->disabled);
     }
 
     /**
@@ -490,15 +490,6 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function updateUpdatedAtOnPreUpdate()
     {
         $this->updatedAt = new \DateTime();
-    }
-
-    /**
-     * @ODM\PrePersist
-     * @ODM\PreUpdate
-     */
-    public function updatePublishedOnPreUpdate()
-    {
-        $this->setPublished(!$this->disabled);
     }
 
     /**

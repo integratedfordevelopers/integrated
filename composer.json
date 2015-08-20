@@ -43,11 +43,10 @@
         "phpunit/phpunit": "4.2.*"
     },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\ContentBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\ContentBundle\\": ""
         }
     },
-    "target-dir": "Integrated/Bundle/ContentBundle",
     "extra": {
         "branch-alias": {
             "dev-develop": "0.9.x-dev"

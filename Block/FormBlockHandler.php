@@ -120,6 +120,7 @@ class FormBlockHandler extends BlockHandler
         $form->remove('channels');
         $form->remove('relations');
         $form->remove('extension_workflow');
+        $form->remove('source');
 
         $form->add('actions', 'form_actions', [
             'buttons' => [
