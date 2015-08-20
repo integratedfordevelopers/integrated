@@ -115,7 +115,7 @@ class MigrateCommand extends Command
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %remaining:-6s%');
         $current = 0;
 
-        foreach ($data as $i => $row) {
+        foreach ($data as $row) {
             // Change the relation mapping (if exists) for Integrated
             if (isset($row['relations'])) {
                 foreach ($row['relations'] as $n => $relation) {
@@ -181,7 +181,7 @@ class MigrateCommand extends Command
             }
 
             // Write it down, some where
-//            $this->database->saveRow($row);
+            $this->database->saveRow($row);
 
             // Update the barry progress
             $progress->setProgress(++$current);
