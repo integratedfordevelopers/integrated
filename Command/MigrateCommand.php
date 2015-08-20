@@ -89,7 +89,13 @@ class MigrateCommand extends Command
                     'c',
                     InputOption::VALUE_OPTIONAL,
                     'The class to convert, additionally a space separated list may be given.'
-                )
+                ),
+                new InputOption(
+                    'ignore-duplicates',
+                    'i',
+                    InputOption::VALUE_OPTIONAL,
+                    'Ignore duplicate files errors and grab the newest version.'
+                ),
             ]);
     }
 
@@ -146,7 +152,7 @@ class MigrateCommand extends Command
             foreach ($this->getReflectionClass($row['class'])->getStorageProperties() as $property) {
                 // Fix the one -> many property now foreach and so on
                 if ($filename = $property->getFileId($row)) {
-                    if ($file = $this->getFile($input->getArgument('path'), $filename, $row['_id'])) {
+                    if ($file = $this->getFile($input->getArgument('path'), $filename, $row['_id'], $input->hasOption('ignore-duplicates'))) {
 
                         // Make a storage object
                         $storage = $this->storage->write(
@@ -217,9 +223,10 @@ class MigrateCommand extends Command
      * @param $path
      * @param $fileId
      * @param $documentId
+     * @param bool $allowDuplicate
      * @return bool|\Symfony\Component\Finder\SplFileInfo
      */
-    protected function getFile($path, $fileId, $documentId)
+    protected function getFile($path, $fileId, $documentId, $allowDuplicate = false)
     {
         // Make a search for a file
         $finder = Finder::create()
@@ -233,15 +240,25 @@ class MigrateCommand extends Command
             $iterator->rewind();
             return $iterator->current();
         } elseif (1 < $finder->count()) {
-            // This can not be done
-            throw new \LogicException(
-                sprintf(
-                    'The file %s (for document: %s) has been found %d times on the given path.',
-                    $fileId,
-                    $documentId,
-                    $finder->count()
-                )
-            );
+            if ($allowDuplicate) {
+                // Sort
+                $finder->sortByModifiedTime();
+
+                // Configure the iterator for the first entry
+                $iterator = $finder->getIterator();
+                $iterator->rewind();
+                return $iterator->current();
+            } else {
+                // This can not be done
+                throw new \LogicException(
+                    sprintf(
+                        'The file %s (for document: %s) has been found %d times on the given path.',
+                        $fileId,
+                        $documentId,
+                        $finder->count()
+                    )
+                );
+            }
         }
 
         return false;
