@@ -42,7 +42,9 @@ class LayoutChoiceType extends AbstractType
     {
         $resolver->setDefaults([
             'theme'   => 'default',
-            'choices' => function(Options $options) { return $this->getChoices($options['theme']); },
+            'choices' => function (Options $options) {
+                return $this->getChoices($options['theme']);
+            },
         ]);
     }
 

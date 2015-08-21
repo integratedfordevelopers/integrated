@@ -27,8 +27,7 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
  * @ODM\Document(collection="page")
- * @todo find a way to fix unique validation (INTEGRATED-474)
- * @ MongoDBUnique(fields="path", message="This value should be unique.")
+ * @todo find a way to fix unique validation (INTEGRATED-481)
  */
 class Page
 {
