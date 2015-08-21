@@ -13,6 +13,7 @@ namespace Integrated\Bundle\PageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -34,10 +35,22 @@ class PageType extends AbstractType
             'label' => 'URL',
         ]);
 
-        $builder->add('layout', 'integrated_page_layout_choice');
+        $builder->add('layout', 'integrated_page_layout_choice', [
+            'theme' => $options['theme'],
+        ]);
 
         $builder->add('disabled', 'checkbox', [
             'required' => false,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'theme' => 'default',
         ]);
     }
 

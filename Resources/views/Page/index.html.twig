@@ -8,8 +8,19 @@
                 <a href="#" data-toggle="dropdown" role="button">{% trans %}Options{% endtrans %} <b class="caret"></b></a>
                 <ul role="menu" class="dropdown-menu">
                     <li role="presentation">
-                        <a href="{{ path('integrated_page_page_new') }}" tabindex="-1" role="menuitem">{% trans %}New{% endtrans %}</a>
+                        <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}New{% endtrans %}</a>
                     </li>
+                </ul>
+            </li>
+
+            <li class="dropdown pull-right">
+                <a href="#" data-toggle="dropdown" role="button">{{ selectedChannel.name }} <b class="caret"></b></a>
+                <ul role="menu" class="dropdown-menu">
+                    {% for channel in channels %}
+                        <li role="presentation">
+                            <a href="{{ path('integrated_page_page_index', { 'channel': channel.id }) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
+                        </li>
+                    {% endfor %}
                 </ul>
             </li>
         </ul>
@@ -44,11 +55,11 @@
                             {{ page.path }}
                         </td>
                         <td>
-                            <a href="{{ path('integrated_page_page_edit', { 'id': page.id }) }}" title="{% trans %}Edit{% endtrans %}">
+                            <a href="{{ path('integrated_page_page_edit', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Edit{% endtrans %}">
                                 {{ icon('pencil') }}
                             </a>
                             {% if not page.locked %}
-                                <a href="{{ path('integrated_page_page_delete', { 'id': page.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                                <a href="{{ path('integrated_page_page_delete', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Delete{% endtrans %}">
                                     {{ icon('remove-circle') }}
                                 </a>
                             {% endif %}
