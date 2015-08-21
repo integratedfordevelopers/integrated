@@ -33,7 +33,8 @@
         "nelmio/alice": "1.*",
         "braincrafted/bootstrap-bundle": "~2.0",
         "twbs/bootstrap": "3.*",
-        "friendsofsymfony/jsrouting-bundle": "~1.5"
+        "friendsofsymfony/jsrouting-bundle": "~1.5",
+        "vihuvac/recaptcha-bundle": "dev-master"
     },
     "suggest": {
         "integrated/page-bundle": "~0.2",
