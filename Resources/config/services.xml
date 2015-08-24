@@ -10,6 +10,8 @@
 
         <parameter key="integrated_block.layout_locator.class">Integrated\Bundle\BlockBundle\Locator\LayoutLocator</parameter>
 
+        <parameter key="integrated_block.configure_menu.class">Integrated\Bundle\BlockBundle\EventListener\ConfigureMenuListener</parameter>
+
     </parameters>
 
     <services>
@@ -21,6 +23,11 @@
 
         <service id="integrated_block.layout_locator" class="%integrated_block.layout_locator.class%">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+        </service>
+
+        <service id="integrated_block.configure_menu" class="%integrated_block.configure_menu.class%">
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="kernel.event_subscriber" />
         </service>
 
     </services>
