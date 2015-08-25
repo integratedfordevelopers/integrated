@@ -1,9 +1,15 @@
 <?php
 
-namespace Integrated\Bundle\BlockBundle\EventListener;
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+namespace Integrated\Bundle\BlockBundle\EventListener;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
 
@@ -17,7 +23,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ConfigureMenuListener implements EventSubscriberInterface
 {
-    const ROLE_NEWSLETTER = 'ROLE_NEWSLETTER';
+    const MENU = 'integrated_menu';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+    const MENU_MANAGE = 'Manage';
 
     /**
      * @var AuthorizationCheckerInterface
@@ -47,16 +55,16 @@ class ConfigureMenuListener implements EventSubscriberInterface
      */
     public function onMenuConfigure(ConfigureMenuEvent $event)
     {
-        if (!$this->authorizationChecker->isGranted(self::ROLE_NEWSLETTER)) {
+        if (!$this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
             return;
         }
 
         $menu = $event->getMenu();
-        if ($menu->getName() !== 'integrated_menu') {
+        if ($menu->getName() !== self::MENU) {
             return;
         }
 
-        $label = $menu->addChild('Manage');
+        $label = $menu->addChild(self::MENU_MANAGE);
         $label->addChild('Blocks', array('route' => 'integrated_block_block_index'));
     }
 }
