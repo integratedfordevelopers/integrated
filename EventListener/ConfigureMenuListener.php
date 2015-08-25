@@ -64,7 +64,11 @@ class ConfigureMenuListener implements EventSubscriberInterface
             return;
         }
 
-        $label = $menu->addChild(self::MENU_MANAGE);
+
+        if (!$label = $menu->getChild(self::MENU_MANAGE)) {
+            $label = $menu->addChild(self::MENU_MANAGE);
+        }
+
         $label->addChild('Blocks', array('route' => 'integrated_block_block_index'));
     }
 }
