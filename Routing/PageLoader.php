@@ -56,10 +56,25 @@ class PageLoader implements LoaderInterface
 
         /** @var \Integrated\Bundle\PageBundle\Document\Page\Page $page */
         foreach ($pages as $page) {
-            $route = new Route($page->getPath(), [
-                '_controller' => 'IntegratedWebsiteBundle:Page:show', // @todo config option (INTEGRATED-426)
-                'id' => $page->getId(),
-            ]);
+            $condition = '';
+
+            if ($channel = $page->getChannel()) {
+                $condition = 'request.attributes.get("_channel") == "' . $channel->getId() . '"';
+            }
+
+            $route = new Route(
+                $page->getPath(),
+                [
+                    '_controller' => 'IntegratedWebsiteBundle:Page:show', // @todo config option (INTEGRATED-426)
+                    'id' => $page->getId(),
+                ],
+                [],
+                [],
+                '',
+                [],
+                [],
+                $condition
+            );
 
             $routes->add('integrated_website_page_' . $page->getId(), $route);
         }
