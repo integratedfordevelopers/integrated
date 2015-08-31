@@ -10,6 +10,8 @@
 
         <parameter key="integrated_theme.form.type.theme_choice.class">Integrated\Bundle\ThemeBundle\Form\Type\ThemeChoiceType</parameter>
 
+        <parameter key="integrated_theme.twig.theme_extension.class">Integrated\Bundle\ThemeBundle\Twig\Extension\ThemeExtension</parameter>
+
     </parameters>
 
     <services>
@@ -22,6 +24,11 @@
         <service id="integrated_theme.form.type.theme_choice" class="%integrated_theme.form.type.theme_choice.class%">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <tag name="form.type" alias="integrated_theme_theme_choice" />
+        </service>
+
+        <service id="integrated_theme.twig.theme_extension" class="%integrated_theme.twig.theme_extension.class%" public="false">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <tag name="twig.extension" />
         </service>
 
     </services>
