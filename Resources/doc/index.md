@@ -19,7 +19,7 @@ You can download the IntegratedMenuBundle by running the command:
 `$ php composer.phar require integrated/menu-bundle`
 
 ###2. Enable the Bundle###
-Enable the bundle in the kernel:
+Enable the bundles in the kernel:
 
     <?php
 	// app/AppKernel.php
@@ -28,6 +28,7 @@ Enable the bundle in the kernel:
 	{
     	$bundles = array(
     	    // ...
+    	    new Knp\Bundle\MenuBundle\KnpMenuBundle(),
     	    new Integrated\Bundle\MenuBundle\IntegratedMenuBundle(),
     	);
 	}
