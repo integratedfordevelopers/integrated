@@ -45,9 +45,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure'
-        );
+        return [ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure'];
     }
 
     /**
@@ -65,7 +63,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
                 $menuAdmin = $menu->addChild(self::MENU_ADMIN);
             }
 
-            $menuAdmin->addChild('Connectors', array('route' => 'integrated_channel_config_index'));
+            $menuAdmin->addChild('Connectors', ['route' => 'integrated_channel_config_index']);
         }
     }
 }
