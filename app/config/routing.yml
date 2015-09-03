@@ -22,6 +22,9 @@ integrated_security:
     resource: "@IntegratedUserBundle/Resources/config/routing.security.xml"
     prefix: "/admin"
 
+integrated_channel:
+    resource: "@IntegratedChannelBundle/Resources/config/routing.xml"
+
 integrated_website:
     resource: "@IntegratedWebsiteBundle/Resources/config/routing.xml"
 
