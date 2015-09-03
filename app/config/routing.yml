@@ -28,9 +28,5 @@ integrated_channel:
 integrated_website:
     resource: "@IntegratedWebsiteBundle/Resources/config/routing.xml"
 
-_intergrated_workflow:
-    prefix: /workflow/
-    resource: "@IntegratedWorkflowBundle/Resources/config/routing/workflow.xml"
-
 fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
