@@ -20,6 +20,7 @@ integrated_security:
 
 integrated_channel:
     resource: "@IntegratedChannelBundle/Resources/config/routing.xml"
+    prefix: "/admin"
 
 integrated_website:
     resource: "@IntegratedWebsiteBundle/Resources/config/routing.xml"
