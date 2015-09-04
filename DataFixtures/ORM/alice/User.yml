@@ -1,0 +1,15 @@
+Integrated\Bundle\UserBundle\Model\Role:
+  role1:
+    __construct: ['ROLE_ADMIN', 'Administrator']
+
+Integrated\Bundle\UserBundle\Model\Group:
+  group1:
+    name:     Administrators
+    roles:    [@role1]
+
+Integrated\Bundle\UserBundle\Model\User:
+  user1:
+    username: admin
+    salt:     salt
+    password: <generatePassword('admin','salt')>
+    groups:   [@group1]
