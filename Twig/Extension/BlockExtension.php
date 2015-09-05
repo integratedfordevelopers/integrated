@@ -36,9 +36,16 @@ class BlockExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return [
+        $functions = [
             new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html']]),
         ];
+
+        /* check if IntegratedPageBundle is installed */
+        if ($this->container->get('integrated_block.bundle_checker')->checkPageBundle()) {
+            $functions[] = new \Twig_SimpleFunction('find_channels', [$this, 'findChannels']);
+        }
+
+        return $functions;
     }
 
     /**
@@ -49,6 +56,47 @@ class BlockExtension extends \Twig_Extension
     public function renderBlock($block)
     {
         return $this->container->get('integrated_block.templating.block_renderer')->render($block);
+    }
+
+    /**
+     * @param \Integrated\Common\Block\BlockInterface $block
+     *
+     * @return null|string
+     */
+    public function findChannels($block)
+    {
+        /* Get all pages which was associated with current Block document */
+        $pages = $this->container
+            ->get('doctrine_mongodb')
+            ->getManager()
+            ->createQueryBuilder('IntegratedPageBundle:Page\Page')
+            ->where(
+                'function() {
+                    var k;
+                    for (k in this.grids) {
+                        var i;
+                        for (i in this.grids[k].items) {
+                            var item = this.grids[k].items[i];
+
+                            if ("block" in item && item.block.$id == "' . $block->getId() . '") {
+                                return true;
+                            }
+                        }
+                    }
+
+                    return false;
+                }'
+            )
+            ->getQuery()->execute();
+
+        $channelNames = [];
+        foreach ($pages as $page) {
+            if ($channel = $page->getChannel()) {
+                $channelNames[] = $channel->getName();
+            }
+        }
+
+        return implode(',', $channelNames);
     }
 
     /**

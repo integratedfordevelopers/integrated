@@ -33,17 +33,20 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $pageBundleExist = $this->get("integrated_block.bundle_checker")->checkPageBundle();
         $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedBlockBundle:Block\Block');
 
         $pagination = $this->getPaginator()->paginate(
             $builder,
             $request->query->get('page', 1),
-            $request->query->get('limit', 20)
+            $request->query->get('limit', 20),
+            ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc']
         );
 
         return [
             'blocks'  => $pagination,
             'factory' => $this->getFactory(),
+            'pageBundleExist' => $pageBundleExist,
         ];
     }
 

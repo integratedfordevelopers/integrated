@@ -25,14 +25,18 @@
                     <col />
                     <col />
                     <col />
+                    {% if pageBundleExist %}<col />{% endif %}
                     <col style="width: 5em" />
                 </colgroup>
 
                 <thead>
                     <tr>
-                        <th>{% trans %}Block name{% endtrans %}</th>
-                        <th>{% trans %}Short code{% endtrans %}</th>
-                        <th>{% trans %}Type{% endtrans %}</th>
+                        <th>{{ knp_pagination_sortable(blocks, 'Block name', 'title') }}</th>
+                        <th>{{ knp_pagination_sortable(blocks, 'Short code', 'id') }}</th>
+                        <th>{{ knp_pagination_sortable(blocks, 'Type', 'type') }}</th>
+                        {% if pageBundleExist %}
+                            <th>{% trans %}Channels{% endtrans %}</th>
+                        {% endif %}
                         <th>{% trans %}Actions{% endtrans %}</th>
                     </tr>
                 </thead>
@@ -50,6 +54,9 @@
                         <td>
                             {{ block.type }}
                         </td>
+                        {% if pageBundleExist %}
+                            <td>{{ find_channels(block) }}</td>
+                        {% endif %}
                         <td>
                             <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">
                                 {{ icon('pencil') }}
