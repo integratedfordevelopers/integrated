@@ -11,8 +11,7 @@
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
 
     {% block stylesheets %}
-        {% stylesheets output='css/styles.css' filter='?uglifycss'
-            '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
+        {% stylesheets output='css/styles.css' '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
@@ -47,8 +46,7 @@
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
 {% block javascripts %}
-    {% javascripts output='js/scripts.js' filter='?uglifyjs2'
-        '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
+    {% javascripts output='js/scripts.js' '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
