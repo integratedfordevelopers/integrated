@@ -12,6 +12,7 @@
 
         <parameter key="integrated_block.form.type.block.class">Integrated\Bundle\BlockBundle\Form\Type\BlockType</parameter>
         <parameter key="integrated_block.form.type.block_size.class">Integrated\Bundle\BlockBundle\Form\Type\BlockSizeType</parameter>
+        <parameter key="integrated_block.form.type.block_filter.class">Integrated\Bundle\BlockBundle\Form\Type\BlockFilterType</parameter>
 
     </parameters>
 
@@ -34,6 +35,12 @@
 
         <service id="integrated_block.form.type.block_size" class="%integrated_block.form.type.block_size.class%">
             <tag name="form.type" alias="integrated_block_size" />
+        </service>
+
+        <service id="integrated_block.form.type.block_filter" class="%integrated_block.form.type.block_filter.class%">
+            <argument type="service" id="integrated_block.metadata.factory" />
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="integrated_block.bundle_checker" />
         </service>
 
     </services>

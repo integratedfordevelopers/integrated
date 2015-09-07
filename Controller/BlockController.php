@@ -33,11 +33,17 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $pageBundleExist = $this->get("integrated_block.bundle_checker")->checkPageBundle();
-        $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedBlockBundle:Block\Block');
+        $facetFilter = $this->createForm($this->get('integrated_block.form.type.block_filter'));
+        $facetFilter->handleRequest($request);
+        $data = $facetFilter->isValid() ? $facetFilter->getData() : ['type' => [], 'channels' => []];
+
+        $bundleChecker = $this->get("integrated_block.bundle_checker");
+        $qb = $this->getDocumentManager()
+            ->getRepository('IntegratedBlockBundle:Block\Block')
+            ->getQBForBlockPaginator($data, $bundleChecker);
 
         $pagination = $this->getPaginator()->paginate(
-            $builder,
+            $qb,
             $request->query->get('page', 1),
             $request->query->get('limit', 20),
             ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc']
@@ -46,7 +52,8 @@ class BlockController extends Controller
         return [
             'blocks'  => $pagination,
             'factory' => $this->getFactory(),
-            'pageBundleExist' => $pageBundleExist,
+            'pageBundleExist' => $bundleChecker->checkPageBundle(),
+            'facetFilter' => $facetFilter->createView()
         ];
     }
 
