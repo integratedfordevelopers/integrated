@@ -12,12 +12,16 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Column;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Row;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-use Integrated\Bundle\BlockBundle\Block\BundleChecker;
+use Integrated\Bundle\BlockBundle\Utils\BundleChecker;
 
 /**
  * Class BlockRepository
  * @package Integrated\Bundle\BlockBundle\Document\Block
+ * @author Vasil Pascal <developer.optimum@gmail.com>
  */
 class BlockRepository extends DocumentRepository
 {
@@ -30,24 +34,43 @@ class BlockRepository extends DocumentRepository
     {
         $qb = $this->createQueryBuilder();
 
-        if ($filterData['type']) {
+        if (isset($filterData['type']) && $filterData['type']) {
             $qb->field('class')->in($filterData['type']);
         }
 
-        if ($bundleChecker->checkPageBundle() && $filterData['channels']) {
+        if ($bundleChecker->checkPageBundle() && isset($filterData['channels']) && $filterData['channels']) {
             $pages = $this->dm->createQueryBuilder('IntegratedPageBundle:Page\Page')
                 ->field('channel.$id')->in($filterData['channels'])
                 ->getQuery()
                 ->execute();
 
             $availableBlockIds = [];
+            $recursiveFindInRow = function (Row $row) use (&$recursiveFindInRow, &$availableBlockIds) {
+                foreach ($row->getColumns() as $column) {
+                    /** @var $column Column */
+                    foreach ($column->getItems() as $item) {
+                        if ($block = $item->getBlock()) {
+                            $availableBlockIds[$block->getId()] = $block->getId();
+                        }
+
+                        if ($row = $item->getRow()) {
+                            $recursiveFindInRow($row);
+                        }
+                    }
+                }
+            };
+
             foreach ($pages as $page) {
                 /** @var $page \Integrated\Bundle\PageBundle\Document\Page\Page */
                 foreach ($page->getGrids() as $grid) {
-
                     foreach ($grid->getItems() as $item) {
-                        $blockId = $item->getBlock()->getId();
-                        $availableBlockIds[$blockId] = $blockId;
+                        if ($block = $item->getBlock()) {
+                            $availableBlockIds[$block->getId()] = $block->getId();
+                        }
+
+                        if ($row = $item->getRow()) {
+                            $recursiveFindInRow($row);
+                        }
                     }
                 }
             }

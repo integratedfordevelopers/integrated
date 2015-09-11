@@ -28,9 +28,6 @@
         "integrated/page-bundle": "~0.3",
         "knplabs/knp-paginator-bundle": ">=2.4"
     },
-    "suggest": {
-        "integrated/page-bundle": "Extend website and block bundles functionality"
-    },
     "autoload":{
         "psr-4":{
             "Integrated\\Bundle\\BlockBundle\\": ""

@@ -18,10 +18,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Integrated\Bundle\BlockBundle\Block\BundleChecker;
+use Integrated\Bundle\BlockBundle\Utils\BundleChecker;
 
 /**
- * @author Developer at optimum-web.com
+ * @author Vasil Pascal <developer.optimum@gmail.com>
  */
 class BlockFilterType extends AbstractType
 {
@@ -47,17 +47,33 @@ class BlockFilterType extends AbstractType
             $groupCountChannels = $dm->createQueryBuilder('IntegratedPageBundle:Page\Page')
                 ->group(array('channel.$id' => 1), array('total' => 0, 'blocks' => []))
                 ->reduce(
-                    'function (curr, result ) {
-                        var i;
-                        for (i in curr.grids) {
-                            var k;
-                            for (k in curr.grids[i].items) {
-                                var item = curr.grids[i].items[k];
+                    'function (curr, result) {
+                        var checkItem = function(item) {
+                            if ("block" in item && result.blocks.indexOf(item.block.$id) < 0) {
+                                result.total += 1;
+                                result.blocks.push(item.block.$id);
+                            }
 
-                                if ("block" in item && result.blocks.indexOf(item.block.$id) < 0) {
-                                    result.total += 1;
-                                    result.blocks.push(item.block.$id);
+                            if ("row" in item) {
+                                recursiveFindInRows(item.row);
+                            }
+                        }
+
+                        var recursiveFindInRows = function(row) {
+                            if ("columns" in row) {
+                                for (c in row.columns) {
+                                    if ("items" in row.columns[c]) {
+                                        for (i in row.columns[c].items) {
+                                            checkItem(row.columns[c].items[i]);
+                                        }
+                                    }
                                 }
+                            }
+                        };
+
+                        for (i in curr.grids) {
+                            for (k in curr.grids[i].items) {
+                                checkItem(curr.grids[i].items[k]);
                             }
                         }
                     }'

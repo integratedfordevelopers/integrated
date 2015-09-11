@@ -9,11 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\BlockBundle\Block;
+namespace Integrated\Bundle\BlockBundle\Utils;
 
 /**
+ * @author Vasil Pascal <developer.optimum@gmail.com>
+ *
  * Class BundleChecker
- * @package Integrated\Bundle\BlockBundle\Block
+ * @package Integrated\Bundle\BlockBundle\Utils
  */
 class BundleChecker
 {

@@ -12,7 +12,7 @@
 
         <parameter key="integrated_block.configure_menu.class">Integrated\Bundle\BlockBundle\EventListener\ConfigureMenuListener</parameter>
 
-        <parameter key="integrated_block.bundle_checker_class">Integrated\Bundle\BlockBundle\Block\BundleChecker</parameter>
+        <parameter key="integrated_block.bundle_checker_class">Integrated\Bundle\BlockBundle\Utils\BundleChecker</parameter>
 
     </parameters>
 
