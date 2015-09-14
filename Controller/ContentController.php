@@ -496,7 +496,9 @@ class ContentController extends Controller
                     $locking['release']();
                 }
 
-                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
+                $url = $form->get('returnUrl')->getData() ?: $this->generateUrl('integrated_content_content_index', ['remember' => 1]);
+
+                return $this->redirect($url);
             }
 
             if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
@@ -995,10 +997,13 @@ class ContentController extends Controller
         $form = $this->createForm($type, $content,[
             'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
             'method' => 'PUT',
+            'attr' => ['class' => 'content-form'],
 
             // don't display error's when the content is locked as the user can't save in the first place
             'validation_groups' => $locking['locked'] ? false : null
         ]);
+
+        $form->add('returnUrl', 'hidden', ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
 
         // load a different set of buttons based on the permissions and locking state
 
