@@ -11,6 +11,13 @@ var modal = $("#content-edit-modal");
 form.on('change', function () {
     form.data('changed', true);
 });
+$(function () {
+    tinymce.on('AddEditor', function (e) {
+        e.editor.on('change', function (e) {
+            form.data('changed', true);
+        });
+    });
+});
 
 /* ask user before leave page via href links and unlock article */
 $('a:not(form.content-form a)').on('click', function (e) {
@@ -39,6 +46,10 @@ $('.live-page', modal).on('click', function() {
     window.onbeforeunload = null;
     $('[name*=cancel]', form).trigger('click');
     modal.modal('hide');
+});
+
+$('button', form).on('click', function () {
+    window.onbeforeunload = null;
 });
 
 /**/
