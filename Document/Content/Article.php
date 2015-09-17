@@ -14,7 +14,9 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
+
+use Integrated\Common\Form\Mapping\Annotations as Type;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Document type Article
@@ -32,6 +34,15 @@ class Article extends Content
      * @Type\Field
      */
     protected $title;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @ODM\UniqueIndex(sparse=true)
+     * @Slug(fields={"title"})
+     * @Type\Field
+     */
+    protected $slug;
 
     /**
      * @var string
@@ -61,13 +72,6 @@ class Article extends Content
     protected $locale;
 
     /**
-     * @var \DateTime
-     * @ODM\Date
-     * @Type\Field(type="integrated_datetime", options={"label" = "Published until"})
-     */
-    protected $publishedUntil;
-
-    /**
      * @var string
      * @ODM\String
      * @Type\Field(type="textarea")
@@ -77,15 +81,23 @@ class Article extends Content
     /**
      * @var string
      * @ODM\String
+     * @Type\Field(type="textarea")
+     */
+    protected $description;
+
+    /**
+     * @var string
+     * @ODM\String
      * @Type\Field(type="integrated_tinymce")
      */
     protected $content;
 
     /**
-     * @var Embedded\Location
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location")
+     * @var Embedded\Address
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address")
+     * @Type\Field(type="integrated_address")
      */
-    protected $location;
+    protected $address;
 
     /**
      * Constructor
@@ -116,6 +128,28 @@ class Article extends Content
     public function setTitle($title)
     {
         $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get the slug of the document
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the slug of the document
+     *
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
         return $this;
     }
 
@@ -232,28 +266,6 @@ class Article extends Content
     }
 
     /**
-     * Get the publishedUntil of the document
-     *
-     * @return \DateTime
-     */
-    public function getPublishedUntil()
-    {
-        return $this->publishedUntil;
-    }
-
-    /**
-     * Set the publishedUntil of the document
-     *
-     * @param \DateTime $publishedUntil
-     * @return $this
-     */
-    public function setPublishedUntil(\DateTime $publishedUntil = null)
-    {
-        $this->publishedUntil = $publishedUntil;
-        return $this;
-    }
-
-    /**
      * Get the intro of the document
      *
      * @return string
@@ -272,6 +284,24 @@ class Article extends Content
     public function setIntro($intro)
     {
         $this->intro = $intro;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
         return $this;
     }
 
@@ -298,24 +328,24 @@ class Article extends Content
     }
 
     /**
-     * Get the location of the document
+     * Get the address of the document
      *
-     * @return Embedded\Location
+     * @return Embedded\Address
      */
-    public function getLocation()
+    public function getAddress()
     {
-        return $this->location;
+        return $this->address;
     }
 
     /**
-     * Set the location of the document
+     * Set the address of the document
      *
-     * @param Embedded\Location $location
+     * @param Embedded\Address $address
      * @return $this
      */
-    public function setLocation(Embedded\Location $location = null)
+    public function setAddress(Embedded\Address $address = null)
     {
-        $this->location = $location;
+        $this->address = $address;
         return $this;
     }
 
@@ -324,12 +354,16 @@ class Article extends Content
      *
      * @return string
      */
-    public function getCoverUrl()
+    public function getCover()
     {
         $items = $this->getReferencesByRelationType('embedded');
         if ($items) {
             foreach ($items as $item) {
                 if ($item instanceof Image) {
+                    if (!$item->getWebPath()) {
+                        continue;
+                    }
+
                     return $item->getWebPath();
                 }
             }

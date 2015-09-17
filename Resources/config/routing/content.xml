@@ -6,6 +6,7 @@
 
 	<route id="integrated_content_content_index" path="/" methods="GET, POST">
 		<default key="_controller">IntegratedContentBundle:Content:index</default>
+        <option key="expose">true</option>
 	</route>
 
 	<route id="integrated_content_content_new" path="/new">
@@ -34,6 +35,10 @@
 
     <route id="integrated_content_content_used_by" path="/{id}/used-by"  methods="GET">
         <default key="_controller">IntegratedContentBundle:Content:usedBy</default>
+    </route>
+
+    <route id="integrated_content_content_show" path="/{id}/show"  methods="GET">
+        <default key="_controller">IntegratedContentBundle:Content:show</default>
     </route>
 
 </routes>

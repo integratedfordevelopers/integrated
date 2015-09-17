@@ -43,7 +43,10 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('converters.xml');
         $loader->load('extensions.xml');
 
+        $loader->load('paginator.xml');
+
         $loader->load('form.xml');
+        $loader->load('form.actions.xml');
         $loader->load('form.content.xml');
         $loader->load('form.content-type.xml');
 
@@ -55,8 +58,14 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('resolvers.xml');
         $loader->load('solr.xml');
         $loader->load('twig.xml');
+        $loader->load('event_listeners.xml');
+        $loader->load('repositories.xml');
+        $loader->load('menu.xml');
 
         $loader->load('security.xml');
+
+        $loader->load('provider.xml');
+        $loader->load('block.xml');
 
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);

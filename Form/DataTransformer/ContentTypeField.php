@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\Common\ContentType\Mapping\Metadata;
+use Integrated\Common\Form\Mapping\Metadata;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 
 /**
@@ -21,14 +21,14 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 class ContentTypeField implements DataTransformerInterface
 {
     /**
-     * @var Metadata\ContentTypeAttribute
+     * @var Metadata\Field
      */
     private $contentTypeField;
 
     /**
-     * @param Metadata\ContentTypeAttribute $contentTypeField
+     * @param Metadata\Field $contentTypeField
      */
-    public function __construct(Metadata\ContentTypeAttribute $contentTypeField)
+    public function __construct(Metadata\Field $contentTypeField)
     {
         $this->contentTypeField = $contentTypeField;
     }

@@ -11,10 +11,13 @@
                 <string key="title">title</string>
                 <string key="title_sort">title</string>
 
+                <string key="slug">slug</string>
+
                 <string key="intro">intro</string>
                 <string key="content">content</string>
 
-                <string key="pub_time">publishedAt</string>
+                <string key="pub_time">publishTime.startDate</string>
+                <string key="pub_end">publishTime.endDate</string>
                 <string key="pub_created">createdAt</string>
                 <string key="pub_edited">updatedAt</string>
 
@@ -45,8 +48,26 @@
                 <string key="locale">locale</string>
                 <string key="cover">cover</string>
 
+                <string key="address_name">address.name</string>
+                <string key="address_address1">address.address1</string>
+                <string key="address_address2">address.address2</string>
+                <string key="address_zipcode">address.zipcode</string>
+                <string key="address_city">address.city</string>
+                <string key="address_state">address.state</string>
+                <string key="address_country">address.country</string>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/article/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
+
             </options>
         </type>
+        <type name="integrated.property" />
 
     </class>
 
@@ -85,6 +106,66 @@
 
                 <string key="content">description</string>
                 <string key="description">description</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Event">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="start_date">startDate</string>
+                <string key="end_date">endDate</string>
+                <string key="website">website</string>
+
+                <string key="start_sort_date">startDate</string>
+                <string key="end_sort_date">endDate</string>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/event/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\JobPosting">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="job_title">jobTitle</string>
+                <string key="salary">salary</string>
+                <string key="apply_url">applyUrl</string>
+
+                <string key="company">company.name</string>
+
+                <array>
+                    <string key="name">contact</string>
+                    <array>
+                        <string>@contact.prefix</string>
+                        <string>@contact.firstName</string>
+                        <string>@contact.lastName</string>
+                    </array>
+                </array>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/job-posting/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
 
             </options>
         </type>
