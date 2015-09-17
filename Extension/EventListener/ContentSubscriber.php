@@ -216,11 +216,11 @@ class ContentSubscriber implements ContentSubscriberInterface
                         }
 
                         $message = \Swift_Message::newInstance()
-                            ->setSubject('[Integrated] "' . $title . '" has been assinged to you')
+                            ->setSubject('[Integrated] "' . $title . '" has been assigned to you')
                             ->setFrom('mailer@integratedforpublishers.com')
                             ->setTo($person->getEmail())
                             ->setBody(
-                                'An item has been assinged to you:
+                                'An item has been assigned to you:
 
 Name: ' . $title . '
 E-mail: ' . $person->getEmail() . '',
