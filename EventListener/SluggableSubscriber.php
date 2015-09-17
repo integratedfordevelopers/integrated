@@ -217,27 +217,28 @@ class SluggableSubscriber implements EventSubscriber
         if (count($objects)) {
 
             $oid = spl_object_hash($object);
-            $positions = [];
+            $slugs = [];
 
             foreach ($objects as $object2) {
 
                 if (property_exists($object2, $field) && $oid !== spl_object_hash($object2)) {
 
                     $value = $this->propertyAccessor->getValue($object2, $field);
-                    $positions[preg_match($pattern, $value, $match) ? (int) $match[2] : 1] = true;
+                    $slugs[] = $value;
                 }
             }
 
-            if (!empty($positions)) {
+            if (!empty($slugs)) {
+                for ($i = 1; $i <= (max(array_keys($slugs)) + 2); $i++) {
 
-                for ($i = 1; $i <= (max(array_keys($positions)) + 1); $i++) {
-
-                    if (!isset($positions[$i])) {
-                        // first available slug
-                        return $slug . ($i > 1 ? '-' . $i : '');
+                    $tryslug = $slug . ($i > 1 ? '-' . $i : '');
+                    if (!in_array($tryslug,$slugs)) {
+                        return $tryslug;
                     }
+
                 }
             }
+
         }
 
         return $slug;
