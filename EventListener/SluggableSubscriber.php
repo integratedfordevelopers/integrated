@@ -120,9 +120,7 @@ class SluggableSubscriber implements EventSubscriber
         $identifierFields = $classMetadataInfo->getIdentifierFieldNames();
 
         foreach ($classMetadata->propertyMetadata as $propertyMetadata) {
-
             if ($propertyMetadata instanceof PropertyMetadata && count($propertyMetadata->slugFields)) {
-
                 $hasIdentifierFields = count(array_intersect($identifierFields, $propertyMetadata->slugFields)) > 0;
 
                 if ($event == 'prePersist' && $hasIdentifierFields || $event == 'postPersist' && !$hasIdentifierFields) {
@@ -132,7 +130,6 @@ class SluggableSubscriber implements EventSubscriber
                 $slug = null;
 
                 if ($event == 'preUpdate') {
-
                     if ($args->hasChangedField($propertyMetadata->name)) {
                         // generate custom slug
                         $slug = $this->slugger->slugify($args->getNewValue($propertyMetadata->name), $propertyMetadata->slugSeparator);
@@ -215,29 +212,25 @@ class SluggableSubscriber implements EventSubscriber
         $objects = $this->findSimilarSlugs($om, $class, $field, $slug);
 
         if (count($objects)) {
-
             $oid = spl_object_hash($object);
-            $positions = [];
+            $slugs = [];
 
             foreach ($objects as $object2) {
-
                 if (property_exists($object2, $field) && $oid !== spl_object_hash($object2)) {
-
                     $value = $this->propertyAccessor->getValue($object2, $field);
-                    $positions[preg_match($pattern, $value, $match) ? (int) $match[2] : 1] = true;
+                    $slugs[] = $value;
                 }
             }
 
-            if (!empty($positions)) {
-
-                for ($i = 1; $i <= (max(array_keys($positions)) + 1); $i++) {
-
-                    if (!isset($positions[$i])) {
-                        // first available slug
-                        return $slug . ($i > 1 ? '-' . $i : '');
+            if (!empty($slugs)) {
+                for ($i = 1; $i <= (max(array_keys($slugs)) + 2); $i++) {
+                    $tryslug = $slug . ($i > 1 ? '-' . $i : '');
+                    if (!in_array($tryslug, $slugs)) {
+                        return $tryslug;
                     }
                 }
             }
+
         }
 
         return $slug;
@@ -256,7 +249,6 @@ class SluggableSubscriber implements EventSubscriber
     {
         // check in document manager
         foreach ($this->getScheduledObjects($om) as $object) {
-
             // @todo check $id
 
             if (property_exists($object, $field) && $slug === $this->propertyAccessor->getValue($object, $field)) {
@@ -300,7 +292,6 @@ class SluggableSubscriber implements EventSubscriber
         $uow = $om->getUnitOfWork();
 
         if ($uow instanceof ODMUnitOfWork) {
-
             // @todo fix slug separator
 
             return array_merge($objects, $this->getRepository($om, $class)->findBy([
@@ -362,7 +353,6 @@ class SluggableSubscriber implements EventSubscriber
     protected function recomputeSingleObjectChangeSet(ObjectManager $om, $object)
     {
         if ($om->contains($object)) {
-
             $classMetadata = $om->getClassMetadata(get_class($object));
             $uow = $om->getUnitOfWork();
 
