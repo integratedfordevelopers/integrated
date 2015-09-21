@@ -19,9 +19,9 @@ class SortableCollectionType extends AbstractType
     {
         $view->vars = array_replace(
             $view->vars,
-            array(
+            [
                 'default_title' => $options['default_title']
-            )
+            ]
         );
     }
 
@@ -30,9 +30,9 @@ class SortableCollectionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'default_title' => 'Item'
-        ));
+        ]);
     }
 
     /**
