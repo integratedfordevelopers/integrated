@@ -74,6 +74,8 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
 
 		$data = $this->getChoices($event->getData());
 
+		sort($data);
+
 		foreach ($form->all() as $child) {
 			if ($child->has('transactions')) {
 				$child->remove('transactions');
