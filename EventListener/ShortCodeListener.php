@@ -40,6 +40,10 @@ class ShortCodeListener
     {
         $response = $event->getResponse();
 
+        if ('Symfony\Component\HttpFoundation\Response' !== get_class($response)) {
+            return;
+        }
+
         $response->setContent(
             preg_replace_callback(
                 '/\[block id="(.+?)"(.*?)\]/i',
