@@ -53,80 +53,62 @@
         {% if form.offsetGet('relations').count() %}
         <div class="col-sm-6 col-md-3 side_column margin_botom_in_mobile">
             <h3 class="title">{% trans %}Link to{% endtrans %}</h3>
-            <div class="content_column_inner">
+
+            <div class="content_column_inner relations">
                 <div class="item_row">
-                    <div class="search_field_holder grey_field_holder">
-                        <form role="form" id="relations-search">
-                            <input id="relations-q" type="text" class="form-control" placeholder="{% trans %}Search here...{% endtrans %}" autocomplete="off" />
-                            <button type="submit" class="submit_btn"><i class="glyphicon glyphicon-search"></i></button>
-                        </form>
-                    </div>
+                    {% for relation in form.relations %}
+                        <div class="relation" style="margin: 0 0 30px 0">
+                            <label for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label><br/>
+                            <input id="{{ relation.vars.name }}" data-multiple="{{ relation.vars.attr['data-multiple'] }}" style="width: 170px; float: left; margin: 0 13px 20px 0;" class="relation-items" />
+                        </div>
+                    {% endfor %}
                 </div>
                 <div id="relations-result"></div>
             </div>
         </div>
         {% endif %}
-
-        <div class="col-sm-6 col-md-3 sidebar_right margin_botom_in_mobile">
-            {% if form.offsetGet('relations').count() %}
-            <div class="item_row">
-                <h3 class="title">{% trans %}Linked items{% endtrans %}</h3>
-                <div class="content_column_inner">
-                    <ul class="custom_list li_with_margin" id="relations-selected"></ul>
-                </div>
-            </div>
-            {% endif %}
-            <div class="item_row" id="used-by"></div>
-
-            {#<div class="item_row">#}
-                {#<h3 class="title">Info</h3>#}
-                {#<div class="content_column_inner">#}
-                    {#<ul class="custom_list custom_list_info">#}
-                        {#<li>#}
-                            {#Creator#}
-                            {#<span class="value">Marijn Otte</span>#}
-                        {#</li>#}
-                        {#<li>#}
-                            {#Created on#}
-                            {#<span class="value">18-12-2013</span>#}
-                        {#</li>#}
-                        {#<li>#}
-                            {#Words#}
-                            {#<span class="value">1296</span>#}
-                        {#</li>#}
-                    {#</ul>#}
-                    {#<a href="#" class="btn_more">More <i class="glyphicon"></i></a>#}
-                {#</div><!-- content_column_inner -->#}
-            {#</div><!-- item_row -->#}
-
-            {#<div class="item_row">#}
-                {#<h3 class="title">History</h3>#}
-                {#<div class="content_column_inner">#}
-                    {#<ul class="custom_list">#}
-                        {#<li class="media">#}
-                            {#<a href="#" class="pull-left"><img src="images/temp/userpic.jpg" alt=""></a>#}
-                            {#<div class="media-body">#}
-                                {#<p>18-12-2013 16:43</p>#}
-                                {#<p>Marijn Otte</p>#}
-                                {#<p>Draft</p>#}
-                                {#<p>Rewritten intro</p>#}
-                            {#</div>#}
-                        {#</li>#}
-                        {#<li class="media">#}
-                            {#<a href="#" class="pull-left"><img src="images/temp/userpic.jpg" alt=""></a>#}
-                            {#<div class="media-body">#}
-                                {#<p>18-12-2013 16:43</p>#}
-                                {#<p>Marijn Otte</p>#}
-                                {#<p>Draft</p>#}
-                                {#<p>Rewritten intro</p>#}
-                            {#</div>#}
-                        {#</li>#}
-                    {#</ul>#}
-                {#</div><!-- content_column_inner -->#}
-            {#</div><!-- item_row -->#}
-
-        </div>
     </div>
+
+    {% autoescape 'js' %}
+        {% verbatim %}
+            <script id="add-template" type="text/xhandlebars-template">
+                {{#if relations}}
+                {{#equals relations.length 1}}
+                <a data-title="Add {{relations.0.name}}" class="btn btn-default add-relation" style="font-size: 13px;" href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
+                    Add
+                </a>
+                {{else}}
+                <div class="btn-group add-relation">
+                    <button type="button" class="btn btn-default dropdown-toggle" style="font-size: 13px;" data-toggle="dropdown" aria-expanded="false">
+                        Add <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        {{#each relations}}
+                        <li>
+                            <a data-title="Add {{this.name}}" href="{{this.href}}" target="_blank" data-modal="add-modal">
+                                {{this.name}}
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                {{/equals}}
+                {{/if}}
+                <div class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title">Add</h4>
+                            </div>
+                            <iframe width="100%" height="400" style="width: 100%; min-height: 10px; border: none;">Loading</iframe>
+                        </div>
+                    </div>
+                </div>
+            </script>
+        {% endverbatim %}
+    {% endautoescape %}
+
 {% endblock %}
 {% block javascript %}
 {{ parent() }}
@@ -176,6 +158,4 @@
     });
 </script>
 {% endif %}
-
-{{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
 {% endblock javascript %}
