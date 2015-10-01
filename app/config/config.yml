@@ -64,7 +64,7 @@ assetic:
                 - less
             output: css/bootstrap.css
 
-# Bootstrap configuration
+# Bootstrap Configuration
 braincrafted_bootstrap:
     less_filter: less
     jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.js
@@ -107,7 +107,7 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
-# Solr configuration
+# Solr Configuration
 integrated_solr:
     endpoints:
         default:
@@ -116,7 +116,7 @@ integrated_solr:
             core: %solr_core%
             timeout: %solr_timeout%
 
-# Bower configuration
+# Bower Configuration
 sp_bower:
     bundles:
         IntegratedContentBundle:
@@ -133,11 +133,12 @@ sp_bower:
     assetic:
         enabled: false
 
-# Theme configuration
+# Theme Configuration
 integrated_theme:
     themes:
-        gim:
-            paths: [@IntegratedWebsiteBundle/Resources/views/themes/default]
+        default:
+            paths:
+                - @IntegratedWebsiteBundle/Resources/views/themes/default
 
 vihuvac_recaptcha:
     site_key:   %recaptcha_site_key%
