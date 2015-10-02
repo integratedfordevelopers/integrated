@@ -65,6 +65,15 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test get- and setWebsite function
+     */
+    public function testGetAndSetWebsiteFunction()
+    {
+        $website = 'http://www.website.com';
+        $this->assertEquals($website, $this->company->setWebsite($website)->getWebsite());
+    }
+
+    /**
      * Test get- and setAddresses function
      */
     public function testGetAndSetAddressesFunction()

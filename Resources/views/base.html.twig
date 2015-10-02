@@ -1,3 +1,7 @@
+{%- if form is defined -%}
+    {% form_theme form 'IntegratedContentBundle:Form:form_div_layout.html.twig' %}
+{%- endif -%}
+
 <!DOCTYPE html>
 <html class="no-js">
 <head>
@@ -6,7 +10,7 @@
 
 {% block style %}
 
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen" />
 
     {% stylesheets "@integrated_css" %}
@@ -96,6 +100,9 @@
 
     <script src="//code.jquery.com/jquery.js"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
+
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 
     {% javascripts
         '@integrated_js'

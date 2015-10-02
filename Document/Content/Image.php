@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Common\Form\Mapping\Annotations as Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**

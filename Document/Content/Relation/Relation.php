@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Common\ContentType\Mapping\Annotations as Type;
+use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber;
@@ -38,14 +38,22 @@ class Relation extends Content
     /**
      * @var string
      * @ODM\String
-     * @Type\Field
+     * @Type\Field(type="integrated_tinymce")
      */
     protected $description;
 
-	/**
-	 * @var Phonenumber[] | Collection
-	 * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber")
-	 */
+    /**
+     * @var Phonenumber[] | Collection
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber")
+     * @Type\Field(
+     *      type="integrated_sortable_collection",
+     *      options={
+     *          "type"="integrated_phonenumber",
+     *          "allow_add"=true,
+     *          "allow_delete"=true
+     *      }
+     * )
+     */
     protected $phonenumbers;
 
     /**
@@ -62,6 +70,7 @@ class Relation extends Content
      *      type="integrated_sortable_collection",
      *      options={
      *          "type"="integrated_address",
+     *          "default_title"="New address",
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }
@@ -69,16 +78,16 @@ class Relation extends Content
      */
     protected $addresses;
 
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		parent::__construct();
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->phonenumbers = new ArrayCollection();
-		$this->addresses = new ArrayCollection();
-	}
+        $this->phonenumbers = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
+    }
 
     /**
      * Get the accountnumber of the document
@@ -131,17 +140,17 @@ class Relation extends Content
      */
     public function getPhonenumbers($type = null)
     {
-		if ($type !== null) {
-			$result = array();
+        if ($type !== null) {
+            $result = array();
 
-			foreach ($this->phonenumbers as $obj) {
-				if (strcasecmp($type, $obj->getType()) === 0) {
-					$result[] = $obj;
-				}
-			}
+            foreach ($this->phonenumbers as $obj) {
+                if (strcasecmp($type, $obj->getType()) === 0) {
+                    $result[] = $obj;
+                }
+            }
 
-			return $result;
-		}
+            return $result;
+        }
 
         return $this->phonenumbers;
     }
@@ -163,24 +172,24 @@ class Relation extends Content
      *
      * @param string|Phonenumber $phonenumber
      * @param string $type
-	 *
+     *
      * @return $this
      */
     public function addPhonenumber($phonenumber, $type = null)
     {
-		if ($phonenumber === null) {
-			return $this;
-		}
+        if ($phonenumber === null) {
+            return $this;
+        }
 
-		if ($phonenumber instanceof Phonenumber) {
-			$obj = $phonenumber;
-		} else {
-			$obj = new Phonenumber();
-			$obj->setNumber($phonenumber);
-			$obj->setType($type);
-		}
+        if ($phonenumber instanceof Phonenumber) {
+            $obj = $phonenumber;
+        } else {
+            $obj = new Phonenumber();
+            $obj->setNumber($phonenumber);
+            $obj->setType($type);
+        }
 
-		$this->phonenumbers->add($obj);
+        $this->phonenumbers->add($obj);
         return $this;
     }
 
@@ -188,24 +197,24 @@ class Relation extends Content
      * Remove phonenumber from phonenumbers collection
      *
      * @param string|Phonenumber $phonenumber
-	 *
+     *
      * @return bool The removed element or null if the collection did not contain the element.
      */
     public function removePhonenumber($phonenumber)
     {
-		if ($phonenumber instanceof Phonenumber) {
-			return $this->phonenumbers->remove($phonenumber);
-		}
+        if ($phonenumber instanceof Phonenumber) {
+            return $this->phonenumbers->remove($phonenumber);
+        }
 
-		$return = false;
+        $return = false;
 
-		foreach ($this->phonenumbers as $obj) {
-			if (strcasecmp($phonenumber, $obj->getNumber()) === 0) {
-				$return = $this->phonenumbers->remove($obj);
-			}
-		}
+        foreach ($this->phonenumbers as $obj) {
+            if (strcasecmp($phonenumber, $obj->getNumber()) === 0) {
+                $return = $this->phonenumbers->remove($obj);
+            }
+        }
 
-		return $return;
+        return $return;
     }
 
     /**
@@ -243,7 +252,7 @@ class Relation extends Content
     /**
      * Set the addresses of the document
      *
-     * @param array $addresses
+     * @param Collection $addresses
      * @return $this
      */
     public function setAddresses(Collection $addresses)
@@ -252,28 +261,28 @@ class Relation extends Content
         return $this;
     }
 
-	/**
-	 * Add address to addresses collection
-	 *
-	 * @param Address $address
-	 *
-	 * @return $this
-	 */
-	public function addAddress(Address $address = null)
-	{
-		if ($address !== null) {
-			$this->addresses->add($address);
-		}
+    /**
+     * Add address to addresses collection
+     *
+     * @param Address $address
+     *
+     * @return $this
+     */
+    public function addAddress(Address $address = null)
+    {
+        if ($address !== null) {
+            $this->addresses->add($address);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param Address $address
-	 * @return bool
-	 */
-	public function removeAddress(Address $address)
-	{
-		return $this->addresses->removeElement($address);
-	}
+    /**
+     * @param Address $address
+     * @return bool
+     */
+    public function removeAddress(Address $address)
+    {
+        return $this->addresses->removeElement($address);
+    }
 }

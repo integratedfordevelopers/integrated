@@ -1,11 +1,20 @@
 <ul class="nav" id="top_menu_for_desktop">
-    <li class="dropdown for_mobile">
+    <li class="dropdown dropdown-large for_mobile">
         <a data-toggle="dropdown" class="dropdown-toggle" role="button" href="#">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
-
-        <ul class="dropdown-menu dropdown-menu-large dropdown-right row">
-            {{ render(controller('IntegratedContentBundle:ContentType:list', {'_format': 'ul'})) }}
-        </ul>
+        {{ knp_menu_render('content_type', {'template': 'IntegratedContentBundle:Menu:content_type.html.twig'}) }}
     </li>
+
+    {% if assingedContent|length > 0 %}
+        <li class="dropdown hidden-xs">
+            <a data-toggle="dropdown" class="dropdown-toggle with_badge" role="button" href="#"><i class="glyphicon glyphicon-tasks"></i><span class="badge">{{ assingedContent|length }}</span></a>
+            <ul role="menu" class="dropdown-menu with_icons">
+                <li class="dropdown_title">{% trans %}Assigned to me{% endtrans %}:</li>
+                {% for doc in assingedContent %}
+                    <li><a href="{{ path('integrated_content_content_edit', {id: doc.type_id}) }}" tabindex="-1" role="menuitem"><i class="glyphicon glyphicon-plus-sign"></i><span class="item_name">{{ doc.title }}</span></a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endif %}
 
     {#<li class="dropdown hidden-xs">
             <a data-toggle="dropdown" class="dropdown-toggle with_badge" role="button" href="#"><i class="glyphicon glyphicon-tasks"></i><span class="badge">4</span></a>
