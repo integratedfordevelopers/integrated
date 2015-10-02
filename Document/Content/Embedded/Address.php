@@ -31,6 +31,12 @@ class Address
      * @var string
      * @ODM\String
      */
+    protected $name;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
     protected $address1;
 
     /**
@@ -64,6 +70,12 @@ class Address
     protected $country;
 
     /**
+     * @var Location
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location")
+     */
+    protected $location;
+
+    /**
      * Get the type of the document
      *
      * @return string
@@ -83,6 +95,38 @@ class Address
     {
         $this->type = $type;
         return $this;
+    }
+
+    /**
+     * Get the name of the document
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the name of the document
+     *
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * Get the title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->address1 . ', ' . $this->getCity();
     }
 
     /**
@@ -214,6 +258,28 @@ class Address
     public function setCountry($country)
     {
         $this->country = $country;
+        return $this;
+    }
+
+    /**
+     * Get the location of the document
+     *
+     * @return Location
+     */
+    public function getLocation()
+    {
+        return $this->location;
+    }
+
+    /**
+     * Set the location of the document
+     *
+     * @param Location $location
+     * @return $this
+     */
+    public function setLocation(Location $location = null)
+    {
+        $this->location = $location;
         return $this;
     }
 }
