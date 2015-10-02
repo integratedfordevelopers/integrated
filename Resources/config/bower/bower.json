@@ -3,6 +3,16 @@
     "dependencies": {
         "typeahead.js": "0.10.*",
         "handlebars" : "~2.0",
-        "requirejs": "2.1.14"
+        "requirejs": "2.1.14",
+
+        "modernizr": "latest",
+        "html5shiv": "latest",
+        "respond": "latest",
+        "jquery": "latest",
+        "bootstrap-sass-official": "latest",
+        "jquery-placeholder": "latest",
+        "bourbon": "~4.2.3",
+        "tinymce": "~4.1.10",
+        "select2": "~4.0.0"
     }
 }
