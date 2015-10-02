@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
 {% block style %}
-    <link rel="stylesheet" href="/css/main.css" />
+    {% stylesheets "@integrated_css" %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
 
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 
