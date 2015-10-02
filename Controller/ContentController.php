@@ -496,7 +496,9 @@ class ContentController extends Controller
                     $locking['release']();
                 }
 
-                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
+                $url = $form->get('returnUrl')->getData() ?: $this->generateUrl('integrated_content_content_index', ['remember' => 1]);
+
+                return $this->redirect($url);
             }
 
             if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
@@ -645,6 +647,13 @@ class ContentController extends Controller
             // this is not rest compatible since a button click is required to save
             if ($form->get('actions')->getData() == 'delete') {
                 if ($form->isValid()) {
+                    if ($this->has('integrated_solr.indexer')) {
+                        //higher priority for content edited in Integrated
+                        $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
+                        $queue = $subscriber->getQueue();
+                        $subscriber->setPriority($queue::PRIORITY_HIGH);
+                    }
+
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                     $dm = $this->get('doctrine_mongodb')->getManager();
 
@@ -995,10 +1004,13 @@ class ContentController extends Controller
         $form = $this->createForm($type, $content,[
             'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
             'method' => 'PUT',
+            'attr' => ['class' => 'content-form'],
 
             // don't display error's when the content is locked as the user can't save in the first place
             'validation_groups' => $locking['locked'] ? false : null
         ]);
+
+        $form->add('returnUrl', 'hidden', ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
 
         // load a different set of buttons based on the permissions and locking state
 
