@@ -1,0 +1,65 @@
+/* VARIABLES */
+
+//For color names was used site - http://chir.ag/projects/name-that-color
+$color-white: #ffffff; //White
+$color-black: #000000; //Black
+$color-mine-shaft: #333333;  //Black thin
+$color-aqua-haze: #f5f8f9; //Body bg
+/* Gray group */
+$color-dusty-gray: #999999; //Main text color
+$color-alabaster: #f9f9f9; //Gray light color
+$color-dove-gray: #666666; //Gray dark color
+$color-gallery: #EBEBEB; //Gray ligh btn bg
+$color-silver-chalive: #ADADAD; //Gray dark btn bg
+$color-mercury: #e5e5e5; //Gray border color
+$color-silver: #cccccc;
+$color-porcelain: #f1f4f5; //Section gray border
+/* Blue group */
+$color-allports: #016aac; //Nav bg  //Link hover color state
+$color-azure-radiance: #0199f8; //Link color //Blue btn bg
+$color-dodger-blue: #34ADF9; //Blue btn hover state
+$color-danube: #5a9ec9; //Blue thin btn bg
+$color-boston-blue: #428bca; //Blue dropdown header
+/* Green group */
+$color-green-haze: #01ac32; //Green color
+/* Orange group */
+$color-ecstasy: #f6740e; //Orange btn bg
+
+
+
+
+/* Font VARIABLES */
+$font-family: 'PT Sans', sans-serif;
+
+$font-light: 300;
+$font-regular: 400;
+$font-medium: 600;
+$font-bold: 700;
+
+
+//Body VARIABLES
+$main-text-color: $color-dusty-gray;
+$body-font-size: 14px;
+$body-line-height: 24px;
+$body-main-font: $font-family;
+$body-bg: $color-aqua-haze;
+$color-link: $color-azure-radiance;
+$color-link-hover: $color-allports;
+
+/* Form VARIABLES */
+$input-font-size: 12px;
+
+$input-color-placeholder-focus: transparent;
+$input-color-placeholder: $color-dusty-gray;
+$input-font-size-placeholder: $input-font-size;
+$input-line-height-placeholder: $body-line-height;
+
+
+
+/* Sections VARIABLES */
+
+
+//Header variables
+$header-bg: $color-allports;
+
+//Footer VARIABLES

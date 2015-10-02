@@ -1,0 +1,33 @@
+/* MEGAMENU */
+.megamenu .nav,
+.megamenu .collapse,
+.megamenu .dropup,
+.megamenu .dropdown {
+  	position: static;
+  	@include respond-to(phones) {
+  		position: relative;
+  	}
+}
+.megamenu .container {
+  	position: relative;
+}
+.megamenu .dropdown-menu {
+  	left: auto;
+  	@include respond-to(phones) {
+		left: 0;
+	}
+}
+.megamenu .megamenu-content {
+  	padding: 5px 0;
+  	@include display(flex);
+  	@include respond-to(phones) {
+  		display: block;
+  	}
+}
+.megamenu .dropdown.megamenu-fw .dropdown-menu {
+  	left: 0;
+  	right: 0;
+}
+.megamenu-holder {
+	right: 0 !important;
+}
