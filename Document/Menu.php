@@ -11,10 +11,6 @@
 
 namespace Integrated\Bundle\MenuBundle\Document;
 
-use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
-
-use Knp\Menu\ItemInterface;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -23,26 +19,18 @@ class Menu extends MenuItem
     /**
      * {@inheritdoc}
      */
-    public function addChild($child, array $options = [])
+    public function toArray()
     {
-        if ($child instanceof Menu) {
-            throw new \InvalidArgumentException('Cannot add an instance of "Menu" as child, use "MenuItem" instead.');
+        $children = [];
+
+        /** @var MenuItem $child */
+        foreach ($this->children as $child) {
+            $children[] = $child->toArray();
         }
 
-        if (!$child instanceof ItemInterface) {
-            if ($this->factory instanceof DatabaseMenuFactory) {
-                $child = $this->factory->createChild($child, $options);
-            } else {
-                $child = $this->factory->createItem($child, $options);
-            }
-        } elseif (null !== $child->getParent()) {
-            throw new \InvalidArgumentException('Cannot add menu item as child, it already belongs to another menu (e.g. has a parent).');
-        }
-
-        $child->setParent($this);
-
-        $this->children[$child->getName()] = $child;
-
-        return $child;
+        return [
+            'id'       => $this->getId(),
+            'children' => $children,
+        ];
     }
 }

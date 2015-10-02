@@ -4,6 +4,7 @@
 
     <embedded-document name="Integrated\Bundle\MenuBundle\Document\MenuItem" collection="menu">
 
+        <field fieldName="id" id="true" strategy="UUID" />
         <field fieldName="name" type="string" />
         <field fieldName="label" type="string" />
         <field fieldName="uri" type="string" />
@@ -15,7 +16,7 @@
         <field fieldName="display" type="boolean" />
         <field fieldName="displayChildren" type="boolean" />
 
-        <embed-many field="children" target-document="Integrated\Bundle\MenuBundle\Document\MenuItem" strategy="set" />
+        <embed-many field="children" target-document="Integrated\Bundle\MenuBundle\Document\MenuItem" />
 
     </embedded-document>
 

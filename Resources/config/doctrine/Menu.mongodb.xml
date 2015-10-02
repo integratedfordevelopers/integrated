@@ -4,18 +4,9 @@
 
     <document name="Integrated\Bundle\MenuBundle\Document\Menu" collection="menu">
 
-        <field fieldName="name" id="true" strategy="NONE" />
-        <field fieldName="label" type="string" />
-        <field fieldName="uri" type="string" />
-        <field fieldName="linkAttributes" type="hash" />
-        <field fieldName="childrenAttributes" type="hash" />
-        <field fieldName="labelAttributes" type="hash" />
-        <field fieldName="attributes" type="hash" />
-        <field fieldName="extras" type="hash" />
-        <field fieldName="display" type="boolean" />
-        <field fieldName="displayChildren" type="boolean" />
+        <field fieldName="id" id="true" strategy="NONE" />
 
-        <embed-many field="children" target-document="Integrated\Bundle\MenuBundle\Document\MenuItem" strategy="set" />
+        <embed-many field="children" target-document="Integrated\Bundle\MenuBundle\Document\MenuItem" />
 
     </document>
 

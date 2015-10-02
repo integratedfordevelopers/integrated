@@ -42,20 +42,24 @@ class DatabaseMenuProvider implements MenuProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name, array $options = [])
+    public function get($id, array $options = [])
     {
-        if (!isset($this->menus[$name])) {
-            $this->menus[$name] = $this->repository->find($name);
+        if (!isset($this->menus[$id])) {
+            if ($menu = $this->repository->find($id)) {
+                $this->menus[$id] = $menu;
+            }
         }
 
-        return $this->menus[$name];
+        if (isset($this->menus[$id])) {
+            return $this->menus[$id];
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function has($name, array $options = [])
+    public function has($id, array $options = [])
     {
-        return null !== $this->get($name, $options);
+        return null !== $this->get($id, $options);
     }
 }

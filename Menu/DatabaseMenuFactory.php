@@ -53,11 +53,13 @@ class DatabaseMenuFactory implements FactoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $id
+     * @param array $options
+     * @return \Integrated\Bundle\MenuBundle\Document\Menu
      */
-    public function createItem($name, array $options = [])
+    public function createItem($id, array $options = [])
     {
-        return $this->getItem($this->menuClass, $name, $options);
+        return $this->getItem($this->menuClass, null, $options)->setId($id);
     }
 
     /**
@@ -71,10 +73,55 @@ class DatabaseMenuFactory implements FactoryInterface
     }
 
     /**
+     * @param array $array
+     * @return \Integrated\Bundle\MenuBundle\Document\MenuItem|null
+     */
+    public function fromArray(array $array = [])
+    {
+        if (isset($array['id'])) {
+            $menu = $this->createItem($array['id']);
+
+            if (isset($array['children'])) {
+                $menu->setChildren($this->parseChildren((array) $array['children']));
+            }
+
+            return $menu;
+        }
+    }
+
+    /**
+     * @param array $array
+     * @return array
+     */
+    protected function parseChildren(array $array = [])
+    {
+        $children = [];
+
+        foreach ($array as $value) {
+            if (isset($value['id'])) {
+                $child = $this->createChild(isset($value['name']) ? $value['name'] : '');
+                $child->setId($value['id']);
+
+                if (isset($value['uri'])) {
+                    $child->setUri($value['uri']);
+                }
+
+                if (isset($value['children'])) {
+                    $child->setChildren($this->parseChildren((array) $value['children']));
+                }
+
+                $children[] = $child;
+            }
+        }
+
+        return $children;
+    }
+
+    /**
      * @param $class
      * @param $name
      * @param array $options
-     * @return ItemInterface
+     * @return \Integrated\Bundle\MenuBundle\Document\MenuItem
      */
     protected function getItem($class, $name, array $options = [])
     {
