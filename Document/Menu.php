@@ -11,26 +11,33 @@
 
 namespace Integrated\Bundle\MenuBundle\Document;
 
+use Integrated\Common\Content\Channel\ChannelInterface;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class Menu extends MenuItem
 {
     /**
-     * {@inheritdoc}
+     * @var ChannelInterface
      */
-    public function toArray()
+    protected $channel;
+
+    /**
+     * @return ChannelInterface
+     */
+    public function getChannel()
     {
-        $children = [];
+        return $this->channel;
+    }
 
-        /** @var MenuItem $child */
-        foreach ($this->children as $child) {
-            $children[] = $child->toArray();
-        }
-
-        return [
-            'id'       => $this->getId(),
-            'children' => $children,
-        ];
+    /**
+     * @param ChannelInterface $channel
+     * @return $this
+     */
+    public function setChannel(ChannelInterface $channel)
+    {
+        $this->channel = $channel;
+        return $this;
     }
 }

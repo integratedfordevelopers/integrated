@@ -53,13 +53,13 @@ class DatabaseMenuFactory implements FactoryInterface
     }
 
     /**
-     * @param string $id
+     * @param string $name
      * @param array $options
      * @return \Integrated\Bundle\MenuBundle\Document\Menu
      */
-    public function createItem($id, array $options = [])
+    public function createItem($name, array $options = [])
     {
-        return $this->getItem($this->menuClass, null, $options)->setId($id);
+        return $this->getItem($this->menuClass, $name, $options);
     }
 
     /**
@@ -74,12 +74,16 @@ class DatabaseMenuFactory implements FactoryInterface
 
     /**
      * @param array $array
-     * @return \Integrated\Bundle\MenuBundle\Document\MenuItem|null
+     * @return \Integrated\Bundle\MenuBundle\Document\Menu|null
      */
     public function fromArray(array $array = [])
     {
-        if (isset($array['id'])) {
-            $menu = $this->createItem($array['id']);
+        if (isset($array['name'])) {
+            $menu = $this->createItem($array['name']);
+
+            if (isset($value['id'])) {
+                $menu->setId($value['id']);
+            }
 
             if (isset($array['children'])) {
                 $menu->setChildren($this->parseChildren((array) $array['children']));

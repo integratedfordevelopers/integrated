@@ -6,15 +6,7 @@
 
         <field fieldName="id" id="true" strategy="UUID" />
         <field fieldName="name" type="string" />
-        <field fieldName="label" type="string" />
         <field fieldName="uri" type="string" />
-        <field fieldName="linkAttributes" type="hash" />
-        <field fieldName="childrenAttributes" type="hash" />
-        <field fieldName="labelAttributes" type="hash" />
-        <field fieldName="attributes" type="hash" />
-        <field fieldName="extras" type="hash" />
-        <field fieldName="display" type="boolean" />
-        <field fieldName="displayChildren" type="boolean" />
 
         <embed-many field="children" target-document="Integrated\Bundle\MenuBundle\Document\MenuItem" />
 

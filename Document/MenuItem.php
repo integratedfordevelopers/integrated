@@ -102,18 +102,26 @@ class MenuItem extends KnpMenuItem
      */
     public function toArray()
     {
+        $array = [];
+
+        if ($this->getId()) {
+            $array['id'] = $this->getId();
+        }
+
+        if ($this->getName()) {
+            $array['name'] = $this->getName();
+        }
+
+        if ($this->getUri()) {
+            $array['uri'] = $this->getUri();
+        }
+
         $children = [];
 
         /** @var MenuItem $child */
         foreach ($this->children as $child) {
             $children[] = $child->toArray();
         }
-
-        $array = [
-            'id'   => $this->getId(),
-            'name' => $this->getName(),
-            'uri'  => $this->getUri(),
-        ];
 
         if (count($children)) {
             $array['children'] = $children;

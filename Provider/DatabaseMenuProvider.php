@@ -16,11 +16,19 @@ use Knp\Menu\Provider\MenuProviderInterface;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
+use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Integrated\Common\Content\Channel\ChannelInterface;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class DatabaseMenuProvider implements MenuProviderInterface
 {
+    /**
+     * @var ChannelContextInterface
+     */
+    protected $channelContext;
+
     /**
      * @var DocumentRepository
      */
@@ -32,34 +40,42 @@ class DatabaseMenuProvider implements MenuProviderInterface
     protected $menus = [];
 
     /**
+     * @param ChannelContextInterface $channelContext
      * @param DocumentRepository $repository
      */
-    public function __construct(DocumentRepository $repository)
+    public function __construct(ChannelContextInterface $channelContext, DocumentRepository $repository)
     {
+        $this->channelContext = $channelContext;
         $this->repository = $repository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get($id, array $options = [])
+    public function get($name, array $options = [])
     {
-        if (!isset($this->menus[$id])) {
-            if ($menu = $this->repository->find($id)) {
-                $this->menus[$id] = $menu;
+        $channel = $this->channelContext->getChannel();
+
+        if ($channel instanceof ChannelInterface) {
+            $channel = $channel->getId();
+        }
+
+        if (!isset($this->menus[$name][$channel])) {
+            if ($menu = $this->repository->findOneBy(['name' => $name, 'channel.$id' => $channel])) {
+                $this->menus[$name][$channel] = $menu;
             }
         }
 
-        if (isset($this->menus[$id])) {
-            return $this->menus[$id];
+        if (isset($this->menus[$name][$channel])) {
+            return $this->menus[$name][$channel];
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function has($id, array $options = [])
+    public function has($name, array $options = [])
     {
-        return null !== $this->get($id, $options);
+        return null !== $this->get($name, $options);
     }
 }
