@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new Sp\BowerBundle\SpBowerBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new Vihuvac\Bundle\RecaptchaBundle\VihuvacRecaptchaBundle(),
 
             new Integrated\Bundle\ContentBundle\IntegratedContentBundle(),
             new Integrated\Bundle\FormTypeBundle\IntegratedFormTypeBundle(),
