@@ -11,5 +11,5 @@ Integrated\Bundle\UserBundle\Model\User:
   user1:
     username: admin
     salt:     <generateSalt()>
-    password: <generatePassword(@self, 'admin','salt')>
+    password: <generatePassword(@self, 'admin')>
     groups:   [@group1]
