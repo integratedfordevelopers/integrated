@@ -10,6 +10,6 @@ Integrated\Bundle\UserBundle\Model\Group:
 Integrated\Bundle\UserBundle\Model\User:
   user1:
     username: admin
-    salt:     salt
-    password: <generatePassword('admin','salt')>
+    salt:     <generateSalt()>
+    password: <generatePassword(@self, 'admin','salt')>
     groups:   [@group1]

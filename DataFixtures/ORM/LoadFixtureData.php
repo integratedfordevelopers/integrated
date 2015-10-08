@@ -51,10 +51,23 @@ class LoadAppData extends ContainerAware implements FixtureInterface
         Fixtures::load($files, $manager, ['providers' => [$this], 'locale' => $this->locale]);
     }
 
-    public function generatePassword($password, $salt)
+    /**
+     * @return string
+     */
+    public function generateSalt()
     {
-        //todo find a way to pass the User object as parameter and generate a real salt
-        $encoder = $this->container->get('security.encoder_factory')->getEncoder(new User());
-        return $encoder->encodePassword($password, $salt);
+        $generator = $this->container->get('security.secure_random');
+        return  base64_encode($generator->nextBytes(72));
+    }
+
+    /**
+     * @param User $user
+     * @param $password
+     * @return mixed
+     */
+    public function generatePassword(User $user, $password)
+    {
+        $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
+        return $encoder->encodePassword($password, $user->getSalt());
     }
 }
