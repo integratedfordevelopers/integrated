@@ -33,6 +33,24 @@ class TextBlock extends Block
     protected $content;
 
     /**
+     * @var string
+     * @ODM\String
+     * @Type\Field(options={"required"=false})
+     */
+    protected $publishedTitle;
+
+    /**
+     * @ODM\Boolean
+     * @Type\Field(
+     *      type="checkbox",
+     *      options={
+     *          "required"=false
+     *      }
+     * )
+     */
+    protected $useTitle;
+
+    /**
      * @return string
      */
     public function getContent()
@@ -56,5 +74,46 @@ class TextBlock extends Block
     public function getType()
     {
         return 'text';
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublishedTitle()
+    {
+        return $this->publishedTitle;
+    }
+
+    /**
+     * @param string $publishedTitle
+     */
+    public function setPublishedTitle($publishedTitle)
+    {
+        $this->publishedTitle = $publishedTitle;
+    }
+
+    public function getValidTitle()
+    {
+        if ($this->useTitle) {
+            return $this->title;
+        }
+
+        return $this->publishedTitle != null ? $this->publishedTitle : $this->title;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseTitle()
+    {
+        return $this->useTitle;
+    }
+
+    /**
+     * @param boolean $useTitle
+     */
+    public function setUseTitle($useTitle)
+    {
+        $this->useTitle = $useTitle;
     }
 }
