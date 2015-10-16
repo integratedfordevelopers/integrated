@@ -94,6 +94,24 @@ class ContentBlock extends Block
     protected $facetFields = [];
 
     /**
+     * @var string
+     * @ODM\String
+     * @Type\Field(options={"required"=false})
+     */
+    protected $publishedTitle;
+
+    /**
+     * @ODM\Boolean
+     * @Type\Field(
+     *      type="checkbox",
+     *      options={
+     *          "required"=false
+     *      }
+     * )
+     */
+    protected $useTitle;
+
+    /**
      * @return SearchSelection
      */
     public function getSearchSelection()
@@ -189,5 +207,46 @@ class ContentBlock extends Block
     public function getType()
     {
         return 'content';
+    }
+
+    /**
+     * @return string
+     */
+    public function getPublishedTitle()
+    {
+        return $this->publishedTitle;
+    }
+
+    /**
+     * @param string $publishedTitle
+     */
+    public function setPublishedTitle($publishedTitle)
+    {
+        $this->publishedTitle = $publishedTitle;
+    }
+
+    public function getValidTitle()
+    {
+        if ($this->useTitle) {
+            return $this->useTitle;
+        }
+
+        return $this->publishedTitle !== null ? $this->publishedTitle : $this->title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUseTitle()
+    {
+        return $this->useTitle;
+    }
+
+    /**
+     * @param mixed $useTitle
+     */
+    public function setUseTitle($useTitle)
+    {
+        $this->useTitle = $useTitle;
     }
 }
