@@ -96,7 +96,24 @@ class ContentBlock extends Block
     /**
      * @var string
      * @ODM\String
-     * @Type\Field(options={"required"=false})
+     * @Assert\NotBlank
+     * @Type\Field(
+     *       options={
+     *          "attr"={"class"="main-title"}
+     *       }
+     * )
+     */
+    protected $title;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field(
+     *       options={
+     *          "required"=false,
+     *          "attr"={"class"="published-title"}
+     *       }
+     * )
      */
     protected $publishedTitle;
 
@@ -105,7 +122,8 @@ class ContentBlock extends Block
      * @Type\Field(
      *      type="checkbox",
      *      options={
-     *          "required"=false
+     *          "required"=false,
+     *          "attr"={"class"="use-title"}
      *      }
      * )
      */
@@ -222,16 +240,7 @@ class ContentBlock extends Block
      */
     public function setPublishedTitle($publishedTitle)
     {
-        $this->publishedTitle = $publishedTitle;
-    }
-
-    public function getValidTitle()
-    {
-        if ($this->useTitle) {
-            return $this->useTitle;
-        }
-
-        return $this->publishedTitle !== null ? $this->publishedTitle : $this->title;
+        $this->publishedTitle = $publishedTitle === null ? '' : $publishedTitle;
     }
 
     /**
@@ -248,5 +257,17 @@ class ContentBlock extends Block
     public function setUseTitle($useTitle)
     {
         $this->useTitle = $useTitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreviewTitle()
+    {
+        if ($this->useTitle) {
+            return $this->title;
+        }
+
+        return $this->publishedTitle !== null ? $this->publishedTitle : $this->title;
     }
 }
