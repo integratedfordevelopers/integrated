@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
@@ -35,20 +36,39 @@ class TextBlock extends Block
     /**
      * @var string
      * @ODM\String
-     * @Type\Field(options={"required"=false})
+     * @Assert\NotBlank
+     * @Type\Field(
+     *       options={
+     *          "attr"={"class"="main-title"}
+     *       }
+     * )
      */
-    protected $publishedTitle;
+    protected $title;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field(
+     *       options={
+     *          "required"=false,
+     *          "attr"={"class"="published-title"}
+     *       }
+     * )
+     */
+    protected $publishedTitle = '';
 
     /**
      * @ODM\Boolean
      * @Type\Field(
      *      type="checkbox",
      *      options={
-     *          "required"=false
+     *          "required"=false,
+     *          "attr"={"class"="use-title"}
      *      }
      * )
      */
     protected $useTitle;
+
 
     /**
      * @return string
@@ -89,16 +109,7 @@ class TextBlock extends Block
      */
     public function setPublishedTitle($publishedTitle)
     {
-        $this->publishedTitle = $publishedTitle;
-    }
-
-    public function getValidTitle()
-    {
-        if ($this->useTitle) {
-            return $this->title;
-        }
-
-        return $this->publishedTitle != null ? $this->publishedTitle : $this->title;
+        $this->publishedTitle = $publishedTitle === null ? '' : $publishedTitle;
     }
 
     /**
@@ -115,5 +126,17 @@ class TextBlock extends Block
     public function setUseTitle($useTitle)
     {
         $this->useTitle = $useTitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreviewTitle()
+    {
+        if ($this->useTitle) {
+            return $this->title;
+        }
+
+        return $this->publishedTitle !== null ? $this->publishedTitle : $this->title;
     }
 }
