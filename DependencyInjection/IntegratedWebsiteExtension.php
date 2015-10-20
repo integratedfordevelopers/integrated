@@ -35,5 +35,6 @@ class IntegratedWebsiteExtension extends Extension
         $loader->load('event_listeners.xml');
         $loader->load('form.xml');
         $loader->load('connector.xml');
+        $loader->load('twig.xml');
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_website.twig.grid_extension.class">Integrated\Bundle\WebsiteBundle\Twig\Extension\GridExtension</parameter>
+        <parameter key="integrated_website.twig.menu_extension.class">Integrated\Bundle\WebsiteBundle\Twig\Extension\MenuExtension</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_website.twig.grid_extension" class="%integrated_website.twig.grid_extension.class%">
+            <argument type="service" id="twig.form.renderer" />
+            <argument type="service" id="form.factory" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_website.twig.menu_extension" class="%integrated_website.twig.menu_extension.class%">
+            <argument type="service" id="integrated_menu.provider.database_menu_provider" />
+            <argument type="service" id="integrated_menu.menu.database_menu_factory" />
+            <argument type="service" id="knp_menu.helper" />
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+</container>

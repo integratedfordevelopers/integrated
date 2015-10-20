@@ -9,7 +9,7 @@
             <div class="pull-right">
                 {% if app.request.attributes.get('_route') == 'integrated_website_page_edit' %}
 
-                    <a href="javascript:;" class="btn btn-default navbar-btn" data-action="integrated-website-save" data-element-id="integrated_website_page">
+                    <a href="javascript:;" class="btn btn-default navbar-btn" data-action="integrated-website-page-save" data-id="{{ page.id }}" data-element-id="integrated_website_page">
                         Save
                     </a>
 

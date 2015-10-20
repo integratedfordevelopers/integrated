@@ -25,6 +25,7 @@
         "integrated/content-bundle": "~0.3",
         "integrated/page-bundle": "~0.3",
         "integrated/theme-bundle": "~0.3",
+        "integrated/menu-bundle": "~0.3",
         "knplabs/knp-paginator-bundle": ">=2.4",
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
         "twbs/bootstrap": "3.*"

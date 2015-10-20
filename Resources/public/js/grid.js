@@ -186,12 +186,6 @@
         }
     });
 
-    $(document).on('click', '[data-action="integrated-website-save"]', function(e) {
-        e.preventDefault();
-
-        $('#' + $(this).attr('data-element-id')).submit();
-    });
-
     $(document).on('click', '[data-action="integrated-website-cols-add"]', function(e) {
         e.preventDefault();
 

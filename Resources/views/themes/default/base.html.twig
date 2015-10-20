@@ -19,17 +19,18 @@
 </head>
 <body>
 
-{% if form is defined %}
+{% if form|default and edit|default %}
     {# TODO: auto generate (INTEGRATED-384) #}
     {{ form_start(form) }}
     {{ form_errors(form) }}
 {% endif %}
 
 <div class="container">
+    {{ integrated_menu('main') }}
     {{ integrated_grid('main') }}
 </div>
 
-{% if form is defined %}
+{% if form|default and edit|default %}
     {# TODO: auto generate (INTEGRATED-384) #}
     {{ form_row(form._token) }}
     {{ form_end(form, { 'render_rest': false }) }}
@@ -48,6 +49,7 @@
 
 {% block javascripts %}
     {% javascripts output='js/scripts.js' filter='?uglifyjs2'
+        '@IntegratedWebsiteBundle/Resources/public/js/menu.js'
         '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}

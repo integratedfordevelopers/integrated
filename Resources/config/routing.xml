@@ -6,5 +6,6 @@
 
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/content.xml" prefix="/content" />
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/page.xml" prefix="/page" />
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/menu.xml" prefix="/menu" />
     <import resource="." type="page" />
 </routes>
