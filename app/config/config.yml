@@ -136,4 +136,3 @@ integrated_theme:
         default:
             paths:
                 - @IntegratedWebsiteBundle/Resources/views/themes/default
-

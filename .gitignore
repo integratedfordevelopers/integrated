@@ -11,10 +11,11 @@
 /bin/
 /components/
 /composer.phar
-/.idea
 /web/css/
 /web/js/
 /web/fonts/
 /web/bower/
+/web/genghis.php
 /conf.d/.ssh/
+/.idea/
 /.vagrant/
