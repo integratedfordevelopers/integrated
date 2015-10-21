@@ -22,11 +22,11 @@
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*",
         "integrated/library": "~0.3",
-        "integrated/content-bundle": "~0.3",
+        "integrated/content-bundle": "~0.2",
         "integrated/channel-bundle": "~0.3",
         "integrated/formtype-bundle": "~0.3",
         "integrated/solr-bundle": "~0.3",
-        "integrated/user-bundle": "~0.2",
+        "integrated/user-bundle": "~0.3",
         "integrated/website-bundle": "~0.3",
         "integrated/workflow-bundle": "~0.3"
     },
