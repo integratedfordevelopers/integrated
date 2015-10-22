@@ -1,12 +1,12 @@
 # IntegratedContentBundle #
-This bundle provides the document structure for Integrated
+This bundle provides the document structure for Integrated.
 
 ## Requirements ##
 * See the require section in the composer.json
 
 ## Features ##
 * Document structure
-* Base template for Integrated
+* Base templates for Integrated
 
 ## Documentation ##
 * [Integrated for Developers](http://integratedfordevelopers.com/ "Integrated for Developers")
@@ -54,7 +54,7 @@ The base template of the ContentBundle uses two [named assets](http://symfony.co
 1. `integrated_js`
 2. `integrated_css`
 
-The IntegratedContentBundle has [SASS files](http://sass-lang.com/). In order to use these files a SASS filter can be used:
+The IntegratedContentBundle uses [Sass](http://sass-lang.com/), in order to use these files a Sass filter can be used:
 
 	# app/config/config.yml
 	assetic:
