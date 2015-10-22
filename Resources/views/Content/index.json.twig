@@ -1,7 +1,7 @@
 {% spaceless %}
 {% set items = [] %}
 {% for content in pager %}
-    {% set item = {'id': content.type_id, 'title': content.title|default('(no title)'), 'content': null, 'image': null, 'disabled': content.disabled_int} %}
+    {% set item = {'id': content.type_id, 'title': content.title|default('(no title)'), 'content': null, 'image': null, 'disabled': content.disabled_int|first|default(0)} %}
     {% if content.content is defined %}
         {% set item = item|merge({'content': content.content|join('...')|striptags}) %}
     {% endif %}
