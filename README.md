@@ -38,7 +38,6 @@ This bundle can be installed following these steps:
 
 ### Configuring the assets ###
 
-#### Configuring the SpBowerBundle ####
 The IntegratedContentBundle uses the [SpBowerBundle](https://github.com/Spea/SpBowerBundle) for handling the external
 resources.
 
@@ -47,14 +46,15 @@ resources.
         paths:
             IntegratedContentBundle: ~
 
-
-#### Configuring Assetic ####
 The base template of the ContentBundle uses two [named assets](http://symfony.com/doc/current/cookbook/assetic/asset_management.html#using-named-assets):
 
 1. `integrated_js`
 2. `integrated_css`
 
-The IntegratedContentBundle uses [Sass](http://sass-lang.com/), in order to use these files a Sass filter can be used:
+These two named assets must be defined in the `app/config/config.yml`.
+
+The IntegratedContentBundle uses [Sass](http://sass-lang.com/) for generating the stylesheet, in order to use these 
+files a Sass filter can be used:
 
 	# app/config/config.yml
 	assetic:
