@@ -1,5 +1,17 @@
+integrated_block:
+    resource: "@IntegratedBlockBundle/Resources/config/routing.xml"
+    prefix: "/admin"
+
+integrated_page:
+    resource: "@IntegratedPageBundle/Resources/config/routing.xml"
+    prefix: "/admin"
+
 integrated_content:
     resource: "@IntegratedContentBundle/Resources/config/routing.xml"
+    prefix: "/admin"
+
+integrated_channel:
+    resource: "@IntegratedChannelBundle/Resources/config/routing.xml"
     prefix: "/admin"
 
 integrated_user:
@@ -9,3 +21,13 @@ integrated_user:
 integrated_security:
     resource: "@IntegratedUserBundle/Resources/config/routing.security.xml"
     prefix: "/admin"
+
+integrated_website:
+    resource: "@IntegratedWebsiteBundle/Resources/config/routing.xml"
+
+_intergrated_workflow:
+    prefix: /workflow/
+    resource: "@IntegratedWorkflowBundle/Resources/config/routing/workflow.xml"
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

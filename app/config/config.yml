@@ -3,7 +3,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
 
-
 framework:
     #esi:             ~
     #translator:      { fallback: %locale% }
@@ -27,12 +26,14 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    form_themes:
+        - 'IntegratedWebsiteBundle:Form:form_div_layout.html.twig'
 
 services:
     twig.extension.intl:
         class: Twig_Extensions_Extension_Intl
         tags:
-                - { name: twig.extension }
+            - { name: twig.extension }
 
 # Assetic Configuration
 assetic:
@@ -44,28 +45,28 @@ assetic:
             compress: true
             apply_to: "\.less$"
         cssrewrite: ~
+        sass:
+            bin: /usr/bin/sass
+            apply_to: "\.scss$"
+            style: compressed
+
     assets:
         integrated_css:
             inputs:
-                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css
-                - @IntegratedFormTypeBundle/Resources/public/components/bootstrap3-wysihtml5-bower/dist/bootstrap3-wysihtml5.min.css
+                - @IntegratedContentBundle/Resources/public/sass/main.scss
+            filters:
+                - sass
+            output: css/main.css
         integrated_js:
             inputs:
-                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
-                - @IntegratedFormTypeBundle/Resources/public/js/datetimepicker.js
-        bootstrap_css:
-            inputs:
-                - @IntegratedContentBundle/Resources/public/less/styles.less
-            filters:
-                - less
-            output: css/bootstrap.css
+                #- @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
+                #- @IntegratedFormTypeBundle/Resources/public/js/datetimepicker.js
 
-# Bootstrap configuration
+
+# Bootstrap Configuration
 braincrafted_bootstrap:
-    less_filter: less
-    jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.js
-#    customize:
-#        variables_file: %kernel.root_dir%/../vendor/integrated/content-bundle/Integrated/Bundle/ContentBundle/Resources/public/less/variables.less
+    auto_configure:
+        assetic: false
 
 # Doctrine Configuration
 doctrine:
@@ -103,7 +104,7 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
-# Solr configuration
+# Solr Configuration
 integrated_solr:
     endpoints:
         default:
@@ -112,7 +113,7 @@ integrated_solr:
             core: %solr_core%
             timeout: %solr_timeout%
 
-# Bower configuration
+# Bower Configuration
 sp_bower:
     bundles:
         IntegratedContentBundle:
@@ -121,7 +122,18 @@ sp_bower:
         IntegratedFormTypeBundle:
             cache:
                 %kernel.cache_dir%/../sp_bower/IntegratedFormTypeBundle
+        IntegratedWebsiteBundle:
+            cache:
+                %kernel.cache_dir%/../sp_bower/IntegratedWebsiteBundle
     bin: %bower_bin%
     install_on_warmup: true
     assetic:
         enabled: false
+
+# Theme Configuration
+integrated_theme:
+    themes:
+        default:
+            paths:
+                - @IntegratedWebsiteBundle/Resources/views/themes/default
+
