@@ -164,13 +164,15 @@ class PageController extends Controller
      */
     protected function createCreateForm(Page $page)
     {
+        $channel = $this->getSelectedChannel();
+
         $form = $this->createForm(
             'integrated_page_page',
             $page,
             [
-                'action' => $this->generateUrl('integrated_page_page_new'),
+                'action' => $this->generateUrl('integrated_page_page_new', ['channel' => $channel->getId()]),
                 'method' => 'POST',
-                'theme'  => $this->getTheme($this->getSelectedChannel()),
+                'theme'  => $this->getTheme($channel),
             ]
         );
 
@@ -186,13 +188,15 @@ class PageController extends Controller
      */
     protected function createEditForm(Page $page)
     {
+        $channel = $page->getChannel();
+
         $form = $this->createForm(
             'integrated_page_page',
             $page,
             [
-                'action' => $this->generateUrl('integrated_page_page_edit', ['id' => $page->getId()]),
+                'action' => $this->generateUrl('integrated_page_page_edit', ['id' => $page->getId(), 'channel' => $channel->getId()]),
                 'method' => 'PUT',
-                'theme'  => $this->getTheme($page->getChannel()),
+                'theme'  => $this->getTheme($channel),
             ]
         );
 
