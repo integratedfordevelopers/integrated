@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dd76648a36ad98b6ebf02fe7505cacb7",
+    "hash": "3b43a06541382ef505ccd605b9fbaea5",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1479,7 +1479,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/bbd79e04351b82441e0ed3e8233ebdeb755b96f5.zip",
+                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/ffd03a8b911c85311ef261f76c3c610e3d67971b.zip",
                 "reference": "d3449b130f21c34230f9c78723cc5b29398b78bd",
                 "shasum": ""
             },
@@ -1504,7 +1504,7 @@
                 "symfony/framework-bundle": "~2.2",
                 "symfony/symfony": "~2.6",
                 "twbs/bootstrap": "3.*",
-                "vihuvac/recaptcha-bundle": "dev-master"
+                "vihuvac/recaptcha-bundle": "~2.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "4.2.*"
@@ -1788,7 +1788,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-page-bundle/get/161e5511c3bde522c45d811774fcb6592565f8b3.zip",
+                "url": "https://bitbucket.org/eactive/integrated-page-bundle/get/858cd501bf2c3ebe8be1952d344270de51c88056.zip",
                 "reference": "161e5511c3bde522c45d811774fcb6592565f8b3",
                 "shasum": ""
             },
@@ -3572,7 +3572,7 @@
         },
         {
             "name": "vihuvac/recaptcha-bundle",
-            "version": "dev-master",
+            "version": "v2.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vihuvac/recaptcha-bundle.git",

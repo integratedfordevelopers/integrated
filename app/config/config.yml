@@ -27,6 +27,7 @@ twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
     form_themes:
+        - 'VihuvacRecaptchaBundle:Form:vihuvac_recaptcha_widget.html.twig'
         - 'IntegratedWebsiteBundle:Form:form_div_layout.html.twig'
 
 services:
@@ -59,8 +60,9 @@ assetic:
             output: css/main.css
         integrated_js:
             inputs:
-                #- @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
-                #- @IntegratedFormTypeBundle/Resources/public/js/datetimepicker.js
+                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
+                - @IntegratedFormTypeBundle/Resources/public/components/select2/select2.js
+                - @IntegratedFormTypeBundle/Resources/public/js/datetimepicker.js
 
 
 # Bootstrap Configuration
@@ -137,3 +139,9 @@ integrated_theme:
             paths:
                 - @IntegratedWebsiteBundle/Resources/views/themes/default
 
+vihuvac_recaptcha:
+    site_key:   %recaptcha_site_key%
+    secret_key: %recaptcha_secret_key%
+    secure:     true
+    enabled:    true
+    locale_key: kernel.default_locale
