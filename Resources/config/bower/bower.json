@@ -4,13 +4,10 @@
         "typeahead.js": "0.10.*",
         "handlebars" : "~2.0",
         "requirejs": "2.1.14",
-
-        "modernizr": "latest",
-        "html5shiv": "latest",
-        "respond": "latest",
-        "jquery": "latest",
-        "bootstrap-sass-official": "latest",
-        "jquery-placeholder": "latest",
+        "modernizr": "~2.8",
+        "respond": "~1.4",
+        "bootstrap-sass-official": "~3.3",
+        "jquery-placeholder": "~2.1",
         "bourbon": "~4.2.3",
         "tinymce": "~4.1.10",
         "select2": "~4.0.0"
