@@ -41,7 +41,7 @@
                         add_unload_trigger: false,
                         schema: "html5",
                         menubar: false,
-                        toolbar: "formatselect | bold italic underline | bullist numlist | link image print preview media fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
+                        toolbar: "styleselect | bold italic underline | bullist numlist | link image print preview media fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
                         statusbar: true,
                         statusbar_size: "small",
                         width: "100%",
@@ -51,8 +51,19 @@
                         browser_spellcheck : true,
                         autoresize_bottom_margin: "0px",
                         
-                        content_css: "/bundles/integratedformtype/css/tinymce.content.css"
-
+                        content_css: "{{ content_styles.content_css|join(',') }}",
+                        style_formats: [
+                            {title: 'Heading 2', block: 'h2' },
+                            {title: 'Heading 3', block: 'h3' },
+                            {title: 'Heading 4', block: 'h4' },
+                            {title: 'Heading 5', block: 'h5' },
+                            {title: 'Preformatted (fixed font)', block: 'pre' }
+                            {% for style_format in content_styles.style_formats %}
+                                {% if loop.first %},{% endif %}
+                                {{ style_format|raw }}
+                                {% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        ]
                     });
                 }
         );
