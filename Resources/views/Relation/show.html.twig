@@ -1,80 +1,86 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
-{% block content %}
-    <div class="content_columns_holder">
-        <div class="content_column_inner">
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
             <ol class="breadcrumb">
                 <li>
                     <a href="{{ path('integrated_content_relation_index') }}">{% trans %}Home{% endtrans %}</a>
                 </li>
                 <li class="active">{% trans %}Show{% endtrans %}</li>
             </ol>
-            <div class="page-header">
-                <h1>{% trans %}Show{% endtrans %}</h1>
-            </div>
-            <dl>
-                <dt>
-                    {% trans %}Name{% endtrans %}
-                </dt>
-                <dd>
-                    {{ relation.name }}
-                </dd>
-                <dt>
-                    {% trans %}Sources{% endtrans %}
-                </dt>
-                <dd>
-                    <ul>
-                        {% for contentType in relation.sources %}
-                            <li>
-                                {{ contentType }}
-                            </li>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <h1 class="main-title font-regular">{% trans %}Show{% endtrans %}</h1>
+            <section class="section-white section-padding section-shadow section-radius">
+                <dl class="dl-horizontal">
+                    <dt>
+                        {% trans %}Name{% endtrans %}
+                    </dt>
+                    <dd>
+                        {{ relation.name }}
+                    </dd>
+                    <dt>
+                        {% trans %}Sources{% endtrans %}
+                    </dt>
+                    <dd>
+                        <ul>
+                            {% for contentType in relation.sources %}
+                                <li>
+                                    {{ contentType }}
+                                </li>
+                            {% else %}
+                                <li>
+                                    {% trans %}No sources added{% endtrans %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </dd>
+                    <dt>
+                        {% trans %}Targets{% endtrans %}
+                    </dt>
+                    <dd>
+                        <ul>
+                            {% for contentType in relation.targets %}
+                                <li>
+                                    {{ contentType }}
+                                </li>
+                            {% else %}
+                                <li>
+                                    {% trans %}No targets added{% endtrans %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </dd>
+                    <dt>
+                        Multiple
+                    </dt>
+                    <dd>
+                        {% if relation.multiple == 1 %}
+                            {% trans %}Multiple{% endtrans %}
                         {% else %}
-                            <li>
-                                {% trans %}No sources added{% endtrans %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </dd>
-                <dt>
-                    {% trans %}Targets{% endtrans %}
-                </dt>
-                <dd>
-                    <ul>
-                        {% for contentType in relation.targets %}
-                            <li>
-                                {{ contentType }}
-                            </li>
+                            {% trans %}One{% endtrans %}
+                        {% endif %}
+                    </dd>
+                    <dt>
+                        Required
+                    </dt>
+                    <dd>
+                        {% if relation.required %}
+                            {% trans %}Yes{% endtrans %}
                         {% else %}
-                            <li>
-                                {% trans %}No targets added{% endtrans %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </dd>
-                <dt>
-                    Multiple
-                </dt>
-                <dd>
-                    {% if relation.multiple == 1 %}
-                        {% trans %}Multiple{% endtrans %}
-                    {% else %}
-                        {% trans %}One{% endtrans %}
-                    {% endif %}
-                </dd>
-                <dt>
-                    Required
-                </dt>
-                <dd>
-                    {% if relation.required %}
-                        {% trans %}Yes{% endtrans %}
-                    {% else %}
-                        {% trans %}No{% endtrans %}
-                    {% endif %}
-                </dd>
-            </dl>
-            <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_relation_edit', {'id': relation.id}) }}">
-                {% trans %}Edit{% endtrans %}
-            </a>
-            {{ form(form, { 'style': 'inline' }) }}
+                            {% trans %}No{% endtrans %}
+                        {% endif %}
+                    </dd>
+                </dl>
+                <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_relation_edit', {'id': relation.id}) }}">
+                    {% trans %}Edit{% endtrans %}
+                </a>
+                {{ form(form, { 'style': 'inline' }) }}
+            </section>
         </div>
     </div>
 {% endblock %}
