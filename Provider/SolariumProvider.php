@@ -118,7 +118,9 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             ->setQuery('pub_active: 1 AND pub_time:[* TO NOW] AND pub_end:[NOW TO *] AND facet_channels: ("%1%")', [$channel]);
 
         if ($search = $request->query->get($blockId . '-search')) {
-            $query->setQuery('title:(%1%*)', [$search]);
+            $edismax = $query->getEDisMax();
+            $edismax->setQueryFields('title^200 content subtitle intro');
+            $query->setQuery($search);
         }
 
         $helper = $query->getHelper();
