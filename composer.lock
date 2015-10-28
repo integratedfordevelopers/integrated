@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3b43a06541382ef505ccd605b9fbaea5",
+    "hash": "4f51ff1b8f109c1c0cab711220773e78",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1421,16 +1421,16 @@
         },
         {
             "name": "integrated/channel-bundle",
-            "version": "dev-develop",
+            "version": "0.3",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-channel-bundle.git",
-                "reference": "d9f2611a135308e950a65e42223ae282480c57cc"
+                "reference": "c56ecdad14e3960e040a3b7537d80898d9709c77"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://bitbucket.org/eactive/integrated-channel-bundle/get/c56ecdad14e3960e040a3b7537d80898d9709c77.zip",
-                "reference": "d9f2611a135308e950a65e42223ae282480c57cc",
+                "reference": "c56ecdad14e3960e040a3b7537d80898d9709c77",
                 "shasum": ""
             },
             "require": {
@@ -1467,7 +1467,7 @@
                 "Integrated",
                 "channel"
             ],
-            "time": "2015-08-13 06:43:32"
+            "time": "2015-09-03 13:14:39"
         },
         {
             "name": "integrated/content-bundle",
