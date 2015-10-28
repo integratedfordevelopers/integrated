@@ -1,85 +1,84 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
 {% block content %}
-
-    <div class="filters_row">
-        <ul class="nav nav-pills">
-            <li class="dropdown">
-                <a href="#" data-toggle="dropdown" role="button">{% trans %}Options{% endtrans %} <b class="caret"></b></a>
-                <ul role="menu" class="dropdown-menu">
-                    <li role="presentation">
-                        <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}New{% endtrans %}</a>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="dropdown pull-right">
-                <a href="#" data-toggle="dropdown" role="button">{{ selectedChannel.name }} <b class="caret"></b></a>
-                <ul role="menu" class="dropdown-menu">
-                    {% for channel in channels %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button">{% trans %}Options{% endtrans %} <b class="caret"></b></a>
+                    <ul role="menu" class="dropdown-menu">
                         <li role="presentation">
-                            <a href="{{ path('integrated_page_page_index', { 'channel': channel.id }) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
+                            <a href="{{ path('integrated_page_page_new', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}New{% endtrans %}</a>
                         </li>
-                    {% endfor %}
-                </ul>
-            </li>
-        </ul>
-    </div>
+                    </ul>
+                </li>
 
-    <div class="content_columns_holder">
-        <div class="content_column_inner">
+                <li class="dropdown pull-right">
+                    <a href="#" data-toggle="dropdown" role="button">{{ selectedChannel.name }} <b class="caret"></b></a>
+                    <ul role="menu" class="dropdown-menu">
+                        {% for channel in channels %}
+                            <li role="presentation">
+                                <a href="{{ path('integrated_page_page_index', { 'channel': channel.id }) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
 
-            <table class="table">
-                <colgroup>
-                    <col />
-                    <col />
-                    <col style="width: 5em" />
-                </colgroup>
+            <section class="section-white section-padding section-shadow section-radius">
 
-                <thead>
-                    <tr>
-                        <th>{% trans %}Title{% endtrans %}</th>
-                        <th>{% trans %}URL{% endtrans %}</th>
-                        <th>{% trans %}Actions{% endtrans %}</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <table class="table">
+                    <colgroup>
+                        <col />
+                        <col />
+                        <col style="width: 5em" />
+                    </colgroup>
 
-                {% for page in pages %}
+                    <thead>
+                        <tr>
+                            <th>{% trans %}Title{% endtrans %}</th>
+                            <th>{% trans %}URL{% endtrans %}</th>
+                            <th>{% trans %}Actions{% endtrans %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    <tr>
-                        <td>
-                            {{ page.title }}
-                        </td>
-                        <td>
-                            {{ page.path }}
-                        </td>
-                        <td>
-                            <a href="{{ path('integrated_page_page_edit', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Edit{% endtrans %}">
-                                {{ icon('pencil') }}
-                            </a>
-                            {% if not page.locked %}
-                                <a href="{{ path('integrated_page_page_delete', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Delete{% endtrans %}">
-                                    {{ icon('remove-circle') }}
+                    {% for page in pages %}
+
+                        <tr>
+                            <td>
+                                {{ page.title }}
+                            </td>
+                            <td>
+                                {{ page.path }}
+                            </td>
+                            <td>
+                                <a href="{{ path('integrated_page_page_edit', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Edit{% endtrans %}">
+                                    {{ icon('pencil') }}
                                 </a>
-                            {% endif %}
-                        </td>
-                    </tr>
+                                {% if not page.locked %}
+                                    <a href="{{ path('integrated_page_page_delete', { 'id': page.id, 'channel': selectedChannel.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                                        {{ icon('remove-circle') }}
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
 
-                {% else %}
+                    {% else %}
 
-                    <tr>
-                        <td colspan="4">
-                            {% trans %}No pages added{% endtrans %}
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="4">
+                                {% trans %}No pages added{% endtrans %}
+                            </td>
+                        </tr>
 
-                {% endfor %}
+                    {% endfor %}
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-            {{ knp_pagination_render(pages) }}
+                {{ knp_pagination_render(pages) }}
+            </section>
         </div>
     </div>
 
