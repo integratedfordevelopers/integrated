@@ -1,79 +1,55 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
-    <div class="filters_row">
-        <ul class="nav nav-pills">
-            <li class="dropdown">
-                <a href="#" data-toggle="dropdown" role="button" id="drop_1">Options <b class="caret"></b></a>
-                <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
-                    <li role="presentation"><a href="{{ path('integrated_user_group_new') }}" tabindex="-1" role="menuitem">New</a></li>
-                </ul>
-            </li>
-        </ul>
-    </div>
-    <div class="content_columns_holder">
-        <div class="content_column_inner">
-            <div class="row">
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button" id="drop_1">Options <b class="caret"></b></a>
+                    <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
+                        <li role="presentation"><a href="{{ path('integrated_user_group_new') }}" tabindex="-1" role="menuitem">New</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <section class="section-white section-padding section-shadow section-radius">
 
-                <div class="col-md-12">
+                <table class="table table-striped table-hover">
 
-                    {#<div class="search">#}
-                        {#<form class="row" role="form">#}
-                            {#<div class="col-md-10">#}
-                                {#<label class="sr-only" for="inputquery">#}
-                                    {#{% trans %}Search text{% endtrans %}#}
-                                {#</label>#}
-                                {#<input type="search" name="q" class="form-control input-lg" id="inputquery" value="{{ app.request.query.get('q')|trim }}" placeholder="{% trans %}Search text{% endtrans %}" />#}
-                            {#</div>#}
-                            {#<div class="col-md-2">#}
-                                {#<button type="submit" class="btn btn-default btn-lg btn-block"><span class="glyphicon glyphicon-search"></span> {% trans %}Search{% endtrans %}</button>#}
-                            {#</div>#}
-                        {#</form>#}
-                    {#</div>#}
+                    <colgroup>
+                        <col style="width: 3em" />
+                        <col />
+                        <col style="width: 5em" />
+                    </colgroup>
 
-                    <div class="results">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
 
-                        <table class="table table-striped table-hover">
+                    <tbody>
 
-                            <colgroup>
-                                <col style="width: 3em" />
-                                <col />
-                                <col style="width: 5em" />
-                            </colgroup>
+                    {% for group in groups %}
 
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
+                        <tr>
+                            <td>{{ group.id }}</td>
+                            <td>{{ group.name }}</td>
+                            <td>
+                                <a href="{{ path('integrated_user_group_edit', {'id': group.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a href="{{ path('integrated_user_group_delete', {'id': group.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                            </td>
+                        </tr>
 
-                            <tbody>
+                   {% endfor %}
 
-                            {% for group in groups %}
+                    </tbody>
 
-                                <tr>
-                                    <td>{{ group.id }}</td>
-                                    <td>{{ group.name }}</td>
-                                    <td>
-                                        <a href="{{ path('integrated_user_group_edit', {'id': group.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
-                                        <a href="{{ path('integrated_user_group_delete', {'id': group.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
-                                    </td>
-                                </tr>
+                </table>
 
-                           {% endfor %}
+                {{ knp_pagination_render(groups) }}
 
-                            </tbody>
-
-                        </table>
-
-                        {{ knp_pagination_render(groups) }}
-
-                    </div>
-
-                </div>
-            </div>
+            </section>
         </div>
     </div>
-
 {% endblock %}
