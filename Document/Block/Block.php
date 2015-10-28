@@ -221,6 +221,29 @@ abstract class Block implements BlockInterface
     }
 
     /**
+     * @param \DateTime $date
+     * @return bool
+     */
+    public function isPublished(\DateTime $date = null)
+    {
+        if (null === $date) {
+            $date = new \DateTime();
+        }
+
+        $published = true;
+
+        if ($this->publishedAt && $this->publishedAt > $date) {
+            $published = false;
+        }
+
+        if ($this->publishedUntil && $this->publishedUntil < $date) {
+            $published = false;
+        }
+
+        return $published;
+    }
+
+    /**
      * @return bool
      */
     public function isDisabled()

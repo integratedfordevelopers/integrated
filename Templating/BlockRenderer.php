@@ -18,6 +18,7 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockHandlerRegistryInterface;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 
@@ -72,6 +73,10 @@ class BlockRenderer
         }
 
         if ($block instanceof BlockInterface) {
+            if ($block instanceof Block && (!$block->isPublished() || $block->isDisabled())) {
+                return;
+            }
+
             try {
                 $handler = $this->blockRegistry->getHandler($block->getType());
 
