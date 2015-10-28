@@ -31,9 +31,14 @@ class Channel extends AbstractType
 
         $builder->add(
             'domains',
-            'integrated_csv_array',
+            'bootstrap_collection',
             array(
-                'label' => 'Domains (comma separated)'
+                'allow_add'          => true,
+                'allow_delete'       => true,
+                'add_button_text'    => 'Add domain',
+                'delete_button_text' => 'Delete domain',
+                'sub_widget_col'     => 9,
+                'button_col'         => 3
             )
         );
     }
