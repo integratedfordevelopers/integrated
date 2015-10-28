@@ -18,6 +18,7 @@ use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Channel document
@@ -208,5 +209,23 @@ class Channel implements ChannelInterface
     {
         $this->createdAt = $createdAt;
         return $this;
+    }
+
+    /**
+     * @param ExecutionContextInterface $context
+     * @Assert\Callback
+     */
+    public function validate(ExecutionContextInterface $context)
+    {
+        foreach ($this->domains as $domain) {
+
+            if (!filter_var($domain, FILTER_VALIDATE_URL) || substr_count($domain, '.') > 1) {
+                $context->buildViolation('You can set only primary domains!')
+                    ->atPath('domains')
+                    ->addViolation();
+
+                break;
+            }
+        }
     }
 }
