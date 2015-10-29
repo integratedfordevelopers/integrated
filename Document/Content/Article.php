@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
@@ -23,22 +22,18 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Article")
  */
 class Article extends Content
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $title;
 
     /**
      * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
      * @Slug(fields={"title"})
      * @Type\Field
      */
@@ -46,55 +41,47 @@ class Article extends Content
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $subtitle;
 
     /**
      * @var ArrayCollection Embedded\Author[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author")
      * @Type\Field(type="integrated_author", options={"label" = "Authors"})
      */
     protected $authors;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $source;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $locale;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(type="textarea")
      */
     protected $intro;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(type="textarea")
      */
     protected $description;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(type="integrated_tinymce")
      */
     protected $content;
 
     /**
      * @var Embedded\Address
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address")
      * @Type\Field(type="integrated_address")
      */
     protected $address;
