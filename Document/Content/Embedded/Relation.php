@@ -14,35 +14,27 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Content\ContentInterface;
 
 /**
  * Embedded document Reference
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Relation
 {
     /**
      * @var string id of the Relation document
-     * @ODM\String
-     * @ODM\Index
      */
     protected $relationId;
 
     /**
      * @var string type of the Relation document
-     * @ODM\String
-     * @ODM\Index
      */
     protected $relationType;
 
     /**
      * @var Collection
-     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
      */
     protected $references;
 
