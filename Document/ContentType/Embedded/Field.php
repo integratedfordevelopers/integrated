@@ -11,32 +11,27 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 
 /**
  * Embedded document Field
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Field implements ContentTypeFieldInterface
 {
     /**
      * @var string The name of the property of the content type
-     * @ODM\String
      */
     protected $name;
 
     /**
      * @var string The type of the form field
-     * @ODM\String
      */
     protected $type;
 
     /**
      * @var array The options of the form field
-     * @ODM\Hash
      */
     protected $options = array();
 
