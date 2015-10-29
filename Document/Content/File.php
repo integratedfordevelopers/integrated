@@ -13,8 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Symfony\Component\HttpFoundation\File\File as UploadedFile;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
@@ -22,9 +20,6 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  * Document type File
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @ODM\Document
- * @ODM\HasLifecycleCallbacks
  *
  * @Type\Document("File")
  */
@@ -38,27 +33,22 @@ class File extends Content
     /**
      * @var UploadedFile
      * @Type\Field(type="integrated_file")
-     * @ODM\Field
      */
     protected $file;
 
     /**
      * @var string
-     * @ODM\Field
      */
     protected $fileExtension;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $title;
 
     /**
      * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
      * @Slug(fields={"title"})
      * @Type\Field
      */
@@ -66,7 +56,6 @@ class File extends Content
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $description;
@@ -142,8 +131,7 @@ class File extends Content
     }
 
     /**
-     * @ODM\PrePersist()
-     * @ODM\PreUpdate()
+     * preUpload
      */
     public function preUpload()
     {
@@ -153,8 +141,7 @@ class File extends Content
     }
 
     /**
-     * @ODM\PostPersist()
-     * @ODM\PostUpdate()
+     * upload
      */
     public function upload()
     {
@@ -180,7 +167,7 @@ class File extends Content
     }
 
     /**
-     * @ODM\PreRemove()
+     * storeFilenameForRemove
      */
     public function storeFilenameForRemove()
     {
@@ -188,7 +175,7 @@ class File extends Content
     }
 
     /**
-     * @ODM\PostRemove()
+     * removeUpload
      */
     public function removeUpload()
     {

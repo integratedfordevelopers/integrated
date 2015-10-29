@@ -1,0 +1,45 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\ContentBundle\Document\Content\File">
+
+        <field fieldName="file" type="string" />
+        <field fieldName="fileExtension" type="string" />
+        <field fieldName="title" type="string" />
+        <field fieldName="slug" type="string" unique="true" sparse="true" />
+        <field fieldName="description" type="string" />
+        <field fieldName="published" type="boolean" />
+        <field fieldName="disabled" type="boolean" />
+
+        <embed-one
+                field="publishTime"
+                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime" />
+
+        <embed-one
+                field="metadata"
+                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata" />
+
+        <embed-many
+                field="relations"
+                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation" />
+
+        <reference-many
+                field="channels"
+                target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel" />
+
+        <discriminator-field name="class" />
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="preUpdate" method="preUpload"/>
+            <lifecycle-callback type="prePersist" method="preUpload"/>
+            <lifecycle-callback type="postUpdate" method="upload"/>
+            <lifecycle-callback type="postPersist" method="upload"/>
+            <lifecycle-callback type="preRemove" method="storeFilenameForRemove"/>
+            <lifecycle-callback type="postRemove" method="removeUpload"/>
+        </lifecycle-callbacks>
+
+    </document>
+
+</doctrine-mongo-mapping>
