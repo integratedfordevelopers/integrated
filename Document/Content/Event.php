@@ -11,34 +11,29 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Event")
  */
 class Event extends Article
 {
     /**
      * @var \DateTime
-     * @ODM\Date
      * @Type\Field(type="integrated_datetime")
      */
     protected $startDate;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      * @Type\Field(type="integrated_datetime")
      */
     protected $endDate;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $website;
