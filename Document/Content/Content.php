@@ -34,11 +34,6 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  * Abstract base class for document types
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @ODM\Document(collection="content", indexes={@ODM\Index(keys={"class"="asc"})})
- * @ODM\InheritanceType("SINGLE_COLLECTION")
- * @ODM\DiscriminatorField(fieldName="class")
- * @ODM\HasLifecycleCallbacks
  */
 class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
 {
@@ -46,45 +41,37 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
      */
     protected $id;
 
     /**
      * @var string the type of the ContentType
-     * @ODM\String
-     * @ODM\Index
      */
     protected $contentType;
 
     /**
      * @var ArrayCollection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation")
      */
     protected $relations;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $createdAt;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $updatedAt;
 
     /**
      * @var PublishTime
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime")
      * @Type\Field(type="integrated_publish_time")
      */
     protected $publishTime;
 
     /**
      * @var bool
-     * @ODM\Boolean
      */
     protected $published = true;
 
@@ -97,13 +84,11 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @var Metadata
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
      */
     protected $metadata;
 
     /**
      * @var Collection
-     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
      */
     protected $channels;
 
@@ -485,7 +470,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @ODM\PreUpdate
+     * updateUpdatedAtOnPreUpdate
      */
     public function updateUpdatedAtOnPreUpdate()
     {
@@ -493,8 +478,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @ODM\PrePersist
-     * @ODM\PreUpdate
+     * updatePublishTimeOnPreUpdate
      */
     public function updatePublishTimeOnPreUpdate()
     {
