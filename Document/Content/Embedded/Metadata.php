@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
-use ArrayIterator;
 use Integrated\Common\Content\Registry;
 
 /**
