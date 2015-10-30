@@ -14,14 +14,6 @@
         <field fieldName="public" type="boolean" />
         <field fieldName="userId" type="int" />
 
-        <reference-many
-                field="sources"
-                target-document="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" />
-
-        <reference-many
-                field="targets"
-                target-document="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" />
-
     </document>
 
 </doctrine-mongo-mapping>
