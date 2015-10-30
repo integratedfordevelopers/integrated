@@ -20,7 +20,7 @@ In our example the 'News' item contains a relations collection with the 'Keyword
 'Keyword' documents. You can fetch these relations by using one of the following functions:
 
 * `getRelations()` Return a collection containing the embedded Relation documents
-* `getRelation($relationId)` Returns one embedded Relation document based on the relationId
+* `getRelation($relationId)` Returns one embedded Relation document based on the relationId of the embedded Relation document
 * `getRelationsByRelationType($relationType)` Return a collection containing the embedded Relation document based on the relationType
 * `getReferencesByRelationType($relationType)` Return a collection containing all the references based on the embedded Relation documents that matches $relationType
 
