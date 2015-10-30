@@ -1,0 +1,22 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\ContentBundle\Document\Content\JobPosting">
+
+        <field fieldName="jobTitle" type="string" />
+        <field fieldName="salary" type="string" />
+        <field fieldName="applyUrl" type="string" />
+
+        <reference-one
+            field="company"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company" />
+
+        <reference-one
+            field="contact"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person" />
+
+    </document>
+
+</doctrine-mongo-mapping>
