@@ -16,7 +16,7 @@ can be selected.
 The backend stores the relations in an embedded document which contains a relationId, relationType and a references 
 collection containing a reference to a Content document. 
 
-In our example the 'News' item contains a relations collection withthe 'Keyword relation' containing references to 
+In our example the 'News' item contains a relations collection with the 'Keyword relation' containing references to 
 'Keyword' documents. You can fetch these relations by using one of the following functions:
 
 * `getRelations()` Return a collection containing the embedded Relation documents
