@@ -22,8 +22,8 @@ use Integrated\Common\Content\Registry;
  */
 class Metadata extends Registry
 {
-	/**
-	 * @var array
-	 */
-	protected $data;
+    /**
+     * @var array
+     */
+    protected $data;
 }
