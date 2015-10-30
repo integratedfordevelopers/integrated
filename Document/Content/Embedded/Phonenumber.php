@@ -11,25 +11,20 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 /**
  * Embedded document Phonenumber
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Phonenumber
 {
 	/**
 	 * @var string
-	 * @ODM\String
 	 */
 	protected $type;
 
 	/**
 	 * @var string
-	 * @ODM\String
 	 */
     protected $number;
 
