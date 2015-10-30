@@ -14,8 +14,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
@@ -77,7 +75,6 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @var bool
-     * @ODM\Boolean
      * @Type\Field(type="checkbox")
      */
     protected $disabled = false;
