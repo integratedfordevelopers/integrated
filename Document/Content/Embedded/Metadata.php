@@ -17,7 +17,6 @@ use Integrated\Common\Content\Registry;
  * Embedded document Metadata
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Metadata extends Registry
 {
