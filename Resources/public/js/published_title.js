@@ -7,7 +7,16 @@ $(function () {
     var use_title_form_row = use_title.closest('.form-group');
 
     var compare_titles = function () {
-        title.val() === published_title.val() ? use_title_form_row.show() : use_title_form_row.hide();
+        if (title.val() === published_title.val()) {
+            use_title.prop('checked', true);
+            use_title_form_row.show();
+            published_form_row.hide();
+        }
+        else {
+            use_title.prop('checked', true);
+            use_title_form_row.hide();
+            published_form_row.show();
+        }
     };
 
     title.on('keyup', compare_titles);
@@ -16,12 +25,8 @@ $(function () {
     compare_titles();
 
     use_title.on('change', function () {
-        if ($(this).prop('checked')) {
-            published_form_row.hide();
-        }
-        else {
-            published_form_row.show();
-            compare_titles();
-        }
+        /* user can do uncheck only */
+        published_form_row.show();
+        use_title_form_row.hide();
     });
 });
