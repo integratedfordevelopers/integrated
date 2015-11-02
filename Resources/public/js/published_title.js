@@ -13,7 +13,7 @@ $(function () {
             published_form_row.hide();
         }
         else {
-            use_title.prop('checked', true);
+            use_title.prop('checked', false);
             use_title_form_row.hide();
             published_form_row.show();
         }
