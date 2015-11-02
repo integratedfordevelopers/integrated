@@ -232,7 +232,7 @@ class ContentBlock extends Block
      */
     public function getPublishedTitle()
     {
-        return $this->publishedTitle;
+        return $this->publishedTitle !== null ? $this->publishedTitle : $this->title;
     }
 
     /**
@@ -257,17 +257,5 @@ class ContentBlock extends Block
     public function setUseTitle($useTitle)
     {
         $this->useTitle = $useTitle;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPreviewTitle()
-    {
-        if ($this->useTitle) {
-            return $this->title;
-        }
-
-        return $this->publishedTitle !== null ? $this->publishedTitle : $this->title;
     }
 }
