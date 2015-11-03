@@ -156,11 +156,11 @@ class BlockController extends Controller
             throw $this->createNotFoundException(sprintf('Block "%s" is locked.', $block->getId()));
         }
 
+        /* check if current Block not used on some page */
         $dm = $this->getDocumentManager();
         if ($this->get('integrated_block.bundle_checker')->checkPageBundle()) {
-            /* check if current Block not used on some page */
             if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
-
+                throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
             }
         }
 
