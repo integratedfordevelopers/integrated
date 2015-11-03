@@ -68,52 +68,9 @@ class BlockExtension extends \Twig_Extension
         /* Get all pages which was associated with current Block document */
         $pages = $this->container
             ->get('doctrine_mongodb')
-            ->getManager()
-            ->createQueryBuilder('IntegratedPageBundle:Page\Page')
-            ->where(
-                'function() {
-                    var block_id = "' . $block->getId() . '";
-
-                    var checkItem = function(item) {
-                        if ("block" in item && item.block.$id == block_id) {
-                            return true;
-                        }
-
-                        if ("row" in item) {
-                            if (recursiveFindInRows(item.row)) {
-                                return true;
-                            }
-                        }
-                    }
-
-                    var recursiveFindInRows = function(row) {
-                        if ("columns" in row) {
-                            for (c in row.columns) {
-                                if ("items" in row.columns[c]) {
-                                    for (i in row.columns[c].items) {
-
-                                        if (checkItem(row.columns[c].items[i])) {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    };
-
-                    for (k in this.grids) {
-                        for (i in this.grids[k].items) {
-
-                            if (checkItem(this.grids[k].items[i])) {
-                                return true;
-                            }
-                        }
-                    }
-
-                    return false;
-                }'
-            )
-            ->getQuery()->execute();
+            ->getRepository('IntegratedBlockBundle:Block\Block')
+            ->pagesByBlockQb($block)
+            ->execute();
 
         $channelNames = [];
         foreach ($pages as $page) {
