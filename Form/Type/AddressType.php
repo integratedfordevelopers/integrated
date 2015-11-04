@@ -35,6 +35,8 @@ class AddressType extends AbstractType
             'required' => false,
         ]);
 
+        $builder->add('name', 'text', ['required' => false]);
+
         $builder->add('country', 'country', ['placeholder' => '', 'required' => false]);
 
         $builder->add('address1', 'text', ['label' => 'Address line 1', 'required' => false]);
