@@ -98,9 +98,10 @@ class MenuItem extends KnpMenuItem
     }
 
     /**
+     * @param bool $nested
      * @return array
      */
-    public function toArray()
+    public function toArray($nested = true)
     {
         $array = [];
 
@@ -116,15 +117,17 @@ class MenuItem extends KnpMenuItem
             $array['uri'] = $this->getUri();
         }
 
-        $children = [];
+        if (true === $nested) {
+            $children = [];
 
-        /** @var MenuItem $child */
-        foreach ($this->children as $child) {
-            $children[] = $child->toArray();
-        }
+            /** @var MenuItem $child */
+            foreach ($this->children as $child) {
+                $children[] = $child->toArray();
+            }
 
-        if (count($children)) {
-            $array['children'] = $children;
+            if (count($children)) {
+                $array['children'] = $children;
+            }
         }
 
         return $array;
