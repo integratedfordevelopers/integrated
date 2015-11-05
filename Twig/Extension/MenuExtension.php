@@ -57,6 +57,7 @@ class MenuExtension extends \Twig_Extension
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults([
             'depth' => 1,
+            'style' => 'tabs',
         ]);
     }
 

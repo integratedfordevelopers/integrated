@@ -1,4 +1,4 @@
-!function($) {
+!function($, Routing) {
 
     var createBlock = function(name, index, value, element) {
 
@@ -113,6 +113,7 @@
         forcePlaceholderSize: true,
         scroll: false,
         opacity: 0.7,
+        cursor: 'move',
 
         stop: function(e, ui) {
             var collection = getCollection(ui.item);
@@ -312,4 +313,4 @@
         }
     });
 
-}(window.jQuery);
+}(window.jQuery, window.Routing);

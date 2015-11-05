@@ -1,8 +1,7 @@
 {% spaceless %}
 {% set data = {
-    'data'   : menu.toArray|default([]),
-    'options': options,
     'html'   : knp_menu_render(menu, options)|trim,
+    'options': options,
 } %}
 
 {{ data|json_encode|raw }}

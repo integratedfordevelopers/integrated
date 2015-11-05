@@ -9,6 +9,7 @@
     {% endif %}
 
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     {% block stylesheets %}
         {% stylesheets output='css/styles.css' filter='?uglifycss'
@@ -26,7 +27,9 @@
 {% endif %}
 
 <div class="container">
-    {{ integrated_menu('main') }}
+    <br />
+    {{ integrated_menu('main', { 'depth': 2 }) }}
+    <br />
     {{ integrated_grid('main') }}
 </div>
 
@@ -49,6 +52,7 @@
 
 {% block javascripts %}
     {% javascripts output='js/scripts.js' filter='?uglifyjs2'
+        '@IntegratedWebsiteBundle/Resources/public/js/page.js'
         '@IntegratedWebsiteBundle/Resources/public/js/menu.js'
         '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>

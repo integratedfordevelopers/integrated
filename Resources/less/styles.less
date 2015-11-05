@@ -40,3 +40,24 @@
     right: 0;
   }
 }
+
+.integrated-website-menu-placeholder {
+  margin: 0 -5px;
+  background: none;
+  border-bottom: none;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid red;
+  width: 0;
+  height: 0;
+  z-index: 9999;
+}
+
+.dropdown-menu {
+  .integrated-website-menu-placeholder {
+    margin: -5px 0 -5px 5px;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid red;
+  }
+}

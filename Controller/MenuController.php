@@ -67,15 +67,18 @@ class MenuController extends Controller
      */
     protected function prepareItems(MenuItem $menu, array $options = [], $depth = 1)
     {
+        $menu->setChildrenAttribute('class', 'integrated-website-menu-list');
+
+        if (1 === $depth) {
+            $menu->setChildrenAttribute('data-json', json_encode($menu->toArray(false)));
+        }
+
         /** @var MenuItem $child */
         foreach ($menu->getChildren() as $child) {
             $child->setAttributes([
-                'class' => 'integrated-website-menu-item',
-            ]);
-
-            $child->setLinkAttributes([
+                'class'       => 'integrated-website-menu-item',
                 'data-action' => 'integrated-website-menu-item-edit',
-                'data-id'     => $child->getId(),
+                'data-json'   => json_encode($child->toArray(false)),
             ]);
 
             $this->prepareItems($child, $options, $depth + 1);
@@ -87,15 +90,13 @@ class MenuController extends Controller
             $child = $menu->addChild('+', [
                 'uri'        => '#',
                 'attributes' => [
-                    'class' => 'integrated-website-menu-item',
-                ],
-                'linkAttributes' => [
+                    'class'       => 'integrated-website-menu-item',
                     'data-action' => 'integrated-website-menu-item-add',
-                    'data-id'     => $uuid,
                 ],
             ]);
 
             $child->setId($uuid);
+            $child->setAttribute('data-json', json_encode($child->toArray(false)));
         }
     }
 

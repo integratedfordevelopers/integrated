@@ -1,284 +1,242 @@
-!function($) {
+!function($, Routing, JSON) {
 
-    $('.integrated-website-menu').each(function(i, element) {
-        var menu = $(element);
-        var script = menu.find('script[type="text/json"]');
+    var Menu = function(element) {
+        this.element = element;
+    };
+
+    Menu.prototype.load = function(data, success) {
+        var element = this.element;
 
         $.ajax({
             type: 'POST',
             url: Routing.generate('integrated_website_menu_render'),
-            data: script.html(),
+            data: data,
             success: function(result) {
-                menu.data('data', result.data);
-                menu.data('options', result.options);
-                menu.html(result.html);
+                element.data('options', result.options);
+                element.html(result.html);
 
-                script.remove();
-            },
-            error: function(result) {
-                // @todo error handling (INTEGRATED-420)
-                alert('An error has occurred!');
-                console.log(result.responseText);
-            }
-        });
-    });
+                element.find('.integrated-website-menu-list, .integrated-website-menu-item').each(function() {
+                    var item = $(this);
 
-    $(document).on('click', '[data-action="integrated-website-menu-item-add"]', function(e) {
-        e.preventDefault();
-
-        var item = $(this);
-        var menu = item.closest('.integrated-website-menu');
-
-        bootbox.dialog({
-                title: 'Add menu item',
-                message: '<div class="row">' +
-                    '<div class="col-md-12">' +
-                        '<form class="form-horizontal">' +
-                            '<div class="form-group">' +
-                                '<label class="col-md-4 control-label" for="name">Name</label>' +
-                                '<div class="col-md-8"> ' +
-                                    '<input id="name" name="name" type="text" class="form-control">' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="form-group">' +
-                                '<label class="col-md-4 control-label" for="name">URI</label>' +
-                                '<div class="col-md-8"> ' +
-                                    '<input id="uri" name="uri" type="text" class="form-control">' +
-                                '</div>' +
-                            '</div>' +
-                        '</form>' +
-                    '</div>' +
-                '</div>',
-                buttons: {
-                    success: {
-                        label: 'Save',
-                        callback: function() {
-                            var name = $('#name').val();
-                            var uri = $('#uri').val();
-                            var data = menu.data('data');
-                            var options = menu.data('options');
-                            var id = item.attr('data-id');
-
-                            replaceItem(data, id, name, uri);
-
-                            // remove add item links
-                            removeItem(data, getAddItem(menu, id));
-
-                            $.ajax({
-                                type: 'POST',
-                                url: Routing.generate('integrated_website_menu_render'),
-                                data: JSON.stringify({
-                                    'data': data,
-                                    'options': options
-                                }),
-                                success: function(result) {
-                                    menu.data('data', result.data);
-                                    menu.data('options', result.options);
-                                    menu.html(result.html);
-                                },
-                                error: function(result) {
-                                    // @todo error handling (INTEGRATED-420)
-                                    alert('An error has occurred!');
-                                    console.log(result.responseText);
-                                }
-                            });
-                        }
+                    if (item.attr('data-json')) {
+                        item.data('data', $.parseJSON(item.attr('data-json')));
+                        item.removeAttr('data-json');
                     }
-                }
-            }
-        );
-    });
+                });
 
-    function replaceItem(data, id, name, uri)
-    {
-        if (data.id == id) {
-            data.name = name;
-            data.uri = uri;
+                element.find('.integrated-website-menu-list').sortable({
+                    tolerance: 'intersect',
+                    items: '[data-action="integrated-website-menu-item-edit"]',
+                    connectWith: '.integrated-website-menu-list',
+                    placeholder: 'integrated-website-menu-placeholder',
+                    cursor: 'move',
+                    cursorAt: { top: 5, left: 10 },
+                    scroll: false,
+                    helper: function() {
+                        return $('<div style="background: red;">').css('width', '20px').css('height', '10px');
+                    }
+                });
 
-        } else if (data.children != undefined) {
-            $.each(data.children, function(i, child) {
-                replaceItem(child, id, name, uri);
-            });
-        }
-    }
-
-    function getAddItem(menu, id)
-    {
-        var ids = [];
-
-        $.each(menu.find('[data-action="integrated-website-menu-item-add"]'), function(i, link) {
-            var id2 = $(link).attr('data-id');
-
-            if (id2 != id) {
-                ids.push(id2);
-            }
-        });
-
-        return ids;
-    }
-
-    function removeItem(data, ids)
-    {
-        var index = $.inArray(data.id, ids);
-
-        if (index !== -1) {
-            delete ids[index];
-            delete data.id;
-            delete data.name;
-            delete data.uri;
-            delete data.children;
-        }
-
-        if (data.children != undefined) {
-            $.each(data.children, function(i, child) {
-                removeItem(child, ids);
-            });
-        }
-    }
-
-    function getItem(data, id)
-    {
-        if (data.children != undefined) {
-            for (var i in data.children) {
-                var child = data.children[i];
-                if (child.id == id || (child = getItem(child, id))) {
-                    return child;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    $(document).on('click', '[data-action="integrated-website-menu-item-edit"]', function(e) {
-        e.preventDefault();
-
-        var item = $(this);
-        var menu = item.closest('.integrated-website-menu');
-        var data = menu.data('data');
-        var options = menu.data('options');
-        var id = item.attr('data-id');
-        var item2 = getItem(data, id);
-
-        bootbox.dialog({
-                title: 'Edit menu item',
-                message: '<div class="row">' +
-                    '<div class="col-md-12">' +
-                        '<form class="form-horizontal">' +
-                            '<div class="form-group">' +
-                                '<label class="col-md-4 control-label" for="name">Name</label>' +
-                                '<div class="col-md-8"> ' +
-                                    '<input id="name" name="name" type="text" value="' + item2.name + '" class="form-control">' +
-                                '</div>' +
-                            '</div>' +
-                            '<div class="form-group">' +
-                                '<label class="col-md-4 control-label" for="name">URI</label>' +
-                                '<div class="col-md-8"> ' +
-                                    '<input id="uri" name="uri" type="text" value="' + item2.uri + '" class="form-control">' +
-                                '</div>' +
-                            '</div>' +
-                        '</form>' +
-                    '</div>' +
-                '</div>',
-                buttons: {
-                    danger: {
-                        label: 'Remove',
-                        className: 'btn-danger pull-left',
-                        callback: function() {
-                            var ids = getAddItem(menu, id);
-
-                            ids.push(id);
-
-                            removeItem(data, ids);
-
-                            $.ajax({
-                                type: 'POST',
-                                url: Routing.generate('integrated_website_menu_render'),
-                                data: JSON.stringify({
-                                    'data': data,
-                                    'options': options
-                                }),
-                                success: function(result) {
-                                    menu.data('data', result.data);
-                                    menu.data('options', result.options);
-                                    menu.html(result.html);
-                                },
-                                error: function(result) {
-                                    // @todo error handling (INTEGRATED-420)
-                                    alert('An error has occurred!');
-                                    console.log(result.responseText);
-                                }
-                            });
-                        }
+                element.find('.dropdown').droppable({
+                    accept: '.integrated-website-menu-item',
+                    tolerance: 'fit',
+                    greedy: true,
+                    over: function(e, ui) {
+                        $(this).addClass('open');
+                        $(this).parent().find('.integrated-website-menu-placeholder').hide();
                     },
-                    success: {
-                        label: 'Save',
-                        callback: function() {
-                            var name = $('#name').val();
-                            var uri = $('#uri').val();
-
-                            replaceItem(data, id, name, uri);
-
-                            // remove add item links
-                            removeItem(data, getAddItem(menu, id));
-
-                            $.ajax({
-                                type: 'POST',
-                                url: Routing.generate('integrated_website_menu_render'),
-                                data: JSON.stringify({
-                                    'data': data,
-                                    'options': options
-                                }),
-                                success: function(result) {
-                                    menu.data('data', result.data);
-                                    menu.data('options', result.options);
-                                    menu.html(result.html);
-                                },
-                                error: function(result) {
-                                    // @todo error handling (INTEGRATED-420)
-                                    alert('An error has occurred!');
-                                    console.log(result.responseText);
-                                }
-                            });
-                        }
+                    out: function(e, ui) {
+                        $(this).removeClass('open');
+                        $(this).parent().find('.integrated-website-menu-placeholder').show();
                     }
+                });
+
+                if ($.isFunction(success)) {
+                    success();
                 }
-            }
-        );
-    });
-
-    $(document).on('click', '[data-action="integrated-website-page-save"]', function(e) {
-        e.preventDefault();
-
-        var menus = [];
-
-        $('.integrated-website-menu').each(function(i, element) {
-            var menu = $(element);
-            var data = menu.data('data');
-
-            // remove add item links
-            removeItem(data, getAddItem(menu));
-
-            menus.push(data);
-        });
-
-        $.ajax({
-            type: 'POST',
-            url: Routing.generate('integrated_website_page_edit', { 'id': $(this).attr('data-id') }),
-            data: JSON.stringify({
-                'menus': menus
-            }),
-            success: function(result) {
-                //console.log(result);
             },
-            error: function(result) {
+            error: function (result) {
                 // @todo error handling (INTEGRATED-420)
                 alert('An error has occurred!');
                 console.log(result.responseText);
             }
         });
+    };
 
-        $('#' + $(this).attr('data-element-id')).submit();
+    Menu.prototype.refresh = function(id) {
+        this.load(JSON.stringify({
+            data: this.getData(id),
+            options: this.getOptions()
+        }));
+    };
+
+    Menu.prototype.getData = function(id) {
+        var menu = this.element.children('.integrated-website-menu-list');
+        var data = menu.data('data');
+
+        data.children = [];
+
+        menu.children('.integrated-website-menu-item').each(function() {
+            var item = new Item($(this));
+            var result = item.getData(id);
+
+            if (result) {
+                data.children.push(result);
+            }
+        });
+
+        return data;
+    };
+
+    Menu.prototype.getOptions = function() {
+        return this.element.data('options');
+    };
+
+    var Item = function(element) {
+        this.element = element;
+        this.menu = new Menu(this.element.closest('.integrated-website-menu'));
+    };
+
+    Item.prototype.getMenu = function() {
+        return this.menu;
+    };
+
+    Item.prototype.getData = function(id, item) {
+        item = item || this.element;
+
+        var data = item.data('data');
+
+        if (id && data.id == id || 'integrated-website-menu-item-edit' == item.attr('data-action')) {
+            var items = item.children('.integrated-website-menu-list').children('.integrated-website-menu-item');
+
+            if (items.length) {
+                var children = [];
+
+                for (var i = 0; i < items.length; i++) {
+                    var result = this.getData(id, $(items[i]));
+
+                    if (result) {
+                        children.push(result);
+                    }
+                }
+
+                data.children = children;
+            }
+
+            return data;
+        }
+    };
+
+    Item.prototype.getValue = function(key) {
+        return this.element.data('data')[key];
+    };
+
+    Item.prototype.update = function(json) {
+        var data = this.element.data('data');
+
+        $.each(json, function(key, value) {
+            data[key] = value;
+        });
+
+        this.element.data('data', data);
+        this.menu.refresh(data.id);
+    };
+
+    Item.prototype.remove = function() {
+        this.element.remove();
+        this.menu.refresh();
+    };
+
+    $.extend(true, Integrated, {
+        Menu: {
+            create: function(element) {
+                return new Menu(element);
+            }
+        }
     });
 
-}(window.jQuery);
+    $('.integrated-website-menu').each(function() {
+        var element = $(this);
+
+        var menu = new Menu(element);
+        var script = element.find('script[type="text/json"]');
+
+        menu.load(script.html(), function() {
+            script.remove();
+        });
+    });
+
+    $('.integrated-website-menu').on('mouseover', '.integrated-website-menu-item', function(e) {
+        $(this).addClass('open');
+    });
+
+    $('.integrated-website-menu').on('mouseout', '.integrated-website-menu-item', function(e) {
+        $(this).removeClass('open');
+    });
+
+    $('.integrated-website-menu').on('click', '[data-action="integrated-website-menu-item-add"]', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var item = new Item($(this));
+        var template = Handlebars.compile($('#integrated_website_template_modal_menu_edit').html());
+        var html = $(template());
+
+        bootbox.dialog({
+            title: 'Add menu item',
+            message: html,
+            buttons: {
+                success: {
+                    label: 'Save',
+                    callback: function() {
+                        item.update({
+                            name: $('#name').val(),
+                            uri:  $('#uri').val()
+                        });
+                    }
+                }
+            }
+        });
+    });
+
+    $('.integrated-website-menu').on('click', '[data-action="integrated-website-menu-item-edit"]', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        console.log($(this));
+
+        var item = new Item($(this));
+        var template = Handlebars.compile($('#integrated_website_template_modal_menu_edit').html());
+
+        var html = $(template({
+            name: item.getValue('name'),
+            uri:  item.getValue('uri')
+        }));
+
+        bootbox.dialog({
+            title: 'Edit menu item',
+            message: html,
+            buttons: {
+                danger: {
+                    label: 'Remove',
+                    className: 'btn-danger pull-left',
+                    callback: function() {
+                        item.remove();
+                    }
+                },
+                success: {
+                    label: 'Save',
+                    callback: function() {
+                        item.update({
+                            name: $('#name').val(),
+                            uri:  $('#uri').val()
+                        });
+                    }
+                }
+            }
+        });
+    });
+
+}(window.jQuery, window.Routing, JSON);
+
+var Integrated = Integrated || {};
