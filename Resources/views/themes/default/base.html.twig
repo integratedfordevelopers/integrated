@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     {% block stylesheets %}
-        {% stylesheets output='css/styles.css' filter='?uglifycss'
+        {% stylesheets output='css/styles.css' 
             '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
         {% endstylesheets %}
@@ -51,7 +51,7 @@
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
 {% block javascripts %}
-    {% javascripts output='js/scripts.js' filter='?uglifyjs2'
+    {% javascripts output='js/scripts.js'
         '@IntegratedWebsiteBundle/Resources/public/js/page.js'
         '@IntegratedWebsiteBundle/Resources/public/js/menu.js'
         '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
