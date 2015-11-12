@@ -6,6 +6,7 @@
 
     Menu.prototype.load = function(data, success) {
         var element = this.element;
+        var menu = this;
 
         $.ajax({
             type: 'POST',
@@ -33,22 +34,25 @@
                     cursorAt: { top: 5, left: 10 },
                     scroll: false,
                     helper: function() {
-                        return $('<div style="background: red;">').css('width', '20px').css('height', '10px');
+                        return $('<div>').css('width', '20px').css('height', '10px');
                     }
+                    //update: function(e, ui) {
+                    //    menu.refresh();
+                    //}
                 });
 
                 element.find('.dropdown').droppable({
                     accept: '.integrated-website-menu-item',
                     tolerance: 'fit',
-                    greedy: true,
-                    over: function(e, ui) {
-                        $(this).addClass('open');
-                        $(this).parent().find('.integrated-website-menu-placeholder').hide();
-                    },
-                    out: function(e, ui) {
-                        $(this).removeClass('open');
-                        $(this).parent().find('.integrated-website-menu-placeholder').show();
-                    }
+                    greedy: true
+                    //over: function(e, ui) {
+                    //    $(this).addClass('open');
+                    //    $(this).closest('.integrated-website-menu-placeholder').hide();
+                    //},
+                    //out: function(e, ui) {
+                    //    $(this).removeClass('open');
+                    //    $(this).closest('.integrated-website-menu-placeholder').show();
+                    //}
                 });
 
                 if ($.isFunction(success)) {
@@ -202,8 +206,6 @@
     $('.integrated-website-menu').on('click', '[data-action="integrated-website-menu-item-edit"]', function(e) {
         e.preventDefault();
         e.stopPropagation();
-
-        console.log($(this));
 
         var item = new Item($(this));
         var template = Handlebars.compile($('#integrated_website_template_modal_menu_edit').html());
