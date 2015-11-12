@@ -24,3 +24,6 @@ parameters:
     solr_timeout:      30
 
     bower_bin:         /usr/local/bin/bower
+
+    recaptcha_site_key: ~
+    recaptcha_secret_key: ~
