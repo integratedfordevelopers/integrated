@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="integrated_website_content_job_show" path="/job/{slug}" methods="GET">
-        <default key="_controller">integrated_website.controller.content.job:showAction</default>
+    <route id="integrated_website_content_event_show" path="/job/{slug}" methods="GET">
+        <default key="_controller">integrated_website.controller.content.event:showAction</default>
     </route>
 </routes>
