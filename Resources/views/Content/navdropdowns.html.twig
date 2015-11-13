@@ -90,7 +90,11 @@
                                 {% endif %}
                                 </p>
                             </li>
-                            <li><a href="{{ path('integrated_user_profile_edit', {id: app.user.id}) }}"><i class="integrate-icon-edit"></i>Edit profile</a></li>
+                            <li>
+                                <a href="{{ path('integrated_user_profile_edit', {id: app.user.id}) }}">
+                                    <i class="integrate-icon-edit"></i>{% trans %}Edit profile{% endtrans %}
+                                </a>
+                            </li>
                             {#<li><a href="#"><i class="integrate-icon-picture"></i>Photo gallery</a></li>#}
                             {#<li><a href="#"><i class="integrate-icon-cog"></i>Settings</a></li>#}
                             <li class="divider"></li>
