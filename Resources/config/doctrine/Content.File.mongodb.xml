@@ -10,26 +10,6 @@
         <field fieldName="title" type="string" />
         <field fieldName="slug" type="string" unique="true" sparse="true" />
         <field fieldName="description" type="string" />
-        <field fieldName="published" type="boolean" />
-        <field fieldName="disabled" type="boolean" />
-
-        <embed-one
-                field="publishTime"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime" />
-
-        <embed-one
-                field="metadata"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata" />
-
-        <embed-many
-                field="relations"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation" />
-
-        <reference-many
-                field="channels"
-                target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel" />
-
-        <discriminator-field name="class" />
 
         <lifecycle-callbacks>
             <lifecycle-callback type="preUpdate" method="preUpload"/>
