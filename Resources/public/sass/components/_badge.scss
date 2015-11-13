@@ -1,0 +1,8 @@
+/* BADGE */
+.badge {
+	background: $color-allports;
+	border-radius: 50%;
+	&.badge-right {
+		margin-left: 8px;
+	}
+}
