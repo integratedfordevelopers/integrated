@@ -2,7 +2,7 @@
 <rss version="2.0">
     <channel>
         <title>{{ selection.title|default }}</title>
-        <link>{{ url('integrated_website_content_rss', { 'id': selection.id }) }}</link>
+        <link>{{ url('integrated_website_search_selection_rss', { 'id': selection.id }) }}</link>
 
         {% spaceless %}
         {% for document in documents %}

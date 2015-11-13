@@ -4,8 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="integrated_website_content_rss" path="/rss/{id}" methods="GET">
-        <default key="_controller">IntegratedWebsiteBundle:Content:rss</default>
-        <default key="_format">xml</default>
+    <route id="integrated_website_content_company_show" path="/company/{slug}" methods="GET">
+        <default key="_controller">integrated_website.controller.content.company:showAction</default>
     </route>
 </routes>
