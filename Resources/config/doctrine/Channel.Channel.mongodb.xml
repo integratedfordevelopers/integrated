@@ -5,7 +5,7 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Channel\Channel" collection="channel">
 
-        <field fieldName="id" id="true" strategy="NONE" unique="true" />
+        <field fieldName="id" id="true" strategy="NONE" />
         <field fieldName="name" type="string" index="true" />
         <field fieldName="domains" type="collection" />
         <field fieldName="options" type="hash" />
