@@ -14,6 +14,8 @@ namespace Integrated\Bundle\ContentBundle\Document\Relation;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Integrated\Common\Content\Relation\RelationInterface;
@@ -24,6 +26,8 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  * Relation document
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ *
+ * @MongoDBUnique(fields="id")
  */
 class Relation implements RelationInterface
 {
