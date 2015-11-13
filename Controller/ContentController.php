@@ -932,7 +932,7 @@ class ContentController extends Controller
             $result = $client->select($query);
 
 
-            $assingedContent = $result->getDocuments();
+            $assignedContent = $result->getDocuments();
         }
 
 
@@ -940,7 +940,7 @@ class ContentController extends Controller
             'avatarurl' => $avatarurl,
             'queuecount' => $queuecount,
             'queuepercentage' => $queuepercentage,
-            'assingedContent' => $assingedContent,
+            'assignedContent' => $assignedContent,
         );
     }
 

@@ -6,21 +6,21 @@
     </li>
 
     {% set divided = false %}
-    {% if assingedContent|length > 0 %}
+    {% if assignedContent|length > 0 %}
         <li class="divider-nav hidden-xs"></li>
         {%  set divided = true %}
 
         <li class="dropdown hidden-xs">
             <a href="#" class="dropdown-toggle btn btn-blue-thin" data-toggle="dropdown">
                 <i class="integrate-icon-doc"></i>
-                <span class="badge badge-right">{{ assingedContent|length }}</span>
+                <span class="badge badge-right">{{ assignedContent|length }}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-left dropdown-icons">
                 <li>
                     <div class="megamenu-content">
                         <ul class="list list-large list-border">
                             <li class="dropdown-header">{% trans %}Assigned to me{% endtrans %}:</li>
-                            {% for doc in assingedContent %}
+                            {% for doc in assignedContent %}
                                 <li>
                                     <a href="{{ path('integrated_content_content_edit', {id: doc.type_id}) }}">
                                         <i class="integrate-icon-plus-circled"></i>
