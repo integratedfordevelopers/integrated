@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
+
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
@@ -20,6 +22,8 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  * Channel document
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ *
+ * @MongoDBUnique(fields="id")
  */
 class Channel implements ChannelInterface
 {
