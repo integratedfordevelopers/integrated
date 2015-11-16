@@ -94,10 +94,6 @@ class ContentBlockHandler extends BlockHandler
 
             try {
                 if ($selection = $block->getSearchSelection()) {
-                    if (true === $block->isShowItemsRandom()) {
-                        $selection->setFilter('sort', 'random');
-                    }
-
                     $request->query->add($selection->getFilters());
                 }
 
@@ -110,7 +106,8 @@ class ContentBlockHandler extends BlockHandler
                 $block->getId(),
                 $block->getItemsPerPage(),
                 $block->getMaxItems(),
-                $block->getFacetFields()
+                $block->getFacetFields(),
+                $block->isShowItemsRandom()
             );
 
             $this->registry[$id] = $pagination;

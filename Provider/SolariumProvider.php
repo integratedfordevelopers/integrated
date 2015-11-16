@@ -61,12 +61,14 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
      * @param int $limit
      * @param int $maxItems
      * @param array $facetFields
+     * @param bool $random
      *
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function execute(Request $request, $blockId = null, $limit = 10, $maxItems = 0, array $facetFields = [])
+    public function execute(Request $request, $blockId = null, $limit = 10, $maxItems = 0, array $facetFields = [], $random = false)
     {
         $pageParam = (null !== $blockId ? $blockId . '-' : '') . 'page';
+        $sortParam = (null !== $blockId ? $blockId . '-' : '') . 'sort';
         $page = (int) $request->query->get($pageParam);
 
         if ($page < 1) {
@@ -75,17 +77,25 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
         // @todo max page (INTEGRATED-431)
 
+        $options = [
+            'pageParameterName'      => $pageParam,
+            'sortFieldParameterName' => $sortParam,
+            'defaultSortFieldName'   => null,
+            'maxItems'               => $maxItems,
+        ];
+
+        if (true === $random) {
+            $options['defaultSortFieldName'] = $request->query->get($sortParam, mt_rand());
+        }
+
         $pagination = $this->paginator->paginate(
             [
                 $this->client,
-                $this->getQuery($request, $blockId, $facetFields),
+                $this->getQuery($request, $blockId, $facetFields, $options['defaultSortFieldName']),
             ],
             $page,
             $limit,
-            [
-                'pageParameterName' => $pageParam,
-                'maxItems' => $maxItems,
-            ]
+            $options
         );
 
         /** @var \Solarium\QueryType\Select\Result\Document $document */
@@ -100,10 +110,11 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
      * @param Request $request
      * @param string $blockId
      * @param array $facetFields
+     * @param int $random
      *
      * @return \Solarium\QueryType\Select\Query\Query
      */
-    protected function getQuery(Request $request, $blockId, array $facetFields = [])
+    protected function getQuery(Request $request, $blockId, array $facetFields = [], $random = null)
     {
         $query = $this->client->createSelect();
 
@@ -206,12 +217,12 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
         $sort = $request->query->get('sort', $sortDefault);
 
-        if ('random' === $sort) {
-            $query->addParam('sort', 'random');
+        if (null !== $random) {
+            $query->addParam('sort', 'random_' . $random . ' desc');
 
         } elseif (strpos($sort,'custom:') === 0) {
             //support for custom query in database, while waiting for a better solution
-            $query->addParam('sort', substr($sort,7));
+            $query->addParam('sort', substr($sort, 7));
 
         } else {
             $sort = trim(strtolower($sort));
