@@ -206,18 +206,19 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
         $sort = $request->query->get('sort', $sortDefault);
 
-        if ('random' === $sort) {
-            $query->addParam('sort', 'random');
+        //support for custom query in database, while waiting for a better solution
+        if (strpos($sort,'custom:') === 0) {
 
-        } elseif (strpos($sort,'custom:') === 0) {
-            //support for custom query in database, while waiting for a better solution
             $query->addParam('sort', substr($sort,7));
 
-        } else {
+        }
+        else {
+
             $sort = trim(strtolower($sort));
             $sort = array_key_exists($sort, $sortOptions) ? $sort : $sortDefault;
 
             $query->addSort($sortOptions[$sort]['field'], in_array($request->query->get('order'), $orderOptions) ? $request->query->get('order') : $sortOptions[$sort]['order']);
+
         }
 
         return $query;

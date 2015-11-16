@@ -94,10 +94,6 @@ class ContentBlockHandler extends BlockHandler
 
             try {
                 if ($selection = $block->getSearchSelection()) {
-                    if (true === $block->isShowItemsRandom()) {
-                        $selection->setFilter('sort', 'random');
-                    }
-
                     $request->query->add($selection->getFilters());
                 }
 

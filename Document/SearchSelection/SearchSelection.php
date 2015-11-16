@@ -94,32 +94,12 @@ class SearchSelection
     }
 
     /**
-     * @param string $key
-     * @return array
-     */
-    public function getFilter($key)
-    {
-        return isset($this->filters[$key]) ? $this->filters[$key] : null;
-    }
-
-    /**
      * @param array $filters
      * @return SearchSelection
      */
     public function setFilters(array $filters = [])
     {
         $this->filters = $filters;
-        return $this;
-    }
-
-    /**
-     * @param string $key
-     * @param string $value
-     * @return SearchSelection
-     */
-    public function setFilter($key, $value)
-    {
-        $this->filters[$key] = $value;
         return $this;
     }
 
