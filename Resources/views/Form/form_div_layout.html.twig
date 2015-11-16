@@ -3,7 +3,7 @@
     {{ bootstrap_set_col_size('sm') }}
 
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <div class="form-group">
                 {{ form_label(form.block) }}
                 <div class="col-sm-9">
@@ -12,11 +12,35 @@
             </div>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-2">
             <div class="form-group">
-                {{ form_label(form.size) }}
-                <div class="col-sm-9">
-                    {{ form_widget(form.size) }}
+                {{ form_label(form.size_xs, '', {'label_col': 6}) }}
+                <div class="col-sm-6">
+                    {{ form_widget(form.size_xs) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                {{ form_label(form.size_sm, '', {'label_col': 6}) }}
+                <div class="col-sm-6">
+                    {{ form_widget(form.size_sm) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                {{ form_label(form.size_md, '', {'label_col': 6}) }}
+                <div class="col-sm-6">
+                    {{ form_widget(form.size_md) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                {{ form_label(form.size_lg, '', {'label_col': 6}) }}
+                <div class="col-sm-6">
+                    {{ form_widget(form.size_lg) }}
                 </div>
             </div>
         </div>
