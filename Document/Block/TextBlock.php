@@ -26,12 +26,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  */
 class TextBlock extends Block
 {
-    /**
-     * @var string
-     * @ODM\String
-     * @Type\Field(type="integrated_tinymce")
-     */
-    protected $content;
+    use PublishTitleTrait;
 
     /**
      * @var string
@@ -48,27 +43,9 @@ class TextBlock extends Block
     /**
      * @var string
      * @ODM\String
-     * @Type\Field(
-     *       options={
-     *          "required"=false,
-     *          "attr"={"class"="published-title"}
-     *       }
-     * )
+     * @Type\Field(type="integrated_tinymce")
      */
-    protected $publishedTitle = '';
-
-    /**
-     * @ODM\Boolean
-     * @Type\Field(
-     *      type="checkbox",
-     *      options={
-     *          "required"=false,
-     *          "attr"={"class"="use-title"}
-     *      }
-     * )
-     */
-    protected $useTitle;
-
+    protected $content;
 
     /**
      * @return string
@@ -94,37 +71,5 @@ class TextBlock extends Block
     public function getType()
     {
         return 'text';
-    }
-
-    /**
-     * @return string
-     */
-    public function getPublishedTitle()
-    {
-        return $this->publishedTitle !== null ? $this->publishedTitle : $this->title;
-    }
-
-    /**
-     * @param string $publishedTitle
-     */
-    public function setPublishedTitle($publishedTitle)
-    {
-        $this->publishedTitle = $publishedTitle === null ? '' : $publishedTitle;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getUseTitle()
-    {
-        return $this->useTitle;
-    }
-
-    /**
-     * @param boolean $useTitle
-     */
-    public function setUseTitle($useTitle)
-    {
-        $this->useTitle = $useTitle;
     }
 }
