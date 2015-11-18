@@ -197,7 +197,7 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOptions()
     {
