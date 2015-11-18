@@ -23,41 +23,41 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ContentTypeFormType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		/** @var MetadataInterface $metadata */
-		$metadata = $options['metadata'];
+        /** @var MetadataInterface $metadata */
+        $metadata = $options['metadata'];
 
         $builder->add('class', 'hidden');
         $builder->add('name', 'text', ['label' => 'Name']);
 
-		$builder->add('fields', 'content_type_field_collection', ['metadata' => $metadata]);
+        $builder->add('fields', 'content_type_field_collection', ['metadata' => $metadata]);
 
         $builder->add('channels', 'content_type_channels', ['property_path' => 'options[channels]']);
 
-		foreach ($metadata->getOptions() as $option) {
-			$ype = $builder->create('options_' . $option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
-				->setPropertyPath('options[' . $option->getName() . ']');
+        foreach ($metadata->getOptions() as $option) {
+            $ype = $builder->create('options_' . $option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
+                ->setPropertyPath('options[' . $option->getName() . ']');
 
-			$builder->add($ype);
-		}
+            $builder->add($ype);
+        }
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setRequired(['metadata']);
-		$resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\Form\\Mapping\\MetadataInterface']);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(['metadata']);
+        $resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\Form\\Mapping\\MetadataInterface']);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'integrated_content_type';
