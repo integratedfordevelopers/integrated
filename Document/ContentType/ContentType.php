@@ -16,6 +16,7 @@ use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Integrated\Common\ContentType\ContentTypeFieldInterface;
 
 /**
  * Document ContentType
@@ -44,7 +45,7 @@ class ContentType implements ContentTypeInterface
     protected $name;
 
     /**
-     * @var Embedded\Field[]
+     * @var ContentTypeFieldInterface[]
      */
     protected $fields = [];
 
@@ -186,7 +187,7 @@ class ContentType implements ContentTypeInterface
     /**
      * Set the fields of the content type
      *
-     * @param array $fields
+     * @param ContentTypeFieldInterface[] $fields
      * @return $this
      */
     public function setFields(array $fields)
