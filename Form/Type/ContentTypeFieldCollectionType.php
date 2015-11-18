@@ -25,36 +25,36 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ContentTypeFieldCollectionType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		/** @var MetadataInterface $metadata */
-		$metadata = $options['metadata'];
+        /** @var MetadataInterface $metadata */
+        $metadata = $options['metadata'];
 
-		foreach ($metadata->getFields() as $field) {
-			$builder->add($field->getName(), 'content_type_field', [
-				'label' => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
-				'field' => $field,
-			]);
+        foreach ($metadata->getFields() as $field) {
+            $builder->add($field->getName(), 'content_type_field', [
+                'label' => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
+                'field' => $field,
+            ]);
         }
 
         $builder->addModelTransformer(new ContentTypeFieldCollectionTransformer());
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setRequired(['metadata']);
-		$resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\Form\\Mapping\\MetadataInterface']);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(['metadata']);
+        $resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\Form\\Mapping\\MetadataInterface']);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'integrated_content_type_fields';
