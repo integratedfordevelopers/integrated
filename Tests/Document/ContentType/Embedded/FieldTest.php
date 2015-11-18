@@ -32,6 +32,14 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test instance of
+     */
+    public function testInstanceOf()
+    {
+        $this->assertInstanceOf('Integrated\Common\ContentType\ContentTypeFieldInterface', $this->field);
+    }
+
+    /**
      * Test name property
      */
     public function testName()
