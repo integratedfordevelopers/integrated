@@ -68,13 +68,23 @@ class RegisterTinymceParametersPass implements CompilerPassInterface
         foreach ($options as $option) {
             /** @var $option \DOMElement */
             $type = $option->getAttribute('type');
-            $value = $option->nodeValue;
-
             if (!in_array($type, [self::STYLE_FORMAT, self::CONTENT_CSS])) {
                 throw new FileException("The file $filePath is not valid");
             }
 
-            $this->parameters[$type][] = $value;
+            $availableFormatParams = ['title', 'inline', 'block', 'selector', 'classes', 'styles', 'attributes', 'exact', 'wrapper'];
+
+            $formatParams = [];
+            foreach ($option->childNodes as $formatParam) {
+                /** @var $formatParam \DOMElement */
+                if (!in_array($formatParam->tagName, $availableFormatParams)) {
+                    throw new FileException("The file $filePath is not valid");
+                }
+
+                $formatParams[$formatParam->tagName] = $formatParam->nodeValue;
+            }
+
+            $this->parameters[$type][] = json_encode($formatParams);
         }
     }
 }

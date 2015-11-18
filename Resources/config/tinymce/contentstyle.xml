@@ -1,6 +1,15 @@
 <styles>
-    <option type="style_formats">{title: 'Custom style 1', block: 'div', classes: 'further-reading', wrapper : true}</option>
-    <option type="style_formats">{title: 'PHP code', block: 'pre', classes: 'brush: php' }</option>
+    <option type="style_formats">
+        <title>Custom style 1</title>
+        <block>div</block>
+        <classes>further-reading</classes>
+        <wrapper>true</wrapper>
+    </option>
+    <option type="style_formats">
+        <title>PHP code</title>
+        <block>pre</block>
+        <classes>brush: php</classes>
+    </option>
 
     <option type="content_css">/bundles/integratedformtype/css/tinymce.content.css</option>
 </styles>
