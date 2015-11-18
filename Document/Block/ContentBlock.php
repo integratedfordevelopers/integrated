@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
+use Integrated\Bundle\BlockBundle\Document\Block\PublishTitleTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
@@ -29,6 +30,8 @@ use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
  */
 class ContentBlock extends Block
 {
+    use PublishTitleTrait;
+
     /**
      * @var SearchSelection
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection")
@@ -104,30 +107,6 @@ class ContentBlock extends Block
      * )
      */
     protected $title;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @Type\Field(
-     *       options={
-     *          "required"=false,
-     *          "attr"={"class"="published-title"}
-     *       }
-     * )
-     */
-    protected $publishedTitle;
-
-    /**
-     * @ODM\Boolean
-     * @Type\Field(
-     *      type="checkbox",
-     *      options={
-     *          "required"=false,
-     *          "attr"={"class"="use-title"}
-     *      }
-     * )
-     */
-    protected $useTitle;
 
     /**
      * @return SearchSelection
@@ -225,37 +204,5 @@ class ContentBlock extends Block
     public function getType()
     {
         return 'content';
-    }
-
-    /**
-     * @return string
-     */
-    public function getPublishedTitle()
-    {
-        return $this->publishedTitle !== null ? $this->publishedTitle : $this->title;
-    }
-
-    /**
-     * @param string $publishedTitle
-     */
-    public function setPublishedTitle($publishedTitle)
-    {
-        $this->publishedTitle = $publishedTitle === null ? '' : $publishedTitle;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUseTitle()
-    {
-        return $this->useTitle;
-    }
-
-    /**
-     * @param mixed $useTitle
-     */
-    public function setUseTitle($useTitle)
-    {
-        $this->useTitle = $useTitle;
     }
 }
