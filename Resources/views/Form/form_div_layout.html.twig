@@ -60,7 +60,7 @@
                             {title: 'Preformatted (fixed font)', block: 'pre' }
                             {% for style_format in content_styles.style_formats %}
                                 {% if loop.first %},{% endif %}
-                                {{ style_format|raw }}
+                                {{ style_format|json_encode|raw }}
                                 {% if not loop.last %},{% endif %}
                             {% endfor %}
                         ]

@@ -85,7 +85,7 @@ class RegisterTinymceParametersPass implements CompilerPassInterface
                     $formatParams[$formatParam->tagName] = $formatParam->nodeValue;
                 }
 
-                $this->parameters[$type][] = json_encode($formatParams);
+                $this->parameters[$type][] = $formatParams;
             }
             else {
                 $this->parameters[$type][] = $option->nodeValue;
