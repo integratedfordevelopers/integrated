@@ -25,36 +25,36 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ContentTypeFieldType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		/** @var AttributeInterface $field */
-		$field = $options['field'];
+        /** @var AttributeInterface $field */
+        $field = $options['field'];
 
-		$builder->add('enabled', 'checkbox', [
-			'required' => false,
-			'label'    => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
-		]);
+        $builder->add('enabled', 'checkbox', [
+            'required' => false,
+            'label'    => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
+        ]);
 
-		$builder->add('required', 'checkbox', ['required' => false]);
+        $builder->add('required', 'checkbox', ['required' => false]);
 
         $builder->addModelTransformer(new ContentTypeFieldTransformer($field));
     }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setRequired(['field']);
-		$resolver->setAllowedTypes(['field' => 'Integrated\\Common\\Form\\Mapping\\AttributeInterface']);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setRequired(['field']);
+        $resolver->setAllowedTypes(['field' => 'Integrated\\Common\\Form\\Mapping\\AttributeInterface']);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'integrated_content_type_field';
