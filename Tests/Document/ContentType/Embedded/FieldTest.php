@@ -45,7 +45,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testType()
     {
-        $type = 'henk';
+        $type = 'type';
         $this->assertEquals($type, $this->field->setType($type)->getType());
     }
 
@@ -54,7 +54,23 @@ class FieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testOptions()
     {
-        $options = array('label' => 'Test', 'required' => false);
+        $options = array('label' => 'label', 'required' => false);
         $this->assertEquals($options, $this->field->setOptions($options)->getOptions());
+    }
+
+    /**
+     * Test getLabel function
+     */
+    public function testGetLabelFunction()
+    {
+        $name = 'name';
+        $this->field->setName($name);
+
+        $this->assertSame(ucfirst($name), $this->field->getLabel());
+
+        $label = 'label';
+        $this->field->setOptions(['label' => $label]);
+        $this->assertSame($label, $this->field->getLabel());
+
     }
 }
