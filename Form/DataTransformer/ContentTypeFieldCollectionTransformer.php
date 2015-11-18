@@ -17,7 +17,7 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeFieldCollection implements DataTransformerInterface
+class ContentTypeFieldCollectionTransformer implements DataTransformerInterface
 {
     /**
      * @param mixed $fields

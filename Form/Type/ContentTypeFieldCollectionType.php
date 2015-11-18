@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeFieldCollection as ContentTypeFieldCollectionTransformer;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeFieldCollectionTransformer;
 
 use Integrated\Common\Form\Mapping\MetadataInterface;
 
