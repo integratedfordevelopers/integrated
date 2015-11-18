@@ -36,7 +36,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testName()
     {
-        $name = 'henk';
+        $name = 'name';
         $this->assertEquals($name, $this->field->setName($name)->getName());
     }
 
