@@ -1,82 +1,80 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
+                    <ul role="menu" class="dropdown-menu">
+                        {% for metadata in factory.allMetadata %}
+                            <li role="presentation">
+                                <a href="{{ path('integrated_block_block_new') }}?class={{ metadata.class }}">{{ metadata.type|default(metadata.class) }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
 
-    <div class="filters_row">
-        <ul class="nav nav-pills">
-            <li class="dropdown">
-                <a href="#" data-toggle="dropdown" role="button">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
-                <ul role="menu" class="dropdown-menu">
-                    {% for metadata in factory.allMetadata %}
-                        <li role="presentation">
-                            <a href="{{ path('integrated_block_block_new') }}?class={{ metadata.class }}">{{ metadata.type|default(metadata.class) }}</a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </li>
-        </ul>
-    </div>
+            <section class="section-white section-padding section-shadow section-radius">
 
-    <div class="content_columns_holder">
-        <div class="content_column_inner">
+                <table class="table">
+                    <colgroup>
+                        <col />
+                        <col />
+                        <col />
+                        <col style="width: 5em" />
+                    </colgroup>
 
-            <table class="table">
-                <colgroup>
-                    <col />
-                    <col />
-                    <col />
-                    <col style="width: 5em" />
-                </colgroup>
+                    <thead>
+                        <tr>
+                            <th>{% trans %}Block name{% endtrans %}</th>
+                            <th>{% trans %}Short code{% endtrans %}</th>
+                            <th>{% trans %}Type{% endtrans %}</th>
+                            <th>{% trans %}Actions{% endtrans %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                <thead>
-                    <tr>
-                        <th>{% trans %}Block name{% endtrans %}</th>
-                        <th>{% trans %}Short code{% endtrans %}</th>
-                        <th>{% trans %}Type{% endtrans %}</th>
-                        <th>{% trans %}Actions{% endtrans %}</th>
-                    </tr>
-                </thead>
-                <tbody>
+                    {% for block in blocks %}
 
-                {% for block in blocks %}
-
-                    <tr>
-                        <td>
-                            {{ block.title }}
-                        </td>
-                        <td>
-                            {{ block.id }}
-                        </td>
-                        <td>
-                            {{ block.type }}
-                        </td>
-                        <td>
-                            <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">
-                                {{ icon('pencil') }}
-                            </a>
-                            {% if not block.locked %}
-                                <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
-                                    {{ icon('remove-circle') }}
+                        <tr>
+                            <td>
+                                {{ block.title }}
+                            </td>
+                            <td>
+                                {{ block.id }}
+                            </td>
+                            <td>
+                                {{ block.type }}
+                            </td>
+                            <td>
+                                <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">
+                                    {{ icon('pencil') }}
                                 </a>
-                            {% endif %}
-                        </td>
-                    </tr>
+                                {% if not block.locked %}
+                                    <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                                        {{ icon('remove-circle') }}
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
 
-                {% else %}
+                    {% else %}
 
-                    <tr>
-                        <td colspan="4">
-                            {% trans %}No blocks added{% endtrans %}
-                        </td>
-                    </tr>
+                        <tr>
+                            <td colspan="4">
+                                {% trans %}No blocks added{% endtrans %}
+                            </td>
+                        </tr>
 
-                {% endfor %}
+                    {% endfor %}
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
 
-            {{ knp_pagination_render(blocks) }}
+                {{ knp_pagination_render(blocks) }}
+            </section>
         </div>
     </div>
-
 {% endblock %}
