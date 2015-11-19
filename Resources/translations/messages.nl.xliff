@@ -195,8 +195,8 @@
                 <target>Relatie bewerken</target>
             </trans-unit>
             <trans-unit id="52">
-                <source>Search here...</source>
-                <target>Zoeken...</target>
+                <source>Search here</source>
+                <target>Zoeken</target>
             </trans-unit>
             <trans-unit id="53">
                 <source>Users</source>

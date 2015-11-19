@@ -59,7 +59,7 @@
                 <div class="nav-form-inner">
                     <form action="{{ path('integrated_content_content_index') }}" class="navbar-form navbar-left search-form" method="get">
                         <div class="form-group relative">
-                            <input type="text" name="q" class="form-control" value="{{ app.request.query.get('q')|trim }}" placeholder="{% trans %}Search here...{% endtrans %}">
+                            <input type="text" name="q" class="form-control" value="{{ app.request.query.get('q')|trim }}" placeholder="{% trans %}Search here{% endtrans %}...">
                             <button type="submit"><i class="integrate-icon-search"></i></button>
                         </div>
                     </form>
@@ -74,7 +74,7 @@
         <div class="container">
             <ol class="breadcrumb">
                 <li class="active">
-                    Home
+                    {% trans %}Home{% endtrans %}
                 </li>
             </ol>
         </div>
