@@ -13,6 +13,7 @@ namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
+use Integrated\Bundle\BlockBundle\Templating\BlockRenderer;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Event;
 
@@ -32,13 +33,20 @@ class EventController
     protected $themeManager;
 
     /**
+     * @var BlockRenderer
+     */
+    protected $blockRenderer;
+
+    /**
      * @param TwigEngine $templating
      * @param ThemeManager $themeManager
+     * @param BlockRenderer $blockRenderer
      */
-    public function __construct(TwigEngine $templating, ThemeManager $themeManager)
+    public function __construct(TwigEngine $templating, ThemeManager $themeManager, BlockRenderer $blockRenderer)
     {
         $this->templating = $templating;
         $this->themeManager = $themeManager;
+        $this->blockRenderer = $blockRenderer;
     }
 
     /**
@@ -47,6 +55,8 @@ class EventController
      */
     public function showAction(Event $event)
     {
+        $this->blockRenderer->setDocument($event);
+
         return $this->templating->renderResponse($this->themeManager->locateTemplate('content/Event/default.html.twig'), [
             'event' => $event,
         ]);
