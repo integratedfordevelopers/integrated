@@ -13,6 +13,7 @@ namespace Integrated\Bundle\BlockBundle\Block;
 
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -28,6 +29,11 @@ class BlockHandler implements BlockHandlerInterface
      * @var string
      */
     private $template;
+
+    /**
+     * @var ContentInterface
+     */
+    private $document;
 
     /**
      * @param \Twig_Environment $twig
@@ -54,6 +60,26 @@ class BlockHandler implements BlockHandlerInterface
     public function setTemplate($template)
     {
         $this->template = $template;
+        return $this;
+    }
+
+    /**
+     * Get current document which can be used in related blocks.
+     *
+     * @return ContentInterface|null
+     */
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    /**
+     * @param ContentInterface $document
+     * @return $this
+     */
+    public function setDocument($document)
+    {
+        $this->document = $document;
         return $this;
     }
 

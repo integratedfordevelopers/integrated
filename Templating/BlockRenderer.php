@@ -18,6 +18,8 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockHandlerRegistryInterface;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Common\Content\ContentInterface;
+
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
@@ -46,6 +48,11 @@ class BlockRenderer
      * @var \Twig_Environment
      */
     protected $twig;
+
+    /**
+     * @var ContentInterface
+     */
+    protected $document;
 
     /**
      * @param BlockHandlerRegistryInterface $blockRegistry
@@ -89,6 +96,10 @@ class BlockRenderer
                 if ($handler instanceof BlockHandler) {
                     $handler->setTwig($this->twig);
 
+                    if ($this->document instanceof ContentInterface) {
+                        $handler->setDocument($this->document);
+                    }
+
                     if ($template = $this->themeManager->locateTemplate('blocks/' . $block->getType() . '/' . $block->getLayout())) {
                         $handler->setTemplate($template);
                     }
@@ -97,5 +108,15 @@ class BlockRenderer
                 return $handler->execute($block);
             }
         }
+    }
+
+    /**
+     * @param ContentInterface $document
+     * @return $this
+     */
+    public function setDocument(ContentInterface $document)
+    {
+        $this->document = $document;
+        return $this;
     }
 }
