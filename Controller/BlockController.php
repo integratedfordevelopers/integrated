@@ -122,7 +122,7 @@ class BlockController extends Controller
         if ($this->get('integrated_block.bundle_checker')->checkPageBundle()) {
             /* check if current Block not used on some page */
             if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
-
+                throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
             }
         }
 
