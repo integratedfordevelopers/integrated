@@ -4,7 +4,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/content.xml" prefix="/content" />
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/content/article.xml" prefix="/content" />
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/content/company.xml" prefix="/content" />
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/content/event.xml" prefix="/content" />
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/content/job_posting.xml" prefix="/content" />
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/content/taxonomy.xml" prefix="/content" />
+
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/page.xml" prefix="/page" />
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/search_selection.xml" />
+
     <import resource="." type="page" />
 </routes>

@@ -21,7 +21,7 @@ use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ContentController extends Controller
+class SearchSelectionController extends Controller
 {
     /**
      * @Template
