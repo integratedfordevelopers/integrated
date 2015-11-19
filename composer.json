@@ -26,8 +26,9 @@
         "integrated/content-bundle": "~0.3",
         "integrated/formtype-bundle": "~0.3",
         "integrated/solr-bundle": "~0.3",
-        "integrated/user-bundle": "~0.2",
-        "integrated/website-bundle": "~0.3"
+        "integrated/user-bundle": "~0.3",
+        "integrated/website-bundle": "~0.3",
+        "integrated/workflow-bundle": "~0.3"
     },
     "scripts": {
         "post-install-cmd": [
@@ -36,8 +37,6 @@
             "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
-            "php app/console braincrafted:bootstrap:install",
             "php app/console fos:js-routing:dump --env=prod",
             "php app/console assetic:dump web",
             "php app/console doctrine:mongodb:schema:create",

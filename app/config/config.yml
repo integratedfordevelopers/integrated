@@ -46,30 +46,29 @@ assetic:
             compress: true
             apply_to: "\.less$"
         cssrewrite: ~
+        sass:
+            bin: /usr/bin/sass
+            apply_to: "\.scss$"
+            style: compressed
+
     assets:
         integrated_css:
             inputs:
-                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css
-                - @IntegratedFormTypeBundle/Resources/public/components/select2/select2.css
-                - @IntegratedFormTypeBundle/Resources/public/components/select2-bootstrap-css/select2-bootstrap.min.css
+                - @IntegratedContentBundle/Resources/public/sass/main.scss
+            filters:
+                - sass
+            output: css/main.css
         integrated_js:
             inputs:
                 - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
                 - @IntegratedFormTypeBundle/Resources/public/components/select2/select2.js
                 - @IntegratedFormTypeBundle/Resources/public/js/datetimepicker.js
-        bootstrap_css:
-            inputs:
-                - @IntegratedContentBundle/Resources/public/less/styles.less
-            filters:
-                - less
-            output: css/bootstrap.css
+
 
 # Bootstrap Configuration
 braincrafted_bootstrap:
-    less_filter: less
-    jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.js
-#    customize:
-#        variables_file: %kernel.root_dir%/../vendor/integrated/content-bundle/Integrated/Bundle/ContentBundle/Resources/public/less/variables.less
+    auto_configure:
+        assetic: false
 
 # Doctrine Configuration
 doctrine:
