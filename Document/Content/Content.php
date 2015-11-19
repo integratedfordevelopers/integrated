@@ -280,6 +280,34 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
+     * @param $relationId
+     * @return ArrayCollection|bool
+     */
+    public function getReferencesByRelationId($relationId)
+    {
+        foreach ($this->relations as $relation) {
+            if ($relation instanceof Relation) {
+                if ($relation->getRelationId() == $relationId) {
+                    return $relation->getReferences();
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @param $relationId
+     * @return Content|bool
+     */
+    public function getFirstReferenceByRelationId($relationId)
+    {
+        if ($references = $this->getReferencesByRelationId($relationId)) {
+            return $references->first();
+        }
+        return false;
+    }
+
+    /**
      * Get the createdAt of the document
      *
      * @return \DateTime
