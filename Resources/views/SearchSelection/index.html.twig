@@ -13,23 +13,23 @@
 
                     <thead>
                         <tr>
-                            <th>Search selections</th>
+                            <th>{% trans %}Search selections{% endtrans %}</th>
                             <th>{% trans %}Short code{% endtrans %}</th>
-                            <th>Actions</th>
+                            <th>{% trans %}Actions{% endtrans %}</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {% for searchSelection in searchSelections %}
 
-                                    <tr>
-                                        <td>{{ searchSelection.title }}</td>
-                                        <td>{{ searchSelection.id|default }}</td>
-                                        <td>
-                                            <a href="{{ path('integrated_content_search_selection_edit', { 'id': searchSelection.id }) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
-                                            <a href="{{ path('integrated_content_search_selection_delete', { 'id': searchSelection.id }) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
-                                        </td>
-                                    </tr>
+                            <tr>
+                                <td>{{ searchSelection.title }}</td>
+                                <td>{{ searchSelection.id|default }}</td>
+                                <td>
+                                    <a href="{{ path('integrated_content_search_selection_edit', { 'id': searchSelection.id }) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <a href="{{ path('integrated_content_search_selection_delete', { 'id': searchSelection.id }) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                                </td>
+                            </tr>
 
                         {% endfor %}
                     </tbody>
