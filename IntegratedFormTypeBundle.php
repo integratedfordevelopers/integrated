@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\FormTypeBundle;
 
 use Integrated\Bundle\FormTypeBundle\DependencyInjection\Compiler\FormCoreExtensionOverridePass;
+use Integrated\Bundle\FormTypeBundle\DependencyInjection\Compiler\RegisterTinymceParametersPass;
 use Integrated\Bundle\FormTypeBundle\DependencyInjection\IntegratedFormTypeExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -30,6 +31,7 @@ class IntegratedFormTypeBundle extends Bundle
 		parent::build($container);
 
 		$container->addCompilerPass(new FormCoreExtensionOverridePass());
+		$container->addCompilerPass(new RegisterTinymceParametersPass());
 	}
 
     /**
