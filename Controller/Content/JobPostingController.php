@@ -13,7 +13,7 @@ namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
-use Integrated\Bundle\BlockBundle\Templating\BlockRenderer;
+use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\JobPosting;
 
@@ -33,20 +33,20 @@ class JobPostingController
     protected $themeManager;
 
     /**
-     * @var BlockRenderer
+     * @var BlockManager
      */
-    protected $blockRenderer;
+    protected $blockManager;
 
     /**
      * @param TwigEngine $templating
      * @param ThemeManager $themeManager
-     * @param BlockRenderer $blockRenderer
+     * @param BlockManager $blockManager
      */
-    public function __construct(TwigEngine $templating, ThemeManager $themeManager, BlockRenderer $blockRenderer)
+    public function __construct(TwigEngine $templating, ThemeManager $themeManager, BlockManager $blockManager)
     {
         $this->templating = $templating;
         $this->themeManager = $themeManager;
-        $this->blockRenderer = $blockRenderer;
+        $this->blockManager = $blockManager;
     }
 
     /**
@@ -55,7 +55,7 @@ class JobPostingController
      */
     public function showAction(JobPosting $jobPosting)
     {
-        $this->blockRenderer->setDocument($jobPosting);
+        $this->blockManager->setDocument($jobPosting);
 
         return $this->templating->renderResponse($this->themeManager->locateTemplate('content/JobPosting/default.html.twig'), [
             'jobPosting' => $jobPosting,
