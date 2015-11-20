@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type;
+namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType;
 
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeFieldCollectionTransformer;
 
@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeFieldCollectionType extends AbstractType
+class FieldCollectionType extends AbstractType
 {
     /**
      * {@inheritdoc}

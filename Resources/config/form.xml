@@ -19,7 +19,7 @@
         <parameter key="integrated_content.form.content.relations.type.class">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</parameter>
 
         <parameter key="integrated_content.form.content_type.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType</parameter>
-        <parameter key="integrated_content.form.content_type.field.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldCollectionType</parameter>
+        <parameter key="integrated_content.form.content_type.field_collection_type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentType\FieldCollectionType</parameter>
         <parameter key="integrated_content.form.content_type.field.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldType</parameter>
         <parameter key="integrated_content.form.content_type.relation.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeRelationFormType</parameter>
         <parameter key="integrated_content.form.content_type.channels.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType</parameter>
@@ -112,7 +112,7 @@
         <service id="integrated_content.form.content_type.channel.repository" alias="integrated_content.form.channel.repository" />
 
         <service id="integrated_content.form.content_type.type" class="%integrated_content.form.content_type.type.class%" />
-        <service id="integrated_content.form.content_type.field.collection.type" class="%integrated_content.form.content_type.field.collection.type.class%" />
+        <service id="integrated_content.form.content_type.field_collection_type" class="%integrated_content.form.content_type.field_collection_type.class%" />
         <service id="integrated_content.form.content_type.field.type" class="%integrated_content.form.content_type.field.type.class%" />
         <service id="integrated_content.form.content_type.relation.type" class="%integrated_content.form.content_type.relation.type.class%" />
         <service id="integrated_content.form.content_type.channels.type" class="%integrated_content.form.content_type.channels.type.class%" />

@@ -7,7 +7,7 @@
 	<services>
 
 		<service id="integrated_content.content_type.field.collection.type" class="%integrated_content.form.proxy.type.class%">
-			<argument type="service" id="integrated_content.form.content_type.field.collection.type" />
+			<argument type="service" id="integrated_content.form.content_type.field_collection_type" />
 			<argument type="string">content_type_field_collection</argument>
 
 			<tag name="form.type" alias="content_type_field_collection" />
