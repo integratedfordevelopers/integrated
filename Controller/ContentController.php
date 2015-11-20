@@ -83,6 +83,7 @@ class ContentController extends Controller
         $query = $client->createSelect();
 
         $facetSet = $query->getFacetSet();
+        $facetSet->getMinCount(1);
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels');
         $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state');
