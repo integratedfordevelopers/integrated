@@ -1,26 +1,23 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
-
-{% block content %}
-
-    <div class="content_columns_holder">
-        <div class="content_column_inner">
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
             <ol class="breadcrumb">
                 <li>
                     <a href="{{ path('integrated_content_search_selection_index') }}">{% trans %}Home{% endtrans %}</a>
                 </li>
                 <li class="active">{% trans %}Edit{% endtrans %}</li>
             </ol>
-
-            <div class="page-header">
-                <h1>{% trans %}Edit{% endtrans %} <small>Search selection</small></h1>
-            </div>
-
-            <div class="row">
-                <div class="col-md-9">
-                    {{ form(form, {'style': 'horizontal'}) }}
-                </div>
-            </div>
         </div>
     </div>
-
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <h1 class="main-title font-regular"><h1>{% trans %}Edit{% endtrans %} <small>Search selection</small></h1></h1>
+            <section class="section-white section-padding section-shadow section-radius">
+                {{ form(form, {'style': 'horizontal'}) }}
+            </section>
+        </div>
+    </div>
 {% endblock %}

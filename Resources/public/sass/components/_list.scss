@@ -149,4 +149,21 @@
 	}
 }
 
+.list-content {
+  >li {
+	margin-bottom: 30px;
+	>h3 {
+	  font-weight: normal;
+	  font-size: 20px;
+	  margin-bottom: 10px;
+	  >a {
+		color: #016aac;
+		text-decoration: none;
+		&:hover {
+		  text-decoration: underline;
+		}
+	  }
+	}
+  }
+}
 
