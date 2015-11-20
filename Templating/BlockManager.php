@@ -27,7 +27,7 @@ use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class BlockRenderer
+class BlockManager
 {
     /**
      * @var BlockHandlerRegistryInterface

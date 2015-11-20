@@ -48,7 +48,7 @@ class BlockExtension extends \Twig_Extension
      */
     public function renderBlock($block)
     {
-        return $this->container->get('integrated_block.templating.block_renderer')->render($block);
+        return $this->container->get('integrated_block.templating.block_manager')->render($block);
     }
 
     /**
