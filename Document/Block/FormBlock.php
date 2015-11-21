@@ -12,9 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
@@ -24,14 +21,12 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Form block")
  */
 class FormBlock extends Block
 {
     /**
      * @var ContentType
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType")
      * @Type\Field(
      *      type="document",
      *      options={
@@ -45,7 +40,6 @@ class FormBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field
      */
@@ -53,7 +47,6 @@ class FormBlock extends Block
 
     /**
      * @var bool
-     * @ODM\Boolean
      * @Type\Field(
      *      type="checkbox",
      *      options={

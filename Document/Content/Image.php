@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,9 +19,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document
- * @ODM\HasLifecycleCallbacks
- *
  * @Type\Document("Image")
  */
 class Image extends File
@@ -30,7 +26,6 @@ class Image extends File
     /**
      * {@inheritdoc}
      * @Type\Field(type="integrated_image")
-     * @ODM\Field
      * @Assert\Image()
      */
     protected $file;

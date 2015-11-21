@@ -11,25 +11,20 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 /**
  * Embedded document Location
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Location
 {
     /**
      * @var float
-     * @ODM\Float
      */
     protected $latitude;
 
     /**
      * @var float
-     * @ODM\Float
      */
     protected $longitude;
 

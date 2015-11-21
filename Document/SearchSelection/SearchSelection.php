@@ -13,22 +13,17 @@ namespace Integrated\Bundle\ContentBundle\Document\SearchSelection;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * SearchSelection document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\Document(collection="search_selection", repositoryClass="SearchSelectionRepository")
  */
 class SearchSelection
 {
     /**
      * @var string
-     * @ODM\Id(strategy="NONE")
      * @Slug(fields={"title"})
      */
     protected $id;
@@ -36,26 +31,21 @@ class SearchSelection
     /**
      * @var string
      * @Assert\NotBlank
-     * @ODM\String
-     * @ODM\Index
      */
     protected $title;
 
     /**
      * @var array
-     * @ODM\Hash
      */
     protected $filters = [];
 
     /**
      * @var bool
-     * @ODM\Boolean
      */
     protected $public = false;
 
     /**
      * @var int
-     * @ODM\Int
      */
     protected $userId;
 

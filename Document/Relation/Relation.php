@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Relation;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Symfony\Component\Validator\Constraints as Assert;
@@ -27,14 +27,12 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document(collection="relation")
  * @MongoDBUnique(fields="id")
  */
 class Relation implements RelationInterface
 {
     /**
      * @var string
-     * @ODM\Id(strategy="NONE")
      * @Slug(fields={"name"}, separator="_")
      */
     protected $id;
@@ -42,47 +40,39 @@ class Relation implements RelationInterface
     /**
      * @var string
      * @Assert\NotBlank()
-     * @ODM\String
-     * @ODM\Index
      */
     protected $name;
 
     /**
      * @var string
      * @Assert\NotBlank
-     * @ODM\String
      */
     protected $type;
 
     /**
      * @var ContentTypeInterface[]
-     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType")
      * @Assert\NotBlank()
      */
     protected $sources;
 
     /**
      * @var ContentTypeInterface[]
-     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType")
      * @Assert\NotBlank()
      */
     protected $targets;
 
     /**
      * @var bool
-     * @ODM\Boolean
      */
     protected $multiple;
 
     /**
      * @var bool
-     * @ODM\Boolean
      */
     protected $required;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $createdAt;
 

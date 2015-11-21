@@ -1,0 +1,17 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\ContentBundle\Document\Block\FormBlock">
+
+        <field fieldName="returnUrl" type="string" />
+        <field fieldName="recaptcha" type="boolean" />
+
+        <reference-one
+                field="contentType"
+                target-document="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" />
+
+    </document>
+
+</doctrine-mongo-mapping>

@@ -11,10 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
-
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
@@ -22,49 +20,41 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 /**
  * Document ContentType
  *
- * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @ODM\Document(collection="content_type")
  * @MongoDBUnique(fields="id")
+ * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
 class ContentType implements ContentTypeInterface
 {
     /**
      * @var string
-     * @ODM\Id(strategy="NONE")
      * @Slug(fields={"name"}, separator="_")
      */
     protected $id;
 
     /**
      * @var string The class of the content type
-     * @ODM\String
      * @Assert\NotBlank()
      */
     protected $class;
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank()
      */
     protected $name;
 
     /**
      * @var Embedded\Field[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field")
      */
     protected $fields = [];
 
     /**
      * @var mixed[]
-     * @ODM\Hash
      */
     protected $options = [];
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $createdAt;
 

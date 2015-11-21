@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
@@ -25,50 +24,42 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Person")
  */
 class Person extends Relation
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(type="choice", options={"choices"={"Male"="Male", "Female"="Female"}})
      */
     protected $gender;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $prefix;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $nickname;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(options={"label"="First name"})
      */
     protected $firstName;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(options={"label"="Last name"})
      */
     protected $lastName;
 
     /**
      * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
      * @Slug(fields={"firstName", "lastName"})
      * @Type\Field
      */
@@ -76,13 +67,11 @@ class Person extends Relation
 
     /**
      * @var Collection Job[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job")
      */
     protected $jobs;
 
     /**
      * @var File
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
      * @Type\Field(type="integrated_image_choice")
      */
     protected $picture;

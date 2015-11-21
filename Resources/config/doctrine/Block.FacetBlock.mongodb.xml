@@ -1,0 +1,16 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\ContentBundle\Document\Block\FacetBlock">
+
+        <field fieldName="field" type="string" />
+
+        <reference-one
+                field="block"
+                target-document="Integrated\Bundle\ContentBundle\Document\Block\ContentBlock" />
+
+    </document>
+
+</doctrine-mongo-mapping>

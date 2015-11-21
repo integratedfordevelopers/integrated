@@ -11,32 +11,27 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 
 /**
  * Embedded document Job
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Job
 {
     /**
      * @var string
-     * @ODM\String
      */
     protected $function;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $department;
 
     /**
      * @var Company
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company")
      */
     protected $company;
 

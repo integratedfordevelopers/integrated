@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
@@ -21,22 +19,18 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document(collection="content")
  * @Type\Document("Taxonomy")
  */
 class Taxonomy extends Content
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $title;
 
     /**
      * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
      * @Slug(fields={"title"})
      * @Type\Field
      */
@@ -44,7 +38,6 @@ class Taxonomy extends Content
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $description;
