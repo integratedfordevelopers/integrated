@@ -56,7 +56,7 @@ class RegisterTinymceParametersPass implements CompilerPassInterface
      */
     private function addParameters($dir)
     {
-        $filePath = $dir.'/Resources/config/tinymce/contentstyle.xml';
+        $filePath = $dir.'/Resources/config/contentstyle/contentstyle.xml';
         if (!is_file($filePath)) {
             return null;
         }
