@@ -30,6 +30,7 @@ function showMore() {
     $('.btn_show_more').on('click', function(e){
         e.preventDefault();
         $(this).closest('.item_row').find('.to_show').slideToggle(200);
+        $(this).hide();
     });
 }
 
