@@ -25,11 +25,11 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 /**
  * @author Vasil Pascal <developer.optimum@gmail.com>
  */
-class RegisterTinymceParametersPass implements CompilerPassInterface
+class RegisterContentStyleParametersPass implements CompilerPassInterface
 {
     const STYLE_FORMAT = "style_formats";
     const CONTENT_CSS = "content_css";
-    const PARAMETER_NAME = "integrated_tinymce_content_styles";
+    const PARAMETER_NAME = "integrated_content_styles";
 
     /** @var array */
     private $parameters;
@@ -56,7 +56,7 @@ class RegisterTinymceParametersPass implements CompilerPassInterface
      */
     private function addParameters($dir)
     {
-        $filePath = $dir.'/Resources/config/tinymce/contentstyle.xml';
+        $filePath = $dir.'/Resources/config/contentstyle/contentstyle.xml';
         if (!is_file($filePath)) {
             return null;
         }
