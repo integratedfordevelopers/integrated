@@ -68,6 +68,13 @@ class ContentBlock extends Block
     protected $maxItems;
 
     /**
+     * @var bool
+     * @ODM\Boolean
+     * @Type\Field(type="checkbox")
+     */
+    protected $showItemsRandom = false;
+
+    /**
      * @var string
      * @ODM\String
      * @Type\Field(
@@ -145,6 +152,22 @@ class ContentBlock extends Block
     {
         $this->maxItems = $maxItems;
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isShowItemsRandom()
+    {
+        return $this->showItemsRandom;
+    }
+
+    /**
+     * @param boolean $showItemsRandom
+     */
+    public function setShowItemsRandom($showItemsRandom)
+    {
+        $this->showItemsRandom = $showItemsRandom;
     }
 
     /**

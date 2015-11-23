@@ -110,6 +110,10 @@ class ContentBlockHandler extends BlockHandler
                 $block->isShowItemsRandom()
             );
 
+            if ($block->isShowItemsRandom()) {
+                return $pagination;
+            }
+
             $this->registry[$id] = $pagination;
         }
 
