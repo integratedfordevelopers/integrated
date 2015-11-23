@@ -85,12 +85,12 @@ class ContentController extends Controller
         $facetSet = $query->getFacetSet();
         $facetSet->getMinCount(1);
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
-        $facetSet->createFacetField('channels')->setField('facet_channels');
-        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state');
+        $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
+        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
         $facetTitles['workflow_state'] = 'Workflow state';
-        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned');
+        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
         $facetTitles['workflow_assigned'] = 'Assigned user';
-        $facetSet->createFacetField('properties')->setField('facet_properties');
+        $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
 
 
         // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
@@ -157,7 +157,7 @@ class ContentController extends Controller
             $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
 
             //create relation facet field
-            $facetSet->createFacetField($name)->setField('facet_' . $relation->getId());
+            $facetSet->createFacetField($name)->setField('facet_' . $relation->getId())->addExclude($name);
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
 
