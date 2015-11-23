@@ -1,31 +1,25 @@
 {% extends 'IntegratedChannelBundle::base.html.twig' %}
 
 {% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li class="dropdown">
 
-    <div class="filters_row">
-        <ul class="nav nav-pills">
-            <li class="dropdown">
+                {% if adapters %}
+                    <a href="#" data-toggle="dropdown" role="button" id="drop_1">Options <b class="caret"></b></a>
+                    <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
 
-            {% if adapters %}
-                <a href="#" data-toggle="dropdown" role="button" id="drop_1">Options <b class="caret"></b></a>
-                <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
+                    {% for adapter in adapters %}
+                        <li role="presentation"><a href="{{ path('integrated_channel_config_new', {'adapter': adapter.manifest.name}) }}" tabindex="-1" role="menuitem">New {{ adapter.manifest.label }} configuration</a></li>
+                    {% endfor %}
 
-                {% for adapter in adapters %}
-                    <li role="presentation"><a href="{{ path('integrated_channel_config_new', {'adapter': adapter.manifest.name}) }}" tabindex="-1" role="menuitem">New {{ adapter.manifest.label }} configuration</a></li>
-                {% endfor %}
+                    </ul>
+                {% endif %}
 
-                </ul>
-            {% endif %}
-
-            </li>
-        </ul>
-    </div>
-
-    <div class="content_columns_holder">
-
-        <div class="content_column_inner">
-
-            <div class="results">
+                </li>
+            </ul>
+            <section class="section-white section-padding section-shadow section-radius">
 
                 <table class="table table-striped table-hover">
 
@@ -64,9 +58,7 @@
 
                 {{ knp_pagination_render(pager) }}
 
-            </div>
-
+            </section>
         </div>
     </div>
-
 {% endblock %}
