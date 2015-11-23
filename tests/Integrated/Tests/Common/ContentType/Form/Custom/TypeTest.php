@@ -48,4 +48,14 @@ class TypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($this->type, $this->type->setType($type));
         $this->assertSame($type, $this->type->getType());
     }
+
+    /**
+     * Test get and setName function
+     */
+    public function testGetAndSetNameFunction()
+    {
+        $name = 'name';
+        $this->assertSame($this->type, $this->type->setName($name));
+        $this->assertSame($name, $this->type->getName());
+    }
 }
