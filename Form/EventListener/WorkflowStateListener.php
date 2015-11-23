@@ -82,7 +82,7 @@ class WorkflowStateListener implements EventSubscriberInterface
             'read_only' => true,
             'mapped' => false,
             'data' => $data->getName(),
-            'label' => 'State'
+            'label' => 'Workflow status'
         ]);
 
         $choices = $this->getChoices($data);
@@ -92,7 +92,7 @@ class WorkflowStateListener implements EventSubscriberInterface
         }
 
         $form->add('next', 'choice', [
-            'label' => 'Next state',
+            'label' => 'Next status',
 
             'choices' => $choices,
             'choices_as_values' => true,

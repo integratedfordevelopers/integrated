@@ -46,6 +46,7 @@ class DefinitionFormType extends AbstractType
         ]);
 
         $builder->add('states', 'bootstrap_collection', [
+            'label'        => 'Statuses',
             'type'         => 'workflow_definition_state',
             'allow_add'    => true,
             'allow_delete' => true,
