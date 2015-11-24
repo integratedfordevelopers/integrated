@@ -74,7 +74,7 @@ class SluggableSubscriber implements EventSubscriber
             'prePersist',
             'postPersist',
             'preUpdate',
-            //'onFlush', // @todo implement to support update after a persist
+            //'onFlush', // @todo implement to support update after a persist (INTEGRATED-294)
         ];
     }
 
@@ -151,7 +151,7 @@ class SluggableSubscriber implements EventSubscriber
                 $id = $event == 'preUpdate' && method_exists($object, 'getId') ? $object->getId() : null;
 
                 // generate unique slug
-                $slug = $this->generateUniqueSlug($om, $object, $propertyMetadata->name, $slug, $id);
+                $slug = $this->generateUniqueSlug($om, $object, $propertyMetadata->name, $slug, $propertyMetadata->slugSeparator, $id);
 
                 $propertyMetadata->setValue($object, $slug);
                 $this->recomputeSingleObjectChangeSet($om, $object);
@@ -183,11 +183,12 @@ class SluggableSubscriber implements EventSubscriber
      * @param object                                      $object
      * @param string                                      $field
      * @param string                                      $slug
+     * @param string                                      $separator
      * @param string                                      $id
      *
      * @return string
      */
-    protected function generateUniqueSlug(ObjectManager $om, $object, $field, $slug, $id = null)
+    protected function generateUniqueSlug(ObjectManager $om, $object, $field, $slug, $separator = '-', $id = null)
     {
         if (!trim($slug)) {
             return null;
@@ -200,16 +201,16 @@ class SluggableSubscriber implements EventSubscriber
         }
 
         // slug with counter pattern
-        $pattern = '/(.+)-(\d+)$/i';
+        $pattern = '/(.+)' . preg_quote($separator, '/') . '(\d+)$/i';
 
-        // @todo fix slug with integer at the end (not the unique counter)
+        // @todo fix slug with integer at the end (not the unique counter) (INTEGRATED-294)
 
         if (preg_match($pattern, $slug, $match)) {
             // remove counter from slug
             $slug = $match[1];
         }
 
-        $objects = $this->findSimilarSlugs($om, $class, $field, $slug);
+        $objects = $this->findSimilarSlugs($om, $class, $field, $slug, $separator);
 
         if (count($objects)) {
             $oid = spl_object_hash($object);
@@ -224,9 +225,10 @@ class SluggableSubscriber implements EventSubscriber
 
             if (!empty($slugs)) {
                 for ($i = 1; $i <= (max(array_keys($slugs)) + 2); $i++) {
-                    $tryslug = $slug . ($i > 1 ? '-' . $i : '');
-                    if (!in_array($tryslug, $slugs)) {
-                        return $tryslug;
+                    $slug2 = $slug . ($i > 1 ? $separator . $i : '');
+
+                    if (!in_array($slug2, $slugs)) {
+                        return $slug2;
                     }
                 }
             }
@@ -249,7 +251,7 @@ class SluggableSubscriber implements EventSubscriber
     {
         // check in document manager
         foreach ($this->getScheduledObjects($om) as $object) {
-            // @todo check $id
+            // @todo check $id (INTEGRATED-294)
 
             if (property_exists($object, $field) && $slug === $this->propertyAccessor->getValue($object, $field)) {
                 return false;
@@ -260,7 +262,6 @@ class SluggableSubscriber implements EventSubscriber
 
         // check in database
         if ($uow instanceof ODMUnitOfWork) {
-
             $builder = $this->getRepository($om, $class)->createQueryBuilder();
             $builder->field($field)->equals($slug);
 
@@ -274,7 +275,7 @@ class SluggableSubscriber implements EventSubscriber
             return ($query->execute() === 0);
 
         } elseif ($uow instanceof ORMUnitOfWork) {
-            throw new \RuntimeException('Not implemented yet'); // @todo
+            throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
     }
 
@@ -283,23 +284,22 @@ class SluggableSubscriber implements EventSubscriber
      * @param string                                      $class
      * @param string                                      $field
      * @param string                                      $slug
+     * @param string                                      $separator
      *
      * @return array
      */
-    protected function findSimilarSlugs(ObjectManager $om, $class, $field, $slug)
+    protected function findSimilarSlugs(ObjectManager $om, $class, $field, $slug, $separator = '-')
     {
         $objects = $this->getScheduledObjects($om);
         $uow = $om->getUnitOfWork();
 
         if ($uow instanceof ODMUnitOfWork) {
-            // @todo fix slug separator
-
             return array_merge($objects, $this->getRepository($om, $class)->findBy([
-                $field => new \MongoRegex('/^' . preg_quote($slug, '/') . '(-\d+)?$/') // counter is optional
+                $field => new \MongoRegex('/^' . preg_quote($slug, '/') . '(' . preg_quote($separator, '/') . '\d+)?$/') // counter is optional
             ]));
 
         } elseif ($uow instanceof ORMUnitOfWork) {
-            throw new \RuntimeException('Not implemented yet'); // @todo
+            throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
     }
 
@@ -331,7 +331,6 @@ class SluggableSubscriber implements EventSubscriber
         $uow = $om->getUnitOfWork();
 
         if ($uow instanceof ODMUnitOfWork) {
-
             $classMetadata = $om->getClassMetadata($class);
 
             if (count($classMetadata->parentClasses)) {
@@ -342,7 +341,7 @@ class SluggableSubscriber implements EventSubscriber
             return $om->getRepository($class);
 
         } elseif ($uow instanceof ORMUnitOfWork) {
-            throw new \RuntimeException('Not implemented yet'); // @todo
+            throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
     }
 

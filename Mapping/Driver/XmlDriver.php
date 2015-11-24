@@ -25,6 +25,6 @@ class XmlDriver implements DriverInterface
      */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
-        throw new \RuntimeException('Not implemented yet'); // @todo
+        throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
     }
 }
