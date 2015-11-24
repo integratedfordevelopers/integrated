@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType;
-
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeFieldCollectionTransformer;
-
-use Integrated\Common\Form\Mapping\MetadataInterface;
+namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\Collection;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Integrated\Common\Form\Mapping\MetadataInterface;
+
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\Collection\DefaultTransformer;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class FieldCollectionType extends AbstractType
+class DefaultType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -40,13 +40,13 @@ class FieldCollectionType extends AbstractType
             ]);
         }
 
-        $builder->addModelTransformer(new ContentTypeFieldCollectionTransformer());
+        $builder->addModelTransformer(new DefaultTransformer());
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['metadata']);
         $resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\Form\\Mapping\\MetadataInterface']);
@@ -57,6 +57,6 @@ class FieldCollectionType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_content_type_fields';
+        return 'integrated_content_type_default_fields';
     }
 }

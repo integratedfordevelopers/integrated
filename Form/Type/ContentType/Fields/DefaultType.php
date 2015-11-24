@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type;
+namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields;
 
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeField as ContentTypeFieldTransformer;
 
@@ -18,12 +18,12 @@ use Integrated\Common\Form\Mapping\AttributeInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeFieldType extends AbstractType
+class DefaultType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -46,7 +46,7 @@ class ContentTypeFieldType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['field']);
         $resolver->setAllowedTypes(['field' => 'Integrated\\Common\\Form\\Mapping\\AttributeInterface']);

@@ -6,19 +6,33 @@
 
 	<services>
 
-		<service id="integrated_content.content_type.field.collection.type" class="%integrated_content.form.proxy.type.class%">
-			<argument type="service" id="integrated_content.form.content_type.field_collection_type" />
-			<argument type="string">content_type_field_collection</argument>
+		<service id="integrated_content.content_type.fields.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.type.content_type.fields_type" />
+			<argument type="string">content_type_fields</argument>
 
-			<tag name="form.type" alias="content_type_field_collection" />
+			<tag name="form.type" alias="content_type_fields" />
 		</service>
 
-		<service id="integrated_content.content_type.field.type" class="%integrated_content.form.proxy.type.class%">
-			<argument type="service" id="integrated_content.form.content_type.field.type" />
+		<service id="integrated_content.content_type.fields.collection.default.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.type.content_type.fields.collection.default_type" />
+			<argument type="string">content_type_fields_collection_default</argument>
+
+			<tag name="form.type" alias="content_type_fields_collection_default" />
+		</service>
+
+		<service id="integrated_content.content_type.field.default.type" class="%integrated_content.form.proxy.type.class%">
+			<argument type="service" id="integrated_content.form.type.content_type.fields.default_type" />
 			<argument type="string">content_type_field</argument>
 
 			<tag name="form.type" alias="content_type_field" />
 		</service>
+
+        <service id="integrated_content.content_type.field.custom.type" class="%integrated_content.form.proxy.type.class%">
+            <argument type="service" id="integrated_content.form.type.content_type.fields.custom_type" />
+            <argument type="string">content_type_field_custom</argument>
+
+            <tag name="form.type" alias="content_type_field_custom" />
+        </service>
 
 		<service id="integrated_content.content_type.new.form.type" class="%integrated_content.form.proxy.type.class%">
 			<argument type="service" id="integrated_content.form.content_type.type" />

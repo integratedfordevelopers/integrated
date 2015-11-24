@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+
 /**
  * Embedded document CustomField
  *
@@ -18,4 +20,9 @@ namespace Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
  */
 class CustomField extends Field
 {
+    /**
+     * {@inheritdoc}
+     * @Slug(fields={"getLabel"})
+     */
+    protected $name;
 }

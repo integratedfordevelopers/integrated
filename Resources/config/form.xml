@@ -19,8 +19,12 @@
         <parameter key="integrated_content.form.content.relations.type.class">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</parameter>
 
         <parameter key="integrated_content.form.content_type.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType</parameter>
-        <parameter key="integrated_content.form.content_type.field_collection_type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentType\FieldCollectionType</parameter>
-        <parameter key="integrated_content.form.content_type.field.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFieldType</parameter>
+
+        <parameter key="integrated_content.form.type.content_type.fields_type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentType\FieldsType</parameter>
+        <parameter key="integrated_content.form.type.content_type.fields.default_type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\DefaultType</parameter>
+        <parameter key="integrated_content.form.type.content_type.fields.custom_type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\CustomType</parameter>
+        <parameter key="integrated_content.form.type.content_type.fields.collection.default_type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\Collection\DefaultType</parameter>
+
         <parameter key="integrated_content.form.content_type.relation.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeRelationFormType</parameter>
         <parameter key="integrated_content.form.content_type.channels.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType</parameter>
         <parameter key="integrated_content.form.content_type.channel.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType</parameter>
@@ -112,9 +116,17 @@
         <service id="integrated_content.form.content_type.channel.repository" alias="integrated_content.form.channel.repository" />
 
         <service id="integrated_content.form.content_type.type" class="%integrated_content.form.content_type.type.class%" />
-        <service id="integrated_content.form.content_type.field_collection_type" class="%integrated_content.form.content_type.field_collection_type.class%" />
-        <service id="integrated_content.form.content_type.field.type" class="%integrated_content.form.content_type.field.type.class%" />
+
+        <!-- ContentType fields -->
+        <service id="integrated_content.form.type.content_type.fields_type" class="%integrated_content.form.type.content_type.fields_type.class%" />
+        <service id="integrated_content.form.type.content_type.fields.default_type" class="%integrated_content.form.type.content_type.fields.default_type.class%" />
+        <service id="integrated_content.form.type.content_type.fields.custom_type" class="%integrated_content.form.type.content_type.fields.custom_type.class%">
+            <argument type="service" id="integrated_content.form.registry" />
+        </service>
+        <service id="integrated_content.form.type.content_type.fields.collection.default_type" class="%integrated_content.form.type.content_type.fields.collection.default_type.class%" />
+
         <service id="integrated_content.form.content_type.relation.type" class="%integrated_content.form.content_type.relation.type.class%" />
+
         <service id="integrated_content.form.content_type.channels.type" class="%integrated_content.form.content_type.channels.type.class%" />
         <service id="integrated_content.form.content_type.channel.collection.type" class="%integrated_content.form.content_type.channel.collection.type.class%">
             <argument type="service" id="integrated_content.form.content_type.channel.repository" />

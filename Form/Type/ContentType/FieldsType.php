@@ -9,7 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type;
+namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType;
+
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\FieldsTransformer;
 
 use Integrated\Common\Form\Mapping\MetadataInterface;
 
@@ -21,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeFormType extends AbstractType
+class FieldsType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -31,19 +33,31 @@ class ContentTypeFormType extends AbstractType
         /** @var MetadataInterface $metadata */
         $metadata = $options['metadata'];
 
-        $builder
-            ->add('class', 'hidden')
-            ->add('name', 'text', ['label' => 'Name'])
-            ->add('fields', 'content_type_fields', ['metadata' => $metadata])
-            ->add('channels', 'content_type_channels', ['property_path' => 'options[channels]'])
-        ;
+        $builder->add(
+            'default',
+            'content_type_fields_collection_default',
+            [
+                'label' => false,
+                'metadata' => $metadata
+            ]
+        );
 
-        foreach ($metadata->getOptions() as $option) {
-            $ype = $builder->create('options_' . $option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
-                ->setPropertyPath('options[' . $option->getName() . ']');
+        $builder->add(
+            'custom',
+            'bootstrap_collection',
+            [
+                'label' => false,
+                'type' => 'content_type_field_custom',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'add_button_text' => 'Add  custom field',
+                'delete_button_text' => 'Delete field',
+                'sub_widget_col' => 9,
+                'button_col' => 3,
+            ]
+        );
 
-            $builder->add($ype);
-        }
+        $builder->addModelTransformer(new FieldsTransformer());
     }
 
     /**
@@ -60,6 +74,6 @@ class ContentTypeFormType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_content_type';
+        return 'integrated_content_type_fields';
     }
 }
