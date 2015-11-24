@@ -9,19 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type;
-
-use Integrated\Common\Form\Mapping\MetadataInterface;
+namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\Collection;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Integrated\Common\Form\Mapping\MetadataInterface;
+
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\Collection\DefaultTransformer;
+
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeFormType extends AbstractType
+class DefaultType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -31,19 +33,14 @@ class ContentTypeFormType extends AbstractType
         /** @var MetadataInterface $metadata */
         $metadata = $options['metadata'];
 
-        $builder
-            ->add('class', 'hidden')
-            ->add('name', 'text', ['label' => 'Name'])
-            ->add('fields', 'content_type_fields', ['metadata' => $metadata])
-            ->add('channels', 'content_type_channels', ['property_path' => 'options[channels]'])
-        ;
-
-        foreach ($metadata->getOptions() as $option) {
-            $ype = $builder->create('options_' . $option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
-                ->setPropertyPath('options[' . $option->getName() . ']');
-
-            $builder->add($ype);
+        foreach ($metadata->getFields() as $field) {
+            $builder->add($field->getName(), 'content_type_field', [
+                'label' => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
+                'field' => $field,
+            ]);
         }
+
+        $builder->addModelTransformer(new DefaultTransformer());
     }
 
     /**
@@ -60,6 +57,6 @@ class ContentTypeFormType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_content_type';
+        return 'integrated_content_type_default_fields';
     }
 }

@@ -3,12 +3,6 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <embedded-document name="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field">
-
-        <field fieldName="name" type="string" unique="true" sparse="true" />
-        <field fieldName="type" type="string" />
-        <field fieldName="options" type="hash" />
-
-    </embedded-document>
+    <embedded-document name="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField" />
 
 </doctrine-mongo-mapping>
