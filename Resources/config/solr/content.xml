@@ -16,7 +16,7 @@
                 <string key="intro">intro</string>
                 <string key="content">content</string>
 
-                <string key="pub_active">published</string>
+                <string key="disabled_int">disabled</string>
                 <string key="pub_time">publishTime.startDate</string>
                 <string key="pub_end">publishTime.endDate</string>
                 <string key="pub_created">createdAt</string>

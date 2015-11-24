@@ -25,30 +25,27 @@ class AddressType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('type', 'choice', array(
+        $builder->add('type', 'choice', [
             'placeholder' => '',
-            'choices'     => array(
+            'choices'     => [
                 'postal'   => 'Postal address',
                 'visiting' => 'Visiting address',
                 'mailing'  => 'Mailing address',
-            )
-        ));
+            ],
+            'required' => false,
+        ]);
 
-        $builder->add('country', 'country', array(
-            'placeholder' => '',
-        ));
+        $builder->add('name', 'text', ['required' => false]);
 
-        $builder->add('address1', 'text', array(
-            'label' => 'Address line 1',
-        ));
+        $builder->add('country', 'country', ['placeholder' => '', 'required' => false]);
 
-        $builder->add('address2', 'text', array(
-            'label' => 'Address line 2',
-        ));
+        $builder->add('address1', 'text', ['label' => 'Address line 1', 'required' => false]);
 
-        $builder->add('zipcode', 'text');
+        $builder->add('address2', 'text', ['label' => 'Address line 2', 'required' => false]);
 
-        $builder->add('city', 'text');
+        $builder->add('zipcode', 'text', ['required' => false]);
+
+        $builder->add('city', 'text', ['required' => false]);
     }
 
     /**

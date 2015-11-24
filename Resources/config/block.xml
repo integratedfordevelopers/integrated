@@ -7,9 +7,10 @@
     <parameters>
 
         <parameter key="integrated_content.block_handler.content.class">Integrated\Bundle\ContentBundle\Block\ContentBlockHandler</parameter>
+
         <parameter key="integrated_content.block_handler.facet.class">Integrated\Bundle\ContentBundle\Block\FacetBlockHandler</parameter>
+
         <parameter key="integrated_content.block_handler.form.class">Integrated\Bundle\ContentBundle\Block\FormBlockHandler</parameter>
-        <parameter key="integrated_content.block_handler.search.class">Integrated\Bundle\ContentBundle\Block\SearchBlockHandler</parameter>
 
     </parameters>
 
@@ -36,7 +37,7 @@
             <tag name="integrated.block" type="form" />
         </service>
 
-        <service id="integrated_content.block_handler.search" class="%integrated_content.block_handler.search.class%">
+        <service id="integrated_content.block_handler.search" class="%integrated_block.block_handler.class%">
             <tag name="integrated.block" type="search" />
         </service>
 

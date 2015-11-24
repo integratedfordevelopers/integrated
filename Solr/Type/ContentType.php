@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Common\Content\ContentInterface;
 
@@ -42,11 +43,15 @@ class ContentType implements TypeInterface
         $container->set('type_class', ClassUtils::getRealClass($data)); // could be a doctrine proxy object but we need the actual class name.
         $container->set('type_id', $data->getId());
 
+        if ($data instanceof Content) {
+            $container->set('pub_active', $data->isPublished(false));
+        }        
+
         //Relation field and facet field for taxonomy and commercial relations
         $items = array_merge($data->getRelationsByRelationType('taxonomy')->toArray(),$data->getRelationsByRelationType('commercial')->toArray());
         foreach ($items as $relation) {
             foreach ($relation->getReferences()->toArray() as $content) {
-                if ($content instanceof Taxonomy) {
+                if ($content instanceof Taxonomy || $content instanceof Article) {
                     $container->add('facet_' . $relation->getRelationId(), $content->getTitle());
                     $container->add('taxonomy_' . $relation->getRelationId() . '_string', $content->getTitle());
                 }

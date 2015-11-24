@@ -64,9 +64,10 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
      *
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function execute(Request $request, $blockId, $limit = 10, $maxItems = 0, array $facetFields = [])
+    public function execute(Request $request, $blockId = null, $limit = 10, $maxItems = 0, array $facetFields = [])
     {
-        $page = (int) $request->query->get($blockId . '-page');
+        $pageParam = (null !== $blockId ? $blockId . '-' : '') . 'page';
+        $page = (int) $request->query->get($pageParam);
 
         if ($page < 1) {
             $page = 1;
@@ -82,7 +83,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             $page,
             $limit,
             [
-                'pageParameterName' => $blockId . '-page',
+                'pageParameterName' => $pageParam,
                 'maxItems' => $maxItems,
             ]
         );
@@ -117,7 +118,9 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             ->setQuery('pub_active: 1 AND pub_time:[* TO NOW] AND pub_end:[NOW TO *] AND facet_channels: ("%1%")', [$channel]);
 
         if ($search = $request->query->get($blockId . '-search')) {
-            $query->setQuery('title:(%1%*)', [$search]);
+            $edismax = $query->getEDisMax();
+            $edismax->setQueryFields('title^200 content subtitle intro');
+            $query->setQuery($search);
         }
 
         $helper = $query->getHelper();

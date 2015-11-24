@@ -58,39 +58,6 @@ class ContentTypeController extends Controller
     }
 
     /**
-     * @Template()
-     * @return array
-     */
-    public function listAction()
-    {
-        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm        = $this->get('doctrine_mongodb')->getManager();
-        $documents = $dm->getRepository($this->contentTypeClass)->findBy(array(), array('name' => 'ASC'));
-        $category  = array();
-
-        foreach ($documents as $document) {
-            $function = new \ReflectionClass($document->getClass());
-
-            if ($function->inNamespace()) {
-                $parts = array_reverse(explode('\\', $function->getName()));
-                $pos   = array_search('Content', $parts);
-
-                if (isset($parts[$pos - 1])) {
-                    $category[$parts[$pos - 1]][] = $document;
-                } else {
-                    $category[reset($parts)][] = $document;
-                }
-            }
-        }
-
-        ksort($category);
-
-        return array(
-            'category' => $category,
-        );
-    }
-
-    /**
      * Display a list of Content documents
      *
      * @Template()
@@ -177,7 +144,6 @@ class ContentTypeController extends Controller
         // Validate request
         $form->handleRequest($request);
         if ($form->isValid()) {
-
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->persist($contentType);
@@ -232,7 +198,6 @@ class ContentTypeController extends Controller
         // Validate request
         $form->handleRequest($request);
         if ($form->isValid()) {
-
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->flush();
@@ -262,20 +227,17 @@ class ContentTypeController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
 
             // Only delete ContentType when there are no Content items
             $count = count($dm->getRepository($contentType->getClass())->findBy(array('contentType' => $contentType->getId())));
             if ($count > 0) {
-
                 // Set flash message and redirect to item page
                 $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
                 return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
 
             } else {
-
                 $dm->remove($contentType);
                 $dm->flush();
 
@@ -354,9 +316,8 @@ class ContentTypeController extends Controller
     /**
      * Creates a form to delete a ContentType document.
      *
-     * @param mixed $id The entity id
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @param ContentType $contentType
+     * @return \Symfony\Component\Form\Form
      */
     protected function createDeleteForm(ContentType $contentType)
     {

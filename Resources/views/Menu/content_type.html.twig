@@ -1,0 +1,44 @@
+{% extends 'BraincraftedBootstrapBundle:Menu:bootstrap.html.twig' %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
+        {% if item.level == 0 %}
+            <ul class="dropdown-menu dropdown-menu-large dropdown-right row">
+                {{ block('children') }}
+            </ul>
+        {% else %}
+            {{ block('children') }}
+        {% endif %}
+    {%  else %}
+        {% if item.level == 0 %}
+            <ul class="dropdown-menu dropdown-menu-large dropdown-right row">
+                <li>
+                    {% trans %}No content types added{% endtrans %}
+                </li>
+            </ul>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block item %}
+    {% if item.displayed %}
+        {% if item.level == 1 %}
+            <li>
+                <ul>
+                    <li class="dropdown-header">
+                        {{ block('label') }}
+                    </li>
+                    {{ block('list') }}
+                </ul>
+            </li>
+        {% else %}
+            <li>
+                {% if item.uri %}
+                    {{ block('linkElement') }}
+                {% else %}
+                    {{ block('label') }}
+                {% endif %}
+            </li>
+        {% endif %}
+    {% endif %}
+{% endblock %}

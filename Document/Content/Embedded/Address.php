@@ -120,6 +120,16 @@ class Address
     }
 
     /**
+     * Get the title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->address1 . ', ' . $this->getCity();
+    }
+
+    /**
      * Get the address1 of the document
      *
      * @return string

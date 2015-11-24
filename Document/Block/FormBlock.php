@@ -71,6 +71,18 @@ class FormBlock extends Block
     protected $emailAddresses = [];
 
     /**
+     * @var bool
+     * @ODM\Boolean
+     * @Type\Field(
+     *      type="checkbox",
+     *      options={
+     *          "required"=false
+     *      }
+     * )
+     */
+    protected $recaptcha = false;
+
+    /**
      * @return ContentType
      */
     public function getContentType()
@@ -121,6 +133,24 @@ class FormBlock extends Block
     public function setEmailAddresses(array $emailAddresses = [])
     {
         $this->emailAddresses = $emailAddresses;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRecaptcha()
+    {
+        return $this->recaptcha;
+    }
+
+    /**
+     * @param boolean $recaptcha
+     * @return $this
+     */
+    public function setRecaptcha($recaptcha)
+    {
+        $this->recaptcha = $recaptcha;
         return $this;
     }
 

@@ -66,6 +66,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
         }
 
         $menuContent->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
+        $menuContent->addChild('Search selections', array('route' => 'integrated_content_search_selection_index'));
 
         if ($this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
             if (!$menuManage = $menu->getChild(self::MENU_MANAGE)) {
@@ -73,6 +74,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
             }
 
             $menuManage->addChild('Content types', array('route' => 'integrated_content_content_type_index'));
+            $menuManage->addChild('Channels', array('route' => 'integrated_content_channel_index'));
             $menuManage->addChild('Relations', array('route' => 'integrated_content_relation_index'));
         }
     }
