@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_content.form.registry.class">Integrated\Common\ContentType\Form\Custom\Type\Registry</parameter>
+        <parameter key="integrated_content.form.registry.registry_factory.class">Integrated\Bundle\ContentBundle\Form\Registry\RegistryFactory</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_content.form.registry.registry_factory" class="%integrated_content.form.registry.registry_factory.class%" />
+
+        <service id="integrated_content.form.registry" class="%integrated_content.form.registry.class%">
+            <factory service="integrated_content.form.registry.registry_factory" method="create" />
+        </service>
+
+    </services>
+
+</container>
