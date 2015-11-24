@@ -122,7 +122,7 @@ class MenuItem extends KnpMenuItem
 
             /** @var MenuItem $child */
             foreach ($this->children as $child) {
-                $children[] = $child->toArray();
+                $children[] = $child->toArray($nested);
             }
 
             if (count($children)) {
