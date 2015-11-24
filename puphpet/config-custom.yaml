@@ -1,0 +1,3 @@
+vagrantfile:
+    vm:
+        hostname: integrated

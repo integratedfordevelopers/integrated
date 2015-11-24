@@ -28,7 +28,7 @@
         "integrated/solr-bundle": "~0.3",
         "integrated/user-bundle": "~0.3",
         "integrated/website-bundle": "~0.3",
-        "integrated/workflow-bundle": "~0.3"
+        "integrated/puphpet": "~0.4"
     },
     "scripts": {
         "post-install-cmd": [
