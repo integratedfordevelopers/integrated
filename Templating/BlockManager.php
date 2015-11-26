@@ -80,17 +80,15 @@ class BlockManager
         }
 
         if ($block instanceof BlockInterface) {
-            if ($block instanceof Block && (!$block->isPublished() || $block->isDisabled())) {
-                return;
-            }
-
             try {
-                $handler = $this->blockRegistry->getHandler($block->getType());
-
+                if ($block instanceof Block && (!$block->isPublished() || $block->isDisabled())) {
+                    return;
+                }
             } catch (DocumentNotFoundException $e) {
-                // @todo log errors (INTEGRATED-444)
                 return;
             }
+
+            $handler = $this->blockRegistry->getHandler($block->getType());
 
             if ($handler instanceof BlockHandlerInterface) {
                 if ($handler instanceof BlockHandler) {
