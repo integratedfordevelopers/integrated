@@ -66,7 +66,7 @@ class Page
     protected $layout;
 
     /**
-     * @var array
+     * @var Grid[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Grid")
      */
     protected $grids;
@@ -191,7 +191,7 @@ class Page
     }
 
     /**
-     * @return array
+     * @return Grid[]
      */
     public function getGrids()
     {
@@ -239,7 +239,7 @@ class Page
 
     /**
      * @param string $id
-     * @return Grid
+     * @return Grid|null
      */
     public function getGrid($id)
     {

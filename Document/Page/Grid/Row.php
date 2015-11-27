@@ -24,7 +24,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Row
 {
     /**
-     * @var array
+     * @var Column[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Column", strategy="set")
      */
     protected $columns;
@@ -37,7 +37,7 @@ class Row
     }
 
     /**
-     * @return array
+     * @return Column[]
      */
     public function getColumns()
     {
@@ -72,5 +72,25 @@ class Row
     {
         $this->columns->removeElement($column);
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $columns = [];
+
+        foreach ($this->columns as $column) {
+            $columns[] = $column->toArray();
+        }
+
+        $array = [];
+
+        if (count($columns)) {
+            $array['columns'] = $columns;
+        }
+
+        return $array;
     }
 }

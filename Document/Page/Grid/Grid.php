@@ -30,15 +30,17 @@ class Grid implements ItemsInterface
     protected $id;
 
     /**
-     * @var array
+     * @var Item[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Item")
      */
     protected $items;
 
     /**
+     * @param string $id
      */
-    public function __construct()
+    public function __construct($id = null)
     {
+        $this->id = $id;
         $this->items = new ArrayCollection();
     }
 
@@ -61,7 +63,7 @@ class Grid implements ItemsInterface
     }
 
     /**
-     * @return array
+     * @return Item[]
      */
     public function getItems()
     {
@@ -96,5 +98,27 @@ class Grid implements ItemsInterface
     {
         $this->items->removeElement($item);
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $items = [];
+
+        foreach ($this->items as $item) {
+            $items[] = $item->toArray();
+        }
+
+        $array = [
+            'id' => $this->id,
+        ];
+
+        if (count($items)) {
+            $array['items'] = $items;
+        }
+
+        return $array;
     }
 }

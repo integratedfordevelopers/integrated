@@ -95,4 +95,24 @@ class Item
         $this->row = $row;
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        $array = [
+            'order' => $this->order,
+        ];
+
+        if ($this->block instanceof Block) {
+            $array['block'] = $this->block->getId();
+        }
+
+        if ($this->row instanceof Row) {
+            $array['row'] = $this->row->toArray();
+        }
+
+        return $array;
+    }
 }
