@@ -299,7 +299,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      * @param $relationId
      * @return Content|bool
      */
-    public function getFirstReferenceByRelationId($relationId)
+    public function getReferenceByRelationId($relationId)
     {
         if ($references = $this->getReferencesByRelationId($relationId)) {
             return $references->first();
