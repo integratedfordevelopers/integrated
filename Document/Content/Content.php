@@ -281,7 +281,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @param $relationId
-     * @return ArrayCollection|bool
+     * @return ArrayCollection
      */
     public function getReferencesByRelationId($relationId)
     {
@@ -292,19 +292,19 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
                 }
             }
         }
-        return false;
+        return new ArrayCollection();
     }
 
     /**
      * @param $relationId
-     * @return Content|bool
+     * @return Content|null
      */
     public function getReferenceByRelationId($relationId)
     {
         if ($references = $this->getReferencesByRelationId($relationId)) {
             return $references->first();
         }
-        return false;
+        return;
     }
 
     /**
