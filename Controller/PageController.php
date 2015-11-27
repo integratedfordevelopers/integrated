@@ -11,25 +11,72 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpFoundation\Request;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+
+use Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider;
+use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class PageController extends Controller
+class PageController
 {
+    /**
+     * @var TwigEngine
+     */
+    protected $templating;
+
+    /**
+     * @var DocumentManager
+     */
+    protected $dm;
+
+    /**
+     * @var ChannelContextInterface
+     */
+    protected $channelContext;
+
+    /**
+     * @var DatabaseMenuProvider
+     */
+    protected $menuProvider;
+
+    /**
+     * @var DatabaseMenuFactory
+     */
+    protected $menuFactory;
+
+    /**
+     * @param TwigEngine $templating
+     * @param DocumentManager $dm
+     * @param ChannelContextInterface $channelContext
+     * @param DatabaseMenuProvider $menuProvider
+     * @param DatabaseMenuFactory $menuFactory
+     */
+    public function __construct(TwigEngine $templating, DocumentManager $dm, ChannelContextInterface $channelContext, DatabaseMenuProvider $menuProvider, DatabaseMenuFactory $menuFactory)
+    {
+        $this->templating = $templating;
+        $this->dm = $dm;
+        $this->channelContext = $channelContext;
+        $this->menuProvider = $menuProvider;
+        $this->menuFactory = $menuFactory;
+    }
+
     /**
      * @param Page $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Page $page)
     {
-        return $this->render($page->getLayout(), [
+        return $this->templating->renderResponse($page->getLayout(), [
             'page' => $page,
-            'edit' => false,
+            'integrated_block_edit' => false,
+            'integrated_menu_edit' => false,
         ]);
     }
 
@@ -43,90 +90,52 @@ class PageController extends Controller
         // @todo security check (INTEGRATED-383)
 
         if ($request->isMethod('POST')) {
-            $dm = $this->getDocumentManager();
             $data = (array) json_decode($request->getContent(), true);
 
             if (isset($data['menus'])) {
-                foreach ((array) $data['menus'] as $array) {
-                    if ($menu = $this->getMenuFactory()->fromArray((array) $array)) {
-                        if ($menu2 = $this->getMenuProvider()->get($menu->getName())) {
-                            $menu2->setChildren($menu->getChildren());
-
-                        } else {
-                            $menu->setChannel($this->getChannel());
-
-                            $dm->persist($menu);
-                        }
-                    }
-                }
+                $this->handleMenuData((array) $data['menus']);
             }
 
-            $dm->flush();
+            if (isset($data['grids'])) {
+                $this->handleGridData((array) $data['grids']);
+            }
+
+            $this->dm->flush();
+
+            // @todo response 201
         }
 
-        // @todo use json
-
-        $form = $this->createEditForm($page);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $this->getDocumentManager()->flush();
-
-            return $this->redirect($this->generateUrl('integrated_website_page_' . $page->getId()));
-        }
-
-        return $this->render($page->getLayout(), [
+        return $this->templating->renderResponse($page->getLayout(), [
             'page' => $page,
-            'form' => $form->createView(),
-            'edit' => true,
+            'integrated_block_edit' => true,
+            'integrated_menu_edit' => true,
         ]);
     }
 
     /**
-     * @param Page $page
-     * @return \Symfony\Component\Form\Form
+     * @param array $data
      */
-    protected function createEditForm(Page $page)
+    protected function handleMenuData(array $data = [])
     {
-        return $this->createForm(
-            'integrated_website_page',
-            $page,
-            [
-                'action' => $this->generateUrl('integrated_website_page_edit', ['id' => $page->getId()]),
-                'method' => 'POST',
-            ]
-        );
+        foreach ($data as $array) {
+            if ($menu = $this->menuFactory->fromArray((array) $array)) {
+                if ($menu2 = $this->menuProvider->get($menu->getName())) {
+                    $menu2->setChildren($menu->getChildren());
+
+                } else {
+                    $menu->setChannel($this->channelContext->getChannel());
+
+                    $this->dm->persist($menu);
+                }
+            }
+        }
     }
 
     /**
-     * @return \Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider
+     * @param array $data
      */
-    protected function getMenuProvider()
+    protected function handleGridData(array $data = [])
     {
-        return $this->get('integrated_menu.provider.database_menu_provider');
-    }
 
-    /**
-     * @return \Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory
-     */
-    protected function getMenuFactory()
-    {
-        return $this->get('integrated_menu.menu.database_menu_factory');
-    }
-
-    /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->get('doctrine_mongodb')->getManager();
-    }
-
-    /**
-     * @return \Integrated\Common\Content\Channel\ChannelInterface|null
-     */
-    protected function getChannel()
-    {
-        return $this->get('channel.context')->getChannel();
     }
 }

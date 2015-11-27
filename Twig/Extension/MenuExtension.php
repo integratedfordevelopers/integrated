@@ -82,7 +82,7 @@ class MenuExtension extends \Twig_Extension
     {
         $options = $this->resolver->resolve($options);
 
-        $edit = isset($context['edit']) && true === $context['edit'];
+        $edit = isset($context['integrated_menu_edit']) && true === $context['integrated_menu_edit'];
         $menu = $this->provider->get($name);
 
         $html = '';

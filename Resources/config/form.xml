@@ -6,7 +6,6 @@
 
     <parameters>
 
-        <parameter key="integrated_website.form.type.page.class">Integrated\Bundle\WebsiteBundle\Form\Type\PageType</parameter>
         <parameter key="integrated_website.form.type.configuration.class">Integrated\Bundle\WebsiteBundle\Form\Type\ConfigurationType</parameter>
 
     </parameters>
@@ -15,11 +14,6 @@
 
         <service id="integrated_website.form.type.configuration" class="%integrated_website.form.type.configuration.class%">
             <tag name="form.type" alias="integrated_website_configuration" />
-        </service>
-
-        <service id="integrated_website.form.type.page" class="%integrated_website.form.type.page.class%">
-            <argument type="service" id="integrated_menu.provider.database_menu_provider" />
-            <tag name="form.type" alias="integrated_website_page" />
         </service>
 
     </services>

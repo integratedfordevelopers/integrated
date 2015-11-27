@@ -11,20 +11,16 @@
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
-    {% block stylesheets %}
-        {% stylesheets output='css/styles.css' 
-            '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
-            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
-        {% endstylesheets %}
-    {% endblock %}
+    {% if app.user|default and is_granted('ROLE_ADMIN') %}
+        {% block stylesheets %}
+            {% stylesheets output='css/edit.css'
+                '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
+                <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
+            {% endstylesheets %}
+        {% endblock %}
+    {% endif %}
 </head>
 <body>
-
-{% if form|default and edit|default %}
-    {# TODO: auto generate (INTEGRATED-384) #}
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-{% endif %}
 
 <div class="container">
     <br />
@@ -32,14 +28,6 @@
     <br />
     {{ integrated_grid('main') }}
 </div>
-
-{% if form|default and edit|default %}
-    {# TODO: auto generate (INTEGRATED-384) #}
-    {{ form_row(form._token) }}
-    {{ form_end(form, { 'render_rest': false }) }}
-
-    {{ include('IntegratedWebsiteBundle::handlebars.html.twig') }}
-{% endif %}
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
@@ -50,14 +38,19 @@
 <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
-{% block javascripts %}
-    {% javascripts output='js/scripts.js'
-        '@IntegratedWebsiteBundle/Resources/public/js/page.js'
-        '@IntegratedWebsiteBundle/Resources/public/js/menu.js'
-        '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
+{% if integrated_block_edit|default or integrated_menu_edit|default %}
+    {% block javascripts %}
+        {% javascripts output='js/scripts.js'
+            '@IntegratedWebsiteBundle/Resources/public/js/page.js'
+            '@IntegratedWebsiteBundle/Resources/public/js/menu.js'
+            '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
+            <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}
+
+    {{ include('@IntegratedWebsite/handlebars/grid.html.twig') }}
+    {{ include('@IntegratedWebsite/handlebars/menu.html.twig') }}
+{% endif %}
 
 </body>
 </html>
