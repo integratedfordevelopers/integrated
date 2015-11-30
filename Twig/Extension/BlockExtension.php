@@ -106,7 +106,7 @@ class BlockExtension extends \Twig_Extension
     {
         if (!isset($this->pages[$block->getId()])) {
             /* Get all pages which was associated with current Block document */
-            $this->pages[$block->getId()] = $this->pages[$block->getId()] = $this->container
+            $this->pages[$block->getId()] = $this->container
                 ->get('doctrine_mongodb')
                 ->getRepository('IntegratedBlockBundle:Block\Block')
                 ->pagesByBlockQb($block)
