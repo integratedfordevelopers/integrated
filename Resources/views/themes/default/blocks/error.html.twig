@@ -1,0 +1,7 @@
+{% if integrated_block_edit|default %}
+    <div class="panel panel-danger">
+        <div class="panel-heading">
+            {% trans with { '%id%': id } %}Block "%id%" contains an error{% endtrans %}
+        </div>
+    </div>
+{% endif %}

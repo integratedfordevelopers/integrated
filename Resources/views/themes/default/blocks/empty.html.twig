@@ -1,0 +1,7 @@
+{% if integrated_block_edit|default %}
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            {% trans with { '%id%': id } %}Block "%id%" is empty{% endtrans %}
+        </div>
+    </div>
+{% endif %}
