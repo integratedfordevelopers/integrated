@@ -92,14 +92,12 @@ class ContentBlockHandler extends BlockHandler
             // search selection is removed
         }
 
-        $pagination = $this->provider->execute(
+        return $this->provider->execute(
             $request,
             $block->getId(),
             $block->getItemsPerPage(),
             $block->getMaxItems(),
             $block->getFacetFields()
         );
-
-        return $pagination;
     }
 }
