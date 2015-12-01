@@ -106,13 +106,8 @@ class ContentBlockHandler extends BlockHandler
                 $block->getId(),
                 $block->getItemsPerPage(),
                 $block->getMaxItems(),
-                $block->getFacetFields(),
-                $block->isShowItemsRandom()
+                $block->getFacetFields()
             );
-
-            if ($block->isShowItemsRandom()) {
-                return $pagination;
-            }
 
             $this->registry[$id] = $pagination;
         }
