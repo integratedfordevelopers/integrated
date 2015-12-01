@@ -11,8 +11,9 @@
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/content/taxonomy.xml" prefix="/content" />
 
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/page.xml" prefix="/page" />
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/grid.xml" prefix="/grid" />
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/menu.xml" prefix="/menu" />
-    
+
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/search_selection.xml" />
     
     <import resource="." type="page" />

@@ -2,7 +2,13 @@
 {% if grid.items is defined %}
     {% for item in grid.items %}
         {% if item.block %}
-            {{ integrated_block(item.block) }}
+            {% if item.attributes|length %}
+                <div{% for key, value in item.attributes %} {{ key }}="{{ value }}"{% endfor %}>
+                    {{ integrated_block(item.block) }}
+                </div>
+            {% else %}
+                {{ integrated_block(item.block) }}
+            {% endif %}
         {% endif %}
 
         {% if item.row %}

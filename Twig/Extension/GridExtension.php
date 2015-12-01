@@ -73,9 +73,11 @@ class GridExtension extends \Twig_Extension
                 $grid = new Grid($id);
             }
 
-            $html .= $environment->render($options['template'], ['grid' => $grid]);
+            if ($edit) {
+                $html .= '<script type="text/json">' . json_encode(['data' => $grid->toArray()]) . '</script>';
+            }
 
-            $html .= '<script type="text/json">' . json_encode(['data' => $grid->toArray()]) . '</script>';
+            $html .= $environment->render($options['template'], ['grid' => $grid]);
         }
 
         if ($edit) {

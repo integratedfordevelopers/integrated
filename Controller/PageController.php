@@ -19,6 +19,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider;
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
+use Integrated\Bundle\PageBundle\Grid\GridFactory;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 
 /**
@@ -52,19 +53,26 @@ class PageController
     protected $menuFactory;
 
     /**
+     * @var GridFactory
+     */
+    protected $gridFactory;
+
+    /**
      * @param TwigEngine $templating
      * @param DocumentManager $dm
      * @param ChannelContextInterface $channelContext
      * @param DatabaseMenuProvider $menuProvider
      * @param DatabaseMenuFactory $menuFactory
+     * @param GridFactory $gridFactory
      */
-    public function __construct(TwigEngine $templating, DocumentManager $dm, ChannelContextInterface $channelContext, DatabaseMenuProvider $menuProvider, DatabaseMenuFactory $menuFactory)
+    public function __construct(TwigEngine $templating, DocumentManager $dm, ChannelContextInterface $channelContext, DatabaseMenuProvider $menuProvider, DatabaseMenuFactory $menuFactory, GridFactory $gridFactory)
     {
         $this->templating = $templating;
         $this->dm = $dm;
         $this->channelContext = $channelContext;
         $this->menuProvider = $menuProvider;
         $this->menuFactory = $menuFactory;
+        $this->gridFactory = $gridFactory;
     }
 
     /**
@@ -136,6 +144,10 @@ class PageController
      */
     protected function handleGridData(array $data = [])
     {
+        foreach ($data as $array) {
+            if ($grid = $this->gridFactory->fromArray((array) $array)) {
 
+            }
+        }
     }
 }

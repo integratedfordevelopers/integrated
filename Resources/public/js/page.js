@@ -27,7 +27,7 @@
             }
         });
 
-        $('#' + $(this).attr('data-element-id')).submit();
+        $(this).blur();
     });
 
 }(window.jQuery, window.Routing);
