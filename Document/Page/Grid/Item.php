@@ -43,6 +43,11 @@ class Item
     protected $row;
 
     /**
+     * @var array
+     */
+    protected $attributes = [];
+
+    /**
      * @return int
      */
     public function getOrder()
@@ -74,6 +79,10 @@ class Item
      */
     public function setBlock(Block $block = null)
     {
+        if ($block && $this->row) {
+            throw new \RuntimeException('Row is already defined');
+        }
+
         $this->block = $block;
         return $this;
     }
@@ -92,6 +101,10 @@ class Item
      */
     public function setRow(Row $row = null)
     {
+        if ($row && $this->block) {
+            throw new \RuntimeException('Block is already defined');
+        }
+
         $this->row = $row;
         return $this;
     }
@@ -114,5 +127,54 @@ class Item
         }
 
         return $array;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * @param array $attributes
+     * @return $this
+     */
+    public function setAttributes(array $attributes = [])
+    {
+        $this->attributes = $attributes;
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     * @return bool
+     */
+    public function hasAttribute($key)
+    {
+        return isset($this->attributes[$key]);
+    }
+
+    /**
+     * @param string $key
+     * @return string|null
+     */
+    public function getAttribute($key)
+    {
+        if ($this->hasAttribute($key)) {
+            return $this->attributes[$key];
+        }
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return $this
+     */
+    public function setAttribute($key, $value)
+    {
+        $this->attributes[$key] = $value;
+        return $this;
     }
 }

@@ -8,12 +8,18 @@
 
         <parameter key="integrated_page.layout_locator.class">Integrated\Bundle\PageBundle\Locator\LayoutLocator</parameter>
 
+        <parameter key="integrated_page.grid.factory.class">Integrated\Bundle\PageBundle\Grid\GridFactory</parameter>
+
     </parameters>
 
     <services>
 
         <service id="integrated_page.layout_locator" class="%integrated_page.layout_locator.class%">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+        </service>
+
+        <service id="integrated_page.grid.factory" class="%integrated_page.grid.factory.class%">
+            <argument type="service" id="integrated_block.block_repository" />
         </service>
 
     </services>
