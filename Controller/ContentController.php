@@ -288,7 +288,8 @@ class ContentController extends Controller
             'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified', 'order' => 'desc'],
             'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
             'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
-            'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc']
+            'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc'],
+            'random'  => ['name' => 'random', 'field' => 'random_' . mt_rand(), 'label' => 'random', 'order' => 'desc'],
         ];
         $order_options = [
             'asc' => 'asc',
@@ -302,8 +303,7 @@ class ContentController extends Controller
             $query->setQuery($q);
 
             $sort_default = 'rel';
-        }
-        else {
+        } else {
             //relevance only available when sorting on specific query
             unset($sort_options['rel']);
         }
@@ -312,7 +312,7 @@ class ContentController extends Controller
         $sort = trim(strtolower($sort));
         $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'),$order_options) ? $request->query->get('order') : $sort_options[$sort]['order'] );
+        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
 
         // Execute the query
         $result = $client->select($query);
