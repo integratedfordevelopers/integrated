@@ -12,8 +12,6 @@
 
         <parameter key="integrated_block.configure_menu.class">Integrated\Bundle\BlockBundle\EventListener\ConfigureMenuListener</parameter>
 
-        <parameter key="integrated_block.bundle_checker_class">Integrated\Bundle\BlockBundle\Utils\BundleChecker</parameter>
-
     </parameters>
 
     <services>
@@ -30,10 +28,6 @@
         <service id="integrated_block.configure_menu" class="%integrated_block.configure_menu.class%">
             <argument type="service" id="security.authorization_checker" />
             <tag name="kernel.event_subscriber" />
-        </service>
-
-        <service id="integrated_block.bundle_checker" class="%integrated_block.bundle_checker_class%">
-            <argument>%kernel.bundles%</argument>
         </service>
 
     </services>

@@ -26,7 +26,7 @@
                         <col />
                         <col />
                         <col />
-                        {% if pageBundleExist %}<col />{% endif %}
+                        {% if pageBundleInstalled %}<col />{% endif %}
                         <col style="width: 5em" />
                     </colgroup>
 
@@ -35,7 +35,7 @@
                             <th>{{ knp_pagination_sortable(blocks, 'Block name', 'title') }}</th>
                             <th>{{ knp_pagination_sortable(blocks, 'Short code', 'id') }}</th>
                             <th>{{ knp_pagination_sortable(blocks, 'Type', 'type') }}</th>
-                            {% if pageBundleExist %}
+                            {% if pageBundleInstalled %}
                                 <th>{% trans %}Channels{% endtrans %}</th>
                             {% endif %}
                             <th>{% trans %}Actions{% endtrans %}</th>
@@ -55,7 +55,7 @@
                             <td>
                                 {{ block.type }}
                             </td>
-                            {% if pageBundleExist %}
+                            {% if pageBundleInstalled %}
                                 <td>{{ find_channels(block) }}</td>
                             {% endif %}
                             <td>
@@ -90,9 +90,11 @@
             <div class="content_column_inner block-facet-filter">
                 {{ form_start(facetFilter) }}
                     {{ form_row(facetFilter.type) }}
-                    <br/>
-                    <br/>
-                    {{ form_row(facetFilter.channels) }}
+                    {% if pageBundleInstalled %}
+                        <br/>
+                        <br/>
+                        {{ form_row(facetFilter.channels) }}
+                    {% endif %}
                 {{ form_end(facetFilter) }}
             </div>
         </div>

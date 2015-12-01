@@ -40,7 +40,7 @@
         <service id="integrated_block.form.type.block_filter" class="%integrated_block.form.type.block_filter.class%">
             <argument type="service" id="integrated_block.metadata.factory" />
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-            <argument type="service" id="integrated_block.bundle_checker" />
+            <argument type="service" id="service_container" />
         </service>
 
     </services>

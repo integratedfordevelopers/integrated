@@ -16,21 +16,18 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Column;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Row;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-use Integrated\Bundle\BlockBundle\Utils\BundleChecker;
 
 /**
- * Class BlockRepository
- * @package Integrated\Bundle\BlockBundle\Document\Block
  * @author Vasil Pascal <developer.optimum@gmail.com>
  */
 class BlockRepository extends DocumentRepository
 {
     /**
      * @param array $filterData
-     * @param BundleChecker $bundleChecker
+     * @param bool  $pageBundleInstalled
      * @return mixed
      */
-    public function getQBForBlockPaginator(array $filterData, BundleChecker $bundleChecker)
+    public function getBlocksByChannelQueryBuilder(array $filterData, $pageBundleInstalled)
     {
         $qb = $this->createQueryBuilder();
 
@@ -38,7 +35,7 @@ class BlockRepository extends DocumentRepository
             $qb->field('class')->in($filterData['type']);
         }
 
-        if ($bundleChecker->checkPageBundle() && isset($filterData['channels']) && $filterData['channels']) {
+        if ($pageBundleInstalled && isset($filterData['channels']) && $filterData['channels']) {
             $pages = $this->dm->createQueryBuilder('IntegratedPageBundle:Page\Page')
                 ->field('channel.$id')->in($filterData['channels'])
                 ->getQuery()
@@ -86,7 +83,7 @@ class BlockRepository extends DocumentRepository
      * @param MetadataFactoryInterface $factory
      * @return array
      */
-    public function getTypesForFacetFilter(MetadataFactoryInterface $factory)
+    public function getTypeChoices(MetadataFactoryInterface $factory)
     {
         $groupCountBlock = $this->createQueryBuilder()
             ->group(array('class' => 1), array('total' => 0))
@@ -105,7 +102,7 @@ class BlockRepository extends DocumentRepository
             $class = $metaData->getClass();
 
             if (array_key_exists($class, $typeCount)) {
-                $typeChoices[$class] = $metaData->getType() . ' ' . $typeCount[$class];
+                $typeChoices[$class] = $metaData->getType().' '.$typeCount[$class];
             }
         }
 
