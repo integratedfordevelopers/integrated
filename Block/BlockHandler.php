@@ -77,7 +77,7 @@ class BlockHandler implements BlockHandlerInterface
      * @param ContentInterface $document
      * @return $this
      */
-    public function setDocument($document)
+    public function setDocument(ContentInterface $document)
     {
         $this->document = $document;
         return $this;
