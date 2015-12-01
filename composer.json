@@ -16,7 +16,6 @@
   "require": {
     "php": ">=5.4",
     "symfony/symfony": "2.7.*",
-    "integrated/library": "~0.4",
     "integrated/content-bundle": "~0.4",
     "knplabs/knp-gaufrette-bundle": "~0.1"
   },
