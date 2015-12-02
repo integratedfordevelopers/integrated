@@ -61,10 +61,11 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
      * @param int $limit
      * @param int $maxItems
      * @param array $facetFields
+     * @param bool $exclude
      *
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function execute(Request $request, $blockId = null, $limit = 10, $maxItems = 0, array $facetFields = [])
+    public function execute(Request $request, $blockId = null, $limit = 10, $maxItems = 0, array $facetFields = [], $exclude = true)
     {
         $pageParam = (null !== $blockId ? $blockId . '-' : '') . 'page';
         $page = (int) $request->query->get($pageParam);
@@ -78,7 +79,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
         $pagination = $this->paginator->paginate(
             [
                 $this->client,
-                $this->getQuery($request, $blockId, $facetFields),
+                $this->getQuery($request, $blockId, $facetFields, $exclude),
             ],
             $page,
             $limit,
@@ -88,9 +89,11 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             ]
         );
 
-        /** @var \Solarium\QueryType\Select\Result\Document $document */
-        foreach ($pagination as $document) {
-            $this->registry[$document->offsetGet('type_id')] = true; // exclude already shown items
+        if (true === $exclude) {
+            /** @var \Solarium\QueryType\Select\Result\Document $document */
+            foreach ($pagination as $document) {
+                $this->registry[$document->offsetGet('type_id')] = true; // exclude already shown items
+            }
         }
 
         return $pagination;
@@ -162,7 +165,6 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
         }
 
         if (count($facetFields)) {
-
             $facetSet = $query->getFacetSet();
 
             foreach ($facetFields as $field) {
