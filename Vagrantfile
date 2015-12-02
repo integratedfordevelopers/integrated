@@ -16,12 +16,6 @@ if File.file?("#{dir}/puphpet/config-custom.yaml")
   configValues.deep_merge!(custom)
 end
 
-# include local config in project directory (when available)
-if File.file?("#{dir}/puphpet/config-local.yaml")
-  custom = YAML.load_file("#{dir}/puphpet/config-local.yaml")
-  configValues.deep_merge!(custom)
-end
-
 data = configValues['vagrantfile']
 
 Vagrant.require_version '>= 1.6.0'
