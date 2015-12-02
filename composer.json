@@ -23,6 +23,7 @@
         "doctrine/mongodb-odm": "*",
         "doctrine/mongodb-odm-bundle": "~3.0",
         "integrated/content-bundle": "~0.3",
+        "integrated/block-bundle": "~0.4",
         "integrated/page-bundle": "~0.3",
         "integrated/theme-bundle": "~0.3",
         "integrated/channel-bundle": "~0.3",
