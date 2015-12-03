@@ -87,7 +87,7 @@ class ContentController extends Controller
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
         $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
-        $facetTitles['workflow_state'] = 'Workflow state';
+        $facetTitles['workflow_state'] = 'Workflow status';
         $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
         $facetTitles['workflow_assigned'] = 'Assigned user';
         $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
