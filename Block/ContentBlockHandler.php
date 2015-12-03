@@ -78,9 +78,10 @@ class ContentBlockHandler extends BlockHandler
     /**
      * @param ContentBlock $block
      * @param Request $request
+     * @param bool $exclude
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function getPagination(ContentBlock $block, Request $request)
+    public function getPagination(ContentBlock $block, Request $request, $exclude = true)
     {
         $request = $request->duplicate(); // don't change original request
 
@@ -97,7 +98,8 @@ class ContentBlockHandler extends BlockHandler
             $block->getId(),
             $block->getItemsPerPage(),
             $block->getMaxItems(),
-            $block->getFacetFields()
+            $block->getFacetFields(),
+            $exclude
         );
     }
 }
