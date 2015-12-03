@@ -33,6 +33,7 @@
             <argument type="service" id="form.factory" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="request_stack" />
+            <argument type="service" id="integrated_content.mailer.form" />
             <tag name="integrated.block" type="form" />
         </service>
 
