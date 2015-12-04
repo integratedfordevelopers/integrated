@@ -52,10 +52,17 @@
     }
 
     var addRemoveButton = function(element) {
+        var id = element.closest('.integrated-website-block').find('input[data-field="integrated-website-block"]').val();
+
         element.find('.integrated-website-block-element').before(
-            '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" data-element-id="' + element.attr('id') + '" title="Remove block">' +
-                '<span class="glyphicon glyphicon-remove"></span>' +
-            '</a>'
+            '<div class="integrated-website-block-options">' +
+                '<a href="' + Routing.generate('integrated_block_block_edit', { 'id': id }) + '" class="integrated-website-helper-icon" title="Edit block">' +
+                    '<span class="glyphicon glyphicon-pencil"></span>' +
+                '</a>' +
+                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" data-element-id="' + element.attr('id') + '" title="Remove block">' +
+                    '<span class="glyphicon glyphicon-remove"></span>' +
+                '</a>' +
+            '</div>'
         );
     }
 
