@@ -298,8 +298,9 @@ class ContentController extends Controller
         ];
 
         if ($q = $request->get('q')) {
-            $dismax = $query->getDisMax();
-            $dismax->setQueryFields('title content');
+            $edismax = $query->getEDisMax();
+            $edismax->setQueryFields('title content');
+            $edismax->setMinimumMatch('75%');
 
             $query->setQuery($q);
 

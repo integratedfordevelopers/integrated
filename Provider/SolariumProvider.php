@@ -108,6 +108,8 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
      */
     protected function getQuery(Request $request, $blockId, array $facetFields = [])
     {
+        $applyExcludes = true;
+
         $query = $this->client->createSelect();
 
         $channel = $request->attributes->get('_channel');
@@ -123,7 +125,12 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
         if ($search = $request->query->get($blockId . '-search')) {
             $edismax = $query->getEDisMax();
             $edismax->setQueryFields('title^200 content subtitle intro');
+            $edismax->setMinimumMatch('75%');
+
             $query->setQuery($search);
+
+            //I would be strange to exclude items when when a seach text is entered
+            $applyExcludes = false;
         }
 
         $helper = $query->getHelper();
@@ -185,7 +192,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             }
         }
 
-        if (count($this->registry)) {
+        if (count($this->registry) && $applyExcludes) {
             // exclude items
             $query->setQuery($query->getQuery() . ' AND -type_id: (%1%)', [implode(' OR ', array_map($filter, array_keys($this->registry)))]);
         }
