@@ -41,30 +41,7 @@ class PageController extends Controller
     public function editAction(Request $request, Page $page)
     {
         // @todo security check (INTEGRATED-383)
-
-        if ($request->isMethod('POST')) {
-            $dm = $this->getDocumentManager();
-            $data = (array) json_decode($request->getContent(), true);
-
-            if (isset($data['menus'])) {
-                foreach ((array) $data['menus'] as $array) {
-                    if ($menu = $this->getMenuFactory()->fromArray((array) $array)) {
-                        if ($menu2 = $this->getMenuProvider()->get($menu->getName())) {
-                            $menu2->setChildren($menu->getChildren());
-
-                        } else {
-                            $menu->setChannel($this->getChannel());
-
-                            $dm->persist($menu);
-                        }
-                    }
-                }
-            }
-
-            $dm->flush();
-        }
-
-        // @todo use json
+        // @todo use json (INTEGRATED-515)
 
         $form = $this->createEditForm($page);
         $form->handleRequest($request);
@@ -99,34 +76,10 @@ class PageController extends Controller
     }
 
     /**
-     * @return \Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider
-     */
-    protected function getMenuProvider()
-    {
-        return $this->get('integrated_menu.provider.database_menu_provider');
-    }
-
-    /**
-     * @return \Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory
-     */
-    protected function getMenuFactory()
-    {
-        return $this->get('integrated_menu.menu.database_menu_factory');
-    }
-
-    /**
      * @return \Doctrine\ODM\MongoDB\DocumentManager
      */
     protected function getDocumentManager()
     {
         return $this->get('doctrine_mongodb')->getManager();
-    }
-
-    /**
-     * @return \Integrated\Common\Content\Channel\ChannelInterface|null
-     */
-    protected function getChannel()
-    {
-        return $this->get('channel.context')->getChannel();
     }
 }

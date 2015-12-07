@@ -6,16 +6,14 @@
         var menus = [];
 
         $('.integrated-website-menu').each(function() {
-            var menu = Integrated.Menu.create($(this));
-
-            menus.push(menu.getData());
+            menus.push(Integrated.Menu.create($(this)).getData());
         });
 
         $.ajax({
             type: 'POST',
-            url: Routing.generate('integrated_website_page_edit', { 'id': $(this).attr('data-id') }),
+            url: Routing.generate('integrated_website_menu_save'),
             data: JSON.stringify({
-                'menus': menus
+                'menu': menus
             }),
             error: function(result) {
                 // @todo error handling (INTEGRATED-420)

@@ -1,6 +1,6 @@
 {% spaceless %}
 {% set data = {
-    'html'   : knp_menu_render(menu, options)|trim,
+    'html'   : integrated_menu_prepare(menu, options),
     'options': options,
 } %}
 
