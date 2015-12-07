@@ -59,7 +59,7 @@ class MenuItem extends KnpMenuItem
 
     /**
      * @param FactoryInterface $factory
-     * @return self
+     * @return $this
      */
     public function setFactory(FactoryInterface $factory)
     {
