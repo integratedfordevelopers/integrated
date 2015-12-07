@@ -23,11 +23,11 @@
         "components/jquery": "1.10.*",
         "integrated/library": "~0.3",
         "integrated/channel-bundle": "~0.3",
-        "integrated/content-bundle": "~0.3",
+        "integrated/content-bundle": "~0.4",
         "integrated/formtype-bundle": "~0.3",
         "integrated/solr-bundle": "~0.3",
         "integrated/user-bundle": "~0.3",
-        "integrated/website-bundle": "~0.3",
+        "integrated/website-bundle": "~0.4",
         "integrated/puphpet": "~0.4"
     },
     "scripts": {
