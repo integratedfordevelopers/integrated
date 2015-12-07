@@ -13,6 +13,7 @@ namespace Integrated\Bundle\MenuBundle\Document;
 
 use Knp\Menu\MenuItem as KnpMenuItem;
 use Knp\Menu\ItemInterface;
+use Knp\Menu\FactoryInterface;
 
 use Doctrine\Common\Collections\Collection;
 
@@ -27,6 +28,16 @@ class MenuItem extends KnpMenuItem
      * @var string
      */
     protected $id;
+
+    /**
+     * @param string $name
+     * @param DatabaseMenuFactory $factory
+     */
+    public function __construct($name, DatabaseMenuFactory $factory)
+    {
+        $this->name = (string) $name;
+        $this->factory = $factory;
+    }
 
     /**
      * @return string
@@ -47,16 +58,26 @@ class MenuItem extends KnpMenuItem
     }
 
     /**
+     * @param FactoryInterface $factory
+     * @return self
+     */
+    public function setFactory(FactoryInterface $factory)
+    {
+        if (!$factory instanceof DatabaseMenuFactory) {
+            throw new \InvalidArgumentException('Factory must be an instance of "Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory".');
+        }
+
+        $this->factory = $factory;
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function addChild($child, array $options = [])
     {
         if ($child instanceof Menu) {
             throw new \InvalidArgumentException('Cannot add an instance of "Integrated\Bundle\MenuBundle\Document\Menu" as child, use "Integrated\Bundle\MenuBundle\Document\MenuItem" instead.');
-        }
-
-        if (!$this->factory instanceof DatabaseMenuFactory) {
-            throw new \InvalidArgumentException('This only works in combination with "Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory".');
         }
 
         if (!$child instanceof ItemInterface) {
