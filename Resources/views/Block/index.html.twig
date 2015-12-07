@@ -65,7 +65,7 @@
                                     {{ icon('pencil') }}
                                 </a>
                                 {% if not block.locked %}
-                                    {% if pageBundleExist and not find_pages(block) %}
+                                    {% if pageBundleInstalled and not find_pages(block) %}
                                         <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
                                             {{ icon('remove-circle') }}
                                         </a>

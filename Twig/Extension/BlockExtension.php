@@ -12,8 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
-use Integrated\Bundle\BlockBundle\Document\Block\Block;
-
+use Integrated\Common\Block\BlockInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -44,15 +43,9 @@ class BlockExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_SimpleFunction('find_channels', [$this, 'findChannels']),
+            new \Twig_SimpleFunction('find_pages', [$this, 'findPages']),
         ];
-
-        /* check if IntegratedPageBundle is installed */
-        if ($this->container->get('integrated_block.bundle_checker')->checkPageBundle()) {
-            $functions[] = new \Twig_SimpleFunction('find_channels', [$this, 'findChannels']);
-            $functions[] = new \Twig_SimpleFunction('find_pages', [$this, 'findPages']);
-        }
-
-        return $functions;
     }
 
     /**
@@ -105,13 +98,16 @@ class BlockExtension extends \Twig_Extension
      */
     public function findChannels($block)
     {
-        /* Get all pages which was associated with current Block document */
-        $pages = $this->getPages($block);
-
         $channelNames = [];
-        foreach ($pages as $page) {
-            if ($channel = $page->getChannel()) {
-                $channelNames[] = $channel->getName();
+        if ($this->container->has('integrated_page.form.type.page')) {
+            /* Get all pages which was associated with current Block document */
+            $pages = $this->getPages($block);
+
+            $channelNames = [];
+            foreach ($pages as $page) {
+                if ($channel = $page->getChannel()) {
+                    $channelNames[] = $channel->getName();
+                }
             }
         }
 
@@ -126,8 +122,10 @@ class BlockExtension extends \Twig_Extension
     public function findPages($block)
     {
         $pageNames = [];
-        foreach ($this->getPages($block) as $page) {
-            $pageNames[] = $page->getTitle();
+        if ($this->container->has('integrated_page.form.type.page')) {
+            foreach ($this->getPages($block) as $page) {
+                $pageNames[] = $page->getTitle();
+            }
         }
 
         return implode(',', $pageNames);
