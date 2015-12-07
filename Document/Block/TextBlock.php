@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
@@ -25,6 +26,20 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  */
 class TextBlock extends Block
 {
+    use PublishTitleTrait;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Assert\NotBlank
+     * @Type\Field(
+     *       options={
+     *          "attr"={"class"="main-title"}
+     *       }
+     * )
+     */
+    protected $title;
+
     /**
      * @var string
      * @ODM\String

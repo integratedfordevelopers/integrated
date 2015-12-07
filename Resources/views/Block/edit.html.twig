@@ -20,3 +20,10 @@
     </div>
 
 {% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/integratedblock/js/published_title.js') }}"></script>
+{% endblock %}
+
+

@@ -18,13 +18,16 @@ use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockHandlerRegistryInterface;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Common\Content\ContentInterface;
+
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class BlockRenderer
+class BlockManager
 {
     /**
      * @var BlockHandlerRegistryInterface
@@ -45,6 +48,11 @@ class BlockRenderer
      * @var \Twig_Environment
      */
     protected $twig;
+
+    /**
+     * @var ContentInterface
+     */
+    protected $document;
 
     /**
      * @param BlockHandlerRegistryInterface $blockRegistry
@@ -73,16 +81,22 @@ class BlockRenderer
 
         if ($block instanceof BlockInterface) {
             try {
-                $handler = $this->blockRegistry->getHandler($block->getType());
-
+                if ($block instanceof Block && (!$block->isPublished() || $block->isDisabled())) {
+                    return;
+                }
             } catch (DocumentNotFoundException $e) {
-                // @todo log errors (INTEGRATED-444)
                 return;
             }
+
+            $handler = $this->blockRegistry->getHandler($block->getType());
 
             if ($handler instanceof BlockHandlerInterface) {
                 if ($handler instanceof BlockHandler) {
                     $handler->setTwig($this->twig);
+
+                    if ($this->document instanceof ContentInterface) {
+                        $handler->setDocument($this->document);
+                    }
 
                     if ($template = $this->themeManager->locateTemplate('blocks/' . $block->getType() . '/' . $block->getLayout())) {
                         $handler->setTemplate($template);
@@ -92,5 +106,15 @@ class BlockRenderer
                 return $handler->execute($block);
             }
         }
+    }
+
+    /**
+     * @param ContentInterface $document
+     * @return $this
+     */
+    public function setDocument(ContentInterface $document)
+    {
+        $this->document = $document;
+        return $this;
     }
 }
