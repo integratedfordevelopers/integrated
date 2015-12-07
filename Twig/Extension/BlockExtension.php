@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -22,6 +23,9 @@ class BlockExtension extends \Twig_Extension
      * @var ContainerInterface
      */
     protected $container;
+
+    /** @var array */
+    protected $pages = [];
 
     /**
      * @param ContainerInterface $container
@@ -40,6 +44,12 @@ class BlockExtension extends \Twig_Extension
             new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('find_channels', [$this, 'findChannels']),
         ];
+
+        /* check if IntegratedPageBundle is installed */
+        if ($this->container->get('integrated_block.bundle_checker')->checkPageBundle()) {
+            $functions[] = new \Twig_SimpleFunction('find_channels', [$this, 'findChannels']);
+            $functions[] = new \Twig_SimpleFunction('find_pages', [$this, 'findPages']);
+        }
 
         return $functions;
     }
@@ -61,66 +71,50 @@ class BlockExtension extends \Twig_Extension
      */
     public function findChannels($block)
     {
+        /* Get all pages which was associated with current Block document */
+        $pages = $this->getPages($block);
+
         $channelNames = [];
-        if ($this->container->has('integrated_page.form.type.page')) {
-            /* Get all pages which was associated with current Block document */
-            $pages = $this->container
-                ->get('doctrine_mongodb')
-                ->getManager()
-                ->createQueryBuilder('IntegratedPageBundle:Page\Page')
-                ->where(
-                    'function() {
-                    var block_id = "'.$block->getId().'";
-
-                    var checkItem = function(item) {
-                        if ("block" in item && item.block.$id == block_id) {
-                            return true;
-                        }
-
-                        if ("row" in item) {
-                            if (recursiveFindInRows(item.row)) {
-                                return true;
-                            }
-                        }
-                    }
-
-                    var recursiveFindInRows = function(row) {
-                        if ("columns" in row) {
-                            for (c in row.columns) {
-                                if ("items" in row.columns[c]) {
-                                    for (i in row.columns[c].items) {
-
-                                        if (checkItem(row.columns[c].items[i])) {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    };
-
-                    for (k in this.grids) {
-                        for (i in this.grids[k].items) {
-
-                            if (checkItem(this.grids[k].items[i])) {
-                                return true;
-                            }
-                        }
-                    }
-
-                    return false;
-                }'
-                )
-                ->getQuery()->execute();
-
-            foreach ($pages as $page) {
-                if ($channel = $page->getChannel()) {
-                    $channelNames[] = $channel->getName();
-                }
+        foreach ($pages as $page) {
+            if ($channel = $page->getChannel()) {
+                $channelNames[] = $channel->getName();
             }
         }
 
         return implode(',', $channelNames);
+    }
+
+    /**
+     * @param \Integrated\Common\Block\BlockInterface $block
+     *
+     * @return null|string
+     */
+    public function findPages($block)
+    {
+        $pageNames = [];
+        foreach ($this->getPages($block) as $page) {
+            $pageNames[] = $page->getTitle();
+        }
+
+        return implode(',', $pageNames);
+    }
+
+    /**
+     * @param Block $block
+     * @return mixed
+     */
+    public function getPages(Block $block)
+    {
+        if (!isset($this->pages[$block->getId()])) {
+            /* Get all pages which was associated with current Block document */
+            $this->pages[$block->getId()] = $this->container
+                ->get('doctrine_mongodb')
+                ->getRepository('IntegratedBlockBundle:Block\Block')
+                ->pagesByBlockQb($block)
+                ->execute();
+        }
+
+        return $this->pages[$block->getId()];
     }
 
     /**

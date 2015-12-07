@@ -37,6 +37,7 @@
                             <th>{{ knp_pagination_sortable(blocks, 'Type', 'type') }}</th>
                             {% if pageBundleInstalled %}
                                 <th>{% trans %}Channels{% endtrans %}</th>
+                                <th>{% trans %}Pages{% endtrans %}</th>
                             {% endif %}
                             <th>{% trans %}Actions{% endtrans %}</th>
                         </tr>
@@ -57,15 +58,18 @@
                             </td>
                             {% if pageBundleInstalled %}
                                 <td>{{ find_channels(block) }}</td>
+                                <td>{{ find_pages(block) }}</td>
                             {% endif %}
                             <td>
                                 <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">
                                     {{ icon('pencil') }}
                                 </a>
                                 {% if not block.locked %}
-                                    <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
-                                        {{ icon('remove-circle') }}
-                                    </a>
+                                    {% if pageBundleExist and not find_pages(block) %}
+                                        <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                                            {{ icon('remove-circle') }}
+                                        </a>
+                                    {% endif  %}
                                 {% endif %}
                             </td>
                         </tr>

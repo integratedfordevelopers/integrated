@@ -108,4 +108,71 @@ class BlockRepository extends DocumentRepository
 
         return $typeChoices;
     }
+
+
+    /**
+     * @param Block $block
+     * @return \Doctrine\MongoDB\Query\Query
+     */
+    public function pagesByBlockQb(Block $block)
+    {
+        return $this->dm
+            ->getRepository('IntegratedPageBundle:Page\Page')
+            ->createQueryBuilder()
+            ->where('function() {
+                var block_id = "' . $block->getId() . '";
+
+                var checkItem = function(item) {
+                        if ("block" in item && item.block.$id == block_id) {
+                            return true;
+                        }
+
+                        if ("row" in item) {
+                            if (recursiveFindInRows(item.row)) {
+                                return true;
+                            }
+                        }
+                    }
+
+                    var recursiveFindInRows = function(row) {
+                        if ("columns" in row) {
+                            for (c in row.columns) {
+                                if ("items" in row.columns[c]) {
+                                    for (i in row.columns[c].items) {
+
+                                        if (checkItem(row.columns[c].items[i])) {
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    };
+
+                    for (k in this.grids) {
+                        for (i in this.grids[k].items) {
+
+                            if (checkItem(this.grids[k].items[i])) {
+                                return true;
+                            }
+                        }
+                    }
+
+                    return false;
+
+            }')
+            ->getQuery();
+    }
+
+
+    /**
+     * Check if given block is used on some page
+     *
+     * @param Block $block
+     * @return bool
+     */
+    public function isUsed(Block $block)
+    {
+        return $this->pagesByBlockQb($block)->getSingleResult() ? true : false;
+    }
 }

@@ -117,6 +117,15 @@ class BlockController extends Controller
      */
     public function editAction(Request $request, Block $block)
     {
+
+        $dm = $this->getDocumentManager();
+        if ($this->get('integrated_block.bundle_checker')->checkPageBundle()) {
+            /* check if current Block not used on some page */
+            if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
+                throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
+            }
+        }
+
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
@@ -147,12 +156,18 @@ class BlockController extends Controller
             throw $this->createNotFoundException(sprintf('Block "%s" is locked.', $block->getId()));
         }
 
+        /* check if current Block not used on some page */
+        $dm = $this->getDocumentManager();
+        if ($this->get('integrated_block.bundle_checker')->checkPageBundle()) {
+            if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
+                throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
+            }
+        }
+
         $form = $this->createDeleteForm($block->getId());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $dm = $this->getDocumentManager();
-
             $dm->remove($block);
             $dm->flush();
 
