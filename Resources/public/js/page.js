@@ -17,9 +17,6 @@
             data: JSON.stringify({
                 'menus': menus
             }),
-            success: function(result) {
-                //console.log(result);
-            },
             error: function(result) {
                 // @todo error handling (INTEGRATED-420)
                 alert('An error has occurred!');
