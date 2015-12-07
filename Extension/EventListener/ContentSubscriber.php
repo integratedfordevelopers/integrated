@@ -21,6 +21,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
+use Integrated\Bundle\WorkflowBundle\Event\WorkflowStateChangedEvent;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Extension\Event\ContentEvent;
 use Integrated\Common\Content\Extension\Event\Subscriber\ContentSubscriberInterface;
@@ -193,6 +194,10 @@ class ContentSubscriber implements ContentSubscriberInterface
         if ($data['state'] !== $state->getState()) {
             $log->setState($data['state']);
             $state->setState($data['state']);
+
+            $workflowEvent = new WorkflowStateChangedEvent($state, $content);
+            $dispatcher = $this->container->get('event_dispatcher');
+            $dispatcher->dispatch('integrated_workflow.workflow_status.changed', $workflowEvent);
 
             $persist = true;
         }
