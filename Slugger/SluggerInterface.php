@@ -9,15 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\SlugBundle;
-
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+namespace Integrated\Bundle\SlugBundle\Slugger;
 
 /**
- * Integrated slug bundle
+ * Slugger interface
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class IntegratedSlugBundle extends Bundle
+interface SluggerInterface
 {
+    /**
+     * @param string $string
+     * @param string $delimiter
+     *
+     * @return string
+     */
+    public function slugify($string, $delimiter = '-');
 }
