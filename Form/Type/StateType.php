@@ -37,11 +37,22 @@ class StateType extends AbstractType
             'constraints' => [
                 new NotBlank(),
                 new Length(['min' => 3])
+            ],
+            'attr' => [
+                'class' => 'state_name_input_field'
             ]
         ]);
 
         $builder->add('publishable', 'checkbox', ['required' => false]);
-        $builder->add('default', 'checkbox', ['required' => false, 'mapped' => false]);
+
+        $builder->add('default', 'checkbox', [
+            'required' => false,
+            'mapped' => false,
+            'attr' => [
+                'class' => 'state_default_input_field'
+            ]
+        ]);
+
         $builder->add('permissions', 'workflow_definition_permissions', ['required' => false]);
 
         if ($options['transitions'] == 'data') {
