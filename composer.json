@@ -16,7 +16,8 @@
   "require": {
     "php": ">=5.4",
     "symfony/framework-bundle": "~2.3",
-    "knplabs/knp-menu-bundle": "~2.0"
+    "knplabs/knp-menu-bundle": "~2.0",
+    "integrated/content-bundle": "~0.3"
   },
   "require-dev": {
     "phpunit/phpunit": "4.2.*"
