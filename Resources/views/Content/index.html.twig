@@ -127,7 +127,7 @@
                             </h3>
                             <ul class="filters_list">
                                 {% for title, count in facet %}
-                                <li>
+                                <li{% if (loop.index >= 8) and (not (title in active[key]|default)) %} class="to_show"{% endif %}>
                                     <label>
                                         <input {% if title in active[key]|default %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
                                         {% if key == 'contenttypes' %}
@@ -150,6 +150,9 @@
                                 </li>
                                 {% endfor %}
                             </ul>
+                            {% if (loop.index >= 8) %}
+                                <a href="#" class="btn_show_more">{% trans %}More{% endtrans %} <i class="glyphicon"></i></a>
+                            {% endif %}
                         </div>
                         {% endif %}
                     {% endfor %}
