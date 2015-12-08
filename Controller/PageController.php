@@ -29,6 +29,7 @@ class PageController extends Controller
     {
         return $this->render($page->getLayout(), [
             'page' => $page,
+            'edit' => false,
         ]);
     }
 
@@ -40,6 +41,7 @@ class PageController extends Controller
     public function editAction(Request $request, Page $page)
     {
         // @todo security check (INTEGRATED-383)
+        // @todo use json (INTEGRATED-515)
 
         $form = $this->createEditForm($page);
         $form->handleRequest($request);
@@ -53,6 +55,7 @@ class PageController extends Controller
         return $this->render($page->getLayout(), [
             'page' => $page,
             'form' => $form->createView(),
+            'edit' => true,
         ]);
     }
 
@@ -67,7 +70,7 @@ class PageController extends Controller
             $page,
             [
                 'action' => $this->generateUrl('integrated_website_page_edit', ['id' => $page->getId()]),
-                'method' => 'PUT',
+                'method' => 'POST',
             ]
         );
     }

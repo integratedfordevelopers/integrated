@@ -36,5 +36,6 @@ class IntegratedWebsiteExtension extends Extension
         $loader->load('form.xml');
         $loader->load('connector.xml');
         $loader->load('controllers.xml');
+        $loader->load('twig.xml');
     }
 }

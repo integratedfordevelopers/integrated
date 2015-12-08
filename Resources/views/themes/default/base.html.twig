@@ -9,26 +9,31 @@
     {% endif %}
 
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
     {% block stylesheets %}
-        {% stylesheets output='css/styles.css' '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
+        {% stylesheets output='css/styles.css' 
+            '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
         {% endstylesheets %}
     {% endblock %}
 </head>
 <body>
 
-{% if form is defined %}
+{% if form|default and edit|default %}
     {# TODO: auto generate (INTEGRATED-384) #}
     {{ form_start(form) }}
     {{ form_errors(form) }}
 {% endif %}
 
 <div class="container">
+    <br />
+    {{ integrated_menu('main', { 'depth': 2 }) }}
+    <br />
     {{ integrated_grid('main') }}
 </div>
 
-{% if form is defined %}
+{% if form|default and edit|default %}
     {# TODO: auto generate (INTEGRATED-384) #}
     {{ form_row(form._token) }}
     {{ form_end(form, { 'render_rest': false }) }}
@@ -46,7 +51,10 @@
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
 {% block javascripts %}
-    {% javascripts output='js/scripts.js' '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
+    {% javascripts output='js/scripts.js'
+        '@IntegratedWebsiteBundle/Resources/public/js/page.js'
+        '@IntegratedWebsiteBundle/Resources/public/js/menu.js'
+        '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

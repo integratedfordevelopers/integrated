@@ -1,4 +1,4 @@
-!function($) {
+!function($, Routing) {
 
     var createBlock = function(name, index, value, element) {
 
@@ -120,6 +120,7 @@
         forcePlaceholderSize: true,
         scroll: false,
         opacity: 0.7,
+        cursor: 'move',
 
         stop: function(e, ui) {
             var collection = getCollection(ui.item);
@@ -191,12 +192,6 @@
         if (confirm('Are you sure?')) {
             removeBlock($(this));
         }
-    });
-
-    $(document).on('click', '[data-action="integrated-website-save"]', function(e) {
-        e.preventDefault();
-
-        $('#' + $(this).attr('data-element-id')).submit();
     });
 
     $(document).on('click', '[data-action="integrated-website-cols-add"]', function(e) {
@@ -325,4 +320,4 @@
         }
     });
 
-}(window.jQuery);
+}(window.jQuery, window.Routing);

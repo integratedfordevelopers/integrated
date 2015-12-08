@@ -26,6 +26,7 @@
         "integrated/block-bundle": "~0.4",
         "integrated/page-bundle": "~0.3",
         "integrated/theme-bundle": "~0.3",
+        "integrated/menu-bundle": "~0.4",
         "integrated/channel-bundle": "~0.3",
         "knplabs/knp-paginator-bundle": ">=2.4",
         "friendsofsymfony/jsrouting-bundle": "1.5.*",

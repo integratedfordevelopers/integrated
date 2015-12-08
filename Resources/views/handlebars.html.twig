@@ -49,3 +49,26 @@
         </div>
     </div>
 </script>
+
+<script id="integrated_website_template_modal_menu_edit" type="text/x-handlebars-template">
+    {% verbatim %}
+    <div class="row">
+        <div class="col-md-12">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="name">Name</label>
+                    <div class="col-md-8">
+                        <input id="name" name="name" type="text" value="{{ name }}" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="uri">URI</label>
+                    <div class="col-md-8">
+                        <input id="uri" name="uri" type="text" value="{{ uri }}" class="form-control" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endverbatim %}
+</script>
