@@ -37,3 +37,16 @@ AppKernel.php
         
         ...
     }
+    
+### Multiple fields
+
+    @Slug(fields={"title", "anotherField"})
+    
+### Custom seperator
+
+     @Slug(fields={"title"}, seperator="_")
+    
+### Custom method to generate slug
+    
+    @Slug(fields={"getSlug"})
+   
