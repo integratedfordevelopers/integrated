@@ -20,3 +20,12 @@
 </div>
 
 {% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts
+    '@IntegratedWorkflowBundle/Resources/public/js/updateTransitions.js'
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

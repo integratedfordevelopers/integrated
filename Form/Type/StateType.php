@@ -37,6 +37,9 @@ class StateType extends AbstractType
             'constraints' => [
                 new NotBlank(),
                 new Length(['min' => 3])
+            ],
+            'attr' => [
+                'class' => 'state_name_input_field'
             ]
         ]);
 
