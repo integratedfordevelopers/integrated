@@ -116,6 +116,10 @@ class WorkflowStateInstanceInjectionListener implements EventSubscriber
 	 */
 	protected function getORMInstance($class, $id)
 	{
+		if (!$class || !$id) {
+			return null;
+		}
+
 		$manager = $this->orm->getManagerForClass($class);
 
 		if (method_exists($manager, 'getReference')) {

@@ -21,10 +21,11 @@ use Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use Integrated\Common\Content\ContentInterface;
 
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
+
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
 use Integrated\Common\ContentType\Mapping\MetadataInterface;
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 
 use Integrated\Common\Security\Permissions;
 
@@ -45,7 +46,7 @@ class WorkflowVoter implements VoterInterface
 	private $manager;
 
 	/**
-	 * @var ContentTypeResolverInterface
+	 * @var ResolverInterface
 	 */
 	private $resolver;
 
@@ -60,12 +61,12 @@ class WorkflowVoter implements VoterInterface
 	private $permissions;
 
 	/**
-	 * @param ManagerRegistry $manager
-	 * @param ContentTypeResolverInterface $resolver
+	 * @param ManagerRegistry          $manager
+	 * @param ResolverInterface        $resolver
 	 * @param MetadataFactoryInterface $metadata
 	 * @param array $permissions
 	 */
-	public function __construct(ManagerRegistry $manager, ContentTypeResolverInterface $resolver, MetadataFactoryInterface $metadata, array $permissions = [])
+	public function __construct(ManagerRegistry $manager, ResolverInterface $resolver, MetadataFactoryInterface $metadata, array $permissions = [])
 	{
 		$this->manager = $manager;
 
@@ -91,17 +92,17 @@ class WorkflowVoter implements VoterInterface
 		return $resolver;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function supportsAttribute($attribute)
 	{
 		return in_array($attribute, $this->permissions);
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function supportsClass($class)
 	{
 		if (is_object($class)) {
@@ -111,9 +112,9 @@ class WorkflowVoter implements VoterInterface
 		return is_subclass_of($class, 'Integrated\\Bundle\\UserBundle\\Model\\GroupableInterface');
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function vote(TokenInterface $token, $object, array $attributes)
 	{
 		if (!$object instanceof ContentInterface) {
@@ -130,7 +131,7 @@ class WorkflowVoter implements VoterInterface
 			return VoterInterface::ACCESS_ABSTAIN;
 		}
 
-		$type = $this->getContentType($class, $object->getContentType());
+		$type = $this->getContentType($object->getContentType());
 
 		if (!$type || !$type->hasOption('workflow')) {
 			return VoterInterface::ACCESS_ABSTAIN;
@@ -211,14 +212,13 @@ class WorkflowVoter implements VoterInterface
 	}
 
 	/**
-	 * @param string $class
 	 * @param string $type
 	 * @return ContentTypeInterface | null
 	 */
-	protected function getContentType($class, $type)
+	protected function getContentType($type)
 	{
-		if ($this->resolver->hasType($class, $type)) {
-			return $this->resolver->getType($class, $type);
+		if ($this->resolver->hasType($type)) {
+			return $this->resolver->getType($type);
 		}
 
 		return null;

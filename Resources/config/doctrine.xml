@@ -8,6 +8,7 @@
 
 		<parameter key="integrated_workflow.doctrine.state_instance_injection.listener.class">Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\WorkflowStateInstanceInjectionListener</parameter>
 		<parameter key="integrated_workflow.doctrine.log_user.listener.class">Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\WorkflowLogInstanceInjectionListener</parameter>
+		<parameter key="integrated_workflow.doctrine.queue.listener.class">Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\ContainerAwareQueueListener</parameter>
 
 	</parameters>
 
@@ -22,6 +23,13 @@
 
 		<service id="integrated_workflow.doctrine.log_user.listener" class="%integrated_workflow.doctrine.log_user.listener.class%">
 			<argument type="service" id="doctrine" on-invalid="ignore" />
+
+			<tag name="doctrine.event_subscriber" connection="default" />
+		</service>
+
+		<service id="integrated_workflow.doctrine.queue.listener" class="%integrated_workflow.doctrine.queue.listener.class%">
+			<argument type="service" id="service_container"/>
+			<argument type="string">integrated_queue.workflow</argument> <!-- should be a config option -->
 
 			<tag name="doctrine.event_subscriber" connection="default" />
 		</service>

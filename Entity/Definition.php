@@ -21,107 +21,139 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
  */
 class Definition
 {
-	/**
-	 * @var int
-	 */
-	protected $id = null;
+    /**
+     * @var string
+     */
+    protected $id = null;
 
-	/**
-	 * @var string
-	 */
-	protected $name;
+    /**
+     * @var string
+     */
+    protected $name;
 
-	/**
-	 * @var Collection | State[]
-	 */
-	protected $states;
+    /**
+     * @var Collection | State[]
+     */
+    protected $states;
 
-	public function __construct()
-	{
-		$this->states = new ArrayCollection();
-	}
+    /**
+     * @var State
+     */
+    protected $default;
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function __construct()
+    {
+        $this->states = new ArrayCollection();
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @param string $name
-	 * @return $this
-	 */
-	public function setName($name)
-	{
-		$this->name = (string) $name;
-		return $this;
-	}
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @return State[]
-	 */
-	public function getStates()
-	{
-		return $this->states->toArray();
-	}
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = (string) $name;
+        return $this;
+    }
 
-	/**
-	 * @param State[] $states
-	 * @return $this
-	 */
-	public function setStates(Collection $states)
-	{
-		foreach ($this->states as $state) {
-			$this->removeState($state);
-		}
+    /**
+     * @return State[]
+     */
+    public function getStates()
+    {
+        return $this->states->toArray();
+    }
 
-		$this->states = new ArrayCollection();
+    /**
+     * @param State[] $states
+     * @return $this
+     */
+    public function setStates(Collection $states)
+    {
+        foreach ($this->states as $state) {
+            $this->removeState($state);
+        }
 
-		foreach ($states as $state) {
-			$this->addState($state); // type check
-		}
+        $this->states = new ArrayCollection();
 
-		return $this;
-	}
+        foreach ($states as $state) {
+            $this->addState($state); // type check
+        }
 
-	/**
-	 * @param State $state
-	 * @return $this
-	 */
-	public function addState(State $state)
-	{
-		if (!$this->states->contains($state)) {
-			$this->states->add($state);
+        return $this;
+    }
 
-			// first add the state to the workflow then set the workflow else
-			// there would be a infinite loop
+    /**
+     * @param State $state
+     * @return $this
+     */
+    public function addState(State $state)
+    {
+        if (!$this->states->contains($state)) {
+            $this->states->add($state);
 
-			$state->setWorkflow($this);
-		}
+            // first add the state to the workflow then set the workflow else
+            // there would be a infinite loop
 
-		return $this;
-	}
+            $state->setWorkflow($this);
+        }
 
-	/**
-	 * @param State $state
-	 * @return $this
-	 */
-	public function removeState(State $state)
-	{
-		if ($this->states->removeElement($state)) {
-			$state->setWorkflow(null);
-		}
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * @param State $state
+     * @return bool
+     */
+    public function hasState(State $state)
+    {
+        return $this->states->contains($state);
+    }
+
+    /**
+     * @param State $state
+     * @return $this
+     */
+    public function removeState(State $state)
+    {
+        if ($this->states->removeElement($state)) {
+            $state->setWorkflow(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return State
+     */
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * @param State $default
+     * @return $this
+     */
+    public function setDefault(State $default = null)
+    {
+        $this->default = $default;
+        return $this;
+    }
 }

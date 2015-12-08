@@ -1,1 +1,11 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block style %}
+
+    {{ parent() }}
+
+    {% stylesheets "@IntegratedWorkflowBundle/Resources/public/css/style.css" %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+
+{% endblock %}

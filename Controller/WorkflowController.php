@@ -21,215 +21,203 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormBuilder;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class WorkflowController extends Controller
 {
-	/**
-	 * Generate a list of workflow definitions
-	 *
-	 * @Template
-	 *
-	 * @param Request $request
-	 * @return array
-	 */
-	public function indexAction(Request $request)
-	{
-		/** @var EntityManager $em */
-		$em = $this->getDoctrine()->getManager();
+    /**
+     * Generate a list of workflow definitions
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function indexAction(Request $request)
+    {
+        /** @var EntityManager $em */
+        $em = $this->getDoctrine()->getManager();
 
-		/** @var $pager \Knp\Component\Pager\Paginator */
-		$pager = $this->get('knp_paginator');
-		$pager = $pager->paginate(
-			$em->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')->createQueryBuilder('item'),
-			$request->query->get('page', 1),
-			15
-		);
+        /** @var $pager \Knp\Component\Pager\Paginator */
+        $pager = $this->get('knp_paginator');
+        $pager = $pager->paginate(
+            $em->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')->createQueryBuilder('item'),
+            $request->query->get('page', 1),
+            15
+        );
 
-		return array(
-			'pager' => $pager
-		);
-	}
+        return $this->render('IntegratedWorkflowBundle:Workflow:index.html.twig', ['pager' => $pager]);
+    }
 
-	/**
-	 * Create a new workflow definition
-	 *
-	 * @Template
-	 *
-	 * @param Request $request
-	 * @return array | Response
-	 */
-	public function newAction(Request $request)
-	{
-		$form = $this->createForm(
-			'workflow_definition_new',
-			null,
-			[
-				'action' => $this->generateUrl('integrated_workflow_new'),
-				'method' => 'POST',
-			],
-			[
-				'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-			]
-		);
+    /**
+     * Create a new workflow definition
+     *
+     * @param Request $request
+     * @return array | Response
+     */
+    public function newAction(Request $request)
+    {
+        $form = $this->createForm(
+            'workflow_definition_new',
+            null,
+            [
+                'action' => $this->generateUrl('integrated_workflow_new'),
+                'method' => 'POST',
+            ],
+            [
+                'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
+                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        );
 
-		if ($request->isMethod('post')) {
-			$form->handleRequest($request);
+        if ($request->isMethod('post')) {
+            $form->handleRequest($request);
 
-			// check for back click else its a submit
-			if ($form->get('actions')->get('cancel')->isClicked()) {
-				return $this->redirect($this->generateUrl('integrated_workflow_index'));
-			}
+            // check for back click else its a submit
+            if ($form->get('actions')->get('cancel')->isClicked()) {
+                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+            }
 
-			if ($form->isValid()) {
-				$workflow = $form->getData();
+            if ($form->isValid()) {
+                $workflow = $form->getData();
 
-				$manager = $this->getDoctrine()->getManager();
-				$manager->persist($workflow);
-				$manager->flush();
+                $manager = $this->getDoctrine()->getManager();
+                $manager->persist($workflow);
+                $manager->flush();
 
                 return $this->redirect($this->generateUrl('integrated_workflow_index'));
-			}
-		}
+            }
+        }
 
-		return array(
-			'form' => $form->createView()
-		);
-	}
+        return $this->render('IntegratedWorkflowBundle:Workflow:new.html.twig', ['form' => $form->createView()]);
+    }
 
-	/**
-	 * Edit a workflow definition
-	 *
-	 * @Template
-	 *
-	 * @param Request $request
-	 * @return array | Response
-	 *
-	 * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-	 */
-	public function editAction(Request $request)
-	{
-		$workflow = $this->getDoctrine()
-				->getManager()
-				->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
-				->find($request->get('id'));
+    /**
+     * Edit a workflow definition
+     *
+     * @param Request $request
+     * @return array | Response
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function editAction(Request $request)
+    {
+        /** @var Definition $workflow */
+        $workflow = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
+            ->find($request->get('id'));
 
-		if (!$workflow) {
-			throw $this->createNotFoundException();
-		}
+        if (!$workflow) {
+            throw $this->createNotFoundException();
+        }
 
-		$form = $this->createForm(
-			'workflow_definition_edit',
-			$workflow,
-			[
-				'action' => $this->generateUrl('integrated_workflow_edit', ['id' => $workflow->getId()]),
-				'method' => 'PUT',
-			],
-			[
-				'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-			]
-		);
+        $form = $this->createForm(
+            'workflow_definition_edit',
+            $workflow,
+            [
+                'action' => $this->generateUrl('integrated_workflow_edit', ['id' => $workflow->getId()]),
+                'method' => 'PUT',
+            ],
+            [
+                'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        );
 
-		if ($request->isMethod('put')) {
-			$form->handleRequest($request);
+        if ($request->isMethod('put')) {
+            $form->handleRequest($request);
 
-			// check for back click else its a submit
-			if ($form->get('actions')->get('cancel')->isClicked()) {
-				return $this->redirect($this->generateUrl('integrated_workflow_index'));
-			}
+            // check for back click else its a submit
+            if ($form->get('actions')->get('cancel')->isClicked()) {
+                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+            }
 
-			if ($form->isValid()) {
-				$manager = $this->getDoctrine()->getManager();
-				$manager->flush();
+            if ($form->isValid()) {
+                $manager = $this->getDoctrine()->getManager();
+                $manager->flush();
 
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the workflow %s are saved', $workflow->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_workflow_index'));
-			}
-		}
+            }
+        }
 
-		return array(
-			'workflow' => $workflow,
-			'form' => $form->createView()
-		);
-	}
+        return $this->render('IntegratedWorkflowBundle:Workflow:edit.html.twig', [
+            'workflow' => $workflow,
+            'form' => $form->createView()
+        ]);
+    }
 
-	/**
-	 * Delete a workflow definition
-	 *
-	 * @Template
-	 *
-	 * @param Request $request
-	 * @return array | Response
-	 */
-	public function deleteAction(Request $request)
-	{
-		$workflow = $this->getDoctrine()
-			->getManager()
-			->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
-			->find($request->get('id'));
+    /**
+     * Delete a workflow definition
+     *
+     * @param Request $request
+     * @return array | Response
+     */
+    public function deleteAction(Request $request)
+    {
+        /** @var Definition $workflow */
+        $workflow = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('Integrated\Bundle\WorkflowBundle\Entity\Definition')
+            ->find($request->get('id'));
 
-		if (!$workflow) {
-			return $this->redirect($this->generateUrl('integrated_workflow_index')); // workflow is already gone
-		}
+        if (!$workflow) {
+            return $this->redirect($this->generateUrl('integrated_workflow_index')); // workflow is already gone
+        }
 
-		$form = $this->createForm(
-			'workflow_definition_delete',
-			$workflow,
-			[
-				'action' => $this->generateUrl('integrated_workflow_delete', ['id' => $workflow->getId()]),
-				'method' => 'DELETE',
-			],
-			[
-				'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
-				'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-			]
-		);
+        $form = $this->createForm(
+            'workflow_definition_delete',
+            $workflow,
+            [
+                'action' => $this->generateUrl('integrated_workflow_delete', ['id' => $workflow->getId()]),
+                'method' => 'DELETE',
+            ],
+            [
+                'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
+                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        );
 
-		if ($request->isMethod('delete')) {
-			$form->handleRequest($request);
+        if ($request->isMethod('delete')) {
+            $form->handleRequest($request);
 
-			// check for back click else its a submit
-			if ($form->get('actions')->get('cancel')->isClicked()) {
-				return $this->redirect($this->generateUrl('integrated_workflow_index'));
-			}
+            // check for back click else its a submit
+            if ($form->get('actions')->get('cancel')->isClicked()) {
+                return $this->redirect($this->generateUrl('integrated_workflow_index'));
+            }
 
-			if ($form->isValid()) {
-				$manager = $this->getDoctrine()->getManager();
-				$manager->remove($workflow);
-				$manager->flush();
+            if ($form->isValid()) {
+                $manager = $this->getDoctrine()->getManager();
+                $manager->remove($workflow);
+                $manager->flush();
 
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The workflow %s is removed', $workflow->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_workflow_index'));
-			}
-		}
+            }
+        }
 
-		return array(
-			'workflow' => $workflow,
-			'form' => $form->createView()
-		);
-	}
+        return $this->render('IntegratedWorkflowBundle:Workflow:delete.html.twig', [
+            'workflow' => $workflow,
+            'form' => $form->createView()
+        ]);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function createForm($type, $data = null, array $options = [], array $buttons = [])
-	{
-		/** @var FormBuilder $form */
-		$form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+    /**
+     * {@inheritdoc}
+     */
+    public function createForm($type, $data = null, array $options = [], array $buttons = [])
+    {
+        /** @var FormBuilder $form */
+        $form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
 
-		if ($buttons) {
-			$form->add('actions', 'form_actions', [
-				'buttons' => $buttons
-			]);
-		}
+        if ($buttons) {
+            $form->add('actions', 'form_actions', [
+                'buttons' => $buttons
+            ]);
+        }
 
-		return $form->getForm();
-	}
+        return $form->getForm();
+    }
 }

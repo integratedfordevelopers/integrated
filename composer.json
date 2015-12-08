@@ -15,26 +15,26 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "~2.4",
+        "symfony/symfony": "~2.7",
         "symfony/framework-bundle": "~2.2",
-		"doctrine/doctrine-fixtures-bundle": "dev-master",
-        "integrated/library": "~0.1",
-		"integrated/content-bundle": "~0.1",
-		"integrated/user-bundle": "~0.1",
-		"knplabs/knp-paginator-bundle": "dev-master"
+        "doctrine/doctrine-fixtures-bundle": "~2.2",
+        "integrated/library": "~0.3",
+        "integrated/content-bundle": "~0.3",
+        "integrated/user-bundle": "~0.1",
+        "integrated/menu-bundle": "~0.3",
+        "knplabs/knp-paginator-bundle": "~2.4"
     },
-	"require-dev": {
-		"phpunit/phpunit": "4.2.*"
-	},
+    "require-dev": {
+        "phpunit/phpunit": "4.2.*"
+    },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\WorkflowBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\WorkflowBundle\\": ""
         }
     },
-    "target-dir": "Integrated/Bundle/WorkflowBundle",
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.1.1-dev"
+            "dev-develop": "0.9.x-dev"
         }
     }
 }

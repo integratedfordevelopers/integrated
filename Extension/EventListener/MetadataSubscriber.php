@@ -34,9 +34,9 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 		$this->extension = $extension;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public static function getSubscribedEvents()
 	{
 		return [
@@ -44,9 +44,9 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 		];
 	}
 
-	/**
-	 * @inheritdoc
-	 */
+    /**
+   	 * {@inheritdoc}
+   	 */
 	public function getExtension()
 	{
 		return $this->extension;
@@ -62,7 +62,7 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 		$attr = $metadata->newOption('workflow');
 
 		$attr->setType('workflow_definition_choice');
-		$attr->setOption('data_type', 'scalar');
+		$attr->setOption('choice_data', 'scalar');
 
 		$metadata->addOption($attr);
 	}
