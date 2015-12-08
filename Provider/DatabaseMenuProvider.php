@@ -62,6 +62,10 @@ class DatabaseMenuProvider implements MenuProviderInterface
 
         if (!isset($this->menus[$name][$channel])) {
             if ($menu = $this->repository->findOneBy(['name' => $name, 'channel.$id' => $channel])) {
+                if ($menu instanceof ItemInterface) {
+                    $this->resolveParent($menu);
+                }
+
                 $this->menus[$name][$channel] = $menu;
             }
         }
@@ -77,5 +81,19 @@ class DatabaseMenuProvider implements MenuProviderInterface
     public function has($name, array $options = [])
     {
         return null !== $this->get($name, $options);
+    }
+
+    /**
+     * @param ItemInterface $menu
+     */
+    protected function resolveParent(ItemInterface $menu)
+    {
+        foreach ($menu->getChildren() as $child) {
+            $child->setParent($menu);
+
+            if ($child->hasChildren()) {
+                $this->resolveParent($child); // recursion
+            }
+        }
     }
 }
