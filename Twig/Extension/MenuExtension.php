@@ -43,6 +43,11 @@ class MenuExtension extends \Twig_Extension
     protected $helper;
 
     /**
+     * @var string
+     */
+    protected $template;
+
+    /**
      * @var OptionsResolver
      */
     protected $resolver;
@@ -56,8 +61,9 @@ class MenuExtension extends \Twig_Extension
      * @param DatabaseMenuProvider $provider
      * @param DatabaseMenuFactory $factory
      * @param Helper $helper
+     * @param string $template
      */
-    public function __construct(DatabaseMenuProvider $provider, DatabaseMenuFactory $factory, Helper $helper)
+    public function __construct(DatabaseMenuProvider $provider, DatabaseMenuFactory $factory, Helper $helper, $template)
     {
         $this->provider = $provider;
         $this->factory = $factory;
@@ -67,6 +73,7 @@ class MenuExtension extends \Twig_Extension
         $this->resolver->setDefaults([
             'depth' => 1,
             'style' => 'tabs',
+            'template' => $template,
         ]);
 
         $this->generator = new UuidGenerator();
