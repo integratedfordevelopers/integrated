@@ -35,7 +35,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document(collection="content", indexes={@ODM\Index(keys={"class"="asc"})})
+ * @ODM\Document(collection="content", indexes={@ODM\Index(keys={"class"="asc"})}, repositoryClass="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
  * @ODM\HasLifecycleCallbacks

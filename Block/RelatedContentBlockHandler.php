@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Block;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 
 //use MongoDBODMProxies\__CG__\Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
+use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,15 +28,15 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 /**
  * Related content block handler
  *
- * @author Vasil <developer.optimum@gmail.com>
+ * @author Vasil Pascal <developer.optimum@gmail.com>
  */
 class RelatedContentBlockHandler extends BlockHandler
 {
-    /**
-     * @var SolariumProvider
-     */
-    private $provider;
 
+    /**
+     * @var Paginator
+     * */
+    private $paginator;
     /**
      * @var RequestStack
      */
@@ -47,12 +48,12 @@ class RelatedContentBlockHandler extends BlockHandler
     private $dm;
 
     /**
-     * @param SolariumProvider $provider
+     * @param Paginator $paginator
      * @param RequestStack $requestStack
      */
-    public function __construct(SolariumProvider $provider, RequestStack $requestStack, DocumentManager $dm)
+    public function __construct(Paginator $paginator, RequestStack $requestStack, DocumentManager $dm)
     {
-        $this->provider = $provider;
+        $this->paginator = $paginator;
         $this->requestStack = $requestStack;
         $this->dm = $dm;
     }
@@ -87,73 +88,33 @@ class RelatedContentBlockHandler extends BlockHandler
     /**
      * @param RelatedContentBlock $block
      * @param Request $request
-     * @param bool $exclude
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function getPagination(RelatedContentBlock $block, Request $request, $exclude = true)
+    public function getPagination(RelatedContentBlock $block, Request $request)
     {
-        $request = $request->duplicate(); // don't change original request
+        /** @var Article $document */
+        $document = $this->getDocument();
 
-        try {
-            /** @var Article $document */
-            $document = $this->getDocument();
-
-            if (!$document instanceof Article) {
-                return;
-            }
-
-            $relationId = $block->getRelation()->getId();
-            $articleId = $document->getId();
-
-            if ($block->getTypeBlock() == RelatedContentBlock::TYPE_BLOCK_2) {
-                $references = $document->getReferencesByRelationId($relationId);
-
-                if (count($references) > 0) {
-                    /** @var Article $firstReference */
-                    $firstReference = array_shift($references);
-
-                    $articleId = $firstReference->getId();
-                } else {
-                    return;
-                }
-            }
-
-            $repository = $this->dm->getRepository('IntegratedContentBundle:Content\Article');
-
-            $references = $repository->findBy(
-                array(
-                    'relations.relationId' => $relationId,
-                    'relations.references.$id'=>$articleId,
-                )
-            );
-
-            $related_articles = [];
-
-            /** @var Article $reference */
-            foreach ($references as $reference) {
-                if ($reference->getContentType() == 'article') {
-                    $related_articles[] = $reference->getContentType().'-'.$reference->getId();
-                }
-            }
-
-            if (count($related_articles) == 0) {
-                return;
-            }
-
-            $request->query->add(['id'=>$related_articles]);
-        } catch (DocumentNotFoundException $e) {
-            // search selection is removed
+        if (!$document instanceof Article) {
+            return;
         }
 
-        $request->query->set('sort', $block->getSortBy());
+        if ($block->getTypeBlock() == RelatedContentBlock::TYPE_BLOCK_TWO) {
+            if ($references = $document->getReferencesByRelationId($block->getRelation()->getId())) {
+                $document = $references->first();
+            }
+            else {
+                return;
+            }
+        }
 
-        return $this->provider->execute(
-            $request,
-            $block->getId(),
-            $block->getItemsPerPage(),
-            $block->getMaxItems(),
-            ['id'],
-            $exclude
+        $query = $this->dm->getRepository('IntegratedContentBundle:Content\Content')
+            ->getCurrentDocumentLinked($document, $block->getRelation());
+
+        return $this->paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $block->getItemsPerPage()
         );
     }
 }

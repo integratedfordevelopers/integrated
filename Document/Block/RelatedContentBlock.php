@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
@@ -21,7 +22,7 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
 /**
  * Related content block document
  *
- * @author Vasil <developer.optimum@gmail.com>
+ * @author Vasil Pascal <developer.optimum@gmail.com>
  *
  * @ODM\Document
  * @Type\Document("Related Content block")
@@ -32,12 +33,12 @@ class RelatedContentBlock extends Block
     /**
      * Show items which have the current document linked
      */
-    const TYPE_BLOCK_1 = 1;
+    const TYPE_BLOCK_ONE = 1;
 
     /**
      * Show items which share linked items with the current document
      */
-    const TYPE_BLOCK_2 = 2;
+    const TYPE_BLOCK_TWO = 2;
 
     /**
      * @var string
@@ -62,7 +63,7 @@ class RelatedContentBlock extends Block
      *     }
      * )
      */
-    protected $type_block;
+    protected $typeBlock;
 
     /**
      * @var ContentBlock
@@ -92,7 +93,7 @@ class RelatedContentBlock extends Block
      *     }
      * )
      */
-    protected $sort_by;
+    protected $sortBy;
 
     /**
      * @var int
@@ -156,19 +157,19 @@ class RelatedContentBlock extends Block
      */
     public function getTypeBlock()
     {
-        return $this->type_block;
+        return $this->typeBlock;
     }
 
     /**
-     * @param string $type_block
+     * @param string $typeBlock
      */
-    public function setTypeBlock($type_block)
+    public function setTypeBlock($typeBlock)
     {
-        $this->type_block = $type_block;
+        $this->typeBlock = $typeBlock;
     }
 
     /**
-     * @return ContentBlock
+     * @return Relation
      */
     public function getRelation()
     {
@@ -176,7 +177,7 @@ class RelatedContentBlock extends Block
     }
 
     /**
-     * @param ContentBlock $relation
+     * @param Relation $relation
      */
     public function setRelation($relation)
     {
@@ -188,15 +189,15 @@ class RelatedContentBlock extends Block
      */
     public function getSortBy()
     {
-        return $this->sort_by;
+        return $this->sortBy;
     }
 
     /**
-     * @param string $sort_by
+     * @param string $sortBy
      */
-    public function setSortBy($sort_by)
+    public function setSortBy($sortBy)
     {
-        $this->sort_by = $sort_by;
+        $this->sortBy = $sortBy;
     }
 
     /**

@@ -43,7 +43,7 @@
         </service>
 
         <service id="integrated_content.block_handler.related_content" class="%integrated_content.block_handler.related_content.class%">
-            <argument type="service" id="integrated_content.provider.solarium" />
+            <argument type="service" id="knp_paginator" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="integrated.block" type="related_content" />
