@@ -164,11 +164,13 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
 
             $filters = $request->query->get($name);
-            if (count($filters) && !in_array('facet_' . $relation->getId(), $facetFields)) {
-                $facetFields[] = 'facet_' . $relation->getId();
+            if (count($filters)) {
+                if (!in_array('facet_' . $relation->getId(), $facetFields)) {
+                    $facetFields[] = 'facet_' . $relation->getId();
+                }
+
                 $request->query->set('facet_' . $relation->getId(), $filters); // @hack
             }
-
         }
 
         if (count($facetFields)) {
