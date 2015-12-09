@@ -131,7 +131,9 @@ class RelatedContentBlockHandler extends BlockHandler
 
             /** @var Article $reference */
             foreach ($references as $reference) {
-                $related_articles[] = $reference->getContentType().'-'.$reference->getId();
+                if ($reference->getContentType() == 'article') {
+                    $related_articles[] = $reference->getContentType().'-'.$reference->getId();
+                }
             }
 
             if (count($related_articles) == 0) {
