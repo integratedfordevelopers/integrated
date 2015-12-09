@@ -102,11 +102,11 @@ class RelatedContentBlockHandler extends BlockHandler
                 return;
             }
 
-            $relationType = $block->getRelation()->getType();
+            $relationId = $block->getRelation()->getId();
             $articleId = $document->getId();
 
             if ($block->getTypeBlock() == RelatedContentBlock::TYPE_BLOCK_2) {
-                $references = $document->getReferencesByRelationType($relationType);
+                $references = $document->getReferencesByRelationId($relationId);
 
                 if (count($references) > 0) {
                     /** @var Article $firstReference */
@@ -122,7 +122,7 @@ class RelatedContentBlockHandler extends BlockHandler
 
             $references = $repository->findBy(
                 array(
-                    'relations.relationType' => $relationType,
+                    'relations.relationId' => $relationId,
                     'relations.references.$id'=>$articleId,
                 )
             );
