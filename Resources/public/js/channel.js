@@ -1,45 +1,35 @@
 $(function() {
-    var $parent = $('#channel_domains');
-    var $primaryDomain = $('#channel_primaryDomain');
+    var $domains_collection = $('.channel-domains');
+    var $primary_domain_input = $('.primary-domain-input');
 
-    var SetPrimaryDomain = function($checkbox) {
-        var value = $checkbox.parent('label').prev('input[type=text]').val();
-        $('#channel_primaryDomain').val(value);
-    };
+    $domains_collection.on('keyup', 'input[type=text]', refresh_checked_status);
+    $domains_collection.on('click', '.primary-domain-radio', function() {
+        var value = $(this).closest('.row').find('input:text').val();
+        $primary_domain_input.val(value);
+    });
 
-    var RefreshCheckedStatus = function () {
-        $('input[name=check_primary_domain]', $parent).each(function () {
-            if ( $(this).parent('label').prev('input:text').val().trim() == '' ) {
-                $(this).attr('disabled','disabled').removeAttr('checked');
-            } else {
+    function refresh_checked_status() {
+        /* if a domain input has entered domain name allow to set it as primary */
+        $('.primary-domain-radio', $domains_collection).each(function () {
+            var domain_name = $(this).closest('.row').find('input:text').val().trim();
+
+            if (domain_name) {
                 $(this).removeAttr('disabled');
+
+                /* if one of domains */
+                if ($primary_domain_input.val() == domain_name) {
+                    $(this).prop('checked', true).trigger('click');
+                }
+            } else {
+                $(this).attr('disabled','disabled').prop('checked', false);
             }
         });
 
-        if ($primaryDomain.val().length > 0) {
-            var value = $primaryDomain.val();
-            var $primaryInput = $('input[value="'+value+'"]:text', $parent);
-
-            if ($primaryInput.length > 0) {
-                $primaryInput.next('label').find('input:radio').attr('checked','checked').click();
-            }
+        /* if no selected primary domain, select first */
+        if (!$('.primary-domain-radio:checked', $domains_collection).length) {
+            $('.primary-domain-radio:first', $domains_collection).prop('checked', true).trigger('click');
         }
+    }
 
-        if ($('input[name=check_primary_domain]:checked', $parent).length == 0) {
-            $('input[name=check_primary_domain]:first', $parent).attr('checked','checked').click();
-        }
-
-        SetPrimaryDomain($('input[name=check_primary_domain]:checked', $parent));
-
-    };
-
-    RefreshCheckedStatus();
-
-    $($parent).on('keyup','input[type=text]', function () {
-        RefreshCheckedStatus();
-    });
-
-    $(document).on('change', 'input[name=check_primary_domain]', function() {
-        SetPrimaryDomain($(this));
-    });
-});
+    refresh_checked_status();
+  });

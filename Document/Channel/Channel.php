@@ -26,6 +26,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
  * @ODM\Document(collection="channel")
+ * @ODM\HasLifecycleCallbacks
  * @MongoDBUnique(fields="id")
  */
 class Channel implements ChannelInterface
@@ -233,6 +234,17 @@ class Channel implements ChannelInterface
         $this->primaryDomain = $primaryDomain;
     }
 
+    /**
+     * @ODM\PrePersist
+     * @ODM\PreUpdate
+     */
+    public function defaultPrimaryDomain()
+    {
+        if (!$this->primaryDomain) {
+            $this->primaryDomain = reset($this->domains);
+        }
+    }
+
 
 
     /**
@@ -241,19 +253,20 @@ class Channel implements ChannelInterface
      */
     public function validate(ExecutionContextInterface $context)
     {
-        if (empty($this->primaryDomain)) {
-            $this->primaryDomain = reset($this->domains);
-        }
-
         foreach ($this->domains as $domain) {
-
-            if (!filter_var($domain, FILTER_VALIDATE_URL) || ($domain == $this->primaryDomain && substr_count($domain, '.') > 1)) {
-                $context->buildViolation('You can set only primary domains!')
+            if (!filter_var($domain, FILTER_VALIDATE_URL)) {
+                $context->buildViolation('Not valid domain: ' . $domain)
                     ->atPath('domains')
                     ->addViolation();
 
                 break;
             }
+        }
+
+        if (!filter_var($this->primaryDomain, FILTER_VALIDATE_URL)) {
+            $context->buildViolation('Not valid primary domain')
+                ->atPath('primaryDomain')
+                ->addViolation();
         }
     }
 }

@@ -174,8 +174,6 @@
             <tag name="form.type" alias="channel_domain" />
         </service>
 
-
-
     </services>
 
 </container>

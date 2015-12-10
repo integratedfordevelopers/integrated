@@ -40,11 +40,12 @@ class Channel extends AbstractType
                 'delete_button_text' => 'Delete domain',
                 'sub_widget_col'     => 5,
                 'button_col'         => 3,
-                'type'               => 'channel_domain'
+                'type'               => 'channel_domain',
+                'attr'               => array('class' => 'channel-domains')
             )
         );
 
-        $builder->add('primaryDomain', 'hidden');
+        $builder->add('primaryDomain', 'hidden', array('attr' => array('class' => 'primary-domain-input')));
     }
 
     /**
