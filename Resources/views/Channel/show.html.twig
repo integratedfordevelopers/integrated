@@ -30,6 +30,12 @@
                 <dd>
                     {{ channel.domains|join(', ') }}
                 </dd>
+                <dt>
+                    {% trans %}Primary Domain{% endtrans %}
+                </dt>
+                <dd>
+                    {{ channel.primaryDomain }}
+                </dd>
             </dl>
             <a class="pull-left btn btn-primary" style="margin-right:10px;" href="{{ path('integrated_content_channel_edit', {'id': channel.id}) }}">
                 {% trans %}Edit{% endtrans %}

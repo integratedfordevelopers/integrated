@@ -33,15 +33,18 @@ class Channel extends AbstractType
             'domains',
             'bootstrap_collection',
             array(
-                'label'              => "Primary domain (http://site.com)",
+                'label'              => "Domains (http://site.com)",
                 'allow_add'          => true,
                 'allow_delete'       => true,
                 'add_button_text'    => 'Add domain',
                 'delete_button_text' => 'Delete domain',
                 'sub_widget_col'     => 5,
-                'button_col'         => 3
+                'button_col'         => 3,
+                'type'               => 'channel_domain'
             )
         );
+
+        $builder->add('primaryDomain', 'hidden');
     }
 
     /**

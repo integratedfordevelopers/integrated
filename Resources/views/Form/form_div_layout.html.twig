@@ -340,3 +340,15 @@
     </script>
 {% endspaceless %}
 {% endblock %}
+
+
+{% block channel_domain_widget %}
+    {% spaceless %}
+        {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' form-control')|trim }) %}
+        <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        <label>
+            <input type="radio" name="check_primary_domain" disabled>
+            Primary domain
+        </label>
+    {% endspaceless %}
+{% endblock channel_domain_widget %}

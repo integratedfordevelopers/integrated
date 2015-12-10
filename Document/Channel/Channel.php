@@ -52,6 +52,12 @@ class Channel implements ChannelInterface
     protected $domains;
 
     /**
+     * @var string
+     * @ODM\String
+     */
+    protected $primaryDomain;
+
+    /**
      * @var mixed[]
      * @ODM\Hash
      */
@@ -212,14 +218,36 @@ class Channel implements ChannelInterface
     }
 
     /**
+     * @return string
+     */
+    public function getPrimaryDomain()
+    {
+        return $this->primaryDomain;
+    }
+
+    /**
+     * @param string $primaryDomain
+     */
+    public function setPrimaryDomain($primaryDomain)
+    {
+        $this->primaryDomain = $primaryDomain;
+    }
+
+
+
+    /**
      * @param ExecutionContextInterface $context
      * @Assert\Callback
      */
     public function validate(ExecutionContextInterface $context)
     {
+        if (empty($this->primaryDomain)) {
+            $this->primaryDomain = reset($this->domains);
+        }
+
         foreach ($this->domains as $domain) {
 
-            if (!filter_var($domain, FILTER_VALIDATE_URL) || substr_count($domain, '.') > 1) {
+            if (!filter_var($domain, FILTER_VALIDATE_URL) || ($domain == $this->primaryDomain && substr_count($domain, '.') > 1)) {
                 $context->buildViolation('You can set only primary domains!')
                     ->atPath('domains')
                     ->addViolation();
