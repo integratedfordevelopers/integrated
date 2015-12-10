@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Block;
 
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 
-//use MongoDBODMProxies\__CG__\Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +20,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
-use Integrated\Bundle\ContentBundle\Provider\SolariumProvider;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
