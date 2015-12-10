@@ -119,7 +119,7 @@ class BlockController extends Controller
     {
 
         $dm = $this->getDocumentManager();
-        if ($this->get('integrated_block.bundle_checker')->checkPageBundle()) {
+        if ($this->container->has('integrated_page.form.type.page')) {
             /* check if current Block not used on some page */
             if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
                 throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
@@ -158,7 +158,7 @@ class BlockController extends Controller
 
         /* check if current Block not used on some page */
         $dm = $this->getDocumentManager();
-        if ($this->get('integrated_block.bundle_checker')->checkPageBundle()) {
+        if ($this->container->has('integrated_page.form.type.page')) {
             if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
                 throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
             }
