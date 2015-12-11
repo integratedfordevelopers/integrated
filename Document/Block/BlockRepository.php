@@ -23,12 +23,13 @@ use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 class BlockRepository extends DocumentRepository
 {
     /**
-     * @param $type
-     * @param $channels
-     * @param $pageBundleInstalled
-     * @return mixed
+     * @param array $type
+     * @param array $channels
+     * @param bool $pageBundleInstalled
+     *
+     * @return \Doctrine\MongoDB\Query\Builder
      */
-    public function getBlocksByChannelQueryBuilder($type, $channels, $pageBundleInstalled)
+    public function getBlocksByChannelQueryBuilder(array $type = [], array $channels = [], $pageBundleInstalled = false)
     {
         $qb = $this->createQueryBuilder();
 
