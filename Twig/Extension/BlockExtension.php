@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
-
+use Integrated\Common\Block\BlockInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -24,6 +24,9 @@ class BlockExtension extends \Twig_Extension
      * @var ContainerInterface
      */
     protected $container;
+
+    /** @var array */
+    protected $pages = [];
 
     /**
      * @param ContainerInterface $container
@@ -40,6 +43,8 @@ class BlockExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_SimpleFunction('integrated_find_channels', [$this, 'findChannels']),
+            new \Twig_SimpleFunction('integrated_find_pages', [$this, 'findPages']),
         ];
     }
 
@@ -84,6 +89,64 @@ class BlockExtension extends \Twig_Extension
     protected function locateTemplate($template)
     {
         return $this->container->get('integrated_theme.templating.theme_manager')->locateTemplate($template);
+    }
+
+    /**
+     * @param \Integrated\Common\Block\BlockInterface $block
+     *
+     * @return null|string
+     */
+    public function findChannels($block)
+    {
+        $channelNames = [];
+        if ($this->container->has('integrated_page.form.type.page')) {
+            /* Get all pages which was associated with current Block document */
+            $pages = $this->getPages($block);
+
+            $channelNames = [];
+            foreach ($pages as $page) {
+                if ($channel = $page->getChannel()) {
+                    $channelNames[] = $channel->getName();
+                }
+            }
+        }
+
+        return implode(',', $channelNames);
+    }
+
+    /**
+     * @param \Integrated\Common\Block\BlockInterface $block
+     *
+     * @return null|string
+     */
+    public function findPages($block)
+    {
+        $pageNames = [];
+        if ($this->container->has('integrated_page.form.type.page')) {
+            foreach ($this->getPages($block) as $page) {
+                $pageNames[] = $page->getTitle();
+            }
+        }
+
+        return implode(',', $pageNames);
+    }
+
+    /**
+     * @param Block $block
+     * @return mixed
+     */
+    public function getPages(Block $block)
+    {
+        if (!isset($this->pages[$block->getId()])) {
+            /* Get all pages which was associated with current Block document */
+            $this->pages[$block->getId()] = $this->container
+                ->get('doctrine_mongodb')
+                ->getRepository('IntegratedBlockBundle:Block\Block')
+                ->pagesByBlockQb($block)
+                ->execute();
+        }
+
+        return $this->pages[$block->getId()];
     }
 
     /**

@@ -24,7 +24,7 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document(collection="block", indexes={@ODM\Index(keys={"class"="asc"})})
+ * @ODM\Document(collection="block", repositoryClass="Integrated\Bundle\BlockBundle\Document\Block\BlockRepository", indexes={@ODM\Index(keys={"class"="asc"})})
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
  */
