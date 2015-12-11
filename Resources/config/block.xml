@@ -12,6 +12,8 @@
 
         <parameter key="integrated_content.block_handler.form.class">Integrated\Bundle\ContentBundle\Block\FormBlockHandler</parameter>
 
+        <parameter key="integrated_content.block_handler.related_content.class">Integrated\Bundle\ContentBundle\Block\RelatedContentBlockHandler</parameter>
+
     </parameters>
 
     <services>
@@ -39,6 +41,15 @@
         <service id="integrated_content.block_handler.search" class="%integrated_block.block_handler.class%">
             <tag name="integrated.block" type="search" />
         </service>
+
+        <service id="integrated_content.block_handler.related_content" class="%integrated_content.block_handler.related_content.class%">
+            <argument type="service" id="knp_paginator" />
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="integrated.block" type="related_content" />
+        </service>
+
+
 
     </services>
 </container>
