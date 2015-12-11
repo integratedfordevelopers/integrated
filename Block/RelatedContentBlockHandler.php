@@ -11,16 +11,14 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
-use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-
+use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Block\BlockInterface;
+use Integrated\Bundle\BlockBundle\Block\BlockHandler;
+use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
+use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Knp\Component\Pager\Paginator;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
-
-use Integrated\Bundle\BlockBundle\Block\BlockHandler;
-use Integrated\Common\Block\BlockInterface;
-use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
-use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -86,16 +84,17 @@ class RelatedContentBlockHandler extends BlockHandler
     /**
      * @param RelatedContentBlock $block
      * @param Request $request
-     * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
+     * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination|null
      */
     public function getPagination(RelatedContentBlock $block, Request $request)
     {
         /** @var Article $document */
         $document = $this->getDocument();
 
-        if (!$document instanceof Article) {
+        if (!$document instanceof ContentInterface) {
             return;
         }
+
 
         if ($block->getTypeBlock() == RelatedContentBlock::TYPE_BLOCK_TWO) {
             if ($references = $document->getReferencesByRelationId($block->getRelation()->getId())) {

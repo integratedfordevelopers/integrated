@@ -46,7 +46,7 @@ class RelatedContentBlock extends Block
      * @Assert\NotBlank
      * @Type\Field
      */
-    protected $published_title;
+    protected $publishedTitle;
 
     /**
      * @var int
@@ -141,15 +141,15 @@ class RelatedContentBlock extends Block
      */
     public function getPublishedTitle()
     {
-        return $this->published_title;
+        return $this->publishedTitle;
     }
 
     /**
-     * @param string $published_title
+     * @param string $publishedTitle
      */
-    public function setPublishedTitle($published_title)
+    public function setPublishedTitle($publishedTitle)
     {
-        $this->published_title = $published_title;
+        $this->publishedTitle = $publishedTitle;
     }
 
     /**
