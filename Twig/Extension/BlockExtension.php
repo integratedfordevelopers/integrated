@@ -43,8 +43,8 @@ class BlockExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html'], 'needs_environment' => true]),
-            new \Twig_SimpleFunction('find_channels', [$this, 'findChannels']),
-            new \Twig_SimpleFunction('find_pages', [$this, 'findPages']),
+            new \Twig_SimpleFunction('integrated_find_channels', [$this, 'findChannels']),
+            new \Twig_SimpleFunction('integrated_find_pages', [$this, 'findPages']),
         ];
     }
 

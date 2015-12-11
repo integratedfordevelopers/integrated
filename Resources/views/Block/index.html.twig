@@ -57,15 +57,15 @@
                                 {{ block.type }}
                             </td>
                             {% if pageBundleInstalled %}
-                                <td>{{ find_channels(block) }}</td>
-                                <td>{{ find_pages(block) }}</td>
+                                <td>{{ integrated_find_channels(block) }}</td>
+                                <td>{{ integrated_find_pages(block) }}</td>
                             {% endif %}
                             <td>
                                 <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">
                                     {{ icon('pencil') }}
                                 </a>
                                 {% if not block.locked %}
-                                    {% if pageBundleInstalled and not find_pages(block) %}
+                                    {% if pageBundleInstalled and not integrated_find_pages(block) %}
                                         <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
                                             {{ icon('remove-circle') }}
                                         </a>

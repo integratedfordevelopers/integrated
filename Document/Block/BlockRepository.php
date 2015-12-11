@@ -23,21 +23,22 @@ use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 class BlockRepository extends DocumentRepository
 {
     /**
-     * @param array $filterData
-     * @param bool  $pageBundleInstalled
+     * @param $type
+     * @param $channels
+     * @param $pageBundleInstalled
      * @return mixed
      */
-    public function getBlocksByChannelQueryBuilder(array $filterData, $pageBundleInstalled)
+    public function getBlocksByChannelQueryBuilder($type, $channels, $pageBundleInstalled)
     {
         $qb = $this->createQueryBuilder();
 
-        if (isset($filterData['type']) && $filterData['type']) {
-            $qb->field('class')->in($filterData['type']);
+        if ($type) {
+            $qb->field('class')->in($type);
         }
 
-        if ($pageBundleInstalled && isset($filterData['channels']) && $filterData['channels']) {
+        if ($pageBundleInstalled && $channels) {
             $pages = $this->dm->createQueryBuilder('IntegratedPageBundle:Page\Page')
-                ->field('channel.$id')->in($filterData['channels'])
+                ->field('channel.$id')->in($channels)
                 ->getQuery()
                 ->execute();
 

@@ -40,7 +40,7 @@ class BlockController extends Controller
         $pageBundleInstalled = $this->container->has('integrated_page.form.type.page');
         $qb = $this->getDocumentManager()
             ->getRepository('IntegratedBlockBundle:Block\Block')
-            ->getBlocksByChannelQueryBuilder($data, $pageBundleInstalled);
+            ->getBlocksByChannelQueryBuilder($data['type'], $data['channels'], $pageBundleInstalled);
 
         $pagination = $this->getPaginator()->paginate(
             $qb,
