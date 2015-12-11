@@ -96,11 +96,9 @@ class RelatedContentBlockHandler extends BlockHandler
         }
 
 
-        if ($block->getTypeBlock() == RelatedContentBlock::TYPE_BLOCK_TWO) {
-            if ($references = $document->getReferencesByRelationId($block->getRelation()->getId())) {
-                $document = $references->first();
-            }
-            else {
+        if ($block->getTypeBlock() == RelatedContentBlock::SHOW_LINKED) {
+            $document = $document->getReferenceByRelationId($block->getRelation()->getId());
+            if (!$document) {
                 return;
             }
         }

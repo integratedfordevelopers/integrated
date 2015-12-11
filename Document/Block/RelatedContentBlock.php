@@ -33,12 +33,12 @@ class RelatedContentBlock extends Block
     /**
      * Show items which have the current document linked
      */
-    const TYPE_BLOCK_ONE = 1;
+    const SHOW_USED_BY = 1;
 
     /**
      * Show items which share linked items with the current document
      */
-    const TYPE_BLOCK_TWO = 2;
+    const SHOW_LINKED = 2;
 
     /**
      * @var string

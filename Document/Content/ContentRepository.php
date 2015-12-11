@@ -15,8 +15,8 @@ class ContentRepository extends DocumentRepository
      * Get items which have the current document linked
      *
      * @param Content $content
-     * @param Relation $relation
-     * @return array
+     * @param Relation|null $relation
+     * @return \Doctrine\MongoDB\Query\Builder
      */
     public function getUsedBy(Content $content, Relation $relation = null)
     {
