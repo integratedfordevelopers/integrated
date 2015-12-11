@@ -11,9 +11,10 @@
 
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Common\Block\BlockInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -25,7 +26,9 @@ class BlockExtension extends \Twig_Extension
      */
     protected $container;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $pages = [];
 
     /**
@@ -96,7 +99,7 @@ class BlockExtension extends \Twig_Extension
      *
      * @return null|string
      */
-    public function findChannels($block)
+    public function findChannels(BlockInterface $block)
     {
         $channelNames = [];
         if ($this->container->has('integrated_page.form.type.page')) {
@@ -119,7 +122,7 @@ class BlockExtension extends \Twig_Extension
      *
      * @return null|string
      */
-    public function findPages($block)
+    public function findPages(BlockInterface $block)
     {
         $pageNames = [];
         if ($this->container->has('integrated_page.form.type.page')) {
@@ -133,7 +136,7 @@ class BlockExtension extends \Twig_Extension
 
     /**
      * @param Block $block
-     * @return mixed
+     * @return \Integrated\Bundle\PageBundle\Document\Page\Page[]
      */
     public function getPages(Block $block)
     {
