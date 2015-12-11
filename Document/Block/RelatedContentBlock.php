@@ -59,7 +59,6 @@ class RelatedContentBlock extends Block
      *             1="Show items which have the current document linked",
      *             2="Show items which share linked items with the current document",
      *          },
-     *          "choices_as_values" = false,
      *     }
      * )
      */
@@ -89,7 +88,6 @@ class RelatedContentBlock extends Block
      *         "choices"={
      *             "time"="Publication date"
      *          },
-     *          "choices_as_values" = false,
      *     }
      * )
      */

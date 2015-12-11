@@ -18,10 +18,16 @@ class ContentRepository extends DocumentRepository
      * @param Relation $relation
      * @return array
      */
-    public function getCurrentDocumentLinked(Content $content, Relation $relation)
+    public function getUsedBy(Content $content, Relation $relation = null)
     {
-        return $this->createQueryBuilder()
-            ->field('relations.relationId')->equals($relation->getId())
-            ->field('relations.references.$id')->equals($content->getId());
+        $query =  $this->createQueryBuilder()
+            ->field('relations.relationId')
+            ->equals($relation->getId());
+
+        if ($relation) {
+            $query->field('relations.references.$id')->equals($content->getId());
+        }
+
+        return $query;
     }
 }

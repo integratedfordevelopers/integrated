@@ -106,7 +106,7 @@ class RelatedContentBlockHandler extends BlockHandler
         }
 
         $query = $this->dm->getRepository('IntegratedContentBundle:Content\Content')
-            ->getCurrentDocumentLinked($document, $block->getRelation());
+            ->getUsedBy($document, $block->getRelation());
 
         return $this->paginator->paginate(
             $query,
