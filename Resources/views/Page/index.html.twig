@@ -18,9 +18,21 @@
                     <ul role="menu" class="dropdown-menu">
                         {% for channel in channels %}
                             <li role="presentation">
-                                <a href="{{ path('integrated_page_page_index', { 'channel': channel.id }) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
+                                <a href="{{ path('integrated_page_page_index', { 'channel': channel.id, 'pageType': pageType}) }}" tabindex="-1" role="menuitem">{{ channel.name }}</a>
                             </li>
                         {% endfor %}
+                    </ul>
+                </li>
+
+                <li class="dropdown pull-right">
+                    <a href="#" data-toggle="dropdown" role="button">{% trans %}{{ pageType == 'static' ? 'Static pages'|trans : 'Content type pages'|trans }}  ==  %}Static{% else %}Content type{% endif %} pages{% endtrans %}<b class="caret"></b></a>
+                    <ul role="menu" class="dropdown-menu">
+                        <li role="presentation">
+                            <a href="{{ path('integrated_page_page_index', { 'channel': selectedChannel, 'pageType': 'static' }) }}" tabindex="-1" role="menuitem">{% trans %}Static pages{% endtrans %}</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="{{ path('integrated_page_page_index', { 'channel': selectedChannel, 'pageType': 'content_type' }) }}" tabindex="-1" role="menuitem">{% trans %}Content type pages{% endtrans %}</a>
+                        </li>
                     </ul>
                 </li>
             </ul>

@@ -26,7 +26,7 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document(collection="page")
+ * @ODM\Document(collection="page", repositoryClass="PageRepository")
  * @todo find a way to fix unique validation (INTEGRATED-481)
  */
 class Page

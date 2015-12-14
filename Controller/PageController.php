@@ -36,11 +36,12 @@ class PageController extends Controller
     {
         $channel = $this->getSelectedChannel();
 
-        $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedPageBundle:Page\Page');
-        $builder->field('channel.$id')->equals($channel->getId());
+        $pageType = $request->query->get('pageType', 'static');
+
+        $pages = $this->getDocumentManager()->getRepository('IntegratedPageBundle:Page\Page')->getPages($channel, $pageType);
 
         $pagination = $this->getPaginator()->paginate(
-            $builder,
+            $pages,
             $request->query->get('page', 1),
             20
         );
@@ -49,6 +50,7 @@ class PageController extends Controller
             'pages' => $pagination,
             'channels' => $this->getChannels(),
             'selectedChannel' => $channel,
+            'pageType' => $pageType,
         ];
     }
 
