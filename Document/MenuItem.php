@@ -119,6 +119,26 @@ class MenuItem extends KnpMenuItem
     }
 
     /**
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function getFirstChild()
+    {
+        $children = $this->getChildren();
+
+        return reset($children);
+    }
+
+    /**
+     * @return \Knp\Menu\ItemInterface
+     */
+    public function getLastChild()
+    {
+        $children = $this->getChildren();
+
+        return end($children);
+    }
+
+    /**
      * @param bool $nested
      * @return array
      */
