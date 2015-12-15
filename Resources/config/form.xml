@@ -39,6 +39,7 @@
 
 		<service id="integrated_user.form.group.type" class="%integrated_user.form.group.type.class%">
 			<argument type="service" id="integrated_user.group.manager" />
+			<argument type="service" id="integrated_user.role.manager" />
 		</service>
 
 		<service id="integrated_user.form.group.choice.type" class="%integrated_user.form.group.choice.type.class%">
@@ -46,7 +47,7 @@
 		</service>
 
 		<service id="integrated_user.form.role.choice.type" class="%integrated_user.form.role.choice.type.class%">
-			<argument type="service" id="integrated_user.role.manager" />
+			<argument type="service" id="service_container" />
 		</service>
 
 		<service id="integrated_user.form.delete.type" class="%integrated_user.form.delete.type.class%" />
