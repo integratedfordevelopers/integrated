@@ -64,9 +64,9 @@ class Group implements GroupInterface
 	}
 
 	/**
-	 * @param RoleInterface $role
+	 * @param $role
 	 */
-	public function addRole(RoleInterface $role)
+	public function addRole($role)
 	{
 		if (!$this->roles->contains($role)) {
 			$this->roles->add($role);
@@ -113,6 +113,7 @@ class Group implements GroupInterface
 //	{
 //		// TODO: Implement unserialize() method.
 //	}
+
 
 	/**
 	 * Get the string representation of the group object.
