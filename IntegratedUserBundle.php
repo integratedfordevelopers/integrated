@@ -13,6 +13,7 @@ namespace Integrated\Bundle\UserBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
+use Integrated\Bundle\UserBundle\DependencyInjection\Compiler\RegisterRolesParametersPass;
 use Integrated\Bundle\UserBundle\DependencyInjection\IntegratedUserExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -30,6 +31,7 @@ class IntegratedUserBundle extends Bundle
 		);
 
 		$container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mapping, ['integrated_user.mapping.entity_manager'], 'integrated_user.mapping.enabled'));
+		$container->addCompilerPass(new RegisterRolesParametersPass());
 	}
 
 	/**

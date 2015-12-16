@@ -15,7 +15,9 @@ use Integrated\Bundle\UserBundle\Model\Role;
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
-
+/**
+ * @author Vasil Pascal <developer.optimum@gmail.com>
+ */
 class RoleToEntityTransformer implements DataTransformerInterface
 {
     /** @var RoleManagerInterface  */
@@ -37,24 +39,22 @@ class RoleToEntityTransformer implements DataTransformerInterface
      */
     public function reverseTransform($roles = [])
     {
-        if (!$roles) {
-            return;
-        }
+        if ($roles) {
+            $transformRoles = [];
 
-        $transformRoles = [];
+            foreach ($roles as $role) {
+                if ($entity = $this->manager->find($role)) {
+                    $transformRoles[] = $entity;
+                } else {
+                    $roleEntity = new Role($role, $role);
+                    $this->manager->persist($roleEntity);
 
-        foreach ($roles as $role) {
-            if ($entity = $this->manager->find($role)) {
-                $transformRoles[] = $entity;
-            } else {
-                $roleEntity = new Role($role, $role);
-                $this->manager->persist($roleEntity);
-
-                $transformRoles[] = $roleEntity;
+                    $transformRoles[] = $roleEntity;
+                }
             }
-        }
 
-        return $transformRoles;
+            return $transformRoles;
+        }
     }
 
     /**
@@ -63,15 +63,13 @@ class RoleToEntityTransformer implements DataTransformerInterface
      */
     public function transform($roles = [])
     {
-        if (!$roles) {
-            return;
+        if ($roles) {
+            $transformRoles = [];
+            /** @var Role $role */
+            foreach ($roles as $role) {
+                $transformRoles[] = $role->getId();
+            }
+            return $transformRoles;
         }
-
-        $transformRoles = [];
-        /** @var Role $role */
-        foreach ($roles as $role) {
-            $transformRoles[] = $role->getId();
-        }
-        return $transformRoles;
     }
 }
