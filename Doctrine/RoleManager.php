@@ -13,10 +13,10 @@ namespace Integrated\Bundle\UserBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-
+use Integrated\Bundle\UserBundle\Event\ConfigureRolesEvent;
 use Integrated\Bundle\UserBundle\Model\roleInterface;
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
-
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use InvalidArgumentException;
 
 /**
