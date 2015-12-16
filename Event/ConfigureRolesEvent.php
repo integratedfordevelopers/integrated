@@ -45,6 +45,9 @@ class ConfigureRolesEvent extends Event
         return $this->roles;
     }
 
+    /**
+     * @param $roles
+     */
     public function addRoles($roles)
     {
         if (!$roles) {
@@ -52,9 +55,7 @@ class ConfigureRolesEvent extends Event
         }
 
         foreach ($roles as $role) {
-            if (!isset($this->roles[$role])) {
-                $this->roles[$role] = $role;
-            }
+            $this->roles[$role] = $role;
         }
     }
 }

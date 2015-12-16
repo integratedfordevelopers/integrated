@@ -43,9 +43,7 @@ class ConfigureRolesSubscriber implements EventSubscriberInterface
      */
     public function onRoleConfigure(ConfigureRolesEvent $event)
     {
-        $roles = ['EVENT_ROLE_1','EVENT_ROLE_2'];
-
-        $event->addRoles($roles);
+        $event->addRoles(['ROLE_EVENT_1', 'ROLE_EVENT_2']);
     }
 }
 
