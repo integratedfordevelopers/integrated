@@ -68,6 +68,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('block.xml');
 
         $loader->load('mailer.xml');
+        $loader->load('services.xml');
 
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);

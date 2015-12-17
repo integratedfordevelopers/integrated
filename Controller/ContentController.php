@@ -618,10 +618,13 @@ class ContentController extends Controller
 
                 $locking['locked'] = false;
             }
-
         }
 
-        $form = $this->createDeleteForm($content, $locking);
+        $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
+        $notDelete = $contentReferenced->hasReferenced($content);
+
+
+        $form = $this->createDeleteForm($content, $locking, $notDelete);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
@@ -707,7 +710,8 @@ class ContentController extends Controller
             'type'    => $type,
             'form'    => $form->createView(),
             'content' => $content,
-            'locking' => $locking
+            'locking' => $locking,
+            'referenced' => $contentReferenced->getReferenced()
         );
     }
 
@@ -1068,11 +1072,11 @@ class ContentController extends Controller
 
     /**
      * @param ContentInterface $content
-     * @param array            $locking
-     *
-     * @return \Symfony\Component\Form\Form
+     * @param array $locking
+     * @param bool|true $notDelete
+     * @return $this|\Symfony\Component\Form\FormInterface
      */
-    protected function createDeleteForm(ContentInterface $content, array $locking)
+    protected function createDeleteForm(ContentInterface $content, array $locking, $notDelete = false)
     {
         $form = $this->createForm('content_delete', $content, [
             'action' => $this->generateUrl('integrated_content_content_delete', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
@@ -1080,8 +1084,7 @@ class ContentController extends Controller
         ]);
 
         // load a different set of buttons based on the locking state
-
-        if ($locking['locked']) {
+        if ($locking['locked'] || $notDelete) {
             return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'cancel']]);
         }
 
