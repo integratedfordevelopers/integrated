@@ -625,10 +625,9 @@ class ContentController extends Controller
         }
 
         $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
-        $notDelete = $contentReferenced->hasReferenced($content);
+        $referenced = $contentReferenced->getReferenced($content);
 
-
-        $form = $this->createDeleteForm($content, $locking, $notDelete);
+        $form = $this->createDeleteForm($content, $locking, count($referenced)>0);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
@@ -715,7 +714,7 @@ class ContentController extends Controller
             'form'    => $form->createView(),
             'content' => $content,
             'locking' => $locking,
-            'referenced' => $contentReferenced->getReferenced()
+            'referenced' => $referenced
         );
     }
 
