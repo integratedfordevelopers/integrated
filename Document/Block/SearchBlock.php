@@ -43,7 +43,12 @@ class SearchBlock extends Block
     /**
      * @var string
      * @ODM\String
-     * @Type\Field
+     * @Type\Field(
+     *      type="text",
+     *      options={
+     *          "label"="Results page URL"
+     *      }
+     * )
      */
     protected $url;
 
