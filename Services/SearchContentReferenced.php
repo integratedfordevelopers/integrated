@@ -16,8 +16,6 @@ class SearchContentReferenced
      */
     private $dm;
 
-    private $refereced;
-
     /**
      * SearchContentReferenced constructor.
      * @param DocumentManager $dm
@@ -25,7 +23,6 @@ class SearchContentReferenced
     public function __construct(DocumentManager $dm)
     {
         $this->dm = $dm;
-        $this->refereced = [];
     }
 
     /**
@@ -33,13 +30,13 @@ class SearchContentReferenced
      * @return bool
      * @throws \Exception
      */
-    public function hasReferenced($document)
+    public function getReferenced($document)
     {
         $metadataFactory = $this->dm->getMetadataFactory();
         $deleted = $this->getDeletedInfo($document, $metadataFactory);
         $allMetadata = $metadataFactory->getAllMetadata();
 
-        $this->refereced = [];
+        $refereced = [];
 
         /** @var ClassMetaData  $classMetadata */
         foreach ($allMetadata as $classMetadata) {
@@ -60,7 +57,7 @@ class SearchContentReferenced
 
                     if ($items) {
                         foreach ($items as $item) {
-                            $this->refereced[] = $item;
+                            $refereced[] = $item;
                         }
                     }
                 }
@@ -75,11 +72,11 @@ class SearchContentReferenced
 
         if ($items) {
             foreach ($items as $item) {
-                $this->refereced[] = $item;
+                $refereced[] = $item;
             }
         }
 
-        return count($this->refereced) > 0;
+        return $this->prepareReferenced($refereced);
     }
 
     /**
@@ -109,20 +106,21 @@ class SearchContentReferenced
     }
 
     /**
+     * @param $refereced
      * @return array
      */
-    public function getReferenced()
+    private function prepareReferenced($refereced)
     {
-        $referenced = [];
-        foreach ($this->refereced as $item) {
+        $output = [];
+        foreach ($refereced as $item) {
             if ($item instanceof Block) {
-                $referenced[] = [
+                $output[] = [
                     'action'=>'integrated_block_block_edit',
                     'id'=>$item->getId(),
                     'name'=>$item->getTitle()
                 ];
             } elseif ($item instanceof Content) {
-                $referenced[] = [
+                $output[] = [
                     'action'=>'integrated_content_content_edit',
                     'id'=>$item->getId(),
                     'name'=>$item->getTitle()
@@ -130,7 +128,7 @@ class SearchContentReferenced
             }
         }
 
-        return $referenced;
+        return $output;
     }
 
 }

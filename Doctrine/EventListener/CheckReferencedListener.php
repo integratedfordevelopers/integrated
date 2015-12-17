@@ -33,7 +33,7 @@ class CheckReferencedListener implements EventSubscriber
         if ($document instanceof Content || $document instanceof SearchSelection) {
             $dm = $args->getDocumentManager();
             $searchReferenced = new SearchContentReferenced($dm);
-            if ($searchReferenced->hasReferenced($document)) {
+            if ($searchReferenced->getReferenced($document)) {
                 throw new AccessDeniedException();
             }
         }

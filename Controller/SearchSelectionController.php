@@ -123,13 +123,9 @@ class SearchSelectionController extends Controller
         // TODO: security check
 
         $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
-        $notDelete = true;
+        $referenced = $contentReferenced->getReferenced($searchSelection);
 
-        if ($contentReferenced->hasReferenced($searchSelection)) {
-            $notDelete = false;
-        }
-
-        $form = $this->createDeleteForm($searchSelection->getId(), $notDelete);
+        $form = $this->createDeleteForm($searchSelection->getId(), count($referenced)>0);
         $form->handleRequest($request);
 
         if ($form->has('submit') && $form->isValid()) {
@@ -145,7 +141,7 @@ class SearchSelectionController extends Controller
         return [
             'searchSelection' => $searchSelection,
             'form' => $form->createView(),
-            'referenced' => $contentReferenced->getReferenced()
+            'referenced' => $referenced
         ];
     }
 
