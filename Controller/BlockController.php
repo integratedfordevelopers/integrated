@@ -118,14 +118,6 @@ class BlockController extends Controller
     public function editAction(Request $request, Block $block)
     {
 
-        $dm = $this->getDocumentManager();
-        if ($this->container->has('integrated_page.form.type.page')) {
-            /* check if current Block not used on some page */
-            if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
-                throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
-            }
-        }
-
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
