@@ -30,7 +30,7 @@ class ConfigureRolesEvent extends Event
 
     /**
      * ConfigureRoleEvent constructor.
-     * @param $roles
+     * @param array $roles
      */
     public function __construct($roles)
     {
@@ -46,7 +46,7 @@ class ConfigureRolesEvent extends Event
     }
 
     /**
-     * @param $roles
+     * @param array $roles
      */
     public function addRoles($roles)
     {

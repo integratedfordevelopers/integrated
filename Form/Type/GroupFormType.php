@@ -33,12 +33,15 @@ class GroupFormType extends AbstractType
      */
     private $manager;
 
+    /**
+     * @var RoleManagerInterface
+     */
     private $roleManager;
 
     /**
      * GroupFormType constructor.
      * @param GroupManagerInterface $manager
-     * @param RoleManagerInterface $roleManager
+     * @param RoleManagerInterface  $roleManager
      */
     public function __construct(GroupManagerInterface $manager, RoleManagerInterface $roleManager)
     {

@@ -69,6 +69,7 @@ class RoleToEntityTransformer implements DataTransformerInterface
             foreach ($roles as $role) {
                 $transformRoles[] = $role->getId();
             }
+
             return $transformRoles;
         }
     }
