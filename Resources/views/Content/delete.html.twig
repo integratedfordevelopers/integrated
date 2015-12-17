@@ -17,6 +17,14 @@
         <p>
             {% trans with {'%name%':  content.id} %}You are about to delete "%name%", click the delete button below to confirm the action.{% endtrans %}
         </p>
+        {% if referenced %}
+            <div class="alert alert-danger">
+                {% trans %} This item is still on use by: {% endtrans %}<br>
+                {% for item in referenced %}
+                    <a href="{{ path(item.action,{'id':item.id}) }}">{{ item.name }}</a><br>
+                {% endfor %}
+            </div>
+        {% endif %}
         {{ form(form) }}
     </div>
 </div>
