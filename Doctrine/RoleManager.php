@@ -162,6 +162,8 @@ class RoleManager implements roleManagerInterface
 	}
 
 	/**
+	 * Get all available roles from (DB, roles.xml and from Events)
+	 *
 	 * @return array
 	 */
 	public function getRolesFromSources()

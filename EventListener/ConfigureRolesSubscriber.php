@@ -34,7 +34,7 @@ class ConfigureRolesSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            ConfigureRolesEvent::CONFIGURE => 'onRoleConfigure'
+            ConfigureRolesEvent::CONFIGURE => 'onRoleConfigure',
         );
     }
 
@@ -43,7 +43,6 @@ class ConfigureRolesSubscriber implements EventSubscriberInterface
      */
     public function onRoleConfigure(ConfigureRolesEvent $event)
     {
-        $event->addRoles(['ROLE_EVENT_1', 'ROLE_EVENT_2']);
+        $event->addRoles([/*add you roles here array('ROLE_ADMIN', 'ROLE_USER')*/]);
     }
 }
-
