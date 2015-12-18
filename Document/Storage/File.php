@@ -1,0 +1,113 @@
+<?php
+
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Integrated\Bundle\ContentBundle\Document\Storage;
+
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Document\Storage\FileInterface;
+use Integrated\Common\Form\Mapping\Annotations as Type;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
+/**
+ * Document type File
+ *
+ * @author Johnny Borg <johnny@e-active.nl>
+ *
+ * @ODM\Document
+ * @Type\Document("File")
+ */
+class File extends Content implements FileInterface
+{
+    /**
+     * @var StorageInterface
+     * @Type\Field(type="integrated_file")
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Storage\Embedded\Storage")
+     */
+    protected $file;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field
+     */
+    protected $title;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field
+     */
+    protected $description;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * @param StorageInterface $file
+     * @return $this
+     */
+    public function setFile(StorageInterface $file = null)
+    {
+        $this->file = $file;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
+    }
+}
