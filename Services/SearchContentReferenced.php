@@ -7,7 +7,7 @@ use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory;
 use Doctrine\ODM\MongoDB\Types\Type as MongoType;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\Article;
 
 class SearchContentReferenced
 {
@@ -113,17 +113,16 @@ class SearchContentReferenced
     {
         $output = [];
         foreach ($refereced as $item) {
-            if ($item instanceof Block) {
-                $output[] = [
-                    'action'=>'integrated_block_block_edit',
-                    'id'=>$item->getId(),
-                    'name'=>$item->getTitle()
-                ];
-            } elseif ($item instanceof Content) {
+            if ($item instanceof Article) {
                 $output[] = [
                     'action'=>'integrated_content_content_edit',
                     'id'=>$item->getId(),
                     'name'=>$item->getTitle()
+                ];
+            } else {
+                $output[] = [
+                    'id'=>$item->getId(),
+                    'name'=>get_class($item)
                 ];
             }
         }
