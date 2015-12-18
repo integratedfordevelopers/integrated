@@ -47,7 +47,7 @@ interface ResolverInterface
      *
      * @param string $filesystem
      * @param string $identifier
-     * @return ResolverInterface
+     * @return \Integrated\Common\Storage\Resolver\ResolverInterface
      */
     public function getResolverClass($filesystem, $identifier);
 }

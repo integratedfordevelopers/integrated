@@ -6,7 +6,7 @@ use Integrated\Common\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Command\CommandInterface;
 use Integrated\Common\Storage\Handler\QueuedCommandBusInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
-use Integrated\Common\Storage\Resolver\ResolverInterface;
+use Integrated\Common\Storage\ResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Psr\Log\LoggerInterface;
