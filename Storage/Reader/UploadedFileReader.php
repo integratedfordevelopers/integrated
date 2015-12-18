@@ -12,8 +12,10 @@
 namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 
 use Integrated\Bundle\StorageBundle\Document\Embedded\Metadata;
+use Integrated\Bundle\StorageBundle\Document\Embedded\MetadataInterface;
 use Integrated\Bundle\StorageBundle\Storage\Identifier\IdentifierInterface;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -50,15 +52,15 @@ class UploadedFileReader implements ReaderInterface
     }
 
     /**
-     * @return Metadata
+     * @return MetadataInterface
      */
     public function getMetadata()
     {
         return new Metadata(
             $this->uploadedFile->getClientOriginalExtension(),
             $this->uploadedFile->getMimeType(),
-            [],
-            []
+            new ArrayCollection(),
+            new ArrayCollection()
         );
     }
 }

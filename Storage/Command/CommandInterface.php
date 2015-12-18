@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Command;
 
-use Integrated\Bundle\StorageBundle\Storage\Manager;
+use Integrated\Bundle\StorageBundle\Storage\ManagerInterface;
 
 /**
  * A simple implementation for for basic support for the message bus (queue) strategy.
@@ -21,8 +21,8 @@ use Integrated\Bundle\StorageBundle\Storage\Manager;
 interface CommandInterface
 {
     /**
-     * @param Manager $manager
+     * @param ManagerInterface $manager
      * @return mixed
      */
-    public function execute(Manager $manager);
+    public function execute(ManagerInterface $manager);
 }

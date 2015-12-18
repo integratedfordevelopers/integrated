@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 
 /**
@@ -46,9 +47,9 @@ class Decision
     {
         $className = get_class($class);
         if (isset($this->decisionMap[$className])) {
-            return array_values($this->decisionMap[$className]);
+            return new ArrayCollection(array_values($this->decisionMap[$className]));
         }
 
-        return $this->registry->keys();
+        return new ArrayCollection($this->registry->keys());
     }
 }

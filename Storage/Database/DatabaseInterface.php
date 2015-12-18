@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
-use Integrated\Bundle\StorageBundle\Document\File;
+use Bundle\StorageBundle\Document\FileInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -19,14 +19,14 @@ use Integrated\Bundle\StorageBundle\Document\File;
 interface DatabaseInterface
 {
     /**
-     * @return File[]
+     * @return FileInterface[]
      */
     public function getFiles();
 
     /**
-     * @param File $file
+     * @param FileInterface $file
      */
-    public function save(File $file);
+    public function save(FileInterface $file);
 
     /**
      * Called occasionally to cleanup/flush the local entities from the manager

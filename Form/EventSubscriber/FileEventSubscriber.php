@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\StorageBundle\Form\EventSubscriber;
 
 use Integrated\Bundle\StorageBundle\Storage\Decision;
-use Integrated\Bundle\StorageBundle\Storage\Manager;
+use Integrated\Bundle\StorageBundle\Storage\ManagerInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormEvents;
 class FileEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var Manager
+     * @var ManagerInterface
      */
     protected $manager;
 
@@ -35,10 +35,10 @@ class FileEventSubscriber implements EventSubscriberInterface
     protected $decision;
 
     /**
-     * @param Manager $manager
+     * @param ManagerInterface $manager
      * @param Decision $decision
      */
-    public function __construct(Manager $manager, Decision $decision)
+    public function __construct(ManagerInterface $manager, Decision $decision)
     {
         $this->manager = $manager;
         $this->decision = $decision;

@@ -19,6 +19,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * Lists the configured filesystem(s).
+ *
  * @author Johnny Borg <johnny@e-active.nl>
  */
 class ListCommand extends Command
@@ -61,12 +63,12 @@ class ListCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->registry->getIterator() as $key => $filesystem)
-        {
+        foreach ($this->registry->getIterator() as $key => $filesystem) {
             $output->write(
                 sprintf(
                     '<info>%s</info>: %s',
-                    $key, get_class($filesystem->getAdapter())
+                    $key,
+                    get_class($filesystem->getAdapter())
                 ),
                 true
             );

@@ -20,7 +20,7 @@ interface ResolverInterface
      * @param array $options
      * @param string $identifier
      */
-    public function __construct($options, $identifier);
+    public function __construct(array $options, $identifier);
 
     /**
      * @return string

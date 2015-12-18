@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 
 use Integrated\Bundle\StorageBundle\Document\Embedded\Metadata;
-use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
+use Integrated\Bundle\StorageBundle\Document\Embedded\StorageInterface;
 use Integrated\Bundle\StorageBundle\Storage\Identifier\IdentifierInterface;
 
 use Gaufrette\Adapter;
@@ -28,7 +28,7 @@ class AdapterReader implements ReaderInterface
     protected $adapter;
 
     /**
-     * @var Storage
+     * @var StorageInterface
      */
     protected $storage;
 
@@ -39,10 +39,10 @@ class AdapterReader implements ReaderInterface
 
     /**
      * @param Adapter $adapter
-     * @param Storage $storage
+     * @param StorageInterface $storage
      * @param IdentifierInterface $identifier
      */
-    public function __construct(Adapter $adapter, Storage $storage, IdentifierInterface $identifier = null)
+    public function __construct(Adapter $adapter, StorageInterface $storage, IdentifierInterface $identifier = null)
     {
         $this->adapter = $adapter;
         $this->storage = $storage;

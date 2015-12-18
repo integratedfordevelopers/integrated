@@ -14,7 +14,7 @@ namespace Integrated\Bundle\StorageBundle\Storage\Resolver;
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class UriResolver implements ResolverInterface
+class LocalResolver implements ResolverInterface
 {
     /**
      * @var string
@@ -29,7 +29,7 @@ class UriResolver implements ResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct($options, $identifier)
+    public function __construct(array $options, $identifier)
     {
         $this->options = $options;
         $this->identifier = $identifier;

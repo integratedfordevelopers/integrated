@@ -6,7 +6,7 @@
 
     <parameters>
 
-        <parameter key="integrated_storage.event.listener_file">Integrated\Bundle\StorageBundle\Doctrine\EventListener\FileEventListener</parameter>
+        <parameter key="integrated_storage.event.listener_file">Integrated\Bundle\StorageBundle\EventListener\Doctrine\ODM\FileEventListener</parameter>
 
     </parameters>
 

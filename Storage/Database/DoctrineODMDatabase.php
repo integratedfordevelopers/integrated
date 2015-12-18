@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
-use Integrated\Bundle\StorageBundle\Document\File;
+use Bundle\StorageBundle\Document\FileInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,7 +35,7 @@ class DoctrineODMDatabase implements DatabaseInterface
     }
 
     /**
-     * @return File[]
+     * @return FileInterface[]
      */
     public function getFiles()
     {
@@ -56,9 +56,9 @@ class DoctrineODMDatabase implements DatabaseInterface
     }
 
     /**
-     * @param File $file
+     * @param FileInterface $file
      */
-    public function save(File $file)
+    public function save(FileInterface $file)
     {
         $this->dm->persist($file);
     }

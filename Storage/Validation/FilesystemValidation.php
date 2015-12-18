@@ -13,6 +13,8 @@ namespace Integrated\Bundle\StorageBundle\Storage\Validation;
 
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
@@ -34,14 +36,14 @@ class FilesystemValidation
     /**
      * Returns a valid list of filesystems
      *
-     * @param array $filesystems
+     * @param ArrayCollection $filesystems
      * @throws \InvalidArgumentException
-     * @return array $filesystems
+     * @return ArrayCollection $filesystems
      */
-    public function isValid(array $filesystems)
+    public function getValidFilesystems(ArrayCollection $filesystems)
     {
         if (0 == count($filesystems)) {
-            $filesystems = $this->registry->keys();
+            $filesystems = new ArrayCollection($this->registry->keys());
         }
 
         foreach ($filesystems as $key) {

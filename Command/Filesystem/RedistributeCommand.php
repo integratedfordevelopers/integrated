@@ -13,7 +13,7 @@ namespace Integrated\Bundle\StorageBundle\Command\Filesystem;
 
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
 use Integrated\Bundle\StorageBundle\Storage\Database\DatabaseInterface;
-use Integrated\Bundle\StorageBundle\Storage\Manager;
+use Integrated\Bundle\StorageBundle\Storage\ManagerInterface;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 
 use Symfony\Component\Console\Command\Command;
@@ -23,6 +23,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * Redistribute files in the database over the filesystems.
+ *
  * @author Johnny Borg <johnny@e-active.nl>
  */
 class RedistributeCommand extends Command
@@ -38,16 +40,16 @@ class RedistributeCommand extends Command
     protected $registry;
 
     /**
-     * @var Manager
+     * @var ManagerInterface
      */
     protected $storage;
 
     /**
      * @param DatabaseInterface $database
      * @param FilesystemRegistry $registry
-     * @param Manager $storage
+     * @param ManagerInterface $storage
      */
-    public function __construct(DatabaseInterface $database, FilesystemRegistry $registry, Manager $storage)
+    public function __construct(DatabaseInterface $database, FilesystemRegistry $registry, ManagerInterface $storage)
     {
         $this->database = $database;
         $this->registry = $registry;
@@ -65,11 +67,14 @@ class RedistributeCommand extends Command
             ->setDescription('Redistribute files in the database over the filesystems.')
             ->setDefinition([
                 new InputArgument(
-                    'filesystems', InputArgument::IS_ARRAY,
+                    'filesystems',
+                    InputArgument::IS_ARRAY,
                     'A space separated list of storage keys'
                 ),
                 new InputOption(
-                    'delete', null, InputOption::VALUE_OPTIONAL,
+                    'delete',
+                    null,
+                    InputOption::VALUE_OPTIONAL,
                     'Delete the file before putting it in storage(s)'
                 )
             ]);
@@ -82,7 +87,7 @@ class RedistributeCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $filesystems = (new FilesystemValidation($this->registry))
-            ->isValid($input->getArgument('filesystems'));
+            ->getValidFilesystems($input->getArgument('filesystems'));
 
         foreach ($this->database->getFiles() as $i => $file) {
             $file->setFile($this->storage->copy($file->getFile(), $filesystems));

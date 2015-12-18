@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Storage\Identifier\IdentifierInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\ReaderInterface;
@@ -51,20 +52,16 @@ class Resolver
 
     /**
      * Gives you an absolute path to the storage.
-     * An preference can be given. When the preference is not able to serve the file another filesystem will be used.
+     * A preference can be given. When the preference is not able to serve the file another filesystem will be used.
      *
      * @param Storage $storage
-     * @param null $filesystem
+     * @param ArrayCollection $filesystem
      * @return string absolute path
      */
-    public function resolve(Storage $storage, $filesystem = null)
+    public function resolve(Storage $storage, ArrayCollection $filesystem = null)
     {
-        if (null == $filesystem) {
-            $filesystem = $storage->getFilesystems()[0];
-        }
-
-        $priority = $storage->getFilesystems();
-        usort($priority, function($a) use ($filesystem) {
+        $priority = $filesystem ? $filesystem : $storage->getFilesystems();
+        $priority->getIterator()->uasort(function ($a) use ($filesystem) {
             // The given filesystem always has priority, however it might not be able to serve the file
             return $a == $filesystem ? -1 : 1;
         });
@@ -120,11 +117,6 @@ class Resolver
     public function getResolverClass($filesystem, $identifier)
     {
         $className = $this->resolverMap[$filesystem]['resolver_class'];
-
-        // No namespace given lets add the default namespace, a simple class can be given by adding a forward slash
-        if (false === strpos($className, '/')) {
-            $className = sprintf('Integrated\Bundle\StorageBundle\Storage\Resolver\%s', $className);
-        }
 
         $resolver = new $className($this->resolverMap[$filesystem], $identifier);
         if ($resolver instanceof ResolverInterface) {

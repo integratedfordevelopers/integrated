@@ -66,8 +66,8 @@ class FilesystemRegistry
      */
     public function exists($key)
     {
-        foreach ($this->getIterator() as $_key => $filesystem) {
-            if ($key == $_key) {
+        foreach ($this->getIterator() as $currentKey => $filesystem) {
+            if ($key == $currentKey) {
                 return true;
             }
         }

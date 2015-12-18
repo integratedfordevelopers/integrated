@@ -21,7 +21,7 @@ This bundle can be installed following these steps:
     {
         return array(
             // ...
-			new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
+            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Integrated\Bundle\StorageBundle\IntegratedStorageBundle()
             // ...
         );
@@ -30,54 +30,52 @@ This bundle can be installed following these steps:
 ### Configuration ###
 The bundle makes use of *knplabs/knp-gaufrette-bundle* for configuration and a file system map. In order to upgrade you current installation to the new version of Integrated you'll need to add the following to you the application configuration.  
 
-	// app/config.yml
-	knp_gaufrette:
-	    adapters:
-	        local:
-	            local:
-	                directory: %kernel.root_dir%/../web/uploads/documents
-	    filesystems:
-	        local:
-	            adapter: local
+    // app/config.yml
+    knp_gaufrette:
+        adapters:
+            local:
+                local:
+                    directory: %kernel.root_dir%/../web/uploads/documents
+        filesystems:
+            local:
+                adapter: local
 
-	integrated_storage:
-		resolver:
-			local:
-				public: /uploads/documents
-	
-The StorageBundle places the files on all known file systems. The order defined in the configuration will be used to determine its main path. When a file system has no resolver storage (for protected files) the developer must write an own implementation to give access to file. 
+    integrated_storage:
+        resolver:
+            local:
+                public: /uploads/documents
+    
+The StorageBundle places the files on all known file systems when no decision mapping exists. The order defined in the configuration will be used to determine its main path. When a file system has no resolver storage (for protected files) the developer must write an own implementation to give access to file. 
 
 #### Protecting files ####
 Additionally to protected entities from being stored in a public accessible storage a developer can configure filesystems for entities.   
 
-	// app/config.yml
-	integrated_storage:
-		// ...
-		decision_map:
-			"Integrated\Bundle\StorageBundle\Document\File": [local]
+    // app/config.yml
+    integrated_storage:
+        // ...
+        decision_map:
+            "Integrated\Bundle\StorageBundle\Document\File": [local]
 
 **The redistribution command does not make use of the decision map and copies all files in the given storage.**
 
 #### File identifier ###
 A file requires an unique identifier. By default the identifier is based on the contents of the file. You can write your own implementation of `Integrated\Bundle\StorageBundle\Storage\Identifier\Identifier`. 
 
-	// app/config.yml
-	integrated_storage:
-		// ...
-		identifier_class: FileIdentifier
-
-When no namespace has been given it will look in `Integrated\Bundle\StorageBundle\Storage\Identifier` by default. To provide a class add a backspace in front.  
+    // app/config.yml
+    integrated_storage:
+        // ...
+        identifier_class: Integrated\Bundle\StorageBundle\Storage\Identifier\FileIdentifier  
 
 #### Url Resolver ###
 In some cases you will need to add logic to the URL resolver. You can write your own implementation of `Integrated\Bundle\StorageBundle\Storage\Resolver\ResolverInterface`.
 
-	// app/config.yml
-	integrated_storage:
-		// ..
-		resolver:
-			public:
-				public: /uploads/documents
-				resolver_class: UriResolver
+    // app/config.yml
+    integrated_storage:
+        // ..
+        resolver:
+            public:
+                public: /uploads/documents
+                resolver_class: Integrated\Bundle\StorageBundle\Storage\Resolver\LocalResolver
 
 When no namespace has been given it will look in `Integrated\Bundle\StorageBundle\Storage\Resolver` by default.
 
