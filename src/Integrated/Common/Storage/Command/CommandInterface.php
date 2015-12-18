@@ -22,7 +22,6 @@ interface CommandInterface
 {
     /**
      * @param ManagerInterface $manager
-     * @return mixed
      */
     public function execute(ManagerInterface $manager);
 }
