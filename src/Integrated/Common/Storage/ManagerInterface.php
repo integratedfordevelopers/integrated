@@ -2,7 +2,7 @@
 
 namespace Integrated\Common\Storage;
 
-use Integrated\Common\Document\Embedded\StorageInterface;
+use Integrated\Common\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Command\CommandInterface;
 use Integrated\Common\Storage\Handler\QueuedCommandBusInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;

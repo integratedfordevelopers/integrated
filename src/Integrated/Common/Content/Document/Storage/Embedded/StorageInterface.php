@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Document\Embedded;
+namespace Integrated\Common\Document\Storage\Embedded;
 
-use Integrated\Common\Content\Document\Embedded\MetadataInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Integrated\Common\Storage\Resolver\ResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;

@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Storage\Reader;
 
-use Integrated\Common\Content\Document\Embedded\MetadataInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

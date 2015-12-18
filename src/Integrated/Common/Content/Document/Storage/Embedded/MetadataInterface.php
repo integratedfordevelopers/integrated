@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content\Document\Embedded;
+namespace Integrated\Common\Content\Document\Storage\Embedded;
 
 use Doctrine\Common\Collections\ArrayCollection;
 

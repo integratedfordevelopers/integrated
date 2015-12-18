@@ -1,8 +1,8 @@
 <?php
 
-namespace Integrated\Common\Document;
+namespace Integrated\Common\Document\Storage;
 
-use Integrated\Common\Document\Embedded\StorageInterface;
+use Integrated\Common\Document\Storage\Embedded\StorageInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
