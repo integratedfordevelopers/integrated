@@ -9,6 +9,10 @@ use Doctrine\ODM\MongoDB\Types\Type as MongoType;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 
+/**
+ * Class SearchContentReferenced
+ * @author Vasil Pascal <developer.optimum@gmail.com>
+ */
 class SearchContentReferenced
 {
     /**
@@ -26,7 +30,7 @@ class SearchContentReferenced
     }
 
     /**
-     * @param $document
+     * @param mixed $document
      * @return bool
      * @throws \Exception
      */
@@ -80,7 +84,7 @@ class SearchContentReferenced
     }
 
     /**
-     * @param $document
+     * @param mixed                $document
      * @param ClassMetadataFactory $metadataFactory
      * @return array
      * @throws \Doctrine\Common\Persistence\Mapping\MappingException
@@ -90,7 +94,7 @@ class SearchContentReferenced
     {
         $deleted = array(
             'className' => get_class($document),
-            'metadata'  => $metadataFactory->getMetadataFor(get_class($document))
+            'metadata'  => $metadataFactory->getMetadataFor(get_class($document)),
         );
 
         $deleted['idField'] = current($deleted['metadata']->getIdentifier());
@@ -102,6 +106,7 @@ class SearchContentReferenced
         } else {
             throw new \Exception('The identifer of the deleted object must have a valid Doctrine field type');
         }
+
         return $deleted;
     }
 
@@ -115,19 +120,18 @@ class SearchContentReferenced
         foreach ($refereced as $item) {
             if ($item instanceof Article) {
                 $output[] = [
-                    'action'=>'integrated_content_content_edit',
-                    'id'=>$item->getId(),
-                    'name'=>$item->getTitle()
+                    'action' => 'integrated_content_content_edit',
+                    'id' => $item->getId(),
+                    'name' => $item->getTitle(),
                 ];
             } else {
                 $output[] = [
-                    'id'=>$item->getId(),
-                    'name'=>get_class($item)
+                    'id' => $item->getId(),
+                    'name' => get_class($item),
                 ];
             }
         }
 
         return $output;
     }
-
 }
