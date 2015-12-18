@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\StorageBundle\Document;
+namespace Integrated\Common\Document;
 
 use Integrated\Common\Document\Embedded\StorageInterface;
 
