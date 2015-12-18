@@ -10,7 +10,7 @@ use Integrated\Common\Document\Storage\Embedded\StorageInterface;
 interface FileInterface
 {
     /**
-     * @return StorageInterface|null
+     * @return StorageInterface
      */
     public function getFile();
 }
