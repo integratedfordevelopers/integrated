@@ -10,6 +10,10 @@ use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\ContentBundle\Services\SearchContentReferenced;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * Class CheckReferencedListener
+ * @author Vasil Pascal <developer.optimum@gmail.com>
+ */
 class CheckReferencedListener implements EventSubscriber
 {
 
@@ -25,6 +29,7 @@ class CheckReferencedListener implements EventSubscriber
 
     /**
      * @param LifecycleEventArgs $args
+     * @throws AccessDeniedException
      */
     public function preRemove(LifecycleEventArgs $args)
     {
