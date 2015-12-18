@@ -11,7 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Handler;
 
-use Integrated\Bundle\StorageBundle\Storage\Command\CommandInterface;
+use Integrated\Common\Storage\Command\CommandInterface;
+use Integrated\Common\Storage\Handler\QueuedCommandBusInterface;
 
 use Symfony\Component\Intl\Exception\NotImplementedException;
 

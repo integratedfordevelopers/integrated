@@ -11,17 +11,19 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
-use Integrated\Bundle\StorageBundle\Storage\Identifier\IdentifierInterface;
-use Integrated\Bundle\StorageBundle\Storage\Reader\ReaderInterface;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
-use Integrated\Bundle\StorageBundle\Storage\Resolver\ResolverInterface;
+use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Storage\FilesystemRegistryInterface;
+use Integrated\Common\Storage\Identifier\IdentifierInterface;
+use Integrated\Common\Storage\Reader\ReaderInterface;
+use Integrated\Common\Storage\ResolverInterface;
+
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class Resolver
+class Resolver implements ResolverInterface
 {
     /**
      * @var array
@@ -39,11 +41,9 @@ class Resolver
     protected $registry;
 
     /**
-     * @param array $resolverMap
-     * @param IdentifierInterface $identifier
-     * @param FilesystemRegistry $registry
+     * {@inheritdoc}
      */
-    public function __construct(array $resolverMap, IdentifierInterface $identifier, FilesystemRegistry $registry)
+    public function __construct(array $resolverMap, IdentifierInterface $identifier, FilesystemRegistryInterface $registry)
     {
         $this->resolverMap = $resolverMap;
         $this->identifier = $identifier;
@@ -51,14 +51,9 @@ class Resolver
     }
 
     /**
-     * Gives you an absolute path to the storage.
-     * A preference can be given. When the preference is not able to serve the file another filesystem will be used.
-     *
-     * @param Storage $storage
-     * @param ArrayCollection $filesystem
-     * @return string absolute path
+     * {@inheritdoc}
      */
-    public function resolve(Storage $storage, ArrayCollection $filesystem = null)
+    public function resolve(StorageInterface $storage, ArrayCollection $filesystem = null)
     {
         $priority = $filesystem ? $filesystem : $storage->getFilesystems();
         $priority->getIterator()->uasort(function ($a) use ($filesystem) {
@@ -86,8 +81,7 @@ class Resolver
     }
 
     /**
-     * @param ReaderInterface $reader
-     * @return string
+     * {@inheritdoc}
      */
     public function getIdentifier(ReaderInterface $reader)
     {
@@ -95,8 +89,7 @@ class Resolver
     }
 
     /**
-     * @param $filesystem
-     * @return array|bool
+     * {@inheritdoc}
      */
     public function getOptions($filesystem)
     {
@@ -108,11 +101,7 @@ class Resolver
     }
 
     /**
-     * Create a resolver class based on the options
-     *
-     * @param string $filesystem
-     * @param string $identifier
-     * @return ResolverInterface
+     * {@inheritdoc}
      */
     public function getResolverClass($filesystem, $identifier)
     {

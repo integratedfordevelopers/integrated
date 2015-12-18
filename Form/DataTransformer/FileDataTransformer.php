@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\DataTransformer;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\StorageInterface;
+use Integrated\Common\Document\Storage\Embedded\StorageInterface;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -42,7 +42,7 @@ class FileDataTransformer implements DataTransformerInterface
 
         throw new TransformationFailedException(
             sprintf(
-                'Class %s given while a instance of Integrated\Bundle\StorageBundle\Document\Embedded\StorageInterface was excepted',
+                'Class %s given while a instance of Integrated\Common\Document\Storage\Embedded\StorageInterface was excepted',
                 is_object($value) ? get_class($value) : gettype($value)
             )
         );

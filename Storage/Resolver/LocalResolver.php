@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Resolver;
 
+use Integrated\Common\Storage\Resolver\ResolverInterface;
+
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */

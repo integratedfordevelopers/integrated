@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Registry;
 
+use Integrated\Common\Storage\FilesystemRegistryInterface;
+
 use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 
@@ -21,7 +23,7 @@ use Knp\Bundle\GaufretteBundle\FilesystemMap;
  *
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class FilesystemRegistry
+class FilesystemRegistry implements FilesystemRegistryInterface
 {
     /**
      * @var FilesystemMap
@@ -37,7 +39,7 @@ class FilesystemRegistry
     }
 
     /**
-     * @param $filesystem
+     * {@inheritdoc}
      * @throws \InvalidArgumentException
      * @return Filesystem
      */
@@ -61,7 +63,7 @@ class FilesystemRegistry
     }
 
     /**
-     * @param $key
+     * {@inheritdoc}
      * @return bool
      */
     public function exists($key)
@@ -76,6 +78,7 @@ class FilesystemRegistry
     }
 
     /**
+     * {@inheritdoc}
      * @return Filesystem[]
      */
     public function getIterator()

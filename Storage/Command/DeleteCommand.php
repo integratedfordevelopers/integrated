@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Command;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\StorageInterface;
-use Integrated\Bundle\StorageBundle\Storage\Manager;
+use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Storage\Command\CommandInterface;
+use Integrated\Common\Storage\ManagerInterface;
+
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -33,10 +35,9 @@ class DeleteCommand implements CommandInterface
     }
 
     /**
-     * @param Manager $manager
-     * @return mixed
+     * @param ManagerInterface $manager
      */
-    public function execute(Manager $manager)
+    public function execute(ManagerInterface $manager)
     {
         $manager->delete($this->storage);
     }

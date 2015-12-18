@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Metadata;
-use Integrated\Bundle\StorageBundle\Document\Embedded\MetadataInterface;
-use Integrated\Bundle\StorageBundle\Storage\Identifier\IdentifierInterface;
+use Integrated\Common\Storage\Identifier\IdentifierInterface;
+use Integrated\Common\Storage\Reader\ReaderInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Mapping\MetadataInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

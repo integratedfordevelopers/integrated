@@ -11,15 +11,18 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
-use Integrated\Bundle\StorageBundle\Document\Embedded\StorageInterface;
-use Integrated\Bundle\StorageBundle\Storage\Command\CommandInterface;
+use Integrated\Bundle\ContentBundle\Document\Storage\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Storage\Exception\RevertException;
-use Integrated\Bundle\StorageBundle\Storage\Handler\QueuedCommandBusInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
-use Integrated\Bundle\StorageBundle\Storage\Reader\ReaderInterface;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
+use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Storage\Command\CommandInterface;
+use Integrated\Common\Storage\FilesystemRegistryInterface;
+use Integrated\Common\Storage\Handler\QueuedCommandBusInterface;
+use Integrated\Common\Storage\ManagerInterface;
+use Integrated\Common\Storage\Reader\ReaderInterface;
+use Integrated\Common\Storage\ResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Gaufrette\Exception\FileNotFound;
@@ -55,8 +58,8 @@ class Manager implements ManagerInterface
      * {@inheritdoc}
      */
     public function __construct(
-        FilesystemRegistry $registry,
-        Resolver $resolveStorage,
+        FilesystemRegistryInterface $registry,
+        ResolverInterface $resolveStorage,
         LoggerInterface $logger,
         QueuedCommandBusInterface $busInterface = null
     ) {

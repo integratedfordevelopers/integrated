@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\Form\EventSubscriber;
 
 use Integrated\Bundle\StorageBundle\Storage\Decision;
-use Integrated\Bundle\StorageBundle\Storage\ManagerInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
+use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

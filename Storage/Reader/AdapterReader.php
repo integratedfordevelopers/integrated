@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Metadata;
-use Integrated\Bundle\StorageBundle\Document\Embedded\StorageInterface;
-use Integrated\Bundle\StorageBundle\Storage\Identifier\IdentifierInterface;
+use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Storage\Identifier\IdentifierInterface;
+use Integrated\Common\Storage\Reader\ReaderInterface;
 
 use Gaufrette\Adapter;
 
@@ -33,7 +33,7 @@ class AdapterReader implements ReaderInterface
     protected $storage;
 
     /**
-     * @var IdentifierInterface|null
+     * @var IdentifierInterface
      */
     protected $identifier;
 
@@ -58,7 +58,7 @@ class AdapterReader implements ReaderInterface
     }
 
     /**
-     * @return Metadata
+     * @return {@inheritdoc}
      */
     public function getMetadata()
     {

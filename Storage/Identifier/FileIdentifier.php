@@ -11,7 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Identifier;
 
-use Integrated\Bundle\StorageBundle\Storage\Reader\ReaderInterface;
+use Integrated\Common\Storage\Identifier\IdentifierInterface;
+use Integrated\Common\Storage\Reader\ReaderInterface;
 
 /**
  * Default identifier procedure, this prohibits duplicate files on the storage.

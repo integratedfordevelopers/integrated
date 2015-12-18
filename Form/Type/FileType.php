@@ -14,7 +14,7 @@ namespace Integrated\Bundle\StorageBundle\Form\Type;
 use Integrated\Bundle\StorageBundle\Form\DataTransformer\FileDataTransformer;
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
 use Integrated\Bundle\StorageBundle\Storage\Decision;
-use Integrated\Bundle\StorageBundle\Storage\ManagerInterface;
+use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,7 +53,7 @@ class FileType extends AbstractType
         // The field might not be required in the integrated content type
         $resolver->setDefaults([
             'required' => false,
-            'data_class' => 'Integrated\Bundle\StorageBundle\Document\Embedded\Storage',
+            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Storage\Embedded\Storage',
             'empty_data' => null
         ]);
     }

@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\StorageBundle\EventListener\Doctrine\ODM;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
-use Integrated\Bundle\StorageBundle\Document\File;
 use Integrated\Bundle\StorageBundle\Storage\Command\DeleteCommand;
-use Integrated\Bundle\StorageBundle\Storage\ManagerInterface;
+use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Document\Storage\FileInterface;
+use Integrated\Common\Storage\ManagerInterface;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -64,7 +64,7 @@ class FileEventListener implements EventSubscriber
         // The document which will be deleted
         $document = $args->getObject();
 
-        if ($document instanceof File) {
+        if ($document instanceof FileInterface) {
             $this->filesystemDelete($args->getDocumentManager(), $document->getFile());
         }
     }
@@ -78,7 +78,7 @@ class FileEventListener implements EventSubscriber
         $uow = $args->getDocumentManager()->getUnitOfWork();
 
         foreach ($uow->getScheduledDocumentDeletions() as $document) {
-            if ($document instanceof Storage) {
+            if ($document instanceof StorageInterface) {
                 $this->filesystemDelete($args->getDocumentManager(), $document);
             }
         }
@@ -88,9 +88,9 @@ class FileEventListener implements EventSubscriber
      * Remove a file from the filesystem when its not used by any other documents
      *
      * @param DocumentManager $dm
-     * @param Storage $storage
+     * @param StorageInterface $storage
      */
-    protected function filesystemDelete(DocumentManager $dm, Storage $storage)
+    protected function filesystemDelete(DocumentManager $dm, StorageInterface $storage)
     {
         // Query on the file identifier (unique/hash based filename)
         $repository = $dm->getRepository(self::REPOSITORY);

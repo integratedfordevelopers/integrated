@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\StorageBundle\Command\Filesystem;
 
-use Integrated\Bundle\StorageBundle\Storage\Database\DatabaseInterface;
-use Integrated\Bundle\StorageBundle\Storage\ManagerInterface;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
+use Integrated\Common\Storage\Database\DatabaseInterface;
+use Integrated\Common\Storage\ManagerInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Command\Command;

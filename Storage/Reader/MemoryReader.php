@@ -11,7 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Metadata;
+use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
+use Integrated\Common\Storage\Reader\ReaderInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -24,22 +25,22 @@ class MemoryReader implements ReaderInterface
     protected $content;
 
     /**
-     * @var Metadata
+     * @var MetadataInterface
      */
     protected $metadata;
 
     /**
      * @param string $content
-     * @param Metadata $metadata
+     * @param MetadataInterface $metadata
      */
-    public function __construct($content, Metadata $metadata)
+    public function __construct($content, MetadataInterface $metadata)
     {
         $this->content = $content;
         $this->metadata = $metadata;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function read()
     {
@@ -47,7 +48,7 @@ class MemoryReader implements ReaderInterface
     }
 
     /**
-     * @return Metadata
+     * {@inheritdoc}
      */
     public function getMetadata()
     {
