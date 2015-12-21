@@ -111,10 +111,12 @@ The <info>%command.name%</info> command creates a new user
 		if ($roles) {
 			$roleManager = $this->getContainer()->get('integrated_user.role.manager');
 			$roleRepository = $roleManager->getRepository();
+			$allRoles = $roleManager->getRolesFromSources();
+
 			foreach ($roles as $role) {
-				if ($objectRole = $roleRepository->findOneBy(['role'=>$role])) {
+				if ($objectRole = $roleRepository->findOneBy(['role' => $role])) {
 					$user->addRole($objectRole);
-				} else {
+				} elseif (isset($allRoles[$role])) {
 					$objectRole = $roleManager->create($role);
 					$roleManager->persist($objectRole);
 					$user->addRole($objectRole);
