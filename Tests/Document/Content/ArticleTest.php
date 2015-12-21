@@ -152,15 +152,6 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test publish time get- and setEndDate function
-     */
-    public function testGetAndSetPublishTimeEndDateFunction()
-    {
-        $publishedUntil = new \DateTime();
-        $this->assertSame($publishedUntil, $this->article->getPublishTime()->setEndDate($publishedUntil)->getEndDate());
-    }
-
-    /**
      * Test get- and setIntro function
      */
     public function testGetAndSetIntroFunction()

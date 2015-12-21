@@ -124,14 +124,22 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($publishedAt, $this->content->getPublishTime()->setStartDate($publishedAt)->getStartDate());
     }
 
+    /**
+     * Test publish time get- and setEndDate function
+     */
+    public function testGetAndSetPublishTimeEndDateFunction()
+    {
+        $publishedUntil = new \DateTime();
+        $this->assertSame($publishedUntil, $this->content->getPublishTime()->setEndDate($publishedUntil)->getEndDate());
+    }
 
     /**
      * Test get- and setDisabled function
      */
     public function testGetAndSetDisabledFunction()
     {
-        $this->assertTrue($this->content->setDisabled(true)->getDisabled());
-        $this->assertFalse($this->content->setDisabled(false)->getDisabled());
+        $this->assertTrue($this->content->setDisabled(true)->isDisabled());
+        $this->assertFalse($this->content->setDisabled(false)->isDisabled());
     }
 
     /**

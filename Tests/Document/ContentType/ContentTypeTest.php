@@ -83,18 +83,9 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($name, $this->contentType->setName($name)->getName());
 
         // After name edit, type should stay the same
-        $type = $this->contentType->getType();
+        $type = $this->contentType->getId();
         $this->contentType->setName('Wim');
-        $this->assertEquals($type, $this->contentType->getType());
-    }
-
-    /**
-     * Test get- and setType function
-     */
-    public function testGetAndSetTypeFunction()
-    {
-        $type = 'Familie De Vries';
-        $this->assertEquals($type, $this->contentType->setId($type)->getId());
+        $this->assertEquals($type, $this->contentType->getId());
     }
 
     /**
