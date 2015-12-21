@@ -121,6 +121,9 @@ The <info>%command.name%</info> command creates a new user
 					$roleManager->persist($objectRole);
 					$user->addRole($objectRole);
 				}
+				else {
+					$output->writeln(sprintf("The role %s not found ", $role));
+				}
 			}
 		}
 
