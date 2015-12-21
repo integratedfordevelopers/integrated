@@ -57,6 +57,7 @@ class CreateUserCommand extends ContainerAwareCommand
 
 			->addArgument('username', InputArgument::REQUIRED, 'The username')
 			->addArgument('password', InputArgument::REQUIRED, 'The password')
+			->addArgument('roles', InputArgument::OPTIONAL, 'Roles')
 			->addArgument('email', InputArgument::OPTIONAL, 'The email address')
 
 //			->addOption('disabled', 'd')
@@ -85,6 +86,11 @@ The <info>%command.name%</info> command creates a new user
 			$email = $input->getArgument('email'); // @todo validate input
 		}
 
+		$roles = null;
+		if ($input->hasArgument('roles')) {
+			$roles = explode(',', $input->getArgument('roles')); // @todo validate input
+		}
+
 		$manager = $this->getManager();
 
 		if ($manager->findByUsername($username)) {
@@ -101,6 +107,21 @@ The <info>%command.name%</info> command creates a new user
 		$user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
 		$user->setSalt($salt);
 		$user->setEmail($email);
+
+		if ($roles) {
+			$roleManager = $this->getContainer()->get('integrated_user.role.manager');
+			$roleRepository = $roleManager->getRepository();
+			foreach ($roles as $role) {
+				if ($objectRole = $roleRepository->findOneBy(['role'=>$role])) {
+					$user->addRole($objectRole);
+				} else {
+					$objectRole = $roleManager->create($role);
+					$roleManager->persist($objectRole);
+					$user->addRole($objectRole);
+				}
+			}
+		}
+
 
 		try {
 			$manager->persist($user);
