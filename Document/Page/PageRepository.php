@@ -21,13 +21,14 @@ class PageRepository extends DocumentRepository
 {
     /**
      * @param Channel $channel
-     * @param null $pageType
+     * @param string $pageType
      * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
-    public function getPages(Channel $channel, $pageType = null)
+    public function getPages(Channel $channel, $pageType = Page::TYPE_STATIC)
     {
         $builder = $this->createQueryBuilder();
         $builder->field('channel.$id')->equals($channel->getId());
+        $builder->field('type')->equals($pageType);
 
         return $builder;
     }

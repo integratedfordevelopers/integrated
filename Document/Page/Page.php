@@ -31,6 +31,9 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
  */
 class Page
 {
+    const TYPE_CONTENT_TYPE = 'ContentType';
+    const TYPE_STATIC = 'Static';
+
     /**
      * @var string
      * @ODM\Id(strategy="NONE")
@@ -100,6 +103,12 @@ class Page
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
      */
     protected $channel;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
+    protected $type = self::TYPE_STATIC;
 
     /**
      */
@@ -337,6 +346,24 @@ class Page
     public function setChannel(Channel $channel)
     {
         $this->channel = $channel;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
         return $this;
     }
 }

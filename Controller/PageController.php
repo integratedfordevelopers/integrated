@@ -36,8 +36,10 @@ class PageController extends Controller
     {
         $channel = $this->getSelectedChannel();
 
-        $pageType = $request->query->get('pageType', 'static');
+        $pageType = $request->query->get('pageType', Page::TYPE_STATIC);
 
+        //todo contentType page automatisch opslaan via event contentType created (moet aangemaakt)
+        //todo migratie script maken
         $pages = $this->getDocumentManager()->getRepository('IntegratedPageBundle:Page\Page')->getPages($channel, $pageType);
 
         $pagination = $this->getPaginator()->paginate(

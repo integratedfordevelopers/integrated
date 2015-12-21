@@ -25,13 +25,22 @@
                 </li>
 
                 <li class="dropdown pull-right">
-                    <a href="#" data-toggle="dropdown" role="button">{% trans %}{{ pageType == 'static' ? 'Static pages'|trans : 'Content type pages'|trans }}  ==  %}Static{% else %}Content type{% endif %} pages{% endtrans %}<b class="caret"></b></a>
+                    <a href="#" data-toggle="dropdown" role="button">
+                        {% if pageType == constant('Integrated\\Bundle\\PageBundle\\Document\\Page\\Page::TYPE_STATIC')  %}
+                            {% trans %}Static pages{% endtrans %}
+                        {% else %}
+                            {% trans %}Content type pages{% endtrans %}
+                        {% endif %}
+                        <b class="caret"></b>
+                    </a>
                     <ul role="menu" class="dropdown-menu">
                         <li role="presentation">
-                            <a href="{{ path('integrated_page_page_index', { 'channel': selectedChannel, 'pageType': 'static' }) }}" tabindex="-1" role="menuitem">{% trans %}Static pages{% endtrans %}</a>
+                            <a href="{{ path('integrated_page_page_index', { 'channel': selectedChannel, 'pageType': constant('Integrated\\Bundle\\PageBundle\\Document\\Page\\Page::TYPE_STATIC') }) }}"
+                               tabindex="-1" role="menuitem">{% trans %}Static pages{% endtrans %}</a>
                         </li>
                         <li role="presentation">
-                            <a href="{{ path('integrated_page_page_index', { 'channel': selectedChannel, 'pageType': 'content_type' }) }}" tabindex="-1" role="menuitem">{% trans %}Content type pages{% endtrans %}</a>
+                            <a href="{{ path('integrated_page_page_index', { 'channel': selectedChannel, 'pageType': constant('Integrated\\Bundle\\PageBundle\\Document\\Page\\Page::TYPE_CONTENT_TYPE') }) }}"
+                               tabindex="-1" role="menuitem">{% trans %}Content type pages{% endtrans %}</a>
                         </li>
                     </ul>
                 </li>
