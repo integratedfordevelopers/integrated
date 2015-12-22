@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Document\Storage;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Common\Document\Storage\Embedded\StorageInterface;
-use Integrated\Common\Document\Storage\FileInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;

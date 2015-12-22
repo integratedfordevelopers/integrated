@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Storage\Embedded;
 
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
-use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\ResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
