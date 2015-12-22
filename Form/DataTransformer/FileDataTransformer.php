@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\DataTransformer;
 
-use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
