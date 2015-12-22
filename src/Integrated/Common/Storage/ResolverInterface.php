@@ -2,7 +2,7 @@
 
 namespace Integrated\Common\Storage;
 
-use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Identifier\IdentifierInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
 
@@ -18,7 +18,11 @@ interface ResolverInterface
      * @param IdentifierInterface $identifier
      * @param FilesystemRegistryInterface $registry
      */
-    public function __construct(array $resolverMap, IdentifierInterface $identifier, FilesystemRegistryInterface $registry);
+    public function __construct(
+        array $resolverMap,
+        IdentifierInterface $identifier,
+        FilesystemRegistryInterface $registry
+    );
 
     /**
      * Gives you an absolute path to the storage.
