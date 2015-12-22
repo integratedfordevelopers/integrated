@@ -91,15 +91,21 @@ class FacetBlockHandler extends BlockHandler
             return;
         }
 
-        $facet = $facetSet->getFacet($block->getField());
+        $facets = [];
+        foreach ($block->getFields() as $field) {
+            $facets[$field->getField()] = [
+                'name' => $field->getName(),
+                'values' => $facetSet->getFacet($field->getField()),
+            ];
+        }
 
-        if (null === $facet || !count($facet)) {
+        if (null === $facets || !count($facets)) {
             return; // @todo show block in edit mode (INTEGRATED-428)
         }
 
         return $this->render([
             'block' => $block,
-            'facet' => $facet,
+            'facets' => $facets,
         ]);
     }
 }
