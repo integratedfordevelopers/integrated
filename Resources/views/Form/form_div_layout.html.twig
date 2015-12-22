@@ -53,6 +53,7 @@
                         
                         content_css: "{{ content_styles.content_css|merge(['/bundles/integratedformtype/css/tinymce.content.css'])|join(',') }}",
                         style_formats: [
+                            {title: 'Paragraph', format: 'p'},
                             {title: 'Heading 2', block: 'h2' },
                             {title: 'Heading 3', block: 'h3' },
                             {title: 'Heading 4', block: 'h4' },
