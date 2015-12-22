@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Resolver;
 
-use Integrated\Common\Storage\Resolver\ResolverInterface;
+use Integrated\Common\Storage\FileResolver\FileResolverInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class LocalResolver implements ResolverInterface
+class LocalResolver implements FileResolverInterface
 {
     /**
      * @var string

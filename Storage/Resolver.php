@@ -17,6 +17,7 @@ use Integrated\Common\Storage\FilesystemRegistryInterface;
 use Integrated\Common\Storage\Identifier\IdentifierInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
 use Integrated\Common\Storage\ResolverInterface;
+use Integrated\Common\Storage\FileResolver\FileResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -108,7 +109,7 @@ class Resolver implements ResolverInterface
         $className = $this->resolverMap[$filesystem]['resolver_class'];
 
         $resolver = new $className($this->resolverMap[$filesystem], $identifier);
-        if ($resolver instanceof ResolverInterface) {
+        if ($resolver instanceof FileResolverInterface) {
             return $resolver;
         }
 
