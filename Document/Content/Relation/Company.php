@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-use Integrated\Bundle\StorageBundle\Document\File;
+use Integrated\Bundle\ContentBundle\Document\Storage\File;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
@@ -46,7 +46,7 @@ class Company extends Relation
 
     /**
      * @var File
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\StorageBundle\Document\File")
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Storage\File")
      * @Type\Field(type="integrated_image_choice")
      */
     protected $logo;
