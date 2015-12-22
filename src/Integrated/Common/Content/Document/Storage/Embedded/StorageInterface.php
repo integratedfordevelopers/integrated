@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Document\Storage\Embedded;
+namespace Integrated\Common\Content\Document\Storage\Embedded;
 
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Integrated\Common\Storage\ResolverInterface;
