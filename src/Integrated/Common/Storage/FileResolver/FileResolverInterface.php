@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Storage\Resolver;
+namespace Integrated\Common\Storage\FileResolver;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-interface ResolverInterface
+interface FileResolverInterface
 {
     /**
      * @param array $options
