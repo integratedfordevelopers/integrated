@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\StorageBundle\Storage;
 
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
-use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\FilesystemRegistryInterface;
 use Integrated\Common\Storage\Identifier\IdentifierInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
