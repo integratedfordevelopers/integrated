@@ -16,7 +16,7 @@ use Integrated\Bundle\StorageBundle\Storage\Exception\RevertException;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
-use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Command\CommandInterface;
 use Integrated\Common\Storage\FilesystemRegistryInterface;
 use Integrated\Common\Storage\Handler\QueuedCommandBusInterface;
@@ -137,7 +137,12 @@ class Manager implements ManagerInterface
                 }
 
                 // Might return 0 for an empty file (or throw an exception)
-                if (false === $storage->setContent($reader->read(), $reader->getMetadata()->storageData())) {
+                $result = $storage->setContent(
+                    $reader->read(),
+                    $reader->getMetadata()->storageData()->toArray()
+                );
+
+                if (false === $result) {
                     // Throw a roll back
                     throw new RevertException(
                         sprintf(
