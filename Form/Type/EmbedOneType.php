@@ -27,7 +27,7 @@ class EmbedOneType extends AbstractType
     protected $metadataFactory;
 
     /**
-     * @param MetadataFactory $metadata
+     * @param MetadataFactory $metadataFactory
      */
     public function __construct(MetadataFactory $metadataFactory)
     {

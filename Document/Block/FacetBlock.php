@@ -47,7 +47,11 @@ class FacetBlock extends Block
      * @Type\Field(
      *      type="bootstrap_collection",
      *      options={
-     *          "type"="integrated_block_size",
+     *          "type"="integrated_embed_one",
+     *          "options"={
+     *              "data_class"="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField",
+     *              "attr"={"class"="section-white section-padding section-shadow section-radius"}
+     *          },
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }

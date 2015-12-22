@@ -19,6 +19,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  * @author Johan Liefers <johan@e-active.nl>
  *
  * @ODM\EmbeddedDocument
+ * @Type\Document("FacetField")
  */
 class FacetField
 {
