@@ -24,9 +24,9 @@ use Integrated\Common\ContentType\ResolverInterface;
 class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
 {
     public function testInterface()
-   	{
-   		$this->assertInstanceOf('Integrated\\Common\\ContentType\\IteratorInterface', $this->getInstance());
-   	}
+    {
+        $this->assertInstanceOf('Integrated\\Common\\ContentType\\IteratorInterface', $this->getInstance());
+    }
 
     public function testCurrent()
     {
@@ -69,7 +69,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testKey()
-   	{
+    {
         $iterator = $this->getInstance([
             $this->getResolver(['type 1' => $this->getType('type 1'), 'type 2' => $this->getType('type 2')])
         ]);
@@ -79,10 +79,10 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('type 2', $iterator->key());
         $iterator->next();
         self::assertNull($iterator->key());
-   	}
+    }
 
     public function testValid()
-   	{
+    {
         $iterator = $this->getInstance([
             $this->getResolver(['type 1' => $this->getType('type 1'), 'type 2' => $this->getType('type 2')])
         ]);
@@ -92,7 +92,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
         self::assertTrue($iterator->valid());
         $iterator->next();
         self::assertFalse($iterator->valid());
-   	}
+    }
 
     public function testValidWithOutResolvers()
     {
@@ -100,7 +100,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testRewind()
-   	{
+    {
         $types = [
             $this->getType('type 1'),
             $this->getType('type 2'),
@@ -119,7 +119,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
 
         self::assertSame($types[0], $iterator->current());
         self::assertEquals('type 1', $iterator->key());
-   	}
+    }
 
     /**
      * @param ResolverInterface[] $resolvers
@@ -140,7 +140,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
     {
         $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $mock->expects($this->any())
-            ->method('getType')
+            ->method('getId')
             ->willReturn($name);
 
         return $mock;

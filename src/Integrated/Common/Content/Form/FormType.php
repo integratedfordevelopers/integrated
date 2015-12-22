@@ -207,7 +207,7 @@ class FormType extends AbstractType implements FormTypeInterface
     public function getName()
     {
         if (null === $this->name) {
-            $this->name = preg_replace('#[^a-zA-Z0-9\-_]#', '', 'integrated_content_form_' . $this->contentType->getType());
+            $this->name = preg_replace('#[^a-zA-Z0-9\-_]#', '', 'integrated_content_form_' . $this->contentType->getId());
             $this->name = strtolower($this->name);
         }
 

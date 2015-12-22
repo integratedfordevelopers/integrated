@@ -651,7 +651,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
     public function testGetName($name, $expected)
     {
         $this->type->expects($this->once())
-            ->method('getType')
+            ->method('getId')
             ->willReturn($name);
 
         $type = $this->getInstance();
