@@ -82,6 +82,13 @@ class Article extends Content
     /**
      * @var string
      * @ODM\String
+     * @Type\Field(type="textarea")
+     */
+    protected $description;
+
+    /**
+     * @var string
+     * @ODM\String
      * @Type\Field(type="integrated_tinymce")
      */
     protected $content;
@@ -278,6 +285,24 @@ class Article extends Content
     public function setIntro($intro)
     {
         $this->intro = $intro;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
         return $this;
     }
 

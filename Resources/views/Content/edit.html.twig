@@ -127,6 +127,24 @@
 
         </div>
     </div>
+
+    <div class="modal fade" id="content-edit-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{% trans %}Unsaved changes{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans %}You have unsaved changes. When you leave this page your changes will be lost.{% endtrans %}</p>
+                    <p>{% trans %}Are you sure you want to leave this page?{% endtrans %}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default live-page">{% trans %}Leave this page{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}Stay on page{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block javascript %}
 {{ parent() }}
@@ -141,7 +159,6 @@
 {% if content is defined %}
 <script>
     $(function() {
-
         var cnt = $('#used-by');
 
         var handleUsedBy = function(data) {
@@ -175,6 +192,11 @@
         loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id}) }}');
     });
 </script>
+
+{% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
 {% endif %}
 
 {{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}

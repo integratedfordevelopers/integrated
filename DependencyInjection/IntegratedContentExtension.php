@@ -46,6 +46,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('paginator.xml');
 
         $loader->load('form.xml');
+        $loader->load('form.actions.xml');
         $loader->load('form.content.xml');
         $loader->load('form.content-type.xml');
 
@@ -65,6 +66,8 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 
         $loader->load('provider.xml');
         $loader->load('block.xml');
+
+        $loader->load('mailer.xml');
 
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);

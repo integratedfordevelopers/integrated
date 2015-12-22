@@ -20,8 +20,11 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\FormBlock;
+use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Form\FormFactory as ContentFormFactory;
+
+use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\True;
 
 /**
  * Form block handler
@@ -51,17 +54,24 @@ class FormBlockHandler extends BlockHandler
     protected $requestStack;
 
     /**
+     * @var FormMailer
+     */
+    protected $formMailer;
+
+    /**
      * @param ContentFormFactory $contentFormFactory
      * @param FormFactory $formFactory
      * @param DocumentManager $documentManager
      * @param RequestStack $requestStack
+     * @param FormMailer $formMailer
      */
-    public function __construct(ContentFormFactory $contentFormFactory, FormFactory $formFactory, DocumentManager $documentManager, RequestStack $requestStack)
+    public function __construct(ContentFormFactory $contentFormFactory, FormFactory $formFactory, DocumentManager $documentManager, RequestStack $requestStack, FormMailer $formMailer)
     {
         $this->contentFormFactory = $contentFormFactory;
         $this->formFactory = $formFactory;
         $this->documentManager = $documentManager;
         $this->requestStack = $requestStack;
+        $this->formMailer = $formMailer;
     }
 
     /**
@@ -83,7 +93,7 @@ class FormBlockHandler extends BlockHandler
         $type = $this->contentFormFactory->getType($contentType->getId());
 
         $content = $type->getType()->create();
-        $form = $this->createForm($type, $content, ['method' => 'post']);
+        $form = $this->createForm($type, $content, ['method' => 'post'], $block);
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -91,6 +101,14 @@ class FormBlockHandler extends BlockHandler
             if ($form->isValid()) {
                 $this->documentManager->persist($content);
                 $this->documentManager->flush();
+                
+                $data = $request->request->get($form->getName());
+
+                // remove irrelevant fields
+                unset($data['actions']);
+                unset($data['_token']);
+
+                $this->formMailer->send($data, $block->getEmailAddresses());
 
                 return new RedirectResponse($block->getReturnUrl());
             }
@@ -106,9 +124,10 @@ class FormBlockHandler extends BlockHandler
      * @param \Integrated\Common\Content\Form\FormTypeInterface $type
      * @param mixed $data
      * @param array $options
+     * @param FormBlock $block
      * @return \Symfony\Component\Form\Form
      */
-    public function createForm($type, $data = null, array $options = [])
+    protected function createForm($type, $data = null, array $options = [], FormBlock $block = null)
     {
         $form = $this->formFactory->createBuilder($type, $data, $options);
 
@@ -120,6 +139,17 @@ class FormBlockHandler extends BlockHandler
         $form->remove('channels');
         $form->remove('relations');
         $form->remove('extension_workflow');
+        $form->remove('source');
+
+        if (null !== $block && $block->isRecaptcha()) {
+            $form->add('recaptcha', 'vihuvac_recaptcha', [
+                'mapped'      => false,
+                'label'       => ' ',
+                'constraints' => [
+                    new True(),
+                ],
+            ]);
+        }
 
         $form->add('actions', 'form_actions', [
             'buttons' => [

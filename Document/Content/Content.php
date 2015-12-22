@@ -78,7 +78,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * @var PublishTime
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime")
-     * @Type\Field(type="integrated_publishtime")
+     * @Type\Field(type="integrated_publish_time")
      */
     protected $publishTime;
 
@@ -280,6 +280,34 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
+     * @param string $relationId
+     * @return ArrayCollection
+     */
+    public function getReferencesByRelationId($relationId)
+    {
+        foreach ($this->relations as $relation) {
+            if ($relation instanceof Relation) {
+                if ($relation->getRelationId() == $relationId) {
+                    return $relation->getReferences();
+                }
+            }
+        }
+
+        return new ArrayCollection();
+    }
+
+    /**
+     * @param string $relationId
+     * @return Content|null
+     */
+    public function getReferenceByRelationId($relationId)
+    {
+        if ($references = $this->getReferencesByRelationId($relationId)) {
+            return $references->first();
+        }
+    }
+
+    /**
      * Get the createdAt of the document
      *
      * @return \DateTime
@@ -370,7 +398,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
             $published = $this->publishTime->isPublished();
         }
 
-        return ($published && $this->published);
+        return ($published && !$this->disabled);
     }
 
     /**
@@ -383,17 +411,6 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     {
         $this->published = $published;
         return $this;
-    }
-
-    /**
-     * Get the disabled of the document
-     *
-     * @deprecated
-     * @return bool
-     */
-    public function getDisabled()
-    {
-        return $this->disabled;
     }
 
     /**
@@ -501,15 +518,6 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function updateUpdatedAtOnPreUpdate()
     {
         $this->updatedAt = new \DateTime();
-    }
-
-    /**
-     * @ODM\PrePersist
-     * @ODM\PreUpdate
-     */
-    public function updatePublishedOnPreUpdate()
-    {
-        $this->setPublished(!$this->disabled);
     }
 
     /**

@@ -1,4 +1,4 @@
-@import "../../../../../../../../../vendor/twbs/bootstrap/less/bootstrap.less";
+@import "../../../../../../vendor/twbs/bootstrap/less/bootstrap.less";
 @import "variables.less";
 
 body {
@@ -95,6 +95,10 @@ textarea {
     font-size: 12px;
     line-height: inherit;
   }
+}
+
+.text-disabled {
+  color: #ddd;
 }
 
 .margin_botom_in_mobile {
@@ -1024,7 +1028,7 @@ header {
 }
 
 .filters_list {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   &:last-child {
     margin-bottom: 0;
   }
@@ -1051,5 +1055,8 @@ header {
         }
       }
     }
+  }
+  .to_show {
+    display: none;
   }
 }

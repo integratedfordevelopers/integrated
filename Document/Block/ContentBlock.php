@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
+use Integrated\Bundle\BlockBundle\Document\Block\PublishTitleTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
@@ -29,6 +30,8 @@ use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
  */
 class ContentBlock extends Block
 {
+    use PublishTitleTrait;
+
     /**
      * @var SearchSelection
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection")
@@ -92,6 +95,18 @@ class ContentBlock extends Block
      * )
      */
     protected $facetFields = [];
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Assert\NotBlank
+     * @Type\Field(
+     *       options={
+     *          "attr"={"class"="main-title"}
+     *       }
+     * )
+     */
+    protected $title;
 
     /**
      * @return SearchSelection
