@@ -43,6 +43,7 @@
             "Integrated\\Common\\Block\\": "src/",
             "Integrated\\Common\\Channel\\": "src/",
             "Integrated\\Common\\Content\\": "src/",
+            "Integrated\\Common\\Content\\Document\\": "src/",
             "Integrated\\Common\\ContentType\\": "src/",
             "Integrated\\Common\\Converter\\": "src/",
             "Integrated\\Common\\Form\\": "src/",
@@ -50,6 +51,7 @@
             "Integrated\\Common\\Queue\\": "src/",
             "Integrated\\Common\\Security\\": "src/",
             "Integrated\\Common\\Solr\\": "src/",
+            "Integrated\\Common\\Storage\\": "src/",
             "Integrated\\Common\\Validator\\": "src/"
         }
     },
