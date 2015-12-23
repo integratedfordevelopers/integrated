@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Storage\Database;
 
-use Integrated\Common\Document\Storage\FileInterface;
+use Integrated\Common\Content\Document\Storage\FileInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

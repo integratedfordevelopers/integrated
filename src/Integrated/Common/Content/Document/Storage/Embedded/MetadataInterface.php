@@ -19,14 +19,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface MetadataInterface
 {
     /**
-     * @param string $extension
-     * @param string $mimeType
-     * @param ArrayCollection $headers
-     * @param ArrayCollection $metadata
-     */
-    public function __construct($extension, $mimeType, ArrayCollection $headers, ArrayCollection $metadata);
-
-    /**
      * @return ArrayCollection
      */
     public function storageData();

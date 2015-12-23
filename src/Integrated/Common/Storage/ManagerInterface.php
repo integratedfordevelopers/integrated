@@ -21,19 +21,6 @@ interface ManagerInterface
     const LOG_PREFIX = 'IntegratedStorage: ';
 
     /**
-     * @param FilesystemRegistryInterface $registry
-     * @param ResolverInterface $resolveStorage
-     * @param LoggerInterface $logger
-     * @param QueuedCommandBusInterface $busInterface
-     */
-    public function __construct(
-        FilesystemRegistryInterface $registry,
-        ResolverInterface $resolveStorage,
-        LoggerInterface $logger,
-        QueuedCommandBusInterface $busInterface = null
-    );
-
-    /**
      * The (queued) command (message) bus strategy
      *
      * @param CommandInterface $command

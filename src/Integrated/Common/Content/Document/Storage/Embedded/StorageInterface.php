@@ -11,7 +11,6 @@
 
 namespace Integrated\Common\Content\Document\Storage\Embedded;
 
-use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Integrated\Common\Storage\ResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;

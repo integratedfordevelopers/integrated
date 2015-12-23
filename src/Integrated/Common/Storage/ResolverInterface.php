@@ -14,17 +14,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface ResolverInterface
 {
     /**
-     * @param array $resolverMap
-     * @param IdentifierInterface $identifier
-     * @param FilesystemRegistryInterface $registry
-     */
-    public function __construct(
-        array $resolverMap,
-        IdentifierInterface $identifier,
-        FilesystemRegistryInterface $registry
-    );
-
-    /**
      * Gives you an absolute path to the storage.
      * A preference can be given. When the preference is not able to serve the file another filesystem will be used.
      *
