@@ -64,17 +64,16 @@ class ListCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         foreach ($this->registry->getIterator() as $key => $filesystem) {
-            $output->write(
+            $output->writeln(
                 sprintf(
                     '<info>%s</info>: %s',
                     $key,
                     get_class($filesystem->getAdapter())
-                ),
-                true
+                )
             );
 
             if ($options = $this->resolverStorage->getOptions($key)) {
-                $output->write(
+                $output->writeln(
                     [
                         sprintf(
                             "\t resolver_class: %s",
@@ -84,13 +83,9 @@ class ListCommand extends Command
                             "\t public: %s",
                             $options['public']
                         )
-                    ],
-                    true
+                    ]
                 );
             }
-
-            // Add an extra empty line
-            $output->write('', true);
         }
     }
 }
