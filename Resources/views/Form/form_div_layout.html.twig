@@ -41,7 +41,7 @@
                         add_unload_trigger: false,
                         schema: "html5",
                         menubar: false,
-                        toolbar: "formatselect | bold italic underline | bullist numlist | link image print preview media fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
+                        toolbar: "styleselect | bold italic underline | bullist numlist | link image print preview media fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
                         statusbar: true,
                         statusbar_size: "small",
                         width: "100%",
@@ -51,9 +51,20 @@
                         browser_spellcheck : true,
                         autoresize_bottom_margin: "0px",
                         convert_urls: false,
-
-                        content_css: "/bundles/integratedformtype/css/tinymce.content.css"
-
+                        content_css: "{{ content_styles.content_css|merge(['/bundles/integratedformtype/css/tinymce.content.css'])|join(',') }}",
+                        style_formats: [
+                            {title: 'Paragraph', format: 'p'},
+                            {title: 'Heading 2', block: 'h2' },
+                            {title: 'Heading 3', block: 'h3' },
+                            {title: 'Heading 4', block: 'h4' },
+                            {title: 'Heading 5', block: 'h5' },
+                            {title: 'Preformatted (fixed font)', block: 'pre' }
+                            {% for style_format in content_styles.style_formats %}
+                                {% if loop.first %},{% endif %}
+                                {{ style_format|json_encode|raw }}
+                                {% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        ]
                     });
                 }
         );
@@ -91,7 +102,7 @@
                 {% set prototype_vars = prototype_vars|merge({'style': style}) %}
             {% endif %}
 
-            {% set prototype_html = '<a data-toggle="collapse" href="#__id__">Item</a>' %}
+            {% set prototype_html = '<a data-toggle="collapse" href="#__id__">' ~ field.vars.value.title|default(form.vars.default_title|default('Item')) ~ '</a>' %}
             {% if form.vars.allow_delete %}
                 {% set prototype_html = prototype_html ~ '<a href="javascript:;" class="pull-right" title="' ~ form.vars.delete_button_text|trans({}, translation_domain) ~ '" data-removefield="collection" data-field="__id__"><span class="glyphicon glyphicon-remove"></span></a>' %}
             {% endif %}
@@ -111,7 +122,7 @@
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <a data-toggle="collapse" href="#{{ field.vars.id }}">
-                                        {{ field.vars.value.title|default('Item') }}
+                                        {{ field.vars.value.title|default(form.vars.default_title|default('Item')) }}
                                     </a>
 
                                     {% if form.vars.allow_delete %}
@@ -121,7 +132,7 @@
                                     {% endif %}
                                 </h4>
                             </div>
-                            <div id="{{ field.vars.id }}" class="panel-collapse collapse">
+                            <div id="{{ field.vars.id }}" class="panel-collapse collapse{% if not field.vars.valid %} in{% endif %}">
                                 <div class="panel-body">
                                     {{ form_widget(field) }}
                                     {{ form_errors(field) }}
