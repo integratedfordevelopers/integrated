@@ -11,16 +11,18 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
+use Integrated\Common\Storage\FilesystemRegistryInterface;
+use Integrated\Common\Storage\DecisionInterface;
+
 use Doctrine\Common\Collections\ArrayCollection;
-use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class Decision
+class Decision implements DecisionInterface
 {
     /**
-     * @var FilesystemRegistry
+     * @var FilesystemRegistryInterface
      */
     protected $registry;
 
@@ -30,19 +32,18 @@ class Decision
     protected $decisionMap;
 
     /**
-     * @param FilesystemRegistry $registry
+     * @param FilesystemRegistryInterface $registry
      * @param array $decisionMap
      */
-    public function __construct(FilesystemRegistry $registry, array $decisionMap)
+    public function __construct(FilesystemRegistryInterface $registry, array $decisionMap)
     {
         $this->registry = $registry;
         $this->decisionMap = $decisionMap;
     }
 
     /**
-     * @param $class
-     * @return array
-     */
+     * {@inheritdoc}
+     **/
     public function getFilesystems($class)
     {
         $className = get_class($class);
