@@ -43,9 +43,9 @@ class PriorityResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testInterface()
-   	{
-   		self::assertInstanceOf('Integrated\\Common\\ContentType\\ResolverInterface', $this->getInstance());
-   	}
+    {
+        self::assertInstanceOf('Integrated\\Common\\ContentType\\ResolverInterface', $this->getInstance());
+    }
 
     public function testHasResolver()
     {
@@ -117,13 +117,13 @@ class PriorityResolverTest extends \PHPUnit_Framework_TestCase
         $mock->expects($this->any())
             ->method('hasType')
             ->willReturnCallback(function ($arg) use ($type) {
-                return (bool) ($arg == $type->getType());
+                return (bool) ($arg == $type->getId());
             });
 
         $mock->expects($this->any())
             ->method('getType')
             ->willReturnCallback(function ($arg) use ($type) {
-                if ($arg == $type->getType()) {
+                if ($arg == $type->getId()) {
                     return $type;
                 }
 
@@ -132,7 +132,7 @@ class PriorityResolverTest extends \PHPUnit_Framework_TestCase
 
         $mock->expects($this->any())
             ->method('getTypes')
-            ->willReturn(new Iterator([$type->getType() => $type]));
+            ->willReturn(new Iterator([$type->getId() => $type]));
 
         return $mock;
     }
@@ -146,7 +146,7 @@ class PriorityResolverTest extends \PHPUnit_Framework_TestCase
     {
         $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $mock->expects($this->any())
-            ->method('getType')
+            ->method('getId')
             ->willReturn($name);
 
         return $mock;

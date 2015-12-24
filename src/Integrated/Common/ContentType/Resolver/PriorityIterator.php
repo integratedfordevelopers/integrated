@@ -104,7 +104,7 @@ class PriorityIterator implements IteratorInterface
     private function validate()
     {
         while ($this->iterator->valid()) {
-            $type = $this->current()->getType();
+            $type = $this->current()->getId();
 
             if (!array_key_exists($type, $this->accepted)) {
                 $this->accepted[$type] = true;

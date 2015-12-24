@@ -49,7 +49,7 @@ class MongoDBIterator implements IteratorInterface
      */
     public function key()
     {
-        return $this->valid() ? $this->current()->getType() : null;
+        return $this->valid() ? $this->current()->getId() : null;
     }
 
     /**

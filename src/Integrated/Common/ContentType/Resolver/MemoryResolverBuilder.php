@@ -32,7 +32,7 @@ class MemoryResolverBuilder
      */
     public function addContentType(ContentTypeInterface $type)
     {
-        $this->types[$type->getType()] = $type;
+        $this->types[$type->getId()] = $type;
 
         return $this;
     }
