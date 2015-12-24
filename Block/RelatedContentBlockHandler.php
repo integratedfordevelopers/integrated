@@ -78,6 +78,7 @@ class RelatedContentBlockHandler extends BlockHandler
         return $this->render([
             'block'      => $block,
             'pagination' => $pagination,
+            'document' => $this->getDocument()
         ]);
     }
 
