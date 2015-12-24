@@ -13,7 +13,7 @@ namespace Integrated\Bundle\StorageBundle\Form\Type;
 
 use Integrated\Bundle\StorageBundle\Form\DataTransformer\FileDataTransformer;
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
-use Integrated\Bundle\StorageBundle\Storage\Decision;
+use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Form\AbstractType;
@@ -31,15 +31,15 @@ class FileType extends AbstractType
     protected $manager;
 
     /**
-     * @var Decision
+     * @var DecisionInterface
      */
     protected $decision;
 
     /**
      * @param ManagerInterface $manager
-     * @param Decision $decision
+     * @param DecisionInterface $decision
      */
-    public function __construct(ManagerInterface $manager, Decision $decision)
+    public function __construct(ManagerInterface $manager, DecisionInterface $decision)
     {
         $this->manager = $manager;
         $this->decision = $decision;
