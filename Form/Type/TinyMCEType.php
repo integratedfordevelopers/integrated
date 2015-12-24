@@ -12,19 +12,48 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class TinyMCEType
+ * @package Integrated\Bundle\FormTypeBundle\Form\Type
+ */
 class TinyMCEType extends AbstractType
 {
+    /** @var array */
+    private $contentStyles;
 
+    /**
+     * TinyMCEType constructor.
+     * @param array $contentStyles
+     */
+    public function __construct(array $contentStyles)
+    {
+        $this->contentStyles = $contentStyles;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars = array_merge($view->vars, ['content_styles' => $this->contentStyles]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return 'textarea';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'integrated_tinymce';

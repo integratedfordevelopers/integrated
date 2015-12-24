@@ -20,6 +20,7 @@
             <tag name="form.type" alias="integrated_datetime" />
         </service>
         <service id="integrated_formtype_form_type_TinyMCE" class="%integrated_formtype_form_type_TinyMCE.class%">
+            <argument>%integrated_content_styles%</argument>
             <tag name="form.type" alias="integrated_tinymce" />
         </service>
         <service id="integrated_formtype_form_type_wysihtml5x" class="%integrated_formtype_form_type_wysihtml5x.class%">
