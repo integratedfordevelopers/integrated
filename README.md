@@ -5,7 +5,7 @@ Provides an interface to manage database locks and keep a lock active by Ajax re
 * See the require section in the composer.json
 
 ## Documentation ##
-* [Integrated for Developers website](http://integratedfordevelopers.com/content/documentation "Integrated for Developers website")
+* [Integrated for developers website](http://integratedfordevelopers.com/content/documentation "Integrated for developers website")
 
 ## Installation ##
 This bundle can be installed following these steps:
