@@ -1,9 +1,9 @@
 {
     "name": "integrated/website-bundle",
     "type": "symfony-bundle",
-    "description": "Integrated Website Bundle",
+    "description": "Provides a website front-end for content in Integrated",
     "keywords": ["Integrated", "website"],
-    "homepage": "http://www.e-active.nl",
+    "homepage": "http://www.integratedfordevelopers.com",
     "license": "MIT",
     "authors": [
         {
@@ -38,11 +38,6 @@
     "autoload":{
         "psr-4":{
             "Integrated\\Bundle\\WebsiteBundle\\": ""
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "0.9.9-dev"
         }
     }
 }
