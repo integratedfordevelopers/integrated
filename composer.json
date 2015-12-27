@@ -1,7 +1,7 @@
 {
     "name": "integrated/locking-bundle",
     "type": "symfony-bundle",
-    "description": "Integrated Locking Bundle",
+    "description": "Provides an interface to manage database locks and keep a lock active by Ajax request",
     "keywords": ["Integrated", "locking"],
     "homepage": "http://www.e-active.nl",
     "license": "MIT",
