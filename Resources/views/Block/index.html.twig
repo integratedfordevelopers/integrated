@@ -17,20 +17,27 @@
             </ul>
 
             <section class="section-white section-padding section-shadow section-radius">
+            <div class="row">
+                <div class="col-sm-8">
 
                 <table class="table">
                     <colgroup>
                         <col />
                         <col />
                         <col />
+                        {% if pageBundleInstalled %}<col />{% endif %}
                         <col style="width: 5em" />
                     </colgroup>
 
                     <thead>
                         <tr>
-                            <th>{% trans %}Block name{% endtrans %}</th>
-                            <th>{% trans %}Short code{% endtrans %}</th>
-                            <th>{% trans %}Type{% endtrans %}</th>
+                            <th>{{ knp_pagination_sortable(blocks, 'Block name', 'title') }}</th>
+                            <th>{{ knp_pagination_sortable(blocks, 'Short code', 'id') }}</th>
+                            <th>{{ knp_pagination_sortable(blocks, 'Type', 'type') }}</th>
+                            {% if pageBundleInstalled %}
+                                <th>{% trans %}Channels{% endtrans %}</th>
+                                <th>{% trans %}Pages{% endtrans %}</th>
+                            {% endif %}
                             <th>{% trans %}Actions{% endtrans %}</th>
                         </tr>
                     </thead>
@@ -48,14 +55,20 @@
                             <td>
                                 {{ block.type }}
                             </td>
+                            {% if pageBundleInstalled %}
+                                <td>{{ integrated_find_channels(block) }}</td>
+                                <td>{{ integrated_find_pages(block) }}</td>
+                            {% endif %}
                             <td>
                                 <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}" title="{% trans %}Edit{% endtrans %}">
                                     {{ icon('pencil') }}
                                 </a>
                                 {% if not block.locked %}
-                                    <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
-                                        {{ icon('remove-circle') }}
-                                    </a>
+                                    {% if pageBundleInstalled and not integrated_find_pages(block) %}
+                                        <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                                            {{ icon('remove-circle') }}
+                                        </a>
+                                    {% endif  %}
                                 {% endif %}
                             </td>
                         </tr>
@@ -74,7 +87,31 @@
                 </table>
 
                 {{ knp_pagination_render(blocks) }}
-            </section>
         </div>
+        <div class="col-sm-4">
+            <div class="content_column_inner block-facet-filter">
+                {{ form_start(facetFilter) }}
+                    {{ form_row(facetFilter.type) }}
+                    {% if pageBundleInstalled %}
+                        <br/>
+                        <br/>
+                        {{ form_row(facetFilter.channels) }}
+                    {% endif %}
+                {{ form_end(facetFilter) }}
+            </div>
+        </div>
+
     </div>
+
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+      $(function () {
+        $(".block-facet-filter").find('form').on('change', function () {
+          $(this).trigger('submit');
+        });
+      });
+    </script>
 {% endblock %}

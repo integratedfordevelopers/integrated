@@ -6,7 +6,7 @@
 
     <parameters>
 
-        <parameter key="integrated_block.templating.block_renderer.class">Integrated\Bundle\BlockBundle\Templating\BlockRenderer</parameter>
+        <parameter key="integrated_block.templating.block_manager.class">Integrated\Bundle\BlockBundle\Templating\BlockManager</parameter>
 
         <parameter key="integrated_block.listener.short_code.class">Integrated\Bundle\BlockBundle\EventListener\ShortCodeListener</parameter>
 
@@ -18,7 +18,7 @@
 
     <services>
 
-        <service id="integrated_block.templating.block_renderer" class="%integrated_block.templating.block_renderer.class%">
+        <service id="integrated_block.templating.block_manager" class="%integrated_block.templating.block_manager.class%">
             <argument type="service" id="integrated_block.registry.block_handler" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
@@ -26,7 +26,7 @@
         </service>
 
         <service id="integrated_block.listener.short_code" class="%integrated_block.listener.short_code.class%">
-            <argument type="service" id="integrated_block.templating.block_renderer" />
+            <argument type="service" id="integrated_block.templating.block_manager" />
             <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse" />
         </service>
 
