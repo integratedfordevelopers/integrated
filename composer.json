@@ -27,7 +27,8 @@
         "doctrine/orm": "~2.4",
         "doctrine/mongodb": "~1.2",
         "doctrine/mongodb-odm": "~1.0",
-        "solarium/solarium": "3.2.0"
+        "solarium/solarium": "3.2.0",
+        "psr/log": "~1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "4.2.*"
@@ -42,6 +43,7 @@
             "Integrated\\Common\\Block\\": "src/",
             "Integrated\\Common\\Channel\\": "src/",
             "Integrated\\Common\\Content\\": "src/",
+            "Integrated\\Common\\Content\\Document\\": "src/",
             "Integrated\\Common\\ContentType\\": "src/",
             "Integrated\\Common\\Converter\\": "src/",
             "Integrated\\Common\\Form\\": "src/",
@@ -49,6 +51,7 @@
             "Integrated\\Common\\Queue\\": "src/",
             "Integrated\\Common\\Security\\": "src/",
             "Integrated\\Common\\Solr\\": "src/",
+            "Integrated\\Common\\Storage\\": "src/",
             "Integrated\\Common\\Validator\\": "src/"
         }
     },
