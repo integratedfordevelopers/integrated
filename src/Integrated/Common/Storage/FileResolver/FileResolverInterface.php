@@ -23,6 +23,8 @@ interface FileResolverInterface
     public function __construct(array $options, $identifier);
 
     /**
+     * An URL send to the client (browser).
+     *
      * @return string
      */
     public function getLocation();
