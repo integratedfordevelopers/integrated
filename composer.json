@@ -18,7 +18,11 @@
         "symfony/symfony": "~2.7",
         "integrated/library": "~0.3",
         "knplabs/knp-paginator-bundle": "~2.3",
-        "braincrafted/bootstrap-bundle": ">=1.5"
+        "braincrafted/bootstrap-bundle": ">=1.5",
+        "doctrine/doctrine-bundle": "~1.6"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*"
     },
     "autoload":{
         "psr-4":{
