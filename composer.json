@@ -30,6 +30,9 @@
         "integrated/website-bundle": "~0.4",
         "integrated/puphpet": "~0.4"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*"
+    },
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
