@@ -45,12 +45,11 @@ class FacetBlock extends Block
      * @var ArrayCollection
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField")
      * @Type\Field(
-     *      type="bootstrap_collection",
+     *      type="integrated_collection",
      *      options={
-     *          "type"="integrated_embed_one",
+     *          "type"="integrated_embed_document",
      *          "options"={
-     *              "data_class"="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField",
-     *              "attr"={"class"="section-white section-padding section-shadow section-radius"}
+     *              "data_class"="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField"
      *          },
      *          "allow_add"=true,
      *          "allow_delete"=true
