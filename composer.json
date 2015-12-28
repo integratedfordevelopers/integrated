@@ -29,6 +29,9 @@
         "integrated/user-bundle": "~0.2",
         "integrated/website-bundle": "~0.3"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*"
+    },
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
