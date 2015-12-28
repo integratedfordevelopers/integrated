@@ -1,9 +1,9 @@
 {
   "name": "integrated/menu-bundle",
   "type": "symfony-bundle",
-  "description": "Integrated Menu Bundle",
+  "description": "Provides MenuEvents to allow adding navigation menu items to the Integrated backend and a database provider to read navigation items from the database (which allows front-end navigation menu editing when used with the website-bundle)",
   "keywords": ["Integrated", "menu"],
-  "homepage": "http://www.e-active.nl",
+  "homepage": "http://www.integratedfordevelopers.com",
   "license": "MIT",
   "authors": [
     {
@@ -25,11 +25,6 @@
   "autoload":{
     "psr-4":{
       "Integrated\\Bundle\\MenuBundle\\": ""
-    }
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-develop": "0.9.x-dev"
     }
   }
 }
