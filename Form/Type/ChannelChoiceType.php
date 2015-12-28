@@ -58,12 +58,17 @@ class ChannelChoiceType extends AbstractType
      * @param PropertyAccessorInterface  $accessor
      * @param ChoiceListFactoryInterface $factory
      */
-    public function __construct(ObjectRepository $repository, PropertyAccessorInterface $accessor = null, ChoiceListFactoryInterface $factory = null)
-    {
+    public function __construct(
+        ObjectRepository $repository,
+        PropertyAccessorInterface $accessor = null,
+        ChoiceListFactoryInterface $factory = null
+    ) {
         $this->repository = $repository;
 
         $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
-        $this->factory = $factory ?: new CachingFactoryDecorator(new PropertyAccessDecorator(new DefaultChoiceListFactory(), $this->accessor));
+        $this->factory = $factory ?: new CachingFactoryDecorator(
+            new PropertyAccessDecorator(new DefaultChoiceListFactory(), $this->accessor)
+        );
     }
 
     /**
