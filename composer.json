@@ -1,9 +1,9 @@
 {
     "name": "integrated/slug-bundle",
     "type": "symfony-bundle",
-    "description": "Integrated Slug Bundle",
+    "description": "Provides a slugger which can generate a slug from a string and event listeners to auto-generate slugs on chosen fields",
     "keywords": ["Integrated", "slug"],
-    "homepage": "http://www.e-active.nl",
+    "homepage": "http://www.integratedfordevelopers.com",
     "license": "MIT",
     "authors": [
         {
@@ -25,10 +25,5 @@
             "Integrated\\Bundle\\SlugBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/SlugBundle",
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "0.9.9-dev"
-        }
-    }
+    "target-dir": "Integrated/Bundle/SlugBundle"
 }
