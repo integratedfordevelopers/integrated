@@ -46,8 +46,11 @@ class ConfigController extends Controller
      * @param RegistryInterface      $registry
      * @param ContainerInterface     $container
      */
-    public function __construct(ConfigManagerInterface $manager, RegistryInterface $registry, ContainerInterface $container)
-    {
+    public function __construct(
+        ConfigManagerInterface $manager,
+        RegistryInterface $registry,
+        ContainerInterface $container
+    ) {
         $this->manager = $manager;
         $this->registry = $registry;
 
@@ -201,7 +204,9 @@ class ConfigController extends Controller
         }
 
         return $this->render('IntegratedChannelBundle:Config:delete.html.twig', [
-            'adapter' => $this->registry->hasAdapter($data->getAdapter()) ? $this->registry->getAdapter($data->getAdapter()) : null,
+            'adapter' => $this->registry->hasAdapter(
+                $data->getAdapter()
+            ) ? $this->registry->getAdapter($data->getAdapter()) : null,
             'data'    => $data,
             'form'    => $form->createView()
         ]);
@@ -217,7 +222,10 @@ class ConfigController extends Controller
     {
         $form = $this->createForm('channel_config_new', $data, [
             'adapter' => $adapter,
-            'action'  => $this->generateUrl('integrated_channel_config_new', ['adapter' => $adapter->getManifest()->getName()]),
+            'action'  => $this->generateUrl(
+                'integrated_channel_config_new',
+                ['adapter' => $adapter->getManifest()->getName()]
+            ),
             'method'  => 'POST',
         ]);
 

@@ -75,7 +75,11 @@ class ConfigFormType extends AbstractType
         ]);
 
         if ($adapter instanceof ConfigurableInterface) {
-            $child = $builder->create('options', $adapter->getConfiguration()->getForm(), ['label' => 'form.config.options', 'translation_domain' => 'IntegratedChannelBundle']);
+            $child = $builder->create(
+                'options',
+                $adapter->getConfiguration()->getForm(),
+                ['label' => 'form.config.options', 'translation_domain' => 'IntegratedChannelBundle']
+            );
             $child->addModelTransformer(new OptionsTransformer());
 
             $builder->add($child);

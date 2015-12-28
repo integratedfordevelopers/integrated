@@ -38,7 +38,9 @@ class ConfigRepository extends EntityRepository implements ConfigManagerInterfac
     public function persist(ConfigInterface $object, $flush = true)
     {
         if (!$this->_class->getReflectionClass()->isInstance($object)) {
-            throw new InvalidArgumentException(sprintf('The object (%s) is not a instance of %s', get_class($object), $this->getClassName()));
+            throw new InvalidArgumentException(
+                sprintf('The object (%s) is not a instance of %s', get_class($object), $this->getClassName())
+            );
         }
 
         $this->_em->persist($object);
@@ -54,7 +56,9 @@ class ConfigRepository extends EntityRepository implements ConfigManagerInterfac
     public function remove(ConfigInterface $object, $flush = true)
     {
         if (!$this->_class->getReflectionClass()->isInstance($object)) {
-            throw new InvalidArgumentException(sprintf('The object (%s) is not a instance of %s', get_class($object), $this->getClassName()));
+            throw new InvalidArgumentException(
+                sprintf('The object (%s) is not a instance of %s', get_class($object), $this->getClassName())
+            );
         }
 
         $this->_em->remove($object);
