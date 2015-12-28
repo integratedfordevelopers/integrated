@@ -2,7 +2,7 @@
     "name": "integrated/integrated",
     "license": "MIT",
     "type": "project",
-    "description": "Integrated, software suite for publishers.",
+    "description": "Skeleton for a new Integrated based application, which includes the use of all core bundles",
     "autoload": {
         "psr-0": { "": "src/" }
     },
