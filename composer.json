@@ -67,9 +67,6 @@
             "php app/console cache:clear --env=prod"
         ]
     },
-    "config": {
-        "bin-dir": "bin"
-    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "extra": {
