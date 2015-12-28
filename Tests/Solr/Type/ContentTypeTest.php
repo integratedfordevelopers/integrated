@@ -102,12 +102,14 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type
 namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type\Fixtures
 {
     use Integrated\Common\Content\ContentInterface;
+    use Doctrine\Common\Collections\ArrayCollection;
 
     class Object1 implements ContentInterface
     {
         public function getId()                      { return 'id1'; }
         public function getContentType()             { return 'type1'; }
         public function setContentType($contentType) { }
+        public function getRelationsByRelationType() { return new ArrayCollection(); }
     }
 
     class Object2 implements ContentInterface
@@ -115,17 +117,20 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type\Fixtures
         public function getId()                      { return 'id2'; }
         public function getContentType()             { return 'type2'; }
         public function setContentType($contentType) { }
+        public function getRelationsByRelationType() { return new ArrayCollection(); }
     }
 }
 
 namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type\Fixtures\__CG__
 {
     use Integrated\Common\Content\ContentInterface;
+    use Doctrine\Common\Collections\ArrayCollection;
 
     class ProxyObject implements ContentInterface
     {
         public function getId()                      { return 'proxy-id'; }
         public function getContentType()             { return 'proxy-type'; }
         public function setContentType($contentType) { }
+        public function getRelationsByRelationType() { return new ArrayCollection(); }
     }
 }
