@@ -54,8 +54,19 @@ class ExportCommand extends ContainerAwareCommand
             ->setName('channel:export')
 
             ->addOption('full', 'f', InputOption::VALUE_NONE, 'Keep running until the queue is empty')
-            ->addOption('daemon', 'd', InputOption::VALUE_NONE, 'Keep running until the programme is manually closed, this option overwrites --full')
-            ->addOption('wait', 'w', InputOption::VALUE_REQUIRED, 'Time in milliseconds to wait between runs (in combination with --full or --daemon)', 0)
+            ->addOption(
+                'daemon',
+                'd',
+                InputOption::VALUE_NONE,
+                'Keep running until the programme is manually closed, this option overwrites --full'
+            )
+            ->addOption(
+                'wait',
+                'w',
+                InputOption::VALUE_REQUIRED,
+                'Time in milliseconds to wait between runs (in combination with --full or --daemon)',
+                0
+            )
 
             ->setDescription('Execute a channel exporter run');
     }
@@ -105,7 +116,13 @@ class ExportCommand extends ContainerAwareCommand
         $cwd = realpath($this->getContainer()->get('kernel')->getRootDir() . '/..');
 
         while (true) {
-            $process = new Process('php app/console channel:export -e ' . $input->getOption('env'), $cwd, null, null, null);
+            $process = new Process(
+                'php app/console channel:export -e ' . $input->getOption('env'),
+                $cwd,
+                null,
+                null,
+                null
+            );
             $process->run(function ($type, $buffer) use ($output) {
                 $output->write($buffer, false, OutputInterface::OUTPUT_RAW);
             });
