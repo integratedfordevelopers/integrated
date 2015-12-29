@@ -19,7 +19,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class EmbedDocumentType extends AbstractType
+class EmbeddedDocumentType extends AbstractType
 {
     /**
      * @var MetadataFactory
@@ -52,6 +52,6 @@ class EmbedDocumentType extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_embed_document';
+        return 'integrated_embedded_document';
     }
 }
