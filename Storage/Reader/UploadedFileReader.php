@@ -57,7 +57,7 @@ class UploadedFileReader implements ReaderInterface
         if (null == $this->data) {
             $file = new \SplFileObject($this->uploadedFile->getPathname(), 'r');
             // Read the file buffered
-            while($data = $file->fread(1024)) {
+            while ($data = $file->fread(1024)) {
                 $this->data .= $data;
             }
             // Cleanup
