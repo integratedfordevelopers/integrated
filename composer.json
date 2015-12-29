@@ -1,7 +1,7 @@
 {
     "name": "integrated/solr-bundle",
     "type": "symfony-bundle",
-    "description": "Integrated Solr Bundle",
+    "description": "Adds support for Solr configuration and indexing of your documents or entities",
     "keywords": ["Integrated", "Solr"],
     "homepage": "http://www.e-active.nl",
     "license": "MIT",
@@ -20,6 +20,7 @@
         "integrated/library": "~0.1"
     },
     "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
         "phpunit/phpunit": "4.2.*"
     },
     "autoload":{
@@ -27,10 +28,5 @@
             "Integrated\\Bundle\\SolrBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/SolrBundle",
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "0.9.x-dev"
-        }
-    }
+    "target-dir": "Integrated/Bundle/SolrBundle"
 }
