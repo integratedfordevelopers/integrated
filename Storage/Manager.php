@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
-use Integrated\Bundle\ContentBundle\Document\Storage\Embedded\Storage;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Storage\Exception\RevertException;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
@@ -40,7 +40,7 @@ class Manager implements ManagerInterface
     protected $registry;
 
     /**
-     * @var LoggerInterface
+     * @var LoggerInterface|null
      */
     protected $logger;
 
@@ -60,7 +60,7 @@ class Manager implements ManagerInterface
     public function __construct(
         FilesystemRegistryInterface $registry,
         ResolverInterface $resolveStorage,
-        LoggerInterface $logger,
+        LoggerInterface $logger = null,
         QueuedCommandBusInterface $busInterface = null
     ) {
         $this->registry = $registry;
@@ -117,14 +117,16 @@ class Manager implements ManagerInterface
             $validation = new FilesystemValidation($this->registry);
             foreach ($validation->getValidFilesystems($filesystems) as $key) {
                 // Log it
-                $this->logger->info(
-                    sprintf(
-                        '%sGoing to write %s in filesystem %s',
-                        self::LOG_PREFIX,
-                        $identifier,
-                        $key
-                    )
-                );
+                if ($this->logger) {
+                    $this->logger->info(
+                        sprintf(
+                            '%sGoing to write %s in filesystem %s',
+                            self::LOG_PREFIX,
+                            $identifier,
+                            $key
+                        )
+                    );
+                }
 
                 // Get the filesystem from the registry
                 $filesystem = $this->registry->get($key);
@@ -164,13 +166,15 @@ class Manager implements ManagerInterface
                 $this->registry->get($key)->delete($identifier);
             }
 
-            $this->logger->critical(
-                sprintf(
-                    '%s%s',
-                    self::LOG_PREFIX,
-                    $e->getMessage()
-                )
-            );
+            if ($this->logger) {
+                $this->logger->critical(
+                    sprintf(
+                        '%s%s',
+                        self::LOG_PREFIX,
+                        $e->getMessage()
+                    )
+                );
+            }
 
             throw $e;
         }
@@ -210,24 +214,28 @@ class Manager implements ManagerInterface
                 $this->registry->get($filesystem)
                     ->delete($storage->getIdentifier());
 
-                $this->logger->notice(
-                    sprintf(
-                        '%sFile %s delete from filesystem %s',
-                        self::LOG_PREFIX,
-                        $storage->getIdentifier(),
-                        $key
-                    )
-                );
+                if ($this->logger) {
+                    $this->logger->notice(
+                        sprintf(
+                            '%sFile %s delete from filesystem %s',
+                            self::LOG_PREFIX,
+                            $storage->getIdentifier(),
+                            $key
+                        )
+                    );
+                }
             } catch (FileNotFound $e) {
                 // Seems like we're not in sync
-                $this->logger->error(
-                    sprintf(
-                        '%sRemote filesystem %s does not contain %s file',
-                        self::LOG_PREFIX,
-                        $key,
-                        $storage->getIdentifier()
-                    )
-                );
+                if ($this->logger) {
+                    $this->logger->error(
+                        sprintf(
+                            '%sRemote filesystem %s does not contain %s file',
+                            self::LOG_PREFIX,
+                            $key,
+                            $storage->getIdentifier()
+                        )
+                    );
+                }
             }
         }
 
