@@ -23,6 +23,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class RouterResourcePass implements CompilerPassInterface
 {
+    /**
+     * @param ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
         $enabled = $container->getParameterBag()->resolveValue($container->getParameter('router.resource'));

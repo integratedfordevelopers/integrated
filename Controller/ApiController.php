@@ -23,6 +23,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ApiController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function refreshAction(Request $request)
     {
         if (!$this->has('integrated_locking.dbal.manager')) {
