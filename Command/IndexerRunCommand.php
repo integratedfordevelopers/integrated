@@ -69,6 +69,11 @@ The <info>%command.name%</info> command starts a indexer run.
         return $this->runInternal($input, $output);
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     private function runInternal(InputInterface $input, OutputInterface $output)
     {
         try {
@@ -95,6 +100,11 @@ The <info>%command.name%</info> command starts a indexer run.
         return 0;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     */
     private function runExternal(InputInterface $input, OutputInterface $output)
     {
         $wait = (int)$input->getOption('wait');

@@ -20,6 +20,9 @@ use Integrated\Bundle\SolrBundle\Solr\Type\CopyAppendType;
  */
 class CopyAppendTypeTest extends CopyTypeTest
 {
+    /**
+     * @return array
+     */
     public function buildProvider()
     {
         $data = parent::buildProvider();
@@ -38,6 +41,9 @@ class CopyAppendTypeTest extends CopyTypeTest
         return $data;
     }
 
+    /**
+     *
+     */
     public function testGetName()
     {
         self::assertEquals('integrated.copy.append', $this->getInstance()->getName());

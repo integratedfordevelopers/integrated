@@ -25,6 +25,9 @@ use stdClass;
  */
 class CopyTypeTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     *
+     */
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
@@ -47,6 +50,9 @@ class CopyTypeTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expected, $container->toArray());
     }
 
+    /**
+     * @return array
+     */
     public function buildProvider()
     {
         return [
@@ -102,6 +108,9 @@ class CopyTypeTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expected, $container->toArray());
     }
 
+    /**
+     * @return array
+     */
     public function buildSpecialOrErrorConditionsProvider()
     {
         return [
@@ -116,6 +125,9 @@ class CopyTypeTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /**
+     *
+     */
     public function testGetName()
     {
         self::assertEquals('integrated.copy', $this->getInstance()->getName());

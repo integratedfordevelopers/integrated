@@ -27,6 +27,9 @@ use Integrated\Bundle\SolrBundle\Tests\Solr\Type\FieldMapperTypeTestTestObject a
  */
 class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     *
+     */
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
@@ -46,6 +49,9 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expected, $container->toArray());
     }
 
+    /**
+     * @return array
+     */
     public function buildProvider()
     {
         return [
@@ -141,6 +147,9 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expected, $container->toArray());
     }
 
+    /**
+     * @return array
+     */
     public function buildSpecialOrErrorConditionsProvider()
     {
         return [
@@ -188,6 +197,9 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
         self::assertEquals($expected, $container->toArray());
     }
 
+    /**
+     * @return array
+     */
     public function buildStringConversionProvider()
     {
         return [
@@ -230,6 +242,9 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    /**
+     *
+     */
     public function testGetName()
     {
         self::assertEquals('integrated.fields', $this->getInstance()->getName());

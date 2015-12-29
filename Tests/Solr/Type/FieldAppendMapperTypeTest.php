@@ -20,6 +20,9 @@ use Integrated\Bundle\SolrBundle\Solr\Type\FieldAppendMapperType;
  */
 class FieldAppendMapperTypeTest extends FieldMapperTypeTest
 {
+    /**
+     * @return array
+     */
     public function buildProvider()
     {
         $data = parent::buildProvider();
@@ -36,6 +39,9 @@ class FieldAppendMapperTypeTest extends FieldMapperTypeTest
         return $data;
     }
 
+    /**
+     *
+     */
     public function testGetName()
     {
         self::assertEquals('integrated.fields.append', $this->getInstance()->getName());

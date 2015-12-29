@@ -11,22 +11,59 @@
 
 namespace Integrated\Bundle\SolrBundle\Tests\Solr\Type;
 
+/**
+ * Class FieldMapperTypeTestTestObject
+ * @package Integrated\Bundle\SolrBundle\Tests\Solr\Type
+ */
 class FieldMapperTypeTestTestObject
 {
+    /**
+     * @var \DateTime
+     */
     public $datetime;
 
+    /**
+     * @var bool
+     */
     public $bool0 = false;
+    /**
+     * @var bool
+     */
     public $bool1 = true;
+    /**
+     * @var int
+     */
     public $int   = 42;
+    /**
+     * @var float
+     */
     public $float = 4.2;
 
+    /**
+     * @var string
+     */
     protected $field1 = 'field1';
+    /**
+     * @var string
+     */
     protected $field2 = 'field2';
+    /**
+     * @var string
+     */
     protected $field3 = 'field3';
+    /**
+     * @var string
+     */
     protected $field4 = 'field4';
 
+    /**
+     * @var \ArrayObject
+     */
     public $arrayObject;
 
+    /**
+     * FieldMapperTypeTestTestObject constructor.
+     */
     public function __construct()
     {
         $this->datetime = new \DateTime('2014-01-01 00:30 CET');
