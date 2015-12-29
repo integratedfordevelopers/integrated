@@ -66,8 +66,8 @@ class IndexerQueueCommand extends ContainerAwareCommand
 The <info>%command.name%</info> command starts a index of the site.
 
 <info>php %command.full_name%</info>
-'
-            );
+');
+
     }
 
     /**
