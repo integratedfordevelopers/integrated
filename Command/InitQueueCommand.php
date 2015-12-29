@@ -36,11 +36,15 @@ class InitQueueCommand extends ContainerAwareCommand
             ->setDescription('Mounts queue tables in the database.')
             ->setDefinition([
                 new InputOption(
-                    'dump-sql', null, InputOption::VALUE_NONE,
+                    'dump-sql',
+                    null,
+                    InputOption::VALUE_NONE,
                     'Dumps the generated SQL statements to the screen (does not execute them).'
                 ),
                 new InputOption(
-                    'force', null, InputOption::VALUE_NONE,
+                    'force',
+                    null,
+                    InputOption::VALUE_NONE,
                     'Causes the generated SQL statements to be physically executed against your database.'
                 ),
             ]);

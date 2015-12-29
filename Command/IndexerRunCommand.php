@@ -53,8 +53,8 @@ class IndexerRunCommand extends ContainerAwareCommand
 The <info>%command.name%</info> command starts a indexer run.
 
 <info>php %command.full_name%</info>
-'
-            );
+');
+
     }
 
     /**
