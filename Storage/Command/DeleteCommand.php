@@ -11,10 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Command;
 
-use Integrated\Common\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Command\CommandInterface;
 use Integrated\Common\Storage\ManagerInterface;
-
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
