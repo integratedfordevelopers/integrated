@@ -52,7 +52,12 @@ class CopyTypeTest extends \PHPUnit_Framework_TestCase
         return [
             'simple' => [
                 ['field3' => 'field1', 'field4' => 'field2'],
-                ['field1' => ['value1'], 'field2' => ['value2', 'value3'], 'field3' => ['value1'], 'field4' => ['value2', 'value3']],
+                [
+                    'field1' => ['value1'],
+                    'field2' => ['value2', 'value3'],
+                    'field3' => ['value1'],
+                    'field4' => ['value2', 'value3']
+                ],
             ],
             'advanced' => [
                 [['name' => 'field3', 'field1', 'field2']],

@@ -35,31 +35,37 @@ class IntegratedSolrExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-		$loader->load('converter.xml');
-		$loader->load('indexer.xml');
-		$loader->load('queue.xml');
-		$loader->load('solarium.xml');
+        $loader->load('converter.xml');
+        $loader->load('indexer.xml');
+        $loader->load('queue.xml');
+        $loader->load('solarium.xml');
         $loader->load('types.xml');
 
         if ($container->getParameter('kernel.debug')) {
             $loader->load('collector.xml');
         }
 
-		$configuration = new Configuration();
-		$config = $this->processConfiguration($configuration, $configs);
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
 
-		$endpoints = array();
+        $endpoints = array();
 
-		foreach ($config['endpoints'] as $name => $options) {
-			$options['key'] = $name;
-			$container->setDefinition('solarium.client.endpoint.' . $name, new Definition('%integrated_solr.solarium.endpoint.class%', array($options)));
+        foreach ($config['endpoints'] as $name => $options) {
+            $options['key'] = $name;
+            $container->setDefinition(
+                'solarium.client.endpoint.' . $name,
+                new Definition('%integrated_solr.solarium.endpoint.class%', array($options))
+            );
 
-			$endpoints[] = new Reference('solarium.client.endpoint.' . $name);
-		}
+            $endpoints[] = new Reference('solarium.client.endpoint.' . $name);
+        }
 
-		$container->setDefinition('solarium.client', new Definition('%integrated_solr.solarium.client.class%', array(array('endpoint' => $endpoints))));
+        $container->setDefinition(
+            'solarium.client',
+            new Definition('%integrated_solr.solarium.client.class%', array(array('endpoint' => $endpoints)))
+        );
 
         if ($container->getParameter('kernel.debug')) {
             $container->getDefinition('solarium.client')->addMethodCall(

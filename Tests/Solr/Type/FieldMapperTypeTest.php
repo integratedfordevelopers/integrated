@@ -18,6 +18,8 @@ use Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
 
+use Integrated\Bundle\SolrBundle\Tests\Solr\Type\FieldMapperTypeTestTestObject as TestObject;
+
 /**
  * @covers Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType
  *
@@ -93,19 +95,35 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
             ],
             'combining fields advanced 1' => [
                 [['name' => 'field', ['@field1', 'arrayObject' => ['@field1', '@field2', '@field3'], 'static text']]],
-                ['field' => ['field1 array1.1 array1.2 array1.3 static text', 'field1 array2.1 array2.2 array2.3 static text']],
+                ['field' => [
+                    'field1 array1.1 array1.2 array1.3 static text', 'field1 array2.1 array2.2 array2.3 static text']
+                ],
             ],
             'combining fields advanced 2' => [
                 [['name' => 'field', ['@field1', 'arrayObject[array1]' => [], 'static text']]],
-                ['field' => ['field1 array1.1 static text', 'field1 array1.2 static text', 'field1 array1.3 static text']],
+                ['field' => [
+                    'field1 array1.1 static text', 'field1 array1.2 static text', 'field1 array1.3 static text']
+                ],
             ],
             'combining fields with separator advanced 1' => [
-                [['name' => 'field', ['separator' => '#', '@field1', 'arrayObject' => ['separator' => '', '@field1', '@field2', '@field3'], 'static text']]],
-                ['field' => ['field1#array1.1array1.2array1.3#static text', 'field1#array2.1array2.2array2.3#static text']],
+                [['name' => 'field', [
+                    'separator' => '#',
+                    '@field1',
+                    'arrayObject' => ['separator' => '', '@field1', '@field2', '@field3'],
+                    'static text'
+                ]]],
+                ['field' => [
+                    'field1#array1.1array1.2array1.3#static text',
+                    'field1#array2.1array2.2array2.3#static text'
+                ]],
             ],
             'combining fields with separator advanced 2' => [
                 [['name' => 'field', ['separator' => '#', '@field1', 'arrayObject[array1]' => [], 'static text']]],
-                ['field' => ['field1#array1.1#static text', 'field1#array1.2#static text', 'field1#array1.3#static text']],
+                ['field' => [
+                    'field1#array1.1#static text',
+                    'field1#array1.2#static text',
+                    'field1#array1.3#static text'
+                ]],
             ],
         ];
     }
@@ -234,101 +252,5 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
         // the code coverage for the container class is ignored for these tests.
 
         return new Container();
-    }
-}
-
-class TestObject
-{
-    public $datetime;
-
-    public $bool0 = false;
-    public $bool1 = true;
-    public $int   = 42;
-    public $float = 4.2;
-
-    protected $field1 = 'field1';
-    protected $field2 = 'field2';
-    protected $field3 = 'field3';
-    protected $field4 = 'field4';
-
-    public $arrayObject;
-
-    public function __construct()
-    {
-        $this->datetime = new DateTime('2014-01-01 00:30 CET');
-
-        $this->arrayObject = new ArrayObject([
-            'field1' => 'field1',
-            'field2' => 'field2',
-            'field3' => 'field3',
-
-            'array1' => new ArrayObject([
-                'field1' => 'array1.1',
-                'field2' => 'array1.2',
-                'field3' => 'array1.3'
-            ], ArrayObject::ARRAY_AS_PROPS),
-
-            'array2' => new ArrayObject([
-                'field1' => 'array2.1',
-                'field2' => 'array2.2',
-                'field3' => 'array2.3'
-            ], ArrayObject::ARRAY_AS_PROPS)
-        ], ArrayObject::ARRAY_AS_PROPS);
-    }
-
-    /**
-     * @return string
-     */
-    public function getField1()
-    {
-        return $this->field1;
-    }
-
-    /**
-     * @return string
-     */
-    public function getField2()
-    {
-        return $this->field2;
-    }
-
-    /**
-     * @return string
-     */
-    public function getField3()
-    {
-        return $this->field3;
-    }
-
-    /**
-     * @return string
-     */
-    public function getField4()
-    {
-        return $this->field4;
-    }
-
-    /**
-     * @return array
-     */
-    public function getArray()
-    {
-        return [];
-    }
-
-    /**
-     * @return $this
-     */
-    public function getSelf()
-    {
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        return '__toString';
     }
 }

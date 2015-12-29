@@ -37,7 +37,9 @@ class RegisterConfigFileProviderPass implements CompilerPassInterface
         $definition = $container->getDefinition('integrated_solr.converter.config.provider.chain');
 
         foreach ($container->getParameter('kernel.bundles') as $name => $class) {
-            if (null !== ($ref = $this->addProvider($container, dirname((new ReflectionClass($class))->getFileName()), $name))) {
+            if (null !== (
+                $ref = $this->addProvider($container, dirname((new ReflectionClass($class))->getFileName()), $name)
+                )) {
                 $definition->addMethodCall('addProvider', [$ref]);
             }
         }

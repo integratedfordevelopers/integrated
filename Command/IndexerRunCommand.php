@@ -35,8 +35,19 @@ class IndexerRunCommand extends ContainerAwareCommand
         $this
             ->setName('solr:indexer:run')
             ->addOption('full', 'f', InputOption::VALUE_NONE, 'Keep running until the queue is empty')
-            ->addOption('daemon', 'd', InputOption::VALUE_NONE, 'Keep running until the programme is manually closed, this option overwrites --full')
-            ->addOption('wait', 'w', InputOption::VALUE_REQUIRED, 'Time in milliseconds to wait between runs (in combination with --full or --daemon)', 0)
+            ->addOption(
+                'daemon',
+                'd',
+                InputOption::VALUE_NONE,
+                'Keep running until the programme is manually closed, this option overwrites --full'
+            )
+            ->addOption(
+                'wait',
+                'w',
+                InputOption::VALUE_REQUIRED,
+                'Time in milliseconds to wait between runs (in combination with --full or --daemon)',
+                0
+            )
             ->setDescription('Execute a sol indexer run')
             ->setHelp('
 The <info>%command.name%</info> command starts a indexer run.
@@ -90,7 +101,10 @@ The <info>%command.name%</info> command starts a indexer run.
         $wait = $wait * 1000; // convert from milli to micro
 
         while (true) {
-            $process = new Process('php app/console solr:indexer:run -e ' . $input->getOption('env'), $this->getRootDir());
+            $process = new Process(
+                'php app/console solr:indexer:run -e ' . $input->getOption('env'),
+                $this->getRootDir()
+            );
             $process->run();
 
             if (!$process->isSuccessful()) {

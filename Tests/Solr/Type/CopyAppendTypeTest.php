@@ -51,4 +51,3 @@ class CopyAppendTypeTest extends CopyTypeTest
         return new CopyAppendType();
     }
 }
-

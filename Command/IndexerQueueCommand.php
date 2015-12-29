@@ -48,8 +48,18 @@ class IndexerQueueCommand extends ContainerAwareCommand
         $this
             ->setName('solr:indexer:queue')
             ->addArgument('id', InputArgument::IS_ARRAY, 'One or more content types that need to be indexed')
-            ->addOption('full', 'f', InputOption::VALUE_NONE, 'Do a full index of all the content this will override any given content types')
-            ->addOption('delete', null, InputOption::VALUE_NONE, 'Delete all the content for the given content types or if none given clear out the whole index')
+            ->addOption(
+                'full',
+                'f',
+                InputOption::VALUE_NONE,
+                'Do a full index of all the content this will override any given content types'
+            )
+            ->addOption(
+                'delete',
+                null,
+                InputOption::VALUE_NONE,
+                'Delete all the content for the given content types or if none given clear out the whole index'
+            )
             ->addOption('ignore', 'i', InputOption::VALUE_NONE, 'Ignore content types that do not exist')
             ->setDescription('Queue all the content of the given content type for solr indexing')
             ->setHelp('
@@ -82,7 +92,9 @@ The <info>%command.name%</info> command starts a index of the site.
         }
 
         if (!$input->getArgument('id') && !$input->getOption('full')) {
-            throw new InvalidArgumentException('You need to give one or more content types or choose the --full or --delete option');
+            throw new InvalidArgumentException(
+                'You need to give one or more content types or choose the --full or --delete option'
+            );
         }
 
         return $this->executeIndex($input, $output);
@@ -125,7 +137,11 @@ The <info>%command.name%</info> command starts a index of the site.
 
             $output->writeln($text);
 
-            if (!$this->getQuestion()->ask($input, $output, new ConfirmationQuestion('Would you want to continue? [y/N] ', false))) {
+            if (!$this->getQuestion()->ask(
+                $input,
+                $output,
+                new ConfirmationQuestion('Would you want to continue? [y/N] ', false)
+            )) {
                 return 1;
             }
         }
@@ -164,7 +180,9 @@ The <info>%command.name%</info> command starts a index of the site.
         if ($input->getOption('full')) {
 
             //use createQueryBuilder for performance reasons
-            $qb = $this->getDocumentManager()->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\Content')
+            $qb = $this->getDocumentManager()->createQueryBuilder(
+                'Integrated\Bundle\ContentBundle\Document\Content\Content'
+            )
                 ->select('id', 'contentType', 'class');
             $result = $qb->getQuery()->execute();
 
