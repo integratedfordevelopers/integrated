@@ -32,6 +32,10 @@
         "friendsofsymfony/jsrouting-bundle": "1.5.*",
         "twbs/bootstrap": "3.*"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
+        "phpunit/phpunit": "~4.8"
+    },
     "suggest": {
         "integrated/channel-bundle": "Manage channel configuration"
     },
