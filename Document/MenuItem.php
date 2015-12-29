@@ -64,7 +64,9 @@ class MenuItem extends KnpMenuItem
     public function setFactory(FactoryInterface $factory)
     {
         if (!$factory instanceof DatabaseMenuFactory) {
-            throw new \InvalidArgumentException('Factory must be an instance of "Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory".');
+            throw new \InvalidArgumentException(
+                'Factory must be an instance of "Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory".'
+            );
         }
 
         $this->factory = $factory;
@@ -77,14 +79,19 @@ class MenuItem extends KnpMenuItem
     public function addChild($child, array $options = [])
     {
         if ($child instanceof Menu) {
-            throw new \InvalidArgumentException('Cannot add an instance of "Integrated\Bundle\MenuBundle\Document\Menu" as child, use "Integrated\Bundle\MenuBundle\Document\MenuItem" instead.');
+            throw new \InvalidArgumentException(
+                'Cannot add an instance of "Integrated\Bundle\MenuBundle\Document\Menu" as child, ' .
+                'use "Integrated\Bundle\MenuBundle\Document\MenuItem" instead.'
+            );
         }
 
         if (!$child instanceof ItemInterface) {
             $child = $this->factory->createChild($child, $options);
 
         } elseif (null !== $child->getParent()) {
-            throw new \InvalidArgumentException('Cannot add menu item as child, it already belongs to another menu (e.g. has a parent).');
+            throw new \InvalidArgumentException(
+                'Cannot add menu item as child, it already belongs to another menu (e.g. has a parent).'
+            );
         }
 
         $child->setParent($this);
