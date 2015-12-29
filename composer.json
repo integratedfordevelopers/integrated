@@ -29,10 +29,5 @@
             "Integrated\\Bundle\\LockingBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/LockingBundle",
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "0.1.x-dev"
-        }
-    }
+    "target-dir": "Integrated/Bundle/LockingBundle"
 }
