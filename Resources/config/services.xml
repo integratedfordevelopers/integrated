@@ -12,7 +12,7 @@
         <parameter key="integrated_formtype_form_type_select2.class">Integrated\Bundle\FormTypeBundle\Form\Type\Select2Type</parameter>
         <parameter key="integrated_formtype_form_type_sortable_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType</parameter>
         <parameter key="integrated_formtype_form_type_integrated_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType</parameter>
-        <parameter key="integrated_formtype.form.type.embedded_document.class">Integrated\Bundle\FormTypeBundle\Form\Type\EmbedDocumentType</parameter>
+        <parameter key="integrated_formtype.form.type.embedded_document.class">Integrated\Bundle\FormTypeBundle\Form\Type\EmbeddedDocumentType</parameter>
 
     </parameters>
 
