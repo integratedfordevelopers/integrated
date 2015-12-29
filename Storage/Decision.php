@@ -15,6 +15,7 @@ use Integrated\Common\Storage\FilesystemRegistryInterface;
 use Integrated\Common\Storage\DecisionInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Util\ClassUtils;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -46,7 +47,7 @@ class Decision implements DecisionInterface
      **/
     public function getFilesystems($class)
     {
-        $className = get_class($class);
+        $className = ClassUtils::getRealClass($class);
         if (isset($this->decisionMap[$className])) {
             return new ArrayCollection(array_values($this->decisionMap[$className]));
         }
