@@ -88,11 +88,11 @@ class Manager implements ManagerInterface
     {
         foreach ($storage->getFilesystems() as $filesystem) {
             // A filesystem might be down, walk over all to get the best candidate
-            $_filesystem = $this->registry->get($filesystem);
+            $fileFilesystem = $this->registry->get($filesystem);
 
             // The file must exist on the storage (might be cached), this is a sanity check
-            if ($_filesystem->has($storage->getIdentifier())) {
-                return $_filesystem->read($storage->getIdentifier());
+            if ($fileFilesystem->has($storage->getIdentifier())) {
+                return $fileFilesystem->read($storage->getIdentifier());
             }
         }
 
