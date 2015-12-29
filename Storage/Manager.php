@@ -14,7 +14,6 @@ namespace Integrated\Bundle\StorageBundle\Storage;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Storage\Exception\RevertException;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
-use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Command\CommandInterface;
@@ -25,6 +24,7 @@ use Integrated\Common\Storage\Reader\ReaderInterface;
 use Integrated\Common\Storage\ResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Gaufrette\File;
 use Gaufrette\Exception\FileNotFound;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -35,7 +35,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class Manager implements ManagerInterface
 {
     /**
-     * @var FilesystemRegistry
+     * @var FilesystemRegistryInterface
      */
     protected $registry;
 
@@ -86,13 +86,13 @@ class Manager implements ManagerInterface
      */
     public function read(StorageInterface $storage)
     {
-        foreach ($storage->getFilesystems() as $filesystem) {
+        foreach ($storage->getFilesystems() as $key) {
             // A filesystem might be down, walk over all to get the best candidate
-            $fileFilesystem = $this->registry->get($filesystem);
+            $filesystem = $this->registry->get($key);
 
             // The file must exist on the storage (might be cached), this is a sanity check
-            if ($fileFilesystem->has($storage->getIdentifier())) {
-                return $fileFilesystem->read($storage->getIdentifier());
+            if ($filesystem->has($storage->getIdentifier())) {
+                return $filesystem->read($storage->getIdentifier());
             }
         }
 
@@ -138,11 +138,20 @@ class Manager implements ManagerInterface
                     $storage = $filesystem->createFile($identifier);
                 }
 
-                // Might return 0 for an empty file (or throw an exception)
-                $result = $storage->setContent(
-                    $reader->read(),
-                    $reader->getMetadata()->storageData()->toArray()
-                );
+                if ($storage instanceof File) {
+                    // Might return 0 for an empty file (or throw an exception)
+                    $result = $storage->setContent(
+                        $reader->read(),
+                        $reader->getMetadata()->storageData()->toArray()
+                    );
+                } else {
+                    throw new \LogicException(
+                        sprintf(
+                            'A instanceof Gaufrette\File was excepted (given: %s).',
+                            get_class($storage)
+                        )
+                    );
+                }
 
                 if (false === $result) {
                     // Throw a roll back

@@ -11,9 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Validation;
 
-use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
-
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Common\Storage\FilesystemRegistryInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -21,14 +20,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 class FilesystemValidation
 {
     /**
-     * @var FilesystemRegistry
+     * @var FilesystemRegistryInterface
      */
     protected $registry;
 
     /**
-     * @param FilesystemRegistry $registry
+     * @param FilesystemRegistryInterface $registry
      */
-    public function __construct(FilesystemRegistry $registry)
+    public function __construct(FilesystemRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
