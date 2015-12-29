@@ -137,8 +137,10 @@ class BlockFilterType extends AbstractType
 
         $channelChoices = [];
         foreach ($groupCountChannels as $groupCountChannel) {
-            $channelId = $groupCountChannel['channel.$id'];
-            $channelChoices[$channelId] = $channelId.' '.$groupCountChannel['total'];
+            if ($groupCountChannel['total'] > 0) {
+                $channelId = $groupCountChannel['channel.$id'];
+                $channelChoices[$channelId] = $channelId.' '.$groupCountChannel['total'];
+            }
         }
 
         return $channelChoices;
