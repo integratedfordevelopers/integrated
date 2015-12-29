@@ -35,8 +35,7 @@ The <info>%command.name%</info> removes all the locks that are set
 
 <info>php %command.full_name%</info>
 EOF
-            )
-        ;
+            );
     }
 
     /**
@@ -44,14 +43,14 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-		$container = $this->getContainer();
+        $container = $this->getContainer();
 
-		if (!$container->has('integrated_locking.dbal.manager')) {
-			return;
-		}
+        if (!$container->has('integrated_locking.dbal.manager')) {
+            return;
+        }
 
-		/** @var ManagerInterface $service */
-		$service = $container->get('integrated_locking.dbal.manager');
-		$service->clear();
+        /** @var ManagerInterface $service */
+        $service = $container->get('integrated_locking.dbal.manager');
+        $service->clear();
     }
 }

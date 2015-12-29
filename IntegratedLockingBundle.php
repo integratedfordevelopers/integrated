@@ -23,21 +23,21 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class IntegratedLockingBundle extends Bundle
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function build(ContainerBuilder $container)
-	{
-		parent::build($container);
+    /**
+     * @inheritdoc
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
 
-		$container->addCompilerPass(new RouterResourcePass());
-	}
+        $container->addCompilerPass(new RouterResourcePass());
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getContainerExtension()
-	{
-		return new IntegratedLockingExtension();
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getContainerExtension()
+    {
+        return new IntegratedLockingExtension();
+    }
 }

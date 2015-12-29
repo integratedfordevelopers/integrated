@@ -35,8 +35,7 @@ The <info>%command.name%</info> removes all the expired locks stored in the data
 
 <info>php %command.full_name%</info>
 EOF
-            )
-        ;
+            );
     }
 
     /**
@@ -44,14 +43,14 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-		$container = $this->getContainer();
+        $container = $this->getContainer();
 
-		if (!$container->has('integrated_locking.dbal.manager')) {
-			return;
-		}
+        if (!$container->has('integrated_locking.dbal.manager')) {
+            return;
+        }
 
-		/** @var Manager $service */
-		$service = $container->get('integrated_locking.dbal.manager');
-		$service->clean();
+        /** @var Manager $service */
+        $service = $container->get('integrated_locking.dbal.manager');
+        $service->clean();
     }
 }
