@@ -20,12 +20,10 @@
         "integrated/library": "~0.1"
     },
     "require-dev": {
+        "doctrine/dbal": ">=2.3.0,<2.5-dev",
         "squizlabs/php_codesniffer": "2.*",
         "phpunit/phpunit": "~4.8"
     },
-	"require-dev": {
-		"doctrine/dbal": ">=2.3.0,<2.5-dev"
-	},
     "autoload":{
         "psr-0":{
             "Integrated\\Bundle\\LockingBundle": ""
