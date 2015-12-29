@@ -31,7 +31,9 @@ class Slugger implements SluggerInterface
 
         setlocale(LC_ALL, 'en_US.UTF-8');
 
-        $slug = strtolower(trim(preg_replace('/[^a-zA-Z0-9\/_|+ -.]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $string)), $delimiter));
+        $slug = strtolower(
+            trim(preg_replace('/[^a-zA-Z0-9\/_|+ -.]/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $string)), $delimiter)
+        );
         $slug = preg_replace('/[\/_|+ -.]+/', $delimiter, $slug);
         $slug = trim($slug, $delimiter);
 

@@ -123,7 +123,11 @@ class SluggableSubscriber implements EventSubscriber
             if ($propertyMetadata instanceof PropertyMetadata && count($propertyMetadata->slugFields)) {
                 $hasIdentifierFields = count(array_intersect($identifierFields, $propertyMetadata->slugFields)) > 0;
 
-                if ($event == 'prePersist' && $hasIdentifierFields || $event == 'postPersist' && !$hasIdentifierFields) {
+                if ($event == 'prePersist' &&
+                    $hasIdentifierFields ||
+                    $event == 'postPersist' &&
+                    !$hasIdentifierFields
+                ) {
                     continue; // generate slug in another event
                 }
 
@@ -132,7 +136,10 @@ class SluggableSubscriber implements EventSubscriber
                 if ($event == 'preUpdate') {
                     if ($args->hasChangedField($propertyMetadata->name)) {
                         // generate custom slug
-                        $slug = $this->slugger->slugify($args->getNewValue($propertyMetadata->name), $propertyMetadata->slugSeparator);
+                        $slug = $this->slugger->slugify(
+                            $args->getNewValue($propertyMetadata->name),
+                            $propertyMetadata->slugSeparator
+                        );
 
                     } elseif (null !== $propertyMetadata->getValue($object)) {
                         continue; // no changes
@@ -140,18 +147,32 @@ class SluggableSubscriber implements EventSubscriber
 
                 } else {
                     // generate custom slug
-                    $slug = $this->slugger->slugify($propertyMetadata->getValue($object), $propertyMetadata->slugSeparator);
+                    $slug = $this->slugger->slugify(
+                        $propertyMetadata->getValue($object),
+                        $propertyMetadata->slugSeparator
+                    );
                 }
 
                 if (!trim($slug)) {
                     // generate slug from the sluggable fields
-                    $slug = $this->generateSlugFromMetadata($object, $propertyMetadata->slugFields, $propertyMetadata->slugSeparator);
+                    $slug = $this->generateSlugFromMetadata(
+                        $object,
+                        $propertyMetadata->slugFields,
+                        $propertyMetadata->slugSeparator
+                    );
                 }
 
                 $id = $event == 'preUpdate' && method_exists($object, 'getId') ? $object->getId() : null;
 
                 // generate unique slug
-                $slug = $this->generateUniqueSlug($om, $object, $propertyMetadata->name, $slug, $propertyMetadata->slugSeparator, $id);
+                $slug = $this->generateUniqueSlug(
+                    $om,
+                    $object,
+                    $propertyMetadata->name,
+                    $slug,
+                    $propertyMetadata->slugSeparator,
+                    $id
+                );
 
                 $propertyMetadata->setValue($object, $slug);
                 $this->recomputeSingleObjectChangeSet($om, $object);
