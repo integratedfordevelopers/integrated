@@ -1,7 +1,7 @@
 {
     "name": "integrated/theme-bundle",
     "type": "symfony-bundle",
-    "description": "Integrated Theme Bundle",
+    "description": "Provides website theme support, which makes it easy to share themes between websites or use a multi-site in your application",
     "keywords": ["Integrated", "theme"],
     "homepage": "http://www.e-active.nl",
     "license": "MIT",
@@ -21,11 +21,6 @@
     "autoload":{
         "psr-4":{
             "Integrated\\Bundle\\ThemeBundle\\": ""
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "0.9.9-dev"
         }
     }
 }
