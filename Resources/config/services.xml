@@ -11,6 +11,8 @@
         <parameter key="integrated_formtype_form_type_TinyMCE.class">Integrated\Bundle\FormTypeBundle\Form\Type\TinyMCEType</parameter>
         <parameter key="integrated_formtype_form_type_select2.class">Integrated\Bundle\FormTypeBundle\Form\Type\Select2Type</parameter>
         <parameter key="integrated_formtype_form_type_sortable_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType</parameter>
+        <parameter key="integrated_formtype_form_type_integrated_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType</parameter>
+        <parameter key="integrated_formtype.form.type.embedded_document.class">Integrated\Bundle\FormTypeBundle\Form\Type\EmbedDocumentType</parameter>
 
     </parameters>
 
@@ -19,18 +21,31 @@
         <service id="integrated_formtype_form_type_datetime" class="%integrated_formtype_form_type_datetime.class%">
             <tag name="form.type" alias="integrated_datetime" />
         </service>
+
         <service id="integrated_formtype_form_type_TinyMCE" class="%integrated_formtype_form_type_TinyMCE.class%">
             <argument>%integrated_content_styles%</argument>
             <tag name="form.type" alias="integrated_tinymce" />
         </service>
+
         <service id="integrated_formtype_form_type_wysihtml5x" class="%integrated_formtype_form_type_wysihtml5x.class%">
             <tag name="form.type" alias="integrated_wysihtml5x" />
         </service>
+
         <service id="integrated_formtype_form_type_sortable_collection" class="%integrated_formtype_form_type_sortable_collection.class%">
             <tag name="form.type" alias="integrated_sortable_collection"/>
         </service>
+
+        <service id="integrated_formtype_form_type_integrated_collection" class="%integrated_formtype_form_type_integrated_collection.class%">
+            <tag name="form.type" alias="integrated_collection"/>
+        </service>
+
         <service id="integrated_formtype_form_type_select2" class="%integrated_formtype_form_type_select2.class%">
             <tag name="form.type" alias="integrated_select2" />
+        </service>
+
+        <service id="integrated_formtype.form.type.embedded_document" class="%integrated_formtype.form.type.embedded_document.class%">
+            <argument type="service" id="integrated_content.metadata.factory.all_types" />
+            <tag name="form.type" alias="integrated_embedded_document"/>
         </service>
 
 
