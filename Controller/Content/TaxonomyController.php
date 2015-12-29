@@ -57,8 +57,9 @@ class TaxonomyController
     {
         $this->blockManager->setDocument($taxonomy);
 
-        return $this->templating->renderResponse($this->themeManager->locateTemplate('content/Taxonomy/default.html.twig'), [
-            'taxonomy' => $taxonomy,
-        ]);
+        return $this->templating->renderResponse(
+            $this->themeManager->locateTemplate('content/Taxonomy/default.html.twig'),
+            ['taxonomy' => $taxonomy]
+        );
     }
 }

@@ -85,7 +85,11 @@ class MenuExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_menu', [$this, 'renderMenu'], ['is_safe' => ['html'], 'needs_context' => true]),
+            new \Twig_SimpleFunction(
+                'integrated_menu',
+                [$this, 'renderMenu'],
+                ['is_safe' => ['html'], 'needs_context' => true]
+            ),
             new \Twig_SimpleFunction('integrated_menu_prepare', [$this, 'prepareMenu'], ['is_safe' => ['html']]),
         ];
     }
@@ -113,7 +117,9 @@ class MenuExtension extends \Twig_Extension
                 $menu = $this->factory->createItem($name);
             }
 
-            $html .= '<script type="text/json">' . json_encode(['data' => $menu->toArray(), 'options' => $options]) . '</script>';
+            $html .= '<script type="text/json">' . json_encode(
+                ['data' => $menu->toArray(), 'options' => $options]
+            ) . '</script>';
         }
 
         if ($menu) {

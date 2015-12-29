@@ -57,8 +57,9 @@ class EventController
     {
         $this->blockManager->setDocument($event);
 
-        return $this->templating->renderResponse($this->themeManager->locateTemplate('content/Event/default.html.twig'), [
-            'event' => $event,
-        ]);
+        return $this->templating->renderResponse(
+            $this->themeManager->locateTemplate('content/Event/default.html.twig'),
+            ['event' => $event]
+        );
     }
 }

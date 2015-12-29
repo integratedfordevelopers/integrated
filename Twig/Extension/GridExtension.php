@@ -49,7 +49,11 @@ class GridExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_grid', [$this, 'renderGrid'], ['is_safe' => ['html'], 'needs_environment' => true, 'needs_context' => true]),
+            new \Twig_SimpleFunction(
+                'integrated_grid',
+                [$this, 'renderGrid'],
+                ['is_safe' => ['html'], 'needs_environment' => true, 'needs_context' => true]
+            ),
         ];
     }
 
@@ -60,8 +64,12 @@ class GridExtension extends \Twig_Extension
      * @param string $template
      * @return string
      */
-    public function renderGrid(\Twig_Environment $environment, $context, $id, $template = 'IntegratedWebsiteBundle:Page:grid.html.twig')
-    {
+    public function renderGrid(
+        \Twig_Environment $environment,
+        $context,
+        $id,
+        $template = 'IntegratedWebsiteBundle:Page:grid.html.twig'
+    ) {
         if (isset($context['form']) && ($form = $context['form']) instanceof FormView) {
             /** @var FormView $form */
 
@@ -82,7 +90,10 @@ class GridExtension extends \Twig_Extension
                 $form = $this->form->create('integrated_website_page', $page)->createView();
 
                 // Render form for the newly added grid
-                return $this->renderer->searchAndRenderBlock($form->offsetGet('grids')->offsetGet($page->indexOf($grid)), 'row');
+                return $this->renderer->searchAndRenderBlock(
+                    $form->offsetGet('grids')->offsetGet($page->indexOf($grid)),
+                    'row'
+                );
             }
         }
 

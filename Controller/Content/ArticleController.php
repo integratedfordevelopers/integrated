@@ -57,8 +57,9 @@ class ArticleController
     {
         $this->blockManager->setDocument($article);
 
-        return $this->templating->renderResponse($this->themeManager->locateTemplate('content/Article/default.html.twig'), [
-            'article' => $article,
-        ]);
+        return $this->templating->renderResponse(
+            $this->themeManager->locateTemplate('content/Article/default.html.twig'),
+            ['article' => $article]
+        );
     }
 }

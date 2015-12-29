@@ -57,8 +57,9 @@ class JobPostingController
     {
         $this->blockManager->setDocument($jobPosting);
 
-        return $this->templating->renderResponse($this->themeManager->locateTemplate('content/JobPosting/default.html.twig'), [
-            'jobPosting' => $jobPosting,
-        ]);
+        return $this->templating->renderResponse(
+            $this->themeManager->locateTemplate('content/JobPosting/default.html.twig'),
+            ['jobPosting' => $jobPosting]
+        );
     }
 }

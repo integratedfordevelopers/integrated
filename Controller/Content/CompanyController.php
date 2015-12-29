@@ -57,8 +57,9 @@ class CompanyController
     {
         $this->blockManager->setDocument($company);
 
-        return $this->templating->renderResponse($this->themeManager->locateTemplate('content/Company/default.html.twig'), [
-            'company' => $company,
-        ]);
+        return $this->templating->renderResponse(
+            $this->themeManager->locateTemplate('content/Company/default.html.twig'),
+            ['company' => $company]
+        );
     }
 }
