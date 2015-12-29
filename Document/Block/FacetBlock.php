@@ -47,7 +47,7 @@ class FacetBlock extends Block
      * @Type\Field(
      *      type="integrated_collection",
      *      options={
-     *          "type"="integrated_embed_document",
+     *          "type"="integrated_embedded_document",
      *          "options"={
      *              "data_class"="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField"
      *          },

@@ -99,8 +99,8 @@ class FacetBlockHandler extends BlockHandler
             ];
         }
 
-        if (null === $facets || !count($facets)) {
-            return; // @todo show block in edit mode (INTEGRATED-428)
+        if (!count($facets)) {
+            return;
         }
 
         return $this->render([
