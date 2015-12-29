@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 
-use Integrated\Bundle\ContentBundle\Document\Storage\Embedded\Metadata;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Common\Storage\Identifier\IdentifierInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
 
@@ -35,6 +35,11 @@ class UploadedFileReader implements ReaderInterface
     protected $identifier;
 
     /**
+     * @var string
+     */
+    private $data;
+
+    /**
      * @param UploadedFile $uploadedFile
      * @param IdentifierInterface $identifier
      */
@@ -49,7 +54,17 @@ class UploadedFileReader implements ReaderInterface
      */
     public function read()
     {
-        return file_get_contents($this->uploadedFile->getPathname());
+        if (null == $this->data) {
+            $file = new \SplFileObject($this->uploadedFile->getPathname(), 'r');
+            // Read the file buffered
+            while($data = $file->fread(1024)) {
+                $this->data .= $data;
+            }
+            // Cleanup
+            unset($file);
+        }
+
+        return $this->data;
     }
 
     /**
