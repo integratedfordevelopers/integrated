@@ -316,7 +316,9 @@ class SluggableSubscriber implements EventSubscriber
 
         if ($uow instanceof ODMUnitOfWork) {
             return array_merge($objects, $this->getRepository($om, $class)->findBy([
-                $field => new \MongoRegex('/^' . preg_quote($slug, '/') . '(' . preg_quote($separator, '/') . '\d+)?$/') // counter is optional
+                $field => new \MongoRegex(
+                    '/^' . preg_quote($slug, '/') . '(' . preg_quote($separator, '/') . '\d+)?$/'
+                ) // counter is optional
             ]));
 
         } elseif ($uow instanceof ORMUnitOfWork) {
