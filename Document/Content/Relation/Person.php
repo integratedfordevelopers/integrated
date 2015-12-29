@@ -15,9 +15,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-use Integrated\Bundle\ContentBundle\Document\Storage\File;
+use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 
 /**
@@ -81,8 +82,8 @@ class Person extends Relation
     protected $jobs;
 
     /**
-     * @var File
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Storage\File")
+     * @var FileInterface
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
      * @Type\Field(type="integrated_image_choice")
      */
     protected $picture;
@@ -280,7 +281,7 @@ class Person extends Relation
     /**
      * Get the picture of the document
      *
-     * @return File
+     * @return FileInterface
      */
     public function getPicture()
     {
@@ -290,10 +291,10 @@ class Person extends Relation
     /**
      * Set the picture of the document
      *
-     * @param File $picture
+     * @param FileInterface $picture
      * @return $this
      */
-    public function setPicture(File $picture)
+    public function setPicture(FileInterface $picture)
     {
         $this->picture = $picture;
         return $this;
@@ -307,7 +308,7 @@ class Person extends Relation
     public function getCover()
     {
         if ($this->getPicture()) {
-            return $this->getPicture()->getWebPath();
+            return $this->getPicture()->getFile()->getPathname();
         }
     }
 

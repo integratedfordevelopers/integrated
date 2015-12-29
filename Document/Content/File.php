@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Document\Storage;
+namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -31,7 +31,7 @@ class File extends Content implements FileInterface
     /**
      * @var StorageInterface
      * @Type\Field(type="integrated_file")
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Storage\Embedded\Storage")
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      */
     protected $file;
 

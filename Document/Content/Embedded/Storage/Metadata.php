@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Document\Storage\Embedded;
+namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Document\Storage\Embedded;
+namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -42,8 +42,8 @@ class Storage implements StorageInterface
     protected $pathname;
 
     /**
-     * @var Metadata
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Storage\Embedded\Metadata")
+     * @var Storage\Metadata
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
      */
     protected $metadata;
 
