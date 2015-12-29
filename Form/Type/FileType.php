@@ -53,7 +53,7 @@ class FileType extends AbstractType
         // The field might not be required in the integrated content type
         $resolver->setDefaults([
             'required' => false,
-            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Storage\Embedded\Storage',
+            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
             'empty_data' => null
         ]);
     }
