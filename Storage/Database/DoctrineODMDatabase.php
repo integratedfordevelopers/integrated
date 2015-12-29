@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
-use Integrated\Common\Document\Storage\FileInterface;
+use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Storage\Database\DatabaseInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
