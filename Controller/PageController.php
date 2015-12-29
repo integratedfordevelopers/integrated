@@ -194,7 +194,10 @@ class PageController extends Controller
             'integrated_page_page',
             $page,
             [
-                'action' => $this->generateUrl('integrated_page_page_edit', ['id' => $page->getId(), 'channel' => $channel->getId()]),
+                'action' => $this->generateUrl(
+                    'integrated_page_page_edit',
+                    ['id' => $page->getId(), 'channel' => $channel->getId()]
+                ),
                 'method' => 'PUT',
                 'theme'  => $this->getTheme($channel),
             ]
