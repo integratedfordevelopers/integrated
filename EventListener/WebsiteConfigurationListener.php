@@ -56,7 +56,7 @@ class WebsiteConfigurationListener implements EventSubscriberInterface
         $this->resolver = $resolver;
     }
 
-    /**s
+    /**
      * @inheritdoc
      */
     public static function getSubscribedEvents()
