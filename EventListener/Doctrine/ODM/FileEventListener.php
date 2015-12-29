@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\EventListener\Doctrine\ODM;
 
 use Integrated\Bundle\StorageBundle\Storage\Command\DeleteCommand;
-use Integrated\Common\Document\Storage\Embedded\StorageInterface;
-use Integrated\Common\Document\Storage\FileInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Doctrine\Common\EventSubscriber;
