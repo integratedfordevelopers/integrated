@@ -11,9 +11,12 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
+
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 
@@ -21,7 +24,6 @@ use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
-use Integrated\Bundle\WorkflowBundle\Event\WorkflowStateChangedEvent;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Extension\Event\ContentEvent;
 use Integrated\Common\Content\Extension\Event\Subscriber\ContentSubscriberInterface;
@@ -31,7 +33,8 @@ use Integrated\Common\Content\MetadataInterface;
 
 use Integrated\Common\ContentType\ResolverInterface;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Integrated\Common\Event\Workflow\WorkflowEvents;
+use Integrated\Common\Event\Workflow\WorkflowStateChangedEvent;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -195,9 +198,8 @@ class ContentSubscriber implements ContentSubscriberInterface
             $log->setState($data['state']);
             $state->setState($data['state']);
 
-            $workflowEvent = new WorkflowStateChangedEvent($state, $content);
-            $dispatcher = $this->container->get('event_dispatcher');
-            $dispatcher->dispatch('integrated_workflow.workflow_status.changed', $workflowEvent);
+            $dispatcher = $this->container->get('integrated_workflow.event_dispatcher');
+            $dispatcher->dispatch(WorkflowEvents::STATE_CHANGED, new WorkflowStateChangedEvent($state, $content));
 
             $persist = true;
         }

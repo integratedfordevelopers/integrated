@@ -50,6 +50,7 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
         $loader->load('solr.xml');
 
         $loader->load('event_listeners.xml');
+        $loader->load('event_dispatcher.xml');
     }
 
     /**
