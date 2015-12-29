@@ -28,8 +28,7 @@ This bundle can be installed following these steps:
     }
 
 ### Configuration ###
-The bundle makes use of *knplabs/knp-gaufrette-bundle* for configuration and a filesystem map. 
-When you've enabled the bundle this config below is required for a default Integrated installation.  
+The bundle makes use of *knplabs/knp-gaufrette-bundle* for configuration and a filesystem map. When you've enabled the bundle this config below is required for a default Integrated installation.  
 
     // app/config.yml
     knp_gaufrette:
@@ -46,13 +45,10 @@ When you've enabled the bundle this config below is required for a default Integ
             foo:
                 public: /uploads/documents
     
-The StorageBundle places the files on all known file systems when no decision mapping exists. 
-The order defined in the configuration will be used to determine its main path. 
-When a file system has no resolver storage (for protected files) the developer must write an own implementation to give access to file (see **Protecting files** section).
-The keys in the *knp_gaufrette* configuration are linked to the *integrated_storage* configuration. 
+The StorageBundle places the files on all known filesystems when no decision mapping exists. The order defined in the configuration will be used to determine its primary path. When a filesystem has no resolver storage (for protected files) the developer must write an own implementation to give access to file (see **Protecting files** section). The filesystems (foo above) in the *knp_gaufrette* configuration are linked to the *integrated_storage* configuration. Based on the key(s) a resolver or decision map entry is linked to a filesystem.  
 
 #### Decision map ####
-Additionally to protected entities from being stored in a public accessible storage a developer can configure filesystems for entities.  
+Additionally to protected entities from being stored in a public accessible resource a developer can configure filesystems for entities.  
 You can enforce entities to be stored in specific storage(s) (thus preventing a public storage).  
 
     // app/config.yml
@@ -64,9 +60,7 @@ You can enforce entities to be stored in specific storage(s) (thus preventing a 
 **The redistribution command does not make use of the decision map and copies all files in the given storage.**
 
 #### Identifier ###
-A file requires an unique identifier. By default the identifier is based on the contents of the file.
-You can write your own implementation of `Integrated\Common\Storage\Identifier\IdentifierInterface`.
-The config below is default and does not have to be set.
+A file requires an unique identifier. By default the identifier is based on the contents of the file. You can write your own implementation of `Integrated\Common\Storage\Identifier\IdentifierInterface`. The config below is default and does not have to be set.
 
     // app/config.yml
     integrated_storage:
@@ -74,9 +68,7 @@ The config below is default and does not have to be set.
         identifier_class: Integrated\Bundle\StorageBundle\Storage\Identifier\FileIdentifier  
 
 #### Resolver ###
-A resolver returns the location of the stored file, providing a location for a browser.  
-In some cases you will need to add storage specific logic to the resolver. 
-You can write your own implementation of `Integrated\Common\Storage\Resolver\ResolverInterface`.
+A resolver returns the location of the stored file, providing a location for a browser. The filesystem does is not linked to public accessible location, for each filesystem a resolver must be written. In some cases you will need to add filesystem specific logic to the resolver. You can write your own implementation of `Integrated\Common\Storage\Resolver\ResolverInterface`.
 
 The config below is default and does not have to be set.
 
@@ -88,13 +80,10 @@ The config below is default and does not have to be set.
                 public: /uploads/documents
                 resolver_class: Integrated\Bundle\StorageBundle\Storage\Resolver\LocalResolver
 
-The arguments given in to the resolver are given in the options variable of the constructor. 
+The arguments given to the resolver are passed in the options variable of the constructor. You can add a service or a parameter to your resolver trough the configuration.  
 
 ### Protecting files ###
-In some cases the files may not be stored in a public available directory. 
-Most cases a directory on the home of the user is enough which can be stored local.
-You can do this by adding an additional private local storage. 
-However files can also be stored on any remote by not defining an resolver. 
+In some cases the files may not be stored in a public available directory. Most cases a directory on the home of the user is enough which can be stored local. You can do this by adding an additional private local storage. However files can also be stored on any remote by not defining an resolver. 
 
 A controller might look like the following:
 
@@ -102,7 +91,6 @@ A controller might look like the following:
     $response = new Response();
     $response->setContent($file->getContent());
     $response->setHeaders($file->getMetadata()->getHeaders());
-
 
 
 ## License ##
