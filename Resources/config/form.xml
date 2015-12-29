@@ -48,7 +48,6 @@
         <parameter key="integrated_content.form.type.phonenumber.class">Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType</parameter>
 
         <parameter key="integrated_formtype_form_type_author.class">Integrated\Bundle\ContentBundle\Form\Type\AuthorType</parameter>
-        <parameter key="integrated_content.form.type.embed_one.class">Integrated\Bundle\ContentBundle\Form\Type\EmbedOneType</parameter>
 
     </parameters>
 
@@ -161,11 +160,6 @@
 
         <service id="integrated_content.form.publish_time.type" class="%integrated_content.form.publish_time.type.class%">
             <tag name="form.type" alias="integrated_publish_time" />
-        </service>
-
-        <service id="integrated_content.form.type.embed_one" class="%integrated_content.form.type.embed_one.class%">
-            <argument type="service" id="integrated_content.metadata.factory.all_types" />
-            <tag name="form.type" alias="integrated_embed_one"/>
         </service>
 
     </services>
