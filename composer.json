@@ -20,9 +20,8 @@
         "knplabs/knp-gaufrette-bundle": "~0.1.7"
     },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\StorageBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\StorageBundle\\": ""
         }
-    },
-    "target-dir": "Integrated/Bundle/StorageBundle"
+    }
 }
