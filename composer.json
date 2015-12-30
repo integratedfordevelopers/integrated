@@ -28,7 +28,6 @@
         "integrated/menu-bundle": "~0.3",
         "integrated/block-bundle": "~0.4",
         "integrated/slug-bundle": "~0.2",
-        "integrated/storage-bundle": "~0.4",
         "knplabs/knp-menu-bundle": "~2.0",
         "knplabs/knp-paginator-bundle": "~2.4",
         "nelmio/alice": "1.*",
@@ -42,7 +41,7 @@
         "integrated/website-bundle": "~0.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.2.*"
+        "phpunit/phpunit": "4.4.*"
     },
     "autoload":{
         "psr-4":{
