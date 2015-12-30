@@ -42,7 +42,9 @@ class Resolver implements ResolverInterface
     protected $registry;
 
     /**
-     * {@inheritdoc}
+     * @param array $resolverMap
+     * @param IdentifierInterface $identifier
+     * @param FilesystemRegistryInterface $registry
      */
     public function __construct(array $resolverMap, IdentifierInterface $identifier, FilesystemRegistryInterface $registry)
     {
