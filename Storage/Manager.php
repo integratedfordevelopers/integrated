@@ -55,7 +55,10 @@ class Manager implements ManagerInterface
     protected $commandBus;
 
     /**
-     * {@inheritdoc}
+     * @param FilesystemRegistryInterface $registry
+     * @param ResolverInterface $resolveStorage
+     * @param LoggerInterface|null $logger
+     * @param QueuedCommandBusInterface|null $busInterface
      */
     public function __construct(
         FilesystemRegistryInterface $registry,
