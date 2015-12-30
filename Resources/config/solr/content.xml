@@ -85,7 +85,7 @@
 
     </class>
 
-    <class name="Integrated\Bundle\StorageBundle\Document\Image">
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Image">
 
         <type name="integrated.fields">
             <options>
@@ -173,5 +173,4 @@
 
     </class>
 
-</converter-mapping>
 </converter-mapping>
