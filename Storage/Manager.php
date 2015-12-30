@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
+use Gaufrette\Filesystem;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Storage\Exception\RevertException;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
@@ -134,36 +135,45 @@ class Manager implements ManagerInterface
                 // Get the filesystem from the registry
                 $filesystem = $this->registry->get($key);
 
-                // Check for existence, do not continue if it exists. A file may have updated meta data
-                if ($filesystem->has($identifier)) {
-                    $storage = $filesystem->get($identifier);
-                } else {
-                    $storage = $filesystem->createFile($identifier);
-                }
+                if ($filesystem instanceof Filesystem) {
+                    // Check for existence, do not continue if it exists. A file may have updated meta data
+                    if ($filesystem->has($identifier)) {
+                        $storage = $filesystem->get($identifier);
+                    } else {
+                        $storage = $filesystem->createFile($identifier);
+                    }
 
-                if ($storage instanceof File) {
-                    // Might return 0 for an empty file (or throw an exception)
-                    $result = $storage->setContent(
-                        $reader->read(),
-                        $reader->getMetadata()->storageData()->toArray()
-                    );
+                    if ($storage instanceof File) {
+                        // Might return 0 for an empty file (or throw an exception)
+                        $result = $storage->setContent(
+                            $reader->read(),
+                            $reader->getMetadata()->storageData()->toArray()
+                        );
+                    } else {
+                        throw new \LogicException(
+                            sprintf(
+                                'A instanceof Gaufrette\File was excepted (given: %s).',
+                                get_class($storage)
+                            )
+                        );
+                    }
+
+                    if (false === $result) {
+                        // Throw a roll back
+                        throw new RevertException(
+                            sprintf(
+                                '%sThe filesystem %s denied writing for key %s',
+                                self::LOG_PREFIX,
+                                $key,
+                                $identifier
+                            )
+                        );
+                    }
                 } else {
                     throw new \LogicException(
                         sprintf(
-                            'A instanceof Gaufrette\File was excepted (given: %s).',
-                            get_class($storage)
-                        )
-                    );
-                }
-
-                if (false === $result) {
-                    // Throw a roll back
-                    throw new RevertException(
-                        sprintf(
-                            '%sThe filesystem %s denied writing for key %s',
-                            self::LOG_PREFIX,
-                            $key,
-                            $identifier
+                            'A instancof Gaufrette\Filesystem was excpected (given: %s).',
+                            get_class($filesystem)
                         )
                     );
                 }

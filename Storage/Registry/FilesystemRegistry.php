@@ -40,8 +40,6 @@ class FilesystemRegistry implements FilesystemRegistryInterface
 
     /**
      * {@inheritdoc}
-     * @throws \InvalidArgumentException
-     * @return Filesystem
      */
     public function get($filesystem)
     {
@@ -49,7 +47,7 @@ class FilesystemRegistry implements FilesystemRegistryInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function keys()
     {
@@ -64,7 +62,6 @@ class FilesystemRegistry implements FilesystemRegistryInterface
 
     /**
      * {@inheritdoc}
-     * @return bool
      */
     public function exists($key)
     {
@@ -79,7 +76,6 @@ class FilesystemRegistry implements FilesystemRegistryInterface
 
     /**
      * {@inheritdoc}
-     * @return Filesystem[]
      */
     public function getIterator()
     {
