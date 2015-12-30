@@ -105,7 +105,7 @@ class Relation
     /**
      * Get references of Relation
      *
-     * @return Collection
+     * @return ContentInterface[]
      */
     public function getReferences()
     {
