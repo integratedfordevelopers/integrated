@@ -83,7 +83,7 @@ class Storage implements StorageInterface
      */
     public function __toString()
     {
-        return (string) $this->pathname;
+        return $this->pathname;
     }
 
     /**
