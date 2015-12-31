@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
-use Integrated\Bundle\StorageBundle\Form\DataTransformer\FileDataTransformer;
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
 use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -63,7 +62,6 @@ class FileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new FileDataTransformer());
         $builder->addEventSubscriber(new FileEventSubscriber($this->manager, $this->decision));
     }
 
