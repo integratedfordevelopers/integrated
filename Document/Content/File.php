@@ -58,7 +58,7 @@ class File extends Content implements FileInterface
     }
 
     /**
-     * @param StorageInterface $file
+     * {@inheritdoc}
      * @return $this
      */
     public function setFile(StorageInterface $file = null)
