@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_storage.command_filesystem_clear">Integrated\Bundle\StorageBundle\Command\Filesystem\ClearCommand</parameter>
+        <parameter key="integrated_storage.command_list">Integrated\Bundle\StorageBundle\Command\Filesystem\ListCommand</parameter>
+        <parameter key="integrated_storage.command_redistribute">Integrated\Bundle\StorageBundle\Command\Filesystem\RedistributeCommand</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_storage.command_filesystem_clear" class="%integrated_storage.command_filesystem_clear%">
+            <argument type="service" id="integrated_storage.database" />
+            <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.manager" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_storage.command_filesystem_list" class="%integrated_storage.command_list%">
+            <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.resolver" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_storage.command_redistribute" class="%integrated_storage.command_redistribute%">
+            <argument type="service" id="integrated_storage.database" />
+            <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.manager" />
+
+            <tag name="console.command" />
+        </service>
+
+    </services>
+
+</container>

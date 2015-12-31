@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_storage.manager">Integrated\Bundle\StorageBundle\Storage\Manager</parameter>
+        <parameter key="integrated_storage.resolver">Integrated\Bundle\StorageBundle\Storage\Resolver</parameter>
+        <parameter key="integrated_storage.decision">Integrated\Bundle\StorageBundle\Storage\Decision</parameter>
+        <parameter key="integrated_storage.registry">Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry</parameter>
+
+    </parameters>
+
+
+    <services>
+
+        <service id="integrated_storage.manager" class="%integrated_storage.manager%">
+            <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.resolver" />
+            <argument type="service" id="logger" on-invalid="ignore"/>
+        </service>
+
+        <service id="integrated_storage.resolver" class="%integrated_storage.resolver%">
+            <!--
+                The first two arguments of this service are injected in the bundle extension (see DependencyInjection)
+             -->
+            <argument />
+            <argument />
+
+            <argument type="service" id="integrated_storage.registry" />
+        </service>
+
+        <service id="integrated_storage.decision" class="%integrated_storage.decision%">
+            <argument type="service" id="integrated_storage.registry" />
+            <!--
+                Second argument is injected in the bundle extension (see DependencyInjection)
+            -->
+            <argument />
+        </service>
+
+        <service id="integrated_storage.registry" class="%integrated_storage.registry%">
+            <argument type="service" id="knp_gaufrette.filesystem_map" />
+        </service>
+
+    </services>
+
+</container>
