@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
@@ -359,12 +360,8 @@ class Article extends Content
         $items = $this->getReferencesByRelationType('embedded');
         if ($items) {
             foreach ($items as $item) {
-                if ($item instanceof Image) {
-                    if (!$item->getWebPath()) {
-                        continue;
-                    }
-
-                    return $item->getWebPath();
+                if ($item instanceof FileInterface) {
+                    return $item->getFile()->getPathname();
                 }
             }
         }
