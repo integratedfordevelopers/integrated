@@ -125,6 +125,19 @@ class RelatedContentBlock extends Block
     protected $maxItems;
 
     /**
+     * @var array
+     * @ODM\Collection
+     * @Type\Field(
+     *     type="integrated_select2",
+     *     options={
+     *         "multiple"=true,
+     *         "expanded"=true,
+     *     }
+     * )
+     */
+    protected $contentType;
+
+    /**
      * Get the block type
      *
      * @return string
@@ -230,5 +243,19 @@ class RelatedContentBlock extends Block
         $this->maxItems = $maxItems;
     }
 
+    /**
+     * @return array
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
 
+    /**
+     * @param array $contentType
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+    }
 }

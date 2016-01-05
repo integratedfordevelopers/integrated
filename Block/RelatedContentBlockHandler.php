@@ -107,6 +107,11 @@ class RelatedContentBlockHandler extends BlockHandler
         $query = $this->dm->getRepository('IntegratedContentBundle:Content\Content')
             ->getUsedBy($document, $block->getRelation());
 
+        $contentType = $block->getContentType();
+        if ($contentType) {
+            $query->field('contentType')->in($contentType);
+        }
+
         return $this->paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
