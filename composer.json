@@ -16,17 +16,17 @@
     "require": {
         "php": ">=5.4",
         "ext-mongo": "~1.2",
-        "symfony/symfony": "~2.6",
+        "symfony/symfony": "~2.7",
         "symfony/framework-bundle": "~2.2",
         "doctrine/doctrine-fixtures-bundle": "~2.2",
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "*",
         "doctrine/mongodb-odm-bundle": "~3.0",
-        "integrated/library": "~0.3",
+        "integrated/library": "~0.4",
         "integrated/formtype-bundle": "~0.2",
         "integrated/locking-bundle": "~0.2",
         "integrated/menu-bundle": "~0.3",
-        "integrated/block-bundle": "~0.2",
+        "integrated/block-bundle": "~0.4",
         "integrated/slug-bundle": "~0.2",
         "knplabs/knp-menu-bundle": "~2.0",
         "knplabs/knp-paginator-bundle": "~2.4",
@@ -40,7 +40,7 @@
         "integrated/website-bundle": "~0.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.2.*"
+        "phpunit/phpunit": "4.4.*"
     },
     "autoload":{
         "psr-4":{

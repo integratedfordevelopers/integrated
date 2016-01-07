@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 
 /**
@@ -61,9 +62,10 @@ class FileTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetFileFunction()
     {
-        /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile | \PHPUnit_Framework_MockObject_MockObject */
-        $file = $this->getMock('Symfony\Component\HttpFoundation\File\UploadedFile', array(), array(), '', false);
-        $this->assertEquals($file, $this->file->setFile($file)->getFile());
+        $this->assertEquals(
+            $file = $this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface'),
+            $this->file->setFile($file)->getFile()
+        );
     }
 
     /**

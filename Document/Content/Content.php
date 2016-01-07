@@ -260,17 +260,6 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @param string $relationId
-     * @return Content|null
-     */
-    public function getReferenceByRelationId($relationId)
-    {
-        if ($references = $this->getReferencesByRelationId($relationId)) {
-            return $references->first();
-        }
-    }
-
-    /**
      * @param $relationType
      * @return array|bool
      */
@@ -305,6 +294,17 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         }
 
         return new ArrayCollection();
+    }
+
+    /**
+     * @param string $relationId
+     * @return Content|null
+     */
+    public function getReferenceByRelationId($relationId)
+    {
+        if ($references = $this->getReferencesByRelationId($relationId)) {
+            return $references->first();
+        }
     }
 
     /**

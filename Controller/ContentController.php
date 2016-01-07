@@ -83,13 +83,14 @@ class ContentController extends Controller
         $query = $client->createSelect();
 
         $facetSet = $query->getFacetSet();
+        $facetSet->setMinCount(1);
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
-        $facetSet->createFacetField('channels')->setField('facet_channels');
-        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state');
-        $facetTitles['workflow_state'] = 'Workflow state';
-        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned');
+        $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
+        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
+        $facetTitles['workflow_state'] = 'Workflow status';
+        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
         $facetTitles['workflow_assigned'] = 'Assigned user';
-        $facetSet->createFacetField('properties')->setField('facet_properties');
+        $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
 
 
         // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
@@ -156,7 +157,7 @@ class ContentController extends Controller
             $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
 
             //create relation facet field
-            $facetSet->createFacetField($name)->setField('facet_' . $relation->getId());
+            $facetSet->createFacetField($name)->setField('facet_' . $relation->getId())->addExclude($name);
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
 
@@ -288,7 +289,8 @@ class ContentController extends Controller
             'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified', 'order' => 'desc'],
             'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
             'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
-            'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc']
+            'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc'],
+            'random'  => ['name' => 'random', 'field' => 'random_' . mt_rand(), 'label' => 'random', 'order' => 'desc'],
         ];
         $order_options = [
             'asc' => 'asc',
@@ -296,14 +298,14 @@ class ContentController extends Controller
         ];
 
         if ($q = $request->get('q')) {
-            $dismax = $query->getDisMax();
-            $dismax->setQueryFields('title content');
+            $edismax = $query->getEDisMax();
+            $edismax->setQueryFields('title content');
+            $edismax->setMinimumMatch('75%');
 
             $query->setQuery($q);
 
             $sort_default = 'rel';
-        }
-        else {
+        } else {
             //relevance only available when sorting on specific query
             unset($sort_options['rel']);
         }
@@ -312,7 +314,7 @@ class ContentController extends Controller
         $sort = trim(strtolower($sort));
         $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'),$order_options) ? $request->query->get('order') : $sort_options[$sort]['order'] );
+        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
 
         // Execute the query
         $result = $client->select($query);
