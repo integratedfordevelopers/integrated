@@ -12,6 +12,7 @@
         <parameter key="integrated_solr.type.field.append.type.class">Integrated\Bundle\SolrBundle\Solr\Type\FieldAppendMapperType</parameter>
         <parameter key="integrated_solr.type.field.type.class">Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType</parameter>
         <parameter key="integrated_solr.type.remove.type.class">Integrated\Bundle\SolrBundle\Solr\Type\RemoveType</parameter>
+        <parameter key="integrated_solr.type.json.type.class">Integrated\Bundle\SolrBundle\Solr\Type\JsonType</parameter>
 
     </parameters>
 
@@ -38,6 +39,10 @@
         </service>
 
         <service id="integrated_solr.type.remove.type" class="%integrated_solr.type.remove.type.class%">
+            <tag name="integrated_solr.type" />
+        </service>
+
+        <service id="integrated_solr.type.json.type" class="%integrated_solr.type.json.type.class%">
             <tag name="integrated_solr.type" />
         </service>
 
