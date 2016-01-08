@@ -27,7 +27,13 @@ class IntegratedWorkflowBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegisterListenersPass('integrated_workflow.event_dispatcher'));
+        $container->addCompilerPass(
+            new RegisterListenersPass(
+                'integrated_workflow.event_dispatcher',
+                'integrated_workflow.event_listener',
+                'integrated_workflow.event_subscriber'
+            )
+        );
     }
 
     /**
