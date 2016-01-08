@@ -33,8 +33,8 @@ use Integrated\Common\Content\MetadataInterface;
 
 use Integrated\Common\ContentType\ResolverInterface;
 
-use Integrated\Common\Event\Workflow\WorkflowEvents;
-use Integrated\Common\Event\Workflow\WorkflowStateChangedEvent;
+use Integrated\Common\Workflow\Events as WorkflowEvents;
+use Integrated\Common\Workflow\Event\WorkflowStateChangedEvent;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
