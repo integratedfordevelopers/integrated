@@ -53,7 +53,7 @@
             "Integrated\\Common\\Solr\\": "src/",
             "Integrated\\Common\\Storage\\": "src/",
             "Integrated\\Common\\Validator\\": "src/",
-            "Integrated\\Common\\Event\\": "src/"
+            "Integrated\\Common\\Workflow\\": "src/"
         }
     },
     "autoload-dev": {
