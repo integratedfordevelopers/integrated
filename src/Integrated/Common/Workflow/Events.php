@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Event\Workflow;
+namespace Integrated\Common\Workflow;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-final class WorkflowEvents
+final class Events
 {
     const STATE_CHANGED = 'integrated.workflow_state.changed';
 }

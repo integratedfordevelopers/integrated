@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Event\Workflow;
+namespace Integrated\Common\Workflow\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
