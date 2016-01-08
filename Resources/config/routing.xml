@@ -5,4 +5,5 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <import resource="@IntegratedPageBundle/Resources/config/routing/page.xml" prefix="/page" />
+    <import resource="@IntegratedPageBundle/Resources/config/routing/content_type_page.xml" prefix="/content_type_page" />
 </routes>

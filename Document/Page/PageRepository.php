@@ -19,17 +19,5 @@ use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
  */
 class PageRepository extends DocumentRepository
 {
-    /**
-     * @param Channel $channel
-     * @param string $pageType
-     * @return \Doctrine\ODM\MongoDB\Query\Builder
-     */
-    public function getPages(Channel $channel, $pageType = Page::TYPE_STATIC)
-    {
-        $builder = $this->createQueryBuilder();
-        $builder->field('channel.$id')->equals($channel->getId());
-        $builder->field('type')->equals($pageType);
 
-        return $builder;
-    }
 }

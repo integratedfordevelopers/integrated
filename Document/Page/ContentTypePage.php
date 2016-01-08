@@ -14,42 +14,22 @@ namespace Integrated\Bundle\PageBundle\Document\Page;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
-use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
-use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 
 /**
- * Page document
+ * @author Johan Liefers <johan@e-active.nl>
  *
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\Document(collection="page", repositoryClass="PageRepository")
- * @todo find a way to fix unique validation (INTEGRATED-481)
+ * @ODM\Document(collection="content_type_page")
  */
-class Page
+class ContentTypePage
 {
     /**
      * @var string
-     * @ODM\Id(strategy="NONE")
-     * @Slug(fields={"title"})
+     * @ODM\Id(strategy="UUID")
      */
     protected $id;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @Assert\NotBlank
-     */
-    protected $title;
-
-    /**
-     * @var string
-     * @ODM\String
-     */
-    protected $description;
 
     /**
      * @var string
@@ -64,12 +44,6 @@ class Page
      * @Assert\NotBlank
      */
     protected $layout;
-
-    /**
-     * @var array
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Grid")
-     */
-    protected $grids;
 
     /**
      * @var \DateTime
@@ -90,22 +64,21 @@ class Page
     protected $disabled = false;
 
     /**
-     * @var bool
-     * @ODM\Boolean
-     */
-    protected $locked = false;
-
-    /**
      * @var Channel
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
      */
     protected $channel;
 
     /**
+     * @var ContentType
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType")
+     */
+    protected $contentType;
+
+    /**
      */
     public function __construct()
     {
-        $this->grids = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
@@ -119,38 +92,12 @@ class Page
     }
 
     /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
+     * @param string $id
      * @return $this
      */
-    public function setTitle($title)
+    public function setId($id)
     {
-        $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
+        $this->id = $id;
         return $this;
     }
 
@@ -191,63 +138,21 @@ class Page
     }
 
     /**
-     * @return array
+     * @return ContentType
      */
-    public function getGrids()
+    public function getContentType()
     {
-        return $this->grids->toArray();
+        return $this->contentType;
     }
 
     /**
-     * @param array $grids
+     * @param ContentType $contentType
      * @return $this
      */
-    public function setGrids(array $grids)
+    public function setContentType(ContentType $contentType)
     {
-        $this->grids = new ArrayCollection($grids);
+        $this->contentType = $contentType;
         return $this;
-    }
-
-    /**
-     * @param Grid $grid
-     * @return $this
-     */
-    public function addGrid(Grid $grid)
-    {
-        $this->grids->add($grid);
-        return $this;
-    }
-
-    /**
-     * @param Grid $grid
-     * @return $this
-     */
-    public function removeGrid(Grid $grid)
-    {
-        $this->grids->removeElement($grid);
-        return $this;
-    }
-
-    /**
-     * @param Grid $grid
-     * @return int
-     */
-    public function indexOf(Grid $grid)
-    {
-        return $this->grids->indexOf($grid);
-    }
-
-    /**
-     * @param string $id
-     * @return Grid
-     */
-    public function getGrid($id)
-    {
-        foreach ($this->grids as $grid) {
-            if ($grid instanceof Grid && $grid->getId() == $id) {
-                return $grid;
-            }
-        }
     }
 
     /**
@@ -301,24 +206,6 @@ class Page
     public function setDisabled($disabled)
     {
         $this->disabled = (bool) $disabled;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isLocked()
-    {
-        return $this->locked;
-    }
-
-    /**
-     * @param bool $locked
-     * @return $this
-     */
-    public function setLocked($locked)
-    {
-        $this->locked = (bool) $locked;
         return $this;
     }
 
