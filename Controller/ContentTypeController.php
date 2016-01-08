@@ -12,6 +12,8 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 
+use Integrated\Common\ContentType\Event\ContentTypeEvent;
+use Integrated\Common\ContentType\Events;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 
@@ -152,6 +154,9 @@ class ContentTypeController extends Controller
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
+            $dispatcher = $this->get('integrated_content.event_dispatcher');
+            $dispatcher->dispatch(Events::CONTENT_TYPE_CREATED, new ContentTypeEvent($contentType));
+
             return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
         }
 
@@ -204,6 +209,9 @@ class ContentTypeController extends Controller
 
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+
+            $dispatcher = $this->get('integrated_content.event_dispatcher');
+            $dispatcher->dispatch(Events::CONTENT_TYPE_CHANGED, new ContentTypeEvent($contentType));
 
             return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
         }
