@@ -20,7 +20,7 @@ use Integrated\Common\Converter\Type\TypeInterface;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class JsonType implements TypeInterface
+class RelationJsonType implements TypeInterface
 {
     /**
      * {@inheritdoc}
@@ -54,6 +54,6 @@ class JsonType implements TypeInterface
      */
     public function getName()
     {
-        return 'integrated.json';
+        return 'integrated.relation_json';
     }
 }
