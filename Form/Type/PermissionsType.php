@@ -33,8 +33,8 @@ class PermissionsType extends AbstractType
     {
         $builder->addViewTransformer(new PermissionTransformer());
 
-        $builder->add('read', 'user_group_choice', ['required' => false, 'multiple' => true, 'choice_data' => 'scalar']);
-        $builder->add('write', 'user_group_choice', ['required' => false, 'multiple' => true, 'choice_data' => 'scalar']);
+        $builder->add('read', 'user_group_choice', ['required' => false, 'multiple' => true, 'choice_data' => 'scalar', 'attr' => ['class' => 'select2']]);
+        $builder->add('write', 'user_group_choice', ['required' => false, 'multiple' => true, 'choice_data' => 'scalar', 'attr' => ['class' => 'select2']]);
     }
 
     /**

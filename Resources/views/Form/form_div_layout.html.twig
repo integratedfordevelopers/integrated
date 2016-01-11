@@ -54,7 +54,7 @@
                     {% if form.vars.allow_delete %}
                         <div class="col-lg-1">
                             <div class="form-group">
-                                <a href class="btn btn-danger btn-small" data-removefield="collection" data-field="{{ field.vars.id }}"><span class="glyphicon glyphicon-remove"></span></a>
+                                <a href class="btn btn-danger btn-small state_delete_button" data-removefield="collection" data-field="{{ field.vars.id }}"><span class="glyphicon glyphicon-remove"></span></a>
                             </div>
                             {# uncomment to see order changing button mock up #}
                             {#<div class="form-group">#}
@@ -71,7 +71,7 @@
 
         {% if form.vars.allow_add %}
             <div class="integrated-collection-button">
-                <a href class="btn btn-success btn-small" data-addfield="collection" data-collection="{{ form.vars.id }}" data-prototype-name="{{ prototype_name }}"><span class="glyphicon glyphicon-plus"></a>
+                <a href class="btn btn-success btn-small state_add_button" data-addfield="collection" data-collection="{{ form.vars.id }}" data-prototype-name="{{ prototype_name }}"><span class="glyphicon glyphicon-plus"></a>
             </div>
         {% endif %}
 
