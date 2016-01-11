@@ -24,6 +24,7 @@
 {% block javascript %}
     {{ parent() }}
     {% javascripts
+    '@IntegratedWorkflowBundle/Resources/public/js/updateTransitions.js'
     '@IntegratedWorkflowBundle/Resources/public/js/select2_init.js'
     %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
