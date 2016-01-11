@@ -101,6 +101,7 @@ class BlockHandler implements BlockHandlerInterface
     {
         return $this->render([
             'block' => $block,
+            'document' => $this->getDocument(),
         ]);
     }
 }
