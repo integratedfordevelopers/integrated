@@ -35,12 +35,10 @@ class RelationJsonType implements TypeInterface
         $accessor = PropertyAccess::createPropertyAccessor();
 
         $array = [];
-        $i = 0;
-        foreach ($relations as $relation) {
+        foreach ($relations as $key => $relation) {
             foreach ($options['properties'] as $alias => $property) {
-                $array[$i][$alias] = $accessor->getValue($relation, $property);
+                $array[$key][$alias] = $accessor->getValue($relation, $property);
             }
-            $i++;
         }
 
         $container->set(
