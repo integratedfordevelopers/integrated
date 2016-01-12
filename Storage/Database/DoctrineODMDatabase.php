@@ -11,7 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
-use Integrated\Bundle\StorageBundle\Document\File;
+use Integrated\Common\Content\Document\Storage\FileInterface;
+use Integrated\Common\Storage\Database\DatabaseInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -45,7 +45,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->scalarNode('identifier_class')
-                ->defaultValue('FileIdentifier')
+                ->defaultValue('Integrated\Bundle\StorageBundle\Storage\Identifier\FileIdentifier')
                 ->end();
     }
 
@@ -68,7 +68,7 @@ class Configuration implements ConfigurationInterface
                             ->isRequired()
                             ->end()
                         ->scalarNode('resolver_class')
-                            ->defaultValue('UriResolver')
+                            ->defaultValue('Integrated\Bundle\StorageBundle\Storage\Resolver\LocalResolver')
                             ->end()
                     ->end()
                 ->end()

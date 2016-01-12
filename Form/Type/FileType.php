@@ -11,10 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
-use Integrated\Bundle\StorageBundle\Form\DataTransformer\FileDataTransformer;
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
-use Integrated\Bundle\StorageBundle\Storage\Decision;
-use Integrated\Bundle\StorageBundle\Storage\Manager;
+use Integrated\Common\Storage\DecisionInterface;
+use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,20 +25,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FileType extends AbstractType
 {
     /**
-     * @var Manager
+     * @var ManagerInterface
      */
     protected $manager;
 
     /**
-     * @var Decision
+     * @var DecisionInterface
      */
     protected $decision;
 
     /**
-     * @param Manager $manager
-     * @param Decision $decision
+     * @param ManagerInterface $manager
+     * @param DecisionInterface $decision
      */
-    public function __construct(Manager $manager, Decision $decision)
+    public function __construct(ManagerInterface $manager, DecisionInterface $decision)
     {
         $this->manager = $manager;
         $this->decision = $decision;
@@ -53,7 +52,7 @@ class FileType extends AbstractType
         // The field might not be required in the integrated content type
         $resolver->setDefaults([
             'required' => false,
-            'data_class' => 'Integrated\Bundle\StorageBundle\Document\Embedded\Storage',
+            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
             'empty_data' => null
         ]);
     }
@@ -63,7 +62,6 @@ class FileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new FileDataTransformer());
         $builder->addEventSubscriber(new FileEventSubscriber($this->manager, $this->decision));
     }
 

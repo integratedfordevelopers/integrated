@@ -41,24 +41,10 @@ class IntegratedStorageExtension extends Extension
         $container->getDefinition('integrated_storage.resolver')
             ->replaceArgument(0, $config['resolver'])
             // Validation of the class will happen when the dependency has been created
-            ->replaceArgument(1, new Definition($this->identifierClass($config['identifier_class'])));
+            ->replaceArgument(1, new Definition($config['identifier_class']));
 
         // Inject the "decision" config (app/config.yml) in the manager
         $container->getDefinition('integrated_storage.decision')
             ->replaceArgument(1, $config['decision_map']);
-    }
-
-    /**
-     * @param $className
-     * @return string
-     */
-    public function identifierClass($className)
-    {
-        // Dynamically checked, if no namespace is given use defaults
-        if (false === strpos($className, '/')) {
-            $className = sprintf('Integrated\Bundle\StorageBundle\Storage\Identifier\%s', $className);
-        }
-
-        return $className;
     }
 }

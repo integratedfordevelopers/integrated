@@ -11,11 +11,12 @@
 
 namespace Integrated\Bundle\StorageBundle\Command\Filesystem;
 
-use Integrated\Bundle\StorageBundle\Storage\Database\DatabaseInterface;
-use Integrated\Bundle\StorageBundle\Storage\Manager;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
-
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
+use Integrated\Common\Storage\Database\DatabaseInterface;
+use Integrated\Common\Storage\ManagerInterface;
+
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,6 +24,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
+ * Deletes all files in the database of the filesystem.
+ *
  * @author Johnny Borg <johnny@e-active.nl>
  */
 class ClearCommand extends Command
@@ -38,16 +41,16 @@ class ClearCommand extends Command
     protected $registry;
 
     /**
-     * @var Manager
+     * @var ManagerInterface
      */
     protected $storage;
 
     /**
      * @param DatabaseInterface $database
      * @param FilesystemRegistry $registry
-     * @param Manager $storage
+     * @param ManagerInterface $storage
      */
-    public function __construct(DatabaseInterface $database, FilesystemRegistry $registry, Manager $storage)
+    public function __construct(DatabaseInterface $database, FilesystemRegistry $registry, ManagerInterface $storage)
     {
         $this->database = $database;
         $this->registry = $registry;
@@ -65,11 +68,14 @@ class ClearCommand extends Command
             ->setDescription('Deletes all files in the database of the filesystem.')
             ->setDefinition([
                 new InputArgument(
-                    'filesystems', InputArgument::IS_ARRAY,
+                    'filesystems',
+                    InputArgument::IS_ARRAY,
                     'A space separated list of storage keys'
                 ),
                 new InputOption(
-                    'delete', null, InputOption::VALUE_OPTIONAL,
+                    'delete',
+                    null,
+                    InputOption::VALUE_OPTIONAL,
                     'Delete the file before putting it in storage(s)'
                 )
             ]);
@@ -81,21 +87,24 @@ class ClearCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $filesystems = (new FilesystemValidation($this->registry))
-            ->isValid($input->getArgument('filesystems'));
+        $availableFilesystems = (new FilesystemValidation($this->registry))
+            ->getValidFilesystems($input->getArgument('filesystems'));
 
-        foreach ($this->database->getObjects() as $i => $file) {
+        foreach ($this->database->getFiles() as $i => $file) {
+            $validFilesystems = new ArrayCollection();
 
-            $_filesystems = [];
-            foreach ($filesystems as $filesystem) {
-                if (in_array($filesystem, $file->getFile()->getFilesystems())) {
-                    $_filesystems[] = $filesystem;
+            foreach ($availableFilesystems as $filesystem) {
+                if ($file->getFile()->getFilesystems()->contains($filesystem)) {
+                    $validFilesystems[] = $filesystem;
                 }
             }
 
-            if (count($_filesystems)) {
-                $file->setFile($this->storage->delete($file->getFile(), $_filesystems));
-                $this->database->saveObject($file);
+            if (count($validFilesystems)) {
+                // Remove the obsolete filesystems
+                $file->setFile(
+                    $this->storage->delete($file->getFile(), $validFilesystems)
+                );
+                $this->database->save($file);
             }
 
             if (0 == ($i % 100)) {

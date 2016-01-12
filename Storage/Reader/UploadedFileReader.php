@@ -11,10 +11,13 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Metadata;
-use Integrated\Bundle\StorageBundle\Storage\Identifier\IdentifierInterface;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
+use Integrated\Common\Storage\Identifier\IdentifierInterface;
+use Integrated\Common\Storage\Reader\ReaderInterface;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Mapping\MetadataInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -32,6 +35,11 @@ class UploadedFileReader implements ReaderInterface
     protected $identifier;
 
     /**
+     * @var string
+     */
+    private $data;
+
+    /**
      * @param UploadedFile $uploadedFile
      * @param IdentifierInterface $identifier
      */
@@ -46,19 +54,29 @@ class UploadedFileReader implements ReaderInterface
      */
     public function read()
     {
-        return file_get_contents($this->uploadedFile->getPathname());
+        if (null == $this->data) {
+            $file = new \SplFileObject($this->uploadedFile->getPathname(), 'r');
+            // Read the file buffered
+            while ($data = $file->fread(1024)) {
+                $this->data .= $data;
+            }
+            // Cleanup
+            unset($file);
+        }
+
+        return $this->data;
     }
 
     /**
-     * @return Metadata
+     * @return MetadataInterface
      */
     public function getMetadata()
     {
         return new Metadata(
             $this->uploadedFile->getClientOriginalExtension(),
             $this->uploadedFile->getMimeType(),
-            [],
-            []
+            new ArrayCollection(),
+            new ArrayCollection()
         );
     }
 }

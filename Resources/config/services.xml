@@ -19,7 +19,7 @@
         <service id="integrated_storage.manager" class="%integrated_storage.manager%">
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.resolver" />
-            <argument type="service" id="logger" />
+            <argument type="service" id="logger" on-invalid="ignore"/>
         </service>
 
         <service id="integrated_storage.resolver" class="%integrated_storage.resolver%">

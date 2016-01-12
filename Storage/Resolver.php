@@ -11,16 +11,20 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
-use Integrated\Bundle\StorageBundle\Storage\Identifier\IdentifierInterface;
-use Integrated\Bundle\StorageBundle\Storage\Reader\ReaderInterface;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
-use Integrated\Bundle\StorageBundle\Storage\Resolver\ResolverInterface;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Storage\FilesystemRegistryInterface;
+use Integrated\Common\Storage\Identifier\IdentifierInterface;
+use Integrated\Common\Storage\Reader\ReaderInterface;
+use Integrated\Common\Storage\ResolverInterface;
+use Integrated\Common\Storage\FileResolver\FileResolverInterface;
+
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class Resolver
+class Resolver implements ResolverInterface
 {
     /**
      * @var array
@@ -40,9 +44,9 @@ class Resolver
     /**
      * @param array $resolverMap
      * @param IdentifierInterface $identifier
-     * @param FilesystemRegistry $registry
+     * @param FilesystemRegistryInterface $registry
      */
-    public function __construct(array $resolverMap, IdentifierInterface $identifier, FilesystemRegistry $registry)
+    public function __construct(array $resolverMap, IdentifierInterface $identifier, FilesystemRegistryInterface $registry)
     {
         $this->resolverMap = $resolverMap;
         $this->identifier = $identifier;
@@ -50,21 +54,12 @@ class Resolver
     }
 
     /**
-     * Gives you an absolute path to the storage.
-     * An preference can be given. When the preference is not able to serve the file another filesystem will be used.
-     *
-     * @param Storage $storage
-     * @param null $filesystem
-     * @return string absolute path
+     * {@inheritdoc}
      */
-    public function resolve(Storage $storage, $filesystem = null)
+    public function resolve(StorageInterface $storage, ArrayCollection $filesystem = null)
     {
-        if (null == $filesystem) {
-            $filesystem = $storage->getFilesystems()[0];
-        }
-
-        $priority = $storage->getFilesystems();
-        usort($priority, function($a) use ($filesystem) {
+        $priority = $filesystem ? $filesystem : $storage->getFilesystems();
+        $priority->getIterator()->uasort(function ($a) use ($filesystem) {
             // The given filesystem always has priority, however it might not be able to serve the file
             return $a == $filesystem ? -1 : 1;
         });
@@ -89,8 +84,7 @@ class Resolver
     }
 
     /**
-     * @param ReaderInterface $reader
-     * @return string
+     * {@inheritdoc}
      */
     public function getIdentifier(ReaderInterface $reader)
     {
@@ -98,8 +92,7 @@ class Resolver
     }
 
     /**
-     * @param $filesystem
-     * @return array|bool
+     * {@inheritdoc}
      */
     public function getOptions($filesystem)
     {
@@ -111,23 +104,14 @@ class Resolver
     }
 
     /**
-     * Create a resolver class based on the options
-     *
-     * @param string $filesystem
-     * @param string $identifier
-     * @return ResolverInterface
+     * {@inheritdoc}
      */
     public function getResolverClass($filesystem, $identifier)
     {
         $className = $this->resolverMap[$filesystem]['resolver_class'];
 
-        // No namespace given lets add the default namespace, a simple class can be given by adding a forward slash
-        if (false === strpos($className, '/')) {
-            $className = sprintf('Integrated\Bundle\StorageBundle\Storage\Resolver\%s', $className);
-        }
-
         $resolver = new $className($this->resolverMap[$filesystem], $identifier);
-        if ($resolver instanceof ResolverInterface) {
+        if ($resolver instanceof FileResolverInterface) {
             return $resolver;
         }
 

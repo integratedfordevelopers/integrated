@@ -11,35 +11,37 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
-use Gaufrette\Exception\FileNotFound;
-use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
-use Integrated\Bundle\StorageBundle\Storage\Command\CommandInterface;
+use Gaufrette\Filesystem;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Storage\Exception\RevertException;
-use Integrated\Bundle\StorageBundle\Storage\Handler\QueuedCommandBusInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
-use Integrated\Bundle\StorageBundle\Storage\Reader\ReaderInterface;
-use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
-use Monolog\Logger;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Storage\Command\CommandInterface;
+use Integrated\Common\Storage\FilesystemRegistryInterface;
+use Integrated\Common\Storage\Handler\QueuedCommandBusInterface;
+use Integrated\Common\Storage\ManagerInterface;
+use Integrated\Common\Storage\Reader\ReaderInterface;
+use Integrated\Common\Storage\ResolverInterface;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Gaufrette\File;
+use Gaufrette\Exception\FileNotFound;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class Manager
+class Manager implements ManagerInterface
 {
     /**
-     * @const string
-     */
-    const LOG_PREFIX = 'IntegratedStorage: ';
-
-    /**
-     * @var FilesystemRegistry
+     * @var FilesystemRegistryInterface
      */
     protected $registry;
 
     /**
-     * @var Logger
+     * @var LoggerInterface|null
      */
     protected $logger;
 
@@ -54,18 +56,17 @@ class Manager
     protected $commandBus;
 
     /**
-     * @param FilesystemRegistry $registry
-     * @param Resolver $resolveStorage
-     * @param Logger $logger
-     * @param QueuedCommandBusInterface $busInterface
+     * @param FilesystemRegistryInterface $registry
+     * @param ResolverInterface $resolveStorage
+     * @param LoggerInterface|null $logger
+     * @param QueuedCommandBusInterface|null $busInterface
      */
     public function __construct(
-        FilesystemRegistry $registry,
-        Resolver $resolveStorage,
-        Logger $logger,
+        FilesystemRegistryInterface $registry,
+        ResolverInterface $resolveStorage,
+        LoggerInterface $logger = null,
         QueuedCommandBusInterface $busInterface = null
-    )
-    {
+    ) {
         $this->registry = $registry;
         $this->resolver = $resolveStorage;
         $this->logger = $logger;
@@ -73,9 +74,7 @@ class Manager
     }
 
     /**
-     * The (queued) command (message) bus strategy
-     *
-     * @param CommandInterface $command
+     * {@inheritdoc}
      */
     public function handle(CommandInterface $command)
     {
@@ -87,21 +86,17 @@ class Manager
     }
 
     /**
-     * Fast and simple read action (without a promise)
-     *
-     * @param Storage $storage
-     * @throws \LogicException
-     * @return string
+     * {@inheritdoc}
      */
-    public function read(Storage $storage)
+    public function read(StorageInterface $storage)
     {
-        foreach ($storage->getFilesystems() as $filesystem) {
+        foreach ($storage->getFilesystems() as $key) {
             // A filesystem might be down, walk over all to get the best candidate
-            $_filesystem = $this->registry->get($filesystem);
+            $filesystem = $this->registry->get($key);
 
             // The file must exist on the storage (might be cached), this is a sanity check
-            if ($_filesystem->has($storage->getIdentifier())) {
-                return $_filesystem->read($storage->getIdentifier());
+            if ($filesystem->has($storage->getIdentifier())) {
+                return $filesystem->read($storage->getIdentifier());
             }
         }
 
@@ -114,50 +109,71 @@ class Manager
     }
 
     /**
-     * @param ReaderInterface $reader
-     * @param array $filesystems
-     * @return Storage
-     * @throws RevertException
-     * @throws \Exception
+     * {@inheritdoc}
      */
-    public function write(ReaderInterface $reader, $filesystems = [])
+    public function write(ReaderInterface $reader, ArrayCollection $filesystems = null)
     {
         // Required data for the storage object
         $identifier = $this->resolver->getIdentifier($reader);
-        $filesystemMap = [];
+        $filesystemMap = new ArrayCollection();
 
         try {
             $validation = new FilesystemValidation($this->registry);
-            foreach ($validation->isValid($filesystems) as $key) {
-
+            foreach ($validation->getValidFilesystems($filesystems) as $key) {
                 // Log it
-                $this->logger->log(Logger::INFO,
-                    sprintf('%sGoing to write %s in filesystem %s',
-                        self::LOG_PREFIX,
-                        $identifier,
-                        $key
-                    )
-                );
+                if ($this->logger) {
+                    $this->logger->info(
+                        sprintf(
+                            '%sGoing to write %s in filesystem %s',
+                            self::LOG_PREFIX,
+                            $identifier,
+                            $key
+                        )
+                    );
+                }
 
                 // Get the filesystem from the registry
                 $filesystem = $this->registry->get($key);
 
-                // Check for existence, do not continue if it exists. A file may have updated meta data
-                if ($filesystem->has($identifier)) {
-                    $storage = $filesystem->get($identifier);
-                } else {
-                    $storage = $filesystem->createFile($identifier);
-                }
+                if ($filesystem instanceof Filesystem) {
+                    // Check for existence, do not continue if it exists. A file may have updated meta data
+                    if ($filesystem->has($identifier)) {
+                        $storage = $filesystem->get($identifier);
+                    } else {
+                        $storage = $filesystem->createFile($identifier);
+                    }
 
-                // Might return 0 for an empty file (or throw an exception)
-                if (false === $storage->setContent($reader->read(), $reader->getMetadata()->storageData())) {
-                    // Throw a roll back
-                    throw new RevertException(
+                    if ($storage instanceof File) {
+                        // Might return 0 for an empty file (or throw an exception)
+                        $result = $storage->setContent(
+                            $reader->read(),
+                            $reader->getMetadata()->storageData()->toArray()
+                        );
+                    } else {
+                        throw new \LogicException(
+                            sprintf(
+                                'A instanceof Gaufrette\File was excepted (given: %s).',
+                                get_class($storage)
+                            )
+                        );
+                    }
+
+                    if (false === $result) {
+                        // Throw a roll back
+                        throw new RevertException(
+                            sprintf(
+                                '%sThe filesystem %s denied writing for key %s',
+                                self::LOG_PREFIX,
+                                $key,
+                                $identifier
+                            )
+                        );
+                    }
+                } else {
+                    throw new \LogicException(
                         sprintf(
-                            '%sThe filesystem %s denied writing for key %s',
-                            self::LOG_PREFIX,
-                            $key,
-                            $identifier
+                            'A instancof Gaufrette\Filesystem was excpected (given: %s).',
+                            get_class($filesystem)
                         )
                     );
                 }
@@ -172,7 +188,15 @@ class Manager
                 $this->registry->get($key)->delete($identifier);
             }
 
-            $this->logger->log(LOGGER::CRITICAL, sprintf('%s%s', self::LOG_PREFIX, $e->getMessage()));
+            if ($this->logger) {
+                $this->logger->critical(
+                    sprintf(
+                        '%s%s',
+                        self::LOG_PREFIX,
+                        $e->getMessage()
+                    )
+                );
+            }
 
             throw $e;
         }
@@ -187,13 +211,9 @@ class Manager
     }
 
     /**
-     * A new storage object (make sure you update it)
-     *
-     * @param Storage $storage
-     * @param ReaderInterface $reader
-     * @return Manager
+     * {@inheritdoc}
      */
-    public function update(Storage $storage, ReaderInterface $reader)
+    public function update(StorageInterface $storage, ReaderInterface $reader)
     {
         // An update might change the signature of the key (FileIdentifier)
         $this->delete($storage);
@@ -203,73 +223,80 @@ class Manager
     }
 
     /**
-     * @param Storage $storage
-     * @param array $filesystems
-     * @return Storage
+     * {@inheritdoc}
      */
-    public function delete(Storage $storage, $filesystems = [])
+    public function delete(StorageInterface $storage, ArrayCollection $filesystems = null)
     {
-        // Delete it everywhere or only one
-        if (0 == count($filesystems)) {
-            $filesystems = $storage->getFilesystems();
-        }
-
         // Sanity
         $validator = new FilesystemValidation($this->registry);
 
         // Delete it in all the known filesystems for the file
-        foreach ($validator->isValid($filesystems) as $key => $filesystem) {
+        foreach ($validator->getValidFilesystems($filesystems) as $key => $filesystem) {
             try {
                 $this->registry->get($filesystem)
                     ->delete($storage->getIdentifier());
 
-                $this->logger->log(Logger::NOTICE,
-                    sprintf(
-                        '%sFile %s delete from filesystem %s',
-                        self::LOG_PREFIX,
-                        $storage->getIdentifier(),
-                        $key
-                    )
-                );
+                if ($this->logger) {
+                    $this->logger->notice(
+                        sprintf(
+                            '%sFile %s delete from filesystem %s',
+                            self::LOG_PREFIX,
+                            $storage->getIdentifier(),
+                            $key
+                        )
+                    );
+                }
             } catch (FileNotFound $e) {
                 // Seems like we're not in sync
-                $this->logger->log(Logger::ERROR,
-                    sprintf(
-                        '%sRemote filesystem %s does not contain %s file',
-                        self::LOG_PREFIX,
-                        $key,
-                        $storage->getIdentifier()
-                    )
-                );
+                if ($this->logger) {
+                    $this->logger->error(
+                        sprintf(
+                            '%sRemote filesystem %s does not contain %s file',
+                            self::LOG_PREFIX,
+                            $key,
+                            $storage->getIdentifier()
+                        )
+                    );
+                }
             }
         }
 
-        return Storage::updateFilesystems(
-            $storage,
-            array_diff($storage->getFilesystems(), $filesystems)
+        return Storage::postWrite(
+            $storage->getIdentifier(),
+            new ArrayCollection(
+                array_merge(
+                    $storage->getFilesystems()->toArray(),
+                    $filesystems->toArray()
+                )
+            ),
+            $this->resolver,
+            $storage->getMetadata()
         );
     }
 
     /**
-     * Copy the storage object to any other filesystem
-     *
-     * @param Storage $storage
-     * @param array $filesystems
-     * @return Storage
+     * {@inheritdoc}
      */
-    public function copy(Storage $storage, $filesystems)
+    public function copy(StorageInterface $storage, ArrayCollection $filesystems)
     {
-        // Reader
-        $reader = new MemoryReader(
-            $this->read($storage),
-            $storage->getMetadata()
+        $this->write(
+            new MemoryReader(
+                $this->read($storage),
+                $storage->getMetadata()
+            ),
+            $filesystems
         );
 
-        $this->write($reader, $filesystems);
-
-        return Storage::updateFilesystems(
-            $storage,
-            array_merge($storage->getFilesystems(), $filesystems)
+        return Storage::postWrite(
+            $storage->getIdentifier(),
+            new ArrayCollection(
+                array_merge(
+                    $storage->getFilesystems()->toArray(),
+                    $filesystems->toArray()
+                )
+            ),
+            $this->resolver,
+            $storage->getMetadata()
         );
     }
 }
