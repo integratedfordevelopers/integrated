@@ -37,7 +37,7 @@ class MigrateCommand extends Command
     /**
      * @const Content type class
      */
-    const CLASSNAME = 'Integrated\\Bundle\\StorageBundle\\Document\\File';
+    const CLASSNAME = '\\Integrated\\Bundle\\ContentBundle\\Document\\Content\\File';
 
     /**
      * @var DatabaseInterface
@@ -109,8 +109,8 @@ class MigrateCommand extends Command
     {
         if (null == $input->getOption('class')) {
             $classes = [
-                'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image',
-                'Integrated\\Bundle\\ContentBundle\\Document\\Content\\File',
+                \Integrated\Bundle\ContentBundle\Document\Content\File::class,
+                \Integrated\Bundle\ContentBundle\Document\Content\Image::class,
             ];
         } else {
             $classes = explode(' ', $input->getOption('class'));
