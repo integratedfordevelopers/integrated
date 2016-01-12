@@ -6,23 +6,21 @@ $(function () {
     var published_form_row = published_title.closest(".form-group");
     var use_title_form_row = use_title.closest('.form-group');
 
-    var compare_titles = function () {
+    var compare_titles = function (at_start) {
         if (title.val() === published_title.val()) {
             use_title.prop('checked', true);
             use_title_form_row.show();
             published_form_row.hide();
         }
-        else {
-            use_title.prop('checked', false);
+        else if (at_start) {
             use_title_form_row.hide();
-            published_form_row.show();
         }
     };
 
     title.on('keyup', compare_titles);
     published_title.on('keyup', compare_titles);
 
-    compare_titles();
+    compare_titles(true);
 
     use_title.on('change', function () {
         /* user can do uncheck only */

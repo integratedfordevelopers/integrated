@@ -16,7 +16,29 @@
         <div class="col-md-12 push-sm-down">
             <h1 class="main-title font-regular">{% trans %}Edit{% endtrans %} <small>{% trans %}Block{% endtrans %}</small></h1>
             <section class="section-white section-padding section-shadow section-radius">
-                {{ form(form, { 'style': 'horizontal' }) }}
+                {{ form_start(form, { 'style': 'horizontal' }) }}
+                <div id="integrated_block_block">
+                    {{ form_errors(form) }}
+
+                    {% for field in form %}
+                        {% if field.vars.name == 'useTitle' %}
+                            <div class="form-group ">
+                                <div class="col-md-2 text-right">
+                                    {{ 'Published title'|trans }}
+                                </div>
+                                <div class="col-md-10">
+                                    <div>
+                                        <label style="font-weight: unset;" for="{{ field.vars.id }}">{{ form_widget(field) }} {{ field.vars.name|capitalize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            {{ form_row(field) }}
+                        {% endif %}
+
+                    {% endfor %}
+                </div>
+                {{ form_end(form) }}
             </section>
         </div>
     </div>
