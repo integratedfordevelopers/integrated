@@ -48,7 +48,7 @@ class DoctrineODMDatabase implements DatabaseInterface
     /**
      * {@inheritdoc}
      */
-    public function saveObject(File $file)
+    public function saveObject(FileInterface $file)
     {
         $this->container->get('doctrine_mongodb.odm.document_manager')
             ->persist($file);

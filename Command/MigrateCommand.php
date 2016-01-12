@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\StorageBundle\Command;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Metadata;
-use Integrated\Bundle\StorageBundle\Storage\Database\DatabaseInterface;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
-use Integrated\Bundle\StorageBundle\Storage\Manager;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\StorageReflection;
+use Integrated\Common\Storage\ManagerInterface;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -42,7 +42,7 @@ class MigrateCommand extends Command
     protected $database;
 
     /**
-     * @var Manager
+     * @var ManagerInterface
      */
     protected $storage;
 
@@ -53,9 +53,9 @@ class MigrateCommand extends Command
 
     /**
      * @param DatabaseInterface $database
-     * @param Manager $storage
+     * @param ManagerInterface $storage
      */
-    public function __construct(DatabaseInterface $database, Manager $storage)
+    public function __construct(DatabaseInterface $database, ManagerInterface $storage)
     {
         $this->database = $database;
         $this->storage = $storage;
@@ -160,7 +160,9 @@ class MigrateCommand extends Command
                                 $file->getContents(),
                                 new Metadata(
                                     $file->getExtension(),
-                                    mime_content_type($file->getPathname())
+                                    mime_content_type($file->getPathname()),
+                                    new ArrayCollection(),
+                                    new ArrayCollection()
                                 )
                             )
                         );

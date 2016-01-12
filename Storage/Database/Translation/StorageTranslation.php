@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database\Translation;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -19,14 +19,14 @@ use Integrated\Bundle\StorageBundle\Document\Embedded\Storage;
 class StorageTranslation
 {
     /**
-     * @var Storage
+     * @var StorageInterface
      */
     protected $storage;
 
     /**
-     * @param Storage $storage
+     * @param StorageInterface $storage
      */
-    public function __construct(Storage $storage)
+    public function __construct(StorageInterface $storage)
     {
         $this->storage = $storage;
     }

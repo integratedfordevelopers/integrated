@@ -11,13 +11,12 @@
 
 namespace Integrated\Bundle\StorageBundle\Tests\Doctrine\EventListener;
 
+use Integrated\Bundle\ContentBundle\Document\Content\File;
+use Integrated\Bundle\StorageBundle\EventListener\Doctrine\ODM\FileEventListener;
+
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-
-use Integrated\Bundle\StorageBundle\Doctrine\EventListener\FileEventListener;
-use Integrated\Bundle\StorageBundle\Document\File;
-use Integrated\Bundle\StorageBundle\Tests\Document\Embedded\StorageTest;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -30,7 +29,7 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
     public function testSubscribedEvents()
     {
         /** @var FileEventListener $listener */
-        $listener = $this->getMockBuilder('Integrated\Bundle\StorageBundle\Doctrine\EventListener\FileEventListener')
+        $listener = $this->getMockBuilder('Integrated\Bundle\StorageBundle\EventListener\Doctrine\ODM\FileEventListener')
             ->disableOriginalConstructor()
             ->setMethods(null)
             ->getMock();

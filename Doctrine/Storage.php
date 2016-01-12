@@ -13,9 +13,9 @@ namespace Integrated\Bundle\StorageBundle\Doctrine;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Storage as EmbeddedStorage;
 use Integrated\Bundle\StorageBundle\Storage\Command\DeleteCommand;
 use Integrated\Bundle\StorageBundle\Storage\Manager;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -42,9 +42,9 @@ class Storage
 
     /**
      * @param DocumentManager $documentManager
-     * @param EmbeddedStorage $storage
+     * @param StorageInterface $storage
      */
-    public function delete(DocumentManager $documentManager, EmbeddedStorage $storage)
+    public function delete(DocumentManager $documentManager, StorageInterface $storage)
     {
         // Query
         $result = $documentManager->getRepository(self::REPOSITORY)

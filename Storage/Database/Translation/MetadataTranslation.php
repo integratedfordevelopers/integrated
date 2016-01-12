@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database\Translation;
 
-use Integrated\Bundle\StorageBundle\Document\Embedded\Metadata;
+use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -19,14 +19,14 @@ use Integrated\Bundle\StorageBundle\Document\Embedded\Metadata;
 class MetadataTranslation
 {
     /**
-     * @var Metadata
+     * @var MetadataInterface
      */
     protected $metadata;
 
     /**
-     * @param Metadata $metadata
+     * @param MetadataInterface $metadata
      */
-    public function __construct(Metadata $metadata)
+    public function __construct(MetadataInterface $metadata)
     {
         $this->metadata = $metadata;
     }
