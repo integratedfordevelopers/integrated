@@ -12,9 +12,12 @@
 namespace Integrated\Bundle\StorageBundle\Command;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
+
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\StorageReflection;
+
+use Integrated\Common\Storage\Database\DatabaseInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -34,7 +37,7 @@ class MigrateCommand extends Command
     /**
      * @const Content type class
      */
-    const ClassName = 'Integrated\\Bundle\\StorageBundle\\Document\\File';
+    const CLASSNAME = 'Integrated\\Bundle\\StorageBundle\\Document\\File';
 
     /**
      * @var DatabaseInterface
@@ -127,7 +130,7 @@ class MigrateCommand extends Command
                 foreach ($row['relations'] as $n => $relation) {
                     foreach ($relation['references'] as $e => $reference) {
                         if (in_array($reference['class'], $classes)) {
-                            $row['relations'][$n]['references'][$e]['class'] = self::ClassName;
+                            $row['relations'][$n]['references'][$e]['class'] = self::CLASSNAME;
                         }
                     }
                 }
@@ -137,7 +140,7 @@ class MigrateCommand extends Command
                 if (is_array($value)) {
                     if (isset($row[$key]['$ref']) && isset($row[$key]['$id']) && isset($row[$key]['class'])) {
                         if (in_array($row[$key]['class'], $classes)) {
-                            $row[$key]['class'] = self::ClassName;
+                            $row[$key]['class'] = self::CLASSNAME;
                         }
                     }
                 }
@@ -146,14 +149,13 @@ class MigrateCommand extends Command
             // Only perform the action for the listed classes
             if (in_array($row['class'], $classes)) {
                 // Modify the class name for the ORM
-                $row['class'] = self::ClassName;
+                $row['class'] = self::CLASSNAME;
             }
 
             foreach ($this->getReflectionClass($row['class'])->getStorageProperties() as $property) {
                 // Fix the one -> many property now foreach and so on
                 if ($filename = $property->getFileId($row)) {
                     if ($file = $this->getFile($input->getArgument('path'), $filename, $row['_id'], $input->hasOption('ignore-duplicates'))) {
-
                         // Make a storage object
                         $storage = $this->storage->write(
                             new MemoryReader(
@@ -174,9 +176,6 @@ class MigrateCommand extends Command
                             @unlink($file->getPathname());
                         }
                     } else {
-                        var_dump($property);
-                        var_dump($row);
-
                         // The only valid count is one, what else?
                         throw new \LogicException(
                             sprintf(
@@ -203,7 +202,7 @@ class MigrateCommand extends Command
             // Change the content type
             $this->database->updateContentType(
                 $class,
-                self::ClassName
+                self::CLASSNAME
             );
         }
     }
