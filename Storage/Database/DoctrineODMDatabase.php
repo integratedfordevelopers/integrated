@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
+use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Storage\Database\DatabaseInterface;
 
@@ -41,7 +42,7 @@ class DoctrineODMDatabase implements DatabaseInterface
     {
         return $this->container->get('doctrine_mongodb.odm.document_manager')
             ->getUnitOfWork()
-            ->getDocumentPersister('Integrated\Bundle\StorageBundle\Document\File')
+            ->getDocumentPersister(File::class)
             ->loadAll();
     }
 
