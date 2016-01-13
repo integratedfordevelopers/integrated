@@ -37,7 +37,7 @@ class MigrateCommand extends Command
     /**
      * @const Content type class
      */
-    const CLASSNAME = '\\Integrated\\Bundle\\ContentBundle\\Document\\Content\\File';
+    const CLASS_NAME = '\\Integrated\\Bundle\\ContentBundle\\Document\\Content\\File';
 
     /**
      * @var DatabaseInterface
@@ -130,7 +130,7 @@ class MigrateCommand extends Command
                 foreach ($row['relations'] as $n => $relation) {
                     foreach ($relation['references'] as $e => $reference) {
                         if (in_array($reference['class'], $classes)) {
-                            $row['relations'][$n]['references'][$e]['class'] = self::CLASSNAME;
+                            $row['relations'][$n]['references'][$e]['class'] = self::CLASS_NAME;
                         }
                     }
                 }
@@ -140,7 +140,7 @@ class MigrateCommand extends Command
                 if (is_array($value)) {
                     if (isset($row[$key]['$ref']) && isset($row[$key]['$id']) && isset($row[$key]['class'])) {
                         if (in_array($row[$key]['class'], $classes)) {
-                            $row[$key]['class'] = self::CLASSNAME;
+                            $row[$key]['class'] = self::CLASS_NAME;
                         }
                     }
                 }
@@ -149,7 +149,7 @@ class MigrateCommand extends Command
             // Only perform the action for the listed classes
             if (in_array($row['class'], $classes)) {
                 // Modify the class name for the ORM
-                $row['class'] = self::CLASSNAME;
+                $row['class'] = self::CLASS_NAME;
             }
 
             foreach ($this->getReflectionClass($row['class'])->getStorageProperties() as $property) {
@@ -202,7 +202,7 @@ class MigrateCommand extends Command
             // Change the content type
             $this->database->updateContentType(
                 $class,
-                self::CLASSNAME
+                self::CLASS_NAME
             );
         }
     }
