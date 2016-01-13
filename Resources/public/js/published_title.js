@@ -17,9 +17,6 @@ $(function () {
         }
     };
 
-    title.on('keyup', compare_titles);
-    published_title.on('keyup', compare_titles);
-
     compare_titles(true);
 
     use_title.on('change', function () {
