@@ -23,6 +23,7 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
 class BlockSize
 {
     /**
+     * @deprecated
      * @var Block
      * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\BlockBundle\Document\Block\Block")
      */
@@ -176,11 +177,14 @@ class BlockSize
         $sizes = [];
         if ($this->getSizeXs()) {
             $sizes['xs'] = $this->getSizeXs();
-        } if ($this->getSizeSm()) {
+        }
+        if ($this->getSizeSm()) {
             $sizes['sm'] = $this->getSizeSm();
-        } if ($this->getSizeMd()) {
+        }
+        if ($this->getSizeMd()) {
             $sizes['md'] = $this->getSizeMd();
-        } if ($this->getSizeLg()) {
+        }
+        if ($this->getSizeLg()) {
             $sizes['lg'] = $this->getSizeLg();
         }
 
