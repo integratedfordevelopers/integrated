@@ -221,9 +221,9 @@ class MigrateCommand extends Command
     }
 
     /**
-     * @param $path
-     * @param $fileId
-     * @param $documentId
+     * @param string $path
+     * @param string $fileId
+     * @param string $documentId
      * @param bool $allowDuplicate
      * @return bool|\Symfony\Component\Finder\SplFileInfo
      */
