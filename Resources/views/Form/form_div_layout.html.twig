@@ -69,41 +69,6 @@
     {% endspaceless %}
 {% endblock form_row %}
 
-{% block form_input_group %}
-    {% spaceless %}
-        {% if attr.input_group is defined and attr.input_group is not empty %}
-            {% set input_group = attr.input_group %}
-        {% endif %}
-        {% set input_group = input_group|default({}) %}
-        {% if input_group is not empty %}
-            {% set ig_size_class = '' %}
-            {% if input_group.size is defined and input_group.size == 'large' %}
-                {% set ig_size_class = ' input-group-lg' %}
-            {% endif  %}
-            {% if input_group.size is defined and input_group.size == 'small' %}
-                {% set ig_size_class = ' input-group-sm' %}
-            {% endif  %}
-            <div class="input-group{{ ig_size_class }}">
-                {% if input_group.prepend is defined and input_group.prepend is not empty %}
-                    <span class="input-group-addon">{{ input_group.prepend|raw|parse_icons }}</span>
-                {% endif %}
-                {% if input_group.button_prepend is defined and input_group.button_prepend is not empty %}
-                    <span class="input-group-btn">{{ form_widget(input_group_button_prepend) }}</span>
-                {% endif %}
-                {{ form_widget(form) }}
-                {% if input_group.button_append is defined and input_group.button_append is not empty %}
-                    <span class="input-group-btn">{{ form_widget(input_group_button_append) }}</span>
-                {% endif %}
-                {% if input_group.append is defined and input_group.append is not empty %}
-                    <span class="input-group-addon">{{ input_group.append|raw|parse_icons }}</span>
-                {% endif %}
-            </div>
-        {% else %}
-            {{ form_widget(form) }}
-        {% endif %}
-    {% endspaceless %}
-{% endblock form_input_group %}
-
 {# @todo
 {% block integrated_block_widget %}
 {% spaceless %}
