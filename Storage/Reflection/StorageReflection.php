@@ -15,7 +15,7 @@ class StorageReflection
     /**
      * @const The storage class to look for
      */
-    const StorageClass = 'Integrated\Bundle\StorageBundle\Document\Embedded\Storage';
+    const STORAGE_CLASS = 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage';
 
     /**
      * @var string
@@ -50,7 +50,7 @@ class StorageReflection
             foreach ($reflection->getProperties() as $property) {
                 foreach ($reader->getPropertyAnnotations($property) as $annotation) {
                     if (FactoryProperty::isValid($annotation)) {
-                        if (self::StorageClass == $annotation->targetDocument) {
+                        if (self::STORAGE_CLASS == $annotation->targetDocument) {
                             // Stuff
                             $this->properties[] = FactoryProperty::factory($property, $annotation);
                         }
