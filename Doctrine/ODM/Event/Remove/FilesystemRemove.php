@@ -26,26 +26,14 @@ class FilesystemRemove
     const REPOSITORY = 'Integrated\Bundle\ContentBundle\Document\Content\Content';
 
     /**
-     * @var DocumentManager
-     */
-    protected $documentManager;
-
-    /**
      * @param DocumentManager $documentManager
-     */
-    public function __construct(DocumentManager $documentManager)
-    {
-        $this->documentManager = $documentManager;
-    }
-
-    /**
      * @param StorageInterface $storageInterface
      * @return bool
      */
-    public function allow(StorageInterface $storageInterface)
+    public function allow(DocumentManager $documentManager, StorageInterface $storageInterface)
     {
         // Query on the file identifier (unique/hash based filename)
-        $repository = $this->documentManager->getRepository(self::REPOSITORY);
+        $repository = $documentManager->getRepository(self::REPOSITORY);
         $result = $repository->createQueryBuilder()
             ->field('file.identifier')->equals($storageInterface->getIdentifier())
             ->getQuery()->execute();

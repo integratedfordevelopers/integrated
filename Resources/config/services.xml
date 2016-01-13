@@ -44,9 +44,7 @@
             <argument type="service" id="knp_gaufrette.filesystem_map" />
         </service>
 
-        <service id="integrated_storage.filesystem_delete" class="%integrated_storage.filesystem_delete%">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-        </service>
+        <service id="integrated_storage.filesystem_delete" class="%integrated_storage.filesystem_delete%" />
 
     </services>
 

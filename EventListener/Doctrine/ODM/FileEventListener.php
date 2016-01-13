@@ -69,7 +69,7 @@ class FileEventListener implements EventSubscriber
         $document = $args->getObject();
 
         if ($document instanceof FileInterface) {
-            if ($this->filesystemRemove->allow($document->getFile())) {
+            if ($this->filesystemRemove->allow($args->getDocumentManager(), $document->getFile())) {
                 // Lets put the delete command in a bus and send it away
                 $this->manager->handle(
                     new DeleteCommand($document->getFile())
@@ -90,7 +90,7 @@ class FileEventListener implements EventSubscriber
 
         foreach ($uow->getScheduledDocumentDeletions() as $document) {
             if ($document instanceof StorageInterface) {
-                if ($this->filesystemRemove->allow($document)) {
+                if ($this->filesystemRemove->allow($args->getDocumentManager(), $document)) {
                     // Lets put the delete command in a bus and send it away
                     $this->manager->handle(
                         new DeleteCommand($document)
