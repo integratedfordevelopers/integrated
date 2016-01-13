@@ -39,8 +39,8 @@ class MetadataTranslation
         return [
             'extension' => $this->metadata->getExtension(),
             'mimeType' => $this->metadata->getMimeType(),
-            'headers' => $this->metadata->getHeaders(),
-            'metadata' => $this->metadata->getMetadata()
+            'headers' => $this->metadata->getHeaders()->toArray(),
+            'metadata' => $this->metadata->getMetadata()->toArray()
         ];
     }
 }
