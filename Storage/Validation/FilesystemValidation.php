@@ -25,23 +25,15 @@ class FilesystemValidation
     protected $registry;
 
     /**
-     * @param FilesystemRegistryInterface $registry
-     */
-    public function __construct(FilesystemRegistryInterface $registry)
-    {
-        $this->registry = $registry;
-    }
-
-    /**
      * Returns a valid list of filesystems
      *
      * @param ArrayCollection $filesystems
-     * @throws \InvalidArgumentException
      * @return ArrayCollection $filesystems
+     * @throws \InvalidArgumentException
      */
-    public function getValidFilesystems(ArrayCollection $filesystems)
+    public function getValidFilesystems(ArrayCollection $filesystems = null)
     {
-        if (0 == count($filesystems)) {
+        if (null == $filesystems || 0 == count($filesystems)) {
             $filesystems = new ArrayCollection($this->registry->keys());
         }
 
@@ -57,5 +49,13 @@ class FilesystemValidation
         }
 
         return $filesystems;
+    }
+
+    /**
+     * @param FilesystemRegistryInterface $registry
+     */
+    public function __construct(FilesystemRegistryInterface $registry)
+    {
+        $this->registry = $registry;
     }
 }
