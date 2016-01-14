@@ -83,13 +83,14 @@ class ContentController extends Controller
         $query = $client->createSelect();
 
         $facetSet = $query->getFacetSet();
+        $facetSet->setMinCount(1);
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
-        $facetSet->createFacetField('channels')->setField('facet_channels');
-        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state');
-        $facetTitles['workflow_state'] = 'Workflow state';
-        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned');
+        $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
+        $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
+        $facetTitles['workflow_state'] = 'Workflow status';
+        $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
         $facetTitles['workflow_assigned'] = 'Assigned user';
-        $facetSet->createFacetField('properties')->setField('facet_properties');
+        $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
 
 
         // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
@@ -156,7 +157,7 @@ class ContentController extends Controller
             $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
 
             //create relation facet field
-            $facetSet->createFacetField($name)->setField('facet_' . $relation->getId());
+            $facetSet->createFacetField($name)->setField('facet_' . $relation->getId())->addExclude($name);
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
 
@@ -288,7 +289,8 @@ class ContentController extends Controller
             'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified', 'order' => 'desc'],
             'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
             'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
-            'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc']
+            'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc'],
+            'random'  => ['name' => 'random', 'field' => 'random_' . mt_rand(), 'label' => 'random', 'order' => 'desc'],
         ];
         $order_options = [
             'asc' => 'asc',
@@ -296,14 +298,14 @@ class ContentController extends Controller
         ];
 
         if ($q = $request->get('q')) {
-            $dismax = $query->getDisMax();
-            $dismax->setQueryFields('title content');
+            $edismax = $query->getEDisMax();
+            $edismax->setQueryFields('title content');
+            $edismax->setMinimumMatch('75%');
 
             $query->setQuery($q);
 
             $sort_default = 'rel';
-        }
-        else {
+        } else {
             //relevance only available when sorting on specific query
             unset($sort_options['rel']);
         }
@@ -312,7 +314,7 @@ class ContentController extends Controller
         $sort = trim(strtolower($sort));
         $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'),$order_options) ? $request->query->get('order') : $sort_options[$sort]['order'] );
+        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
 
         // Execute the query
         $result = $client->select($query);
@@ -496,7 +498,9 @@ class ContentController extends Controller
                     $locking['release']();
                 }
 
-                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
+                $url = $form->get('returnUrl')->getData() ?: $this->generateUrl('integrated_content_content_index', ['remember' => 1]);
+
+                return $this->redirect($url);
             }
 
             if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
@@ -645,6 +649,13 @@ class ContentController extends Controller
             // this is not rest compatible since a button click is required to save
             if ($form->get('actions')->getData() == 'delete') {
                 if ($form->isValid()) {
+                    if ($this->has('integrated_solr.indexer')) {
+                        //higher priority for content edited in Integrated
+                        $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
+                        $queue = $subscriber->getQueue();
+                        $subscriber->setPriority($queue::PRIORITY_HIGH);
+                    }
+
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                     $dm = $this->get('doctrine_mongodb')->getManager();
 
@@ -923,7 +934,7 @@ class ContentController extends Controller
             $result = $client->select($query);
 
 
-            $assingedContent = $result->getDocuments();
+            $assignedContent = $result->getDocuments();
         }
 
 
@@ -931,7 +942,7 @@ class ContentController extends Controller
             'avatarurl' => $avatarurl,
             'queuecount' => $queuecount,
             'queuepercentage' => $queuepercentage,
-            'assingedContent' => $assingedContent,
+            'assignedContent' => $assignedContent,
         );
     }
 
@@ -995,10 +1006,13 @@ class ContentController extends Controller
         $form = $this->createForm($type, $content,[
             'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
             'method' => 'PUT',
+            'attr' => ['class' => 'content-form'],
 
             // don't display error's when the content is locked as the user can't save in the first place
             'validation_groups' => $locking['locked'] ? false : null
         ]);
+
+        $form->add('returnUrl', 'hidden', ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
 
         // load a different set of buttons based on the permissions and locking state
 

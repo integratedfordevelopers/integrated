@@ -35,7 +35,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document(collection="content", indexes={@ODM\Index(keys={"class"="asc"})})
+ * @ODM\Document(collection="content", indexes={@ODM\Index(keys={"class"="asc"})}, repositoryClass="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository")
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
  * @ODM\HasLifecycleCallbacks
@@ -277,6 +277,34 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         }
 
         return false;
+    }
+
+    /**
+     * @param string $relationId
+     * @return ArrayCollection
+     */
+    public function getReferencesByRelationId($relationId)
+    {
+        foreach ($this->relations as $relation) {
+            if ($relation instanceof Relation) {
+                if ($relation->getRelationId() == $relationId) {
+                    return $relation->getReferences();
+                }
+            }
+        }
+
+        return new ArrayCollection();
+    }
+
+    /**
+     * @param string $relationId
+     * @return Content|null
+     */
+    public function getReferenceByRelationId($relationId)
+    {
+        if ($references = $this->getReferencesByRelationId($relationId)) {
+            return $references->first();
+        }
     }
 
     /**

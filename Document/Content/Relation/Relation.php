@@ -70,6 +70,7 @@ class Relation extends Content
      *      type="integrated_sortable_collection",
      *      options={
      *          "type"="integrated_address",
+     *          "default_title"="New address",
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }
@@ -201,6 +202,7 @@ class Relation extends Content
      */
     public function removePhonenumber($phonenumber)
     {
+        // @todo (INTEGRATED-452)
         if ($phonenumber instanceof Phonenumber) {
             return $this->phonenumbers->remove($phonenumber);
         }

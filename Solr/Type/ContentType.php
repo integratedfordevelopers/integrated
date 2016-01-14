@@ -51,7 +51,7 @@ class ContentType implements TypeInterface
         $items = array_merge($data->getRelationsByRelationType('taxonomy')->toArray(),$data->getRelationsByRelationType('commercial')->toArray());
         foreach ($items as $relation) {
             foreach ($relation->getReferences()->toArray() as $content) {
-                if ($content instanceof Taxonomy) {
+                if ($content instanceof Taxonomy || $content instanceof Article) {
                     $container->add('facet_' . $relation->getRelationId(), $content->getTitle());
                     $container->add('taxonomy_' . $relation->getRelationId() . '_string', $content->getTitle());
                 }

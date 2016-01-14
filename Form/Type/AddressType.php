@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -25,40 +25,67 @@ class AddressType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('type', 'choice', array(
-            'placeholder' => '',
-            'choices'     => array(
-                'postal'   => 'Postal address',
-                'visiting' => 'Visiting address',
-                'mailing'  => 'Mailing address',
-            )
-        ));
+        if (in_array('type', $options['fields'])) {
+            $builder->add('type', 'choice', [
+                'placeholder' => '',
+                'required'    => false,
+                'choices'     => [
+                    'postal'   => 'Postal address',
+                    'visiting' => 'Visiting address',
+                    'mailing'  => 'Mailing address',
+                ],
+            ]);
+        }
 
-        $builder->add('country', 'country', array(
-            'placeholder' => '',
-        ));
+        if (in_array('name', $options['fields'])) {
+            $builder->add('name', 'text', [
+                'required' => false,
+            ]);
+        }
 
-        $builder->add('address1', 'text', array(
-            'label' => 'Address line 1',
-        ));
+        if (in_array('address1', $options['fields'])) {
+            $builder->add('address1', 'text', [
+                'label'    => 'Address line 1',
+                'required' => false,
+            ]);
+        }
 
-        $builder->add('address2', 'text', array(
-            'label' => 'Address line 2',
-        ));
+        if (in_array('address2', $options['fields'])) {
+            $builder->add('address2', 'text', [
+                'label'    => 'Address line 2',
+                'required' => false,
+            ]);
+        }
 
-        $builder->add('zipcode', 'text');
+        if (in_array('zipcode', $options['fields'])) {
+            $builder->add('zipcode', 'text', [
+                'required' => false,
+            ]);
+        }
 
-        $builder->add('city', 'text');
+        if (in_array('city', $options['fields'])) {
+            $builder->add('city', 'text', [
+                'required' => false,
+            ]);
+        }
+
+        if (in_array('country', $options['fields'])) {
+            $builder->add('country', 'country', [
+                'placeholder' => '',
+                'required'    => false,
+            ]);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Embedded\\Address'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Embedded\\Address',
+            'fields'     => ['type', 'name', 'country', 'address1', 'address2', 'zipcode', 'city'], // @todo validate options (INTEGRATED-627)
+        ]);
     }
 
     /**
