@@ -34,41 +34,6 @@ class ContentItemsBlock extends Block
     protected $items;
 
     /**
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
-     * @Type\Field(
-     *     type="integrated_ajax_select2",
-     *     options={
-     *          "multiple"=false,
-     *          "params"={
-     *              "_format"="json",
-     *              "contenttypes"={"theme"},
-     *          },
-     *          "placeholder"="--select an item--",
-     *          "allow_clear"=true
-     *     }
-     * )
-     */
-    protected $item;
-
-    /**
-     * @return mixed
-     */
-    public function getItem()
-    {
-        return $this->item;
-    }
-
-    /**
-     * @param mixed $item
-     * @return $this
-     */
-    public function setItem($item)
-    {
-        $this->item = $item;
-        return $this;
-    }
-
-    /**
      * General object init
      */
     public function __construct()
