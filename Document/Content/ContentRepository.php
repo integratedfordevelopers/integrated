@@ -21,11 +21,11 @@ class ContentRepository extends DocumentRepository
     public function getUsedBy(Content $content, Relation $relation = null)
     {
         $query =  $this->createQueryBuilder()
-            ->field('relations.relationId')
-            ->equals($relation->getId());
+            ->field('relations.references.$id')
+            ->equals($content->getId());
 
         if ($relation) {
-            $query->field('relations.references.$id')->equals($content->getId());
+            $query->field('relations.relationId')->equals($relation->getId());
         }
 
         return $query;

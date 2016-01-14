@@ -77,7 +77,7 @@ class FacetBlockHandler extends BlockHandler
             return;
         }
 
-        $pagination = $handler->getPagination($contentBlock, $request);
+        $pagination = $handler->getPagination($contentBlock, $request, false);
 
         $result = $pagination->getCustomParameter('result');
 

@@ -112,10 +112,20 @@ class RelatedContentBlockHandler extends BlockHandler
             $query->field('contentType')->in($contentType);
         }
 
+        if ($block->getSortBy()) {
+            $query->sort($block->getSortBy());
+        }
+
+        $pageParam = $block->getId() . '-page';
+
         return $this->paginator->paginate(
             $query,
-            $request->query->getInt('page', 1),
-            $block->getItemsPerPage()
+            $request->query->get($pageParam, 1),
+            $block->getItemsPerPage(),
+            [
+                'pageParameterName' => $pageParam,
+                'maxItems' => $block->getMaxItems(),
+            ]
         );
     }
 }
