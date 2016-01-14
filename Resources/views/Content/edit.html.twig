@@ -1,14 +1,5 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
-    {% block crumbs %}
-    <ol class="breadcrumb">
-        <li>
-            <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
-        </li>
-        <li class="active">{% trans %}Edit{% endtrans %}</li>
-    </ol>
-    {% endblock %}
-
     {% block filters %}
     <div class="filters_row">
         {#<ul class="nav nav-pills">#}
@@ -33,50 +24,59 @@
     </div>
     {% endblock %}
 
-    <div class="content_columns_holder">
-        {% set colWidth = 'col-md-9' %}
-        {% if form.offsetGet('relations').count() %}
-            {% set colWidth = 'col-md-6' %}
-        {% endif %}
-        <div class="col-sm-12 {{ colWidth }} content_column margin_botom_in_mobile">
-            <h3 class="title">
-                {% block pageTitle %}
-                {% trans %}Edit{% endtrans %} {{ type.name }}
-                {% endblock %}
-            </h3>
-            <div class="content_column_inner">
-                <div class="item_row">
-                    {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+<h1 class="main-title font-regular">
+    {% block pageTitle %}
+        {% trans %}Edit{% endtrans %} {{ type.name }} <i class="integrate-icon-edit"></i>
+    {% endblock %}
+</h1>
+
+<div class="row">
+
+    <div class="col-md-8 push-sm-down">
+        <section class="section-white section-padding section-shadow section-radius">
+            {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+        </section>
+    </div>
+
+    <div class="col-md-4">
+        <aside>
+
+            <div class="aside-holder section-gray section-shadow section-radius">
+
+                {% if content.isPublished and content.getChannels|length > 0 %}
+                <div class="aside-item-holder">
+                    <h2 class="font-medium color-green"><i class="integrate-icon-ok-circled"></i> {% trans %}Published{% endtrans %}</h2>
                 </div>
-            </div>
-        </div>
-        {% if form.offsetGet('relations').count() %}
-        <div class="col-sm-6 col-md-3 side_column margin_botom_in_mobile">
-            <h3 class="title">{% trans %}Link to{% endtrans %}</h3>
-            <div class="content_column_inner">
-                <div class="item_row">
-                    <div class="search_field_holder grey_field_holder">
-                        <form role="form" id="relations-search">
-                            <input id="relations-q" type="text" class="form-control" placeholder="{% trans %}Search here...{% endtrans %}" autocomplete="off" />
-                            <button type="submit" class="submit_btn"><i class="glyphicon glyphicon-search"></i></button>
-                        </form>
+                {% endif %}
+
+                {% if form.offsetGet('relations').count() %}
+                <div class="aside-item-holder section-white">
+                    <h3 class="font-medium">{% trans %}Link to{% endtrans %}</h3>
+                    <div class="content_column_inner">
+                        <div class="item_row">
+                            <div class="search_field_holder grey_field_holder">
+                                <form role="form" id="relations-search">
+                                    <input id="relations-q" type="text" class="form-control" placeholder="{% trans %}Search here...{% endtrans %}" autocomplete="off" />
+                                    <button type="submit" class="submit_btn"><i class="glyphicon glyphicon-search"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div id="relations-result"></div>
                     </div>
                 </div>
-                <div id="relations-result"></div>
-            </div>
-        </div>
-        {% endif %}
+                {% endif %}
 
-        <div class="col-sm-6 col-md-3 sidebar_right margin_botom_in_mobile">
-            {% if form.offsetGet('relations').count() %}
-            <div class="item_row">
-                <h3 class="title">{% trans %}Linked items{% endtrans %}</h3>
-                <div class="content_column_inner">
-                    <ul class="custom_list li_with_margin" id="relations-selected"></ul>
+                <div class="aside-item-holder section-white">
+                    {% if form.offsetGet('relations').count() %}
+                    <div class="item_row">
+                        <h3 class="title">{% trans %}Linked items{% endtrans %}</h3>
+                        <div class="content_column_inner">
+                            <ul class="custom_list li_with_margin" id="relations-selected"></ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="item_row" id="used-by"></div>
                 </div>
-            </div>
-            {% endif %}
-            <div class="item_row" id="used-by"></div>
 
             {#<div class="item_row">#}
                 {#<h3 class="title">Info</h3>#}
@@ -124,8 +124,8 @@
                     {#</ul>#}
                 {#</div><!-- content_column_inner -->#}
             {#</div><!-- item_row -->#}
-
-        </div>
+            </div>
+        </aside>
     </div>
 
     <div class="modal fade" id="content-edit-modal">
