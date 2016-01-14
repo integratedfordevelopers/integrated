@@ -31,7 +31,7 @@ class FactoryProperty
 
         // Oh noes!
         throw new \InvalidArgumentException(
-            sprintf('Class %s can not be resolved to an reflection property', get_class($field))
+            sprintf('Class %s can not be resolved to a reflection property', get_class($field))
         );
     }
 
