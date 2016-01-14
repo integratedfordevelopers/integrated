@@ -20,16 +20,53 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  * @author Johan Liefers <johan@e-active.nl>
  *
  * @ODM\Document
- * @Type\Document("Feature document items block")
+ * @Type\Document("Content items block")
  */
-class FeatureDocumentItemsBlock extends Block
+class ContentItemsBlock extends Block
 {
     /**
      * @var ArrayCollection
      * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
-     * todo add select2 type
+     * @Type\Field(
+     *     type="integrated_ajax_select2"
+     *     )
      */
     protected $items;
+
+    /**
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
+     * @Type\Field(
+     *     type="integrated_ajax_select2",
+     *     options={
+     *          "multiple"=false,
+     *          "params"={
+     *              "_format"="json",
+     *              "contenttypes"={"theme"},
+     *          },
+     *          "placeholder"="--select an item--",
+     *          "allow_clear"=true
+     *     }
+     * )
+     */
+    protected $item;
+
+    /**
+     * @return mixed
+     */
+    public function getItem()
+    {
+        return $this->item;
+    }
+
+    /**
+     * @param mixed $item
+     * @return $this
+     */
+    public function setItem($item)
+    {
+        $this->item = $item;
+        return $this;
+    }
 
     /**
      * General object init
