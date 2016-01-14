@@ -25,6 +25,14 @@ class FilesystemValidation
     protected $registry;
 
     /**
+     * @param FilesystemRegistryInterface $registry
+     */
+    public function __construct(FilesystemRegistryInterface $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    /**
      * Returns a valid list of filesystems
      *
      * @param ArrayCollection $filesystems
@@ -49,13 +57,5 @@ class FilesystemValidation
         }
 
         return $filesystems;
-    }
-
-    /**
-     * @param FilesystemRegistryInterface $registry
-     */
-    public function __construct(FilesystemRegistryInterface $registry)
-    {
-        $this->registry = $registry;
     }
 }
