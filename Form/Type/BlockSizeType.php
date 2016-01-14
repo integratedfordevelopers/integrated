@@ -28,7 +28,32 @@ class BlockSizeType extends AbstractType
     {
         $builder->add('block', 'integrated_block');
 
-        $builder->add('size', 'integer', [
+        $builder->add('size_xs', 'integer', [
+            'required' => false,
+            'constraints' => new Range([
+                'min' => 1,
+                'max' => 12,
+            ]),
+        ]);
+
+        $builder->add('size_sm', 'integer', [
+            'required' => false,
+            'constraints' => new Range([
+                'min' => 1,
+                'max' => 12,
+            ]),
+        ]);
+
+        $builder->add('size_md', 'integer', [
+            'required' => false,
+            'constraints' => new Range([
+                'min' => 1,
+                'max' => 12,
+            ]),
+        ]);
+
+        $builder->add('size_lg', 'integer', [
+            'required' => false,
             'constraints' => new Range([
                 'min' => 1,
                 'max' => 12,
