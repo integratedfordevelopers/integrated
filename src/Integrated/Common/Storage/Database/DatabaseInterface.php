@@ -19,18 +19,34 @@ use Integrated\Common\Content\Document\Storage\FileInterface;
 interface DatabaseInterface
 {
     /**
+     * @return array
+     */
+    public function getRows();
+
+    /**
      * @return FileInterface[]
      */
-    public function getFiles();
+    public function getObjects();
 
     /**
      * @param FileInterface $file
      */
-    public function save(FileInterface $file);
+    public function saveObject(FileInterface $file);
+
+    /**
+     * @param array $row
+     */
+    public function saveRow(array $row);
 
     /**
      * Called occasionally to cleanup/flush the local entities from the manager
      * Can be left empty if not needed (ODM and ORM require it for memory issues)
      */
     public function commit();
+
+    /**
+     * @param string $oldClass
+     * @param string $newClass
+     */
+    public function updateContentType($oldClass, $newClass);
 }
