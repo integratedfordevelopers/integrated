@@ -13,7 +13,7 @@
         <parameter key="integrated_formtype_form_type_sortable_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType</parameter>
         <parameter key="integrated_formtype_form_type_integrated_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType</parameter>
         <parameter key="integrated_formtype.form.type.embedded_document.class">Integrated\Bundle\FormTypeBundle\Form\Type\EmbeddedDocumentType</parameter>
-        <parameter key="integrated_formtype.form.type.reference_many.class">Integrated\Bundle\FormTypeBundle\Form\Type\ReferenceManyType</parameter>
+        <parameter key="integrated_formtype.form.type.ajax_select2.class">Integrated\Bundle\FormTypeBundle\Form\Type\AjaxSelect2Type</parameter>
 
     </parameters>
 
@@ -49,8 +49,15 @@
             <tag name="form.type" alias="integrated_embedded_document"/>
         </service>
 
-        <service id="integrated_formtype.form.type.reference_many" class="%integrated_formtype_form_type_select2.class%">
-            <tag name="form.type" alias="integrated_select2" />
+        <service id="integrated_formtype.form.type.ajax_select2" class="%integrated_formtype.form.type.ajax_select2.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="string">IntegratedContentBundle:Content\Content</argument>
+            <argument type="string">integrated_content_content_index</argument>
+            <argument type="collection">
+                <argument key="_format">json</argument>
+            </argument>
+
+            <tag name="form.type" alias="integrated_ajax_select2" />
         </service>
 
 
