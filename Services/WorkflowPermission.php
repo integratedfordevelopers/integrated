@@ -69,21 +69,19 @@ class WorkflowPermission implements ContentTypeFilterInterface
             /** @var Definition $workflow */
             $workflow = $this->repository->find($workflowId);
 
-            /** @var Definition\State $state */
-            foreach ($workflow->getStates() as $state) {
+            $state = $workflow->getDefault();
 
-                /** @var Definition\Permission $permission */
-                foreach ($state->getPermissions() as $permission) {
-                    /** @var Group $group */
-                    foreach ($groups as $group) {
-                        if ($group->getId() == $permission->getGroup()
-                            && $permission->getMask() >= Definition\Permission::READ
-                        ) {
-                            return true;
-                        }
+            /** @var Definition\Permission $permission */
+            foreach ($state->getPermissions() as $permission) {
+                /** @var Group $group */
+                foreach ($groups as $group) {
+                    if ($group->getId() == $permission->getGroup()
+                        && $permission->getMask() >= Definition\Permission::READ
+                    ) {
+                        return true;
                     }
-                    $permission->getGroup();
                 }
+                $permission->getGroup();
             }
 
             return false;
