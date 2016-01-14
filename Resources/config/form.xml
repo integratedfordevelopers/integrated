@@ -18,6 +18,13 @@
             <tag name="form.type" alias="integrated_file" />
         </service>
 
+        <service id="integrated_storage.form.type.image" class="Integrated\Bundle\StorageBundle\Form\Type\ImageType">
+            <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="integrated_storage.decision" />
+
+            <tag name="form.type" alias="integrated_image" />
+        </service>
+
     </services>
 
 </container>

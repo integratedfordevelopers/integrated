@@ -10,9 +10,9 @@
         <parameter key="integrated_storage.resolver">Integrated\Bundle\StorageBundle\Storage\Resolver</parameter>
         <parameter key="integrated_storage.decision">Integrated\Bundle\StorageBundle\Storage\Decision</parameter>
         <parameter key="integrated_storage.registry">Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry</parameter>
+        <parameter key="integrated_storage.filesystem_delete">Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove</parameter>
 
     </parameters>
-
 
     <services>
 
@@ -43,6 +43,8 @@
         <service id="integrated_storage.registry" class="%integrated_storage.registry%">
             <argument type="service" id="knp_gaufrette.filesystem_map" />
         </service>
+
+        <service id="integrated_storage.filesystem_delete" class="%integrated_storage.filesystem_delete%" />
 
     </services>
 
