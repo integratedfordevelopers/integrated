@@ -1,6 +1,6 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
-{% form_theme facetFilter 'IntegratedBlockBundle:Form:form_div_layout.html.twig' %}
+{% form_theme facetFilter 'IntegratedBlockBundle:Form:form_div_filter.html.twig' %}
 
 {% block content %}
     <div class="row">
@@ -55,7 +55,7 @@
                                         {{ block.title }}
                                     </td>
                                     <td>
-                                        {{ block.id|truncate(15) }}
+                                        {{ block.id }}
                                     </td>
                                     <td>
                                         {{ block.type }}
@@ -104,10 +104,17 @@
             <aside>
                 <div class="aside-holder section-gray section-shadow section-radius">
                     {{ form_start(facetFilter) }}
-                    {{ form_row(facetFilter.type) }}
+
+                    <div class="aside-item-holder">
+                        {{ form_row(facetFilter.type) }}
+                    </div>
+
                     {% if pageBundleInstalled %}
-                        {{ form_row(facetFilter.channels) }}
+                        <div class="aside-item-holder">
+                            {{ form_row(facetFilter.channels) }}
+                        </div>
                     {% endif %}
+
                     {{ form_end(facetFilter) }}
                 </div>
             </aside>
