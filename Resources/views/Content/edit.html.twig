@@ -43,10 +43,12 @@
 
             <div class="aside-holder section-gray section-shadow section-radius">
 
-                {% if content.isPublished and content.getChannels|length > 0 %}
-                <div class="aside-item-holder">
-                    <h2 class="font-medium color-green"><i class="integrate-icon-ok-circled"></i> {% trans %}Published{% endtrans %}</h2>
-                </div>
+                {% if content is defined %}
+                    {% if content.isPublished and content.getChannels|length > 0 %}
+                        <div class="aside-item-holder">
+                            <h2 class="font-medium color-green"><i class="integrate-icon-ok-circled"></i> {% trans %}Published{% endtrans %}</h2>
+                        </div>
+                    {% endif %}
                 {% endif %}
 
                 {% if form.offsetGet('relations').count() %}
