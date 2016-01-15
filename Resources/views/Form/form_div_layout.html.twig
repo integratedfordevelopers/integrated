@@ -340,3 +340,13 @@
     </script>
 {% endspaceless %}
 {% endblock %}
+
+{% block integrated_content_actions_row %}
+    {% spaceless %}
+        <section class="section-white prefooter-holder">
+            <div class="container text-center">
+                {{ form_widget(form) }}
+            </div><!-- container -->
+        </section>
+    {% endspaceless %}
+{% endblock %}
