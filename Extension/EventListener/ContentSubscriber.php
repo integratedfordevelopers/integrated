@@ -11,9 +11,12 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
+
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 
@@ -30,7 +33,8 @@ use Integrated\Common\Content\MetadataInterface;
 
 use Integrated\Common\ContentType\ResolverInterface;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Integrated\Common\Workflow\Events as WorkflowEvents;
+use Integrated\Common\Workflow\Event\WorkflowStateChangedEvent;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -193,6 +197,9 @@ class ContentSubscriber implements ContentSubscriberInterface
         if ($data['state'] !== $state->getState()) {
             $log->setState($data['state']);
             $state->setState($data['state']);
+
+            $dispatcher = $this->container->get('integrated_workflow.event_dispatcher');
+            $dispatcher->dispatch(WorkflowEvents::STATE_CHANGED, new WorkflowStateChangedEvent($state, $content));
 
             $persist = true;
         }
