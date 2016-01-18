@@ -17,6 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\Type as Form;
+use Integrated\Common\Channel\Event\ChannelEvent;
+use Integrated\Common\Channel\Events;
 
 /**
  * Controller for CRUD actions Channel document
@@ -105,7 +107,6 @@ class ChannelController extends Controller
         // Validate request
         $form->handleRequest($request);
         if ($form->isValid()) {
-
             // Save channel
             $this->getDocumentManager()->persist($channel);
             $this->getDocumentManager()->flush();
@@ -113,12 +114,15 @@ class ChannelController extends Controller
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
-            return $this->redirect($this->generateUrl('integrated_content_channel_show', array('id' => $channel->getId())));
+            $dispatcher = $this->get('integrated_content.event_dispatcher');
+            $dispatcher->dispatch(Events::CHANNEL_CREATED, new ChannelEvent($channel));
+
+            return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
         }
 
-        return array(
+        return [
             'form' => $form->createView()
-        );
+        ];
     }
 
     /**
@@ -155,11 +159,13 @@ class ChannelController extends Controller
         // Validate request
         $form->handleRequest($request);
         if ($form->isValid()) {
-
             $this->getDocumentManager()->flush();
 
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
+
+            $dispatcher = $this->get('integrated_content.event_dispatcher');
+            $dispatcher->dispatch(Events::CHANNEL_UPDATED, new ChannelEvent($channel));
 
             return $this->redirect($this->generateUrl('integrated_content_channel_show', array('id' => $channel->getId())));
         }
@@ -183,10 +189,12 @@ class ChannelController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             // Remove channel
             $this->getDocumentManager()->remove($channel);
             $this->getDocumentManager()->flush();
+
+            $dispatcher = $this->get('integrated_content.event_dispatcher');
+            $dispatcher->dispatch(Events::CHANNEL_DELETED, new ChannelEvent($channel));
 
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');

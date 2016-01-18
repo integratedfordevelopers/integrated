@@ -211,15 +211,15 @@ class ContentTypeController extends Controller
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
-            $dispatcher->dispatch(Events::CONTENT_TYPE_CHANGED, new ContentTypeEvent($contentType));
+            $dispatcher->dispatch(Events::CONTENT_TYPE_UPDATED, new ContentTypeEvent($contentType));
 
-            return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
+            return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
         }
 
-        return array(
+        return [
             'form' => $form->createView(),
             'contentType' => $contentType
-        );
+        ];
     }
 
     /**
@@ -248,6 +248,9 @@ class ContentTypeController extends Controller
             } else {
                 $dm->remove($contentType);
                 $dm->flush();
+
+                $dispatcher = $this->get('integrated_content.event_dispatcher');
+                $dispatcher->dispatch(Events::CONTENT_TYPE_DELETED, new ContentTypeEvent($contentType));
 
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
