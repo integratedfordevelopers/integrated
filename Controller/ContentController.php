@@ -446,7 +446,8 @@ class ContentController extends Controller
 
         return array(
             'type' => $type->getType(),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
         );
     }
 
@@ -585,7 +586,8 @@ class ContentController extends Controller
             'type'    => $type->getType(),
             'form'    => $form->createView(),
             'content' => $content,
-            'locking' => $locking
+            'locking' => $locking,
+            'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
         );
     }
 
