@@ -13,10 +13,15 @@ namespace Integrated\Bundle\WorkflowBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Integrated\Bundle\UserBundle\Model\Group;
+use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormBuilder;
@@ -202,6 +207,68 @@ class WorkflowController extends Controller
             'workflow' => $workflow,
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function assignedAction(Request $request)
+    {
+        $stateId = $request->get('state');
+
+        $isDefaultState = false;
+        if (empty($stateId)) {
+            $workflowId = $request->get('workflow');
+            $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition');
+            $workflow = $repository->find($workflowId);
+            $state = $workflow->getDefault();
+
+            $isDefaultState = true;
+        } else {
+            $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition\State');
+            $state = $repository->find($stateId);
+        }
+
+        /** @var User $currentUser */
+        $currentUser = $this->get('security.token_storage')->getToken()->getUser();
+
+        $currentUserGroups = [];
+        /** @var Group $group */
+        foreach ($currentUser->getGroups() as $group) {
+            $currentUserGroups[] = $group->getId();
+        }
+
+        $groups = [];
+        $currentUserCanWrite = false;
+        foreach ($state->getPermissions() as $permission) {
+            if ($permission->getMask() >= Definition\Permission::WRITE) {
+                $group = $permission->getGroup();
+                $groups[] = $group;
+
+                if (in_array($group, $currentUserGroups)) {
+                    $currentUserCanWrite = true;
+                }
+            }
+        }
+
+        /** @var EntityRepository $userRepository */
+        $userRepository = $this->get('integrated_user.user.manager.doctrine')->getRepository();
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $userRepository->createQueryBuilder('u');
+
+        if (!$isDefaultState || !$currentUserCanWrite) {
+            $queryBuilder->join('u.groups', 'ug');
+            $queryBuilder->where('ug.id IN (:groups)')->setParameter('groups', $groups);
+        }
+
+        $users = [];
+        /** @var User $item */
+        foreach ($queryBuilder->getQuery()->getResult() as $item) {
+            $users[$item->getId()] = $item->getUsername();
+        }
+
+        return new JsonResponse(['users' => $users]);
     }
 
     /**
