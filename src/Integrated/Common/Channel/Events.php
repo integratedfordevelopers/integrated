@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\ContentType;
+namespace Integrated\Common\Channel;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
 final class Events
 {
-    const CONTENT_TYPE_CREATED = 'integrated.content_type.created';
+    const CHANNEL_CREATED = 'integrated.channel.created';
 
-    const CONTENT_TYPE_UPDATED = 'integrated.content_type.updated';
+    const CHANNEL_UPDATED = 'integrated.channel.updated';
 
-    const CONTENT_TYPE_DELETED = 'integrated.content_type.deleted';
+    const CHANNEL_DELETED = 'integrated.channel.deleted';
 }
