@@ -8,6 +8,7 @@
 
         <parameter key="integrated_page.event_listener.configure_menu_subscriber.class">Integrated\Bundle\PageBundle\EventListener\ConfigureMenuSubscriber</parameter>
         <parameter key="integrated_page.event_listener.content_type_changed.class">Integrated\Bundle\PageBundle\EventListener\ContentTypeChangedListener</parameter>
+        <parameter key="integrated_page.event_listener.channel_changed.class">Integrated\Bundle\PageBundle\EventListener\ChannelChangedListener</parameter>
 
     </parameters>
 
@@ -19,6 +20,11 @@
         </service>
 
         <service id="integrated_page.event_listener.content_type_changed" class="%integrated_page.event_listener.content_type_changed.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="integrated_content.event_subscriber" />
+        </service>
+
+        <service id="integrated_page.event_listener.channel_changed" class="%integrated_page.event_listener.channel_changed.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="integrated_content.event_subscriber" />
         </service>

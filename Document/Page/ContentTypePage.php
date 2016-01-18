@@ -35,6 +35,10 @@ class ContentTypePage
      * @var string
      * @ODM\String
      * @Assert\NotBlank
+     * @Assert\Regex(
+     *     pattern="/{slug}/",
+     *     message="Url must contain {slug}"
+     * )
      */
     protected $path;
 
@@ -76,9 +80,22 @@ class ContentTypePage
     protected $contentType;
 
     /**
+     * @param ContentType $contentType
+     * @param Channel $channel
+     * @param string $layout
+     * @param null $path
      */
-    public function __construct()
+    public function __construct(ContentType $contentType, Channel $channel, $layout = 'default.html.twig', $path = null)
     {
+        $this->setContentType($contentType);
+        $this->setChannel($channel);
+        $this->setLayout($layout);
+        if ($path) {
+            $this->setPath($path);
+        } else {
+            $this->setPath(sprintf('/content/%s/{slug}', $contentType->getId()));
+        }
+
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }

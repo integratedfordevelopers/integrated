@@ -15,8 +15,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Common\ContentType\Event\ContentTypeEvent;
-use Integrated\Common\ContentType\Events;
+use Integrated\Common\Channel\Events;
+use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
@@ -24,7 +24,7 @@ use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class ContentTypeChangedListener implements EventSubscriberInterface
+class ChannelChangedListener implements EventSubscriberInterface
 {
     /**
      * @var DocumentManager
@@ -45,49 +45,45 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::CONTENT_TYPE_UPDATED => 'contentTypeChanged',
-            Events::CONTENT_TYPE_CREATED => 'contentTypeChanged',
-            Events::CONTENT_TYPE_DELETED => 'contentTypeDeleted',
+            Events::CHANNEL_CREATED => 'channelChanged',
+            Events::CHANNEL_UPDATED => 'channelChanged',
+            Events::CHANNEL_DELETED => 'channelDeleted',
         ];
     }
 
     /**
-     * @param ContentTypeEvent $event
+     * @param ChannelEvent $event
      */
-    public function contentTypeChanged(ContentTypeEvent $event)
+    public function channelChanged(ChannelEvent $event)
     {
-        $contentType = $event->getContentType();
-        $channelOption = $contentType->getOption('channels');
+        $channel = $event->getChannel();
 
-        if (isset($channelOption['disabled']) && $channelOption['disabled'] == 0) {
-            $channels = $this->getChannelRepository()->findAll();
+        $contentTypes = $this->getContentTypeRepository()->findBy(['options.channels.disabled' => 0]);
 
-            foreach ($channels as $channel) {
-                if (!$this->getPageRepository()->findOneBy(['channel.$id' => $channel->getId(), 'contentType.$id' => $contentType->getId()])) {
-                    $page = new ContentTypePage($contentType, $channel);
-                    $this->dm->persist($page);
-                    $this->dm->flush($page);
-                }
+        /** @var ContentType $contentType */
+        foreach ($contentTypes as $contentType) {
+            if (!$this->getPageRepository()->findOneBy(['channel.$id' => $channel->getId(), 'contentType.$id' => $contentType->getId()])) {
+                $page = new ContentTypePage($contentType, $channel);
+                $this->dm->persist($page);
+                $this->dm->flush($page);
             }
-        } else {
-            $this->deletePagesByContentType($contentType);
         }
     }
 
     /**
-     * @param ContentTypeEvent $event
+     * @param ChannelEvent $event
      */
-    protected function contentTypeDeleted(ContentTypeEvent $event)
+    protected function channelDeleted(ChannelEvent $event)
     {
-        $this->deletePagesByContentType($event->getContentType());
+        $this->deletePagesByChannel($event->getChannel());
     }
 
     /**
-     * @param ContentType $contentType
+     * @param Channel $channel
      */
-    protected function deletePagesByContentType(ContentType $contentType)
+    protected function deletePagesByChannel(Channel $channel)
     {
-        $pages = $this->getPageRepository()->findBy(['contentType.$id' => $contentType->getId()]);
+        $pages = $this->getPageRepository()->findBy(['channel.$id' => $channel->getId()]);
 
         foreach ($pages as $page) {
             $this->dm->remove($page);
@@ -109,5 +105,13 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     protected function getChannelRepository()
     {
         return $this->dm->getRepository('IntegratedContentBundle:Channel\Channel');
+    }
+
+    /**
+     * @return \Doctrine\ODM\MongoDB\DocumentRepository
+     */
+    protected function getContentTypeRepository()
+    {
+        return $this->dm->getRepository('IntegratedContentBundle:ContentType\ContentType');
     }
 }

@@ -59,25 +59,48 @@ class ContentTypePageController extends Controller
      */
     public function editAction(Request $request, ContentTypePage $page)
     {
-        //todo
-//        $form = $this->createEditForm($page);
-//        $form->handleRequest($request);
-//
-//        if ($form->isValid()) {
-//            $channel = $this->getSelectedChannel();
-//
-//            $this->getDocumentManager()->flush();
-//
-//            $this->clearRoutingCache();
-//
-//            $this->get('braincrafted_bootstrap.flash')->success('Page updated');
-//
-//            return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
-//        }
-//
-//        return [
-//            'page' => $page,
-//            'form' => $form->createView(),
-//        ];
+        $form = $this->createEditForm($page);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $channel = $this->getSelectedChannel();
+
+            $this->getDocumentManager()->flush();
+
+            $this->clearRoutingCache();
+
+            $this->get('braincrafted_bootstrap.flash')->success('Page updated');
+
+            return $this->redirect($this->generateUrl('integrated_page_content_type_page_index', ['channel' => $channel->getId()]));
+        }
+
+        return [
+            'page' => $page,
+            'form' => $form->createView(),
+        ];
+    }
+
+
+    /**
+     * @param ContentTypePage $page
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function createEditForm(ContentTypePage $page)
+    {
+        $channel = $page->getChannel();
+
+        $form = $this->createForm(
+            'integrated_page_content_type_page',
+            $page,
+            [
+                'method' => 'PUT',
+                'theme'  => $this->getTheme($channel),
+            ]
+        );
+
+        $form->add('submit', 'submit', ['label' => 'Save']);
+
+        return $form;
     }
 }

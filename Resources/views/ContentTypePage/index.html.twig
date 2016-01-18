@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-md-12 push-sm-down">
             <ul class="list-inline">
+                <li class="dropdown"></li>
                 <li class="dropdown pull-right">
                     <a href="#" data-toggle="dropdown" role="button">{{ selectedChannel.name }} <b class="caret"></b></a>
                     <ul role="menu" class="dropdown-menu">
@@ -21,8 +22,8 @@
                         <b class="caret"></b>
                     </a>
                     <ul role="menu" class="dropdown-menu">
-                        <li href="{{ path('integrated_page_page_index', { 'channel': selectedChannel.id }) }}" role="presentation">
-                            <a tabindex="-1" role="menuitem">{% trans %}Static pages{% endtrans %}</a>
+                        <li role="presentation">
+                            <a href="{{ path('integrated_page_page_index', { 'channel': selectedChannel.id }) }}" tabindex="-1" role="menuitem">{% trans %}Static pages{% endtrans %}</a>
                         </li>
                     </ul>
                 </li>
