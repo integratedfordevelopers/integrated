@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
@@ -361,7 +362,9 @@ class Article extends Content
         if ($items) {
             foreach ($items as $item) {
                 if ($item instanceof FileInterface) {
-                    return $item->getFile()->getPathname();
+                    if ($item->getFile() instanceof StorageInterface) {
+                        return $item->getFile()->getPathname();
+                    }
                 }
             }
         }
