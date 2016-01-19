@@ -24,7 +24,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Image;
  * @author Marijn Otte <marijn@e-active.nl>
  * @description Add usefull properties for filtering
  */
-class PropertyType implements TypeInterface
+class HasImageType implements TypeInterface
 {
     /**
      * {@inheritdoc}
@@ -58,6 +58,6 @@ class PropertyType implements TypeInterface
      */
     public function getName()
     {
-        return 'integrated.property';
+        return 'integrated.has_image';
     }
 }
