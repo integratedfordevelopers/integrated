@@ -41,6 +41,7 @@ class TinyMCEType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars = array_merge($view->vars, ['content_styles' => $this->contentStyles]);
+        $view->vars['mode'] = $options['mode'];
     }
 
     /**
@@ -70,8 +71,4 @@ class TinyMCEType extends AbstractType
         ));
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['mode'] = $options['mode'];
-    }
 }
