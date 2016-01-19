@@ -35,7 +35,7 @@ class HasImageType implements TypeInterface
             return; // only process content
         }
 
-        //Add property for has image / don't has image (usefull to make selections with articles for views with image, or to find articles with missing image)
+        //Add property for has image / doesn't have image (usefull to make selections with articles for views with image, or to find articles with missing image)
         $found = false;
         $items = $data->getReferencesByRelationType('embedded');
         if ($items) {
@@ -48,7 +48,7 @@ class HasImageType implements TypeInterface
         if ($found) {
             $container->add('facet_properties', 'Has image');
         } else {
-            $container->add('facet_properties', 'Don\'t has images');
+            $container->add('facet_properties', 'Doesn\'t have images');
         }
 
     }
