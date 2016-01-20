@@ -34,17 +34,17 @@
                         selector: "textarea#{{ id }}",
                         theme: "modern",
                         plugins: [
-                            {% if form.vars.mode == "advanced" %}
-                            ["advlist autolink link image lists charmap hr anchor pagebreak"],
+                            {% if form.vars.mode == "web" %}
+                            ["advlist autolink link integratedImage integratedColumn lists charmap hr anchor pagebreak"],
                             ["searchreplace wordcount visualchars fullscreen media nonbreaking"],
                             ["table contextmenu directionality template paste wordcount autoresize code"]
-                                    {% else %}
-                                    ["advlist autolink link image lists charmap hr anchor pagebreak"],
+                            {% else %}
+                            ["advlist autolink link lists charmap hr anchor pagebreak"],
                             ["searchreplace wordcount visualchars fullscreen nonbreaking"],
                             ["table contextmenu directionality template paste wordcount autoresize"]
                             {% endif %}
                         ],
-                        {% if form.vars.mode == "advanced" %}
+                        {% if form.vars.mode == "web" %}
                         external_plugins: {
                             "integratedImage": "/bundles/integratedformtype/js/tinymce-plugins/integrated-image/plugin.js",
                             "integratedColumn": "/bundles/integratedformtype/js/tinymce-plugins/integrated-column/plugin.js"
