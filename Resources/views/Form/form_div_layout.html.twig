@@ -35,7 +35,7 @@
                         theme: "modern",
                         plugins: [
                             {% if form.vars.mode == "web" %}
-                            ["advlist autolink link integratedImage integratedColumn lists charmap hr anchor pagebreak"],
+                            ["advlist autolink link lists charmap hr anchor pagebreak"],
                             ["searchreplace wordcount visualchars fullscreen media nonbreaking"],
                             ["table contextmenu directionality template paste wordcount autoresize code"]
                             {% else %}
@@ -53,7 +53,11 @@
                         add_unload_trigger: false,
                         schema: "html5",
                         menubar: false,
-                        toolbar: "styleselect | bold italic underline | bullist numlist | link image print preview media fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
+                        {% if form.vars.mode == "web" %}
+                        toolbar: "styleselect | bold italic underline | bullist numlist | link integratedImage integratedColumn media print preview fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
+                        {% else %}
+                        toolbar: "styleselect | bold italic underline | bullist numlist | link print preview fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
+                        {% endif %}
                         statusbar: true,
                         statusbar_size: "small",
                         width: "100%",
