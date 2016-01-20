@@ -23,7 +23,7 @@ class LayoutLocator
     /**
      * @var ThemeManager
      */
-    private $themeManager;
+    protected $themeManager;
 
     /**
      * @var array
@@ -45,23 +45,18 @@ class LayoutLocator
     public function getLayouts($type)
     {
         if (!isset($this->layouts[$type])) {
-
             $this->layouts[$type] = [];
 
             foreach ($this->themeManager->getThemes() as $id => $theme) {
-
                 foreach ($theme->getPaths() as $path) {
-
                     $path = $this->themeManager->locateResource($path) . '/blocks/' . $type;
 
                     if (is_dir($path)) {
-
                         $finder = new Finder();
                         $finder->files()->in($path)->name('*.html.twig');
 
                         /** @var \Symfony\Component\Finder\SplFileInfo $file */
                         foreach ($finder as $file) {
-
                             $this->layouts[$type][] = $file->getRelativePathname();
                         }
                     }

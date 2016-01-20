@@ -33,17 +33,27 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedBlockBundle:Block\Block');
+        $facetFilter = $this->createForm($this->get('integrated_block.form.type.block_filter'));
+        $facetFilter->handleRequest($request);
+        $data = $facetFilter->isValid() ? $facetFilter->getData() : ['type' => [], 'channels' => []];
+
+        $pageBundleInstalled = $this->container->has('integrated_page.form.type.page');
+        $qb = $this->getDocumentManager()
+            ->getRepository('IntegratedBlockBundle:Block\Block')
+            ->getBlocksByChannelQueryBuilder($data['type'], $data['channels'], $pageBundleInstalled);
 
         $pagination = $this->getPaginator()->paginate(
-            $builder,
+            $qb,
             $request->query->get('page', 1),
-            $request->query->get('limit', 20)
+            $request->query->get('limit', 20),
+            ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc']
         );
 
         return [
             'blocks'  => $pagination,
             'factory' => $this->getFactory(),
+            'pageBundleInstalled' => $pageBundleInstalled,
+            'facetFilter' => $facetFilter->createView()
         ];
     }
 
@@ -82,7 +92,6 @@ class BlockController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $dm = $this->getDocumentManager();
 
             $dm->persist($block);
@@ -108,11 +117,11 @@ class BlockController extends Controller
      */
     public function editAction(Request $request, Block $block)
     {
+
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $this->getDocumentManager()->flush();
 
             $this->get('braincrafted_bootstrap.flash')->success('Block updated');
@@ -139,13 +148,18 @@ class BlockController extends Controller
             throw $this->createNotFoundException(sprintf('Block "%s" is locked.', $block->getId()));
         }
 
+        /* check if current Block not used on some page */
+        $dm = $this->getDocumentManager();
+        if ($this->container->has('integrated_page.form.type.page')) {
+            if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
+                throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
+            }
+        }
+
         $form = $this->createDeleteForm($block->getId());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
-            $dm = $this->getDocumentManager();
-
             $dm->remove($block);
             $dm->flush();
 

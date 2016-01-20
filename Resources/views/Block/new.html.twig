@@ -12,11 +12,38 @@
             </ol>
 
             <div class="page-header">
-                <h1>{% trans %}New{% endtrans %} <small>Block</small></h1>
+                <h1>{% trans %}New{% endtrans %} <small>{% trans %}Block{% endtrans %}</small></h1>
             </div>
 
-            {{ form(form, { 'style': 'horizontal' }) }}
+            {{ form_start(form, { 'style': 'horizontal' }) }}
+                <div id="integrated_block_block">
+                    {{ form_errors(form) }}
+
+                    {% for field in form %}
+                        {% if field.vars.name == 'useTitle' %}
+                            <div class="form-group ">
+                                <div class="col-md-2 text-right">
+                                    {{ 'Published title'|trans }}
+                                </div>
+                                <div class="col-md-10">
+                                    <div>
+                                        <label style="font-weight: unset;" for="{{ field.vars.id }}">{{ form_widget(field) }} {{ field.vars.name|humanize }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            {{ form_row(field) }}
+                        {% endif %}
+
+                    {% endfor %}
+                </div>
+            {{ form_end(form) }}
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/integratedblock/js/published_title.js') }}"></script>
 {% endblock %}

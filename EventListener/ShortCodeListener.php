@@ -13,7 +13,7 @@ namespace Integrated\Bundle\BlockBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 
-use Integrated\Bundle\BlockBundle\Templating\BlockRenderer;
+use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -21,16 +21,16 @@ use Integrated\Bundle\BlockBundle\Templating\BlockRenderer;
 class ShortCodeListener
 {
     /**
-     * @var BlockRenderer
+     * @var BlockManager
      */
-    private $blockRenderer;
+    protected $blockManager;
 
     /**
-     * @param BlockRenderer $blockRenderer
+     * @param BlockManager $blockManager
      */
-    public function __construct(BlockRenderer $blockRenderer)
+    public function __construct(BlockManager $blockManager)
     {
-        $this->blockRenderer = $blockRenderer;
+        $this->blockManager = $blockManager;
     }
 
     /**
@@ -40,13 +40,25 @@ class ShortCodeListener
     {
         $response = $event->getResponse();
 
-        if (preg_match('/\[block id="(.+?)"(.*?)\]/i', $response->getContent(), $match)) {
-
-            $response->setContent(str_replace(
-                $match[0],
-                $this->blockRenderer->render($match[1]),
-                $response->getContent()
-            ));
+        if ('Symfony\Component\HttpFoundation\Response' !== get_class($response)) {
+            return;
         }
+
+        $response->setContent(
+            preg_replace_callback(
+                '/\[block id="(.+?)"(.*?)\]/i',
+                [$this, 'replaceWithBlock'],
+                $response->getContent()
+            )
+        );
+    }
+
+    /**
+     * @param array $matches
+     * @return null|string
+     */
+    public function replaceWithBlock(array $matches)
+    {
+        return $this->blockManager->render($matches[1]);
     }
 }

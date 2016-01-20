@@ -17,20 +17,24 @@
         "php": ">=5.4",
         "symfony/symfony": ">=2.4",
         "symfony/framework-bundle": ">=2.2",
-        "doctrine/mongodb": "*",
+        "sensio/framework-extra-bundle": "~2.3",
+        "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "*",
-        "doctrine/mongodb-odm-bundle": "*",
-        "integrated/library": "~0.2",
+        "doctrine/mongodb-odm-bundle": "~3.0",
+        "integrated/library": "~0.3",
+        "integrated/menu-bundle": "~0.3",
         "integrated/slug-bundle": "~0.2",
         "integrated/theme-bundle": "~0.2",
         "knplabs/knp-paginator-bundle": ">=2.4"
     },
+    "suggest": {
+        "integrated/page-bundle": "Extend block bundle functionality"
+    },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\BlockBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\BlockBundle\\": ""
         }
     },
-    "target-dir": "Integrated/Bundle/BlockBundle",
     "extra": {
         "branch-alias": {
             "dev-develop": "0.9.9-dev"

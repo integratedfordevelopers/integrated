@@ -27,7 +27,7 @@ class BlockType extends AbstractType
     /**
      * @var DocumentRepository
      */
-    private $repository;
+    protected $repository;
 
     /**
      * @param DocumentManager $dm

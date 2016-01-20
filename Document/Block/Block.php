@@ -24,7 +24,7 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document(collection="block", indexes={@ODM\Index(keys={"class"="asc"})})
+ * @ODM\Document(collection="block", repositoryClass="Integrated\Bundle\BlockBundle\Document\Block\BlockRepository", indexes={@ODM\Index(keys={"class"="asc"})})
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
  */
@@ -218,6 +218,29 @@ abstract class Block implements BlockInterface
     {
         $this->publishedUntil = $publishedUntil;
         return $this;
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return bool
+     */
+    public function isPublished(\DateTime $date = null)
+    {
+        if (null === $date) {
+            $date = new \DateTime();
+        }
+
+        $published = true;
+
+        if ($this->publishedAt && $this->publishedAt > $date) {
+            $published = false;
+        }
+
+        if ($this->publishedUntil && $this->publishedUntil < $date) {
+            $published = false;
+        }
+
+        return $published;
     }
 
     /**
