@@ -27,7 +27,7 @@ class ContentItemsBlock extends Block
     /**
      * @var ArrayCollection
      * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
-     * @Type\Field(type="integrated_ajax_select2")
+     * @Type\Field(type="integrated_content_choice")
      */
     protected $items;
 
