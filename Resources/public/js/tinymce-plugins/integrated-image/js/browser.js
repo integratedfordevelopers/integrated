@@ -24,7 +24,7 @@ $(document).ready(function(){
                 '<div class="thumbnail">'+
                     '<div class="thumbnail-img"><img src="{{img-source}}" alt="{{img-alt}}"></div>'+
                     '<div class="caption">'+
-                        '<p class="text-center"><a href="{{img-source}}" class="btn btn-primary btn-sm btn-insert-image">insert</a></p>'+
+                        '<p class="text-center"><a href="{{img-source}}" class="btn btn-primary btn-sm btn-insert-image">Insert</a></p>'+
                     '</div>'+
                 '</div>'+
             '</div>';
