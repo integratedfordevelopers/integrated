@@ -1,5 +1,5 @@
 $(function() {
-    $('.integrated_ajax_select2').select2({
+    $('.integrated_content_choice').select2({
         ajax: {
             processResults: function (data) {
                 return {

@@ -24,9 +24,8 @@ use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\AjaxDocumentTransforme
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class AjaxSelect2Type extends AbstractType
+class ContentChoice extends AbstractType
 {
-
     /**
      * @var DocumentManager
      */
@@ -109,6 +108,6 @@ class AjaxSelect2Type extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_ajax_select2';
+        return 'integrated_content_choice';
     }
 }

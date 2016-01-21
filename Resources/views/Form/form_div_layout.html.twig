@@ -194,11 +194,11 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block integrated_ajax_select2_widget %}
+{% block integrated_content_choice_widget %}
     {% set attr = attr|merge({
         'data-ajax--url' : path(route, params),
         'data-allow-clear' : (allow_clear ? 'true' : 'false'),
-        'class' : (attr.class|default('') ~ ' form-control integrated_ajax_select2')|trim
+        'class' : (attr.class|default('') ~ ' form-control integrated_content_choice')|trim
     }) %}
     {% spaceless %}
         <select {{ block('widget_attributes') }}>
