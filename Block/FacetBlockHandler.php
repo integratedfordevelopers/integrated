@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Block;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Common\Block\BlockHandlerRegistryInterface;
@@ -53,7 +54,7 @@ class FacetBlockHandler extends BlockHandler
     /**
      * {@inheritdoc}
      */
-    public function execute(BlockInterface $block)
+    public function execute(BlockInterface $block, array $options)
     {
         if (!$block instanceof FacetBlock) {
             return;
@@ -77,7 +78,9 @@ class FacetBlockHandler extends BlockHandler
             return;
         }
 
-        $pagination = $handler->getPagination($contentBlock, $request, false);
+        $options['exclude'] = false; // don't exclude already shown items
+
+        $pagination = $handler->getPagination($contentBlock, $request, $options);
 
         $result = $pagination->getCustomParameter('result');
 
@@ -94,7 +97,7 @@ class FacetBlockHandler extends BlockHandler
         $facets = [];
         foreach ($block->getFields() as $field) {
             $facets[$field->getField()] = [
-                'name' => $field->getName(),
+                'name'   => $field->getName(),
                 'values' => $facetSet->getFacet($field->getField()),
             ];
         }
@@ -104,8 +107,20 @@ class FacetBlockHandler extends BlockHandler
         }
 
         return $this->render([
-            'block' => $block,
+            'block'  => $block,
             'facets' => $facets,
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'filters' => [], // add extra filters (overwrites search selection)
+        ]);
+
+        $resolver->setAllowedTypes('filters', 'array');
     }
 }

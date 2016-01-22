@@ -77,7 +77,7 @@ class FormBlockHandler extends BlockHandler
     /**
      * {@inheritdoc}
      */
-    public function execute(BlockInterface $block)
+    public function execute(BlockInterface $block, array $options)
     {
         if (!$block instanceof FormBlock) {
             return;
