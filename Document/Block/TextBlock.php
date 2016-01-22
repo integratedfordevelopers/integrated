@@ -43,7 +43,7 @@ class TextBlock extends Block
     /**
      * @var string
      * @ODM\String
-     * @Type\Field(type="integrated_tinymce")
+     * @Type\Field(type="integrated_tinymce",options={"mode"="web"})
      */
     protected $content;
 
