@@ -316,6 +316,16 @@ class ContentController extends Controller
 
         $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
 
+        // add field filters
+        foreach ((array) $request->query->get('filter') as $name => $value) {
+            $value = trim($value);
+            if (!is_string($name) || !is_string($value) || !$value) {
+                continue;
+            }
+
+            $query->createFilterQuery($name)->setQuery('%1%:%P2%', [$name, $value]);
+        }
+
         // Execute the query
         $result = $client->select($query);
 
