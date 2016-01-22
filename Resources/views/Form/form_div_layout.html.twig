@@ -34,14 +34,30 @@
                         selector: "textarea#{{ id }}",
                         theme: "modern",
                         plugins: [
-                            ["advlist autolink link image lists charmap hr anchor pagebreak"],
+                            {% if form.vars.mode == "web" %}
+                            ["advlist autolink link lists charmap hr anchor pagebreak"],
                             ["searchreplace wordcount visualchars fullscreen media nonbreaking"],
+                            ["table contextmenu directionality template paste wordcount autoresize code"]
+                            {% else %}
+                            ["advlist autolink link lists charmap hr anchor pagebreak"],
+                            ["searchreplace wordcount visualchars fullscreen nonbreaking"],
                             ["table contextmenu directionality template paste wordcount autoresize"]
+                            {% endif %}
                         ],
+                        {% if form.vars.mode == "web" %}
+                        external_plugins: {
+                            "integratedImage": "/bundles/integratedformtype/js/tinymce-plugins/integrated-image/plugin.js",
+                            "integratedColumn": "/bundles/integratedformtype/js/tinymce-plugins/integrated-column/plugin.js"
+                        },
+                        {% endif %}
                         add_unload_trigger: false,
                         schema: "html5",
                         menubar: false,
-                        toolbar: "styleselect | bold italic underline | bullist numlist | link image print preview media fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
+                        {% if form.vars.mode == "web" %}
+                        toolbar: "styleselect | bold italic underline | bullist numlist | link integratedImage integratedColumn media print preview fullpage table | charmap pagebreak | pastetext searchreplace code fullscreen",
+                        {% else %}
+                        toolbar: "styleselect | bold italic underline | bullist numlist | link print preview fullpage table | charmap pagebreak | pastetext searchreplace fullscreen",
+                        {% endif %}
                         statusbar: true,
                         statusbar_size: "small",
                         width: "100%",

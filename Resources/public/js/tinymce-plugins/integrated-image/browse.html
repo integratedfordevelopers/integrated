@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>Image Browser</title>
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="css/style.css">
+
+        <script src="/bundles/fosjsrouting/js/router.js"></script>
+        <script src="/js/routing?callback=fos.Router.setData"></script>
+    </head>
+    <body>
+        <div class="container-fluid" style="margin: 10px">
+            <div class="row">
+                <div class="col-sm-7">
+                    <button id="btn-upload" class="btn btn-primary" onclick="window.open('/admin/content/new?class=Integrated%5CBundle%5CContentBundle%5CDocument%5CContent%5CImage&type=image');">Upload new image</button>
+                </div>
+                <div class="col-sm-5">
+                    <form id="form-search" action="" class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <div class="input-group">
+                                    <input id="txt-search" type="text" class="form-control" placeholder="Search image...">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12" id="thumbnail-container"></div>
+            </div>
+            <div class="row">
+                <div id="pagination-container" class="col-sm-12"></div>
+            </div>
+        </div>
+
+        <script src="/js/jquery.js"></script>
+        <script src="js/jquery.loading-overlay.min.js"></script>
+        <script src="js/browser.js"></script>
+    </body>
+</html>

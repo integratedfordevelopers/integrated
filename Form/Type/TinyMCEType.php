@@ -15,7 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Class TinyMCEType
@@ -41,6 +41,7 @@ class TinyMCEType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars = array_merge($view->vars, ['content_styles' => $this->contentStyles]);
+        $view->vars['mode'] = $options['mode'];
     }
 
     /**
@@ -58,4 +59,16 @@ class TinyMCEType extends AbstractType
     {
         return 'integrated_tinymce';
     }
+
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'mode' => "default",
+        ));
+
+        $resolver->setAllowedTypes(array(
+            'mode' => 'string',
+        ));
+    }
+
 }
