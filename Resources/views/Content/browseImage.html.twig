@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-    <script src="{{ asset('js/fos_js_routes.js?callback=fos.Router.setData') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
     <script src="{{ asset('js/jquery.js') }}"></script>
     <script src="{{ asset('js/bootstrap.js') }}"></script>
     <script src="{{ asset('bundles/integratedformtype/js/tinymce-plugins/integrated-image/js/jquery.loading-overlay.min.js') }}"></script>
@@ -14,7 +14,7 @@
 <body>
 <div class="container-fluid" style="margin: 10px">
     <div class="row">
-        <div class="col-sm-7">
+        <div class="col-sm-5">
             <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Upload new image <span class="caret"></span>
@@ -26,13 +26,20 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-7">
             <form id="form-search" action="" class="form-horizontal">
                 <div class="form-group">
-                    <div class="col-sm-12">
+                    <div class="col-sm-6">
                         <div class="input-group">
                             <input id="txt-search" type="text" class="form-control" placeholder="Search image...">
                         </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="type-search">
+                            {% for image in images %}
+                                <option value="{{ image.id }}">{{ image.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
             </form>
