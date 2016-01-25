@@ -21,12 +21,12 @@ $(document).ready(function(){
         var rowTemplate = '<div class="row">{{thumbnails}}</div>';
         var thumbnailTemplate =
             '<div class="col-sm-3">'+
-                '<div class="thumbnail">'+
-                    '<div class="thumbnail-img"><img src="{{img-source}}" alt="{{img-alt}}"></div>'+
-                    '<div class="caption">'+
-                        '<p class="text-center"><a href="{{img-source}}" class="btn btn-primary btn-sm btn-insert-image">Insert</a></p>'+
-                    '</div>'+
-                '</div>'+
+            '<div class="thumbnail">'+
+            '<div class="thumbnail-img"><img src="{{img-source}}" alt="{{img-alt}}"></div>'+
+            '<div class="caption">'+
+            '<p class="text-center"><a href="{{img-source}}" class="btn btn-primary btn-sm btn-insert-image">Insert</a></p>'+
+            '</div>'+
+            '</div>'+
             '</div>';
 
         var container       = $('#thumbnail-container');
@@ -64,11 +64,11 @@ $(document).ready(function(){
     function renderPagination(page){
         var paginationTemplate =
             '<nav class="pull-right">'+
-                '<ul class="pagination">'+
-                    '{{page-prev}}'+
-                    '{{page-num}}'+
-                    '{{page-next}}'+
-                '</ul>'+
+            '<ul class="pagination">'+
+            '{{page-prev}}'+
+            '{{page-num}}'+
+            '{{page-next}}'+
+            '</ul>'+
             '</nav>';
 
         var container = $('#pagination-container');
@@ -93,24 +93,24 @@ $(document).ready(function(){
         ){
             if(typeof page.pages[i] != 'undefined'){
                 pageNum +=  '<li '+(i == page.page ? 'class="active"' : '')+'>'+
-                                '<a href="'+(i == page.page ? '#' : page.pages[i].href)+'">'+i+'</a>'+
-                            '</li>';
+                    '<a href="'+(i == page.page ? '#' : page.pages[i].href)+'">'+i+'</a>'+
+                    '</li>';
             }
         }
 
         temporaryHtml = paginationTemplate.replace(
             '{{page-prev}}',
             '<li '+(page.previous == null ? 'class="disabled"' : '')+'>'+
-                '<a href="'+(page.previous == null ? '#' : page.previous.href)+'" aria-label="Previous">'+
-                    '<span aria-hidden="true">&laquo;</span>'+
-                '</a>'+
+            '<a href="'+(page.previous == null ? '#' : page.previous.href)+'" aria-label="Previous">'+
+            '<span aria-hidden="true">&laquo;</span>'+
+            '</a>'+
             '</li>'
         ).replace(
             '{{page-next}}',
             '<li '+(page.next == null ? 'class="disabled"' : '')+'>'+
-                '<a href="'+(page.next == null ? '#' : page.next.href)+'" aria-label="Next">'+
-                    '<span aria-hidden="true">&raquo;</span>'+
-                '</a>'+
+            '<a href="'+(page.next == null ? '#' : page.next.href)+'" aria-label="Next">'+
+            '<span aria-hidden="true">&raquo;</span>'+
+            '</a>'+
             '</li>'
         ).replace(
             '{{page-num}}', pageNum
@@ -132,32 +132,11 @@ $(document).ready(function(){
      */
     var mcemodal    = tinymce.activeEditor.windowManager.getWindows()[0];
 
-    /**
-     * The search handler
-     */
-    $('#btn-search').click(function(){
-        var keyword = $('#txt-search').val();
-        var url     = Routing.generate('integrated_content_content_index', {"contenttypes[]": "image", "_format": "json", "q": keyword});
-
-        $('#thumbnail-container').loader('show');
-        $.get(url, function(data){
-            renderImage(data.items);
-            renderPagination(data.pagination);
-            $('#thumbnail-container').loader('hide');
-
-        }, 'json')
-        .error(function(){
-            $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
-        });
-    });
-
-    /**
-     * Type ahead search handler
-     */
     var previousCall = null;
-    $('#txt-search').keyup(function(){
-        var keyword = $(this).val();
-        var url     = Routing.generate('integrated_content_content_index', {"contenttypes[]": "image", "_format": "json", "q": keyword});
+    var refreshImages = function() {
+        var keyword = $('#txt-search').val();
+        var type = $('#type-search').val();
+        var url     = Routing.generate('integrated_content_content_index', {"contenttypes[]": type, "_format": "json", "q": keyword});
 
         $('#thumbnail-container').loader('show');
         if(previousCall !== null){
@@ -166,23 +145,28 @@ $(document).ready(function(){
         }
 
         previousCall = $.get(url, function(data){
-            renderImage(data.items);
-            renderPagination(data.pagination);
-            $('#thumbnail-container').loader('hide');
+                renderImage(data.items);
+                renderPagination(data.pagination);
+                $('#thumbnail-container').loader('hide');
 
-        }, 'json')
-        .error(function(xhr, status){
-            if(status !== 'abort'){
-                $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>');
-            }
-        });
-    });
+            }, 'json')
+            .error(function(xhr, status){
+                if(status !== 'abort'){
+                    $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>');
+                }
+            });
+
+    };
 
     /**
-     * Disable default search form handler
+     * Type ahead search handler
      */
-    $('#form-search').submit(function(e){
-        e.preventDefault();
+    $('#txt-search').keyup(function(){
+        refreshImages();
+    });
+
+    $('#type-search').change(function() {
+        refreshImages();
     });
 
     /**
@@ -196,13 +180,13 @@ $(document).ready(function(){
 
         if(href !== '#'){
             $.get(href, function(data){
-                renderImage(data.items);
-                renderPagination(data.pagination);
-                $('#thumbnail-container').loader('hide');
-            }, 'json')
-            .error(function(){
-                $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
-            });
+                    renderImage(data.items);
+                    renderPagination(data.pagination);
+                    $('#thumbnail-container').loader('hide');
+                }, 'json')
+                .error(function(){
+                    $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
+                });
         }
     });
 
@@ -223,12 +207,5 @@ $(document).ready(function(){
      */
     $('#thumbnail-container').loader('show');
 
-    $.get(Routing.generate('integrated_content_content_index', {"contenttypes[]": "image", "_format": "json"}), function(data){
-        renderImage(data.items);
-        renderPagination(data.pagination);
-        $('#thumbnail-container').loader('hide');
-    }, 'json')
-    .error(function(){
-        $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
-    });
+    refreshImages();
 });
