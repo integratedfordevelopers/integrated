@@ -15,12 +15,15 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 
+use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use Integrated\Common\Content\ContentInterface;
 
+use Integrated\Common\Content\ExtensibleInterface;
+use Integrated\Common\Content\Registry;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
@@ -179,6 +182,8 @@ class WorkflowVoter implements VoterInterface
 
 		$permissions = $this->getPermissions($token->getUser(), $state);
 
+		$isAssigned = $this->isAssigned($token->getUser(), $object);
+
 		// check the permissions: create requires write permission, view
 		// requires the read permission, edit and delete required both.
 
@@ -191,20 +196,22 @@ class WorkflowVoter implements VoterInterface
 
 			$result = VoterInterface::ACCESS_GRANTED;
 
-			if ($this->permissions['view'] == $attribute) {
-				if (!$permissions['read']) { return VoterInterface::ACCESS_DENIED; }
-			}
+			if (!$isAssigned) {
+				if ($this->permissions['view'] == $attribute) {
+					if (!$permissions['read']) { return VoterInterface::ACCESS_DENIED; }
+				}
 
-			if ($this->permissions['create'] == $attribute) {
-				if (!$permissions['write']) { return VoterInterface::ACCESS_DENIED; }
-			}
+				if ($this->permissions['create'] == $attribute) {
+					if (!$permissions['write']) { return VoterInterface::ACCESS_DENIED; }
+				}
 
-			if ($this->permissions['edit'] == $attribute) {
-				if (!$permissions['read'] || !$permissions['write']) { return VoterInterface::ACCESS_DENIED; }
-			}
+				if ($this->permissions['edit'] == $attribute) {
+					if (!$permissions['read'] || !$permissions['write']) { return VoterInterface::ACCESS_DENIED; }
+				}
 
-			if ($this->permissions['delete'] == $attribute) {
-				if (!$permissions['read'] || !$permissions['write']) { return VoterInterface::ACCESS_DENIED; }
+				if ($this->permissions['delete'] == $attribute) {
+					if (!$permissions['read'] || !$permissions['write']) { return VoterInterface::ACCESS_DENIED; }
+				}
 			}
 		}
 
@@ -290,5 +297,28 @@ class WorkflowVoter implements VoterInterface
 			'read'  => (bool) ($mask & Permission::READ),
 			'write' => (bool) ($mask & Permission::WRITE)
 		];
+	}
+
+	/**
+	 * @param GroupableInterface $user
+	 * @param ContentInterface 	 $content
+	 * @return bool
+	 */
+	protected function isAssigned(GroupableInterface $user, ContentInterface $content)
+	{
+		if ($content instanceof ExtensibleInterface) {
+			/** @var Registry $extensions */
+			$extensions = $content->getExtensions();
+
+			$workflowExtension = $extensions->get('integrated.extension.workflow');
+
+			/** @var User $assigned */
+			$assigned = $workflowExtension['assigned'];
+
+			if ($assigned && $assigned->getId() == $user->getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
