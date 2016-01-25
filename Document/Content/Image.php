@@ -11,37 +11,19 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-use Symfony\Component\Validator\Constraints as Assert;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * Document type Image
  *
- * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ * @author Johnny Borg <johnny@e-active.nl>
  *
  * @ODM\Document
- * @ODM\HasLifecycleCallbacks
- *
  * @Type\Document("Image")
  */
 class Image extends File
 {
-    /**
-     * {@inheritdoc}
-     * @Type\Field(type="integrated_image")
-     * @ODM\Field
-     * @Assert\Image()
-     */
-    protected $file;
 
-    /**
-     * Get the upload dir for displaying uploaded files in the view
-     *
-     * @return string
-     */
-    protected function getUploadDir()
-    {
-        return 'uploads/images';
-    }
 }

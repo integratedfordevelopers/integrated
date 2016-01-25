@@ -39,11 +39,6 @@ class ContentBlockHandler extends BlockHandler
     private $requestStack;
 
     /**
-     * @var array
-     */
-    private $registry = [];
-
-    /**
      * @param SolariumProvider $provider
      * @param RequestStack $requestStack
      */
@@ -71,7 +66,7 @@ class ContentBlockHandler extends BlockHandler
         $pagination = $this->getPagination($block, $request);
 
         if (!count($pagination)) {
-            return; // @todo show block in edit mode (INTEGRATED-428)
+            return;
         }
 
         return $this->render([
@@ -83,35 +78,28 @@ class ContentBlockHandler extends BlockHandler
     /**
      * @param ContentBlock $block
      * @param Request $request
+     * @param bool $exclude
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function getPagination(ContentBlock $block, Request $request)
+    public function getPagination(ContentBlock $block, Request $request, $exclude = true)
     {
-        $id = $block->getId();
+        $request = $request->duplicate(); // don't change original request
 
-        if (!isset($this->registry[$id])) {
-            $request = $request->duplicate(); // don't change original request
-
-            try {
-                if ($selection = $block->getSearchSelection()) {
-                    $request->query->add($selection->getFilters());
-                }
-
-            } catch (DocumentNotFoundException $e) {
-                // search selection is removed
+        try {
+            if ($selection = $block->getSearchSelection()) {
+                $request->query->add($selection->getFilters());
             }
-
-            $pagination = $this->provider->execute(
-                $request,
-                $block->getId(),
-                $block->getItemsPerPage(),
-                $block->getMaxItems(),
-                $block->getFacetFields()
-            );
-
-            $this->registry[$id] = $pagination;
+        } catch (DocumentNotFoundException $e) {
+            // search selection is removed
         }
 
-        return $this->registry[$id];
+        return $this->provider->execute(
+            $request,
+            $block->getId(),
+            $block->getItemsPerPage(),
+            $block->getMaxItems(),
+            $block->getFacetFields(),
+            $exclude
+        );
     }
 }

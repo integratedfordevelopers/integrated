@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Menu;
 
+use Integrated\Common\ContentType\ContentTypeFilterInterface;
 use Knp\Menu\FactoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -34,13 +35,20 @@ class ContentTypeMenuBuilder
     protected $repository;
 
     /**
-     * @param FactoryInterface $factory
-     * @param ObjectRepository $repository
+     * @var ContentTypeFilterInterface
      */
-    public function __construct(FactoryInterface $factory, ObjectRepository $repository)
+    protected $workflowPermission;
+
+    /**
+     * @param FactoryInterface           $factory
+     * @param ObjectRepository           $repository
+     * @param ContentTypeFilterInterface $workflowPermission
+     */
+    public function __construct(FactoryInterface $factory, ObjectRepository $repository, ContentTypeFilterInterface $workflowPermission = null)
     {
         $this->factory = $factory;
         $this->repository = $repository;
+        $this->workflowPermission = $workflowPermission;
     }
 
     /**
@@ -57,6 +65,11 @@ class ContentTypeMenuBuilder
 
             /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType $document */
             foreach ($documents as $document) {
+
+                if ($this->workflowPermission !== null && !$this->workflowPermission->hasAccess($document)) {
+                    continue;
+                }
+
                 $child->addChild(
                     $document->getName(),
                     ['route' => self::ROUTE, 'routeParameters' => ['type' => $document->getType()]]

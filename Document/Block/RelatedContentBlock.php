@@ -79,14 +79,14 @@ class RelatedContentBlock extends Block
     protected $relation;
 
     /**
-     * @var int
-     * @ODM\Int
+     * @var string
+     * @ODM\String)
      * @Assert\NotBlank
      * @Type\Field(
      *     type="choice",
      *     options={
      *         "choices"={
-     *             "time"="Publication date"
+     *             "publishTime.startDate"="Publication date"
      *          },
      *     }
      * )
