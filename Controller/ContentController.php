@@ -983,8 +983,22 @@ class ContentController extends Controller
      */
     public function browseImageAction()
     {
-        $repository = $this->container->get('integrated_content.content_type_repository');
+        $container = $this->container;
+
+        $repository = $container->get('integrated_content.content_type_repository');
         $images = $repository->findBy(array('class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image'));
+
+        if ($container->has('integrated_workflow.services.permission')) {
+            $accessImages = [];
+
+            $workflowPermission = $container->get('integrated_workflow.services.permission');
+            foreach ($images as $image) {
+                if ($workflowPermission->hasAccess($image)) {
+                    $accessImages[] = $image;
+                }
+            }
+            $images = $accessImages;
+        }
 
         return array('images'=>$images);
     }
