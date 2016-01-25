@@ -978,6 +978,18 @@ class ContentController extends Controller
     }
 
     /**
+     * @return array
+     * @Template()
+     */
+    public function browseImageAction()
+    {
+        $repository = $this->container->get('integrated_content.content_type_repository');
+        $images = $repository->findBy(array('class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image'));
+
+        return array('images'=>$images);
+    }
+
+    /**
      * @param FormTypeInterface $type
      * @param ContentInterface  $content
      * @param Request           $request
