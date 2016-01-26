@@ -1,0 +1,54 @@
+@font-face {
+  font-family: 'fontello';
+  src: url('#{$custom-font-path}fonts/fontello.eot?89149255');
+  src: url('#{$custom-font-path}fonts/fontello.eot?89149255#iefix') format('embedded-opentype'),
+       url('#{$custom-font-path}fonts/fontello.woff?89149255') format('woff'),
+       url('#{$custom-font-path}fonts/fontello.ttf?89149255') format('truetype'),
+       url('#{$custom-font-path}fonts/fontello.svg?89149255#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+[class^="integrate-icon-"]:before, [class*=" integrate-icon-"]:before {
+    font-family: "fontello";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    text-align: center;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+ 
+.integrate-icon-menu:before { content: '\e800'; }
+.integrate-icon-up-open:before { content: '\e801'; }
+.integrate-icon-right-open:before { content: '\e802'; }
+.integrate-icon-left-open:before { content: '\e803'; }
+.integrate-icon-down-open:before { content: '\e804'; }
+.integrate-icon-search:before { content: '\e805'; }
+.integrate-icon-doc:before { content: '\e806'; }
+.integrate-icon-ok-circled:before { content: '\e807'; }
+.integrate-icon-plus-circled:before { content: '\e808'; }
+.integrate-icon-cancel-circled:before { content: '\e809'; }
+.integrate-icon-cancel:before { content: '\e80a'; }
+.integrate-icon-check-1:before { content: '\e80b'; }
+.integrate-icon-edit:before { content: '\e80c'; }
+.integrate-icon-th-1:before { content: '\e80d'; }
+.integrate-icon-hdd:before { content: '\e80e'; }
+.integrate-icon-database:before { content: '\e80f'; }
+.integrate-icon-tasks:before { content: '\e810'; }
+.integrate-icon-picture:before { content: '\e811'; }
+.integrate-icon-cog:before { content: '\e812'; }
+.integrate-icon-lock:before { content: '\e813'; }
+.integrate-icon-minus-circled:before { content: '\e814'; }
+.integrate-icon-angle-double-down:before { content: '\e815'; }
+.integrate-icon-angle-double-up:before { content: '\e816'; }
+.integrate-icon-down:before { content: '\e817'; }
+
+
+
+

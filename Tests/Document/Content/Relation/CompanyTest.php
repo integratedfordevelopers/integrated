@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Relation;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -78,9 +80,9 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetAddressesFunction()
     {
-        $addresses = array(
+        $addresses = new ArrayCollection([
             $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address')
-        );
+        ]);
         $this->assertSame($addresses, $this->company->setAddresses($addresses)->getAddresses());
     }
 

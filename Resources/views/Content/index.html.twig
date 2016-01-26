@@ -1,163 +1,149 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
+    <div class="row">
 
-    <div class="filters_row">
-        <ul class="nav nav-pills">
+        <div class="col-md-8 push-sm-down">
+            <ul class="list-inline">
 
-            <li class="dropdown">
-                <a href data-toggle="dropdown" role="button" id="sorting-list">{% trans %}Sort by{% endtrans %}: {{ params.sort.options[params.sort.current].label|trans }} <b class="caret"></b></a>
+                <li class="dropdown">
+                    <a href data-toggle="dropdown" role="button" id="sorting-list">{% trans %}Sort by{% endtrans %}: {{ params.sort.options[params.sort.current].label|trans }} <b class="caret"></b></a>
 
-                <ul aria-labelledby="sorting-list" role="menu" class="dropdown-menu" id="sorting-menu">
+                    <ul aria-labelledby="sorting-list" role="menu" class="dropdown-menu" id="sorting-menu">
 
-                {% for sort in params.sort.options %}
+                        {% for sort in params.sort.options %}
 
-                    <li {% if sort.name == params.sort.current %}class="active" {% endif %}role="presentation">
-                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': sort.name == params.sort.default ? null : sort.name })) }}" tabindex="-1" role="menuitem">{{ sort.label|trans|capitalize }}</a>
-                    </li>
+                            <li {% if sort.name == params.sort.current %}class="active" {% endif %}role="presentation">
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'sort': sort.name == params.sort.default ? null : sort.name })) }}" tabindex="-1" role="menuitem">{{ sort.label|trans|capitalize }}</a>
+                            </li>
 
-                {% endfor %}
+                        {% endfor %}
 
-                </ul>
-            </li>
+                    </ul>
+                </li>
 
-            {{ render(controller('IntegratedContentBundle:SearchSelection:menu')) }}
-        </ul>
-    </div>
+                {{ render(controller('IntegratedContentBundle:SearchSelection:menu')) }}
+            </ul>
+            <section class="section-white section-padding section-shadow section-radius">
+                <ul class="list-unstyled list-content">
+                    {% for content in pager %}
+                        <li>
+                            <h3>
+                                <a href="{{ path('integrated_content_content_edit', {id: content.type_id}) }}">
+                                    {{ content.title|default }}
+                                </a>
+                            </h3>
 
-    <div class="content_columns_holder">
-        <div class="col-sm-8 content_column">
-            <div class="content_column_inner">
-
-                {% for content in pager %}
-
-                    <div class="item_row">
-                        <h3 class="title">
-                            <a href="{{ path('integrated_content_content_edit', {id: content.type_id}) }}">
-                                {{ content.title|default }}
-                            </a>
-                        </h3>
-
-                        {% if locks[content.type_id] is defined %}
-
-                            {% if locks[content.type_id].user is defined %}
-
-                        <div class="alert alert-danger">
-                            {% trans %}This item is locked by{% endtrans %} {{ locks[content.type_id].user }}
-                        </div>
-
-                            {% else %}
-
-                        <div class="alert alert-danger">
-                            {% trans %}This item is locked{% endtrans %}
-                        </div>
-
+                            {% if locks[content.type_id] is defined %}
+                                {% if locks[content.type_id].user is defined %}
+                                    <div class="alert alert-danger">
+                                        {% trans %}This item is locked by{% endtrans %} {{ locks[content.type_id].user }}
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-danger">
+                                        {% trans %}This item is locked{% endtrans %}
+                                    </div>
+                                {% endif %}
                             {% endif %}
 
-                        {% endif %}
+                            {% if content.intro is defined and content.intro|join('...')|trim is not empty %}
+                                 <p>{{ content.intro|join('...')|slice(0, 200)|striptags|raw }}</p>
+                            {% elseif content.content is defined and content.content|join('...')|trim is not empty %}
+                                 <p>{{ content.content|join('...')|slice(0, 200)|striptags|raw }}</p>
+                            {% endif %}
 
-                        {% if content.intro is defined and content.intro|join('...')|trim is not empty %}
-                             <p>{{ content.intro|join('...')|slice(0, 200)|striptags|raw }}</p>
-                        {% elseif content.content is defined and content.content|join('...')|trim is not empty %}
-                             <p>{{ content.content|join('...')|slice(0, 200)|striptags|raw }}</p>
-                        {% endif %}
-
-                        <ul class="status_info_list">
-                            <li>
-                                {% if contentTypes[content.type_name] is defined %}
-                                    {{ contentTypes[content.type_name] }}
-                                {% else %}
-                                    {{ content.type_name }}
-                                {% endif %}
-                                {% if content.pub_time is defined %}
-                                    |
-                                    {{ content.pub_time|localizeddate('medium') }}
-                                {% endif %}
-                                {% if content.pub_edited is defined %}
-                                    {% if content.pub_time is not defined or content.pub_edited != content.pub_time %}
-                                    |
+                            <ul class="list-inline">
+                                <li>
+                                    {% if contentTypes[content.type_name] is defined %}
+                                        {{ contentTypes[content.type_name] }}
+                                    {% else %}
+                                        {{ content.type_name }}
+                                    {% endif %}
                                     {% if content.pub_time is defined %}
-                                        {% trans %}Updated{% endtrans %}
+                                        |
+                                        {{ content.pub_time|localizeddate('medium') }}
                                     {% endif %}
-                                    {{ content.pub_edited|localizeddate('medium') }}
+                                    {% if content.pub_edited is defined %}
+                                        {% if content.pub_time is not defined or content.pub_edited != content.pub_time %}
+                                        |
+                                        {% if content.pub_time is defined %}
+                                            {% trans %}Updated{% endtrans %}
+                                        {% endif %}
+                                        {{ content.pub_edited|localizeddate('medium') }}
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            </li>
+                                </li>
 
-                            <li class="dropdown">
-                                <a href="#" data-toggle="dropdown" role="button"><b class="caret"></b></a>
-                                <ul role="menu" class="dropdown-menu">
-                                    <li role="presentation"><a href="{{ path('integrated_content_content_delete', {'id': content.type_id}) }}" tabindex="-1" role="menuitem">{% trans %}Delete item{% endtrans %}</a></li>
-                                </ul>
-                            </li>
+                                <li class="dropdown">
+                                    <a href="#" data-toggle="dropdown" role="button"><b class="caret"></b></a>
+                                    <ul role="menu" class="dropdown-menu">
+                                        <li role="presentation"><a href="{{ path('integrated_content_content_delete', {'id': content.type_id}) }}" tabindex="-1" role="menuitem">{% trans %}Delete item{% endtrans %}</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="text-danger">
+                           {% trans %}No items found{% endtrans %}
+                        </li>
+                    {% endfor %}
+                </ul>
 
-                        </ul>
-                    </div>
-
-                {% else %}
-
-                    <div class="item_row">
-                        <p class="text-danger">{% trans %}No items found{% endtrans %}</p>
-                    </div>
-
-                {% endfor %}
-
-                <div class="item_row">
+                <div class="row">
                     <div class="pull-right">
                         {{ knp_pagination_render(pager) }}
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
 
-        <div class="col-sm-4 sidebar_right">
-            <div class="content_column_inner">
-                <form>
-                    <input type="hidden" value="{{ app.request.query.get('q') }}" name="q" />
-                    {% for key, facet in facets %}
-                        {% if facet|length > 0 %}
-                        <div class="item_row">
-                            <h3 class="title">
-                                {% if key == 'contenttypes' %}
-                                    {% trans %}Content types{% endtrans %}
-                                {% elseif facetTitles[key]|default %}
-                                    {{ facetTitles[key]|default|trans }}
-                                {% else %}
-                                    {{ key|capitalize }}
-                                {% endif %}
-                            </h3>
-                            <ul class="filters_list">
-                                {% for title, count in facet %}
-                                <li{% if (loop.index >= 8) and (not (title in active[key]|default)) %} class="to_show"{% endif %}>
-                                    <label>
-                                        <input {% if title in active[key]|default %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
-                                        {% if key == 'contenttypes' %}
-                                            {% if contentTypes[title] is defined %}
-                                                {{ contentTypes[title] }}
+        <div class="col-sm-4">
+            <aside>
+                <div class="aside-holder section-gray section-shadow section-radius">
+                    <form>
+                        <input type="hidden" value="{{ app.request.query.get('q') }}" name="q" />
+                        {% for key, facet in facets %}
+                            {% if facet|length > 0 %}
+                            <div class="aside-item-holder">
+                                <h3 class="font-medium">
+                                    {% if key == 'contenttypes' %}
+                                        {% trans %}Content types{% endtrans %}
+                                    {% elseif facetTitles[key]|default %}
+                                        {{ facetTitles[key]|default|trans }}
+                                    {% else %}
+                                        {{ key|capitalize }}
+                                    {% endif %}
+                                </h3>
+                                <ul class="filters_list">
+                                    {% for title, count in facet %}
+                                    <li class="checkbox">
+                                        <label>
+                                            <input {% if title in active[key]|default %}checked="checked"{% endif %} onclick="form.submit();" type="checkbox" name="{{ key }}[]" value="{{ title }}" />
+                                            {% if key == 'contenttypes' %}
+                                                {% if contentTypes[title] is defined %}
+                                                    {{ contentTypes[title] }}
+                                                {% else %}
+                                                    {{ title }}
+                                                {% endif %}
+                                            {% elseif key == 'channels' %}
+                                                {% if channels[title] is defined %}
+                                                    {{ channels[title] }}
+                                                {% else %}
+                                                    {{ title }}
+                                                {% endif %}
                                             {% else %}
                                                 {{ title }}
                                             {% endif %}
-                                        {% elseif key == 'channels' %}
-                                            {% if channels[title] is defined %}
-                                                {{ channels[title] }}
-                                            {% else %}
-                                                {{ title }}
-                                            {% endif %}
-                                        {% else %}
-                                            {{ title }}
-                                        {% endif %}
-                                        <span class="value">{{ count }}</span>
-                                    </label>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                            {% if (facet.count >= 8) %}
-                                <a href="#" class="btn_show_more">{% trans %}More{% endtrans %} <i class="glyphicon"></i></a>
+                                            <span class="value">{{ count }}</span>
+                                        </label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                             {% endif %}
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </form>
-            </div>
+                        {% endfor %}
+                    </form>
+                </div>
+            </aside>
         </div>
     </div>
 {% endblock %}

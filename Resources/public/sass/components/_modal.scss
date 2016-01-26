@@ -1,0 +1,11 @@
+/* MODAL */
+
+/* Edit news modal */
+#edit-news-modal {
+	.modal-dialog {
+		width: 560px;
+		@include respond-to(phones) {
+			width: 100%;
+		}
+	}
+}
