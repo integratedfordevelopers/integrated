@@ -1,14 +1,5 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
-    {% block crumbs %}
-    <ol class="breadcrumb">
-        <li>
-            <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
-        </li>
-        <li class="active">{% trans %}Edit{% endtrans %}</li>
-    </ol>
-    {% endblock %}
-
     {% block filters %}
     <div class="filters_row">
         {#<ul class="nav nav-pills">#}
@@ -33,40 +24,110 @@
     </div>
     {% endblock %}
 
-    <div class="content_columns_holder">
-        {% set colWidth = 'col-md-9' %}
-        {% if form.offsetGet('relations').count() %}
-            {% set colWidth = 'col-md-6' %}
-        {% endif %}
-        <div class="col-sm-12 {{ colWidth }} content_column margin_botom_in_mobile">
-            <h3 class="title">
-                {% block pageTitle %}
-                {% trans %}Edit{% endtrans %} {{ type.name }}
-                {% endblock %}
-            </h3>
-            <div class="content_column_inner">
-                <div class="item_row">
-                    {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
-                </div>
-            </div>
-        </div>
-        {% if form.offsetGet('relations').count() %}
-        <div class="col-sm-6 col-md-3 side_column margin_botom_in_mobile">
-            <h3 class="title">{% trans %}Link to{% endtrans %}</h3>
+<h1 class="main-title font-regular">
+    {% block pageTitle %}
+        {% trans %}Edit{% endtrans %} {{ type.name }} <i class="integrate-icon-edit"></i>
+    {% endblock %}
+</h1>
 
-            <div class="content_column_inner relations">
-                <div class="item_row">
-                    {% for relation in form.relations %}
-                        <div class="relation" style="margin: 0 0 30px 0">
-                            <label for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label><br/>
-                            <input id="{{ relation.vars.name }}" data-multiple="{{ relation.vars.attr['data-multiple'] }}" style="width: 170px; float: left; margin: 0 13px 20px 0;" class="relation-items" />
+<div class="row">
+
+    <div class="col-md-8 push-sm-down">
+        <section class="section-white section-padding section-shadow section-radius">
+            {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+        </section>
+    </div>
+
+    <div class="col-md-4">
+        <aside>
+
+            <div class="aside-holder section-gray section-shadow section-radius">
+
+                {% if content is defined %}
+                    {% if content.isPublished and content.getChannels|length > 0 %}
+                        <div class="aside-item-holder">
+                            <h2 class="font-medium color-green"><i class="integrate-icon-ok-circled"></i> {% trans %}Published{% endtrans %}</h2>
                         </div>
-                    {% endfor %}
+                    {% endif %}
+                {% endif %}
+
+                {% if form.offsetGet('relations').count() %}
+                <div class="aside-item-holder section-white">
+                    <h3 class="font-medium">{% trans %}Link to{% endtrans %}</h3>
+                    <div class="content_column_inner  relations">
+                        <div class="item_row">
+                        {% for relation in form.relations %}
+                            <div class="relation" style="margin: 0 0 30px 0">
+                                <label for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label><br/>
+                                <input id="{{ relation.vars.name }}" data-multiple="{{ relation.vars.attr['data-multiple'] }}" style="width: 170px; float: left; margin: 0 13px 20px 0;" class="relation-items" />
+                            </div>
+                        {% endfor %}
+                        </div>
+                        <div id="relations-result"></div>
+                    </div>
                 </div>
-                <div id="relations-result"></div>
+                {% endif %}
+
+                <div class="aside-item-holder section-white">
+                    {% if form.offsetGet('relations').count() %}
+                    <div class="item_row">
+                        <h3 class="title">{% trans %}Linked items{% endtrans %}</h3>
+                        <div class="content_column_inner">
+                            <ul class="custom_list li_with_margin" id="relations-selected"></ul>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="item_row" id="used-by"></div>
+                </div>
+
+            {#<div class="item_row">#}
+                {#<h3 class="title">Info</h3>#}
+                {#<div class="content_column_inner">#}
+                    {#<ul class="custom_list custom_list_info">#}
+                        {#<li>#}
+                            {#Creator#}
+                            {#<span class="value">Marijn Otte</span>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#Created on#}
+                            {#<span class="value">18-12-2013</span>#}
+                        {#</li>#}
+                        {#<li>#}
+                            {#Words#}
+                            {#<span class="value">1296</span>#}
+                        {#</li>#}
+                    {#</ul>#}
+                    {#<a href="#" class="btn_more">More <i class="glyphicon"></i></a>#}
+                {#</div><!-- content_column_inner -->#}
+            {#</div><!-- item_row -->#}
+
+            {#<div class="item_row">#}
+                {#<h3 class="title">History</h3>#}
+                {#<div class="content_column_inner">#}
+                    {#<ul class="custom_list">#}
+                        {#<li class="media">#}
+                            {#<a href="#" class="pull-left"><img src="images/temp/userpic.jpg" alt=""></a>#}
+                            {#<div class="media-body">#}
+                                {#<p>18-12-2013 16:43</p>#}
+                                {#<p>Marijn Otte</p>#}
+                                {#<p>Draft</p>#}
+                                {#<p>Rewritten intro</p>#}
+                            {#</div>#}
+                        {#</li>#}
+                        {#<li class="media">#}
+                            {#<a href="#" class="pull-left"><img src="images/temp/userpic.jpg" alt=""></a>#}
+                            {#<div class="media-body">#}
+                                {#<p>18-12-2013 16:43</p>#}
+                                {#<p>Marijn Otte</p>#}
+                                {#<p>Draft</p>#}
+                                {#<p>Rewritten intro</p>#}
+                            {#</div>#}
+                        {#</li>#}
+                    {#</ul>#}
+                {#</div><!-- content_column_inner -->#}
+            {#</div><!-- item_row -->#}
             </div>
-        </div>
-        {% endif %}
+        </aside>
     </div>
 
     {% autoescape 'js' %}
@@ -91,7 +152,7 @@
                         </li>
                         {{/each}}
                     </ul>
-                </div>
+                 </div>
                 {{/equals}}
                 {{/if}}
                 <div class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

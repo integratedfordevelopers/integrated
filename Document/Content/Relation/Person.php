@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
@@ -308,7 +309,9 @@ class Person extends Relation
     public function getCover()
     {
         if ($this->getPicture()) {
-            return $this->getPicture()->getFile()->getPathname();
+            if ($this->getPicture()->getFile() instanceof StorageInterface) {
+                return $this->getPicture()->getFile()->getPathname();
+            }
         }
     }
 

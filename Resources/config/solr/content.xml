@@ -68,7 +68,7 @@
 
             </options>
         </type>
-        <type name="integrated.property" />
+        <type name="integrated.has_image" />
 
     </class>
 
