@@ -15,6 +15,7 @@ use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Common\Block\BlockInterface;
@@ -51,7 +52,7 @@ class ContentBlockHandler extends BlockHandler
     /**
      * {@inheritdoc}
      */
-    public function execute(BlockInterface $block)
+    public function execute(BlockInterface $block, array $options)
     {
         if (!$block instanceof ContentBlock) {
             return;
@@ -63,7 +64,7 @@ class ContentBlockHandler extends BlockHandler
             return;
         }
 
-        $pagination = $this->getPagination($block, $request);
+        $pagination = $this->getPagination($block, $request, $options);
 
         if (!count($pagination)) {
             return;
@@ -78,10 +79,10 @@ class ContentBlockHandler extends BlockHandler
     /**
      * @param ContentBlock $block
      * @param Request $request
-     * @param bool $exclude
+     * @param array $options
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function getPagination(ContentBlock $block, Request $request, $exclude = true)
+    public function getPagination(ContentBlock $block, Request $request, array $options = [])
     {
         $request = $request->duplicate(); // don't change original request
 
@@ -93,13 +94,20 @@ class ContentBlockHandler extends BlockHandler
             // search selection is removed
         }
 
-        return $this->provider->execute(
-            $request,
-            $block->getId(),
-            $block->getItemsPerPage(),
-            $block->getMaxItems(),
-            $block->getFacetFields(),
-            $exclude
-        );
+        return $this->provider->execute($block, $request, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'filters' => [],   // add extra filters (overwrites search selection)
+            'exclude' => true, // exclude already shown items
+        ]);
+
+        $resolver->setAllowedTypes('filters', 'array');
+        $resolver->setAllowedTypes('exclude', 'bool');
     }
 }
