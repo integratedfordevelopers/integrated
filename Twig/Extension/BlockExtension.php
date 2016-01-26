@@ -54,18 +54,19 @@ class BlockExtension extends \Twig_Extension
     /**
      * @param \Twig_Environment $environment
      * @param \Integrated\Common\Block\BlockInterface|string $block
+     * @param array $options
      *
      * @return null|string
      *
      * @throws \Exception
      */
-    public function renderBlock(\Twig_Environment $environment, $block)
+    public function renderBlock(\Twig_Environment $environment, $block, array $options = [])
     {
         $id = $block instanceof Block ? $block->getId() : $block;
 
         try {
             // fatal errors are not catched
-            $html = $this->container->get('integrated_block.templating.block_manager')->render($block);
+            $html = $this->container->get('integrated_block.templating.block_manager')->render($block, $options);
 
             if (!$html) {
                 return $environment->render($this->locateTemplate('blocks/empty.html.twig'), ['id' => $id]);
