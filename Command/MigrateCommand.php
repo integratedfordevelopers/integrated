@@ -34,10 +34,6 @@ use Symfony\Component\Finder\Finder;
  */
 class MigrateCommand extends Command
 {
-    /**
-     * @const Content type class
-     */
-    const CLASS_NAME = '\\Integrated\\Bundle\\ContentBundle\\Document\\Content\\File';
 
     /**
      * @var DatabaseInterface
@@ -88,12 +84,6 @@ class MigrateCommand extends Command
                     'Delete the local file after placing it in the storage'
                 ),
                 new InputOption(
-                    'class',
-                    'c',
-                    InputOption::VALUE_OPTIONAL,
-                    'The class to convert, additionally a space separated list may be given.'
-                ),
-                new InputOption(
                     'ignore-duplicates',
                     'i',
                     InputOption::VALUE_OPTIONAL,
@@ -107,14 +97,6 @@ class MigrateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (null == $input->getOption('class')) {
-            $classes = [
-                \Integrated\Bundle\ContentBundle\Document\Content\File::class,
-                \Integrated\Bundle\ContentBundle\Document\Content\Image::class,
-            ];
-        } else {
-            $classes = explode(' ', $input->getOption('class'));
-        }
 
         $data = $this->database->getRows();
 
@@ -125,32 +107,6 @@ class MigrateCommand extends Command
         $current = 0;
 
         foreach ($data as $row) {
-            // Change the relation mapping (if exists) for Integrated
-            if (isset($row['relations'])) {
-                foreach ($row['relations'] as $n => $relation) {
-                    foreach ($relation['references'] as $e => $reference) {
-                        if (in_array($reference['class'], $classes)) {
-                            $row['relations'][$n]['references'][$e]['class'] = self::CLASS_NAME;
-                        }
-                    }
-                }
-            }
-            // Walk over (embedded relations) keys
-            foreach ($row as $key => $value) {
-                if (is_array($value)) {
-                    if (isset($row[$key]['$ref']) && isset($row[$key]['$id']) && isset($row[$key]['class'])) {
-                        if (in_array($row[$key]['class'], $classes)) {
-                            $row[$key]['class'] = self::CLASS_NAME;
-                        }
-                    }
-                }
-            }
-
-            // Only perform the action for the listed classes
-            if (in_array($row['class'], $classes)) {
-                // Modify the class name for the ORM
-                $row['class'] = self::CLASS_NAME;
-            }
 
             foreach ($this->getReflectionClass($row['class'])->getStorageProperties() as $property) {
                 // Fix the one -> many property now foreach and so on
@@ -197,14 +153,6 @@ class MigrateCommand extends Command
         // Release the output
         $progress->finish();
 
-        // Update the content types
-        foreach ($classes as $class) {
-            // Change the content type
-            $this->database->updateContentType(
-                $class,
-                self::CLASS_NAME
-            );
-        }
     }
 
     /**
