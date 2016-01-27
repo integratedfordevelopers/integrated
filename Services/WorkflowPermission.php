@@ -76,7 +76,7 @@ class WorkflowPermission implements ContentTypeFilterInterface
                 /** @var Group $group */
                 foreach ($groups as $group) {
                     if ($group->getId() == $permission->getGroup()
-                        && $permission->getMask() >= Definition\Permission::READ
+                        && $permission->getMask() >= Definition\Permission::WRITE
                     ) {
                         return true;
                     }
