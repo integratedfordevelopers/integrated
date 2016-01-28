@@ -224,3 +224,13 @@
         </select>
     {% endspaceless %}
 {% endblock %}
+
+{% block integrated_relations_choice_row %}
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block integrated_relation_choice_row %}
+    {{ form_row(form.children['references']) }}
+    {{ form_errors(form) }}
+{% endblock %}

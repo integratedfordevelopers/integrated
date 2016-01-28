@@ -19,7 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\AjaxDocumentTransformer;
+use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\ContentChoicesTransformer;
+use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\ContentChoiceTransformer;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -66,7 +67,11 @@ class ContentChoice extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new AjaxDocumentTransformer($this->dm, $options), true);
+        if ($options['multiple']) {
+            $builder->addViewTransformer(new ContentChoicesTransformer($this->dm, $options), true);
+        } else {
+            $builder->addViewTransformer(new ContentChoiceTransformer($this->dm, $options), true);
+        }
     }
 
     /**
@@ -92,14 +97,14 @@ class ContentChoice extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'repositoryClass' => $this->repositoryClass,
-            'route' => $this->route,
-            'params' => $this->params,
+            'repositoryClass' => $this->repositoryClass, // repository for finding the contentItems, default: IntegratedContentBundle:Content\Content
+            'route' => $this->route, // api route for getting the ajax results, default: integrated_content_content_index
+            'params' => $this->params, // additional parameters for the api route, default: ['_format' => 'json']
             'multiple' => true,
             'compound' => false,
             'required' => false,
             'placeholder' => null,
-            'allow_clear' => false
+            'allow_clear' => false, // if set to true the user is able to clear the selection
         ]);
     }
 

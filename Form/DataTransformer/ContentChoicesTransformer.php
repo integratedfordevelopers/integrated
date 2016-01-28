@@ -16,12 +16,10 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
-
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class AjaxDocumentTransformer implements DataTransformerInterface
+class ContentChoicesTransformer implements DataTransformerInterface
 {
     /**
      * @var \Integrated\Bundle\ContentBundle\Document\Content\ContentRepository
@@ -59,16 +57,7 @@ class AjaxDocumentTransformer implements DataTransformerInterface
                 ];
             }
             return $values;
-        } else {
-            if ($value instanceof Content) {
-                return [[
-                    'id' => $value->getId(),
-                    //todo publishable title INTEGRATED-364
-                    'text' => $value->getTitle()
-                ]];
-            }
         }
-        return null;
     }
 
     /**
@@ -77,21 +66,13 @@ class AjaxDocumentTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (!$value) {
-            if (!$this->options['multiple']) {
-                return null;
-            }
-            return [];
-        }
-
-        if (!is_array($value)) {
-            return $this->repo->find($value);
-        } else {
-            $documents = [];
+        $documents = [];
+        if (is_array($value)|| $value instanceof Collection) {
             foreach ($value as $id) {
                 $documents[] = $this->repo->find($id);
             }
-            return $documents;
         }
+
+        return $documents;
     }
 }
