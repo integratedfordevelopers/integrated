@@ -147,9 +147,11 @@ class RelationsType extends AbstractType
                 $contentTypes[] = $target->getId();
             }
 
-            $relationOptions = isset($options['options'][$embeddedRelation->getRelationId()]) ? $options['options'][$embeddedRelation->getRelationId()] : [];
+            $relationOptions = isset($options['options'][$embeddedRelation->getRelationId()]) ?
+                $options['options'][$embeddedRelation->getRelationId()] : [];
             $relationOptions['contentTypes'] = $contentTypes;
-            $relationOptions['multiple'] = $relation->isMultiple();
+            $relationOptions['multiple'] = isset($relationOptions['multiple']) ?
+                $relationOptions['multiple'] :$relation->isMultiple();
             if (!isset($relationOptions['label'])) {
                 $relationOptions['label'] = $relation->getName();
             }
