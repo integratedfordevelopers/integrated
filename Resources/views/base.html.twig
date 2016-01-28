@@ -95,6 +95,7 @@
 {% block javascript %}
 
     <script src="//code.jquery.com/jquery.js"></script>
+    <script src="{{ asset('/js/bootstrap.js') }}"></script>
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
@@ -107,7 +108,6 @@
         '@IntegratedContentBundle/Resources/public/components/respond/dest/respond.min.js'
         '@IntegratedContentBundle/Resources/public/components/tinymce/tinymce.min.js'
         '@IntegratedContentBundle/Resources/public/components/select2/dist/js/select2.min.js'
-        '@IntegratedContentBundle/Resources/public/components/bootstrap-sass-official/assets/javascripts/bootstrap.js'
         '@IntegratedContentBundle/Resources/public/components/jquery-placeholder/jquery.placeholder.js'
         '@IntegratedContentBundle/Resources/public/js/scripts.js'
     %}
