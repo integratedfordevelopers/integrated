@@ -315,7 +315,11 @@ class WorkflowVoter implements VoterInterface
 			/** @var User $assigned */
 			$assigned = $workflowExtension['assigned'];
 
-			if ($assigned && $assigned->getId() == $user->getId()) {
+			if ($assigned instanceof User) {
+				$assigned = $assigned->getId();
+			}
+
+			if ($assigned && $assigned == $user->getId()) {
 				return true;
 			}
 		}
