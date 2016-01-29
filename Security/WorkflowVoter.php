@@ -43,286 +43,295 @@ use Symfony\Component\Security\Core\Util\ClassUtils;
  */
 class WorkflowVoter implements VoterInterface
 {
-	/**
-	 * @var ManagerRegistry
-	 */
-	private $manager;
+    /**
+     * @var ManagerRegistry
+     */
+    private $manager;
 
-	/**
-	 * @var ResolverInterface
-	 */
-	private $resolver;
+    /**
+     * @var ResolverInterface
+     */
+    private $resolver;
 
-	/**
-	 * @var MetadataFactoryInterface
-	 */
-	private $metadata;
+    /**
+     * @var MetadataFactoryInterface
+     */
+    private $metadata;
 
-	/**
-	 * @var array
-	 */
-	private $permissions;
+    /**
+     * @var array
+     */
+    private $permissions;
 
-	/**
-	 * @param ManagerRegistry          $manager
-	 * @param ResolverInterface        $resolver
-	 * @param MetadataFactoryInterface $metadata
-	 * @param array $permissions
-	 */
-	public function __construct(ManagerRegistry $manager, ResolverInterface $resolver, MetadataFactoryInterface $metadata, array $permissions = [])
-	{
-		$this->manager = $manager;
+    /**
+     * @param ManagerRegistry $manager
+     * @param ResolverInterface $resolver
+     * @param MetadataFactoryInterface $metadata
+     * @param array $permissions
+     */
+    public function __construct(ManagerRegistry $manager, ResolverInterface $resolver, MetadataFactoryInterface $metadata, array $permissions = [])
+    {
+        $this->manager = $manager;
 
-		$this->resolver = $resolver;
+        $this->resolver = $resolver;
         $this->metadata = $metadata;
 
-		$this->permissions = $this->getOptionsResolver()->resolve($permissions);
-	}
-
-	/**
-	 * @return OptionsResolver
-	 */
-	protected function getOptionsResolver()
-	{
-		$resolver = new OptionsResolver();
-		$resolver->setDefaults([
-			'view'   => Permissions::VIEW,
-			'create' => Permissions::CREATE,
-			'edit'   => Permissions::EDIT,
-			'delete' => Permissions::DELETE,
-		]);
-
-		return $resolver;
-	}
+        $this->permissions = $this->getOptionsResolver()->resolve($permissions);
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function supportsAttribute($attribute)
-	{
-		return in_array($attribute, $this->permissions);
-	}
+     * @return OptionsResolver
+     */
+    protected function getOptionsResolver()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults([
+            'view' => Permissions::VIEW,
+            'create' => Permissions::CREATE,
+            'edit' => Permissions::EDIT,
+            'delete' => Permissions::DELETE,
+        ]);
+
+        return $resolver;
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function supportsClass($class)
-	{
-		if (is_object($class)) {
-			$class = get_class($class);
-		}
-
-		return is_subclass_of($class, 'Integrated\\Bundle\\UserBundle\\Model\\GroupableInterface');
-	}
+     * {@inheritdoc}
+     */
+    public function supportsAttribute($attribute)
+    {
+        return in_array($attribute, $this->permissions);
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function vote(TokenInterface $token, $object, array $attributes)
-	{
-		if (!$object instanceof ContentInterface) {
-			return VoterInterface::ACCESS_ABSTAIN;
-		}
+     * {@inheritdoc}
+     */
+    public function supportsClass($class)
+    {
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
 
-		// first check if the object has a workflow connected to it and check
-		// if the workflow even exists. If any of those condition are negative
-		// then the voter wil abstain from voting.
+        return is_subclass_of($class, 'Integrated\\Bundle\\UserBundle\\Model\\GroupableInterface');
+    }
 
-		$class = ClassUtils::getRealClass($object);
+    /**
+     * {@inheritdoc}
+     */
+    public function vote(TokenInterface $token, $object, array $attributes)
+    {
+        if (!$object instanceof ContentInterface) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
 
-		if (!$this->getMetadata($class)->hasOption('workflow')) {
-			return VoterInterface::ACCESS_ABSTAIN;
-		}
+        // first check if the object has a workflow connected to it and check
+        // if the workflow even exists. If any of those condition are negative
+        // then the voter wil abstain from voting.
 
-		$type = $this->getContentType($object->getContentType());
+        $class = ClassUtils::getRealClass($object);
 
-		if (!$type || !$type->hasOption('workflow')) {
-			return VoterInterface::ACCESS_ABSTAIN;
-		}
+        if (!$this->getMetadata($class)->hasOption('workflow')) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
 
-		$workflow = $this->getWorkflow($type->getOption('workflow'));
+        $type = $this->getContentType($object->getContentType());
 
-		if (!$workflow) {
-			return VoterInterface::ACCESS_ABSTAIN;
-		}
+        if (!$type || !$type->hasOption('workflow')) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
 
-		// get the current state and verify that it belongs to the workflow. If
-		// one or move conditions are negative then pick the default workflow
-		// state to work with.
+        $workflow = $this->getWorkflow($type->getOption('workflow'));
 
-		$state = $this->getState($object);
+        if (!$workflow) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
 
-		if (!$state || $state->getWorkflow() !== $workflow) {
-			$state = $workflow->getStates();
-			$state = array_shift($state); // there is no default (yet) so pick first one
-		}
+        // get the current state and verify that it belongs to the workflow. If
+        // one or move conditions are negative then pick the default workflow
+        // state to work with.
 
-		if (!$state) {
-			// This should not happen as it should not be possible to create
-			// a workflow without a state. But check for it anyways as it is
-			// technicality possible to have a workflow without a state.
+        $state = $this->getState($object);
 
-			return VoterInterface::ACCESS_ABSTAIN;
-		}
+        if (!$state || $state->getWorkflow() !== $workflow) {
+            $state = $workflow->getStates();
+            $state = array_shift($state); // there is no default (yet) so pick first one
+        }
 
-		// security checks are group based so deny every token class that
-		// does not support groups.
+        if (!$state) {
+            // This should not happen as it should not be possible to create
+            // a workflow without a state. But check for it anyways as it is
+            // technicality possible to have a workflow without a state.
 
-		if (!$this->supportsClass($token->getUser())) {
-			// if any of the attributes is supported then deny else abstain
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
 
-			foreach ($attributes as $attribute) {
-				if ($this->supportsAttribute($attribute)) {
-					return VoterInterface::ACCESS_DENIED;
-				}
-			}
+        // security checks are group based so deny every token class that
+        // does not support groups.
 
-			return VoterInterface::ACCESS_ABSTAIN;
-		}
+        if (!$this->supportsClass($token->getUser())) {
+            // if any of the attributes is supported then deny else abstain
 
-		$permissions = $this->getPermissions($token->getUser(), $state);
+            foreach ($attributes as $attribute) {
+                if ($this->supportsAttribute($attribute)) {
+                    return VoterInterface::ACCESS_DENIED;
+                }
+            }
 
-		$isAssigned = $this->isAssigned($token->getUser(), $object);
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
 
-		// check the permissions: create requires write permission, view
-		// requires the read permission, edit and delete required both.
+        $permissions = $this->getPermissions($token->getUser(), $state);
 
-		$result = VoterInterface::ACCESS_ABSTAIN;
+        $isAssigned = $this->isAssigned($token->getUser(), $object);
 
-		foreach ($attributes as $attribute) {
-			if (!$this->supportsAttribute($attribute)) {
-				continue;
-			}
+        // check the permissions: create requires write permission, view
+        // requires the read permission, edit and delete required both.
 
-			$result = VoterInterface::ACCESS_GRANTED;
+        $result = VoterInterface::ACCESS_ABSTAIN;
 
-			if (!$isAssigned) {
-				if ($this->permissions['view'] == $attribute) {
-					if (!$permissions['read']) { return VoterInterface::ACCESS_DENIED; }
-				}
+        foreach ($attributes as $attribute) {
+            if (!$this->supportsAttribute($attribute)) {
+                continue;
+            }
 
-				if ($this->permissions['create'] == $attribute) {
-					if (!$permissions['write']) { return VoterInterface::ACCESS_DENIED; }
-				}
+            $result = VoterInterface::ACCESS_GRANTED;
 
-				if ($this->permissions['edit'] == $attribute) {
-					if (!$permissions['read'] || !$permissions['write']) { return VoterInterface::ACCESS_DENIED; }
-				}
+            if (!$isAssigned) {
+                if ($this->permissions['view'] == $attribute) {
+                    if (!$permissions['read']) {
+                        return VoterInterface::ACCESS_DENIED;
+                    }
+                }
 
-				if ($this->permissions['delete'] == $attribute) {
-					if (!$permissions['read'] || !$permissions['write']) { return VoterInterface::ACCESS_DENIED; }
-				}
-			}
-		}
+                if ($this->permissions['create'] == $attribute) {
+                    if (!$permissions['write']) {
+                        return VoterInterface::ACCESS_DENIED;
+                    }
+                }
 
-		return $result;
-	}
+                if ($this->permissions['edit'] == $attribute) {
+                    if (!$permissions['read'] || !$permissions['write']) {
+                        return VoterInterface::ACCESS_DENIED;
+                    }
+                }
 
-	/**
-	 * @param string $type
-	 * @return ContentTypeInterface | null
-	 */
-	protected function getContentType($type)
-	{
-		if ($this->resolver->hasType($type)) {
-			return $this->resolver->getType($type);
-		}
+                if ($this->permissions['delete'] == $attribute) {
+                    if (!$permissions['read'] || !$permissions['write']) {
+                        return VoterInterface::ACCESS_DENIED;
+                    }
+                }
+            }
+        }
 
-		return null;
-	}
+        return $result;
+    }
 
-	/**
-	 * @param $class
-	 * @return MetadataInterface
-	 */
-	protected function getMetadata($class)
-	{
-		return $this->metadata->getMetadata($class);
-	}
+    /**
+     * @param string $type
+     * @return ContentTypeInterface | null
+     */
+    protected function getContentType($type)
+    {
+        if ($this->resolver->hasType($type)) {
+            return $this->resolver->getType($type);
+        }
 
-	/**
-	 * @param string $id
-	 * @return Definition
-	 */
-	protected function getWorkflow($id)
-	{
-		$repository = $this->manager->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
-		return $repository->find($id);
-	}
+        return null;
+    }
 
-	/**
-	 * @param ContentInterface $content
-	 * @return Definition\State
-	 */
-	protected function getState(ContentInterface $content)
-	{
-		$repository = $this->manager->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
+    /**
+     * @param $class
+     * @return MetadataInterface
+     */
+    protected function getMetadata($class)
+    {
+        return $this->metadata->getMetadata($class);
+    }
 
-		if ($result = $repository->findOneBy(['content' => $content])) {
-			$result = $result->getState();
-		}
+    /**
+     * @param string $id
+     * @return Definition
+     */
+    protected function getWorkflow($id)
+    {
+        $repository = $this->manager->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
+        return $repository->find($id);
+    }
 
-		return $result;
-	}
+    /**
+     * @param ContentInterface $content
+     * @return Definition\State
+     */
+    protected function getState(ContentInterface $content)
+    {
+        $repository = $this->manager->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
 
-	/**
-	 * @param GroupableInterface $user
-	 * @param Definition\State $state
-	 * @return array
-	 */
-	protected function getPermissions(GroupableInterface $user, Definition\State $state)
-	{
-		$groups = [];
+        if ($result = $repository->findOneBy(['content' => $content])) {
+            $result = $result->getState();
+        }
 
-		foreach ($user->getGroups() as $group)
-		{
-			$groups[$group->getId()] = $group->getId(); // create lookup table
-		}
+        return $result;
+    }
 
-		$mask = 0;
+    /**
+     * @param GroupableInterface $user
+     * @param Definition\State $state
+     * @return array
+     */
+    protected function getPermissions(GroupableInterface $user, Definition\State $state)
+    {
+        $groups = [];
 
-		if ($groups) {
-			$mask_all = Permission::READ | Permission::WRITE;
+        foreach ($user->getGroups() as $group) {
+            $groups[$group->getId()] = $group->getId(); // create lookup table
+        }
 
-			foreach ($state->getPermissions() as $permission) {
-				if (isset($groups[$permission->getGroup()])) {
-					$mask = $mask | ($mask_all & $permission->getMask());
+        $mask = 0;
 
-					if ($mask == $mask_all)	{ break; }
-				}
-			}
-		}
+        if ($groups) {
+            $mask_all = Permission::READ | Permission::WRITE;
 
-		return [
-			'read'  => (bool) ($mask & Permission::READ),
-			'write' => (bool) ($mask & Permission::WRITE)
-		];
-	}
+            foreach ($state->getPermissions() as $permission) {
+                if (isset($groups[$permission->getGroup()])) {
+                    $mask = $mask | ($mask_all & $permission->getMask());
 
-	/**
-	 * @param GroupableInterface $user
-	 * @param ContentInterface 	 $content
-	 * @return bool
-	 */
-	protected function isAssigned(GroupableInterface $user, ContentInterface $content)
-	{
-		if ($content instanceof ExtensibleInterface) {
-			/** @var Registry $extensions */
-			$extensions = $content->getExtensions();
+                    if ($mask == $mask_all) {
+                        break;
+                    }
+                }
+            }
+        }
 
-			$workflowExtension = $extensions->get('integrated.extension.workflow');
+        return [
+            'read' => (bool)($mask & Permission::READ),
+            'write' => (bool)($mask & Permission::WRITE)
+        ];
+    }
 
-			/** @var User $assigned */
-			$assigned = $workflowExtension['assigned'];
+    /**
+     * @param GroupableInterface $user
+     * @param ContentInterface $content
+     * @return bool
+     */
+    protected function isAssigned(GroupableInterface $user, ContentInterface $content)
+    {
+        if ($content instanceof ExtensibleInterface) {
+            /** @var Registry $extensions */
+            $extensions = $content->getExtensions();
 
-			if ($assigned instanceof User) {
-				$assigned = $assigned->getId();
-			}
+            $workflowExtension = $extensions->get('integrated.extension.workflow');
 
-			if ($assigned && $assigned == $user->getId()) {
-				return true;
-			}
-		}
-		return false;
-	}
+            /** @var User $assigned */
+            $assigned = $workflowExtension['assigned'];
+
+            if ($assigned instanceof User) {
+                $assigned = $assigned->getId();
+            }
+
+            if ($assigned && $assigned == $user->getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
