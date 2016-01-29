@@ -82,7 +82,8 @@ class WorkflowStateListener implements EventSubscriberInterface
             'read_only' => true,
             'mapped' => false,
             'data' => $data->getName(),
-            'label' => 'Workflow status'
+            'label' => 'Workflow status',
+            'label_attr' => ['class' => 'current-state', 'data-value' => $data->getId()],
         ]);
 
         $choices = $this->getChoices($data);
@@ -104,6 +105,7 @@ class WorkflowStateListener implements EventSubscriberInterface
             'expanded' => true,
             'mapped' => false,
             'empty_data' => $data,
+            'attr' => ['class' => 'next-status-choice'],
         ]);
     }
 

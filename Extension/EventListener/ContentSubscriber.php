@@ -16,6 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
+use Integrated\Bundle\UserBundle\Model\Group;
 
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
@@ -113,7 +114,7 @@ class ContentSubscriber implements ContentSubscriberInterface
             $data = [
                 'comment'  => '',
                 'state'    => $state->getState(),
-                'assigned' => $state->getAssignedType() == 'user' ? $state->getAssigned() : null,
+                'assigned' => $state->getAssignedType() == 'user' ? $state->getAssignedId() : null,
                 'deadline' => $state->getDeadline(),
             ];
         }
@@ -144,6 +145,16 @@ class ContentSubscriber implements ContentSubscriberInterface
 
         if (!$data['state']) {
             $data['state'] = $workflow->getDefault();
+        }
+
+        if (!$data['assigned'] instanceof User && $data['assigned']) {
+            $data['assigned'] = $this->container->get('integrated_user.user.manager')->find($data['assigned']);
+        }
+
+        if ($data['assigned']
+            && !$this->hasAssignedAccess($data['assigned'], $data['state'], $data['state'] == $workflow->getDefault())
+        ) {
+            $data['assigned'] = null;
         }
 
         $event->setData($data);
@@ -387,5 +398,32 @@ E-mail: ' . $person->getEmail() . '',
         }
 
         return $this->resolver;
+    }
+
+    /**
+     * @param User $assigned
+     * @param Definition\State $state
+     * @param bool|true $isDefault
+     * @return bool
+     */
+    protected function hasAssignedAccess(User $assigned, Definition\State $state, $isDefault = true)
+    {
+        $groups = [];
+        /** @var Group $group */
+        foreach ($assigned->getGroups() as $group) {
+            $groups[] = $group->getId();
+        }
+
+        $canWrite = false;
+        foreach ($state->getPermissions() as $permission) {
+            if (in_array($permission->getGroup(), $groups) && $permission->getMask() >= Definition\Permission::WRITE) {
+                $canWrite = true;
+            }
+        }
+        if ($isDefault || $canWrite) {
+            return true;
+        }
+
+        return false;
     }
 }

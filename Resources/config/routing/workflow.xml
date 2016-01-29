@@ -12,6 +12,11 @@
 		<default key="_controller">IntegratedWorkflowBundle:Workflow:new</default>
 	</route>
 
+	<route id="integrated_workflow_assigned" path="/assigned" methods="GET">
+		<default key="_controller">IntegratedWorkflowBundle:Workflow:assigned</default>
+		<option key="expose">true</option>
+	</route>
+
 <route id="integrated_workflow_test" path="/test">
 	<default key="_controller">IntegratedWorkflowBundle:Workflow:test</default>
 </route>

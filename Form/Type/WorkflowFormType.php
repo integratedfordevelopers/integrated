@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
+use Integrated\Bundle\UserBundle\Doctrine\UserManager;
+use Integrated\Bundle\UserBundle\Model\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -22,6 +24,20 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class WorkflowFormType extends AbstractType
 {
     /**
+     * @var UserManager
+     */
+    private $userManager;
+
+    /**
+     * WorkflowFormType constructor.
+     * @param UserManager $userManager
+     */
+    public function __construct(UserManager $userManager)
+    {
+        $this->userManager = $userManager;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -30,8 +46,37 @@ class WorkflowFormType extends AbstractType
 
         $builder->add('state', 'workflow_state', ['label' => 'Workflow status', 'workflow' => $options['workflow']]);
 
-        $builder->add('assigned', 'user_choice', ['empty_value' => 'Not Assigned', 'empty_data'  => null, 'required' => false]);
+        $builder->add('workflow', 'hidden', ['data' => $options['workflow'], 'attr' => ['class' => 'workflow-hidden']]);
+
+        $builder->add(
+            'assigned',
+            'integrated_select2',
+            [
+                'empty_value' => 'Not Assigned',
+                'empty_data'  => null,
+                'required' => false,
+                'attr' => ['class' => 'assigned-choice'],
+                'choices' => $this->getAssigned(),
+            ]
+        );
+
         $builder->add('deadline', 'integrated_datetime');
+    }
+
+    /**
+     * @return array
+     */
+    public function getAssigned()
+    {
+        $userRepository = $this->userManager->getRepository();
+        $users = [];
+
+        /** @var User $item */
+        foreach ($userRepository->findAll() as $item) {
+            $users[$item->getId()] = $item->getUsername();
+        }
+
+        return $users;
     }
 
     /**
