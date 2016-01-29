@@ -188,8 +188,8 @@ class ContentController extends Controller
             }
         }
 
-        // If the workflow bundle is loaded then only display the results that the user
-        // has read rights to
+        // If the workflow bundle is loaded then only display the results that the
+        // user has read rights to
 
         if ($this->has('integrated_workflow.solr.workflow.extension')) {
             $filter = [];
@@ -200,14 +200,26 @@ class ContentController extends Controller
                 }
             }
 
+            // allow content without workflow
             $fq = $query->createFilterQuery('workflow')
                 ->addTag('workflow')
                 ->addTag('security')
-                ->setQuery('(*:* -security_workflow_read:[* TO *])'); // empty fields only
+                ->setQuery('(*:* -security_workflow_read:[* TO *])');
 
+            // allow content with group access
             if ($filter) {
-                $fq->setQuery($fq->getQuery() . ' OR security_workflow_read: ((%1%))', [implode(') OR (', $filter)]);
+                $fq->setQuery(
+                    $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
+                    [implode(') OR (', $filter)]
+                );
             }
+
+            // always allow access to assinged content
+            $fq->setQuery(
+                $fq->getQuery() . ' OR facet_workflow_assigned_id: %1%',
+                array($this->getUser()->getId())
+            );
+
         }
 
         // TODO this should be somewhere else:
