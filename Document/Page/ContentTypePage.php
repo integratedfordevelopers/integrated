@@ -47,6 +47,20 @@ class ContentTypePage
      * @ODM\String
      * @Assert\NotBlank
      */
+    protected $controllerService;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Assert\NotBlank
+     */
+    protected $controllerAction;
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Assert\NotBlank
+     */
     protected $layout;
 
     /**
@@ -242,5 +256,37 @@ class ContentTypePage
     {
         $this->channel = $channel;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getControllerService()
+    {
+        return $this->controllerService;
+    }
+
+    /**
+     * @param string $controllerService
+     */
+    public function setControllerService($controllerService)
+    {
+        $this->controllerService = $controllerService;
+    }
+
+    /**
+     * @return string
+     */
+    public function getControllerAction()
+    {
+        return $this->controllerAction;
+    }
+
+    /**
+     * @param string $controllerAction
+     */
+    public function setControllerAction($controllerAction)
+    {
+        $this->controllerAction = $controllerAction;
     }
 }

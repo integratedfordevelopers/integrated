@@ -8,12 +8,23 @@
 
         <parameter key="integrated_page.layout_locator.class">Integrated\Bundle\PageBundle\Locator\LayoutLocator</parameter>
 
+        <parameter key="integrated_page.content_type.content_type_controller_manager.class">Integrated\Bundle\PageBundle\ContentType\ContentTypeControllerManager</parameter>
+
+        <parameter key="integrated_page.content_type.routing_loader.class">Integrated\Bundle\PageBundle\ContentType\RoutingLoader</parameter>
+
     </parameters>
 
     <services>
 
         <service id="integrated_page.layout_locator" class="%integrated_page.layout_locator.class%">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
+        </service>
+
+        <service id="integrated_page.content_type.content_type_controller_manager" class="%integrated_page.content_type.content_type_controller_manager.class%" />
+
+        <service id="integrated_page.content_type.routing_loader" class="%integrated_page.content_type.routing_loader.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="routing.loader" />
         </service>
 
     </services>

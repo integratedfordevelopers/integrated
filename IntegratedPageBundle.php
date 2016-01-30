@@ -11,11 +11,23 @@
 
 namespace Integrated\Bundle\PageBundle;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+use Integrated\Bundle\PageBundle\DependencyInjection\Compiler\ContentTypeControllersPass;
+
 /**
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
+ * @author Johan Liefers <johan@e-active.nl>
  */
 class IntegratedPageBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new ContentTypeControllersPass());
+    }
 }

@@ -58,6 +58,7 @@
         </service>
 
         <service id="integrated_page.form.content_type_page.page" class="%integrated_page.form.type.content_type_page.class%">
+            <argument type="service" id="integrated_page.content_type.content_type_controller_manager" />
             <tag name="form.type" alias="integrated_page_content_type_page" />
         </service>
 

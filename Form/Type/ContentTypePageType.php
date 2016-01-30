@@ -11,8 +11,11 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
+use Integrated\Bundle\PageBundle\ContentType\ContentTypeControllerManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
@@ -21,6 +24,16 @@ use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
  */
 class ContentTypePageType extends AbstractType
 {
+    /**
+     * @var ContentTypeControllerManager
+     */
+    protected $controllerManager;
+
+    public function __construct(ContentTypeControllerManager $controllerManager)
+    {
+        $this->controllerManager = $controllerManager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,6 +50,31 @@ class ContentTypePageType extends AbstractType
             'theme' => $options['theme'],
             'directory' => sprintf('/content/%s', $contentTypePage->getContentType()->getId())
         ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $contentTypePage = $event->getData();
+
+            if (!$contentTypePage instanceof ContentTypePage) {
+                return;
+            }
+
+            $className = $contentTypePage->getContentType()->getClass();
+            $controller = $this->controllerManager->getController($className);
+
+            if (!is_array($controller)) {
+                throw new \Exception(sprintf('Controller service for class "%s" is not defined', $className));
+            }
+
+            $contentTypePage->setControllerService($controller['service']);
+
+            if (count($controller['controller_actions']) > 1) {
+                $event->getForm()->add('controller_action', 'choice', [
+                    'choices' => array_combine($controller['controller_actions'], $controller['controller_actions'])
+                ]);
+            } else {
+                $contentTypePage->setControllerAction($controller['controller_actions'][0]);
+            }
+        });
     }
 
     /**
@@ -45,6 +83,7 @@ class ContentTypePageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\ContentTypePage',
             'theme' => 'default',
         ]);
     }

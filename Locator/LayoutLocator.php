@@ -47,12 +47,10 @@ class LayoutLocator
     {
         if (null === $this->layouts) {
             $this->layouts = [];
-dump($this->themeManager->getThemes());
             foreach ($this->themeManager->getThemes() as $id => $theme2) {
                 if ($theme === $id) {
                     foreach ($theme2->getPaths() as $resource) {
                         $path = $this->themeManager->locateResource($resource) . $directory;
-dump($path);
                         if (is_dir($path)) {
                             $finder = new Finder();
                             $finder->files()->in($path)->depth(0)->name('*.html.twig');

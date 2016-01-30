@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WebsiteBundle\Routing;
+namespace Integrated\Bundle\PageBundle\ContentType;
 
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
@@ -19,9 +19,9 @@ use Symfony\Component\Routing\RouteCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
+ * @author Johan Liefers <johan@e-active.nl>
  */
-class PageLoader implements LoaderInterface
+class RoutingLoader implements LoaderInterface
 {
     /**
      * @var bool
@@ -32,6 +32,11 @@ class PageLoader implements LoaderInterface
      * @var DocumentManager
      */
     protected $dm;
+
+    /**
+     * @var \Integrated\Bundle\PageBundle\Document\Page\ContentTypePage
+     */
+    protected $page;
 
     /**
      * @param DocumentManager $dm
@@ -52,37 +57,55 @@ class PageLoader implements LoaderInterface
 
         $routes = new RouteCollection();
 
-        $pages = $this->dm->getRepository('IntegratedPageBundle:Page\Page')->findAll();
-        // @todo publication filters (INTEGRATED-425)
+        $pages = $this->dm->getRepository('IntegratedPageBundle:Page\ContentTypePage')->findAll();
 
-        /** @var \Integrated\Bundle\PageBundle\Document\Page\Page $page */
+        /** @var \Integrated\Bundle\PageBundle\Document\Page\ContentTypePage $page */
         foreach ($pages as $page) {
-            $condition = '';
+            dump($page->getPath());
+            $this->page = $page;
+            $path = preg_replace_callback('/(#)([\s\S]+?)(#)/', [$this, 'convertPath'], $page->getPath());
+            dump($path);
 
-            if ($channel = $page->getChannel()) {
-                $condition = 'request.attributes.get("_channel") == "' . $channel->getId() . '"';
-            }
-
-            //todo in controller service tag with classname, automatically resolve controller, throw exception if multiple classnames are defined
             $route = new Route(
                 $page->getPath(),
-                [
-                    '_controller' => 'IntegratedWebsiteBundle:Page:show', // @todo config option (INTEGRATED-426)
-                    'id' => $page->getId(),
-                ],
+                ['_controller' => sprintf('%s:%s', $page->getControllerService(), $page->getControllerAction())],
                 [],
                 [],
                 '',
                 [],
                 [],
-                $condition
+                'request.attributes.get("_channel") == "' . $page->getChannel()->getId() . '"'
             );
 
-            $routes->add('integrated_website_page_' . $page->getId(), $route);
+            $routes->add('integrated_website_content_type_page_' . $page->getId(), $route);
         }
-
+        die;
         return $routes;
     }
+
+    protected function convertPath($matches)
+    {
+        //todo find right url
+        $contentType = $this->getContentTypeRepo()->find('');
+//        /** @var \Integrated\Bundle\ContentBundle\Document\Relation\Relation $relation */
+//        foreach ($relations as $relation) {
+//            if ($relation->getId() === $matches[2])
+//            {
+//
+//            }
+//        }
+
+        dump($matches);
+        dump($this->page);
+        return $matches[2];
+    }
+
+    protected function getContentTypeRepo()
+    {
+        return $this->dm->getRepository('IntegratedContentBundle:ContentType\ContentType');
+    }
+
+
 
     /**
      * {@inheritdoc}
