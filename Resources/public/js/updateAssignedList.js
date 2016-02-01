@@ -25,7 +25,7 @@ $(function() {
 
                 var $firstOption = $('option:first', $assigned);
                 var $option = $firstOption.clone();
-                $firstOption.siblings().remove();
+                $('option', $assigned).remove();
 
                 $.each(response.users, function(id, name) {
                     var $tmp = $option.clone().val(id).text(name);

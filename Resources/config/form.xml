@@ -38,6 +38,7 @@
 
 		<service id="integrated_workflow.form.workflow.type" class="%integrated_workflow.form.workflow.type.class%">
 			<argument type="service" id="integrated_user.user.manager" />
+			<argument type="service" id="security.token_storage" />
 		</service>
 
 		<service id="integrated_workflow.form.workflow.state.type" class="%integrated_workflow.form.workflow.state.type.class%">

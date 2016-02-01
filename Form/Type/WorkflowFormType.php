@@ -17,6 +17,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -29,12 +30,20 @@ class WorkflowFormType extends AbstractType
     private $userManager;
 
     /**
-     * WorkflowFormType constructor.
-     * @param UserManager $userManager
+     * @var TokenStorage
      */
-    public function __construct(UserManager $userManager)
+    private $tokenStorage;
+
+    /**
+     * WorkflowFormType constructor.
+     *
+     * @param UserManager $userManager
+     * @param TokenStorage $tokenStorage
+     */
+    public function __construct(UserManager $userManager, TokenStorage $tokenStorage)
     {
         $this->userManager = $userManager;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -52,8 +61,8 @@ class WorkflowFormType extends AbstractType
             'assigned',
             'integrated_select2',
             [
-                'empty_value' => 'Not Assigned',
-                'empty_data'  => null,
+                'empty_value' => null,
+                'empty_data'  => $this->tokenStorage->getToken()->getUser()->getId(),
                 'required' => false,
                 'attr' => ['class' => 'assigned-choice'],
                 'choices' => $this->getAssigned(),
