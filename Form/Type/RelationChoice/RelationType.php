@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice;
 
-use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\CollectionToDocumentTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -20,6 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
+use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\CollectionToDocumentTransformer;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 
 /**
@@ -28,17 +28,10 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 class RelationType extends AbstractType
 {
     /**
-     * @var array
-     */
-    protected $contentTypes;
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->contentTypes = $options['contentTypes'];
-
         $commonOptions = [
             'label' => $options['label'],
             'multiple' => $options['multiple'],
@@ -50,14 +43,14 @@ class RelationType extends AbstractType
             $builder->add('references', 'integrated_content_choice', array_merge($commonOptions, [
                 'allow_clear' => $options['allow_clear'],
                 'route' => $options['route'],
-                'params' => $options['params'] ?: ['_format' => 'json', 'contenttypes' => $this->contentTypes],
+                'params' => $options['params'] ?: ['_format' => 'json', 'contenttypes' => $options['contentTypes']],
             ]));
         } else {
             $builder->add('references', 'document', array_merge($commonOptions, [
                 'class' => 'Integrated\Bundle\ContentBundle\Document\Content\Content',
-                'query_builder' => function (DocumentRepository $dr) {
+                'query_builder' => function (DocumentRepository $dr) use ($options) {
                     return $dr->createQueryBuilder()
-                        ->field('contentType')->in($this->contentTypes);
+                        ->field('contentType')->in($options['contentTypes']);
                 },
             ]));
         }
@@ -65,7 +58,6 @@ class RelationType extends AbstractType
         if (!$options['multiple']) {
             $builder->get('references')->addModelTransformer(new CollectionToDocumentTransformer(), true);
         }
-
     }
 
     /**

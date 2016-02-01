@@ -68,9 +68,9 @@ class ContentChoice extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['multiple']) {
-            $builder->addViewTransformer(new ContentChoicesTransformer($this->dm, $options), true);
+            $builder->addViewTransformer(new ContentChoicesTransformer($this->dm, $options['repository_class']), true);
         } else {
-            $builder->addViewTransformer(new ContentChoiceTransformer($this->dm, $options), true);
+            $builder->addViewTransformer(new ContentChoiceTransformer($this->dm, $options['repository_class']), true);
         }
     }
 
@@ -97,7 +97,7 @@ class ContentChoice extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'repositoryClass' => $this->repositoryClass, // repository for finding the contentItems, default: IntegratedContentBundle:Content\Content
+            'repository_class' => $this->repositoryClass, // repository for finding the contentItems, default: IntegratedContentBundle:Content\Content
             'route' => $this->route, // api route for getting the ajax results, default: integrated_content_content_index
             'params' => $this->params, // additional parameters for the api route, default: ['_format' => 'json']
             'multiple' => true,

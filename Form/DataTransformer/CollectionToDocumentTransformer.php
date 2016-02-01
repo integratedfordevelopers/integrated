@@ -11,11 +11,13 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -23,14 +25,19 @@ use Doctrine\Common\Collections\Collection;
 class CollectionToDocumentTransformer implements DataTransformerInterface
 {
     /**
-     * @param Collection $value
-     * @return ContentInterface|null
+     * @param mixed $value
+     * @return mixed|null
+     * @throws \Exception
      */
     public function transform($value)
     {
+        if (null === $value) {
+            return null;
+        }
         if ($value instanceof Collection) {
             return $value->first();
         }
+        throw new TransformationFailedException(sprintf('Expected a Collection, "%s" given', gettype($value)));
     }
 
     /**
@@ -39,7 +46,7 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if ($value) {
+        if (null !== $value) {
             return new ArrayCollection([$value]);
         }
         return new ArrayCollection([]);

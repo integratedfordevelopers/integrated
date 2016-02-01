@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -24,31 +24,29 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
 class ContentChoiceTransformer implements DataTransformerInterface
 {
     /**
-     * @var \Integrated\Bundle\ContentBundle\Document\Content\ContentRepository
+     * @var \Doctrine\ODM\MongoDB\DocumentRepository
      */
     protected $repo;
 
     /**
-     * @var array
-     */
-    protected $options;
-
-    /**
      * @param DocumentManager $dm
-     * @param array $options
+     * @param string $repositoryClass
      */
-    public function __construct(DocumentManager $dm, array $options)
+    public function __construct(DocumentManager $dm, $repositoryClass)
     {
-        $this->repo = $dm->getRepository($options['repositoryClass']);
-        $this->options = $options;
+        $this->repo = $dm->getRepository($repositoryClass);
     }
 
     /**
      * @param mixed $value
      * @return array|null
+     * @throws \Exception
      */
     public function transform($value)
     {
+        if (null === $value) {
+            return null;
+        }
         if ($value instanceof Content) {
             return [[
                 'id' => $value->getId(),
@@ -56,17 +54,22 @@ class ContentChoiceTransformer implements DataTransformerInterface
                 'text' => $value->getTitle()
             ]];
         }
+
+        throw new TransformationFailedException(sprintf('Expected integrated content, "%s" given', gettype($value)));
     }
 
     /**
      * @param mixed $value
-     * @return array|null|object
+     * @return null|object
+     * @throws \Doctrine\ODM\MongoDB\LockException
      */
     public function reverseTransform($value)
     {
-
-        if ($value) {
+        if (null === $value) {
+            return null;
+        } elseif (is_string($value)) {
             return $this->repo->find($value);
         }
+        throw new TransformationFailedException(sprintf('Expected string, "%s" given', gettype($value)));
     }
 }

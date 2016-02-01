@@ -13,16 +13,9 @@ namespace Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\DocumentManager;
-
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
+use Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\EventListener\AddRelationFieldsSubscriber;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -30,22 +23,16 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as Embedd
 class RelationsType extends AbstractType
 {
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentRepository
+     * @var AddRelationFieldsSubscriber
      */
-    protected $repo;
+    protected $subscriber;
 
     /**
-     * @var ArrayCollection
+     * @param AddRelationFieldsSubscriber $subscriber
      */
-    protected $relations;
-
-    /**
-     * @param DocumentManager $dm
-     */
-    public function __construct(DocumentManager $dm)
+    public function __construct(AddRelationFieldsSubscriber $subscriber)
     {
-        $this->repo = $dm->getRepository('IntegratedContentBundle:Relation\Relation');
-        $this->relations = new ArrayCollection();
+        $this->subscriber = $subscriber;
     }
 
     /**
@@ -53,31 +40,7 @@ class RelationsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $relations = $event->getData();
-            $form = $event->getForm();
-
-            if (!$relations instanceof ArrayCollection) {
-                return;
-            }
-
-            $options = $event->getForm()->getConfig()->getOptions();
-
-            $relations = $this->ensureRelations($relations, $options);
-            $this->addFormFields($form, $relations, $options);
-
-            $event->setData($relations);
-        });
-    }
-
-
-    /**
-     * @param $relationId
-     * @param Relation $relation
-     */
-    public function setRelation($relationId, Relation $relation)
-    {
-        $this->relations->set($relationId, $relation);
+        $builder->addEventSubscriber($this->subscriber);
     }
 
     /**
@@ -86,87 +49,12 @@ class RelationsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'relations' => [],
             'options' => []
         ]);
-    }
 
-    /**
-     * @param ArrayCollection $relations
-     * @param $options
-     * @return ArrayCollection
-     * @throws \Doctrine\ODM\MongoDB\LockException
-     */
-    protected function ensureRelations(ArrayCollection $relations, $options)
-    {
-        //get all relation ids
-        $relationIds = [];
-        foreach ($relations as $relation) {
-            $relationIds[] = $relation->getRelationId();
-        }
+        $resolver->setRequired(['relations']);
 
-        foreach ((array) $options['relations'] as $relationId) {
-            $relation = $this->repo->find($relationId);
-            if (!$relation instanceof Relation) {
-                continue;
-            }
-
-            $this->setRelation($relationId, $relation);
-
-            //no need to add if the relation is already in the collection
-            if (in_array($relationId, $relationIds)) {
-                continue;
-            }
-
-            $embeddedRelation = new EmbeddedRelation();
-            $embeddedRelation->setRelationId($relationId);
-            $embeddedRelation->setRelationType($relation->getType());
-
-            $relations->add($embeddedRelation);
-        }
-
-        return $relations;
-    }
-
-    /**
-     * @param FormInterface $form
-     * @param ArrayCollection $relations
-     * @param $options
-     */
-    protected function addFormFields(FormInterface $form, ArrayCollection $relations, $options)
-    {
-        /** @var EmbeddedRelation $embeddedRelation */
-        foreach ($relations as $key => $embeddedRelation) {
-            if (!in_array($embeddedRelation->getRelationId(), $options['relations'])) {
-                continue;
-            }
-
-            $relation = $this->getRelation($embeddedRelation->getRelationId());
-            $contentTypes = [];
-            foreach ($relation->getTargets() as $target) {
-                $contentTypes[] = $target->getId();
-            }
-
-            $relationOptions = isset($options['options'][$embeddedRelation->getRelationId()]) ?
-                $options['options'][$embeddedRelation->getRelationId()] : [];
-            $relationOptions['contentTypes'] = $contentTypes;
-            $relationOptions['multiple'] = isset($relationOptions['multiple']) ?
-                $relationOptions['multiple'] :$relation->isMultiple();
-            if (!isset($relationOptions['label'])) {
-                $relationOptions['label'] = $relation->getName();
-            }
-
-            $form->add($key, 'integrated_relation_choice', $relationOptions);
-        }
-    }
-
-    /**
-     * @param $id
-     * @return Relation $relation
-     */
-    public function getRelation($id)
-    {
-        return $this->relations->get($id);
+        $resolver->setAllowedTypes('relations', ['array']);
     }
 
     /**
