@@ -46,8 +46,7 @@ class ContentChoiceTransformer implements DataTransformerInterface
     {
         if (null === $value) {
             return null;
-        }
-        if ($value instanceof Content) {
+        } elseif ($value instanceof Content) {
             return [[
                 'id' => $value->getId(),
                 //todo publishable title INTEGRATED-364

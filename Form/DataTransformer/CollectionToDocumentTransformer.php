@@ -35,7 +35,10 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
             return null;
         }
         if ($value instanceof Collection) {
-            return $value->first();
+            if ($value->count()) {
+                return $value->first();
+            }
+            return null;
         }
         throw new TransformationFailedException(sprintf('Expected a Collection, "%s" given', gettype($value)));
     }

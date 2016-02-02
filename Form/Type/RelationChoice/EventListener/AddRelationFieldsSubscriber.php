@@ -95,12 +95,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
         }
 
         foreach ($this->getOption('relations') as $relationId) {
-            $relation = $this->repo->find($relationId);
-            if (!$relation instanceof Relation) {
-                throw new \Exception(sprintf('RelationId "%s" is not found', $relationId));
-            }
-
-            $this->setRelation($relationId, $relation);
+            $relation = $this->findRelation($relationId, $event->getForm()->getParent()->getData());
 
             //no need to add if the relation is already in the collection
             if (in_array($relationId, $relationIds)) {
@@ -116,6 +111,36 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
 
         $this->setEmbeddedRelations($relations);
         $event->setData($relations);
+    }
+
+    /**
+     * @param $relationId
+     * @param $formData
+     * @return Relation|object
+     * @throws \Doctrine\ODM\MongoDB\LockException
+     * @throws \Exception
+     */
+    protected function findRelation($relationId, $formData)
+    {
+        $relation = $this->repo->find($relationId);
+        if (!$relation instanceof Relation) {
+            throw new \Exception(sprintf('RelationId "%s" is not found', $relationId));
+        }
+
+        $relationSourceClasses = [];
+        $sources = $relation->getSources();
+        foreach ($sources as $source) {
+            $relationSourceClasses[] = $source->getClass();
+        }
+        $formClass = get_class($formData);
+
+        if (!in_array($formClass, $relationSourceClasses)) {
+            throw new \Exception(sprintf('RelationId "%s" does not have "%s" defined as source, perhaps you have chosen a wrong relation?', $relationId, $formClass));
+        }
+
+        $this->setRelation($relationId, $relation);
+
+        return $relation;
     }
 
     /**
