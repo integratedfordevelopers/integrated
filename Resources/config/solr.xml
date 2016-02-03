@@ -8,7 +8,7 @@
 
         <parameter key="integrated_content.solr.content.type.class">Integrated\Bundle\ContentBundle\Solr\Type\ContentType</parameter>
 
-        <parameter key="integrated_content.solr.property.type.class">Integrated\Bundle\ContentBundle\Solr\Type\PropertyType</parameter>
+        <parameter key="integrated_content.solr.has_image.type.class">Integrated\Bundle\ContentBundle\Solr\Type\HasImageType</parameter>
 
         <parameter key="integrated_content.solr.channel.extension.class">Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension</parameter>
 
@@ -20,7 +20,7 @@
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_content.solr.property.type" class="%integrated_content.solr.property.type.class%">
+        <service id="integrated_content.solr.has_image.type" class="%integrated_content.solr.has_image.type.class%">
             <tag name="integrated_solr.type" />
         </service>
 

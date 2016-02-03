@@ -188,8 +188,8 @@ class ContentController extends Controller
             }
         }
 
-        // If the workflow bundle is loaded then only display the results that the user
-        // has read rights to
+        // If the workflow bundle is loaded then only display the results that the
+        // user has read rights to
 
         if ($this->has('integrated_workflow.solr.workflow.extension')) {
             $filter = [];
@@ -200,14 +200,26 @@ class ContentController extends Controller
                 }
             }
 
+            // allow content without workflow
             $fq = $query->createFilterQuery('workflow')
                 ->addTag('workflow')
                 ->addTag('security')
-                ->setQuery('(*:* -security_workflow_read:[* TO *])'); // empty fields only
+                ->setQuery('(*:* -security_workflow_read:[* TO *])');
 
+            // allow content with group access
             if ($filter) {
-                $fq->setQuery($fq->getQuery() . ' OR security_workflow_read: ((%1%))', [implode(') OR (', $filter)]);
+                $fq->setQuery(
+                    $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
+                    [implode(') OR (', $filter)]
+                );
             }
+
+            // always allow access to assinged content
+            $fq->setQuery(
+                $fq->getQuery() . ' OR facet_workflow_assigned_id: %1%',
+                array($this->getUser()->getId())
+            );
+
         }
 
         // TODO this should be somewhere else:
@@ -315,6 +327,16 @@ class ContentController extends Controller
         $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
         $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
+
+        // add field filters
+        foreach ((array) $request->query->get('filter') as $name => $value) {
+            $value = trim($value);
+            if (!is_string($name) || !is_string($value) || !$value) {
+                continue;
+            }
+
+            $query->createFilterQuery($name)->setQuery('%1%:%P2%', [$name, $value]);
+        }
 
         // Execute the query
         $result = $client->select($query);
@@ -446,7 +468,8 @@ class ContentController extends Controller
 
         return array(
             'type' => $type->getType(),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
         );
     }
 
@@ -585,7 +608,8 @@ class ContentController extends Controller
             'type'    => $type->getType(),
             'form'    => $form->createView(),
             'content' => $content,
-            'locking' => $locking
+            'locking' => $locking,
+            'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
         );
     }
 

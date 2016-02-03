@@ -68,7 +68,7 @@
 
             </options>
         </type>
-        <type name="integrated.property" />
+        <type name="integrated.has_image" />
 
     </class>
 
@@ -93,7 +93,7 @@
                 <string key="content">description</string>
                 <string key="description">description</string>
 
-                <string key="image_text">webpath</string>
+                <string key="image_text">file.pathname</string>
 
             </options>
         </type>
