@@ -48,29 +48,25 @@ assetic:
             compress: true
             apply_to: "\.less$"
         cssrewrite: ~
-        sass:
-            bin: /usr/bin/sass
-            apply_to: "\.scss$"
-            style: compressed
+        scssphp:
+            formatter: 'Leafo\ScssPhp\Formatter\Compressed'
 
     assets:
         integrated_css:
             inputs:
                 - @IntegratedContentBundle/Resources/public/sass/main.scss
             filters:
-                - sass
+                - scssphp
             output: css/main.css
         integrated_js:
             inputs:
                 - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
-                - @IntegratedFormTypeBundle/Resources/public/components/select2/select2.js
                 - @IntegratedFormTypeBundle/Resources/public/js/datetimepicker.js
 
 
 # Bootstrap Configuration
 braincrafted_bootstrap:
-    auto_configure:
-        assetic: false
+    jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.js
 
 # Doctrine Configuration
 doctrine:
