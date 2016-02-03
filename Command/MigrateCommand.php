@@ -12,6 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\Command;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
+use Integrated\Bundle\ContentBundle\Document\Content\File;
+use Integrated\Bundle\ContentBundle\Document\Content\Image;
 
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
@@ -21,6 +23,7 @@ use Integrated\Common\Storage\Database\DatabaseInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -104,7 +107,6 @@ class MigrateCommand extends Command
         $progress = new ProgressBar($output, count($data));
         $progress->start();
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %remaining:-6s%');
-        $current = 0;
 
         foreach ($data as $row) {
 
@@ -147,7 +149,7 @@ class MigrateCommand extends Command
             $this->database->saveRow($row);
 
             // Update the barry progress
-            $progress->setProgress(++$current);
+            $progress->advance();
         }
 
         // Release the output

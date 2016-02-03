@@ -63,12 +63,20 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
                 $this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface')
             );
 
+        // DocumentManager
+        $dm = $this->getMockBuilder('\Doctrine\ODM\MongoDB\DocumentManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         /**
          * @var \Doctrine\ODM\MongoDB\Event\LifecycleEventArgs|\PHPUnit_Framework_MockObject_MockObject
          */
         $preRemove = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LifecycleEventArgs')
             ->disableOriginalConstructor()
             ->getMock();
+        $preRemove->expects($this->any())
+            ->method('getDocumentManager')
+            ->willReturn($dm);
         $preRemove->expects($this->once())
             ->method('getObject')
             ->willReturn($file);
@@ -79,9 +87,6 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
         $uow->expects($this->once())
             ->method('getScheduledDocumentDeletions')
             ->willReturn([$this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface')]);
-        $dm = $this->getMockBuilder('\Doctrine\ODM\MongoDB\DocumentManager')
-            ->disableOriginalConstructor()
-            ->getMock();
         $dm->expects($this->once())
             ->method('getUnitOfWork')
             ->willReturn($uow);
@@ -89,7 +94,7 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
         $onFlush = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\OnFlushEventArgs')
             ->disableOriginalConstructor()
             ->getMock();
-        $onFlush->expects($this->once())
+        $onFlush->expects($this->any())
             ->method('getDocumentManager')
             ->willReturn($dm);
 
@@ -136,7 +141,7 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
         $onFlush = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\OnFlushEventArgs')
             ->disableOriginalConstructor()
             ->getMock();
-        $onFlush->expects($this->once())
+        $onFlush->expects($this->any())
             ->method('getDocumentManager')
             ->willReturn($dm);
 
@@ -181,6 +186,13 @@ class FileEventListenerTest extends \PHPUnit_Framework_TestCase
         $preRemove->expects($this->once())
             ->method('getObject')
             ->willReturn($file);
+        $preRemove->expects($this->once())
+            ->method('getDocumentManager')
+            ->willReturn(
+                $this->getMockBuilder('\Doctrine\ODM\MongoDB\DocumentManager')
+                    ->disableOriginalConstructor()
+                    ->getMock()
+            );
 
         // The test
         $listener = new FileEventListener($manager, $filesystemRemove);
