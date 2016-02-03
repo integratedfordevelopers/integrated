@@ -14,8 +14,6 @@
 
         <parameter key="integrated_content.block_handler.related_content.class">Integrated\Bundle\ContentBundle\Block\RelatedContentBlockHandler</parameter>
 
-        <parameter key="integrated_content.subscriber.related_content_block_content_type.class">Integrated\Bundle\ContentBundle\EventListener\RelatedContentBlockContentTypeSubscriber</parameter>
-
     </parameters>
 
     <services>
@@ -50,12 +48,6 @@
             <argument type="service" id="request_stack" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="integrated.block" type="related_content" />
-        </service>
-
-        <service id="integrated_content.subscriber.related_content_block_content_type" class="%integrated_content.subscriber.related_content_block_content_type.class%">
-            <argument type="service" id="integrated_block.metadata.factory" />
-            <argument type="service" id="integrated_content.content_type_repository" />
-            <tag name="kernel.event_subscriber"/>
         </service>
 
     </services>

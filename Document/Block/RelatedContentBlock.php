@@ -128,14 +128,14 @@ class RelatedContentBlock extends Block
      * @var array
      * @ODM\Collection
      * @Type\Field(
-     *     type="integrated_select2",
+     *     type="integrated_relation_block_content_types",
      *     options={
      *         "multiple"=true,
      *         "expanded"=true,
      *     }
      * )
      */
-    protected $contentType;
+    protected $contentTypes;
 
     /**
      * Get the block type
@@ -246,16 +246,16 @@ class RelatedContentBlock extends Block
     /**
      * @return array
      */
-    public function getContentType()
+    public function getContentTypes()
     {
-        return $this->contentType;
+        return $this->contentTypes;
     }
 
     /**
-     * @param array $contentType
+     * @param array $contentTypes
      */
-    public function setContentType($contentType)
+    public function setContentTypes($contentTypes)
     {
-        $this->contentType = $contentType;
+        $this->contentTypes = $contentTypes;
     }
 }
