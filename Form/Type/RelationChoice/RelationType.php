@@ -34,6 +34,7 @@ class RelationType extends AbstractType
     {
         $commonOptions = [
             'label' => $options['label'],
+            'constraints' => $options['constraints'],
             'multiple' => $options['multiple'],
             'required' => $options['required'],
             'attr' => $options['attr'] ?: ['class' => 'relation_select2'],
