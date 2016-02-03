@@ -92,6 +92,24 @@ A controller might look like the following:
     $response->setContent($file->getContent());
     $response->setHeaders($file->getMetadata()->getHeaders());
 
+### Data fixtures ###
+In order to make use of the StorageBundle in fixtures the file must exist on disk and must be created by an StorageManager. The manager creates the file on the disk as configured in the application. The file exists and is placed on the correct filesystem with the required properties. To use the helper you must add a trait to your *LoadFixtureData* class and the *LoadFixtureData* class must be *ContainerAware* to have access to the container.
+
+
+	// Required class and trait
+	use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Faker\StorageTrait;
+	use Symfony\Component\DependencyInjection\ContainerAware;
+	...
+	class LoadFixtureData extends ContainerAware implements FixtureInterface {
+		// The trait to include the public helper
+		use StorageTrait;
+ 
+Now you can use the following in your *alice/Fixtures.yml* file:
+   
+	# Create a file type 
+    <createFile($this->fake('image', '', '/tmp', 300, 400, 'business'), 'name')>
+	# Create a storage object (file)    
+    <createStorage($this->fake('image', '', '/tmp', 300, 400, 'city'))>
 
 ## License ##
 This bundle is under the MIT license. See the complete license in the bundle:
