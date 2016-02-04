@@ -4,38 +4,40 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aced3f9fb323fcce1a94d955a0026488",
+    "hash": "759b4abfdaa48d77765bcc75ebdf57f7",
+    "content-hash": "a1c3443e11121c3277c9c41f97905317",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
-            "version": "v2.1.2",
+            "version": "v2.2.0",
             "target-dir": "Braincrafted/Bundle/BootstrapBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/braincrafted/bootstrap-bundle.git",
-                "reference": "c301bae8ba91b1a6f1045919b16f9cb9b62c7e7b"
+                "reference": "23ae42061668d0fdc999b63db55c264265e037ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/braincrafted/bootstrap-bundle/zipball/c301bae8ba91b1a6f1045919b16f9cb9b62c7e7b",
-                "reference": "c301bae8ba91b1a6f1045919b16f9cb9b62c7e7b",
+                "url": "https://api.github.com/repos/braincrafted/bootstrap-bundle/zipball/23ae42061668d0fdc999b63db55c264265e037ab",
+                "reference": "23ae42061668d0fdc999b63db55c264265e037ab",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "symfony/console": "~2.3",
-                "symfony/finder": "~2.3",
-                "symfony/form": "~2.3",
-                "symfony/framework-bundle": "~2.3",
-                "symfony/twig-bundle": "~2.3"
+                "symfony/console": "~2.6|~3.0",
+                "symfony/finder": "~2.6|~3.0",
+                "symfony/form": "~2.6|~3.0",
+                "symfony/framework-bundle": "~2.6|~3.0",
+                "symfony/twig-bundle": "~2.6|~3.0",
+                "twig/twig": "~1.12|~2.0@dev"
             },
             "require-dev": {
                 "knplabs/knp-menu": "~2.0@alpha",
                 "knplabs/knp-menu-bundle": "~2.0@alpha",
                 "knplabs/knp-paginator-bundle": "dev-master",
-                "mockery/mockery": "0.9.*",
-                "phpunit/phpunit": "3.7.*",
-                "symfony/assetic-bundle": "~2.3"
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~3.7",
+                "symfony/assetic-bundle": "~2.6|~3.0"
             },
             "suggest": {
                 "knplabs/knp-menu": "Required to use KnpMenuBundle.",
@@ -64,7 +66,7 @@
             "keywords": [
                 "bootstrap"
             ],
-            "time": "2015-03-06 12:14:13"
+            "time": "2016-01-23 17:44:32"
         },
         {
             "name": "components/jquery",
@@ -181,33 +183,33 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.5.1",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "2b9cec5a5e722010cbebc91713d4c11eaa064d5e"
+                "reference": "f8af318d14bdb0eff0336795b428b547bd39ccb6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/2b9cec5a5e722010cbebc91713d4c11eaa064d5e",
-                "reference": "2b9cec5a5e722010cbebc91713d4c11eaa064d5e",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/f8af318d14bdb0eff0336795b428b547bd39ccb6",
+                "reference": "f8af318d14bdb0eff0336795b428b547bd39ccb6",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": "~5.5|~7.0"
             },
             "conflict": {
                 "doctrine/common": ">2.2,<2.4"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=3.7",
+                "phpunit/phpunit": "~4.8|~5.0",
                 "predis/predis": "~1.0",
                 "satooshi/php-coveralls": "~0.6"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5.x-dev"
+                    "dev-master": "1.6.x-dev"
                 }
             },
             "autoload": {
@@ -247,7 +249,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-11-02 18:35:48"
+            "time": "2015-12-31 16:37:02"
         },
         {
             "name": "doctrine/collections",
@@ -317,16 +319,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "v2.5.1",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "0009b8f0d4a917aabc971fb089eba80e872f83f9"
+                "reference": "a579557bc689580c19fee4e27487a67fe60defc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/0009b8f0d4a917aabc971fb089eba80e872f83f9",
-                "reference": "0009b8f0d4a917aabc971fb089eba80e872f83f9",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/a579557bc689580c19fee4e27487a67fe60defc0",
+                "reference": "a579557bc689580c19fee4e27487a67fe60defc0",
                 "shasum": ""
             },
             "require": {
@@ -335,20 +337,20 @@
                 "doctrine/collections": "1.*",
                 "doctrine/inflector": "1.*",
                 "doctrine/lexer": "1.*",
-                "php": ">=5.3.2"
+                "php": "~5.5|~7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~3.7"
+                "phpunit/phpunit": "~4.8|~5.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6.x-dev"
+                    "dev-master": "2.7.x-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Doctrine\\Common\\": "lib/"
+                "psr-4": {
+                    "Doctrine\\Common\\": "lib/Doctrine/Common"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -386,7 +388,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-08-31 13:00:22"
+            "time": "2015-12-25 13:18:31"
         },
         {
             "name": "doctrine/data-fixtures",
@@ -447,20 +449,20 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.2",
+            "version": "v2.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "01dbcbc5cd0a913d751418e635434a18a2f2a75c"
+                "reference": "abbdfd1cff43a7b99d027af3be709bc8fc7d4769"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/01dbcbc5cd0a913d751418e635434a18a2f2a75c",
-                "reference": "01dbcbc5cd0a913d751418e635434a18a2f2a75c",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/abbdfd1cff43a7b99d027af3be709bc8fc7d4769",
+                "reference": "abbdfd1cff43a7b99d027af3be709bc8fc7d4769",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": ">=2.4,<2.6-dev",
+                "doctrine/common": ">=2.4,<2.7-dev",
                 "php": ">=5.3.2"
             },
             "require-dev": {
@@ -514,7 +516,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2015-09-16 16:29:33"
+            "time": "2016-01-05 22:11:12"
         },
         {
             "name": "doctrine/doctrine-bundle",
@@ -596,16 +598,16 @@
         },
         {
             "name": "doctrine/doctrine-cache-bundle",
-            "version": "1.2.2",
+            "version": "1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineCacheBundle.git",
-                "reference": "030ff41ef1db66370b36467086bfb817a661fe6a"
+                "reference": "18c600a9b82f6454d2e81ca4957cdd56a1cf3504"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineCacheBundle/zipball/030ff41ef1db66370b36467086bfb817a661fe6a",
-                "reference": "030ff41ef1db66370b36467086bfb817a661fe6a",
+                "url": "https://api.github.com/repos/doctrine/DoctrineCacheBundle/zipball/18c600a9b82f6454d2e81ca4957cdd56a1cf3504",
+                "reference": "18c600a9b82f6454d2e81ca4957cdd56a1cf3504",
                 "shasum": ""
             },
             "require": {
@@ -619,6 +621,7 @@
                 "instaclick/object-calisthenics-sniffs": "dev-master",
                 "instaclick/symfony2-coding-standard": "dev-remaster",
                 "phpunit/phpunit": "~4",
+                "predis/predis": "~0.8",
                 "satooshi/php-coveralls": "~0.6.1",
                 "squizlabs/php_codesniffer": "~1.5",
                 "symfony/console": "~2.2|~3.0",
@@ -679,7 +682,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2015-11-27 04:59:07"
+            "time": "2016-01-26 17:28:51"
         },
         {
             "name": "doctrine/doctrine-fixtures-bundle",
@@ -985,16 +988,16 @@
         },
         {
             "name": "doctrine/mongodb-odm",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb-odm.git",
-                "reference": "cb327d1e15a17159247d70255b7fab6bea5ad4b0"
+                "reference": "f14ee65af497ced2c01b3daeae8d9ee318265277"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/cb327d1e15a17159247d70255b7fab6bea5ad4b0",
-                "reference": "cb327d1e15a17159247d70255b7fab6bea5ad4b0",
+                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/f14ee65af497ced2c01b3daeae8d9ee318265277",
+                "reference": "f14ee65af497ced2c01b3daeae8d9ee318265277",
                 "shasum": ""
             },
             "require": {
@@ -1063,24 +1066,24 @@
                 "odm",
                 "persistence"
             ],
-            "time": "2015-11-03 14:58:21"
+            "time": "2015-12-15 14:42:32"
         },
         {
             "name": "doctrine/mongodb-odm-bundle",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMongoDBBundle.git",
-                "reference": "8ac34a2b62ecbe2e6d79697de6a02cdcb8613198"
+                "reference": "ce759711b418617191f599f2b7e02048191146b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/8ac34a2b62ecbe2e6d79697de6a02cdcb8613198",
-                "reference": "8ac34a2b62ecbe2e6d79697de6a02cdcb8613198",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMongoDBBundle/zipball/ce759711b418617191f599f2b7e02048191146b7",
+                "reference": "ce759711b418617191f599f2b7e02048191146b7",
                 "shasum": ""
             },
             "require": {
-                "doctrine/mongodb-odm": "~1.0.0-beta10@dev",
+                "doctrine/mongodb-odm": "~1.0",
                 "php": ">=5.3.2",
                 "symfony/config": "~2.2",
                 "symfony/console": "~2.1",
@@ -1133,26 +1136,26 @@
                 "persistence",
                 "symfony"
             ],
-            "time": "2015-08-31 13:07:17"
+            "time": "2015-12-26 16:04:48"
         },
         {
             "name": "doctrine/orm",
-            "version": "v2.5.2",
+            "version": "v2.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/doctrine2.git",
-                "reference": "464b5fdbfbbeb4a65465ac173c4c5d90960f41ff"
+                "reference": "bc4ddbfb0114cb33438cc811c9a740d8aa304aab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/464b5fdbfbbeb4a65465ac173c4c5d90960f41ff",
-                "reference": "464b5fdbfbbeb4a65465ac173c4c5d90960f41ff",
+                "url": "https://api.github.com/repos/doctrine/doctrine2/zipball/bc4ddbfb0114cb33438cc811c9a740d8aa304aab",
+                "reference": "bc4ddbfb0114cb33438cc811c9a740d8aa304aab",
                 "shasum": ""
             },
             "require": {
                 "doctrine/cache": "~1.4",
                 "doctrine/collections": "~1.2",
-                "doctrine/common": ">=2.5-dev,<2.6-dev",
+                "doctrine/common": ">=2.5-dev,<2.7-dev",
                 "doctrine/dbal": ">=2.5-dev,<2.6-dev",
                 "doctrine/instantiator": "~1.0.1",
                 "ext-pdo": "*",
@@ -1161,7 +1164,6 @@
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0",
-                "satooshi/php-coveralls": "dev-master",
                 "symfony/yaml": "~2.3|~3.0"
             },
             "suggest": {
@@ -1210,7 +1212,7 @@
                 "database",
                 "orm"
             ],
-            "time": "2015-11-23 12:44:25"
+            "time": "2016-01-05 21:34:58"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
@@ -1375,16 +1377,16 @@
         },
         {
             "name": "integrated/block-bundle",
-            "version": "0.3",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-block-bundle.git",
-                "reference": "d9a214cd546fa85881a89fe9bc37d7d50c6a8d59"
+                "reference": "cdeb11a33040fbff1869d8785e8ada47588a1b81"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-block-bundle/get/d9a214cd546fa85881a89fe9bc37d7d50c6a8d59.zip",
-                "reference": "d9a214cd546fa85881a89fe9bc37d7d50c6a8d59",
+                "url": "https://bitbucket.org/eactive/integrated-block-bundle/get/cdeb11a33040fbff1869d8785e8ada47588a1b81.zip",
+                "reference": "cdeb11a33040fbff1869d8785e8ada47588a1b81",
                 "shasum": ""
             },
             "require": {
@@ -1400,6 +1402,9 @@
                 "sensio/framework-extra-bundle": "~2.3",
                 "symfony/framework-bundle": ">=2.2",
                 "symfony/symfony": ">=2.4"
+            },
+            "suggest": {
+                "integrated/page-bundle": "Extend block bundle functionality"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1428,19 +1433,19 @@
                 "Integrated",
                 "block"
             ],
-            "time": "2015-09-29 10:54:16"
+            "time": "2016-01-26 13:20:13"
         },
         {
             "name": "integrated/channel-bundle",
             "version": "0.3",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/eactive/integrated-channel-bundle.git",
+                "url": "https://github.com/integratedfordevelopers/integrated-channel-bundle.git",
                 "reference": "c56ecdad14e3960e040a3b7537d80898d9709c77"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-channel-bundle/get/c56ecdad14e3960e040a3b7537d80898d9709c77.zip",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-channel-bundle/zipball/c56ecdad14e3960e040a3b7537d80898d9709c77",
                 "reference": "c56ecdad14e3960e040a3b7537d80898d9709c77",
                 "shasum": ""
             },
@@ -1478,20 +1483,20 @@
                 "Integrated",
                 "channel"
             ],
-            "time": "2015-09-03 13:14:39"
+            "time": "2015-09-03 11:14:39"
         },
         {
             "name": "integrated/content-bundle",
-            "version": "0.3",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-content-bundle.git",
-                "reference": "ffd03a8b911c85311ef261f76c3c610e3d67971b"
+                "reference": "824eedc592736d67203bcc4a86eeb332021f548d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/ffd03a8b911c85311ef261f76c3c610e3d67971b.zip",
-                "reference": "ffd03a8b911c85311ef261f76c3c610e3d67971b",
+                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/824eedc592736d67203bcc4a86eeb332021f548d.zip",
+                "reference": "824eedc592736d67203bcc4a86eeb332021f548d",
                 "shasum": ""
             },
             "require": {
@@ -1502,9 +1507,9 @@
                 "doctrine/mongodb-odm-bundle": "~3.0",
                 "ext-mongo": "~1.2",
                 "friendsofsymfony/jsrouting-bundle": "~1.5",
-                "integrated/block-bundle": "~0.2",
+                "integrated/block-bundle": "~0.4",
                 "integrated/formtype-bundle": "~0.2",
-                "integrated/library": "~0.3",
+                "integrated/library": "~0.4",
                 "integrated/locking-bundle": "~0.2",
                 "integrated/menu-bundle": "~0.3",
                 "integrated/slug-bundle": "~0.2",
@@ -1513,12 +1518,11 @@
                 "nelmio/alice": "1.*",
                 "php": ">=5.4",
                 "symfony/framework-bundle": "~2.2",
-                "symfony/symfony": "~2.6",
-                "twbs/bootstrap": "3.*",
+                "symfony/symfony": "~2.7",
                 "vihuvac/recaptcha-bundle": "~2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.2.*"
+                "phpunit/phpunit": "4.4.*"
             },
             "suggest": {
                 "integrated/page-bundle": "~0.3",
@@ -1551,7 +1555,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2015-10-23 15:40:29"
+            "time": "2016-02-04 08:19:05"
         },
         {
             "name": "integrated/formtype-bundle",
@@ -1609,16 +1613,16 @@
         },
         {
             "name": "integrated/library",
-            "version": "0.3",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-library.git",
-                "reference": "843554adf0ad538c8df4f7b1849871f77f52fba3"
+                "reference": "7febc5868bc81469508c54bea0dea1fa4eb5f9b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-library/get/843554adf0ad538c8df4f7b1849871f77f52fba3.zip",
-                "reference": "843554adf0ad538c8df4f7b1849871f77f52fba3",
+                "url": "https://bitbucket.org/eactive/integrated-library/get/7febc5868bc81469508c54bea0dea1fa4eb5f9b9.zip",
+                "reference": "7febc5868bc81469508c54bea0dea1fa4eb5f9b9",
                 "shasum": ""
             },
             "require": {
@@ -1626,6 +1630,7 @@
                 "doctrine/mongodb-odm": "~1.0",
                 "doctrine/orm": "~2.4",
                 "php": ">=5.4",
+                "psr/log": "~1.0",
                 "solarium/solarium": "3.2.0",
                 "symfony/dependency-injection": "~2.4",
                 "symfony/event-dispatcher": "~2.4",
@@ -1656,6 +1661,7 @@
                     "Integrated\\Common\\Block\\": "src/",
                     "Integrated\\Common\\Channel\\": "src/",
                     "Integrated\\Common\\Content\\": "src/",
+                    "Integrated\\Common\\Content\\Document\\": "src/",
                     "Integrated\\Common\\ContentType\\": "src/",
                     "Integrated\\Common\\Converter\\": "src/",
                     "Integrated\\Common\\Form\\": "src/",
@@ -1663,7 +1669,9 @@
                     "Integrated\\Common\\Queue\\": "src/",
                     "Integrated\\Common\\Security\\": "src/",
                     "Integrated\\Common\\Solr\\": "src/",
-                    "Integrated\\Common\\Validator\\": "src/"
+                    "Integrated\\Common\\Storage\\": "src/",
+                    "Integrated\\Common\\Validator\\": "src/",
+                    "Integrated\\Common\\Workflow\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1682,7 +1690,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2015-09-06 10:50:28"
+            "time": "2016-01-26 13:05:50"
         },
         {
             "name": "integrated/locking-bundle",
@@ -1690,12 +1698,12 @@
             "target-dir": "Integrated/Bundle/LockingBundle",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/eactive/integrated-locking-bundle.git",
+                "url": "https://github.com/integratedfordevelopers/integrated-locking-bundle.git",
                 "reference": "13dd4fbad1e81c89033e5c8c3d21e771372877b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-locking-bundle/get/13dd4fbad1e81c89033e5c8c3d21e771372877b5.zip",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-locking-bundle/zipball/13dd4fbad1e81c89033e5c8c3d21e771372877b5",
                 "reference": "13dd4fbad1e81c89033e5c8c3d21e771372877b5",
                 "shasum": ""
             },
@@ -1735,36 +1743,33 @@
                 "Integrated",
                 "locking"
             ],
-            "time": "2014-10-14 22:38:17"
+            "time": "2014-10-14 20:38:17"
         },
         {
             "name": "integrated/menu-bundle",
-            "version": "0.3",
+            "version": "0.4.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/eactive/integrated-menu-bundle.git",
-                "reference": "af7f3c2fff71b478d2aa4276a267f0d029bafe92"
+                "url": "https://github.com/integratedfordevelopers/integrated-menu-bundle.git",
+                "reference": "b70ca14d96f267343a9d472d644aed03d4c45027"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-menu-bundle/get/af7f3c2fff71b478d2aa4276a267f0d029bafe92.zip",
-                "reference": "af7f3c2fff71b478d2aa4276a267f0d029bafe92",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-menu-bundle/zipball/b70ca14d96f267343a9d472d644aed03d4c45027",
+                "reference": "b70ca14d96f267343a9d472d644aed03d4c45027",
                 "shasum": ""
             },
             "require": {
+                "integrated/content-bundle": "~0.3",
                 "knplabs/knp-menu-bundle": "~2.0",
                 "php": ">=5.4",
                 "symfony/framework-bundle": "~2.3"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.2.*"
+                "phpunit/phpunit": "4.2.*",
+                "squizlabs/php_codesniffer": "2.*"
             },
             "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-develop": "0.9.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Integrated\\Bundle\\MenuBundle\\": ""
@@ -1780,13 +1785,13 @@
                     "homepage": "http://www.e-active.nl"
                 }
             ],
-            "description": "Integrated Menu Bundle",
-            "homepage": "http://www.e-active.nl",
+            "description": "Provides MenuEvents to allow adding navigation menu items to the Integrated backend and a database provider to read navigation items from the database (which allows front-end navigation menu editing when used with the website-bundle)",
+            "homepage": "http://www.integratedfordevelopers.com",
             "keywords": [
                 "Integrated",
                 "menu"
             ],
-            "time": "2015-09-01 09:21:47"
+            "time": "2015-12-29 10:27:48"
         },
         {
             "name": "integrated/page-bundle",
@@ -1794,12 +1799,12 @@
             "target-dir": "Integrated/Bundle/PageBundle",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/eactive/integrated-page-bundle.git",
+                "url": "https://github.com/integratedfordevelopers/integrated-page-bundle.git",
                 "reference": "858cd501bf2c3ebe8be1952d344270de51c88056"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-page-bundle/get/858cd501bf2c3ebe8be1952d344270de51c88056.zip",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-page-bundle/zipball/858cd501bf2c3ebe8be1952d344270de51c88056",
                 "reference": "858cd501bf2c3ebe8be1952d344270de51c88056",
                 "shasum": ""
             },
@@ -1846,28 +1851,23 @@
                 "Integrated",
                 "page"
             ],
-            "time": "2015-10-23 11:48:41"
+            "time": "2015-10-23 09:48:41"
         },
         {
             "name": "integrated/puphpet",
             "version": "0.4.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/eactive/integrated-puphpet.git",
-                "reference": "f3970b0bc8e324fdaf212c4b80269a0b523f17f6"
+                "url": "https://github.com/integratedfordevelopers/integrated-puphpet.git",
+                "reference": "e1454d990328495994aa5a5f5a5e6b576384c98c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-puphpet/get/f3970b0bc8e324fdaf212c4b80269a0b523f17f6.zip",
-                "reference": "f3970b0bc8e324fdaf212c4b80269a0b523f17f6",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-puphpet/zipball/e1454d990328495994aa5a5f5a5e6b576384c98c",
+                "reference": "e1454d990328495994aa5a5f5a5e6b576384c98c",
                 "shasum": ""
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-develop": "0.9.9-dev"
-                }
-            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
@@ -1878,14 +1878,14 @@
                     "homepage": "http://www.e-active.nl"
                 }
             ],
-            "description": "Integrated Vagrant Puphpet configuration",
-            "homepage": "http://www.e-active.nl",
+            "description": "Provides a Vagrant box for Integrated applications, based on PuPHPet",
+            "homepage": "http://www.integratedfordevelopers.com",
             "keywords": [
                 "Integrated",
                 "puphpet",
                 "vagrant"
             ],
-            "time": "2015-11-30 16:00:45"
+            "time": "2015-12-28 13:28:41"
         },
         {
             "name": "integrated/slug-bundle",
@@ -1893,12 +1893,12 @@
             "target-dir": "Integrated/Bundle/SlugBundle",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/eactive/integrated-slug-bundle.git",
+                "url": "https://github.com/integratedfordevelopers/integrated-slug-bundle.git",
                 "reference": "dcb65f503464e265414cf3d923831c9b1148482b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-slug-bundle/get/dcb65f503464e265414cf3d923831c9b1148482b.zip",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-slug-bundle/zipball/dcb65f503464e265414cf3d923831c9b1148482b",
                 "reference": "dcb65f503464e265414cf3d923831c9b1148482b",
                 "shasum": ""
             },
@@ -1935,7 +1935,7 @@
                 "Integrated",
                 "slug"
             ],
-            "time": "2015-09-17 16:55:09"
+            "time": "2015-09-17 14:55:09"
         },
         {
             "name": "integrated/solr-bundle",
@@ -1943,12 +1943,12 @@
             "target-dir": "Integrated/Bundle/SolrBundle",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/eactive/integrated-solr-bundle.git",
+                "url": "https://github.com/integratedfordevelopers/integrated-solr-bundle.git",
                 "reference": "4eed433351da4e0d95c7552619cfcd4e20b5702a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-solr-bundle/get/4eed433351da4e0d95c7552619cfcd4e20b5702a.zip",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-solr-bundle/zipball/4eed433351da4e0d95c7552619cfcd4e20b5702a",
                 "reference": "4eed433351da4e0d95c7552619cfcd4e20b5702a",
                 "shasum": ""
             },
@@ -1988,19 +1988,19 @@
                 "Integrated",
                 "solr"
             ],
-            "time": "2015-07-31 07:08:08"
+            "time": "2015-07-31 05:08:08"
         },
         {
             "name": "integrated/theme-bundle",
             "version": "0.3",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/eactive/integrated-theme-bundle.git",
+                "url": "https://github.com/integratedfordevelopers/integrated-theme-bundle.git",
                 "reference": "2e64e49450ccaffdbf818554f54f11e8a4d90000"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-theme-bundle/get/2e64e49450ccaffdbf818554f54f11e8a4d90000.zip",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-theme-bundle/zipball/2e64e49450ccaffdbf818554f54f11e8a4d90000",
                 "reference": "2e64e49450ccaffdbf818554f54f11e8a4d90000",
                 "shasum": ""
             },
@@ -2036,7 +2036,7 @@
                 "Integrated",
                 "theme"
             ],
-            "time": "2015-08-31 09:51:43"
+            "time": "2015-08-31 07:51:43"
         },
         {
             "name": "integrated/user-bundle",
@@ -2094,16 +2094,16 @@
         },
         {
             "name": "integrated/website-bundle",
-            "version": "0.3",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
-                "url": "https://bitbucket.org/eactive/integrated-website-bundle.git",
-                "reference": "d08d436bcb90a95da1b13ff237d6d1d9a1ecca36"
+                "url": "https://github.com/integratedfordevelopers/integrated-website-bundle.git",
+                "reference": "8315f7cd013f7860c75c18022fbc8bdafca67a16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-website-bundle/get/d08d436bcb90a95da1b13ff237d6d1d9a1ecca36.zip",
-                "reference": "d08d436bcb90a95da1b13ff237d6d1d9a1ecca36",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-website-bundle/zipball/8315f7cd013f7860c75c18022fbc8bdafca67a16",
+                "reference": "8315f7cd013f7860c75c18022fbc8bdafca67a16",
                 "shasum": ""
             },
             "require": {
@@ -2112,8 +2112,10 @@
                 "doctrine/mongodb-odm-bundle": "~3.0",
                 "ext-mongo": "~1.2",
                 "friendsofsymfony/jsrouting-bundle": "1.5.*",
+                "integrated/block-bundle": "~0.4",
                 "integrated/channel-bundle": "~0.3",
                 "integrated/content-bundle": "~0.3",
+                "integrated/menu-bundle": "~0.4",
                 "integrated/page-bundle": "~0.3",
                 "integrated/theme-bundle": "~0.3",
                 "knplabs/knp-paginator-bundle": ">=2.4",
@@ -2123,15 +2125,14 @@
                 "symfony/symfony": ">=2.4",
                 "twbs/bootstrap": "3.*"
             },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8",
+                "squizlabs/php_codesniffer": "2.*"
+            },
             "suggest": {
                 "integrated/channel-bundle": "Manage channel configuration"
             },
             "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-develop": "0.9.9-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Integrated\\Bundle\\WebsiteBundle\\": ""
@@ -2147,13 +2148,13 @@
                     "homepage": "http://www.e-active.nl"
                 }
             ],
-            "description": "Integrated Website Bundle",
-            "homepage": "http://www.e-active.nl",
+            "description": "Provides a website front-end for content in Integrated",
+            "homepage": "http://www.integratedfordevelopers.com",
             "keywords": [
                 "Integrated",
                 "website"
             ],
-            "time": "2015-09-21 13:57:57"
+            "time": "2015-12-29 18:56:52"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -2327,16 +2328,16 @@
         },
         {
             "name": "knplabs/knp-menu",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenu.git",
-                "reference": "c6ad49933babd06a27b2f962a3469601ec9038b8"
+                "reference": "9917b999a3c3d3901386d60c4888b07679291031"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/c6ad49933babd06a27b2f962a3469601ec9038b8",
-                "reference": "c6ad49933babd06a27b2f962a3469601ec9038b8",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/9917b999a3c3d3901386d60c4888b07679291031",
+                "reference": "9917b999a3c3d3901386d60c4888b07679291031",
                 "shasum": ""
             },
             "require": {
@@ -2345,7 +2346,8 @@
             "require-dev": {
                 "pimple/pimple": "~1.0",
                 "silex/silex": "~1.0",
-                "symfony/phpunit-bridge": "~2.7",
+                "symfony/phpunit-bridge": "~2.7|~3.0",
+                "symfony/routing": "~2.3|~3.0",
                 "twig/twig": "~1.16|~2.0"
             },
             "suggest": {
@@ -2388,29 +2390,29 @@
                 "menu",
                 "tree"
             ],
-            "time": "2015-09-20 08:23:47"
+            "time": "2016-01-08 15:42:54"
         },
         {
             "name": "knplabs/knp-menu-bundle",
-            "version": "v2.1.0",
+            "version": "v2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
-                "reference": "2246a70109bdd313a105d2a7ef464a763aacf0cd"
+                "reference": "90aff8e39274d1225dfa3bb7b1dd4e47b7312dca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/2246a70109bdd313a105d2a7ef464a763aacf0cd",
-                "reference": "2246a70109bdd313a105d2a7ef464a763aacf0cd",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/90aff8e39274d1225dfa3bb7b1dd4e47b7312dca",
+                "reference": "90aff8e39274d1225dfa3bb7b1dd4e47b7312dca",
                 "shasum": ""
             },
             "require": {
                 "knplabs/knp-menu": "~2.1",
-                "symfony/framework-bundle": "~2.3"
+                "symfony/framework-bundle": "~2.3|~3.0"
             },
             "require-dev": {
-                "symfony/expression-language": "~2.4",
-                "symfony/phpunit-bridge": "~2.7"
+                "symfony/expression-language": "~2.4|~3.0",
+                "symfony/phpunit-bridge": "~2.7|~3.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -2445,7 +2447,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2015-09-28 15:23:54"
+            "time": "2015-12-15 12:06:23"
         },
         {
             "name": "knplabs/knp-paginator-bundle",
@@ -2586,6 +2588,59 @@
             "time": "2015-11-12 13:51:40"
         },
         {
+            "name": "leafo/scssphp",
+            "version": "v0.6.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/leafo/scssphp.git",
+                "reference": "a27edad3d16635a222d7204706572e24c338aa17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/leafo/scssphp/zipball/a27edad3d16635a222d7204706572e24c338aa17",
+                "reference": "a27edad3d16635a222d7204706572e24c338aa17",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "kherge/box": "~2.5",
+                "phpunit/phpunit": "~3.7",
+                "squizlabs/php_codesniffer": "~2.5"
+            },
+            "bin": [
+                "bin/pscss"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Leafo\\ScssPhp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Leaf Corcoran",
+                    "email": "leafot@gmail.com",
+                    "homepage": "http://leafo.net"
+                }
+            ],
+            "description": "scssphp is a compiler for SCSS written in PHP.",
+            "homepage": "http://leafo.github.io/scssphp/",
+            "keywords": [
+                "css",
+                "less",
+                "sass",
+                "scss",
+                "stylesheet"
+            ],
+            "time": "2016-01-15 02:50:06"
+        },
+        {
             "name": "monolog/monolog",
             "version": "1.17.2",
             "source": {
@@ -2718,6 +2773,54 @@
                 "test"
             ],
             "time": "2014-10-10 13:07:37"
+        },
+        {
+            "name": "paragonie/random_compat",
+            "version": "1.1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paragonie/random_compat.git",
+                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/e6f80ab77885151908d0ec743689ca700886e8b0",
+                "reference": "e6f80ab77885151908d0ec743689ca700886e8b0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*|5.*"
+            },
+            "suggest": {
+                "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "lib/random.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paragon Initiative Enterprises",
+                    "email": "security@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
+            "keywords": [
+                "csprng",
+                "pseudorandom",
+                "random"
+            ],
+            "time": "2016-01-29 16:19:52"
         },
         {
             "name": "psr/log",
@@ -3240,16 +3343,16 @@
         },
         {
             "name": "symfony/swiftmailer-bundle",
-            "version": "v2.3.9",
+            "version": "v2.3.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/swiftmailer-bundle.git",
-                "reference": "3d21ada19f23631f558ad6df653b168e35362e78"
+                "reference": "5e1a90f28213231ceee19c953bbebc5b5b95c690"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/3d21ada19f23631f558ad6df653b168e35362e78",
-                "reference": "3d21ada19f23631f558ad6df653b168e35362e78",
+                "url": "https://api.github.com/repos/symfony/swiftmailer-bundle/zipball/5e1a90f28213231ceee19c953bbebc5b5b95c690",
+                "reference": "5e1a90f28213231ceee19c953bbebc5b5b95c690",
                 "shasum": ""
             },
             "require": {
@@ -3293,24 +3396,25 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2015-11-28 10:59:29"
+            "time": "2016-01-15 16:41:20"
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.7.7",
+            "version": "v2.7.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "cc69dbd24b4b2e6de60b2414ef95da2794f459a2"
+                "reference": "d3646cc6875c214d211001e0673ec9e91b5f2da7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/cc69dbd24b4b2e6de60b2414ef95da2794f459a2",
-                "reference": "cc69dbd24b4b2e6de60b2414ef95da2794f459a2",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/d3646cc6875c214d211001e0673ec9e91b5f2da7",
+                "reference": "d3646cc6875c214d211001e0673ec9e91b5f2da7",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.4",
+                "paragonie/random_compat": "~1.0",
                 "php": ">=5.3.9",
                 "psr/log": "~1.0",
                 "twig/twig": "~1.23|~2.0"
@@ -3417,7 +3521,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2015-11-23 11:58:08"
+            "time": "2016-01-14 10:41:56"
         },
         {
             "name": "twbs/bootstrap",
@@ -3519,16 +3623,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.23.1",
+            "version": "v1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "d9b6333ae8dd2c8e3fd256e127548def0bc614c6"
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d9b6333ae8dd2c8e3fd256e127548def0bc614c6",
-                "reference": "d9b6333ae8dd2c8e3fd256e127548def0bc614c6",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
+                "reference": "3e5aa30ebfbafd5951fb1b01e338e1800ce7e0e8",
                 "shasum": ""
             },
             "require": {
@@ -3541,7 +3645,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.23-dev"
+                    "dev-master": "1.24-dev"
                 }
             },
             "autoload": {
@@ -3576,7 +3680,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2015-11-05 12:49:06"
+            "time": "2016-01-25 21:22:18"
         },
         {
             "name": "vihuvac/recaptcha-bundle",
@@ -3672,7 +3776,85 @@
             "time": "2014-01-20 22:35:06"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "squizlabs/php_codesniffer",
+            "version": "2.5.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "6731851d6aaf1d0d6c58feff1065227b7fda3ba8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/6731851d6aaf1d0d6c58feff1065227b7fda3ba8",
+                "reference": "6731851d6aaf1d0d6c58feff1065227b7fda3ba8",
+                "shasum": ""
+            },
+            "require": {
+                "ext-tokenizer": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.1.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "bin": [
+                "scripts/phpcs",
+                "scripts/phpcbf"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "CodeSniffer.php",
+                    "CodeSniffer/CLI.php",
+                    "CodeSniffer/Exception.php",
+                    "CodeSniffer/File.php",
+                    "CodeSniffer/Fixer.php",
+                    "CodeSniffer/Report.php",
+                    "CodeSniffer/Reporting.php",
+                    "CodeSniffer/Sniff.php",
+                    "CodeSniffer/Tokens.php",
+                    "CodeSniffer/Reports/",
+                    "CodeSniffer/Tokenizers/",
+                    "CodeSniffer/DocGenerators/",
+                    "CodeSniffer/Standards/AbstractPatternSniff.php",
+                    "CodeSniffer/Standards/AbstractScopeSniff.php",
+                    "CodeSniffer/Standards/AbstractVariableSniff.php",
+                    "CodeSniffer/Standards/IncorrectPatternException.php",
+                    "CodeSniffer/Standards/Generic/Sniffs/",
+                    "CodeSniffer/Standards/MySource/Sniffs/",
+                    "CodeSniffer/Standards/PEAR/Sniffs/",
+                    "CodeSniffer/Standards/PSR1/Sniffs/",
+                    "CodeSniffer/Standards/PSR2/Sniffs/",
+                    "CodeSniffer/Standards/Squiz/Sniffs/",
+                    "CodeSniffer/Standards/Zend/Sniffs/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Sherwood",
+                    "role": "lead"
+                }
+            ],
+            "description": "PHP_CodeSniffer tokenizes PHP, JavaScript and CSS files and detects violations of a defined set of coding standards.",
+            "homepage": "http://www.squizlabs.com/php-codesniffer",
+            "keywords": [
+                "phpcs",
+                "standards"
+            ],
+            "time": "2016-01-19 23:39:10"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
