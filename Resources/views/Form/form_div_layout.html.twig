@@ -218,11 +218,27 @@
     }) %}
     {% spaceless %}
         <select {{ block('widget_attributes') }}>
-            {% for content in value %}
-                <option value="{{ content.id }}" selected="selected">{{ content.text }}</option>
-            {% endfor %}
+            {% if multiple %}
+                {{ block('integrated_content_choice_multiple') }}
+            {% else %}
+                {{ block('integrated_content_choice_single') }}
+            {% endif %}
         </select>
     {% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_choice_single %}
+    {% if data %}
+        {# todo publishable title INTEGRATED-364 #}
+        <option value="{{ data.id }}" selected="selected">{{ data.title }}</option>
+    {% endif %}
+{% endblock %}
+
+{% block integrated_content_choice_multiple %}
+    {% for document in data %}
+        {# todo publishable title INTEGRATED-364 #}
+        <option value="{{ document.id }}" selected="selected">{{ document.title }}</option>
+    {% endfor %}
 {% endblock %}
 
 {% block integrated_relations_choice_row %}
@@ -230,7 +246,7 @@
     {{ form_errors(form) }}
 {% endblock %}
 
-{% block integrated_relation_choice_row %}
+{% block integrated_relation_references_row %}
     {{ form_row(form.children['references']) }}
     {{ form_errors(form) }}
 {% endblock %}

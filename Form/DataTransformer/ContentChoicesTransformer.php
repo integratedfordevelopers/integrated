@@ -50,11 +50,7 @@ class ContentChoicesTransformer implements DataTransformerInterface
                 if (!$content instanceof ContentInterface) {
                     throw new TransformationFailedException(sprintf('Expected integrated content, "%s" given', gettype($content)));
                 }
-                $values[] = [
-                    'id' => $content->getId(),
-                    //todo publishable title INTEGRATED-364
-                    'text' => $content->getTitle()
-                ];
+                $values[] = $content->getId();
             }
             return $values;
         }

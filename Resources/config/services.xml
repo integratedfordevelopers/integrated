@@ -13,11 +13,10 @@
         <parameter key="integrated_formtype_form_type_sortable_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType</parameter>
         <parameter key="integrated_formtype_form_type_integrated_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType</parameter>
         <parameter key="integrated_formtype.form.type.embedded_document.class">Integrated\Bundle\FormTypeBundle\Form\Type\EmbeddedDocumentType</parameter>
-        <parameter key="integrated_formtype.form.type.content_choice.class">Integrated\Bundle\FormTypeBundle\Form\Type\ContentChoice</parameter>
+        <parameter key="integrated_formtype.form.type.content_choice.class">Integrated\Bundle\FormTypeBundle\Form\Type\ContentChoiceType</parameter>
 
         <parameter key="integrated_formtype.form.type.relation_choice.relations.class">Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\RelationsType</parameter>
-        <parameter key="integrated_formtype.form.type.relation_choice.relation.class">Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\RelationType</parameter>
-        <parameter key="integrated_formtype.form.type.relation_choice.event_listener.add_fields.class">Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\EventListener\AddRelationFieldsSubscriber</parameter>
+        <parameter key="integrated_formtype.form.type.relation_references_choice.relation.class">Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\RelationReferencesType</parameter>
 
     </parameters>
 
@@ -65,18 +64,13 @@
         </service>
         
         <service id="integrated_formtype.form.type.relation_choice.relations" class="%integrated_formtype.form.type.relation_choice.relations.class%">
-            <argument type="service" id="integrated_formtype.form.type.relation_choice.event_listener.add_fields" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="form.type" alias="integrated_relations_choice"/>
         </service>
 
-        <service id="integrated_formtype.form.type.relation_choice.relation" class="%integrated_formtype.form.type.relation_choice.relation.class%">
-            <tag name="form.type" alias="integrated_relation_choice"/>
+        <service id="integrated_formtype.form.type.relation_references_choice.relation" class="%integrated_formtype.form.type.relation_references_choice.relation.class%">
+            <tag name="form.type" alias="integrated_relation_references"/>
         </service>
-
-        <service id="integrated_formtype.form.type.relation_choice.event_listener.add_fields" class="%integrated_formtype.form.type.relation_choice.event_listener.add_fields.class%">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-        </service>
-
 
     </services>
 

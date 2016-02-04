@@ -16,7 +16,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -46,12 +46,8 @@ class ContentChoiceTransformer implements DataTransformerInterface
     {
         if (null === $value) {
             return null;
-        } elseif ($value instanceof Content) {
-            return [[
-                'id' => $value->getId(),
-                //todo publishable title INTEGRATED-364
-                'text' => $value->getTitle()
-            ]];
+        } elseif ($value instanceof ContentInterface) {
+            return $value->getId();
         }
 
         throw new TransformationFailedException(sprintf('Expected integrated content, "%s" given', gettype($value)));

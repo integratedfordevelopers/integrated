@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,16 +24,16 @@ use Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\EventListener\AddR
 class RelationsType extends AbstractType
 {
     /**
-     * @var AddRelationFieldsSubscriber
+     * @var DocumentManager
      */
-    protected $subscriber;
+    protected $dm;
 
     /**
-     * @param AddRelationFieldsSubscriber $subscriber
+     * @param DocumentManager $dm
      */
-    public function __construct(AddRelationFieldsSubscriber $subscriber)
+    public function __construct(DocumentManager $dm)
     {
-        $this->subscriber = $subscriber;
+        $this->dm = $dm;
     }
 
     /**
@@ -40,7 +41,7 @@ class RelationsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventSubscriber($this->subscriber);
+        $builder->addEventSubscriber(new AddRelationFieldsSubscriber($this->dm, $options));
     }
 
     /**
@@ -64,5 +65,4 @@ class RelationsType extends AbstractType
     {
         return 'integrated_relations_choice';
     }
-
 }

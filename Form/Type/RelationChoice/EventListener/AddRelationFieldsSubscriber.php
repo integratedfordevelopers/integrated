@@ -56,11 +56,13 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
 
     /**
      * @param DocumentManager $dm
+     * @param array $options
      */
-    public function __construct(DocumentManager $dm)
+    public function __construct(DocumentManager $dm, array $options)
     {
         $this->repo = $dm->getRepository('IntegratedContentBundle:Relation\Relation');
         $this->relations = new ArrayCollection();
+        $this->options = $options;
     }
 
     /**
@@ -68,8 +70,6 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        $options = $event->getForm()->getConfig()->getOptions();
-        $this->setOptions($options);
         $this->ensureRelations($event);
         $this->addFormFields($event);
     }
@@ -94,7 +94,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
             $relationIds[] = $relation->getRelationId();
         }
 
-        foreach ($this->getOption('relations') as $relationId) {
+        foreach ($this->options['relations'] as $relationId) {
             $relation = $this->findRelation($relationId, $event->getForm()->getParent()->getData());
 
             //no need to add if the relation is already in the collection
@@ -150,7 +150,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     {
         /** @var EmbeddedRelation $embeddedRelation */
         foreach ($this->getEmbeddedRelations() as $key => $embeddedRelation) {
-            if (!in_array($embeddedRelation->getRelationId(), $this->getOption('relations'))) {
+            if (!in_array($embeddedRelation->getRelationId(), $this->options['relations'])) {
                 continue;
             }
 
@@ -160,17 +160,16 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
                 $contentTypes[] = $target->getId();
             }
 
-            $options = $this->getOptions();
-            $relationOptions = isset($options['options'][$embeddedRelation->getRelationId()]) ?
-                $options['options'][$embeddedRelation->getRelationId()] : [];
-            $relationOptions['contentTypes'] = $contentTypes;
+            $relationOptions = isset($this->options['options'][$embeddedRelation->getRelationId()]) ?
+                $this->options['options'][$embeddedRelation->getRelationId()] : [];
+            $relationOptions['content_types'] = $contentTypes;
             $relationOptions['multiple'] = isset($relationOptions['multiple']) ?
                 $relationOptions['multiple'] : $relation->isMultiple();
             if (!isset($relationOptions['label'])) {
                 $relationOptions['label'] = $relation->getName();
             }
 
-            $event->getForm()->add($key, 'integrated_relation_choice', $relationOptions);
+            $event->getForm()->add($key, 'integrated_relation_references', ['options' => $relationOptions]);
         }
     }
 
@@ -214,31 +213,5 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     public function getEmbeddedRelations()
     {
         return $this->embeddedRelations->toArray();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOption($key)
-    {
-        return $this->options[$key];
-    }
-
-    /**
-     * @return array
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
-     * @param array $options
-     * @return $this
-     */
-    public function setOptions($options)
-    {
-        $this->options = $options;
-        return $this;
     }
 }

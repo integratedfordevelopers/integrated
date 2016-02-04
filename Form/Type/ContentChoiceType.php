@@ -25,7 +25,7 @@ use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\ContentChoiceTransform
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class ContentChoice extends AbstractType
+class ContentChoiceType extends AbstractType
 {
     /**
      * @var DocumentManager

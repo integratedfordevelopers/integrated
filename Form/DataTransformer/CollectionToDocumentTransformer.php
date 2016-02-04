@@ -52,6 +52,6 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
         if (null !== $value) {
             return new ArrayCollection([$value]);
         }
-        return new ArrayCollection([]);
+        return new ArrayCollection();
     }
 }
