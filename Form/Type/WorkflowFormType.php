@@ -61,8 +61,8 @@ class WorkflowFormType extends AbstractType
             'assigned',
             'integrated_select2',
             [
-                'empty_value' => null,
-                'empty_data'  => $this->tokenStorage->getToken()->getUser()->getId(),
+                'empty_value' => 'Not Assigned',
+                'data'  => $this->tokenStorage->getToken()->getUser()->getId(),
                 'required' => false,
                 'attr' => ['class' => 'assigned-choice'],
                 'choices' => $this->getAssigned(),
