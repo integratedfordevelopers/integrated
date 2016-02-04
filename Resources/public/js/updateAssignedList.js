@@ -13,6 +13,7 @@ $(function() {
             status = currentStateId;
         }
 
+        $assigned.attr('disabled','disabled');
         $.ajax({
             url: Routing.generate('integrated_workflow_assigned', {
                 'workflow':workflowId,
@@ -36,6 +37,8 @@ $(function() {
 
                     $tmp.appendTo($assigned);
                 });
+
+                $assigned.removeAttr('disabled');
             }
         });
     };
