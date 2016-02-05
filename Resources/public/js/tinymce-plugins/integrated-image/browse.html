@@ -5,26 +5,12 @@
         <link rel="stylesheet" href="css/style.css">
 
         <script src="/bundles/fosjsrouting/js/router.js"></script>
-        <script src="/js/routing?callback=fos.Router.setData"></script>
+        <script src="/js/fos_js_routes.js?callback=fos.Router.setData"></script>
+
     </head>
     <body>
         <div class="container-fluid" style="margin: 10px">
-            <div class="row">
-                <div class="col-sm-7">
-                    <button id="btn-upload" class="btn btn-primary" onclick="window.open('/admin/content/new?class=Integrated%5CBundle%5CContentBundle%5CDocument%5CContent%5CImage&type=image');">Upload new image</button>
-                </div>
-                <div class="col-sm-5">
-                    <form id="form-search" action="" class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <div class="input-group">
-                                    <input id="txt-search" type="text" class="form-control" placeholder="Search image...">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            <div id="add_image_wrapper" class="row"></div>
 
             <div class="row">
                 <div class="col-sm-12" id="thumbnail-container"></div>
@@ -37,5 +23,17 @@
         <script src="/js/jquery.js"></script>
         <script src="js/jquery.loading-overlay.min.js"></script>
         <script src="js/browser.js"></script>
+        <script>
+            $(function() {
+                $add_image_wrapper = $('#add_image_wrapper');
+
+                $.ajax({
+                    url: Routing.generate('integrated_content_content_browse_image'),
+                    success: function (response) {
+                        $add_image_wrapper.html(response);
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

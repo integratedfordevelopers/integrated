@@ -5,7 +5,7 @@ tinymce.create('tinymce.plugins.IntegratedImage', {
         var browseImage = function(){
             editor.windowManager.open({
                 title   : 'Browse Images',
-                url     : Routing.generate('integrated_content_content_browse_image'),
+                url     : url+'/browse.html',
                 width   : 800,
                 height  : 600
             });

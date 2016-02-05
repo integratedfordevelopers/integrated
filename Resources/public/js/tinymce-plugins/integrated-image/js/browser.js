@@ -161,11 +161,11 @@ $(document).ready(function(){
     /**
      * Type ahead search handler
      */
-    $('#txt-search').keyup(function(){
+    $(document).on('keyup', '#txt-search', function () {
         refreshImages();
     });
 
-    $('#type-search').change(function() {
+    $(document).on('change', '#type-search', function () {
         refreshImages();
     });
 
