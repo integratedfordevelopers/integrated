@@ -67,7 +67,7 @@ class RoutingLoader implements LoaderInterface
             dump($path);
 
             $route = new Route(
-                $page->getPath(),
+                $page->getRoutePath(),
                 ['_controller' => sprintf('%s:%s', $page->getControllerService(), $page->getControllerAction())],
                 [],
                 [],
@@ -79,25 +79,8 @@ class RoutingLoader implements LoaderInterface
 
             $routes->add('integrated_website_content_type_page_' . $page->getId(), $route);
         }
-        die;
+//        die;
         return $routes;
-    }
-
-    protected function convertPath($matches)
-    {
-        //todo find right url
-        $contentType = $this->getContentTypeRepo()->find('');
-//        /** @var \Integrated\Bundle\ContentBundle\Document\Relation\Relation $relation */
-//        foreach ($relations as $relation) {
-//            if ($relation->getId() === $matches[2])
-//            {
-//
-//            }
-//        }
-
-        dump($matches);
-        dump($this->page);
-        return $matches[2];
     }
 
     protected function getContentTypeRepo()
