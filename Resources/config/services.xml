@@ -11,6 +11,8 @@
         <parameter key="integrated_storage.decision">Integrated\Bundle\StorageBundle\Storage\Decision</parameter>
         <parameter key="integrated_storage.registry">Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry</parameter>
         <parameter key="integrated_storage.filesystem_delete">Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove</parameter>
+        <parameter key="integrated_storage.cache_app">Integrated\Bundle\StorageBundle\Storage\Cache\AppCache</parameter>
+        <parameter key="integrated_storage.file_locator">Integrated\Bundle\StorageBundle\Locator\StorageLocator</parameter>
 
     </parameters>
 
@@ -46,6 +48,21 @@
 
         <service id="integrated_storage.filesystem_delete" class="%integrated_storage.filesystem_delete%" />
 
+        <service id="integrated_storage.cache_app" class="%integrated_storage.cache_app%">
+            <argument>%kernel.cache_dir%</argument>
+            <argument type="service" id="integrated_storage.manager" />
+        </service>
+
+        <service id="file_locator" alias="integrated_storage.file_locator" />
+        <service id="integrated_storage.file_locator" class="%integrated_storage.file_locator%">
+            <argument type="service" id="kernel" />
+            <argument>%kernel.root_dir%/Resources</argument>
+
+            <argument type="collection" />
+
+            <argument type="service" id="integrated_storage.cache_app" />
+
+        </service>
     </services>
 
 </container>
