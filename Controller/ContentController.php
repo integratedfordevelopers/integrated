@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Symfony\Component\Filesystem\LockHandler;
 use Traversable;
 
@@ -986,7 +987,18 @@ class ContentController extends Controller
         $container = $this->container;
 
         $repository = $container->get('integrated_content.content_type_repository');
-        $images = $repository->findBy(array('class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image'));
+        $contentTypes = $repository->findAll();
+
+        $images = [];
+        /** @var ContentType $contentType */
+        foreach ($contentTypes as $contentType) {
+            $class = $contentType->getClass();
+            $imageClassName = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image';
+
+            if ($class == $imageClassName || is_subclass_of($class, $imageClassName)) {
+                $images[] = $contentType;
+            }
+        }
 
         if ($container->has('integrated_workflow.services.permission')) {
             $accessImages = [];
