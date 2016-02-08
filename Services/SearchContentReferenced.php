@@ -6,8 +6,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory;
 use Doctrine\ODM\MongoDB\Types\Type as MongoType;
-use Integrated\Bundle\BlockBundle\Document\Block\Block;
-use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 /**
  * Class SearchContentReferenced
@@ -31,7 +30,7 @@ class SearchContentReferenced
 
     /**
      * @param mixed $document
-     * @return bool
+     * @return array
      * @throws \Exception
      */
     public function getReferenced($document)
@@ -40,7 +39,7 @@ class SearchContentReferenced
         $deleted = $this->getDeletedInfo($document, $metadataFactory);
         $allMetadata = $metadataFactory->getAllMetadata();
 
-        $refereced = [];
+        $referenced = [];
 
         /** @var ClassMetaData  $classMetadata */
         foreach ($allMetadata as $classMetadata) {
@@ -61,7 +60,7 @@ class SearchContentReferenced
 
                     if ($items) {
                         foreach ($items as $item) {
-                            $refereced[] = $item;
+                            $referenced[] = $item;
                         }
                     }
                 }
@@ -76,11 +75,11 @@ class SearchContentReferenced
 
         if ($items) {
             foreach ($items as $item) {
-                $refereced[] = $item;
+                $referenced[] = $item;
             }
         }
 
-        return $this->prepareReferenced($refereced);
+        return $this->prepareReferenced($referenced);
     }
 
     /**
@@ -111,14 +110,14 @@ class SearchContentReferenced
     }
 
     /**
-     * @param $refereced
+     * @param $referenced
      * @return array
      */
-    private function prepareReferenced($refereced)
+    private function prepareReferenced($referenced)
     {
         $output = [];
-        foreach ($refereced as $item) {
-            if ($item instanceof Article) {
+        foreach ($referenced as $item) {
+            if ($item instanceof Content) {
                 $output[] = [
                     'action' => 'integrated_content_content_edit',
                     'id' => $item->getId(),
