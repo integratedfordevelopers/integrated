@@ -34,6 +34,18 @@ class User
     protected $name;
 
     /**
+     * @var string
+     * @ODM\String
+     */
+    protected $ipAddress;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
+    protected $endpoint;
+
+    /**
      * @return string
      */
     public function getId()
@@ -66,6 +78,44 @@ class User
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIpAddress()
+    {
+        return $this->ipAddress;
+    }
+
+    /**
+     * @param string $ipAddress
+     * @return $this
+     */
+    public function setIpAddress($ipAddress)
+    {
+        $this->ipAddress = $ipAddress;
+        return $this;
+    }
+
+    /**
+     * Get the endpoint (e.g. the request URL or console command name).
+     *
+     * @return string
+     */
+    public function getEndpoint()
+    {
+        return $this->endpoint;
+    }
+
+    /**
+     * @param string $endpoint
+     * @return $this
+     */
+    public function setEndpoint($endpoint)
+    {
+        $this->endpoint = $endpoint;
         return $this;
     }
 }

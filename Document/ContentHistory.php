@@ -16,6 +16,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User;
 use Integrated\Common\Content\ContentInterface;
 
+use DateTime;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
@@ -23,6 +25,10 @@ use Integrated\Common\Content\ContentInterface;
  */
 class ContentHistory
 {
+    const ACTION_INSERT = 'INSERT';
+    const ACTION_UPDATE = 'UPDATE';
+    const ACTION_DELETE = 'DELETE';
+
     /**
      * @var string
      * @ODM\Id(strategy="UUID")
@@ -30,16 +36,35 @@ class ContentHistory
     protected $id;
 
     /**
-     * @var User
+     * @var DateTime
+     * @ODM\Date
+     */
+    protected $date;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
+    protected $action;
+
+    /**
+     * @var ContentInterface | null
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
+     */
+    protected $snapshot;
+
+    /**
+     * @var User | null
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User")
      */
     protected $user;
 
     /**
-     * @var ContentInterface
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
      */
-    protected $snapshot;
+    public function __construct()
+    {
+        $this->date = new DateTime();
+    }
 
     /**
      * @return string
@@ -50,20 +75,38 @@ class ContentHistory
     }
 
     /**
-     * @return User
+     * @return DateTime
      */
-    public function getUser()
+    public function getDate()
     {
-        return $this->user;
+        return $this->date;
     }
 
     /**
-     * @param User $user
+     * @param DateTime $date
      * @return $this
      */
-    public function setUser(User $user = null)
+    public function setDate($date)
     {
-        $this->user = $user;
+        $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
+
+    /**
+     * @param string $action
+     * @return $this
+     */
+    public function setAction($action)
+    {
+        $this->action = $action;
         return $this;
     }
 
@@ -76,12 +119,30 @@ class ContentHistory
     }
 
     /**
-     * @param ContentInterface $snapshot
+     * @param ContentInterface | null $snapshot
      * @return $this
      */
-    public function setSnapshot(ContentInterface $snapshot)
+    public function setSnapshot(ContentInterface $snapshot = null)
     {
         $this->snapshot = $snapshot;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User | null $user
+     * @return $this
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
         return $this;
     }
 }
