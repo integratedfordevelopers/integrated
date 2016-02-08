@@ -18,16 +18,7 @@
             {% trans with {'%name%':  content.id} %}You are about to delete "%name%", click the delete button below to confirm the action.{% endtrans %}
         </p>
         {% if referenced %}
-            <div class="alert alert-danger">
-                {% trans %} This item is still on use by: {% endtrans %}<br>
-                {% for item in referenced %}
-                    {% if item.action is defined %}
-                        <a href="{{ path(item.action,{'id':item.id}) }}">{{ item.name }}</a><br>
-                    {% else %}
-                        {{ item.name }} &nbsp; {{ item.id }}<br>
-                    {% endif %}
-                {% endfor %}
-            </div>
+            {% include '@IntegratedContent/referencedAlert.html.twig' with {'referenced':referenced} only %}
         {% endif %}
         {{ form(form) }}
     </div>
