@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -24,39 +24,44 @@ class PhonenumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        if (in_array('type', $options['fields'])) {
+            $builder->add('type', 'choice', [
+                'choices' => [
+                    'mobile' => 'Mobile',
+                    'work'   => 'Work',
+                    'home'   => 'Home'
+                ]
+            ]);
+        }
+
+        if (in_array('number', $options['fields'])) {
+            $builder->add('number', 'text', [
+                'label'       => 'Phone number',
+                'constraints' => [
+                    new NotBlank(),
+                ]
+            ]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Embedded\\Phonenumber',
+            'fields'     => ['type', 'number'], // @todo validate options (INTEGRATED-627)
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'integrated_phonenumber';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('type', 'choice', array(
-            'choices' => array(
-                'mobile' => 'Mobile',
-                'work' => 'Work',
-                'home' => 'Home'
-            )
-        ));
-
-        $builder->add('number', 'text', array(
-            'label' => 'Phone number',
-            'constraints' => array(
-                new NotBlank(),
-            )
-        ));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Embedded\\Phonenumber'
-        ));
     }
 }

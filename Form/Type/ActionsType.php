@@ -25,12 +25,12 @@ class ActionsType extends BaseActionsType
     {
         parent::__construct('integrated_content_actions', [
             'create'         => ['type' => 'submit', 'options' => ['label' => 'Create']],
-            'save'           => ['type' => 'submit', 'options' => ['label' => 'Save']],
+            'save'           => ['type' => 'submit', 'options' => ['label' => 'Save', 'button_class' => 'orange']],
             'delete'         => ['type' => 'submit', 'options' => ['label' => 'Delete']],
             'back'           => ['type' => 'submit', 'options' => ['label' => 'Back', 'attr' => ['formnovalidate' => 'formnovalidate']]],
             'reload'         => ['type' => 'submit', 'options' => ['label' => 'Reload', 'attr' => ['formnovalidate' => 'formnovalidate']]],
             'reload_changed' => ['type' => 'submit', 'options' => ['label' => 'Reload (keep changes)', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-            'cancel'         => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate', 'data-dismiss' => 'modal']]],
+            'cancel'         => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'gray-thin', 'attr' => ['formnovalidate' => 'formnovalidate', 'data-dismiss' => 'modal']]],
         ]);
     }
 }

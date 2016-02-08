@@ -1,0 +1,13 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {{ block.publishedTitle }}
+    </div>
+
+    <div class="panel-body">
+        <ul>
+            {% for content in pagination %}
+                <li>{{ content.title|default }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

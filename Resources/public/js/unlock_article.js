@@ -20,7 +20,7 @@ $(function () {
 });
 
 /* ask user before leave page via href links and unlock article */
-$('a:not(form.content-form a)').on('click', function (e) {
+$('a:not(form.content-form a), form.content-form button[name*=cancel]').on('click', function (e) {
     var url = $(this).attr('href');
 
     if (url && url != '#') {
@@ -35,6 +35,10 @@ $('a:not(form.content-form a)').on('click', function (e) {
             $('.return-url', form).val(url);
             $('[name*=cancel]', form).trigger('click');
         }
+    } else if ( $(this).is('button[name*=cancel]', form) && form.data('changed')) {
+        e.preventDefault();
+
+        modal.modal();
     }
 });
 
@@ -44,6 +48,7 @@ $('.live-page', modal).on('click', function() {
     $('.return-url', form).val(url);
 
     window.onbeforeunload = null;
+    form.data('changed', false);
     $('[name*=cancel]', form).trigger('click');
     modal.modal('hide');
 });

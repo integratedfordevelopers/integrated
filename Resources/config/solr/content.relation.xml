@@ -93,7 +93,7 @@
         <type name="integrated.fields">
             <options>
 
-                <string key="logo">logo.webpath</string>
+                <string key="logo">logo.file.pathname</string>
 
                 <array>
                     <string key="name">url</string>

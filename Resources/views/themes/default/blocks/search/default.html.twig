@@ -4,7 +4,7 @@
     </div>
 
     <div class="panel-body">
-        <form method="get">
+        <form method="get"{% if block.url|default %} action="{{ block.url }}"{% endif %}>
             <input type="text" name="{{ block.block.id }}-search" value="{{ app.request.get(block.block.id ~ '-search') }}" />
             <input type="submit" />
         </form>

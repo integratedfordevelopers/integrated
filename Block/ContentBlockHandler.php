@@ -15,6 +15,7 @@ use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Common\Block\BlockInterface;
@@ -39,11 +40,6 @@ class ContentBlockHandler extends BlockHandler
     private $requestStack;
 
     /**
-     * @var array
-     */
-    private $registry = [];
-
-    /**
      * @param SolariumProvider $provider
      * @param RequestStack $requestStack
      */
@@ -56,7 +52,7 @@ class ContentBlockHandler extends BlockHandler
     /**
      * {@inheritdoc}
      */
-    public function execute(BlockInterface $block)
+    public function execute(BlockInterface $block, array $options)
     {
         if (!$block instanceof ContentBlock) {
             return;
@@ -68,10 +64,10 @@ class ContentBlockHandler extends BlockHandler
             return;
         }
 
-        $pagination = $this->getPagination($block, $request);
+        $pagination = $this->getPagination($block, $request, $options);
 
         if (!count($pagination)) {
-            return; // @todo show block in edit mode (INTEGRATED-428)
+            return;
         }
 
         return $this->render([
@@ -83,35 +79,35 @@ class ContentBlockHandler extends BlockHandler
     /**
      * @param ContentBlock $block
      * @param Request $request
+     * @param array $options
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
-    public function getPagination(ContentBlock $block, Request $request)
+    public function getPagination(ContentBlock $block, Request $request, array $options = [])
     {
-        $id = $block->getId();
+        $request = $request->duplicate(); // don't change original request
 
-        if (!isset($this->registry[$id])) {
-            $request = $request->duplicate(); // don't change original request
-
-            try {
-                if ($selection = $block->getSearchSelection()) {
-                    $request->query->add($selection->getFilters());
-                }
-
-            } catch (DocumentNotFoundException $e) {
-                // search selection is removed
+        try {
+            if ($selection = $block->getSearchSelection()) {
+                $request->query->add($selection->getFilters());
             }
-
-            $pagination = $this->provider->execute(
-                $request,
-                $block->getId(),
-                $block->getItemsPerPage(),
-                $block->getMaxItems(),
-                $block->getFacetFields()
-            );
-
-            $this->registry[$id] = $pagination;
+        } catch (DocumentNotFoundException $e) {
+            // search selection is removed
         }
 
-        return $this->registry[$id];
+        return $this->provider->execute($block, $request, $options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'filters' => [],   // add extra filters (overwrites search selection)
+            'exclude' => true, // exclude already shown items
+        ]);
+
+        $resolver->setAllowedTypes('filters', 'array');
+        $resolver->setAllowedTypes('exclude', 'bool');
     }
 }
