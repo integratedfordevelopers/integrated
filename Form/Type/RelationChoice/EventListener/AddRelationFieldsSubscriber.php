@@ -15,6 +15,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
@@ -40,12 +41,12 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     protected $repo;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      */
     protected $relations;
 
     /**
-     * @var ArrayCollection
+     * @var Collection
      */
     protected $embeddedRelations;
 
@@ -76,7 +77,6 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
 
     /**
      * @param FormEvent $event
-     * @return ArrayCollection
      * @throws \Doctrine\ODM\MongoDB\LockException
      * @throws \Exception
      */
@@ -84,8 +84,8 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     {
         $relations = $event->getData();
 
-        if (!$relations instanceof ArrayCollection) {
-            throw new \Exception(sprintf('Relations should be instance of ArrayCollection, "%s" given', gettype($relations)));
+        if (!$relations instanceof Collection) {
+            throw new \Exception(sprintf('Relations should implement Collection, "%s" given', gettype($relations)));
         }
 
         //get all relation ids
@@ -116,7 +116,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     /**
      * @param $relationId
      * @param $formData
-     * @return Relation|object
+     * @return Relation
      * @throws \Doctrine\ODM\MongoDB\LockException
      * @throws \Exception
      */
@@ -200,9 +200,9 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ArrayCollection $relations
+     * @param Collection $relations
      */
-    public function setEmbeddedRelations(ArrayCollection $relations)
+    public function setEmbeddedRelations(Collection $relations)
     {
         $this->embeddedRelations = $relations;
     }
