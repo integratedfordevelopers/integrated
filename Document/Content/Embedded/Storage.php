@@ -26,7 +26,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * @author Johnny Borg <johnny@e-active.nl>
  * @ODM\EmbeddedDocument
  */
-class Storage implements StorageInterface
+class Storage implements StorageInterface, \ArrayAccess
 {
     /**
      * @var string
@@ -81,14 +81,6 @@ class Storage implements StorageInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString()
-    {
-        return $this->pathname;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier()
     {
         return $this->identifier;
@@ -116,5 +108,49 @@ class Storage implements StorageInterface
     public function getMetadata()
     {
         return $this->metadata;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return $this->pathname;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetExists($offset)
+    {
+        return strlen($this->pathname) > ($offset+1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetGet($offset)
+    {
+        if (0 === $offset) {
+            return '@';
+        }
+
+        return substr($this->pathname, ($offset+1), 1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetSet($offset, $value)
+    {
+        $this->pathname{($offset+1)} = $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->pathname{($offset+1)});
     }
 }
