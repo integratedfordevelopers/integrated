@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormEvents;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
+ * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class FileEventSubscriber implements EventSubscriberInterface
 {
@@ -59,14 +60,26 @@ class FileEventSubscriber implements EventSubscriberInterface
      */
     public function preSubmitData(FormEvent $event)
     {
-        if ($event->getData()) {
-            // Write and set the data in the entity
-            $event->setData(
-                $this->manager->write(
-                    new UploadedFileReader($event->getData()),
-                    $this->decision->getFilesystems($event->getForm()->getData())
-                )
-            );
+        $data = $event->getData();
+
+        if (!empty($data['remove'])) {
+            // Remove the file
+            $event->setData(['file' => null]);
+        } else {
+            $file = $event->getForm()->get('file')->getData();
+
+            if (!empty($data['file'])) {
+                // Write and set the data in the entity
+                $event->setData([
+                    'file' => $this->manager->write(
+                        new UploadedFileReader($data['file']),
+                        $this->decision->getFilesystems($file)
+                    )
+                ]);
+            } elseif ($file) {
+                // Previous value, the form did not have a valid input
+                $event->setData(['file' => $file]);
+            }
         }
     }
 }

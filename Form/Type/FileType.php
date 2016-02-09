@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
+use Integrated\Bundle\StorageBundle\Form\DataTransformer\FileTransformer;
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
 use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -21,6 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
+ * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class FileType extends AbstractType
 {
@@ -51,9 +53,8 @@ class FileType extends AbstractType
     {
         // The field might not be required in the integrated content type
         $resolver->setDefaults([
+            'compound' => true,
             'required' => false,
-            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
-            'empty_data' => null
         ]);
     }
 
@@ -62,7 +63,16 @@ class FileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add('file', 'file', [
+            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
+        ]);
+
+        $builder->add('remove', 'checkbox', [
+            'mapped' => false,
+        ]);
+
         $builder->addEventSubscriber(new FileEventSubscriber($this->manager, $this->decision));
+        $builder->addModelTransformer(new FileTransformer());
     }
 
     /**
@@ -71,13 +81,5 @@ class FileType extends AbstractType
     public function getName()
     {
         return 'integrated_file';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'file';
     }
 }
