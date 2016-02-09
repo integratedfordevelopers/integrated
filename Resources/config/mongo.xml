@@ -15,6 +15,7 @@
         <parameter key="integrated_content.odm.mongo.mapping.discriminator_map.listener.class">Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapMetadataSubscriber</parameter>
 
         <parameter key="integrated_content.odm.mongo.cleanreferences.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CleanReferencesListener</parameter>
+        <parameter key="integrated_content.odm.mongo.clean_relations.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CleanRelationsListener</parameter>
 
 	</parameters>
 
@@ -56,6 +57,10 @@
 
 
         <service id="integrated_content.odm.mongo.cleanreferences.listener" class="%integrated_content.odm.mongo.cleanreferences.listener.class%">
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+        <service id="integrated_content.odm.mongo.clean_relations.listener" class="%integrated_content.odm.mongo.clean_relations.listener.class%">
             <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
         </service>
 

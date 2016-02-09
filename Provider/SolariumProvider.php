@@ -108,9 +108,9 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
      */
     protected function getQuery(Request $request, $blockId, array $facetFields = [], array $options = [])
     {
-        // @todo cleanup (copied from ContentController)
+        // @todo cleanup (INTEGRATED-431)
 
-        $applyExcludes = true;
+        $exclude = isset($options['exclude']) ? (bool) $options['exclude'] : true;
 
         $query = $this->client->createSelect();
 
@@ -131,8 +131,8 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
             $query->setQuery($search);
 
-            //I would be strange to exclude items when when a seach text is entered
-            $applyExcludes = false;
+            // It would be strange to exclude items when a search text is entered
+            $exclude = false;
         }
 
         $helper = $query->getHelper();
@@ -196,7 +196,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             }
         }
 
-        if (count($this->registry) && $applyExcludes) {
+        if (count($this->registry) && $exclude) {
             // exclude items
             $query->setQuery($query->getQuery() . ' AND -type_id: (%1%)', [implode(' OR ', array_map($filter, array_keys($this->registry)))]);
         }

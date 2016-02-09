@@ -240,4 +240,12 @@
 {% endjavascripts %}
 
 {% endif %}
+
+{% if hasWorkflowBundle %}
+    {% javascripts '@IntegratedWorkflowBundle/Resources/public/js/updateAssignedList.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endif %}
+
+{{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
 {% endblock javascript %}
