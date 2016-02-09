@@ -135,7 +135,7 @@
             <div class="col-sm-8">
                 {% set pathname = form.file.vars.data.getPathname()|default %}
                 {% if pathname %}
-                    <a href="{{pathname }}" target="_blank" style="display: block; margin-bottom: 6px;">
+                    <a href="{{ pathname }}" target="_blank" style="display: block; margin-bottom: 6px;">
                         {% trans %}Download{% endtrans %}
                     </a>
                 {% endif %}
