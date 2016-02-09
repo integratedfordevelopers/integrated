@@ -68,7 +68,8 @@ class FileType extends AbstractType
         ]);
 
         $builder->add('remove', 'checkbox', [
-            'mapped' => false,
+            'mapped'   => false,
+            'required' => false,
         ]);
 
         $builder->addEventSubscriber(new FileEventSubscriber($this->manager, $this->decision));
