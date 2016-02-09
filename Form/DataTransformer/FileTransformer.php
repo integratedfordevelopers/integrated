@@ -13,7 +13,7 @@ namespace Integrated\Bundle\StorageBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -21,7 +21,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 class FileTransformer implements DataTransformerInterface
 {
     /**
-     * @param Storage | null $file
+     * @param StorageInterface | null $file
      * @return array
      */
     public function transform($file)
@@ -33,7 +33,7 @@ class FileTransformer implements DataTransformerInterface
 
     /**
      * @param array $value
-     * @return Storage | null
+     * @return StorageInterface | null
      */
     public function reverseTransform($value)
     {
