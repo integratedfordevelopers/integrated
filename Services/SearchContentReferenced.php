@@ -129,7 +129,7 @@ class SearchContentReferenced
                 $output[] = [
                     'action' => 'integrated_content_content_edit',
                     'id' => $item->getId(),
-                    'name' => $item->getTitle(),
+                    'name' => method_exists($item, 'getTitle') ? $item->getTitle() : get_class($item),
                 ];
             } else {
                 $output[] = [
