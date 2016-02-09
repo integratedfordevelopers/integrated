@@ -51,7 +51,7 @@ class SearchContentReferenced
             foreach ($associations as $assocFieldName) {
                 $assocClassName = $classMetadata->getAssociationTargetClass($assocFieldName);
 
-                if ($deleted['className'] == $assocClassName) {
+                if ($deleted['className'] == $assocClassName || is_subclass_of($deleted['className'], $assocClassName)) {
                     $items = $this->dm->createQueryBuilder($classMetadata->getName())
                         ->field($assocFieldName.'.$id')
                         ->equals($deleted['idValue'])
@@ -63,23 +63,31 @@ class SearchContentReferenced
                             $referenced[] = $item;
                         }
                     }
+                } elseif ($fieldMetaData = $metadataFactory->getMetadataFor($assocClassName)) {
+                    $fieldAssociations = $fieldMetaData->getAssociationNames();
+
+                    foreach ($fieldAssociations as $fieldAssociation) {
+                        $fieldAssocClassName = $fieldMetaData->getAssociationTargetClass($fieldAssociation);
+
+                        if ($deleted['className'] == $fieldAssocClassName || is_subclass_of($deleted['className'], $fieldAssocClassName)) {
+                            $items = $this->dm->createQueryBuilder($classMetadata->getName())
+                                ->field($assocFieldName.'.'.$fieldAssociation.'.$id')
+                                ->equals($deleted['idValue'])
+                                ->getQuery()
+                                ->toArray();
+
+                            if ($items) {
+                                foreach ($items as $item) {
+                                    $referenced[] = $item;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        $items = $this->dm->createQueryBuilder('IntegratedContentBundle:Content\Content')
-            ->field('relations.references.$id')
-            ->equals($deleted['idValue'])
-            ->getQuery()
-            ->toArray();
-
-        if ($items) {
-            foreach ($items as $item) {
-                $referenced[] = $item;
-            }
-        }
-
-        return $this->prepareReferenced($referenced);
+        return $this->prepareReferenced(array_unique($referenced));
     }
 
     /**
