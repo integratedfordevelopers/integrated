@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Symfony\Component\Filesystem\LockHandler;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Traversable;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -43,6 +45,11 @@ class ContentController extends Controller
      * @var string
      */
     protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
+
+    /**
+     * @var string
+     */
+    protected $imageClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image';
 
     /**
      * @Template()
@@ -980,7 +987,6 @@ class ContentController extends Controller
 
     /**
      * @return array
-     * @Template()
      */
     public function browseImageAction()
     {
@@ -993,9 +999,8 @@ class ContentController extends Controller
         /** @var ContentType $contentType */
         foreach ($contentTypes as $contentType) {
             $class = $contentType->getClass();
-            $imageClassName = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image';
 
-            if ($class == $imageClassName || is_subclass_of($class, $imageClassName)) {
+            if ($class == $this->imageClass || is_subclass_of($class, $this->imageClass)) {
                 $images[] = $contentType;
             }
         }
@@ -1012,7 +1017,17 @@ class ContentController extends Controller
             $images = $accessImages;
         }
 
-        return array('images'=>$images);
+        $output = [];
+        /** @var Image $image */
+        foreach ($images as $image) {
+            $output[] = [
+                'id' => $image->getId(),
+                'name' => $image->getName(),
+                'path' => $this->generateUrl('integrated_content_content_new', ['type'=>$image->getId()]),
+            ];
+        }
+
+        return new JsonResponse($output);
     }
 
     /**
