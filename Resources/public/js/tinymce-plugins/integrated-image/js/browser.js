@@ -133,7 +133,8 @@ $(document).ready(function(){
     var mcemodal    = tinymce.activeEditor.windowManager.getWindows()[0];
 
     var previousCall = null;
-    var refreshImages = function() {
+
+    refreshImages = function() {
         var keyword = $('#txt-search').val();
         var type = $('#type-search').val();
         var url     = Routing.generate('integrated_content_content_index', {"contenttypes[]": type, "_format": "json", "q": keyword});
