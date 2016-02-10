@@ -37,12 +37,10 @@ class FileEventSubscriber implements EventSubscriberInterface
 
     /**
      * @param ManagerInterface $manager
-     * @param DecisionInterface $decision
      */
-    public function __construct(ManagerInterface $manager, DecisionInterface $decision)
+    public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;
-        $this->decision = $decision;
     }
 
     /**
@@ -51,35 +49,20 @@ class FileEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SUBMIT => 'preSubmitData'
+            FormEvents::POST_SUBMIT => 'postSubmit'
         ];
     }
 
     /**
      * @param FormEvent $event
      */
-    public function preSubmitData(FormEvent $event)
+    public function postSubmit(FormEvent $event)
     {
         $data = $event->getData();
 
         if (!empty($data['remove'])) {
             // Remove the file
             $event->setData(['file' => null]);
-        } else {
-            $file = $event->getForm()->get('file')->getData();
-
-            if (!empty($data['file'])) {
-                // Write and set the data in the entity
-                $event->setData([
-                    'file' => $this->manager->write(
-                        new UploadedFileReader($data['file']),
-                        $this->decision->getFilesystems($file)
-                    )
-                ]);
-            } elseif ($file) {
-                // Previous value, the form did not have a valid input
-                $event->setData(['file' => $file]);
-            }
         }
     }
 }

@@ -11,18 +11,36 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
+use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Storage\ManagerInterface;
+
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class FileTransformer implements DataTransformerInterface
 {
+
     /**
-     * @param StorageInterface | null $file
-     * @return array
+     * @var ManagerInterface
+     */
+    protected $manager;
+
+    /**
+     * @param ManagerInterface $manager
+     */
+    public function __construct(ManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function transform($file)
     {
@@ -32,15 +50,19 @@ class FileTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param array $value
-     * @return StorageInterface | null
+     * {@inheritdoc}
+     * @return StorageInterface|null
      */
     public function reverseTransform($value)
     {
-        if (!isset($value['file'])) {
-            return null;
+        // It must be set, however for the sake of being sure
+        if (isset($value['file']) && $value['file'] instanceof UploadedFile) {
+            // Write and set the data in the entity
+            return $this->manager->write(
+                new UploadedFileReader($value['file'])
+            );
         }
 
-        return $value['file'];
+        return null;
     }
 }

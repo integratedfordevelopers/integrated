@@ -32,18 +32,11 @@ class FileType extends AbstractType
     protected $manager;
 
     /**
-     * @var DecisionInterface
-     */
-    protected $decision;
-
-    /**
      * @param ManagerInterface $manager
-     * @param DecisionInterface $decision
      */
-    public function __construct(ManagerInterface $manager, DecisionInterface $decision)
+    public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;
-        $this->decision = $decision;
     }
 
     /**
@@ -63,17 +56,26 @@ class FileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'file', [
-            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
-        ]);
+        $builder->add(
+            'file',
+            'file',
+            [
+                'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
+                'required' => false,
+            ]
+        );
 
-        $builder->add('remove', 'checkbox', [
-            'mapped'   => false,
-            'required' => false,
-        ]);
+        $builder->add(
+            'remove',
+            'checkbox',
+            [
+                'mapped'   => false,
+                'required' => false,
+            ]
+        );
 
-        $builder->addEventSubscriber(new FileEventSubscriber($this->manager, $this->decision));
-        $builder->addModelTransformer(new FileTransformer());
+        $builder->addEventSubscriber(new FileEventSubscriber($this->manager));
+        $builder->addModelTransformer(new FileTransformer($this->manager));
     }
 
     /**
