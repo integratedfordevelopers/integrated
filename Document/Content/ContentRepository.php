@@ -36,7 +36,7 @@ class ContentRepository extends DocumentRepository
     /**
      * Deletes all references to a content item
      *
-     * @param $referenceId
+     * @param $id
      */
     public function deleteReference($id)
     {
