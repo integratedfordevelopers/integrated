@@ -3,50 +3,36 @@ $(".relation-items").each(function() {
     var multiple = $(this).data('multiple');
     var relation_id = $(this).attr('id');
 
-    $(this).select2({
+    var $relation = $(this);
+    var $formControl = $('[data-relation="' + relation_id + '"]');
+    var defaultValues = $.parseJSON($('#default_references').val());
+
+    if (defaultValues[relation_id].length) {
+        $.each(defaultValues[relation_id], function() {
+            $relation.append('<option value="'+this.id+'">'+this.title+'</option>');
+        });
+    }
+
+    $relation.select2({
+        minimumInputLength: 4,
         multiple: multiple,
-        initSelection: function(element, callback) {
-            var url = Routing.generate("integrated_content_content_index")
-                + '?relation=' + relation_id
-                + '&limit=5&q='
-                + '&sort=title&_format=json';
-
-            $.ajax({
-                url: url,
-                dataType: 'JSON',
-                success: function (data) {
-                    var ids = $('[data-relation="' + relation_id + '"]').val().split(',');
-
-                    /* add already selected items */
-                    var items = [];
-                    if ('items' in data) {
-                        for (var k in data.items) {
-                            var item = data.items[k];
-
-                            if ($.inArray(item.id, ids) >= 0) {
-                                items.push({id: item.id, text: item.title});
-                            }
-                        }
-                    }
-                    callback(multiple ? items : items[0]);
-
-                    /* add create button */
-                    var addTemplateSource = $('#add-template').html();
-                    var addTemplate = Handlebars.compile(addTemplateSource);
-                    element.after(addTemplate(data));
-                }
-            });
-        },
         ajax: {
-            multiple: multiple,
-            url: function (params) {
-                return Routing.generate("integrated_content_content_index")
-                    + '?relation=' + relation_id
-                    + '&limit=5&q=' + params
-                    + '&sort=title&_format=json';
+            type: 'GET',
+            url: Routing.generate("integrated_content_content_index"),
+            dataType: 'json',
+            data: function(param) {
+                return {
+                    relation: relation_id,
+                    limit: 5,
+                    sort: 'title',
+                    _format: 'json',
+                    q: param.term
+                };
             },
             processResults: function (data) {
                 var items = [];
+
+                console.log(data);
 
                 if ('items' in data) {
                     for (var k in data.items) {
@@ -58,8 +44,6 @@ $(".relation-items").each(function() {
             }
         }
     });
-
-    if (multiple) $(this).select2('val', [], true);
 
     $(this).on('change', function () {
         $('[data-relation="' + relation_id + '"]').val( $(this).val() );

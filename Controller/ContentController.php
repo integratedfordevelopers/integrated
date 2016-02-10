@@ -604,12 +604,24 @@ class ContentController extends Controller
             $this->get('braincrafted_bootstrap.flash')->error($text);
         }
 
+        $references = [];
+        /** @var \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation $relation */
+        foreach ($content->getRelations() as $relation) {
+            foreach ($relation->getReferences() as $reference) {
+                $references[$relation->getRelationId()][] = array(
+                    'id' => $reference->getId(),
+                    'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
+                );
+            }
+        }
+
         return array(
             'type'    => $type->getType(),
             'form'    => $form->createView(),
             'content' => $content,
             'locking' => $locking,
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
+            'references' => json_encode($references),
         );
     }
 

@@ -35,6 +35,25 @@
     <div class="col-md-8 push-sm-down">
         <section class="section-white section-padding section-shadow section-radius">
             {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+
+            {% if form.offsetGet('relations').count() %}
+                <input type="hidden" id="default_references" value="{{ references }}">
+                <div class="aside-item-holder section-white">
+                    <h3 class="font-medium">{% trans %}Link to{% endtrans %}</h3>
+                    <div class="content_column_inner  relations">
+                        <div class="item_row">
+                            {% for relation in form.relations %}
+                                <div class="relation" style="margin: 0 0 30px 0">
+                                    <label for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label><br/>
+
+                                    <select id="{{ relation.vars.name }}" data-multiple="{{ relation.vars.attr['data-multiple'] }}" class="relation-items form-control">
+                                    </select>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </section>
     </div>
 
@@ -51,32 +70,7 @@
                     {% endif %}
                 {% endif %}
 
-                {% if form.offsetGet('relations').count() %}
                 <div class="aside-item-holder section-white">
-                    <h3 class="font-medium">{% trans %}Link to{% endtrans %}</h3>
-                    <div class="content_column_inner  relations">
-                        <div class="item_row">
-                        {% for relation in form.relations %}
-                            <div class="relation" style="margin: 0 0 30px 0">
-                                <label for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label><br/>
-                                <input id="{{ relation.vars.name }}" data-multiple="{{ relation.vars.attr['data-multiple'] }}" style="width: 170px; float: left; margin: 0 13px 20px 0;" class="relation-items" />
-                            </div>
-                        {% endfor %}
-                        </div>
-                        <div id="relations-result"></div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <div class="aside-item-holder section-white">
-                    {% if form.offsetGet('relations').count() %}
-                    <div class="item_row">
-                        <h3 class="title">{% trans %}Linked items{% endtrans %}</h3>
-                        <div class="content_column_inner">
-                            <ul class="custom_list li_with_margin" id="relations-selected"></ul>
-                        </div>
-                    </div>
-                    {% endif %}
                     <div class="item_row" id="used-by"></div>
                 </div>
 
