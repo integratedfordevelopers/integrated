@@ -76,7 +76,7 @@ class FileEventSubscriber implements EventSubscriberInterface
 
             // Make sure the entity ends up a StorageInterface
             $event->setData($this->manager->write(
-                new UploadedFileReader($event->getForm()->get('file')->getData()),
+                new UploadedFileReader($file),
                 // Set the file to allowed entity filesystems
                 $this->decision->getFilesystems($rootForm->getData())
             ));
