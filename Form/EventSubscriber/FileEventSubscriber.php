@@ -68,11 +68,17 @@ class FileEventSubscriber implements EventSubscriberInterface
         if ($event->getForm()->get('remove')->getData()) {
             $file->setData(null);
         } elseif ($file instanceof UploadedFile) {
+            // Get the root document bind to the form
+            $rootForm = $event->getForm();
+            while ($rootForm->getParent()) {
+                $rootForm = $rootForm->getParent();
+            }
+
             // Make sure the entity ends up a StorageInterface
             $event->setData($this->manager->write(
                 new UploadedFileReader($event->getForm()->get('file')->getData()),
                 // Set the file to allowed entity filesystems
-                $this->decision->getFilesystems($event->getForm()->getData())
+                $this->decision->getFilesystems($rootForm->getData())
             ));
         } else {
             // We don't know what to do
