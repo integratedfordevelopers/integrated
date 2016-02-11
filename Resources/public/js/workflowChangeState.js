@@ -45,9 +45,10 @@ $(function() {
                     if ($el) {
                         $el.removeAttr('required');
                         $el.removeAttr('disabled');
+                        $el.parents('.form-group').show();
 
                         if (values.disabled) {
-                            $el.attr('disabled','disabled');
+                            $el.attr('disabled','disabled').parents('.form-group').hide();
                         } else if (values.required) {
                             $el.attr('required','required');
                         }
