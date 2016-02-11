@@ -100,7 +100,7 @@ class MigrateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
+        // Fetch all data from database
         $data = $this->database->getRows();
 
         // Barry progress
@@ -109,8 +109,29 @@ class MigrateCommand extends Command
         $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %remaining:-6s%');
 
         foreach ($data as $row) {
-
+            // Walk over the properties of the class with reflection
             foreach ($this->getReflectionClass($row['class'])->getStorageProperties() as $property) {
+                // We can always skip it unless
+                $skip = true;
+
+                // The property exists
+                if (isset($row[$property->getPropertyName()])) {
+                    // And does not contain the required fields
+                    foreach (['identifier', 'pathname', 'metadata', 'filesystems'] as $key) {
+                        if (!isset($row[$property->getPropertyName()][$key])) {
+                            $skip = false;
+
+                            // Skip out the current foreach
+                            break 1;
+                        }
+                    }
+                }
+
+                // Skip when all required properties are found or when the property does not exist
+                if ($skip) {
+                    continue;
+                }
+
                 // Fix the one -> many property now foreach and so on
                 if ($filename = $property->getFileId($row)) {
                     if ($file = $this->getFile($input->getArgument('path'), $filename, $row['_id'], $input->hasOption('ignore-duplicates'))) {
