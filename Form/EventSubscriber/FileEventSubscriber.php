@@ -12,6 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\Form\EventSubscriber;
 
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
+
+use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,11 +33,18 @@ class FileEventSubscriber implements EventSubscriberInterface
     protected $manager;
 
     /**
-     * @param ManagerInterface $manager
+     * @var DecisionInterface
      */
-    public function __construct(ManagerInterface $manager)
+    protected $decision;
+
+    /**
+     * @param ManagerInterface $manager
+     * @param DecisionInterface $decision
+     */
+    public function __construct(ManagerInterface $manager, DecisionInterface $decision)
     {
         $this->manager = $manager;
+        $this->decision = $decision;
     }
 
     /**
@@ -75,8 +84,11 @@ class FileEventSubscriber implements EventSubscriberInterface
 
         // Only match the instance
         if ($file instanceof UploadedFile) {
+            // Make sure the entity ends up a StorageInterface
             $event->setData($this->manager->write(
-                new UploadedFileReader($event->getForm()->get('file')->getData())
+                new UploadedFileReader($event->getForm()->get('file')->getData()),
+                // Set the file to allowed entity filesystems
+                $this->decision->getFilesystems($event->getForm()->getData())
             ));
         }
     }

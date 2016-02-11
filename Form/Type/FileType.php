@@ -12,6 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
+
+use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Form\AbstractType;
@@ -30,11 +32,18 @@ class FileType extends AbstractType
     protected $manager;
 
     /**
-     * @param ManagerInterface $manager
+     * @var DecisionInterface
      */
-    public function __construct(ManagerInterface $manager)
+    protected $decision;
+
+    /**
+     * @param ManagerInterface $manager
+     * @param DecisionInterface $decision
+     */
+    public function __construct(ManagerInterface $manager, DecisionInterface $decision)
     {
         $this->manager = $manager;
+        $this->decision = $decision;
     }
 
     /**
@@ -65,7 +74,7 @@ class FileType extends AbstractType
             'required' => false,
         ]);
 
-        $builder->addEventSubscriber(new FileEventSubscriber($this->manager));
+        $builder->addEventSubscriber(new FileEventSubscriber($this->manager, $this->decision));
     }
 
     /**
