@@ -133,12 +133,16 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% if form.vars.data.pathname|default %}
-                    <a href="{{ form.vars.data.pathname }}" target="_blank" style="display: block; margin-bottom: 6px;">
+                {% set pathname = form.file.vars.data.getPathname()|default %}
+                {% if pathname %}
+                    <a href="{{ pathname }}" target="_blank" style="display: block; margin-bottom: 6px;">
                         {% trans %}Download{% endtrans %}
                     </a>
                 {% endif %}
-                {{ form_widget(form) }}
+                {{ form_widget(form.file) }}
+                {% if pathname %}
+                    {{ form_widget(form.remove) }}
+                {% endif %}
                 {{ form_errors(form) }}
             </div>
         </div>
@@ -150,10 +154,14 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% if form.vars.data.pathname|default %}
-                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ form.vars.data.pathname }}" />
+                {% set pathname = form.file.vars.data.getPathname()|default %}
+                {% if pathname %}
+                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ pathname }}" />
                 {% endif %}
-                {{ form_widget(form) }}
+                {{ form_widget(form.file) }}
+                {% if pathname %}
+                    {{ form_widget(form.remove) }}
+                {% endif %}
                 {{ form_errors(form) }}
             </div>
         </div>
