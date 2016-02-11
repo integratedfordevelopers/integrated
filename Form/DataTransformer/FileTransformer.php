@@ -25,7 +25,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class FileTransformer implements DataTransformerInterface
 {
-
     /**
      * @var ManagerInterface
      */
