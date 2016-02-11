@@ -56,23 +56,15 @@ class FileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'file',
-            'file',
-            [
-                'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
-                'required' => false,
-            ]
-        );
+        $builder->add('file', 'file', [
+            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
+            'required' => false,
+        ]);
 
-        $builder->add(
-            'remove',
-            'checkbox',
-            [
-                'mapped'   => false,
-                'required' => false,
-            ]
-        );
+        $builder->add('remove', 'checkbox', [
+            'mapped' => false,
+            'required' => false,
+        ]);
 
         $builder->addEventSubscriber(new FileEventSubscriber($this->manager));
         $builder->addModelTransformer(new FileTransformer($this->manager));
