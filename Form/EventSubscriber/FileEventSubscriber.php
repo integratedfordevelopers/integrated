@@ -53,25 +53,8 @@ class FileEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA => 'preSetData',
             FormEvents::SUBMIT => 'submit',
         ];
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function preSetData(FormEvent $event)
-    {
-        // The file property
-        $file = $event->getForm()->get('file');
-
-        // Map the data self
-        if ($event->getForm()->get('remove')->getData()) {
-            $file->setData(null);
-        } else {
-            $file->setData($event->getData());
-        }
     }
 
     /**
@@ -82,8 +65,9 @@ class FileEventSubscriber implements EventSubscriberInterface
         // The file property in the form
         $file = $event->getForm()->get('file')->getData();
 
-        // Only match the instance
-        if ($file instanceof UploadedFile) {
+        if ($event->getForm()->get('remove')->getData()) {
+            $file->setData(null);
+        } elseif ($file instanceof UploadedFile) {
             // Make sure the entity ends up a StorageInterface
             $event->setData($this->manager->write(
                 new UploadedFileReader($event->getForm()->get('file')->getData()),
