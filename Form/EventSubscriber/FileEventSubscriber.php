@@ -12,15 +12,18 @@
 namespace Integrated\Bundle\StorageBundle\Form\EventSubscriber;
 
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
+
 use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
+ * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class FileEventSubscriber implements EventSubscriberInterface
 {
@@ -50,22 +53,39 @@ class FileEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SUBMIT => 'preSubmitData'
+            FormEvents::SUBMIT => 'submit',
         ];
     }
 
     /**
      * @param FormEvent $event
      */
-    public function preSubmitData(FormEvent $event)
+    public function submit(FormEvent $event)
     {
-        if ($event->getData()) {
-            // Write and set the data in the entity
-            $event->setData(
-                $this->manager->write(
-                    new UploadedFileReader($event->getData()),
-                    $this->decision->getFilesystems($event->getForm()->getData())
-                )
+        // The file property in the form
+        $file = $event->getForm()->get('file')->getData();
+
+        if ($event->getForm()->get('remove')->getData()) {
+            $file->setData(null);
+        } elseif ($file instanceof UploadedFile) {
+            // Get the root document bind to the form
+            $rootForm = $event->getForm();
+            while ($rootForm->getParent()) {
+                $rootForm = $rootForm->getParent();
+            }
+
+            // Make sure the entity ends up a StorageInterface
+            $event->setData($this->manager->write(
+                new UploadedFileReader($file),
+                // Set the file to allowed entity filesystems
+                $this->decision->getFilesystems($rootForm->getData())
+            ));
+        } else {
+            // We don't know what to do
+            throw new \LogicException(
+                'Invalid class given in submit event, expected %s got %s.',
+                UploadedFile::class,
+                get_class($file)
             );
         }
     }
