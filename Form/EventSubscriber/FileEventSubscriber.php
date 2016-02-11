@@ -31,11 +31,6 @@ class FileEventSubscriber implements EventSubscriberInterface
     protected $manager;
 
     /**
-     * @var DecisionInterface
-     */
-    protected $decision;
-
-    /**
      * @param ManagerInterface $manager
      */
     public function __construct(ManagerInterface $manager)
