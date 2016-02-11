@@ -51,9 +51,9 @@ class WorkflowFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('comment', 'textarea', ['required' => false]);
-
         $builder->add('state', 'workflow_state', ['label' => 'Workflow status', 'workflow' => $options['workflow']]);
+
+        $builder->add('comment', 'textarea', ['required' => false, 'attr' => ['class' => 'comment']]);
 
         $builder->add('workflow', 'hidden', ['data' => $options['workflow'], 'attr' => ['class' => 'workflow-hidden']]);
 
@@ -69,7 +69,7 @@ class WorkflowFormType extends AbstractType
             ]
         );
 
-        $builder->add('deadline', 'integrated_datetime');
+        $builder->add('deadline', 'integrated_datetime', ['attr' => ['class' => 'deadline']]);
     }
 
     /**

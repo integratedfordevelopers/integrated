@@ -23,6 +23,12 @@
 
 		<field name="publishable" column="publishable" type="boolean" />
 
+		<field name="comment" column="comment" type="integer" />
+
+		<field name="assignee" column="assignee" type="integer" />
+
+		<field name="deadline" column="deadline" type="integer" />
+
 		<one-to-many field="permissions" target-entity="Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission" mapped-by="state">
 			<cascade>
 				<cascade-persist />

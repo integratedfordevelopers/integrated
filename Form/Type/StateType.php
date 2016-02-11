@@ -14,6 +14,7 @@ namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromDataListener;
 
+use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -51,6 +52,27 @@ class StateType extends AbstractType
             'attr' => [
                 'class' => 'state_default_input_field'
             ]
+        ]);
+
+        $choiceFlags = [
+            StateVisibleConfig::OPTIONAL => 'Optional',
+            StateVisibleConfig::REQUIRED => 'Required',
+            StateVisibleConfig::DISABLED => 'Disabled',
+        ];
+
+        $builder->add('comment', 'choice', [
+            'expanded' => true,
+            'choices' => $choiceFlags,
+        ]);
+
+        $builder->add('assignee', 'choice', [
+            'expanded' => true,
+            'choices' => $choiceFlags,
+        ]);
+
+        $builder->add('deadline', 'choice', [
+            'expanded' => true,
+            'choices' => $choiceFlags,
         ]);
 
         $builder->add('permissions', 'workflow_definition_permissions', ['required' => false]);

@@ -19,6 +19,7 @@ use Integrated\Bundle\UserBundle\Model\Group;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
+use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -213,7 +214,7 @@ class WorkflowController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function assignedAction(Request $request)
+    public function changeStateAction(Request $request)
     {
         $stateId = $request->get('state');
 
@@ -268,7 +269,22 @@ class WorkflowController extends Controller
             $users[$item->getId()] = $item->getUsername();
         }
 
-        return new JsonResponse(['users' => $users]);
+        $fieldsCodes = [
+            'comment' => [
+                'required' => $state->getComment() == StateVisibleConfig::REQUIRED,
+                'disabled' => $state->getComment() == StateVisibleConfig::DISABLED,
+            ],
+            'assigned-choice' => [
+                'required' => $state->getAssignee() == StateVisibleConfig::REQUIRED,
+                'disabled' => $state->getAssignee() == StateVisibleConfig::DISABLED,
+            ],
+            'deadline' => [
+                'required' => $state->getDeadline() == StateVisibleConfig::REQUIRED,
+                'disabled' => $state->getDeadline() == StateVisibleConfig::DISABLED,
+            ],
+        ];
+
+        return new JsonResponse(['users' => $users, 'fields' => $fieldsCodes]);
     }
 
     /**
