@@ -74,6 +74,13 @@ class FileEventSubscriber implements EventSubscriberInterface
                 // Set the file to allowed entity filesystems
                 $this->decision->getFilesystems($event->getForm()->getData())
             ));
+        } else {
+            // We don't know what to do
+            throw new \LogicException(
+                'Invalid class given in submit event, expected %s got %s.',
+                UploadedFile::class,
+                get_class($file)
+            );
         }
     }
 }
