@@ -12,12 +12,12 @@
 namespace Integrated\Bundle\StorageBundle\Form\EventSubscriber;
 
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
-use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -44,20 +44,40 @@ class FileEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::POST_SUBMIT => 'postSubmit'
+            FormEvents::PRE_SET_DATA => 'preSetData',
+            FormEvents::SUBMIT => 'submit',
         ];
     }
 
     /**
      * @param FormEvent $event
      */
-    public function postSubmit(FormEvent $event)
+    public function preSetData(FormEvent $event)
     {
-        $data = $event->getData();
+        // The file property
+        $file = $event->getForm()->get('file');
 
-        if (!empty($data['remove'])) {
-            // Remove the file
-            $event->setData(['file' => null]);
+        // Map the data self
+        if ($event->getForm()->get('remove')->getData()) {
+            $file->setData(null);
+        } else {
+            $file->setData($event->getData());
+        }
+    }
+
+    /**
+     * @param FormEvent $event
+     */
+    public function submit(FormEvent $event)
+    {
+        // The file property in the form
+        $file = $event->getForm()->get('file')->getData();
+
+        // Only match the instance
+        if ($file instanceof UploadedFile) {
+            $event->setData($this->manager->write(
+                new UploadedFileReader($event->getForm()->get('file')->getData())
+            ));
         }
     }
 }

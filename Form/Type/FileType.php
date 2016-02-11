@@ -11,9 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
-use Integrated\Bundle\StorageBundle\Form\DataTransformer\FileTransformer;
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
-use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Form\AbstractType;
@@ -59,6 +57,7 @@ class FileType extends AbstractType
         $builder->add('file', 'file', [
             'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
             'required' => false,
+            'mapped' => false,
         ]);
 
         $builder->add('remove', 'checkbox', [
@@ -67,7 +66,6 @@ class FileType extends AbstractType
         ]);
 
         $builder->addEventSubscriber(new FileEventSubscriber($this->manager));
-        $builder->addModelTransformer(new FileTransformer($this->manager));
     }
 
     /**
