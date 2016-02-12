@@ -45,7 +45,7 @@ class ContentType implements TypeInterface
 
         if ($data instanceof Content) {
             $container->set('pub_active', $data->isPublished(false));
-        }        
+        }
 
         //Relation field and facet field for taxonomy and commercial relations
         $items = array_merge($data->getRelationsByRelationType('taxonomy')->toArray(),$data->getRelationsByRelationType('commercial')->toArray());
