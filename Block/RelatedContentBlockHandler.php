@@ -107,6 +107,11 @@ class RelatedContentBlockHandler extends BlockHandler
         $query = $this->dm->getRepository('IntegratedContentBundle:Content\Content')
             ->getUsedBy($document, $block->getRelation());
 
+        $contentTypes = $block->getContentTypes();
+        if ($contentTypes) {
+            $query->field('contentType')->in($contentTypes);
+        }
+
         if ($block->getSortBy()) {
             $query->sort($block->getSortBy());
         }

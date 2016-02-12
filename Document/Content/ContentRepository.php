@@ -14,7 +14,7 @@ class ContentRepository extends DocumentRepository
     /**
      * Get items which have the current document linked
      *
-     * @param Content $content
+     * @param Content       $content
      * @param Relation|null $relation
      * @return \Doctrine\MongoDB\Query\Builder
      */
@@ -22,7 +22,9 @@ class ContentRepository extends DocumentRepository
     {
         $query =  $this->createQueryBuilder()
             ->field('relations.references.$id')
-            ->equals($content->getId());
+            ->equals($content->getId())
+            ->field('id')
+            ->notEqual($content->getId());
 
         if ($relation) {
             $query->field('relations.relationId')->equals($relation->getId());

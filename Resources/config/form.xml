@@ -48,6 +48,8 @@
 
         <parameter key="integrated_formtype_form_type_author.class">Integrated\Bundle\ContentBundle\Form\Type\AuthorType</parameter>
 
+        <parameter key="integrated_formtype_form_type_relation_block_content_types.class">Integrated\Bundle\ContentBundle\Form\Type\RelationBlockContentTypes</parameter>
+
     </parameters>
 
     <services>
@@ -155,6 +157,12 @@
 
         <service id="integrated_content.form.publish_time.type" class="%integrated_content.form.publish_time.type.class%">
             <tag name="form.type" alias="integrated_publish_time" />
+        </service>
+
+        <service id="integrated_formtype_form_type_relation_block_content_types" class="%integrated_formtype_form_type_relation_block_content_types.class%">
+            <argument type="service" id="integrated_content.content_type_repository" />
+
+            <tag name="form.type" alias="integrated_relation_block_content_types" />
         </service>
 
     </services>

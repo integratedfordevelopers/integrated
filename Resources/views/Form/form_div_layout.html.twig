@@ -133,8 +133,8 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% if (form.parent.vars.value.file is not empty) %}
-                    <a href="{{ form.parent.vars.value.file }}" target="_blank">
+                {% if form.vars.data.pathname|default %}
+                    <a href="{{ form.vars.data.pathname }}" target="_blank" style="display: block; margin-bottom: 6px;">
                         {% trans %}Download{% endtrans %}
                     </a>
                 {% endif %}
@@ -150,8 +150,8 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% if (form.parent.vars.value.file.pathname is not empty) %}
-                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ form.parent.vars.value.file.pathname() }}" />
+                {% if form.vars.data.pathname|default %}
+                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ form.vars.data.pathname }}" />
                 {% endif %}
                 {{ form_widget(form) }}
                 {{ form_errors(form) }}
