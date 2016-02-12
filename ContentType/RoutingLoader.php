@@ -61,11 +61,14 @@ class RoutingLoader implements LoaderInterface
 
         /** @var \Integrated\Bundle\PageBundle\Document\Page\ContentTypePage $page */
         foreach ($pages as $page) {
-            dump($page->getPath());
-            $this->page = $page;
-            $path = preg_replace_callback('/(#)([\s\S]+?)(#)/', [$this, 'convertPath'], $page->getPath());
-            dump($path);
+            if (!$page->getControllerService()) {
+                continue;
+            }
 
+            $this->page = $page;
+
+            //todo solr extension maken voor inschieten van urls in solr, gepostfixes met channel (url_dzg)
+            //todo twig functie schrijven: integrated_url(document), moet met solr en document overweg kunnen.
             $route = new Route(
                 $page->getRoutePath(),
                 ['_controller' => sprintf('%s:%s', $page->getControllerService(), $page->getControllerAction())],
@@ -79,16 +82,17 @@ class RoutingLoader implements LoaderInterface
 
             $routes->add('integrated_website_content_type_page_' . $page->getId(), $route);
         }
-//        die;
+
         return $routes;
     }
 
+    /**
+     * @return \Doctrine\ODM\MongoDB\DocumentRepository
+     */
     protected function getContentTypeRepo()
     {
         return $this->dm->getRepository('IntegratedContentBundle:ContentType\ContentType');
     }
-
-
 
     /**
      * {@inheritdoc}

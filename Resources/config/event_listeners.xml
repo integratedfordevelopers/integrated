@@ -21,11 +21,13 @@
 
         <service id="integrated_page.event_listener.content_type_changed" class="%integrated_page.event_listener.content_type_changed.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.services.content_type_page" />
             <tag name="integrated_content.event_subscriber" />
         </service>
 
         <service id="integrated_page.event_listener.channel_changed" class="%integrated_page.event_listener.channel_changed.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.services.content_type_page" />
             <tag name="integrated_content.event_subscriber" />
         </service>
 

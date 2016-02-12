@@ -20,11 +20,19 @@ class ContentTypeControllerManager
 {
     private $controllers;
 
+    /**
+     * ContentTypeControllerManager constructor.
+     */
     public function __construct()
     {
         $this->controllers = new ArrayCollection();
     }
 
+    /**
+     * @param $serviceId
+     * @param $attributes
+     * @throws \Exception
+     */
     public function addController($serviceId, $attributes)
     {
         if (!array_key_exists('class', $attributes)) {

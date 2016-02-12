@@ -29,6 +29,11 @@ class ContentTypePageType extends AbstractType
      */
     protected $controllerManager;
 
+    /**
+    /**
+     * ContentTypePageType constructor.
+     * @param ContentTypeControllerManager $controllerManager
+     */
     public function __construct(ContentTypeControllerManager $controllerManager)
     {
         $this->controllerManager = $controllerManager;

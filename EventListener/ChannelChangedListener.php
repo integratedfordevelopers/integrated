@@ -19,6 +19,7 @@ use Integrated\Common\Channel\Events;
 use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\PageBundle\Services\ContentTypePageService;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 
 /**
@@ -32,11 +33,18 @@ class ChannelChangedListener implements EventSubscriberInterface
     protected $dm;
 
     /**
-     * @param DocumentManager $dm
+     * @var ContentTypePageService
      */
-    public function __construct(DocumentManager $dm)
+    protected $contentTypePageService;
+
+    /**
+     * @param DocumentManager $dm
+     * @param ContentTypePageService $contentTypePageService
+     */
+    public function __construct(DocumentManager $dm, ContentTypePageService $contentTypePageService)
     {
         $this->dm = $dm;
+        $this->contentTypePageService = $contentTypePageService;
     }
 
     /**
@@ -63,9 +71,7 @@ class ChannelChangedListener implements EventSubscriberInterface
         /** @var ContentType $contentType */
         foreach ($contentTypes as $contentType) {
             if (!$this->getPageRepository()->findOneBy(['channel.$id' => $channel->getId(), 'contentType.$id' => $contentType->getId()])) {
-                $page = new ContentTypePage($contentType, $channel);
-                $this->dm->persist($page);
-                $this->dm->flush($page);
+                $this->contentTypePageService->addContentType($contentType, $channel);
             }
         }
     }

@@ -12,6 +12,8 @@
 
         <parameter key="integrated_page.content_type.routing_loader.class">Integrated\Bundle\PageBundle\ContentType\RoutingLoader</parameter>
 
+        <parameter key="integrated_page.services.content_type_page.class">Integrated\Bundle\PageBundle\Services\ContentTypePageService</parameter>
+
     </parameters>
 
     <services>
@@ -25,6 +27,11 @@
         <service id="integrated_page.content_type.routing_loader" class="%integrated_page.content_type.routing_loader.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="routing.loader" />
+        </service>
+
+        <service id="integrated_page.services.content_type_page" class="%integrated_page.services.content_type_page.class%">
+            <argument type="service" id="integrated_page.content_type.content_type_controller_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
     </services>
