@@ -158,8 +158,9 @@ class MigrateCommand extends Command
                         // The only valid count is one, what else?
                         throw new \LogicException(
                             sprintf(
-                                'The file %s was found zero times, the ID must be unique in the given path and exist.',
-                                $filename
+                                'The file %s was found zero times for document %s.',
+                                $filename,
+                                $row['_id']
                             )
                         );
                     }
