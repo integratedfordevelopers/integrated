@@ -38,21 +38,17 @@
 
             {% if form.offsetGet('relations').count() %}
                 <input type="hidden" id="default_references" value="{{ references }}">
-                <div class="aside-item-holder section-white">
-                    <div class="content_column_inner  relations">
-                        <div class="item_row">
-                            {% for relation in form.relations %}
-                                <div class="relation" style="margin: 0 0 30px 0">
-                                    <label for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label><br/>
-
-                                    <select id="{{ relation.vars.name }}" data-multiple="{{ relation.vars.attr['data-multiple'] }}" class="relation-items form-control">
-                                    </select>
-                                </div>
-                            {% endfor %}
+                <div class="form-horizontal relations" style="margin-top:15px;">
+                    {% for relation in form.relations %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label>
+                            <div class="col-sm-8 relation">
+                                <select id="{{ relation.vars.name }}" data-multiple="{{ relation.vars.attr['data-multiple'] }}" class="relation-items form-control">
+                                </select>
+                            </div>
                         </div>
 
-                        <div id="relations-result"></div>
-                    </div>
+                    {% endfor %}
                 </div>
             {% endif %}
         </section>
@@ -236,11 +232,7 @@
 
 {% endif %}
 
-{% if hasWorkflowBundle %}
-    {% javascripts '@IntegratedWorkflowBundle/Resources/public/js/updateAssignedList.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endif %}
+
 
 {{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
 {% endblock javascript %}
