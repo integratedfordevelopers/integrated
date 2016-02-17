@@ -83,9 +83,11 @@ class FileEventSubscriber implements EventSubscriberInterface
         } else {
             // We don't know what to do
             throw new \LogicException(
-                'Invalid class given in submit event, expected %s got %s.',
-                UploadedFile::class,
-                get_class($file)
+                sprintf(
+                    'Invalid class given in submit event, expected %s got %s.',
+                    UploadedFile::class,
+                    get_class($file)
+                )
             );
         }
     }
