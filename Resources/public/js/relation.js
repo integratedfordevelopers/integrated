@@ -7,14 +7,13 @@ $(".relation-items").each(function() {
     var $formControl = $('[data-relation="' + relation_id + '"]');
     var defaultValues = $.parseJSON($('#default_references').val());
 
-    if (defaultValues.length && defaultValues[relation_id].length) {
+    if (defaultValues[relation_id] !== undefined && defaultValues[relation_id].length) {
         $.each(defaultValues[relation_id], function() {
             $relation.append('<option value="'+this.id+'">'+this.title+'</option>');
         });
     }
 
     $relation.select2({
-        minimumInputLength: 4,
         multiple: multiple,
         ajax: {
             type: 'GET',

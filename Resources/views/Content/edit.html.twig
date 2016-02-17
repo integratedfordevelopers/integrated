@@ -39,7 +39,6 @@
             {% if form.offsetGet('relations').count() %}
                 <input type="hidden" id="default_references" value="{{ references }}">
                 <div class="aside-item-holder section-white">
-                    <h3 class="font-medium">{% trans %}Link to{% endtrans %}</h3>
                     <div class="content_column_inner  relations">
                         <div class="item_row">
                             {% for relation in form.relations %}
@@ -51,6 +50,8 @@
                                 </div>
                             {% endfor %}
                         </div>
+
+                        <div id="relations-result"></div>
                     </div>
                 </div>
             {% endif %}
