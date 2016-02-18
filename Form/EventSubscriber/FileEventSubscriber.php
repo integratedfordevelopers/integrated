@@ -65,6 +65,7 @@ class FileEventSubscriber implements EventSubscriberInterface
         // The file property in the form
         $file = $event->getForm()->get('file')->getData();
 
+        // Delete is more important
         if ($event->getForm()->get('remove')->getData()) {
             $file->setData(null);
         } elseif ($file instanceof UploadedFile) {
@@ -80,15 +81,6 @@ class FileEventSubscriber implements EventSubscriberInterface
                 // Set the file to allowed entity filesystems
                 $this->decision->getFilesystems($rootForm->getData())
             ));
-        } else {
-            // We don't know what to do
-            throw new \LogicException(
-                sprintf(
-                    'Invalid class given in submit event, expected %s got %s.',
-                    UploadedFile::class,
-                    get_class($file)
-                )
-            );
         }
     }
 }
