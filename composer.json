@@ -21,6 +21,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*",
+        "leafo/scssphp": "~0.6",
         "integrated/library": "~0.3",
         "integrated/channel-bundle": "~0.3",
         "integrated/content-bundle": "~0.5",
