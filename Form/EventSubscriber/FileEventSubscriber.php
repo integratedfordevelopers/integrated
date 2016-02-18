@@ -65,7 +65,7 @@ class FileEventSubscriber implements EventSubscriberInterface
         // The file property in the form
         $file = $event->getForm()->get('file')->getData();
 
-        // Delete is more important
+        // Delete comes first
         if ($event->getForm()->get('remove')->getData()) {
             $file->setData(null);
         } elseif ($file instanceof UploadedFile) {
@@ -81,6 +81,9 @@ class FileEventSubscriber implements EventSubscriberInterface
                 // Set the file to allowed entity filesystems
                 $this->decision->getFilesystems($rootForm->getData())
             ));
+        } else {
+            // Set the something we don't know
+            $event->setData($file);
         }
     }
 }
