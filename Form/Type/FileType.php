@@ -15,7 +15,6 @@ use ArrayObject;
 
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
 
-use Integrated\Bundle\StorageBundle\Form\TestTransform;
 use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
@@ -69,7 +68,7 @@ class FileType extends AbstractType
         $resolver->setDefaults([
             'compound' => true,
             'required' => false,
-            'constraints_file' => array(),
+            'constraints_file' => [],
         ]);
 
         $resolver->setNormalizer('constraints', $constraintsNormalizer);
