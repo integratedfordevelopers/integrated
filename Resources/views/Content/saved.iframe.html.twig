@@ -2,12 +2,8 @@
 <html>
 <head>
     <script>
-        parent.$(function() {
-            parent.$('#{{ relation }}')
-                .closest(".relation")
-                .find(".bs-example-modal-lg")
-                .modal('hide');
-        });
+        parent.$('.relation-items#{{ relation }}').append('<option selected value="{{ id }}">{{ title }}</option>').trigger('change');
+        parent.$('.relation-items#{{ relation }}').closest(".relation").find(".bs-example-modal-lg").modal('hide');
     </script>
 </head>
 <body>

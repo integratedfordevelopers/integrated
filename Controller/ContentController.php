@@ -452,6 +452,7 @@ class ContentController extends Controller
                         'IntegratedContentBundle:Content:saved.iframe.html.twig',
                         array(
                             'id' => $content->getId(),
+                            'title' => method_exists($content, 'getTitle') ? $content->getTitle() : $content->getId(),
                             'relation' => $request->get('relation')
                         )
                     );

@@ -11,6 +11,7 @@
 
 	<route id="integrated_content_content_new" path="/new">
 		<default key="_controller">IntegratedContentBundle:Content:new</default>
+		<option key="expose">true</option>
 	</route>
 
 	<route id="integrated_content_content_new_rest" path="/" methods="POST">

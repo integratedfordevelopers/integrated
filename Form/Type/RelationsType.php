@@ -59,7 +59,10 @@ class RelationsType extends AbstractType
 
         foreach ($relations as $relation) {
             foreach ($relation->getTargets() as $contentType) {
-                $url[] = $contentType->getType();
+                $contentTypes[] = [
+                    'type' => $contentType->getType(),
+                    'name' => $contentType->getName(),
+                ];
             }
 
             $constraints = [];
@@ -69,11 +72,11 @@ class RelationsType extends AbstractType
                 ]);
             }
 
-            $builder->add($relation->getId(), 'hidden', [
-                'attr' => [
-                    'data-title'    => $relation->getName(),
-                    'data-relation' => $relation->getId(),
-                    'data-multiple' => $relation->isMultiple()
+            $builder->add($relation->getId(), 'hidden', ['attr' => [
+                'data-title'    => $relation->getName(),
+                'data-relation' => $relation->getId(),
+                'data-multiple' => $relation->isMultiple(),
+                'data-types'    => json_encode($contentTypes),
                 ],
                 'constraints' => $constraints,
             ]);

@@ -4,12 +4,12 @@ $(".relation-items").each(function() {
     var relation_id = $(this).attr('id');
 
     var $relation = $(this);
-    var $formControl = $('[data-relation="' + relation_id + '"]');
     var defaultValues = $.parseJSON($('#default_references').val());
+    var $addWrapper = $relation.next('.add-wrapper');
 
     if (defaultValues[relation_id] !== undefined && defaultValues[relation_id].length) {
         $.each(defaultValues[relation_id], function() {
-            $relation.append('<option value="'+this.id+'">'+this.title+'</option>');
+            $relation.append('<option selected value="'+this.id+'">'+this.title+'</option>');
         });
     }
 
@@ -47,6 +47,21 @@ $(".relation-items").each(function() {
     $(this).on('change', function () {
         $('[data-relation="' + relation_id + '"]').val( $(this).val() );
     });
+
+    var source = $("#add-template").html();
+    var template = Handlebars.compile(source);
+
+    var contentRelation = [];
+    $.each($relation.data('types'), function() {
+        contentRelation.push({
+            'name': this.name,
+            'href': Routing.generate('integrated_content_content_new', {type: this.type, relation: relation_id})
+        });
+    });
+
+    var context = {relations: contentRelation};
+    var html = template(context);
+    $addWrapper.html(html);
 });
 
 var resizeIFrame = function(height, iFrame) {
@@ -65,12 +80,17 @@ var resizeIFrame = function(height, iFrame) {
 
 $('.relations').on('click', 'a[data-modal]', function(e){
     e.preventDefault();
-    var modal = $(this).next('.bs-example-modal-lg');
+
+    if ($(this).parents('.btn-group').length) {
+        var modal = $(this).parents('.btn-group').next('.bs-example-modal-lg');
+    } else {
+        var modal = $(this).next('.bs-example-modal-lg');
+    }
     var iFrame = modal.find('iframe');
 
     modal.find('.modal-title').text($(this).data('title'));
 
-    iFrame.css('display', 'block').attr('src', $(this).attr('href') + '&_format=iframe.html').load(function(e){
+    iFrame.css('display', 'block').attr('src', $(this).data('href') + '&_format=iframe.html').load(function(e){
 
         iFrame.show();
         modal.modal('show');
