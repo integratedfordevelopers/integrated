@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ContentHistoryBundle\Document;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User;
-use Integrated\Common\Content\ContentInterface;
 
 use DateTime;
 
@@ -48,10 +47,10 @@ class ContentHistory
     protected $action;
 
     /**
-     * @var ContentInterface | null
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
+     * @var array
+     * @ODM\Hash
      */
-    protected $snapshot;
+    protected $changeSet = [];
 
     /**
      * @var User | null
@@ -111,20 +110,20 @@ class ContentHistory
     }
 
     /**
-     * @return ContentInterface
+     * @return array
      */
-    public function getSnapshot()
+    public function getChangeSet()
     {
-        return $this->snapshot;
+        return $this->changeSet;
     }
 
     /**
-     * @param ContentInterface | null $snapshot
+     * @param array $changeSet
      * @return $this
      */
-    public function setSnapshot(ContentInterface $snapshot = null)
+    public function setChangeSet(array $changeSet = [])
     {
-        $this->snapshot = $snapshot;
+        $this->changeSet = $changeSet;
         return $this;
     }
 

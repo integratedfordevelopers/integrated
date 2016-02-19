@@ -14,9 +14,9 @@ namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
-use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -28,11 +28,7 @@ class ContentHistorySubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        // @todo priority
-
         return [
-//            Events::postPersist,
-//            Events::postUpdate,
             Events::onFlush,
         ];
     }
@@ -42,85 +38,37 @@ class ContentHistorySubscriber implements EventSubscriber
      */
     public function onFlush($args)
     {
-        dump($args->getDocumentManager()->getUnitOfWork()); die;
-//        $this->createLog($args->getDocumentManager(), $args->getDocumentManager()->getUnitOfWork()->getScheduledDocumentUpdates());
+        $dm = $args->getDocumentManager();
+        $uow = $dm->getUnitOfWork();
 
-        //dump($args->getDocumentManager()->getUnitOfWork()->g);
-        dump($args->getDocumentManager()->getUnitOfWork()->getScheduledDocumentInsertions());
-        dump($args->getDocumentManager()->getUnitOfWork()->getScheduledDocumentDeletions());
-        die;
+        //$this->createLog($dm, $uow->getScheduledDocumentInsertions(), ContentHistory::ACTION_INSERT);
+        $this->createLog($dm, $uow->getScheduledDocumentUpdates(), ContentHistory::ACTION_UPDATE);
+        //$this->createLog($dm, $uow->getScheduledDocumentDeletions(), ContentHistory::ACTION_DELETE);
     }
 
     /**
-     * @param LifecycleEventArgs $args
-     */
-    public function postPersist(LifecycleEventArgs $args)
-    {
-        $this->createLog($args, ContentHistory::ACTION_INSERT);
-    }
-
-    /**
-     * @param LifecycleEventArgs $args
-     */
-    public function postUpdate(LifecycleEventArgs $args)
-    {
-        $this->createLog($args, ContentHistory::ACTION_UPDATE);
-    }
-
-    /**
-     * @param LifecycleEventArgs $args
-     */
-    public function postRemove(LifecycleEventArgs $args)
-    {
-        $this->createLog($args, ContentHistory::ACTION_DELETE);
-    }
-
-    /**
-     * @param LifecycleEventArgs $args
+     * @param DocumentManager $dm
+     * @param array $documents
      * @param string $action
-     * @return bool
      */
-    protected function createLog($dm, $docs)
+    protected function createLog(DocumentManager $dm, array $documents, $action)
     {
-        if (!isset($GLOBALS['done'])) {
-            $GLOBALS['done'] = array();
-        }
+        $uow = $dm->getUnitOfWork();
 
-//        file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/../log.txt", date("YmdHis") . get_class($args->getDocument()) . "\n", FILE_APPEND);
-//        if (!$args->getDocument() instanceof ContentInterface) {
-//            file_put_contents($_SERVER['DOCUMENT_ROOT'] . "/../log.txt", date("YmdHis") . "return " . get_class($args->getDocument()) . "\n", FILE_APPEND);
-//            return false;
-//        }
+        foreach ($documents as $document) {
+            $changeSet = $uow->getDocumentChangeSet($document);
 
-//        if ($args->getDocument()->getTitle() == 'flap') {
-//            dump($args);
-//            exit;
-//            return false;
-//        }
+            unset($changeSet['relations']); // @hack
 
-        //$GLOBALS['done'][$args->getDocument()->getId()] = $args->getDocument()->getId();
-        // $args->getDocument()->setTitle('flap');
+            if (count($changeSet)) {
+                $history = new ContentHistory();
 
+                $history->setAction($action);
+                $history->setChangeSet($changeSet);
 
-        foreach ($docs as $doc) {
-            if (!$doc instanceof ContentInterface) {
-                continue;
+                $dm->persist($history);
+                $uow->recomputeSingleDocumentChangeSet($dm->getClassMetadata(get_class($history)), $history);
             }
-
-       // $dm = $args->getDocumentManager();
-        //$dm->detach($args->getDocument());
-
-        //dump($dm->getUnitOfWork()->getScheduledCollections($args->getDocument()));
-
-        $history = new ContentHistory();
-
-        //$history->setAction($action);
-        $history->setSnapshot($doc);
-
-        $dm->persist($history);
-        $dm->flush($history);
-    }
-
-        return true;
+        }
     }
 }
