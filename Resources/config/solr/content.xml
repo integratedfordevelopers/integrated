@@ -38,6 +38,7 @@
                     <string key="name">author</string>
                     <array>
                         <array key="authors">
+                            <string>@person.id</string>
                             <string>@person.prefix</string>
                             <string>@person.firstName</string>
                             <string>@person.lastName</string>
