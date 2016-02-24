@@ -86,12 +86,14 @@ class WorkflowExtension implements TypeExtensionInterface
             }
         }
 
+        $container->add('workflow_state', $state->getName());
         $container->add('facet_workflow_state', $state->getName());
 
         if ($assignee = $this->getAssigned($data)) {
             if ($assignee instanceof User) {
                 if ($relation = $assignee->getRelation()) {
                     if ($relation instanceof Person) {
+                        $container->add('workflow_assigned', $relation->getFirstname() . ' ' . $relation->getLastname());
                         $container->add('facet_workflow_assigned', $relation->getFirstname() . ' ' . $relation->getLastname());
                     }
                 }
