@@ -194,7 +194,9 @@ class ContentController extends Controller
         if ($this->has('integrated_workflow.solr.workflow.extension')) {
             $filter = [];
 
-            if (($user = $this->getUser()) && $user instanceof GroupableInterface) {
+            $user = $this->getUser();
+
+            if ($user instanceof GroupableInterface) {
                 foreach ($user->getGroups() as $group) {
                     $filter[] = $group->getId();
                 }
@@ -217,8 +219,15 @@ class ContentController extends Controller
             // always allow access to assinged content
             $fq->setQuery(
                 $fq->getQuery() . ' OR facet_workflow_assigned_id: %1%',
-                array($this->getUser()->getId())
+                array($user->getId())
             );
+
+            if ($person = $user->getRelation()) {
+                $fq->setQuery(
+                    $fq->getQuery().' OR author: %1%*',
+                    array($person->getId())
+                );
+            }
 
         }
 
