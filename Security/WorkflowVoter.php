@@ -13,6 +13,9 @@ namespace Integrated\Bundle\WorkflowBundle\Security;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 
 use Integrated\Bundle\UserBundle\Model\User;
@@ -198,7 +201,7 @@ class WorkflowVoter implements VoterInterface
 
             if (!$isAssigned) {
                 if ($this->permissions['view'] == $attribute) {
-                    if (!$permissions['read']) {
+                    if (!$permissions['read'] && !$this->isAuthor($token->getUser(), $object)) {
                         return VoterInterface::ACCESS_DENIED;
                     }
                 }
@@ -332,6 +335,28 @@ class WorkflowVoter implements VoterInterface
                 return true;
             }
         }
+        return false;
+    }
+
+    /**
+     * @param User             $user
+     * @param ContentInterface $content
+     * @return bool
+     */
+    protected function isAuthor(User $user, ContentInterface $content)
+    {
+        if (($userRelation = $user->getRelation()) && $content instanceof Article) {
+            /** @var Author $author */
+            foreach ($content->getAuthors() as $author) {
+                /** @var Person $person */
+                $person = $author->getPerson();
+
+                if ($person->getId() == $userRelation->getId()) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 }
