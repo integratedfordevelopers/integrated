@@ -16,4 +16,6 @@
     <import resource="@IntegratedWebsiteBundle/Resources/config/routing/search_selection.xml" />
     
     <import resource="." type="page" />
+
+    <import resource="." type="integrated_content_type_page" />
 </routes>
