@@ -79,7 +79,8 @@ class ProfileFormType extends AbstractType
             $builder->add('enabled', 'checkbox', [
                 'mapped' => false,
                 'required' => false,
-                'label' => 'Enable login'
+                'label' => 'Enable login',
+                'attr' => ['class' => 'login-visible-control'],
             ]);
 
             // this has to be a event listener as data will not be mapped to this
@@ -185,6 +186,7 @@ class ProfileFormType extends AbstractType
         // everything can be left empty if enabled is not checked
 
         $resolver->setDefault('optional', false);
+        $resolver->setDefault('attr', array('class' => 'integrated-user-form'));
         $resolver->setAllowedTypes('optional', ['bool']);
 
     }
