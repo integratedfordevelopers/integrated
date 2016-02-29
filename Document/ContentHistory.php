@@ -35,6 +35,13 @@ class ContentHistory
     protected $id;
 
     /**
+     * @var string | null
+     * @ODM\String
+     * @ODM\Index
+     */
+    protected $document;
+
+    /**
      * @var DateTime
      * @ODM\Date
      */
@@ -50,7 +57,7 @@ class ContentHistory
      * @var array
      * @ODM\Hash
      */
-    protected $changeSet = [];
+    protected $changes = [];
 
     /**
      * @var User | null
@@ -71,6 +78,24 @@ class ContentHistory
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    /**
+     * @param string $document
+     * @return $this
+     */
+    public function setDocument($document)
+    {
+        $this->document = $document;
+        return $this;
     }
 
     /**
@@ -112,18 +137,20 @@ class ContentHistory
     /**
      * @return array
      */
-    public function getChangeSet()
+    public function getChanges()
     {
-        return $this->changeSet;
+        return $this->changes;
     }
 
     /**
-     * @param array $changeSet
+     * @param array $changes
      * @return $this
      */
-    public function setChangeSet(array $changeSet = [])
+    public function setChanges(array $changes = [])
     {
-        $this->changeSet = $changeSet;
+        unset($changes['class']);
+
+        $this->changes = $changes;
         return $this;
     }
 
