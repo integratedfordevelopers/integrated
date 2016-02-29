@@ -151,21 +151,6 @@ class ContentTypePage
     }
 
     /**
-     * Returns the correct path for symfony routing module
-     * @return mixed
-     */
-    public function getRoutePath()
-    {
-        return preg_replace_callback(
-            '/(#)([\s\S]+?)(#)/',
-            function ($matches) {
-                return $matches[2];
-            },
-            $this->path
-        );
-    }
-
-    /**
      * @return string
      */
     public function getLayout()

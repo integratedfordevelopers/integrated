@@ -34,8 +34,9 @@ class ContentTypePageService
     protected $dm;
 
     /**
-     * ContentTypePageType constructor.
+     * ContentTypePageService constructor.
      * @param ContentTypeControllerManager $controllerManager
+     * @param DocumentManager $dm
      */
     public function __construct(ContentTypeControllerManager $controllerManager, DocumentManager $dm)
     {

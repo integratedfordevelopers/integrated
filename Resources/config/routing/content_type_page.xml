@@ -11,4 +11,5 @@
     <route id="integrated_page_content_type_page_edit" path="/{id}/edit" methods="GET|PUT">
         <default key="_controller">IntegratedPageBundle:ContentTypePage:edit</default>
     </route>
+
 </routes>

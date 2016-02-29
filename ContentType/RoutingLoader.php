@@ -11,8 +11,9 @@
 
 namespace Integrated\Bundle\PageBundle\ContentType;
 
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Loader\LoaderResolverInterface;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
+use Integrated\Bundle\PageBundle\Services\RouteResolver;
+use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -21,8 +22,10 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class RoutingLoader implements LoaderInterface
+class RoutingLoader extends Loader
 {
+    const ROUTE_PREFIX = 'integrated_content_type_page';
+
     /**
      * @var bool
      */
@@ -34,16 +37,24 @@ class RoutingLoader implements LoaderInterface
     protected $dm;
 
     /**
+     * @var RouteResolver
+     */
+    protected $routeResolver;
+
+    /**
      * @var \Integrated\Bundle\PageBundle\Document\Page\ContentTypePage
      */
     protected $page;
 
     /**
+     * RoutingLoader constructor.
      * @param DocumentManager $dm
+     * @param RouteResolver $routeResolver
      */
-    public function __construct(DocumentManager $dm)
+    public function __construct(DocumentManager $dm, RouteResolver $routeResolver)
     {
         $this->dm = $dm;
+        $this->routeResolver = $routeResolver;
     }
 
     /**
@@ -66,11 +77,14 @@ class RoutingLoader implements LoaderInterface
             }
 
             $this->page = $page;
+            $this->routeResolver->setContentTypePage($page);
 
             //todo solr extension maken voor inschieten van urls in solr, gepostfixes met channel (url_dzg)
             //todo twig functie schrijven: integrated_url(document), moet met solr en document overweg kunnen.
+            //todo check if url is unique
+            //todo pagina in url mogelijk maken
             $route = new Route(
-                $page->getRoutePath(),
+                $this->routeResolver->getRoutePath(),
                 ['_controller' => sprintf('%s:%s', $page->getControllerService(), $page->getControllerAction())],
                 [],
                 [],
@@ -80,8 +94,9 @@ class RoutingLoader implements LoaderInterface
                 'request.attributes.get("_channel") == "' . $page->getChannel()->getId() . '"'
             );
 
-            $routes->add('integrated_website_content_type_page_' . $page->getId(), $route);
+            $routes->add($this->routeResolver->getRouteName(), $route);
         }
+        $this->loaded = true;
 
         return $routes;
     }
@@ -99,20 +114,6 @@ class RoutingLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
-        return 'page' === $type;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getResolver()
-    {
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setResolver(LoaderResolverInterface $resolver)
-    {
+        return self::ROUTE_PREFIX === $type;
     }
 }
