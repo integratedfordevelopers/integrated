@@ -67,9 +67,27 @@ class ContentChoicesTransformer implements DataTransformerInterface
             return [];
         } elseif (is_array($value)) {
             $documents = [];
+            $ids = [];
+
             foreach ($value as $id) {
-                $documents[] = $this->repo->find($id);
+                $ids[] = $id;
+                $documents[$id] = null;
             }
+
+            $qb = $this->repo->createQueryBuilder()
+                ->field('id')->in($ids);
+
+            $result = $qb->getQuery()->getIterator();
+
+            if (count($result) !== count($documents)) {
+                throw new TransformationFailedException('Could not correctly convert all the values');
+            }
+
+            /** @var ContentInterface $document */
+            foreach ($result as $document) {
+                $documents[$document->getId()] = $document;
+            }
+
             return $documents;
         }
 
