@@ -93,7 +93,8 @@ class RelationReferencesType extends AbstractType
                     'attr' => ['class' => 'relation_select2'],
                     'query_builder' => function (DocumentRepository $dr) use ($value) {
                         return $dr->createQueryBuilder()
-                            ->field('contentType')->in($value['content_types']);
+                            ->field('contentType')->in($value['content_types'])
+                            ->sort('title');
                     }
                 ];
             }
