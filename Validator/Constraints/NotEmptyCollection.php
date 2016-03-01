@@ -19,13 +19,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class NotEmptyCollection extends Constraint
 {
-    public $message = 'You have to select at least one item.';
-
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    public function validatedBy()
-    {
-        return get_class($this).'Validator';
-    }
+    public $message = 'You have to select at least one item.';
 }
