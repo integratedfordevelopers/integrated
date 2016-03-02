@@ -61,7 +61,7 @@ class AuthorTransformer implements DataTransformerInterface
         $collection = array();
 
         if (is_array($array) && isset($array['persons'], $array['types']) && is_array($array['types'])) {
-            foreach (explode(',', $array['persons']) as $person) {
+            foreach ($array['persons'] as $person) {
                 $result = $mr->getRepository('IntegratedContentBundle:Content\Relation\Person')->find($person);
 
                 if ($result && isset($array['types'][$person])) {
