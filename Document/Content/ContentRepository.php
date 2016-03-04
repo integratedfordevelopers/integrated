@@ -16,15 +16,19 @@ class ContentRepository extends DocumentRepository
      *
      * @param Content       $content
      * @param Relation|null $relation
+     * @param Content|null  $excludeContent
      * @return \Doctrine\MongoDB\Query\Builder
      */
-    public function getUsedBy(Content $content, Relation $relation = null)
+    public function getUsedBy(Content $content, Relation $relation = null, Content $excludeContent = null)
     {
+        if (!$excludeContent) {
+            $excludeContent = $content;
+        }
         $query =  $this->createQueryBuilder()
             ->field('relations.references.$id')
             ->equals($content->getId())
             ->field('id')
-            ->notEqual($content->getId());
+            ->notEqual($excludeContent->getId());
 
         if ($relation) {
             $query->field('relations.relationId')->equals($relation->getId());
