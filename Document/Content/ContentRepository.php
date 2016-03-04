@@ -32,4 +32,28 @@ class ContentRepository extends DocumentRepository
 
         return $query;
     }
+
+    /**
+     * Deletes all references to a content item
+     *
+     * @param $id
+     */
+    public function deleteReference($id)
+    {
+        $documents = $this->findBy(['relations.references.$id' => $id]);
+
+        /** @var Content $document */
+        foreach ($documents as $document) {
+            /** @var \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation $relation */
+            foreach ($document->getRelations() as $relation) {
+                foreach ($relation->getReferences() as $reference) {
+                    if ($reference->getId() == $id) {
+                        $relation->removeReference($reference);
+                    }
+                }
+            }
+        }
+
+        $this->dm->flush($documents);
+    }
 }

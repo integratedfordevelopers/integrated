@@ -53,6 +53,12 @@
 
                             <ul class="list-inline">
                                 <li>
+                                    {% if content.workflow_state is defined %}
+                                        {{ content.workflow_state|first|default }} |
+                                    {% endif %}
+                                    {% if content.workflow_assigned is defined %}
+                                        {{ content.workflow_assigned|first|default }} |
+                                    {% endif %}
                                     {% if contentTypes[content.type_name] is defined %}
                                         {{ contentTypes[content.type_name] }}
                                     {% else %}
