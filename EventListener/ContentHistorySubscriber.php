@@ -15,8 +15,8 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Types\Type;
 
+use Integrated\Bundle\ContentHistoryBundle\Doctrine\ODM\MongoDB\Persister\PersistenceBuilder;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
 use Integrated\Common\Content\ContentInterface;
 
@@ -43,7 +43,7 @@ class ContentHistorySubscriber implements EventSubscriber
         $dm = $args->getDocumentManager();
         $uow = $dm->getUnitOfWork();
 
-        //$this->createLog($dm, $uow->getScheduledDocumentInsertions(), ContentHistory::ACTION_INSERT);
+        $this->createLog($dm, $uow->getScheduledDocumentInsertions(), ContentHistory::ACTION_INSERT);
         $this->createLog($dm, $uow->getScheduledDocumentUpdates(), ContentHistory::ACTION_UPDATE);
         $this->createLog($dm, $uow->getScheduledDocumentDeletions(), ContentHistory::ACTION_DELETE);
     }
@@ -56,48 +56,17 @@ class ContentHistorySubscriber implements EventSubscriber
     protected function createLog(DocumentManager $dm, array $documents, $action)
     {
         $uow = $dm->getUnitOfWork();
-        $pb = $uow->getPersistenceBuilder();
+        $pb = new PersistenceBuilder($dm);
 
         foreach ($documents as $document) {
-//            if (!$document instanceof ContentInterface) {
-//                continue;
-//            }
-
-            $class = $dm->getClassMetadata(get_class($document));
-
-            foreach ($class->getFieldNames() as $field) {
-
-//                if ('relatedItems' == $field) {
-//                    $type = Type::getType($class->fieldMappings[$field]);
-
-              //  dump($class->fieldMappings[$field]); die;
-//                dump($type); die;
-//
-//                    dump($type->convertToDatabaseValue($document->getRelatedItems()));
-//
-//                }
-                dump($field);
-//                $placeholders[] = (! empty($class->fieldMappings[$field]['requireSQLConversion']))
-//                    ? $type->convertToDatabaseValueSQL('?', $this->platform)
+            if (!$document instanceof ContentInterface) {
+                continue;
             }
-
-          //  die;
-
-          //  dump($pb->prepareInsertData($document));
-//            dump($pb->prepareUpdateData($document));
-//            dump($pb->prepareUpsertData($document));
-
-//            dump($uow->getDocumentChangeSet($document));
-
-
 
             $history = new ContentHistory();
 
-
-            $history->setDocument(get_class($document));
-
             $history->setAction($action);
-            $history->setChanges($pb->prepareInsertData($document));
+            $history->setSnapshot($pb->prepareData($document));
 
             $dm->persist($history);
             $uow->recomputeSingleDocumentChangeSet($dm->getClassMetadata(get_class($history)), $history);
