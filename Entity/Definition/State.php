@@ -18,6 +18,7 @@ use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\PersistentCollection;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
+use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -58,6 +59,69 @@ class State
      * @var Collection | State[]
      */
     protected $transitions;
+
+    /**
+     * @var int
+     */
+    protected $comment = StateVisibleConfig::OPTIONAL;
+
+    /**
+     * @var int
+     */
+    protected $assignee = StateVisibleConfig::OPTIONAL;
+
+    /**
+     * @var int
+     */
+    protected $deadline = StateVisibleConfig::OPTIONAL;
+
+    /**
+     * @return int
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param int $comment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAssignee()
+    {
+        return $this->assignee;
+    }
+
+    /**
+     * @param int $assignee
+     */
+    public function setAssignee($assignee)
+    {
+        $this->assignee = $assignee;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeadline()
+    {
+        return $this->deadline;
+    }
+
+    /**
+     * @param int $deadline
+     */
+    public function setDeadline($deadline)
+    {
+        $this->deadline = $deadline;
+    }
 
     public function __construct()
     {
