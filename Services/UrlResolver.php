@@ -36,6 +36,11 @@ class UrlResolver extends RouteResolver
     protected $channelContext;
 
     /**
+     * @var ContentTypePage[]
+     */
+    protected $contentTypePages = [];
+
+    /**
      * UrlResolver constructor.
      * @param ContentTypeControllerManager $controllerManager
      * @param ChannelContextInterface $channelContext
@@ -56,47 +61,103 @@ class UrlResolver extends RouteResolver
 
     /**
      * @param ContentInterface|array $document
+     * @param null $channelId
      * @return string
      */
-    public function generateUrl($document)
+    public function generateUrl($document, $channelId = null)
     {
-        $contentType = $this->getContentType($document);
-//        $slug = $this->getSlug()
+        if (is_array($document)) {
+            return $this->getSolrUrl($document, $channelId);
+        }
 
-        $page = $this->dm->getRepository('IntegratedPageBundle:Page\ContentTypePage')
-            ->findOneBy([
-                'channel.$id' => $this->channelContext->getChannel()->getId(),
-                'contentType.$id' => $contentType
-            ]);
-
+        $page = $this->getContentTypePageById($channelId, $document->getContentType());
+dump($channelId);
+dump($document->getContentType());
+dump($page);
         if ($page instanceof ContentTypePage) {
             $this->setContentTypePage($page);
-            return $this->resolveRoute();
+            return $this->resolveUrl($document);
         }
 
         //todo check for environment and add appp_env.php
-        return sprintf('/%s/%s', $contentType, 'slug');
-//        dump();
-//        $this->controllerManager->getController();
+        return sprintf('/%s/%s', $document->getContentType(), 'slug');
     }
 
     /**
-     * @param ContentInterface|array $document
+     * @param array $document
+     * @param string|null $channelId
+     * @return string|null
+     */
+    protected function getSolrUrl($document, $channelId)
+    {
+        if (null === $channelId) {
+            $channelId = $this->channelContext->getChannel()->getId();
+        }
+
+        $arrayKey = sprintf('url_%s', $channelId);
+
+        if (isset($document[$arrayKey])) {
+            return $document[$arrayKey];
+        }
+
+        //url is not in solr document
+        return null;
+    }
+
+
+    /**
+     * @param ContentInterface $document
      * @return string
      */
-    protected function getContentType($document)
+    public function resolveUrl($document)
     {
-        if ($document instanceof ContentInterface) {
-            $contentType = $document->getContentType();
-        } else {
-            //solr
-            $contentType = isset($document['type_name']) ?: null;
+        return $this->router->generate(
+            $this->getRouteName(),
+            $this->resolveParameters($document)
+        );
+    }
+
+    /**
+     * @param $document
+     * @return array
+     */
+    public function resolveParameters($document)
+    {
+        //todo INTEGRATED-440 add Slug to ContentInterface
+        $parameters = ['slug' => $document->getSlug()];
+
+        //register relations
+        $this->matchRelations();
+
+        foreach ($this->relations as $relationId) {
+            //todo INTEGRATED-440 add getReferenceByRelationId to ContentInterface
+            $relation = $document->getReferenceByRelationId($relationId);
+
+            $parameters[$relationId] = $relation ? $relation->getSlug() : $relationId;
         }
 
-        if (!$contentType) {
-            throw new \InvalidArgumentException('Document must contain contentType');
+        return $parameters;
+    }
+
+    /**
+     * @param $channelId
+     * @param $contentTypeId
+     * @return ContentTypePage
+     */
+    protected function getContentTypePageById($contentTypeId, $channelId = null)
+    {
+        if (null === $channelId) {
+            $channelId = $this->channelContext->getChannel()->getId();
         }
 
-        return $contentType;
+        if (isset($this->contentTypePages[$channelId][$contentTypeId])) {
+            return $this->contentTypePages[$channelId][$contentTypeId];
+        }
+
+        return $this->dm->getRepository('IntegratedPageBundle:Page\ContentTypePage')
+            ->findOneBy([
+                'channel.$id' => $channelId,
+                'contentType.$id' => $contentTypeId
+            ]);
     }
 }

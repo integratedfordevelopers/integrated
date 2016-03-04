@@ -39,7 +39,7 @@ class RouteResolver
     protected $contentTypePage;
 
     /**
-     * @var Relation[]
+     * @var array
      */
     protected $relations = [];
 
@@ -48,35 +48,34 @@ class RouteResolver
      * @param DocumentManager $dm
      * @param Router $router
      */
-    public function __construct(DocumentManager $dm,  Router $router)
+    public function __construct(DocumentManager $dm, Router $router)
     {
         $this->dm = $dm;
     }
 
     /**
      * Returns the correct path for symfony routing module
-     * @return mixed
+     * @return string
      */
     public function getRoutePath()
+    {
+        //todo add and match pages
+        return $this->matchRelations();
+    }
+
+    /**
+     * Converts the relations in the path to route syntax and registers the matched relations
+     * @return string
+     */
+    protected function matchRelations()
     {
         return preg_replace_callback(
             '/(#)([\s\S]+?)(#)/',
             function ($matches) {
-                return $matches[2];
+                $this->relations[$matches[2]] = $matches[2];
+                return sprintf('{%s}', $matches[2]);
             },
             $this->getContentTypePage()->getPath()
-        );
-    }
-
-    /**
-     * @param ContentTypePage $page
-     */
-    public function resolveRoute()
-    {
-        return $this->router->generate(
-            $this->getRouteName($this->getContentTypePage()->getId()),
-        //todo resolve params and relations
-            ['slug' => 'a']
         );
     }
 

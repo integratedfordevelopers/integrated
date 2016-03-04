@@ -35,5 +35,6 @@ class IntegratedPageExtension extends Extension
         $loader->load('form.xml');
         $loader->load('event_listeners.xml');
         $loader->load('twig.xml');
+        $loader->load('solr.xml');
     }
 }

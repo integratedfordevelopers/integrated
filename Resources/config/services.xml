@@ -39,6 +39,7 @@
 
         <service id="integrated_page.services.route_resolver" class="%integrated_page.services.route_resolver.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="router" />
         </service>
 
         <service id="integrated_page.services.url_resolver" class="%integrated_page.services.url_resolver.class%">

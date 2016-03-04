@@ -80,7 +80,7 @@ class RoutingLoader extends Loader
             $this->routeResolver->setContentTypePage($page);
 
             //todo solr extension maken voor inschieten van urls in solr, gepostfixes met channel (url_dzg)
-            //todo twig functie schrijven: integrated_url(document), moet met solr en document overweg kunnen.
+            //todo twig functie schrijven: integrated_url(document)
             //todo check if url is unique
             //todo pagina in url mogelijk maken
             $route = new Route(
