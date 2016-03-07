@@ -133,7 +133,7 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% set pathname = form.file.vars.data.getPathname()|default %}
+                {% set pathname = form.vars.data.getPathname()|default %}
                 {% if pathname %}
                     <a href="{{ pathname }}" target="_blank" style="display: block; margin-bottom: 6px;">
                         {% trans %}Download{% endtrans %}
@@ -143,7 +143,7 @@
                 {% if pathname %}
                     {{ form_widget(form.remove) }}
                 {% endif %}
-                {{ form_errors(form) }}
+                {{ form_errors(form.file) }}
             </div>
         </div>
     {% endspaceless %}
@@ -154,15 +154,15 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% set pathname = form.file.vars.data.getPathname()|default %}
-                {% if pathname %}
-                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ pathname }}" />
+                {% set preview = form.vars.preview|default %}
+                {% if preview %}
+                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ image(preview) }}" />
                 {% endif %}
                 {{ form_widget(form.file) }}
-                {% if pathname %}
+                {% if preview %}
                     {{ form_widget(form.remove) }}
                 {% endif %}
-                {{ form_errors(form) }}
+                {{ form_errors(form.file) }}
             </div>
         </div>
     {% endspaceless %}
