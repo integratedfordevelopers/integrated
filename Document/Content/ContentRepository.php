@@ -25,10 +25,11 @@ class ContentRepository extends DocumentRepository
             $excludeContent = $content;
         }
         $query =  $this->createQueryBuilder()
-            ->field('relations.references.$id')
-            ->equals($content->getId())
-            ->field('id')
-            ->notEqual($excludeContent->getId());
+            ->field('relations.references.$id')->equals($content->getId())
+            ->field('id')->notEqual($excludeContent->getId())
+            ->field('disabled')->equals(false)
+            ->field('publishTime.startDate')->lte(new \DateTime())
+            ->field('publishTime.endDate')->gte(new \DateTime());
 
         if ($relation) {
             $query->field('relations.relationId')->equals($relation->getId());
