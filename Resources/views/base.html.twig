@@ -13,10 +13,10 @@
 
     <script>
         var loadedScripts = [],
-            callBacks = [];
+            callbacks = [];
         function require(url, callback){
 
-            callBacks.push(callback);
+            callbacks.push(callback);
 
             if (loadedScripts[url]) {
                 script = loadedScripts[url];
@@ -40,8 +40,8 @@
                 };
             } else {  //Others
                 script.onload = function(){
-                    for (var key in callBacks) {
-                        callBacks[key]();
+                    for (var key in callbacks) {
+                        callbacks[key]();
                     }
                 };
             }
