@@ -12,10 +12,23 @@
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 
     <script>
+        var loadedScripts = [],
+            callbacks = [];
         function require(url, callback){
 
-            var script = document.createElement("script")
-            script.type = "text/javascript";
+            callbacks.push(callback);
+
+            if (loadedScripts[url]) {
+                script = loadedScripts[url];
+            } else {
+                var script = document.createElement("script")
+                script.type = "text/javascript";
+
+                script.src = url;
+                document.getElementsByTagName("head")[0].appendChild(script);
+
+                loadedScripts[url] = script;
+            }
 
             if (script.readyState){  //IE
                 script.onreadystatechange = function(){
@@ -27,12 +40,12 @@
                 };
             } else {  //Others
                 script.onload = function(){
-                    callback();
+                    for (var key in callbacks) {
+                        callbacks[key]();
+                    }
                 };
             }
 
-            script.src = url;
-            document.getElementsByTagName("head")[0].appendChild(script);
         }
     </script>
 
