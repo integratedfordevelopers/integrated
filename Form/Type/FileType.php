@@ -15,11 +15,15 @@ use ArrayObject;
 
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
 
+use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -35,18 +39,11 @@ class FileType extends AbstractType
     protected $manager;
 
     /**
-     * @var DecisionInterface
-     */
-    protected $decision;
-
-    /**
      * @param ManagerInterface $manager
-     * @param DecisionInterface $decision
      */
-    public function __construct(ManagerInterface $manager, DecisionInterface $decision)
+    public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;
-        $this->decision = $decision;
     }
 
     /**
@@ -80,11 +77,12 @@ class FileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'file', [
+        $c = $builder->add('file', 'file', [
             'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
             'required' => false,
             'mapped' => false,
-            'constraints' => $options['constraints_file']
+            'empty_data' => null,
+            'constraints' => $options['constraints_file'],
         ]);
 
         $builder->add('remove', 'checkbox', [
@@ -92,7 +90,7 @@ class FileType extends AbstractType
             'required' => false,
         ]);
 
-        $builder->addEventSubscriber(new FileEventSubscriber($this->manager, $this->decision));
+        $builder->addEventSubscriber(new FileEventSubscriber($this->manager));
     }
 
     /**
@@ -101,5 +99,23 @@ class FileType extends AbstractType
     public function getName()
     {
         return 'integrated_file';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $data = $form->getData();
+
+        if ($data instanceof StorageIntentUpload) {
+            $view->vars['preview'] = $data;
+
+            if (!$view->vars['valid']) {
+                $view->vars['preview'] = $data->getOriginal();
+            }
+        } elseif ($data instanceof StorageInterface) {
+            $view->vars['preview'] = $data;
+        }
     }
 }

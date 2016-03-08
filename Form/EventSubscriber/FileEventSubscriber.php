@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\EventSubscriber;
 
+use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
 
 use Integrated\Common\Storage\DecisionInterface;
@@ -33,18 +34,11 @@ class FileEventSubscriber implements EventSubscriberInterface
     protected $manager;
 
     /**
-     * @var DecisionInterface
-     */
-    protected $decision;
-
-    /**
      * @param ManagerInterface $manager
-     * @param DecisionInterface $decision
      */
-    public function __construct(ManagerInterface $manager, DecisionInterface $decision)
+    public function __construct(ManagerInterface $manager)
     {
         $this->manager = $manager;
-        $this->decision = $decision;
     }
 
     /**
@@ -53,7 +47,7 @@ class FileEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::SUBMIT => 'submit',
+            FormEvents::SUBMIT => 'submit'
         ];
     }
 
@@ -67,7 +61,8 @@ class FileEventSubscriber implements EventSubscriberInterface
 
         // Delete comes first
         if ($event->getForm()->get('remove')->getData()) {
-            $file->setData(null);
+            // Delete the set the property to null
+            $event->setData(null);
         } elseif ($file instanceof UploadedFile) {
             // Get the root document bind to the form
             $rootForm = $event->getForm();
@@ -76,11 +71,9 @@ class FileEventSubscriber implements EventSubscriberInterface
             }
 
             // Make sure the entity ends up a StorageInterface
-            $event->setData($this->manager->write(
-                new UploadedFileReader($file),
-                // Set the file to allowed entity filesystems
-                $this->decision->getFilesystems($rootForm->getData())
-            ));
+            $event->setData(
+                 new StorageIntentUpload($event->getForm()->getData(), $file)
+            );
         } else {
             // Set the something we don't know
             $event->setData($file);

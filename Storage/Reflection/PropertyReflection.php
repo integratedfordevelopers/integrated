@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Reflection;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\FactoryProperty;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\PropertyInterface;
 
@@ -19,17 +20,17 @@ use Doctrine\Common\Annotations\AnnotationReader;
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class StorageReflection
+class PropertyReflection
 {
     /**
-     * @const The storage class to look for
+     * @var string
      */
-    const STORAGE_CLASS = 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage';
+    protected $reflectionClass;
 
     /**
      * @var string
      */
-    protected $className;
+    protected $targetClass;
 
     /**
      * @var array|null
@@ -37,29 +38,31 @@ class StorageReflection
     protected $properties;
 
     /**
-     * @param string $className
+     * @param string $reflectionClass
+     * @param string $targetClass
      */
-    public function __construct($className)
+    public function __construct($reflectionClass, $targetClass = Storage::class)
     {
-        $this->className = $className;
+        $this->reflectionClass = $reflectionClass;
+        $this->targetClass = $targetClass;
     }
 
     /**
      * @return PropertyInterface[]
      */
-    public function getStorageProperties()
+    public function getTargetProperties()
     {
         if (null === $this->properties) {
             // Prevent additional lookup when none is found
             $this->properties = [];
 
             $reader = new AnnotationReader();
-            $reflection = new \ReflectionClass($this->className);
+            $reflection = new \ReflectionClass($this->reflectionClass);
 
             foreach ($reflection->getProperties() as $property) {
                 foreach ($reader->getPropertyAnnotations($property) as $annotation) {
                     if (FactoryProperty::isValid($annotation)) {
-                        if (self::STORAGE_CLASS == $annotation->targetDocument) {
+                        if ($this->targetClass == $annotation->targetDocument) {
                             // Stuff
                             $this->properties[] = FactoryProperty::factory($property, $annotation);
                         }

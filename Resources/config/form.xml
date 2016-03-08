@@ -13,7 +13,6 @@
 
         <service id="integrated_storage.form.type.file" class="Integrated\Bundle\StorageBundle\Form\Type\FileType">
             <argument type="service" id="integrated_storage.manager" />
-            <argument type="service" id="integrated_storage.decision" />
 
             <tag name="form.type" alias="integrated_file" />
         </service>
