@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
-use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -84,17 +82,7 @@ class ContentBlockHandler extends BlockHandler
      */
     public function getPagination(ContentBlock $block, Request $request, array $options = [])
     {
-        $request = $request->duplicate(); // don't change original request
-
-        try {
-            if ($selection = $block->getSearchSelection()) {
-                $request->query->add($selection->getFilters());
-            }
-        } catch (DocumentNotFoundException $e) {
-            // search selection is removed
-        }
-
-        return $this->provider->execute($block, $request, $options);
+        return $this->provider->execute($block, $request->duplicate(), $options); // don't change original request
     }
 
     /**
