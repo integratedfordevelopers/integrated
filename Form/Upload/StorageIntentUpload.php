@@ -78,7 +78,6 @@ class StorageIntentUpload implements StorageInterface
             new ArrayCollection(),
             new ArrayCollection()
         );
-
     }
 
     /**
