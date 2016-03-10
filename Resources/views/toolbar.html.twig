@@ -1,4 +1,4 @@
-{% if app.user %}
+{% if app.user and is_granted('ROLE_ADMIN') %}
     <div class="navbar navbar-fixed-top integrated-website-toolbar">
         <div class="container">
 
