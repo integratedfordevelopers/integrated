@@ -27,7 +27,7 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
     /**
      * @param mixed $value
      * @return mixed|null
-     * @throws \Exception
+     * @throws TransformationFailedException
      */
     public function transform($value)
     {

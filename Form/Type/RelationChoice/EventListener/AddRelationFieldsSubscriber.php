@@ -77,7 +77,6 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
 
     /**
      * @param FormEvent $event
-     * @throws \Doctrine\ODM\MongoDB\LockException
      * @throws \Exception
      */
     protected function ensureRelations(FormEvent $event)
@@ -114,10 +113,9 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param $relationId
-     * @param $formData
-     * @return Relation
-     * @throws \Doctrine\ODM\MongoDB\LockException
+     * @param string $relationId
+     * @param object $formData
+     * @return Relation|object
      * @throws \Exception
      */
     protected function findRelation($relationId, $formData)
@@ -129,9 +127,11 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
 
         $relationSourceClasses = [];
         $sources = $relation->getSources();
+
         foreach ($sources as $source) {
             $relationSourceClasses[] = $source->getClass();
         }
+
         $formClass = get_class($formData);
 
         if (!in_array($formClass, $relationSourceClasses)) {

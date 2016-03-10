@@ -14,7 +14,7 @@ namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 
 use Integrated\Common\Content\ContentInterface;
 
@@ -24,17 +24,16 @@ use Integrated\Common\Content\ContentInterface;
 class ContentChoicesTransformer implements DataTransformerInterface
 {
     /**
-     * @var \Doctrine\ODM\MongoDB\DocumentRepository
+     * @var DocumentRepository
      */
     protected $repo;
 
     /**
-     * @param DocumentManager $dm
-     * @param string $repositoryClass
+     * @param DocumentRepository $repo
      */
-    public function __construct(DocumentManager $dm, $repositoryClass)
+    public function __construct(DocumentRepository $repo)
     {
-        $this->repo = $dm->getRepository($repositoryClass);
+        $this->repo = $repo;
     }
 
     /**
@@ -60,14 +59,14 @@ class ContentChoicesTransformer implements DataTransformerInterface
     /**
      * @param mixed $value
      * @return array
+     * @throws TransformationFailedException
      */
     public function reverseTransform($value)
     {
         if (null === $value) {
             return [];
         } elseif (is_array($value)) {
-            $documents = [];
-            $ids = [];
+            $documents = $ids = [];
 
             foreach ($value as $id) {
                 $ids[] = $id;

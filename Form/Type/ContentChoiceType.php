@@ -68,9 +68,15 @@ class ContentChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['multiple']) {
-            $builder->addViewTransformer(new ContentChoicesTransformer($this->dm, $options['repository_class']), true);
+            $builder->addViewTransformer(
+                new ContentChoicesTransformer($this->dm->getRepository($options['repository_class'])),
+                true
+            );
         } else {
-            $builder->addViewTransformer(new ContentChoiceTransformer($this->dm, $options['repository_class']), true);
+            $builder->addViewTransformer(
+                new ContentChoiceTransformer($this->dm->getRepository($options['repository_class'])),
+                true
+            );
         }
     }
 

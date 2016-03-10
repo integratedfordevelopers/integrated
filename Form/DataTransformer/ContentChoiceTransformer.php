@@ -14,7 +14,7 @@ namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 
 use Integrated\Common\Content\ContentInterface;
 
@@ -29,18 +29,17 @@ class ContentChoiceTransformer implements DataTransformerInterface
     protected $repo;
 
     /**
-     * @param DocumentManager $dm
-     * @param string $repositoryClass
+     * @param DocumentRepository $repo
      */
-    public function __construct(DocumentManager $dm, $repositoryClass)
+    public function __construct(DocumentRepository $repo)
     {
-        $this->repo = $dm->getRepository($repositoryClass);
+        $this->repo = $repo;
     }
 
     /**
      * @param mixed $value
      * @return array|null
-     * @throws \Exception
+     * @throws TransformationFailedException
      */
     public function transform($value)
     {
@@ -56,15 +55,21 @@ class ContentChoiceTransformer implements DataTransformerInterface
     /**
      * @param mixed $value
      * @return null|object
-     * @throws \Doctrine\ODM\MongoDB\LockException
+     * @throws \Doctrine\ODM\MongoDB\LockException|TransformationFailedException
      */
     public function reverseTransform($value)
     {
         if (null === $value) {
             return null;
         } elseif (is_string($value)) {
-            return $this->repo->find($value);
+            $result = $this->repo->find($value);
+            if (!$result) {
+                throw new TransformationFailedException(sprintf('Document with id "%s" not found', $value));
+            }
+
+            return $result;
         }
+
         throw new TransformationFailedException(sprintf('Expected string, "%s" given', gettype($value)));
     }
 }
