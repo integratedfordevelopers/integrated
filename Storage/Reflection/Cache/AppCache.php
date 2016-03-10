@@ -46,8 +46,7 @@ class AppCache implements ReflectionCacheInterface
     }
 
     /**
-     * @param string $class
-     * @return PropertyReflection
+     * {@inheritdoc}
      */
     public function getPropertyReflectionClass($class)
     {
@@ -59,7 +58,7 @@ class AppCache implements ReflectionCacheInterface
             )
         );
 
-        if ($file->isFile()) {
+        if ($file->isFile() && 'dev' != $this->environment) {
             return unserialize(
                 $file->openFile()->fread($file->getSize())
             );
