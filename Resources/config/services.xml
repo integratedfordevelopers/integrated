@@ -13,6 +13,7 @@
         <parameter key="integrated_storage.filesystem_delete">Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove</parameter>
         <parameter key="integrated_storage.cache_app">Integrated\Bundle\StorageBundle\Storage\Cache\AppCache</parameter>
         <parameter key="integrated_storage.file_locator">Integrated\Bundle\StorageBundle\Locator\StorageLocator</parameter>
+        <parameter key="integrated_storage.reflection_cache">Integrated\Bundle\StorageBundle\Storage\Reflection\Cache\AppCache</parameter>
 
     </parameters>
 
@@ -44,6 +45,11 @@
 
         <service id="integrated_storage.registry" class="%integrated_storage.registry%">
             <argument type="service" id="knp_gaufrette.filesystem_map" />
+        </service>
+
+        <service id="integrated_storage.reflection_cache" class="%integrated_storage.reflection_cache%">
+            <argument>%kernel.environment%</argument>
+            <argument>%kernel.cache_dir%</argument>
         </service>
 
         <service id="integrated_storage.filesystem_delete" class="%integrated_storage.filesystem_delete%" />

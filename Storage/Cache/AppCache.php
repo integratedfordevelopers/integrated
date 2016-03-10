@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Cache;
 
+use Integrated\Bundle\StorageBundle\Storage\Util\DirectoryUtil;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Cache\CacheInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -23,7 +24,7 @@ class AppCache implements CacheInterface
     /**
      * @const
      */
-    const CACHE_PATH = '%s/integrated/storage/%s';
+    const CACHE_PATH = '%s/integrated/storage/file/%s';
 
     /**
      * @var ManagerInterface
@@ -71,15 +72,8 @@ class AppCache implements CacheInterface
             return $file->getPathname();
         }
 
-        // Create the directory
-        $directories = explode('/', substr(str_replace($this->directory, '', $file->getPath()), 1));
-        for ($i = 1; $i <= count($directories); $i++) {
-            $dir = sprintf('%s/%s', $this->directory, implode('/', array_slice($directories, 0, $i)));
-
-            if (!is_dir($dir)) {
-                mkdir($dir);
-            }
-        }
+        // Create a directory
+        DirectoryUtil::createDirectory($this->directory, $file->getPath());
 
         // Open a file with write permission
         $write = $file->openFile('w');

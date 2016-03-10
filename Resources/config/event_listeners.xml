@@ -15,6 +15,8 @@
         <service id="integrated_storage.event.listener_file" class="%integrated_storage.event.listener_file%">
             <argument type="service" id="integrated_storage.manager" />
             <argument type="service" id="integrated_storage.filesystem_delete" />
+            <argument type="service" id="integrated_storage.reflection_cache" />
+            <argument type="service" id="integrated_storage.decision" />
 
             <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
         </service>

@@ -31,11 +31,6 @@ class EmbedOneProperty implements PropertyInterface
     protected $embedOne;
 
     /**
-     * @var mixed
-     */
-    protected $value;
-
-    /**
      * @param \ReflectionProperty $property
      * @param EmbedOne $embedOne
      */

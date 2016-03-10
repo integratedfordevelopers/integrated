@@ -17,7 +17,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Image;
 
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\StorageReflection;
+use Integrated\Bundle\StorageBundle\Storage\Reflection\PropertyReflection;
 
 use Integrated\Common\Storage\Database\DatabaseInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -110,7 +110,7 @@ class MigrateCommand extends Command
 
         foreach ($data as $row) {
             // Walk over the properties of the class with reflection
-            foreach ($this->getReflectionClass($row['class'])->getStorageProperties() as $property) {
+            foreach ($this->getReflectionClass($row['class'])->getTargetProperties() as $property) {
                 // We can always skip it unless
                 $skip = true;
 
@@ -181,7 +181,7 @@ class MigrateCommand extends Command
 
     /**
      * @param $class
-     * @return StorageReflection
+     * @return PropertyReflection
      */
     protected function getReflectionClass($class)
     {
@@ -189,7 +189,7 @@ class MigrateCommand extends Command
             return $this->reflectionClasses[$class];
         }
 
-        return $this->reflectionClasses[$class] = new StorageReflection($class);
+        return $this->reflectionClasses[$class] = new PropertyReflection($class);
     }
 
     /**

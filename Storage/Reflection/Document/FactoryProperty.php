@@ -21,7 +21,7 @@ class FactoryProperty
     /**
      * @param \ReflectionProperty $property
      * @param AbstractField $field
-     * @return
+     * @return PropertyInterface
      */
     public static function factory(\ReflectionProperty $property, AbstractField $field)
     {
