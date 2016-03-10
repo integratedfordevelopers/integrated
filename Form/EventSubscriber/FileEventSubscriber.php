@@ -57,8 +57,10 @@ class FileEventSubscriber implements EventSubscriberInterface
      */
     public function submit(FormEvent $event)
     {
-        // The file property in the form
+        // This (if any) is the new file
         $upload = $event->getForm()->get('file')->getData();
+
+        // This is (if any) the old file
         $original = $event->getData();
 
         // Delete comes first then a upload and lastly the original (if it meets our interface)
