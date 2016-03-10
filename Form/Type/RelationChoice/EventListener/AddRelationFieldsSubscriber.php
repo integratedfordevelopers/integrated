@@ -156,15 +156,18 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
 
             $relation = $this->getRelation($embeddedRelation->getRelationId());
             $contentTypes = [];
+
             foreach ($relation->getTargets() as $target) {
                 $contentTypes[] = $target->getId();
             }
 
             $relationOptions = isset($this->options['options'][$embeddedRelation->getRelationId()]) ?
                 $this->options['options'][$embeddedRelation->getRelationId()] : [];
+
             $relationOptions['content_types'] = $contentTypes;
             $relationOptions['multiple'] = isset($relationOptions['multiple']) ?
                 $relationOptions['multiple'] : $relation->isMultiple();
+
             if (!isset($relationOptions['label'])) {
                 $relationOptions['label'] = $relation->getName();
             }

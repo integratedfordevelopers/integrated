@@ -43,7 +43,11 @@ class ContentChoicesTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        if (is_array($value) || $value instanceof \Traversable) {
+        if (is_string($value) || is_object($value)) {
+            throw new TransformationFailedException(sprintf('Expected array, "%s" given', gettype($value)));
+        }
+
+        if (is_array($value)) {
             $values = [];
             foreach ($value as $content) {
                 if (!$content instanceof ContentInterface) {
@@ -53,6 +57,7 @@ class ContentChoicesTransformer implements DataTransformerInterface
             }
             return $values;
         }
+
         return null;
     }
 

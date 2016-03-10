@@ -17,16 +17,14 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Integrated\Common\Content\ContentInterface;
-
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
 class CollectionToDocumentTransformer implements DataTransformerInterface
 {
     /**
-     * @param mixed $value
-     * @return mixed|null
+     * @param Collection|null $value
+     * @return object|null
      * @throws TransformationFailedException
      */
     public function transform($value)
@@ -36,7 +34,15 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
         }
         if ($value instanceof Collection) {
             if ($value->count()) {
-                return $value->first();
+                $document = $value->first();
+
+                if (!is_object($document)) {
+                    throw new TransformationFailedException(
+                        sprintf('Expected an object in the Collection, "%s" given', gettype($value))
+                    );
+                }
+
+                return $document;
             }
             return null;
         }
@@ -44,14 +50,20 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param ContentInterface $value
+     * @param object|null $value
      * @return ArrayCollection
      */
     public function reverseTransform($value)
     {
         if (null !== $value) {
-            return new ArrayCollection([$value]);
+            if (is_object($value)) {
+                return new ArrayCollection([$value]);
+            }
+            throw new TransformationFailedException(
+                sprintf('Expected an object, "%s" given', gettype($value))
+            );
         }
+
         return new ArrayCollection();
     }
 }

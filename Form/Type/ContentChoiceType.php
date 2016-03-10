@@ -48,7 +48,6 @@ class ContentChoiceType extends AbstractType
     protected $params;
 
     /**
-     * AjaxSelect2Type constructor.
      * @param DocumentManager $dm
      * @param string $repositoryClass
      * @param string $route

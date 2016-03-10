@@ -37,8 +37,8 @@ class ContentChoiceTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param mixed $value
-     * @return array|null
+     * @param ContentInterface|null $value
+     * @return string|null
      * @throws TransformationFailedException
      */
     public function transform($value)
@@ -53,9 +53,9 @@ class ContentChoiceTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param mixed $value
-     * @return null|object
-     * @throws \Doctrine\ODM\MongoDB\LockException|TransformationFailedException
+     * @param string|null $value
+     * @return null|ContentInterface
+     * @throws TransformationFailedException
      */
     public function reverseTransform($value)
     {
@@ -63,11 +63,13 @@ class ContentChoiceTransformer implements DataTransformerInterface
             return null;
         } elseif (is_string($value)) {
             $result = $this->repo->find($value);
-            if (!$result) {
-                throw new TransformationFailedException(sprintf('Document with id "%s" not found', $value));
+
+            if ($result instanceof ContentInterface) {
+                return $result;
             }
 
-            return $result;
+            throw new TransformationFailedException(sprintf('Document with id "%s" not found', $value));
+
         }
 
         throw new TransformationFailedException(sprintf('Expected string, "%s" given', gettype($value)));
