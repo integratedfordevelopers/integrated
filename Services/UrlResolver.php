@@ -11,9 +11,11 @@
 
 namespace Integrated\Bundle\PageBundle\Services;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Symfony\Component\Routing\Router;
+
+use Solarium\QueryType\Select\Result\Document;
+
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\PageBundle\ContentType\ContentTypeControllerManager;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
@@ -41,7 +43,6 @@ class UrlResolver extends RouteResolver
     protected $contentTypePages = [];
 
     /**
-     * UrlResolver constructor.
      * @param ContentTypeControllerManager $controllerManager
      * @param ChannelContextInterface $channelContext
      * @param Router $router
@@ -66,29 +67,32 @@ class UrlResolver extends RouteResolver
      */
     public function generateUrl($document, $channelId = null)
     {
-        if (is_array($document)) {
+        if ($document instanceof Document || is_array($document)) {
             return $this->getSolrUrl($document, $channelId);
         }
 
-        $page = $this->getContentTypePageById($channelId, $document->getContentType());
-dump($channelId);
-dump($document->getContentType());
-dump($page);
-        if ($page instanceof ContentTypePage) {
+        $page = $this->getContentTypePageById($document->getContentType(), $channelId);
+        if (!$page instanceof ContentTypePage) {
             $this->setContentTypePage($page);
             return $this->resolveUrl($document);
         }
 
-        //todo check for environment and add appp_env.php
-        return sprintf('/%s/%s', $document->getContentType(), 'slug');
+        // fallback /app_*.php/contentType/slug, in production /contentType/slug
+        return sprintf(
+            '%s/%s/%s',
+            $this->router->getContext()->getBaseUrl(),
+            $document->getContentType(),
+            //todo INTEGRATED-440 add Slug to ContentInterface
+            $document->getSlug()
+        );
     }
 
     /**
-     * @param array $document
+     * @param Document|array $document
      * @param string|null $channelId
      * @return string|null
      */
-    protected function getSolrUrl($document, $channelId)
+    protected function getSolrUrl($document, $channelId = null)
     {
         if (null === $channelId) {
             $channelId = $this->channelContext->getChannel()->getId();
@@ -97,7 +101,10 @@ dump($page);
         $arrayKey = sprintf('url_%s', $channelId);
 
         if (isset($document[$arrayKey])) {
-            return $document[$arrayKey];
+            $url = $document[$arrayKey];
+
+            //add app_*.php if not in production
+            return $this->router->getContext()->getBaseUrl() . $url;
         }
 
         //url is not in solr document

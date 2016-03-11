@@ -59,10 +59,12 @@ class UrlType implements TypeInterface
         }
 
         foreach ($this->getChannels() as $channel) {
-            $container->set(
-                sprintf('url_%s', $channel->getId()),
-                $this->urlResolver->generateUrl($data, $channel->getId())
-            );
+            $url = $this->urlResolver->generateUrl($data, $channel->getId());
+
+            //remove app_*.php
+            $url = preg_replace('/\/app_(.+?)\.php/', '', $url);
+
+            $container->set(sprintf('url_%s', $channel->getId()), $url);
         }
     }
 
