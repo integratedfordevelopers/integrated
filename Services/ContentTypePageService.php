@@ -14,7 +14,6 @@ namespace Integrated\Bundle\PageBundle\Services;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
-use Integrated\Bundle\PageBundle\ContentType\ContentTypeControllerManager;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 
@@ -34,7 +33,6 @@ class ContentTypePageService
     protected $dm;
 
     /**
-     * ContentTypePageService constructor.
      * @param ContentTypeControllerManager $controllerManager
      * @param DocumentManager $dm
      */

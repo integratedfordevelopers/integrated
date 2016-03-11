@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Router;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\PageBundle\ContentType\RoutingLoader;
+use Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 
 /**
@@ -59,7 +59,6 @@ class RouteResolver
      */
     public function getRoutePath()
     {
-        //todo add and match pages
         return $this->matchRelations();
     }
 
@@ -84,7 +83,7 @@ class RouteResolver
      */
     public function getRouteName()
     {
-        return sprintf('%s_%s', RoutingLoader::ROUTE_PREFIX, $this->getContentTypePage()->getId());
+        return sprintf('%s_%s', ContentTypePageLoader::ROUTE_PREFIX, $this->getContentTypePage()->getId());
     }
 
     /**

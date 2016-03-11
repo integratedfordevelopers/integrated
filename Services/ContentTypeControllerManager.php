@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\PageBundle\ContentType;
+namespace Integrated\Bundle\PageBundle\Services;
 
 use Doctrine\Common\Collections\ArrayCollection;
 

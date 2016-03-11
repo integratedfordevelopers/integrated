@@ -17,7 +17,6 @@ use Solarium\QueryType\Select\Result\Document;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\PageBundle\ContentType\ContentTypeControllerManager;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\ContentInterface;
@@ -72,7 +71,7 @@ class UrlResolver extends RouteResolver
         }
 
         $page = $this->getContentTypePageById($document->getContentType(), $channelId);
-        if (!$page instanceof ContentTypePage) {
+        if ($page instanceof ContentTypePage) {
             $this->setContentTypePage($page);
             return $this->resolveUrl($document);
         }
@@ -136,7 +135,13 @@ class UrlResolver extends RouteResolver
         //register relations
         $this->matchRelations();
 
-        foreach ($this->relations as $relationId) {
+        $relation = null;
+        foreach (array_reverse($this->relations) as $relationId) {
+            //if there is a previous relation then the new reference should be searched that relation
+            if ($relation) {
+                $document = $relation;
+            }
+
             //todo INTEGRATED-440 add getReferenceByRelationId to ContentInterface
             $relation = $document->getReferenceByRelationId($relationId);
 

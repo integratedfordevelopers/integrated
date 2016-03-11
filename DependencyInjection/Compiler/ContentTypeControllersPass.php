@@ -24,11 +24,11 @@ class ContentTypeControllersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('integrated_page.content_type.content_type_controller_manager')) {
+        if (!$container->hasDefinition('integrated_page.services.content_type_controller_manager')) {
             return;
         }
 
-        $definition = $container->findDefinition('integrated_page.content_type.content_type_controller_manager');
+        $definition = $container->findDefinition('integrated_page.services.content_type_controller_manager');
 
         $taggedServices = $container->findTaggedServiceIds('integrated_page.contenttype_controller');
 

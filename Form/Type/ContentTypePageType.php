@@ -11,14 +11,15 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
-use Integrated\Bundle\PageBundle\ContentType\ContentTypeControllerManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
+
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
