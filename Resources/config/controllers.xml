@@ -20,30 +20,35 @@
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="Integrated\Bundle\ContentBundle\Document\Content\Article"/>
         </service>
 
         <service id="integrated_website.controller.content.company" class="%integrated_website.controller.content.company.class%">
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company"/>
         </service>
 
         <service id="integrated_website.controller.content.event" class="%integrated_website.controller.content.event.class%">
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="Integrated\Bundle\ContentBundle\Document\Content\Event"/>
         </service>
 
         <service id="integrated_website.controller.content.job_posting" class="%integrated_website.controller.content.job_posting.class%">
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="Integrated\Bundle\ContentBundle\Document\Content\JobPosting"/>
         </service>
 
         <service id="integrated_website.controller.content.taxonomy" class="%integrated_website.controller.content.taxonomy.class%">
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy"/>
         </service>
 
     </services>

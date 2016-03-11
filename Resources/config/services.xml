@@ -7,6 +7,7 @@
     <parameters>
 
         <parameter key="integrated_website.routing.page_loader.class">Integrated\Bundle\WebsiteBundle\Routing\PageLoader</parameter>
+        <parameter key="integrated_website.routing.content_type_page_loader.class">Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader</parameter>
 
     </parameters>
 
@@ -14,6 +15,12 @@
 
         <service id="integrated_website.routing.page_loader" class="%integrated_website.routing.page_loader.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="routing.loader" />
+        </service>
+
+        <service id="integrated_website.routing.content_type_page_loader" class="%integrated_website.routing.content_type_page_loader.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.services.route_resolver" />
             <tag name="routing.loader" />
         </service>
 
