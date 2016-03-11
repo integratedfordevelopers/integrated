@@ -51,16 +51,6 @@ class FileType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $constraints = new ArrayObject();
-        $constraintsNormalizer = function(Options $options, $value) use ($constraints)  {
-            $constraints->exchangeArray(is_object($value) ? [$value] : (array) $value);
-            return [];
-        };
-
-        $constraintsFileNormalizer = function(Options $options) use ($constraints)  {
-            return $constraints->getArrayCopy();
-        };
-
         // The field might not be required in the integrated content type
         $resolver->setDefaults([
             'compound' => true,
@@ -68,8 +58,21 @@ class FileType extends AbstractType
             'constraints_file' => [],
         ]);
 
-        $resolver->setNormalizer('constraints', $constraintsNormalizer);
-        $resolver->setNormalizer('constraints_file', $constraintsFileNormalizer);
+        // Move the constraints from the main object to the file object
+        $constraints = new ArrayObject();
+        $resolver->setNormalizer(
+            'constraints',
+            function(Options $options, $value) use ($constraints)  {
+                $constraints->exchangeArray(is_object($value) ? [$value] : (array) $value);
+                return [];
+            }
+        );
+        $resolver->setNormalizer(
+            'constraints_file',
+            function(Options $options) use ($constraints)  {
+                return $constraints->getArrayCopy();
+            }
+        );
     }
 
     /**
