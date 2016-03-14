@@ -145,7 +145,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             // search selection is removed
         }
 
-        $this->addFacetFilters($query, $block, (array) $request->query->all(), $options);
+        $count = $this->addFacetFilters($query, $block, (array) $request->query->all(), $options);
 
         if (count($this->registry) && isset($options['exclude']) && true === $options['exclude']) {
             $helper = $query->getHelper();
@@ -153,8 +153,10 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
                 return $helper->escapePhrase($param);
             };
 
-            // exclude items
-            $query->setQuery($query->getQuery() . ' AND -type_id: (%1%)', [implode(' OR ', array_map($filter, array_keys($this->registry)))]);
+            if (0 === $count) {
+                // only exclude without facet filtering
+                $query->setQuery($query->getQuery() . ' AND -type_id: (%1%)', [implode(' OR ', array_map($filter, array_keys($this->registry)))]);
+            }
         }
 
         return $query;
@@ -165,9 +167,13 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
      * @param ContentBlock $block
      * @param array $request
      * @param array $options
+     *
+     * @return int
      */
     protected function addFacetFilters(Query $query, ContentBlock $block, array $request = [], array $options = [])
     {
+        $count = 0;
+
         $suffix = isset($options['search_selection']) && true === $options['search_selection'] ? '_search_selection' : null;
         $facetFields = $block->getFacetFields();
 
@@ -219,6 +225,8 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
                 $param = isset($request[$field]) ? $request[$field] : null;
 
                 if ($param) {
+                    $count++; // facet fields count
+
                     $query
                         ->createFilterQuery($field . $suffix)
                         ->setQuery($field . ': (%1%)', [implode(' OR ', array_map($filter, $param))])
@@ -260,6 +268,8 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
                 $query->addSort($sortOptions[$sort]['field'], in_array($order, $orderOptions) ? $order : $sortOptions[$sort]['order']);
             }
         }
+
+        return $count;
     }
 
     /**
