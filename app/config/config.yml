@@ -68,7 +68,7 @@ assetic:
 
 # Bootstrap Configuration
 braincrafted_bootstrap:
-    less_filter: less
+    css_preprocessor: less
     jquery_path: %kernel.root_dir%/../vendor/components/jquery/jquery.js
 #    customize:
 #        variables_file: %kernel.root_dir%/../vendor/integrated/content-bundle/Integrated/Bundle/ContentBundle/Resources/public/less/variables.less
