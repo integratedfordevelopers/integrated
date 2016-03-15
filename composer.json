@@ -1,0 +1,30 @@
+{
+    "name": "integrated/asset-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Asset Bundle",
+    "keywords": ["Integrated", "asset", "asset manager"],
+    "homepage": "http://www.integratedfordevelopers.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": ">=2.4"
+    },
+    "autoload":{
+        "psr-4":{
+            "Integrated\\Bundle\\AssetBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.9-dev"
+        }
+    }
+}
