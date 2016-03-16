@@ -38,7 +38,7 @@
 
             {% if form.offsetGet('relations').count() %}
                 <input type="hidden" id="default_references" value="{{ references }}">
-                <div class="form-horizontal relations" style="margin-top:15px;">
+                <div class="form-horizontal relations margin-top">
                     {% for relation in form.relations %}
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label>
@@ -52,7 +52,7 @@
                                 >
                                 </select>
 
-                                <div class="add-wrapper" style="margin-top: 5px;"></div>
+                                <div class="add-wrapper margin-top"></div>
                             </div>
                         </div>
 
@@ -128,6 +128,47 @@
             </div>
         </aside>
     </div>
+
+    {% autoescape 'js' %}
+        {% verbatim %}
+            <script id="add-template" type="text/xhandlebars-template">
+                {{#if relations}}
+                {{#equals relations.length 1}}
+                <a data-title="Add {{relations.0.name}}" class="btn btn-gray add-relation font-size-13" data-href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
+                    {% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}
+                </a>
+                {{else}}
+                <div class="btn-group add-relation">
+                    <button type="button" class="btn btn-gray dropdown-toggle font-size-13" data-toggle="dropdown" aria-expanded="false">
+                        {% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        {{#each relations}}
+                        <li>
+                            <a class="cursor-pointer" data-title="Add {{this.name}}" data-href="{{this.href}}" target="_blank" data-modal="add-modal">
+                                {{this.name}}
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                 </div>
+                {{/equals}}
+                {{/if}}
+                <div class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{% endverbatim %}{% trans %}Close{% endtrans %}{% verbatim %}</span></button>
+                                <h4 class="modal-title">{% endverbatim %}{% trans %}Add{% endtrans %}{% verbatim %}</h4>
+                            </div>
+                            <iframe width="100%" height="400">{% endverbatim %}{% trans %}Loading{% endtrans %}{% verbatim %}</iframe>
+                        </div>
+                    </div>
+                </div>
+            </script>
+        {% endverbatim %}
+    {% endautoescape %}
+
 
     <div class="modal fade" id="content-edit-modal">
         <div class="modal-dialog">
@@ -212,3 +253,14 @@
 
 {{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
 {% endblock javascript %}
+
+{% block style %}
+    {{ parent() }}
+    <style>
+        .form-horizontal.margin-top {margin-top: 15px;}
+        .form-horizontal .add-wrapper {margin-top: 5px;}
+        .font-size-13 {font-size: 13px;}
+        .cursor-pointer {cursor: pointer;}
+        .modal iframe {width: 100%; min-height: 10px; border: none;}
+    </style>
+{% endblock %}
