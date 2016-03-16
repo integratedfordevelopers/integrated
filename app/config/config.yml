@@ -104,6 +104,21 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
 
+# Storage Configuration
+knp_gaufrette:
+    adapters:
+        local:
+            local:
+                directory: %kernel.root_dir%/../web/files
+    filesystems:
+        integrated:
+            adapter: local
+
+integrated_storage:
+    resolver:
+        integrated:
+            public: /files
+
 # Solr Configuration
 integrated_solr:
     endpoints:
