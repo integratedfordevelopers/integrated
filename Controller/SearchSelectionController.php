@@ -122,10 +122,13 @@ class SearchSelectionController extends Controller
     {
         // TODO: security check
 
-        $form = $this->createDeleteForm($searchSelection->getId());
+        $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
+        $referenced = $contentReferenced->getReferenced($searchSelection);
+
+        $form = $this->createDeleteForm($searchSelection->getId(), count($referenced) > 0);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->has('submit') && $form->isValid()) {
 
             $this->getDocumentManager()->remove($searchSelection);
             $this->getDocumentManager()->flush();
@@ -138,6 +141,7 @@ class SearchSelectionController extends Controller
         return [
             'searchSelection' => $searchSelection,
             'form' => $form->createView(),
+            'referenced' => $referenced,
         ];
     }
 
@@ -212,17 +216,24 @@ class SearchSelectionController extends Controller
     /**
      * Creates a form to delete a SearchSelection document by id.
      *
-     * @param mixed $id The document id
-     * @return \Symfony\Component\Form\Form The form
+     * @param $id
+     * @param bool|false $notDelete
+     * @return \Symfony\Component\Form\Form
      */
-    protected function createDeleteForm($id)
+    protected function createDeleteForm($id, $notDelete = false)
     {
-        return $this
+        $form = $this
             ->createFormBuilder()
             ->setAction($this->generateUrl('integrated_content_search_selection_delete', ['id' => $id]))
-            ->setMethod('DELETE')
-            ->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
-            ->getForm();
+            ->setMethod('DELETE');
+
+        if ($notDelete) {
+            $form->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
+        } else {
+            $form->add('reload', 'submit', ['label' => 'Reload', 'attr' => ['class' => 'btn-default']]);
+        }
+
+        return $form->getForm();
     }
 
     /**

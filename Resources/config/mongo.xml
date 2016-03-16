@@ -17,7 +17,9 @@
         <parameter key="integrated_content.odm.mongo.cleanreferences.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CleanReferencesListener</parameter>
         <parameter key="integrated_content.odm.mongo.clean_relations.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CleanRelationsListener</parameter>
 
-	</parameters>
+        <parameter key="integrated_content.odm.mongo.checkreferenced.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CheckReferencedListener</parameter>
+
+    </parameters>
 
 	<services>
 
@@ -61,6 +63,10 @@
         </service>
 
         <service id="integrated_content.odm.mongo.clean_relations.listener" class="%integrated_content.odm.mongo.clean_relations.listener.class%">
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+        <service id="integrated_content.odm.mongo.checkreferenced.listener" class="%integrated_content.odm.mongo.checkreferenced.listener.class%">
             <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
         </service>
 

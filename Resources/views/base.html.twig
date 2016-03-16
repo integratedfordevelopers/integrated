@@ -12,10 +12,23 @@
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 
     <script>
+        var loadedScripts = [],
+            callbacks = [];
         function require(url, callback){
 
-            var script = document.createElement("script")
-            script.type = "text/javascript";
+            callbacks.push(callback);
+
+            if (loadedScripts[url]) {
+                script = loadedScripts[url];
+            } else {
+                var script = document.createElement("script")
+                script.type = "text/javascript";
+
+                script.src = url;
+                document.getElementsByTagName("head")[0].appendChild(script);
+
+                loadedScripts[url] = script;
+            }
 
             if (script.readyState){  //IE
                 script.onreadystatechange = function(){
@@ -27,12 +40,12 @@
                 };
             } else {  //Others
                 script.onload = function(){
-                    callback();
+                    for (var key in callbacks) {
+                        callbacks[key]();
+                    }
                 };
             }
 
-            script.src = url;
-            document.getElementsByTagName("head")[0].appendChild(script);
         }
     </script>
 
@@ -44,27 +57,14 @@
     <nav class="navbar megamenu">
         <div class="container">
 
-            <ul class="nav navbar-nav nav-left">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="integrate-icon-menu"></i></a>
-                    {{ knp_menu_render('integrated_menu', {'template': 'IntegratedContentBundle:Menu:menu.html.twig'}) }}
-                </li>
-            </ul>
+            {% include 'IntegratedContentBundle:partials:block.navigation.html.twig' %}
 
-            <a class="navbar-brand hidden-xs" href="{{ path('integrated_content_content_index') }}">Integrated</a>
+            {% include 'IntegratedContentBundle:partials:block.logo.html.twig' %}
 
             {{ render(controller('IntegratedContentBundle:Content:navdropdowns')) }}
 
-            <div class="nav-form-holder">
-                <div class="nav-form-inner">
-                    <form action="{{ path('integrated_content_content_index') }}" class="navbar-form navbar-left search-form" method="get">
-                        <div class="form-group relative">
-                            <input type="text" name="q" class="form-control" value="{{ app.request.query.get('q')|trim }}" placeholder="{% trans %}Search here{% endtrans %}...">
-                            <button type="submit"><i class="integrate-icon-search"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            {% include 'IntegratedContentBundle:partials:block.search.html.twig' %}
+
         </div>
     </nav>
 {% endblock %}
@@ -106,7 +106,7 @@
         '@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.min.js'
         '@IntegratedContentBundle/Resources/public/components/modernizr/modernizr.js'
         '@IntegratedContentBundle/Resources/public/components/respond/dest/respond.min.js'
-        '@IntegratedContentBundle/Resources/public/components/select2/dist/js/select2.min.js'
+        '@IntegratedContentBundle/Resources/public/components/select2/dist/js/select2.full.min.js'
         '@IntegratedContentBundle/Resources/public/components/jquery-placeholder/jquery.placeholder.js'
         '@IntegratedContentBundle/Resources/public/js/scripts.js'
     %}

@@ -129,46 +129,6 @@
         </aside>
     </div>
 
-    {% autoescape 'js' %}
-        {% verbatim %}
-            <script id="add-template" type="text/xhandlebars-template">
-                {{#if relations}}
-                {{#equals relations.length 1}}
-                <a data-title="Add {{relations.0.name}}" class="btn btn-gray add-relation" style="font-size: 13px;" data-href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
-                    Add New
-                </a>
-                {{else}}
-                <div class="btn-group add-relation">
-                    <button type="button" class="btn btn-gray dropdown-toggle" style="font-size: 13px;" data-toggle="dropdown" aria-expanded="false">
-                        Add New<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        {{#each relations}}
-                        <li>
-                            <a style="cursor:pointer;" data-title="Add {{this.name}}" data-href="{{this.href}}" target="_blank" data-modal="add-modal">
-                                {{this.name}}
-                            </a>
-                        </li>
-                        {{/each}}
-                    </ul>
-                 </div>
-                {{/equals}}
-                {{/if}}
-                <div class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                                <h4 class="modal-title">Add</h4>
-                            </div>
-                            <iframe width="100%" height="400" style="width: 100%; min-height: 10px; border: none;">Loading</iframe>
-                        </div>
-                    </div>
-                </div>
-            </script>
-        {% endverbatim %}
-    {% endautoescape %}
-
     <div class="modal fade" id="content-edit-modal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -180,8 +140,8 @@
                     <p>{% trans %}Are you sure you want to leave this page?{% endtrans %}</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default live-page">{% trans %}Leave this page{% endtrans %}</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">{% trans %}Stay on page{% endtrans %}</button>
+                    <button type="button" class="btn btn-primary live-page">{% trans %}Leave this page{% endtrans %}</button>
+                    <button type="button" class="btn btn-gray-thin" data-dismiss="modal">{% trans %}Stay on page{% endtrans %}</button>
                 </div>
             </div>
         </div>
@@ -240,7 +200,15 @@
 
 {% endif %}
 
+{% javascripts "@IntegratedUserBundle/Resources/public/js/visible_user_form.js" %}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
 
+{% if hasWorkflowBundle %}
+    {% javascripts '@IntegratedWorkflowBundle/Resources/public/js/workflowChangeState.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endif %}
 
 {{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
 {% endblock javascript %}
