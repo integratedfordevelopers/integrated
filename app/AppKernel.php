@@ -22,11 +22,13 @@ class AppKernel extends Kernel
             new Sp\BowerBundle\SpBowerBundle(),
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Vihuvac\Bundle\RecaptchaBundle\VihuvacRecaptchaBundle(),
 
             new Integrated\Bundle\ContentBundle\IntegratedContentBundle(),
             new Integrated\Bundle\FormTypeBundle\IntegratedFormTypeBundle(),
             new Integrated\Bundle\SolrBundle\IntegratedSolrBundle(),
+            new Integrated\Bundle\StorageBundle\IntegratedStorageBundle(),
             new Integrated\Bundle\UserBundle\IntegratedUserBundle(),
             new Integrated\Bundle\LockingBundle\IntegratedLockingBundle(),
             new Integrated\Bundle\SlugBundle\IntegratedSlugBundle(),
