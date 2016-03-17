@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new Vihuvac\Bundle\RecaptchaBundle\VihuvacRecaptchaBundle(),
+            new Gregwar\ImageBundle\GregwarImageBundle(),
 
             new Integrated\Bundle\ContentBundle\IntegratedContentBundle(),
             new Integrated\Bundle\FormTypeBundle\IntegratedFormTypeBundle(),
