@@ -15,3 +15,10 @@
         </div>
     </div>
 {% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts "@IntegratedContentBundle/Resources/public/js/channel.js" %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascript %}
