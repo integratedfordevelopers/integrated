@@ -25,8 +25,8 @@
         <parameter key="integrated_content.form.content_type.channels.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType</parameter>
         <parameter key="integrated_content.form.content_type.channel.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType</parameter>
         <parameter key="integrated_content.form.content_type.channel.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType</parameter>
-        
-        <parameter key="integrated_content.form.type.image.class">Integrated\Bundle\ContentBundle\Form\Type\ImageType</parameter>
+        <parameter key="integrated_content.form.channel.domain.class">Integrated\Bundle\ContentBundle\Form\Type\ChannelDomainType</parameter>
+
         <parameter key="integrated_content.form.type.image_choice.class">Integrated\Bundle\ContentBundle\Form\Type\ImageChoiceType</parameter>
         <parameter key="integrated_content.form.type.csv_array.class">Integrated\Bundle\ContentBundle\Form\Type\CsvArray</parameter>
 
@@ -40,7 +40,6 @@
         <parameter key="integrated_content.form.search_selection_choice.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType</parameter>
 
 		<parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
-		<parameter key="integrated_content.form.type.file.class">Integrated\Bundle\ContentBundle\Form\Type\FileType</parameter>
         <parameter key="integrated_content.form.type.address.class">Integrated\Bundle\ContentBundle\Form\Type\AddressType</parameter>
         <parameter key="integrated_content.form.publish_time.type.class">Integrated\Bundle\ContentBundle\Form\Type\PublishTimeType</parameter>
 
@@ -88,10 +87,6 @@
             <argument type="string">content_relations</argument>
 
             <tag name="integrated_content.form.event_subscriber" />
-        </service>
-
-        <service id="integrated_content.form.type.image" class="%integrated_content.form.type.image.class%">
-            <tag name="form.type" alias="integrated_image" />
         </service>
 
         <service id="integrated_content.form.type.image_choice" class="%integrated_content.form.type.image_choice.class%">
@@ -163,6 +158,10 @@
             <argument type="service" id="integrated_content.content_type_repository" />
 
             <tag name="form.type" alias="integrated_relation_block_content_types" />
+        </service>
+
+        <service id="integrated_content.form.channel.domain.type" class="%integrated_content.form.channel.domain.class%">
+            <tag name="form.type" alias="channel_domain" />
         </service>
 
     </services>
