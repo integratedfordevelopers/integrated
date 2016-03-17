@@ -31,7 +31,8 @@
         "knplabs/knp-menu-bundle": "~2.0",
         "knplabs/knp-paginator-bundle": "~2.4",
         "nelmio/alice": "1.*",
-        "braincrafted/bootstrap-bundle": "~2.0",
+        "braincrafted/bootstrap-bundle": "~2.2.0",
+        "twbs/bootstrap": "3.*",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
         "vihuvac/recaptcha-bundle": "~2.0"
     },

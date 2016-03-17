@@ -11,7 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Image;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Symfony\Component\Filesystem\LockHandler;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Traversable;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -42,6 +45,11 @@ class ContentController extends Controller
      * @var string
      */
     protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
+
+    /**
+     * @var string
+     */
+    protected $imageClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image';
 
     /**
      * @Template()
@@ -1011,6 +1019,51 @@ class ContentController extends Controller
             'content' => $content,
             'pagination' => $pagination
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function browseImageAction()
+    {
+        $container = $this->container;
+
+        $repository = $container->get('integrated_content.content_type_repository');
+        $contentTypes = $repository->findAll();
+
+        $images = [];
+        /** @var ContentType $contentType */
+        foreach ($contentTypes as $contentType) {
+            $class = $contentType->getClass();
+
+            if ($class == $this->imageClass || is_subclass_of($class, $this->imageClass)) {
+                $images[] = $contentType;
+            }
+        }
+
+        if ($container->has('integrated_workflow.services.permission')) {
+            $accessImages = [];
+
+            $workflowPermission = $container->get('integrated_workflow.services.permission');
+            foreach ($images as $image) {
+                if ($workflowPermission->hasAccess($image)) {
+                    $accessImages[] = $image;
+                }
+            }
+            $images = $accessImages;
+        }
+
+        $output = [];
+        /** @var Image $image */
+        foreach ($images as $image) {
+            $output[] = [
+                'id' => $image->getId(),
+                'name' => $image->getName(),
+                'path' => $this->generateUrl('integrated_content_content_new', ['type'=>$image->getId()]),
+            ];
+        }
+
+        return new JsonResponse($output);
     }
 
     /**
