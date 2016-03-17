@@ -25,22 +25,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface StorageInterface
 {
     /**
-     * Create an object after a write operation on the filesystem
-     *
-     * @param string $identity
-     * @param ArrayCollection $filesystems
-     * @param ResolverInterface $resolverStorage
-     * @param MetadataInterface $metadata
-     * @return StorageInterface
-     */
-    public static function postWrite(
-        $identity,
-        ArrayCollection $filesystems,
-        ResolverInterface $resolverStorage,
-        MetadataInterface $metadata
-    );
-
-    /**
      * @return string
      */
     public function getIdentifier();
