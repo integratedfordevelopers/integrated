@@ -22,13 +22,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ConfigureRolesSubscriber implements EventSubscriberInterface
 {
     /**
-     * ConfigureRolesSubscriber constructor.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
