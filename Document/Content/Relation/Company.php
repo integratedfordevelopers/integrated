@@ -13,8 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
@@ -44,9 +44,9 @@ class Company extends Relation
     protected $slug;
 
     /**
-     * @var FileInterface
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
-     * @Type\Field(type="integrated_image_choice")
+     * @var Storage
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
+     * @Type\Field(type="integrated_image")
      */
     protected $logo;
 
@@ -104,7 +104,7 @@ class Company extends Relation
     /**
      * Get the file of the document
      *
-     * @return FileInterface
+     * @return Storage
      */
     public function getLogo()
     {
@@ -114,10 +114,10 @@ class Company extends Relation
     /**
      * Set the logo of the document
      *
-     * @param FileInterface $logo
+     * @param Storage $logo
      * @return $this
      */
-    public function setLogo(FileInterface $logo)
+    public function setLogo(Storage $logo)
     {
         $this->logo = $logo;
         return $this;
