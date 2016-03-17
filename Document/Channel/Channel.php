@@ -254,8 +254,8 @@ class Channel implements ChannelInterface
     public function validate(ExecutionContextInterface $context)
     {
         foreach ($this->domains as $domain) {
-            if (!filter_var($domain, FILTER_VALIDATE_URL)) {
-                $context->buildViolation('Not valid domain: ' . $domain)
+            if (!filter_var('admin@' . $domain, FILTER_VALIDATE_EMAIL)) {
+                $context->buildViolation('Domain ' . $domain . ' is not valid')
                     ->atPath('domains')
                     ->addViolation();
 
@@ -263,8 +263,8 @@ class Channel implements ChannelInterface
             }
         }
 
-        if (!filter_var($this->primaryDomain, FILTER_VALIDATE_URL)) {
-            $context->buildViolation('Not valid primary domain')
+        if (!filter_var('admin@' . $this->primaryDomain, FILTER_VALIDATE_EMAIL)) {
+            $context->buildViolation('Primary domain ' . $domain . ' is not valid')
                 ->atPath('primaryDomain')
                 ->addViolation();
         }

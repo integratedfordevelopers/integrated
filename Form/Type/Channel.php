@@ -33,7 +33,7 @@ class Channel extends AbstractType
             'domains',
             'bootstrap_collection',
             array(
-                'label'              => "Domains (http://site.com)",
+                'label'              => "Domains (example.com)",
                 'allow_add'          => true,
                 'allow_delete'       => true,
                 'add_button_text'    => 'Add domain',
