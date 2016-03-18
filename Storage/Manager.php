@@ -93,7 +93,7 @@ class Manager implements ManagerInterface
      */
     public function read(StorageInterface $storage)
     {
-        // Walk over the storage's that should contain the file
+        // Walk over all filesystems that should contain the file
         foreach ($storage->getFilesystems() as $key) {
             // Just log it, when the fan is dirty (shit hit it)
             try {
