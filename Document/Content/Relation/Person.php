@@ -303,15 +303,15 @@ class Person extends Relation
     /**
      * Get the relative cover image URL for person (picture)
      *
-     * @return string
+     * @return string|null
      */
     public function getCover()
     {
-        if ($this->getPicture()) {
-            if ($this->getPicture() instanceof StorageInterface) {
-                return $this->getPicture()->getPathname();
-            }
+        if ($this->getPicture() instanceof StorageInterface) {
+            return $this->getPicture()->getPathname();
         }
+
+        return null;
     }
 
     /**
