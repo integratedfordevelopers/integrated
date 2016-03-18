@@ -12,10 +12,9 @@
 namespace Integrated\Bundle\StorageBundle\Storage\Filesystem;
 
 use Gaufrette\File;
+use Gaufrette\Filesystem;
 
 use Integrated\Common\Storage\Reader\ReaderInterface;
-
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
