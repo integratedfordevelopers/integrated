@@ -82,7 +82,7 @@ class Person extends Relation
     protected $jobs;
 
     /**
-     * @var StorageInterface
+     * @var StorageInterface|null
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      * @Type\Field(type="integrated_image")
      */
@@ -281,7 +281,7 @@ class Person extends Relation
     /**
      * Get the picture of the document
      *
-     * @return Storage
+     * @return StorageInterface|null
      */
     public function getPicture()
     {
