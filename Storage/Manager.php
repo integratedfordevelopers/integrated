@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
-use Gaufrette\Filesystem;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Storage\Exception\RevertException;
+use Integrated\Bundle\StorageBundle\Storage\Filesystem\WriteFilesystem;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -25,9 +25,12 @@ use Integrated\Common\Storage\Reader\ReaderInterface;
 use Integrated\Common\Storage\ResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Gaufrette\File;
+
 use Gaufrette\Exception\FileNotFound;
+use Gaufrette\Filesystem;
+
 use Psr\Log\LoggerInterface;
+
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
@@ -90,20 +93,36 @@ class Manager implements ManagerInterface
      */
     public function read(StorageInterface $storage)
     {
+        // Walk over the storage's that should contain the file
         foreach ($storage->getFilesystems() as $key) {
-            // A filesystem might be down, walk over all to get the best candidate
-            $filesystem = $this->registry->get($key);
+            // Just log it, when the fan is dirty (shit hit it)
+            try {
+                // A filesystem might be down, walk over all to get the best candidate
+                $filesystem = $this->registry->get($key);
 
-            // The file must exist on the storage (might be cached), this is a sanity check
-            if ($filesystem->has($storage->getIdentifier())) {
-                return $filesystem->read($storage->getIdentifier());
+                // The file must exist on the storage (might be cached), this is a sanity check
+                if ($filesystem->has($storage->getIdentifier())) {
+                    return $filesystem->read($storage->getIdentifier());
+                }
+            } catch (Exception $e) {
+                if ($this->logger) {
+                    $this->logger->alert(
+                        sprintf(
+                            '%sThe filesystem %s did not properly return the file %s: %s',
+                            self::LOG_PREFIX,
+                            $e->getMessage()
+                        )
+                    );
+                }
             }
         }
 
+        // Just to the last resort
         throw new \LogicException(
             sprintf(
-                'The file %s has no available filesystem for a read operation.',
-                $storage->getIdentifier()
+                'The file %s has no available filesystem(s) for a read operation tried: %s.',
+                $storage->getIdentifier(),
+                implode(', ', $storage->getFilesystems())
             )
         );
     }
@@ -132,48 +151,18 @@ class Manager implements ManagerInterface
                     );
                 }
 
-                // Get the filesystem from the registry
-                $filesystem = $this->registry->get($key);
+                // Check for existence, do not continue if it exists. A file may have updated meta data
+                $result = (new WriteFilesystem($this->getFilesystem($key)))->write($identifier, $reader);
 
-                if ($filesystem instanceof Filesystem) {
-                    // Check for existence, do not continue if it exists. A file may have updated meta data
-                    if ($filesystem->has($identifier)) {
-                        $storage = $filesystem->get($identifier);
-                    } else {
-                        $storage = $filesystem->createFile($identifier);
-                    }
-
-                    if ($storage instanceof File) {
-                        // Might return 0 for an empty file (or throw an exception)
-                        $result = $storage->setContent(
-                            $reader->read(),
-                            $reader->getMetadata()->storageData()->toArray()
-                        );
-                    } else {
-                        throw new \LogicException(
-                            sprintf(
-                                'A instanceof Gaufrette\File was excepted (given: %s).',
-                                get_class($storage)
-                            )
-                        );
-                    }
-
-                    if (false === $result) {
-                        // Throw a roll back
-                        throw new RevertException(
-                            sprintf(
-                                '%sThe filesystem %s denied writing for key %s',
-                                self::LOG_PREFIX,
-                                $key,
-                                $identifier
-                            )
-                        );
-                    }
-                } else {
-                    throw new \LogicException(
+                // The method may return false, an identical operator must be used
+                if (false === $result) {
+                    // Throw a roll back
+                    throw new RevertException(
                         sprintf(
-                            'A instancof Gaufrette\Filesystem was excpected (given: %s).',
-                            get_class($filesystem)
+                            '%sThe filesystem %s denied writing for key %s',
+                            self::LOG_PREFIX,
+                            $key,
+                            $identifier
                         )
                     );
                 }
@@ -182,12 +171,7 @@ class Manager implements ManagerInterface
                 $filesystemMap[] = $key;
             }
         } catch (Exception $e) {
-            // Before bubbling up the catch conditions revert any changes to the file system
-            foreach ($filesystemMap as $key) {
-                // Issue the delete request, no validation
-                $this->registry->get($key)->delete($identifier);
-            }
-
+            // Attempt to log it, then just pass along
             if ($this->logger) {
                 $this->logger->critical(
                     sprintf(
@@ -212,29 +196,16 @@ class Manager implements ManagerInterface
 
     /**
      * {@inheritdoc}
+     * @return null
      */
-    public function update(StorageInterface $storage, ReaderInterface $reader)
+    public function delete(StorageInterface $storage)
     {
-        // An update might change the signature of the key (FileIdentifier)
-        $this->delete($storage);
-
-        // Return the new object
-        return $this->write($reader);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete(StorageInterface $storage, ArrayCollection $filesystems = null)
-    {
-        // Sanity
-        $validator = new FilesystemValidation($this->registry);
-
         // Delete it in all the known filesystems for the file
-        foreach ($validator->getValidFilesystems($filesystems) as $key => $filesystem) {
+        foreach ($storage->getFilesystems() as $key) {
+            // Try per filesystem, not the file as a whole
             try {
-                $this->registry->get($filesystem)
-                    ->delete($storage->getIdentifier());
+                // Remove the file out the filesystem
+                $this->registry->get($key)->delete($storage->getIdentifier());
 
                 if ($this->logger) {
                     $this->logger->notice(
@@ -260,43 +231,104 @@ class Manager implements ManagerInterface
                 }
             }
         }
-
-        return Storage::postWrite(
-            $storage->getIdentifier(),
-            new ArrayCollection(
-                array_merge(
-                    $storage->getFilesystems()->toArray(),
-                    $filesystems->toArray()
-                )
-            ),
-            $this->resolver,
-            $storage->getMetadata()
-        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function copy(StorageInterface $storage, ArrayCollection $filesystems)
+    public function move(StorageInterface $storage, ArrayCollection $filesystems)
     {
-        $this->write(
-            new MemoryReader(
-                $this->read($storage),
-                $storage->getMetadata()
-            ),
-            $filesystems
+        // The file, read by ourselves
+        $reader = new MemoryReader(
+            $this->read($storage),
+            $storage->getMetadata()
         );
 
-        return Storage::postWrite(
-            $storage->getIdentifier(),
-            new ArrayCollection(
-                array_merge(
-                    $storage->getFilesystems()->toArray(),
-                    $filesystems->toArray()
-                )
-            ),
-            $this->resolver,
-            $storage->getMetadata()
+        // We'll need one atleast
+        if ($filesystems->count()) {
+            try {
+                // Place the file in the storage
+                foreach ($filesystems as $key) {
+                    // Place the file
+                    $result = (new WriteFilesystem($this->getFilesystem($key)))->write($storage->getIdentifier(), $reader);
+
+                    if (false === $result) {
+                        // Throw a roll back
+                        throw new RevertException(
+                            sprintf(
+                                '%sThe filesystem %s denied writing for key %s',
+                                self::LOG_PREFIX,
+                                $key,
+                                $storage->getIdentifier()
+                            )
+                        );
+                    }
+                }
+
+                // Build a map
+                $removeMap = new ArrayCollection($storage->getFilesystems());
+                $removeMap->filter(
+                    function($key) use ($filesystems) {
+                        // Only delete the file from the filesystems that are not requested
+                        return false == $filesystems->exists($key);
+                    }
+                );
+
+                // Remove it
+                foreach ($removeMap as $key) {
+                    $this->getFilesystem($key)->delete($storage->getIdentifier());
+                }
+
+                // Return a new storage object
+                return Storage::postWrite(
+                    $storage->getIdentifier(),
+                    $filesystems,
+                    $this->resolver,
+                    $storage->getMetadata()
+                );
+            } catch (RevertException $e) {
+                // Just log it
+                if ($this->logger) {
+                    $this->logger->critical(
+                        sprintf(
+                            '%s%s',
+                            self::LOG_PREFIX,
+                            $e->getMessage()
+                        )
+                    );
+                }
+
+                throw $e;
+            }
+        }
+
+        // No filesystem defined
+        throw new \LogicException(
+            sprintf(
+                'No filesystems to defined to move the file %s to.',
+                $storage->getIdentifier()
+            )
+        );
+    }
+
+    /**
+     * @param string $key
+     * @return Filesystem
+     */
+    protected function getFilesystem($key)
+    {
+        // Grab it from reggie
+        $filesystem = $this->registry->get($key);
+        if ($filesystem instanceof Filesystem) {
+            return $filesystem;
+        }
+
+        // We must return some sort specialization like Filesystem ainit?
+        throw new \LogicException(
+            sprintf(
+                'A instanceof Gaufrette\Filesystem was expected (given: %s).',
+                is_object($filesystem) ? get_class($filesystem) : gettype($filesystem)
+            )
         );
     }
 }
