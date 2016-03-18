@@ -45,27 +45,17 @@ interface ManagerInterface
     public function write(ReaderInterface $reader, ArrayCollection $filesystems = null);
 
     /**
-     * A new storage object (make sure you update it)
-     *
      * @param StorageInterface $storage
-     * @param ReaderInterface $reader
-     * @return ManagerInterface
+     * @return void
      */
-    public function update(StorageInterface $storage, ReaderInterface $reader);
+    public function delete(StorageInterface $storage);
 
     /**
-     * @param StorageInterface $storage
-     * @param ArrayCollection $filesystems
-     * @return StorageInterface
-     */
-    public function delete(StorageInterface $storage, ArrayCollection $filesystems = null);
-
-    /**
-     * Copy the storage object to any other filesystem
+     * Move the file to the specified filesystems
      *
      * @param StorageInterface $storage
      * @param ArrayCollection $filesystems
      * @return StorageInterface
      */
-    public function copy(StorageInterface $storage, ArrayCollection $filesystems);
+    public function move(StorageInterface $storage, ArrayCollection $filesystems);
 }
