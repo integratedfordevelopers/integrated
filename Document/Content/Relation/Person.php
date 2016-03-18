@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
@@ -81,7 +82,7 @@ class Person extends Relation
     protected $jobs;
 
     /**
-     * @var Storage
+     * @var StorageInterface
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      * @Type\Field(type="integrated_image")
      */
@@ -290,10 +291,10 @@ class Person extends Relation
     /**
      * Set the picture of the document
      *
-     * @param Storage $picture
+     * @param StorageInterface $picture
      * @return $this
      */
-    public function setPicture(Storage $picture)
+    public function setPicture(StorageInterface $picture)
     {
         $this->picture = $picture;
         return $this;
@@ -307,7 +308,7 @@ class Person extends Relation
     public function getCover()
     {
         if ($this->getPicture()) {
-            if ($this->getPicture() instanceof Storage) {
+            if ($this->getPicture() instanceof StorageInterface) {
                 return $this->getPicture()->getPathname();
             }
         }
