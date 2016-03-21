@@ -133,15 +133,24 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% set pathname = form.vars.data.getPathname()|default %}
-                {% if pathname %}
-                    <a href="{{ pathname }}" target="_blank" style="display: block; margin-bottom: 6px;">
+                {% set preview = form.vars.preview|default %}
+                {% if preview %}
+                    <a href="{{ preview }}" target="_blank" style="display: block; margin-bottom: 6px;">
                         {% trans %}Download{% endtrans %}
                     </a>
                 {% endif %}
                 {{ form_widget(form.file) }}
-                {% if pathname %}
-                    {{ form_widget(form.remove) }}
+                {% if preview %}
+                    <div class="checkbox">
+                        <label>
+                            {{ form_widget(form.remove) }}
+                            {%  if (form.remove.vars.label) %}
+                                {{ form.remove.vars.label }}
+                            {% else %}
+                                {% trans %}Remove{% endtrans %}
+                            {%  endif %}
+                        </label>
+                    </div>
                 {% endif %}
                 {{ form_errors(form.file) }}
             </div>
@@ -160,7 +169,16 @@
                 {% endif %}
                 {{ form_widget(form.file) }}
                 {% if preview %}
-                    {{ form_widget(form.remove) }}
+                    <div class="checkbox">
+                        <label>
+                            {{ form_widget(form.remove) }}
+                            {%  if (form.remove.vars.label) %}
+                                {{ form.remove.vars.label }}
+                            {% else %}
+                                {% trans %}Remove{% endtrans %}
+                            {%  endif %}
+                        </label>
+                    </div>
                 {% endif %}
                 {{ form_errors(form.file) }}
             </div>
