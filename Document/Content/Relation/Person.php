@@ -16,11 +16,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
 /**
  * Document type Relation\Person
@@ -83,9 +82,9 @@ class Person extends Relation
     protected $jobs;
 
     /**
-     * @var FileInterface
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
-     * @Type\Field(type="integrated_image_choice")
+     * @var StorageInterface|null
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
+     * @Type\Field(type="integrated_image")
      */
     protected $picture;
 
@@ -282,7 +281,7 @@ class Person extends Relation
     /**
      * Get the picture of the document
      *
-     * @return FileInterface
+     * @return StorageInterface|null
      */
     public function getPicture()
     {
@@ -292,10 +291,10 @@ class Person extends Relation
     /**
      * Set the picture of the document
      *
-     * @param FileInterface $picture
+     * @param StorageInterface|null $picture
      * @return $this
      */
-    public function setPicture(FileInterface $picture)
+    public function setPicture(StorageInterface $picture = null)
     {
         $this->picture = $picture;
         return $this;
@@ -304,15 +303,15 @@ class Person extends Relation
     /**
      * Get the relative cover image URL for person (picture)
      *
-     * @return string
+     * @return string|null
      */
     public function getCover()
     {
-        if ($this->getPicture()) {
-            if ($this->getPicture()->getFile() instanceof StorageInterface) {
-                return $this->getPicture()->getFile()->getPathname();
-            }
+        if ($this->getPicture() instanceof StorageInterface) {
+            return $this->getPicture()->getPathname();
         }
+
+        return null;
     }
 
     /**
