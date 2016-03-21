@@ -22,6 +22,7 @@
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "*",
         "doctrine/mongodb-odm-bundle": "~3.0",
+        "gregwar/image-bundle": "~2.1.0",
         "integrated/library": "~0.4",
         "integrated/formtype-bundle": "~0.2",
         "integrated/locking-bundle": "~0.2",
