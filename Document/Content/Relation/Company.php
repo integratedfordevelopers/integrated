@@ -114,10 +114,10 @@ class Company extends Relation
     /**
      * Set the logo of the document
      *
-     * @param StorageInterface $logo
+     * @param StorageInterface|null $logo
      * @return $this
      */
-    public function setLogo(StorageInterface $logo)
+    public function setLogo(StorageInterface $logo = null)
     {
         $this->logo = $logo;
         return $this;

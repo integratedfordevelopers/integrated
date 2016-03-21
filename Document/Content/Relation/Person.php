@@ -291,10 +291,10 @@ class Person extends Relation
     /**
      * Set the picture of the document
      *
-     * @param StorageInterface $picture
+     * @param StorageInterface|null $picture
      * @return $this
      */
-    public function setPicture(StorageInterface $picture)
+    public function setPicture(StorageInterface $picture = null)
     {
         $this->picture = $picture;
         return $this;
