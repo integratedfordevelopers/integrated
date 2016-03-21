@@ -4,11 +4,9 @@ namespace Integrated\Common\Storage;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Command\CommandInterface;
-use Integrated\Common\Storage\Handler\QueuedCommandBusInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Psr\Log\LoggerInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -37,35 +35,28 @@ interface ManagerInterface
     public function read(StorageInterface $storage);
 
     /**
+     * Write the file in the storage, all filesystems or specified
      * @param ReaderInterface $reader
      * @param ArrayCollection $filesystems
-     * @return StorageInterface
      * @throws \Exception
+     * @return StorageInterface
      */
     public function write(ReaderInterface $reader, ArrayCollection $filesystems = null);
 
     /**
-     * A new storage object (make sure you update it)
-     *
-     * @param StorageInterface $storage
-     * @param ReaderInterface $reader
-     * @return ManagerInterface
-     */
-    public function update(StorageInterface $storage, ReaderInterface $reader);
-
-    /**
-     * @param StorageInterface $storage
-     * @param ArrayCollection $filesystems
-     * @return StorageInterface
-     */
-    public function delete(StorageInterface $storage, ArrayCollection $filesystems = null);
-
-    /**
-     * Copy the storage object to any other filesystem
+     * Move the file to the specified filesystems
      *
      * @param StorageInterface $storage
      * @param ArrayCollection $filesystems
      * @return StorageInterface
      */
-    public function copy(StorageInterface $storage, ArrayCollection $filesystems);
+    public function move(StorageInterface $storage, ArrayCollection $filesystems);
+
+    /**
+     * Delete the file in all known filesystems
+     *
+     * @param StorageInterface $storage
+     * @return void
+     */
+    public function delete(StorageInterface $storage);
 }
