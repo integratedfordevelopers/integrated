@@ -1,0 +1,136 @@
+<?php
+
+namespace Integrated\Bundle\CommentBundle\Document;
+
+use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\UserBundle\Model\User;
+
+/**
+ * Class Comment
+ *
+ * @ODM\Document
+ */
+class Comment
+{
+    /**
+     * @var string
+     * @ODM\Id(strategy="UUID")
+     */
+    protected $id;
+
+    /**
+     * @var int
+     * @ODM\String()
+     */
+    protected $author;
+
+    /**
+     * @var \DateTime
+     * @ODM\Date()
+     */
+    protected $date;
+
+    /**
+     * @var Content
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
+     */
+    protected $content;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
+    protected $text;
+
+    /**
+     * Comment constructor.
+     */
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User $author
+     */
+    public function setAuthor($author)
+    {
+        if ($author instanceof User) {
+            $author = $author->getId();
+        }
+        $this->author = $author;
+    }
+
+    /**
+     * @return Content
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param Content $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param string $text
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param \DateTime $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+}

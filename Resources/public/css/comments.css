@@ -1,0 +1,21 @@
+.comment-text-selected {
+    background: #0199f8;
+    border-radius: 3px;
+    padding: 1px;
+    color: #fff;
+    position: relative;
+}
+
+.add-comment-button {
+    background: #0199f8;
+    position: absolute;
+    padding: 10px 25px;
+    color: #fff;
+    border-radius: 5px;
+    left: 0;
+    right: 0;
+    top: -50px;
+    width: 115px;
+    cursor: pointer;
+    margin: 0 auto;
+}
