@@ -1,7 +1,35 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
+    <parameters>
+
+        <parameter key="integrated_asset.manager.asset_manager.class">Integrated\Bundle\AssetBundle\Manager\AssetManager</parameter>
+
+        <parameter key="integrated_asset.twig.asset_extension.class">Integrated\Bundle\AssetBundle\Twig\Extension\AssetExtension</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_asset.manager.stylesheet_manager" class="%integrated_asset.manager.asset_manager.class%" />
+        <service id="integrated_asset.manager.javascript_manager" class="%integrated_asset.manager.asset_manager.class%" />
+
+        <service id="integrated_asset.twig.stylesheet_extension" class="%integrated_asset.twig.asset_extension.class%">
+            <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
+            <argument type="string">integrated_stylesheets</argument>
+            <argument type="string">@IntegratedAssetBundle/Resources/views/Asset/stylesheets.html.twig</argument>
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_asset.twig.javascript_extension" class="%integrated_asset.twig.asset_extension.class%">
+            <argument type="service" id="integrated_asset.manager.javascript_manager" />
+            <argument type="string">integrated_javascripts</argument>
+            <argument type="string">@IntegratedAssetBundle/Resources/views/Asset/javascripts.html.twig</argument>
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
 </container>
