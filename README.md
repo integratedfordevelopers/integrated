@@ -49,7 +49,7 @@ This bundle can be installed following these steps:
     
     {% integrated_javascripts mode='prepend'
         'bundles/app/js/script.js' %}
-    {% integrated_javascripts %}
+    {% endintegrated_javascripts %}
     
 ### Render stylesheets ###
  
