@@ -1,4 +1,4 @@
-.comment-text-selected {
+.comment-text-selected, .comment-added {
     background: #0199f8;
     border-radius: 3px;
     padding: 1px;
@@ -6,16 +6,6 @@
     position: relative;
 }
 
-.add-comment-button {
-    background: #0199f8;
-    position: absolute;
-    padding: 10px 25px;
-    color: #fff;
-    border-radius: 5px;
-    left: 0;
-    right: 0;
-    top: -50px;
-    width: 115px;
-    cursor: pointer;
-    margin: 0 auto;
+.comment-added {
+    background-color: rgba(1, 153, 248, 0.5);
 }

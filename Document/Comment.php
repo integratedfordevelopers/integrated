@@ -2,9 +2,9 @@
 
 namespace Integrated\Bundle\CommentBundle\Document;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Bundle\UserBundle\Model\User;
 
 /**
  * Class Comment
@@ -44,11 +44,18 @@ class Comment
     protected $text;
 
     /**
+     * @var ArrayCollection
+     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\CommentBundle\Document\Comment")
+     */
+    protected $children;
+
+    /**
      * Comment constructor.
      */
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->children = new ArrayCollection();
     }
 
     /**
@@ -68,7 +75,7 @@ class Comment
     }
 
     /**
-     * @return User
+     * @return int
      */
     public function getAuthor()
     {
@@ -76,13 +83,10 @@ class Comment
     }
 
     /**
-     * @param User $author
+     * @param int $author
      */
     public function setAuthor($author)
     {
-        if ($author instanceof User) {
-            $author = $author->getId();
-        }
         $this->author = $author;
     }
 
@@ -132,5 +136,31 @@ class Comment
     public function setDate($date)
     {
         $this->date = $date;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param ArrayCollection $children
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
+    }
+
+    /**
+     * @param Comment $child
+     */
+    public function addChildren(Comment $child)
+    {
+        if (!$this->children->contains($child)) {
+            $this->children->add($child);
+        }
     }
 }

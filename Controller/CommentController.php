@@ -5,10 +5,11 @@ namespace Integrated\Bundle\CommentBundle\Controller;
 use Integrated\Bundle\CommentBundle\Document\Comment;
 use Integrated\Bundle\CommentBundle\Form\Type\CommentType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\UserBundle\Model\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
 
 /**
  * Class CommentController
@@ -24,25 +25,37 @@ class CommentController extends Controller
      */
     public function newAction(Content $content, Request $request)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
-        $comment = new Comment();
-        $comment->setAuthor($user);
-        $comment->setContent($content);
-
-        $form = $this->createForm(new CommentType(), $comment);
+        $form = $this->createForm(new CommentType());
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+                $data = $form->getData();
+
                 /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                 $dm = $this->get('doctrine_mongodb')->getManager();
+
+                /** @var User $user */
+                $user = $this->get('security.token_storage')->getToken()->getUser();
+
+                $comment = new Comment();
+                $comment->setAuthor($user->getId());
+                $comment->setContent($content);
+                $comment->setText($data['text']);
 
                 $dm->persist($comment);
                 $dm->flush();
 
-                return $this->redirect($this->generateUrl('integrated_comment_get', ['comment' => $comment->getId()]));
+                if ($data['parent']) {
+                    $parentComment = $this->get('doctrine.odm.mongodb.document_manager')->find('IntegratedCommentBundle:Comment', $data['parent']);
+                    if ($parentComment) {
+                        $parentComment->addChildren($comment);
+                        $dm->flush();
+                    }
+                }
+
+                return new JsonResponse(['id' => $comment->getId()]);
             }
         }
 
@@ -60,7 +73,13 @@ class CommentController extends Controller
      */
     public function getAction(Comment $comment, Request $request)
     {
-        $form = $this->createForm(new CommentType(), $comment);
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $replyComment = new Comment();
+        $replyComment->setAuthor($user);
+        $replyComment->setContent($comment->getContent());
+
+        $form = $this->createForm(new CommentType(), null, ['parent' => $comment->getId()]);
 
         return [
             'comment' => $comment,

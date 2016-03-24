@@ -38,6 +38,41 @@
                 </div>
             </div>
 
+            <div class="comment-typly">
+                {% for child in comment.children %}
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object img-circle" src="assets/images/elements/profile.jpg" alt="">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading"><a href="#">{{ author.username }}</a></h4>
+                            <p><small><span class="date">{{ child.date|date('d-m-Y') }}</span> <span class="time">{{ child.date|date('H:s') }}</span></small></p>
+                        </div>
+                    </div>
+
+                    <h3 class="font-bold color-gray-dark">{{ child.text }}</h3>
+
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <ul class="list-inline list-gray">
+                                <li><a href="#">Edit</a></li>
+                                <li><a href="#">Delete</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-5">
+                            <form action="" class="pull-right">
+                                <div class="form-group">
+                                    <label class="font-light">
+                                        <input type="checkbox"> Resolved
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
 
         <div class="comment-footer">
