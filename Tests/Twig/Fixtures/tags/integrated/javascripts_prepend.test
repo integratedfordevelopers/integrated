@@ -1,0 +1,17 @@
+--TEST--
+"integrated_javascripts" prepend external javascript
+--TEMPLATE--
+{% integrated_javascripts mode='append'
+    'script2.js' %}
+{% endintegrated_javascripts %}
+
+{% integrated_javascripts mode='prepend'
+    'script.js' %}
+{% endintegrated_javascripts %}
+
+{{ integrated_javascripts() }}
+--DATA--
+return array()
+--EXPECT--
+<script type="text/javascript" src="/script.js"></script>
+<script type="text/javascript" src="/script2.js"></script>

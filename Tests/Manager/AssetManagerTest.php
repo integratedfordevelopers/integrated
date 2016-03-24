@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\AssetBundle\Tests;
+namespace Integrated\Bundle\AssetBundle\Tests\Manager;
 
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 
