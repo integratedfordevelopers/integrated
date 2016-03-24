@@ -38,18 +38,18 @@ This bundle can be installed following these steps:
         p { font-size: 10px }
     {% endintegrated_stylesheets %}
     
-### Add external styleheets ### 
+### Add external styleheets ###
 
     {% integrated_stylesheets
         'bundles/app/css/styles.css'
         'bundles/app/css/styles2.css' %}
     {% endintegrated_stylesheets %}
     
-### Prepend javascript ###    
+### Prepend javascript ###
     
     {% integrated_javascripts mode='prepend'
         'bundles/app/js/script.js' %}
-    {% endintegrated_stylesheets %}
+    {% integrated_javascripts %}
     
 ### Render stylesheets ###
  
