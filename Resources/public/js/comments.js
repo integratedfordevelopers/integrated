@@ -1,36 +1,102 @@
-$(function() {
+$(function () {
 
-    var setCenterOfObject = function($block, $parent) {
-        var parentOffset = $parent.offset();
-        var centerParent = parentOffset.left + ($parent.width() / 2);
+    var $selectedParent = null;
+    var $container = null;
+    var flowOffset = {top:0,left:0};
+    var postCommentCallback = null;
 
-        var leftPosBlock = centerParent - ($block.width() / 2);
+    var tinyCommentCheckSelect = function (e) {
+        if ($(e.target).hasClass('hold')) {
+            return;
+        }
 
-        var topPosBlock = parentOffset.top - $block.height();
+        var $tinyMCE = tinyMCE.activeEditor;
 
-        $block.css({
-            'z-index': 999,
-            position: 'absolute',
-            left: leftPosBlock,
-            top: topPosBlock
+        removeControls();
+
+        $container = $($tinyMCE.getContainer().parentNode);
+        flowOffset = {top:0,left:0};
+
+        var selectContent = $tinyMCE.selection.getContent();
+
+        if ($(e.target).hasClass('comment-added') && selectContent == '') {
+            showAddedComment($(e.target));
+            return;
+        } else if (selectContent == '') {
+            return;
+        }
+
+        $tinyMCE.selection.setContent('<span class="comment-text-selected">' + selectContent + '</span>');
+
+        $selectedParent = $('.comment-text-selected', $tinyMCE.getBody());
+        postCommentCallback = function (commentId) {
+            $selectedParent.removeClass('comment-text-selected').addClass('comment-added').attr('data-comment-id', commentId);
+        };
+        showCommentButton($selectedParent, $container);
+    };
+
+    var textCommentCheckSelect = function (e) {
+        if (e.target.selectionStart != e.target.selectionEnd) {
+            removeControls();
+
+            $selectedParent = $(this);
+            $container = $('body');
+            flowOffset.top = -25;
+            postCommentCallback = function (commentId) {
+                $selectedParent.attr('data-comment-id', commentId).after('<div class="added-comment-line" data-comment-id="'+commentId+'">&nbsp;</div>');
+            };
+
+            if ($(this).data('comment-id') !== undefined) {
+                showAddedComment($(this));
+            } else {
+                showCommentButton($selectedParent, $container);
+            }
+        }
+    };
+
+    var removeControls = function() {
+        stripSelectSpan();
+        removeModalComment();
+        removeCommentButton();
+    };
+
+    var stripSelectSpan = function() {
+        $('.comment-text-selected', tinyMCE.activeEditor.getBody()).each(function() {
+            $(this).replaceWith($(this).html());
         });
     };
 
-    var showAddedComment = function($parent) {
-        var commentId = $parent.data('id');
+    var showCommentButton = function($element, $container) {
+        var $div = $('<div class="add-comment-button hold">Add a Comment</div>');
+        $div.bind('click', showModalComment);
+
+        $container.append($div);
+        setCenterOfObject($div, $element);
+    };
+
+    var removeCommentButton = function() {
+        $('.add-comment-button').remove();
+    };
+
+    var showModalComment = function () {
+        var contentId = $('#integrated_content_id').val();
         $.ajax({
             type: 'GET',
-            url: Routing.generate('integrated_comment_get', {comment: commentId}),
+            url: Routing.generate('integrated_comment_new', {content: contentId}),
             success: function (response) {
                 var $modal = $(response);
                 removeCommentButton();
 
-                $tinyContainer.append($modal);
-                setCenterOfObject($modal, $parent);
+                $container.append($modal);
+                setCenterOfObject($modal, $selectedParent);
 
                 $('form', $modal).bind('submit', postComment);
             }
         });
+    };
+
+    var removeModalComment = function () {
+        $('.comment-holder').remove();
     };
 
     var postComment = function (e) {
@@ -44,24 +110,21 @@ $(function() {
             url: Routing.generate('integrated_comment_new', {content: contentId}),
             success: function (response) {
                 removeModalComment();
-
-                var $parent = $('.comment-text-selected', $tinyBody);
-                $parent.removeClass('comment-text-selected').addClass('comment-added').attr('data-id', response.id);
+                postCommentCallback.call(this, response.id);
             }
         });
     };
 
-    var showModalComment = function () {
-        var contentId = $('#integrated_content_id').val();
+    var showAddedComment = function($parent) {
+        var commentId = $parent.data('comment-id');
         $.ajax({
             type: 'GET',
-            url: Routing.generate('integrated_comment_new', {content: contentId}),
+            url: Routing.generate('integrated_comment_get', {comment: commentId}),
             success: function (response) {
-                var $parent = $('.comment-text-selected', $tinyBody);
                 var $modal = $(response);
                 removeCommentButton();
 
-                $tinyContainer.append($modal);
+                $container.append($modal);
                 setCenterOfObject($modal, $parent);
 
                 $('form', $modal).bind('submit', postComment);
@@ -69,62 +132,41 @@ $(function() {
         });
     };
 
-    var removeModalComment = function () {
-        $('.comment-holder', $tinyContainer).remove();
-    };
+    var setCenterOfObject = function($block, $parent) {
+        var parentOffset = $parent.offset();
+        var centerParent = parentOffset.left + ($parent.width() / 2);
 
-    var showCommentButton = function() {
-        var $parent = $('.comment-text-selected', $tinyBody);
-        var $div = $('<div class="add-comment-button hold">Add a Comment</div>');
-        $div.bind('click', showModalComment);
+        var leftPosBlock = centerParent - ($block.width() / 2) + flowOffset.left;
+        var topPosBlock = parentOffset.top - $block.height() + flowOffset.top;
 
-        $tinyContainer.append($div);
-        setCenterOfObject($div, $parent);
-    };
-
-    var removeCommentButton = function() {
-        $('.add-comment-button', $tinyContainer).remove();
-    };
-
-    var stripSelectSpan = function() {
-        removeCommentButton();
-
-        $('.comment-text-selected', $tinyBody).each(function() {
-            $(this).replaceWith($(this).html());
+        $block.css({
+            'z-index': 999,
+            position: 'absolute',
+            left: leftPosBlock,
+            top: topPosBlock
         });
     };
 
-    var commentCheckSelect = function (e) {
-        if ($(e.target).hasClass('hold')) {
+
+
+    var tinyMceInit = function () {
+        if (tinyMCE.activeEditor == undefined) {
             return;
         }
+        clearInterval(waitForTiny);
 
-        stripSelectSpan();
-        removeModalComment();
-
-        var selectContent = $tinyMCE.selection.getContent();
-
-        if ($(e.target).hasClass('comment-added') && selectContent == '') {
-            showAddedComment($(e.target));
-            return;
-        } else if (selectContent == '') {
-            return;
-        }
-
-        $tinyMCE.selection.setContent('<span class="comment-text-selected">' + selectContent + '</span>');
-        showCommentButton();
+        tinyMCE.activeEditor.on('click', tinyCommentCheckSelect);
+        tinyMCE.activeEditor.on('keypress', tinyCommentCheckSelect);
+        tinyMCE.activeEditor.dom.loadCSS("/bundles/integratedcomment/css/comments.css");
     };
+    var waitForTiny = setInterval(tinyMceInit, 100);
 
-    if (tinymce !== undefined) {
-        setTimeout(function() {
-            $tinyMCE = tinyMCE.activeEditor;
-            $tinyBody = $tinyMCE.getBody();
-            $tinyContainer = $($tinyMCE.getContainer().parentNode);
-
-            $tinyMCE.on('click', commentCheckSelect);
-            $tinyMCE.on('keypress', commentCheckSelect);
-
-            $tinyMCE.dom.loadCSS("/bundles/integratedcomment/css/comments.css");
-        }, 2000);
-    }
+    $('input:text, textarea').bind('select', textCommentCheckSelect);
+    $(document).on('click', '.added-comment-line', function () {
+        $container = $('body');
+        showAddedComment($(this).prev());
+    });
+    $(document).on('click', '.comment-holder .integrate-icon-cancel', function() {
+        removeControls();
+    });
 });

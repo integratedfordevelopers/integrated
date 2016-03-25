@@ -4,6 +4,7 @@ namespace Integrated\Bundle\CommentBundle\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Bundle\CommentBundle\Document\Embedded\Author;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 /**
@@ -20,8 +21,8 @@ class Comment
     protected $id;
 
     /**
-     * @var int
-     * @ODM\String()
+     * @var Author
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\CommentBundle\Document\Embedded\Author")
      */
     protected $author;
 
@@ -36,6 +37,12 @@ class Comment
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
      */
     protected $content;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
+    protected $field;
 
     /**
      * @var string
@@ -72,22 +79,6 @@ class Comment
     public function setId($id)
     {
         $this->id = $id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getAuthor()
-    {
-        return $this->author;
-    }
-
-    /**
-     * @param int $author
-     */
-    public function setAuthor($author)
-    {
-        $this->author = $author;
     }
 
     /**
@@ -162,5 +153,37 @@ class Comment
         if (!$this->children->contains($child)) {
             $this->children->add($child);
         }
+    }
+
+    /**
+     * @return Author
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param Author $author
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @return string
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
+
+    /**
+     * @param string $field
+     */
+    public function setField($field)
+    {
+        $this->field = $field;
     }
 }

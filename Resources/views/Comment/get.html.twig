@@ -13,7 +13,7 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h4 class="media-heading"><a href="#">{{ author.username }}</a></h4>
+                    <h4 class="media-heading"><a href="#">{{ comment.author.userName }}</a></h4>
                     <p><small><span class="date">{{ comment.date|date('d-m-Y') }}</span> <span class="time">{{ comment.date|date('H:s') }}</span></small></p>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                             </a>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading"><a href="#">{{ author.username }}</a></h4>
+                            <h4 class="media-heading"><a href="#">{{ child.author.userName }}</a></h4>
                             <p><small><span class="date">{{ child.date|date('d-m-Y') }}</span> <span class="time">{{ child.date|date('H:s') }}</span></small></p>
                         </div>
                     </div>

@@ -3,6 +3,7 @@
 namespace Integrated\Bundle\CommentBundle\Controller;
 
 use Integrated\Bundle\CommentBundle\Document\Comment;
+use Integrated\Bundle\CommentBundle\Document\Embedded\Author;
 use Integrated\Bundle\CommentBundle\Form\Type\CommentType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\UserBundle\Model\User;
@@ -39,8 +40,10 @@ class CommentController extends Controller
                 /** @var User $user */
                 $user = $this->get('security.token_storage')->getToken()->getUser();
 
+                $author = new Author($user->getId(), $user->getUsername());
+
                 $comment = new Comment();
-                $comment->setAuthor($user->getId());
+                $comment->setAuthor($author);
                 $comment->setContent($content);
                 $comment->setText($data['text']);
 
@@ -68,22 +71,15 @@ class CommentController extends Controller
      * @Template()
      *
      * @param Comment $comment
-     * @param Request $request
      * @return array
      */
-    public function getAction(Comment $comment, Request $request)
+    public function getAction(Comment $comment)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
-        $replyComment = new Comment();
-        $replyComment->setAuthor($user);
-        $replyComment->setContent($comment->getContent());
-
         $form = $this->createForm(new CommentType(), null, ['parent' => $comment->getId()]);
 
         return [
             'comment' => $comment,
-            'author' => $this->get('integrated_user.user.manager')->find($comment->getAuthor()),
+            'author' => $this->get('integrated_user.user.manager')->find($comment->getAuthor()->getUserId()),
             'form' => $form->createView(),
         ];
 

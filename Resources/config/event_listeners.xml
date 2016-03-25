@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_comment.event_listener.content_comment_subscriber.class">Integrated\Bundle\CommentBundle\EventListener\ContentCommentSubscriber</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_comment.event_listener.content_comment_subscriber" class="%integrated_comment.event_listener.content_comment_subscriber.class%">
+            <tag name="doctrine_mongodb.odm.event_subscriber" />
+        </service>
+
+    </services>
+
+</container>
