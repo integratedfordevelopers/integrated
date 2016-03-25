@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentHistoryBundle\Doctrine\ODM\MongoDB\Persister;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Types\Type;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -52,13 +53,25 @@ class PersistenceBuilder
             } elseif (isset($mapping['association'])) {
                 if ($mapping['association'] === ClassMetadata::REFERENCE_ONE && $mapping['isOwningSide']) {
                     // @ReferenceOne
-                    // @todo
+                    $data[$mapping['name']] = is_object($value) ? $this->dm->createDBRef($value, $mapping) : null;
                 } elseif ($mapping['association'] === ClassMetadata::EMBED_ONE) {
                     // @EmbedOne
-                    // @todo
+                    $data[$mapping['name']] = is_object($value) ? $this->prepareData($value) : null;
                 } elseif ($mapping['type'] === ClassMetadata::MANY && !$mapping['isInverseSide']) {
                     // @ReferenceMany, @EmbedMany
-                    // @todo
+                    if ($value instanceof Collection) {
+                        foreach ($value as $object) {
+                            if (!is_object($value)) {
+                                continue;
+                            }
+
+                            if ($mapping['association'] === ClassMetadata::REFERENCE_MANY) {
+                                $data[$mapping['name']][] = $this->dm->createDBRef($object, $mapping);
+                            } else {
+                                $data[$mapping['name']][] = $this->prepareData($object);
+                            }
+                        }
+                    }
                 }
             }
         }
