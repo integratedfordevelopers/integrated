@@ -21,6 +21,7 @@ use DateTime;
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
  * @ODM\Document(collection="content_history")
+ * @ODM\Index(keys={"contentId"="asc", "date"="desc"})
  */
 class ContentHistory
 {
@@ -35,10 +36,10 @@ class ContentHistory
     protected $id;
 
     /**
-     * @var DateTime
-     * @ODM\Date
+     * @var string
+     * @ODM\String
      */
-    protected $date;
+    protected $contentId;
 
     /**
      * @var string
@@ -47,10 +48,16 @@ class ContentHistory
     protected $action;
 
     /**
+     * @var DateTime
+     * @ODM\Date
+     */
+    protected $date;
+
+    /**
      * @var array
      * @ODM\Hash
      */
-    protected $snapshot = [];
+    protected $changeSet = [];
 
     /**
      * @var User | null
@@ -59,9 +66,19 @@ class ContentHistory
     protected $user;
 
     /**
+     * @var ContentHistory | null
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory")
      */
-    public function __construct()
+    protected $previous;
+
+    /**
+     * @param string $contentId
+     * @param string $action
+     */
+    public function __construct($contentId, $action)
     {
+        $this->contentId = $contentId;
+        $this->action = $action;
         $this->date = new DateTime();
     }
 
@@ -74,20 +91,20 @@ class ContentHistory
     }
 
     /**
-     * @return DateTime
+     * @return string
      */
-    public function getDate()
+    public function getContentId()
     {
-        return $this->date;
+        return $this->contentId;
     }
 
     /**
-     * @param DateTime $date
+     * @param string $contentId
      * @return $this
      */
-    public function setDate($date)
+    public function setContentId($contentId)
     {
-        $this->date = $date;
+        $this->contentId = $contentId;
         return $this;
     }
 
@@ -110,20 +127,38 @@ class ContentHistory
     }
 
     /**
-     * @return array
+     * @return DateTime
      */
-    public function getSnapshot()
+    public function getDate()
     {
-        return $this->snapshot;
+        return $this->date;
     }
 
     /**
-     * @param array $snapshot
+     * @param DateTime $date
      * @return $this
      */
-    public function setSnapshot(array $snapshot = [])
+    public function setDate($date)
     {
-        $this->snapshot = $snapshot;
+        $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getChangeSet()
+    {
+        return $this->changeSet;
+    }
+
+    /**
+     * @param array $changeSet
+     * @return $this
+     */
+    public function setChangeSet(array $changeSet = [])
+    {
+        $this->changeSet = $changeSet;
         return $this;
     }
 
@@ -142,6 +177,24 @@ class ContentHistory
     public function setUser(User $user = null)
     {
         $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return ContentHistory
+     */
+    public function getPrevious()
+    {
+        return $this->previous;
+    }
+
+    /**
+     * @param ContentHistory | null $previous
+     * @return $this
+     */
+    public function setPrevious(ContentHistory $previous = null)
+    {
+        $this->previous = $previous;
         return $this;
     }
 }

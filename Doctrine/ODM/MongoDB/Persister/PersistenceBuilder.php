@@ -59,17 +59,19 @@ class PersistenceBuilder
                     $data[$mapping['name']] = is_object($value) ? $this->prepareData($value) : null;
                 } elseif ($mapping['type'] === ClassMetadata::MANY && !$mapping['isInverseSide']) {
                     // @ReferenceMany, @EmbedMany
-                    if ($value instanceof Collection) {
-                        foreach ($value as $object) {
-                            if (!is_object($value)) {
-                                continue;
-                            }
+                    if (!$value instanceof Collection) {
+                        continue;
+                    }
 
-                            if ($mapping['association'] === ClassMetadata::REFERENCE_MANY) {
-                                $data[$mapping['name']][] = $this->dm->createDBRef($object, $mapping);
-                            } else {
-                                $data[$mapping['name']][] = $this->prepareData($object);
-                            }
+                    foreach ($value as $object) {
+                        if (!is_object($value)) {
+                            continue;
+                        }
+
+                        if ($mapping['association'] === ClassMetadata::REFERENCE_MANY) {
+                            $data[$mapping['name']][] = $this->dm->createDBRef($object, $mapping);
+                        } else {
+                            $data[$mapping['name']][] = $this->prepareData($object);
                         }
                     }
                 }

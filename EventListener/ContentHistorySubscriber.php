@@ -16,6 +16,7 @@ use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
+use Integrated\Bundle\ContentHistoryBundle\Diff\ArrayComparer;
 use Integrated\Bundle\ContentHistoryBundle\Doctrine\ODM\MongoDB\Persister\PersistenceBuilder;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
 use Integrated\Common\Content\ContentInterface;
@@ -63,10 +64,24 @@ class ContentHistorySubscriber implements EventSubscriber
                 continue;
             }
 
-            $history = new ContentHistory();
+            $history = new ContentHistory($document->getId(), $action);
 
-            $history->setAction($action);
-            $history->setSnapshot($pb->prepareData($document));
+            $previous = $dm->createQueryBuilder(ContentHistory::class)
+                ->field('contentId')->equals($history->getContentId())
+                ->sort('date', 'desc')
+                ->getQuery()->getSingleResult();
+
+            // link previous content history document
+            $history->setPrevious($previous);
+
+            // load original data
+            $originalData = $dm->createQueryBuilder(get_class($document))->hydrate(false)
+                ->field('id')->equals($document->getId())
+                ->getQuery()->getSingleResult();
+
+            $changeSet = ArrayComparer::diff($originalData, $pb->prepareData($document));
+
+            $history->setChangeSet($changeSet);
 
             $dm->persist($history);
             $uow->recomputeSingleDocumentChangeSet($dm->getClassMetadata(get_class($history)), $history);
