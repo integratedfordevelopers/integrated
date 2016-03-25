@@ -79,9 +79,11 @@ class ContentHistorySubscriber implements EventSubscriber
                 ->field('id')->equals($document->getId())
                 ->getQuery()->getSingleResult();
 
-            $changeSet = ArrayComparer::diff($originalData, $pb->prepareData($document));
+            $history->setChangeSet(ArrayComparer::diff($originalData, $pb->prepareData($document)));
 
-            $history->setChangeSet($changeSet);
+            if (!count($history->getChangeSet())) {
+                continue; // no changes
+            }
 
             $dm->persist($history);
             $uow->recomputeSingleDocumentChangeSet($dm->getClassMetadata(get_class($history)), $history);
