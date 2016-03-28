@@ -34,7 +34,7 @@ class Comment
 
     /**
      * @var Content
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
      */
     protected $content;
 

@@ -2,19 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1ba32170-2fdc-44cb-944e-7f6320c601da" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Document/CommentContent.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Document/Embedded/Author.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/EventListener/ContentCommentSubscriber.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Resources/config/event_listeners.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Resources/config/service.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Service/ContentCommentTransformer.php" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Resources/config/services.xml" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/EventListener/CommentFormFieldsSubscriber.php" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/EventListener/ContentCommentSubscriber.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Resources/config/service.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Service/ContentCommentTransformer.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Controller/CommentController.php" afterPath="$PROJECT_DIR$/Controller/CommentController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DependencyInjection/IntegratedCommentExtension.php" afterPath="$PROJECT_DIR$/DependencyInjection/IntegratedCommentExtension.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Document/Comment.php" afterPath="$PROJECT_DIR$/Document/Comment.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Document/CommentContent.php" afterPath="$PROJECT_DIR$/Document/CommentContent.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Document/Embedded/Author.php" afterPath="$PROJECT_DIR$/Document/Embedded/Author.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Form/Type/CommentType.php" afterPath="$PROJECT_DIR$/Form/Type/CommentType.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Resources/config/event_listeners.xml" afterPath="$PROJECT_DIR$/Resources/config/event_listeners.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Resources/config/routing.xml" afterPath="$PROJECT_DIR$/Resources/config/routing.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Resources/public/js/comments.js" afterPath="$PROJECT_DIR$/Resources/public/js/comments.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Resources/views/Comment/get.html.twig" afterPath="$PROJECT_DIR$/Resources/views/Comment/get.html.twig" />
     </list>
     <ignored path="comment-bundle.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -71,7 +72,9 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="-0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+              <folding>
+                <element signature="e#61#101#0#PHP" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -86,11 +89,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommentController.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CommentController.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Controller/CommentController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
+            <state vertical-scroll-proportion="-0.0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#62#115#0#PHP" expanded="false" />
+                <marker date="1459159832114" expanded="true" signature="640:2810" placeholder="{...}" />
+                <marker date="1459159832114" expanded="true" signature="2452:2808" placeholder="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CommentFormFieldsSubscriber.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/EventListener/CommentFormFieldsSubscriber.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3686007">
+              <caret line="12" column="43" selection-start-line="12" selection-start-column="43" selection-end-line="12" selection-end-column="43" />
               <folding />
             </state>
           </provider>
@@ -122,6 +139,8 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/Document/Comment.php" />
         <option value="$PROJECT_DIR$/Resources/public/js/comments.js" />
+        <option value="$PROJECT_DIR$/EventListener/ContentCommentSubscriber.php" />
+        <option value="$PROJECT_DIR$/EventListener/CommentFormFieldsSubscriber.php" />
       </list>
     </option>
   </component>
@@ -256,6 +275,38 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="comment-bundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="comment-bundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Form" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Type" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="comment-bundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="comment-bundle" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="EventListener" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scratches" />
@@ -321,7 +372,13 @@
       <option name="project" value="LOCAL" />
       <updated>1458834372110</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Comments on content for easier collaboration">
+      <created>1458922389668</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1458922389668</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -411,7 +468,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#61#101#0#PHP" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -443,6 +502,18 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#62#115#0#PHP" expanded="false" />
+            <marker date="1459159832114" expanded="true" signature="640:2810" placeholder="{...}" />
+            <marker date="1459159832114" expanded="true" signature="2452:2808" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/EventListener/CommentFormFieldsSubscriber.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3686007">
+          <caret line="12" column="43" selection-start-line="12" selection-start-column="43" selection-end-line="12" selection-end-column="43" />
           <folding />
         </state>
       </provider>

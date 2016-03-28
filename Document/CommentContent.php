@@ -20,9 +20,15 @@ class CommentContent
 
     /**
      * @var Content
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
      */
     protected $content;
+
+    /**
+     * @var string
+     * @ODM\String()
+     */
+    protected $field;
 
     /**
      * @var string
@@ -76,5 +82,21 @@ class CommentContent
     public function setBody($body)
     {
         $this->body = $body;
+    }
+
+    /**
+     * @return string
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
+
+    /**
+     * @param string $field
+     */
+    public function setField($field)
+    {
+        $this->field = $field;
     }
 }

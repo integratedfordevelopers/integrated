@@ -24,6 +24,5 @@ class IntegratedCommentExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('event_listeners.xml');
-        $loader->load('service.xml');
     }
 }

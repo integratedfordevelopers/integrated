@@ -6,6 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class CommentType
+ */
 class CommentType extends AbstractType
 {
     /**
@@ -16,6 +19,7 @@ class CommentType extends AbstractType
     {
         $builder->add('text', 'text', ['attr' => ['placeholder' => 'Add a comment']]);
         $builder->add('parent', 'hidden', ['data' => $options['parent']]);
+        $builder->add('field', 'hidden', ['data' => $options['field']]);
     }
     /**
      * {@inheritdoc}
@@ -31,7 +35,6 @@ class CommentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('parent', null);
+        $resolver->setDefault('field', null);
     }
-
 }
-

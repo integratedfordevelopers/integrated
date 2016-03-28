@@ -4,6 +4,7 @@ $(function () {
     var $container = null;
     var flowOffset = {top:0,left:0};
     var postCommentCallback = null;
+    var fieldName = null;
 
     var tinyCommentCheckSelect = function (e) {
         if ($(e.target).hasClass('hold')) {
@@ -22,7 +23,11 @@ $(function () {
         if ($(e.target).hasClass('comment-added') && selectContent == '') {
             showAddedComment($(e.target));
             return;
+        } else if ($(e.rangeParent).hasClass('comment-added') && selectContent == '') {
+            showAddedComment($(e.rangeParent));
+            return;
         } else if (selectContent == '') {
+            console.log('2');
             return;
         }
 
@@ -32,6 +37,8 @@ $(function () {
         postCommentCallback = function (commentId) {
             $selectedParent.removeClass('comment-text-selected').addClass('comment-added').attr('data-comment-id', commentId);
         };
+        fieldName = getFieldName($('textarea', $container).attr('name'));
+
         showCommentButton($selectedParent, $container);
     };
 
@@ -43,8 +50,11 @@ $(function () {
             $container = $('body');
             flowOffset.top = -25;
             postCommentCallback = function (commentId) {
-                $selectedParent.attr('data-comment-id', commentId).after('<div class="added-comment-line" data-comment-id="'+commentId+'">&nbsp;</div>');
+                if ($selectedParent.next('.added-comment-line').length == 0) {
+                    createAddedCommentLine($selectedParent.attr('data-comment-id', commentId));
+                }
             };
+            fieldName = getFieldName($selectedParent.attr('name'));
 
             if ($(this).data('comment-id') !== undefined) {
                 showAddedComment($(this));
@@ -82,7 +92,7 @@ $(function () {
         var contentId = $('#integrated_content_id').val();
         $.ajax({
             type: 'GET',
-            url: Routing.generate('integrated_comment_new', {content: contentId}),
+            url: Routing.generate('integrated_comment_new', {content: contentId, field: fieldName}),
             success: function (response) {
                 var $modal = $(response);
                 removeCommentButton();
@@ -107,7 +117,7 @@ $(function () {
             type: 'POST',
             data: $(this).serialize(),
             dataType: 'json',
-            url: Routing.generate('integrated_comment_new', {content: contentId}),
+            url: Routing.generate('integrated_comment_new', {content: contentId, field: fieldName}),
             success: function (response) {
                 removeModalComment();
                 postCommentCallback.call(this, response.id);
@@ -147,7 +157,16 @@ $(function () {
         });
     };
 
+    var getFieldName = function(fullName) {
+        return /\[(.+)\]$/.exec(fullName)[1];
+    };
 
+    var createAddedCommentLine = function($parent) {
+        var commentId = $parent.data('comment-id');
+        if (commentId) {
+            $parent.after('<div class="added-comment-line" data-comment-id="'+commentId+'">&nbsp;</div>');
+        }
+    };
 
     var tinyMceInit = function () {
         if (tinyMCE.activeEditor == undefined) {
@@ -164,9 +183,16 @@ $(function () {
     $('input:text, textarea').bind('select', textCommentCheckSelect);
     $(document).on('click', '.added-comment-line', function () {
         $container = $('body');
-        showAddedComment($(this).prev());
+        var $prev = $(this).prev();
+        fieldName = getFieldName($prev.attr('name'));
+        showAddedComment($prev);
     });
+
     $(document).on('click', '.comment-holder .integrate-icon-cancel', function() {
         removeControls();
+    });
+
+    $('[data-comment-id]').each(function() {
+        createAddedCommentLine($(this));
     });
 });

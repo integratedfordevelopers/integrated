@@ -21,12 +21,13 @@ class CommentController extends Controller
      * @Template()
      *
      * @param Content $content
+     * @param string  $field
      * @param Request $request
      * @return array
      */
-    public function newAction(Content $content, Request $request)
+    public function newAction(Content $content, $field, Request $request)
     {
-        $form = $this->createForm(new CommentType());
+        $form = $this->createForm(new CommentType(), null, ['field' => $field]);
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -46,6 +47,7 @@ class CommentController extends Controller
                 $comment->setAuthor($author);
                 $comment->setContent($content);
                 $comment->setText($data['text']);
+                $comment->setField($field);
 
                 $dm->persist($comment);
                 $dm->flush();
@@ -75,7 +77,7 @@ class CommentController extends Controller
      */
     public function getAction(Comment $comment)
     {
-        $form = $this->createForm(new CommentType(), null, ['parent' => $comment->getId()]);
+        $form = $this->createForm(new CommentType(), null, ['parent' => $comment->getId(), 'field' => $comment->getField()]);
 
         return [
             'comment' => $comment,
