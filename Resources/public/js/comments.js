@@ -17,6 +17,8 @@ $(function () {
 
         $container = $($tinyMCE.getContainer().parentNode);
         flowOffset = {top:0,left:0};
+        fieldName = getFieldName($('textarea', $container).attr('name'));
+        postCommentCallback = null;
 
         var selectContent = $tinyMCE.selection.getContent();
 
@@ -27,7 +29,6 @@ $(function () {
             showAddedComment($(e.rangeParent));
             return;
         } else if (selectContent == '') {
-            console.log('2');
             return;
         }
 
@@ -37,7 +38,6 @@ $(function () {
         postCommentCallback = function (commentId) {
             $selectedParent.removeClass('comment-text-selected').addClass('comment-added').attr('data-comment-id', commentId);
         };
-        fieldName = getFieldName($('textarea', $container).attr('name'));
 
         showCommentButton($selectedParent, $container);
     };

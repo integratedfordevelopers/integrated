@@ -67,7 +67,8 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
             $options = $field->getOptions();
 
             $repository = $this->documentManager->getRepository('IntegratedCommentBundle:Comment');
-            if ($comment = $repository->findOneBy(['content.$id' => $content->getId(), 'field' => $field->getName()])) {
+            if ($comment = $repository->findBy(['content.$id' => $content->getId(), 'field' => $field->getName()], ['date' => 'asc'])) {
+                $comment = $comment[0];
                 $options['attr'] = array('data-comment-id' => $comment->getId());
                 $field->setOptions($options);
             }

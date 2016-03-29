@@ -41,7 +41,7 @@ class CommentController extends Controller
                 /** @var User $user */
                 $user = $this->get('security.token_storage')->getToken()->getUser();
 
-                $author = new Author($user->getId(), $user->getUsername());
+                $author = new Author($user);
 
                 $comment = new Comment();
                 $comment->setAuthor($author);

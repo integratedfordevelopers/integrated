@@ -3,6 +3,8 @@
 namespace Integrated\Bundle\CommentBundle\Document\Embedded;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
+use Integrated\Bundle\UserBundle\Model\User;
 
 /**
  * Class Author
@@ -29,14 +31,20 @@ class Author
     protected $userName;
 
     /**
-     * Author constructor.
-     * @param null $userId
-     * @param null $userName
+     * @var Person
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person")
      */
-    public function __construct($userId = null, $userName = null)
+    protected $person;
+
+    /**
+     * Author constructor.
+     * @param User $user
+     */
+    public function __construct(User $user)
     {
-        $this->setUserId($userId);
-        $this->setUserName($userName);
+        $this->setUserId($user->getId());
+        $this->setUserName($user->getUsername());
+        $this->setPerson($user->getRelation());
     }
 
     /**
@@ -69,5 +77,37 @@ class Author
     public function setUserName($userName)
     {
         $this->userName = $userName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return Person
+     */
+    public function getPerson()
+    {
+        return $this->person;
+    }
+
+    /**
+     * @param Person $person
+     */
+    public function setPerson($person)
+    {
+        $this->person = $person;
     }
 }
