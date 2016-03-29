@@ -25,7 +25,7 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     public function getExtensions()
     {
         return [
-            new SymfonyAssetExtension(),
+            new TwigTestAssetExtension(),
             new AssetExtension(new AssetManager(), 'integrated_stylesheets', 'stylesheets.html.twig'),
             new AssetExtension(new AssetManager(), 'integrated_javascripts', 'javascripts.html.twig'),
         ];
@@ -60,7 +60,7 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     }
 }
 
-class SymfonyAssetExtension extends \Twig_Extension
+class TwigTestAssetExtension extends \Twig_Extension
 {
     /**
      * {@inheritdoc}

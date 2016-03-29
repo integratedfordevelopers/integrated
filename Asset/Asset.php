@@ -24,7 +24,7 @@ class Asset
     /**
      * @var bool
      */
-    protected $inline = false;
+    protected $inline;
 
     /**
      * @param string $content
@@ -32,8 +32,8 @@ class Asset
      */
     public function __construct($content, $inline = false)
     {
-        $this->setContent($content);
-        $this->setInline($inline);
+        $this->content = $content;
+        $this->inline = (bool) $inline;
     }
 
     /**
