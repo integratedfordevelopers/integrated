@@ -138,10 +138,9 @@ class BlockRepository extends DocumentRepository
 
                     var recursiveFindInRows = function(row) {
                         if ("columns" in row) {
-                            for (c in row.columns) {
+                            for (var c in row.columns) {
                                 if ("items" in row.columns[c]) {
-                                    for (i in row.columns[c].items) {
-
+                                    for (var i in row.columns[c].items) {
                                         if (checkItem(row.columns[c].items[i])) {
                                             return true;
                                         }

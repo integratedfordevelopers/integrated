@@ -115,9 +115,9 @@ class BlockFilterType extends AbstractType
 
                         var recursiveFindInRows = function(row) {
                             if ("columns" in row) {
-                                for (c in row.columns) {
+                                for (var c in row.columns) {
                                     if ("items" in row.columns[c]) {
-                                        for (i in row.columns[c].items) {
+                                        for (var i in row.columns[c].items) {
                                             checkItem(row.columns[c].items[i]);
                                         }
                                     }
