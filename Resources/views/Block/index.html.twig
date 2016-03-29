@@ -1,8 +1,10 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
+{% form_theme facetFilter 'IntegratedBlockBundle:Form:form_div_filter.html.twig' %}
+
 {% block content %}
     <div class="row">
-        <div class="col-md-12 push-sm-down">
+        <div class="col-md-8 push-sm-down">
             <ul class="list-inline">
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" role="button">{% trans %}Create new{% endtrans %} <b
@@ -20,7 +22,7 @@
             <section class="section-white section-padding section-shadow section-radius">
 
                 <div class="row">
-                    <div class="col-sm-8">
+                    <div class="col-sm-12">
 
                         <table class="table">
                             <colgroup>
@@ -93,23 +95,31 @@
 
                         {{ knp_pagination_render(blocks) }}
                     </div>
-                    <div class="col-sm-4">
-                        <div class="content_column_inner block-facet-filter">
-                            {{ form_start(facetFilter) }}
-                            {{ form_row(facetFilter.type) }}
-                            {% if pageBundleInstalled %}
-                                <br/>
-                                <br/>
-                                {{ form_row(facetFilter.channels) }}
-                            {% endif %}
-                            {{ form_end(facetFilter) }}
-                        </div>
-                    </div>
-
                 </div>
             </section>
 
         </div>
+
+        <div class="col-sm-4">
+            <aside>
+                <div class="aside-holder section-gray section-shadow section-radius">
+                    {{ form_start(facetFilter) }}
+
+                    <div class="aside-item-holder">
+                        {{ form_row(facetFilter.type) }}
+                    </div>
+
+                    {% if pageBundleInstalled %}
+                        <div class="aside-item-holder">
+                            {{ form_row(facetFilter.channels) }}
+                        </div>
+                    {% endif %}
+
+                    {{ form_end(facetFilter) }}
+                </div>
+            </aside>
+        </div>
+
     </div>
 
 {% endblock %}
