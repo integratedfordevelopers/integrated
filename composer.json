@@ -21,7 +21,7 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*",
-        "gregwar/image-bundle": "~2.2.1",
+        "gregwar/image-bundle": "~2.1.0",
         "integrated/library": "~0.4",
         "integrated/block-bundle": "~0.4",
         "integrated/channel-bundle": "~0.4",
