@@ -8,16 +8,10 @@ use Integrated\Bundle\UserBundle\Model\User;
 
 /**
  * Class Author
- * @ODM\Document
+ * @ODM\EmbeddedDocument()
  */
 class Author
 {
-    /**
-     * @var string
-     * @ODM\Id(strategy="UUID")
-     */
-    protected $id;
-
     /**
      * @var string
      * @ODM\String
