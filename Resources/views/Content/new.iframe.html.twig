@@ -2,7 +2,9 @@
 {% block style %}
     {{ parent() }}
     <style>
-        .add-relation {display: none;}
+        .add-relation { display: none; }
+        #wrapper-holder > .container { width: auto; background: #fff; }
+        #wrapper-holder > .container .section-radius { box-shadow: none; }
     </style>
 {% endblock %}
 {% block header %}{% endblock %}
