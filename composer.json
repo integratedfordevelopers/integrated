@@ -22,7 +22,7 @@
         "sp/bower-bundle": "~0.9",
         "components/jquery": "1.10.*",
         "leafo/scssphp": "~0.6",
-        "gregwar/image-bundle": "~2.2.1",
+        "gregwar/image-bundle": "~2.1.0",
         "integrated/library": "~0.5",
         "integrated/block-bundle": "~0.5",
         "integrated/channel-bundle": "~0.5",
@@ -50,14 +50,14 @@
             "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "php app/console fos:js-routing:dump --env=prod",
             "php app/console assetic:dump web",
             "php app/console doctrine:mongodb:schema:create",
             "php app/console doctrine:schema:create",
             "php app/console init:queue --force",
             "php app/console init:locking --force",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "php app/console cache:clear --env=prod"
+            "php app/console cache:clear --env=prod",
+            "php app/console fos:js-routing:dump --env=prod"
         ],
         "post-update-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
@@ -67,14 +67,14 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
             "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
             "php app/console braincrafted:bootstrap:install",
-            "php app/console fos:js-routing:dump --env=prod",
             "php app/console assetic:dump web",
             "php app/console doctrine:mongodb:schema:create",
             "php app/console doctrine:schema:update --force",
             "php app/console init:queue --force",
             "php app/console init:locking --force",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "php app/console cache:clear --env=prod"
+            "php app/console cache:clear --env=prod",
+            "php app/console fos:js-routing:dump --env=prod"
         ]
     },
     "minimum-stability": "dev",
