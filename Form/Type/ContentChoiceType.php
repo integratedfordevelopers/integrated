@@ -19,12 +19,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\AjaxDocumentTransformer;
+use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\ContentChoicesTransformer;
+use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\ContentChoiceTransformer;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class ContentChoice extends AbstractType
+class ContentChoiceType extends AbstractType
 {
     /**
      * @var DocumentManager
@@ -47,7 +48,6 @@ class ContentChoice extends AbstractType
     protected $params;
 
     /**
-     * AjaxSelect2Type constructor.
      * @param DocumentManager $dm
      * @param string $repositoryClass
      * @param string $route
@@ -66,7 +66,17 @@ class ContentChoice extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new AjaxDocumentTransformer($this->dm, $options), true);
+        if ($options['multiple']) {
+            $builder->addViewTransformer(
+                new ContentChoicesTransformer($this->dm->getRepository($options['repository_class'])),
+                true
+            );
+        } else {
+            $builder->addViewTransformer(
+                new ContentChoiceTransformer($this->dm->getRepository($options['repository_class'])),
+                true
+            );
+        }
     }
 
     /**
@@ -92,14 +102,14 @@ class ContentChoice extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'repositoryClass' => $this->repositoryClass,
-            'route' => $this->route,
-            'params' => $this->params,
+            'repository_class' => $this->repositoryClass, // repository for finding the contentItems, default: IntegratedContentBundle:Content\Content
+            'route' => $this->route, // api route for getting the ajax results, default: integrated_content_content_index
+            'params' => $this->params, // additional parameters for the api route, default: ['_format' => 'json']
             'multiple' => true,
             'compound' => false,
             'required' => false,
             'placeholder' => null,
-            'allow_clear' => false
+            'allow_clear' => false, // if set to true the user is able to clear the selection
         ]);
     }
 
