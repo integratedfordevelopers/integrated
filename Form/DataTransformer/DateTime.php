@@ -27,7 +27,7 @@ class DateTime implements DataTransformerInterface
             return "";
         }
 
-        return $datetime->format('d-m-Y - H:i');
+        return $datetime->format('d-m-Y H:i');
     }
 
     /**
@@ -35,7 +35,7 @@ class DateTime implements DataTransformerInterface
      */
     public function reverseTransform($string)
     {
-        $object = \DateTime::createFromFormat('d-m-Y - H:i',$string);
+        $object = \DateTime::createFromFormat('d-m-Y H:i', $string);
         if (!$object) {
             return null;
         }

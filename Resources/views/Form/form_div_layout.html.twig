@@ -1,11 +1,19 @@
 {% use "BraincraftedBootstrapBundle:Form:bootstrap.html.twig" %}
 
 {% block integrated_datetime_widget  %}
+    {% integrated_stylesheets
+        'bundles/integratedformtype/components/datetimepicker/jquery.datetimepicker.css' %}
+    {% endintegrated_stylesheets %}
+
+    {% integrated_javascripts
+        'bundles/integratedformtype/components/datetimepicker/build/jquery.datetimepicker.full.min.js'
+        'bundles/integratedformtype/js/datetimepicker.js' %}
+    {% endintegrated_javascripts %}
+
     {% spaceless %}
-        <div class="input-group date form_datetime" data-locale="{{ app.request.locale }}" style="width: 230px;" data-date="" data-date-format="dd-m-yyyy - HH:ii">
-            <input {{ block('widget_attributes') }} class="form-control" size="16" type="text" {% if value is not empty %}value="{{ value }}" {% endif %} readonly>
+        <div class="input-group date form_datetime" data-locale="{{ app.request.locale }}" style="width: 230px;" data-date-format="d-m-Y H:i">
+            <input {{ block('widget_attributes') }} class="form-control" size="16" type="text" {% if value is not empty %}value="{{ value }}" {% endif %} >
             <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
         </div>
     {% endspaceless %}
 {% endblock %}
