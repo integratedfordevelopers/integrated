@@ -94,6 +94,8 @@
 
 {% block javascript %}
 
+    {{ integrated_stylesheets() }}
+
     <script src="//code.jquery.com/jquery.js"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
 
@@ -112,6 +114,8 @@
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
+    {{ integrated_javascripts() }}
 
     {% block locking %}
         {% if locking is defined and locking.lock is defined and locking.locked == false %}
