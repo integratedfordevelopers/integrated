@@ -59,42 +59,40 @@ class AppCache implements ReflectionCacheInterface
      */
     public function getPropertyReflectionClass($class)
     {
-        // The object
-        $reflection = null;
-
         // Check the local cache for an early out
         if ($this->cache->contains($class)) {
-            $reflection = $this->cache->get($class);
+            return $this->cache->get($class);
         }
 
+        // Something that will be the reflection object
+        $reflection = null;
+
+        // Get the cache file
+        $file = new \SplFileInfo(
+            sprintf(
+                self::CACHE_PATH,
+                $this->directory,
+                sha1(sprintf('%s_%s', __FILE__, $class))
+            )
+        );
+
         // Check the disk cache
-        if (null == $reflection) {
-            // Build a file object read
-            $file = new \SplFileInfo(
-                sprintf(
-                    self::CACHE_PATH,
-                    $this->directory,
-                    sha1(sprintf('%s_%s', __FILE__, $class))
-                )
-            );
+        if ($file->isFile()) {
+            // Read operation
+            $reflection = unserialize($file->openFile()->fread($file->getSize()));
 
-            if ($file->isFile()) {
-                // Read operation
-                $reflection = unserialize($file->openFile()->fread($file->getSize()));
-
-                // Sanity
-                if (false == ($reflection instanceof PropertyReflection)) {
-                    // Invalid result
-                    throw new LogicException(
-                        'Unexpected result from reflection cache %s given but %s expected',
-                        is_object($reflection) ? get_class($reflection) : gettype($reflection),
-                        PropertyReflection::class
-                    );
-                }
+            // Sanity
+            if (false == ($reflection instanceof PropertyReflection)) {
+                // Invalid result
+                throw new LogicException(
+                    'Unexpected result from reflection cache %s given but %s expected',
+                    is_object($reflection) ? get_class($reflection) : gettype($reflection),
+                    PropertyReflection::class
+                );
             }
         }
 
-        // Check
+        // Build disk cache
         if (null == $reflection || 'dev' == $this->environment) {
             // Build new property reflection and do a one time lookup
             $reflection = new PropertyReflection($class);
@@ -110,5 +108,4 @@ class AppCache implements ReflectionCacheInterface
 
         return $reflection;
     }
-
 }
