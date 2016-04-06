@@ -11,9 +11,12 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Reflection\Cache;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\PropertyReflection;
 use Integrated\Bundle\StorageBundle\Storage\Util\DirectoryUtil;
+use Symfony\Component\Form\Exception\LogicException;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -36,6 +39,11 @@ class AppCache implements ReflectionCacheInterface
     protected $directory;
 
     /**
+     * @var ArrayCollection
+     */
+    protected $cache;
+
+    /**
      * @param string $environment
      * @param string $directory
      */
@@ -43,6 +51,7 @@ class AppCache implements ReflectionCacheInterface
     {
         $this->environment = $environment;
         $this->directory = $directory;
+        $this->cache = new ArrayCollection();
     }
 
     /**
@@ -50,26 +59,54 @@ class AppCache implements ReflectionCacheInterface
      */
     public function getPropertyReflectionClass($class)
     {
-        $file = new \SplFileInfo(
-            sprintf(
-                self::CACHE_PATH,
-                $this->directory,
-                sha1(sprintf('%s_%s', __FILE__, $class))
-            )
-        );
+        // The object
+        $reflection = null;
 
-        if ($file->isFile() && 'dev' != $this->environment) {
-            return unserialize(
-                $file->openFile()->fread($file->getSize())
-            );
+        // Check the local cache for an early out
+        if ($this->cache->contains($class)) {
+            $reflection = $this->cache->get($class);
         }
 
-        $reflection = new PropertyReflection($class);
-        $reflection->getTargetProperties();
+        // Check the disk cache
+        if (null == $reflection) {
+            // Build a file object read
+            $file = new \SplFileInfo(
+                sprintf(
+                    self::CACHE_PATH,
+                    $this->directory,
+                    sha1(sprintf('%s_%s', __FILE__, $class))
+                )
+            );
 
-        DirectoryUtil::createDirectory($this->directory, $file->getPath());
-        $file->openFile('w')
-            ->fwrite(serialize($reflection));
+            if ($file->isFile()) {
+                // Read operation
+                $reflection = unserialize($file->openFile()->fread($file->getSize()));
+
+                // Sanity
+                if (false == ($reflection instanceof PropertyReflection)) {
+                    // Invalid result
+                    throw new LogicException(
+                        'Unexpected result from reflection cache %s given but %s expected',
+                        is_object($reflection) ? get_class($reflection) : gettype($reflection),
+                        PropertyReflection::class
+                    );
+                }
+            }
+        }
+
+        // Check
+        if (null == $reflection || 'dev' == $this->environment) {
+            // Build new property reflection and do a one time lookup
+            $reflection = new PropertyReflection($class);
+            $reflection->getTargetProperties();
+
+            // Write the reflection
+            DirectoryUtil::createDirectory($this->directory, $file->getPath());
+            $file->openFile('w')->fwrite(serialize($reflection));
+        }
+
+        // Add to the cache to prevent a disk lookup
+        $this->cache->set($class, $reflection);
 
         return $reflection;
     }
