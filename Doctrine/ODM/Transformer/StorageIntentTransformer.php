@@ -11,12 +11,11 @@
 
 namespace Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer;
 
-use Doctrine\ODM\MongoDB\UnitOfWork;
-
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\ManipulatorDocument;
+use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
+
 use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
@@ -28,17 +27,17 @@ class StorageIntentTransformer
     /**
      * @var ManagerInterface
      */
-    private $manager;
+    protected $manager;
 
     /**
      * @var DecisionInterface
      */
-    private $decision;
+    protected $decision;
 
     /**
      * @var ReflectionCacheInterface
      */
-    private $reflection;
+    protected $reflection;
 
     /**
      * @param ManagerInterface $manager
@@ -53,43 +52,28 @@ class StorageIntentTransformer
     }
 
     /**
-     * @param UnitOfWork $unitOfWork
+     * @param DoctrineDocument $document
      */
-    public function storageWrite(UnitOfWork $unitOfWork)
+    public function transform(DoctrineDocument $document)
     {
-        // Process the full identity map
-        foreach ($unitOfWork->getIdentityMap() as $class => $documents) {
-            // This must be cached
-            $reflection = $this->reflection->getPropertyReflectionClass($class);
+        // Fetch the reflection class from cache
+        $reflection = $this->reflection->getPropertyReflectionClass($document->getClassName());
 
-            // Check if we've got anything on which we can reflect
-            if ($properties = $reflection->getTargetProperties()) {
-                foreach ($properties as $property) {
-                    // Its less costly to reflect classes than documents
-                    // Rather than do per class multiple documents
-                    foreach ($documents as $id => $document) {
-                        // Allow us to modify the document
-                        $manipulator = new ManipulatorDocument($document);
-
-                        // Extract the value
-                        $value = $manipulator->get($property->getPropertyName());
-                        if ($value instanceof StorageIntentUpload) {
-                            // Remove the intent and make a storage object outta it
-                            $manipulator->set(
-                                $property->getPropertyName(),
-                                // Create the file in the file system
-                                $this->manager->write(
-                                    new UploadedFileReader($value->getUploadedFile()),
-                                    // Use the decision map to place the file in the correct (public or private) file systems
-                                    $this->decision->getFilesystems($document)
-                                )
-                            );
-
-                            // Tell doctrine we've changed something
-                            $unitOfWork->scheduleForUpdate($document);
-                        }
-                    }
-                }
+        // Check if we've got a property that has
+        foreach ($reflection->getTargetProperties() as $property) {
+            // Extract the value
+            $value = $document->get($property->getPropertyName());
+            if ($value instanceof StorageIntentUpload) {
+                // Remove the intent and make a storage object outta it
+                $document->set(
+                    $property->getPropertyName(),
+                    // Create the file in the file system
+                    $this->manager->write(
+                        new UploadedFileReader($value->getUploadedFile()),
+                        // Use the decision map to place the file in the correct (public or private) file systems
+                        $this->decision->getFilesystems($document)
+                    )
+                );
             }
         }
     }
