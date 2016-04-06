@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
+use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,10 +22,35 @@ use Symfony\Component\Form\FormBuilderInterface;
 class DateTimeType extends AbstractType
 {
     /**
+     * @var  AssetManager
+     */
+    protected $styleSheetManager;
+
+    /**
+     * @var  AssetManager
+     */
+    protected $javascriptManager;
+
+    /**
+     * @param AssetManager $styleSheetManager
+     * @param AssetManager $javascriptManager
+     */
+    public function __construct(AssetManager $styleSheetManager, AssetManager $javascriptManager)
+    {
+        $this->styleSheetManager = $styleSheetManager;
+        $this->javascriptManager = $javascriptManager;
+    }
+
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->styleSheetManager->add('bundles/integratedformtype/components/datetimepicker/jquery.datetimepicker.css');
+        $this->javascriptManager->add('bundles/integratedformtype/components/datetimepicker/build/jquery.datetimepicker.full.min.js');
+        $this->javascriptManager->add('bundles/integratedformtype/js/datetimepicker.js');
+
         $transformer = new DateTime();
         $builder->addModelTransformer($transformer);
     }

@@ -23,6 +23,8 @@
 	<services>
 
         <service id="integrated_formtype_form_type_datetime" class="%integrated_formtype_form_type_datetime.class%">
+            <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
+            <argument type="service" id="integrated_asset.manager.javascript_manager" />
             <tag name="form.type" alias="integrated_datetime" />
         </service>
 
