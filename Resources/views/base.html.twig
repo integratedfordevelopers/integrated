@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
 
+    {{ integrated_stylesheets() }}
+
     {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
 
     <script>
@@ -93,8 +95,6 @@
 </div>
 
 {% block javascript %}
-
-    {{ integrated_stylesheets() }}
 
     <script src="//code.jquery.com/jquery.js"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
