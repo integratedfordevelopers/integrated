@@ -114,7 +114,7 @@ class FileEventListener implements EventSubscriber
             foreach ($identities as $document) {
                 // Use a proxy for the transformer data
                 $proxyDocument = new DoctrineDocument($document);
-                $this->intentTransformer->transform($document);
+                $this->intentTransformer->transform($proxyDocument);
 
                 // Only reschedule the update when we've made changes
                 if ($proxyDocument->hasUpdates()) {
