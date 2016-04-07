@@ -18,15 +18,11 @@ use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 
 use Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove;
-use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
+use Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer;
 use Integrated\Bundle\StorageBundle\Storage\Command\DeleteCommand;
-use Integrated\Bundle\StorageBundle\Storage\Decision;
-use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\ManipulatorDocument;
+use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
-use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 /**
@@ -45,27 +41,20 @@ class FileEventListener implements EventSubscriber
     protected $filesystemRemove;
 
     /**
-     * @var ReflectionCacheInterface
+     * @var StorageIntentTransformer
      */
-    protected $reflection;
-
-    /**
-     * @var DecisionInterface
-     */
-    private $decision;
+    private $intentTransformer;
 
     /**
      * @param ManagerInterface $manager
      * @param FilesystemRemove $filesystemRemove
-     * @param ReflectionCacheInterface $reflection
-     * @param DecisionInterface $decision
+     * @param StorageIntentTransformer $intentTransformer
      */
-    public function __construct(ManagerInterface $manager, FilesystemRemove $filesystemRemove, ReflectionCacheInterface $reflection, DecisionInterface $decision)
+    public function __construct(ManagerInterface $manager, FilesystemRemove $filesystemRemove, StorageIntentTransformer $intentTransformer)
     {
         $this->manager = $manager;
         $this->filesystemRemove = $filesystemRemove;
-        $this->reflection = $reflection;
-        $this->decision = $decision;
+        $this->intentTransformer = $intentTransformer;
     }
 
     /**
@@ -74,10 +63,21 @@ class FileEventListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
+            Events::prePersist,
             Events::preRemove,
             Events::preFlush,
             Events::onFlush,
         ];
+    }
+
+    /**
+     * This event will be called on a document persist
+     *
+     * @param LifecycleEventArgs $args
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $this->intentTransformer->transform(new DoctrineDocument($args->getDocument()));
     }
 
     /**
@@ -101,45 +101,24 @@ class FileEventListener implements EventSubscriber
     }
 
     /**
+     * This event will be called on any flush in doctrine
+     *
      * @param PreFlushEventArgs $args
      */
     public function preFlush(PreFlushEventArgs $args)
     {
-        // This is the mother of all children from the womb of Doctrine
+        // Keeps track of the documents in the current queue
         $uow = $args->getDocumentManager()->getUnitOfWork();
 
-        // Process the full identity map
-        foreach ($uow->getIdentityMap() as $class => $documents) {
-            // This must be cached
-            $reflection = $this->reflection->getPropertyReflectionClass($class);
+        foreach ($uow->getIdentityMap() as $identities) {
+            foreach ($identities as $document) {
+                // Use a proxy for the transformer data
+                $proxyDocument = new DoctrineDocument($document);
+                $this->intentTransformer->transform($proxyDocument);
 
-            // Check if we've got anything on which we can reflect
-            if ($properties = $reflection->getTargetProperties()) {
-                foreach ($properties as $property) {
-                    // Its less costly to reflect classes than documents
-                    // Rather than do per class multiple documents
-                    foreach ($documents as $id => $document) {
-                        // Allow us to modify the document
-                        $manipulator = new ManipulatorDocument($document);
-
-                        // Extract the value
-                        $value = $manipulator->get($property->getPropertyName());
-                        if ($value instanceof StorageIntentUpload) {
-                            // Remove the intent and make a storage object outta it
-                            $manipulator->set(
-                                $property->getPropertyName(),
-                                // Create the file in the file system
-                                $this->manager->write(
-                                    new UploadedFileReader($value->getUploadedFile()),
-                                    // Use the decision map to place the file in the correct (public or private) file systems
-                                    $this->decision->getFilesystems($document)
-                                )
-                            );
-
-                            // Tell doctrine we've changed something
-                            $uow->scheduleForUpdate($document);
-                        }
-                    }
+                // Only reschedule the update when we've made changes
+                if ($proxyDocument->hasUpdates()) {
+                    $uow->scheduleForUpdate($document);
                 }
             }
         }
@@ -154,7 +133,6 @@ class FileEventListener implements EventSubscriber
     {
         // Keeps track of documents in current queue
         $uow = $args->getDocumentManager()->getUnitOfWork();
-        $dm = $args->getDocumentManager();
 
         foreach ($uow->getScheduledDocumentDeletions() as $documentDeletion) {
             if ($documentDeletion instanceof StorageInterface) {

@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
 
@@ -14,6 +14,7 @@
         <parameter key="integrated_storage.cache_app">Integrated\Bundle\StorageBundle\Storage\Cache\AppCache</parameter>
         <parameter key="integrated_storage.file_locator">Integrated\Bundle\StorageBundle\Locator\StorageLocator</parameter>
         <parameter key="integrated_storage.reflection_cache">Integrated\Bundle\StorageBundle\Storage\Reflection\Cache\AppCache</parameter>
+        <parameter key="integrated_storage.intent_writer">Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer</parameter>
 
     </parameters>
 
@@ -59,6 +60,13 @@
             <argument type="service" id="integrated_storage.manager" />
         </service>
 
+        <service id="integrated_storage.intent_writer" class="%integrated_storage.intent_writer%">
+            <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="integrated_storage.decision" />
+            <argument type="service" id="integrated_storage.reflection_cache" />
+        </service>
+
+        <!-- Overwrite the default file_locator service with our own -->
         <service id="file_locator" alias="integrated_storage.file_locator" />
         <service id="integrated_storage.file_locator" class="%integrated_storage.file_locator%">
             <argument type="service" id="kernel" />
