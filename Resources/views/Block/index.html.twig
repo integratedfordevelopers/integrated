@@ -7,8 +7,7 @@
         <div class="col-md-8 push-sm-down">
             <ul class="list-inline">
                 <li class="dropdown">
-                    <a href="#" data-toggle="dropdown" role="button">{% trans %}Create new{% endtrans %} <b
-                                class="caret"></b></a>
+                    <a href="#" data-toggle="dropdown" role="button">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
                     <ul role="menu" class="dropdown-menu">
                         {% for metadata in factory.allMetadata %}
                             <li role="presentation">
@@ -24,14 +23,16 @@
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <table class="table">
+                        <table class="table table-fixed">
                             <colgroup>
-                                <col/>
-                                <col/>
-                                <col/>
+                                <col />
+                                <col />
+                                <col />
                                 {% if pageBundleInstalled %}
-                                    <col/>{% endif %}
-                                <col style="width: 5em"/>
+                                    <col />
+                                    <col width="60px" />
+                                {% endif %}
+                                <col width="60px" />
                             </colgroup>
 
                             <thead>
@@ -51,28 +52,44 @@
                             {% for block in blocks %}
 
                                 <tr>
-                                    <td>
+                                    <td class="break-word">
                                         {{ block.title }}
                                     </td>
-                                    <td>
+                                    <td class="break-word">
                                         {{ block.id }}
                                     </td>
                                     <td>
                                         {{ block.type }}
                                     </td>
                                     {% if pageBundleInstalled %}
-                                        <td>{{ integrated_find_channels(block) }}</td>
-                                        <td>{{ integrated_find_pages(block) }}</td>
+                                        <td class="break-word">
+                                            {% for channel in integrated_find_channels(block) %}
+                                                {{ channel.name }}{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            {% set pageList %}
+                                                {% if integrated_find_pages(block)|length %}
+                                                    <ul class="list-bullet">
+                                                        {% for page in integrated_find_pages(block) %}
+                                                            <li>{{ page.title }}</li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                            {% endset %}
+
+                                            {% if pageList|trim %}
+                                                <span class="glyphicon glyphicon-list-alt" data-toggle="popover" data-trigger="hover" title="Pages" data-content="{{ pageList|e }}" data-html="true" data-placement="left"></span>
+                                            {% endif %}
+                                        </td>
                                     {% endif %}
                                     <td>
-                                        <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}"
-                                           title="{% trans %}Edit{% endtrans %}">
+                                        <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}"  title="{% trans %}Edit{% endtrans %}">
                                             {{ icon('pencil') }}
                                         </a>
                                         {% if not block.locked %}
                                             {% if pageBundleInstalled and not integrated_find_pages(block) %}
-                                                <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}"
-                                                   title="{% trans %}Delete{% endtrans %}">
+                                                <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
                                                     {{ icon('remove-circle') }}
                                                 </a>
                                             {% endif %}
@@ -128,6 +145,8 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function () {
+            $('[data-toggle="popover"]').popover();
+
             $('form[name="integrated_block_filter"]').on('change', function () {
                 $(this).trigger('submit');
             });
