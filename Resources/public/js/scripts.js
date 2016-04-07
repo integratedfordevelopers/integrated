@@ -52,11 +52,12 @@ $(document).ready(function(){
 		$(this).toggleClass('active');
 	});
 
-	//Tinymce initial
-	tinymce.init({
-	    selector: "textarea#tinymce-holder"
-	});
-
+    if (typeof tinymce !== 'undefined') {
+        //Tinymce initial
+        tinymce.init({
+            selector: "textarea#tinymce-holder"
+        });
+    }
 
 	//Select 2 initial
 	$(".basic-multiple").select2();
