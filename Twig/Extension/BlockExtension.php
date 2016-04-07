@@ -98,41 +98,42 @@ class BlockExtension extends \Twig_Extension
     /**
      * @param \Integrated\Common\Block\BlockInterface $block
      *
-     * @return null|string
+     * @return \Integrated\Bundle\ContentBundle\Document\Channel\Channel[]
      */
     public function findChannels(BlockInterface $block)
     {
-        $channelNames = [];
+        $channels = [];
+
         if ($this->container->has('integrated_page.form.type.page')) {
             /* Get all pages which was associated with current Block document */
             $pages = $this->getPages($block);
 
-            $channelNames = [];
             foreach ($pages as $page) {
                 if ($channel = $page->getChannel()) {
-                    $channelNames[] = $channel->getName();
+                    $channels[$channel->getId()] = $channel;
                 }
             }
         }
 
-        return implode(',', $channelNames);
+        return $channels;
     }
 
     /**
      * @param \Integrated\Common\Block\BlockInterface $block
      *
-     * @return null|string
+     * @return \Integrated\Bundle\PageBundle\Document\Page\Page[]
      */
     public function findPages(BlockInterface $block)
     {
-        $pageNames = [];
+        $pages = [];
+
         if ($this->container->has('integrated_page.form.type.page')) {
             foreach ($this->getPages($block) as $page) {
-                $pageNames[] = $page->getTitle();
+                $pages[$page->getId()] = $page;
             }
         }
 
-        return implode(',', $pageNames);
+        return $pages;
     }
 
     /**
