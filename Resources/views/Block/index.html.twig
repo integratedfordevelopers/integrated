@@ -128,7 +128,7 @@
     {{ parent() }}
     <script type="text/javascript">
         $(function () {
-            $(".block-facet-filter").find('form').on('change', function () {
+            $('form[name="integrated_block_filter"]').on('change', function () {
                 $(this).trigger('submit');
             });
         });
