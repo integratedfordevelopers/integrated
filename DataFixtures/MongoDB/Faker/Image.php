@@ -26,9 +26,9 @@ class Image extends \Faker\Provider\Image
     /**
      * @param int $width
      * @param int $height
-     * @param null $category
+     * @param null|string $category
      * @param bool $randomize
-     * @param null $word
+     * @param null|string $word
      * @return string
      */
     public static function imageUrl($width = 640, $height = 480, $category = null, $randomize = true, $word = null)
