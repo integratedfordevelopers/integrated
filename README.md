@@ -105,10 +105,12 @@ In order to make use of the StorageBundle in fixtures the file must exist on dis
 		use StorageTrait;
  
 Now you can use the following in your *alice/Fixtures.yml* file:
-   
-	# Create a file type 
+
+    # Create an image (storage object)
+    <createImage(300, 400, 'nature')>
+	# Create a file type (might be slower because it uses lorempixel)
     <createFile($this->fake('image', '', '/tmp', 300, 400, 'business'), 'name')>
-	# Create a storage object (file)    
+	# Create a storage object (file) (might be slower because it uses lorempixel)
     <createStorage($this->fake('image', '', '/tmp', 300, 400, 'city'))>
 
 ## License ##
