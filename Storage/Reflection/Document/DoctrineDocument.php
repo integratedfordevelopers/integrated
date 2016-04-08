@@ -11,10 +11,12 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Reflection\Document;
 
+use Doctrine\Common\Util\ClassUtils;
+
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class ManipulatorDocument
+class DoctrineDocument
 {
     /**
      * @const string
@@ -32,6 +34,11 @@ class ManipulatorDocument
     protected $document;
 
     /**
+     * @var int
+     */
+    private $updates = 0;
+
+    /**
      * @param object $document
      */
     public function __construct($document)
@@ -44,6 +51,22 @@ class ManipulatorDocument
                 sprintf('Object of type %s is not a object', gettype($document))
             );
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassName()
+    {
+        return ClassUtils::getRealClass(get_class($this->document));
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasUpdates()
+    {
+        return 0 !== $this->updates;
     }
 
     /**
@@ -76,6 +99,9 @@ class ManipulatorDocument
     {
         $method = sprintf(self::SET_SIGNATURE, ucfirst($propertyName));
         if (method_exists($this->document, $method)) {
+            // This keeps track of the times something updated, not changed
+            $this->updates++;
+
             return call_user_func([$this->document, $method], $propertyValue);
         }
 
