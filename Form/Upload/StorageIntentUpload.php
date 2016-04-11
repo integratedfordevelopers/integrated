@@ -64,7 +64,7 @@ class StorageIntentUpload implements StorageInterface
      */
     public function getFilesystems()
     {
-        return [];
+        return new ArrayCollection();
     }
 
     /**
