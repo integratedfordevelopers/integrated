@@ -192,6 +192,15 @@
         };
 
         loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id}) }}');
+
+        window.addEventListener('message',function(event) {
+            // resize modal if relations are changed
+            var iframe = $('[data-id="' + event.data.resizeIframe + '"]');
+
+            console.log(iframe);
+
+            iframe.attr('height', iframe.contents().height());
+        }, false);
     });
 </script>
 
@@ -211,5 +220,5 @@
     {% endjavascripts %}
 {% endif %}
 
-{{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
+{% include 'IntegratedContentBundle:Content:handlebars/templates.html.twig' with { type: content.contentType|default(app.request.query.type|default) } %}
 {% endblock javascript %}

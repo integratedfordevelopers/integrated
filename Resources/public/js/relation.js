@@ -1,9 +1,10 @@
-var Relation = function(id, url) {
+var Relation = function(id, url, contentType) {
 
     this.id = id;
     this.url = url;
     this.loadedSelected = false;
     this.modal = false;
+    this.contentType = contentType;
 
     var relation = this;
 
@@ -17,7 +18,7 @@ var Relation = function(id, url) {
                 '<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>' +
                 '<h4 class="modal-title">Add</h4>' +
                 '</div>' +
-                '<iframe width="100%" height="400" style="width: 100%; min-height: 10px; border: none;">Loading</iframe>' +
+                '<iframe data-id="' +  this.id + '" width="100%" height="10" style="width: 100%; min-height: 10px; border: none;">Loading</iframe>' +
                 '</div>' +
                 '</div>'
             );
@@ -35,16 +36,8 @@ var Relation = function(id, url) {
         return modal.find('iframe');
     }
 
-    this.resizeIFrame = function(height) {
-        if (height <= 0) {
-            height = $(window).height() - 120;
-        }
-
-        if ((height + 20) >= $(window).height()) {
-            height = $(window).height() - 120;
-        }
-
-        this.getIFrame().attr('height', height);
+    this.resizeIFrame = function() {
+        this.getIFrame().attr('height', this.getIFrame().contents().height());
     }
 
     this.handleOptions = function(data) {
@@ -74,14 +67,7 @@ var Relation = function(id, url) {
 
                 iFrame.show();
                 relation.modal.modal('show');
-
-                var height = $(window).height() - 120;
-                if ((iFrame.contents().height() + 20) < $(window).height()) {
-                    // todo: this does not work in IE
-                    height = iFrame.contents().height() -100;
-                }
-
-                relation.resizeIFrame(height);
+                relation.resizeIFrame();
 
                 iFrame.contents().find('*[data-dismiss="modal"]').click(function(ev){
                     ev.preventDefault();
@@ -151,7 +137,11 @@ var Relation = function(id, url) {
             if ($.inArray($(this).val(), selected) < 0) {
                 $(this).attr('checked', false);
             }
-        })
+        });
+
+        if (window.location != window.parent.location) {
+            window.parent.postMessage({ resizeIframe: this.contentType }, '*');
+        }
     }
 
     this.loadSelected = function(url) {
