@@ -66,6 +66,17 @@
                     </array>
                 </array>
 
+                <array>
+                    <string key="name">facet_authors</string>
+                    <array>
+                        <array key="authors">
+                            <string>@person.prefix</string>
+                            <string>@person.firstName</string>
+                            <string>@person.lastName</string>
+                        </array>
+                    </array>
+                </array>
+
             </options>
         </type>
         <type name="integrated.property" />
