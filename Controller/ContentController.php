@@ -94,10 +94,16 @@ class ContentController extends Controller
         $facetSet->setMinCount(1);
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
+
         $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
         $facetTitles['workflow_state'] = 'Workflow status';
+
         $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
         $facetTitles['workflow_assigned'] = 'Assigned user';
+
+        $facetSet->createFacetField('authors')->setField('facet_authors')->addExclude('authors');
+        $facetTitles['workflow_state'] = 'Author';
+
         $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
 
 
@@ -134,16 +140,16 @@ class ContentController extends Controller
 
         $active = [];
 
+        $helper = $query->getHelper();
+        $filter = function ($param) use ($helper) {
+            return $helper->escapePhrase($param);
+        };
+
         // If the request query contains a properties parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
         // TODO this code should be somewhere else
         $propertiesfilter = $request->query->get('properties');
         if (is_array($propertiesfilter)) {
-
-            $helper = $query->getHelper();
-            $filter = function($param) use($helper) {
-                return $helper->escapePhrase($param);
-            };
 
             $query
                 ->createFilterQuery('properties')
@@ -156,13 +162,7 @@ class ContentController extends Controller
 
         /** @var Relation $relation */
         foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
-
-            $helper = $query->getHelper();
-            $filter = function($param) use($helper) {
-                return $helper->escapePhrase($param);
-            };
-
-            $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
+            $name = preg_replace("/[^a-zA-Z]/", "", $relation->getName());
 
             //create relation facet field
             $facetSet->createFacetField($name)->setField('facet_' . $relation->getId())->addExclude($name);
@@ -184,11 +184,6 @@ class ContentController extends Controller
         if (is_array($contentType)) {
 
             if (count($contentType)) {
-                $helper = $query->getHelper();
-                $filter = function($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('contenttypes')
                     ->addTag('contenttypes')
@@ -200,11 +195,11 @@ class ContentController extends Controller
         // has read rights to
 
         if ($this->has('integrated_workflow.solr.workflow.extension')) {
-            $filter = [];
+            $filterWorkflow = [];
 
             if (($user = $this->getUser()) && $user instanceof GroupableInterface) {
                 foreach ($user->getGroups() as $group) {
-                    $filter[] = $group->getId();
+                    $filterWorkflow[] = $group->getId();
                 }
             }
 
@@ -213,21 +208,15 @@ class ContentController extends Controller
                 ->addTag('security')
                 ->setQuery('(*:* -security_workflow_read:[* TO *])'); // empty fields only
 
-            if ($filter) {
-                $fq->setQuery($fq->getQuery() . ' OR security_workflow_read: ((%1%))', [implode(') OR (', $filter)]);
+            if ($filterWorkflow) {
+                $fq->setQuery($fq->getQuery() . ' OR security_workflow_read: ((%1%))', [implode(') OR (', $filterWorkflow)]);
             }
         }
 
         // TODO this should be somewhere else:
         $activeChannels = $request->query->get('channels');
         if (is_array($activeChannels)) {
-
             if (count($activeChannels)) {
-                $helper = $query->getHelper();
-                $filter = function($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('channels')
                     ->addTag('channels')
@@ -239,11 +228,6 @@ class ContentController extends Controller
         $activeStates = $request->query->get('workflow_state');
         if (is_array($activeStates)) {
             if (count($activeStates)) {
-                $helper = $query->getHelper();
-                $filter = function ($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('workflow_state')
                     ->addTag('workflow_state')
@@ -255,15 +239,21 @@ class ContentController extends Controller
         $activeAssigned = $request->query->get('workflow_assigned');
         if (is_array($activeAssigned)) {
             if (count($activeAssigned)) {
-                $helper = $query->getHelper();
-                $filter = function ($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('workflow_assigned')
                     ->addTag('workflow_assigned')
                     ->setQuery('facet_workflow_assigned: ((%1%))', [implode(') OR (', array_map($filter, $activeAssigned))]);
+            }
+        }
+
+
+        $activeAuthors = $request->query->get('authors');
+        if (is_array($activeAuthors)) {
+            if (count($activeAuthors)) {
+                $query
+                    ->createFilterQuery('authors')
+                    ->addTag('authors')
+                    ->setQuery('facet_authors: ((%1%))', [implode(') OR (', array_map($filter, $activeAuthors))]);
             }
         }
 
@@ -277,11 +267,6 @@ class ContentController extends Controller
                 }
 
                 if (count($id)) {
-                    $helper = $query->getHelper();
-                    $filter = function($param) use($helper) {
-                        return $helper->escapePhrase($param);
-                    };
-
                     $query
                         ->createFilterQuery('id')
                         ->addTag('id')
@@ -350,6 +335,7 @@ class ContentController extends Controller
         $active['channels'] = $activeChannels;
         $active['workflow_state'] = $activeStates;
         $active['workflow_assigned'] = $activeAssigned;
+        $active['authors'] = $activeAuthors;
 
         return array(
             'types'        => $types,
