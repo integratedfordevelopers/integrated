@@ -1,10 +1,10 @@
-var Relation = function(id, url, contentType) {
+var Relation = function(id, url, type) {
 
     this.id = id;
     this.url = url;
     this.loadedSelected = false;
     this.modal = false;
-    this.contentType = contentType;
+    this.type = type;
 
     var relation = this;
 
@@ -37,7 +37,14 @@ var Relation = function(id, url, contentType) {
     }
 
     this.resizeIFrame = function() {
-        this.getIFrame().attr('height', this.getIFrame().contents().height());
+        var height = this.getIFrame().contents().height();
+        var margin = 120;
+
+        if (height > ($(window).height() - margin)) {
+            height = $(window).height() - margin;
+        }
+
+        this.getIFrame().attr('height', height);
     }
 
     this.handleOptions = function(data) {
@@ -128,6 +135,8 @@ var Relation = function(id, url, contentType) {
         $.ajax({
             url: url,
             success: this.handleOptions
+        }).done(function() {
+            relation.triggerResize();
         });
     }
 
@@ -139,9 +148,7 @@ var Relation = function(id, url, contentType) {
             }
         });
 
-        if (window.location != window.parent.location) {
-            window.parent.postMessage({ resizeIframe: this.contentType }, '*');
-        }
+        this.triggerResize();
     }
 
     this.loadSelected = function(url) {
@@ -160,6 +167,8 @@ var Relation = function(id, url, contentType) {
                 id: this.getSelected()
             },
             success: this.handleSelected
+        }).done(function() {
+            relation.triggerResize();
         });
     }
 
@@ -237,5 +246,11 @@ var Relation = function(id, url, contentType) {
 
     this.getMultiple = function() {
         return (this.getInputElement().data('multiple') == 1);
+    }
+
+    this.triggerResize = function() {
+        if (window.location != window.parent.location) {
+            window.parent.postMessage({ resizeModal: this.type }, '*');
+        }
     }
 }

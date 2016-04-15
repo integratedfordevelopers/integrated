@@ -193,13 +193,17 @@
 
         loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id}) }}');
 
-        window.addEventListener('message',function(event) {
-            // resize modal if relations are changed
-            var iframe = $('[data-id="' + event.data.resizeIframe + '"]');
+        window.addEventListener('message', function(event) {
+            // also resize modal if relations are changed
+            var iframe = $('[data-id="' + event.data.resizeModal + '"]');
+            var height = iframe.contents().height();
+            var margin = 120;
 
-            console.log(iframe);
+            if (height > ($(window).height() - margin)) {
+                height = $(window).height() - margin;
+            }
 
-            iframe.attr('height', iframe.contents().height());
+            iframe.attr('height', height);
         }, false);
     });
 </script>
@@ -220,5 +224,5 @@
     {% endjavascripts %}
 {% endif %}
 
-{% include 'IntegratedContentBundle:Content:handlebars/templates.html.twig' with { type: content.contentType|default(app.request.query.type|default) } %}
+{% include 'IntegratedContentBundle:Content:handlebars/templates.html.twig' with { type: app.request.query.get('relation')|default } %}
 {% endblock javascript %}
