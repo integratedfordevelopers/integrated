@@ -1,9 +1,10 @@
-var Relation = function(id, url) {
+var Relation = function(id, url, type) {
 
     this.id = id;
     this.url = url;
     this.loadedSelected = false;
     this.modal = false;
+    this.type = type;
 
     var relation = this;
 
@@ -17,7 +18,7 @@ var Relation = function(id, url) {
                 '<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>' +
                 '<h4 class="modal-title">Add</h4>' +
                 '</div>' +
-                '<iframe width="100%" height="400" style="width: 100%; min-height: 10px; border: none;">Loading</iframe>' +
+                '<iframe data-id="' +  this.id + '" width="100%" height="10" style="width: 100%; min-height: 10px; border: none;">Loading</iframe>' +
                 '</div>' +
                 '</div>'
             );
@@ -35,13 +36,12 @@ var Relation = function(id, url) {
         return modal.find('iframe');
     }
 
-    this.resizeIFrame = function(height) {
-        if (height <= 0) {
-            height = $(window).height() - 120;
-        }
+    this.resizeIFrame = function() {
+        var height = this.getIFrame().contents().height();
+        var margin = 120;
 
-        if ((height + 20) >= $(window).height()) {
-            height = $(window).height() - 120;
+        if (height > ($(window).height() - margin)) {
+            height = $(window).height() - margin;
         }
 
         this.getIFrame().attr('height', height);
@@ -74,14 +74,7 @@ var Relation = function(id, url) {
 
                 iFrame.show();
                 relation.modal.modal('show');
-
-                var height = $(window).height() - 120;
-                if ((iFrame.contents().height() + 20) < $(window).height()) {
-                    // todo: this does not work in IE
-                    height = iFrame.contents().height() -100;
-                }
-
-                relation.resizeIFrame(height);
+                relation.resizeIFrame();
 
                 iFrame.contents().find('*[data-dismiss="modal"]').click(function(ev){
                     ev.preventDefault();
@@ -142,6 +135,8 @@ var Relation = function(id, url) {
         $.ajax({
             url: url,
             success: this.handleOptions
+        }).done(function() {
+            relation.triggerResize();
         });
     }
 
@@ -151,7 +146,9 @@ var Relation = function(id, url) {
             if ($.inArray($(this).val(), selected) < 0) {
                 $(this).attr('checked', false);
             }
-        })
+        });
+
+        this.triggerResize();
     }
 
     this.loadSelected = function(url) {
@@ -170,6 +167,8 @@ var Relation = function(id, url) {
                 id: this.getSelected()
             },
             success: this.handleSelected
+        }).done(function() {
+            relation.triggerResize();
         });
     }
 
@@ -247,5 +246,11 @@ var Relation = function(id, url) {
 
     this.getMultiple = function() {
         return (this.getInputElement().data('multiple') == 1);
+    }
+
+    this.triggerResize = function() {
+        if (window.location != window.parent.location) {
+            window.parent.postMessage({ resizeModal: this.type }, '*');
+        }
     }
 }

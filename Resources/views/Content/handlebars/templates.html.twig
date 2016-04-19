@@ -125,7 +125,7 @@
 
     $.fn.relation = function() {
 
-        relations[$(this).data('relation')] = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}");
+        relations[$(this).data('relation')] = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}"{% if type|default %}, "{{ type }}"{% endif %});
         relations[$(this).data('relation')].loadOptions();
 
         return relations[$(this).data('relation')];

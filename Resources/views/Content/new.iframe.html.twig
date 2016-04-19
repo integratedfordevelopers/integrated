@@ -1,10 +1,33 @@
 {% extends 'IntegratedContentBundle:Content:new.html.twig' %}
+
 {% block style %}
     {{ parent() }}
-    <style>
-        .add-relation {display: none;}
+
+    <style type="text/css">
+        #wrapper-holder {
+            padding-bottom: 85px;
+        }
+
+        #wrapper-holder > .container {
+            width: auto;
+            background: #fff;
+        }
+
+        #wrapper-holder > .container .section-radius {
+            box-shadow: none;
+        }
+
+        .add-relation {
+            display: none;
+        }
+
+        .prefooter-holder {
+            border-top: 1px solid #e5e5e5;
+            background: #fcfcfc;
+        }
     </style>
 {% endblock %}
+
 {% block header %}{% endblock %}
 {% block crumbs %}{% endblock %}
 {% block filters %}{% endblock %}
