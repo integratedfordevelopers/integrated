@@ -174,8 +174,8 @@ class PersonTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetPictureFunction()
     {
-        /* @var $picture \Integrated\Bundle\ContentBundle\Document\Content\File | \PHPUnit_Framework_MockObject_MockObject */
-        $picture = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\File');
+        /* @var $picture \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $picture = $this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface');
         $this->assertSame($picture, $this->person->setPicture($picture)->getPicture());
     }
 

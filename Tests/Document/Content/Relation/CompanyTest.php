@@ -100,8 +100,8 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetLogoFunction()
     {
-        /* @var $logo \Integrated\Bundle\ContentBundle\Document\Content\File | \\PHPUnit_Framework_MockObject_MockObject */
-        $logo = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\File');
+        /* @var $logo \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $logo = $this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface');
         $this->assertSame($logo, $this->company->setLogo($logo)->getLogo());
     }
 

@@ -46,7 +46,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetReferencesFunction()
     {
         $references = new ArrayCollection(array('ref1'));
-        $this->assertSame($references, $this->relation->setReferences($references)->getReferences());
+        $this->assertEquals($references, $this->relation->setReferences($references)->getReferences());
     }
 
     /**
