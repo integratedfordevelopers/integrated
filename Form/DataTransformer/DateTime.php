@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * @author Björn Borneman <bjorn@e-active.nl>
@@ -23,11 +24,15 @@ class DateTime implements DataTransformerInterface
      */
     public function transform($datetime)
     {
-        if (empty($datetime)) {
-            return "";
+        if ($datetime instanceof \DateTimeInterface) {
+            return $datetime->format('d-m-Y H:i');
         }
 
-        return $datetime->format('d-m-Y H:i');
+        if (null !== $datetime && '' !== $datetime) {
+            throw new TransformationFailedException('Expected datetime or null');
+        }
+
+        return null;
     }
 
     /**
@@ -35,11 +40,14 @@ class DateTime implements DataTransformerInterface
      */
     public function reverseTransform($string)
     {
-        $object = \DateTime::createFromFormat('d-m-Y H:i', $string);
-        if (!$object) {
-            return null;
+        if (null !== $string && '' !== $string) {
+            if ($object = \DateTime::createFromFormat('d-m-Y H:i', $string)) {
+                return $object;
+            }
+
+            throw new TransformationFailedException('No valid date string, should be "d-m-Y H:i"');
         }
 
-        return $object;
+        return null;
     }
 }
