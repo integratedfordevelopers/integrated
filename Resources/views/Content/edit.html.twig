@@ -1,4 +1,16 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_block_block_index') }}">{% trans %}Home{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Edit{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
 {% block content %}
     {% block filters %}
     <div class="filters_row">
