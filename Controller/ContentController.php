@@ -1093,7 +1093,13 @@ class ContentController extends Controller
     protected function createEditForm(FormTypeInterface $type, ContentInterface $content, array $locking)
     {
         $form = $this->createForm($type, $content,[
-            'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
+            'action' => $this->generateUrl(
+                'integrated_content_content_edit',
+                    $locking['locked'] ?
+                        ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]
+                        :
+                        ['id' => $content->getId()]
+            ),
             'method' => 'PUT',
             'attr' => ['class' => 'content-form'],
 
