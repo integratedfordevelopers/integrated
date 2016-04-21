@@ -1095,7 +1095,7 @@ class ContentController extends Controller
         $form = $this->createForm($type, $content,[
             'action' => $this->generateUrl(
                 'integrated_content_content_edit',
-                    $locking['locked'] ?
+                    $locking['lock'] ?
                         ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]
                         :
                         ['id' => $content->getId()]
