@@ -1,4 +1,7 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% set editable = is_granted(constant('Integrated\\Common\\Security\\Permissions::EDIT'), content) %}
+
 {% block crumbs %}
     <div class="breadcrumb-holder">
         <div class="container">
@@ -63,7 +66,7 @@
                     {% endif %}
                 {% endif %}
 
-                {% if form.offsetGet('relations').count() %}
+                {% if form.offsetGet('relations').count() and editable %}
                 <div class="aside-item-holder section-white">
                     <h3 class="font-medium">{% trans %}Link to{% endtrans %}</h3>
                     <div class="content_column_inner">
@@ -236,5 +239,5 @@
     {% endjavascripts %}
 {% endif %}
 
-{% include 'IntegratedContentBundle:Content:handlebars/templates.html.twig' with { type: app.request.query.get('relation')|default } %}
+{% include 'IntegratedContentBundle:Content:handlebars/templates.html.twig' with { 'editable': editable, 'type': app.request.query.get('relation')|default } %}
 {% endblock javascript %}

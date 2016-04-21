@@ -1092,6 +1092,8 @@ class ContentController extends Controller
      */
     protected function createEditForm(FormTypeInterface $type, ContentInterface $content, array $locking)
     {
+        $editable = $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content);
+
         $form = $this->createForm($type, $content,[
             'action' => $this->generateUrl(
                 'integrated_content_content_edit',
@@ -1102,7 +1104,7 @@ class ContentController extends Controller
             ),
             'method' => 'PUT',
             'attr' => ['class' => 'content-form'],
-
+            'disabled' => !$editable,
             // don't display error's when the content is locked as the user can't save in the first place
             'validation_groups' => $locking['locked'] ? false : null
         ]);
@@ -1111,7 +1113,7 @@ class ContentController extends Controller
 
         // load a different set of buttons based on the permissions and locking state
 
-        if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
+        if (!$editable) {
             return $form->add('actions', 'content_actions', ['buttons' => ['back']]);
         }
 
