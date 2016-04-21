@@ -281,14 +281,23 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @param string $relationId
+     * @param bool $published
      * @return ArrayCollection
      */
-    public function getReferencesByRelationId($relationId)
+    public function getReferencesByRelationId($relationId, $published = true)
     {
         foreach ($this->relations as $relation) {
             if ($relation instanceof Relation) {
                 if ($relation->getRelationId() == $relationId) {
-                    return $relation->getReferences();
+                    if ($references = $relation->getReferences()) {
+                        if (true !== $published) {
+                            return $references;
+                        }
+
+                        return $references->filter(function ($content) {
+                            return $content instanceof Content ? $content->isPublished() : true;
+                        });
+                    }
                 }
             }
         }
@@ -298,11 +307,12 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @param string $relationId
+     * @param bool $published
      * @return Content|null
      */
-    public function getReferenceByRelationId($relationId)
+    public function getReferenceByRelationId($relationId, $published = true)
     {
-        if ($references = $this->getReferencesByRelationId($relationId)) {
+        if ($references = $this->getReferencesByRelationId($relationId, $published)) {
             return $references->first();
         }
     }
