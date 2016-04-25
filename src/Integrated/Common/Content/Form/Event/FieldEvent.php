@@ -35,7 +35,7 @@ class FieldEvent extends FormEvent
 	private $ignore = false;
 
 	/**
-	 * @var object|null
+	 * @var mixed
 	 */
 	private $data = null;
 
@@ -88,7 +88,7 @@ class FieldEvent extends FormEvent
 	}
 
 	/**
-	 * @return ContentInterface
+	 * @return mixed
 	 */
 	public function getData()
 	{
@@ -96,7 +96,7 @@ class FieldEvent extends FormEvent
 	}
 
 	/**
-	 * @param object $data
+	 * @param mixed $data
 	 * @return $this
 	 */
 	public function setData($data)
