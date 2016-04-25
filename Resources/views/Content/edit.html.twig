@@ -222,11 +222,11 @@
         }, false);
     });
 </script>
-
-{% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
-    <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
-
+    {% if editable %}
+        {% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endif %}
 {% endif %}
 
 {% javascripts "@IntegratedUserBundle/Resources/public/js/visible_user_form.js" %}
