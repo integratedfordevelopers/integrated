@@ -56,12 +56,14 @@ class FormFieldSubscriber implements EventSubscriberInterface
         if ($event->getData() instanceof ContentInterface) {
             $editable = $this->authorizationChecker->isGranted(Permissions::EDIT, $event->getData());
 
-            $event->getField()->setOptions(
-                array_merge(
-                    $event->getField()->getOptions(),
-                    ['disabled' => !$editable]
-                )
-            );
+            if (!$editable) {
+                $event->getField()->setOptions(
+                    array_merge(
+                        $event->getField()->getOptions(),
+                        ['disabled' => !$editable]
+                    )
+                );
+            }
         }
     }
 }
