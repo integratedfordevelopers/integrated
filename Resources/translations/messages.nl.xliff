@@ -506,6 +506,10 @@
                 <source>Relation</source>
                 <target>Relatie</target>
             </trans-unit>
+            <trans-unit id="130">
+                <source>Workflow status</source>
+                <target>Huidige status</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
