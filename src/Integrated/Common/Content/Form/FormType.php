@@ -100,6 +100,7 @@ class FormType extends AbstractType implements FormTypeInterface
                 if ($dispatcher->hasListeners(Events::BUILD_FIELD)) {
                     $event = new FieldEvent($this->contentType, $this->metadata);
                     $event->setOptions($options);
+                    $event->setData($builder->getData());
                     $event->setField(clone $config); // don't allow the original to be changed.
 
                     $dispatcher->dispatch(Events::BUILD_FIELD, $event);
