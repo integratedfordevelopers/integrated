@@ -49,6 +49,8 @@
 
         <parameter key="integrated_formtype_form_type_relation_block_content_types.class">Integrated\Bundle\ContentBundle\Form\Type\RelationBlockContentTypes</parameter>
 
+        <parameter key="integrated_content.form.listener.form_field.class">Integrated\Bundle\ContentBundle\Form\EventListener\FormFieldSubscriber</parameter>
+
     </parameters>
 
     <services>
@@ -162,6 +164,11 @@
 
         <service id="integrated_content.form.channel.domain.type" class="%integrated_content.form.channel.domain.class%">
             <tag name="form.type" alias="channel_domain" />
+        </service>
+
+        <service id="integrated_content.form.listener.form_field" class="%integrated_content.form.listener.form_field.class%">
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="integrated_content.form.event_subscriber" />
         </service>
 
     </services>
