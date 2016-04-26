@@ -122,7 +122,7 @@ class Manager implements ManagerInterface
             sprintf(
                 'The file %s has no available filesystem(s) for a read operation tried: %s.',
                 $storage->getIdentifier(),
-                implode(', ', $storage->getFilesystems())
+                implode(', ', $storage->getFilesystems()->toArray())
             )
         );
     }
