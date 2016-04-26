@@ -483,11 +483,12 @@ class ContentController extends Controller
             }
         }
 
-        return array(
+        return [
+            'editable' => true,
             'type' => $type->getType(),
             'form' => $form->createView(),
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
-        );
+        ];
     }
 
     /**
@@ -621,13 +622,14 @@ class ContentController extends Controller
             $this->get('braincrafted_bootstrap.flash')->error($text);
         }
 
-        return array(
-            'type'    => $type->getType(),
-            'form'    => $form->createView(),
-            'content' => $content,
-            'locking' => $locking,
+        return [
+            'editable' => $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content),
+            'type'     => $type->getType(),
+            'form'     => $form->createView(),
+            'content'  => $content,
+            'locking'  => $locking,
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
-        );
+        ];
     }
 
     /**
