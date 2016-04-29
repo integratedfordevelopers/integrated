@@ -192,7 +192,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
         }
 
         foreach ($this->dm->getRepository('IntegratedContentBundle:Relation\Relation')->findAll() as $relation) {
-            $name = preg_replace("/[^a-zA]/", '', $relation->getName());
+            $name = preg_replace("/[^a-zA-Z]/", '', $relation->getName());
             $filters = isset($request[$name]) ? $request[$name] : [];
 
             if (count($filters)) {
