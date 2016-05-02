@@ -17,6 +17,7 @@
 
         <parameter key="integrated_formtype.form.type.relation_choice.relations.class">Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\RelationsType</parameter>
         <parameter key="integrated_formtype.form.type.relation_references_choice.relation.class">Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\RelationReferencesType</parameter>
+        <parameter key="integrated_formtype.form.type.save_cancel.class">Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType</parameter>
 
     </parameters>
 
@@ -72,6 +73,10 @@
 
         <service id="integrated_formtype.form.type.relation_references_choice.relation" class="%integrated_formtype.form.type.relation_references_choice.relation.class%">
             <tag name="form.type" alias="integrated_relation_references"/>
+        </service>
+
+        <service id="integrated_formtype.form.type.save_cancel" class="%integrated_formtype.form.type.save_cancel.class%">
+            <tag name="form.type" alias="integrated_save_cancel"/>
         </service>
 
     </services>
