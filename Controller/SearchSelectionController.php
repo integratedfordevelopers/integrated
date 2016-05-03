@@ -180,13 +180,17 @@ class SearchSelectionController extends Controller
         $form = $this->createForm(
             $this->get('integrated_content.form.search_selection.type'),
             $searchSelection,
-            array(
+            [
                 'action' => $this->generateUrl('integrated_content_search_selection_new', $request ? $request->query->all() : []),
                 'method' => 'POST',
-            )
+            ]
         );
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', 'integrated_save_cancel', [
+            'cancel_route' => 'integrated_content_search_selection_index',
+            'label' => 'Create',
+            'button_class' => '',
+        ]);
 
         return $form;
     }
@@ -208,7 +212,7 @@ class SearchSelectionController extends Controller
             )
         );
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', 'integrated_save_cancel', ['cancel_route' => 'integrated_content_search_selection_index']);
 
         return $form;
     }
