@@ -197,7 +197,11 @@ class BlockController extends Controller
             'type' => $block->getType(),
         ]);
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', 'integrated_save_cancel', [
+            'cancel_route' => 'integrated_block_block_index',
+            'label' => 'Create',
+            'button_class' => '',
+        ]);
 
         return $form;
     }
@@ -223,7 +227,7 @@ class BlockController extends Controller
             'type' => $block->getType(),
         ]);
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', 'integrated_save_cancel', ['cancel_route' => 'integrated_block_block_index']);
 
         return $form;
     }
