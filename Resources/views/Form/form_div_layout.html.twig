@@ -249,3 +249,15 @@
     {{ form_row(form.children['references']) }}
     {{ form_errors(form) }}
 {% endblock %}
+
+{% block integrated_save_cancel_row %}
+    {% spaceless %}
+        <section class="section-white prefooter-holder">
+            <div class="container text-center">
+                {{ form_widget(form) }}
+                &nbsp;
+                <a class="btn btn-gray-thin" href="{{ path(cancel_route, cancel_route_parameters) }}">{% trans %}Cancel{% endtrans %}</a>
+            </div><!-- container -->
+        </section>
+    {% endspaceless %}
+{% endblock %}
