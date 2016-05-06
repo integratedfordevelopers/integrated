@@ -39,7 +39,7 @@ class FieldMapperType implements TypeInterface
     /**
      * @var PropertyAccessorInterface
      */
-    private $accessor;
+    protected $accessor;
 
     /**
      * Constructor.
@@ -57,24 +57,7 @@ class FieldMapperType implements TypeInterface
      */
     public function build(ContainerInterface $container, $data, array $options = [])
     {
-        $fields = [];
-
-        // first group the options by field name
-
-        foreach ($options as $field => $value) {
-            if (is_array($value)) {
-                $field = $value[$index = isset($value['name']) ? 'name' : key($value)];
-                unset($value[$index]);
-            } else {
-                $value = ['@' . $value]; // convert simple config to advance config
-            }
-
-            foreach ($value as $config) {
-                $fields[$field][] = $config;
-            }
-        }
-
-        foreach ($fields as $field => $config) {
+        foreach ($this->groupFields($options) as $field => $config) {
             $this->remove($container, $field);
 
             foreach ($this->read($data, $config) as $value) {
@@ -89,6 +72,32 @@ class FieldMapperType implements TypeInterface
     public function getName()
     {
         return 'integrated.fields';
+    }
+
+    /**
+     * @param array $options
+     * @return array
+     */
+    protected function groupFields(array $options = [])
+    {
+        $fields = [];
+
+        // first group the options by field name
+
+        foreach ($options as $field => $value) {
+            if (is_array($value)) {
+                $field = $value[$index = isset($value['name']) ? 'name' : key($value)];
+                unset($value[$index]);
+            } else {
+                $value = ['@' . $value]; // convert simple config to advance config
+            }
+
+            foreach ($value as $key => $config) {
+                $fields[$field][$key] = $config;
+            }
+        }
+
+        return $fields;
     }
 
     /**
@@ -159,7 +168,6 @@ class FieldMapperType implements TypeInterface
 
         foreach ($paths as $index => $path) {
             if (is_array($path)) {
-
                 // Since $path is a array the $index with be treated as a path and the result of that
                 // path is treated as a array. If the result is not a array then it will be placed in
                 // a array to simulate that the result is a array.

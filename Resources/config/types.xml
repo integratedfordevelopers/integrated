@@ -14,6 +14,7 @@
         <parameter key="integrated_solr.type.remove.type.class">Integrated\Bundle\SolrBundle\Solr\Type\RemoveType</parameter>
         <parameter key="integrated_solr.type.relation_json.type.class">Integrated\Bundle\SolrBundle\Solr\Type\RelationJsonType</parameter>
         <parameter key="integrated_solr.type.property.type.class">Integrated\Bundle\SolrBundle\Solr\Type\PropertyType</parameter>
+        <parameter key="integrated_solr.type.json.type.class">Integrated\Bundle\SolrBundle\Solr\Type\JsonType</parameter>
 
     </parameters>
 
@@ -48,6 +49,10 @@
         </service>
 
         <service id="integrated_solr.type.property.type" class="%integrated_solr.type.property.type.class%">
+            <tag name="integrated_solr.type" />
+        </service>
+
+        <service id="integrated_solr.type.json.type" class="%integrated_solr.type.json.type.class%">
             <tag name="integrated_solr.type" />
         </service>
 
