@@ -68,12 +68,6 @@ class FileEventSubscriber implements EventSubscriberInterface
             // Delete the set the property to null
             $event->setData(null);
         } elseif ($upload instanceof UploadedFile) {
-            // Get the root document bind to the form
-            $rootForm = $event->getForm();
-            while ($rootForm->getParent()) {
-                $rootForm = $rootForm->getParent();
-            }
-
             // Make sure the entity ends up a StorageInterface
             $event->setData(
                  new StorageIntentUpload($event->getForm()->getData(), $upload)
