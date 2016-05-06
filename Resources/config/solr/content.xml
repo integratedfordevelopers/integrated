@@ -71,7 +71,7 @@
             <options>
 
                 <array>
-                    <string key="name">authors</string>
+                    <string key="name">authors_string</string>
                     <array key="authors">
                         <string key="id">@person.id</string>
                         <string key="slug">@person.slug</string>
