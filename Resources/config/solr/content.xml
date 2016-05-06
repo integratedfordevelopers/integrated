@@ -39,9 +39,6 @@
                     <array>
                         <array key="authors">
                             <string>@person.id</string>
-                            <string>@person.prefix</string>
-                            <string>@person.firstName</string>
-                            <string>@person.lastName</string>
                         </array>
                     </array>
                 </array>
@@ -69,6 +66,24 @@
 
             </options>
         </type>
+
+        <type name="integrated.json">
+            <options>
+
+                <array>
+                    <string key="name">authors_string</string>
+                    <array key="authors">
+                        <string key="id">@person.id</string>
+                        <string key="slug">@person.slug</string>
+                        <string key="prefix">@person.prefix</string>
+                        <string key="first_name">@person.firstName</string>
+                        <string key="last_name">@person.lastName</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
         <type name="integrated.has_image" />
 
     </class>
