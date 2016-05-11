@@ -11,39 +11,44 @@
 
 namespace Integrated\Common\Solr\Indexer\Event;
 
+use Exception;
+
 use Integrated\Common\Solr\Exception\ExceptionInterface;
 use Integrated\Common\Solr\Indexer\IndexerInterface;
+
+use Integrated\Common\Queue\QueueMessageInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ErrorEvent extends IndexerEvent
+class ErrorEvent extends MessageEvent
 {
-	/**
-	 * @var ExceptionInterface
-	 */
-	private $exception;
+    /**
+     * @var ExceptionInterface
+     */
+    private $exception;
 
-	/**
-	 * Event constructor.
-	 *
-	 * @param IndexerInterface $indexer
-	 * @param ExceptionInterface $exception
-	 */
-	public function __construct(IndexerInterface $indexer, ExceptionInterface $exception)
-	{
-		parent::__construct($indexer);
+    /**
+     * Event constructor.
+     *
+     * @param IndexerInterface      $indexer
+     * @param QueueMessageInterface $message
+     * @param ExceptionInterface    $exception
+     */
+    public function __construct(IndexerInterface $indexer, QueueMessageInterface $message, ExceptionInterface $exception)
+    {
+        parent::__construct($indexer, $message);
 
-		$this->exception = $exception;
-	}
+        $this->exception = $exception;
+    }
 
-	/**
-	 * Get the exception object for this event.
-	 *
-	 * @return ExceptionInterface
-	 */
-	public function getException()
-	{
-		return $this->exception;
-	}
+    /**
+     * Get the exception object for this event.
+     *
+     * @return ExceptionInterface | Exception
+     */
+    public function getException()
+    {
+        return $this->exception;
+    }
 }

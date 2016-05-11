@@ -13,51 +13,22 @@ namespace Integrated\Common\Solr\Indexer;
 
 use Exception;
 
-use Integrated\Common\Converter\ConverterAwareInterface;
-use Integrated\Common\Converter\ConverterInterface;
-
 use Integrated\Common\Queue\QueueAwareInterface;
-use Integrated\Common\Queue\QueueInterface;
-
 use Integrated\Common\Solr\Exception\InvalidArgumentException;
 
 use Solarium\Core\Client\Client;
 
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerInterface;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface IndexerInterface extends QueueAwareInterface, SerializerAwareInterface, ConverterAwareInterface
+interface IndexerInterface extends QueueAwareInterface
 {
-    /**
-     * Set the queue.
-     *
-     * @param QueueInterface $queue
-     */
-    public function setQueue(QueueInterface $queue);
-
     /**
      * Set the solarium client.
      *
      * @param Client $client
      */
     public function setClient(Client $client);
-
-    /**
-     * Set the serializer.
-     *
-     * @param SerializerInterface $serializer
-     */
-    public function setSerializer(SerializerInterface $serializer);
-
-    /**
-     * Set the converter
-     *
-     * @param ConverterInterface $convert
-     */
-    public function setConverter(ConverterInterface $convert);
 
     /**
      * This wil execute a indexing run by getting jobs from the queue.
