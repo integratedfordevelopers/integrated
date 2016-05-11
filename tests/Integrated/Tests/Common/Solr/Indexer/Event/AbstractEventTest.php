@@ -14,33 +14,35 @@ namespace Integrated\Tests\Common\Solr\Indexer\Event;
 use Integrated\Common\Solr\Indexer\Event\IndexerEvent;
 use Integrated\Common\Solr\Indexer\IndexerInterface;
 
+use Symfony\Component\EventDispatcher\Event;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 abstract class AbstractEventTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var IndexerInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $indexer;
+    /**
+     * @var IndexerInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $indexer;
 
-	/**
-	 * @var IndexerEvent
-	 */
-	protected $event;
+    public function setUp()
+    {
+        $this->indexer = $this->getMock(IndexerInterface::class);
+    }
 
-	public function setUp()
-	{
-		$this->indexer = $this->getMock('Integrated\Common\Solr\Indexer\IndexerInterface');
-	}
+    public function testParent()
+    {
+        self::assertInstanceOf(Event::class, $this->getInstance());
+    }
 
-	public function testParent()
-	{
-		$this->assertInstanceOf('Symfony\Component\EventDispatcher\Event', $this->event);
-	}
+    public function testGetIndexer()
+    {
+        self::assertSame($this->indexer, $this->getInstance()->getIndexer());
+    }
 
-	public function testGetIndexer()
-	{
-		$this->assertSame($this->indexer, $this->event->getIndexer());
-	}
+    /**
+     * @return IndexerEvent
+     */
+    abstract protected function getInstance();
 }

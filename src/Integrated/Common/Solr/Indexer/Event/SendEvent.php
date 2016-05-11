@@ -19,31 +19,31 @@ use Solarium\QueryType\Update\Query\Query;
  */
 class SendEvent extends IndexerEvent
 {
-	/**
-	 * @var Query
-	 */
-	protected $query;
+    /**
+     * @var Query
+     */
+    protected $query;
 
-	/**
-	 * Event constructor.
-	 *
-	 * @param IndexerInterface $indexer
-	 * @param Query $query
-	 */
-	public function __construct(IndexerInterface $indexer, Query $query)
-	{
-		parent::__construct($indexer);
+    /**
+     * Event constructor.
+     *
+     * @param IndexerInterface $indexer
+     * @param Query $query
+     */
+    public function __construct(IndexerInterface $indexer, Query $query)
+    {
+        parent::__construct($indexer);
 
-		$this->query = $query;
-	}
+        $this->query = $query;
+    }
 
-	/**
-	 * Get the query object for this event.
-	 *
-	 * @return Query
-	 */
-	public function getQuery()
-	{
-		return $this->query;
-	}
-} 
+    /**
+     * Get the query object for this event.
+     *
+     * @return Query
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+}

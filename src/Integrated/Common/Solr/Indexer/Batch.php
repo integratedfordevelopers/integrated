@@ -20,62 +20,62 @@ use ArrayIterator;
  */
 class Batch implements Countable, IteratorAggregate
 {
-	/**
-	 * @var BatchOperation[]
-	 */
-	private $batch = array();
+    /**
+     * @var BatchOperation[]
+     */
+    private $batch = array();
 
-	/**
-	 * Add the given batch operation to the batch.
-	 *
-	 * @param BatchOperation $operation
-	 */
-	public function add(BatchOperation $operation)
-	{
-		$this->batch[] = $operation;
-	}
+    /**
+     * Add the given batch operation to the batch.
+     *
+     * @param BatchOperation $operation
+     */
+    public function add(BatchOperation $operation)
+    {
+        $this->batch[] = $operation;
+    }
 
-	/**
-	 * Remove the given batch operation from the batch
-	 *
-	 * @param BatchOperation $operation
-	 */
-	public function remove(BatchOperation $operation)
-	{
-		foreach ($this->batch as $key => $value) {
-			if ($operation === $value) {
-				unset($this->batch[$key]);
-			}
-		}
+    /**
+     * Remove the given batch operation from the batch
+     *
+     * @param BatchOperation $operation
+     */
+    public function remove(BatchOperation $operation)
+    {
+        foreach ($this->batch as $key => $value) {
+            if ($operation === $value) {
+                unset($this->batch[$key]);
+            }
+        }
 
-		$this->batch = array_values($this->batch); // reorder keys
-	}
+        $this->batch = array_values($this->batch); // reorder keys
+    }
 
-	/**
-	 * Clear all the batch operation from the batch.
-	 */
-	public function clear()
-	{
-		$this->batch = array();
-	}
+    /**
+     * Clear all the batch operation from the batch.
+     */
+    public function clear()
+    {
+        $this->batch = array();
+    }
 
-	/**
-	 * Return the number of batch operations.
-	 *
-	 * @return int
-	 */
-	public function count()
-	{
-		return count($this->batch);
-	}
+    /**
+     * Return the number of batch operations.
+     *
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->batch);
+    }
 
-	/**
-	 * Get a iterator to walk of the batch operations.
-	 *
-	 * @return BatchOperation[]
-	 */
-	public function getIterator()
-	{
-		return new ArrayIterator($this->batch);
-	}
+    /**
+     * Get a iterator to walk of the batch operations.
+     *
+     * @return BatchOperation[]
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->batch);
+    }
 }

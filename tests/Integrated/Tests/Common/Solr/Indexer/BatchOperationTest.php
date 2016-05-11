@@ -21,58 +21,61 @@ use Solarium\QueryType\Update\Query\Command\Command;
  */
 class BatchOperationTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var BatchOperation
-	 */
-	protected $operation;
+    /**
+     * @var QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $message;
 
-	/**
-	 * @var QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $message;
+    /**
+     * @var Command | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $command;
 
-	/**
-	 * @var Command | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $command;
+    protected function setUp()
+    {
+        $this->message = $this->getMock(QueueMessageInterface::class);
+        $this->command = $this->getMock(Command::class);
+    }
 
-	protected function setUp()
-	{
-		$this->message = $this->getMock('Integrated\Common\Queue\QueueMessageInterface');
-		$this->command = $this->getMock('Solarium\QueryType\Update\Query\Command\Command');
+    public function testConstructorNullCommand()
+    {
+        $this->command = null;
+        self::assertNull($this->getInstance()->getCommand());
+    }
 
-		$this->operation = new BatchOperation($this->message, $this->command);
-	}
+    public function testGetMessage()
+    {
+        self::assertSame($this->message, $this->getInstance()->getMessage());
+    }
 
-	public function testConstructorNullCommand()
-	{
-		$this->operation = new BatchOperation($this->message);
-		$this->assertNull($this->operation->getCommand());
-	}
+    public function testGetCommand()
+    {
+        self::assertSame($this->command, $this->getInstance()->getCommand());
+    }
 
-	public function testGetMessage()
-	{
-		$this->assertSame($this->message, $this->operation->getMessage());
-	}
+    public function testSetCommand()
+    {
+        $command = $this->getMock(Command::class);
 
-	public function testGetCommand()
-	{
-		$this->assertSame($this->command, $this->operation->getCommand());
-	}
+        $instance = $this->getInstance();
+        $instance->setCommand($command);
 
-	public function testSetCommand()
-	{
-		$command = $this->getMock('Solarium\QueryType\Update\Query\Command\Command');
+        self::assertSame($command, $instance->getCommand());
+    }
 
-		$this->operation->setCommand($command);
+    public function testSetCommandNull()
+    {
+        $instance = $this->getInstance();
+        $instance->setCommand(null);
 
-		$this->assertSame($command, $this->operation->getCommand());
-	}
+        self::assertNull($instance->getCommand());
+    }
 
-	public function testSetCommandNull()
-	{
-		$this->operation->setCommand(null);
-		$this->assertNull($this->operation->getCommand());
-	}
+    /**
+     * @return BatchOperation
+     */
+    protected function getInstance()
+    {
+        return new BatchOperation($this->message, $this->command);
+    }
 }
- 

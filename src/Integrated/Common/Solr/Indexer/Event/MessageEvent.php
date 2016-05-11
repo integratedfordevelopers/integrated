@@ -19,31 +19,31 @@ use Integrated\Common\Queue\QueueMessageInterface;
  */
 class MessageEvent extends IndexerEvent
 {
-	/**
-	 * @var QueueMessageInterface
-	 */
-	protected $message;
+    /**
+     * @var QueueMessageInterface
+     */
+    protected $message;
 
-	/**
-	 * Event constructor.
-	 *
-	 * @param IndexerInterface $indexer
-	 * @param QueueMessageInterface $message
-	 */
-	public function __construct(IndexerInterface $indexer, QueueMessageInterface $message)
-	{
-		parent::__construct($indexer);
+    /**
+     * Event constructor.
+     *
+     * @param IndexerInterface $indexer
+     * @param QueueMessageInterface $message
+     */
+    public function __construct(IndexerInterface $indexer, QueueMessageInterface $message)
+    {
+        parent::__construct($indexer);
 
-		$this->message = $message;
-	}
+        $this->message = $message;
+    }
 
-	/**
-	 * Get the queue message object for this event.
-	 *
-	 * @return QueueMessageInterface
-	 */
-	public function getMessage()
-	{
-		return $this->message;
-	}
-} 
+    /**
+     * Get the queue message object for this event.
+     *
+     * @return QueueMessageInterface
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+}

@@ -19,27 +19,28 @@ use Integrated\Common\Solr\Indexer\BatchOperation;
  */
 class BatchEventTest extends AbstractEventTest
 {
-	/**
-	 * @var BatchOperation | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $operation;
+    /**
+     * @var BatchOperation | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $operation;
 
-	/**
-	 * @var BatchEvent
-	 */
-	protected $event;
+    public function setUp()
+    {
+        parent::setUp();
 
-	public function setUp()
-	{
-		parent::setUp();
+        $this->operation = $this->getMockBuilder(BatchOperation::class)->disableOriginalConstructor()->getMock();
+    }
 
-		$this->operation = $this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false);
-		$this->event = new BatchEvent($this->indexer, $this->operation);
-	}
+    public function testGetOperation()
+    {
+        self::assertSame($this->operation, $this->getInstance()->getOperation());
+    }
 
-	public function testGetOperation()
-	{
-		$this->assertSame($this->operation, $this->event->getOperation());
-	}
+    /**
+     * @return BatchEvent
+     */
+    protected function getInstance()
+    {
+        return new BatchEvent($this->indexer, $this->operation);
+    }
 }
- 

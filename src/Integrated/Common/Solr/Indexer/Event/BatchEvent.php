@@ -19,31 +19,31 @@ use Integrated\Common\Solr\Indexer\BatchOperation;
  */
 class BatchEvent extends IndexerEvent
 {
-	/**
-	 * @var BatchOperation
-	 */
-	protected $operation;
+    /**
+     * @var BatchOperation
+     */
+    protected $operation;
 
-	/**
-	 * Event constructor.
-	 *
-	 * @param IndexerInterface $indexer
-	 * @param BatchOperation $operation
-	 */
-	public function __construct(IndexerInterface $indexer, BatchOperation $operation)
-	{
-		parent::__construct($indexer);
+    /**
+     * Event constructor.
+     *
+     * @param IndexerInterface $indexer
+     * @param BatchOperation $operation
+     */
+    public function __construct(IndexerInterface $indexer, BatchOperation $operation)
+    {
+        parent::__construct($indexer);
 
-		$this->operation = $operation;
-	}
+        $this->operation = $operation;
+    }
 
-	/**
-	 * Get the batch operation object for this event.
-	 *
-	 * @return BatchOperation
-	 */
-	public function getOperation()
-	{
-		return $this->operation;
-	}
-} 
+    /**
+     * Get the batch operation object for this event.
+     *
+     * @return BatchOperation
+     */
+    public function getOperation()
+    {
+        return $this->operation;
+    }
+}

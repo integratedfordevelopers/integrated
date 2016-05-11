@@ -19,26 +19,28 @@ use Integrated\Common\Queue\QueueMessageInterface;
  */
 class MessageEventTest extends AbstractEventTest
 {
-	/**
-	 * @var QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $message;
+    /**
+     * @var QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $message;
 
-	/**
-	 * @var MessageEvent
-	 */
-	protected $event;
+    public function setUp()
+    {
+        parent::setUp();
 
-	public function setUp()
-	{
-		parent::setUp();
+        $this->message = $this->getMock(QueueMessageInterface::class);
+    }
 
-		$this->message = $this->getMock('Integrated\Common\Queue\QueueMessageInterface');
-		$this->event = new MessageEvent($this->indexer, $this->message);
-	}
+    public function testGetMessage()
+    {
+        self::assertSame($this->message, $this->getInstance()->getMessage());
+    }
 
-	public function testGetMessage()
-	{
-		$this->assertSame($this->message, $this->event->getMessage());
-	}
+    /**
+     * @return MessageEvent
+     */
+    protected function getInstance()
+    {
+        return new MessageEvent($this->indexer, $this->message);
+    }
 }

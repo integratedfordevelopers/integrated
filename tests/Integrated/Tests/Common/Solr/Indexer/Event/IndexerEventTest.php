@@ -18,10 +18,8 @@ use Integrated\Common\Solr\Indexer\Event\IndexerEvent;
  */
 class IndexerEventTest extends AbstractEventTest
 {
-	public function setUp()
-	{
-		parent::setUp();
-
-		$this->event = new IndexerEvent($this->indexer);
-	}
+    protected function getInstance()
+    {
+        return new IndexerEvent($this->indexer);
+    }
 }

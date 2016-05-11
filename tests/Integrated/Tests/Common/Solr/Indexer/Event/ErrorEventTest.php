@@ -24,21 +24,23 @@ class ErrorEventTest extends MessageEventTest
      */
     protected $exception;
 
-    /**
-     * @var ErrorEvent
-     */
-    protected $event;
-
     public function setUp()
     {
         parent::setUp();
 
         $this->exception = $this->getMock(ExceptionInterface::class);
-        $this->event = new ErrorEvent($this->indexer, $this->message, $this->exception);
     }
 
     public function testGetException()
     {
-        $this->assertSame($this->exception, $this->event->getException());
+        self::assertSame($this->exception, $this->getInstance()->getException());
+    }
+
+    /**
+     * @return ErrorEvent
+     */
+    protected function getInstance()
+    {
+        return new ErrorEvent($this->indexer, $this->message, $this->exception);
     }
 }
