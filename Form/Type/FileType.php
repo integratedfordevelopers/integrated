@@ -16,6 +16,7 @@ use ArrayObject;
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
 
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
+use Integrated\Bundle\StorageBundle\Form\Util\FormUtil;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -114,7 +115,7 @@ class FileType extends AbstractType
         if ($data instanceof StorageIntentUpload) {
             $view->vars['preview'] = $data;
 
-            if (!$view->vars['valid']) {
+            if (!FormUtil::getRootForm($form)->isValid()) {
                 $view->vars['preview'] = $data->getOriginal();
             }
         } elseif ($data instanceof StorageInterface) {
