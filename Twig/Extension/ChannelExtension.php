@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Twig\Extension;
 
-use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 
 /**
