@@ -125,6 +125,9 @@ class MigrateCommand extends Command
                             break 1;
                         }
                     }
+                } else {
+                    // Some document do not have the property, but have a file on disk
+                    $skip = false;
                 }
 
                 // Skip when all required properties are found or when the property does not exist
@@ -155,14 +158,16 @@ class MigrateCommand extends Command
                             @unlink($file->getPathname());
                         }
                     } else {
-                        // The only valid count is one, what else?
-                        throw new \LogicException(
-                            sprintf(
-                                'The file %s was found zero times for document %s.',
-                                $filename,
-                                $row['_id']
-                            )
-                        );
+                        if (isset($row[$property->getPropertyName()])) {
+                            // If the property exists, the only valid count is one, what else?
+                            throw new \LogicException(
+                                sprintf(
+                                    'The file %s was found zero times for document %s.',
+                                    $filename,
+                                    $row['_id']
+                                )
+                            );
+                        }
                     }
                 }
             }
