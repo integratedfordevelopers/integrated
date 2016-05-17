@@ -41,7 +41,6 @@ class IntegratedContentBundle extends Bundle
         $container->addCompilerPass(new FormFactoryEventDispatcherPass());
         $container->addCompilerPass(new MetadataEventDispatcherPass());
         $container->addCompilerPass(new PriorityResolverBuilderPass());
-        $container->addCompilerPass(new TemplatingPass());
         $container->addCompilerPass(new ThemeManagerPass());
     }
 
