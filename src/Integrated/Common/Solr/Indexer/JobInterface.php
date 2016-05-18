@@ -18,33 +18,33 @@ use Serializable;
  */
 interface JobInterface extends Serializable
 {
-	/**
-	 * Get the action.
-	 *
-	 * @return string|null
-	 */
-	public function getAction();
+    /**
+     * Get the action.
+     *
+     * @return string|null
+     */
+    public function getAction();
 
-	/**
-	 * Check if action is set.
-	 *
-	 * @return bool
-	 */
-	public function hasAction();
+    /**
+     * Check if action is set.
+     *
+     * @return bool
+     */
+    public function hasAction();
 
-	/**
-	 * Get the option value.
-	 *
-	 * @param string $name the name of the option to retrieve.
-	 * @return string|null
-	 */
-	public function getOption($name);
+    /**
+     * Get the option value.
+     *
+     * @param string $name the name of the option to retrieve.
+     * @return string|null
+     */
+    public function getOption($name);
 
-	/**
-	 * Check if the option exists.
-	 *
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasOption($name);
+    /**
+     * Check if the option exists.
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function hasOption($name);
 }

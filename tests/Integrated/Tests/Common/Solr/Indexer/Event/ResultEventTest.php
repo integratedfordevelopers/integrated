@@ -19,26 +19,25 @@ use Solarium\Core\Query\Result\ResultInterface;
  */
 class ResultEventTest extends AbstractEventTest
 {
-	/**
-	 * @var ResultInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $result;
+    /**
+     * @var ResultInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $result;
 
-	/**
-	 * @var ResultEvent
-	 */
-	protected $event;
+    public function setUp()
+    {
+        parent::setUp();
 
-	public function setUp()
-	{
-		parent::setUp();
+        $this->result = $this->getMock(ResultInterface::class);
+    }
 
-		$this->result = $this->getMock('Solarium\Core\Query\Result\ResultInterface');
-		$this->event = new ResultEvent($this->indexer, $this->result);
-	}
+    public function testGetResult()
+    {
+        self::assertSame($this->result, $this->getInstance()->getResult());
+    }
 
-	public function testGetResult()
-	{
-		$this->assertSame($this->result, $this->event->getResult());
-	}
+    protected function getInstance()
+    {
+        return new ResultEvent($this->indexer, $this->result);
+    }
 }

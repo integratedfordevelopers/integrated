@@ -12,142 +12,119 @@
 namespace Integrated\Tests\Common\Solr\Indexer;
 
 use Integrated\Common\Solr\Indexer\Job;
+use Integrated\Common\Solr\Indexer\JobInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class JobTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var Job
-	 */
-	protected $job;
+    public function testInterface()
+    {
+        self::assertInstanceOf(JobInterface::class, $this->getInstance());
+    }
 
-	protected function setUp()
-	{
-		$this->job = new Job();
-	}
+    public function testConstructor()
+    {
+        $instance = $this->getInstance('action', ['name1' => 'value', 'name2' => 42]);
 
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Integrated\Common\Solr\Indexer\JobInterface', $this->job);
-	}
+        self::assertEquals('action', $instance->getAction());
+        self::assertSame(['name1' => 'value', 'name2' => '42'], $instance->getOptions());
+    }
 
-	public function testConstructAction()
-	{
-		$this->job = new Job('action');
-		$this->assertEquals('action', $this->job->getAction());
-	}
+    public function testSerialize()
+    {
+        /** @var Job $instance */
+        $instance = $this->getInstance();
 
-	public function testConstructOptions()
-	{
-		$this->job = new Job(null, ['name1' => 'value', 'name2' => 42]);
-		$this->assertSame(['name1' => 'value', 'name2' => '42'], $this->job->getOptions());
-	}
+        $instance->setAction('action');
+        $instance->setOption('name', 'value');
 
-	public function testSerialize()
-	{
-		$this->assertNotEmpty(serialize($this->job));
-	}
+        $instance = unserialize(serialize($instance));
 
-	public function testUnserialize()
-	{
-		$this->job->setAction('action');
-		$this->job->setOption('name', 'value');
+        self::assertInstanceOf(Job::class, $instance);
+        self::assertEquals('action', $instance->getAction());
+        self::assertSame(['name' => 'value'], $instance->getOptions());
+    }
 
-		$this->job = unserialize(serialize($this->job));
+    public function testSetGetAction()
+    {
+        $instance = $this->getInstance();
 
-		$this->assertEquals('action', $this->job->getAction());
-		$this->assertSame(['name' => 'value'], $this->job->getOptions());
-	}
+        self::assertNull($instance->getAction());
+        self::assertEquals('action', $instance->setAction('action')->getAction());
+        self::assertSame('42', $instance->setAction(42)->getAction());
+        self::assertNull($instance->setAction(null)->getAction());
+    }
 
-	public function testSetAction()
-	{
-		$this->job->setAction('action');
-		$this->assertEquals('action', $this->job->getAction());
-	}
+    public function testHasAction()
+    {
+        $instance = $this->getInstance();
 
-	public function testSetActionNull()
-	{
-		$this->job->setAction('action');
-		$this->job->setAction(null);
+        self::assertFalse($instance->hasAction());
+        self::assertTrue($instance->setAction('action')->hasAction());
+        self::assertFalse($instance->setAction(null)->hasAction());
+    }
 
-		$this->assertNull($this->job->getAction());
-	}
+    public function testSetGetOption()
+    {
+        $instance = $this->getInstance();
 
-	public function testSetActionNoneString()
-	{
-		$this->job->setAction(42);
-		$this->assertSame('42', $this->job->getAction());
-	}
+        self::assertNull($instance->getOption('name'));
+        self::assertEquals('value', $instance->setOption('name', 'value')->getOption('name'));
+        self::assertEquals('42', $instance->setOption('name', 42)->getOption('name'));
+    }
 
-	public function testGetAction()
-	{
-		$this->assertNull($this->job->getAction());
-	}
+    public function testHasOption()
+    {
+        $instance = $this->getInstance();
 
-	public function testHasAction()
-	{
-		$this->assertFalse($this->job->hasAction());
-		$this->job->setAction('action');
-		$this->assertTrue($this->job->hasAction());
-		$this->job->setAction(null);
-		$this->assertFalse($this->job->hasAction());
-	}
+        self::assertFalse($instance->hasOption('name'));
+        self::assertTrue($instance->setOption('name', 'value')->hasOption('name'));
+        self::assertFalse($instance->removeOption('name')->hasOption('name'));
+    }
 
-	public function testSetOption()
-	{
-		$this->job->setOption('name', 'value1');
-		$this->assertEquals('value1', $this->job->getOption('name'));
-		$this->job->setOption('name', 'value2');
-		$this->assertEquals('value2', $this->job->getOption('name'));
-	}
+    public function testRemoveOption()
+    {
+        $instance = $this->getInstance();
 
-	public function testSetOptionNoneString()
-	{
-		$this->job->setOption('name', 42);
-		$this->assertSame('42', $this->job->getOption('name'));
-	}
+        $instance->setOption('name', 'value');
+        $instance->removeOption('name');
 
-	public function testGetOption()
-	{
-		$this->assertNull($this->job->getOption('name'));
-	}
+        self::assertNull($instance->getOption('name'));
+    }
 
-	public function testHasOption()
-	{
-		$this->assertFalse($this->job->hasOption('name'));
-		$this->job->setOption('name', 'value');
-		$this->assertTrue($this->job->hasOption('name'));
-		$this->job->removeOption('name');
-		$this->assertFalse($this->job->hasOption('name'));
-	}
+    public function testGetOptions()
+    {
+        $instance = $this->getInstance();
 
-	public function testRemoveOption()
-	{
-		$this->job->setOption('name', 'value');
-		$this->job->removeOption('name');
+        self::assertSame([], $instance->getOptions());
 
-		$this->assertNull($this->job->getOption('name'));
-	}
+        $instance->setOption('name1', 'value');
+        $instance->setOption('name2', 'value');
 
-	public function testGetOptions()
-	{
-		$this->assertSame([], $this->job->getOptions());
+        self::assertSame(['name1' => 'value', 'name2' => 'value'], $instance->getOptions());
+    }
 
-		$this->job->setOption('name1', 'value');
-		$this->job->setOption('name2', 'value');
+    public function testClearOptions()
+    {
+        $instance = $this->getInstance();
 
-		$this->assertSame(['name1' => 'value', 'name2' => 'value'], $this->job->getOptions());
-	}
+        $instance->setOption('name1', 'value');
+        $instance->setOption('name2', 'value');
+        $instance->clearOptions();
 
-	public function testClearOptions()
-	{
-		$this->job->setOption('name1', 'value');
-		$this->job->setOption('name2', 'value');
-		$this->job->clearOptions();
+        self::assertSame([], $instance->getOptions());
+    }
 
-		$this->assertSame([], $this->job->getOptions());
-	}
+    /**
+     * @param null  $action
+     * @param array $options
+     *
+     * @return Job
+     */
+    protected function getInstance($action = null, array $options = [])
+    {
+        return new Job($action, $options);
+    }
 }
- 

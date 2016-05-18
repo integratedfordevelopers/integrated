@@ -16,138 +16,138 @@ namespace Integrated\Common\Solr\Indexer;
  */
 class Job implements JobInterface
 {
-	/**
-	 * @var string
-	 */
-	private $action;
+    /**
+     * @var string
+     */
+    private $action;
 
-	/**
-	 * @var string[]
-	 */
-	private $options = array();
+    /**
+     * @var string[]
+     */
+    private $options = [];
 
-	/**
-	 * The constructor
-	 *
-	 * @param string|null $action the action or null of not specified
-	 * @param string[] $options array of options
-	 */
-	public function __construct($action = null, array $options = array())
-	{
-		$this->setAction($action);
+    /**
+     * The constructor
+     *
+     * @param string|null $action the action or null of not specified
+     * @param string[]    $options array of options
+     */
+    public function __construct($action = null, array $options = [])
+    {
+        $this->setAction($action);
 
-		foreach ($options as $name => $value) {
-			$this->setOption($name, $value);
-		}
-	}
+        foreach ($options as $name => $value) {
+            $this->setOption($name, $value);
+        }
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function serialize()
-	{
-		return serialize(array('action' => $this->action, 'options' => $this->options));
-	}
+    /**
+     * @inheritdoc
+     */
+    public function serialize()
+    {
+        return serialize(array('action' => $this->action, 'options' => $this->options));
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function unserialize($serialized)
-	{
-		$data = unserialize($serialized);
-		$this->__construct($data['action'], (array) $data['options']);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
+        $this->__construct($data['action'], (array) $data['options']);
+    }
 
-	/**
-	 * Set the action.
-	 *
-	 * If $action is null then the action will be unset.
-	 *
-	 * @param string|null $action
-	 * @return $this
-	 */
-	public function setAction($action)
-	{
-		$this->action = $action === null ? $action : (string) $action;
-		return $this;
-	}
+    /**
+     * Set the action.
+     *
+     * If $action is null then the action will be unset.
+     *
+     * @param string|null $action
+     * @return $this
+     */
+    public function setAction($action)
+    {
+        $this->action = $action === null ? $action : (string) $action;
+        return $this;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getAction()
-	{
-		return $this->action;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getAction()
+    {
+        return $this->action;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function hasAction()
-	{
-		return (bool) $this->action;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function hasAction()
+    {
+        return (bool) $this->action;
+    }
 
-	/**
-	 * Set the option.
-	 *
-	 * @param string $name the option name
-	 * @param string $value
-	 *
-	 * @return $this
-	 */
-	public function setOption($name, $value)
-	{
-		$this->options[$name] = (string) $value;
-		return $this;
-	}
+    /**
+     * Set the option.
+     *
+     * @param string $name the option name
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = (string) $value;
+        return $this;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getOption($name)
-	{
-		return isset($this->options[$name]) ? $this->options[$name] : null;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getOption($name)
+    {
+        return isset($this->options[$name]) ? $this->options[$name] : null;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function hasOption($name)
-	{
-		return isset($this->options[$name]);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function hasOption($name)
+    {
+        return isset($this->options[$name]);
+    }
 
-	/**
-	 * Remove the option
-	 *
-	 * @param string $name the name of the option to remove.
-	 * @return $this
-	 */
-	public function removeOption($name)
-	{
-		unset($this->options[$name]);
-		return $this;
-	}
+    /**
+     * Remove the option
+     *
+     * @param string $name the name of the option to remove.
+     * @return $this
+     */
+    public function removeOption($name)
+    {
+        unset($this->options[$name]);
+        return $this;
+    }
 
-	/**
-	 * Get all the options
-	 *
-	 * @return string[]
-	 */
-	public function getOptions()
-	{
-		return $this->options;
-	}
+    /**
+     * Get all the options
+     *
+     * @return string[]
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
-	/**
-	 * Remove all the options
-	 *
-	 * @return $this
-	 */
-	public function clearOptions()
-	{
-		$this->options = array();
-		return $this;
-	}
+    /**
+     * Remove all the options
+     *
+     * @return $this
+     */
+    public function clearOptions()
+    {
+        $this->options = [];
+        return $this;
+    }
 }

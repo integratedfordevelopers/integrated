@@ -9,11 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Solr\Exception;
+namespace Integrated\Common\Solr\Indexer;
+
+use Solarium\QueryType\Update\Query\Command\Command;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class SerializerException extends RuntimeException
+interface CommandFactoryInterface
 {
+    /**
+     * Create a solarium update command from a job
+     *
+     * @param JobInterface $job
+     * @return Command
+     */
+    public function create(JobInterface $job);
 }

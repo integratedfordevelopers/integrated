@@ -20,58 +20,58 @@ use Solarium\QueryType\Update\Query\Command\Command;
  */
 class BatchOperation
 {
-	/**
-	 * @var QueueMessageInterface
-	 */
-	private $message;
+    /**
+     * @var QueueMessageInterface
+     */
+    private $message;
 
-	/**
-	 * @var Command | null
-	 */
-	private $command = null;
+    /**
+     * @var Command | null
+     */
+    private $command = null;
 
-	/**
-	 * Create a batch operation.
-	 *
-	 * @param QueueMessageInterface $message
-	 * @param Command $command
-	 */
-	public function __construct(QueueMessageInterface $message, Command $command = null)
-	{
-		$this->message = $message;
-		$this->command = $command;
-	}
+    /**
+     * Create a batch operation.
+     *
+     * @param QueueMessageInterface $message
+     * @param Command $command
+     */
+    public function __construct(QueueMessageInterface $message, Command $command = null)
+    {
+        $this->message = $message;
+        $this->command = $command;
+    }
 
-	/**
-	 * Return the queue message.
-	 *
-	 * @return QueueMessageInterface
-	 */
-	public function getMessage()
-	{
-		return $this->message;
-	}
+    /**
+     * Return the queue message.
+     *
+     * @return QueueMessageInterface
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 
-	/**
-	 * Get the command.
-	 *
-	 * @return Command|null
-	 */
-	public function getCommand()
-	{
-		return $this->command;
-	}
+    /**
+     * Get the command.
+     *
+     * @return Command|null
+     */
+    public function getCommand()
+    {
+        return $this->command;
+    }
 
-	/**
-	 * Set the command.
-	 *
-	 * This allows for the command to be changed or even
-	 * to be removed.
-	 *
-	 * @param Command $command
-	 */
-	public function setCommand(Command $command = null)
-	{
-		$this->command = $command;
-	}
+    /**
+     * Set the command.
+     *
+     * This allows for the command to be changed or even
+     * to be removed.
+     *
+     * @param Command $command
+     */
+    public function setCommand(Command $command = null)
+    {
+        $this->command = $command;
+    }
 }

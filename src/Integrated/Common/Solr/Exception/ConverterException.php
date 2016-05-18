@@ -14,6 +14,6 @@ namespace Integrated\Common\Solr\Exception;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class SerializerException extends RuntimeException
+class ConverterException extends RuntimeException
 {
 }
