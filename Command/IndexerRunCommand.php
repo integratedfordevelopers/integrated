@@ -115,7 +115,10 @@ The <info>%command.name%</info> command starts a indexer run.
                 'php app/console solr:indexer:run -e ' . $input->getOption('env'),
                 $this->getRootDir()
             );
-            $process->run();
+
+            $process->run(function ($type, $buffer) use ($output) {
+                $output->write($buffer, false, $type);
+            });
 
             if (!$process->isSuccessful()) {
                 break; // terminate when there is a error

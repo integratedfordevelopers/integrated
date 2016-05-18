@@ -38,6 +38,7 @@ class IntegratedSolrExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('converter.xml');
+        $loader->load('event.xml');
         $loader->load('indexer.xml');
         $loader->load('queue.xml');
         $loader->load('solarium.xml');
