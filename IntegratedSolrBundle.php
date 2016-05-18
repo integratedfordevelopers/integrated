@@ -15,6 +15,7 @@ use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterConfig
 use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterTypePass;
 use Integrated\Bundle\SolrBundle\DependencyInjection\IntegratedSolrExtension;
 
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -32,6 +33,7 @@ class IntegratedSolrBundle extends Bundle
 
         $container->addCompilerPass(new RegisterConfigFileProviderPass());
         $container->addCompilerPass(new RegisterTypePass());
+        $container->addCompilerPass(new RegisterListenersPass('integrated_solr.event.dispatcher', 'integrated_solr.event_listener', 'integrated_solr.event_subscriber'));
     }
 
     /**
