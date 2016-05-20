@@ -1,0 +1,11 @@
+.comment-text-selected, .comment-added {
+    background: #0199f8;
+    border-radius: 3px;
+    padding: 1px;
+    color: #fff;
+    position: relative;
+}
+
+.comment-added {
+    background-color: rgba(1, 153, 248, 0.5);
+}

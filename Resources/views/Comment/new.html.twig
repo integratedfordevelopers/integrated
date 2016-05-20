@@ -1,0 +1,24 @@
+<div class="comment-holder hold">
+    <div class="comment-inner">
+        <div class="comment-body">
+            <a href="#" class="cancel-comment"><i class="integrate-icon-cancel"></i></a>
+            <div class="media">
+            </div>
+            <div class="comment-footer">
+                {{ form_start(form) }}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-8 push-down">
+                                {{ form_widget(form.text) }}
+                            </div><!-- col -->
+
+                            <div class="col-sm-4">
+                                <button type="submit" class="btn btn-gray-thin">{{ 'Add Comment'|trans }}</button>
+                            </div>
+                        </div>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
