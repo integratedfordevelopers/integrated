@@ -75,7 +75,7 @@ class ContentHistorySubscriber implements EventSubscriber
             $history->setPrevious($previous);
 
             // load original data
-            $originalData = $dm->createQueryBuilder(get_class($document))->hydrate(false)
+            $originalData = (array) $dm->createQueryBuilder(get_class($document))->hydrate(false)
                 ->field('id')->equals($document->getId())
                 ->getQuery()->getSingleResult();
 

@@ -21,9 +21,16 @@ class ArrayComparer
      * @param array $new
      * @return array
      */
-    public static function diff($old, $new)
+    public static function diff(array $old = [], array $new = [])
     {
         $diff = [];
+
+        foreach ($old as $key => $value) {
+            if (!array_key_exists($key, $new)) {
+                // key is missing in the new array
+                $diff[$key] = null;
+            }
+        }
 
         foreach ($new as $key => $value) {
             if (array_key_exists($key, $old)) {
