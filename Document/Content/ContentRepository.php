@@ -17,19 +17,23 @@ class ContentRepository extends DocumentRepository
      * @param Content       $content
      * @param Relation|null $relation
      * @param Content|null  $excludeContent
+     * @param bool $filterPublished
      * @return \Doctrine\MongoDB\Query\Builder
      */
-    public function getUsedBy(Content $content, Relation $relation = null, Content $excludeContent = null)
+    public function getUsedBy(Content $content, Relation $relation = null, Content $excludeContent = null, $filterPublished = true)
     {
         if (!$excludeContent) {
             $excludeContent = $content;
         }
-        $query =  $this->createQueryBuilder()
+        $query = $this->createQueryBuilder()
             ->field('relations.references.$id')->equals($content->getId())
-            ->field('id')->notEqual($excludeContent->getId())
-            ->field('disabled')->equals(false)
-            ->field('publishTime.startDate')->lte(new \DateTime())
-            ->field('publishTime.endDate')->gte(new \DateTime());
+            ->field('id')->notEqual($excludeContent->getId());
+
+        if ($filterPublished) {
+            $query->field('disabled')->equals(false)
+                ->field('publishTime.startDate')->lte(new \DateTime())
+                ->field('publishTime.endDate')->gte(new \DateTime());
+        }
 
         if ($relation) {
             $query->field('relations.relationId')->equals($relation->getId());
