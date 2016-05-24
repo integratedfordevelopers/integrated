@@ -55,7 +55,7 @@ class EmbedOneProperty implements PropertyInterface
     {
         if (isset($document[$this->getPropertyName()]['_id'])) {
             return $document[$this->getPropertyName()]['_id'];
-        } elseif (isset($document[$this->getPropertyName()])) {
+        } elseif (isset($document['_id'])) {
             return $document['_id'];
         }
 
