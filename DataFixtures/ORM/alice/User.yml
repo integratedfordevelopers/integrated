@@ -1,11 +1,21 @@
 Integrated\Bundle\UserBundle\Model\Role:
   role1:
     __construct: ['ROLE_ADMIN', 'Administrator']
+  role2:
+    __construct: ['ROLE_USER_MANAGER', 'User manager']
+  role3:
+    __construct: ['ROLE_BLOCK_MANAGER', 'Block manager']
+  role4:
+    __construct: ['ROLE_PAGE_MANAGER', 'Page manager']
+  role5:
+    __construct: ['ROLE_WORKFLOW_MANAGER', 'Workflow manager']
+  role6:
+    __construct: ['ROLE_CHANNEL_MANAGER', 'Channel manager']
 
 Integrated\Bundle\UserBundle\Model\Group:
   group1:
     name:     Administrators
-    roles:    [@role1]
+    roles:    [@role1, @role2, @role3, @role4, @role5, @role6]
 
 Integrated\Bundle\UserBundle\Model\User:
   user1:
