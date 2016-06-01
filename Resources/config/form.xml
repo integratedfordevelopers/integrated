@@ -34,8 +34,6 @@
 
         <parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
         
-        <parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
-        
         <parameter key="integrated_content.form.search_selection.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType</parameter>
         <parameter key="integrated_content.form.search_selection_choice.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType</parameter>
 
@@ -47,7 +45,7 @@
 
         <parameter key="integrated_formtype_form_type_author.class">Integrated\Bundle\ContentBundle\Form\Type\AuthorType</parameter>
 
-        <parameter key="integrated_formtype_form_type_relation_block_content_types.class">Integrated\Bundle\ContentBundle\Form\Type\RelationBlockContentTypes</parameter>
+        <parameter key="integrated_formtype.form.content_type_choice.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice</parameter>
 
         <parameter key="integrated_content.form.listener.form_field.class">Integrated\Bundle\ContentBundle\Form\EventListener\FormFieldSubscriber</parameter>
 
@@ -156,10 +154,9 @@
             <tag name="form.type" alias="integrated_publish_time" />
         </service>
 
-        <service id="integrated_formtype_form_type_relation_block_content_types" class="%integrated_formtype_form_type_relation_block_content_types.class%">
+        <service id="integrated_formtype.form.content_type_choice" class="%integrated_formtype.form.content_type_choice.class%">
             <argument type="service" id="integrated_content.content_type_repository" />
-
-            <tag name="form.type" alias="integrated_relation_block_content_types" />
+            <tag name="form.type" alias="integrated_content_type_choice" />
         </service>
 
         <service id="integrated_content.form.channel.domain.type" class="%integrated_content.form.channel.domain.class%">

@@ -127,13 +127,7 @@ class RelatedContentBlock extends Block
     /**
      * @var array
      * @ODM\Collection
-     * @Type\Field(
-     *     type="integrated_relation_block_content_types",
-     *     options={
-     *         "multiple"=true,
-     *         "expanded"=true,
-     *     }
-     * )
+     * @Type\Field(type="integrated_content_type_choice")
      */
     protected $contentTypes;
 
