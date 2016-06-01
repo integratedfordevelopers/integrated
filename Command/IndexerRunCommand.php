@@ -115,6 +115,8 @@ The <info>%command.name%</info> command starts a indexer run.
                 'php app/console solr:indexer:run -e ' . $input->getOption('env'),
                 $this->getRootDir()
             );
+
+            $process->setTimeout(0);
             $process->run();
 
             if (!$process->isSuccessful()) {
