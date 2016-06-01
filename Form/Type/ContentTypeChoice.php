@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -19,28 +20,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Vasil Pascal <developer.optimum@gmail.com>
  */
-class RelationBlockContentTypes extends AbstractType
+class ContentTypeChoice extends AbstractType
 {
     /**
      * @var ObjectRepository
      */
     private $repository;
 
+    /**
+     * @param ObjectRepository $repository
+     */
     public function __construct(ObjectRepository $repository)
     {
         $this->repository = $repository;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $choices = [];
 
         $contentTypes = $this->repository->findAll();
         foreach ($contentTypes as $contentType) {
-            $choices[] = $contentType;
+            $choices[$contentType->getId()] = $contentType;
         }
-
         $resolver->setDefault('choices', $choices);
+        $resolver->setDefault('multiple', true);
+        $resolver->setDefault('attr', ['class' => 'basic-multiple']);
     }
 
     /**
@@ -48,7 +56,7 @@ class RelationBlockContentTypes extends AbstractType
      */
     public function getParent()
     {
-        return 'integrated_select2';
+        return 'choice';
     }
 
     /**
@@ -56,6 +64,6 @@ class RelationBlockContentTypes extends AbstractType
      */
     public function getName()
     {
-        return 'integrated_relation_block_content_types';
+        return 'integrated_content_type_choice';
     }
 }
