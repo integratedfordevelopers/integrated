@@ -177,9 +177,9 @@
             {% endif %}
             {% set prototype_html = '<div class="col-xs-' ~ form.vars.sub_widget_col ~ '">' ~ form_widget(prototype, prototype_vars) ~ '</div>' %}
             {% if form.vars.allow_delete %}
-                {% set prototype_html = prototype_html ~ '<div class="col-xs-' ~ form.vars.button_col ~ '"><a href="#" class="btn btn-danger btn-sm" data-removefield="collection" data-field="__id__">' ~ form.vars.delete_button_text|trans({}, translation_domain)|parse_icons|raw ~ '</a></div>' %}
+                {% set prototype_html = prototype_html ~ '<div class="col-xs-' ~ form.vars.button_col ~ '"><a href="#" class="btn btn-danger btn-sm" data-removefield="collection" data-field="__id__" title="' ~ form.vars.delete_button_text|trans({}, translation_domain)|raw ~ '"><span class="glyphicon glyphicon-remove"></span></a></div>' %}
             {% endif %}
-            {% set prototype_html = '<div class="section-white section-padding section-shadow section-radius row">' ~ prototype_html ~ '</div>' %}
+            {% set prototype_html = '<div class="section-white section-padding section-shadow section-radius"><div class="row">' ~ prototype_html ~ '</div></div>' %}
 
             {% set attr = attr|merge({'data-prototype': prototype_html }) %}
             {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
@@ -188,16 +188,20 @@
             <ul class="bc-collection list-unstyled">
                 {% for field in form %}
                     <li>
-                        <div class="section-white section-padding section-shadow section-radius row">
-                            <div class="col-xs-{{ form.vars.sub_widget_col }}">
-                                {{ form_widget(field) }}
-                                {{ form_errors(field) }}
-                            </div>
-                            {% if form.vars.allow_delete %}
-                                <div class="col-xs-{{ form.vars.button_col }}">
-                                    <a href="#" class="btn btn-danger btn-sm" data-removefield="collection" data-field="{{ field.vars.id }}">{{ form.vars.delete_button_text|trans({}, translation_domain)|parse_icons|raw }}</a>
+                        <div class="section-white section-padding section-shadow section-radius">
+                            <div class="row">
+                                <div class="col-xs-{{ form.vars.sub_widget_col }}">
+                                    {{ form_widget(field) }}
+                                    {{ form_errors(field) }}
                                 </div>
-                            {% endif %}
+                                {% if form.vars.allow_delete %}
+                                    <div class="col-xs-{{ form.vars.button_col }}">
+                                        <a href="#" class="btn btn-danger btn-sm" data-removefield="collection" data-field="{{ field.vars.id }}" title="{{ form.vars.delete_button_text|trans({}, translation_domain)|raw }}">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </li>
                 {% endfor %}
