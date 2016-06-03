@@ -94,6 +94,9 @@ class RelationReferencesType extends AbstractType
                     'query_builder' => function (DocumentRepository $dr) use ($value) {
                         return $dr->createQueryBuilder()
                             ->field('contentType')->in($value['content_types'])
+                            ->field('disabled')->equals(false)
+                            ->field('publishTime.startDate')->lte(new \DateTime())
+                            ->field('publishTime.endDate')->gte(new \DateTime())
                             ->sort('title');
                     }
                 ];
