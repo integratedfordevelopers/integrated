@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
@@ -27,6 +29,19 @@ use Integrated\Common\Content\ContentInterface;
  */
 class ContentHistorySubscriber implements EventSubscriber
 {
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * @return array
      */
@@ -100,10 +115,26 @@ class ContentHistorySubscriber implements EventSubscriber
     }
 
     /**
-     * @return User
+     * @return User | null
      */
     protected function getUser()
     {
-        return new User();
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
+            return null;
+        }
+
+        $user = $token->getUser();
+
+        if ($user instanceof \Integrated\Bundle\UserBundle\Model\User) {
+            $name = $user->getUsername();
+            $relation = $user->getRelation();
+
+            if ($relation instanceof ContentInterface) {
+                // override with a better name
+                $name = (string) $relation;
+            }
+
+            //return new User($user->getId(), $name);
+        }
     }
 }
