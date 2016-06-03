@@ -111,28 +111,25 @@ class MigrateCommand extends Command
         foreach ($data as $row) {
             // Walk over the properties of the class with reflection
             foreach ($this->getReflectionClass($row['class'])->getTargetProperties() as $property) {
-                // We can always skip it unless
-                $skip = true;
-
-                // The property exists
+                // Skip already migrated files
                 if (isset($row[$property->getPropertyName()])) {
+                    // We can skip when the file has been migrated
+                    $skip = false;
+
                     // And does not contain the required fields
                     foreach (['identifier', 'pathname', 'metadata', 'filesystems'] as $key) {
                         if (!isset($row[$property->getPropertyName()][$key])) {
-                            $skip = false;
+                            $skip = true;
 
                             // Skip out the current foreach
                             break 1;
                         }
                     }
-                } else {
-                    // Some document do not have the property, but have a file on disk
-                    $skip = false;
-                }
 
-                // Skip when all required properties are found or when the property does not exist
-                if ($skip) {
-                    continue;
+                    // Skip when all required properties are found or when the property does not exist
+                    if ($skip) {
+                        continue;
+                    }
                 }
 
                 // Fix the one -> many property now foreach and so on
@@ -151,7 +148,11 @@ class MigrateCommand extends Command
                             )
                         );
 
+                        // Convert the property
                         $row[$property->getPropertyName()] = (new StorageTranslation($storage))->toArray();
+
+                        // Write it down, some where
+                        $this->database->saveRow($row);
 
                         // Check for a delete
                         if ($input->getOption('delete')) {
@@ -171,9 +172,6 @@ class MigrateCommand extends Command
                     }
                 }
             }
-
-            // Write it down, some where
-            $this->database->saveRow($row);
 
             // Update the barry progress
             $progress->advance();
