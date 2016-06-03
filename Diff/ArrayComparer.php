@@ -38,7 +38,7 @@ class ArrayComparer
                     // value has changed
                     $diff[$key] = $value;
                 }
-            } elseif (null !== $value) {
+            } elseif (null !== $value && [] !== $value) {
                 // value is new
                 $diff[$key] = $value;
             }

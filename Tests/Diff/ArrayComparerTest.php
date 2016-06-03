@@ -49,6 +49,12 @@ class ArrayComparerTest extends \PHPUnit_Framework_TestCase
             [], // new
             ['undefined' => null] // expected
         );
+
+        $this->assertDiff(
+            [], // old
+            ['empty' => []], // new
+            [] // expected
+        );
     }
 
     /**

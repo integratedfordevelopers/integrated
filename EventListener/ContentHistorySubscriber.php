@@ -19,6 +19,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentHistoryBundle\Diff\ArrayComparer;
 use Integrated\Bundle\ContentHistoryBundle\Doctrine\ODM\MongoDB\Persister\PersistenceBuilder;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
+use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User;
 use Integrated\Common\Content\ContentInterface;
 
 /**
@@ -66,6 +67,25 @@ class ContentHistorySubscriber implements EventSubscriber
 
             $history = new ContentHistory($document->getId(), $action);
 
+            // load original data
+            $originalData = (array) $dm->createQueryBuilder(get_class($document))->hydrate(false)
+                ->field('id')->equals($document->getId())
+                ->getQuery()->getSingleResult();
+
+            if (ContentHistory::ACTION_DELETE === $action) {
+                $diff = $originalData;
+            } else {
+                $diff = ArrayComparer::diff($originalData, $pb->prepareData($document));
+            }
+
+            $history->setChangeSet($diff);
+
+            if (!count($history->getChangeSet())) {
+                continue; // no changes
+            }
+
+            //$history->setUser($this->getUser());
+
             $previous = $dm->createQueryBuilder(ContentHistory::class)
                 ->field('contentId')->equals($history->getContentId())
                 ->sort('date', 'desc')
@@ -74,19 +94,16 @@ class ContentHistorySubscriber implements EventSubscriber
             // link previous content history document
             $history->setPrevious($previous);
 
-            // load original data
-            $originalData = (array) $dm->createQueryBuilder(get_class($document))->hydrate(false)
-                ->field('id')->equals($document->getId())
-                ->getQuery()->getSingleResult();
-
-            $history->setChangeSet(ArrayComparer::diff($originalData, $pb->prepareData($document)));
-
-            if (!count($history->getChangeSet())) {
-                continue; // no changes
-            }
-
             $dm->persist($history);
             $uow->recomputeSingleDocumentChangeSet($dm->getClassMetadata(get_class($history)), $history);
         }
+    }
+
+    /**
+     * @return User
+     */
+    protected function getUser()
+    {
+        return new User();
     }
 }
