@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\LockHandler;
 
 use RuntimeException;
 use InvalidArgumentException;
@@ -62,6 +63,17 @@ The <info>%command.name%</info> command starts a index of all the content from t
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $lock = new LockHandler(IndexCommand::class);
+        $attempts = 0;
+
+        while (!$lock->lock()) {
+            // retry for almost a minute, otherwise don't throw an error (after all another indexer is running)
+            if ($attempts++ >= 10) {
+                return 0;
+            }
+            sleep(5);
+        }
+
         if (!$input->getArgument('id') && !$input->getOption('full')) {
             throw new InvalidArgumentException('You need to give one or more workflow ids or choose the --full option');
         }
