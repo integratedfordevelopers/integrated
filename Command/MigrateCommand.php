@@ -12,8 +12,6 @@
 namespace Integrated\Bundle\StorageBundle\Command;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
-use Integrated\Bundle\ContentBundle\Document\Content\File;
-use Integrated\Bundle\ContentBundle\Document\Content\Image;
 
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
@@ -83,15 +81,21 @@ class MigrateCommand extends Command
                 new InputOption(
                     'delete',
                     'd',
-                    InputOption::VALUE_OPTIONAL,
+                    InputOption::VALUE_NONE,
                     'Delete the local file after placing it in the storage'
                 ),
                 new InputOption(
                     'ignore-duplicates',
                     'i',
-                    InputOption::VALUE_OPTIONAL,
-                    'Ignore duplicate files errors and grab the newest version.'
+                    InputOption::VALUE_NONE,
+                    'Ignore duplicate files errors and grab the newest version'
                 ),
+                new InputOption(
+                    'find-empty',
+                    'f',
+                    InputOption::VALUE_NONE,
+                    'Attempt to find a file if the property is empty'
+                )
             ]);
     }
 
@@ -114,7 +118,7 @@ class MigrateCommand extends Command
                 // Skip already migrated files
                 if (isset($row[$property->getPropertyName()])) {
                     // We can skip when the file has been migrated
-                    $skip = false;
+                    $skip = !$input->getOption('find-empty');
 
                     // And does not contain the required fields
                     foreach (['identifier', 'pathname', 'metadata', 'filesystems'] as $key) {
@@ -155,7 +159,7 @@ class MigrateCommand extends Command
                         $this->database->saveRow($row);
 
                         // Check for a delete
-                        if ($input->getOption('delete')) {
+                        if ($input->hasOption('delete')) {
                             @unlink($file->getPathname());
                         }
                     } else {
