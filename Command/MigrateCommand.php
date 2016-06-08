@@ -110,7 +110,7 @@ class MigrateCommand extends Command
         // Barry progress
         $progress = new ProgressBar($output, count($data));
         $progress->start();
-        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %remaining:-6s%');
+        $progress->setFormat('  %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
 
         foreach ($data as $row) {
             // Walk over the properties of the class with reflection
@@ -183,11 +183,10 @@ class MigrateCommand extends Command
 
         // Release the output
         $progress->finish();
-
     }
 
     /**
-     * @param $class
+     * @param string $class
      * @return PropertyReflection
      */
     protected function getReflectionClass($class)
