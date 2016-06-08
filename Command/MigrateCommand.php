@@ -29,6 +29,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -217,7 +218,13 @@ class MigrateCommand extends Command
             // Configure the iterator for the first entry
             $iterator = $finder->getIterator();
             $iterator->rewind();
-            return $iterator->current();
+
+            // Grab the path
+            $file = $iterator->current();
+
+            // Memory optimalization
+            unset($iterator);
+            return $file;
         } elseif (1 < $finder->count()) {
             if ($allowDuplicate) {
                 // Sort
