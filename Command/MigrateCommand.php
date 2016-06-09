@@ -139,7 +139,7 @@ class MigrateCommand extends Command
 
                 // Fix the one -> many property now foreach and so on
                 if ($filename = $property->getFileId($row)) {
-                    if ($file = $this->getFile($input->getArgument('path'), $filename, $row['_id'], $input->hasOption('ignore-duplicates'))) {
+                    if ($file = $this->getFile($input->getArgument('path'), $filename, $row['_id'], $input->getOption('ignore-duplicates'))) {
                         // Make a storage object
                         $storage = $this->storage->write(
                             new MemoryReader(
@@ -160,7 +160,7 @@ class MigrateCommand extends Command
                         $this->database->saveRow($row);
 
                         // Check for a delete
-                        if ($input->hasOption('delete')) {
+                        if ($input->getOption('delete')) {
                             @unlink($file->getPathname());
                         }
                     } else {
