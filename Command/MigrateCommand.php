@@ -219,8 +219,8 @@ class MigrateCommand extends Command
             $iterator = $finder->getIterator();
             $iterator->rewind();
 
-            // Grab the path
-            $file = $iterator->current();
+            /** @var \Symfony\Component\Finder\SplFileInfo $file */
+            $file = clone $iterator->current();
 
             // Memory optimalization
             unset($iterator);
