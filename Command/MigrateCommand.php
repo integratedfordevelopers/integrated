@@ -161,6 +161,7 @@ class MigrateCommand extends Command
 
                         // Check for a delete
                         if ($input->getOption('delete')) {
+                            exit($file->getPathname());
                             @unlink($file->getPathname());
                         }
                     } else {
@@ -168,9 +169,10 @@ class MigrateCommand extends Command
                             // If the property exists, the only valid count is one, what else?
                             throw new \LogicException(
                                 sprintf(
-                                    'The file %s was found zero times for document %s.',
+                                    'The file %s was found zero times for document %s and property %s.',
                                     $filename,
-                                    $row['_id']
+                                    $row['_id'],
+                                    $property->getPropertyName()
                                 )
                             );
                         }
@@ -224,6 +226,9 @@ class MigrateCommand extends Command
 
             // Memory optimalization
             unset($iterator);
+            unset($finder);
+
+            // Return
             return $file;
         } elseif (1 < $finder->count()) {
             if ($allowDuplicate) {
