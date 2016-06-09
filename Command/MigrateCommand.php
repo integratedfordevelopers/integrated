@@ -119,14 +119,14 @@ class MigrateCommand extends Command
                 // Does the property exists?
                 $skip = !isset($row[$property->getPropertyName()]);
 
-                // Skip already migrated files
-                if (isset($row[$property->getPropertyName()]['filesystems'])) {
-                    $skip = true;
-                }
-
                 // Search even when the property does not exist
                 if ($input->getOption('find-empty')) {
                     $skip = false;
+                }
+
+                // Skip already migrated files
+                if (isset($row[$property->getPropertyName()]['filesystems'])) {
+                    $skip = true;
                 }
 
                 // Skip when it meets the criteria above
