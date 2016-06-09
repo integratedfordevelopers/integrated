@@ -124,7 +124,7 @@ class MigrateCommand extends Command
                     // And does not contain the required fields
                     foreach (['identifier', 'pathname', 'metadata', 'filesystems'] as $key) {
                         if (!isset($row[$property->getPropertyName()][$key])) {
-                            $skip = false;
+                            $skip = true;
 
                             // Skip out the current foreach
                             break 1;
