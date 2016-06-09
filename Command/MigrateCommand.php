@@ -116,23 +116,20 @@ class MigrateCommand extends Command
         foreach ($data as $row) {
             // Walk over the properties of the class with reflection
             foreach ($this->getReflectionClass($row['class'])->getTargetProperties() as $property) {
-                // Default this is true unless find-empty has been set
-                $skip = !$input->getOption('find-empty');
+                // Does the property exists?
+                $skip = isset($row[$property->getPropertyName()]);
 
-                // Skip already migrated files
-                if (isset($row[$property->getPropertyName()])) {
-                    // And does not contain the required fields
-                    foreach (['identifier', 'pathname', 'metadata', 'filesystems'] as $key) {
-                        if (!isset($row[$property->getPropertyName()][$key])) {
-                            $skip = true;
-
-                            // Skip out the current foreach
-                            break 1;
-                        }
-                    }
+                // Search even when the property does not exist
+                if ($input->getOption('find-empty')) {
+                    $skip = false;
                 }
 
-                // Skip when all required properties are found or when the property does not exist
+                // Skip already migrated files
+                if (isset($row[$property->getPropertyName()]['filesystems'])) {
+                    $skip = true;
+                }
+
+                // Skip when it meets the criteria above
                 if ($skip) {
                     continue;
                 }
@@ -161,7 +158,6 @@ class MigrateCommand extends Command
 
                         // Check for a delete
                         if ($input->getOption('delete')) {
-                            exit($file->getPathname());
                             @unlink($file->getPathname());
                         }
                     } else {
