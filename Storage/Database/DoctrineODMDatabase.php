@@ -63,7 +63,9 @@ class DoctrineODMDatabase implements DatabaseInterface
         return $this->getCollection()
             ->find()
             ->getMongoCursor()
-            ->timeout(-1);
+            ->batchSize(100)
+            ->timeout(-1)
+        ;
     }
 
     /**
