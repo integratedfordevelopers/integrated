@@ -61,7 +61,9 @@ class DoctrineODMDatabase implements DatabaseInterface
     public function getRows()
     {
         return $this->getCollection()
-            ->find();
+            ->find()
+            ->getMongoCursor()
+            ->timeout(-1);
     }
 
     /**

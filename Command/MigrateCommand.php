@@ -109,7 +109,7 @@ class MigrateCommand extends Command
         $data = $this->database->getRows();
 
         // Barry progress
-        $progress = new ProgressBar($output, count($data));
+        $progress = new ProgressBar($output, $data->count());
         $progress->start();
         $progress->setFormat('  %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
 
