@@ -29,8 +29,7 @@
 
 		<service id="integrated_user.form.profile.type" class="%integrated_user.form.profile.type.class%">
 			<argument type="service" id="integrated_user.user.manager" />
-			<argument type="service" id="security.secure_random" />
-			<argument type="service" id="security.encoder_factory" />
+			<argument type="service" id="integrated_user.form.event_listener.user_profile_password_extension" />
 		</service>
 
 		<service id="integrated_user.form.profile.choice.type" class="%integrated_user.form.profile.choice.type.class%">

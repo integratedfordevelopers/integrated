@@ -8,6 +8,8 @@
 
         <parameter key="integrated_user.event_listener.configure_menu_subscriber.class">Integrated\Bundle\UserBundle\EventListener\ConfigureMenuSubscriber</parameter>
 
+        <parameter key="integrated_user.form.event_listener.user_profile_password_extension.class">Integrated\Bundle\UserBundle\Form\EventListener\UserProfilePasswordListener</parameter>
+
     </parameters>
 
     <services>
@@ -15,6 +17,11 @@
         <service id="integrated_user.event_listener.configure_menu_subscriber" class="%integrated_user.event_listener.configure_menu_subscriber.class%">
             <argument type="service" id="security.authorization_checker" />
             <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="integrated_user.form.event_listener.user_profile_password_extension" class="%integrated_user.form.event_listener.user_profile_password_extension.class%">
+            <argument type="service" id="security.secure_random" />
+            <argument type="service" id="security.encoder_factory" />
         </service>
 
     </services>
