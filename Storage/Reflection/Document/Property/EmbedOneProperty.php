@@ -53,7 +53,9 @@ class EmbedOneProperty implements PropertyInterface
      */
     public function getFileId(array $document)
     {
-        if (isset($document[$this->getPropertyName()]['_id'])) {
+        if (isset($document[$this->getPropertyName()]['$id'])) {
+            return $document[$this->getPropertyName()]['$id'];
+        } elseif (isset($document[$this->getPropertyName()]['_id'])) {
             return $document[$this->getPropertyName()]['_id'];
         } elseif (isset($document['_id'])) {
             return $document['_id'];
