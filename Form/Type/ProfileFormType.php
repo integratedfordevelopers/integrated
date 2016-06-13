@@ -100,7 +100,6 @@ class ProfileFormType extends AbstractType
         $builder->add('password', 'password', [
             'mapped' => false,
             'constraints' => [
-                new NotBlank(),
                 new Length(['min' => 6])
             ],
             'attr' => ['autocomplete' => 'off']
