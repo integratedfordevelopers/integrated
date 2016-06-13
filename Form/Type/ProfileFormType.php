@@ -26,6 +26,9 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\Util\SecureRandomInterface;
+
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -43,21 +46,28 @@ class ProfileFormType extends AbstractType
     private $manager;
 
     /**
-     * @var UserProfilePasswordListener
+     * @var SecureRandomInterface
      */
-    private $profileListener;
+    private $generator;
+
+    /**
+     * @var EncoderFactoryInterface
+     */
+    private $encoderFactory;
 
     /**
      * Constructor.
      *
      * @param UserManagerInterface $manager
-     * @param UserProfilePasswordListener $profileListener
+     * @param SecureRandomInterface $generator
+     * @param EncoderFactoryInterface $encoder
      */
-    public function __construct(UserManagerInterface $manager, UserProfilePasswordListener $profileListener)
+    public function __construct(UserManagerInterface $manager, SecureRandomInterface $generator, EncoderFactoryInterface $encoder)
     {
         $this->manager = $manager;
 
-        $this->profileListener = $profileListener;
+        $this->generator = $generator;
+        $this->encoderFactory = $encoder;
     }
 
     /**
@@ -107,7 +117,7 @@ class ProfileFormType extends AbstractType
             'expanded' => true
         ]);
 
-        $builder->addEventSubscriber($this->profileListener);
+        $builder->addEventSubscriber(new UserProfilePasswordListener($this->generator, $this->encoderFactory));
         $builder->addEventSubscriber(new UserProfileExtensionListener('integrated.extension.user'));
 
         if ($options['optional']) {
