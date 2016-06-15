@@ -111,6 +111,18 @@ Now you can use the following in your *alice/Fixtures.yml* file:
 	# Create a storage object (file)    
     <createStorage($this->fake('image', '', '/tmp', 300, 400, 'city'))>
 
+### Redirect controller ###
+
+A basic redirect module is provided to redirect documents containing a storage object to the storage path. In some cases you might use this to prevent a backwards compatibility break in your project when migrating to the storage bundle. A basic route might look as follows; 
+
+	app_storage_redirect:
+    	path: /uploads/{type}/{id}.{ext}
+	    defaults: { _controller: integrated_storage.controller_redirect:objectAction }
+	    requirements: { "_type": "images|file|documents", "_ext": "\s+" }
+
+Depending on your implementation you can remove the type and extension requirements or as a parameter in whole. 
+
+
 ## License ##
 This bundle is under the MIT license. See the complete license in the bundle:
 
