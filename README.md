@@ -116,7 +116,7 @@ Now you can use the following in your *alice/Fixtures.yml* file:
 A basic redirect module is provided to redirect documents containing a storage object to the storage path. In some cases you might use this to prevent a backwards compatibility break in your project when migrating to the storage bundle. A basic route might look as follows; 
 
 	app_storage_redirect:
-    	path: /uploads/{type}/{id}.{ext}
+	    path: /uploads/{type}/{id}.{ext}
 	    defaults: { _controller: integrated_storage.controller_redirect:objectAction }
 	    requirements: { "_type": "images|file|documents", "_ext": "\s+" }
 
