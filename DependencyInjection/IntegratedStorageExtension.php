@@ -32,6 +32,7 @@ class IntegratedStorageExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('command.xml');
+        $loader->load('controllers.xml');
         $loader->load('database.xml');
         $loader->load('event_listeners.xml');
         $loader->load('form.xml');
