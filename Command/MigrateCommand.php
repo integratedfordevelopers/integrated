@@ -12,8 +12,6 @@
 namespace Integrated\Bundle\StorageBundle\Command;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
-use Integrated\Bundle\ContentBundle\Document\Content\File;
-use Integrated\Bundle\ContentBundle\Document\Content\Image;
 
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
@@ -31,6 +29,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -83,15 +82,21 @@ class MigrateCommand extends Command
                 new InputOption(
                     'delete',
                     'd',
-                    InputOption::VALUE_OPTIONAL,
+                    InputOption::VALUE_NONE,
                     'Delete the local file after placing it in the storage'
                 ),
                 new InputOption(
                     'ignore-duplicates',
                     'i',
-                    InputOption::VALUE_OPTIONAL,
-                    'Ignore duplicate files errors and grab the newest version.'
+                    InputOption::VALUE_NONE,
+                    'Ignore duplicate files errors and grab the newest version'
                 ),
+                new InputOption(
+                    'find-empty',
+                    'f',
+                    InputOption::VALUE_NONE,
+                    'Attempt to find a file if the property is empty'
+                )
             ]);
     }
 
@@ -104,40 +109,34 @@ class MigrateCommand extends Command
         $data = $this->database->getRows();
 
         // Barry progress
-        $progress = new ProgressBar($output, count($data));
+        $progress = new ProgressBar($output, $data->count());
         $progress->start();
-        $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %remaining:-6s%');
+        $progress->setFormat('  %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
 
         foreach ($data as $row) {
             // Walk over the properties of the class with reflection
             foreach ($this->getReflectionClass($row['class'])->getTargetProperties() as $property) {
-                // We can always skip it unless
-                $skip = true;
+                // Does the property exists?
+                $skip = !isset($row[$property->getPropertyName()]);
 
-                // The property exists
-                if (isset($row[$property->getPropertyName()])) {
-                    // And does not contain the required fields
-                    foreach (['identifier', 'pathname', 'metadata', 'filesystems'] as $key) {
-                        if (!isset($row[$property->getPropertyName()][$key])) {
-                            $skip = false;
-
-                            // Skip out the current foreach
-                            break 1;
-                        }
-                    }
-                } else {
-                    // Some document do not have the property, but have a file on disk
+                // Search even when the property does not exist
+                if ($input->getOption('find-empty')) {
                     $skip = false;
                 }
 
-                // Skip when all required properties are found or when the property does not exist
+                // Skip already migrated files
+                if (isset($row[$property->getPropertyName()]['filesystems'])) {
+                    $skip = true;
+                }
+
+                // Skip when it meets the criteria above
                 if ($skip) {
                     continue;
                 }
 
                 // Fix the one -> many property now foreach and so on
                 if ($filename = $property->getFileId($row)) {
-                    if ($file = $this->getFile($input->getArgument('path'), $filename, $row['_id'], $input->hasOption('ignore-duplicates'))) {
+                    if ($file = $this->getFile($input->getArgument('path'), $filename, $row['_id'], $input->getOption('ignore-duplicates'))) {
                         // Make a storage object
                         $storage = $this->storage->write(
                             new MemoryReader(
@@ -151,7 +150,11 @@ class MigrateCommand extends Command
                             )
                         );
 
+                        // Convert the property
                         $row[$property->getPropertyName()] = (new StorageTranslation($storage))->toArray();
+
+                        // Write it down, some where
+                        $this->database->saveRow($row);
 
                         // Check for a delete
                         if ($input->getOption('delete')) {
@@ -162,9 +165,10 @@ class MigrateCommand extends Command
                             // If the property exists, the only valid count is one, what else?
                             throw new \LogicException(
                                 sprintf(
-                                    'The file %s was found zero times for document %s.',
+                                    'The file %s was found zero times for document %s and property %s.',
                                     $filename,
-                                    $row['_id']
+                                    $row['_id'],
+                                    $property->getPropertyName()
                                 )
                             );
                         }
@@ -172,20 +176,16 @@ class MigrateCommand extends Command
                 }
             }
 
-            // Write it down, some where
-            $this->database->saveRow($row);
-
             // Update the barry progress
             $progress->advance();
         }
 
         // Release the output
         $progress->finish();
-
     }
 
     /**
-     * @param $class
+     * @param string $class
      * @return PropertyReflection
      */
     protected function getReflectionClass($class)
@@ -216,7 +216,16 @@ class MigrateCommand extends Command
             // Configure the iterator for the first entry
             $iterator = $finder->getIterator();
             $iterator->rewind();
-            return $iterator->current();
+
+            /** @var \Symfony\Component\Finder\SplFileInfo $file */
+            $file = clone $iterator->current();
+
+            // Memory optimalization
+            unset($iterator);
+            unset($finder);
+
+            // Return
+            return $file;
         } elseif (1 < $finder->count()) {
             if ($allowDuplicate) {
                 // Sort
