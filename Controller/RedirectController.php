@@ -12,13 +12,11 @@
 namespace Integrated\Bundle\StorageBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+
 use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
 
-use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
