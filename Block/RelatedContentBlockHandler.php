@@ -115,7 +115,7 @@ class RelatedContentBlockHandler extends BlockHandler
         }
 
         if ($block->getSortBy()) {
-            $query->sort($block->getSortBy());
+            $query->sort($block->getSortBy(), $block->getSortDirection());
         }
 
         $pageParam = $block->getId() . '-page';
