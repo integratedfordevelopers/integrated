@@ -13,16 +13,15 @@ namespace Integrated\Bundle\SolrBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
 
-use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
-use Integrated\Common\Solr\Indexer\Events;
-use Integrated\Common\Solr\Indexer\Job;
+use Integrated\Common\Solr\Task\Event\ErrorEvent;
+use Integrated\Common\Solr\Task\Events;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ErrorLogger implements EventSubscriberInterface
+class WorkerErrorLogger implements EventSubscriberInterface
 {
     /**
      * @var LoggerInterface
@@ -48,14 +47,9 @@ class ErrorLogger implements EventSubscriberInterface
             return;
         }
 
-        $payload = $event->getMessage()->getPayload();
-
-        if ($payload instanceof Job) {
-            $this->logger->error($event->getException()->getMessage(), [
-                'action' => $payload->getAction(),
-                'options' => $payload->getOptions()
-            ]);
-        }
+        $this->logger->error($event->getException()->getMessage(), [
+            'payload' => serialize($event->getMessage()->getPayload())
+        ]);
     }
 
     /**
