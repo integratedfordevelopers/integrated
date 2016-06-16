@@ -80,7 +80,7 @@ class RelatedContentBlock extends Block
 
     /**
      * @var string
-     * @ODM\String)
+     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field(
      *     type="choice",
@@ -92,6 +92,22 @@ class RelatedContentBlock extends Block
      * )
      */
     protected $sortBy;
+
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Type\Field(
+     *     type="choice",
+     *     options={
+     *         "choices"={
+     *             "asc"="asc",
+     *             "desc"="desc"
+     *          },
+     *     }
+     * )
+     */
+    protected $sortDirection;
 
     /**
      * @var int
@@ -203,6 +219,24 @@ class RelatedContentBlock extends Block
     public function setSortBy($sortBy)
     {
         $this->sortBy = $sortBy;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSortDirection()
+    {
+        return $this->sortDirection;
+    }
+
+    /**
+     * @param string $sortDirection
+     * @return $this
+     */
+    public function setSortDirection($sortDirection)
+    {
+        $this->sortDirection = $sortDirection;
+        return $this;
     }
 
     /**
