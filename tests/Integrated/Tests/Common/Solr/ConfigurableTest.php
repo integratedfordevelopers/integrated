@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\Common\Solr\Indexer;
+namespace Integrated\Tests\Common\Solr;
 
-use Integrated\Common\Solr\Indexer\Configurable as BaseConfigurable;
+use Integrated\Common\Solr\Configurable as BaseConfigurable;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @covers Integrated\Common\Solr\Indexer\Configurable
+ * @covers Integrated\Common\Solr\Configurable
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
