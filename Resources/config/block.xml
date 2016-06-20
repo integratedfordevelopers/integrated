@@ -44,5 +44,9 @@
             <tag name="integrated.block" type="content_items" />
         </service>
 
+        <service id="integrated_block.block_handler.featured_items" class="%integrated_block.block_handler.class%">
+            <tag name="integrated.block" type="featured_items" />
+        </service>
+
     </services>
 </container>
