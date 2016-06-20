@@ -273,7 +273,7 @@ class SluggableSubscriber implements EventSubscriber
         // check in document manager
         foreach ($this->getScheduledObjects($om) as $object) {
             if (property_exists($object, $field) && $slug === $this->propertyAccessor->getValue($object, $field)) {
-                if (null !== $id && $this->propertyAccessor->getValue($object, 'id') !== $id) {
+                if (!(null !== $id && method_exists($object, 'getId') && $id == $object->getId())) {
                     return false;
                 }
             }
