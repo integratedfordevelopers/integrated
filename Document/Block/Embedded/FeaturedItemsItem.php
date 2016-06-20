@@ -49,16 +49,16 @@ class FeaturedItemsItem
      * @var string
      * @ODM\String
      * @Type\Field(
-     *      type = "choice",
-     *      options = {
-     *          "label" = "Link target",
-     *          "expanded" = true,
-     *          "choices" = {
-     *               "_self"  = "Current window",
-     *               "_blank" = "New window"
+     *      type="choice",
+     *      options={
+     *          "label"="Link target",
+     *          "expanded"=true,
+     *          "choices"={
+     *               "_self"="Current window",
+     *               "_blank"="New window"
      *          }
      *      }
-     *     )
+     *  )
      */
     protected $target = '_self';
 
@@ -79,7 +79,7 @@ class FeaturedItemsItem
      *      }
      * )
      */
-    protected $active = true;
+    protected $disabled = false;
 
     /**
      * @var int
@@ -163,18 +163,18 @@ class FeaturedItemsItem
     /**
      * @return boolean
      */
-    public function isActive()
+    public function isDisabled()
     {
-        return $this->active;
+        return $this->disabled;
     }
 
     /**
-     * @param boolean $active
+     * @param boolean $disabled
      * @return $this
      */
-    public function setActive($active)
+    public function setDisabled($disabled)
     {
-        $this->active = $active;
+        $this->disabled = $disabled;
         return $this;
     }
 

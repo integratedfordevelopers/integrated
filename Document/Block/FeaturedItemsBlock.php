@@ -14,6 +14,7 @@ namespace Integrated\Bundle\BlockBundle\Document\Block;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
@@ -68,12 +69,30 @@ class FeaturedItemsBlock extends Block
     }
 
     /**
-     * @param ArrayCollection $items
+     * @param array $items
      * @return $this
      */
-    public function setItems($items)
+    public function setItems(array $items)
     {
-        $this->items = $items;
+        $this->items = new ArrayCollection($items);
+        return $this;
+    }
+
+    /**
+     * @param FeaturedItemsItem $item
+     * @return $this
+     */
+    public function addItem(FeaturedItemsItem $item) {
+        $this->items->add($item);
+        return $this;
+    }
+
+    /**
+     * @param FeaturedItemsItem $item
+     * @return $this
+     */
+    public function removeItem(FeaturedItemsItem $item) {
+        $this->items->removeElement($item);
         return $this;
     }
 
