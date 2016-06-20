@@ -272,10 +272,10 @@ class SluggableSubscriber implements EventSubscriber
     {
         // check in document manager
         foreach ($this->getScheduledObjects($om) as $object) {
-            // @todo check $id (INTEGRATED-294)
-
             if (property_exists($object, $field) && $slug === $this->propertyAccessor->getValue($object, $field)) {
-                return false;
+                if (!(null !== $id && method_exists($object, 'getId') && $id == $object->getId())) {
+                    return false;
+                }
             }
         }
 
