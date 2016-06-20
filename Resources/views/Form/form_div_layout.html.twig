@@ -165,6 +165,11 @@
                 </a>
             {% endif %}
         </div>
+
+        {% integrated_javascripts mode='append'
+            'bundles/integratedformtype/components/jquery-ui/jquery-ui.min.js'
+            'bundles/integratedformtype/js/content_sortable_collection.js' %}
+        {% endintegrated_javascripts %}
     {% endspaceless %}
 {% endblock %}
 
