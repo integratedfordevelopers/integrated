@@ -18,6 +18,7 @@ use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Queue\QueueMessageInterface;
 use Integrated\Common\Queue\Provider\Memory\QueueProvider;
 
+use Integrated\Common\Solr\Configurable;
 use Integrated\Common\Solr\Indexer\Event\BatchEvent;
 use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 use Integrated\Common\Solr\Indexer\Event\IndexerEvent;
