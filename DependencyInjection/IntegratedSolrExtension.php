@@ -42,7 +42,9 @@ class IntegratedSolrExtension extends Extension
         $loader->load('indexer.xml');
         $loader->load('queue.xml');
         $loader->load('solarium.xml');
+        $loader->load('task.xml');
         $loader->load('types.xml');
+        $loader->load('worker.xml');
 
         if ($container->getParameter('kernel.debug')) {
             $loader->load('collector.xml');

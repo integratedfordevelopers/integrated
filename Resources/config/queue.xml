@@ -49,12 +49,18 @@
 
 		<!-- the next service should be totally dynamically created -->
 
-		<service id="integrated_queue.solr_indexer"
-				 class="%integrated_queue.queue.class%"
-				 factory-service="integrated_queue.factory"
-				 factory-method="getQueue">
-			<argument type="string">solr-indexer</argument> <!-- config option -->
-		</service>
+		<service id="integrated_queue.solr_indexer" class="%integrated_queue.queue.class%">
+            <factory service="integrated_queue.factory" method="getQueue" />
+            <argument type="string">solr-indexer</argument> <!-- config option -->
+        </service>
+
+        <service id="integrated_queue.solr_worker" class="%integrated_queue.queue.class%">
+            <factory service="integrated_queue.factory" method="getQueue" />
+            <argument type="string">solr-worker</argument> <!-- config option -->
+        </service>
+
+        <service id="integrated_solr.queue.indexer" alias="integrated_queue.solr_indexer" />
+        <service id="integrated_solr.queue.worker" alias="integrated_queue.solr_worker" />
 
     </services>
 

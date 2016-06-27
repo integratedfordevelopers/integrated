@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_solr.worker.error.subscriber" class="Integrated\Bundle\SolrBundle\EventListener\WorkerErrorLogger">
+            <call method="setLogger">
+                <argument type="service" id="logger" on-invalid="null"/>
+            </call>
+
+            <tag name="monolog.logger" channel="solr" />
+            <tag name="integrated_solr.event_subscriber" />
+        </service>
+
+        <service id="integrated_solr.worker.handler.registry_builder" class="Integrated\Common\Solr\Task\RegistryBuilder" />
+
+        <service id="integrated_solr.worker.handler.registry" class="Integrated\Common\Solr\Task\Registry">
+            <factory service="integrated_solr.worker.handler.registry_builder" method="getRegistry" />
+        </service>
+
+        <service id="integrated_solr.worker" class="Integrated\Common\Solr\Task\Worker">
+            <argument type="service" id="integrated_solr.worker.handler.registry" />
+            <argument type="service" id="integrated_solr.queue.worker" />
+
+            <call method="setEventDispatcher">
+                <argument type="service" id="integrated_solr.event.dispatcher" />
+            </call>
+        </service>
+
+    </services>
+
+</container>
