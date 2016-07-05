@@ -38,7 +38,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  * @ODM\Document(collection="content", repositoryClass="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository")
  * @ODM\Indexes({
  *   @ODM\Index(keys={"class"="asc"}),
- *   @ODM\Index(keys={"relations.references.$id"="asc"})
+ *   @ODM\Index(keys={"relations.references.$id"="asc", "class"="asc"})
  * })
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
