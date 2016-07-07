@@ -69,7 +69,7 @@ class WorkflowFormType extends AbstractType
             ]
         );
 
-        $builder->add('deadline', 'integrated_datetime', ['attr' => ['class' => 'deadline']]);
+        $builder->add('deadline', 'integrated_datetime', ['attr' => ['class' => 'form-control deadline']]);
     }
 
     /**
