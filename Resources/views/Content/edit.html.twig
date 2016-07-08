@@ -7,7 +7,12 @@
                 <li>
                     <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
                 </li>
-                <li class="active">{% trans %}Edit{% endtrans %}</li>
+                <li>
+                    <a href="{{ path('integrated_content_content_index', { 'contenttypes': [ type.id ] }) }}">{{ type.name|trans }}</a>
+                </li>
+                {% block crumbs_items %}
+                    <li class="active">{% trans %}Edit{% endtrans %}</li>
+                {% endblock %}
             </ol>
         </div>
     </div>
@@ -39,8 +44,9 @@
 
 <h1 class="main-title font-regular">
     {% block pageTitle %}
-        {% trans %}Edit{% endtrans %} {{ type.name }} <i class="integrate-icon-edit"></i>
+        {% trans %}Edit{% endtrans %} {{ type.name }}
     {% endblock %}
+    <i class="integrate-icon-edit"></i>
 </h1>
 
 <div class="row">
