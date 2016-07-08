@@ -629,6 +629,7 @@ class ContentController extends Controller
             'content'  => $content,
             'locking'  => $locking,
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
+            'hasContentHistoryBundle' => $this->has('integrated_content_history.controller.content_history'),
         ];
     }
 

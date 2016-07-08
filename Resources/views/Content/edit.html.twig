@@ -99,52 +99,30 @@
                     <div class="item_row" id="used-by"></div>
                 </div>
 
-            {#<div class="item_row">#}
-                {#<h3 class="title">Info</h3>#}
-                {#<div class="content_column_inner">#}
-                    {#<ul class="custom_list custom_list_info">#}
-                        {#<li>#}
-                            {#Creator#}
-                            {#<span class="value">Marijn Otte</span>#}
-                        {#</li>#}
-                        {#<li>#}
-                            {#Created on#}
-                            {#<span class="value">18-12-2013</span>#}
-                        {#</li>#}
-                        {#<li>#}
-                            {#Words#}
-                            {#<span class="value">1296</span>#}
-                        {#</li>#}
-                    {#</ul>#}
-                    {#<a href="#" class="btn_more">More <i class="glyphicon"></i></a>#}
-                {#</div><!-- content_column_inner -->#}
-            {#</div><!-- item_row -->#}
+                {#<div class="item_row">#}
+                    {#<h3 class="title">Info</h3>#}
+                    {#<div class="content_column_inner">#}
+                        {#<ul class="custom_list custom_list_info">#}
+                            {#<li>#}
+                                {#Creator#}
+                                {#<span class="value">Marijn Otte</span>#}
+                            {#</li>#}
+                            {#<li>#}
+                                {#Created on#}
+                                {#<span class="value">18-12-2013</span>#}
+                            {#</li>#}
+                            {#<li>#}
+                                {#Words#}
+                                {#<span class="value">1296</span>#}
+                            {#</li>#}
+                        {#</ul>#}
+                        {#<a href="#" class="btn_more">More <i class="glyphicon"></i></a>#}
+                    {#</div><!-- content_column_inner -->#}
+                {#</div><!-- item_row -->#}
 
-            {#<div class="item_row">#}
-                {#<h3 class="title">History</h3>#}
-                {#<div class="content_column_inner">#}
-                    {#<ul class="custom_list">#}
-                        {#<li class="media">#}
-                            {#<a href="#" class="pull-left"><img src="images/temp/userpic.jpg" alt=""></a>#}
-                            {#<div class="media-body">#}
-                                {#<p>18-12-2013 16:43</p>#}
-                                {#<p>Marijn Otte</p>#}
-                                {#<p>Draft</p>#}
-                                {#<p>Rewritten intro</p>#}
-                            {#</div>#}
-                        {#</li>#}
-                        {#<li class="media">#}
-                            {#<a href="#" class="pull-left"><img src="images/temp/userpic.jpg" alt=""></a>#}
-                            {#<div class="media-body">#}
-                                {#<p>18-12-2013 16:43</p>#}
-                                {#<p>Marijn Otte</p>#}
-                                {#<p>Draft</p>#}
-                                {#<p>Rewritten intro</p>#}
-                            {#</div>#}
-                        {#</li>#}
-                    {#</ul>#}
-                {#</div><!-- content_column_inner -->#}
-            {#</div><!-- item_row -->#}
+                {% if hasContentHistoryBundle %}
+                    {{ render(controller('integrated_content_history.controller.content_history:historyAction', { 'content': content })) }}
+                {% endif %}
             </div>
         </aside>
     </div>
