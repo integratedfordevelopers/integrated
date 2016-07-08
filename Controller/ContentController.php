@@ -1117,7 +1117,7 @@ class ContentController extends Controller
         }
 
         if ($locking['locked']) {
-            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'reload_changed', 'cancel']]);
+            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'cancel']]);
         }
 
         return $form->add('actions', 'content_actions', ['buttons' => ['save', 'cancel']]);
