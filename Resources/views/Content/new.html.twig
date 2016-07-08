@@ -1,11 +1,15 @@
 {% extends 'IntegratedContentBundle:Content:edit.html.twig' %}
 {% block crumbs %}
-    <ol class="breadcrumb">
-        <li>
-            <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
-        </li>
-        <li class="active">{% trans %}New{% endtrans %}</li>
-    </ol>
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}New{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
 {% endblock %}
 {% block pageTitle %}
     {% trans %}New{% endtrans %} {{ type.name }}
