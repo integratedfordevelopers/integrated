@@ -14,6 +14,7 @@
     <services>
 
         <service id="integrated_content_history.event_listener.content_history_subscriber" class="%integrated_content_history.event_listener.content_history_subscriber.class%">
+            <argument type="service" id="service_container" />
             <tag name="doctrine_mongodb.odm.event_subscriber" />
         </service>
 

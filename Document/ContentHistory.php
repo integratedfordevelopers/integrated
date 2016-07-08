@@ -55,7 +55,7 @@ class ContentHistory
 
     /**
      * @var array
-     * @ODM\Hash
+     * @ODM\Hash(nullable=true)
      */
     protected $changeSet = [];
 

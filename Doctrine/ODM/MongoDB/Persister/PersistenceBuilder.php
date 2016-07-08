@@ -49,7 +49,13 @@ class PersistenceBuilder
 
             if (!isset($mapping['association'])) {
                 // @Field, @String, @Date, etc.
-                $data[$mapping['name']] = Type::getType($mapping['type'])->convertToDatabaseValue($value);
+                $value2 = Type::getType($mapping['type'])->convertToDatabaseValue($value);
+
+                if ($value2 instanceof \stdClass) {
+                    $value2 = (array) $value2;
+                }
+
+                $data[$mapping['name']] = $value2;
             } elseif (isset($mapping['association'])) {
                 if ($mapping['association'] === ClassMetadata::REFERENCE_ONE && $mapping['isOwningSide']) {
                     // @ReferenceOne
@@ -63,8 +69,12 @@ class PersistenceBuilder
                         continue;
                     }
 
+                    if ($value->isEmpty()) {
+                        $data[$mapping['name']] = [];
+                    }
+
                     foreach ($value as $object) {
-                        if (!is_object($value)) {
+                        if (!is_object($object)) {
                             continue;
                         }
 
