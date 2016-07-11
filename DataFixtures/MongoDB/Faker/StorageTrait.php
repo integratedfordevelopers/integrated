@@ -16,7 +16,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
-use Integrated\Common\Storage\ManagerInterface;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -24,25 +25,9 @@ use Integrated\Common\Storage\ManagerInterface;
 trait StorageTrait
 {
     /**
-     * @param string $path
-     * @return Storage
+     * @return ContainerInterface
      */
-    public function createStorage($path)
-    {
-        return $this->getFileManager()->write(
-            new MemoryReader(
-                // Use the file_get_contents to support local and remote (http) protocols
-                file_get_contents($path),
-                // Metadata
-                new Storage\Metadata(
-                    substr($path, strrpos($path, '.') + 1),
-                    mime_content_type($path),
-                    new ArrayCollection(),
-                    new ArrayCollection()
-                )
-            )
-        );
-    }
+    abstract public function getContainer();
 
     /**
      * @param int $width
@@ -73,17 +58,25 @@ trait StorageTrait
     }
 
     /**
-     * @return ManagerInterface
+     * @param string $path
+     * @return Storage
      */
-    protected function getFileManager()
+    public function createStorage($path)
     {
-        // The check on the container aware does not seem to work, this is a work around
-        if (isset($this->container)) {
-            return $this->container->get('integrated_storage.manager');
-        }
-
-        throw new \LogicException(
-            'LoadFixtureData class must be a instanceof ContainerAware'
-        );
+        return $this->getContainer()
+            ->get('integrated_storage.manager')
+            ->write(
+                new MemoryReader(
+                    // Use the file_get_contents to support local and remote (http) protocols
+                    file_get_contents($path),
+                    // Metadata
+                    new Storage\Metadata(
+                        substr($path, strrpos($path, '.') + 1),
+                        mime_content_type($path),
+                        new ArrayCollection(),
+                        new ArrayCollection()
+                    )
+                )
+            );
     }
 }
