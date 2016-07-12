@@ -42,12 +42,14 @@
     </div>
     {% endblock %}
 
-<h1 class="main-title font-regular">
-    {% block pageTitle %}
-        {% trans %}Edit{% endtrans %} {{ type.name }}
-    {% endblock %}
-    <i class="integrate-icon-edit"></i>
-</h1>
+{% block main_title %}
+    <h1 class="main-title font-regular">
+        {% block pageTitle %}
+            {% trans %}Edit{% endtrans %} {{ type.name }}
+        {% endblock %}
+        <i class="integrate-icon-edit"></i>
+    </h1>
+{% endblock %}
 
 <div class="row">
 
