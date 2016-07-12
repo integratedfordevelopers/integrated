@@ -31,7 +31,7 @@ class AddressType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($options['fields'] as $field => $type) {
+        foreach ($options['fields'] as $field) {
             // Variables
             $type = 'text';
             $default = ['required' => $builder->getRequired()];
@@ -40,7 +40,7 @@ class AddressType extends AbstractType
             // Spec may vary per field, but not per se
             switch ($field) {
                 case 'type':
-                    // This is a special one
+                    $type = 'choice';
                     $default = [
                         'placeholder' => '',
                         'required'    => false,
