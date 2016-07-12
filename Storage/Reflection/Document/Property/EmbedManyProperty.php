@@ -27,7 +27,7 @@ class EmbedManyProperty implements PropertyInterface
     protected $property;
 
     /**
-     * @var EmbedOne
+     * @var EmbedMany
      */
     protected $embedMany;
 
