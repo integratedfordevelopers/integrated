@@ -54,6 +54,10 @@ class EmbedManyProperty implements PropertyInterface
      */
     public function getFileId(array $document)
     {
-        return $document[$this->getPropertyName()];
+        if (isset($document[$this->getPropertyName()])) {
+            return $document[$this->getPropertyName()];
+        }
+
+        return false;
     }
 }
