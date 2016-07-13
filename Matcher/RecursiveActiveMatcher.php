@@ -26,7 +26,7 @@ class RecursiveActiveMatcher
     /**
      * @var Matcher
      */
-    protected $voter;
+    protected $matcher;
 
     /**
      * @param RequestStack $requestStack
@@ -34,16 +34,20 @@ class RecursiveActiveMatcher
     public function __construct(RequestStack $requestStack)
     {
         // Create a knp menu voter
-        $this->voter = new Matcher();
-        $this->voter->addVoter(
-            new UriVoter(
-                str_replace(
-                    $requestStack->getMasterRequest()->getScriptName(), // contains; app.php or app_dev.php
-                    '',                                                 // info not needed for voting
-                    $requestStack->getMasterRequest()->getRequestUri()  // request uri
+        $this->matcher = new Matcher();
+
+        // Add the URI matcher whenever we've got a request
+        if ($request = $requestStack->getMasterRequest()) {
+            $this->matcher->addVoter(
+                new UriVoter(
+                    str_replace(
+                        $request->getScriptName(), // contains; app.php or app_dev.php
+                        '',                                                 // info not needed for voting
+                        $request->getRequestUri()  // request uri
+                    )
                 )
-            )
-        );
+            );
+        }
     }
 
     /**
@@ -56,7 +60,7 @@ class RecursiveActiveMatcher
             $this->setActive($item);
 
             // We active?
-            if ($this->voter->isCurrent($item)) {
+            if ($this->matcher->isCurrent($item)) {
                 $item->setCurrent(true);
 
                 // Run trough any parent items
