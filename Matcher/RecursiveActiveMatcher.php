@@ -48,31 +48,15 @@ class RecursiveActiveMatcher
     }
 
     /**
-     * @param Menu $menu
-     */
-    public function setActive(Menu $menu)
-    {
-        foreach ($menu->getChildren() as $child) {
-            // Parent
-            if ($this->voter->isCurrent($child)) {
-                $child->setCurrent(true);
-            }
-
-            // Any subs
-            $this->recursiveVote($child);
-        }
-    }
-
-    /**
      * @param MenuItem $menuItem
      * @return bool
      */
-    protected function recursiveVote(MenuItem $menuItem)
+    public function setActive(MenuItem $menuItem)
     {
         foreach ($menuItem->getChildren() as $child) {
             // Check the actives
             $active = false;
-            $active = $this->recursiveVote($child) ? true : $active;
+            $active = $this->setActive($child) ? true : $active;
             $active = $this->voter->isCurrent($child) ? true : $active;
 
             // We active?
@@ -82,9 +66,6 @@ class RecursiveActiveMatcher
                 if ($parent = $child->getParent()) {
                     $parent->setCurrent(true);
                 }
-
-                // Time to leave this recursive party
-                return true;
             }
         }
 
