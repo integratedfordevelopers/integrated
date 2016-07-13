@@ -12,11 +12,13 @@ form.on('change', function () {
     form.data('changed', true);
 });
 $(function () {
-    tinymce.on('AddEditor', function (e) {
-        e.editor.on('change', function (e) {
-            form.data('changed', true);
+    if (typeof tinymce !== 'undefined') {
+        tinymce.on('AddEditor', function (e) {
+            e.editor.on('change', function (e) {
+                form.data('changed', true);
+            });
         });
-    });
+    }
 });
 
 /* ask user before leave page via href links and unlock article */
