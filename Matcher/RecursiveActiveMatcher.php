@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\MenuBundle\Matcher;
 
-use Integrated\Bundle\MenuBundle\Document\Menu;
 use Integrated\Bundle\MenuBundle\Document\MenuItem;
 
 use Knp\Menu\Matcher\Matcher;
@@ -52,18 +51,19 @@ class RecursiveActiveMatcher
      */
     public function setActive(MenuItem $menuItem)
     {
-        foreach ($menuItem->getChildren() as $child) {
-            // Check the actives
-            $active = false;
-            $active = $this->setActive($child) ? true : $active;
-            $active = $this->voter->isCurrent($child) ? true : $active;
+        foreach ($menuItem->getChildren() as $item) {
+            // Run recursive, find any children playing this game
+            $this->setActive($item);
 
             // We active?
-            if ($active) {
-                $child->setCurrent(true);
+            if ($this->voter->isCurrent($item)) {
+                $item->setCurrent(true);
 
-                if ($parent = $child->getParent()) {
+                // Run trough any parent items
+                $parent = $item;
+                while ($parent->getParent()) {
                     $parent->setCurrent(true);
+                    $parent = $parent->getParent();
                 }
             }
         }
