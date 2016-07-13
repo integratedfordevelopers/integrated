@@ -49,7 +49,6 @@ class RecursiveActiveMatcher
 
     /**
      * @param MenuItem $menuItem
-     * @return bool
      */
     public function setActive(MenuItem $menuItem)
     {
@@ -68,8 +67,6 @@ class RecursiveActiveMatcher
                 }
             }
         }
-
-        return false;
     }
 
 }
