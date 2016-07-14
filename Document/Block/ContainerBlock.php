@@ -33,7 +33,7 @@ class ContainerBlock extends Block
      *      type="integrated_sortable_collection",
      *      options={
      *          "type"="integrated_block_size",
-     *          "default_title"="New item",
+     *          "default_title"="New block",
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }
