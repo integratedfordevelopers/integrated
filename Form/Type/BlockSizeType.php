@@ -67,7 +67,7 @@ class BlockSizeType extends AbstractType
         $builder->add('size_lg', 'integer', [
             'label' => 'Large devices',
             'attr' => [
-                'help_text' => 'Any screen bigger (or equal) than 1200px wide (full hd and bigger).',
+                'help_text' => 'Any screen bigger (or equal) than 1200px wide (full hd and bigger screens).',
             ],
             'required' => false,
             'constraints' => new Range([
