@@ -91,11 +91,14 @@ class FileEventListener implements EventSubscriber
         $document = $args->getObject();
 
         if ($document instanceof FileInterface) {
-            if ($this->filesystemRemove->allow($args->getDocumentManager(), $document->getFile())) {
-                // Lets put the delete command in a bus and send it away
-                $this->manager->handle(
-                    new DeleteCommand($document->getFile())
-                );
+            $storage = $document->getFile();
+            if ($storage instanceof StorageInterface) {
+                if ($this->filesystemRemove->allow($args->getDocumentManager(), $storage)) {
+                    // Lets put the delete command in a bus and send it away
+                    $this->manager->handle(
+                        new DeleteCommand($document->getFile())
+                    );
+                }
             }
         }
     }
