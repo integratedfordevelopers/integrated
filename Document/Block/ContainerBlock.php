@@ -30,9 +30,10 @@ class ContainerBlock extends Block
      * @var ArrayCollection
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\BlockBundle\Document\Block\Embedded\BlockSize")
      * @Type\Field(
-     *      type="bootstrap_collection",
+     *      type="integrated_sortable_collection",
      *      options={
      *          "type"="integrated_block_size",
+     *          "default_title"="New block",
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }
