@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -46,7 +47,7 @@ class MenuController extends Controller
      * @Template
      *
      * @param Request $request
-     * @return array
+     * @return JsonResponse
      */
     public function saveAction(Request $request)
     {
@@ -71,7 +72,7 @@ class MenuController extends Controller
             $dm->flush();
         }
 
-        return [];
+        return new JsonResponse();
     }
 
     /**
