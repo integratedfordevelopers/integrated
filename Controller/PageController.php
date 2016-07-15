@@ -173,7 +173,12 @@ class PageController extends Controller
             ]
         );
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', 'integrated_save_cancel', [
+            'cancel_route' => 'integrated_page_page_index',
+            'cancel_route_parameters' => ['channel' => $this->getSelectedChannel()->getId()],
+            'label' => 'Create',
+            'button_class' => '',
+        ]);
 
         return $form;
     }
@@ -197,7 +202,10 @@ class PageController extends Controller
             ]
         );
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', 'integrated_save_cancel', [
+            'cancel_route' => 'integrated_page_page_index',
+            'cancel_route_parameters' => ['channel' => $this->getSelectedChannel()->getId()],
+        ]);
 
         return $form;
     }
