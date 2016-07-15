@@ -52,10 +52,11 @@ class ContentTypePageType extends AbstractType
             'label' => 'URL'
         ]);
 
-        $builder->add('layout', 'integrated_page_layout_choice', [
-            'theme' => $options['theme'],
-            'directory' => sprintf('/content/%s', $contentTypePage->getContentType()->getId())
-        ]);
+        //todo implement layout in controller
+//        $builder->add('layout', 'integrated_page_layout_choice', [
+//            'theme' => $options['theme'],
+//            'directory' => sprintf('/content/%s', $contentTypePage->getContentType()->getId())
+//        ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $contentTypePage = $event->getData();
