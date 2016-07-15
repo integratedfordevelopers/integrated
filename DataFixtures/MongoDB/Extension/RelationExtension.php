@@ -29,7 +29,7 @@ trait RelationExtension
      * @param string $id
      * @return null|Relation
      */
-    public function contentType($id)
+    public function relation($id)
     {
         return $this->getContainer()
             ->get('doctrine.odm.mongodb.document_manager')
