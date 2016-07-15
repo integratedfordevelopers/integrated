@@ -43,7 +43,7 @@ In order for contentType pages to work you need to define your controllers as se
 In the service you then have to tag your controller as a contentType controller by adding the tag "integrated_page". Furthermore the "class" attribute is required in this tag.
 By default the showAction will be called for the contentType controller, but you can also define one or more actions in the "controller_actions" attribute.
 
-some exmaples:
+some examples:
 
     <tag name="integrated_page.contenttype_controller" class="Integrated\Bundle\ContentBundle\Document\Content\Article"/>
     <tag name="integrated_page.contenttype_controller" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company" controller_actions="fooAction, showAction"/>
