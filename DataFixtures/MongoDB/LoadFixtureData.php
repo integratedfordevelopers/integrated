@@ -15,9 +15,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
-use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Faker\StorageTrait;
+use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\FileExtension;
+use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\ImageExtension;
 
 use Nelmio\Alice\Fixtures;
 
@@ -31,7 +31,8 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class LoadFixtureData extends ContainerAware implements FixtureInterface
 {
-    use StorageTrait;
+    use FileExtension;
+    use ImageExtension;
     use ClassFieldsExtension;
 
     /**

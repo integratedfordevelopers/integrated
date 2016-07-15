@@ -1,6 +1,6 @@
 Integrated\Bundle\ContentBundle\Document\Content\File:
   logo{1..5}:
-    file: <createStorage($this->fake('image', '', '/tmp', 300, 400, 'business'))>
+    file: <createImage($this->fake('image', '', '/tmp', 300, 400, 'business'))>
     contentType: file
     title: <name()>
     description: <paragraph(1)>
