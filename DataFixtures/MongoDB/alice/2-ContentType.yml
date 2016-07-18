@@ -28,13 +28,3 @@ Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
     class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
     name: Employee
     fields: <classfields($class, ['firstName', 'lastName', 'email'], ['nickname'])>
-
-  File:
-    class: Integrated\Bundle\ContentBundle\Document\Content\File
-    name: File
-    fields: <classfields($class, ['title', 'file'])>
-
-  Image:
-    class: Integrated\Bundle\ContentBundle\Document\Content\Image
-    name: Image
-    fields: <classfields($class, ['title', 'file'])>
