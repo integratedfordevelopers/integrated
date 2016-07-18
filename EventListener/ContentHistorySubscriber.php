@@ -12,6 +12,9 @@
 namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
@@ -88,26 +91,16 @@ class ContentHistorySubscriber implements EventSubscriber
                 ->getQuery()->getSingleResult();
 
             if (ContentHistory::ACTION_DELETE === $action) {
-                $diff = $originalData;
+                $history->setChangeSet($originalData);
             } else {
-                $diff = ArrayComparer::diff($originalData, $pb->prepareData($document));
+                $history->setChangeSet(ArrayComparer::diff($originalData, $pb->prepareData($document)));
             }
-
-            $history->setChangeSet($diff);
 
             if (!count($history->getChangeSet())) {
                 continue; // no changes
             }
 
-            //$history->setUser($this->getUser());
-
-            $previous = $dm->createQueryBuilder(ContentHistory::class)
-                ->field('contentId')->equals($history->getContentId())
-                ->sort('date', 'desc')
-                ->getQuery()->getSingleResult();
-
-            // link previous content history document
-            $history->setPrevious($previous);
+            $history->setUser($this->getUser());
 
             $dm->persist($history);
             $uow->recomputeSingleDocumentChangeSet($dm->getClassMetadata(get_class($history)), $history);
@@ -115,26 +108,40 @@ class ContentHistorySubscriber implements EventSubscriber
     }
 
     /**
-     * @return User | null
+     * @return User
      */
     protected function getUser()
     {
-        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
-            return null;
-        }
+        $user = new User();
+        $token = $this->container->get('security.token_storage')->getToken();
 
-        $user = $token->getUser();
+        if ($token instanceof TokenInterface) {
+            $securityUser = $token->getUser();
 
-        if ($user instanceof \Integrated\Bundle\UserBundle\Model\User) {
-            $name = $user->getUsername();
-            $relation = $user->getRelation();
+            if ($securityUser instanceof \Integrated\Bundle\UserBundle\Model\User) {
+                $user->setId($securityUser->getId());
+                $user->setName($securityUser->getUsername());
 
-            if ($relation instanceof ContentInterface) {
-                // override with a better name
-                $name = (string) $relation;
+                $relation = $securityUser->getRelation();
+
+                if ($relation instanceof ContentInterface && $name = (string) $relation) {
+                    // override with a better name
+                    $user->setName($name);
+                }
             }
-
-            //return new User($user->getId(), $name);
         }
+
+        $requestStack = $this->container->get('request_stack');
+
+        if ($requestStack instanceof RequestStack) {
+            $request = $requestStack->getMasterRequest();
+
+            if ($request instanceof Request) {
+                $user->setIpAddress($request->getClientIp());
+                $user->setEndpoint($request->getSchemeAndHttpHost() . $request->getRequestUri());
+            }
+        }
+
+        return $user;
     }
 }

@@ -1,16 +1,32 @@
-<div class="aside-item-holder section-white">
-    <h3 class="font-medium">{% trans %}History{% endtrans %}</h3>
+{% if documents|length %}
+    <div class="aside-item-holder section-white">
+        <h3 class="font-medium">{% trans %}History{% endtrans %}</h3>
 
-    <div class="media">
-        <div class="media-left">
-            <img class="media-object img-circle" src="http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=36" alt="">
-        </div><!-- media-left -->
-        <div class="media-body">
-            <h4 class="media-heading">e-active</h4>
-            <p><small>Jul 8, 2016, 3:03:29 PM</small></p>
-            <p><small>Draft</small></p>
-            Yoyo, dit is cool.
-        </div><!-- media-body -->
-    </div><!-- media -->
+        {% for document in documents|slice(0, limit) %}
+            <div class="media">
+                <div class="media-left">
+                    <img class="media-object img-circle" src="http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=36" alt="">
+                </div><!-- media-left -->
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        {{ document.user.name|default('Unknown') }}
+                    </h4>
 
-</div>
+                    <p>
+                        <small>
+                            <a href="">
+                                <span class="label label-primary">{{ document.action }}</span>
+                            </a>
+                            &nbsp; {{ document.date|localizeddate('medium') }}
+                        </small>
+                    </p>
+                </div><!-- media-body -->
+            </div><!-- media -->
+        {% endfor %}
+
+        {#% if documents|length > limit %}
+            <br />
+            <a href="">Show full history</a>
+        {% endif %#}
+    </div>
+{% endif %}

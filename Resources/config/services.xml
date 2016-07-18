@@ -7,6 +7,9 @@
     <parameters>
 
         <parameter key="integrated_content_history.event_listener.content_history_subscriber.class">Integrated\Bundle\ContentHistoryBundle\EventListener\ContentHistorySubscriber</parameter>
+
+        <parameter key="integrated_content_history.document.content_history.class">Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory</parameter>
+
         <parameter key="integrated_content_history.controller.content_history.class">Integrated\Bundle\ContentHistoryBundle\Controller\ContentHistoryController</parameter>
 
     </parameters>
@@ -18,8 +21,14 @@
             <tag name="doctrine_mongodb.odm.event_subscriber" />
         </service>
 
+        <service id="integrated_content_history.repository.content_history" class="Doctrine\Common\Persistence\ObjectRepository">
+            <factory service="doctrine.odm.mongodb.document_manager" method="getRepository" />
+            <argument>%integrated_content_history.document.content_history.class%</argument>
+        </service>
+
         <service id="integrated_content_history.controller.content_history" class="%integrated_content_history.controller.content_history.class%">
             <argument type="service" id="templating" />
+            <argument type="service" id="integrated_content_history.repository.content_history" />
         </service>
 
     </services>

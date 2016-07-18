@@ -66,12 +66,6 @@ class ContentHistory
     protected $user;
 
     /**
-     * @var ContentHistory | null
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory")
-     */
-    protected $previous;
-
-    /**
      * @param string $contentId
      * @param string $action
      */
@@ -177,24 +171,6 @@ class ContentHistory
     public function setUser(User $user = null)
     {
         $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * @return ContentHistory
-     */
-    public function getPrevious()
-    {
-        return $this->previous;
-    }
-
-    /**
-     * @param ContentHistory | null $previous
-     * @return $this
-     */
-    public function setPrevious(ContentHistory $previous = null)
-    {
-        $this->previous = $previous;
         return $this;
     }
 }

@@ -21,8 +21,8 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 class User
 {
     /**
-     * @var string
-     * @ODM\String
+     * @var int
+     * @ODM\Int
      * @ODM\Index
      */
     protected $id;
@@ -46,7 +46,7 @@ class User
     protected $endpoint;
 
     /**
-     * @return string
+     * @return int
      */
     public function getId()
     {
@@ -54,7 +54,7 @@ class User
     }
 
     /**
-     * @param string $id
+     * @param int $id
      * @return $this
      */
     public function setId($id)

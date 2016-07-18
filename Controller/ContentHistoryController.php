@@ -14,6 +14,8 @@ namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
+use Doctrine\Common\Persistence\ObjectRepository;
+
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 /**
@@ -27,19 +29,34 @@ class ContentHistoryController extends Controller
     protected $templating;
 
     /**
-     * @param TwigEngine $templating
+     * @var ObjectRepository
      */
-    public function __construct(TwigEngine $templating)
+    protected $repository;
+
+    /**
+     * @param TwigEngine $templating
+     * @param ObjectRepository $repository
+     */
+    public function __construct(TwigEngine $templating, ObjectRepository $repository)
     {
         $this->templating = $templating;
+        $this->repository = $repository;
     }
 
     /**
      * @param Content $content
+     * @param int $limit
      * @return string
      */
-    public function historyAction(Content $content)
+    public function historyAction(Content $content, $limit = 10)
     {
-        return $this->templating->renderResponse('IntegratedContentHistoryBundle:ContentHistory:history.html.twig');
+        return $this->templating->renderResponse('IntegratedContentHistoryBundle:ContentHistory:history.html.twig', [
+            'documents' => $this->repository->findBy(
+                ['contentId' => $content->getId()],
+                ['date' => 'desc'],
+                $limit + 1
+            ),
+            'limit' => $limit,
+        ]);
     }
 }
