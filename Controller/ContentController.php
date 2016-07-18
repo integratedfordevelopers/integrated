@@ -488,6 +488,7 @@ class ContentController extends Controller
             'type' => $type->getType(),
             'form' => $form->createView(),
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
+            'hasContentHistoryBundle' => false, // not needed here
         ];
     }
 
