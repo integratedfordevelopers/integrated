@@ -11,14 +11,14 @@
 
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension;
 
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-trait ContentTypeExtension
+trait RelationExtension
 {
     /**
      * @return ContainerInterface
@@ -27,13 +27,13 @@ trait ContentTypeExtension
 
     /**
      * @param string $id
-     * @return null|ContentType
+     * @return null|Relation
      */
-    public function contentType($id)
+    public function relation($id)
     {
         return $this->getContainer()
             ->get('doctrine.odm.mongodb.document_manager')
-            ->getRepository(ContentType::class)->find($id)
+            ->getRepository(Relation::class)->find($id)
         ;
     }
 }
