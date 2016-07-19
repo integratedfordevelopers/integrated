@@ -57,10 +57,8 @@ class AddressType extends AbstractType
                     break;
             }
 
-            $options = array_merge($default, $override);
-
             // Add into the form
-            $builder->add($field, $type, $options);
+            $builder->add($field, $type, array_merge($default, $override));
         }
     }
 
