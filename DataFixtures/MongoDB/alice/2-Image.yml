@@ -1,6 +1,6 @@
 Integrated\Bundle\ContentBundle\Document\Content\Image:
   image{1..5}:
-    file: <createImage($this->fake('image', '', '/tmp', 300, 400, 'city'))>
+    file: <createImage(300, 400, 'nature')>
     contentType: image
     title: <name()>
     description: <paragraph(1)>
