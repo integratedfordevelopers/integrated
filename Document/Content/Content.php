@@ -280,6 +280,21 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
+     * @param $relationType
+     * @return Content|null
+     */
+    public function getReferenceByRelationtype($relationType)
+    {
+        $references = $this->getReferencesByRelationType($relationType);
+
+        if (is_array($references) && count($references)) {
+            return $references[0];
+        }
+
+        return null;
+    }
+
+    /**
      * @param string $relationId
      * @return ArrayCollection
      */
