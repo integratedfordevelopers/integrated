@@ -283,7 +283,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      * @param $relationType
      * @return Content|null
      */
-    public function getReferenceByRelationtype($relationType)
+    public function getReferenceByRelationType($relationType)
     {
         $references = $this->getReferencesByRelationType($relationType);
 
