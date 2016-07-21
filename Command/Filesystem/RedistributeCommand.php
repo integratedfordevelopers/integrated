@@ -11,12 +11,17 @@
 
 namespace Integrated\Bundle\StorageBundle\Command\Filesystem;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
+use Integrated\Bundle\StorageBundle\Storage\Reflection\PropertyReflection;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Common\Storage\Database\DatabaseInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -43,6 +48,11 @@ class RedistributeCommand extends Command
      * @var ManagerInterface
      */
     protected $storage;
+
+    /**
+     * @var PropertyReflection[]
+     */
+    protected $reflectionClasses;
 
     /**
      * @param DatabaseInterface $database
@@ -86,19 +96,50 @@ class RedistributeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Fetch all data from database
+        $data = $this->database->getRows();
+
+        // Get the filesystems (all if none specified )
         $filesystems = (new FilesystemValidation($this->registry))
-            ->getValidFilesystems($input->getArgument('filesystems'));
+            ->getValidFilesystems(new ArrayCollection($input->getArgument('filesystems')));
 
-        foreach ($this->database->getObjects() as $i => $file) {
-            $file->setFile($this->storage->copy($file->getFile(), $filesystems));
-            $this->database->saveObject($file);
+        // Barry progress
+        $progress = new ProgressBar($output, $data->count());
+        $progress->start();
+        $progress->setFormat('%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
+        $progress->setRedrawFrequency(75);
 
-            if (0 == ($i % 100)) {
-                $this->database->commit();
+        foreach ($data as $row) {
+            // This will be used to determine if we need to update the object
+            $document = new DoctrineDocument($row);
+
+
+            foreach ($this->getReflectionClass($row['class'])->getTargetProperties() as $property) {
+                //
+
+                // Update the field in the database
+                if ($document->hasUpdates()) {
+                    $this->database->saveRow($row);
+                }
             }
+
+            // Notify barry about our progress
+            $progress->advance();
         }
 
-        // Any left overs from the party
-        $this->database->commit();
+        $b =1==1;
+    }
+
+    /**
+     * @param string $class
+     * @return PropertyReflection
+     */
+    protected function getReflectionClass($class)
+    {
+        if (isset($this->reflectionClasses[$class])) {
+            return $this->reflectionClasses[$class];
+        }
+
+        return $this->reflectionClasses[$class] = new PropertyReflection($class);
     }
 }

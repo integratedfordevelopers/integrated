@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
-use Integrated\Bundle\ContentBundle\Document\Content\File;
-use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Storage\Database\DatabaseInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -38,26 +36,6 @@ class DoctrineODMDatabase implements DatabaseInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjects()
-    {
-        return $this->container->get('doctrine_mongodb.odm.document_manager')
-            ->getUnitOfWork()
-            ->getDocumentPersister(File::class)
-            ->loadAll();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveObject(FileInterface $file)
-    {
-        $this->container->get('doctrine_mongodb.odm.document_manager')
-            ->persist($file);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRows()
     {
         return $this->getCollection()
@@ -75,33 +53,6 @@ class DoctrineODMDatabase implements DatabaseInterface
     {
         return $this->getCollection()
             ->update(['_id' => $row['_id']], $row);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function updateContentType($oldClass, $newClass)
-    {
-        $contentType = $this->getCollection('content_type')
-            ->find(['class' => $oldClass]);
-
-        foreach ($contentType as $row) {
-            $row['class'] = $newClass;
-            $this->getCollection('content_type')
-                ->update(
-                    ['_id' => $row['_id']],
-                    $row
-                );
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function commit()
-    {
-        $this->container->get('doctrine_mongodb.odm.document_manager')->flush();
-        $this->container->get('doctrine_mongodb.odm.document_manager')->clear();
     }
 
     /**
