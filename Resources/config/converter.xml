@@ -18,7 +18,7 @@
 
         <parameter key="integrated_solr.converter.config.resolver.class">Integrated\Common\Converter\Config\ConfigResolver</parameter>
 
-        <parameter key="integrated_solr.converter.container_factory.class">Integrated\Common\Converter\ContainerFactory</parameter>
+        <parameter key="integrated_solr.converter.container_factory.class">Integrated\Common\Converter\FilterContainerFactory</parameter>
 
         <parameter key="integrated_solr.converter.class">Integrated\Common\Converter\Converter</parameter>
 
