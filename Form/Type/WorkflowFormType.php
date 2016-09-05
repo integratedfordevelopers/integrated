@@ -77,12 +77,13 @@ class WorkflowFormType extends AbstractType
      */
     public function getAssigned()
     {
-        $userRepository = $this->userManager->getRepository();
+        $builder = $this->userManager->createQueryBuilder();
+        $query = $builder->getQuery();
+
         $users = [];
 
-        /** @var User $item */
-        foreach ($userRepository->findAll() as $item) {
-            $users[$item->getId()] = $item->getUsername();
+        foreach ($query->getArrayResult() as $item) {
+            $users[$item['id']] = $item['username'];
         }
 
         return $users;
