@@ -160,4 +160,12 @@ class UserManager implements UserManagerInterface
 	{
 		return $this->repository->getClassName();
 	}
+
+	/**
+	 * @return \Doctrine\ORM\QueryBuilder
+	 */
+	public function createQueryBuilder()
+	{
+		return $this->repository->createQueryBuilder($this->getClassName());
+	}
 }
