@@ -49,6 +49,8 @@
 
         <parameter key="integrated_content.form.listener.form_field.class">Integrated\Bundle\ContentBundle\Form\EventListener\FormFieldSubscriber</parameter>
 
+        <parameter key="integrated_content.form.type.primary_channel.class">Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType</parameter>
+
     </parameters>
 
     <services>
@@ -168,6 +170,9 @@
             <tag name="integrated_content.form.event_subscriber" />
         </service>
 
+        <service id="integrated_content.form.type.primary_channel" class="%integrated_content.form.type.primary_channel.class%">
+            <tag name="form.type" alias="integrated_primary_channel" />
+        </service>
     </services>
 
 </container>
