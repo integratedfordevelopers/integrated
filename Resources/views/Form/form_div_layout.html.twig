@@ -397,3 +397,13 @@
         </section>
     {% endspaceless %}
 {% endblock %}
+
+{% block integrated_primary_channel_row %}
+    <div class="hidden">
+        {{ form_widget(form) }}
+    </div>
+
+    {% integrated_javascripts mode='append'
+    'bundles/integratedcontent/js/primary_channel.js' %}
+    {% endintegrated_javascripts %}
+{% endblock %}

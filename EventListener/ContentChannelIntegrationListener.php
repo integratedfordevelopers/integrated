@@ -108,7 +108,7 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
             if ($choices) {
                 $operand = ChannelEnforcerListener::ADD;
 
-                $type = $builder->create('channels', 'choice', [
+                $builder->add('channels', 'choice', [
                     'required' => false,
 
                     'choices' => $choices,
@@ -118,9 +118,11 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
 
                     'multiple' => true,
                     'expanded' => true,
+                    'attr' => ['class' => 'channel-options']
                 ]);
 
-                $builder->add($type);
+                $builder->add('primaryChannel', 'integrated_primary_channel');
+
                 $builder->addEventSubscriber(new ChannelDefaultDataListener($default));
             }
 

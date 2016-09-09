@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
@@ -110,6 +111,12 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
      */
     protected $channels;
+
+    /**
+     * @var Channel
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
+     */
+    protected $primaryChannel;
 
     /**
      * Constructor
@@ -523,6 +530,28 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function removeChannel(ChannelInterface $channel)
     {
         $this->channels->removeElement($channel);
+        return $this;
+    }
+
+    /**
+     * @return Channel|null
+     */
+    public function getPrimaryChannel()
+    {
+        if (null === $this->primaryChannel && $this->channels->count()) {
+            return $this->channels->first();
+        }
+
+        return $this->primaryChannel;
+    }
+
+    /**
+     * @param Channel|null $primaryChannel
+     * @return $this
+     */
+    public function setPrimaryChannel(Channel $primaryChannel = null)
+    {
+        $this->primaryChannel = $primaryChannel;
         return $this;
     }
 
