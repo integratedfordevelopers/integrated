@@ -23,24 +23,26 @@ class ArrayComparer
      */
     public static function diff(array $old = [], array $new = [])
     {
-        $diff = [];
-
-        foreach ($old as $key => $value) {
+        foreach (array_keys($old) as $key) {
             if (!array_key_exists($key, $new)) {
-                // key is missing in the new array
-                $diff[$key] = null;
+                // add missing key
+                $new[$key] = null;
             }
         }
 
+        foreach (array_keys($new) as $key) {
+            if (!array_key_exists($key, $old)) {
+                // add missing key
+                $old[$key] = null;
+            }
+        }
+
+        $diff = [];
+
         foreach ($new as $key => $value) {
-            if (array_key_exists($key, $old)) {
-                if ($old[$key] != $value) {
-                    // value has changed
-                    $diff[$key] = $value;
-                }
-            } elseif (null !== $value && [] !== $value) {
-                // value is new
-                $diff[$key] = $value;
+            if ($old[$key] != $value) {
+                // value has changed
+                $diff[$key] = [$old[$key], $value];
             }
         }
 

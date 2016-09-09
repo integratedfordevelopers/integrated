@@ -20,12 +20,23 @@ class ArrayComparerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      */
-    public function testAddValue()
+    public function testAddField()
     {
         $this->assertDiff(
             [], // old
             ['key' => 'value'], // new
-            ['key' => 'value'] // expected
+            ['key' => [null, 'value']] // expected
+        );
+    }
+
+    /**
+     */
+    public function testRemoveField()
+    {
+        $this->assertDiff(
+            ['key2' => 'value2'], // old
+            [], // new
+            ['key2' => ['value2', null]] // expected
         );
     }
 
@@ -34,25 +45,31 @@ class ArrayComparerTest extends \PHPUnit_Framework_TestCase
     public function testUpdateValue()
     {
         $this->assertDiff(
-            ['key' => 'undefined', 'key2' => 'unchanged'], // old
-            ['key' => 'value', 'key2' => 'unchanged'], // new
-            ['key' => 'value'] // expected
+            ['key3' => 'value3', 'key4' => 'unchanged'], // old
+            ['key3' => 'value4', 'key4' => 'unchanged'], // new
+            ['key3' => ['value3', 'value4']] // expected
         );
     }
 
     /**
      */
-    public function testRemoveValue()
+    public function testEmptyValue()
     {
         $this->assertDiff(
-            ['undefined' => 'test'], // old
-            [], // new
-            ['undefined' => null] // expected
+            [], // old
+            ['key5' => []], // new
+            [] // expected
         );
 
         $this->assertDiff(
             [], // old
-            ['empty' => []], // new
+            ['key6' => null], // new
+            [] // expected
+        );
+
+        $this->assertDiff(
+            ['key7' => null], // old
+            [], // new
             [] // expected
         );
     }

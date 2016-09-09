@@ -90,10 +90,22 @@ class ContentHistorySubscriber implements EventSubscriber
                 ->field('id')->equals($document->getId())
                 ->getQuery()->getSingleResult();
 
-            if (ContentHistory::ACTION_DELETE === $action) {
-                $history->setChangeSet($originalData);
-            } else {
-                $history->setChangeSet(ArrayComparer::diff($originalData, $pb->prepareData($document)));
+            switch ($action) {
+                case ContentHistory::ACTION_INSERT:
+                    $history->setChangeSet($pb->prepareData($document));
+                    break;
+
+                case ContentHistory::ACTION_UPDATE:
+                    $history->setChangeSet(ArrayComparer::diff($originalData, $pb->prepareData($document)));
+                    break;
+
+                case ContentHistory::ACTION_DELETE:
+                    $history->setChangeSet($originalData);
+                    break;
+
+                default:
+                    throw new \InvalidArgumentException(sprintf('Invalid action "%s"', $action));
+                    break;
             }
 
             if (!count($history->getChangeSet())) {
