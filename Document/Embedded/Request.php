@@ -18,54 +18,55 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  *
  * @ODM\EmbeddedDocument
  */
-class User
+class Request
 {
     /**
-     * @var int
-     * @ODM\Int
-     * @ODM\Index
+     * @var string
+     * @ODM\String
      */
-    protected $id;
+    protected $ipAddress;
 
     /**
      * @var string
      * @ODM\String
      */
-    protected $name;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
+    protected $endpoint;
 
     /**
      * @return string
      */
-    public function getName()
+    public function getIpAddress()
     {
-        return $this->name;
+        return $this->ipAddress;
     }
 
     /**
-     * @param string $name
+     * @param string $ipAddress
      * @return $this
      */
-    public function setName($name)
+    public function setIpAddress($ipAddress)
     {
-        $this->name = $name;
+        $this->ipAddress = $ipAddress;
+        return $this;
+    }
+
+    /**
+     * Get the endpoint (e.g. the request URL or console command name).
+     *
+     * @return string
+     */
+    public function getEndpoint()
+    {
+        return $this->endpoint;
+    }
+
+    /**
+     * @param string $endpoint
+     * @return $this
+     */
+    public function setEndpoint($endpoint)
+    {
+        $this->endpoint = $endpoint;
         return $this;
     }
 }

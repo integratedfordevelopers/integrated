@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentHistoryBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Request;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User;
 
 use DateTime;
@@ -25,10 +26,6 @@ use DateTime;
  */
 class ContentHistory
 {
-    const ACTION_INSERT = 'INSERT';
-    const ACTION_UPDATE = 'UPDATE';
-    const ACTION_DELETE = 'DELETE';
-
     /**
      * @var string
      * @ODM\Id(strategy="UUID")
@@ -58,6 +55,12 @@ class ContentHistory
      * @ODM\Hash(nullable=true)
      */
     protected $changeSet = [];
+
+    /**
+     * @var Request | null
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Request")
+     */
+    protected $request;
 
     /**
      * @var User | null
@@ -157,7 +160,25 @@ class ContentHistory
     }
 
     /**
-     * @return User
+     * @return Request | null
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request | null $request
+     * @return $this
+     */
+    public function setRequest($request = null)
+    {
+        $this->request = $request;
+        return $this;
+    }
+
+    /**
+     * @return User | null
      */
     public function getUser()
     {

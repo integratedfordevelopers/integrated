@@ -30,6 +30,9 @@ class IntegratedContentHistoryExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.xml');
+
+        $loader->load('controllers.xml');
+        $loader->load('doctrine.xml');
+        $loader->load('event_subscribers.xml');
     }
 }
