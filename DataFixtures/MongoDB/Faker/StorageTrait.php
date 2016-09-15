@@ -45,6 +45,22 @@ trait StorageTrait
     }
 
     /**
+     * @param int $width
+     * @param int $height
+     * @param null $category
+     * @param string $dir
+     * @return Storage
+     */
+    public function createImage($width = 640, $height = 480, $category = null, $dir = '/tmp')
+    {
+        $faker = new Image();
+        
+        $image = $faker->image($dir, $width, $height, $category);
+        
+        return $this->createStorage($image);
+    }
+
+    /**
      * @param string $path
      * @param string $name
      * @return File
