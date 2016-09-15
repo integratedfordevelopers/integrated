@@ -13,11 +13,12 @@ namespace Integrated\Bundle\SolrBundle\Provider;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Common\Solr\Task\Provider\ContentProviderInterface;
+use Integrated\Common\Solr\Task\Provider\ContentTypeProviderInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class MongoDBProvider implements ContentProviderInterface
+class MongoDBProvider implements ContentProviderInterface, ContentTypeProviderInterface
 {
     /**
      * @var DocumentRepository
@@ -41,6 +42,23 @@ class MongoDBProvider implements ContentProviderInterface
     {
         $iterator = $this->repository->createQueryBuilder()
             ->field('relations.references.$id')->equals($id)
+            ->getQuery()
+            ->getIterator();
+
+        if (method_exists($iterator, 'timeout')) {
+            $iterator->timeout(-1);
+        }
+
+        return $iterator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContent($id)
+    {
+        $iterator = $this->repository->createQueryBuilder()
+            ->field('contentType')->equals($id)
             ->getQuery()
             ->getIterator();
 
