@@ -24,80 +24,80 @@ use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
  */
 class WorkflowLogInstanceInjectionListener implements EventSubscriber
 {
-	/**
-	 * @var ManagerRegistry
-	 */
-	protected $manager;
+    /**
+     * @var ManagerRegistry
+     */
+    protected $manager;
 
     /**
      * @param ManagerRegistry $manager
      */
-	public function __construct(ManagerRegistry $manager)
-	{
-		$this->manager = $manager;
-	}
+    public function __construct(ManagerRegistry $manager)
+    {
+        $this->manager = $manager;
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getSubscribedEvents()
-	{
-		return [
-			Events::postLoad
-		];
-	}
+     * {@inheritdoc}
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            Events::postLoad
+        ];
+    }
 
-	/**
-	 * Add the user instance or a proxy to this user instance to the Log entity
-	 *
-	 * @param LifecycleEventArgs $args
-	 */
-	public function postLoad(LifecycleEventArgs $args)
-	{
-		$object = $args->getEntity();
+    /**
+     * Add the user instance or a proxy to this user instance to the Log entity
+     *
+     * @param LifecycleEventArgs $args
+     */
+    public function postLoad(LifecycleEventArgs $args)
+    {
+        $object = $args->getEntity();
 
-		if (!$object instanceof Log) {
-			return;
-		}
+        if (!$object instanceof Log) {
+            return;
+        }
 
-		$metadata = $args->getEntityManager()->getClassMetadata(get_class($object));
+        $metadata = $args->getEntityManager()->getClassMetadata(get_class($object));
 
-		$prop = $metadata->getReflectionClass()->getProperty('user_class');
-		$prop->setAccessible(true);
+        $prop = $metadata->getReflectionClass()->getProperty('user_class');
+        $prop->setAccessible(true);
 
-		$class = $prop->getValue($object);
+        $class = $prop->getValue($object);
 
-		$prop = $metadata->getReflectionClass()->getProperty('user_id');
-		$prop->setAccessible(true);
+        $prop = $metadata->getReflectionClass()->getProperty('user_id');
+        $prop->setAccessible(true);
 
-		$id = $prop->getValue($object);
+        $id = $prop->getValue($object);
 
-		$prop = $metadata->getReflectionClass()->getProperty('user_instance');
-		$prop->setAccessible(true);
-		$prop->setValue($object, $this->getInstance($class, $id));
-	}
+        $prop = $metadata->getReflectionClass()->getProperty('user_instance');
+        $prop->setAccessible(true);
+        $prop->setValue($object, $this->getInstance($class, $id));
+    }
 
-	/**
-	 * Try to get a reference to the user object else fetch it immediately from the
-	 * repository.
-	 *
-	 * @param string $class
-	 * @param string $id
-	 *
-	 * @return object
-	 */
-	protected function getInstance($class, $id)
-	{
-		if (!$class || !$id) {
-			return null;
-		}
+    /**
+     * Try to get a reference to the user object else fetch it immediately from the
+     * repository.
+     *
+     * @param string $class
+     * @param string $id
+     *
+     * @return object
+     */
+    protected function getInstance($class, $id)
+    {
+        if (!$class || !$id) {
+            return null;
+        }
 
-		$manager = $this->manager->getManagerForClass($class);
+        $manager = $this->manager->getManagerForClass($class);
 
-		if (method_exists($manager, 'getReference')) {
-			return $manager->getReference($class, $id);
-		}
+        if (method_exists($manager, 'getReference')) {
+            return $manager->getReference($class, $id);
+        }
 
-		return $manager->getRepository($class)->find($id);
-	}
+        return $manager->getRepository($class)->find($id);
+    }
 }

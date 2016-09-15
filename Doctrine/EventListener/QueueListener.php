@@ -26,104 +26,104 @@ use Integrated\Common\Queue\QueueInterface;
  */
 class QueueListener implements EventSubscriber, QueueAwareInterface
 {
-	/**
-	 * @var QueueInterface
-	 */
-	private $queue;
+    /**
+     * @var QueueInterface
+     */
+    private $queue;
 
     /**
      * @var array
      */
-	private $identities = [];
+    private $identities = [];
 
-	/**
-	 * @param QueueInterface $queue
-	 */
-	public function __construct(QueueInterface $queue)
-	{
-		$this->setQueue($queue);
-	}
+    /**
+     * @param QueueInterface $queue
+     */
+    public function __construct(QueueInterface $queue)
+    {
+        $this->setQueue($queue);
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setQueue(QueueInterface $queue)
-	{
-		$this->queue = $queue;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueue(QueueInterface $queue)
+    {
+        $this->queue = $queue;
+    }
 
-	/**
-	 * @return QueueInterface
-	 */
-	public function getQueue()
-	{
-		return $this->queue;
-	}
+    /**
+     * @return QueueInterface
+     */
+    public function getQueue()
+    {
+        return $this->queue;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getSubscribedEvents()
-	{
-		return array(
-			Events::postPersist,
-			Events::postUpdate,
-		);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            Events::postPersist,
+            Events::postUpdate,
+        ];
+    }
 
-	/**
-	 * @param LifecycleEventArgs $event
-	 */
-	public function postPersist(LifecycleEventArgs $event)
-	{
-		$this->process($event);
-	}
+    /**
+     * @param LifecycleEventArgs $event
+     */
+    public function postPersist(LifecycleEventArgs $event)
+    {
+        $this->process($event);
+    }
 
-	/**
-	 * @param LifecycleEventArgs $event
-	 */
-	public function postUpdate(LifecycleEventArgs $event)
-	{
-		$this->process($event);
-	}
+    /**
+     * @param LifecycleEventArgs $event
+     */
+    public function postUpdate(LifecycleEventArgs $event)
+    {
+        $this->process($event);
+    }
 
-	/**
-	 * Queue a workflow index
-	 *
-	 * @param LifecycleEventArgs $event
-	 */
-	protected function process(LifecycleEventArgs $event)
-	{
-		if ($id = $this->getId($event->getObject())) {
-			if (array_key_exists($id, $this->identities)) {
-				return; // only add a workflow index ones for the selected id.
-			}
+    /**
+     * Queue a workflow index
+     *
+     * @param LifecycleEventArgs $event
+     */
+    protected function process(LifecycleEventArgs $event)
+    {
+        if ($id = $this->getId($event->getObject())) {
+            if (array_key_exists($id, $this->identities)) {
+                return; // only add a workflow index ones for the selected id.
+            }
 
-			$this->getQueue()->push([
-				'command' => 'index',
-				'args'    => [$id]
-			]);
+            $this->getQueue()->push([
+                'command' => 'index',
+                'args' => [$id]
+            ]);
 
-			$this->identities[$id] = true;
-		}
-	}
+            $this->identities[$id] = true;
+        }
+    }
 
-	/**
-	 * Try to extract a Definition id from the $data
-	 *
-	 * @param mixed $data
-	 * @return null | string
-	 */
-	protected function getId($data)
-	{
-		if ($data instanceof State) {
-			$data = $data->getWorkflow();
-		}
+    /**
+     * Try to extract a Definition id from the $data
+     *
+     * @param mixed $data
+     * @return null | string
+     */
+    protected function getId($data)
+    {
+        if ($data instanceof State) {
+            $data = $data->getWorkflow();
+        }
 
-		if ($data instanceof Definition) {
-			return $data->getId();
-		}
+        if ($data instanceof Definition) {
+            return $data->getId();
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

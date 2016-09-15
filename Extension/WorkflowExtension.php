@@ -26,35 +26,35 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class WorkflowExtension implements ExtensionInterface, ContainerAwareInterface
 {
-	/**
-	 * @var ContainerInterface
-	 */
-	private $container = null;
+    /**
+     * @var ContainerInterface
+     */
+    private $container = null;
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getSubscribers()
-	{
-		return [
-			new ContentSubscriber($this, $this->container),
-			new MetadataSubscriber($this)
-		];
-	}
+     * {@inheritdoc}
+     */
+    public function getSubscribers()
+    {
+        return [
+            new ContentSubscriber($this, $this->container),
+            new MetadataSubscriber($this)
+        ];
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getName()
-	{
-		return 'integrated.extension.workflow';
-	}
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'integrated.extension.workflow';
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function setContainer(ContainerInterface $container = null)
-	{
-		$this->container = $container;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
 }
