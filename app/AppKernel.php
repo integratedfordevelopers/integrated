@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Vihuvac\Bundle\RecaptchaBundle\VihuvacRecaptchaBundle(),
             new Gregwar\ImageBundle\GregwarImageBundle(),
 
+            new Integrated\Bundle\AssetBundle\IntegratedAssetBundle(),
             new Integrated\Bundle\ContentBundle\IntegratedContentBundle(),
             new Integrated\Bundle\FormTypeBundle\IntegratedFormTypeBundle(),
             new Integrated\Bundle\SolrBundle\IntegratedSolrBundle(),
@@ -39,6 +40,7 @@ class AppKernel extends Kernel
             new Integrated\Bundle\ChannelBundle\IntegratedChannelBundle(),
             new Integrated\Bundle\WebsiteBundle\IntegratedWebsiteBundle(),
             new Integrated\Bundle\MenuBundle\IntegratedMenuBundle(),
+            new Integrated\Bundle\WorkflowBundle\IntegratedWorkflowBundle(),
 
             new AppBundle\AppBundle(),
         );
