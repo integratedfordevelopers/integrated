@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Integrated\Bundle\ContentHistoryBundle\Event\ContentHistoryEvent;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -23,6 +25,18 @@ class WorkflowSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [];
+        return [
+            ContentHistoryEvent::INSERT => 'onChange',
+            ContentHistoryEvent::UPDATE => 'onChange',
+            ContentHistoryEvent::DELETE => 'onChange',
+        ];
+    }
+
+    /**
+     * @param ContentHistoryEvent $event
+     */
+    public function onChange(ContentHistoryEvent $event)
+    {
+
     }
 }

@@ -44,13 +44,20 @@ final class ContentHistoryEvent extends Event
     protected $document;
 
     /**
+     * @var array
+     */
+    protected $originalData;
+
+    /**
      * @param ContentHistory $contentHistory
      * @param ContentInterface $document
+     * @param array $originalData
      */
-    public function __construct(ContentHistory $contentHistory, ContentInterface $document)
+    public function __construct(ContentHistory $contentHistory, ContentInterface $document, array $originalData = [])
     {
         $this->contentHistory = $contentHistory;
         $this->document = $document;
+        $this->originalData = $originalData;
     }
 
     /**
@@ -62,10 +69,22 @@ final class ContentHistoryEvent extends Event
     }
 
     /**
+     * Get the current document (with changes).
+     *
      * @return ContentInterface
      */
     public function getDocument()
     {
         return $this->document;
+    }
+
+    /**
+     * Get the original data (without changes).
+     *
+     * @return array
+     */
+    public function getOriginalData()
+    {
+        return $this->originalData;
     }
 }

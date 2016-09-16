@@ -83,12 +83,30 @@ class ContentHistorySubscriber implements EventSubscriber
                 continue;
             }
 
-            $history = new $this->className($document->getId(), $action);
+            $history = new $this->className($document->getId(), $document->getContentType(), $action);
+            $originalData = $this->getOriginalData($dm, $document, $action);
 
-            $this->eventDispatcher->dispatch($action, new ContentHistoryEvent($history, $document));
+            $this->eventDispatcher->dispatch($action, new ContentHistoryEvent($history, $document, $originalData));
 
             $dm->persist($history);
             $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($classMetadata, $history);
         }
+    }
+
+    /**
+     * @param DocumentManager $dm
+     * @param ContentInterface $document
+     * @param string $action
+     * @return array
+     */
+    protected function getOriginalData(DocumentManager $dm, ContentInterface $document, $action)
+    {
+        if ($action == ContentHistoryEvent::INSERT) {
+            return [];
+        }
+
+        return (array) $dm->createQueryBuilder(get_class($document))->hydrate(false)
+            ->field('id')->equals($document->getId())
+            ->getQuery()->getSingleResult();
     }
 }

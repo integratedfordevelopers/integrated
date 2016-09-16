@@ -29,6 +29,13 @@ This bundle can be installed following these steps:
         );
     }
 
+### Import the routing ###
+
+    # app/config/routing.yml
+    integrated_content_history:
+        resource: @IntegratedContentHistoryBundle/Resources/config/routing.xml
+        prefix: "/admin"
+
 ## License ##
 This bundle is under the MIT license. See the complete license in the bundle:
 

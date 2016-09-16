@@ -20,5 +20,24 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  */
 class Workflow
 {
+    /**
+     * @var
+     */
+    protected $state;
 
+    /**
+     * @var
+     */
+    protected $assigned;
+
+    /**
+     * @var
+     */
+    protected $deadline;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
+    protected $comment;
 }

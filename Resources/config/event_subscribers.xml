@@ -44,9 +44,5 @@
             <tag name="integrated.content_history.event_subscriber" />
         </service>
 
-        <service id="integrated_content_history.event_listener.workflow_subscriber" class="%integrated_content_history.event_listener.workflow_subscriber.class%">
-            <tag name="integrated.content_history.event_subscriber" />
-        </service>
-
     </services>
 </container>

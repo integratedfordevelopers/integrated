@@ -11,17 +11,18 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
+use Integrated\Bundle\ContentHistoryBundle\Form\FormFactory;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ContentHistoryController extends Controller
+class ContentHistoryController
 {
     /**
      * @var TwigEngine
@@ -44,11 +45,22 @@ class ContentHistoryController extends Controller
     }
 
     /**
+     * @param ContentHistory $contentHistory
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showAction(ContentHistory $contentHistory)
+    {
+        return $this->templating->renderResponse('IntegratedContentHistoryBundle:ContentHistory:show.html.twig', [
+            'contentHistory' => $contentHistory,
+        ]);
+    }
+
+    /**
      * @param Content $content
      * @param int $limit
-     * @return string
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function historyAction(Content $content, $limit = 10)
+    public function historyAction(Content $content, $limit = 3)
     {
         return $this->templating->renderResponse('IntegratedContentHistoryBundle:ContentHistory:history.html.twig', [
             'documents' => $this->repository->findBy(

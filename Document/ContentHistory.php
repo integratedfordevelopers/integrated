@@ -42,6 +42,12 @@ class ContentHistory
      * @var string
      * @ODM\String
      */
+    protected $contentType;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
     protected $action;
 
     /**
@@ -70,11 +76,13 @@ class ContentHistory
 
     /**
      * @param string $contentId
+     * @param string $contentType
      * @param string $action
      */
-    public function __construct($contentId, $action)
+    public function __construct($contentId, $contentType, $action)
     {
         $this->contentId = $contentId;
+        $this->contentType = $contentType;
         $this->action = $action;
         $this->date = new DateTime();
     }
@@ -96,13 +104,11 @@ class ContentHistory
     }
 
     /**
-     * @param string $contentId
-     * @return $this
+     * @return string
      */
-    public function setContentId($contentId)
+    public function getContentType()
     {
-        $this->contentId = $contentId;
-        return $this;
+        return $this->contentType;
     }
 
     /**
@@ -111,16 +117,6 @@ class ContentHistory
     public function getAction()
     {
         return $this->action;
-    }
-
-    /**
-     * @param string $action
-     * @return $this
-     */
-    public function setAction($action)
-    {
-        $this->action = $action;
-        return $this;
     }
 
     /**

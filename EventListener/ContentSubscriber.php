@@ -74,7 +74,7 @@ class ContentSubscriber implements EventSubscriberInterface
         $document = $event->getDocument();
 
         $event->getContentHistory()->setChangeSet(
-            ArrayComparer::diff($this->getOriginalData($document), $this->persistenceBuilder->prepareData($document))
+            ArrayComparer::diff($event->getOriginalData(), $this->persistenceBuilder->prepareData($document))
         );
     }
 
@@ -84,18 +84,7 @@ class ContentSubscriber implements EventSubscriberInterface
     public function onDelete(ContentHistoryEvent $event)
     {
         $event->getContentHistory()->setChangeSet(
-            $this->getOriginalData($event->getDocument())
+            $event->getOriginalData()
         );
-    }
-
-    /**
-     * @param ContentInterface $document
-     * @return array
-     */
-    protected function getOriginalData(ContentInterface $document)
-    {
-        return (array) $this->documentManager->createQueryBuilder(get_class($document))->hydrate(false)
-            ->field('id')->equals($document->getId())
-            ->getQuery()->getSingleResult();
     }
 }
