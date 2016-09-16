@@ -128,16 +128,6 @@ class ContentHistory
     }
 
     /**
-     * @param DateTime $date
-     * @return $this
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function getChangeSet()
