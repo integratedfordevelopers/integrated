@@ -8,6 +8,13 @@
 
         <service id="integrated_solr.task.reference_queue_handler.mongodb_reference_subscriber" class="Integrated\Common\Solr\Task\Tasks\Doctrine\EventListener\MongoDBReferencesListener">
             <argument type="service" id="integrated_queue.solr_worker" />
+
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+        <service id="integrated_solr.task.content_type_queue_handler.mongodb_reference_subscriber" class="Integrated\Common\Solr\Task\Tasks\Doctrine\EventListener\MongoDBContentTypeListener">
+            <argument type="service" id="integrated_queue.solr_worker" />
+
             <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
         </service>
 
@@ -26,6 +33,14 @@
             <argument type="service" id="integrated_solr.indexer.job_factory" />
 
             <tag name="integrated_solr.task" class="Integrated\Common\Solr\Task\Tasks\Doctrine\MongoDBReferenceQueueTask" />
+        </service>
+
+        <service id="integrated_solr.task.content_type_queue_handler" class="Integrated\Common\Solr\Task\Tasks\ContentTypeQueueTaskHandler">
+            <argument type="service" id="integrated_solr.task.reference_queue_handler.mongodb_provider" />
+            <argument type="service" id="integrated_solr.queue.indexer" />
+            <argument type="service" id="integrated_solr.indexer.job_factory" />
+
+            <tag name="integrated_solr.task" class="Integrated\Common\Solr\Task\Tasks\ContentTypeQueueTask" />
         </service>
 
     </services>
