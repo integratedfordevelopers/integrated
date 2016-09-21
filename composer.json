@@ -25,7 +25,7 @@
         "phpunit/phpunit": "3.7.*"
     },
     "suggest": {
-      "integrated-content-bundle": "Allows use of the integrated_tinymce formtype"
+      "integrated-content-bundle": "Allows use of the integrated_editor formtype"
     },
     "autoload":{
         "psr-0":{
