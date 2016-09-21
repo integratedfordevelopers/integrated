@@ -163,9 +163,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Get the relations of the document
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getRelations()
     {
@@ -173,26 +171,21 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Set the relations of the document
-     *
-     * @param Collection $relations
-     * @return $this
+     * {@inheritdoc}
      */
     public function setRelations(Collection $relations)
     {
         foreach ($relations as $relation) {
-            // TODO: should we check if relation instanceof Relation
-            $this->addRelation($relation);
+            if ($relation instanceof Relation) {
+                $this->addRelation($relation);
+            }
         }
 
         return $this;
     }
 
     /**
-     * Add relation to relations collection
-     *
-     * @param Relation $relation
-     * @return $this
+     * {@inheritdoc}
      */
     public function addRelation(Relation $relation)
     {
@@ -206,22 +199,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Add reference to relations collection
-     *
-     * @todo not compatible with latest relations version
-     * @param ContentInterface $content
-     * @throws \Exception
-     */
-    public function addReference(ContentInterface $content)
-    {
-        throw new \Exception('Method not longer supported');
-    }
-
-    /**
-     * Remove relation from relations collection
-     *
-     * @param Relation $relation
-     * @return $this
+     * {@inheritdoc}
      */
     public function removeRelation(Relation $relation)
     {
@@ -230,8 +208,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @param $relationId
-     * @return Relation|false
+     * {@inheritdoc}
      */
     public function getRelation($relationId)
     {
@@ -261,6 +238,18 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
             return false;
         });
+    }
+
+    /**
+     * Add reference to relations collection
+     *
+     * @todo not compatible with latest relations version
+     * @param ContentInterface $content
+     * @throws \Exception
+     */
+    public function addReference(ContentInterface $content)
+    {
+        throw new \Exception('Method not longer supported');
     }
 
     /**
