@@ -4,10 +4,10 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-	<route id="integrated_storage_redirect" path="/uploads/{type}/{id}.{ext}" methods="GET">
+	<route id="integrated_storage_redirect" path="/storage/{type}/{id}.{ext}" methods="GET">
 		<default key="_controller">IntegratedStorageBundle:Redirect:object</default>
 
-		<requirement key="type">images|file|documents</requirement>
+		<requirement key="type">\s+</requirement>
 		<requirement key="ext">\s+</requirement>
 
 		<option key="expose">true</option>
