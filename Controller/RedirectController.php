@@ -71,8 +71,7 @@ class RedirectController
 
         // Everything ends here, no file found in the property
         throw new NotFoundHttpException(
-            'There is file %s found in the object',
-            $document->getId()
+            sprintf('There is no file found in the %s object', $document->getId())
         );
     }
 }

@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
+use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Storage\Database\DatabaseInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -65,5 +66,39 @@ class DoctrineODMDatabase implements DatabaseInterface
             // Use parameters for the database
             ->selectDatabase($this->container->getParameter('database_name'))
             ->selectCollection($collection);
+    }
+
+    /**
+     * @return FileInterface[]
+     */
+    public function getObjects()
+    {
+        // TODO: Implement getObjects() method.
+    }
+
+    /**
+     * @param FileInterface $file
+     */
+    public function saveObject(FileInterface $file)
+    {
+        // TODO: Implement saveObject() method.
+    }
+
+    /**
+     * Called occasionally to cleanup/flush the local entities from the manager
+     * Can be left empty if not needed (ODM and ORM require it for memory issues)
+     */
+    public function commit()
+    {
+        // TODO: Implement commit() method.
+    }
+
+    /**
+     * @param string $oldClass
+     * @param string $newClass
+     */
+    public function updateContentType($oldClass, $newClass)
+    {
+        // TODO: Implement updateContentType() method.
     }
 }

@@ -13,12 +13,12 @@ namespace Integrated\Bundle\StorageBundle\Form\Type;
 
 use ArrayObject;
 
-use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
+use Integrated\Bundle\ContentBundle\Form\Util\FormUtil;
 
+use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
-use Integrated\Bundle\StorageBundle\Form\Util\FormUtil;
+
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Form\AbstractType;
