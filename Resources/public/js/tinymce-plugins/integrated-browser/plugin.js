@@ -2,18 +2,17 @@ tinymce.create('tinymce.plugins.integratedBrowser', {
     init : function(editor, url){
         var image = function() {
             editor.windowManager.open({
-                title   : 'Browse Images',
+                title   : 'Browse images',
                 url     : url+'/browse.html',
                 width   : 800,
                 height  : 600
             }, {
-                mode: 'image',
-
+                mode: 'image'
             });
         };
         var video = function() {
             editor.windowManager.open({
-                title: 'Browse Video',
+                title: 'Browse video',
                 url: url + '/browse.html',
                 width: 800,
                 height: 600
