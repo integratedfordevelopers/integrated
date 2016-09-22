@@ -54,7 +54,6 @@ The routing needs to be to imported into the application to support usage in var
     integrated_storage:
         resource: "@IntegratedStorageBundle/Resources/config/routing/storage.xml"
         prefix: "/"
-        schemes: ['%request_scheme%']
 
 #### Decision map ####
 Additionally to protected entities from being stored in a public accessible resource a developer can configure filesystems for entities.  
