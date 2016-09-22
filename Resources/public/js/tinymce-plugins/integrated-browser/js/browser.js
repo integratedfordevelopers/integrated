@@ -260,11 +260,17 @@ $(document).ready(function() {
                 url: $(this).attr('href') + '&_format=iframe.html',
                 width: 800,
                 height: 600
+            }).on('close', function () {
+                refreshImages();
             });
         });
     }).error(function() {
         $('#add_image_wrapper').html('<p>Failed to retrieve content types.</p>');
     }).done(function (){
         $('#add_image_wrapper').css('opacity',1);
+    });
+
+    tinymce.activeEditor.windowManager.onClose.add(function() {
+
     });
 });
