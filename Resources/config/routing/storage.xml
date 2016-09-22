@@ -5,7 +5,7 @@
 		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
 	<route id="integrated_storage_file" path="/storage/{id}.{ext}" methods="GET">
-		<default key="_controller">IntegratedStorageBundle:Redirect:object</default>
+		<default key="_controller">integrated_storage.controller_file:fileAction</default>
 
 		<requirement key="ext">^[a-zA-Z-_0-9]+$</requirement>
 
