@@ -4,13 +4,13 @@ $(document).ready(function() {
      * tinimce instance from the top level window object
      * @type object
      */
-    var tinymce     = top.tinymce;
+    var tinymce = top.tinymce;
 
     /**
      * window modal object created by tinymce object
      * @type object
      */
-    var mcemodal    = tinymce.activeEditor.windowManager.getWindows()[0];
+    var mcemodal = tinymce.activeEditor.windowManager.getWindows()[0];
 
     /**
      * @type {Object}
@@ -21,19 +21,6 @@ $(document).ready(function() {
      * @type object|null
      */
     var previousCall = null;
-
-
-    /**
-     * Get the query parameter passed from the plugin loader
-     * @param  string name  query parameter name
-     * @return string       query parameter value
-     */
-    function getQuery(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
 
     /**
      * Render image lists into thumbnail container
@@ -59,10 +46,9 @@ $(document).ready(function() {
             temporaryThumb += thumbnailTemplate.replace(
                 /\{\{img-source\}\}/g,
                 Routing.generate(
-                    'app_storage_redirect',
+                    'integrated_storage_file',
                     {
                         id: images[i].id,
-                        type: images[i].type,
                         ext: images[i].extension
                     },
                     true
@@ -238,38 +224,47 @@ $(document).ready(function() {
     /**
      * Here the plugin begins
      */
-    $.ajax({
-        url: Routing.generate(
-            'integrated_content_content_media_types', {'filter': options['mode']}
-        ),
-        dataType: 'json',
-        success: function (images) {
+    $.get(Routing.generate('integrated_content_content_media_types', {'filter': options['mode']}), function (contentTypes) {
+        var buttonHtml = '';
 
-            var buttonHtml = '';
-            if (images.length == 1) {
-                var image = images[0];
-                buttonHtml = '<a target="_blank" href="'+image.path+'" class="btn btn-primary" role="button">Upload new '+image.name+'</a>';
-            } else if (images.length > 1) {
-                buttonHtml = '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                    'Upload new image <span class="caret"></span></button>' +
-                    '<ul class="dropdown-menu">';
-                for (var i in images) {
-                    var image = images[i];
-                    buttonHtml += '<li><a target="_blank" href="'+image.path+'">'+image.name+'</a></li>';
-                }
-                buttonHtml += '</ul>';
-            }
-            $('#button_wrap').html(buttonHtml);
+        if (contentTypes.length == 1) {
+            buttonHtml = '<a target="_blank" href="'+image.path+'" class="btn btn-primary btn-content-add" role="button">Upload new '+ contentTypes[0].name +'</a>';
+        } else if (contentTypes.length > 1) {
+            buttonHtml =
+                '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                'Upload new image <span class="caret"></span></button>' +
+                '<ul class="dropdown-menu">';
 
-            var searchHtml = '';
-            for (var i in images) {
-                var image = images[i];
-                searchHtml += '<option value="'+image.id+'">'+image.name+'</option>';
+            for (var i in contentTypes) {
+                buttonHtml += '<li><a target="_blank" class="btn-content-add" href="'+ contentTypes[i].path +'">'+ contentTypes[i].name +'</a></li>';
             }
 
-            $('#type-search').html(searchHtml);
-            refreshImages();
-            $('#add_image_wrapper').css('opacity',1);
+            buttonHtml += '</ul>';
         }
+
+        $('#button_wrap').html(buttonHtml);
+
+        var searchHtml = '';
+        for (var i in contentTypes) {
+            searchHtml += '<option value="'+ contentTypes[i].id +'">'+ contentTypes[i].name +'</option>';
+        }
+
+        $('#type-search').html(searchHtml);
+        refreshImages();
+
+        $('.btn-content-add').click(function(e) {
+            e.preventDefault();
+
+            tinymce.activeEditor.windowManager.open({
+                title: 'Add a new '+ $(this).text(),
+                url: $(this).attr('href') + '&_format=iframe.html',
+                width: 800,
+                height: 600
+            });
+        });
+    }).error(function() {
+        $('#add_image_wrapper').html('<p>Failed to retrieve content types.</p>');
+    }).done(function (){
+        $('#add_image_wrapper').css('opacity',1);
     });
 });
