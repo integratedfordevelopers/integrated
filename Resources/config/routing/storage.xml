@@ -4,11 +4,12 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-	<route id="integrated_storage_redirect" path="/storage/{type}/{id}.{ext}" methods="GET">
+	<route id="integrated_storage_file" path="/storage/{id}.{ext}" methods="GET">
 		<default key="_controller">IntegratedStorageBundle:Redirect:object</default>
 
-		<requirement key="type">\s+</requirement>
-		<requirement key="ext">\s+</requirement>
+		<requirement key="ext">^[a-zA-Z-_0-9]+$</requirement>
+
+		<default key="type">file</default>
 
 		<option key="expose">true</option>
 	</route>
