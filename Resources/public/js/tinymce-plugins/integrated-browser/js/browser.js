@@ -198,12 +198,12 @@ $(document).ready(function() {
                 renderImage(data.items);
                 renderPagination(data.pagination);
             }, 'json')
-                .error(function(){
-                    $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
-                })
-                .done(function() {
-                    $('#thumbnail-container').loader('hide');
-                });
+            .error(function(){
+                $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
+            })
+            .done(function() {
+                $('#thumbnail-container').loader('hide');
+            });
         }
     });
 
@@ -268,9 +268,5 @@ $(document).ready(function() {
         $('#add_image_wrapper').html('<p>Failed to retrieve content types.</p>');
     }).done(function (){
         $('#add_image_wrapper').css('opacity',1);
-    });
-
-    tinymce.activeEditor.windowManager.onClose.add(function() {
-
     });
 });
