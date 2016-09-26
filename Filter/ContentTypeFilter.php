@@ -26,7 +26,7 @@ class ContentTypeFilter
      */
     public static function match($class, $filter)
     {
-        if (null == $filter) {
+        if (null === $filter) {
             return true;
         }
 
