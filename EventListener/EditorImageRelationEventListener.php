@@ -35,10 +35,16 @@ class EditorImageRelationEventListener implements EventSubscriberInterface
     private $documentManager;
 
     /**
+     * @var HtmlRelation
+     */
+    private $htmlRelation;
+
+    /**
      * @param DocumentManager $documentManager
      */
     public function __construct(DocumentManager $documentManager)
     {
+        $this->htmlRelation = new HtmlRelation();
         $this->documentManager = $documentManager;
     }
 
@@ -75,8 +81,7 @@ class EditorImageRelationEventListener implements EventSubscriberInterface
             foreach ($event->getForm()->all() as $form) {
                 $type = $form->getConfig()->getType()->getInnerType();
                 if ($type instanceof EditorType) {
-                    $reader = new HtmlRelation();
-                    foreach ($reader->read($form->getData()) as $id) {
+                    foreach ($this->htmlRelation->read($form->getData()) as $id) {
                         if ($image = $this->documentManager->find(File::class, $id)) {
                             $relation->addReference($image);
                         }
