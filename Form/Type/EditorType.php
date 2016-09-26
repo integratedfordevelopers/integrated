@@ -26,7 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class EditorType extends AbstractType
 {
-    const RELATION = '__tiny_mce_image';
+    const RELATION = '__editor_image';
 
     /**
      * @var array
