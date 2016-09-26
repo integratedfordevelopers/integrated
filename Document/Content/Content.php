@@ -241,18 +241,6 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Add reference to relations collection
-     *
-     * @todo not compatible with latest relations version
-     * @param ContentInterface $content
-     * @throws \Exception
-     */
-    public function addReference(ContentInterface $content)
-    {
-        throw new \Exception('Method not longer supported');
-    }
-
-    /**
      * @param $relationType
      * @return array|bool
      */
