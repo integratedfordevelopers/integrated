@@ -11,12 +11,7 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Bundle\ContentBundle\Form\Util\FormUtil;
-use Integrated\Bundle\FormTypeBundle\Form\EventSubscriber\TinyMCEEventSubscriber;
-
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -46,8 +41,8 @@ class EditorType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars = array_merge($view->vars, ['content_styles' => $this->contentStyles]);
         $view->vars['mode'] = $options['mode'];
+        $view->vars['content_styles'] = $this->contentStyles;
     }
 
     /**
@@ -56,7 +51,7 @@ class EditorType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'mode' => "default",
+            'mode' => 'default',
         ]);
 
         $resolver->setAllowedTypes([
