@@ -11,7 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
-use Integrated\Common\Content\Document\Storage\FileInterface;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
+
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Storage\Database\DatabaseInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -39,7 +41,12 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function getRows()
     {
-        return $this->getCollection()
+        return $this->container->get('doctrine_mongodb.odm.default_document_manager')
+            ->getConnection()
+            ->selectCollection(
+                $this->container->get('doctrine_mongodb.odm.default_configuration')->getDefaultDB(),
+                'content'
+            )
             ->find()
             ->getMongoCursor()
             ->batchSize(100)
@@ -57,48 +64,25 @@ class DoctrineODMDatabase implements DatabaseInterface
     }
 
     /**
-     * @param string $collection
-     * @return \Doctrine\MongoDB\Collection
-     */
-    protected function getCollection($collection = 'content')
-    {
-        return $this->container->get('doctrine_mongodb.odm.default_connection')
-            // Use parameters for the database
-            ->selectDatabase($this->container->getParameter('database_name'))
-            ->selectCollection($collection);
-    }
-
-    /**
-     * @return FileInterface[]
+     * @return ContentInterface[]
      */
     public function getObjects()
     {
-        // TODO: Implement getObjects() method.
+        return $this->container->get('doctrine.odm.mongodb.document_manager')
+            ->getUnitOfWork()
+            ->getDocumentPersister(Content::class)
+            ->loadAll()
+            ->batchSize(100)
+            ->timeout(-1)
+        ;
     }
 
     /**
-     * @param FileInterface $file
+     * @param object $object
      */
-    public function saveObject(FileInterface $file)
+    public function saveObject($object)
     {
-        // TODO: Implement saveObject() method.
-    }
-
-    /**
-     * Called occasionally to cleanup/flush the local entities from the manager
-     * Can be left empty if not needed (ODM and ORM require it for memory issues)
-     */
-    public function commit()
-    {
-        // TODO: Implement commit() method.
-    }
-
-    /**
-     * @param string $oldClass
-     * @param string $newClass
-     */
-    public function updateContentType($oldClass, $newClass)
-    {
-        // TODO: Implement updateContentType() method.
+        return $this->container->get('doctrine.odm.mongodb.document_manager')
+            ->persist($object);
     }
 }

@@ -12,9 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\Storage\Reflection\Document\Property;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations\EmbedMany;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\PropertyInterface;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations\EmbedOne;
+use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\PropertyInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
