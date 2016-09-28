@@ -9,8 +9,6 @@
 
 		<requirement key="ext">^[a-zA-Z-_0-9]+$</requirement>
 
-		<default key="type">file</default>
-
 		<option key="expose">true</option>
 	</route>
 
