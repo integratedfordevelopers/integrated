@@ -59,7 +59,12 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function saveRow(array $row)
     {
-        return $this->getCollection()
+        return $this->container->get('doctrine_mongodb.odm.default_connection')
+            // Use parameters for the database
+            ->selectCollection(
+                $this->container->get('doctrine_mongodb.odm.default_configuration')->getDefaultDB(),
+                'content'
+            )
             ->update(['_id' => $row['_id']], $row);
     }
 
