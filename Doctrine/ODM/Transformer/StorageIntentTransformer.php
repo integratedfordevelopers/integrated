@@ -74,6 +74,30 @@ class StorageIntentTransformer
                         $this->decision->getFilesystems($document)
                     )
                 );
+            } elseif (is_array($value)) {
+                // Only change the property whenever there's an embedded intent upload since changing triggers stuff
+                $changes = 0;
+
+                // Johnny Walker over the values
+                foreach ($value as $key => $object) {
+                    // Check if we want it
+                    if ($object instanceof StorageIntentUpload) {
+                        // Replace the value
+                        $value[$key] = $this->manager->write(
+                            new UploadedFileReader($object->getUploadedFile()),
+                            // Use the decision map to place the file in the correct (public or private) file systems
+                            $this->decision->getFilesystems($document)
+                        );
+
+                        // Thus we've got changes
+                        $changes++;
+                    }
+                }
+
+                // Update the document
+                if ($changes) {
+                    $document->set($property->getPropertyName(), $value);
+                }
             }
         }
     }

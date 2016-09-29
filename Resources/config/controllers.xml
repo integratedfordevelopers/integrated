@@ -6,13 +6,13 @@
 
     <parameters>
 
-        <parameter key="integrated_storage.controller_redirect">Integrated\Bundle\StorageBundle\Controller\RedirectController</parameter>
+        <parameter key="integrated_storage.controller_file">Integrated\Bundle\StorageBundle\Controller\FileController</parameter>
 
     </parameters>
 
     <services>
 
-        <service id="integrated_storage.controller_redirect" class="%integrated_storage.controller_redirect%">
+        <service id="integrated_storage.controller_file" class="%integrated_storage.controller_file%">
             <argument type="service" id="integrated_storage.reflection_cache" />
         </service>
 

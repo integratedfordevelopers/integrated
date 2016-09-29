@@ -29,9 +29,10 @@ class Image extends \Faker\Provider\Image
      * @param null|string $category
      * @param bool $randomize
      * @param null|string $word
+     * @param bool $gray
      * @return string
      */
-    public static function imageUrl($width = 640, $height = 480, $category = null, $randomize = true, $word = null)
+    public static function imageUrl($width = 640, $height = 480, $category = null, $randomize = true, $word = null, $gray = false)
     {
         $url = "http://wospixel.e-activesites.nl/{$width}/{$height}/";
 

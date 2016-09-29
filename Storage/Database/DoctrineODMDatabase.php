@@ -11,8 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
-use Integrated\Bundle\ContentBundle\Document\Content\File;
-use Integrated\Common\Content\Document\Storage\FileInterface;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
+
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Storage\Database\DatabaseInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -38,29 +39,14 @@ class DoctrineODMDatabase implements DatabaseInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjects()
-    {
-        return $this->container->get('doctrine_mongodb.odm.document_manager')
-            ->getUnitOfWork()
-            ->getDocumentPersister(File::class)
-            ->loadAll();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveObject(FileInterface $file)
-    {
-        $this->container->get('doctrine_mongodb.odm.document_manager')
-            ->persist($file);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getRows()
     {
-        return $this->getCollection()
+        return $this->container->get('doctrine_mongodb.odm.default_document_manager')
+            ->getConnection()
+            ->selectCollection(
+                $this->container->get('doctrine_mongodb.odm.default_configuration')->getDefaultDB(),
+                'content'
+            )
             ->find()
             ->getMongoCursor()
             ->batchSize(100)
@@ -78,41 +64,26 @@ class DoctrineODMDatabase implements DatabaseInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return ContentInterface[]
      */
-    public function updateContentType($oldClass, $newClass)
+    public function getObjects()
     {
-        $contentType = $this->getCollection('content_type')
-            ->find(['class' => $oldClass]);
-
-        foreach ($contentType as $row) {
-            $row['class'] = $newClass;
-            $this->getCollection('content_type')
-                ->update(
-                    ['_id' => $row['_id']],
-                    $row
-                );
-        }
+        return $this->container->get('doctrine.odm.mongodb.document_manager')
+            ->getUnitOfWork()
+            ->getDocumentPersister(Content::class)
+            ->loadAll()
+            ->batchSize(100)
+            ->timeout(-1)
+        ;
     }
 
     /**
-     * {@inheritdoc}
+     * @param object $object
      */
-    public function commit()
+    public function saveObject($object)
     {
-        $this->container->get('doctrine_mongodb.odm.document_manager')->flush();
-        $this->container->get('doctrine_mongodb.odm.document_manager')->clear();
-    }
-
-    /**
-     * @param string $collection
-     * @return \Doctrine\MongoDB\Collection
-     */
-    protected function getCollection($collection = 'content')
-    {
-        return $this->container->get('doctrine_mongodb.odm.default_connection')
-            // Use parameters for the database
-            ->selectDatabase($this->container->getParameter('database_name'))
-            ->selectCollection($collection);
+        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $dm->persist($object);
+        $dm->flush($object);
     }
 }

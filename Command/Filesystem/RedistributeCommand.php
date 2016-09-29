@@ -11,12 +11,20 @@
 
 namespace Integrated\Bundle\StorageBundle\Command\Filesystem;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
+use Doctrine\Common\Util\ClassUtils;
+use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
+use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
+use Integrated\Bundle\StorageBundle\Storage\Reflection\PropertyReflection;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Database\DatabaseInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -43,6 +51,11 @@ class RedistributeCommand extends Command
      * @var ManagerInterface
      */
     protected $storage;
+
+    /**
+     * @var PropertyReflection[]
+     */
+    protected $reflectionClasses;
 
     /**
      * @param DatabaseInterface $database
@@ -86,19 +99,65 @@ class RedistributeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln('Starting redistribution of the filesystem');
+
+        // Get the filesystems (all if none specified )
         $filesystems = (new FilesystemValidation($this->registry))
-            ->getValidFilesystems($input->getArgument('filesystems'));
+            ->getValidFilesystems(new ArrayCollection($input->getArgument('filesystems')));
 
-        foreach ($this->database->getObjects() as $i => $file) {
-            $file->setFile($this->storage->copy($file->getFile(), $filesystems));
-            $this->database->saveObject($file);
+        // Fetch all data from database
+        $data = $this->database->getObjects();
 
-            if (0 == ($i % 100)) {
-                $this->database->commit();
+        // Barry progress
+        $progress = new ProgressBar($output, $data->count());
+        $progress->start();
+        $progress->setFormat('%current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% %memory:6s%');
+        $progress->setRedrawFrequency(75);
+
+        foreach ($data as $row) {
+            // This will be used to determine if we need to update the object
+            $document = new DoctrineDocument($row);
+
+            // Loop trough the documents properties that might contain a file
+            foreach ($this->getReflectionClass(ClassUtils::getClass($row))->getTargetProperties() as $property) {
+                /** @var StorageInterface|bool $file */
+                if ($file = $document->get($property->getPropertyName())) {
+                    // Update the document
+                    $document->set(
+                        $property->getPropertyName(),
+                        // Let the manager decide which filesystems will be affected
+                        $this->storage->write(
+                            new MemoryReader($this->storage->read($file), $file->getMetadata()),
+                            $filesystems
+                        )
+                    );
+                }
             }
+
+            // Update the field in the database
+            if ($document->hasUpdates()) {
+                $this->database->saveObject($row);
+            }
+
+            // Notify barry about our progress
+            $progress->advance();
         }
 
-        // Any left overs from the party
-        $this->database->commit();
+        // Let barry and the user go
+        $progress->finish();
+        $output->writeln('Done!');
+    }
+
+    /**
+     * @param string $class
+     * @return PropertyReflection
+     */
+    protected function getReflectionClass($class)
+    {
+        if (isset($this->reflectionClasses[$class])) {
+            return $this->reflectionClasses[$class];
+        }
+
+        return $this->reflectionClasses[$class] = new PropertyReflection($class);
     }
 }

@@ -25,7 +25,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class RedirectController
+class FileController
 {
     /**
      * @var ReflectionCacheInterface
@@ -44,7 +44,7 @@ class RedirectController
      * @param Content $document
      * @return RedirectResponse
      */
-    public function objectAction(Content $document)
+    public function fileAction(Content $document)
     {
         // Read properties in the document containing a storage object
         foreach ($this->reflection->getPropertyReflectionClass(get_class($document))->getTargetProperties() as $property) {
@@ -71,8 +71,7 @@ class RedirectController
 
         // Everything ends here, no file found in the property
         throw new NotFoundHttpException(
-            'There is file %s found in the object',
-            $document->getId()
+            sprintf('There is no file found in the %s object', $document->getId())
         );
     }
 }

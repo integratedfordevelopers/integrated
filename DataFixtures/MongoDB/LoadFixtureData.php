@@ -14,12 +14,15 @@ namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
+use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
 
-use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Faker\StorageTrait;
+use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\FileExtension;
+use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\ImageExtension;
+
 use Nelmio\Alice\Fixtures;
 
 use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -28,7 +31,9 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class LoadFixtureData extends ContainerAware implements FixtureInterface
 {
-    use StorageTrait;
+    use FileExtension;
+    use ImageExtension;
+    use ClassFieldsExtension;
 
     /**
      * @inheritdoc
@@ -53,5 +58,13 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
         }
 
         Fixtures::load($files, $manager, ['providers' => [$this]]);
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 }

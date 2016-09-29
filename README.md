@@ -45,7 +45,15 @@ The bundle makes use of *knplabs/knp-gaufrette-bundle* for configuration and a f
             foo:
                 public: /uploads/documents
     
-The StorageBundle places the files on all known filesystems when no decision mapping exists. The order defined in the configuration will be used to determine its primary path. When a filesystem has no resolver storage (for protected files) the developer must write an own implementation to give access to file (see **Protecting files** section). The filesystems (foo above) in the *knp_gaufrette* configuration are linked to the *integrated_storage* configuration. Based on the key(s) a resolver or decision map entry is linked to a filesystem.  
+The StorageBundle places the files on all known filesystems when no decision mapping exists. The order defined in the configuration will be used to determine its primary path. When a filesystem has no resolver storage (for protected files) the developer must write an own implementation to give access to file (see **Protecting files** section). The filesystems (foo above) in the *knp_gaufrette* configuration are linked to the *integrated_storage* configuration. Based on the key(s) a resolver or decision map entry is linked to a filesystem.
+  
+### Routing ###
+The routing needs to be to imported into the application to support usage in various Integrated components. 
+ 
+    // app/routing.yml
+    integrated_storage:
+        resource: "@IntegratedStorageBundle/Resources/config/routing/storage.xml"
+        prefix: "/"
 
 #### Decision map ####
 Additionally to protected entities from being stored in a public accessible resource a developer can configure filesystems for entities.  
@@ -112,15 +120,6 @@ Now you can use the following in your *alice/Fixtures.yml* file:
     <createFile($this->fake('image', '', '/tmp', 300, 400, 'business'), 'name')>
 	# Create a storage object (file) (might be slower because it uses lorempixel)
     <createStorage($this->fake('image', '', '/tmp', 300, 400, 'city'))>
-
-### Redirect controller ###
-
-A basic redirect module is provided to redirect documents containing a storage object to the storage path. In some cases you might use this to prevent a backwards compatibility break in your project when migrating to the storage bundle. A basic route might look as follows; 
-
-	app_storage_redirect:
-	    path: /uploads/{type}/{id}.{ext}
-	    defaults: { _controller: integrated_storage.controller_redirect:objectAction }
-	    requirements: { "_type": "images|file|documents", "_ext": "\s+" }
 
 Depending on your implementation you can remove the type and extension requirements or as a parameter in whole. 
 

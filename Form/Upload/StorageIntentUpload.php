@@ -16,12 +16,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
+ * The parent of this class is used within the constraint validation of the Symfony form component.
+ *
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class StorageIntentUpload implements StorageInterface
+class StorageIntentUpload extends File implements StorageInterface
 {
     /**
      * @var UploadedFile
@@ -41,6 +44,8 @@ class StorageIntentUpload implements StorageInterface
     {
         $this->original = $original;
         $this->uploadedFile = $uploadedFile;
+
+        parent::__construct($uploadedFile->getPathname());
     }
 
     /**
