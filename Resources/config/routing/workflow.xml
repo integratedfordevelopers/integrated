@@ -17,10 +17,6 @@
 		<option key="expose">true</option>
 	</route>
 
-<route id="integrated_workflow_test" path="/test">
-	<default key="_controller">IntegratedWorkflowBundle:Workflow:test</default>
-</route>
-
 	<route id="integrated_workflow_new_rest" path="/" methods="POST">
 		<default key="_controller">IntegratedWorkflowBundle:Workflow:new</default>
 	</route>

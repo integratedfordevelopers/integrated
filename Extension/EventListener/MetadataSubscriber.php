@@ -21,49 +21,49 @@ use Integrated\Common\Content\Extension\ExtensionInterface;
  */
 class MetadataSubscriber implements MetadataSubscriberInterface
 {
-	/**
-	 * @var ExtensionInterface
-	 */
-	private $extension;
-
-	/**
-	 * @param ExtensionInterface $extension
-	 */
-	public function __construct(ExtensionInterface $extension)
-	{
-		$this->extension = $extension;
-	}
+    /**
+     * @var ExtensionInterface
+     */
+    private $extension;
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public static function getSubscribedEvents()
-	{
-		return [
-			Events::METADATA => 'process',
-		];
-	}
+     * @param ExtensionInterface $extension
+     */
+    public function __construct(ExtensionInterface $extension)
+    {
+        $this->extension = $extension;
+    }
 
     /**
-   	 * {@inheritdoc}
-   	 */
-	public function getExtension()
-	{
-		return $this->extension;
-	}
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            Events::METADATA => 'process',
+        ];
+    }
 
-	/**
-	 * @param MetadataEvent $event
-	 */
-	public function process(MetadataEvent $event)
-	{
-		$metadata = $event->getMetadata();
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
 
-		$attr = $metadata->newOption('workflow');
+    /**
+     * @param MetadataEvent $event
+     */
+    public function process(MetadataEvent $event)
+    {
+        $metadata = $event->getMetadata();
 
-		$attr->setType('workflow_definition_choice');
-		$attr->setOption('choice_data', 'scalar');
+        $attr = $metadata->newOption('workflow');
 
-		$metadata->addOption($attr);
-	}
+        $attr->setType('workflow_definition_choice');
+        $attr->setOption('choice_data', 'scalar');
+
+        $metadata->addOption($attr);
+    }
 }

@@ -1,28 +1,40 @@
 {% extends 'IntegratedWorkflowBundle::layout.html.twig' %}
 
-{% block content %}
-
-    <div class="content_columns_holder">
-        <div class="content_column_inner">
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
             <ol class="breadcrumb">
                 <li>
                     <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
                 </li>
                 <li class="active">{% trans %}Delete{% endtrans %}</li>
             </ol>
-
-            <div class="page-header">
-                <h1>{% trans %}Delete{% endtrans %} <small>{% trans %}workflow{% endtrans %}</small></h1>
-            </div>
-
-            <div class="row">
-                <div class="col-md-9">
-                    <p>
-                        {% trans with {'%name%':  workflow.name} %}You are about to delete the workflow "%name%", click the delete button below to confirm the action.{% endtrans %}
-                    </p>
-                    {{ form(form) }}
-                </div>
-            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="main-title font-regular">
+        {% block contentTitle %}
+            {% trans %}Delete{% endtrans %} Workflow
+        {% endblock %}
+        <i class="integrate-icon-edit"></i>
+    </h1>
+
+    <div class="row">
+
+        <div class="col-md-12">
+            <section class="section-white section-padding section-shadow section-radius">
+
+                <p>
+                    {% trans with {'%name%':  workflow.name} %}You are about to delete the workflow "%name%", click the delete button below to confirm the action.{% endtrans %}
+                </p>
+                {{ form(form) }}
+
+            </section>
+        </div>
+
+    </div>
+
 {% endblock %}

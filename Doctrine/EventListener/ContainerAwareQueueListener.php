@@ -18,39 +18,39 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ContainerAwareQueueListener extends QueueListener
 {
-	/**
-	 * @var ContainerInterface
-	 */
-	protected $container;
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
-	/**
-	 * @var string
-	 */
-	protected $service;
+    /**
+     * @var string
+     */
+    protected $service;
 
-	/**
-	 * @param ContainerInterface $container
-	 * @param string $service the name of the queue service to use
-	 */
-	public function __construct(ContainerInterface $container, $service)
-	{
-		$this->container = $container;
-		$this->service = $service;
-	}
+    /**
+     * @param ContainerInterface $container
+     * @param string             $service the name of the queue service to use
+     */
+    public function __construct(ContainerInterface $container, $service)
+    {
+        $this->container = $container;
+        $this->service = $service;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getQueue()
-	{
-		$queue = parent::getQueue();
+    /**
+     * {@inheritdoc}
+     */
+    public function getQueue()
+    {
+        $queue = parent::getQueue();
 
-		if (null === $queue) {
-			$queue = $this->container->get($this->service);
+        if (null === $queue) {
+            $queue = $this->container->get($this->service);
 
-			$this->setQueue($queue);
-		}
+            $this->setQueue($queue);
+        }
 
-		return $queue;
-	}
+        return $queue;
+    }
 }
