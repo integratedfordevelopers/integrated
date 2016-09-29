@@ -14,23 +14,20 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ * @author Vasil Pascal <developer.optimum@gmail.com>
  */
-class ImageType extends AbstractType
+class ChannelDomainType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getParent()
     {
-        return 'integrated_image';
+        return 'text';
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'integrated_file';
-    }
-}
+	 * {@inheritDoc}
+	 */
+	public function getName()
+	{
+		return 'channel_domain';
+	}
+} 

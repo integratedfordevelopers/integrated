@@ -1,4 +1,22 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('integrated_content_content_index', { 'contenttypes': [ type.id ] }) }}">{{ type.name|trans }}</a>
+                </li>
+                {% block crumbs_items %}
+                    <li class="active">{% trans %}Edit{% endtrans %}</li>
+                {% endblock %}
+            </ol>
+        </div>
+    </div>
+{% endblock %}
 {% block content %}
     {% block filters %}
     <div class="filters_row">
@@ -24,11 +42,14 @@
     </div>
     {% endblock %}
 
-<h1 class="main-title font-regular">
-    {% block pageTitle %}
-        {% trans %}Edit{% endtrans %} {{ type.name }} <i class="integrate-icon-edit"></i>
-    {% endblock %}
-</h1>
+{% block main_title %}
+    <h1 class="main-title font-regular">
+        {% block pageTitle %}
+            {% trans %}Edit{% endtrans %} {{ type.name }}
+        {% endblock %}
+        <i class="integrate-icon-edit"></i>
+    </h1>
+{% endblock %}
 
 <div class="row">
 
@@ -232,13 +253,26 @@
         };
 
         loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id}) }}');
+
+        window.addEventListener('message', function(event) {
+            // also resize modal if relations are changed
+            var iframe = $('[data-id="' + event.data.resizeModal + '"]');
+            var height = iframe.contents().height();
+            var margin = 120;
+
+            if (height > ($(window).height() - margin)) {
+                height = $(window).height() - margin;
+            }
+
+            iframe.attr('height', height);
+        }, false);
     });
 </script>
-
-{% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
-    <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
-
+    {% if editable %}
+        {% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endif %}
 {% endif %}
 
 {% javascripts "@IntegratedUserBundle/Resources/public/js/visible_user_form.js" %}

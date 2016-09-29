@@ -11,7 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Image;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Filter\ContentTypeFilter;
+use Integrated\Bundle\ContentBundle\Provider\MediaProvider;
 use Symfony\Component\Filesystem\LockHandler;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Traversable;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -488,6 +493,7 @@ class ContentController extends Controller
         }
 
         return array(
+            'editable' => true,
             'type' => $type->getType(),
             'form' => $form->createView(),
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
@@ -566,6 +572,8 @@ class ContentController extends Controller
                         $subscriber->setPriority($queue::PRIORITY_HIGH);
                     }
 
+                    // $dispatcher->dispatch(Event::PRE_FLUSH, new ArgSet($entity, $form));
+
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                     $dm = $this->get('doctrine_mongodb')->getManager();
                     $dm->flush();
@@ -638,6 +646,7 @@ class ContentController extends Controller
         }
 
         return array(
+            'editable' => $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content),
             'type'    => $type->getType(),
             'form'    => $form->createView(),
             'content' => $content,
@@ -1039,6 +1048,25 @@ class ContentController extends Controller
     }
 
     /**
+     * @return JsonResponse
+     */
+    public function mediaTypesAction($filter = null)
+    {
+        $output = [];
+
+        /** @var Image $image */
+        foreach ($this->container->get('integrated_content.provider.media')->getContentTypes($filter) as $contentType) {
+            $output[] = [
+                'id' => $contentType->getId(),
+                'name' => $contentType->getName(),
+                'path' => $this->generateUrl('integrated_content_content_new', ['type' => $contentType->getId()]),
+            ];
+        }
+
+        return new JsonResponse($output);
+    }
+
+    /**
      * @param FormTypeInterface $type
      * @param ContentInterface  $content
      * @param Request           $request
@@ -1065,10 +1093,15 @@ class ContentController extends Controller
     protected function createEditForm(FormTypeInterface $type, ContentInterface $content, array $locking)
     {
         $form = $this->createForm($type, $content,[
-            'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
+            'action' => $this->generateUrl(
+                'integrated_content_content_edit',
+                    $locking['lock'] ?
+                        ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]
+                        :
+                        ['id' => $content->getId()]
+            ),
             'method' => 'PUT',
             'attr' => ['class' => 'content-form'],
-
             // don't display error's when the content is locked as the user can't save in the first place
             'validation_groups' => $locking['locked'] ? false : null
         ]);
@@ -1077,12 +1110,12 @@ class ContentController extends Controller
 
         // load a different set of buttons based on the permissions and locking state
 
-        if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
+        if (!$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content)) {
             return $form->add('actions', 'content_actions', ['buttons' => ['back']]);
         }
 
         if ($locking['locked']) {
-            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'reload_changed', 'cancel']]);
+            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'cancel']]);
         }
 
         return $form->add('actions', 'content_actions', ['buttons' => ['save', 'cancel']]);

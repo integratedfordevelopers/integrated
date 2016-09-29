@@ -1,5 +1,4 @@
 {% use "IntegratedFormTypeBundle:Form:form_div_layout.html.twig" %}
-{% use "IntegratedBlockBundle:Form:form_div_layout.html.twig" %}
 
 {% block content_type_field_collection_widget %}
 {% spaceless %}
@@ -133,13 +132,26 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% if form.vars.data.pathname|default %}
-                    <a href="{{ form.vars.data.pathname }}" target="_blank" style="display: block; margin-bottom: 6px;">
+                {% set preview = form.vars.preview|default %}
+                {% if preview %}
+                    <a href="{{ preview }}" target="_blank" style="display: block; margin-bottom: 6px;">
                         {% trans %}Download{% endtrans %}
                     </a>
                 {% endif %}
-                {{ form_widget(form) }}
-                {{ form_errors(form) }}
+                {{ form_widget(form.file) }}
+                {% if preview %}
+                    <div class="checkbox">
+                        <label>
+                            {{ form_widget(form.remove) }}
+                            {%  if (form.remove.vars.label) %}
+                                {{ form.remove.vars.label }}
+                            {% else %}
+                                {% trans %}Remove{% endtrans %}
+                            {%  endif %}
+                        </label>
+                    </div>
+                {% endif %}
+                {{ form_errors(form.file) }}
             </div>
         </div>
     {% endspaceless %}
@@ -150,11 +162,24 @@
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
             {{ form_label(form) }}
             <div class="col-sm-8">
-                {% if form.vars.data.pathname|default %}
-                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ form.vars.data.pathname }}" />
+                {% set preview = form.vars.preview|default %}
+                {% if preview %}
+                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ image(preview) }}" />
                 {% endif %}
-                {{ form_widget(form) }}
-                {{ form_errors(form) }}
+                {{ form_widget(form.file) }}
+                {% if preview %}
+                    <div class="checkbox">
+                        <label>
+                            {{ form_widget(form.remove) }}
+                            {%  if (form.remove.vars.label) %}
+                                {{ form.remove.vars.label }}
+                            {% else %}
+                                {% trans %}Remove{% endtrans %}
+                            {%  endif %}
+                        </label>
+                    </div>
+                {% endif %}
+                {{ form_errors(form.file) }}
             </div>
         </div>
     {% endspaceless %}
@@ -353,6 +378,16 @@
 {% endspaceless %}
 {% endblock %}
 
+{% block channel_domain_widget %}
+    {% spaceless %}
+        {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' form-control')|trim }) %}
+        <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        <label>
+            <input class="primary-domain-radio" type="radio" name="check_primary_domain" disabled> {{ 'Primary domain'|trans }}
+        </label>
+    {% endspaceless %}
+{% endblock channel_domain_widget %}
+
 {% block integrated_content_actions_row %}
     {% spaceless %}
         <section class="section-white prefooter-holder">
@@ -361,4 +396,14 @@
             </div><!-- container -->
         </section>
     {% endspaceless %}
+{% endblock %}
+
+{% block integrated_primary_channel_row %}
+    <div class="hidden">
+        {{ form_widget(form) }}
+    </div>
+
+    {% integrated_javascripts mode='append'
+    'bundles/integratedcontent/js/primary_channel.js' %}
+    {% endintegrated_javascripts %}
 {% endblock %}

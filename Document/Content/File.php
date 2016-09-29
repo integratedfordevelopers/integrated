@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;

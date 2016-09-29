@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
@@ -35,7 +36,11 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document(collection="content", indexes={@ODM\Index(keys={"class"="asc"})}, repositoryClass="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository")
+ * @ODM\Document(collection="content", repositoryClass="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository")
+ * @ODM\Indexes({
+ *   @ODM\Index(keys={"class"="asc"}),
+ *   @ODM\Index(keys={"relations.references.$id"="asc", "class"="asc"})
+ * })
  * @ODM\InheritanceType("SINGLE_COLLECTION")
  * @ODM\DiscriminatorField(fieldName="class")
  * @ODM\HasLifecycleCallbacks
@@ -108,6 +113,12 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     protected $channels;
 
     /**
+     * @var Channel
+     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
+     */
+    protected $primaryChannel;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -159,9 +170,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Get the relations of the document
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getRelations()
     {
@@ -169,26 +178,21 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Set the relations of the document
-     *
-     * @param Collection $relations
-     * @return $this
+     * {@inheritdoc}
      */
     public function setRelations(Collection $relations)
     {
         foreach ($relations as $relation) {
-            // TODO: should we check if relation instanceof Relation
-            $this->addRelation($relation);
+            if ($relation instanceof Relation) {
+                $this->addRelation($relation);
+            }
         }
 
         return $this;
     }
 
     /**
-     * Add relation to relations collection
-     *
-     * @param Relation $relation
-     * @return $this
+     * {@inheritdoc}
      */
     public function addRelation(Relation $relation)
     {
@@ -202,22 +206,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Add reference to relations collection
-     *
-     * @todo not compatible with latest relations version
-     * @param ContentInterface $content
-     * @throws \Exception
-     */
-    public function addReference(ContentInterface $content)
-    {
-        throw new \Exception('Method not longer supported');
-    }
-
-    /**
-     * Remove relation from relations collection
-     *
-     * @param Relation $relation
-     * @return $this
+     * {@inheritdoc}
      */
     public function removeRelation(Relation $relation)
     {
@@ -226,8 +215,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @param $relationId
-     * @return Relation|false
+     * {@inheritdoc}
      */
     public function getRelation($relationId)
     {
@@ -281,14 +269,23 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @param string $relationId
+     * @param bool $published
      * @return ArrayCollection
      */
-    public function getReferencesByRelationId($relationId)
+    public function getReferencesByRelationId($relationId, $published = true)
     {
         foreach ($this->relations as $relation) {
             if ($relation instanceof Relation) {
                 if ($relation->getRelationId() == $relationId) {
-                    return $relation->getReferences();
+                    if ($references = $relation->getReferences()) {
+                        if (true !== $published) {
+                            return $references;
+                        }
+
+                        return $references->filter(function ($content) {
+                            return $content instanceof Content ? $content->isPublished() : true;
+                        });
+                    }
                 }
             }
         }
@@ -298,11 +295,12 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
 
     /**
      * @param string $relationId
+     * @param bool $published
      * @return Content|null
      */
-    public function getReferenceByRelationId($relationId)
+    public function getReferenceByRelationId($relationId, $published = true)
     {
-        if ($references = $this->getReferencesByRelationId($relationId)) {
+        if ($references = $this->getReferencesByRelationId($relationId, $published)) {
             return $references->first();
         }
     }
@@ -509,6 +507,28 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function removeChannel(ChannelInterface $channel)
     {
         $this->channels->removeElement($channel);
+        return $this;
+    }
+
+    /**
+     * @return Channel|null
+     */
+    public function getPrimaryChannel()
+    {
+        if (null === $this->primaryChannel && $this->channels->count()) {
+            return $this->channels->first();
+        }
+
+        return $this->primaryChannel;
+    }
+
+    /**
+     * @param Channel|null $primaryChannel
+     * @return $this
+     */
+    public function setPrimaryChannel(Channel $primaryChannel = null)
+    {
+        $this->primaryChannel = $primaryChannel;
         return $this;
     }
 
