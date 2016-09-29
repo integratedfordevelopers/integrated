@@ -11,37 +11,29 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Class TinyMCEType
- * @package Integrated\Bundle\FormTypeBundle\Form\Type
+ * @author Johnny Borg <johnny@e-active.nl>
+ * @deprecated
  */
-class TinyMCEType extends AbstractType
+class TinyMCEType extends EditorType
 {
-    /** @var array */
-    private $contentStyles;
-
     /**
-     * TinyMCEType constructor.
-     * @param array $contentStyles
+     * @param OptionsResolverInterface $resolver
      */
-    public function __construct(array $contentStyles)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $this->contentStyles = $contentStyles;
-    }
+        @trigger_error(
+            sprintf(
+                'The formtype %s is deprecated in favour of %s and will be removed in the future',
+                self::getName(),
+                parent::getName()
+            ),
+            E_USER_DEPRECATED
+        );
 
-    /**
-     * {@inheritdoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars = array_merge($view->vars, ['content_styles' => $this->contentStyles]);
-        $view->vars['mode'] = $options['mode'];
+        parent::setDefaultOptions($resolver);
     }
 
     /**
@@ -59,16 +51,4 @@ class TinyMCEType extends AbstractType
     {
         return 'integrated_tinymce';
     }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'mode' => "default",
-        ));
-
-        $resolver->setAllowedTypes(array(
-            'mode' => 'string',
-        ));
-    }
-
 }

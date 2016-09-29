@@ -1,16 +1,26 @@
-$(document).ready(function(){
+$(document).ready(function() {
 
     /**
-     * Get the query parameter passed from the plugin loader
-     * @param  string name  query parameter name
-     * @return string       query parameter value
+     * tinimce instance from the top level window object
+     * @type object
      */
-    function getQuery(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-            results = regex.exec(location.search);
-        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
+    var tinymce = top.tinymce;
+
+    /**
+     * window modal object created by tinymce object
+     * @type object
+     */
+    var mcemodal = tinymce.activeEditor.windowManager.getWindows()[0];
+
+    /**
+     * @type {Object}
+     */
+    var options = tinymce.activeEditor.windowManager.getParams();
+
+    /**
+     * @type object|null
+     */
+    var previousCall = null;
 
     /**
      * Render image lists into thumbnail container
@@ -22,9 +32,8 @@ $(document).ready(function(){
         var thumbnailTemplate =
             '<div class="col-sm-3">'+
             '<div class="thumbnail">'+
-            '<div class="thumbnail-img"><img src="{{img-source}}" alt="{{img-alt}}"></div>'+
-            '<div class="caption">'+
-            '<p class="text-center"><a href="{{img-source}}" class="btn btn-primary btn-sm btn-insert-image">Insert</a></p>'+
+            '<div class="thumbnail-img">'+
+            '<img src="{{img-source}}" class="img-responsive btn-insert-image" title="{{img-title}}" alt="{{img-alt}}" data-integrated-id="{{img-id}}" />'+
             '</div>'+
             '</div>'+
             '</div>';
@@ -34,13 +43,28 @@ $(document).ready(function(){
         var temporaryThumb  = '';
 
         for(var i = 0; i < images.length; i++){
-
             temporaryThumb += thumbnailTemplate.replace(
                 /\{\{img-source\}\}/g,
-                images[i].image == null ? 'image/thumbnail.svg' : images[i].image
+                Routing.generate(
+                    'integrated_storage_file',
+                    {
+                        id: images[i].id,
+                        ext: images[i].extension
+                    },
+                    true
+                )
             ).replace(
                 /\{\{img-alt\}\}/g,
                 images[i].title
+            ).replace(
+                /\{\{img-id\}\}/g,
+                images[i].id
+            ).replace(
+                /\{\{img-title\}\}/g,
+                images[i].title
+            ).replace(
+                /\{\{img-alt\}\}/g,
+                images[i].alternate
             );
 
             if(i % 4 == 3 || i == images.length - 1){
@@ -50,7 +74,7 @@ $(document).ready(function(){
         }
 
         if(images.length == 0){
-            temporaryHtml = '<p class="text-center">No images found!</p>';
+            temporaryHtml = '<p class="text-center">No images found.</p>';
         }
 
         container.html(temporaryHtml);
@@ -120,43 +144,33 @@ $(document).ready(function(){
 
     }
 
-    /**
-     * tinimce instance from the top level window object
-     * @type object
-     */
-    var tinymce     = top.tinymce;
-
-    /**
-     * window modal object created by tinymce object
-     * @type object
-     */
-    var mcemodal    = tinymce.activeEditor.windowManager.getWindows()[0];
-
-    var previousCall = null;
-
     refreshImages = function() {
-        var keyword = $('#txt-search').val();
-        var type = $('#type-search').val();
-        var url     = Routing.generate('integrated_content_content_index', {"contenttypes[]": type, "_format": "json", "q": keyword});
-
         $('#thumbnail-container').loader('show');
+
+        var params = {
+            "contenttypes[]": $('#type-search').val(),
+            "q": $('#txt-search').val(),
+            "_format": "json"
+        };
+
         if(previousCall !== null){
             previousCall.abort();
             previousCall = null;
         }
 
-        previousCall = $.get(url, function(data){
+        previousCall =
+            $.get(Routing.generate('integrated_content_content_index', params), function(data) {
                 renderImage(data.items);
                 renderPagination(data.pagination);
-                $('#thumbnail-container').loader('hide');
-
             }, 'json')
-            .error(function(xhr, status){
-                if(status !== 'abort'){
-                    $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>');
-                }
-            });
-
+                .error(function(xhr, status){
+                    if(status !== 'abort'){
+                        $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>');
+                    }
+                }).done(function () {
+                $('#thumbnail-container').loader('hide');
+            })
+        ;
     };
 
     /**
@@ -171,7 +185,7 @@ $(document).ready(function(){
     });
 
     /**
-     * Pagiation link click handler
+     * Pagination link click handler
      */
     $('#pagination-container').on('click', 'a', function(e){
         e.preventDefault();
@@ -181,13 +195,15 @@ $(document).ready(function(){
 
         if(href !== '#'){
             $.get(href, function(data){
-                    renderImage(data.items);
-                    renderPagination(data.pagination);
-                    $('#thumbnail-container').loader('hide');
-                }, 'json')
-                .error(function(){
-                    $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
-                });
+                renderImage(data.items);
+                renderPagination(data.pagination);
+            }, 'json')
+            .error(function(){
+                $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
+            })
+            .done(function() {
+                $('#thumbnail-container').loader('hide');
+            });
         }
     });
 
@@ -197,16 +213,60 @@ $(document).ready(function(){
      */
     $('#thumbnail-container').on('click', '.btn-insert-image', function(e){
         e.preventDefault();
-        var image = $(this).attr('href');
+        var image = $(this);
+        image.removeClass('btn-insert-image');
 
-        tinymce.activeEditor.insertContent('<img src="'+image+'" class="img-responsive" />');
+        // Inject the image
+        tinymce.activeEditor.insertContent(image[0].outerHTML);
         mcemodal.close();
     });
 
     /**
-     * Initial image rendering process
+     * Here the plugin begins
      */
-    $('#thumbnail-container').loader('show');
+    $.get(Routing.generate('integrated_content_content_media_types', {'filter': options['mode']}), function (contentTypes) {
+        var buttonHtml = '';
 
-    refreshImages();
+        if (contentTypes.length == 1) {
+            buttonHtml = '<a target="_blank" href="'+image.path+'" class="btn btn-primary btn-content-add" role="button">Upload new '+ contentTypes[0].name +'</a>';
+        } else if (contentTypes.length > 1) {
+            buttonHtml =
+                '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                'Upload new image <span class="caret"></span></button>' +
+                '<ul class="dropdown-menu">';
+
+            for (var i in contentTypes) {
+                buttonHtml += '<li><a target="_blank" class="btn-content-add" href="'+ contentTypes[i].path +'">'+ contentTypes[i].name +'</a></li>';
+            }
+
+            buttonHtml += '</ul>';
+        }
+
+        $('#button_wrap').html(buttonHtml);
+
+        var searchHtml = '';
+        for (var i in contentTypes) {
+            searchHtml += '<option value="'+ contentTypes[i].id +'">'+ contentTypes[i].name +'</option>';
+        }
+
+        $('#type-search').html(searchHtml);
+        refreshImages();
+
+        $('.btn-content-add').click(function(e) {
+            e.preventDefault();
+
+            tinymce.activeEditor.windowManager.open({
+                title: 'Add a new '+ $(this).text(),
+                url: $(this).attr('href') + '&_format=iframe.html',
+                width: 800,
+                height: 600
+            }).on('close', function () {
+                refreshImages();
+            });
+        });
+    }).error(function() {
+        $('#add_image_wrapper').html('<p>Failed to retrieve content types.</p>');
+    }).done(function (){
+        $('#add_image_wrapper').css('opacity',1);
+    });
 });

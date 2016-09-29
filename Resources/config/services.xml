@@ -8,7 +8,8 @@
 
         <parameter key="integrated_formtype_form_type_datetime.class">Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType</parameter>
         <parameter key="integrated_formtype_form_type_wysihtml5x.class">Integrated\Bundle\FormTypeBundle\Form\Type\WysiHtml5xType</parameter>
-        <parameter key="integrated_formtype_form_type_TinyMCE.class">Integrated\Bundle\FormTypeBundle\Form\Type\TinyMCEType</parameter>
+        <parameter key="integrated_formtype_form_type_editor.class">Integrated\Bundle\FormTypeBundle\Form\Type\EditorType</parameter>
+        <parameter key="integrated_formtype_form_type_tinymce.class">Integrated\Bundle\FormTypeBundle\Form\Type\TinyMCEType</parameter>
         <parameter key="integrated_formtype_form_type_select2.class">Integrated\Bundle\FormTypeBundle\Form\Type\Select2Type</parameter>
         <parameter key="integrated_formtype_form_type_sortable_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType</parameter>
         <parameter key="integrated_formtype_form_type_integrated_collection.class">Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType</parameter>
@@ -29,8 +30,15 @@
             <tag name="form.type" alias="integrated_datetime" />
         </service>
 
-        <service id="integrated_formtype_form_type_TinyMCE" class="%integrated_formtype_form_type_TinyMCE.class%">
+        <service id="integrated_formtype_form_type_editor" class="%integrated_formtype_form_type_editor.class%">
             <argument>%integrated_content_styles%</argument>
+
+            <tag name="form.type" alias="integrated_editor" />
+        </service>
+
+        <service id="integrated_formtype_form_type_tinymce" class="%integrated_formtype_form_type_tinymce.class%">
+            <argument>%integrated_content_styles%</argument>
+
             <tag name="form.type" alias="integrated_tinymce" />
         </service>
 
