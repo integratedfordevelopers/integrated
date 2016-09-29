@@ -82,7 +82,8 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function saveObject($object)
     {
-        return $this->container->get('doctrine.odm.mongodb.document_manager')
-            ->persist($object);
+        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
+        $dm->persist($object);
+        $dm->flush();
     }
 }
