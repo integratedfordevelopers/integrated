@@ -22,16 +22,16 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
  */
 interface ContentInterface
 {
-	/**
-	 * Return the id of the content
-	 *
-	 * @return string
-	 */
-	public function getId();
+    /**
+     * Return the id of the content
+     *
+     * @return string
+     */
+    public function getId();
 
     /**
-	 * Return the contentType of the Content
-	 *
+     * Return the contentType of the Content
+     *
      * @return string
      */
     public function getContentType();
