@@ -83,36 +83,10 @@ class ClearCommand extends Command
 
     /**
      * {@inheritdoc}
-     * @throws \InvalidArgumentException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $availableFilesystems = (new FilesystemValidation($this->registry))
-            ->getValidFilesystems($input->getArgument('filesystems'));
 
-        foreach ($this->database->getFiles() as $i => $file) {
-            $validFilesystems = new ArrayCollection();
-
-            foreach ($availableFilesystems as $filesystem) {
-                if ($file->getFile()->getFilesystems()->contains($filesystem)) {
-                    $validFilesystems[] = $filesystem;
-                }
-            }
-
-            if (count($validFilesystems)) {
-                // Remove the obsolete filesystems
-                $file->setFile(
-                    $this->storage->delete($file->getFile(), $validFilesystems)
-                );
-                $this->database->save($file);
-            }
-
-            if (0 == ($i % 100)) {
-                $this->database->commit();
-            }
-        }
-
-        // Any left overs from the party
-        $this->database->commit();
+        throw new \RuntimeException('Not implemented yet');
     }
 }
