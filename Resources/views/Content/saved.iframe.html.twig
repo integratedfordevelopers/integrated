@@ -2,14 +2,28 @@
 <html>
 <head>
     <script>
-        parent.$(function() {
-            if (parent.relations['{{ relation }}'] != undefined) {
-                parent.relations['{{ relation }}'].loadOptions();
-                parent.relations['{{ relation }}'].addOption('{{ id }}');
+        /**
+         * @type object|null
+         */
+        var tinymce = top.tinymce;
+        if ('undefined' != typeof(tinymce)) {
+            tinymce.activeEditor.windowManager.close();
+        }
 
-                parent.relations['{{ relation }}'].getModal().modal('hide');
-            }
-        });
+        /**
+         * @type object|null
+         */
+        var relations = parent.relations;
+        if ('undefined' != typeof(relations)) {
+            parent.$(function() {
+                if (parent.relations['{{ relation }}'] != undefined) {
+                    parent.relations['{{ relation }}'].loadOptions();
+                    parent.relations['{{ relation }}'].addOption('{{ id }}');
+
+                    parent.relations['{{ relation }}'].getModal().modal('hide');
+                }
+            });
+        }
     </script>
 </head>
 <body>

@@ -24,40 +24,15 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Johnny Borg <johnny@e-active.nl>
  *
  * @ODM\Document
- * @Type\Document("Image")
+ * @Type\Document("Video")
  */
-class Image extends File
+class Video extends File
 {
     /**
      * @var StorageInterface
-     * @Type\Field(type="integrated_image")
-     * @Assert\File(mimeTypes="image/*")
+     * @Type\Field(type="integrated_file")
+     * @Assert\File(mimeTypes="video/*")
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      */
     protected $file;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @Type\Field
-     */
-    protected $alt;
-
-    /**
-     * @return string
-     */
-    public function getAlt()
-    {
-        return $this->alt;
-    }
-
-    /**
-     * @param string $alt
-     * @return $this
-     */
-    public function setAlt($alt)
-    {
-        $this->alt = $alt;
-        return $this;
-    }
 }

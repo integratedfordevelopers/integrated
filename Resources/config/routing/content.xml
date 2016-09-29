@@ -17,8 +17,9 @@
 		<default key="_controller">IntegratedContentBundle:Content:new</default>
 	</route>
 
-	<route id="integrated_content_content_browse_image" path="/browse_image"  methods="GET">
-		<default key="_controller">IntegratedContentBundle:Content:browseImage</default>
+	<route id="integrated_content_content_media_types" path="/media_types/{filter}"  methods="GET">
+		<default key="_controller">IntegratedContentBundle:Content:mediaTypes</default>
+		<default key="filter">null</default>
 		<option key="expose">true</option>
 	</route>
 

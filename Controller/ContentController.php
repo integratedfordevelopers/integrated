@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Filter\ContentTypeFilter;
+use Integrated\Bundle\ContentBundle\Provider\MediaProvider;
 use Symfony\Component\Filesystem\LockHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Traversable;
@@ -45,11 +47,6 @@ class ContentController extends Controller
      * @var string
      */
     protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
-
-    /**
-     * @var string
-     */
-    protected $imageClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image';
 
     /**
      * @Template()
@@ -562,6 +559,8 @@ class ContentController extends Controller
                         $subscriber->setPriority($queue::PRIORITY_HIGH);
                     }
 
+                    // $dispatcher->dispatch(Event::PRE_FLUSH, new ArgSet($entity, $form));
+
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                     $dm = $this->get('doctrine_mongodb')->getManager();
                     $dm->flush();
@@ -1024,44 +1023,18 @@ class ContentController extends Controller
     }
 
     /**
-     * @return array
+     * @return JsonResponse
      */
-    public function browseImageAction()
+    public function mediaTypesAction($filter = null)
     {
-        $container = $this->container;
-
-        $repository = $container->get('integrated_content.content_type_repository');
-        $contentTypes = $repository->findAll();
-
-        $images = [];
-        /** @var ContentType $contentType */
-        foreach ($contentTypes as $contentType) {
-            $class = $contentType->getClass();
-
-            if ($class == $this->imageClass || is_subclass_of($class, $this->imageClass)) {
-                $images[] = $contentType;
-            }
-        }
-
-        if ($container->has('integrated_workflow.services.permission')) {
-            $accessImages = [];
-
-            $workflowPermission = $container->get('integrated_workflow.services.permission');
-            foreach ($images as $image) {
-                if ($workflowPermission->hasAccess($image)) {
-                    $accessImages[] = $image;
-                }
-            }
-            $images = $accessImages;
-        }
-
         $output = [];
+
         /** @var Image $image */
-        foreach ($images as $image) {
+        foreach ($this->container->get('integrated_content.provider.media')->getContentTypes($filter) as $contentType) {
             $output[] = [
-                'id' => $image->getId(),
-                'name' => $image->getName(),
-                'path' => $this->generateUrl('integrated_content_content_new', ['type'=>$image->getId()]),
+                'id' => $contentType->getId(),
+                'name' => $contentType->getName(),
+                'path' => $this->generateUrl('integrated_content_content_new', ['type' => $contentType->getId()]),
             ];
         }
 
