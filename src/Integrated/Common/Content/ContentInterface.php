@@ -19,6 +19,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
+ * @author Johnny Borg <johnny@e-active.nl>
  */
 interface ContentInterface
 {
@@ -40,7 +41,7 @@ interface ContentInterface
      * Set the contentType of the Content
      *
      * @param string $contentType
-     * @return $this
+     * @return ContentInterface
      */
     public function setContentType($contentType);
 
@@ -53,7 +54,7 @@ interface ContentInterface
 
     /**
      * @param $relationId
-     * @return Relation|false
+     * @return Relation|bool
      */
     public function getRelation($relationId);
 
@@ -61,7 +62,7 @@ interface ContentInterface
      * Set the relations of the document
      *
      * @param Collection $relations
-     * @return $this
+     * @return ContentInterface
      */
     public function setRelations(Collection $relations);
 
@@ -69,7 +70,7 @@ interface ContentInterface
      * Add relation to relations collection
      *
      * @param Relation $relation
-     * @return $this
+     * @return ContentInterface
      */
     public function addRelation(Relation $relation);
 
@@ -77,7 +78,7 @@ interface ContentInterface
      * Remove relation from relations collection
      *
      * @param Relation $relation
-     * @return $this
+     * @return ContentInterface
      */
     public function removeRelation(Relation $relation);
 }
