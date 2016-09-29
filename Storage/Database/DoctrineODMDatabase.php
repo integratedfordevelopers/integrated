@@ -84,6 +84,6 @@ class DoctrineODMDatabase implements DatabaseInterface
     {
         $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
         $dm->persist($object);
-        $dm->flush();
+        $dm->flush($object);
     }
 }
