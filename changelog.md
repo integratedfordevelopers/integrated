@@ -1,5 +1,10 @@
 # Changelog Integrated version 0.4 #
 
+## Highlights ##
+- Cloud storage support, store files anywhere
+- Editable navigation for websites
+- A lot of small new features and improvements
+
 ## New Features ##
 - [INTEGRATED-7](https://eactive.atlassian.net/browse/INTEGRATED-7) [library] Integrated should filter control characters in input
 - [INTEGRATED-39](https://eactive.atlassian.net/browse/INTEGRATED-39) Add image in editor when editing pages or blocks
