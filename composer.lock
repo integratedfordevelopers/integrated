@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e780f305896a57df1021b0dfbbf2f4ac",
+    "content-hash": "9e82cc6b1324c84751442bf8ed06c48d",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -1336,17 +1336,17 @@
         },
         {
             "name": "gregwar/cache",
-            "version": "v1.0.10",
+            "version": "v1.0.12",
             "target-dir": "Gregwar/Cache",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gregwar/Cache.git",
-                "reference": "0a1a02e4943e95f491b3d2395609247385975622"
+                "reference": "305d0f5a12c0beecbbd7e1de236f59f39e0c0ac3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gregwar/Cache/zipball/0a1a02e4943e95f491b3d2395609247385975622",
-                "reference": "0a1a02e4943e95f491b3d2395609247385975622",
+                "url": "https://api.github.com/repos/Gregwar/Cache/zipball/305d0f5a12c0beecbbd7e1de236f59f39e0c0ac3",
+                "reference": "305d0f5a12c0beecbbd7e1de236f59f39e0c0ac3",
                 "shasum": ""
             },
             "require": {
@@ -1375,7 +1375,7 @@
                 "file-system",
                 "system"
             ],
-            "time": "2014-09-24 11:23:30"
+            "time": "2016-09-23 08:16:04"
         },
         {
             "name": "gregwar/image",
@@ -1831,12 +1831,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-library.git",
-                "reference": "03f8c3dc646a8acfea4cd263be24cb4a401ff01a"
+                "reference": "9f3429eaf3da98a36f4fba0d8c0456518d06abee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-library/get/03f8c3dc646a8acfea4cd263be24cb4a401ff01a.zip",
-                "reference": "03f8c3dc646a8acfea4cd263be24cb4a401ff01a",
+                "url": "https://bitbucket.org/eactive/integrated-library/get/9f3429eaf3da98a36f4fba0d8c0456518d06abee.zip",
+                "reference": "9f3429eaf3da98a36f4fba0d8c0456518d06abee",
                 "shasum": ""
             },
             "require": {
@@ -1904,11 +1904,11 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2016-07-02 15:29:51"
+            "time": "2016-09-16 06:07:09"
         },
         {
             "name": "integrated/locking-bundle",
-            "version": "0.4.x-dev",
+            "version": "0.4",
             "target-dir": "Integrated/Bundle/LockingBundle",
             "source": {
                 "type": "git",
@@ -1958,16 +1958,16 @@
         },
         {
             "name": "integrated/menu-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-menu-bundle.git",
-                "reference": "3d35335954131ee888909a7e726725da9aeb7c0e"
+                "reference": "b70ca14d96f267343a9d472d644aed03d4c45027"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-menu-bundle/zipball/3d35335954131ee888909a7e726725da9aeb7c0e",
-                "reference": "3d35335954131ee888909a7e726725da9aeb7c0e",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-menu-bundle/zipball/b70ca14d96f267343a9d472d644aed03d4c45027",
+                "reference": "b70ca14d96f267343a9d472d644aed03d4c45027",
                 "shasum": ""
             },
             "require": {
@@ -2002,7 +2002,7 @@
                 "Integrated",
                 "menu"
             ],
-            "time": "2016-07-13 15:07:12"
+            "time": "2015-12-29 10:27:48"
         },
         {
             "name": "integrated/page-bundle",
@@ -2066,7 +2066,7 @@
         },
         {
             "name": "integrated/puphpet",
-            "version": "0.4.x-dev",
+            "version": "0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-puphpet.git",
@@ -2100,17 +2100,17 @@
         },
         {
             "name": "integrated/slug-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.4",
             "target-dir": "Integrated/Bundle/SlugBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-slug-bundle.git",
-                "reference": "bb0c5358e6d6257c0f2176a149231068386de16b"
+                "reference": "902d9b3a395eb0afdf3e5319b05ce6bb6801a47e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-slug-bundle/zipball/bb0c5358e6d6257c0f2176a149231068386de16b",
-                "reference": "bb0c5358e6d6257c0f2176a149231068386de16b",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-slug-bundle/zipball/902d9b3a395eb0afdf3e5319b05ce6bb6801a47e",
+                "reference": "902d9b3a395eb0afdf3e5319b05ce6bb6801a47e",
                 "shasum": ""
             },
             "require": {
@@ -2146,7 +2146,7 @@
                 "Integrated",
                 "slug"
             ],
-            "time": "2016-06-20 14:33:22"
+            "time": "2015-12-29 11:38:34"
         },
         {
             "name": "integrated/solr-bundle",
@@ -2155,12 +2155,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-solr-bundle.git",
-                "reference": "d6fe95635ed3818192677f8b8c12c5d681ac8957"
+                "reference": "42b752583fe058ef44daa3c62024e5b01578fa92"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-solr-bundle/zipball/d6fe95635ed3818192677f8b8c12c5d681ac8957",
-                "reference": "d6fe95635ed3818192677f8b8c12c5d681ac8957",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-solr-bundle/zipball/42b752583fe058ef44daa3c62024e5b01578fa92",
+                "reference": "42b752583fe058ef44daa3c62024e5b01578fa92",
                 "shasum": ""
             },
             "require": {
@@ -2195,7 +2195,7 @@
                 "Integrated",
                 "solr"
             ],
-            "time": "2016-09-15 07:11:40"
+            "time": "2016-09-16 06:01:30"
         },
         {
             "name": "integrated/storage-bundle",
@@ -2248,7 +2248,7 @@
         },
         {
             "name": "integrated/theme-bundle",
-            "version": "0.4.x-dev",
+            "version": "0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-theme-bundle.git",
@@ -2417,12 +2417,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-workflow-bundle.git",
-                "reference": "a84c007f2efbc73e939525042b199c06aa1d8fe7"
+                "reference": "955d67043479eed8a34508b7fb8f696a537f4bf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-workflow-bundle/get/a84c007f2efbc73e939525042b199c06aa1d8fe7.zip",
-                "reference": "a84c007f2efbc73e939525042b199c06aa1d8fe7",
+                "url": "https://bitbucket.org/eactive/integrated-workflow-bundle/get/955d67043479eed8a34508b7fb8f696a537f4bf1.zip",
+                "reference": "955d67043479eed8a34508b7fb8f696a537f4bf1",
                 "shasum": ""
             },
             "require": {
@@ -2466,7 +2466,7 @@
                 "Integrated",
                 "workflow"
             ],
-            "time": "2016-09-05 07:22:04"
+            "time": "2016-09-29 05:25:18"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -2787,16 +2787,16 @@
         },
         {
             "name": "knplabs/knp-menu",
-            "version": "v2.1.1",
+            "version": "2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenu.git",
-                "reference": "9917b999a3c3d3901386d60c4888b07679291031"
+                "reference": "964b5b3ca7fd23019147991f4f75f361d061eb20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/9917b999a3c3d3901386d60c4888b07679291031",
-                "reference": "9917b999a3c3d3901386d60c4888b07679291031",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenu/zipball/964b5b3ca7fd23019147991f4f75f361d061eb20",
+                "reference": "964b5b3ca7fd23019147991f4f75f361d061eb20",
                 "shasum": ""
             },
             "require": {
@@ -2817,7 +2817,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev"
+                    "dev-master": "2.2-dev"
                 }
             },
             "autoload": {
@@ -2849,7 +2849,7 @@
                 "menu",
                 "tree"
             ],
-            "time": "2016-01-08 15:42:54"
+            "time": "2016-09-22 07:36:19"
         },
         {
             "name": "knplabs/knp-menu-bundle",
@@ -2894,7 +2894,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -3284,22 +3284,30 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b"
+                "reference": "5277094ed527a1c4477177d102fe4c53551953e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/fe0936ee26643249e916849d48e3a51d5f5e278b",
-                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/5277094ed527a1c4477177d102fe4c53551953e0",
+                "reference": "5277094ed527a1c4477177d102fe4c53551953e0",
                 "shasum": ""
             },
+            "require": {
+                "php": ">=5.3.0"
+            },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "Psr\\Log\\": ""
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3313,12 +3321,13 @@
                 }
             ],
             "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
             "keywords": [
                 "log",
                 "psr",
                 "psr-3"
             ],
-            "time": "2012-12-21 11:40:51"
+            "time": "2016-09-19 16:02:08"
         },
         {
             "name": "robloach/component-installer",
@@ -4198,16 +4207,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.24.2",
+            "version": "v1.25.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "33093f6e310e6976baeac7b14f3a6ec02f2d79b7"
+                "reference": "f16a634ab08d87e520da5671ec52153d627f10f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/33093f6e310e6976baeac7b14f3a6ec02f2d79b7",
-                "reference": "33093f6e310e6976baeac7b14f3a6ec02f2d79b7",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/f16a634ab08d87e520da5671ec52153d627f10f6",
+                "reference": "f16a634ab08d87e520da5671ec52153d627f10f6",
                 "shasum": ""
             },
             "require": {
@@ -4220,7 +4229,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.24-dev"
+                    "dev-master": "1.25-dev"
                 }
             },
             "autoload": {
@@ -4255,20 +4264,20 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2016-09-01 17:50:53"
+            "time": "2016-09-21 23:05:12"
         },
         {
             "name": "vihuvac/recaptcha-bundle",
-            "version": "v2.1.3",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vihuvac/recaptcha-bundle.git",
-                "reference": "de87e22569998cf541748c62e239926e546848e1"
+                "reference": "868ce77242448fb91e36d4d0724855bd874aab1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vihuvac/recaptcha-bundle/zipball/de87e22569998cf541748c62e239926e546848e1",
-                "reference": "de87e22569998cf541748c62e239926e546848e1",
+                "url": "https://api.github.com/repos/vihuvac/recaptcha-bundle/zipball/868ce77242448fb91e36d4d0724855bd874aab1a",
+                "reference": "868ce77242448fb91e36d4d0724855bd874aab1a",
                 "shasum": ""
             },
             "require": {
@@ -4310,7 +4319,7 @@
                 "google",
                 "recaptcha"
             ],
-            "time": "2016-08-10 23:18:17"
+            "time": "2016-09-29 04:48:09"
         },
         {
             "name": "willdurand/jsonp-callback-validator",
