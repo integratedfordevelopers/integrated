@@ -160,6 +160,5 @@ integrated_theme:
 vihuvac_recaptcha:
     site_key:   %recaptcha_site_key%
     secret_key: %recaptcha_secret_key%
-    secure:     true
     enabled:    true
     locale_key: kernel.default_locale
