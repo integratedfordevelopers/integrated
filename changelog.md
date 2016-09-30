@@ -1,0 +1,113 @@
+# Changelog Integrated version 0.4 #
+
+## Highlights ##
+- Cloud storage support, store files anywhere
+- Editable navigation for websites
+- A lot of small new features and improvements
+
+## New Features ##
+- [INTEGRATED-7](https://eactive.atlassian.net/browse/INTEGRATED-7) [library] Integrated should filter control characters in input
+- [INTEGRATED-39](https://eactive.atlassian.net/browse/INTEGRATED-39) Add image in editor when editing pages or blocks
+- [INTEGRATED-147](https://eactive.atlassian.net/browse/INTEGRATED-147) [workflow-bundle] Allow only one default state checkbox to be checked
+- [INTEGRATED-316](https://eactive.atlassian.net/browse/INTEGRATED-316) Title for block and title for content
+- [INTEGRATED-377](https://eactive.atlassian.net/browse/INTEGRATED-377) Documentation of most important relation functions
+- [INTEGRATED-389](https://eactive.atlassian.net/browse/INTEGRATED-389) Implement filesystem layer
+- [INTEGRATED-393](https://eactive.atlassian.net/browse/INTEGRATED-393) Command for migration to new filesystem
+- [INTEGRATED-407](https://eactive.atlassian.net/browse/INTEGRATED-407) Create SlugBundle for slugging names, titles, etc.
+- [INTEGRATED-435](https://eactive.atlassian.net/browse/INTEGRATED-435) Editable navigation in website
+- [INTEGRATED-442](https://eactive.atlassian.net/browse/INTEGRATED-442) Allow sent to of submitted forms to e-mail addresses
+- [INTEGRATED-444](https://eactive.atlassian.net/browse/INTEGRATED-444) [block-bundle] Log block errors
+- [INTEGRATED-453](https://eactive.atlassian.net/browse/INTEGRATED-453) [puphpet] Upgrade to a customizable, centralized Debian 8 Vagrant box with PuPHPet
+- [INTEGRATED-488](https://eactive.atlassian.net/browse/INTEGRATED-488) Allow custom styles to be used
+- [INTEGRATED-489](https://eactive.atlassian.net/browse/INTEGRATED-489) Allow sorting in block overview
+- [INTEGRATED-493](https://eactive.atlassian.net/browse/INTEGRATED-493) ChannelBundle does not have a consistant path in skeleton
+- [INTEGRATED-506](https://eactive.atlassian.net/browse/INTEGRATED-506) [workflow-bundle] Use select2 to choose read and write
+- [INTEGRATED-507](https://eactive.atlassian.net/browse/INTEGRATED-507) Update new / edited statusses when editing workflow
+- [INTEGRATED-528](https://eactive.atlassian.net/browse/INTEGRATED-528) Edit channel domains with collection
+- [INTEGRATED-529](https://eactive.atlassian.net/browse/INTEGRATED-529) Allow to set primary domain name for channel
+- [INTEGRATED-557](https://eactive.atlassian.net/browse/INTEGRATED-557) Add export function to xml, csv and xlsx
+- [INTEGRATED-560](https://eactive.atlassian.net/browse/INTEGRATED-560) [block-bundle] Don't allow to delete a block when used in a page
+- [INTEGRATED-563](https://eactive.atlassian.net/browse/INTEGRATED-563) Hide blocks with exceptions
+- [INTEGRATED-567](https://eactive.atlassian.net/browse/INTEGRATED-567) [content-bundle] Show name in address form
+- [INTEGRATED-568](https://eactive.atlassian.net/browse/INTEGRATED-568) Add option to show content items random in blocks
+- [INTEGRATED-571](https://eactive.atlassian.net/browse/INTEGRATED-571) Controllers for document types from contentbundle
+- [INTEGRATED-576](https://eactive.atlassian.net/browse/INTEGRATED-576) Allow Article content type for taxonomy facet
+- [INTEGRATED-585](https://eactive.atlassian.net/browse/INTEGRATED-585) Add getReferencesByRelationId and getFirstReferenceByRelationId
+- [INTEGRATED-586](https://eactive.atlassian.net/browse/INTEGRATED-586) Inject active document to blocks (for related blocks)
+- [INTEGRATED-587](https://eactive.atlassian.net/browse/INTEGRATED-587) [content-bundle] Hide facets with 0-values in content navigator
+- [INTEGRATED-588](https://eactive.atlassian.net/browse/INTEGRATED-588) "More" button for long facet filters
+- [INTEGRATED-589](https://eactive.atlassian.net/browse/INTEGRATED-589) Replace tinymce in contentstyle path and remove example contentstyles
+- [INTEGRATED-591](https://eactive.atlassian.net/browse/INTEGRATED-591) Require Symfony 2.7 for ContentBundle
+- [INTEGRATED-608](https://eactive.atlassian.net/browse/INTEGRATED-608) Minimum match of 75% for search queries
+- [INTEGRATED-609](https://eactive.atlassian.net/browse/INTEGRATED-609) [workflow-bundle] Throw event when workflow status changes
+- [INTEGRATED-613](https://eactive.atlassian.net/browse/INTEGRATED-613) [website-bundle] Add edit block link from block editing mode
+- [INTEGRATED-621](https://eactive.atlassian.net/browse/INTEGRATED-621) [website-bundle] Add template option to menu extension
+- [INTEGRATED-625](https://eactive.atlassian.net/browse/INTEGRATED-625) [menu-bundle] getLastChild function doesn't work properly
+- [INTEGRATED-626](https://eactive.atlassian.net/browse/INTEGRATED-626) Add option to phonenumber and address form type to hide/show specific fields
+- [INTEGRATED-632](https://eactive.atlassian.net/browse/INTEGRATED-632) Add URL field to SearchBlock
+- [INTEGRATED-636](https://eactive.atlassian.net/browse/INTEGRATED-636) [content-bundle] Add content to default view for content block
+- [INTEGRATED-659](https://eactive.atlassian.net/browse/INTEGRATED-659) [workflow-bundle] Use select2 to choose transitions
+- [INTEGRATED-674](https://eactive.atlassian.net/browse/INTEGRATED-674) Implement FileLocatorInterface in StorageBundle
+- [INTEGRATED-675](https://eactive.atlassian.net/browse/INTEGRATED-675) [website-bundle] Support custom menu template
+- [INTEGRATED-689](https://eactive.atlassian.net/browse/INTEGRATED-689) Author facet in content navigator
+- [INTEGRATED-692](https://eactive.atlassian.net/browse/INTEGRATED-692) Add ImageType (storage bundle)
+- [INTEGRATED-693](https://eactive.atlassian.net/browse/INTEGRATED-693) Add form validation options (storage bundle)
+- [INTEGRATED-699](https://eactive.atlassian.net/browse/INTEGRATED-699) Add remove checkbox to FileType (StorageBundle)
+- [INTEGRATED-707](https://eactive.atlassian.net/browse/INTEGRATED-707) Add contraints feature for images
+- [INTEGRATED-739](https://eactive.atlassian.net/browse/INTEGRATED-739) Add support for image resizing with Gregwar
+
+# Bug Fixes #
+- [INTEGRATED-177](https://eactive.atlassian.net/browse/INTEGRATED-177) Changing 'State' to 'Workflow status'
+- [INTEGRATED-178](https://eactive.atlassian.net/browse/INTEGRATED-178) Transitions order
+- [INTEGRATED-326](https://eactive.atlassian.net/browse/INTEGRATED-326) Error while deleting a just created item
+- [INTEGRATED-460](https://eactive.atlassian.net/browse/INTEGRATED-460) [menu-bundle] MenuBundle readme is incomplete
+- [INTEGRATED-461](https://eactive.atlassian.net/browse/INTEGRATED-461) Vagrantfile does not work with on Windows 10 with Virtualbox 5
+- [INTEGRATED-483](https://eactive.atlassian.net/browse/INTEGRATED-483) [website-bundle] 500 error after removing an active block
+- [INTEGRATED-490](https://eactive.atlassian.net/browse/INTEGRATED-490) Link URL's for internal links get corrupted
+- [INTEGRATED-541](https://eactive.atlassian.net/browse/INTEGRATED-541) [content-bundle] Use stable version for recaptcha-bundle
+- [INTEGRATED-542](https://eactive.atlassian.net/browse/INTEGRATED-542) [content-bundle] Use stable version for doctrine/mongodb-odm
+- [INTEGRATED-558](https://eactive.atlassian.net/browse/INTEGRATED-558) Counts for taxonomy facet filters are not correct when filtering on it
+- [INTEGRATED-559](https://eactive.atlassian.net/browse/INTEGRATED-559) [block-bundle] Publication does not work for blocks
+- [INTEGRATED-574](https://eactive.atlassian.net/browse/INTEGRATED-574) Fix integrated_file/image form type error
+- [INTEGRATED-599](https://eactive.atlassian.net/browse/INTEGRATED-599) [puphpet] Application crashes in dev mode on puphpet when firephp/chromephp is enabled
+- [INTEGRATED-605](https://eactive.atlassian.net/browse/INTEGRATED-605) Facet blocks do not work properly since remove of result cache
+- [INTEGRATED-606](https://eactive.atlassian.net/browse/INTEGRATED-606) Sub-categories disappearing in search selections while using multiple blocks with same search selections on the same page
+- [INTEGRATED-617](https://eactive.atlassian.net/browse/INTEGRATED-617) Logging in failed sometimes with Vagrant on OS X hosts
+- [INTEGRATED-635](https://eactive.atlassian.net/browse/INTEGRATED-635) Error when editing pages in the default template
+- [INTEGRATED-657](https://eactive.atlassian.net/browse/INTEGRATED-657) [content-bundle] Error when image has no file
+- [INTEGRATED-673](https://eactive.atlassian.net/browse/INTEGRATED-673) Editor image dialog only supports contentType "image"
+- [INTEGRATED-694](https://eactive.atlassian.net/browse/INTEGRATED-694) Fix integrated_image form row
+- [INTEGRATED-712](https://eactive.atlassian.net/browse/INTEGRATED-712) [storage-bundle] Exception in FileEventSubscriber
+- [INTEGRATED-716](https://eactive.atlassian.net/browse/INTEGRATED-716) Allow contraints on integrated_file formtype
+- [INTEGRATED-736](https://eactive.atlassian.net/browse/INTEGRATED-736) Braincrafted config is broken after update to newest release
+- [INTEGRATED-737](https://eactive.atlassian.net/browse/INTEGRATED-737) Image and File type are not completely removed
+- [INTEGRATED-738](https://eactive.atlassian.net/browse/INTEGRATED-738) Interface should not define postWrite method
+- [INTEGRATED-741](https://eactive.atlassian.net/browse/INTEGRATED-741) [storage-bundle] StorageManager delete function error
+- [INTEGRATED-742](https://eactive.atlassian.net/browse/INTEGRATED-742) [content-bundle] gregwar/image-bundle has wrong version
+- [INTEGRATED-743](https://eactive.atlassian.net/browse/INTEGRATED-743) No label by remove checkbox integrated_integrated_image_row (and file)
+- [INTEGRATED-752](https://eactive.atlassian.net/browse/INTEGRATED-752) [storage-bundle] StorageIntentUpload class not found
+- [INTEGRATED-793](https://eactive.atlassian.net/browse/INTEGRATED-793) Storage migration does not migrate items without db key
+- [INTEGRATED-795](https://eactive.atlassian.net/browse/INTEGRATED-795) Server error when uploading image with validation error in other field
+- [INTEGRATED-803](https://eactive.atlassian.net/browse/INTEGRATED-803) [solr-bundle] php app/console s:i:r -f exceeded the timeout of 60 seconds
+- [INTEGRATED-804](https://eactive.atlassian.net/browse/INTEGRATED-804) [storage-bundle] Files without file field are not migrated
+- [INTEGRATED-805](https://eactive.atlassian.net/browse/INTEGRATED-805) [content-bundle] Channel injection as app.channel Twig variable fails after upgrade to Symfony 2.7
+
+## Other Changes ##
+- [INTEGRATED-158](https://eactive.atlassian.net/browse/INTEGRATED-158) How to: create a new document type
+
+## Package versions ##
+- integrated-channel-bundle     0.4
+- integrated-content-bundle     0.4
+- integrated-formtype-bundle    0.4
+- integrated-library            0.4
+- integrated-locking-bundle     0.4
+- integrated-menu-bundle        0.4
+- integrated-page-bundle        0.4
+- integrated-puphpet            0.4
+- integrated-slug-bundle        0.4
+- integrated-solr-bundle        0.4
+- integrated-storage-bundle     0.4
+- integrated-theme-bundle       0.4
+- integrated-user-bundle        0.4
+- integrated-website-bundle     0.4
+- integrated-workflow-bundle    0.4
