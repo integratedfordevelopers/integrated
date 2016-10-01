@@ -22,6 +22,10 @@ integrated_channel:
     resource: "@IntegratedChannelBundle/Resources/config/routing.xml"
     prefix: "/admin"
 
+integrated_workflow:
+    resource: "@IntegratedWorkflowBundle/Resources/config/routing/workflow.xml"
+    prefix: "/admin/workflow"
+
 integrated_website:
     resource: "@IntegratedWebsiteBundle/Resources/config/routing.xml"
 
