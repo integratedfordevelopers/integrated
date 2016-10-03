@@ -7,21 +7,13 @@
     <parameters>
 
         <parameter key="integrated_storage.command_migrate">Integrated\Bundle\StorageBundle\Command\MigrateCommand</parameter>
-        <parameter key="integrated_storage.command_filesystem_clear">Integrated\Bundle\StorageBundle\Command\Filesystem\ClearCommand</parameter>
         <parameter key="integrated_storage.command_list">Integrated\Bundle\StorageBundle\Command\Filesystem\ListCommand</parameter>
-        <parameter key="integrated_storage.command_redistribute">Integrated\Bundle\StorageBundle\Command\Filesystem\RedistributeCommand</parameter>
+        <parameter key="integrated_storage.command_filesystem_remove">Integrated\Bundle\StorageBundle\Command\Filesystem\RemoveCommand</parameter>
+        <parameter key="integrated_storage.command_add">Integrated\Bundle\StorageBundle\Command\Filesystem\AddCommand</parameter>
 
     </parameters>
 
     <services>
-
-        <service id="integrated_storage.command_filesystem_clear" class="%integrated_storage.command_filesystem_clear%">
-            <argument type="service" id="integrated_storage.database" />
-            <argument type="service" id="integrated_storage.registry" />
-            <argument type="service" id="integrated_storage.manager" />
-
-            <tag name="console.command" />
-        </service>
 
         <service id="integrated_storage.command_filesystem_list" class="%integrated_storage.command_list%">
             <argument type="service" id="integrated_storage.registry" />
@@ -30,7 +22,15 @@
             <tag name="console.command" />
         </service>
 
-        <service id="integrated_storage.command_redistribute" class="%integrated_storage.command_redistribute%">
+        <service id="integrated_storage.command_filesystem_remove" class="%integrated_storage.command_filesystem_remove%">
+            <argument type="service" id="integrated_storage.database" />
+            <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.manager" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_storage.command_add" class="%integrated_storage.command_add%">
             <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.manager" />

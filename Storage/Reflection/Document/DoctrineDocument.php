@@ -54,6 +54,14 @@ class DoctrineDocument
     }
 
     /**
+     * @return object
+     */
+    public function getDocument()
+    {
+        return $this->document;
+    }
+
+    /**
      * @return string
      */
     public function getClassName()
