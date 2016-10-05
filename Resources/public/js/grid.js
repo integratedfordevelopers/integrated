@@ -160,7 +160,7 @@
         var collection = $('#' + $(this).attr('data-collection-id'));
 
         $.ajax({
-            url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 999 }), // @todo paging (INTEGRATED-423)
+            url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 99999 }), // @todo paging (INTEGRATED-423)
             dataType: 'json',
             success: function(data) {
 
