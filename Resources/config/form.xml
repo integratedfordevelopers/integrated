@@ -51,6 +51,8 @@
 
         <parameter key="integrated_content.form.type.primary_channel.class">Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType</parameter>
 
+        <parameter key="integrated_content.form.type.company_job.class">Integrated\Bundle\ContentBundle\Form\Type\CompanyJobType</parameter>
+
     </parameters>
 
     <services>
@@ -172,6 +174,11 @@
 
         <service id="integrated_content.form.type.primary_channel" class="%integrated_content.form.type.primary_channel.class%">
             <tag name="form.type" alias="integrated_primary_channel" />
+        </service>
+
+        <service id="integrated_content.form.type.company_job" class="%integrated_content.form.type.company_job.class%">
+            <argument type="service" id="doctrine_mongodb" />
+            <tag name="form.type" alias="integrated_company_job" />
         </service>
     </services>
 
