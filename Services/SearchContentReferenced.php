@@ -6,6 +6,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory;
 use Doctrine\ODM\MongoDB\Types\Type as MongoType;
+
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 /**
@@ -51,6 +52,10 @@ class SearchContentReferenced
             foreach ($associations as $assocFieldName) {
                 $assocClassName = $classMetadata->getAssociationTargetClass($assocFieldName);
 
+                if (!class_exists($assocClassName)) {
+                    continue;
+                }
+
                 if ($deleted['className'] == $assocClassName || is_subclass_of($deleted['className'], $assocClassName)) {
                     $items = $this->dm->createQueryBuilder($classMetadata->getName())
                         ->field($assocFieldName.'.$id')
@@ -60,7 +65,7 @@ class SearchContentReferenced
 
                     if ($items) {
                         foreach ($items as $item) {
-                            $referenced[] = $item;
+                            $referenced[spl_object_hash($item)] = $item;
                         }
                     }
                 } elseif ($fieldMetaData = $metadataFactory->getMetadataFor($assocClassName)) {
@@ -78,7 +83,7 @@ class SearchContentReferenced
 
                             if ($items) {
                                 foreach ($items as $item) {
-                                    $referenced[] = $item;
+                                    $referenced[spl_object_hash($item)] = $item;
                                 }
                             }
                         }
@@ -87,7 +92,7 @@ class SearchContentReferenced
             }
         }
 
-        return $this->prepareReferenced(array_unique($referenced));
+        return $this->prepareReferenced($referenced);
     }
 
     /**
