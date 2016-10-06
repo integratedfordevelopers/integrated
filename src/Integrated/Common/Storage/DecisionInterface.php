@@ -10,8 +10,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 interface DecisionInterface
 {
     /**
-     * @param object $class
+     * @param object $object
      * @return ArrayCollection
      */
-    public function getFilesystems($class);
+    public function getFilesystems($object);
 }
