@@ -41,7 +41,7 @@ class FilesystemValidation
      */
     public function getValidFilesystems(ArrayCollection $filesystems = null)
     {
-        if (null == $filesystems) {
+        if (null === $filesystems) {
             $filesystems = new ArrayCollection($this->registry->keys());
         }
 
