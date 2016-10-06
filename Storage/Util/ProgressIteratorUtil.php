@@ -5,6 +5,7 @@ namespace Integrated\Bundle\StorageBundle\Storage\Util;
 use Doctrine\MongoDB\ArrayIterator;
 use Doctrine\MongoDB\Iterator;
 
+use Doctrine\ODM\MongoDB\Cursor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -46,23 +47,23 @@ class ProgressIteratorUtil
      */
     public function map(\Closure $closure)
     {
-        $progress = $this->createProgress();
+        if ($this->iterator->count()) {
+            $progress = $this->createProgress();
+            $iterator = new ArrayIterator();
 
-        $iterator = new ArrayIterator();
+            foreach ($this->iterator as $item) {
+                $result = $closure($item);
+                if ($result) {
+                    $iterator[] = $result;
+                }
 
-        foreach ($this->iterator as $item) {
-            $result = $closure($item);
-            if ($result) {
-                $iterator[] = $result;
+                $progress->advance();
             }
 
-            $progress->advance();
+            // Map creates a new collection
+            $this->iterator = $iterator;
+            $progress->finish();
         }
-
-        // Map creates a new collection
-        $this->iterator = $iterator;
-
-        $progress->finish();
 
         return $this;
     }
@@ -73,15 +74,17 @@ class ProgressIteratorUtil
      */
     public function walk(\Closure $closure)
     {
-        $progress = $this->createProgress();
+        if ($this->iterator->count()) {
+            $progress = $this->createProgress();
 
-        foreach ($this->iterator as $item) {
-            $closure($item);
+            foreach ($this->iterator as $item) {
+                $closure($item);
 
-            $progress->advance();
+                $progress->advance();
+            }
+
+            $progress->finish();
         }
-
-        $progress->finish();
 
         return $this;
     }

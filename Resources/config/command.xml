@@ -34,6 +34,7 @@
             <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="integrated_storage.decision" />
 
             <tag name="console.command" />
         </service>

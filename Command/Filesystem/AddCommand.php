@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\StorageBundle\Command\Filesystem;
 
 use Integrated\Bundle\StorageBundle\Storage\Collection\Map\ContentReflectionMap;
+use Integrated\Bundle\StorageBundle\Storage\Collection\Map\FileMap;
 use Integrated\Bundle\StorageBundle\Storage\Collection\Walk\DocumentWalk;
 use Integrated\Bundle\StorageBundle\Storage\Collection\Walk\FilesystemWalk;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\Cache\ObjectCache;
@@ -20,6 +21,7 @@ use Integrated\Bundle\StorageBundle\Storage\Util\ProgressIteratorUtil;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 
 use Integrated\Common\Storage\Database\DatabaseInterface;
+use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Console\Command\Command;
@@ -55,15 +57,21 @@ class AddCommand extends Command
     protected $reflectionClasses;
 
     /**
+     * @var DecisionInterface
+     */
+    private $decision;
+
+    /**
      * @param DatabaseInterface $database
      * @param FilesystemRegistry $registry
      * @param ManagerInterface $storage
      */
-    public function __construct(DatabaseInterface $database, FilesystemRegistry $registry, ManagerInterface $storage)
+    public function __construct(DatabaseInterface $database, FilesystemRegistry $registry, ManagerInterface $storage, DecisionInterface $decision)
     {
         $this->database = $database;
         $this->registry = $registry;
         $this->storage = $storage;
+        $this->decision = $decision;
 
         parent::__construct();
     }
@@ -90,15 +98,23 @@ class AddCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $reflection = new ObjectCache();
-        $iteratorUtil = new ProgressIteratorUtil($this->database->getObjects(), $output);
+        $filesystem = $input->getArgument('filesystem');
 
-        $output->writeln('Running three steps; map, store and save');
+        if ($this->registry->exists($filesystem)) {
+            // This we'll need to do some work
+            $reflection = new ObjectCache();
+            $iteratorUtil = new ProgressIteratorUtil($this->database->getObjects(), $output);
 
-        $iteratorUtil
-            ->map(ContentReflectionMap::storageProperties($reflection))
-            ->walk(FilesystemWalk::add($this->storage, $reflection, $input->getArgument('filesystem')))
-            ->walk(DocumentWalk::save($this->database))
-        ;
+            $output->writeln('Running four steps; fetch, check for adding, writing file and save database');
+
+            $iteratorUtil
+                ->map(ContentReflectionMap::storageProperties($reflection))
+                ->map(FileMap::documentAllowed($this->decision, $filesystem))
+                ->walk(FilesystemWalk::add($this->storage, $reflection, $filesystem))
+                ->walk(DocumentWalk::save($this->database))
+            ;
+        } else {
+            throw new \InvalidArgumentException(sprintf('The filesystem %s does not exist', $filesystem));
+        }
     }
 }
