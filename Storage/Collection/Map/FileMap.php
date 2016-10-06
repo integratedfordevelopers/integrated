@@ -14,29 +14,45 @@ namespace Integrated\Bundle\StorageBundle\Storage\Collection\Map;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
 use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
 
-use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\DecisionInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class ContentReflectionMap
+class FileMap
 {
     /**
-     * @param ReflectionCacheInterface $reflection
+     * @param DecisionInterface $decision
+     * @param string $filesystem
      * @return \Closure
      */
-    public static function storageProperties(ReflectionCacheInterface $reflection)
+    public static function documentAllowed(DecisionInterface $decision, $filesystem)
     {
-        return function (ContentInterface $content) use ($reflection) {
-            // Create a document with some additional methods we're gonna need
-            $document = new DoctrineDocument($content);
+        return function(DoctrineDocument $document) use ($decision, $filesystem) {
+            // Check if the decision map allows the document for the filesystem
+            if ($decision->getFilesystems($document->getDocument())->contains($filesystem)) {
+                return $document;
+            }
 
+            return false;
+        };
+    }
+
+    /**
+     * @param ReflectionCacheInterface $reflection
+     * @param string $filesystem
+     * @return \Closure
+     */
+    public static function documentFilesystemContains(ReflectionCacheInterface $reflection, $filesystem)
+    {
+        return function (DoctrineDocument $document) use ($reflection, $filesystem) {
             foreach ($reflection->getPropertyReflectionClass($document->getClassName())->getTargetProperties() as $property) {
                 /** @var StorageInterface|bool $file */
                 if ($file = $document->get($property->getPropertyName())) {
-                    return $document;
+                    if ($file->getFilesystems()->contains($filesystem)) {
+                        return $document;
+                    }
                 }
             }
 

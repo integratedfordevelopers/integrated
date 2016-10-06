@@ -137,8 +137,12 @@ class Manager implements ManagerInterface
         $filesystemMap = new ArrayCollection();
 
         try {
-            $validation = new FilesystemValidation($this->registry);
-            foreach ($validation->getValidFilesystems($filesystems) as $key) {
+            $filesystems = (new FilesystemValidation($this->registry))->getValidFilesystems($filesystems);
+            if (0 == $filesystems->count()) {
+                throw new \LogicException('A file must be at least on one filesystem');
+            }
+
+            foreach ($filesystems as $key) {
                 // Log it
                 if ($this->logger) {
                     $this->logger->info(

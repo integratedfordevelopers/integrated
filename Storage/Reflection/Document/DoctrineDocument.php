@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\StorageBundle\Storage\Reflection\Document;
 
 use Doctrine\Common\Util\ClassUtils;
+use Integrated\Common\Locks\Exception\LogicException;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

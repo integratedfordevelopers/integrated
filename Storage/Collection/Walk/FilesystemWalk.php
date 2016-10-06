@@ -41,7 +41,30 @@ class FilesystemWalk
      */
     public static function remove(ManagerInterface $storage, ReflectionCacheInterface $reflection, $filesystem)
     {
-        return static::modifyFilesystem($storage, $reflection, $filesystem, static::REMOVE);
+        return function(DoctrineDocument $document) use ($storage, $reflection, $filesystem) {
+            foreach ($reflection->getPropertyReflectionClass($document->getClassName())->getTargetProperties() as $property) {
+                /** @var StorageInterface|bool $file */
+                if ($file = $document->get($property->getPropertyName())) {
+                    // Get the list
+                    $filesystems = $file->getFilesystems();
+
+                    if ($filesystems->contains($filesystem)) {
+                        // Remove it
+                        $filesystems->removeElement($filesystem);
+
+                        // Update the document
+                        $document->set(
+                            $property->getPropertyName(),
+                            // Let the manager decide which filesystems will be affected
+                            $storage->write(
+                                new MemoryReader($storage->read($file), $file->getMetadata()),
+                                $filesystems
+                            )
+                        );
+                    }
+                }
+            }
+        };
     }
 
     /**
@@ -52,44 +75,27 @@ class FilesystemWalk
      */
     public static function add(ManagerInterface $storage, ReflectionCacheInterface $reflection, $filesystem)
     {
-        return static::modifyFilesystem($storage, $reflection, $filesystem, static::ADD);
-    }
-
-    /**
-     * @param ManagerInterface $storage
-     * @param ReflectionCacheInterface $reflection
-     * @param $filesystem
-     * @param $operation
-     * @return \Closure
-     */
-    protected static function modifyFilesystem(ManagerInterface $storage, ReflectionCacheInterface $reflection, $filesystem, $operation)
-    {
-        return function(DoctrineDocument $document) use ($storage, $reflection, $operation, $filesystem) {
+        return function(DoctrineDocument $document) use ($storage, $reflection, $filesystem) {
             foreach ($reflection->getPropertyReflectionClass($document->getClassName())->getTargetProperties() as $property) {
                 /** @var StorageInterface|bool $file */
                 if ($file = $document->get($property->getPropertyName())) {
-                    // Do the operation on the collection
+                    // Get the list
                     $filesystems = $file->getFilesystems();
-                    switch ($operation) {
-                        case self::ADD:
-                            $filesystems->contains($filesystem) ?: $filesystems->add($filesystem);
-                            break;
-                        case self::REMOVE:
-                            $filesystems->remove($filesystem);
-                            break;
-                        default:
-                            throw new \RuntimeException(sprintf('Operation %s for filesystem does not exist', $operation));
-                    }
 
-                    // Update the document
-                    $document->set(
-                        $property->getPropertyName(),
-                        // Let the manager decide which filesystems will be affected
-                        $storage->write(
-                            new MemoryReader($storage->read($file), $file->getMetadata()),
-                            $filesystems
-                        )
-                    );
+                    if (!$filesystems->contains($filesystem)) {
+                        // Remove it
+                        $filesystems->add($filesystem);
+
+                        // Update the document
+                        $document->set(
+                            $property->getPropertyName(),
+                            // Let the manager decide which filesystems will be affected
+                            $storage->write(
+                                new MemoryReader($storage->read($file), $file->getMetadata()),
+                                $filesystems
+                            )
+                        );
+                    }
                 }
             }
         };
