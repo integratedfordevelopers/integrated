@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\StorageBundle\EventListener\Doctrine\ODM;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Proxy\Proxy;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
@@ -115,6 +116,11 @@ class FileEventListener implements EventSubscriber
 
         foreach ($uow->getIdentityMap() as $identities) {
             foreach ($identities as $document) {
+                //skip unloaded proxies, they cannot contain a StoreIntentUpload
+                if ($document instanceof Proxy && !$document->__isInitialized()) {
+                    continue;
+                }
+
                 // Use a proxy for the transformer data
                 $proxyDocument = new DoctrineDocument($document);
                 $this->intentTransformer->transform($proxyDocument);
