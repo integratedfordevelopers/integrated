@@ -2,8 +2,26 @@
 <html>
 <head>
     <script>
-        parent.$('.relation-items#{{ relation }}').append('<option selected value="{{ id }}">{{ title }}</option>').trigger('change');
-        parent.$('.relation-items#{{ relation }}').closest(".relation").find(".bs-example-modal-lg").modal('hide');
+        {% if (relation) %}
+            /**
+             * @type object|null
+             */
+            var relation = parent.$('.relation-items#{{ relation }}');
+
+            if (0 < relation.length) {
+                parent.$('.relation-items#{{ relation }}').append('<option selected value="{{ id }}">{{ title }}</option>').trigger('change');
+                parent.$("#relation-add-modal").modal('hide');
+            }
+        {% endif %}
+
+        /**
+         * @type object|null
+         */
+        var tinymce = top.tinymce;
+
+        if ('undefined' != typeof(tinymce)) {
+            tinymce.activeEditor.windowManager.close();
+        }
     </script>
 </head>
 <body>
