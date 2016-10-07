@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\StorageBundle\Storage\Exception;
+namespace Integrated\Bundle\StorageBundle\Exception;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 

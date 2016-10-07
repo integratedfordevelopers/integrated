@@ -55,7 +55,11 @@ class StorageLocator extends FileLocator
     public function locate($file, $currentPath = null, $first = true)
     {
         if ($file instanceof StorageInterface) {
-            return $this->cache->path($file);
+            try {
+                return $this->cache->path($file);
+            } catch (\Exception $e) {
+                throw new \InvalidArgumentException('File not found.');
+            }
         }
 
         // Continue the normal symfony stuff
