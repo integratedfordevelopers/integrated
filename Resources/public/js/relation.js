@@ -73,8 +73,6 @@ var resizeIFrame = function(height, iFrame) {
         height = $(window).height() - 120;
     }
 
-    console.log(iFrame, 'resizeIframe');
-
     iFrame.attr('height', height);
 };
 
@@ -82,9 +80,9 @@ $('.relations').on('click', 'a[data-modal]', function(e){
     e.preventDefault();
 
     if ($(this).parents('.btn-group').length) {
-        var modal = $(this).parents('.btn-group').next('.bs-example-modal-lg');
+        var modal = $(this).parents('.btn-group').next('#relation-add-modal');
     } else {
-        var modal = $(this).next('.bs-example-modal-lg');
+        var modal = $(this).next('#relation-add-modal');
     }
     var iFrame = modal.find('iframe');
 
@@ -105,11 +103,6 @@ $('.relations').on('click', 'a[data-modal]', function(e){
 
         iFrame.contents().find('*[data-dismiss="modal"]').click(function(ev){
             ev.preventDefault();
-
-
-            var result = modal.modal('hide');
-
-            console.log(result, 'modal');
         });
 
         iFrame.unbind('load');

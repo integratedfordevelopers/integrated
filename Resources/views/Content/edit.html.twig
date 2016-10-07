@@ -155,9 +155,9 @@
             <script id="add-template" type="text/xhandlebars-template">
                 {{#if relations}}
                 {{#equals relations.length 1}}
-                <a data-title="Add {{relations.0.name}}" class="btn btn-gray add-relation font-size-13" data-href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
-                    {% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}
-                </a>
+                    <a data-title="Add {{relations.0.name}}" class="btn btn-gray add-relation font-size-13" data-href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
+                        {% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}
+                    </a>
                 {{else}}
                 <div class="btn-group add-relation">
                     <button type="button" class="btn btn-gray dropdown-toggle font-size-13" data-toggle="dropdown" aria-expanded="false">
@@ -175,7 +175,7 @@
                  </div>
                 {{/equals}}
                 {{/if}}
-                <div class="modal bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal" id="relation-add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
