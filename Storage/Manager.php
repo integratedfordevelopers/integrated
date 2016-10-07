@@ -12,10 +12,13 @@
 namespace Integrated\Bundle\StorageBundle\Storage;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
+
+use Integrated\Bundle\StorageBundle\Storage\Exception\NoFilesystemAvailableException;
 use Integrated\Bundle\StorageBundle\Storage\Exception\RevertException;
 use Integrated\Bundle\StorageBundle\Storage\Filesystem\WriteFilesystem;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
+
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Command\CommandInterface;
 use Integrated\Common\Storage\FilesystemRegistryInterface;
@@ -117,14 +120,7 @@ class Manager implements ManagerInterface
             }
         }
 
-        // Just to the last resort
-        throw new \LogicException(
-            sprintf(
-                'The file %s has no available filesystem(s) for a read operation tried: %s.',
-                $storage->getIdentifier(),
-                implode(', ', $storage->getFilesystems()->toArray())
-            )
-        );
+        throw NoFilesystemAvailableException::readOperation($storage);
     }
 
     /**
