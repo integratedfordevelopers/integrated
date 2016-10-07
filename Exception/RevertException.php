@@ -17,8 +17,8 @@ namespace Integrated\Bundle\StorageBundle\Exception;
 class RevertException extends \ErrorException
 {
     /**
-     * @param $filesystem
-     * @param $identifier
+     * @param string $filesystem
+     * @param string $identifier
      * @return static
      */
     public static function writeFailed($filesystem, $identifier)
