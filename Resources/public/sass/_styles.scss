@@ -3,19 +3,6 @@
     padding-bottom: 120px;
 }
 
-a.primary-channel-selector {
-    color: #E0E0E0;
-    text-shadow: 0 0 1px black;
-}
-
-label.primary-channel {
+label.is-primary-channel {
     font-weight: bold;
-
-    a.primary-channel-selector {
-        color: gold;
-    }
-}
-
-a.primary-channel-selector:hover {
-    color: #ffa200;
 }
