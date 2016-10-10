@@ -1,34 +1,28 @@
 $(function() {
     var $primaryChannel = $('.primary-channel'),
-        $channelInputs = $('.channel-options input');
+        $channelInputs = $('.channel-options input'),
+        $primarySelector = $('<a href="#">').addClass('primary-channel-selector')
+            .text(' (' + $primaryChannel.data('make-primary-text') + ')');
 
-    $channelInputs.each(function() {
-        var $input = $(this),
-            $selector = $('<a href="#">').addClass('primary-channel-selector')
-                .append($('<span>').addClass('glyphicon glyphicon-king'));
+    updateChannelSelectors();
 
-        if ($input.is(':checked') && $primaryChannel.val() == $input.val()) {
-            $input.parent().addClass('primary-channel');
-        }
+    function updateChannelSelectors()
+    {
+        $('.primary-channel-selector').remove();
+        $('.is-primary-channel').removeClass('is-primary-channel');
 
-        $input.after($selector);
+        $channelInputs.each(function() {
+            var $input = $(this);
 
-        $selector.tooltip({
-            placement: 'left',
-            title: function () {
-                if ($(this).parent().hasClass('primary-channel')) {
-                   if ($('.channel-options input:checked').length === 1) {
-                       return 'Cannot unset (only one channel is selected)'
-                   } else {
-                       return 'Unset active channel'
-                   }
+            if ($input.is(':checked')) {
+                if ($primaryChannel.val() == $input.val()) {
+                    $input.parent().addClass('is-primary-channel');
                 } else {
-                    return 'Make channel active';
+                    $input.parent().append($primarySelector.clone());
                 }
-            },
-            trigger: 'hover'
+            }
         });
-    });
+    }
 
     $channelInputs.change(function () {
         var $input = $(this);
@@ -39,42 +33,25 @@ $(function() {
         } else {
             checkIfOtherInputFieldsAreChecked($input);
         }
+
+        updateChannelSelectors();
     });
 
-    $('.primary-channel-selector').click(function () {
-        var $input = $(this).parent().find('input');
+    $(document).on('click', '.primary-channel-selector', function () {
+        makePrimary($(this).parent().find('input'));
 
-        if ($(this).parent().hasClass('primary-channel')) {
-            removePrimary($input)
-        } else {
-            makePrimary($input);
-        }
+        updateChannelSelectors();
 
         //don't follow the link
         return false;
     });
 
     function makePrimary($input) {
-        //unset active class
-        $('.channel-options label').each(function() {
-            $(this).removeClass('primary-channel');
-        });
-
-        $input.parent().addClass('primary-channel');
-
         $primaryChannel.val($input.val());
-
-        if (!$input.is(':checked')) {
-            //input is not yet checked, so let's check the checkbox
-            $input.prop('checked', true);
-        }
     }
 
     function removePrimary ($input) {
-        var $parent = $input.parent();
-
-        if ($parent.hasClass('primary-channel')) {
-            $parent.removeClass('primary-channel');
+        if ($input.parent().hasClass('is-primary-channel')) {
             $primaryChannel.val('');
         }
 
@@ -83,7 +60,6 @@ $(function() {
 
     function checkIfOtherInputFieldsAreChecked($input) {
         $selectedChannelInputs = $('.channel-options input:checked').not($input);
-
         //if only one other item is checked then that should be the new primary
         if (1 === $selectedChannelInputs.length) {
             makePrimary($selectedChannelInputs.first());
