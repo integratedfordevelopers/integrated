@@ -44,15 +44,13 @@ class CustomFieldsTypeTest extends TypeTestCase
      */
     public function testSubmitValidData(array $data)
     {
-        $form = $this->factory->create($this->type, new ContentType(), ['contentType' => $this->getContentType()]);
+        $form = $this->factory->create($this->type, [], ['contentType' => $this->getContentType()]);
 
         $form->submit($data);
         $this->assertTrue($form->isSynchronized());
-        $this->assertInstanceOf(ContentType::class, $form->getData());
 
         $view = $form->createView();
         $children = $view->children;
-
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
