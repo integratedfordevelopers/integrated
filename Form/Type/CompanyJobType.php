@@ -11,12 +11,11 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
-use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
 use Symfony\Component\Form\Extension\Core\Type\BaseType;
-
 use Symfony\Component\Form\FormBuilderInterface;
+
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -24,13 +23,17 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CompanyJobType extends BaseType
 {
     /**
-     * @var ManagerRegistry
+     * @var ContentTypeManager
      */
-    protected $mr;
+    private $contentTypeManager;
 
-    public function __construct(ManagerRegistry $mr)
+
+    /**
+     * @param ContentTypeManager $contentTypeManager
+     */
+    public function __construct(ContentTypeManager $contentTypeManager)
     {
-        $this->mr = $mr;
+        $this->contentTypeManager = $contentTypeManager;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -40,11 +43,8 @@ class CompanyJobType extends BaseType
             'params' => ['_format' => 'json', 'contenttypes' => $this->getContentTypes()]
         ]);
 
-//        $subForm = $builder->create('job');
-//        $subForm->add('function');
-//        $subForm->add('department');
-//
-//        $builder->addEventSubscriber(new ResizeFormListener($subForm, [], true, true));
+        $builder->add('function');
+        $builder->add('department');
     }
 
     /**
@@ -53,22 +53,10 @@ class CompanyJobType extends BaseType
      */
     protected function getContentTypes()
     {
-        $contentTypes = $this->mr->getManager()->getRepository('IntegratedContentBundle:ContentType\ContentType')->findAll();
-        $contentTypeNames = [];
+        $contentTypes = $this->contentTypeManager->filterInstanceOf(Company::class);
 
-        foreach ($contentTypes as $contentType) {
-            if (is_a($contentType->getClass(), Company::class, true)) {
-                $contentTypeNames[] = $contentType->getId();
-            }
-        }
-
-        return $contentTypeNames;
+        return array_map(function($contentType) { return $contentType->getId(); }, $contentTypes);
     }
-//
-//    public function configureOptions(OptionsResolver $resolver)
-//    {
-//        $resolver->setDefault('label', false);
-//    }
 
     public function getName()
     {

@@ -7,12 +7,14 @@
 	<parameters>
 
 		<parameter key="integrated_content.channel.class">Integrated\Bundle\ContentBundle\Document\Channel\Channel</parameter>
+		<parameter key="integrated_content.content_type.class">Integrated\Bundle\ContentBundle\Document\ContentType\ContentType</parameter>
 
 	</parameters>
 
 	<services>
 
 		<service id="integrated_content.channel.manager" alias="integrated_content.channel.manager.doctrine" />
+		<service id="integrated_content.content_type.manager" alias="integrated_content.content_type.manager.doctrine" />
 
 	</services>
 

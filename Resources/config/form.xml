@@ -177,7 +177,7 @@
         </service>
 
         <service id="integrated_content.form.type.company_job" class="%integrated_content.form.type.company_job.class%">
-            <argument type="service" id="doctrine_mongodb" />
+            <argument type="service" id="integrated_content.content_type.manager" />
             <tag name="form.type" alias="integrated_company_job" />
         </service>
     </services>

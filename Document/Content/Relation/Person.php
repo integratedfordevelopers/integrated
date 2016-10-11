@@ -78,7 +78,16 @@ class Person extends Relation
     /**
      * @var Collection Job[]
      * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job")
-     * @Type\Field(type="integrated_company_job")
+     * @Type\Field(
+     *      type="bootstrap_collection",
+     *      options={
+     *          "label"="Contact persons",
+     *          "type"="integrated_company_job",
+     *          "allow_add"=true,
+     *          "allow_delete"=true,
+     *          "delete_button_text"="x"
+     *      }
+     * )
      */
     protected $jobs;
 
