@@ -211,8 +211,12 @@
 {% endblock %}
 
 {% block integrated_content_choice_widget %}
+    {% integrated_javascripts mode='append'
+    'bundles/integratedformtype/js/content_choice.js' %}
+    {% endintegrated_javascripts %}
+
     {% set attr = attr|merge({
-        'data-ajax--url' : path(route, params),
+        'data-ajax-url' : path(route, params),
         'data-allow-clear' : (allow_clear ? 'true' : 'false'),
         'class' : (attr.class|default('') ~ ' form-control integrated_content_choice')|trim
     }) %}
