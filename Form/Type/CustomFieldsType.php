@@ -30,7 +30,7 @@ class CustomFieldsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var ContentTypeInterface $metadata */
+        /** @var ContentTypeInterface $contentType */
         $contentType = $options['contentType'];
 
         foreach ($contentType->getFields() as $field) {
