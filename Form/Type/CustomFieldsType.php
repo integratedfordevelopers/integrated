@@ -38,16 +38,11 @@ class CustomFieldsType extends AbstractType
                 continue;
             }
 
-            $constraints = [];
             $options = $field->getOptions();
-            if (!empty($options['required'])) {
-                $constraints[] = new NotBlank();
-            }
-
             $builder->add(
                 $field->getName(),
                 $field->getType(),
-                $options + ['constraints' => $constraints]
+                $options + ['constraints' => !empty($options['required']) ? [new NotBlank()] : []]
             );
         }
     }
@@ -60,7 +55,6 @@ class CustomFieldsType extends AbstractType
         $resolver
             ->setRequired(['contentType'])
             ->setAllowedTypes(['contentType' => ContentTypeInterface::class])
-            ->setDefault('cascade_validation', true)
         ;
     }
 

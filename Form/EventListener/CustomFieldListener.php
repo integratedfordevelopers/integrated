@@ -16,7 +16,7 @@ use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -52,7 +52,7 @@ class CustomFieldListener implements EventSubscriberInterface
                     [
                         'contentType' => $contentType,
                         // TODO this will be mapped in INTEGRATED-552
-                        'mapped' => false
+                        'mapped' => false,
                     ]
                 );
 

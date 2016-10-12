@@ -12,8 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
+use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType;
 
+use Integrated\Common\ContentType\ContentTypeInterface;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -76,21 +79,21 @@ class CustomFieldsTypeTest extends TypeTestCase
     }
 
     /**
-     * @return \Integrated\Common\ContentType\ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContentType()
     {
-        /** @var \Integrated\Common\ContentType\ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject $contentType */
-        $contentType = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
+        /** @var ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject $contentType */
+        $contentType = $this->getMock(ContentTypeInterface::class);
 
-        /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field|\PHPUnit_Framework_MockObject_MockObject $defaultField */
-        $defaultField = $this->getMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field');
+        /** @var Field|\PHPUnit_Framework_MockObject_MockObject $defaultField */
+        $defaultField = $this->getMock(Field::class);
 
-        /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField|\PHPUnit_Framework_MockObject_MockObject $customField1 */
-        $customField1 = $this->getMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField');
+        /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField1 */
+        $customField1 = $this->getMock(CustomField::class);
 
-        /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField|\PHPUnit_Framework_MockObject_MockObject $customField2 */
-        $customField2 = $this->getMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField');
+        /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField2 */
+        $customField2 = $this->getMock(CustomField::class);
 
         // Stub the customField getters so we can check the outcome
         $customField1
@@ -148,6 +151,6 @@ class CustomFieldsTypeTest extends TypeTestCase
         $validator->method('validate')->will($this->returnValue(new ConstraintViolationList()));
         $validator->method('getMetadataFor')->willReturn($this->getMock('\Symfony\Component\Validator\Mapping\ClassMetadata', [], [], '', false));
 
-        return array(new ValidatorExtension($validator));
+        return [new ValidatorExtension($validator)];
     }
 }
