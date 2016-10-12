@@ -1,4 +1,8 @@
 $(function() {
+    initContentChoice();
+});
+
+function initContentChoice() {
     $('.integrated_content_choice').select2({
         ajax: {
             processResults: function (data) {
@@ -14,4 +18,4 @@ $(function() {
             }
         }
     });
-});
+}
