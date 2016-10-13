@@ -1,0 +1,158 @@
+<?php
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Integrated\Bundle\ContentBundle\Tests\Form\EventListener;
+
+use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
+use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
+use Integrated\Bundle\ContentBundle\Form\EventListener\CustomFieldListener;
+use Integrated\Common\Content\Form\Event\BuilderEvent;
+use Integrated\Common\Content\Form\Events;
+use Integrated\Common\ContentType\ContentTypeInterface;
+
+use Symfony\Component\Form\FormBuilderInterface;
+
+/**
+ * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ */
+class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @var CustomFieldListener
+     */
+    protected $listener;
+
+    /**
+     * Setup the test
+     */
+    protected function setUp()
+    {
+        $this->listener = new CustomFieldListener();
+    }
+
+    /**
+     * Test instanceOf
+     */
+    public function testInstanceOf()
+    {
+        $this->assertInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface', $this->listener);
+    }
+
+    /**
+     * Test getSubscribedEvents function
+     */
+    public function testGetSubscribedEventsFunction()
+    {
+        $this->assertSame(CustomFieldListener::getSubscribedEvents(), [Events::POST_BUILD => 'onPostBuild']);
+    }
+
+    /**
+     * Test onPostBuild event with custom fields
+     */
+    public function testOnPostBuildFunctionWithCustomFields()
+    {
+        /** @var BuilderEvent|\PHPUnit_Framework_MockObject_MockObject $event */
+        $event = $this->getMock(BuilderEvent::class, [], [], '', false);
+
+        /** @var ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject $contentType */
+        $contentType = $this->getMock(ContentTypeInterface::class);
+
+        /** @var FormBuilderInterface|\PHPUnit_Framework_MockObject_MockObject $builder */
+        $builder = $this->getMock(FormBuilderInterface::class);
+
+        /** @var Field|\PHPUnit_Framework_MockObject_MockObject $field */
+        $field = $this->getMock(Field::class);
+
+        /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField */
+        $customField = $this->getMock(CustomField::class);
+
+        /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField2 */
+        $customField2 = $this->getMock(CustomField::class);
+
+        $event
+            ->expects($this->once())
+            ->method('getContentType')
+            ->willReturn($contentType)
+        ;
+
+        $event
+            ->expects($this->once())
+            ->method('getBuilder')
+            ->willReturn($builder)
+        ;
+
+        $contentType
+            ->expects($this->once())
+            ->method('getFields')
+            ->willReturn([$field, $customField, $customField2])
+        ;
+
+        // Assert the add function, this function should be called once
+        $builder
+            ->expects($this->once())
+            ->method('add')
+            ->with(
+                CustomFieldListener::FORM_NAME,
+                CustomFieldListener::FORM_TYPE,
+                [
+                    'contentType' => $contentType,
+                    // TODO this will be mapped in INTEGRATED-552
+                    'mapped' => false
+                ]
+            )
+        ;
+
+        $this->listener->onPostBuild($event);
+    }
+
+    /**
+     * Test onPostBuild event with no custom fields
+     */
+    public function testOnPostBuildFunctionWithNoCustomFields()
+    {
+        /** @var BuilderEvent|\PHPUnit_Framework_MockObject_MockObject $event */
+        $event = $this->getMock(BuilderEvent::class, [], [], '', false);
+
+        /** @var ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject $contentType */
+        $contentType = $this->getMock(ContentTypeInterface::class);
+
+        /** @var FormBuilderInterface|\PHPUnit_Framework_MockObject_MockObject $builder */
+        $builder = $this->getMock(FormBuilderInterface::class);
+
+        /** @var Field|\PHPUnit_Framework_MockObject_MockObject $field */
+        $field = $this->getMock(Field::class);
+
+        $event
+            ->expects($this->once())
+            ->method('getContentType')
+            ->willReturn($contentType)
+        ;
+
+        $event
+            ->expects($this->once())
+            ->method('getBuilder')
+            ->willReturn($builder)
+        ;
+
+        $contentType
+            ->expects($this->once())
+            ->method('getFields')
+            ->willReturn([$field])
+        ;
+
+        // Assert the add function, this function should not be called
+        $builder
+            ->expects($this->never())
+            ->method('add')
+        ;
+
+        $this->listener->onPostBuild($event);
+    }
+}
