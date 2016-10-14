@@ -211,8 +211,12 @@
 {% endblock %}
 
 {% block integrated_content_choice_widget %}
+    {% integrated_javascripts mode='prepend'
+    'bundles/integratedformtype/js/content_choice.js' %}
+    {% endintegrated_javascripts %}
+
     {% set attr = attr|merge({
-        'data-ajax--url' : path(route, params),
+        'data-ajax-url' : path(route, params),
         'data-allow-clear' : (allow_clear ? 'true' : 'false'),
         'class' : (attr.class|default('') ~ ' form-control integrated_content_choice')|trim
     }) %}
@@ -230,14 +234,14 @@
 {% block integrated_content_choice_single %}
     {% if data %}
         {# todo publishable title INTEGRATED-364 #}
-        <option value="{{ data.id }}" selected="selected">{{ data.title }}</option>
+        <option value="{{ data.id }}" selected="selected">{{ data }}</option>
     {% endif %}
 {% endblock %}
 
 {% block integrated_content_choice_multiple %}
     {% for document in data %}
         {# todo publishable title INTEGRATED-364 #}
-        <option value="{{ document.id }}" selected="selected">{{ document.title }}</option>
+        <option value="{{ document.id }}" selected="selected">{{ document }}</option>
     {% endfor %}
 {% endblock %}
 
@@ -262,3 +266,4 @@
         </section>
     {% endspaceless %}
 {% endblock %}
+
