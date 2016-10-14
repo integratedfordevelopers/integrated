@@ -33,9 +33,9 @@ class ContentTypeManager
     private $repository;
 
     /**
-     * @var ContentType[]
+     * @var ContentType[]|null
      */
-    protected $contentTypes;
+    protected $contentTypes = null;
 
     /**
      * ContentTypeManager constructor.
@@ -50,8 +50,6 @@ class ContentTypeManager
         if (!is_subclass_of($this->repository->getClassName(), 'Integrated\\Common\\ContentType\\ContentTypeInterface')) {
             throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of Integrated\\Common\\ContentType\\ContentTypeInterface', $this->repository->getClassName()));
         }
-
-        $this->contentTypes = $this->repository->findBy([], ['name' => 'ASC']);
     }
 
     /**
@@ -71,13 +69,14 @@ class ContentTypeManager
     }
 
     /**
+     * @param $className
      * @return ContentType[]
      */
     public function filterInstanceOf($className)
     {
         $contentTypes = [];
 
-        foreach ($this->contentTypes as $contentType) {
+        foreach ($this->getAll() as $contentType) {
             if (is_a($contentType->getClass(), $className, true)) {
                 $contentTypes[] = $contentType;
             }
@@ -91,6 +90,10 @@ class ContentTypeManager
      */
     public function getAll()
     {
+        if (null === $this->contentTypes) {
+            $this->contentTypes = $this->repository->findBy([], ['name' => 'ASC']);
+        }
+
         return $this->contentTypes;
     }
 }

@@ -29,7 +29,6 @@ class CompanyJobType extends BaseType
      */
     private $contentTypeManager;
 
-
     /**
      * @param ContentTypeManager $contentTypeManager
      */
@@ -38,6 +37,10 @@ class CompanyJobType extends BaseType
         $this->contentTypeManager = $contentTypeManager;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('company', 'integrated_content_choice', [
