@@ -407,3 +407,11 @@
     'bundles/integratedcontent/js/primary_channel.js' %}
     {% endintegrated_javascripts %}
 {% endblock %}
+
+{% block integrated_contact_persons_widget %}
+    {% integrated_javascripts mode='append'
+    'bundles/integratedcontent/js/contact_persons.js' %}
+    {% endintegrated_javascripts %}
+
+    {{ block('integrated_collection_widget') }}
+{% endblock %}

@@ -51,6 +51,10 @@
 
         <parameter key="integrated_content.form.type.primary_channel.class">Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType</parameter>
 
+        <parameter key="integrated_content.form.type.job.company_job.class">Integrated\Bundle\ContentBundle\Form\Type\Job\CompanyJobType</parameter>
+
+        <parameter key="integrated_content.form.type.job.contact_persons.class">Integrated\Bundle\ContentBundle\Form\Type\Job\ContactPersonsType</parameter>
+
     </parameters>
 
     <services>
@@ -173,6 +177,15 @@
         <service id="integrated_content.form.type.primary_channel" class="%integrated_content.form.type.primary_channel.class%">
             <argument type="service" id="translator" />
             <tag name="form.type" alias="integrated_primary_channel" />
+        </service>
+
+        <service id="integrated_content.form.type.job.company_job" class="%integrated_content.form.type.job.company_job.class%">
+            <argument type="service" id="integrated_content.content_type.manager" />
+            <tag name="form.type" alias="integrated_company_job" />
+        </service>
+
+        <service id="integrated_content.form.type.job.contact_persons" class="%integrated_content.form.type.job.contact_persons.class%">
+            <tag name="form.type" alias="integrated_contact_persons" />
         </service>
     </services>
 
