@@ -104,8 +104,8 @@ class WorkflowStateListener implements EventSubscriberInterface
 
             'expanded' => true,
             'mapped' => false,
-            'empty_data' => $data,
-            'attr' => ['class' => 'next-status-choice'],
+            'required' => false,
+            'attr' => ['class' => 'next-status-choice']
         ]);
     }
 
