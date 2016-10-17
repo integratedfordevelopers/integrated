@@ -175,6 +175,17 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertNotContains($channel2, $this->content->getChannels());
     }
 
+    public function testCustomFieldsFunction()
+    {
+        $fields = ['field1' => 'value1', 'field2' => 'value2'];
+        $this->assertSame($fields, $this->content->setCustomFields($fields)->getCustomFields());
+        $this->assertNull($this->content->getCustomField('field3'));
+        $this->content->addCustomField('field2', 'newValue');
+        $this->assertSame('newValue', $this->content->getCustomField('field2'));
+        $this->content->removeCustomField('field1');
+        $this->assertFalse($this->content->hasCustomField('field1'));
+    }
+
     /**
      * @return \Integrated\Common\Content\Channel\ChannelInterface[]|\PHPUnit_Framework_MockObject_MockObject[]
      */
