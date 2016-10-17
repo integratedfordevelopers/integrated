@@ -19,7 +19,7 @@ use Doctrine\Common\Inflector\Inflector;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class AssetExtension extends \Twig_Extension
+abstract class AbstractAssetExtension extends \Twig_Extension
 {
     /**
      * @var AssetManager
@@ -27,25 +27,11 @@ class AssetExtension extends \Twig_Extension
     protected $manager;
 
     /**
-     * @var string
-     */
-    protected $tag;
-
-    /**
-     * @var string
-     */
-    protected $template;
-
-    /**
      * @param AssetManager $manager
-     * @param string $tag
-     * @param string $template
      */
-    public function __construct(AssetManager $manager, $tag, $template)
+    public function __construct(AssetManager $manager)
     {
         $this->manager = $manager;
-        $this->tag = $tag;
-        $this->template = $template;
     }
 
     /**
@@ -54,7 +40,7 @@ class AssetExtension extends \Twig_Extension
     public function getTokenParsers()
     {
         return [
-            new AssetTokenParser($this->tag),
+            new AssetTokenParser($this->getTag()),
         ];
     }
 
@@ -64,7 +50,7 @@ class AssetExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction($this->tag, [$this, 'render'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_SimpleFunction('render', [$this, 'render'], ['is_safe' => ['html'], 'needs_environment' => true]),
         ];
     }
 
@@ -75,12 +61,12 @@ class AssetExtension extends \Twig_Extension
     public function render(\Twig_Environment $environment)
     {
         /** @var \Twig_Template $template */
-        $template = $environment->loadTemplate($this->template);
+        $template = $environment->loadTemplate($this->getTemplate());
 
         $html = [];
 
         foreach ($this->manager->getAssets() as $asset) {
-            $block = Inflector::singularize($this->tag) . ($asset->isInline() ? '_inline' : '');
+            $block = Inflector::singularize($this->getTag()) . ($asset->isInline() ? '_inline' : '');
 
             $html[] = $template->renderBlock($block, [
                 $asset->isInline() ? 'asset_content' : 'asset_url' => $asset->getContent()
@@ -103,6 +89,16 @@ class AssetExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return $this->tag . '_extension';
+        return $this->getTag() . '_extension';
     }
+
+    /**
+     * @return string
+     */
+    abstract protected function getTemplate();
+
+    /**
+     * @return string
+     */
+    abstract protected function getTag();
 }
