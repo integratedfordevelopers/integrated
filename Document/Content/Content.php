@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
@@ -90,9 +91,9 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     protected $channels;
 
     /**
-     * @var array
+     * @var Embedded\CustomFields
      */
-    protected $customFields = [];
+    protected $customFields;
 
     /**
      * Constructor
@@ -472,66 +473,28 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @return array
+     * @return Embedded\CustomFields
      */
     public function getCustomFields()
     {
+        if ($this->customFields === null) {
+            $this->customFields = new Embedded\CustomFields();
+        }
+
         return $this->customFields;
     }
 
     /**
-     * @param array $customFields
+     * @param RegistryInterface|null $customFields
      * @return $this
      */
-    public function setCustomFields(array $customFields)
+    public function setCustomFields(RegistryInterface $customFields = null)
     {
+        if ($customFields !== null && !$customFields instanceof Embedded\CustomFields) {
+            $customFields = new Embedded\CustomFields($customFields->toArray());
+        }
+
         $this->customFields = $customFields;
-        return $this;
-    }
-
-    /**
-     * @param $field
-     * @return bool
-     */
-    public function hasCustomField($field)
-    {
-        return array_key_exists($field, $this->customFields);
-    }
-
-    /**
-     * @param mixed $field
-     * @param mixed $value
-     * @return $this
-     */
-    public function addCustomField($field, $value)
-    {
-        $this->customFields[$field] = $value;
-        return $this;
-    }
-
-    /**
-     * @param $field
-     * @return mixed|null
-     */
-    public function getCustomField($field)
-    {
-        if ($this->hasCustomField($field)) {
-            return $this->customFields[$field];
-        }
-
-        return null;
-    }
-
-    /**
-     * @param $field
-     * @return $this
-     */
-    public function removeCustomField($field)
-    {
-        if ($this->hasCustomField($field)) {
-            unset($this->customFields[$field]);
-        }
-
         return $this;
     }
 

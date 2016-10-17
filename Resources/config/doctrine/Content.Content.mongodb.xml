@@ -24,6 +24,10 @@
             field="metadata"
             target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata" />
 
+        <embed-one
+            field="customFields"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomFields" />
+
         <embed-many
             field="relations"
             target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation" />
