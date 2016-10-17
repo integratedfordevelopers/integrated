@@ -8,7 +8,9 @@
 
         <parameter key="integrated_asset.manager.asset_manager.class">Integrated\Bundle\AssetBundle\Manager\AssetManager</parameter>
 
-        <parameter key="integrated_asset.twig.asset_extension.class">Integrated\Bundle\AssetBundle\Twig\Extension\AssetExtension</parameter>
+        <parameter key="integrated_asset.twig.javascript_extension.class">Integrated\Bundle\AssetBundle\Twig\Extension\JavascriptExtension</parameter>
+
+        <parameter key="integrated_asset.twig.stylesheet_extension.class">Integrated\Bundle\AssetBundle\Twig\Extension\StylesheetExtension</parameter>
 
     </parameters>
 
@@ -17,17 +19,13 @@
         <service id="integrated_asset.manager.stylesheet_manager" class="%integrated_asset.manager.asset_manager.class%" />
         <service id="integrated_asset.manager.javascript_manager" class="%integrated_asset.manager.asset_manager.class%" />
 
-        <service id="integrated_asset.twig.stylesheet_extension" class="%integrated_asset.twig.asset_extension.class%">
+        <service id="integrated_asset.twig.stylesheet_extension" class="%integrated_asset.twig.stylesheet_extension.class%">
             <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
-            <argument type="string">integrated_stylesheets</argument>
-            <argument type="string">@IntegratedAssetBundle/Resources/views/Asset/stylesheets.html.twig</argument>
             <tag name="twig.extension" />
         </service>
 
-        <service id="integrated_asset.twig.javascript_extension" class="%integrated_asset.twig.asset_extension.class%">
+        <service id="integrated_asset.twig.javascript_extension" class="%integrated_asset.twig.javascript_extension.class%">
             <argument type="service" id="integrated_asset.manager.javascript_manager" />
-            <argument type="string">integrated_javascripts</argument>
-            <argument type="string">@IntegratedAssetBundle/Resources/views/Asset/javascripts.html.twig</argument>
             <tag name="twig.extension" />
         </service>
 
