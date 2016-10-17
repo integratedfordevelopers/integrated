@@ -90,6 +90,11 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     protected $channels;
 
     /**
+     * @var array
+     */
+    protected $customFields = [];
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -464,6 +469,48 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     {
         $this->channels->removeElement($channel);
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustomFields()
+    {
+        return $this->customFields;
+    }
+
+    /**
+     * @param array $customFields
+     * @return $this
+     */
+    public function setCustomFields(array $customFields)
+    {
+        $this->customFields = $customFields;
+        return $this;
+    }
+
+    /**
+     * @param mixed $key
+     * @param mixed $value
+     * @return $this
+     */
+    public function addCustomField($key, $value)
+    {
+        $this->customFields[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * @param $key
+     * @return mixed|null
+     */
+    public function getCustomField($key)
+    {
+        if (isset($this->customFields[$key])) {
+            return $this->customFields[$key];
+        }
+
+        return null;
     }
 
     /**

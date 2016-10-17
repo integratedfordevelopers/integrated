@@ -14,14 +14,15 @@
         <field fieldName="updatedAt" type="date" />
         <field fieldName="published" type="boolean" />
         <field fieldName="disabled" type="boolean" />
+        <field fieldName="customFields" type="hash" />
 
         <embed-one
-                field="publishTime"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime" />
+            field="publishTime"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime" />
 
         <embed-one
-                field="metadata"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata" />
+            field="metadata"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata" />
 
         <embed-many
             field="relations"
