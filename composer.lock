@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "bcdbe1b0fc20aef7ec5d31d8f7a1a37b",
+    "content-hash": "7f8a5d40f7128772d437191620e82ddf",
     "packages": [
         {
             "name": "braincrafted/bootstrap-bundle",
@@ -998,16 +998,16 @@
         },
         {
             "name": "doctrine/mongodb-odm",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/mongodb-odm.git",
-                "reference": "9eedb38286805f8f084c9a530ef89379ed9bf4b5"
+                "reference": "e839648ef7649757aae3b9818236a6fa47c016cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/9eedb38286805f8f084c9a530ef89379ed9bf4b5",
-                "reference": "9eedb38286805f8f084c9a530ef89379ed9bf4b5",
+                "url": "https://api.github.com/repos/doctrine/mongodb-odm/zipball/e839648ef7649757aae3b9818236a6fa47c016cd",
+                "reference": "e839648ef7649757aae3b9818236a6fa47c016cd",
                 "shasum": ""
             },
             "require": {
@@ -1078,7 +1078,7 @@
                 "odm",
                 "persistence"
             ],
-            "time": "2016-07-27 13:16:06"
+            "time": "2016-10-07 09:18:05"
         },
         {
             "name": "doctrine/mongodb-odm-bundle",
@@ -1696,12 +1696,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-content-bundle.git",
-                "reference": "de8c6eb24acaa50d65571ecf7a3556c9ec372171"
+                "reference": "c3490d46269315b4ab1f249bdd84d4c812315c90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/de8c6eb24acaa50d65571ecf7a3556c9ec372171.zip",
-                "reference": "de8c6eb24acaa50d65571ecf7a3556c9ec372171",
+                "url": "https://bitbucket.org/eactive/integrated-content-bundle/get/c3490d46269315b4ab1f249bdd84d4c812315c90.zip",
+                "reference": "c3490d46269315b4ab1f249bdd84d4c812315c90",
                 "shasum": ""
             },
             "require": {
@@ -1764,7 +1764,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2016-09-15 07:13:51"
+            "time": "2016-10-07 07:01:21"
         },
         {
             "name": "integrated/formtype-bundle",
@@ -2203,12 +2203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-storage-bundle.git",
-                "reference": "5fec362fcf966d6ea686ee05ee631281e0b1b48a"
+                "reference": "f1340942f7ac25d70e380719d3c5a5ee8b502597"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://bitbucket.org/eactive/integrated-storage-bundle/get/5fec362fcf966d6ea686ee05ee631281e0b1b48a.zip",
-                "reference": "5fec362fcf966d6ea686ee05ee631281e0b1b48a",
+                "url": "https://bitbucket.org/eactive/integrated-storage-bundle/get/f1340942f7ac25d70e380719d3c5a5ee8b502597.zip",
+                "reference": "f1340942f7ac25d70e380719d3c5a5ee8b502597",
                 "shasum": ""
             },
             "require": {
@@ -2244,7 +2244,7 @@
                 "Integrated",
                 "storage"
             ],
-            "time": "2016-09-15 14:01:48"
+            "time": "2016-10-07 06:36:43"
         },
         {
             "name": "integrated/theme-bundle",
@@ -2353,12 +2353,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-website-bundle.git",
-                "reference": "5154ef4f0467b337d89dc7e7dc5480a626e01c58"
+                "reference": "6c2c7dbbe5fd6bfa27f673365793580b6de291bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-website-bundle/zipball/5154ef4f0467b337d89dc7e7dc5480a626e01c58",
-                "reference": "5154ef4f0467b337d89dc7e7dc5480a626e01c58",
+                "url": "https://api.github.com/repos/integratedfordevelopers/integrated-website-bundle/zipball/6c2c7dbbe5fd6bfa27f673365793580b6de291bf",
+                "reference": "6c2c7dbbe5fd6bfa27f673365793580b6de291bf",
                 "shasum": ""
             },
             "require": {
@@ -2409,7 +2409,7 @@
                 "Integrated",
                 "website"
             ],
-            "time": "2016-08-24 13:23:19"
+            "time": "2016-10-05 13:09:23"
         },
         {
             "name": "integrated/workflow-bundle",
@@ -2853,20 +2853,20 @@
         },
         {
             "name": "knplabs/knp-menu-bundle",
-            "version": "2.1.2",
+            "version": "2.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/KnpMenuBundle.git",
-                "reference": "42ff1953c3a79d0b31aba2ece8c03fbd70e7f1ca"
+                "reference": "0e4af7209dc03e39c51ec70b68ab2ba3177c25de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/42ff1953c3a79d0b31aba2ece8c03fbd70e7f1ca",
-                "reference": "42ff1953c3a79d0b31aba2ece8c03fbd70e7f1ca",
+                "url": "https://api.github.com/repos/KnpLabs/KnpMenuBundle/zipball/0e4af7209dc03e39c51ec70b68ab2ba3177c25de",
+                "reference": "0e4af7209dc03e39c51ec70b68ab2ba3177c25de",
                 "shasum": ""
             },
             "require": {
-                "knplabs/knp-menu": "~2.1",
+                "knplabs/knp-menu": "~2.2",
                 "symfony/framework-bundle": "~2.3|~3.0"
             },
             "require-dev": {
@@ -2876,7 +2876,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "2.2.x-dev"
                 }
             },
             "autoload": {
@@ -2894,7 +2894,7 @@
                     "email": "stof@notk.org"
                 },
                 {
-                    "name": "KnpLabs",
+                    "name": "Knplabs",
                     "homepage": "http://knplabs.com"
                 },
                 {
@@ -2906,7 +2906,7 @@
             "keywords": [
                 "menu"
             ],
-            "time": "2016-06-21 06:53:03"
+            "time": "2016-09-22 12:24:40"
         },
         {
             "name": "knplabs/knp-paginator-bundle",
@@ -3284,16 +3284,16 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0"
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/5277094ed527a1c4477177d102fe4c53551953e0",
-                "reference": "5277094ed527a1c4477177d102fe4c53551953e0",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
+                "reference": "4ebe3a8bf773a19edfe0a84b6585ba3d401b724d",
                 "shasum": ""
             },
             "require": {
@@ -3327,7 +3327,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-09-19 16:02:08"
+            "time": "2016-10-10 12:19:37"
         },
         {
             "name": "robloach/component-installer",
