@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\Debug;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomFields;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -175,15 +175,15 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertNotContains($channel2, $this->content->getChannels());
     }
 
+    /**
+     * Test getCustomFields functions
+     */
     public function testCustomFieldsFunction()
     {
-        $fields = ['field1' => 'value1', 'field2' => 'value2'];
+        $this->isInstanceOf(CustomFields::class, $this->content->getCustomFields());
+
+        $fields = new CustomFields(['field1' => 'value1', 'field2' => 'value2']);
         $this->assertSame($fields, $this->content->setCustomFields($fields)->getCustomFields());
-        $this->assertNull($this->content->getCustomField('field3'));
-        $this->content->addCustomField('field2', 'newValue');
-        $this->assertSame('newValue', $this->content->getCustomField('field2'));
-        $this->content->removeCustomField('field1');
-        $this->assertFalse($this->content->hasCustomField('field1'));
     }
 
     /**
