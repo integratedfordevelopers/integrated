@@ -490,27 +490,49 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @param mixed $key
+     * @param $field
+     * @return bool
+     */
+    public function hasCustomField($field)
+    {
+        return array_key_exists($field, $this->customFields);
+    }
+
+    /**
+     * @param mixed $field
      * @param mixed $value
      * @return $this
      */
-    public function addCustomField($key, $value)
+    public function addCustomField($field, $value)
     {
-        $this->customFields[$key] = $value;
+        $this->customFields[$field] = $value;
         return $this;
     }
 
     /**
-     * @param $key
+     * @param $field
      * @return mixed|null
      */
-    public function getCustomField($key)
+    public function getCustomField($field)
     {
-        if (isset($this->customFields[$key])) {
-            return $this->customFields[$key];
+        if ($this->hasCustomField($field)) {
+            return $this->customFields[$field];
         }
 
         return null;
+    }
+
+    /**
+     * @param $field
+     * @return $this
+     */
+    public function removeCustomField($field)
+    {
+        if ($this->hasCustomField($field)) {
+            unset($this->customFields[$field]);
+        }
+
+        return $this;
     }
 
     /**
