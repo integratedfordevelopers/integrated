@@ -102,9 +102,7 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
                 CustomFieldListener::FORM_NAME,
                 CustomFieldListener::FORM_TYPE,
                 [
-                    'contentType' => $contentType,
-                    // TODO this will be mapped in INTEGRATED-552
-                    'mapped' => false
+                    'contentType' => $contentType
                 ]
             )
         ;

@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\Valid;
  */
 class CustomFieldListener implements EventSubscriberInterface
 {
-    const FORM_NAME = 'custom';
+    const FORM_NAME = 'customFields';
     const FORM_TYPE = 'integrated_custom_fields';
 
     /**
@@ -50,9 +50,7 @@ class CustomFieldListener implements EventSubscriberInterface
                     self::FORM_NAME,
                     self::FORM_TYPE,
                     [
-                        'contentType' => $contentType,
-                        // TODO this will be mapped in INTEGRATED-552
-                        'mapped' => false,
+                        'contentType' => $contentType
                     ]
                 );
 

@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
@@ -88,6 +89,11 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      * @var Collection
      */
     protected $channels;
+
+    /**
+     * @var Embedded\CustomFields
+     */
+    protected $customFields;
 
     /**
      * Constructor
@@ -463,6 +469,32 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function removeChannel(ChannelInterface $channel)
     {
         $this->channels->removeElement($channel);
+        return $this;
+    }
+
+    /**
+     * @return Embedded\CustomFields
+     */
+    public function getCustomFields()
+    {
+        if ($this->customFields === null) {
+            $this->customFields = new Embedded\CustomFields();
+        }
+
+        return $this->customFields;
+    }
+
+    /**
+     * @param RegistryInterface|null $customFields
+     * @return $this
+     */
+    public function setCustomFields(RegistryInterface $customFields = null)
+    {
+        if ($customFields !== null && !$customFields instanceof Embedded\CustomFields) {
+            $customFields = new Embedded\CustomFields($customFields->toArray());
+        }
+
+        $this->customFields = $customFields;
         return $this;
     }
 

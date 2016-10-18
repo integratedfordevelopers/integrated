@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\Debug;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomFields;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -116,15 +116,6 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setPublishedAt function
-     */
-    public function testGetAndSetPublishedAtFunction()
-    {
-        $publishedAt = new \DateTime();
-        $this->assertSame($publishedAt, $this->content->setPublishedAt($publishedAt)->getPublishedAt());
-    }
-
-    /**
      * Test get- and setDisabled function
      */
     public function testGetAndSetDisabledFunction()
@@ -145,28 +136,25 @@ class ContentTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test get- and setChannels function
+     * @dataProvider getChannels
+     * @param ArrayCollection $channels
      */
-    public function testGetAndSetChannelsFunction()
+    public function testGetAndSetChannelsFunction(ArrayCollection $channels)
     {
-        $channels = new ArrayCollection();
-        $this->assertSame($channels, $this->content->setChannels($channels)->getChannels());
+        $this->assertEquals($channels->toArray(), $this->content->setChannels($channels)->getChannels());
     }
 
     /**
      * Test addChannel function
+     * @dataProvider getChannels
+     * @param ArrayCollection $channels
      */
-    public function testAddChannelFunction()
+    public function testAddChannelFunction(ArrayCollection $channels)
     {
-        /* @var $channel \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $channel = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
-
-        // Check if we can add
-        $this->content->addChannel($channel);
-        $this->assertContains($channel, $this->content->getChannels());
-
-        // Duplicate check
-        $this->content->addChannel($channel);
-        $this->assertCount(1, $this->content->getChannels());
+        foreach ($channels as $channel) {
+            $this->assertContains($channel, $this->content->addChannel($channel)->getChannels());
+            $this->assertCount(count($this->content->getChannels()), $this->content->addChannel($channel)->getChannels());
+        }
     }
 
     /**
@@ -180,17 +168,41 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         /* @var $channel2 \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
         $channel2 = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
 
-        // Add channels
         $this->content->addChannel($channel1)->addChannel($channel2);
-        $this->assertCount(2, $this->content->getChannels());
+        $this->content->removeChannel($channel2);
 
-        // Remove channel2
-        $this->assertTrue($this->content->removeChannel($channel2));
-
-        // Channel1 should not be removed
         $this->assertContains($channel1, $this->content->getChannels());
+        $this->assertNotContains($channel2, $this->content->getChannels());
+    }
 
-        // Removal of channel that is not added should return false
-        $this->assertFalse($this->content->removeChannel($channel2));
+    /**
+     * Test getCustomFields functions
+     */
+    public function testCustomFieldsFunction()
+    {
+        $this->isInstanceOf(CustomFields::class, $this->content->getCustomFields());
+
+        $fields = new CustomFields(['field1' => 'value1', 'field2' => 'value2']);
+        $this->assertSame($fields, $this->content->setCustomFields($fields)->getCustomFields());
+    }
+
+    /**
+     * @return \Integrated\Common\Content\Channel\ChannelInterface[]|\PHPUnit_Framework_MockObject_MockObject[]
+     */
+    public function getChannels()
+    {
+        return [
+            'single' => [
+                new ArrayCollection([
+                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface')
+                ])
+            ],
+            'multiple' => [
+                new ArrayCollection([
+                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface'),
+                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface')
+                ])
+            ]
+        ];
     }
 }
