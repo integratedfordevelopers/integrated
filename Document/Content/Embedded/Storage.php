@@ -46,7 +46,7 @@ class Storage implements StorageInterface, \ArrayAccess
 
     /**
      * @var Storage\Metadata
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata")
      */
     protected $metadata;
 
