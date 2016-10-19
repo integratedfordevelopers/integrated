@@ -21,8 +21,7 @@
                     <th>{{ knp_pagination_sortable(blocks, 'Short code', 'id') }}</th>
                     <th>{{ knp_pagination_sortable(blocks, 'Type', 'type') }}</th>
                     {% if pageBundleInstalled %}
-                        <th>{% trans %}Channels{% endtrans %}</th>
-                        <th>{% trans %}Pages{% endtrans %}</th>
+                        <th>{% trans %}Usage{% endtrans %}</th>
                     {% endif %}
                     <th>{% trans %}Actions{% endtrans %}</th>
                 </tr>
@@ -30,7 +29,6 @@
                 <tbody>
 
                 {% for block in blocks %}
-
                     <tr>
                         <td class="break-word">
                             {{ block.title }}
@@ -39,17 +37,23 @@
                             {{ block.id }}
                         </td>
                         <td>
-                            {{ block.type }}
+                            {{ block|integrated_block_type }}
                         </td>
                         {% if pageBundleInstalled %}
-                            <td class="break-word">
-                                {% for channel in integrated_find_channels(block) %}
-                                    {{ channel.name }}{% if not loop.last %}, {% endif %}
-                                {% endfor %}
-                            </td>
                             <td>
                                 {% set pageList %}
                                     {% if integrated_find_pages(block)|length %}
+                                        <h3>
+                                            {% trans %}Channels{% endtrans %}
+                                        </h3>
+                                        <ul class="list-bullet">
+                                            {% for channel in integrated_find_channels(block) %}
+                                                <li>{{ channel.name }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        <h3>
+                                            {% trans %}Pages{% endtrans %}
+                                        </h3>
                                         <ul class="list-bullet">
                                             {% for page in integrated_find_pages(block) %}
                                                 <li>{{ page.title }}</li>
@@ -59,7 +63,7 @@
                                 {% endset %}
 
                                 {% if pageList|trim %}
-                                    <span class="glyphicon glyphicon-list-alt" data-toggle="popover" data-trigger="hover" title="Pages" data-content="{{ pageList|e }}" data-html="true" data-placement="left"></span>
+                                    <span class="glyphicon glyphicon-list-alt" data-toggle="popover" data-trigger="hover" data-content="{{ pageList|e }}" data-html="true" data-placement="left"></span>
                                 {% endif %}
                             </td>
                         {% endif %}
@@ -81,7 +85,11 @@
 
                     <tr>
                         <td colspan="4">
-                            {% trans %}No blocks added{% endtrans %}
+                            {% if facetFilter.vars.value.q|default or facetFilter.vars.value.type|default or facetFilter.vars.value.channels|default  %}
+                                {% trans %}No blocks found{% endtrans %}
+                            {% else %}
+                                {% trans %}No blocks added{% endtrans %}
+                            {% endif %}
                         </td>
                     </tr>
 

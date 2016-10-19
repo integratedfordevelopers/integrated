@@ -13,7 +13,9 @@ namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+use Integrated\Bundle\BlockBundle\Util\PageUsageUtil;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Block\BlockInterface;
 
 /**
@@ -27,16 +29,39 @@ class BlockExtension extends \Twig_Extension
     protected $container;
 
     /**
+     * @var PageUsageUtil
+     */
+    protected $pageUsageUtil;
+
+    /**
+     * @var PageUsageUtil
+     */
+    protected $metadataFactory;
+
+    /**
+     * @var bool
+     */
+    private $pageBundleInstalled;
+
+    /**
      * @var array
      */
     protected $pages = [];
 
     /**
      * @param ContainerInterface $container
+     * @param PageUsageUtil $pageUsageUtil
+     * @param MetadataFactoryInterface $metadataFactory
      */
-    public function __construct(ContainerInterface $container)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        PageUsageUtil $pageUsageUtil,
+        MetadataFactoryInterface $metadataFactory
+    ) {
         $this->container = $container; // @todo remove service container (INTEGRATED-445)
+        $this->pageUsageUtil = $pageUsageUtil;
+        $this->metadataFactory = $metadataFactory;
+        $this->pageBundleInstalled = class_exists('\Integrated\Bundle\PageBundle\IntegratedPageBundle');
     }
 
     /**
@@ -48,6 +73,16 @@ class BlockExtension extends \Twig_Extension
             new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html'], 'needs_environment' => true]),
             new \Twig_SimpleFunction('integrated_find_channels', [$this, 'findChannels']),
             new \Twig_SimpleFunction('integrated_find_pages', [$this, 'findPages']),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilters()
+    {
+        return [
+            new \Twig_SimpleFilter('integrated_block_type', [$this, 'getBlockTypeName']),
         ];
     }
 
@@ -104,13 +139,13 @@ class BlockExtension extends \Twig_Extension
     {
         $channels = [];
 
-        if ($this->container->has('integrated_page.form.type.page')) {
+        if ($this->pageBundleInstalled) {
             /* Get all pages which was associated with current Block document */
-            $pages = $this->getPages($block);
+            $pages = $this->findPages($block);
 
             foreach ($pages as $page) {
-                if ($channel = $page->getChannel()) {
-                    $channels[$channel->getId()] = $channel;
+                if (array_key_exists('channel', $page)) {
+                    $channels[$page['channel']['$id']] = $this->pageUsageUtil->getChannel($page['channel']['$id']);
                 }
             }
         }
@@ -121,37 +156,24 @@ class BlockExtension extends \Twig_Extension
     /**
      * @param \Integrated\Common\Block\BlockInterface $block
      *
-     * @return \Integrated\Bundle\PageBundle\Document\Page\Page[]
+     * @return array
      */
     public function findPages(BlockInterface $block)
     {
-        $pages = [];
-
-        if ($this->container->has('integrated_page.form.type.page')) {
-            foreach ($this->getPages($block) as $page) {
-                $pages[$page->getId()] = $page;
-            }
+        if ($this->pageBundleInstalled) {
+            return $this->pageUsageUtil->getPagesPerBlock($block->getId());
         }
 
-        return $pages;
+        return [];
     }
 
     /**
-     * @param Block $block
-     * @return \Integrated\Bundle\PageBundle\Document\Page\Page[]
+     * @param BlockInterface $block
+     * @return string
      */
-    public function getPages(Block $block)
+    public function getBlockTypeName(BlockInterface $block)
     {
-        if (!isset($this->pages[$block->getId()])) {
-            /* Get all pages which was associated with current Block document */
-            $this->pages[$block->getId()] = $this->container
-                ->get('doctrine_mongodb')
-                ->getRepository('IntegratedBlockBundle:Block\Block')
-                ->pagesByBlockQb($block)
-                ->execute();
-        }
-
-        return $this->pages[$block->getId()];
+        return $this->metadataFactory->getMetadata(get_class($block))->getType();
     }
 
     /**

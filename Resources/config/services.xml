@@ -12,12 +12,16 @@
 
         <parameter key="integrated_block.configure_menu.class">Integrated\Bundle\BlockBundle\EventListener\ConfigureMenuListener</parameter>
 
+        <parameter key="integrated_block.util.page_usage.class">Integrated\Bundle\BlockBundle\Util\PageUsageUtil</parameter>
+
     </parameters>
 
     <services>
 
         <service id="integrated_block.twig.block_extension" class="%integrated_block.twig.block_extension.class%">
             <argument type="service" id="service_container" />
+            <argument type="service" id="integrated_block.util.page_usage" />
+            <argument type="service" id="integrated_block.metadata.factory" />
             <tag name="twig.extension" />
         </service>
 
@@ -28,6 +32,10 @@
         <service id="integrated_block.configure_menu" class="%integrated_block.configure_menu.class%">
             <argument type="service" id="security.authorization_checker" />
             <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="integrated_block.util.page_usage" class="%integrated_block.util.page_usage.class%">
+            <argument type="service" id="doctrine_mongodb" />
         </service>
 
     </services>
