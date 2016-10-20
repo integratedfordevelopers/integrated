@@ -16,32 +16,31 @@
     "require": {
         "php": ">=5.4",
         "ext-mongo": "~1.2",
-        "symfony/symfony": "~2.7",
-        "symfony/framework-bundle": "~2.2",
-        "doctrine/doctrine-fixtures-bundle": "~2.2",
-        "doctrine/mongodb": ">=1.0.0",
-        "doctrine/mongodb-odm": "*",
-        "doctrine/mongodb-odm-bundle": "~3.0",
-        "gregwar/image-bundle": "~2.1.0",
-        "integrated/library": "~0.4",
-        "integrated/formtype-bundle": "~0.2",
-        "integrated/locking-bundle": "~0.2",
-        "integrated/menu-bundle": "~0.3",
-        "integrated/block-bundle": "~0.4",
-        "integrated/slug-bundle": "~0.2",
+        "symfony/symfony": "~2.7.19",
+        "doctrine/doctrine-fixtures-bundle": "~2.3",
+        "doctrine/mongodb": "~1.3",
+        "doctrine/mongodb-odm": "~1.1.2",
+        "doctrine/mongodb-odm-bundle": "~3.2",
+        "gregwar/image-bundle": "~2.1.1",
+        "integrated/library": "~0.6",
+        "integrated/formtype-bundle": "~0.6",
+        "integrated/locking-bundle": "~0.4",
+        "integrated/menu-bundle": "~0.5",
+        "integrated/block-bundle": "~0.6",
+        "integrated/slug-bundle": "~0.5",
         "integrated/solr-bundle": "~0.5",
         "integrated/asset-bundle": "~0.5",
-        "knplabs/knp-menu-bundle": "~2.0",
-        "knplabs/knp-paginator-bundle": "~2.4",
-        "nelmio/alice": "1.*",
+        "knplabs/knp-menu-bundle": "~2.1",
+        "knplabs/knp-paginator-bundle": "~2.5",
+        "nelmio/alice": "~1.7",
         "braincrafted/bootstrap-bundle": "~2.2.0",
-        "twbs/bootstrap": "3.*",
+        "twbs/bootstrap": "~3.3",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
-        "vihuvac/recaptcha-bundle": "~2.0"
+        "vihuvac/recaptcha-bundle": "~2.1"
     },
     "suggest": {
-        "integrated/page-bundle": "~0.3",
-        "integrated/website-bundle": "~0.3"
+        "integrated/page-bundle": "~0.5",
+        "integrated/website-bundle": "~0.5"
     },
     "require-dev": {
         "phpunit/phpunit": "4.4.*"
@@ -49,11 +48,6 @@
     "autoload":{
         "psr-4":{
             "Integrated\\Bundle\\ContentBundle\\": ""
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "0.9.x-dev"
         }
     }
 }
