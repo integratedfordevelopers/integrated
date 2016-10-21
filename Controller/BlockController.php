@@ -38,8 +38,8 @@ class BlockController extends Controller
 
         $qb = $this->get('integrated_block.util.page_usage')
             ->getBlocksByChannelQueryBuilder(
-                isset($data['type']) ? $data['type'] : [],
-                isset($data['channels']) ? $data['channels'] : [],
+                isset($data['type']) ? array_filter($data['type']) : [],
+                isset($data['channels']) ? array_filter($data['channels']) : [],
                 $pageBundleInstalled,
                 isset($data['q']) ? $data['q'] : null
             );
