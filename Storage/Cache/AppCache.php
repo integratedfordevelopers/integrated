@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Cache;
 
+use Integrated\Bundle\StorageBundle\Exception\NoFilesystemAvailableException;
 use Integrated\Bundle\StorageBundle\Storage\Util\DirectoryUtil;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Cache\CacheInterface;
@@ -78,10 +79,16 @@ class AppCache implements CacheInterface
         // Open a file with write permission
         $write = $file->openFile('w');
         if ($write->isWritable()) {
-            // Write it
-            $write->fwrite(
-                $this->fileManager->read($storage)
-            );
+            // Whenever the filesystem(s) are down or does not contain the file (anymore) we'll end up with this exception
+            try {
+                // Read it
+                $content = $this->fileManager->read($storage);
+            } catch (NoFilesystemAvailableException $exception) {
+                throw new \InvalidArgumentException($exception->getMessage());
+            }
+
+            // Write it if we've got some content
+            $write->fwrite($content);
 
             return $write->getPathname();
         }
