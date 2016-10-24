@@ -33,16 +33,10 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $data = $request->query->get('integrated_block_filter');
         $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
 
         $qb = $this->get('integrated_block.provider.filter_query')
-            ->getBlocksByChannelQueryBuilder(
-                isset($data['type']) ? $data['type'] : [],
-                isset($data['channels']) ? $data['channels'] : [],
-                $pageBundleInstalled,
-                isset($data['q']) ? $data['q'] : null
-            );
+            ->getBlocksByChannelQueryBuilder($request->query->get('integrated_block_filter'), $pageBundleInstalled);
 
         $pagination = $this->getPaginator()->paginate(
             $qb,

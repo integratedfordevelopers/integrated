@@ -40,28 +40,26 @@ class FilterQueryProvider
     }
 
     /**
-     * @param array $type
-     * @param array $channels
+     * @param array $data
      * @param bool $pageBundleInstalled
-     * @param string|null $query
      * @return \Doctrine\MongoDB\Query\Builder
      */
-    public function getBlocksByChannelQueryBuilder(array $type = [], array $channels = [], $pageBundleInstalled = false, $query = null)
+    public function getBlocksByChannelQueryBuilder(array $data, $pageBundleInstalled = false)
     {
         $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
 
-        if ($type) {
-            $qb->field('class')->in($type);
+        if (isset($data['type'])) {
+            $qb->field('class')->in($data['type']);
         }
 
-        if ($query) {
-            $qb->field('title')->equals(new \MongoRegex('/' . $query . '/i'));
+        if (isset($data['type'])) {
+            $qb->field('title')->equals(new \MongoRegex('/' . $data['q'] . '/i'));
         }
 
-        if ($pageBundleInstalled && $channels) {
+        if ($pageBundleInstalled && isset($data['channels'])) {
             $availableBlockIds = [];
 
-            foreach ($channels as $channel) {
+            foreach ($data['channels'] as $channel) {
                 $availableBlockIds = array_merge($availableBlockIds, $this->blockUsageProvider->getBlocksPerChannel($channel));
             }
 
