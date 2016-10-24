@@ -1,0 +1,6 @@
+{
+    "name": "integrated-storage-bundle",
+    "dependencies": {
+        "dropzone": "4.3.*"
+    }
+}

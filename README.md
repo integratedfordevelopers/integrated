@@ -30,7 +30,7 @@ This bundle can be installed following these steps:
 ### Configuration ###
 The bundle makes use of *knplabs/knp-gaufrette-bundle* for configuration and a filesystem map. When you've enabled the bundle this config below is required for a default Integrated installation.  
 
-    // app/config.yml
+    # app/config.yml
     knp_gaufrette:
         adapters:
             foo:
@@ -47,10 +47,19 @@ The bundle makes use of *knplabs/knp-gaufrette-bundle* for configuration and a f
     
 The StorageBundle places the files on all known filesystems when no decision mapping exists. The order defined in the configuration will be used to determine its primary path. When a filesystem has no resolver storage (for protected files) the developer must write an own implementation to give access to file (see **Protecting files** section). The filesystems (foo above) in the *knp_gaufrette* configuration are linked to the *integrated_storage* configuration. Based on the key(s) a resolver or decision map entry is linked to a filesystem.
   
+### Configuring the assets ###
+The IntegratedStorageBundle uses the [SpBowerBundle](https://github.com/Spea/SpBowerBundle) for handling the external
+resources.
+
+	# app/config/config.yml
+	sp_bower:
+        bundles:
+            IntegratedStorageBundle: ~
+  
 ### Routing ###
 The routing needs to be to imported into the application to support usage in various Integrated components. 
  
-    // app/routing.yml
+    # app/routing.yml
     integrated_storage:
         resource: "@IntegratedStorageBundle/Resources/config/routing/storage.xml"
         prefix: "/"
@@ -59,7 +68,7 @@ The routing needs to be to imported into the application to support usage in var
 Additionally to protected entities from being stored in a public accessible resource a developer can configure filesystems for entities.  
 You can enforce entities to be stored in specific storage(s) (thus preventing a public storage).  
 
-    // app/config.yml
+    # app/config.yml
     integrated_storage:
         // ...
         decision_map:
@@ -70,7 +79,7 @@ You can enforce entities to be stored in specific storage(s) (thus preventing a 
 #### Identifier ###
 A file requires an unique identifier. By default the identifier is based on the contents of the file. You can write your own implementation of `Integrated\Common\Storage\Identifier\IdentifierInterface`. The config below is default and does not have to be set.
 
-    // app/config.yml
+    # app/config.yml
     integrated_storage:
         // ...
         identifier_class: Integrated\Bundle\StorageBundle\Storage\Identifier\FileIdentifier  
@@ -80,7 +89,7 @@ A resolver returns the location of the stored file, providing a location for a b
 
 The config below is default and does not have to be set.
 
-    // app/config.yml
+    # app/config.yml
     integrated_storage:
         // ..
         resolver:
