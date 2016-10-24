@@ -43,7 +43,7 @@ resources.
 
 	# app/config/config.yml
 	sp_bower:
-        paths:
+        bundles:
             IntegratedContentBundle: ~
 
 The base template of the ContentBundle uses two [named assets](http://symfony.com/doc/current/cookbook/assetic/asset_management.html#using-named-assets):

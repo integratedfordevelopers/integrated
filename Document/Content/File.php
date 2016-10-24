@@ -29,7 +29,7 @@ class File extends Content implements FileInterface
 {
     /**
      * @var StorageInterface
-     * @Type\Field(type="integrated_file")
+     * @Type\Field(type="integrated_file_dropzone")
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      */
     protected $file;
