@@ -35,5 +35,6 @@ class IntegratedBlockExtension extends Extension
         $loader->load('metadata.xml');
         $loader->load('form.xml');
         $loader->load('block.xml');
+        $loader->load('paginator.xml');
     }
 }

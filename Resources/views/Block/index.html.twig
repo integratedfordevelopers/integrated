@@ -31,7 +31,7 @@
                         {{ form_widget(facetFilter.q) }}
                     </div>
 
-                    <div class="aside-item-holder{% if facetFilter.channels.vars.choices|length == 0 %} hidden{% endif %}">
+                    <div class="aside-item-holder{% if facetFilter.type.vars.choices|length == 0 %} hidden{% endif %}">
                         {{ form_row(facetFilter.type) }}
                     </div>
 

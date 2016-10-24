@@ -11,12 +11,13 @@
 
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
+use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\BlockBundle\Util\PageUsageUtil;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 /**
@@ -35,9 +36,9 @@ class BlockFilterType extends AbstractType
     private $dm;
 
     /**
-     * @var PageUsageUtil
+     * @var BlockUsageProvider
      */
-    private $pageUsageUtil;
+    private $blockUsageProvider;
 
     /**
      * @var bool
@@ -47,14 +48,19 @@ class BlockFilterType extends AbstractType
     /**
      * @param MetadataFactoryInterface $factory
      * @param DocumentManager          $dm
-     * @param PageUsageUtil            $pageUsageUtil
+     * @param BlockUsageProvider       $blockUsageProvider
+     * @param array                    $bundles
      */
-    public function __construct(MetadataFactoryInterface $factory, DocumentManager $dm, PageUsageUtil $pageUsageUtil)
-    {
+    public function __construct(
+        MetadataFactoryInterface $factory,
+        DocumentManager $dm,
+        BlockUsageProvider $blockUsageProvider,
+        array $bundles
+    ) {
         $this->factory = $factory;
         $this->dm = $dm;
-        $this->pageUsageUtil = $pageUsageUtil;
-        $this->pageBundleInstalled = class_exists('\Integrated\Bundle\PageBundle\IntegratedPageBundle');
+        $this->blockUsageProvider = $blockUsageProvider;
+        $this->pageBundleInstalled = isset($bundles['IntegratedPageBundle']);
     }
 
     /**
@@ -73,7 +79,7 @@ class BlockFilterType extends AbstractType
         $builder->add(
             'type',
             'choice',
-            ['choices' => $this->getTypeChoices(), 'expanded' => true, 'multiple' => true]
+            ['choices' => $this->getTypeChoices($options['blockIds']), 'expanded' => true, 'multiple' => true]
         );
 
         /* if IntegratedPageBundle is installed show channels */
@@ -81,9 +87,18 @@ class BlockFilterType extends AbstractType
             $builder->add(
                 'channels',
                 'choice',
-                ['choices' => $this->getChannelChoices(), 'expanded' => true, 'multiple' => true]
+                ['choices' => $this->getChannelChoices($options['blockIds']), 'expanded' => true, 'multiple' => true]
             );
         }
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('blockIds');
+        $resolver->setAllowedTypes('blockIds', 'array');
     }
 
 
@@ -96,28 +111,30 @@ class BlockFilterType extends AbstractType
     }
 
     /**
-     * @return array
+     * @param array $blockIds
+     * @return mixed
      */
-    private function getTypeChoices()
+    private function getTypeChoices(array $blockIds)
     {
         return $this->dm->getRepository('IntegratedBlockBundle:Block\Block')->getTypeChoices(
             $this->factory,
-            $this->pageUsageUtil->getFilteredBlockIds()
+            $blockIds
         );
     }
 
     /**
+     * @param array $blockIds
      * @return array
      */
-    private function getChannelChoices()
+    private function getChannelChoices(array $blockIds)
     {
-        $channels = $this->pageUsageUtil->getBlocksPerChannel();
+        $channels = $this->blockUsageProvider->getBlocksPerChannel();
 
         $channelChoices = [];
         foreach ($channels as $channelId => $blocks) {
-            $count = count(array_intersect($blocks, $this->pageUsageUtil->getFilteredBlockIds()));
+            $count = count(array_intersect($blocks, $blockIds));
             if ($count) {
-                $channelChoices[$channelId] = $this->pageUsageUtil->getChannel($channelId)->getName() . ' ' . $count;
+                $channelChoices[$channelId] = $this->blockUsageProvider->getChannel($channelId)->getName() . ' ' . $count;
             }
         }
 

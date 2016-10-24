@@ -34,9 +34,9 @@ class BlockController extends Controller
     public function indexAction(Request $request)
     {
         $data = $request->query->get('integrated_block_filter');
-        $pageBundleInstalled = $this->container->has('integrated_page.form.type.page');
+        $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
 
-        $qb = $this->get('integrated_block.util.page_usage')
+        $qb = $this->get('integrated_block.provider.filter_query')
             ->getBlocksByChannelQueryBuilder(
                 isset($data['type']) ? $data['type'] : [],
                 isset($data['channels']) ? $data['channels'] : [],
@@ -48,10 +48,12 @@ class BlockController extends Controller
             $qb,
             $request->query->get('page', 1),
             $request->query->get('limit', 20),
-            ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc']
+            ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc', 'query_type' => 'block_overview']
         );
 
-        $facetFilter = $this->createForm($this->get('integrated_block.form.type.block_filter'));
+        $facetFilter = $this->createForm($this->get('integrated_block.form.type.block_filter'), null, [
+            'blockIds' => $pagination->getCustomParameter('blockIds')
+        ]);
         $facetFilter->handleRequest($request);
 
         return [

@@ -9,19 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\BlockBundle\Util;
+namespace Integrated\Bundle\BlockBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\MongoDB\Query\Builder;
 
-use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class PageUsageUtil
+class BlockUsageProvider
 {
     /**
     * @var ManagerRegistry
@@ -54,24 +52,11 @@ class PageUsageUtil
     protected $channels = [];
 
     /**
-     * @var array|null
-     */
-    protected $filteredBlockIds = null;
-
-    /**
-     * @param ManagerRegistry $dm
+     * @param ManagerRegistry $mr
      */
     public function __construct(ManagerRegistry $mr)
     {
         $this->mr = $mr;
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getFilteredBlockIds()
-    {
-        return $this->filteredBlockIds;
     }
 
     /**
@@ -84,7 +69,7 @@ class PageUsageUtil
             //loads blockPages
             $this->convertPages();
 
-            //to prevent doing same logic everytime if there are no results
+            //to prevent doing same logic every time if there are no results
             if (null === $this->blockPages) {
                 $this->blockPages = [];
             }
@@ -107,7 +92,7 @@ class PageUsageUtil
             //loads channelBlocks
             $this->convertPages();
 
-            //to prevent doing same logic everytime if there are no results
+            //to prevent doing same logic every time if there are no results
             if (null === $this->channelBlocks) {
                 $this->channelBlocks = [];
             }
@@ -118,6 +103,19 @@ class PageUsageUtil
         }
 
         return $this->channelBlocks;
+    }
+
+    /**
+     * @param string $id
+     * @return Channel|null
+     */
+    public function getChannel($id)
+    {
+        if (!array_key_exists($id, $this->channels)) {
+            $this->channels[$id] = $this->mr->getManager()->getRepository(Channel::class)->find($id);
+        }
+
+        return $this->channels[$id];
     }
 
     /**
@@ -172,66 +170,5 @@ class PageUsageUtil
                 }
             }
         }
-    }
-
-    /**
-     * @param string $id
-     * @return Channel|null
-     */
-    public function getChannel($id)
-    {
-        if (!array_key_exists($id, $this->channels)) {
-            $this->channels[$id] = $this->mr->getManager()->getRepository(Channel::class)->find($id);
-        }
-
-        return $this->channels[$id];
-    }
-
-    /**
-     * @param array $type
-     * @param array $channels
-     * @param bool $pageBundleInstalled
-     * @param string|null $query
-     * @return \Doctrine\MongoDB\Query\Builder
-     */
-    public function getBlocksByChannelQueryBuilder(array $type = [], array $channels = [], $pageBundleInstalled = false, $query = null)
-    {
-        $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
-
-        if ($type) {
-            $qb->field('class')->in($type);
-        }
-
-        if ($query) {
-            $qb->field('title')->equals(new \MongoRegex('/' . $query . '/i'));
-        }
-
-        if ($pageBundleInstalled && $channels) {
-            $availableBlockIds = [];
-
-            foreach ($channels as $channel) {
-                $availableBlockIds = array_merge($availableBlockIds, $this->getBlocksPerChannel($channel));
-            }
-
-            $qb->field('id')->in($availableBlockIds);
-        }
-
-        $this->saveQueryResults(clone $qb);
-
-        return $qb;
-    }
-
-    /**
-     * Save results from filter query, this way the facet filters will only show available block facets
-     * @param Builder $builder
-     */
-    protected function saveQueryResults(Builder $builder)
-    {
-        $blocks = $builder->select('_id')
-            ->hydrate(false)
-            ->getQuery()
-            ->toArray();
-
-        $this->filteredBlockIds = array_keys($blocks);
     }
 }
