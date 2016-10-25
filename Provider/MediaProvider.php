@@ -11,11 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Provider;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-
 use Integrated\Bundle\ContentBundle\Filter\ContentTypeFilter;
 use Integrated\Bundle\WorkflowBundle\Services\WorkflowPermission;
 
@@ -25,9 +22,9 @@ use Integrated\Bundle\WorkflowBundle\Services\WorkflowPermission;
 class MediaProvider
 {
     /**
-     * @var ObjectRepository
+     * @var ContentTypeManager
      */
-    private $contentType;
+    private $contentTypeManager;
 
     /**
      * @var WorkflowPermission
@@ -35,12 +32,12 @@ class MediaProvider
     private $permission;
 
     /**
-     * @param ObjectRepository $contentType
+     * @param ContentTypeManager $contentTypeManager
      * @param WorkflowPermission $permission
      */
-    public function __construct(ObjectRepository $contentType, WorkflowPermission $permission = null)
+    public function __construct(ContentTypeManager $contentTypeManager, WorkflowPermission $permission = null)
     {
-        $this->contentType = $contentType;
+        $this->contentTypeManager = $contentTypeManager;
         $this->permission = $permission;
     }
 
@@ -52,16 +49,12 @@ class MediaProvider
     {
         $contentTypes = [];
 
-        /** @var ContentType $contentType */
-        foreach ($this->contentType->findAll() as $contentType) {
+        foreach ($this->contentTypeManager->filterInstanceOf(File::class) as $contentType) {
             if (ContentTypeFilter::match($contentType->getClass(), $filter)) {
-                $reflection = new \ReflectionClass($contentType->getClass());
-                if ($reflection->isSubclassOf(File::class) || File::class == $reflection->getName()) {
-                    if (null == $this->permission) {
-                        $contentTypes[] = $contentType;
-                    } elseif ($this->permission->hasAccess($contentType)) {
-                        $contentTypes[] = $contentType;
-                    }
+                if (null == $this->permission) {
+                    $contentTypes[] = $contentType;
+                } elseif ($this->permission->hasAccess($contentType)) {
+                    $contentTypes[] = $contentType;
                 }
             }
         }

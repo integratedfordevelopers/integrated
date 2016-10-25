@@ -21,7 +21,7 @@
 
         <service id="integrated_content.provider.media" class="%integrated_content.provider.media.class%">
 
-            <argument type="service" id="integrated_content.content_type_repository" />
+            <argument type="service" id="integrated_content.content_type.manager" />
             <argument type="service" id="integrated_workflow.services.permission" on-invalid="ignore" />
 
         </service>

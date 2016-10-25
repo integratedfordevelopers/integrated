@@ -157,34 +157,6 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block integrated_file_dropzone_row %}
-    {% spaceless %}
-        <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
-            {{ form_label(form) }}
-            <div class="col-sm-8">
-                <div id="dropzone">
-                    <div class="dz-default dz-message"><span>Drop file or click here to upload.</span></div>
-                    <div class="fallback">
-                        {{ form_widget(form.file) }}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {% integrated_javascripts inline=true %}
-        Dropzone.autoDiscover = false;
-        var dropzone = new Dropzone("div#dropzone", {
-        url: "/storage/upload",
-        uploadMultiple: false
-        });
-
-        dropzone.on("complete", function(file) {
-            console.log(file);
-        });
-        {% endintegrated_javascripts %}
-    {% endspaceless %}
-{% endblock %}
-
 {% block integrated_image_row %}
     {% spaceless %}
         <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
@@ -210,13 +182,6 @@
                 {{ form_errors(form.file) }}
             </div>
         </div>
-    {% endspaceless %}
-{% endblock %}
-
-{% block integrated_image_dropzone_widget %}
-    {% spaceless %}
-
-
     {% endspaceless %}
 {% endblock %}
 
@@ -441,4 +406,12 @@
     {% integrated_javascripts mode='append'
     'bundles/integratedcontent/js/primary_channel.js' %}
     {% endintegrated_javascripts %}
+{% endblock %}
+
+{% block integrated_contact_persons_widget %}
+    {% integrated_javascripts mode='append'
+    'bundles/integratedcontent/js/contact_persons.js' %}
+    {% endintegrated_javascripts %}
+
+    {{ block('integrated_collection_widget') }}
 {% endblock %}
