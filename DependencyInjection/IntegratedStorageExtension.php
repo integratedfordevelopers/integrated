@@ -14,14 +14,20 @@ namespace Integrated\Bundle\StorageBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class IntegratedStorageExtension extends Extension
+class IntegratedStorageExtension extends Extension implements PrependExtensionInterface
 {
+    /**
+     * @var string
+     */
+    protected $formTemplate = 'IntegratedStorageBundle:Form:form_div_layout.html.twig';
+
     /**
      * {@inheritdoc}
      */
@@ -47,5 +53,22 @@ class IntegratedStorageExtension extends Extension
         // Inject the "decision" config (app/config.yml) in the manager
         $container->getDefinition('integrated_storage.decision')
             ->replaceArgument(1, $config['decision_map']);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        foreach ($container->getExtensions() as $name => $extension) {
+            switch ($name) {
+                case 'twig':
+                    $container->prependExtensionConfig(
+                        $name,
+                        array('form'  => array('resources' => array($this->formTemplate)))
+                    );
+                    break;
+            }
+        }
     }
 }

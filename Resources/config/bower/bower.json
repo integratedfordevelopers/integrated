@@ -1,6 +1,6 @@
 {
     "name": "integrated-storage-bundle",
     "dependencies": {
-        "dropzone": "4.3.*"
+        "jquery.filer": "1.3.*"
     }
 }

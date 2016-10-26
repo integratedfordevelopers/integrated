@@ -19,7 +19,6 @@ use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -74,17 +73,5 @@ class FileController
         throw new NotFoundHttpException(
             sprintf('There is no file found in the %s object', $document->getId())
         );
-    }
-
-    /**
-     */
-    public function uploadAction(Request $request)
-    {
-        /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
-        if ($file = $request->files->get('file')) {
-            echo $file->getPathname();
-        }
-
-        die;
     }
 }

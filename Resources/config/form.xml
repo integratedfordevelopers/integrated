@@ -9,8 +9,8 @@
         <parameter key="integrated_storage.form.type.file.class">Integrated\Bundle\StorageBundle\Form\Type\FileType</parameter>
         <parameter key="integrated_storage.form.type.image.class">Integrated\Bundle\StorageBundle\Form\Type\ImageType</parameter>
 
-        <parameter key="integrated_storage.form.type.file_dropzone.class">Integrated\Bundle\StorageBundle\Form\Type\FileDropzoneType</parameter>
-        <parameter key="integrated_storage.form.type.image_dropzone.class">Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneType</parameter>
+        <parameter key="integrated_storage.form.type.file_dropzone.class">Integrated\Bundle\StorageBundle\Form\Type\DropzoneType</parameter>
+        <parameter key="integrated_storage.form.type.image_dropzone.class">Integrated\Bundle\StorageBundle\Form\Type\DropzoneType</parameter>
 
     </parameters>
 
@@ -32,13 +32,20 @@
         <service id="integrated_storage.form.type.file_dropzone" class="%integrated_storage.form.type.file_dropzone.class%">
             <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
             <argument type="service" id="integrated_asset.manager.javascript_manager" />
+            <argument type="service" id="translator" />
+            <argument type="service" id="image.handling" />
+            <argument>file</argument>
             <tag name="form.type" alias="integrated_file_dropzone" />
         </service>
 
-        <service id="integrated_storage.form.type.image_dropzone" class="%integrated_storage.form.type.image_dropzone.class%" parent="integrated_storage.form.type.file_dropzone">
+        <service id="integrated_storage.form.type.image_dropzone" class="%integrated_storage.form.type.image_dropzone.class%">
+            <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
+            <argument type="service" id="integrated_asset.manager.javascript_manager" />
+            <argument type="service" id="translator" />
+            <argument type="service" id="image.handling" />
+            <argument>image</argument>
             <tag name="form.type" alias="integrated_image_dropzone" />
         </service>
-
     </services>
 
 </container>
