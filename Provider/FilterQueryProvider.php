@@ -40,11 +40,11 @@ class FilterQueryProvider
     }
 
     /**
-     * @param array $data
+     * @param array|null $data
      * @param bool $pageBundleInstalled
      * @return \Doctrine\MongoDB\Query\Builder
      */
-    public function getBlocksByChannelQueryBuilder(array $data, $pageBundleInstalled = false)
+    public function getBlocksByChannelQueryBuilder($data, $pageBundleInstalled = false)
     {
         $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
 
