@@ -1,0 +1,16 @@
+.integrated-dropzone.is-dragover {
+    border: 2px solid #525252;
+}
+.integrated-dropzone.empty-error {
+    border-color:#a94442;
+    box-shadow:0 0 10px #a94442;
+}
+.integrated-dropzone {
+    width: 100%;
+}
+.jFiler-input-dragDrop .jFiler-input-icon {
+    margin-top: 0;
+}
+.jFiler-items-grid .jFiler-item .jFiler-item-container {
+    margin: 0;
+}
