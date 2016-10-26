@@ -30,7 +30,7 @@ class Video extends File
 {
     /**
      * @var StorageInterface
-     * @Type\Field(type="integrated_file")
+     * @Type\Field(type="integrated_file_dropzone")
      * @Assert\File(mimeTypes="video/*")
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      */
