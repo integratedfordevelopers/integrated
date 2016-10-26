@@ -16,6 +16,8 @@
             '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
             <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
         {% endstylesheets %}
+
+        {{ integrated_stylesheets() }}
     {% endblock %}
 </head>
 <body>
@@ -57,6 +59,8 @@
         '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
+    {{ integrated_javascripts() }}
 {% endblock %}
 
 </body>

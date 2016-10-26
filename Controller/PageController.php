@@ -52,6 +52,9 @@ class PageController extends Controller
             return $this->redirect($this->generateUrl('integrated_website_page_' . $page->getId()));
         }
 
+        $this->get('integrated_asset.manager.javascript_manager')
+            ->add('bundles/integratedcontent/js/handlebars.helpers.js');
+
         return $this->render($page->getLayout(), [
             'page' => $page,
             'form' => $form->createView(),
