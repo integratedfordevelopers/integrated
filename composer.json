@@ -24,7 +24,7 @@
         "leafo/scssphp": "~0.6",
         "gregwar/image-bundle": "~2.1.0",
         "integrated/library": "~0.5,<0.6",
-        "integrated/block-bundle": "~0.5",
+        "integrated/block-bundle": "~0.5,<0.6",
         "integrated/channel-bundle": "~0.5",
         "integrated/content-bundle": "~0.5,<0.6",
         "integrated/formtype-bundle": "~0.5,<0.6",
@@ -36,7 +36,7 @@
         "integrated/storage-bundle": "~0.5,<0.6",
         "integrated/theme-bundle": "~0.4",
         "integrated/user-bundle": "~0.5",
-        "integrated/website-bundle": "~0.5",
+        "integrated/website-bundle": "~0.5,<0.6",
         "integrated/workflow-bundle": "~0.5",
         "integrated/puphpet": "~0.4"
     },
