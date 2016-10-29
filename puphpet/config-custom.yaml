@@ -1,3 +1,4 @@
 vagrantfile:
     vm:
         hostname: integrated
+        memory: '3072'
