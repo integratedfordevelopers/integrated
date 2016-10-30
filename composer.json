@@ -22,7 +22,7 @@
         "doctrine/mongodb-odm-bundle": "~3.2",
         "integrated/content-bundle": "~0.6",
         "integrated/block-bundle": "~0.6",
-        "integrated/theme-bundle": "~0.4",
+        "integrated/theme-bundle": "~0.6",
         "knplabs/knp-paginator-bundle": ">=2.4"
     },
     "suggest": {
