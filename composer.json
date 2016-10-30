@@ -21,9 +21,9 @@
         "doctrine/mongodb-odm": "~1.1",
         "doctrine/mongodb-odm-bundle": "~3.2",
         "integrated/library": "~0.6",
-        "integrated/menu-bundle": "~0.5",
-        "integrated/slug-bundle": "~0.5",
-        "integrated/theme-bundle": "~0.4",
+        "integrated/menu-bundle": "~0.6",
+        "integrated/slug-bundle": "~0.6",
+        "integrated/theme-bundle": "~0.6",
         "knplabs/knp-paginator-bundle": "~2.5"
     },
     "suggest": {
