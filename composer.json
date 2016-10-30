@@ -15,19 +15,17 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "~2.4",
-        "symfony/framework-bundle": "~2.2",
-        "integrated/library": "~0.1"
+        "symfony/symfony": "~2.7",
+        "integrated/library": "~0.6"
     },
     "require-dev": {
-        "doctrine/dbal": ">=2.3.0,<2.5-dev",
+        "doctrine/dbal": "~2.5",
         "squizlabs/php_codesniffer": "2.*",
         "phpunit/phpunit": "~4.8"
     },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\LockingBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\LockingBundle\\": ""
         }
-    },
-    "target-dir": "Integrated/Bundle/LockingBundle"
+    }
 }
