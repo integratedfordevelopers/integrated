@@ -24,7 +24,7 @@
                                 <li>
                                     <a href="{{ path('integrated_content_content_edit', {id: doc.type_id}) }}">
                                         <i class="integrate-icon-plus-circled"></i>
-                                        {{ doc.title }}
+                                        {{ doc.title|default }}
                                     </a>
                                 </li>
                             {% endfor %}
