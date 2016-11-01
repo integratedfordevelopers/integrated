@@ -6,7 +6,8 @@
         {% set item = item|merge({'content': content.content|join('...')|striptags}) %}
     {% endif %}
     {% if content.image_string is defined %}
-        {% set item = item|merge({'image': content.image_string}) %}
+        {% set item = item|merge({'image': content.image_string|first}) %}
+        {# todo add resized image for preview #}
     {% endif %}
     {% if content.extension_string is defined %}
         {% set item = item|merge({'extension': content.extension_string[0]}) %}

@@ -481,23 +481,12 @@ class ContentController extends Controller
             }
         }
 
-        $references = [];
-        /** @var \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation $relation */
-        foreach ($content->getRelations() as $relation) {
-            foreach ($relation->getReferences() as $reference) {
-                $references[$relation->getRelationId()][] = array(
-                    'id' => $reference->getId(),
-                    'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
-                );
-            }
-        }
-
         return array(
             'editable' => true,
             'type' => $type->getType(),
             'form' => $form->createView(),
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
-            'references' => json_encode($references),
+            'references' => json_encode($this->getReferences($content)),
         );
     }
 
@@ -634,17 +623,6 @@ class ContentController extends Controller
             $this->get('braincrafted_bootstrap.flash')->error($text);
         }
 
-        $references = [];
-        /** @var \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation $relation */
-        foreach ($content->getRelations() as $relation) {
-            foreach ($relation->getReferences() as $reference) {
-                $references[$relation->getRelationId()][] = array(
-                    'id' => $reference->getId(),
-                    'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
-                );
-            }
-        }
-
         return array(
             'editable' => $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content),
             'type'    => $type->getType(),
@@ -652,7 +630,7 @@ class ContentController extends Controller
             'content' => $content,
             'locking' => $locking,
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
-            'references' => json_encode($references),
+            'references' => json_encode($this->getReferences($content)),
         );
     }
 
@@ -1140,5 +1118,32 @@ class ContentController extends Controller
         }
 
         return $form->add('actions', 'content_actions', ['buttons' => ['delete', 'cancel']]);
+    }
+
+    /**
+     * @param ContentInterface $content
+     * @return array
+     */
+    protected function getReferences(ContentInterface $content)
+    {
+        $references = [];
+        /** @var \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation $relation */
+        foreach ($content->getRelations() as $relation) {
+            foreach ($relation->getReferences() as $reference) {
+                $properties = array(
+                    'id' => $reference->getId(),
+                    'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
+                );
+
+                if ($reference instanceof Image) {
+                    $properties['image'] = $this->get('image.handling')->open($reference->getFile())->cropResize(250, 250)->jpeg();
+                }
+
+                $references[$relation->getRelationId()][] = $properties;
+
+            }
+        }
+
+        return $references;
     }
 }
