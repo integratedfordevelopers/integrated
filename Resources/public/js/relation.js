@@ -9,7 +9,7 @@ $(".relation-items").each(function() {
 
     if (defaultValues[relation_id] !== undefined && defaultValues[relation_id].length) {
         $.each(defaultValues[relation_id], function() {
-            $relation.append('<option selected value="'+this.id+'">'+this.title+'</option>');
+            $relation.append('<option selected value="'+this.id+'" data-image="' + (this.image ? this.image : '') + '">'+this.title+'</option>');
         });
     }
 
@@ -31,16 +31,45 @@ $(".relation-items").each(function() {
             processResults: function (data) {
                 var items = [];
 
-                console.log(data);
-
                 if ('items' in data) {
                     for (var k in data.items) {
-                        items.push({id: data.items[k].id, text: data.items[k].title});
+                        var item = data.items[k];
+                        if (!item.text) {
+                            item.text = item.title;
+                        }
+                        items.push(item);
                     }
                 }
 
                 return { results: items };
             }
+        },
+        templateResult: function (state) {
+            if (!state.id) {
+                return state.text;
+            }
+
+            var image = state.image ? '<img src="' + state.image + '" class="select2-dropdown-image" />' : '';
+
+            return $('<span>' + image + state.text + '</span>');
+        },
+        templateSelection: function (data) {
+            if (!data.id) {
+                return data.text;
+            }
+
+            var image = '';
+            if (data.image) {
+                image = data.image;
+            } else if (data.element) {
+                image = $(data.element).data('image');
+            }
+
+            if (image) {
+                image = '<img src="' + image + '"/>'
+            }
+
+            return $('<div class="select2-selected">' + image + data.text + '</div>');
         }
     });
 
