@@ -25,12 +25,11 @@
         <parameter key="integrated_content.form.content_type.channels.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType</parameter>
         <parameter key="integrated_content.form.content_type.channel.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType</parameter>
         <parameter key="integrated_content.form.content_type.channel.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType</parameter>
-        <parameter key="integrated_content.form.channel.domain.class">Integrated\Bundle\ContentBundle\Form\Type\ChannelDomainType</parameter>
 
         <parameter key="integrated_content.form.type.image_choice.class">Integrated\Bundle\ContentBundle\Form\Type\ImageChoiceType</parameter>
         <parameter key="integrated_content.form.type.csv_array.class">Integrated\Bundle\ContentBundle\Form\Type\CsvArray</parameter>
 
-        <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\Channel</parameter>
+        <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\ChannelType</parameter>
 
         <parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
         
@@ -163,10 +162,6 @@
         <service id="integrated_formtype.form.content_type_choice" class="%integrated_formtype.form.content_type_choice.class%">
             <argument type="service" id="integrated_content.content_type_repository" />
             <tag name="form.type" alias="integrated_content_type_choice" />
-        </service>
-
-        <service id="integrated_content.form.channel.domain.type" class="%integrated_content.form.channel.domain.class%">
-            <tag name="form.type" alias="channel_domain" />
         </service>
 
         <service id="integrated_content.form.listener.form_field" class="%integrated_content.form.listener.form_field.class%">

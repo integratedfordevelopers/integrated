@@ -244,29 +244,4 @@ class Channel implements ChannelInterface
             $this->primaryDomain = reset($this->domains);
         }
     }
-
-
-
-    /**
-     * @param ExecutionContextInterface $context
-     * @Assert\Callback
-     */
-    public function validate(ExecutionContextInterface $context)
-    {
-        foreach ($this->domains as $domain) {
-            if (!filter_var('admin@' . $domain, FILTER_VALIDATE_EMAIL)) {
-                $context->buildViolation('Domain ' . $domain . ' is not valid')
-                    ->atPath('domains')
-                    ->addViolation();
-
-                break;
-            }
-        }
-
-        if (!filter_var('admin@' . $this->primaryDomain, FILTER_VALIDATE_EMAIL)) {
-            $context->buildViolation('Primary domain ' . $domain . ' is not valid')
-                ->atPath('primaryDomain')
-                ->addViolation();
-        }
-    }
 }
