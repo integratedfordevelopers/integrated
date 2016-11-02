@@ -1,5 +1,5 @@
 {
-    "name": "integrated/integrated-image-bundle",
+    "name": "integrated/image-bundle",
     "type": "symfony-bundle",
     "description": "Integrated Image Bundle",
     "keywords": ["Integrated", "Image", "Thumbnail", "Twig", "Extension"],
