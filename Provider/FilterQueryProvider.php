@@ -31,20 +31,27 @@ class FilterQueryProvider
     protected $blockUsageProvider;
 
     /**
-     * @param ManagerRegistry $mr
+     * @var bool
      */
-    public function __construct(ManagerRegistry $mr, BlockUsageProvider $blockUsageProvider)
+    private $pageBundleInstalled;
+
+    /**
+     * @param ManagerRegistry $mr
+     * @param BlockUsageProvider $blockUsageProvider
+     * @param array $bundles
+     */
+    public function __construct(ManagerRegistry $mr, BlockUsageProvider $blockUsageProvider, array $bundles)
     {
         $this->mr = $mr;
         $this->blockUsageProvider = $blockUsageProvider;
+        $this->pageBundleInstalled = isset($bundles['IntegratedPageBundle']);
     }
 
     /**
      * @param array|null $data
-     * @param bool $pageBundleInstalled
      * @return \Doctrine\MongoDB\Query\Builder
      */
-    public function getBlocksByChannelQueryBuilder($data, $pageBundleInstalled = false)
+    public function getBlocksByChannelQueryBuilder($data)
     {
         $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
 
@@ -52,11 +59,11 @@ class FilterQueryProvider
             $qb->field('class')->in($data['type']);
         }
 
-        if (isset($data['type'])) {
+        if (isset($data['q'])) {
             $qb->field('title')->equals(new \MongoRegex('/' . $data['q'] . '/i'));
         }
 
-        if ($pageBundleInstalled && isset($data['channels'])) {
+        if ($this->pageBundleInstalled && isset($data['channels'])) {
             $availableBlockIds = [];
 
             foreach ($data['channels'] as $channel) {
@@ -67,5 +74,22 @@ class FilterQueryProvider
         }
 
         return $qb;
+    }
+
+    /**
+     * @param array|null $data
+     * @return array
+     */
+    public function getBlockIds($data)
+    {
+        $queryBuilder = $this->getBlocksByChannelQueryBuilder($data);
+
+        $blocks = $queryBuilder->select('_id')
+            ->hydrate(false)
+            ->getQuery()
+            ->getIterator()
+            ->toArray();
+
+        return array_keys($blocks);
     }
 }
