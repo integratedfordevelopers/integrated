@@ -11,14 +11,14 @@
 
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
-use Doctrine\MongoDB\ArrayIterator;
-use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
+
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 /**
  * @author Vasil Pascal <developer.optimum@gmail.com>
@@ -36,6 +36,11 @@ class BlockFilterType extends AbstractType
     private $dm;
 
     /**
+     * @var BlockUsageProvider
+     */
+    private $blockUsageProvider;
+
+    /**
      * @var bool
      */
     private $pageBundleInstalled;
@@ -43,13 +48,19 @@ class BlockFilterType extends AbstractType
     /**
      * @param MetadataFactoryInterface $factory
      * @param DocumentManager          $dm
-     * @param ContainerInterface       $serviceContainer
+     * @param BlockUsageProvider       $blockUsageProvider
+     * @param array                    $bundles
      */
-    public function __construct(MetadataFactoryInterface $factory, DocumentManager $dm, ContainerInterface $serviceContainer)
-    {
+    public function __construct(
+        MetadataFactoryInterface $factory,
+        DocumentManager $dm,
+        BlockUsageProvider $blockUsageProvider,
+        array $bundles
+    ) {
         $this->factory = $factory;
         $this->dm = $dm;
-        $this->pageBundleInstalled = $serviceContainer->has('integrated_page.form.type.page');
+        $this->blockUsageProvider = $blockUsageProvider;
+        $this->pageBundleInstalled = isset($bundles['IntegratedPageBundle']);
     }
 
     /**
@@ -60,9 +71,15 @@ class BlockFilterType extends AbstractType
         $builder->setMethod('GET');
 
         $builder->add(
+            'q',
+            'text',
+            ['attr' => ['placeholder' => 'Filter block name']]
+        );
+
+        $builder->add(
             'type',
             'choice',
-            ['choices' => $this->getTypeChoices(), 'expanded' => true, 'multiple' => true]
+            ['choices' => $this->getTypeChoices($options['blockIds']), 'expanded' => true, 'multiple' => true]
         );
 
         /* if IntegratedPageBundle is installed show channels */
@@ -70,9 +87,18 @@ class BlockFilterType extends AbstractType
             $builder->add(
                 'channels',
                 'choice',
-                ['choices' => $this->getChannelChoices(), 'expanded' => true, 'multiple' => true]
+                ['choices' => $this->getChannelChoices($options['blockIds']), 'expanded' => true, 'multiple' => true]
             );
         }
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('blockIds');
+        $resolver->setAllowedTypes('blockIds', 'array');
     }
 
 
@@ -85,61 +111,30 @@ class BlockFilterType extends AbstractType
     }
 
     /**
+     * @param array $blockIds
      * @return mixed
      */
-    private function getTypeChoices()
+    private function getTypeChoices(array $blockIds)
     {
-        return $this->dm->getRepository('IntegratedBlockBundle:Block\Block')->getTypeChoices($this->factory);
+        return $this->dm->getRepository('IntegratedBlockBundle:Block\Block')->getTypeChoices(
+            $this->factory,
+            $blockIds
+        );
     }
 
     /**
+     * @param array $blockIds
      * @return array
      */
-    private function getChannelChoices()
+    private function getChannelChoices(array $blockIds)
     {
-        /* count numb of blocks for each channel */
-        $groupCountChannels = $this->dm->createQueryBuilder('IntegratedPageBundle:Page\Page')
-            ->group(array('channel.$id' => 1), array('total' => 0, 'blocks' => []))
-            ->reduce(
-                'function (curr, result) {
-                        var checkItem = function(item) {
-                            if ("block" in item && result.blocks.indexOf(item.block.$id) < 0) {
-                                result.total += 1;
-                                result.blocks.push(item.block.$id);
-                            }
-
-                            if ("row" in item) {
-                                recursiveFindInRows(item.row);
-                            }
-                        }
-
-                        var recursiveFindInRows = function(row) {
-                            if ("columns" in row) {
-                                for (var c in row.columns) {
-                                    if ("items" in row.columns[c]) {
-                                        for (var i in row.columns[c].items) {
-                                            checkItem(row.columns[c].items[i]);
-                                        }
-                                    }
-                                }
-                            }
-                        };
-
-                        for (i in curr.grids) {
-                            for (k in curr.grids[i].items) {
-                                checkItem(curr.grids[i].items[k]);
-                            }
-                        }
-                    }'
-            )
-            ->getQuery()
-            ->execute();
+        $channels = $this->blockUsageProvider->getBlocksPerChannel();
 
         $channelChoices = [];
-        foreach ($groupCountChannels as $groupCountChannel) {
-            if ($groupCountChannel['total'] > 0) {
-                $channelId = $groupCountChannel['channel.$id'];
-                $channelChoices[$channelId] = $channelId.' '.$groupCountChannel['total'];
+        foreach ($channels as $channelId => $blocks) {
+            $count = count(array_intersect($blocks, $blockIds));
+            if ($count) {
+                $channelChoices[$channelId] = $this->blockUsageProvider->getChannel($channelId)->getName() . ' ' . $count;
             }
         }
 

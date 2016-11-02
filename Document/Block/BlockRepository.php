@@ -12,9 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Integrated\Bundle\PageBundle\Document\Page\Grid\Column;
-use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
-use Integrated\Bundle\PageBundle\Document\Page\Grid\Row;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 /**
@@ -23,75 +20,21 @@ use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 class BlockRepository extends DocumentRepository
 {
     /**
-     * @param array $type
-     * @param array $channels
-     * @param bool $pageBundleInstalled
-     *
-     * @return \Doctrine\MongoDB\Query\Builder
-     */
-    public function getBlocksByChannelQueryBuilder(array $type = [], array $channels = [], $pageBundleInstalled = false)
-    {
-        $qb = $this->createQueryBuilder();
-
-        if ($type) {
-            $qb->field('class')->in($type);
-        }
-
-        if ($pageBundleInstalled && $channels) {
-            $pages = $this->dm->createQueryBuilder('IntegratedPageBundle:Page\Page')
-                ->field('channel.$id')->in($channels)
-                ->getQuery()
-                ->execute();
-
-            $availableBlockIds = [];
-            $recursiveFindInRow = function (Row $row) use (&$recursiveFindInRow, &$availableBlockIds) {
-                foreach ($row->getColumns() as $column) {
-                    /** @var $column Column */
-                    foreach ($column->getItems() as $item) {
-                        if ($block = $item->getBlock()) {
-                            $availableBlockIds[$block->getId()] = $block->getId();
-                        }
-
-                        if ($row = $item->getRow()) {
-                            $recursiveFindInRow($row);
-                        }
-                    }
-                }
-            };
-
-            foreach ($pages as $page) {
-                /** @var $page \Integrated\Bundle\PageBundle\Document\Page\Page */
-                foreach ($page->getGrids() as $grid) {
-                    foreach ($grid->getItems() as $item) {
-                        if ($block = $item->getBlock()) {
-                            $availableBlockIds[$block->getId()] = $block->getId();
-                        }
-
-                        if ($row = $item->getRow()) {
-                            $recursiveFindInRow($row);
-                        }
-                    }
-                }
-            }
-
-            $qb->field('id')->in($availableBlockIds);
-        }
-
-        return $qb;
-    }
-
-
-    /**
      * @param MetadataFactoryInterface $factory
+     * @param array|null $ids
      * @return array
      */
-    public function getTypeChoices(MetadataFactoryInterface $factory)
+    public function getTypeChoices(MetadataFactoryInterface $factory, array $ids = null)
     {
-        $groupCountBlock = $this->createQueryBuilder()
+        $qb =$this->createQueryBuilder()
             ->group(array('class' => 1), array('total' => 0))
-            ->reduce('function (curr, result ) { result.total += 1;}')
-            ->getQuery()
-            ->execute();
+            ->reduce('function (curr, result ) { result.total += 1;}');
+
+        if (null !== $ids) {
+            $qb->field('_id')->in($ids);
+        }
+
+        $groupCountBlock = $qb->getQuery()->getIterator();
 
         $typeCount = [];
         foreach ($groupCountBlock as $result) {
@@ -103,18 +46,18 @@ class BlockRepository extends DocumentRepository
             /** @var $metaData \Integrated\Common\Form\Mapping\Metadata\Document */
             $class = $metaData->getClass();
 
-            if (array_key_exists($class, $typeCount)) {
-                $typeChoices[$class] = $metaData->getType().' '.$typeCount[$class];
+            if (array_key_exists($class, $typeCount) && $typeCount[$class]) {
+                $typeChoices[$class] = $metaData->getType() . ' ' . $typeCount[$class];
             }
         }
 
         return $typeChoices;
     }
 
-
     /**
      * @param Block $block
      * @return \Doctrine\MongoDB\Query\Query
+     * @internal heavy query, multiple calls make page slow
      */
     public function pagesByBlockQb(Block $block)
     {
@@ -171,6 +114,7 @@ class BlockRepository extends DocumentRepository
      *
      * @param Block $block
      * @return bool
+     * @internal heavy query, multiple calls make page slow
      */
     public function isUsed(Block $block)
     {

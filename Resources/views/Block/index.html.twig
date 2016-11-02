@@ -28,11 +28,22 @@
                     {{ form_start(facetFilter) }}
 
                     <div class="aside-item-holder">
+                        <div class="input-group">
+                            {{ form_widget(facetFilter.q) }}
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="aside-item-holder{% if facetFilter.type.vars.choices|length == 0 %} hidden{% endif %}">
                         {{ form_row(facetFilter.type) }}
                     </div>
 
                     {% if pageBundleInstalled %}
-                        <div class="aside-item-holder">
+                        <div class="aside-item-holder{% if facetFilter.channels.vars.choices|length == 0 %} hidden{% endif %}">
                             {{ form_row(facetFilter.channels) }}
                         </div>
                     {% endif %}
