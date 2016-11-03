@@ -55,7 +55,8 @@ class FilterQueryProvider
     {
         $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
 
-        if (isset($data['type'])) {
+        $type = isset($data['type']) ? array_filter($data['type']) : null;
+        if ($type) {
             $qb->field('class')->in($data['type']);
         }
 
@@ -63,10 +64,11 @@ class FilterQueryProvider
             $qb->field('title')->equals(new \MongoRegex('/' . $data['q'] . '/i'));
         }
 
-        if ($this->pageBundleInstalled && isset($data['channels'])) {
+        $channels = isset($data['channels']) ? array_filter($data['channels']) : null;
+        if ($this->pageBundleInstalled && $channels) {
             $availableBlockIds = [];
 
-            foreach ($data['channels'] as $channel) {
+            foreach ($channels as $channel) {
                 $availableBlockIds = array_merge($availableBlockIds, $this->blockUsageProvider->getBlocksPerChannel($channel));
             }
 
