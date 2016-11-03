@@ -13,7 +13,7 @@ namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Integrated\Bundle\BlockBundle\Util\PageUsageUtil;
+use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Block\BlockInterface;
@@ -29,12 +29,12 @@ class BlockExtension extends \Twig_Extension
     protected $container;
 
     /**
-     * @var PageUsageUtil
+     * @var BlockUsageProvider
      */
-    protected $pageUsageUtil;
+    protected $blockUsageProvider;
 
     /**
-     * @var PageUsageUtil
+     * @var MetadataFactoryInterface
      */
     protected $metadataFactory;
 
@@ -50,18 +50,18 @@ class BlockExtension extends \Twig_Extension
 
     /**
      * @param ContainerInterface $container
-     * @param PageUsageUtil $pageUsageUtil
+     * @param BlockUsageProvider $blockUsageProvider
      * @param MetadataFactoryInterface $metadataFactory
      */
     public function __construct(
         ContainerInterface $container,
-        PageUsageUtil $pageUsageUtil,
+        BlockUsageProvider $blockUsageProvider,
         MetadataFactoryInterface $metadataFactory
     ) {
         $this->container = $container; // @todo remove service container (INTEGRATED-445)
-        $this->pageUsageUtil = $pageUsageUtil;
+        $this->blockUsageProvider = $blockUsageProvider;
         $this->metadataFactory = $metadataFactory;
-        $this->pageBundleInstalled = class_exists('\Integrated\Bundle\PageBundle\IntegratedPageBundle');
+        $this->pageBundleInstalled = isset($container->getParameter('kernel.bundles')['IntegratedPageBundle']);
     }
 
     /**
@@ -145,7 +145,7 @@ class BlockExtension extends \Twig_Extension
 
             foreach ($pages as $page) {
                 if (array_key_exists('channel', $page)) {
-                    $channels[$page['channel']['$id']] = $this->pageUsageUtil->getChannel($page['channel']['$id']);
+                    $channels[$page['channel']['$id']] = $this->blockUsageProvider->getChannel($page['channel']['$id']);
                 }
             }
         }
@@ -161,7 +161,7 @@ class BlockExtension extends \Twig_Extension
     public function findPages(BlockInterface $block)
     {
         if ($this->pageBundleInstalled) {
-            return $this->pageUsageUtil->getPagesPerBlock($block->getId());
+            return $this->blockUsageProvider->getPagesPerBlock($block->getId());
         }
 
         return [];

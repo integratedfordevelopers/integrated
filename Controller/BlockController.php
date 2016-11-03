@@ -33,26 +33,21 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
         $data = $request->query->get('integrated_block_filter');
-        $pageBundleInstalled = $this->container->has('integrated_page.form.type.page');
+        $queryProvider = $this->get('integrated_block.provider.filter_query');
 
-        $qb = $this->get('integrated_block.util.page_usage')
-            ->getBlocksByChannelQueryBuilder(
-                isset($data['type']) ? array_filter($data['type']) : [],
-                isset($data['channels']) ? array_filter($data['channels']) : [],
-                $pageBundleInstalled,
-                isset($data['q']) ? $data['q'] : null
-            );
+        $facetFilter = $this->createForm($this->get('integrated_block.form.type.block_filter'), null, [
+            'blockIds' => $queryProvider->getBlockIds($data)
+        ]);
+        $facetFilter->handleRequest($request);
 
         $pagination = $this->getPaginator()->paginate(
-            $qb,
+            $queryProvider->getBlocksByChannelQueryBuilder($data),
             $request->query->get('page', 1),
             $request->query->get('limit', 20),
-            ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc']
+            ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc', 'query_type' => 'block_overview']
         );
-
-        $facetFilter = $this->createForm($this->get('integrated_block.form.type.block_filter'));
-        $facetFilter->handleRequest($request);
 
         return [
             'blocks'  => $pagination,
