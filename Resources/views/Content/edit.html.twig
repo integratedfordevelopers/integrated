@@ -269,6 +269,9 @@
     });
 </script>
     {% if editable %}
+        <script>
+            var formInvalid = {{ form.vars.valid ? '0' : '1' }};
+        </script>
         {% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
