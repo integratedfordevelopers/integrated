@@ -53,7 +53,7 @@ class ImageExtension extends \Twig_Extension
             return $this->imageHandling->open(StorageModelFactory::json($json));
         }
 
-        throw new \InvalidArgumentException('Argument is not a json string.');
+        return $this->imageHandling->open((string) $image);
     }
 
     /**
@@ -61,6 +61,6 @@ class ImageExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'image_json';
+        return 'integrated_image_json';
     }
 }
