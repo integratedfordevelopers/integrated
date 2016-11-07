@@ -15,7 +15,7 @@ Integrated\Bundle\UserBundle\Model\Role:
 Integrated\Bundle\UserBundle\Model\Group:
   group1:
     name:     Administrators
-    roles:    [@ROLE_ADMIN, @ROLE_USER_MANAGER, @ROLE_BLOCK_MANAGER, @ROLE_PAGE_MANAGER, @ROLE_WORKFLOW_MANAGER, @ROLE_CHANNEL_MANAGER]
+    roles:    [@ROLE_ADMIN]
 
 Integrated\Bundle\UserBundle\Model\User:
   user1:
