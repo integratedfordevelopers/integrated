@@ -24,6 +24,7 @@ class ConfigureMenuListener implements EventSubscriberInterface
     const MENU = 'integrated_menu';
     const MENU_WEBSITE = 'Website';
     const ROLE_BLOCK_MANAGER = 'ROLE_BLOCK_MANAGER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
      * @var AuthorizationCheckerInterface
@@ -53,7 +54,8 @@ class ConfigureMenuListener implements EventSubscriberInterface
      */
     public function onMenuConfigure(ConfigureMenuEvent $event)
     {
-        if (!$this->authorizationChecker->isGranted(self::ROLE_BLOCK_MANAGER)) {
+        if (!$this->authorizationChecker->isGranted(self::ROLE_BLOCK_MANAGER) &&
+            !$this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
             return;
         }
 
