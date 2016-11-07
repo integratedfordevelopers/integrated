@@ -26,6 +26,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
     const MENU = 'integrated_menu';
     const MENU_ADMIN = 'Manage';
     const ROLE_CHANNEL_MANAGER = 'ROLE_CHANNEL_MANAGER';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
      * @var AuthorizationCheckerInterface
@@ -58,7 +59,8 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->authorizationChecker->isGranted(self::ROLE_CHANNEL_MANAGER)) {
+        if ($this->authorizationChecker->isGranted(self::ROLE_CHANNEL_MANAGER) ||
+            $this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
             if (!$menuAdmin = $menu->getChild(self::MENU_ADMIN)) {
                 $menuAdmin = $menu->addChild(self::MENU_ADMIN);
             }
