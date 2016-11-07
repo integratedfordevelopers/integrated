@@ -15,7 +15,9 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "~2.7"
+        "symfony/symfony": "~2.7",
+        "integrated/library": "~0.4.1",
+        "integrated/content-bundle": "~0.4.1"
     },
     "require-dev": {
         "phpunit/phpunit": "4.2.*"
