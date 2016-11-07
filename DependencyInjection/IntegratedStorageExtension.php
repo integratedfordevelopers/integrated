@@ -37,6 +37,7 @@ class IntegratedStorageExtension extends Extension
         $loader->load('event_listeners.xml');
         $loader->load('form.xml');
         $loader->load('services.xml');
+        $loader->load('solr.xml');
 
         // Inject the "resolve" config (app/config.yml) in the file resolver service
         $container->getDefinition('integrated_storage.resolver')
