@@ -212,10 +212,10 @@ class ContentController extends Controller
                 ->setQuery('(*:* -security_workflow_read:[* TO *])');
 
             // allow content with group access
-            if ($filter) {
+            if ($filterWorkflow) {
                 $fq->setQuery(
                     $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
-                    [implode(') OR (', $filter)]
+                    [implode(') OR (', $filterWorkflow)]
                 );
             }
 
