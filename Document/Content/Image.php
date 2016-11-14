@@ -35,29 +35,4 @@ class Image extends File
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      */
     protected $file;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @Type\Field
-     */
-    protected $alt;
-
-    /**
-     * @return string
-     */
-    public function getAlt()
-    {
-        return $this->alt;
-    }
-
-    /**
-     * @param string $alt
-     * @return $this
-     */
-    public function setAlt($alt)
-    {
-        $this->alt = $alt;
-        return $this;
-    }
 }

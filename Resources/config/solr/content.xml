@@ -28,6 +28,14 @@
     </class>
 
     <class name="Integrated\Bundle\ContentBundle\Document\Content\Article">
+        <type name="integrated.storage">
+            <options>
+
+                <string key="image">image</string>
+
+            </options>
+        </type>
+
 
         <type name="integrated.fields">
             <options>
@@ -61,6 +69,17 @@
                         <string key="separator" />
                         <string>/content/article/</string>
                         <string>@slug</string>
+                    </array>
+                </array>
+
+                <array>
+                    <string key="name">facet_authors</string>
+                    <array>
+                        <array key="authors">
+                            <string>@person.prefix</string>
+                            <string>@person.firstName</string>
+                            <string>@person.lastName</string>
+                        </array>
                     </array>
                 </array>
 
@@ -99,6 +118,16 @@
                 <string key="extension_string">file.metadata.extension</string>
 
             </options>
+        </type>
+
+        <type name="integrated.storage">
+
+            <options>
+
+                <string key="file">file</string>
+
+            </options>
+
         </type>
 
     </class>
