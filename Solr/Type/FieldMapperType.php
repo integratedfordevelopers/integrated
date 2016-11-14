@@ -92,8 +92,8 @@ class FieldMapperType implements TypeInterface
                 $value = ['@' . $value]; // convert simple config to advance config
             }
 
-            foreach ($value as $key => $config) {
-                $fields[$field][$key] = $config;
+            foreach ($value as $config) {
+                $fields[$field][] = $config;
             }
         }
 
