@@ -14,7 +14,7 @@ namespace Integrated\Common\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Integrated\Common\Content\Relation\RelationInterface;
+use Integrated\Common\Content\Embedded\RelationInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
