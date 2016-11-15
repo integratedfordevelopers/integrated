@@ -23,6 +23,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
+use Integrated\Common\Content\Embedded\RelationInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
 use Integrated\Common\Content\MetadataInterface;
@@ -194,7 +195,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * {@inheritdoc}
      */
-    public function addRelation(Relation $relation)
+    public function addRelation(RelationInterface $relation)
     {
         if ($exist = $this->getRelation($relation->getRelationId())) {
             $exist->addReferences($relation->getReferences());
@@ -208,7 +209,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * {@inheritdoc}
      */
-    public function removeRelation(Relation $relation)
+    public function removeRelation(RelationInterface $relation)
     {
         $this->relations->removeElement($relation);
         return $this;
@@ -220,7 +221,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function getRelation($relationId)
     {
         return $this->relations->filter(function ($relation) use ($relationId) {
-            if ($relation instanceof Relation) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     return true;
                 }
