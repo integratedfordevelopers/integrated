@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Content\Embedded\RelationInterface;
 
 /**
  * Embedded document Reference
@@ -24,7 +25,7 @@ use Integrated\Common\Content\ContentInterface;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @ODM\EmbeddedDocument
  */
-class Relation
+class Relation implements RelationInterface
 {
     /**
      * @var string id of the Relation document
@@ -65,7 +66,7 @@ class Relation
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getRelationId()
     {
@@ -83,7 +84,7 @@ class Relation
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getRelationType()
     {
@@ -103,9 +104,7 @@ class Relation
     }
 
     /**
-     * Get references of Relation
-     *
-     * @return ContentInterface[] | ArrayCollection
+     * {@inheritdoc}
      */
     public function getReferences()
     {
