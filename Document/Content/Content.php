@@ -18,10 +18,11 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
+use Integrated\Common\Content\Embedded\RelationInterface;
+
 use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
@@ -183,7 +184,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function setRelations(Collection $relations)
     {
         foreach ($relations as $relation) {
-            if ($relation instanceof Relation) {
+            if ($relation instanceof RelationInterface) {
                 $this->addRelation($relation);
             }
         }
@@ -194,7 +195,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * {@inheritdoc}
      */
-    public function addRelation(Relation $relation)
+    public function addRelation(RelationInterface $relation)
     {
         if ($exist = $this->getRelation($relation->getRelationId())) {
             $exist->addReferences($relation->getReferences());
@@ -208,7 +209,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     /**
      * {@inheritdoc}
      */
-    public function removeRelation(Relation $relation)
+    public function removeRelation(RelationInterface $relation)
     {
         $this->relations->removeElement($relation);
         return $this;
@@ -220,7 +221,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function getRelation($relationId)
     {
         return $this->relations->filter(function ($relation) use ($relationId) {
-            if ($relation instanceof Relation) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     return true;
                 }
@@ -237,7 +238,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function getRelationsByRelationType($relationType)
     {
         return $this->relations->filter(function ($relation) use ($relationType) {
-            if ($relation instanceof Relation) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationType() == $relationType) {
                     return true;
                 }
@@ -256,7 +257,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         if ($relations = $this->getRelationsByRelationType($relationType)) {
             $references = array();
 
-            /** @var Relation $relation */
+            /** @var RelationInterface $relation */
             foreach ($relations as $relation) {
                 $references = array_merge($references, $relation->getReferences()->toArray());
             }
@@ -290,7 +291,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function getReferencesByRelationId($relationId, $published = true)
     {
         foreach ($this->relations as $relation) {
-            if ($relation instanceof Relation) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     if ($references = $relation->getReferences()) {
                         if (true !== $published) {
