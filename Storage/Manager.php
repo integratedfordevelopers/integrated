@@ -12,10 +12,13 @@
 namespace Integrated\Bundle\StorageBundle\Storage;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
-use Integrated\Bundle\StorageBundle\Storage\Exception\RevertException;
+
+use Integrated\Bundle\StorageBundle\Exception\NoFilesystemAvailableException;
+use Integrated\Bundle\StorageBundle\Exception\RevertException;
 use Integrated\Bundle\StorageBundle\Storage\Filesystem\WriteFilesystem;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Bundle\StorageBundle\Storage\Validation\FilesystemValidation;
+
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Command\CommandInterface;
 use Integrated\Common\Storage\FilesystemRegistryInterface;
@@ -117,14 +120,7 @@ class Manager implements ManagerInterface
             }
         }
 
-        // Just to the last resort
-        throw new \LogicException(
-            sprintf(
-                'The file %s has no available filesystem(s) for a read operation tried: %s.',
-                $storage->getIdentifier(),
-                implode(', ', $storage->getFilesystems()->toArray())
-            )
-        );
+        throw NoFilesystemAvailableException::readOperation($storage);
     }
 
     /**
@@ -161,14 +157,7 @@ class Manager implements ManagerInterface
                 // The method may return false, an identical operator must be used
                 if (false === $result) {
                     // Throw a roll back
-                    throw new RevertException(
-                        sprintf(
-                            '%sThe filesystem %s denied writing for key %s',
-                            self::LOG_PREFIX,
-                            $key,
-                            $identifier
-                        )
-                    );
+                    throw RevertException::writeFailed($key, $identifier);
                 }
 
                 // Attach the filesystem to the storage object
@@ -254,25 +243,23 @@ class Manager implements ManagerInterface
                 // Place the file in the storage
                 foreach ($filesystems as $key) {
                     // Place the file
-                    $result = (new WriteFilesystem($this->getFilesystem($key)))->write($storage->getIdentifier(), $reader);
+                    $result = (new WriteFilesystem($this->getFilesystem($key)))
+                        ->write(
+                            $storage->getIdentifier(),
+                            $reader
+                        )
+                    ;
 
                     if (false === $result) {
                         // Throw a roll back
-                        throw new RevertException(
-                            sprintf(
-                                '%sThe filesystem %s denied writing for key %s',
-                                self::LOG_PREFIX,
-                                $key,
-                                $storage->getIdentifier()
-                            )
-                        );
+                        throw RevertException::writeFailed($key, $storage);
                     }
                 }
 
                 // Build a map
                 $removeMap = new ArrayCollection($storage->getFilesystems());
                 $removeMap->filter(
-                    function($key) use ($filesystems) {
+                    function ($key) use ($filesystems) {
                         // Only delete the file from the filesystems that are not requested
                         return false == $filesystems->exists($key);
                     }
