@@ -24,6 +24,7 @@ use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\Embedded\RelationInterface;
 
 use Integrated\Common\Content\ChannelableInterface;
+use Integrated\Common\Content\Embedded\RelationInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
 use Integrated\Common\Content\MetadataInterface;
