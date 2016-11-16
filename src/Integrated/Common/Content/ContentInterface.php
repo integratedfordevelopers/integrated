@@ -14,7 +14,7 @@ namespace Integrated\Common\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
+use Integrated\Common\Content\Embedded\RelationInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -54,7 +54,7 @@ interface ContentInterface
 
     /**
      * @param $relationId
-     * @return Relation|bool
+     * @return RelationInterface|bool
      */
     public function getRelation($relationId);
 
@@ -69,16 +69,16 @@ interface ContentInterface
     /**
      * Add relation to relations collection
      *
-     * @param Relation $relation
+     * @param RelationInterface $relation
      * @return ContentInterface
      */
-    public function addRelation(Relation $relation);
+    public function addRelation(RelationInterface $relation);
 
     /**
      * Remove relation from relations collection
      *
-     * @param Relation $relation
+     * @param RelationInterface $relation
      * @return ContentInterface
      */
-    public function removeRelation(Relation $relation);
+    public function removeRelation(RelationInterface $relation);
 }
