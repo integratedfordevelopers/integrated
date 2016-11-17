@@ -28,14 +28,6 @@
     </class>
 
     <class name="Integrated\Bundle\ContentBundle\Document\Content\Article">
-        <type name="integrated.storage">
-            <options>
-
-                <string key="image">image</string>
-
-            </options>
-        </type>
-
 
         <type name="integrated.fields">
             <options>
