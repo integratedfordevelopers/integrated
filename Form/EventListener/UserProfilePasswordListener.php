@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 use Symfony\Component\Security\Core\Util\SecureRandomInterface;
 
-use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -68,23 +68,18 @@ class UserProfilePasswordListener implements EventSubscriberInterface
      */
     public function onPostSetData(FormEvent $event)
     {
+        $inheritedPasswordOptions = $event->getForm()->get('password')->getConfig()->getOptions();
+
         if ($event->getData() === null || !$event->getData()->getPassword()) {
-            return;
+            //password is not set, so it should not be blank
+            $inheritedPasswordOptions['constraints'][] = new NotBlank();
+        } else {
+            //make password optional, it is already set
+            $inheritedPasswordOptions['attr']['help_text'] = 'Password will only be changed if a new password is entered';
+            $inheritedPasswordOptions['required'] = false;
         }
-
-        // replace required password field with optional password field
-
-        $event->getForm()->add('password', 'password', [
-            'mapped' => false,
-            'required' => false,
-            'attr' => [
-                'help_text'    => 'Password will only be changed if a new password is entered',
-                'autocomplete' => 'off'
-            ],
-            'constraints' => [
-                new Length(['min' => 6])
-            ]
-        ]);
+        
+        $event->getForm()->add('password', 'password', $inheritedPasswordOptions);
     }
 
     /**
