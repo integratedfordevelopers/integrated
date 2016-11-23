@@ -114,6 +114,7 @@ class Group implements GroupInterface
 //		// TODO: Implement unserialize() method.
 //	}
 
+
 	/**
 	 * Get the string representation of the group object.
 	 *

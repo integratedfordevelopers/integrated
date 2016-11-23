@@ -13,6 +13,7 @@ namespace Integrated\Bundle\UserBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
+use Integrated\Bundle\UserBundle\DependencyInjection\Compiler\RegisterRolesParametersPass;
 use Integrated\Bundle\UserBundle\DependencyInjection\IntegratedUserExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -23,20 +24,25 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class IntegratedUserBundle extends Bundle
 {
-	public function build(ContainerBuilder $container)
-	{
-		$mapping = array(
-			__DIR__ . '/Resources/config/mapping/doctrine/' => 'Integrated\\Bundle\\UserBundle\\Model'
-		);
+    /**
+     * @param ContainerBuilder $container
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $mapping = array(
+            __DIR__.'/Resources/config/mapping/doctrine/' => 'Integrated\\Bundle\\UserBundle\\Model',
+        );
 
-		$container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mapping, ['integrated_user.mapping.entity_manager'], 'integrated_user.mapping.enabled'));
-	}
+        $container->addCompilerPass(DoctrineOrmMappingsPass::createXmlMappingDriver($mapping, ['integrated_user.mapping.entity_manager'], 'integrated_user.mapping.enabled'));
+        $container->addCompilerPass(new RegisterRolesParametersPass());
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getContainerExtension()
-	{
-		return new IntegratedUserExtension();
-	}
+
+    /**
+     * @return IntegratedUserExtension
+     */
+    public function getContainerExtension()
+    {
+        return new IntegratedUserExtension();
+    }
 }

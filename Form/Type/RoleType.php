@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,14 +20,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RoleType extends AbstractType
 {
+
     /**
      * @var RoleManagerInterface
      */
     private $manager;
 
     /**
-     * Constructor.
-     *
+     * RoleType constructor.
      * @param RoleManagerInterface $manager
      */
     public function __construct(RoleManagerInterface $manager)
@@ -41,13 +40,11 @@ class RoleType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('class', $this->manager->getClassName());
-
-        $resolver->setDefault('choice_value', 'id');
-        $resolver->setDefault('choice_label', 'role');
 
         $resolver->setDefault('multiple', true);
         $resolver->setDefault('expanded', true);
+
+        $resolver->setDefaults(array('choices' => $this->manager->getRolesFromSources()));
     }
 
     /**
@@ -55,7 +52,7 @@ class RoleType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return 'choice';
     }
 
     /**
@@ -64,13 +61,5 @@ class RoleType extends AbstractType
     public function getName()
     {
         return 'integrated_user_role_choice';
-    }
-
-    /**
-     * @return RoleManagerInterface
-     */
-    public function getManager()
-    {
-        return $this->manager;
     }
 }

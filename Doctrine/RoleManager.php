@@ -13,10 +13,10 @@ namespace Integrated\Bundle\UserBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-
+use Integrated\Bundle\UserBundle\Event\ConfigureRolesEvent;
 use Integrated\Bundle\UserBundle\Model\roleInterface;
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
-
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use InvalidArgumentException;
 
 /**
@@ -34,10 +34,30 @@ class RoleManager implements roleManagerInterface
 	 */
 	private $repository;
 
-	public function __construct(ObjectManager $om, $class)
+	/**
+	 * @var EventDispatcherInterface
+	 */
+	private $eventDispatcher;
+
+	/**
+	 * @var array
+	 */
+	private $roles;
+
+
+    /**
+     * RoleManager constructor.
+     * @param ObjectManager $om
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param $class
+     * @param $roles
+     */
+    public function __construct(ObjectManager $om, EventDispatcherInterface $eventDispatcher, $class, $roles)
 	{
 		$this->om = $om;
+		$this->eventDispatcher = $eventDispatcher;
 		$this->repository = $this->om->getRepository($class);
+		$this->roles = $roles;
 
 		if (!is_subclass_of($this->repository->getClassName(), 'Integrated\\Bundle\\UserBundle\\Model\\RoleInterface')) {
 			throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\RoleInterface', $this->repository->getClassName()));
@@ -140,4 +160,32 @@ class RoleManager implements roleManagerInterface
 	{
 		return $this->repository->getClassName();
 	}
+
+	/**
+	 * Get all available roles from (DB, roles.xml and from Events)
+	 *
+	 * @return array
+	 */
+	public function getRolesFromSources()
+	{
+		$roleEvent = new ConfigureRolesEvent($this->roles);
+		$this->eventDispatcher->dispatch(
+				ConfigureRolesEvent::CONFIGURE,
+				$roleEvent
+		);
+		$this->roles = $roleEvent->getRoles();
+
+		$roles = $this->findAll();
+
+		$dbRoles = [];
+		foreach ($roles as $role) {
+			$roleName = $role->getRole();
+			if ( isset($this->roles[$roleName]) ) {
+				unset($this->roles[$roleName]);
+			}
+			$dbRoles[ $role->getId() ] = $role->getLabel();
+		}
+
+        return $dbRoles + $this->roles;
+    }
 }

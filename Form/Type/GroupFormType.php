@@ -11,15 +11,15 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
+use Integrated\Bundle\UserBundle\Form\DataTransformer\RoleToEntityTransformer;
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
+use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
 use Integrated\Bundle\UserBundle\Validator\Constraints\UniqueGroup;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -34,11 +34,20 @@ class GroupFormType extends AbstractType
     private $manager;
 
     /**
-     * @param GroupManagerInterface $manager
+     * @var RoleManagerInterface
      */
-    public function __construct(GroupManagerInterface $manager)
+    private $roleManager;
+
+    /**
+     * GroupFormType constructor.
+     * @param GroupManagerInterface $manager
+     * @param RoleManagerInterface  $roleManager
+     */
+    public function __construct(GroupManagerInterface $manager, RoleManagerInterface $roleManager)
     {
         $this->manager = $manager;
+
+        $this->roleManager = $roleManager;
     }
 
     /**
@@ -55,6 +64,9 @@ class GroupFormType extends AbstractType
         ]);
 
         $builder->add('roles', 'user_role_choice');
+
+        $transformer = new RoleToEntityTransformer($this->roleManager);
+        $builder->get('roles')->addModelTransformer($transformer);
     }
 
     /**

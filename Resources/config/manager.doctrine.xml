@@ -28,7 +28,9 @@
 
 		<service id="integrated_user.role.manager.doctrine" class="%integrated_user.role.manager.doctrine.class%">
 			<argument type="service" id="integrated_user.doctrine.object_manager" />
+			<argument type="service" id="event_dispatcher" />
 			<argument>%integrated_user.role.class%</argument>
+			<argument>%integrated_roles%</argument>
 		</service>
 
 	</services>
