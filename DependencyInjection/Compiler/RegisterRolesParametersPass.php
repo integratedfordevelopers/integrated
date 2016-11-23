@@ -15,7 +15,6 @@ use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 /**
  * @author Vasil Pascal <developer.optimum@gmail.com>
@@ -39,8 +38,8 @@ class RegisterRolesParametersPass implements CompilerPassInterface
     }
 
     /**
-     * @param $dir
-     * @param $parameters
+     * @param string $dir
+     * @param array $parameters
      * @return null
      */
     private function addParameters($dir, &$parameters)
