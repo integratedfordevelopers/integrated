@@ -1,6 +1,7 @@
 $(function() {
     $('.sortable-collection').sortable({
-        axis: 'y'
+        axis: 'y',
+        containment: 'parent'
     });
 
     $('.sortable-collection').closest('form').submit(function() {
