@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Solr\Serializer;
 
-use IntlDateFormatter;
-
 use Integrated\Bundle\ContentBundle\Solr\Query\SuggestionQuery;
 use Integrated\Common\ContentType\ResolverInterface;
 
@@ -97,7 +95,7 @@ class SuggestionNormalizer implements NormalizerInterface
             ];
         }
 
-        return $data;
+        return array_filter($data);
     }
 
     /**
@@ -138,14 +136,10 @@ class SuggestionNormalizer implements NormalizerInterface
      */
     protected function getDate(DocumentInterface $document, $field)
     {
-        if (!isset($document[$field]) || !($date = strtotime($document[$field]))) {
+        if (!isset($document[$field]) || !strtotime($document[$field])) {
             return null;
         }
 
-        return IntlDateFormatter::create(
-            null,
-            IntlDateFormatter::MEDIUM,
-            IntlDateFormatter::MEDIUM
-        )->format($date);
+        return $document[$field];
     }
 }

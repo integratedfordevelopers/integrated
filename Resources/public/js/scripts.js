@@ -126,9 +126,15 @@ $(document).ready(function () {
 
         if ($.isArray(response.results)) {
             $.each(response.results, function () {
+                var data = this;
+
+                if (data.published) {
+                    data.published = moment(data.published).format('lll');
+                }
+
                 results.push({
                     type: { suggestion: false, result: true },
-                    data: this
+                    data: data
                 });
             });
         }

@@ -17,7 +17,6 @@ use Solarium\Client;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Serializer;
@@ -57,11 +56,11 @@ class SearchController extends Controller
      */
     public function suggestionAction($query, Request $request)
     {
-        if (!$query = trim($query)) {
-            return new JsonResponse();
-        }
+        $response = ['query' => ''];
 
-        $response = $this->client->select(new SuggestionQuery($query));
+        if ($query = trim($query)) {
+            $response = $this->client->select(new SuggestionQuery($query));
+        }
 
         return new Response($this->serializer->serialize($response, $request->getRequestFormat('json')));
     }
