@@ -25,8 +25,17 @@ $color-green-haze: #01ac32; //Green color
 /* Orange group */
 $color-ecstasy: #f6740e; //Orange btn bg
 
+/* TYPEAHEAD */
+$typeahead-color: $dropdown-link-color !default;
+$typeahead-hover-color: $dropdown-link-hover-color !default;
+$typeahead-list-color: $dropdown-link-disabled-color !default;
+$typeahead-hint-color: #ccc !default;
+$typeahead-divider-color: $color-boston-blue !default;
 
-
+$typeahead-bg: $dropdown-bg !default;
+$typeahead-hover-bg: $dropdown-link-hover-bg !default;
+$typeahead-border: $dropdown-border !default;
+$typeahead-fallback-border: $dropdown-fallback-border !default;
 
 /* Font VARIABLES */
 $font-family: 'PT Sans', sans-serif;
