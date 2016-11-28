@@ -39,6 +39,8 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
+        $loader->load('controller.xml');
+
         $loader->load('channel.xml');
         $loader->load('converters.xml');
         $loader->load('extensions.xml');
