@@ -20,6 +20,7 @@ use Solarium\QueryType\Select\Result\DocumentInterface;
 use Solarium\QueryType\Select\Result\Result;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -43,8 +44,11 @@ class SuggestionNormalizer implements NormalizerInterface
     private $resolver;
 
     /**
+     * Constructor.
+     *
      * @param UrlGeneratorInterface $generator
      * @param string                $route
+     * @param ResolverInterface     $resolver
      */
     public function __construct(UrlGeneratorInterface $generator, $route, ResolverInterface $resolver)
     {
@@ -64,6 +68,14 @@ class SuggestionNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
+        if (!$this->supportsNormalization($object)) {
+            throw new InvalidArgumentException(sprintf(
+                'The object must be a instance of "%s" with a query instance of "%s".',
+                Result::class,
+                SuggestionQuery::class
+            ));
+        }
+
         $data = [
             'query' => $object->getQuery()->getQuery(true),
             'suggestions' => [],
