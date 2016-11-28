@@ -17,7 +17,7 @@ namespace Integrated\Bundle\ContentBundle\Solr;
 class Normalizer
 {
     /**
-     * {@inheritdoc}
+     * Convert to lower case and remove all the diacritics from the string.
      */
     public static function normalize($query)
     {
