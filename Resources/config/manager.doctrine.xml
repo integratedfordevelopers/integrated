@@ -7,6 +7,7 @@
 	<parameters>
 
 		<parameter key="integrated_content.channel.manager.doctrine.class">Integrated\Bundle\ContentBundle\Doctrine\ChannelManager</parameter>
+		<parameter key="integrated_content.content_type.manager.doctrine.class">Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager</parameter>
 
 	</parameters>
 
@@ -17,6 +18,12 @@
 		<service id="integrated_content.channel.manager.doctrine" class="%integrated_content.channel.manager.doctrine.class%">
 			<argument type="service" id="integrated_content.doctrine.object_manager" />
 			<argument>%integrated_content.channel.class%</argument>
+		</service>
+
+		<service id="integrated_content.content_type.manager.doctrine" class="%integrated_content.content_type.manager.doctrine.class%">
+			<argument type="service" id="integrated_content.doctrine.object_manager" />
+			<argument>%integrated_content.content_type.class%</argument>
+			<argument type="service" id="integrated_workflow.services.permission" on-invalid="ignore" />
 		</service>
 
 	</services>

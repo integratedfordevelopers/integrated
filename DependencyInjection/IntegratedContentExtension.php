@@ -61,6 +61,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('solr.xml');
         $loader->load('twig.xml');
         $loader->load('event_listeners.xml');
+        $loader->load('event_dispatchers.xml');
         $loader->load('repositories.xml');
         $loader->load('menu.xml');
 
@@ -72,6 +73,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('services.xml');
 
         $loader->load('mailer.xml');
+        $loader->load('services.xml');
 
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);

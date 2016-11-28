@@ -16,6 +16,8 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Document type Image
  *
@@ -28,33 +30,9 @@ class Image extends File
 {
     /**
      * @var StorageInterface
-     * @Type\Field(type="integrated_image")
+     * @Type\Field(type="integrated_image_dropzone")
+     * @Assert\File(mimeTypes="image/*")
      * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      */
     protected $file;
-
-    /**
-     * @var string
-     * @ODM\String
-     * @Type\Field
-     */
-    protected $alt;
-
-    /**
-     * @return string
-     */
-    public function getAlt()
-    {
-        return $this->alt;
-    }
-
-    /**
-     * @param string $alt
-     * @return $this
-     */
-    public function setAlt($alt)
-    {
-        $this->alt = $alt;
-        return $this;
-    }
 }

@@ -18,11 +18,11 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
+use Integrated\Common\Content\Embedded\RelationInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
 use Integrated\Common\Content\MetadataInterface;
@@ -170,9 +170,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Get the relations of the document
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getRelations()
     {
@@ -180,28 +178,23 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Set the relations of the document
-     *
-     * @param Collection $relations
-     * @return $this
+     * {@inheritdoc}
      */
     public function setRelations(Collection $relations)
     {
         foreach ($relations as $relation) {
-            // TODO: should we check if relation instanceof Relation
-            $this->addRelation($relation);
+            if ($relation instanceof RelationInterface) {
+                $this->addRelation($relation);
+            }
         }
 
         return $this;
     }
 
     /**
-     * Add relation to relations collection
-     *
-     * @param Relation $relation
-     * @return $this
+     * {@inheritdoc}
      */
-    public function addRelation(Relation $relation)
+    public function addRelation(RelationInterface $relation)
     {
         if ($exist = $this->getRelation($relation->getRelationId())) {
             $exist->addReferences($relation->getReferences());
@@ -213,37 +206,21 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Add reference to relations collection
-     *
-     * @todo not compatible with latest relations version
-     * @param ContentInterface $content
-     * @throws \Exception
+     * {@inheritdoc}
      */
-    public function addReference(ContentInterface $content)
-    {
-        throw new \Exception('Method not longer supported');
-    }
-
-    /**
-     * Remove relation from relations collection
-     *
-     * @param Relation $relation
-     * @return $this
-     */
-    public function removeRelation(Relation $relation)
+    public function removeRelation(RelationInterface $relation)
     {
         $this->relations->removeElement($relation);
         return $this;
     }
 
     /**
-     * @param $relationId
-     * @return Relation|false
+     * {@inheritdoc}
      */
     public function getRelation($relationId)
     {
         return $this->relations->filter(function ($relation) use ($relationId) {
-            if ($relation instanceof Relation) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     return true;
                 }
@@ -260,7 +237,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function getRelationsByRelationType($relationType)
     {
         return $this->relations->filter(function ($relation) use ($relationType) {
-            if ($relation instanceof Relation) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationType() == $relationType) {
                     return true;
                 }
@@ -279,7 +256,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         if ($relations = $this->getRelationsByRelationType($relationType)) {
             $references = array();
 
-            /** @var Relation $relation */
+            /** @var RelationInterface $relation */
             foreach ($relations as $relation) {
                 $references = array_merge($references, $relation->getReferences()->toArray());
             }
@@ -291,6 +268,21 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
+     * @param $relationType
+     * @return Content|null
+     */
+    public function getReferenceByRelationType($relationType)
+    {
+        $references = $this->getReferencesByRelationType($relationType);
+
+        if (is_array($references) && count($references)) {
+            return $references[0];
+        }
+
+        return null;
+    }
+
+    /**
      * @param string $relationId
      * @param bool $published
      * @return ArrayCollection
@@ -298,7 +290,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     public function getReferencesByRelationId($relationId, $published = true)
     {
         foreach ($this->relations as $relation) {
-            if ($relation instanceof Relation) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     if ($references = $relation->getReferences()) {
                         if (true !== $published) {

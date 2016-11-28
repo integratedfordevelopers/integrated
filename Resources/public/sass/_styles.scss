@@ -3,19 +3,20 @@
     padding-bottom: 120px;
 }
 
-a.primary-channel-selector {
-    color: #E0E0E0;
-    text-shadow: 0 0 1px black;
-}
-
-label.primary-channel {
+label.is-primary-channel {
     font-weight: bold;
-
-    a.primary-channel-selector {
-        color: gold;
-    }
 }
 
-a.primary-channel-selector:hover {
-    color: #ffa200;
+.select2-dropdown-image {
+    max-height: 40px;
+    margin-right: 5px;
+}
+
+div.select2-selected {
+    display: inline;
+}
+
+div.select2-selected img {
+    margin: 0 5px 0 -5px;
+    max-height: 40px;
 }

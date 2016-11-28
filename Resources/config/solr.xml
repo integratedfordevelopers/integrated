@@ -14,6 +14,14 @@
             <tag name="integrated_solr.type" />
         </service>
 
+        <service id="integrated_content.solr.relation_json.type" class="Integrated\Bundle\ContentBundle\Solr\Type\RelationJsonType" public="false">
+            <tag name="integrated_solr.type" />
+        </service>
+
+        <service id="integrated_content.solr.property.type" class="Integrated\Bundle\ContentBundle\Solr\Type\PropertyType" public="false">
+            <tag name="integrated_solr.type" />
+        </service>
+
         <service id="integrated_content.solr.channel.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension" public="false">
             <tag name="integrated_solr.type_extension" />
         </service>

@@ -7,6 +7,7 @@
     <parameters>
 
         <parameter key="integrated_content.provider.solarium.class">Integrated\Bundle\ContentBundle\Provider\SolariumProvider</parameter>
+        <parameter key="integrated_content.provider.media.class">Integrated\Bundle\ContentBundle\Provider\MediaProvider</parameter>
 
     </parameters>
 
@@ -16,6 +17,13 @@
             <argument type="service" id="solarium.client" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="knp_paginator" />
+        </service>
+
+        <service id="integrated_content.provider.media" class="%integrated_content.provider.media.class%">
+
+            <argument type="service" id="integrated_content.content_type.manager" />
+            <argument type="service" id="integrated_workflow.services.permission" on-invalid="ignore" />
+
         </service>
 
     </services>

@@ -378,7 +378,7 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block channel_domain_widget %}
+{% block _channel_domains_entry_widget %}
     {% spaceless %}
         {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' form-control')|trim }) %}
         <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
@@ -386,7 +386,7 @@
             <input class="primary-domain-radio" type="radio" name="check_primary_domain" disabled> {{ 'Primary domain'|trans }}
         </label>
     {% endspaceless %}
-{% endblock channel_domain_widget %}
+{% endblock %}
 
 {% block integrated_content_actions_row %}
     {% spaceless %}
@@ -406,4 +406,12 @@
     {% integrated_javascripts mode='append'
     'bundles/integratedcontent/js/primary_channel.js' %}
     {% endintegrated_javascripts %}
+{% endblock %}
+
+{% block integrated_contact_persons_widget %}
+    {% integrated_javascripts mode='append'
+    'bundles/integratedcontent/js/contact_persons.js' %}
+    {% endintegrated_javascripts %}
+
+    {{ block('integrated_collection_widget') }}
 {% endblock %}

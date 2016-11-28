@@ -25,12 +25,11 @@
         <parameter key="integrated_content.form.content_type.channels.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType</parameter>
         <parameter key="integrated_content.form.content_type.channel.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType</parameter>
         <parameter key="integrated_content.form.content_type.channel.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType</parameter>
-        <parameter key="integrated_content.form.channel.domain.class">Integrated\Bundle\ContentBundle\Form\Type\ChannelDomainType</parameter>
 
         <parameter key="integrated_content.form.type.image_choice.class">Integrated\Bundle\ContentBundle\Form\Type\ImageChoiceType</parameter>
         <parameter key="integrated_content.form.type.csv_array.class">Integrated\Bundle\ContentBundle\Form\Type\CsvArray</parameter>
 
-        <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\Channel</parameter>
+        <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\ChannelType</parameter>
 
         <parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
         
@@ -50,6 +49,10 @@
         <parameter key="integrated_content.form.listener.form_field.class">Integrated\Bundle\ContentBundle\Form\EventListener\FormFieldSubscriber</parameter>
 
         <parameter key="integrated_content.form.type.primary_channel.class">Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType</parameter>
+
+        <parameter key="integrated_content.form.type.job.company_job.class">Integrated\Bundle\ContentBundle\Form\Type\Job\CompanyJobType</parameter>
+
+        <parameter key="integrated_content.form.type.job.contact_persons.class">Integrated\Bundle\ContentBundle\Form\Type\Job\ContactPersonsType</parameter>
 
     </parameters>
 
@@ -161,17 +164,23 @@
             <tag name="form.type" alias="integrated_content_type_choice" />
         </service>
 
-        <service id="integrated_content.form.channel.domain.type" class="%integrated_content.form.channel.domain.class%">
-            <tag name="form.type" alias="channel_domain" />
-        </service>
-
         <service id="integrated_content.form.listener.form_field" class="%integrated_content.form.listener.form_field.class%">
             <argument type="service" id="security.authorization_checker" />
             <tag name="integrated_content.form.event_subscriber" />
         </service>
 
         <service id="integrated_content.form.type.primary_channel" class="%integrated_content.form.type.primary_channel.class%">
+            <argument type="service" id="translator" />
             <tag name="form.type" alias="integrated_primary_channel" />
+        </service>
+
+        <service id="integrated_content.form.type.job.company_job" class="%integrated_content.form.type.job.company_job.class%">
+            <argument type="service" id="integrated_content.content_type.manager" />
+            <tag name="form.type" alias="integrated_company_job" />
+        </service>
+
+        <service id="integrated_content.form.type.job.contact_persons" class="%integrated_content.form.type.job.contact_persons.class%">
+            <tag name="form.type" alias="integrated_contact_persons" />
         </service>
     </services>
 

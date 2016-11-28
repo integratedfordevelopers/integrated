@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
@@ -22,6 +23,20 @@ use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 class PrimaryChannelType extends AbstractType
 {
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * PrimaryChannelType constructor.
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -30,7 +45,10 @@ class PrimaryChannelType extends AbstractType
             'class' => Channel::class,
             'choice_label' => 'name',
             'required' => false,
-            'attr' => ['class' => 'primary-channel']
+            'attr' => [
+                'class' => 'primary-channel',
+                'data-make-primary-text' => $this->translator->trans('make primary'),
+            ]
         ]);
     }
 

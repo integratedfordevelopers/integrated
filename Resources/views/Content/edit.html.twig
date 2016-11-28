@@ -56,6 +56,30 @@
     <div class="col-md-8 push-sm-down">
         <section class="section-white section-padding section-shadow section-radius">
             {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+
+            {% if form.offsetGet('relations').count() %}
+                <input type="hidden" id="default_references" value="{{ references }}">
+                <div class="form-horizontal relations margin-top">
+                    {% for relation in form.relations %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label>
+                            <div class="col-sm-8 relation">
+                                <select
+                                        multiple
+                                        id="{{ relation.vars.name }}"
+                                        data-multiple="{{ relation.vars.attr['data-multiple'] }}"
+                                        data-types="{{ relation.vars.attr['data-types'] }}"
+                                        class="relation-items form-control"
+                                >
+                                </select>
+
+                                <div class="add-wrapper margin-top"></div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                </div>
+            {% endif %}
         </section>
     </div>
 
@@ -72,32 +96,7 @@
                     {% endif %}
                 {% endif %}
 
-                {% if form.offsetGet('relations').count() and editable %}
                 <div class="aside-item-holder section-white">
-                    <h3 class="font-medium">{% trans %}Link to{% endtrans %}</h3>
-                    <div class="content_column_inner">
-                        <div class="item_row">
-                            <div class="search_field_holder grey_field_holder">
-                                <form role="form" id="relations-search">
-                                    <input id="relations-q" type="text" class="form-control" placeholder="{% trans %}Search here...{% endtrans %}" autocomplete="off" />
-                                    <button type="submit" class="submit_btn"><i class="glyphicon glyphicon-search"></i></button>
-                                </form>
-                            </div>
-                        </div>
-                        <div id="relations-result"></div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <div class="aside-item-holder section-white">
-                    {% if form.offsetGet('relations').count() %}
-                    <div class="item_row">
-                        <h3 class="title">{% trans %}Linked items{% endtrans %}</h3>
-                        <div class="content_column_inner">
-                            <ul class="custom_list li_with_margin" id="relations-selected"></ul>
-                        </div>
-                    </div>
-                    {% endif %}
                     <div class="item_row" id="used-by"></div>
                 </div>
 
@@ -150,6 +149,47 @@
             </div>
         </aside>
     </div>
+
+    {% autoescape 'js' %}
+        {% verbatim %}
+            <script id="add-template" type="text/xhandlebars-template">
+                {{#if relations}}
+                {{#equals relations.length 1}}
+                    <a data-title="Add {{relations.0.name}}" class="btn btn-gray add-relation font-size-13" data-href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
+                        {% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}
+                    </a>
+                {{else}}
+                <div class="btn-group add-relation">
+                    <button type="button" class="btn btn-gray dropdown-toggle font-size-13" data-toggle="dropdown" aria-expanded="false">
+                        {% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}<span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        {{#each relations}}
+                        <li>
+                            <a class="cursor-pointer" data-title="Add {{this.name}}" data-href="{{this.href}}" target="_blank" data-modal="add-modal">
+                                {{this.name}}
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                 </div>
+                {{/equals}}
+                {{/if}}
+                <div class="modal" id="relation-add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{% endverbatim %}{% trans %}Close{% endtrans %}{% verbatim %}</span></button>
+                                <h4 class="modal-title">{% endverbatim %}{% trans %}Add{% endtrans %}{% verbatim %}</h4>
+                            </div>
+                            <iframe width="100%" height="400">{% endverbatim %}{% trans %}Loading{% endtrans %}{% verbatim %}</iframe>
+                        </div>
+                    </div>
+                </div>
+            </script>
+        {% endverbatim %}
+    {% endautoescape %}
+
 
     <div class="modal fade" id="content-edit-modal">
         <div class="modal-dialog">
@@ -229,6 +269,9 @@
     });
 </script>
     {% if editable %}
+        <script>
+            var formInvalid = {{ form.vars.valid ? '0' : '1' }};
+        </script>
         {% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
             <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
@@ -245,5 +288,16 @@
     {% endjavascripts %}
 {% endif %}
 
-{% include 'IntegratedContentBundle:Content:handlebars/templates.html.twig' with { 'editable': editable, 'type': app.request.query.get('relation')|default } %}
+{{ include('IntegratedContentBundle:Content:handlebars/templates.html.twig')}}
 {% endblock javascript %}
+
+{% block style %}
+    {{ parent() }}
+    <style>
+        .form-horizontal.margin-top {margin-top: 15px;}
+        .form-horizontal .add-wrapper {margin-top: 5px;}
+        .font-size-13 {font-size: 13px;}
+        .cursor-pointer {cursor: pointer;}
+        .modal iframe {width: 100%; min-height: 10px; border: none;}
+    </style>
+{% endblock %}
