@@ -24,7 +24,7 @@ use Nelmio\Alice\Fixtures;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class LoadAppData extends ContainerAware implements FixtureInterface
+class LoadFixtureData extends ContainerAware implements FixtureInterface
 {
     /**
      * @var string
