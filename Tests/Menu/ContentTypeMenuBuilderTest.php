@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Menu;
 
 use Integrated\Bundle\ContentBundle\Menu\ContentTypeMenuBuilder;
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -23,9 +24,9 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected $factory;
     /**
-     * @var \Doctrine\Common\Persistence\ObjectRepository | \PHPUnit_Framework_MockObject_MockObject
+     * @var ContentTypeManager | \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $objectRepository;
+    protected $contentTypeManager;
 
     /**
      * @var ContentTypeMenuBuilder
@@ -38,8 +39,8 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
     protected function setup()
     {
         $this->factory = $this->getMock('Knp\Menu\FactoryInterface');
-        $this->objectRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
-        $this->menuBuilder = new ContentTypeMenuBuilder($this->factory, $this->objectRepository);
+        $this->contentTypeManager = $this->getMock(ContentTypeManager::class, [], [], '', false);
+        $this->menuBuilder = new ContentTypeMenuBuilder($this->factory, $this->contentTypeManager);
     }
 
     /**
@@ -57,9 +58,9 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($menu)
         ;
 
-        $this->objectRepository
+        $this->contentTypeManager
             ->expects($this->once())
-            ->method('findBy')
+            ->method('getAll')
             ->willReturn([$this->getMock('\stdClass')])
         ;
 
@@ -81,9 +82,9 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($menu)
         ;
 
-        $this->objectRepository
+        $this->contentTypeManager
             ->expects($this->once())
-            ->method('findBy')
+            ->method('getAll')
             ->willReturn($this->getItemWithoutParent())
         ;
 
@@ -120,9 +121,9 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($menu)
         ;
 
-        $this->objectRepository
+        $this->contentTypeManager
             ->expects($this->once())
-            ->method('findBy')
+            ->method('getAll')
             ->willReturn($this->getItems())
         ;
 
