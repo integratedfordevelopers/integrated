@@ -45,8 +45,11 @@ class ContentTypeMenuBuilder
      * @param ContentTypeManager         $contentTypeManager
      * @param ContentTypeFilterInterface $workflowPermission
      */
-    public function __construct(FactoryInterface $factory, ContentTypeManager $contentTypeManager, ContentTypeFilterInterface $workflowPermission = null)
-    {
+    public function __construct(
+        FactoryInterface $factory,
+        ContentTypeManager $contentTypeManager,
+        ContentTypeFilterInterface $workflowPermission = null
+    ) {
         $this->factory = $factory;
         $this->contentTypeManager = $contentTypeManager;
         $this->workflowPermission = $workflowPermission;
@@ -66,7 +69,6 @@ class ContentTypeMenuBuilder
 
             /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType $document */
             foreach ($documents as $document) {
-
                 if ($this->workflowPermission !== null && !$this->workflowPermission->hasAccess($document)) {
                     continue;
                 }
