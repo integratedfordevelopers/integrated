@@ -13,6 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Tests\Menu;
 
 use Integrated\Bundle\ContentBundle\Menu\ContentTypeMenuBuilder;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Common\ContentType\ContentTypeFilterInterface;
+
+use Knp\Menu\FactoryInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -20,27 +23,28 @@ use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Knp\Menu\FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $factory;
+
     /**
      * @var ContentTypeManager | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $contentTypeManager;
 
     /**
-     * @var ContentTypeMenuBuilder
+     * @var ContentTypeFilterInterface | \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $menuBuilder;
+    protected $contentTypeFilterInterface;
 
     /**
      * Setup the test
      */
     protected function setup()
     {
-        $this->factory = $this->getMock('Knp\Menu\FactoryInterface');
+        $this->factory = $this->getMock(FactoryInterface::class);
         $this->contentTypeManager = $this->getMock(ContentTypeManager::class, [], [], '', false);
-        $this->menuBuilder = new ContentTypeMenuBuilder($this->factory, $this->contentTypeManager);
+        $this->contentTypeFilterInterface = $this->getMock(ContentTypeFilterInterface::class);
     }
 
     /**
@@ -48,6 +52,8 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateMenuFunctionWithInvalidContentType()
     {
+        $builder = $this->getInstance();
+
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->getMock('Knp\Menu\ItemInterface');
 
@@ -64,7 +70,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
             ->willReturn([$this->getMock('\stdClass')])
         ;
 
-        $this->assertSame($menu, $this->menuBuilder->createMenu());
+        $this->assertSame($menu, $builder->createMenu());
     }
 
     /**
@@ -72,6 +78,8 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateMenuFunctionWithItemWithoutParent()
     {
+        $builder = $this->getInstance();
+
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->getMock('Knp\Menu\ItemInterface');
 
@@ -103,7 +111,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
             ->willReturn($child)
         ;
 
-        $this->assertSame($menu, $this->menuBuilder->createMenu());
+        $this->assertSame($menu, $builder->createMenu());
     }
 
     /**
@@ -111,6 +119,8 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateMenuFunctionWithItems()
     {
+        $builder = $this->getInstance();
+
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
         $menu = $this->getMock('Knp\Menu\ItemInterface');
 
@@ -153,8 +163,73 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
             ->willReturnOnConsecutiveCalls($child1, $child2)
         ;
 
-        $this->assertSame($menu, $this->menuBuilder->createMenu());
+        $this->assertSame($menu, $builder->createMenu());
     }
+
+    /**
+     * Test createMenu function with access check
+     */
+    public function testCreateMenuFunctionWithItemsWithAccessCheck()
+    {
+        $builder = $this->getInstance(true);
+
+        $items = $this->getItems();
+
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
+        $menu = $this->getMock('Knp\Menu\ItemInterface');
+
+        $this->factory
+            ->expects($this->once())
+            ->method('createItem')
+            ->with('root')
+            ->willReturn($menu)
+        ;
+
+        $this->contentTypeManager
+            ->expects($this->once())
+            ->method('getAll')
+            ->willReturn($items)
+        ;
+
+        $this->contentTypeFilterInterface
+            ->expects($this->exactly(3))
+            ->method('hasAccess')
+            ->willReturnOnConsecutiveCalls(
+                true,
+                false,
+                false
+            )
+        ;
+
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child1 */
+        $child1 = $this->getMock('Knp\Menu\ItemInterface');
+
+        $child1
+            ->expects($this->once())
+            ->method('addChild')
+        ;
+
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child2 */
+        $child2 = $this->getMock('Knp\Menu\ItemInterface');
+
+        $child2
+            ->expects($this->never())
+            ->method('addChild')
+        ;
+
+        $menu
+            ->expects($this->exactly(2))
+            ->method('addChild')
+            ->withConsecutive(
+                array('ParentWithMultipleLevels'),
+                array('ParentWithOneLevel')
+            )
+            ->willReturnOnConsecutiveCalls($child1, $child2)
+        ;
+
+        $this->assertSame($menu, $builder->createMenu());
+    }
+
 
     protected function getItemWithoutParent()
     {
@@ -192,5 +267,18 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         ;
 
         return [$contentType1, $contentType2, $contentType3];
+    }
+
+    /**
+     * @param bool $withFilter
+     * @return ContentTypeMenuBuilder
+     */
+    protected function getInstance($withFilter = false)
+    {
+        return new ContentTypeMenuBuilder(
+            $this->factory,
+            $this->contentTypeManager,
+            $withFilter ? $this->contentTypeFilterInterface : null
+        );
     }
 }
