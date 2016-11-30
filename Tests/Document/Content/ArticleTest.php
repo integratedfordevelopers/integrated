@@ -20,7 +20,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ArticleTest extends \PHPUnit_Framework_TestCase
+class ArticleTest extends ContentTest
 {
     /**
      * @var Article
@@ -33,22 +33,6 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->article = new Article();
-    }
-
-    /**
-     * Article should implement ContentInterface
-     */
-    public function testInstanceOfContentInterface()
-    {
-        $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->article);
-    }
-
-    /**
-     * Article should extend Content
-     */
-    public function testInstanceOfContent()
-    {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->article);
     }
 
     /**
@@ -187,5 +171,13 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     {
         $title = 'Title';
         $this->assertEquals($title, (string) $this->article->setTitle($title));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContent()
+    {
+        return $this->article;
     }
 }

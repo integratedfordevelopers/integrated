@@ -45,7 +45,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  * @ODM\DiscriminatorField(fieldName="class")
  * @ODM\HasLifecycleCallbacks
  */
-class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
+abstract class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
 {
     use ExtensibleTrait;
 
@@ -573,4 +573,9 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
             $this->publishTime->setEndDate(new \DateTime(PublishTime::DATE_MAX));
         }
     }
+
+    /**
+     * @return string
+     */
+    abstract public function __toString();
 }

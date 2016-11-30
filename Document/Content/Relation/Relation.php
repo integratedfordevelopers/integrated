@@ -26,7 +26,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber;
  *
  * @ODM\MappedSuperclass
  */
-class Relation extends Content
+abstract class Relation extends Content
 {
     /**
      * @var string

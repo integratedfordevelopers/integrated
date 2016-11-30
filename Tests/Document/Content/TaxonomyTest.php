@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class TaxonomyTest extends \PHPUnit_Framework_TestCase
+class TaxonomyTest extends ContentTest
 {
     /**
      * @var Taxonomy
@@ -29,22 +29,6 @@ class TaxonomyTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->taxonomy = new Taxonomy();
-    }
-
-    /**
-     * Taxonomy should implement ContentInterface
-     */
-    public function testInstanceOfContentInterface()
-    {
-        $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->taxonomy);
-    }
-
-    /**
-     * Taxonomy should extend Content
-     */
-    public function testInstanceOfContent()
-    {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->taxonomy);
     }
 
     /**
@@ -72,5 +56,13 @@ class TaxonomyTest extends \PHPUnit_Framework_TestCase
     {
         $title = 'Title';
         $this->assertEquals($title, (string) $this->taxonomy->setTitle($title));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContent()
+    {
+        return $this->taxonomy;
     }
 }
