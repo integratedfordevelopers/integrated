@@ -55,7 +55,7 @@ class BatchOperation
     /**
      * Get the command.
      *
-     * @return Command|null
+     * @return AbstractCommand|null
      */
     public function getCommand()
     {
@@ -68,9 +68,9 @@ class BatchOperation
      * This allows for the command to be changed or even
      * to be removed.
      *
-     * @param Command $command
+     * @param AbstractCommand $command
      */
-    public function setCommand(Command $command = null)
+    public function setCommand(AbstractCommand $command = null)
     {
         $this->command = $command;
     }

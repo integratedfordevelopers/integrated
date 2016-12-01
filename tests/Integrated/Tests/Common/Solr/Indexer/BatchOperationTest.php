@@ -14,7 +14,7 @@ namespace Integrated\Tests\Common\Solr\Indexer;
 use Integrated\Common\Solr\Indexer\BatchOperation;
 use Integrated\Common\Queue\QueueMessageInterface;
 
-use Solarium\QueryType\Update\Query\Command\Command;
+use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -27,14 +27,14 @@ class BatchOperationTest extends \PHPUnit_Framework_TestCase
     protected $message;
 
     /**
-     * @var Command | \PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractCommand | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $command;
 
     protected function setUp()
     {
         $this->message = $this->getMock(QueueMessageInterface::class);
-        $this->command = $this->getMock(Command::class);
+        $this->command = $this->getMock(AbstractCommand::class);
     }
 
     public function testConstructorNullCommand()
@@ -55,7 +55,7 @@ class BatchOperationTest extends \PHPUnit_Framework_TestCase
 
     public function testSetCommand()
     {
-        $command = $this->getMock(Command::class);
+        $command = $this->getMock(AbstractCommand::class);
 
         $instance = $this->getInstance();
         $instance->setCommand($command);

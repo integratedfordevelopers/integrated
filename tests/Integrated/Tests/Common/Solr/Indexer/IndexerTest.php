@@ -35,7 +35,7 @@ use Integrated\Common\Queue\QueueInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Solarium\Core\Client\Client;
-use Solarium\QueryType\Update\Query\Command\Command;
+use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 use Solarium\QueryType\Update\Query\Query;
 use Solarium\Core\Query\Result\ResultInterface;
 
@@ -963,11 +963,11 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Command | \PHPUnit_Framework_MockObject_MockObject
+     * @return AbstractCommand | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getCommand()
     {
-        return $this->getMock(Command::class);
+        return $this->getMock(AbstractCommand::class);
     }
 
     /**
