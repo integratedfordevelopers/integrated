@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Solr\Indexer;
 
-use Solarium\QueryType\Update\Query\Command\Command;
+use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -22,7 +22,7 @@ interface CommandFactoryInterface
      * Create a solarium update command from a job
      *
      * @param JobInterface $job
-     * @return Command
+     * @return AbstractCommand
      */
     public function create(JobInterface $job);
 }
