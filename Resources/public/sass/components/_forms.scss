@@ -234,8 +234,14 @@ label {
 	}
 }
 
+.input-group-author {
+	height: 100%;
 
-
-
-
-
+	.btn {
+        padding: 0px 10px;
+		color: $color-mine-shaft;
+		height: 100%;
+		box-sizing: content-box;
+        border: 1px solid $color-silver;
+	}
+}

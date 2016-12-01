@@ -228,7 +228,7 @@
 
 {% block integrated_author_widget  %}
 
-    <div class="input-group">
+    <div class="input-group input-group-author">
         <select multiple id="{{ id }}" name="{{ full_name }}[persons][]" class="col-md-12 integrated_select2" style="width: 100%; padding: 0;">
             {% if value is not empty %}
                 {% for item in value %}
@@ -237,7 +237,9 @@
             {% endif %}
         </select>
         <span class="input-group-btn">
-            <button id="types-btn" class="btn btn-default" type="button" style="padding: 5px 10px;"><span class="caret"></span></button>
+            <button id="types-btn" class="btn btn-default" type="button">
+                <span class="caret"></span>
+            </button>
         </span>
     </div>
 
