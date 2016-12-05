@@ -11,13 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends ContentTest
 {
     /**
      * @var File
@@ -30,22 +29,6 @@ class FileTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->file = new File();
-    }
-
-    /**
-     * File should implement ContentInterface
-     */
-    public function testInstanceOfContentInterface()
-    {
-        $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->file);
-    }
-
-    /**
-     * File should extend Content
-     */
-    public function testInstanceOfContent()
-    {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->file);
     }
 
     /**
@@ -84,5 +67,13 @@ class FileTest extends \PHPUnit_Framework_TestCase
     {
         $title = 'Title';
         $this->assertEquals($title, (string) $this->file->setTitle($title));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContent()
+    {
+        return $this->file;
     }
 }
