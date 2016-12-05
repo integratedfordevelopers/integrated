@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class CompanyTest extends \PHPUnit_Framework_TestCase
+class CompanyTest extends RelationTest
 {
     /**
      * @var Company
@@ -31,30 +31,6 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->company = new Company();
-    }
-
-    /**
-     * Company should implement ContentInterface
-     */
-    public function testInstanceOfContentInterface()
-    {
-        $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->company);
-    }
-
-    /**
-     * Company should extend Content
-     */
-    public function testInstanceOfContent()
-    {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->company);
-    }
-
-    /**
-     * Company should extend Relation
-     */
-    public function testInstanceOfRelation()
-    {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation', $this->company);
     }
 
     /**
@@ -112,5 +88,13 @@ class CompanyTest extends \PHPUnit_Framework_TestCase
     {
         $name = 'Name';
         $this->assertEquals($name, (string) $this->company->setName($name));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContent()
+    {
+        return $this->company;
     }
 }
