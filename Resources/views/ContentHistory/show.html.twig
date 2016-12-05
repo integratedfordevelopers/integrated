@@ -1,1 +1,23 @@
-{{ dump(contentHistory) }}
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block content %}
+
+<p>Date: {{ contentHistory.date|localizeddate }}</p>
+<p>Action: {{ contentHistory.action }}</p>
+<p>User: {{ contentHistory.user.name }} {% if contentHistory.user.id is defined %}(#{{ contentHistory.user.id }}){% endif %}</p>
+<p>Endpoint: {{ contentHistory.request.endpoint }}</p>
+<p>IP address: {{ contentHistory.request.ipAddress }}</p>
+
+{% if contentHistory.action == 'insert' %}
+
+    {% for field in form if field.vars.data is not empty %}
+        <p>
+            {{ form_label(field) }}:
+            {{ form_widget(field) }}
+        </p>
+    {% endfor %}
+
+
+{% endif %}
+
+{% endblock %}

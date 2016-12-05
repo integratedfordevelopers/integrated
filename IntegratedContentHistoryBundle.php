@@ -36,7 +36,5 @@ class IntegratedContentHistoryBundle extends Bundle
                 'integrated.content_history.event_subscriber'
             )
         );
-
-        $container->addCompilerPass(new WorkflowSubscriberPass());
     }
 }

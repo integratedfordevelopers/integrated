@@ -14,9 +14,9 @@
 
                     <p>
                         <small>
-                            <a href="{{ path('integrated_content_history_show', { 'id': document.id }) }}">
+                            {#<a href="{{ path('integrated_content_history_show', { 'id': document.id }) }}">#}
                                 <span class="label label-primary">{{ document.action }}</span>
-                            </a>
+                            {#</a>#}
                             &nbsp; {{ document.date|localizeddate('medium') }}
                         </small>
                     </p>

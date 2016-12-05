@@ -35,13 +35,20 @@ class ContentHistoryController
     protected $repository;
 
     /**
+     * @var FormFactory
+     */
+    protected $formFactory;
+
+    /**
      * @param TwigEngine $templating
      * @param ObjectRepository $repository
+     * @param FormFactory $formFactory
      */
-    public function __construct(TwigEngine $templating, ObjectRepository $repository)
+    public function __construct(TwigEngine $templating, ObjectRepository $repository, FormFactory $formFactory)
     {
         $this->templating = $templating;
         $this->repository = $repository;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -50,8 +57,19 @@ class ContentHistoryController
      */
     public function showAction(ContentHistory $contentHistory)
     {
+        $class = $contentHistory->getContentClass();
+        $document = new $class();
+
+        $this->repository->getDocumentManager()->getHydratorFactory()->hydrate(
+            $document,
+            $contentHistory->getChangeSet()
+        );
+
+        $form = $this->formFactory->create($contentHistory->getContentType(), $document);
+
         return $this->templating->renderResponse('IntegratedContentHistoryBundle:ContentHistory:show.html.twig', [
             'contentHistory' => $contentHistory,
+            'form' => $form->createView(),
         ]);
     }
 

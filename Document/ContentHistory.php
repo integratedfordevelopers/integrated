@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentHistoryBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Request;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User;
 
@@ -48,6 +49,12 @@ class ContentHistory
      * @var string
      * @ODM\String
      */
+    protected $contentClass;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
     protected $action;
 
     /**
@@ -75,14 +82,14 @@ class ContentHistory
     protected $user;
 
     /**
-     * @param string $contentId
-     * @param string $contentType
+     * @param ContentInterface $content
      * @param string $action
      */
-    public function __construct($contentId, $contentType, $action)
+    public function __construct(ContentInterface $content, $action)
     {
-        $this->contentId = $contentId;
-        $this->contentType = $contentType;
+        $this->contentId = $content->getId();
+        $this->contentType = $content->getContentType();
+        $this->contentClass = get_class($content);
         $this->action = $action;
         $this->date = new DateTime();
     }
@@ -109,6 +116,14 @@ class ContentHistory
     public function getContentType()
     {
         return $this->contentType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentClass()
+    {
+        return $this->contentClass;
     }
 
     /**

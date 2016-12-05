@@ -83,7 +83,7 @@ class ContentHistorySubscriber implements EventSubscriber
                 continue;
             }
 
-            $history = new $this->className($document->getId(), $document->getContentType(), $action);
+            $history = new $this->className($document, $action);
             $originalData = $this->getOriginalData($dm, $document, $action);
 
             $this->eventDispatcher->dispatch($action, new ContentHistoryEvent($history, $document, $originalData));
