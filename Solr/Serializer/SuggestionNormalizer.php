@@ -87,11 +87,11 @@ class SuggestionNormalizer implements NormalizerInterface
         foreach ($object->getDocuments() as $document) {
             $data['results'][] = [
                 'id' => $document['type_id'],
-                'type' => $this->getType($document),
+//                'type' => $this->getType($document),
                 'title' => $document['title'],
-                'url' => $this->getUrl($document),
-                'published' => $this->getDate($document, 'pub_time'),
-                'updated' => $this->getDate($document, 'pub_edited')
+//                'url' => $this->getUrl($document),
+//                'published' => $this->getDate($document, 'pub_time'),
+//                'updated' => $this->getDate($document, 'pub_edited')
             ];
         }
 
