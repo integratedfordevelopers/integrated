@@ -25,7 +25,7 @@ $(".relation-items").each(function() {
                     limit: 5,
                     sort: 'title',
                     _format: 'json',
-                    q: param.term + '*'
+                    q: typeof param.term != 'undefined' ? param.term + '*' : ''
                 };
             },
             processResults: function (data) {
