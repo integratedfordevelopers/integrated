@@ -116,6 +116,10 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
+    <script>
+        moment.locale('{{ app.request.locale }}');
+    </script>
+
     {{ integrated_javascripts() }}
 
     {% block locking %}
