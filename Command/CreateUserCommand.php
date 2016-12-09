@@ -86,10 +86,10 @@ The <info>%command.name%</info> command creates a new user
 			$email = $input->getArgument('email'); // @todo validate input
 		}
 
-		$roles = null;
-		if ($input->hasArgument('roles')) {
-			$roles = explode(',', $input->getArgument('roles')); // @todo validate input
-		}
+        $roles = null;
+        if ($input->hasArgument('roles')) {
+            $roles = explode(',', $input->getArgument('roles'));
+        }
 
 		$manager = $this->getManager();
 
