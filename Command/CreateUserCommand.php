@@ -108,24 +108,23 @@ The <info>%command.name%</info> command creates a new user
 		$user->setSalt($salt);
 		$user->setEmail($email);
 
-		if ($roles) {
-			$roleManager = $this->getContainer()->get('integrated_user.role.manager');
-			$roleRepository = $roleManager->getRepository();
-			$allRoles = $roleManager->getRolesFromSources();
+        if ($roles) {
+            $roleManager = $this->getContainer()->get('integrated_user.role.manager');
+            $roleRepository = $roleManager->getRepository();
+            $allRoles = $roleManager->getRolesFromSources();
 
-			foreach ($roles as $role) {
-				if ($objectRole = $roleRepository->findOneBy(['role' => $role])) {
-					$user->addRole($objectRole);
-				} elseif (isset($allRoles[$role])) {
-					$objectRole = $roleManager->create($role);
-					$roleManager->persist($objectRole);
-					$user->addRole($objectRole);
-				}
-				else {
-					$output->writeln(sprintf("The role %s not found ", $role));
-				}
-			}
-		}
+            foreach ($roles as $role) {
+                if ($objectRole = $roleRepository->findOneBy(['role' => $role])) {
+                    $user->addRole($objectRole);
+                } elseif (isset($allRoles[$role])) {
+                    $objectRole = $roleManager->create($role);
+                    $roleManager->persist($objectRole);
+                    $user->addRole($objectRole);
+                } else {
+                    $output->writeln(sprintf("The role %s not found ", $role));
+                }
+            }
+        }
 
 
 		try {
