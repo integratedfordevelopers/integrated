@@ -86,9 +86,9 @@ class SuggestionNormalizer implements NormalizerInterface
 
         foreach ($object->getDocuments() as $document) {
             $data['results'][] = [
-                'id' => $document['type_id'],
+                'id' => (string) $document['type_id'],
                 'type' => $this->getType($document),
-                'title' => $document['title'],
+                'title' => (string) $document['title'],
                 'url' => $this->getUrl($document),
                 'published' => $this->getDate($document, 'pub_time'),
                 'updated' => $this->getDate($document, 'pub_edited')
@@ -116,7 +116,7 @@ class SuggestionNormalizer implements NormalizerInterface
             return $this->resolver->getType($document['type_name'])->getName();
         }
 
-        return $document['type_name'];
+        return (string) $document['type_name'];
     }
 
     /**
