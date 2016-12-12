@@ -75,7 +75,6 @@ class SuggestionNormalizer implements NormalizerInterface
         }
 
         $data = [
-            'query' => $object->getQuery()->getQuery(true),
             'suggestions' => [],
             'results' => []
         ];
@@ -95,7 +94,7 @@ class SuggestionNormalizer implements NormalizerInterface
             ];
         }
 
-        return array_filter($data);
+        return ['query' => $object->getQuery()->getQuery(true)] + array_filter($data);
     }
 
     /**

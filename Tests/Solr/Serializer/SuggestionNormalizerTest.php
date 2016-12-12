@@ -245,7 +245,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getDocuments')
             ->willReturn([]);
 
-        self::assertSame([], $this->getInstance()->normalize($result));
+        self::assertSame(['query' => ''], $this->getInstance()->normalize($result));
     }
 
     public function testSupportsNormalization()
