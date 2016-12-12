@@ -116,9 +116,11 @@
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
 
+    {% if app.request.locale %}
     <script>
         moment.locale('{{ app.request.locale }}');
     </script>
+    {% endif %}
 
     {{ integrated_javascripts() }}
 
