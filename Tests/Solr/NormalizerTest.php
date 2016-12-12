@@ -19,38 +19,36 @@ use Integrated\Bundle\ContentBundle\Solr\Normalizer;
 class NormalizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     *  Set up
+     * @dataProvider normalizeProvider
      */
-    protected function setUp()
+    public function testNormalize($expected, $actual)
     {
-        $this->normalizer = new Normalizer();
-    }
-
-    /**
-     * @dataProvider additionProvider
-     */
-    public function testNormalizerInput($expected, $actual, $message)
-    {
-        $this->assertEquals($expected, $this->normalizer->normalize($actual), $message);
+        $this->assertEquals($expected, Normalizer::normalize($actual));
     }
 
     /**
      * @return array
      */
-    public function additionProvider()
+    public function normalizeProvider()
     {
         return [
-            [
-                'test', 'Test', 'Testing strtolower'
+            'strtolower' => [
+                'test', 'Test'
             ],
-            [
-                'test', ' Test ', 'Testing trim'
+            'trim' => [
+                'test', '  test  '
             ],
-            [
-                'eaoi', 'éáóí', 'Filter umlauts'
+            'diacritics' => [
+                'eeaaooii', 'éëáäóöíï'
             ],
-            [
-                'p test', "p\n Test\t", 'Filter new lines and tabs'
+            'new lines and tabs' => [
+                'test test', "\ntest\n\ttest\t"
+            ],
+            'reduce spaces' => [
+                'test test', "test  test"
+            ],
+            'mixed' => [
+                'test eaoi test', "\n Test\n\t éäóï \t\n TEST"
             ]
         ];
     }
