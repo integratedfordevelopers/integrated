@@ -48,4 +48,9 @@ interface UserInterface extends AdvancedUserInterface, GroupableInterface, Seria
 	 * @return string
 	 */
 	public function getEmail();
-} 
+
+    /**
+     * @param RoleInterface $role
+     */
+	public function addRole(RoleInterface $role);
+}
