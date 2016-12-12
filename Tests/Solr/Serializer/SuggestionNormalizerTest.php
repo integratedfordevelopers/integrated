@@ -49,6 +49,55 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->resolver = $this->getMock(ResolverInterface::class);
     }
 
+    protected function setUpNormalize()
+    {
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturnMap([
+                ['news', true],
+                ['blog', true],
+                ['invalid', false],
+                [null, false]
+            ]);
+
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('getType')
+            ->willReturnMap([
+                ['news', $this->getContentType('this-is-news')],
+                ['blog', $this->getContentType('this-is-a-blog')],
+            ]);
+
+        $this->generator->expects($this->atLeastOnce())
+            ->method('generate')
+            ->willReturnCallback(function ($route, $params) {
+                self::assertEquals(self::ROUTE, $route);
+                self::assertArrayHasKey('id', $params);
+                self::assertCount(1, $params);
+
+                $map = [
+                    'id_0' => 'url_0',
+                    'id_1' => 'url_1',
+                    'id_2' => 'url_2',
+                    'id_3' => 'url_3',
+                ];
+
+                if (array_key_exists($params['id'], $map)) {
+                    return $map[$params['id']];
+                }
+
+                return '';
+            });
+    }
+
+    protected function setUpNormalizeNoCalls()
+    {
+        $this->resolver->expects($this->never())
+            ->method($this->anything());
+
+        $this->generator->expects($this->never())
+            ->method($this->anything());
+    }
+
     public function testInterface()
     {
         self::assertInstanceOf(NormalizerInterface::class, $this->getInstance());
@@ -93,122 +142,17 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getFacetSet')
             ->willReturn($this->getFacetSet($suggestions));
 
-        $documents = [
-            new Document([
-                'type_id' => 'id_0',
-                'type_name' => 'news',
-                'title' => 'title_0',
-                'pub_time' => 'invalid',
-                'pub_edited' => 'invalid'
-            ]),
-            new Document([
-                'type_id' => 'id_1',
-                'type_name' => 'blog',
-                'pub_time' => '2012-12-12T12:12:12Z',
-            ]),
-            new Document([
-                'type_id' => 'id_2',
-                'type_name' => 'invalid',
-                'title' => 'title_2',
-                'pub_edited' => '2012-12-12T12:12:12Z',
-            ]),
-            new Document([
-                'type_id' => 'id_3',
-                'type_name' => 'blog',
-                'title' => 'title_3',
-                'pub_time' => '2012-12-12T12:12:12Z',
-                'pub_edited' => 'invalid'
-            ]),
-            new Document([]),
-        ];
-
         $result
             ->expects($this->once())
             ->method('getDocuments')
-            ->willReturn($documents);
+            ->willReturn($this->getDocuments());
 
-        $this->resolver->expects($this->atLeastOnce())
-            ->method('hasType')
-            ->willReturnMap([
-                ['news', true],
-                ['blog', true],
-                ['invalid', false],
-                [null, false]
-            ]);
-
-        $this->resolver->expects($this->atLeastOnce())
-            ->method('getType')
-            ->willReturnMap([
-                ['news', $this->getContentType('this-is-news')],
-                ['blog', $this->getContentType('this-is-a-blog')],
-            ]);
-
-        $this->generator->expects($this->atLeastOnce())
-            ->method('generate')
-            ->willReturnCallback(function ($route, $params) {
-                self::assertEquals(self::ROUTE, $route);
-                self::assertArrayHasKey('id', $params);
-                self::assertCount(1, $params);
-
-                $map = [
-                    'id_0' => 'url_0',
-                    'id_1' => 'url_1',
-                    'id_2' => 'url_2',
-                    'id_3' => 'url_3',
-                ];
-
-                if (array_key_exists($params['id'], $map)) {
-                    return $map[$params['id']];
-                }
-
-                return '';
-            });
+        $this->setUpNormalize();
 
         $expected = [
             'query' => 'this-is-the-query',
             'suggestions' => array_keys($suggestions),
-            'results' => [
-                [
-                    'id' => 'id_0',
-                    'type' => 'this-is-news',
-                    'title' => 'title_0',
-                    'url' => 'url_0',
-                    'published' => null,
-                    'updated' => null
-                ],
-                [
-                    'id' => 'id_1',
-                    'type' => 'this-is-a-blog',
-                    'title' => '',
-                    'url' => 'url_1',
-                    'published' => '2012-12-12T12:12:12Z',
-                    'updated' => null
-                ],
-                [
-                    'id' => 'id_2',
-                    'type' => 'invalid',
-                    'title' => 'title_2',
-                    'url' => 'url_2',
-                    'published' => null,
-                    'updated' => '2012-12-12T12:12:12Z'
-                ],
-                [
-                    'id' => 'id_3',
-                    'type' => 'this-is-a-blog',
-                    'title' => 'title_3',
-                    'url' => 'url_3',
-                    'published' => '2012-12-12T12:12:12Z',
-                    'updated' => null
-                ],
-                [
-                    'id' => '',
-                    'type' => '',
-                    'title' => '',
-                    'url' => '',
-                    'published' => null,
-                    'updated' => null
-                ],
-            ]
+            'results' => $this->getDocumentsExpected()
         ];
 
         self::assertSame($expected, $this->getInstance()->normalize($result));
@@ -228,11 +172,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getDocuments')
             ->willReturn([]);
 
-        $this->resolver->expects($this->never())
-            ->method($this->anything());
-
-        $this->generator->expects($this->never())
-            ->method($this->anything());
+        $this->setUpNormalizeNoCalls();
 
         self::assertSame(['query' => 'this-is-the-query'], $this->getInstance()->normalize($result));
     }
@@ -246,121 +186,16 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getFacetSet')
             ->willReturn($this->getFacetSet());
 
-        $documents = [
-            new Document([
-                'type_id' => 'id_0',
-                'type_name' => 'news',
-                'title' => 'title_0',
-                'pub_time' => 'invalid',
-                'pub_edited' => 'invalid'
-            ]),
-            new Document([
-                'type_id' => 'id_1',
-                'type_name' => 'blog',
-                'pub_time' => '2012-12-12T12:12:12Z',
-            ]),
-            new Document([
-                'type_id' => 'id_2',
-                'type_name' => 'invalid',
-                'title' => 'title_2',
-                'pub_edited' => '2012-12-12T12:12:12Z',
-            ]),
-            new Document([
-                'type_id' => 'id_3',
-                'type_name' => 'blog',
-                'title' => 'title_3',
-                'pub_time' => '2012-12-12T12:12:12Z',
-                'pub_edited' => 'invalid'
-            ]),
-            new Document([])
-        ];
-
         $result
             ->expects($this->once())
             ->method('getDocuments')
-            ->willReturn($documents);
+            ->willReturn($this->getDocuments());
 
-        $this->resolver->expects($this->atLeastOnce())
-            ->method('hasType')
-            ->willReturnMap([
-                ['news', true],
-                ['blog', true],
-                ['invalid', false],
-                [null, false]
-            ]);
-
-        $this->resolver->expects($this->atLeastOnce())
-            ->method('getType')
-            ->willReturnMap([
-                ['news', $this->getContentType('this-is-news')],
-                ['blog', $this->getContentType('this-is-a-blog')],
-            ]);
-
-        $this->generator->expects($this->atLeastOnce())
-            ->method('generate')
-            ->willReturnCallback(function ($route, $params) {
-                self::assertEquals(self::ROUTE, $route);
-                self::assertArrayHasKey('id', $params);
-                self::assertCount(1, $params);
-
-                $map = [
-                    'id_0' => 'url_0',
-                    'id_1' => 'url_1',
-                    'id_2' => 'url_2',
-                    'id_3' => 'url_3',
-                ];
-
-                if (array_key_exists($params['id'], $map)) {
-                    return $map[$params['id']];
-                }
-
-                return '';
-            });
+        $this->setUpNormalize();
 
         $expected = [
             'query' => 'this-is-the-query',
-            'results' => [
-                [
-                    'id' => 'id_0',
-                    'type' => 'this-is-news',
-                    'title' => 'title_0',
-                    'url' => 'url_0',
-                    'published' => null,
-                    'updated' => null
-                ],
-                [
-                    'id' => 'id_1',
-                    'type' => 'this-is-a-blog',
-                    'title' => '',
-                    'url' => 'url_1',
-                    'published' => '2012-12-12T12:12:12Z',
-                    'updated' => null
-                ],
-                [
-                    'id' => 'id_2',
-                    'type' => 'invalid',
-                    'title' => 'title_2',
-                    'url' => 'url_2',
-                    'published' => null,
-                    'updated' => '2012-12-12T12:12:12Z'
-                ],
-                [
-                    'id' => 'id_3',
-                    'type' => 'this-is-a-blog',
-                    'title' => 'title_3',
-                    'url' => 'url_3',
-                    'published' => '2012-12-12T12:12:12Z',
-                    'updated' => null
-                ],
-                [
-                    'id' => '',
-                    'type' => '',
-                    'title' => '',
-                    'url' => '',
-                    'published' => null,
-                    'updated' => null
-                ],
-            ]
+            'results' => $this->getDocumentsExpected()
         ];
 
         self::assertSame($expected, $this->getInstance()->normalize($result));
@@ -386,11 +221,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getDocuments')
             ->willReturn([]);
 
-        $this->resolver->expects($this->never())
-            ->method($this->anything());
-
-        $this->generator->expects($this->never())
-            ->method($this->anything());
+        $this->setUpNormalizeNoCalls();
 
         $expected = [
             'query' => 'this-is-the-query',
@@ -497,5 +328,89 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
             ->willReturn($name);
 
         return $mock;
+    }
+
+    /**
+     * @return Document[]
+     */
+    protected function getDocuments()
+    {
+        return [
+            new Document([
+                'type_id' => 'id_0',
+                'type_name' => 'news',
+                'title' => 'title_0',
+                'pub_time' => 'invalid',
+                'pub_edited' => 'invalid'
+            ]),
+            new Document([
+                'type_id' => 'id_1',
+                'type_name' => 'blog',
+                'pub_time' => '2012-12-12T12:12:12Z',
+            ]),
+            new Document([
+                'type_id' => 'id_2',
+                'type_name' => 'invalid',
+                'title' => 'title_2',
+                'pub_edited' => '2012-12-12T12:12:12Z',
+            ]),
+            new Document([
+                'type_id' => 'id_3',
+                'type_name' => 'blog',
+                'title' => 'title_3',
+                'pub_time' => '2012-12-12T12:12:12Z',
+                'pub_edited' => 'invalid'
+            ]),
+            new Document([]),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDocumentsExpected()
+    {
+        return [
+            [
+                'id' => 'id_0',
+                'type' => 'this-is-news',
+                'title' => 'title_0',
+                'url' => 'url_0',
+                'published' => null,
+                'updated' => null
+            ],
+            [
+                'id' => 'id_1',
+                'type' => 'this-is-a-blog',
+                'title' => '',
+                'url' => 'url_1',
+                'published' => '2012-12-12T12:12:12Z',
+                'updated' => null
+            ],
+            [
+                'id' => 'id_2',
+                'type' => 'invalid',
+                'title' => 'title_2',
+                'url' => 'url_2',
+                'published' => null,
+                'updated' => '2012-12-12T12:12:12Z'
+            ],
+            [
+                'id' => 'id_3',
+                'type' => 'this-is-a-blog',
+                'title' => 'title_3',
+                'url' => 'url_3',
+                'published' => '2012-12-12T12:12:12Z',
+                'updated' => null
+            ],
+            [
+                'id' => '',
+                'type' => '',
+                'title' => '',
+                'url' => '',
+                'published' => null,
+                'updated' => null
+            ],
+        ];
     }
 }
