@@ -1,31 +1,39 @@
 /* Set some custom paths */
 $icon-font-path: '/bundles/integratedcontent/components/bootstrap-sass-official/assets/fonts/bootstrap/';
 $custom-font-path: '/bundles/integratedcontent/';
-@import '../components/bootstrap-sass-official/assets/stylesheets/bootstrap.scss';
-@import url(http://fonts.googleapis.com/css?family=PT+Sans:400,700);
-@import "../components/bourbon/app/assets/stylesheets/_bourbon.scss";
-@import 'components/_fonts.scss';
-@import 'components/_variables.scss';
-@import 'components/_mixins.scss';
-@import 'components/_typography.scss';
-@import 'components/_buttons.scss';
-@import 'components/_forms.scss';
-@import 'components/_nav.scss';
-@import 'components/_megamenu.scss';
-@import 'components/_reset.scss';
-@import 'components/_dropdown.scss';
-@import 'components/_badge.scss';
-@import 'components/_list.scss';
-@import 'components/_breadcrumb.scss';
-@import 'components/_aside.scss';
-@import 'components/_media.scss';
-@import 'components/_select2.scss';
-@import 'components/_table.scss';
-@import 'components/_tinymce.scss';
-@import 'components/_prefooter.scss';
-@import 'components/_modal.scss';
-@import 'components/_comment.scss';
-@import 'components/_filters.scss';
-@import 'partials/_header.scss';
-@import 'partials/_footer.scss';
-@import '_styles.scss';
+
+@import '../components/bootstrap-sass-official/assets/stylesheets/bootstrap';
+@import url('//fonts.googleapis.com/css?family=PT+Sans:400,700');
+@import "../components/bourbon/app/assets/stylesheets/bourbon";
+
+// we want the mixin from bootstrap so load them again to override the changes made by bourbon
+@import '../components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins';
+
+@import 'components/fonts';
+@import 'components/variables';
+@import 'components/mixins';
+@import 'components/typography';
+@import 'components/buttons';
+@import 'components/forms';
+@import 'components/nav';
+@import 'components/megamenu';
+@import 'components/reset';
+@import 'components/dropdown';
+@import 'components/badge';
+@import 'components/list';
+@import 'components/breadcrumb';
+@import 'components/aside';
+@import 'components/media';
+@import 'components/select2';
+@import 'components/table';
+@import 'components/tinymce';
+@import 'components/typeahead';
+@import 'components/prefooter';
+@import 'components/modal';
+@import 'components/comment';
+@import 'components/filters';
+
+@import 'partials/header';
+@import 'partials/footer';
+
+@import 'styles';

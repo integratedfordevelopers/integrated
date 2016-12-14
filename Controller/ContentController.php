@@ -68,8 +68,7 @@ class ContentController extends Controller
         if ($request->query->get('remember') && $session->has('content_index_view')) {
             $request->query->add(unserialize($session->get('content_index_view')));
             $request->query->remove('remember');
-        }
-        elseif (!$request->query->has('_format')) {
+        } elseif (!$request->query->has('_format')) {
             $session->set('content_index_view',serialize($request->query->all()));
         }
 
@@ -948,7 +947,7 @@ class ContentController extends Controller
 //
 //        }
 
-        $avatarurl = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
+        $avatarurl = "//www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
 
 
         /** @var $client \Solarium\Client */
@@ -957,6 +956,8 @@ class ContentController extends Controller
         //
         $client = $this->get('solarium.client');
         $query = $client->createSelect();
+
+        $assignedContent = [];
 
         if ($user = $this->getUser()) {
             $userId = $user->getId();

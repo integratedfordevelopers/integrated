@@ -16,6 +16,7 @@
     "require": {
         "php": ">=5.4",
         "ext-mongo": "~1.2",
+        "ext-intl" : "*",
         "symfony/symfony": "~2.7",
         "doctrine/doctrine-fixtures-bundle": "~2.3",
         "doctrine/mongodb": "~1.3",

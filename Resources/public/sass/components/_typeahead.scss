@@ -1,0 +1,83 @@
+/* TYPEAHEAD */
+.twitter-typeahead {
+  display: block !important;
+
+  .tt-hint {
+    color: $typeahead-hint-color;
+  }
+
+  .tt-menu {
+    width: 100%;
+    margin-top: 4px;
+    font-size: $font-size-base;
+    text-align: left;
+    background-color: $typeahead-bg;
+    border: 1px solid $typeahead-fallback-border; // IE8 fallback
+    border: 1px solid $typeahead-border;
+    border-radius: $border-radius-base;
+    @include box-shadow(0 6px 12px rgba(0,0,0,.175));
+    background-clip: padding-box;
+    overflow: hidden;
+  }
+
+  .tt-divider,
+  .tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: $line-height-base;
+    color: $typeahead-color;
+    white-space: nowrap;
+  }
+
+  .tt-divider {
+    color: $typeahead-divider-color;
+   	font-size: 18px;
+   	padding: 7px 20px;
+    border-top: 1px solid $typeahead-fallback-border; // IE8 fallback
+    border-top: 1px solid $typeahead-border;
+  }
+
+  .tt-suggestion {
+    cursor: pointer;
+
+    &.tt-cursor,
+    &:hover {
+      text-decoration: none;
+      color: $typeahead-hover-color;
+      background-color: $typeahead-hover-bg;
+    }
+
+    &.tt-suggestion-result {
+      padding-bottom: 7px;
+
+      > ul {
+        margin-bottom: 0;
+        padding-left: 0; // Override default ul/ol
+        list-style: none;
+
+        @include clearfix;
+
+        > li {
+          float: left;
+          font-size: $font-size-small;
+          color: $typeahead-list-color;
+          padding-left: 6px;
+          margin-left: 6px;
+          border-left: 1px solid $typeahead-border;
+
+          &:first-child {
+            margin-left: 0;
+            padding-left: 0;
+            border-left: 0;
+          }
+        }
+      }
+    }
+
+    a {
+      color: $typeahead-color;
+    }
+  }
+}
