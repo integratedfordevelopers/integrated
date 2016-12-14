@@ -14,10 +14,11 @@ namespace Integrated\Bundle\SolrBundle\Command;
 use DateTime;
 use DateTimeZone;
 
-use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Solr\Indexer\Job;
 use Integrated\Common\Queue\QueueInterface;
+
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
@@ -175,32 +176,21 @@ The <info>%command.name%</info> command starts a index of the site.
      */
     protected function executeIndex(InputInterface $input, OutputInterface $output)
     {
-        $result = null;
+        // Don't hydrate for performance reasons
+        $builder = $this->getDocumentManager()->createQueryBuilder(Content::class);
+        $builder->select('id', 'contentType', 'class')->hydrate(false);
 
         if ($input->getOption('full')) {
-
-            //use createQueryBuilder for performance reasons
-            $qb = $this->getDocumentManager()->createQueryBuilder(
-                'Integrated\Bundle\ContentBundle\Document\Content\Content'
-            )
-                ->select('id', 'contentType', 'class');
-            $result = $qb->getQuery()->execute();
+            $result = $builder->getQuery()->execute();
 
             // The entire site is going to be reindex so everything that is now in the queue
             // will be redone so just clear it so content is not double indexed.
 
             $this->getQueue()->clear();
         } else {
-            $criteria['$or'] = [];
+            $builder->field('contentType')->in($input->getArgument('id'));
 
-            foreach ($input->getArgument('id') as $id) {
-                $criteria['$or'][] = ['contentType' => $id];
-            }
-
-            $result = $this->getDocumentManager()
-                ->getUnitOfWork()
-                ->getDocumentPersister('Integrated\Bundle\ContentBundle\Document\Content\Content')
-                ->loadAll($criteria);
+            $result = $builder->getQuery()->execute();
         }
 
         if ($count = $result->count()) {
@@ -251,17 +241,14 @@ The <info>%command.name%</info> command starts a index of the site.
         $count = 0;
         $manager = $this->getDocumentManager();
 
-        /** @var ContentInterface $document */
-
         foreach ($cursor as $document) {
             $progress->advance();
 
             $job = new Job('ADD');
 
-            $job->setOption('document.id', $document->getContentType() . '-' . $document->getId());
-
-            $job->setOption('document.data', $this->getSerializer()->serialize($document, 'json'));
-            $job->setOption('document.class', get_class($document));
+            $job->setOption('document.id', $document['contentType'] . '-' . $document['_id']);
+            $job->setOption('document.data', json_encode(['id' => $document['_id']]));
+            $job->setOption('document.class', $document['class']);
             $job->setOption('document.format', 'json');
 
             $queue->push($job);
