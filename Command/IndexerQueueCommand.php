@@ -246,7 +246,10 @@ The <info>%command.name%</info> command starts a index of the site.
 
             $job = new Job('ADD');
 
-            $job->setOption('document.id', $document['contentType'] . '-' . $document['_id']);
+            $contentType = isset($document['contentType']) ? $document['contentType'] : '';
+
+            $job->setOption('document.id', $contentType . '-' . $document['_id']);
+
             $job->setOption('document.data', json_encode(['id' => $document['_id']]));
             $job->setOption('document.class', $document['class']);
             $job->setOption('document.format', 'json');
