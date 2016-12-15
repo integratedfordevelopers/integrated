@@ -74,21 +74,26 @@ class QueueProvider implements QueueProviderInterface
 	 */
 	public function pull($channel, $limit = 1)
 	{
-		$channel = (string) $channel;
-
-		$limit = (int) $limit;
-		$limit = $limit > 1 ? $limit : 1;
-
 		$query = '
 			SELECT id, payload,	attempts, priority
 			FROM %s
-			WHERE channel = ? AND time_execute <= ?
+			WHERE %s
 			ORDER BY priority DESC, time_execute, id
 		';
 
+        $where = 'channel = ? AND time_execute <= ?';
+        if (isset($this->options['where'])) {
+            $where = sprintf('%s AND %s', $where, $this->options['where']);
+        }
+
+		if ($limit > 0) {
+            $query = $this->platform->modifyLimitQuery($query, $limit);
+        }
+
 		$query = sprintf(
-			$this->platform->modifyLimitQuery($query, $limit),
-			$this->platform->quoteIdentifier($this->options['queue_table_name'])
+			$query,
+            $this->platform->quoteIdentifier($this->options['queue_table_name']),
+            $where
 		);
 
 		$results = array();
@@ -136,6 +141,21 @@ class QueueProvider implements QueueProviderInterface
 
 		return $this->connection->fetchColumn($query, [$channel]);
 	}
+
+    /**
+     * Set a option for the current queue channel
+     *
+     * @param string $name
+     * @param mixed $value
+     */
+    public function setOption($name, $value)
+    {
+        if (isset($this->options[$name])) {
+            throw new \InvalidArgumentException(sprintf('Option %s already set.', $name));
+        }
+
+        $this->options[$name] = $value;
+    }
 
 	/**
 	 * Delete the message from the queue
