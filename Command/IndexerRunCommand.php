@@ -231,7 +231,7 @@ The <info>%command.name%</info> command starts a indexer run.
                 while ($pool->count()) {
                     foreach ($pool as $i => $process) {
                         if (!$process->isRunning()) {
-                            $output->writeln(sprintf('Process %d finnished.', ($i+1)));
+                            $output->writeln(sprintf('Process %d finished.', ($i+1)));
 
                             // This one is important
                             $pool->removeElement($process);
