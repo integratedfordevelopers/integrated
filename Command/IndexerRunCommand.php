@@ -176,7 +176,10 @@ The <info>%command.name%</info> command starts a indexer run.
 
         while (true) {
             // Run a external process
-            $process = new Process('php app/console solr:indexer:run -e ', $this->workingDirectory);
+            $process = new Process(
+                sprintf('php app/console solr:indexer:run -e %s', $this->kernel->getEnvironment()),
+                $this->workingDirectory
+            );
 
             $process->setTimeout(0);
             $process->run(function ($type, $buffer) use ($output) {
