@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\SolrBundle\Process\Exception\LogicException;
 
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Process\Process;
 
 /**
@@ -26,7 +27,7 @@ class ProcessPoolGenerator
     /**
      * @const
      */
-    const COMMAND = 'php app/console %s %s %d:%d';
+    const COMMAND = 'php app/console %s %s %d:%d -e %s';
 
     /**
      * @var InputInterface
@@ -34,16 +35,25 @@ class ProcessPoolGenerator
     private $input;
 
     /**
-     * @param ArgumentProcess $argumentProcess
+     * @var Kernel
      */
-    public function __construct(InputInterface $input)
+    private $kernel;
+
+    /**
+     * @param InputInterface $input
+     * @param Kernel $kernel
+     */
+    public function __construct(InputInterface $input, Kernel $kernel)
     {
         $this->input = $input;
+        $this->kernel = $kernel;
     }
 
     /**
      * @param ArgumentProcess $argumentProcess
+     * @param string $workingDirectory
      * @return ArrayCollection|Process[]
+     * @throws LogicException
      */
     public function getProcessesPool(ArgumentProcess $argumentProcess, $workingDirectory)
     {
@@ -56,7 +66,8 @@ class ProcessPoolGenerator
                     $this->input->getFirstArgument(),
                     $this->input->getParameterOption('command'),
                     $i,
-                    $argumentProcess->getProcessMax()
+                    $argumentProcess->getProcessMax(),
+                    $this->kernel->getEnvironment()
                 ),
                 $workingDirectory
             );

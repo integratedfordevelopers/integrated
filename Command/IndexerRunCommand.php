@@ -28,6 +28,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\LockHandler;
 
@@ -52,17 +54,24 @@ class IndexerRunCommand extends Command
     protected $workingDirectory;
 
     /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    /**
      * @param Indexer $indexer
-     * @param Queue $solrQueue
+     * @param QueueProvider $queueProvider
+     * @param KernelInterface $kernel
      * @param string $workingDirectory
      */
-    public function __construct(Indexer $indexer, QueueProvider $queueProvider, $workingDirectory)
+    public function __construct(Indexer $indexer, QueueProvider $queueProvider, KernelInterface $kernel, $workingDirectory)
     {
         parent::__construct();
 
         $this->indexer = $indexer;
         $this->queueProvider = $queueProvider;
         $this->workingDirectory = $workingDirectory;
+        $this->kernel = $kernel;
     }
 
     /**
@@ -167,7 +176,7 @@ The <info>%command.name%</info> command starts a indexer run.
 
         while (true) {
             // Run a external process
-            $process = new Process('php app/console solr:indexer:run', $this->workingDirectory);
+            $process = new Process('php app/console solr:indexer:run -e ', $this->workingDirectory);
 
             $process->setTimeout(0);
             $process->run(function ($type, $buffer) use ($output) {
@@ -191,7 +200,7 @@ The <info>%command.name%</info> command starts a indexer run.
     }
 
     /**
-     * @param ArgumentProcess $argumentProcess
+     * @param ArgumentProcess $argument
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
@@ -200,7 +209,7 @@ The <info>%command.name%</info> command starts a indexer run.
     {
         if ($argument->isParentProcess()) {
             // Create pool generator to generate the processes
-            $generator = new ProcessPoolGenerator($input);
+            $generator = new ProcessPoolGenerator($input, $this->kernel);
             $pool = $generator->getProcessesPool($argument, $this->workingDirectory);
 
             // Start them accordingly
