@@ -88,12 +88,14 @@ class Indexer extends Configurable implements IndexerInterface
     {
         $resolver->setDefaults([
             'queue.size' => 5000,
+            'queue.provider.where' => false,
             'batch.size' => 100,
         ]);
 
         $resolver->setAllowedTypes([
             'queue.size' => 'integer',
             'batch.size' => 'integer',
+            'queue.provider.where' => ['string', 'boolean']
         ]);
     }
 
