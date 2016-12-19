@@ -221,7 +221,7 @@ The <info>%command.name%</info> command starts a indexer run.
                 $process->start();
 
                 // Tell somebody
-                $output->writeln(sprintf('Started process %d with pid %d to run the queue.', ($i+1), $process->getPid()));
+                $output->writeln(sprintf('Started process %d with pid %d to run the queue', ($i+1), $process->getPid()));
             }
 
             if ($input->getOption('blocking')) {
@@ -231,7 +231,7 @@ The <info>%command.name%</info> command starts a indexer run.
                 while ($pool->count()) {
                     foreach ($pool as $i => $process) {
                         if (!$process->isRunning()) {
-                            $output->writeln(sprintf('Process %d finished.', ($i+1)));
+                            $output->writeln(sprintf('Process %d finished', ($i+1)));
 
                             // This one is important
                             $pool->removeElement($process);
