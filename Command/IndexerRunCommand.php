@@ -13,6 +13,8 @@ namespace Integrated\Bundle\SolrBundle\Command;
 
 use Exception;
 
+use Integrated\Bundle\SolrBundle\EventSubscriber\DoctrineClearEventSubscriber;
+use Integrated\Bundle\SolrBundle\EventSubscriber\MemoryEventSubscriber;
 use Integrated\Bundle\SolrBundle\Process\ArgumentProcess;
 use Integrated\Bundle\SolrBundle\Process\ProcessPoolGenerator;
 
@@ -54,23 +56,30 @@ class IndexerRunCommand extends Command
     protected $workingDirectory;
 
     /**
+     * @var DoctrineClearEventSubscriber
+     */
+    protected $clearEventSubscriber;
+
+    /**
      * @var KernelInterface
      */
-    private $kernel;
+    protected $kernel;
 
     /**
      * @param Indexer $indexer
      * @param QueueProvider $queueProvider
      * @param KernelInterface $kernel
+     * @param DoctrineClearEventSubscriber $clearEventSubscriber
      * @param string $workingDirectory
      */
-    public function __construct(Indexer $indexer, QueueProvider $queueProvider, KernelInterface $kernel, $workingDirectory)
+    public function __construct(Indexer $indexer, QueueProvider $queueProvider, DoctrineClearEventSubscriber $clearEventSubscriber, KernelInterface $kernel, $workingDirectory)
     {
         parent::__construct();
 
         $this->indexer = $indexer;
         $this->queueProvider = $queueProvider;
         $this->workingDirectory = $workingDirectory;
+        $this->clearEventSubscriber = $clearEventSubscriber;
         $this->kernel = $kernel;
     }
 
@@ -225,7 +234,7 @@ The <info>%command.name%</info> command starts a indexer run.
             }
 
             if ($input->getOption('blocking')) {
-                $output->writeln('Running in blocking mode, waiting until all started process are done');
+                $output->writeln('Running in blocking mode, waiting until all started processes are done');
 
                 // While the pool contains processes we're running
                 while ($pool->count()) {
@@ -247,8 +256,11 @@ The <info>%command.name%</info> command starts a indexer run.
             return 0;
         }
 
-        // Set the modulo to run over the dataset with x processes
+        // Set the modulo to run over the data set with x processes, creating a unique list per thread
         $this->queueProvider->setOption('where', sprintf('(id %% %d) = %d', $argument->getProcessMax(), $argument->getProcessNumber()));
+
+        // Add the clear event listener only for the thread
+        $this->indexer->getEventDispatcher()->addSubscriber($this->clearEventSubscriber);
 
         // Remove the limit so we'll keep on johnny walk'n
         $this->indexer->setOption('queue.size', -1);

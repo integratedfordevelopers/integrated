@@ -13,12 +13,15 @@
     <services>
 
         <service id="integrated_solr.command.indexer_run" class="%integrated_solr.command.indexer_run.class%">
+
             <argument type="service" id="integrated_solr.indexer" />
             <argument type="service" id="integrated_queue.dbal.provider" />
+            <argument type="service" id="integrated_solr.subscriber.doctrine.clear" />
             <argument type="service" id="kernel" />
             <argument>%kernel.root_dir%/..</argument>
 
             <tag name="console.command" />
+
         </service>
 
     </services>
