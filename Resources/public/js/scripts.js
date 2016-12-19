@@ -98,10 +98,10 @@ $(document).ready(function () {
 
     // this event listener will add a divider between terms and results.
     elm.bind('typeahead:render', function (e, suggestions, async, dataset) {
-        var first = elm.parent('.twitter-typeahead').find('.tt-dataset-' + dataset + ' .tt-suggestion-result').first();
+        var first = elm.parent('.twitter-typeahead').find('.tt-dataset-' + dataset + ' .tt-suggestion-term').first();
 
         if (!first.is(':first-child')) {
-            first.before('<div role="separator" class="tt-divider">Content</div>');
+            first.before('<div role="separator" class="tt-divider"></div>');
         }
     });
 
@@ -109,20 +109,13 @@ $(document).ready(function () {
     elm.bind('typeahead:select', function(e, suggestion) {
         if (suggestion.type.result) {
             window.location.href = suggestion.data.url;
+        } else {
+            elm.parents('form').submit();
         }
     });
 
     function transform(response) {
         var results = [];
-
-        if ($.isArray(response.suggestions)) {
-            $.each(response.suggestions, function (index, value) {
-                results.push({
-                    type: { suggestion: true, result: false },
-                    data: value
-                });
-            });
-        }
 
         if ($.isArray(response.results)) {
             $.each(response.results, function () {
@@ -135,6 +128,15 @@ $(document).ready(function () {
                 results.push({
                     type: { suggestion: false, result: true },
                     data: data
+                });
+            });
+        }
+
+        if ($.isArray(response.suggestions)) {
+            $.each(response.suggestions, function (index, value) {
+                results.push({
+                    type: { suggestion: true, result: false },
+                    data: value
                 });
             });
         }

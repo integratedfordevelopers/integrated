@@ -34,7 +34,7 @@
   .tt-divider {
     color: $typeahead-divider-color;
    	font-size: 18px;
-   	padding: 7px 20px;
+   	padding: 0;
     border-top: 1px solid $typeahead-fallback-border; // IE8 fallback
     border-top: 1px solid $typeahead-border;
   }
