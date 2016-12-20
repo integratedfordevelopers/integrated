@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Document type File
@@ -28,7 +27,6 @@ class File extends Content implements FileInterface
     /**
      * @var StorageInterface
      * @Type\Field(type="integrated_file_dropzone")
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      */
     protected $file;
 

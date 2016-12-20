@@ -28,7 +28,6 @@ class Image extends File
      * @var StorageInterface
      * @Type\Field(type="integrated_image_dropzone")
      * @Assert\File(mimeTypes="image/*")
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      */
     protected $file;
 }

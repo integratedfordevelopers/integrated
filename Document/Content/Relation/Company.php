@@ -39,7 +39,6 @@ class Company extends Relation
 
     /**
      * @var StorageInterface
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      * @Type\Field(type="integrated_image")
      */
     protected $logo;

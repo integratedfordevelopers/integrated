@@ -12,13 +12,15 @@
         <field fieldName="lastName" type="string" />
         <field fieldName="slug" type="string" unique="true" sparse="true" />
 
+        <embed-one
+            field="picture"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage"
+        />
+
         <embed-many
             field="jobs"
-            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job" />
-
-        <reference-one
-                field="picture"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\File" />
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job"
+        />
 
     </document>
 

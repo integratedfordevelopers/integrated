@@ -14,8 +14,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Block;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
@@ -24,7 +22,6 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
  *
  * @author Vasil Pascal <developer.optimum@gmail.com>
  *
- * @ODM\Document
  * @Type\Document("Related Content block")
  */
 class RelatedContentBlock extends Block
@@ -42,7 +39,6 @@ class RelatedContentBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field
      */
@@ -50,7 +46,6 @@ class RelatedContentBlock extends Block
 
     /**
      * @var int
-     * @ODM\Int
      * @Assert\NotBlank
      * @Type\Field(
      *     type="choice",
@@ -66,7 +61,6 @@ class RelatedContentBlock extends Block
 
     /**
      * @var ContentBlock
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Relation\Relation")
      * @Type\Field(
      *      type="document",
      *      options={
@@ -80,7 +74,6 @@ class RelatedContentBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field(
      *     type="choice",
@@ -96,7 +89,6 @@ class RelatedContentBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(
      *     type="choice",
      *     options={
@@ -111,7 +103,6 @@ class RelatedContentBlock extends Block
 
     /**
      * @var int
-     * @ODM\Int
      * @Assert\Length(min=0)
      * @Type\Field(
      *      type="integer",
@@ -126,7 +117,6 @@ class RelatedContentBlock extends Block
 
     /**
      * @var int
-     * @ODM\Int
      * @Assert\Length(min=0)
      * @Type\Field(
      *      type="integer",
@@ -142,7 +132,6 @@ class RelatedContentBlock extends Block
 
     /**
      * @var array
-     * @ODM\Collection
      * @Type\Field(type="integrated_content_type_choice")
      */
     protected $contentTypes;

@@ -8,8 +8,14 @@
         <field fieldName="id" id="true" strategy="NONE" />
         <field fieldName="name" type="string" index="true" />
         <field fieldName="domains" type="collection" />
+        <field fieldName="primaryDomain" type="string" />
         <field fieldName="options" type="hash" />
         <field fieldName="createdAt" type="date" />
+
+        <lifecycle-callbacks>
+            <lifecycle-callback type="prePersist" method="defaultPrimaryDomain" />
+            <lifecycle-callback type="preUpdate" method="defaultPrimaryDomain" />
+        </lifecycle-callbacks>
 
     </document>
 

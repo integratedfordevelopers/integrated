@@ -40,7 +40,6 @@ class FacetBlock extends Block
 
     /**
      * @var ArrayCollection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField")
      * @Type\Field(
      *      type="integrated_collection",
      *      options={

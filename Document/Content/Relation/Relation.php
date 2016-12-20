@@ -23,8 +23,6 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber;
  * Class for Relations
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @ODM\MappedSuperclass
  */
 abstract class Relation extends Content
 {

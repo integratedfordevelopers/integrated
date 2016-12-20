@@ -74,7 +74,6 @@ class Person extends Relation
 
     /**
      * @var StorageInterface|null
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      * @Type\Field(type="integrated_image")
      */
     protected $picture;

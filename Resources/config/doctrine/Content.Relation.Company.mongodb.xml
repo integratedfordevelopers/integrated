@@ -9,9 +9,10 @@
         <field fieldName="slug" type="string" unique="true" sparse="true" />
         <field fieldName="website" type="string" />
 
-        <reference-one
-                field="logo"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\File" />
+        <embed-one
+            field="logo"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage"
+        />
 
     </document>
 

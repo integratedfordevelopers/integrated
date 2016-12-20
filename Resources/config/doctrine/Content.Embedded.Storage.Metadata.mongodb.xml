@@ -1,0 +1,20 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata">
+
+        <field fieldName="extension" type="string" />
+        <field fieldName="mimeType" type="string" />
+        <field fieldName="headers" type="hash" />
+        <field fieldName="metadata" type="hash" />
+
+        <embed-one
+                field="metadata"
+                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata"
+        />
+
+    </embedded-document>
+
+</doctrine-mongo-mapping>

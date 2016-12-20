@@ -5,20 +5,10 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\File">
 
-        <field fieldName="file" type="string" />
-        <field fieldName="fileExtension" type="string" />
         <field fieldName="title" type="string" />
-        <field fieldName="slug" type="string" unique="true" sparse="true" />
         <field fieldName="description" type="string" />
 
-        <lifecycle-callbacks>
-            <lifecycle-callback type="preUpdate" method="preUpload"/>
-            <lifecycle-callback type="prePersist" method="preUpload"/>
-            <lifecycle-callback type="postUpdate" method="upload"/>
-            <lifecycle-callback type="postPersist" method="upload"/>
-            <lifecycle-callback type="preRemove" method="storeFilenameForRemove"/>
-            <lifecycle-callback type="postRemove" method="removeUpload"/>
-        </lifecycle-callbacks>
+        <embed-one field="file" target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage" />
 
     </document>
 

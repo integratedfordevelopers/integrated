@@ -7,9 +7,16 @@
 
         <field fieldName="field" type="string" />
 
+        <embed-many
+            field="fields"
+            target-document="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField"
+        />
+
         <reference-one
-                field="block"
-                target-document="Integrated\Bundle\ContentBundle\Document\Block\ContentBlock" />
+            field="block"
+            target-document="Integrated\Bundle\ContentBundle\Document\Block\ContentBlock"
+        />
+
 
     </document>
 

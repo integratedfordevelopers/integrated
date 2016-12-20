@@ -47,7 +47,6 @@ class Channel implements ChannelInterface
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $primaryDomain;
 
@@ -226,8 +225,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * @ODM\PrePersist
-     * @ODM\PreUpdate
+     *
      */
     public function defaultPrimaryDomain()
     {

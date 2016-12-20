@@ -5,6 +5,7 @@
 
     <document
         name="Integrated\Bundle\ContentBundle\Document\Content\Content"
+        repository-class="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository"
         collection="content"
         inheritance-type="SINGLE_COLLECTION">
 
@@ -32,6 +33,11 @@
             field="relations"
             target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation" />
 
+        <reference-one
+            field="primaryChannel"
+            target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel"
+        />
+
         <reference-many
             field="channels"
             target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel" />
@@ -46,6 +52,10 @@
 
         <indexes>
             <index>
+                <key name="class" order="asc"/>
+            </index>
+            <index>
+                <key name="relations.references.$id" order="asc"/>
                 <key name="class" order="asc"/>
             </index>
         </indexes>

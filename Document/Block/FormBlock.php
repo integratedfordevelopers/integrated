@@ -47,7 +47,6 @@ class FormBlock extends Block
 
     /**
      * @var array
-     * @ODM\Collection
      * @Assert\All({
      *     @Assert\Email
      * })

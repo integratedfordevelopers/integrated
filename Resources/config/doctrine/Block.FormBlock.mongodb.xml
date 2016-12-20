@@ -6,6 +6,7 @@
     <document name="Integrated\Bundle\ContentBundle\Document\Block\FormBlock">
 
         <field fieldName="returnUrl" type="string" />
+        <field fieldName="emailAddresses" type="collection" />
         <field fieldName="recaptcha" type="boolean" />
 
         <reference-one

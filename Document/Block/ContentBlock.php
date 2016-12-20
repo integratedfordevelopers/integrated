@@ -90,7 +90,6 @@ class ContentBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field(
      *       options={

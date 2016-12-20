@@ -38,7 +38,6 @@ class SearchBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(
      *      type="text",
      *      options={

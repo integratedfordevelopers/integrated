@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
@@ -33,15 +34,6 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  * Abstract base class for document types
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @ODM\Document(collection="content", repositoryClass="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository")
- * @ODM\Indexes({
- *   @ODM\Index(keys={"class"="asc"}),
- *   @ODM\Index(keys={"relations.references.$id"="asc", "class"="asc"})
- * })
- * @ODM\InheritanceType("SINGLE_COLLECTION")
- * @ODM\DiscriminatorField(fieldName="class")
- * @ODM\HasLifecycleCallbacks
  */
 abstract class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
 {
@@ -101,7 +93,6 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @var Channel
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
      */
     protected $primaryChannel;
 
