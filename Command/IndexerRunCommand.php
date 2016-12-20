@@ -240,6 +240,10 @@ The <info>%command.name%</info> command starts a indexer run.
                 while ($pool->count()) {
                     foreach ($pool as $i => $process) {
                         if (!$process->isRunning()) {
+                            if ($process->getIncrementalOutput()) {
+                                $output->writeln(sprintf('Prcocess %d: %s', $i, $process->getIncrementalOutput()));
+                            }
+
                             $output->writeln(sprintf('Process %d finished', ($i+1)));
 
                             // This one is important
