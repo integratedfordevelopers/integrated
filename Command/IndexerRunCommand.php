@@ -255,21 +255,26 @@ The <info>%command.name%</info> command starts a indexer run.
                     sleep(1);
                 }
             }
+        } else {
+            // Set the modulo to run over the data set with x processes, creating a unique list per thread
+            $this->queueProvider->setOption('where', sprintf('(id %% %d) = %d', $argument->getProcessMax(), $argument->getProcessNumber()));
 
-            // Good to go
-            return 0;
+            // Add the clear event listener only for the thread
+            $this->indexer->getEventDispatcher()->addSubscriber($this->clearEventSubscriber);
+
+            // Remove the limit so we'll keep on johnny walk'n
+            //$this->indexer->setOption('queue.size', -1);
+
+            // Seems to be a sub-process, ran it with a the number appended to the class
+            while ($this->indexer->getQueue()) {
+                $this->runInternal(sprintf('%s:%d', self::class, $argument->getProcessNumber()), $output);
+
+                // Give them cores some relaxation
+                usleep(5000);
+            }
         }
 
-        // Set the modulo to run over the data set with x processes, creating a unique list per thread
-        $this->queueProvider->setOption('where', sprintf('(id %% %d) = %d', $argument->getProcessMax(), $argument->getProcessNumber()));
-
-        // Add the clear event listener only for the thread
-        $this->indexer->getEventDispatcher()->addSubscriber($this->clearEventSubscriber);
-
-        // Remove the limit so we'll keep on johnny walk'n
-        $this->indexer->setOption('queue.size', -1);
-
-        // Seems to be a sub-process, ran it with a the number appended to the class
-        return $this->runInternal(sprintf('%s:%d', self::class, $argument->getProcessNumber()), $output);
+        // Good to go
+        return 0;
     }
 }
