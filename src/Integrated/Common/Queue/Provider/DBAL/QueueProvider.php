@@ -134,9 +134,17 @@ class QueueProvider implements QueueProviderInterface
             $this->platform->quoteIdentifier($this->options['queue_table_name'])
         );
 
+        $where = array();
+        if (isset($this->options['where'])) {
+            $where[] = $this->options['where'];
+        }
+
         if ($channel) {
-            $channel = (string) $channel;
-            $query .= ' WHERE channel = ?';
+            $where[] = 'channel = ?';
+        }
+
+        if (count($where)) {
+            $query = sprintf('%s WHERE %s', $query, implode(' AND ', $where));
         }
 
         return $this->connection->fetchColumn($query, [$channel]);
