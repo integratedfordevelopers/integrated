@@ -1,31 +1,89 @@
-# Integrated Content Bundle
+# IntegratedContentBundle #
+This bundle provides the document structure for Integrated.
 
-TODO: write a readme file ;)
+## Requirements ##
+* See the require section in the composer.json
 
-### Assetic config
+## Features ##
+* Document structure
+* Base templates for Integrated
 
-Don't forget to do a assetic dump so that the bootstrap css and javascript are generated
+## Documentation ##
+* [Integrated for Developers](http://integratedfordevelopers.com/ "Integrated for Developers")
 
-	# Assetic Configuration
+## Installation ##
+This bundle can be installed following these steps:
+
+### Install using composer ###
+
+    $ php composer.phar require integrated/content-bundle
+
+### Enable the bundle ###
+
+    // app/AppKernel.php
+    public function registerBundles()
+    {
+        return array(
+            // ...
+            new Integrated\Bundle\ContentBundle\IntegratedContentBundle()
+            // ...
+        );
+    }
+
+### Import the routing ###
+
+    # app/config/routing.yml
+    integrated_content:
+        resource: @IntegratedContentBundle/Resources/config/routing.xml
+
+### Configuring the assets ###
+
+The IntegratedContentBundle uses the [SpBowerBundle](https://github.com/Spea/SpBowerBundle) for handling the external
+resources.
+
+	# app/config/config.yml
+	sp_bower:
+        bundles:
+            IntegratedContentBundle: ~
+
+The base template of the ContentBundle uses two [named assets](http://symfony.com/doc/current/cookbook/assetic/asset_management.html#using-named-assets):
+
+1. `integrated_js`
+2. `integrated_css`
+
+These two named assets must be defined in the `app/config/config.yml`.
+
+The IntegratedContentBundle uses [Sass](http://sass-lang.com/) for generating the stylesheet, in order to use these 
+files a Sass filter can be used:
+
+	# app/config/config.yml
 	assetic:
-		debug:          %kernel.debug%
-		use_controller: false
+		# ...
 		filters:
-			less:
-				node: /usr/bin/node
-				node_paths: [/usr/local/lib/node_modules]
-				compress: true
-				apply_to: "\.less$"
-			cssrewrite: ~
+			sass:
+				bin: /usr/bin/sass
+				apply_to: "\.scss$"
+				style: compressed
+		# ...
 		assets:
 			integrated_css:
 				inputs:
-	#                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css
+					- @IntegratedContentBundle/Resources/public/sass/main.scss
+				filters:
+					- sass
+				output: css/main.css
 			integrated_js:
 				inputs:
-	#                - @IntegratedFormTypeBundle/Resources/public/components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js
-	#                - @IntegratedFormTypeBundle/Resources/public/js/*
+					# Add your custom javascript files here
 
-	# Bootstrap configuration
-	braincrafted_bootstrap:
-		less_filter: less
+## License ##
+This bundle is under the MIT license. See the complete license in the bundle:
+
+    LICENSE
+
+## Contributing ##
+Pull requests are welcome. Please see our [CONTRIBUTING guide](http://integratedfordevelopers.com/contributing "CONTRIBUTING guide").
+
+## About ##
+This bundle is part of the Integrated project. You can read more about this project on the
+[Integrated for Developers](http://integratedfordevelopers.com/ "Integrated for Developers") website.

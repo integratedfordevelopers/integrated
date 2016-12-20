@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
+use Integrated\Bundle\BlockBundle\Document\Block\PublishTitleTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
@@ -26,6 +27,8 @@ use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
  */
 class ContentBlock extends Block
 {
+    use PublishTitleTrait;
+
     /**
      * @var SearchSelection
      * @Type\Field(type="integrated_search_selection_choice")
@@ -84,6 +87,18 @@ class ContentBlock extends Block
      * )
      */
     protected $facetFields = [];
+
+    /**
+     * @var string
+     * @ODM\String
+     * @Assert\NotBlank
+     * @Type\Field(
+     *       options={
+     *          "attr"={"class"="main-title"}
+     *       }
+     * )
+     */
+    protected $title;
 
     /**
      * @return SearchSelection

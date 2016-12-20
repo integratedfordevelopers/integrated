@@ -11,7 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -21,39 +22,57 @@ use Symfony\Component\Form\FormBuilderInterface;
 class AddressType extends AbstractType
 {
     /**
+     * @const array
+     */
+    const PROPERTIES = ['type', 'name', 'country', 'address1', 'address2', 'zipcode', 'city'];
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('type', 'choice', [
-            'placeholder' => '',
-            'choices'     => [
-                'postal'   => 'Postal address',
-                'visiting' => 'Visiting address',
-                'mailing'  => 'Mailing address',
-            ],
-            'required' => false,
-        ]);
+        foreach ($options['fields'] as $field) {
+            // Variables
+            $type = 'text';
+            $default = ['required' => $builder->getRequired()];
+            $override = isset($options['options'][$field]) ? $options['options'][$field] : [];
 
-        $builder->add('country', 'country', ['placeholder' => '', 'required' => false]);
+            // Spec may vary per field, but not per se
+            switch ($field) {
+                case 'type':
+                    $type = 'choice';
+                    $default = [
+                        'placeholder' => '',
+                        'required'    => false,
+                        'choices'     => [
+                            'postal'   => 'Postal address',
+                            'visiting' => 'Visiting address',
+                            'mailing'  => 'Mailing address',
+                        ],
+                    ];
+                    break;
+                case 'country':
+                    $type = 'country';
+                    $default['placeholder'] = '';
+                    break;
+            }
 
-        $builder->add('address1', 'text', ['label' => 'Address line 1', 'required' => false]);
-
-        $builder->add('address2', 'text', ['label' => 'Address line 2', 'required' => false]);
-
-        $builder->add('zipcode', 'text', ['required' => false]);
-
-        $builder->add('city', 'text', ['required' => false]);
+            // Add into the form
+            $builder->add($field, $type, array_merge($default, $override));
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Embedded\\Address'
-        ));
+        // Set defaults for the resolver
+        $resolver->setDefaults([
+            'data_class' => Address::class,
+            'options' => [],
+            'fields'     => self::PROPERTIES, // @todo validate options (INTEGRATED-627)
+        ]);
     }
 
     /**

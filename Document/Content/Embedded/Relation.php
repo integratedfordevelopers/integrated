@@ -15,13 +15,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Content\Embedded\RelationInterface;
 
 /**
  * Embedded document Reference
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class Relation
+class Relation implements RelationInterface
 {
     /**
      * @var string id of the Relation document
@@ -57,7 +58,7 @@ class Relation
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getRelationId()
     {
@@ -75,7 +76,7 @@ class Relation
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getRelationType()
     {
@@ -95,9 +96,7 @@ class Relation
     }
 
     /**
-     * Get references of Relation
-     *
-     * @return ContentInterface[]
+     * {@inheritdoc}
      */
     public function getReferences()
     {

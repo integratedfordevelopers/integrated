@@ -58,8 +58,13 @@ class RelationsType extends AbstractType
         $relations = $this->manager->getRepository(self::REPOSITORY)->findBy(array('sources.$id' => $type->getId()), array('name' => 'ASC'));
 
         foreach ($relations as $relation) {
+            $contentTypes = [];
+
             foreach ($relation->getTargets() as $contentType) {
-                $url[] = $contentType->getType();
+                $contentTypes[] = [
+                    'type' => $contentType->getType(),
+                    'name' => $contentType->getName(),
+                ];
             }
 
             $constraints = [];
@@ -69,11 +74,11 @@ class RelationsType extends AbstractType
                 ]);
             }
 
-            $builder->add($relation->getId(), 'hidden', [
-                'attr' => [
-                    'data-title'    => $relation->getName(),
-                    'data-relation' => $relation->getId(),
-                    'data-multiple' => $relation->isMultiple()
+            $builder->add($relation->getId(), 'hidden', ['attr' => [
+                'data-title'    => $relation->getName(),
+                'data-relation' => $relation->getId(),
+                'data-multiple' => $relation->isMultiple(),
+                'data-types'    => json_encode($contentTypes),
                 ],
                 'constraints' => $constraints,
             ]);

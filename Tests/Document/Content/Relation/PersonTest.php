@@ -12,12 +12,13 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class PersonTest extends \PHPUnit_Framework_TestCase
+class PersonTest extends RelationTest
 {
     /**
      * @var Person
@@ -30,30 +31,6 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->person = new Person();
-    }
-
-    /**
-     * Person should implement ContentInterface
-     */
-    public function testInstanceOfContentInterface()
-    {
-        $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->person);
-    }
-
-    /**
-     * Person should extend Content
-     */
-    public function testInstanceOfContent()
-    {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->person);
-    }
-
-    /**
-     * Person should extend Relation
-     */
-    public function testInstanceOfRelation()
-    {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation', $this->person);
     }
 
     /**
@@ -174,11 +151,10 @@ class PersonTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetPictureFunction()
     {
-        /* @var $picture \Integrated\Bundle\ContentBundle\Document\Content\File | \PHPUnit_Framework_MockObject_MockObject */
-        $picture = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\File');
+        /* @var $picture \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface | \PHPUnit_Framework_MockObject_MockObject */
+        $picture = $this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface');
         $this->assertSame($picture, $this->person->setPicture($picture)->getPicture());
     }
-
 
     /**
      * Test toString function with first and last name
@@ -209,5 +185,13 @@ class PersonTest extends \PHPUnit_Framework_TestCase
     {
         $lastName = 'de Vries';
         $this->assertEquals($lastName, (string) $this->person->setLastName($lastName));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContent()
+    {
+        return $this->person;
     }
 }

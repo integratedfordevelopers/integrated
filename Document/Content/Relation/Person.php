@@ -14,10 +14,11 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
 /**
  * Document type Relation\Person
@@ -67,12 +68,14 @@ class Person extends Relation
 
     /**
      * @var Collection Job[]
+     * @Type\Field(type="integrated_contact_persons")
      */
     protected $jobs;
 
     /**
-     * @var File
-     * @Type\Field(type="integrated_image_choice")
+     * @var StorageInterface|null
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
+     * @Type\Field(type="integrated_image")
      */
     protected $picture;
 
@@ -269,7 +272,7 @@ class Person extends Relation
     /**
      * Get the picture of the document
      *
-     * @return File
+     * @return StorageInterface|null
      */
     public function getPicture()
     {
@@ -279,10 +282,10 @@ class Person extends Relation
     /**
      * Set the picture of the document
      *
-     * @param File $picture
+     * @param StorageInterface|null $picture
      * @return $this
      */
-    public function setPicture(File $picture)
+    public function setPicture(StorageInterface $picture = null)
     {
         $this->picture = $picture;
         return $this;
@@ -291,13 +294,15 @@ class Person extends Relation
     /**
      * Get the relative cover image URL for person (picture)
      *
-     * @return string
+     * @return string|null
      */
     public function getCover()
     {
-        if ($this->getPicture()) {
-            return $this->getPicture()->getWebPath();
+        if ($this->getPicture() instanceof StorageInterface) {
+            return $this->getPicture()->getPathname();
         }
+
+        return null;
     }
 
     /**

@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
@@ -37,10 +39,30 @@ class FacetBlock extends Block
     protected $block;
 
     /**
-     * @var string
-     * @Type\Field(type="text")
+     * @var ArrayCollection
+     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField")
+     * @Type\Field(
+     *      type="integrated_collection",
+     *      options={
+     *          "type"="integrated_embedded_document",
+     *          "options"={
+     *              "data_class"="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField"
+     *          },
+     *          "allow_add"=true,
+     *          "allow_delete"=true
+     *      }
+     * )
      */
-    protected $field;
+    protected $fields;
+
+    /**
+     *
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->fields = new ArrayCollection();
+    }
 
     /**
      * @return ContentBlock
@@ -61,20 +83,20 @@ class FacetBlock extends Block
     }
 
     /**
-     * @return string
+     * @return \Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField[]
      */
-    public function getField()
+    public function getFields()
     {
-        return $this->field;
+        return $this->fields->toArray();
     }
 
     /**
-     * @param string $field
+     * @param array $fields
      * @return $this
      */
-    public function setField($field)
+    public function setFields(array $fields)
     {
-        $this->field = $field;
+        $this->fields = new ArrayCollection($fields);
         return $this;
     }
 

@@ -2,14 +2,26 @@
 <html>
 <head>
     <script>
-        parent.$(function() {
-            if (parent.relations['{{ relation }}'] != undefined) {
-                parent.relations['{{ relation }}'].loadOptions();
-                parent.relations['{{ relation }}'].addOption('{{ id }}');
+        {% if (relation) %}
+            /**
+             * @type object|null
+             */
+            var relation = parent.$('.relation-items#{{ relation }}');
 
-                parent.relations['{{ relation }}'].getModal().modal('hide');
+            if (0 < relation.length) {
+                parent.$('.relation-items#{{ relation }}').append('<option selected value="{{ id }}">{{ title }}</option>').trigger('change');
+                parent.$("#relation-add-modal").modal('hide');
             }
-        });
+        {% endif %}
+
+        /**
+         * @type object|null
+         */
+        var tinymce = top.tinymce;
+
+        if ('undefined' != typeof(tinymce)) {
+            tinymce.activeEditor.windowManager.close();
+        }
     </script>
 </head>
 <body>

@@ -37,6 +37,18 @@ class SearchBlock extends Block
     protected $block;
 
     /**
+     * @var string
+     * @ODM\String
+     * @Type\Field(
+     *      type="text",
+     *      options={
+     *          "label"="Results page URL"
+     *      }
+     * )
+     */
+    protected $url;
+
+    /**
      * @return ContentBlock
      */
     public function getBlock()
@@ -52,6 +64,22 @@ class SearchBlock extends Block
     {
         $this->block = $block;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 
     /**

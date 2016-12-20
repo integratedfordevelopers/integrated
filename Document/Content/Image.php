@@ -11,32 +11,24 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Document type Image
  *
- * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ * @author Johnny Borg <johnny@e-active.nl>
  *
  * @Type\Document("Image")
  */
 class Image extends File
 {
     /**
-     * {@inheritdoc}
-     * @Type\Field(type="integrated_image")
-     * @Assert\Image()
+     * @var StorageInterface
+     * @Type\Field(type="integrated_image_dropzone")
+     * @Assert\File(mimeTypes="image/*")
+     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      */
     protected $file;
-
-    /**
-     * Get the upload dir for displaying uploaded files in the view
-     *
-     * @return string
-     */
-    protected function getUploadDir()
-    {
-        return 'uploads/images';
-    }
 }

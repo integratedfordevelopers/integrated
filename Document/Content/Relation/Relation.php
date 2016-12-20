@@ -23,8 +23,10 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber;
  * Class for Relations
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ *
+ * @ODM\MappedSuperclass
  */
-class Relation extends Content
+abstract class Relation extends Content
 {
     /**
      * @var string
@@ -34,7 +36,7 @@ class Relation extends Content
 
     /**
      * @var string
-     * @Type\Field(type="integrated_tinymce")
+     * @Type\Field(type="integrated_editor")
      */
     protected $description;
 
@@ -195,6 +197,7 @@ class Relation extends Content
      */
     public function removePhonenumber($phonenumber)
     {
+        // @todo (INTEGRATED-452)
         if ($phonenumber instanceof Phonenumber) {
             return $this->phonenumbers->remove($phonenumber);
         }

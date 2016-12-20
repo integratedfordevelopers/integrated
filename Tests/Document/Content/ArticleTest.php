@@ -12,12 +12,15 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ArticleTest extends \PHPUnit_Framework_TestCase
+class ArticleTest extends ContentTest
 {
     /**
      * @var Article
@@ -30,22 +33,6 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->article = new Article();
-    }
-
-    /**
-     * Article should implement ContentInterface
-     */
-    public function testInstanceOfContentInterface()
-    {
-        $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->article);
-    }
-
-    /**
-     * Article should extend Content
-     */
-    public function testInstanceOfContent()
-    {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->article);
     }
 
     /**
@@ -149,15 +136,6 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setPublishedUntil function
-     */
-    public function testGetAndSetPublishedUntilFunction()
-    {
-        $publishedUntil = new \DateTime();
-        $this->assertSame($publishedUntil, $this->article->setPublishedUntil($publishedUntil)->getPublishedUntil());
-    }
-
-    /**
      * Test get- and setIntro function
      */
     public function testGetAndSetIntroFunction()
@@ -176,13 +154,14 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setLocation function
+     * Test address get- and setLocation function
      */
-    public function testGetAndSetLocationFunction()
+    public function testGetAndSetAddressLocationFunction()
     {
-        /* @var $location \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location | \PHPUnit_Framework_MockObject_MockObject */
-        $location = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location');
-        $this->assertSame($location, $this->article->setLocation($location)->getLocation());
+        $this->article->setAddress(new Address());
+
+        $location = new Location();
+        $this->assertSame($location, $this->article->getAddress()->setLocation($location)->getLocation());
     }
 
     /**
@@ -192,5 +171,13 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     {
         $title = 'Title';
         $this->assertEquals($title, (string) $this->article->setTitle($title));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContent()
+    {
+        return $this->article;
     }
 }

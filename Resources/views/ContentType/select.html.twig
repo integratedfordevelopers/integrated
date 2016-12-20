@@ -1,31 +1,37 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
-{% block content %}
-    <div class="content_columns_holder">
-        <div class="content_column_inner">
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
             <ol class="breadcrumb">
                 <li>
-                    <a href="{{ path('integrated_content_content_type_index') }}">Home</a>
+                    <a href="{{ path('integrated_content_content_type_index') }}">{% trans %}Home{% endtrans %}</a>
                 </li>
-                <li class="active">Select</li>
+                <li class="active">{% trans %}Select{% endtrans %}</li>
             </ol>
-            <div class="page-header">
-                <h1>Select document type</h1>
-            </div>
-            <form method="get" action="{{ path('integrated_content_content_type_new') }}">
-                <div class="form-group">
-                    <label>Document type</label>
-                    <select name="class" class="form-control">
-                        {% for type in documentTypes %}
-                            {% if type.type %}
-                                <option value="{{ type.class }}">{{ type.type }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    Submit
-                </button>
-            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <h1 class="main-title font-regular">{% trans %}Select document type{% endtrans %}</h1>
+            <section class="section-white section-padding section-shadow section-radius">
+                <form method="get" action="{{ path('integrated_content_content_type_new') }}">
+                    <div class="form-group">
+                        <label>Document type</label>
+                        <select name="class" class="form-control">
+                            {% for type in documentTypes %}
+                                {% if type.type %}
+                                    <option value="{{ type.class }}">{{ type.type }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        {% trans %}Submit{% endtrans %}
+                    </button>
+                </form>
+            </section>
         </div>
     </div>
 {% endblock %}

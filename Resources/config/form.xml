@@ -29,30 +29,34 @@
         <parameter key="integrated_content.form.content_type.channels.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType</parameter>
         <parameter key="integrated_content.form.content_type.channel.collection.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelCollectionType</parameter>
         <parameter key="integrated_content.form.content_type.channel.type.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelType</parameter>
-        
-        <parameter key="integrated_content.form.type.image.class">Integrated\Bundle\ContentBundle\Form\Type\ImageType</parameter>
+
         <parameter key="integrated_content.form.type.image_choice.class">Integrated\Bundle\ContentBundle\Form\Type\ImageChoiceType</parameter>
         <parameter key="integrated_content.form.type.csv_array.class">Integrated\Bundle\ContentBundle\Form\Type\CsvArray</parameter>
 
-        <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\Channel</parameter>
+        <parameter key="integrated_content.form.type.channel.class">Integrated\Bundle\ContentBundle\Form\Type\ChannelType</parameter>
 
         <parameter key="integrated_content.form.delete.type.class">Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType</parameter>
-        
-        <parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
-        <parameter key="integrated_content.form.type.file.class">Integrated\Bundle\ContentBundle\Form\Type\FileType</parameter>
-        
+
         <parameter key="integrated_content.form.search_selection.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType</parameter>
         <parameter key="integrated_content.form.search_selection_choice.type.class">Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType</parameter>
 
 		<parameter key="integrated_content.form.type.relation.class">Integrated\Bundle\ContentBundle\Form\Type\RelationType</parameter>
-		<parameter key="integrated_content.form.type.file.class">Integrated\Bundle\ContentBundle\Form\Type\FileType</parameter>
         <parameter key="integrated_content.form.type.address.class">Integrated\Bundle\ContentBundle\Form\Type\AddressType</parameter>
         <parameter key="integrated_content.form.publish_time.type.class">Integrated\Bundle\ContentBundle\Form\Type\PublishTimeType</parameter>
 
         <parameter key="integrated_content.form.type.phonenumber.class">Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType</parameter>
 
         <parameter key="integrated_formtype_form_type_author.class">Integrated\Bundle\ContentBundle\Form\Type\AuthorType</parameter>
-        <parameter key="integrated_content.form.type.embed_one.class">Integrated\Bundle\ContentBundle\Form\Type\EmbedOneType</parameter>
+
+        <parameter key="integrated_formtype.form.content_type_choice.class">Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice</parameter>
+
+        <parameter key="integrated_content.form.listener.form_field.class">Integrated\Bundle\ContentBundle\Form\EventListener\FormFieldSubscriber</parameter>
+
+        <parameter key="integrated_content.form.type.primary_channel.class">Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType</parameter>
+
+        <parameter key="integrated_content.form.type.job.company_job.class">Integrated\Bundle\ContentBundle\Form\Type\Job\CompanyJobType</parameter>
+
+        <parameter key="integrated_content.form.type.job.contact_persons.class">Integrated\Bundle\ContentBundle\Form\Type\Job\ContactPersonsType</parameter>
 
     </parameters>
 
@@ -151,10 +155,6 @@
             <tag name="form.type" alias="integrated_relation" />
         </service>
 
-        <service id="integrated_content.form.type.file" class="%integrated_content.form.type.file.class%">
-            <tag name="form.type" alias="integrated_file" />
-        </service>
-
         <service id="integrated_content.form.type.phonenumber" class="%integrated_content.form.type.phonenumber.class%">
             <tag name="form.type" alias="integrated_phonenumber" />
         </service>
@@ -183,11 +183,29 @@
             <tag name="form.type" alias="integrated_publish_time" />
         </service>
 
-        <service id="integrated_content.form.type.embed_one" class="%integrated_content.form.type.embed_one.class%">
-            <argument type="service" id="integrated_content.metadata.factory.all_types" />
-            <tag name="form.type" alias="integrated_embed_one"/>
+        <service id="integrated_formtype.form.content_type_choice" class="%integrated_formtype.form.content_type_choice.class%">
+            <argument type="service" id="integrated_content.content_type_repository" />
+            <tag name="form.type" alias="integrated_content_type_choice" />
         </service>
 
+        <service id="integrated_content.form.listener.form_field" class="%integrated_content.form.listener.form_field.class%">
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="integrated_content.form.event_subscriber" />
+        </service>
+
+        <service id="integrated_content.form.type.primary_channel" class="%integrated_content.form.type.primary_channel.class%">
+            <argument type="service" id="translator" />
+            <tag name="form.type" alias="integrated_primary_channel" />
+        </service>
+
+        <service id="integrated_content.form.type.job.company_job" class="%integrated_content.form.type.job.company_job.class%">
+            <argument type="service" id="integrated_content.content_type.manager" />
+            <tag name="form.type" alias="integrated_company_job" />
+        </service>
+
+        <service id="integrated_content.form.type.job.contact_persons" class="%integrated_content.form.type.job.contact_persons.class%">
+            <tag name="form.type" alias="integrated_contact_persons" />
+        </service>
     </services>
 
 </container>

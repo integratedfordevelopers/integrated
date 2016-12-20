@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Menu;
 
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Common\ContentType\ContentTypeFilterInterface;
+
 use Knp\Menu\FactoryInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -29,18 +31,28 @@ class ContentTypeMenuBuilder
     protected $factory;
 
     /**
-     * @var ObjectRepository
+     * @var ContentTypeManager
      */
-    protected $repository;
+    protected $contentTypeManager;
 
     /**
-     * @param FactoryInterface $factory
-     * @param ObjectRepository $repository
+     * @var ContentTypeFilterInterface
      */
-    public function __construct(FactoryInterface $factory, ObjectRepository $repository)
-    {
+    protected $workflowPermission;
+
+    /**
+     * @param FactoryInterface           $factory
+     * @param ContentTypeManager         $contentTypeManager
+     * @param ContentTypeFilterInterface $workflowPermission
+     */
+    public function __construct(
+        FactoryInterface $factory,
+        ContentTypeManager $contentTypeManager,
+        ContentTypeFilterInterface $workflowPermission = null
+    ) {
         $this->factory = $factory;
-        $this->repository = $repository;
+        $this->contentTypeManager = $contentTypeManager;
+        $this->workflowPermission = $workflowPermission;
     }
 
     /**
@@ -50,13 +62,17 @@ class ContentTypeMenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $result = $this->repository->findBy([], ['name' => 'ASC']);
+        $contentTypes = $this->contentTypeManager->getAll();
 
-        foreach ($this->group($result) as $key => $documents) {
+        foreach ($this->group($contentTypes) as $key => $documents) {
             $child = $menu->addChild($key);
 
             /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType $document */
             foreach ($documents as $document) {
+                if ($this->workflowPermission !== null && !$this->workflowPermission->hasAccess($document)) {
+                    continue;
+                }
+
                 $child->addChild(
                     $document->getName(),
                     ['route' => self::ROUTE, 'routeParameters' => ['type' => $document->getType()]]

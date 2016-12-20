@@ -1,0 +1,90 @@
+/* NAV */
+.navbar {
+	background: $header-bg;
+	border-radius: 0;
+	border: none;
+	margin-bottom: 0;
+	.nav {
+		@include respond-to(phones) {
+			float: left;
+			margin: 0 10px 0 0;
+		}
+	}
+}
+.nav {
+	>li {
+		&.open {
+			>a {
+				background: lighten($color-danube, 10%);
+				&:hover, &:focus {
+					background: lighten($color-danube, 10%);
+				}
+			}
+			.dropdown-menu {
+				position: absolute;
+				background: $color-white;
+				border: 1px solid rgba(0, 0, 0, 0.15);
+				.dropdown-header {
+					@include respond-to(phones) {
+						padding: 5px 15px;
+					}
+				}
+				&.dropdown-top-fixed {
+					@include respond-to(phones) {
+						margin-top: 8px;
+					}
+				}
+			}
+		}
+		>a {
+			color: $color-white;
+			&:hover, &:focus {
+				background: lighten($color-danube, 10%);
+			}
+			&.btn {
+				margin-top: 8px;
+				padding: 7px 20px;
+				margin-left: 10px;
+				margin-right: 10px;
+				@include respond-to(tablets-small) {
+					margin-left: 2.5px;
+					margin-right: 2.5px;
+				}
+				@include respond-to(phones) {
+					padding: 7px 10px;
+				}
+			}
+		}
+	}
+}
+.navbar-brand {
+	color: $color-white;
+	font-size: 24px;
+	&:hover, &:focus {
+		color: $color-white;
+	}
+}
+.nav-left {
+	float: left;
+	margin-right: 5px;
+	>li {
+		>a {
+			padding: 10px;
+			>i {
+				font-size: 20px;
+				line-height: 30px;
+			}
+		}
+	}
+}
+.divider-nav {
+	margin: 8px 10px 0 10px;
+	width: 1px;
+	background: rgba($color-white, .2);
+	height: 34px;
+	@include respond-to(tablets-small) {
+		margin-left: 2.5px;
+		margin-right: 2.5px;
+	}
+}
+

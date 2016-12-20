@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\File;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class FileTest extends \PHPUnit_Framework_TestCase
+class FileTest extends ContentTest
 {
     /**
      * @var File
@@ -29,22 +29,6 @@ class FileTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->file = new File();
-    }
-
-    /**
-     * File should implement ContentInterface
-     */
-    public function testInstanceOfContentInterface()
-    {
-        $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->file);
-    }
-
-    /**
-     * File should extend Content
-     */
-    public function testInstanceOfContent()
-    {
-        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->file);
     }
 
     /**
@@ -61,9 +45,10 @@ class FileTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetFileFunction()
     {
-        /* @var $file \Symfony\Component\HttpFoundation\File\UploadedFile | \PHPUnit_Framework_MockObject_MockObject */
-        $file = $this->getMock('Symfony\Component\HttpFoundation\File\UploadedFile', array(), array(), '', false);
-        $this->assertEquals($file, $this->file->setFile($file)->getFile());
+        $this->assertEquals(
+            $file = $this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface'),
+            $this->file->setFile($file)->getFile()
+        );
     }
 
     /**
@@ -82,5 +67,13 @@ class FileTest extends \PHPUnit_Framework_TestCase
     {
         $title = 'Title';
         $this->assertEquals($title, (string) $this->file->setTitle($title));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getContent()
+    {
+        return $this->file;
     }
 }

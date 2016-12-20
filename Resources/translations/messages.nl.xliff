@@ -195,8 +195,8 @@
                 <target>Relatie bewerken</target>
             </trans-unit>
             <trans-unit id="52">
-                <source>Search here...</source>
-                <target>Zoeken...</target>
+                <source>Search here</source>
+                <target>Zoeken</target>
             </trans-unit>
             <trans-unit id="53">
                 <source>Users</source>
@@ -317,6 +317,194 @@
             <trans-unit id="82">
                 <source>Blocks</source>
                 <target>Blokken</target>
+            </trans-unit>
+            <trans-unit id="83">
+                <source>Edit profile</source>
+                <target>Wijzig profiel</target>
+            </trans-unit>
+            <trans-unit id="84">
+                <source>Version</source>
+                <target>Versie</target>
+            </trans-unit>
+            <trans-unit id="85">
+                <source>Assigned</source>
+                <target>Toegewezen</target>
+            </trans-unit>
+            <trans-unit id="86">
+                <source>Not Assigned</source>
+                <target>Niet toegewezen</target>
+            </trans-unit>
+            <trans-unit id="87">
+                <source>Don't change</source>
+                <target>Niet veranderen</target>
+            </trans-unit>
+            <trans-unit id="88">
+                <source>Next status</source>
+                <target>Volgende status</target>
+            </trans-unit>
+            <trans-unit id="89">
+                <source>Comment</source>
+                <target>Commentaar</target>
+            </trans-unit>
+            <trans-unit id="90">
+                <source>Channels</source>
+                <target>Kanalen</target>
+            </trans-unit>
+            <trans-unit id="91">
+                <source>Published</source>
+                <target>Gepubliceerd</target>
+            </trans-unit>
+            <trans-unit id="92">
+                <source>Search here...</source>
+                <target>Zoeken...</target>
+            </trans-unit>
+            <trans-unit id="93">
+                <source>Unsaved changes</source>
+                <target>Niet opgeslagen wijzigingen</target>
+            </trans-unit>
+            <trans-unit id="94">
+                <source>You have unsaved changes. When you leave this page your changes will be lost.</source>
+                <target>U heeft wijzigingen gemaakt die niet worden opgeslagen. Alle wijzigingen gaan verloren bij het verlaten van deze pagina.</target>
+            </trans-unit>
+            <trans-unit id="95">
+                <source>Are you sure you want to leave this page?</source>
+                <target>Weet u zeker dat u deze pagina wilt verlaten?</target>
+            </trans-unit>
+            <trans-unit id="96">
+                <source>Stay on page</source>
+                <target>Blijf op deze pagina</target>
+            </trans-unit>
+            <trans-unit id="97">
+                <source>Stay on page</source>
+                <target>Blijf op deze pagina</target>
+            </trans-unit>
+            <trans-unit id="98">
+                <source>Leave this page</source>
+                <target>Verlaat deze pagina</target>
+            </trans-unit>
+            <trans-unit id="99">
+                <source>Startdate</source>
+                <target>Begin datum</target>
+            </trans-unit>
+            <trans-unit id="100">
+                <source>Enddate</source>
+                <target>Eind datum</target>
+            </trans-unit>
+            <trans-unit id="101">
+                <source>Publish time</source>
+                <target>Gepubliceerd op</target>
+            </trans-unit>
+            <trans-unit id="102">
+                <source>Search selections</source>
+                <target>Zoek selecties</target>
+            </trans-unit>
+            <trans-unit id="103">
+                <source>Connectors</source>
+                <target>Connectoren</target>
+            </trans-unit>
+            <trans-unit id="104">
+                <source>Website</source>
+                <target>Website</target>
+            </trans-unit>
+            <trans-unit id="105">
+                <source>Pages</source>
+                <target>Pagina's</target>
+            </trans-unit>
+            <trans-unit id="106">
+                <source>Article</source>
+                <target>Artikel</target>
+            </trans-unit>
+            <trans-unit id="107">
+                <source>Home</source>
+                <target>Home</target>
+            </trans-unit>
+            <trans-unit id="108">
+                <source>End date</source>
+                <target>Eind datum</target>
+            </trans-unit>
+            <trans-unit id="109">
+                <source>Start date</source>
+                <target>Begin datum</target>
+            </trans-unit>
+            <trans-unit id="110">
+                <source>Options</source>
+                <target>Opties</target>
+            </trans-unit>
+            <trans-unit id="111">
+                <source>Block name</source>
+                <target>Blok naam</target>
+            </trans-unit>
+            <trans-unit id="112">
+                <source>Short code</source>
+                <target>Korte code</target>
+            </trans-unit>
+            <trans-unit id="113">
+                <source>Address</source>
+                <target>Adres</target>
+            </trans-unit>
+            <trans-unit id="114">
+                <source>Authors</source>
+                <target>Auteurs</target>
+            </trans-unit>
+            <trans-unit id="115">
+                <source>Postal address</source>
+                <target>Postadres</target>
+            </trans-unit>
+            <trans-unit id="116">
+                <source>Postal address</source>
+                <target>Postadres</target>
+            </trans-unit>
+            <trans-unit id="117">
+                <source>Visiting address</source>
+                <target>Bezoekadres</target>
+            </trans-unit>
+            <trans-unit id="118">
+                <source>Mailing address</source>
+                <target>Mailadres</target>
+            </trans-unit>
+            <trans-unit id="119">
+                <source>Address line 1</source>
+                <target>Adres 1</target>
+            </trans-unit>
+            <trans-unit id="120">
+                <source>Zipcode</source>
+                <target>Postcode</target>
+            </trans-unit>
+            <trans-unit id="121">
+                <source>City</source>
+                <target>Plaats</target>
+            </trans-unit>
+            <trans-unit id="122">
+                <source>Country</source>
+                <target>Land</target>
+            </trans-unit>
+            <trans-unit id="123">
+                <source>Address line 2</source>
+                <target>Adres 2</target>
+            </trans-unit>
+            <trans-unit id="124">
+                <source>Slug</source>
+                <target>Permanente url (slug)</target>
+            </trans-unit>
+            <trans-unit id="125">
+                <source>Picture</source>
+                <target>Afbeelding</target>
+            </trans-unit>
+            <trans-unit id="126">
+                <source>Phonenumbers</source>
+                <target>Telefoonnummers</target>
+            </trans-unit>
+            <trans-unit id="127">
+                <source>Addresses</source>
+                <target>Adressen</target>
+            </trans-unit>
+            <trans-unit id="128">
+                <source>Addresses</source>
+                <target>Adressen</target>
+            </trans-unit>
+            <trans-unit id="129">
+                <source>Relation</source>
+                <target>Relatie</target>
             </trans-unit>
         </body>
     </file>

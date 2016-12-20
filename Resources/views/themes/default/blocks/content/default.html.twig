@@ -1,9 +1,19 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        {{ block.title }}
+        {{ block.publishedTitle }}
     </div>
 
     <div class="panel-body">
-        TODO
+        <ul>
+            {% for document in pagination %}
+
+                <li>
+                    <a href="{{ document.url|default }}">
+                        {{ document.title|default }}
+                    </a>
+                </li>
+
+            {% endfor %}
+        </ul>
     </div>
 </div>

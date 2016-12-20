@@ -17,6 +17,7 @@ use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Channel document
@@ -43,6 +44,12 @@ class Channel implements ChannelInterface
      * @var array
      */
     protected $domains;
+
+    /**
+     * @var string
+     * @ODM\String
+     */
+    protected $primaryDomain;
 
     /**
      * @var mixed[]
@@ -200,5 +207,32 @@ class Channel implements ChannelInterface
     {
         $this->createdAt = $createdAt;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrimaryDomain()
+    {
+        return $this->primaryDomain;
+    }
+
+    /**
+     * @param string $primaryDomain
+     */
+    public function setPrimaryDomain($primaryDomain)
+    {
+        $this->primaryDomain = $primaryDomain;
+    }
+
+    /**
+     * @ODM\PrePersist
+     * @ODM\PreUpdate
+     */
+    public function defaultPrimaryDomain()
+    {
+        if (!$this->primaryDomain) {
+            $this->primaryDomain = reset($this->domains);
+        }
     }
 }

@@ -1,0 +1,32 @@
+/* MEDIA */
+.media {}
+.media-body {
+	position: relative;
+	.media-heading {
+		margin-bottom: 2px;
+		a {
+			color: $color-link;
+			&:hover, &:focus {
+				color: $color-link-hover;
+			}
+		}
+	}
+	>p {
+		line-height: 16px;
+		margin-bottom: 2px;
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+.link-rewritten {
+	position: absolute;
+	right: 0;
+	top: 50%;
+	margin-top: -13px;
+	color: $color-dove-gray;
+	font-weight: $font-medium;
+	@include respond-to(tablets-large) {
+		position: static;
+	}
+}

@@ -24,13 +24,13 @@ class ActionsType extends BaseActionsType
     public function __construct()
     {
         parent::__construct('integrated_content_actions', [
-            'create'         => ['type' => 'submit', 'options' => ['label' => 'Create']],
-            'save'           => ['type' => 'submit', 'options' => ['label' => 'Save']],
-            'delete'         => ['type' => 'submit', 'options' => ['label' => 'Delete']],
+            'create'         => ['type' => 'submit', 'options' => ['label' => 'Create', 'button_class' => 'orange']],
+            'save'           => ['type' => 'submit', 'options' => ['label' => 'Save', 'button_class' => 'orange']],
+            'delete'         => ['type' => 'submit', 'options' => ['label' => 'Delete', 'button_class' => 'orange']],
             'back'           => ['type' => 'submit', 'options' => ['label' => 'Back', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-            'reload'         => ['type' => 'submit', 'options' => ['label' => 'Reload', 'attr' => ['formnovalidate' => 'formnovalidate']]],
+            'reload'         => ['type' => 'submit', 'options' => ['label' => 'Reload', 'button_class' => 'orange', 'attr' => ['formnovalidate' => 'formnovalidate']]],
             'reload_changed' => ['type' => 'submit', 'options' => ['label' => 'Reload (keep changes)', 'attr' => ['formnovalidate' => 'formnovalidate']]],
-            'cancel'         => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'default', 'attr' => ['formnovalidate' => 'formnovalidate', 'data-dismiss' => 'modal']]],
+            'cancel'         => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'button_class' => 'gray-thin', 'attr' => ['formnovalidate' => 'formnovalidate', 'data-dismiss' => 'modal']]],
         ]);
     }
 }

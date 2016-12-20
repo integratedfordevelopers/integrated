@@ -4,28 +4,34 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_content.solr.content.type.class">Integrated\Bundle\ContentBundle\Solr\Type\ContentType</parameter>
-
-        <parameter key="integrated_content.solr.property.type.class">Integrated\Bundle\ContentBundle\Solr\Type\PropertyType</parameter>
-
-        <parameter key="integrated_content.solr.channel.extension.class">Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_content.solr.content.type" class="%integrated_content.solr.content.type.class%">
+        <service id="integrated_content.solr.content.type" class="Integrated\Bundle\ContentBundle\Solr\Type\ContentType" public="false">
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_content.solr.property.type" class="%integrated_content.solr.property.type.class%">
+        <service id="integrated_content.solr.has_image.type" class="Integrated\Bundle\ContentBundle\Solr\Type\HasImageType" public="false">
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_content.solr.channel.extension" class="%integrated_content.solr.channel.extension.class%">
+        <service id="integrated_content.solr.relation_json.type" class="Integrated\Bundle\ContentBundle\Solr\Type\RelationJsonType" public="false">
+            <tag name="integrated_solr.type" />
+        </service>
+
+        <service id="integrated_content.solr.property.type" class="Integrated\Bundle\ContentBundle\Solr\Type\PropertyType" public="false">
+            <tag name="integrated_solr.type" />
+        </service>
+
+        <service id="integrated_content.solr.channel.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension" public="false">
             <tag name="integrated_solr.type_extension" />
+        </service>
+
+        <service id="integrated_content.solr.normalizer.suggestion" class="Integrated\Bundle\ContentBundle\Solr\Serializer\SuggestionNormalizer" public="false">
+            <argument type="service" id="router" />
+            <argument type="string">integrated_content_content_edit</argument>
+            <argument type="service" id="integrated_content.resolver" />
+
+            <tag name="serializer.normalizer" priority="32" />
         </service>
 
     </services>
