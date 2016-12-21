@@ -18,6 +18,8 @@ use Integrated\Common\Form\Mapping\Metadata\Document;
  */
 class ContentTypeTest extends \PHPUnit_Framework_TestCase
 {
+    const CONTENT_TYPE_CLASS = 'class';
+
     /**
      * @var Document
      */
@@ -28,7 +30,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->contentType = new Document('');
+        $this->contentType = new Document(self::CONTENT_TYPE_CLASS);
     }
 
     /**
@@ -36,8 +38,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testClass()
     {
-        $this->contentType->setClass('Henk');
-        $this->assertEquals('Henk', $this->contentType->getClass());
+        $this->assertEquals(self::CONTENT_TYPE_CLASS, $this->contentType->getClass());
     }
 
     /**
@@ -63,7 +64,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
             $field1
         );
 
-        $this->contentType->setFields(array($field1));
+        $this->contentType->addField($field1);
 
         // Assert
         $this->assertSame($fields, $this->contentType->getFields());

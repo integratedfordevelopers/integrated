@@ -23,9 +23,7 @@ class FilterContainer extends Container
     {
         if (is_string($value)) {
             $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
-
-            //Remove null characters
-            $value = str_replace("\x00","",$value);
+            $value = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $value);
         }
 
         return parent::add($key, $value);

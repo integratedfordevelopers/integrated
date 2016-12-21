@@ -20,13 +20,13 @@ use Integrated\Common\ContentType\Resolver\MongoDBIterator;
  */
 class MongoDBIteratorTest extends \PHPUnit_Framework_TestCase
 {
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Integrated\\Common\\ContentType\\IteratorInterface', $this->getInstance());
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Integrated\\Common\\ContentType\\IteratorInterface', $this->getInstance());
+    }
 
-	public function testCurrent()
-	{
+    public function testCurrent()
+    {
         $types = [
             $this->getType('test1'),
             $this->getType('test2'),
@@ -39,10 +39,10 @@ class MongoDBIteratorTest extends \PHPUnit_Framework_TestCase
         self::assertSame($types[1], $iterator->current());
         $iterator->next();
         self::assertNull($iterator->current());
-	}
+    }
 
-	public function testNext()
-	{
+    public function testNext()
+    {
         $iterator = $this->getInstance();
 
         // more next calls then items but this should not give a error
@@ -51,10 +51,10 @@ class MongoDBIteratorTest extends \PHPUnit_Framework_TestCase
         $iterator->next();
         $iterator->next();
         $iterator->next();
-	}
+    }
 
-	public function testKey()
-	{
+    public function testKey()
+    {
         $iterator = $this->getInstance([$this->getType('test1'), $this->getType('test2')]);
 
         self::assertEquals('test1', $iterator->key());
@@ -62,10 +62,10 @@ class MongoDBIteratorTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('test2', $iterator->key());
         $iterator->next();
         self::assertNull($iterator->key());
-	}
+    }
 
-	public function testValid()
-	{
+    public function testValid()
+    {
         $iterator = $this->getInstance([$this->getType('test1'), $this->getType('test2')]);
 
         self::assertTrue($iterator->valid());
@@ -73,10 +73,10 @@ class MongoDBIteratorTest extends \PHPUnit_Framework_TestCase
         self::assertTrue($iterator->valid());
         $iterator->next();
         self::assertFalse($iterator->valid());
-	}
+    }
 
-	public function testRewind()
-	{
+    public function testRewind()
+    {
         $types = [
             $this->getType('test1'),
             $this->getType('test2'),
@@ -91,7 +91,7 @@ class MongoDBIteratorTest extends \PHPUnit_Framework_TestCase
 
         self::assertSame($types[0], $iterator->current());
         self::assertEquals('test1', $iterator->key());
-	}
+    }
 
     /**
      * @param ContentTypeInterface[] $types
@@ -112,7 +112,7 @@ class MongoDBIteratorTest extends \PHPUnit_Framework_TestCase
     {
         $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $mock->expects($this->any())
-            ->method('getType')
+            ->method('getId')
             ->willReturn($name);
 
         return $mock;

@@ -11,86 +11,99 @@
 
 namespace Integrated\Tests\Common\Solr\Indexer;
 
+use Countable;
+
 use Integrated\Common\Solr\Indexer\Batch;
+use Integrated\Common\Solr\Indexer\BatchOperation;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class BatchTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var Batch
-	 */
-	protected $batch;
+    public function testAdd()
+    {
+        $operation = [
+            $this->getOperation(),
+            $this->getOperation()
+        ];
 
-	protected function setUp()
-	{
-		$this->batch = new Batch();
-	}
+        $instance = $this->getInstance();
 
-	public function testAdd()
-	{
-		$operation = $this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false);
+        $instance->add($operation[0]);
+        $instance->add($operation[1]);
 
-		$this->batch->add($operation);
+        self::assertSame($operation, iterator_to_array($instance));
+    }
 
-		$this->assertSame([$operation], iterator_to_array($this->batch));
-	}
+    public function testRemove()
+    {
+        $operation = [
+            $this->getOperation(),
+            $this->getOperation(),
+            $this->getOperation()
+        ];
 
-	public function testAddOrder()
-	{
-		$operation1 = $this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false);
-		$operation2 = $this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false);
+        $instance = $this->getInstance();
 
-		$this->batch->add($operation1);
-		$this->batch->add($operation2);
+        $instance->add($operation[0]);
+        $instance->add($operation[1]);
+        $instance->add($operation[2]);
 
-		$this->assertSame([$operation1, $operation2], iterator_to_array($this->batch));
-	}
+        $instance->remove($operation[1]);
 
-	public function testRemove()
-	{
-		$operation1 = $this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false);
-		$operation2 = $this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false);
-		$operation3 = $this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false);
+        self::assertSame([$operation[0], $operation[2]], iterator_to_array($instance));
 
-		$this->batch->add($operation1);
-		$this->batch->add($operation2);
-		$this->batch->add($operation3);
+        $instance->remove($operation[0]);
+        $instance->remove($operation[2]);
 
-		$this->batch->remove($operation2);
+        self::assertEmpty(iterator_to_array($instance));
+    }
 
-		$this->assertSame([$operation1, $operation3], iterator_to_array($this->batch));
+    public function testClear()
+    {
+        $instance = $this->getInstance();
 
-		$this->batch->remove($operation1);
-		$this->batch->remove($operation3);
+        $instance->add($this->getOperation());
+        $instance->add($this->getOperation());
 
-		$this->assertEmpty(iterator_to_array($this->batch));
-	}
+        $instance->clear();
 
-	public function testClear()
-	{
-		$this->batch->add($this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false));
-		$this->batch->add($this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false));
+        self::assertEquals(0, $instance->count());
+    }
 
-		$this->batch->clear();
+    public function testCount()
+    {
+        $instance = $this->getInstance();
 
-		$this->assertEquals(0, $this->batch->count());
-	}
+        self::assertInstanceOf(Countable::class, $instance);
+        self::assertEquals(0, $instance->count());
 
-	public function testCount()
-	{
-		$this->assertInstanceOf('Countable', $this->batch);
-		$this->assertEquals(0, $this->batch->count());
+        $instance->add($this->getOperation());
 
-		$this->batch->add($this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false));
+        self::assertEquals(1, $instance->count());
 
-		$this->assertEquals(1, $this->batch->count());
+        $instance->add($this->getOperation());
+        $instance->add($this->getOperation());
 
-		$this->batch->add($this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false));
-		$this->batch->add($this->getMock('Integrated\Common\Solr\Indexer\BatchOperation', array(), array(), '', false));
+        self::assertEquals(3, $instance->count());
+    }
 
-		$this->assertEquals(3, $this->batch->count());
-	}
+    /**
+     * @return Batch
+     */
+    protected function getInstance()
+    {
+        return new Batch();
+    }
+
+    /**
+     * @return BatchOperation | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getOperation()
+    {
+        return $this->getMockBuilder(BatchOperation::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
 }
- 

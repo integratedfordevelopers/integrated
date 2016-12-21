@@ -18,6 +18,8 @@ use Integrated\Common\Form\Mapping\Metadata\Field;
  */
 class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
 {
+    const NAME = 'name';
+
     /**
      * @var Field
      */
@@ -28,7 +30,7 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->contentTypeField = new Field('');
+        $this->contentTypeField = new Field(self::NAME);
     }
 
     /**
@@ -36,9 +38,7 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testName()
     {
-        $name = 'Henk';
-        $this->contentTypeField->setName($name);
-        $this->assertEquals($name, $this->contentTypeField->getName());
+        $this->assertEquals(self::NAME, $this->contentTypeField->getName());
     }
 
     /**
@@ -66,10 +66,7 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLabelFunction()
     {
-        $name = 'name';
-        $this->contentTypeField->setName($name);
-
-        $this->assertEquals(ucfirst($name), $this->contentTypeField->getLabel());
+        $this->assertEquals(ucfirst(self::NAME), $this->contentTypeField->getLabel());
 
         $options = array('label' => 'Henk de Vries');
         $this->contentTypeField->setOptions($options);

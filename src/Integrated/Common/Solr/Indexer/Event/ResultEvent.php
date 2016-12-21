@@ -19,31 +19,31 @@ use Solarium\Core\Query\Result\ResultInterface;
  */
 class ResultEvent extends IndexerEvent
 {
-	/**
-	 * @var ResultInterface
-	 */
-	protected $result;
+    /**
+     * @var ResultInterface
+     */
+    protected $result;
 
-	/**
-	 * Event constructor.
-	 *
-	 * @param IndexerInterface $indexer
-	 * @param ResultInterface $result
-	 */
-	public function __construct(IndexerInterface $indexer, ResultInterface $result)
-	{
-		parent::__construct($indexer);
+    /**
+     * Event constructor.
+     *
+     * @param IndexerInterface $indexer
+     * @param ResultInterface $result
+     */
+    public function __construct(IndexerInterface $indexer, ResultInterface $result)
+    {
+        parent::__construct($indexer);
 
-		$this->result = $result;
-	}
+        $this->result = $result;
+    }
 
-	/**
-	 * Get the result object for this event.
-	 *
-	 * @return ResultInterface
-	 */
-	public function getResult()
-	{
-		return $this->result;
-	}
-} 
+    /**
+     * Get the result object for this event.
+     *
+     * @return ResultInterface
+     */
+    public function getResult()
+    {
+        return $this->result;
+    }
+}

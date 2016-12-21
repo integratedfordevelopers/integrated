@@ -19,26 +19,28 @@ use Solarium\QueryType\Update\Query\Query;
  */
 class SendEventTest extends AbstractEventTest
 {
-	/**
-	 * @var Query | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $query;
+    /**
+     * @var Query | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $query;
 
-	/**
-	 * @var SendEvent
-	 */
-	protected $event;
+    public function setUp()
+    {
+        parent::setUp();
 
-	public function setUp()
-	{
-		parent::setUp();
+        $this->query = $this->getMock(Query::class);
+    }
 
-		$this->query = $this->getMock('Solarium\QueryType\Update\Query\Query');
-		$this->event = new SendEvent($this->indexer, $this->query);
-	}
+    public function testGetQuery()
+    {
+        self::assertSame($this->query, $this->getInstance()->getQuery());
+    }
 
-	public function testGetQuery()
-	{
-		$this->assertSame($this->query, $this->event->getQuery());
-	}
+    /**
+     * @return SendEvent
+     */
+    protected function getInstance()
+    {
+        return new SendEvent($this->indexer, $this->query);
+    }
 }

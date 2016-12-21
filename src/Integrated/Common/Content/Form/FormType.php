@@ -100,6 +100,7 @@ class FormType extends AbstractType implements FormTypeInterface
                 if ($dispatcher->hasListeners(Events::BUILD_FIELD)) {
                     $event = new FieldEvent($this->contentType, $this->metadata);
                     $event->setOptions($options);
+                    $event->setData($builder->getData());
                     $event->setField(clone $config); // don't allow the original to be changed.
 
                     $dispatcher->dispatch(Events::BUILD_FIELD, $event);
@@ -207,7 +208,7 @@ class FormType extends AbstractType implements FormTypeInterface
     public function getName()
     {
         if (null === $this->name) {
-            $this->name = preg_replace('#[^a-zA-Z0-9\-_]#', '', 'integrated_content_form_' . $this->contentType->getType());
+            $this->name = preg_replace('#[^a-zA-Z0-9\-_]#', '', 'integrated_content_form_' . $this->contentType->getId());
             $this->name = strtolower($this->name);
         }
 
