@@ -114,7 +114,7 @@ class IndexerRunCommand extends Command
                 'blocking',
                 'b',
                 InputOption::VALUE_NONE,
-                0
+                'Block the current command until all sub-processes are done'
             )
             ->setDescription('Execute a sol indexer run')
             ->setHelp('
