@@ -76,6 +76,11 @@ interface QueueInterface extends Countable
 	 */
 	public function pull($limit = 1);
 
+    /**
+     * @return int
+     */
+	public function count();
+
 	/**
 	 * Clear all the message from the queue
 	 */
