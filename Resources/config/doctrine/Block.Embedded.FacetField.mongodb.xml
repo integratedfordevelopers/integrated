@@ -8,10 +8,6 @@
         <field fieldName="name" type="string" />
         <field fieldName="field" type="string" />
 
-        <embed-one
-                field="location"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location" />
-
     </embedded-document>
 
 </doctrine-mongo-mapping>

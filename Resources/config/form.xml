@@ -102,10 +102,6 @@
             <tag name="integrated_content.form.event_subscriber" />
         </service>
 
-        <service id="integrated_content.form.type.image" class="%integrated_content.form.type.image.class%">
-            <tag name="form.type" alias="integrated_image" />
-        </service>
-
         <service id="integrated_content.form.type.image_choice" class="%integrated_content.form.type.image_choice.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="form.type" alias="integrated_image_choice" />

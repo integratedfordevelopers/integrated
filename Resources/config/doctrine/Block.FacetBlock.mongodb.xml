@@ -5,8 +5,6 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Block\FacetBlock">
 
-        <field fieldName="field" type="string" />
-
         <embed-many
             field="fields"
             target-document="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField"
