@@ -268,11 +268,8 @@ The <info>%command.name%</info> command starts a indexer run.
             // Add the clear event listener only for the thread
             $this->indexer->getEventDispatcher()->addSubscriber($this->clearEventSubscriber);
 
-            echo $this->indexer->getQueue()->count();
-
             // Seems to be a sub-process, ran it with a the number appended to the class
             while ($this->indexer->getQueue()->count()) {
-                echo $this->indexer->getQueue()->count();
                 $this->runInternal(sprintf('%s:%d', self::class, $argument->getProcessNumber()), $output);
 
                 // Give them cores some relaxation
