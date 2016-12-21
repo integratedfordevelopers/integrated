@@ -97,7 +97,7 @@ class QueueProvider implements QueueProviderInterface
         );
 
         $results = array();
-echo $query;
+
         foreach ($this->connection->fetchAll($query, [$channel, time()]) as $row) {
             $delete = function() use ($row) {
                 $this->delete($row['id']);
@@ -146,7 +146,7 @@ echo $query;
         if (count($where)) {
             $query = sprintf('%s WHERE %s', $query, implode(' AND ', $where));
         }
-echo $query;
+
         return $this->connection->fetchColumn($query, [$channel]);
     }
 
