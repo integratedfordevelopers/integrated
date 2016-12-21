@@ -186,7 +186,7 @@ The <info>%command.name%</info> command starts a index of the site.
             // The entire site is going to be reindex so everything that is now in the queue
             // will be redone so just clear it so content is not double indexed.
 
-            //$this->getQueue()->clear();
+            $this->getQueue()->clear();
         } else {
             $builder->field('contentType')->in($input->getArgument('id'));
 
