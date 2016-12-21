@@ -239,11 +239,17 @@ The <info>%command.name%</info> command starts a indexer run.
                 // While the pool contains processes we're running
                 while ($pool->count()) {
                     foreach ($pool as $i => $process) {
-                        if (!$process->isRunning()) {
-                            if ($process->getIncrementalOutput()) {
-                                $output->writeln(sprintf('Prcocess %d: %s', $i, $process->getIncrementalOutput()));
-                            }
+                        // Read stout for anything to pass thru
+                        if ($processOutput = $process->getIncrementalOutput()) {
+                            $output->writeln(sprintf('Prcocess %d: %s', $i, $processOutput));
+                        }
+                        // Read sterr for anything to pass thru
+                        if ($processOutput = $process->getIncrementalErrorOutput()) {
+                            $output->writeln(sprintf('Prcocess %d: %s', $i, $processOutput));
+                        }
 
+                        if (!$process->isRunning()) {
+                            // Tell the user
                             $output->writeln(sprintf('Process %d finished', ($i+1)));
 
                             // This one is important
@@ -262,11 +268,11 @@ The <info>%command.name%</info> command starts a indexer run.
             // Add the clear event listener only for the thread
             $this->indexer->getEventDispatcher()->addSubscriber($this->clearEventSubscriber);
 
-            // Remove the limit so we'll keep on johnny walk'n
-            //$this->indexer->setOption('queue.size', -1);
+            echo $this->indexer->getQueue()->count();
 
             // Seems to be a sub-process, ran it with a the number appended to the class
-            while ($this->indexer->getQueue()) {
+            while ($this->indexer->getQueue()->count()) {
+                echo $this->indexer->getQueue()->count();
                 $this->runInternal(sprintf('%s:%d', self::class, $argument->getProcessNumber()), $output);
 
                 // Give them cores some relaxation
