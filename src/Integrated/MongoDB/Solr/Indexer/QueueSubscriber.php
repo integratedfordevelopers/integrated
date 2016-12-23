@@ -188,11 +188,11 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 
         $this->getQueue()->push($job, 0, $this->priority);
 
-        if ($this->priority >= QueueInterface::PRIORITY_MEDIUM_HIGH) {
+        if ($this->priority > QueueInterface::PRIORITY_MEDIUM_HIGH) {
             $this->getQueue()->push(new Job('COMMIT', ['softcommit' => 'true']), 0, $this->priority);
 
             //Do this only one time
-            $this->setPriority(QueueInterface::PRIORITY_MEDIUM);
+            $this->setPriority(QueueInterface::PRIORITY_MEDIUM_HIGH);
         }
     }
 }
