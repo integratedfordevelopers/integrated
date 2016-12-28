@@ -1,0 +1,32 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <mapped-superclass
+        name="Integrated\Bundle\BlockBundle\Document\Block\Block"
+        collection="block"
+        repository-class="Integrated\Bundle\BlockBundle\Document\Block\BlockRepository"
+        inheritance-type="SINGLE_COLLECTION"
+    >
+        <field name="id" id="true" strategy="NONE" />
+        <field name="title" type="string" />
+        <field name="layout" type="string" />
+        <field name="createdAt" type="date" />
+        <field name="updatedAt" type="date" />
+        <field name="publishedAt" type="date" />
+        <field name="publishedUntil" type="date" />
+        <field name="disabled" type="boolean" />
+        <field name="locked" type="boolean" />
+
+        <discriminator-field name="class" />
+
+        <indexes>
+            <index>
+                <key name="class" order="asc"/>
+            </index>
+        </indexes>
+
+    </mapped-superclass>
+
+</doctrine-mongo-mapping>

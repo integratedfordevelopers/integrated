@@ -5,7 +5,6 @@ trait PublishTitleTrait
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(
      *       options={
      *          "required"=false,
@@ -16,7 +15,6 @@ trait PublishTitleTrait
     protected $publishedTitle = '';
 
     /**
-     * @ODM\Boolean
      * @Type\Field(
      *      type="checkbox",
      *      options={
