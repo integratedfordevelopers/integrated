@@ -3,7 +3,7 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <embedded-document name="Integrated\Bundle\BlockBundle\Document\Block\TextBlock">
+    <embedded-document name="Integrated\Bundle\BlockBundle\Document\Block\Embedded\BlockSize">
 
         <field name="size" type="int" />
 
