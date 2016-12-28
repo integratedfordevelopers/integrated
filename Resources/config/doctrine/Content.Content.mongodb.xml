@@ -3,7 +3,7 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <document
+    <mapped-superclass
         name="Integrated\Bundle\ContentBundle\Document\Content\Content"
         repository-class="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository"
         collection="content"
@@ -61,6 +61,6 @@
         </indexes>
         
 
-    </document>
+    </mapped-superclass>
 
 </doctrine-mongo-mapping>
