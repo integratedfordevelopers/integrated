@@ -58,6 +58,12 @@ $(document).ready(function () {
 
     //Select 2 initial
     $(".basic-multiple").select2();
+
+    $('.btn_show_more').on('click', function(e){
+        e.preventDefault();
+        $(this).closest('.filters_list').find('.to_show').slideToggle(200);
+        $(this).hide();
+    });
 });
 
 $(document).ready(function () {
