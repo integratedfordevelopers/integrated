@@ -34,7 +34,6 @@ class IntegratedBlockExtension extends Extension
         $loader->load('services.xml');
         $loader->load('metadata.xml');
         $loader->load('form.xml');
-        $loader->load('event_listeners.xml');
         $loader->load('block.xml');
     }
 }

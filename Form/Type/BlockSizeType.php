@@ -28,7 +28,48 @@ class BlockSizeType extends AbstractType
     {
         $builder->add('block', 'integrated_block');
 
-        $builder->add('size', 'integer', [
+        $builder->add('size_xs', 'integer', [
+            'label' => 'Extra small devices',
+            'attr' => [
+                'help_text' => 'Any screen less than 768px wide (most likely phones).',
+            ],
+            'required' => false,
+            'constraints' => new Range([
+                'min' => 1,
+                'max' => 12,
+            ]),
+        ]);
+
+        $builder->add('size_sm', 'integer', [
+            'label' => 'Small devices',
+            'attr' => [
+                'help_text' => 'Any screen bigger (or equal) than 768px wide (most likely tablets).'
+            ],
+            'required' => false,
+            'constraints' => new Range([
+                'min' => 1,
+                'max' => 12,
+            ]),
+        ]);
+
+        $builder->add('size_md', 'integer', [
+            'label' => 'Medium devices',
+            'attr' => [
+                'help_text' => 'Any screen bigger (or equal) than 992px wide (most likely desktops).',
+            ],
+            'required' => false,
+            'constraints' => new Range([
+                'min' => 1,
+                'max' => 12,
+            ]),
+        ]);
+
+        $builder->add('size_lg', 'integer', [
+            'label' => 'Large devices',
+            'attr' => [
+                'help_text' => 'Any screen bigger (or equal) than 1200px wide (full hd and bigger screens).',
+            ],
+            'required' => false,
             'constraints' => new Range([
                 'min' => 1,
                 'max' => 12,

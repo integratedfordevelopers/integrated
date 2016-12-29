@@ -60,7 +60,12 @@ abstract class Block implements BlockInterface
 
     /**
      * @var \DateTime
-     * @Type\Field(type="integrated_datetime")
+     * @Type\Field(
+     *      type="integrated_datetime",
+     *      options={
+     *          "required"=false
+     *      }
+     * )
      */
     protected $publishedUntil;
 
