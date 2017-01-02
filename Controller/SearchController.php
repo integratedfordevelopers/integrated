@@ -67,7 +67,7 @@ class SearchController extends Controller
         $response = ['query' => ''];
 
         if ($query = trim($query)) {
-            $response = $this->client->select(new SuggestionQuery($query));
+            $response = $this->client->select($this->expander->expand(new SuggestionQuery($query)));
         }
 
         return new Response($this->serializer->serialize($response, $request->getRequestFormat('json')));
