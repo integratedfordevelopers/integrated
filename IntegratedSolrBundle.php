@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\SolrBundle;
 
+use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\ExpanderPass;
 use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterConfigFileProviderPass;
 use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterTaskHandlerPass;
 use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterTypePass;
@@ -43,6 +44,8 @@ class IntegratedSolrBundle extends Bundle
             'integrated_solr.event_listener',
             'integrated_solr.event_subscriber'
         ));
+
+        $container->addCompilerPass(new ExpanderPass());
     }
 
     /**
