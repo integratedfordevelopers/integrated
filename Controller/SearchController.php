@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Solr\Query\SuggestionQuery;
-
 use Integrated\Common\Solr\Query\ExpanderInterface;
+
 use Solarium\Client;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
