@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Solr\Query\SuggestionQuery;
 
+use Integrated\Common\Solr\Query\ExpanderInterface;
 use Solarium\Client;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -37,14 +38,21 @@ class SearchController extends Controller
     protected $serializer;
 
     /**
-     * @param Client             $client
-     * @param Serializer         $serializer
+     * @var ExpanderInterface
+     */
+    protected $expander;
+
+    /**
+     * @param Client $client
+     * @param Serializer $serializer
+     * @param ExpanderInterface $expander
      * @param ContainerInterface $container
      */
-    public function __construct(Client $client, Serializer $serializer, ContainerInterface $container)
+    public function __construct(Client $client, Serializer $serializer, ExpanderInterface $expander, ContainerInterface $container)
     {
         $this->client = $client;
         $this->serializer = $serializer;
+        $this->expander = $expander;
         $this->container = $container;
     }
 
