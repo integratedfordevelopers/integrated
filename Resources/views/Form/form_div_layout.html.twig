@@ -1,6 +1,6 @@
 {% use "IntegratedFormTypeBundle:Form:form_div_layout.html.twig" %}
 
-{% block content_type_field_collection_widget %}
+{% block content_type_fields_collection_default_widget %}
 {% spaceless %}
     <table class="table">
         <thead>
@@ -380,9 +380,9 @@
 {% endspaceless %}
 {% endblock %}
 
-{% block integrated_custom_fields_row %}
-    {{ block('form_rows') }}
-{% endblock %}
+{#{% block integrated_custom_fields_row %}#}
+    {#{{ block('form_rows') }}#}
+{#{% endblock %}#}
 
 {% block _channel_domains_entry_widget %}
     {% spaceless %}
