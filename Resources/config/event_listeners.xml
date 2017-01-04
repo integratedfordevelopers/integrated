@@ -17,6 +17,11 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="integrated_workflow.event_listener_marker.marker_event" class="Integrated\Bundle\WorkflowBundle\EventListener\Marker\MarkerEvent">
+            <argument type="service" id="security.token_storage" />
+            <tag name="integrated_solr.event_listener" event="solarium.core.preExecute" method="preExecute" />
+        </service>
+
     </services>
 
 </container>
