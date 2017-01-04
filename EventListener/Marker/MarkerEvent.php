@@ -28,7 +28,7 @@ class MarkerEvent
     }
 
     /**
-     * {@inheritdoc}
+     * @param PreExecute $event
      */
     public function preExecute(PreExecute $event)
     {
@@ -79,7 +79,5 @@ class MarkerEvent
                 $fq->setQuery($fq->getQuery() . ' OR author: %1%*', [$person->getId()]);
             }
         }
-
-        return $query;
     }
 }
