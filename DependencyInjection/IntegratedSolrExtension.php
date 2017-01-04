@@ -67,7 +67,13 @@ class IntegratedSolrExtension extends Extension
 
         $container->setDefinition(
             'solarium.client',
-            new Definition('%integrated_solr.solarium.client.class%', array(array('endpoint' => $endpoints)))
+            new Definition(
+                '%integrated_solr.solarium.client.class%',
+                [
+                    ['endpoint' => $endpoints],
+                    new Reference('integrated_solr.event.dispatcher')
+                ]
+            )
         );
 
         if ($container->getParameter('kernel.debug')) {
