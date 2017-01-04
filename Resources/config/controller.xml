@@ -9,7 +9,6 @@
         <service id="integrated_content.controller.search_controller" class="Integrated\Bundle\ContentBundle\Controller\SearchController">
             <argument type="service" id="integrated_solr.indexer.client" />
             <argument type="service" id="serializer" />
-            <argument type="service" id="integrated_solr.solr_query.expander" />
             <argument type="service" id="service_container" />
         </service>
 

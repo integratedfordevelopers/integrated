@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Solr\Query\SuggestionQuery;
-use Integrated\Common\Solr\Query\ExpanderInterface;
 
 use Solarium\Client;
 
@@ -38,21 +37,14 @@ class SearchController extends Controller
     protected $serializer;
 
     /**
-     * @var ExpanderInterface
-     */
-    protected $expander;
-
-    /**
-     * @param Client $client
-     * @param Serializer $serializer
-     * @param ExpanderInterface $expander
+     * @param Client             $client
+     * @param Serializer         $serializer
      * @param ContainerInterface $container
      */
-    public function __construct(Client $client, Serializer $serializer, ExpanderInterface $expander, ContainerInterface $container)
+    public function __construct(Client $client, Serializer $serializer, ContainerInterface $container)
     {
         $this->client = $client;
         $this->serializer = $serializer;
-        $this->expander = $expander;
         $this->container = $container;
     }
 
@@ -67,7 +59,7 @@ class SearchController extends Controller
         $response = ['query' => ''];
 
         if ($query = trim($query)) {
-            $response = $this->client->select($this->expander->expand(new SuggestionQuery($query)));
+            $response = $this->client->select(new SuggestionQuery($query));
         }
 
         return new Response($this->serializer->serialize($response, $request->getRequestFormat('json')));
