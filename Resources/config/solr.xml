@@ -20,11 +20,6 @@
             <tag name="integrated_solr.type_extension" />
         </service>
 
-        <service id="integrated_workflow.solr_query_expand.workflow_expansion" class="Integrated\Bundle\WorkflowBundle\Solr\Query\Expand\WorkflowExpansion">
-            <argument type="service" id="security.token_storage" />
-            <tag name="integrated_solr.expansion" />
-        </service>
-
     </services>
 
 </container>
