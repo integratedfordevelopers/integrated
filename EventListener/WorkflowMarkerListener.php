@@ -1,10 +1,10 @@
 <?php
 
-namespace Integrated\Bundle\WorkflowBundle\EventListener\Marker;
+namespace Integrated\Bundle\WorkflowBundle\EventListener;
 
 use Integrated\Bundle\UserBundle\Model\User;
 
-use Solarium\Core\Event\PreExecute;
+use Solarium\Core\Event;
 use Solarium\QueryType\Select\Query\Query;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class MarkerEvent
+class WorkflowMarkerListener implements EventSubscriberInterface
 {
     /**
      * @var TokenStorageInterface
@@ -28,13 +28,23 @@ class MarkerEvent
     }
 
     /**
-     * @param PreExecute $event
+     * {@inheritdoc}
      */
-    public function preExecute(PreExecute $event)
+    public static function getSubscribedEvents()
+    {
+        return [
+            Event\Events::PRE_EXECUTE => 'preExecute'
+        ];
+    }
+
+    /**
+     * @param Event\PreExecute $event
+     */
+    public function preExecute(Event\PreExecute $event)
     {
         $query = $event->getQuery();
 
-        if (!$query instanceof MarkerInterface) {
+        if (!$query instanceof WorkflowMarkerInterface) {
             return;
         }
 
