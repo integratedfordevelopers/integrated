@@ -11,67 +11,55 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 /**
  * Embedded document Address
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Address
 {
     /**
      * @var string
-     * @ODM\String
      */
     protected $type;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $name;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $address1;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $address2;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $zipcode;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $city;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $state;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $country;
 
     /**
      * @var Location
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location")
      */
     protected $location;
 

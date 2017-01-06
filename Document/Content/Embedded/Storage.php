@@ -17,7 +17,6 @@ use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\ResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * This document covers the database existence, it is not allowed to create a new instance manually.
@@ -25,7 +24,6 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * Any changes to the filesystem must be passed by a command trough the manager handler.
  *
  * @author Johnny Borg <johnny@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Storage implements StorageInterface, \ArrayAccess
 {
@@ -33,26 +31,21 @@ class Storage implements StorageInterface, \ArrayAccess
 
     /**
      * @var string
-     * @ODM\Index
-     * @ODM\String
      */
     protected $identifier;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $pathname;
 
     /**
      * @var Storage\Metadata
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata")
      */
     protected $metadata;
 
     /**
      * @var ArrayCollection
-     * @ODM\Collection
      */
     protected $filesystems;
 

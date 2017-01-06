@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
+namespace Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\Collection;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
+use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeFieldCollection implements DataTransformerInterface
+class DefaultTransformer implements DataTransformerInterface
 {
     /**
      * @param mixed $fields
@@ -28,7 +28,7 @@ class ContentTypeFieldCollection implements DataTransformerInterface
         $return = array();
         if (is_array($fields) || $fields instanceof \Traversable) {
             foreach ($fields as $field) {
-                if ($field instanceof Field) {
+                if ($field instanceof Embedded\Field) {
                     $return[$field->getName()] = $field;
                 }
             }
@@ -46,6 +46,10 @@ class ContentTypeFieldCollection implements DataTransformerInterface
         if (is_array($values) || $values instanceof \ArrayAccess) {
             foreach ($values as $key => $value) {
                 if ($value === null) {
+                    unset($values[$key]);
+                }
+
+                if ($value instanceof Embedded\CustomField) {
                     unset($values[$key]);
                 }
             }

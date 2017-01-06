@@ -11,12 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\EmbeddedDocument
  */
 class PublishTime
 {
@@ -27,13 +23,11 @@ class PublishTime
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $startDate;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $endDate;
 

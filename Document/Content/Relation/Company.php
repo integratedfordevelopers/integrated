@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
@@ -22,22 +20,18 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Company")
  */
 class Company extends Relation
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $name;
 
     /**
      * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
      * @Slug(fields={"name"})
      * @Type\Field
      */
@@ -45,14 +39,12 @@ class Company extends Relation
 
     /**
      * @var StorageInterface
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      * @Type\Field(type="integrated_image")
      */
     protected $logo;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $website;
