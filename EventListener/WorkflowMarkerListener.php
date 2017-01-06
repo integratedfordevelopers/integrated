@@ -7,6 +7,7 @@ use Integrated\Bundle\UserBundle\Model\User;
 use Solarium\Core\Event;
 use Solarium\QueryType\Select\Query\Query;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**

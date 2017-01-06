@@ -17,9 +17,9 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="integrated__workflow.event_listener.workflow_marker_listener" class="Integrated\Bundle\WorkflowBundle\EventListener\WorkflowMarkerListener">
+        <service id="integrated_workflow.event_listener.workflow_marker_listener" class="Integrated\Bundle\WorkflowBundle\EventListener\WorkflowMarkerListener">
             <argument type="service" id="security.token_storage" />
-            <tag name="integrated_solr.event_listener" />
+            <tag name="integrated_solr.event_subscriber" />
         </service>
 
     </services>
