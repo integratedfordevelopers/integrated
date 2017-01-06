@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
@@ -21,14 +20,12 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Container block")
  */
 class ContainerBlock extends Block
 {
     /**
      * @var ArrayCollection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\BlockBundle\Document\Block\Embedded\BlockSize")
      * @Type\Field(
      *      type="integrated_sortable_collection",
      *      options={

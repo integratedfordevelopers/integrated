@@ -11,27 +11,21 @@
 
 namespace Integrated\Bundle\BlockBundle\Document\Block\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\EmbeddedDocument
  */
 class BlockSize
 {
     /**
      * @deprecated
      * @var Block
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\BlockBundle\Document\Block\Block")
      */
     protected $block;
 
     /**
      * @var int
-     * @ODM\Int
      */
     protected $size;
 

@@ -21,7 +21,6 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Text block")
  */
 class TextBlock extends Block
@@ -30,7 +29,6 @@ class TextBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field(
      *       options={
@@ -42,7 +40,6 @@ class TextBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(type="integrated_tinymce",options={"mode"="web"})
      */
     protected $content;
