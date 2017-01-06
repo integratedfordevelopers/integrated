@@ -174,6 +174,11 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getRelations()
     {
+        //should always be instanceOf collection, but due to corrupt database can sometimes be null
+        if (!$this->relations instanceof Collection) {
+            $this->relations = new ArrayCollection();
+        }
+
         return $this->relations;
     }
 
@@ -199,7 +204,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
         if ($exist = $this->getRelation($relation->getRelationId())) {
             $exist->addReferences($relation->getReferences());
         } else {
-            $this->relations->add($relation);
+            $this->getRelations()->add($relation);
         }
 
         return $this;
@@ -210,7 +215,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function removeRelation(RelationInterface $relation)
     {
-        $this->relations->removeElement($relation);
+        $this->getRelations()->removeElement($relation);
         return $this;
     }
 
@@ -219,7 +224,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getRelation($relationId)
     {
-        return $this->relations->filter(function ($relation) use ($relationId) {
+        return $this->getRelations()->filter(function ($relation) use ($relationId) {
             if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     return true;
@@ -236,7 +241,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getRelationsByRelationType($relationType)
     {
-        return $this->relations->filter(function ($relation) use ($relationType) {
+        return $this->getRelations()->filter(function ($relation) use ($relationType) {
             if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationType() == $relationType) {
                     return true;
@@ -289,7 +294,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getReferencesByRelationId($relationId, $published = true)
     {
-        foreach ($this->relations as $relation) {
+        foreach ($this->getRelations() as $relation) {
             if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     if ($references = $relation->getReferences()) {
