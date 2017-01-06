@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Solr\Query;
 
 use Integrated\Bundle\ContentBundle\Solr\Normalizer;
-use Integrated\Bundle\WorkflowBundle\EventListener\Marker\MarkerInterface;
+use Integrated\Bundle\WorkflowBundle\EventListener\WorkflowMarkerInterface;
 
 use Solarium\QueryType\Select\Query\Query;
 use Solarium\QueryType\Select\Query\Component\Facet\Field;
@@ -21,7 +21,7 @@ use Solarium\Exception\InvalidArgumentException;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class SuggestionQuery extends Query implements MarkerInterface
+class SuggestionQuery extends Query implements WorkflowMarkerInterface
 {
     /**
      * @var string
