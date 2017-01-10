@@ -187,7 +187,9 @@ The <info>%command.name%</info> command starts a indexer run.
             );
 
             $process->setTimeout(0);
-            $process->run();
+            $process->run(function ($type, $buffer) use ($output) {
+                $output->write($buffer, false, $type);
+            });
 
             if (!$process->isSuccessful()) {
                 break; // terminate when there is a error
