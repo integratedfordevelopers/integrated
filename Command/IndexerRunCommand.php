@@ -19,18 +19,13 @@ use Integrated\Bundle\SolrBundle\Process\ArgumentProcess;
 use Integrated\Bundle\SolrBundle\Process\ProcessPoolGenerator;
 
 use Integrated\Common\Queue\Provider\DBAL\QueueProvider;
-use Integrated\Common\Queue\Queue;
 use Integrated\Common\Solr\Indexer\Indexer;
-use Integrated\Common\Solr\Indexer\IndexerInterface;
-
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\LockHandler;
@@ -116,7 +111,7 @@ class IndexerRunCommand extends Command
                 InputOption::VALUE_NONE,
                 'Block the current command until all sub-processes are done'
             )
-            ->setDescription('Execute a sol indexer run')
+            ->setDescription('Execute a solr indexer run')
             ->setHelp('
 The <info>%command.name%</info> command starts a indexer run.
 
@@ -135,7 +130,7 @@ The <info>%command.name%</info> command starts a indexer run.
         if ($argument = $input->getArgument('processes')) {
             return $this->runProcess(new ArgumentProcess($argument), $input, $output);
         } else if ($input->getOption('full') || $input->getOption('daemon')) {
-            return $this->runExternal($input);
+            return $this->runExternal($input, $output);
         }
 
         return $this->runInternal(self::class, $output);
@@ -176,9 +171,10 @@ The <info>%command.name%</info> command starts a indexer run.
 
     /**
      * @param InputInterface $input
+     * @param OutputInterface $output
      * @return int
      */
-    private function runExternal(InputInterface $input)
+    private function runExternal(InputInterface $input, OutputInterface $output)
     {
         $wait = (int) $input->getOption('wait');
         $wait = $wait * 1000; // convert from milli to micro
@@ -191,16 +187,14 @@ The <info>%command.name%</info> command starts a indexer run.
             );
 
             $process->setTimeout(0);
-            $process->run(function ($type, $buffer) use ($output) {
-                $output->write($buffer, false, $type);
-            });
+            $process->run();
 
             if (!$process->isSuccessful()) {
                 break; // terminate when there is a error
             }
 
             if (!$input->getOption('daemon')) {
-                if ($this->indexer->getQueue()->count()) {
+                if (!$this->indexer->getQueue()->count()) {
                     break;
                 }
             }
