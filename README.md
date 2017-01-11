@@ -11,9 +11,8 @@ else you get errors when adding the entities.
 * Add the bundle to the AppKernel
 * Add the routing
 
-	_intergrated_workflow:
-		prefix: /workflow/
-		resource: "@IntegratedWorkflowBundle/Resources/config/routing/workflow.xml"
+	intergrated_workflow:
+		resource: "@IntegratedWorkflowBundle/Resources/config/routing.xml"
 
 * The bundle got entities so execute the Doctrine commands
 
