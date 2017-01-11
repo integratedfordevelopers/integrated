@@ -1,5 +1,5 @@
 --TEST--
-"integrated_javascripts" add external javascript
+"integrated_javascripts" add inline javascript
 --TEMPLATE--
 {% integrated_javascripts inline=true %}
 alert('test');
@@ -8,7 +8,6 @@ alert('test');
 {{ integrated_javascripts() }}
 --DATA--
 return array()
---EXPECT--
-<script type="text/javascript">
+--EXPECT--<script type="text/javascript">
     alert('test');
 </script>
