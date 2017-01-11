@@ -39,10 +39,12 @@ class IntegratedSolrExtension extends Extension
 
         $loader->load('converter.xml');
         $loader->load('event.xml');
+        $loader->load('command.xml');
         $loader->load('indexer.xml');
         $loader->load('queue.xml');
         $loader->load('solarium.xml');
         $loader->load('task.xml');
+        $loader->load('subscriber.xml');
         $loader->load('types.xml');
         $loader->load('worker.xml');
 

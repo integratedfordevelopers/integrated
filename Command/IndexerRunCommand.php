@@ -11,22 +11,73 @@
 
 namespace Integrated\Bundle\SolrBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Exception;
+
+use Integrated\Bundle\SolrBundle\EventSubscriber\DoctrineClearEventSubscriber;
+use Integrated\Bundle\SolrBundle\EventSubscriber\MemoryEventSubscriber;
+use Integrated\Bundle\SolrBundle\Process\ArgumentProcess;
+use Integrated\Bundle\SolrBundle\Process\ProcessPoolGenerator;
+
+use Integrated\Common\Queue\Provider\DBAL\QueueProvider;
+use Integrated\Common\Solr\Indexer\Indexer;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\LockHandler;
-
-use Exception;
-
-use Integrated\Common\Solr\Indexer\IndexerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class IndexerRunCommand extends ContainerAwareCommand
+class IndexerRunCommand extends Command
 {
+    /**
+     * @var Indexer
+     */
+    protected $indexer;
+
+    /**
+     * @var QueueProvider
+     */
+    protected $queueProvider;
+
+    /**
+     * @var string
+     */
+    protected $workingDirectory;
+
+    /**
+     * @var DoctrineClearEventSubscriber
+     */
+    protected $clearEventSubscriber;
+
+    /**
+     * @var KernelInterface
+     */
+    protected $kernel;
+
+    /**
+     * @param Indexer $indexer
+     * @param QueueProvider $queueProvider
+     * @param KernelInterface $kernel
+     * @param DoctrineClearEventSubscriber $clearEventSubscriber
+     * @param string $workingDirectory
+     */
+    public function __construct(Indexer $indexer, QueueProvider $queueProvider, DoctrineClearEventSubscriber $clearEventSubscriber, KernelInterface $kernel, $workingDirectory)
+    {
+        parent::__construct();
+
+        $this->indexer = $indexer;
+        $this->queueProvider = $queueProvider;
+        $this->workingDirectory = $workingDirectory;
+        $this->clearEventSubscriber = $clearEventSubscriber;
+        $this->kernel = $kernel;
+    }
+
     /**
      * @see Command
      */
@@ -48,7 +99,19 @@ class IndexerRunCommand extends ContainerAwareCommand
                 'Time in milliseconds to wait between runs (in combination with --full or --daemon)',
                 0
             )
-            ->setDescription('Execute a sol indexer run')
+            ->addArgument(
+                'processes',
+                InputArgument::OPTIONAL,
+                'Creates a number of proccess that run the queue',
+                0
+            )
+            ->addOption(
+                'blocking',
+                'b',
+                InputOption::VALUE_NONE,
+                'Block the current command until all sub-processes are done'
+            )
+            ->setDescription('Execute a solr indexer run')
             ->setHelp('
 The <info>%command.name%</info> command starts a indexer run.
 
@@ -58,38 +121,44 @@ The <info>%command.name%</info> command starts a indexer run.
     }
 
     /**
-     * @see Command::execute()
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        if ($input->getOption('full') || $input->getOption('daemon')) {
-            return $this->runExternal($input, $output);
-        }
-
-        return $this->runInternal($input, $output);
-    }
-
-    /**
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
      */
-    private function runInternal(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        if ($argument = $input->getArgument('processes')) {
+            return $this->runProcess(new ArgumentProcess($argument), $input, $output);
+        } else if ($input->getOption('full') || $input->getOption('daemon')) {
+            return $this->runExternal($input, $output);
+        }
+
+        return $this->runInternal(self::class, $output);
+    }
+
+    /**
+     * @param string $lock
+     * @param OutputInterface $output
+     * @return int
+     */
+    private function runInternal($lock, OutputInterface $output)
     {
         try {
-            $lock = new LockHandler('Integrated\Bundle\SolrBundle\Command\IndexerRunCommand');
-            $attemps = 0;
+            $lock = new LockHandler($lock);
+            $attempts = 0;
             while (!$lock->lock()) {
-                //retry for almost a minute, otherwise don't throw an error (after all another indexer is running)
-                if ($attemps++ >= 10) {
+                // Retry for almost a minute, otherwise don't throw an error (after all another indexer is running)
+                if ($attempts++ >= 10) {
                     return 0;
                 }
                 sleep(5);
             }
 
-            /** @var IndexerInterface $indexer */
-            $indexer = $this->getContainer()->get('integrated_solr.indexer');
-            $indexer->execute();
+            if ($output->isDebug() && method_exists($this->indexer, 'setDebug')) {
+                $this->indexer->setDebug();
+            }
+
+            $this->indexer->execute();
 
         } catch (Exception $e) {
             $output->writeln("Aborting: " . $e->getMessage());
@@ -107,13 +176,14 @@ The <info>%command.name%</info> command starts a indexer run.
      */
     private function runExternal(InputInterface $input, OutputInterface $output)
     {
-        $wait = (int)$input->getOption('wait');
+        $wait = (int) $input->getOption('wait');
         $wait = $wait * 1000; // convert from milli to micro
 
         while (true) {
+            // Run a external process
             $process = new Process(
-                'php app/console solr:indexer:run -e ' . $input->getOption('env'),
-                $this->getRootDir()
+                sprintf('php app/console solr:indexer:run -e %s', $this->kernel->getEnvironment()),
+                $this->workingDirectory
             );
 
             $process->setTimeout(0);
@@ -126,7 +196,7 @@ The <info>%command.name%</info> command starts a indexer run.
             }
 
             if (!$input->getOption('daemon')) {
-                if (!$this->getContainer()->get('integrated_solr.indexer')->getQueue()->count()) {
+                if (!$this->indexer->getQueue()->count()) {
                     break;
                 }
             }
@@ -138,10 +208,72 @@ The <info>%command.name%</info> command starts a indexer run.
     }
 
     /**
-     * @return string
+     * @param ArgumentProcess $argument
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
      */
-    protected function getRootDir()
+    private function runProcess(ArgumentProcess $argument, InputInterface $input, OutputInterface $output)
     {
-        return realpath($this->getContainer()->get('kernel')->getRootDir() . '/..');
+        if ($argument->isParentProcess()) {
+            // Create pool generator to generate the processes
+            $generator = new ProcessPoolGenerator($input, $this->kernel);
+            $pool = $generator->getProcessesPool($argument, $this->workingDirectory);
+
+            // Start them accordingly
+            foreach ($pool as $i => $process) {
+                // Run it
+                $process->start();
+
+                // Tell somebody
+                $output->writeln(sprintf('Started process %d with pid %d to run the queue', ($i+1), $process->getPid()));
+            }
+
+            if ($input->getOption('blocking')) {
+                $output->writeln('Running in blocking mode, waiting until all started processes are done');
+
+                // While the pool contains processes we're running
+                while ($pool->count()) {
+                    foreach ($pool as $i => $process) {
+                        // Read stout for anything to pass thru
+                        if ($processOutput = $process->getIncrementalOutput()) {
+                            $output->writeln(sprintf('Prcocess %d: %s', $i, $processOutput));
+                        }
+                        // Read sterr for anything to pass thru
+                        if ($processOutput = $process->getIncrementalErrorOutput()) {
+                            $output->writeln(sprintf('Prcocess %d: %s', $i, $processOutput));
+                        }
+
+                        if (!$process->isRunning()) {
+                            // Tell the user
+                            $output->writeln(sprintf('Process %d finished', ($i+1)));
+
+                            // This one is important
+                            $pool->removeElement($process);
+                        }
+                    }
+
+                    // Don't create a cpu load, check periodically
+                    sleep(1);
+                }
+            }
+        } else {
+            // Set the modulo to run over the data set with x processes, creating a unique list per thread
+            $this->queueProvider->setOption('where', sprintf('(id %% %d) = %d', $argument->getProcessMax(), $argument->getProcessNumber()));
+
+            // Add the clear event listener only for the thread
+            $this->indexer->getEventDispatcher()->addSubscriber($this->clearEventSubscriber);
+
+            // Seems to be a sub-process, ran it with a the number appended to the class
+            while ($this->indexer->getQueue()->count()) {
+                $this->runInternal(sprintf('%s:%d', self::class, $argument->getProcessNumber()), $output);
+
+                // Give them cores some relaxation
+                usleep(5000);
+            }
+        }
+
+        // Good to go
+        return 0;
     }
 }
