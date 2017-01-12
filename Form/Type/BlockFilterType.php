@@ -12,13 +12,15 @@
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
 use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-
-use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 /**
  * @author Vasil Pascal <developer.optimum@gmail.com>
@@ -72,22 +74,30 @@ class BlockFilterType extends AbstractType
 
         $builder->add(
             'q',
-            'text',
+            TextType::class,
             ['attr' => ['placeholder' => 'Filter block name']]
         );
 
         $builder->add(
             'type',
-            'choice',
-            ['choices' => $this->getTypeChoices($options['blockIds']), 'expanded' => true, 'multiple' => true]
+            ChoiceType::class,
+            [
+                'choices' => $this->getTypeChoices($options['blockIds']),
+                'expanded' => true,
+                'multiple' => true
+            ]
         );
 
         /* if IntegratedPageBundle is installed show channels */
         if ($this->pageBundleInstalled) {
             $builder->add(
                 'channels',
-                'choice',
-                ['choices' => $this->getChannelChoices($options['blockIds']), 'expanded' => true, 'multiple' => true]
+                ChoiceType::class,
+                [
+                    'choices' => $this->getChannelChoices($options['blockIds']),
+                    'expanded' => true,
+                    'multiple' => true
+                ]
             );
         }
     }
@@ -105,7 +115,7 @@ class BlockFilterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_block_filter';
     }
