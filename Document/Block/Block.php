@@ -54,14 +54,14 @@ abstract class Block implements BlockInterface
 
     /**
      * @var \DateTime
-     * @Type\Field(type="integrated_datetime")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType")
      */
     protected $publishedAt;
 
     /**
      * @var \DateTime
      * @Type\Field(
-     *      type="integrated_datetime",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType",
      *      options={
      *          "required"=false
      *      }
@@ -72,7 +72,7 @@ abstract class Block implements BlockInterface
     /**
      * @var bool
      * @Type\Field(
-     *      type="checkbox",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\CheckboxType",
      *      options={
      *          "required"=false
      *      }

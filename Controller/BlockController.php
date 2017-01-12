@@ -41,7 +41,7 @@ class BlockController extends Controller
         $data = $request->query->get('integrated_block_filter');
         $queryProvider = $this->get('integrated_block.provider.filter_query');
 
-        $facetFilter = $this->createForm($this->get(BlockFilterType::class), null, [
+        $facetFilter = $this->createForm(BlockFilterType::class, null, [
             'blockIds' => $queryProvider->getBlockIds($data)
         ]);
         $facetFilter->handleRequest($request);
@@ -197,11 +197,11 @@ class BlockController extends Controller
             ]
         );
 
-        $form->add('layout', 'integrated_block_layout_choice', [
+        $form->add('layout', LayoutChoiceType::class, [
             'type' => $block->getType(),
         ]);
 
-        $form->add('actions', 'integrated_save_cancel', [
+        $form->add('actions', SaveCancelType::class, [
             'cancel_route' => 'integrated_block_block_index',
             'label' => 'Create',
             'button_class' => '',

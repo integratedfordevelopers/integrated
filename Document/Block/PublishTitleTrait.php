@@ -16,7 +16,7 @@ trait PublishTitleTrait
 
     /**
      * @Type\Field(
-     *      type="checkbox",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\CheckboxType",
      *      options={
      *          "required"=false,
      *          "attr"={"class"="use-title"}

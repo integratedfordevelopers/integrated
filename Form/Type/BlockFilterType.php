@@ -83,6 +83,7 @@ class BlockFilterType extends AbstractType
             ChoiceType::class,
             [
                 'choices' => $this->getTypeChoices($options['blockIds']),
+                //'choices' => [],
                 'expanded' => true,
                 'multiple' => true
             ]

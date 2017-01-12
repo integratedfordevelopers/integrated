@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,7 +44,7 @@ class LayoutChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choice_list' => function (Options $options) {
+            'choices' => function (Options $options) {
                 return $this->getChoiceList($options['type']);
             },
         ]);
@@ -55,13 +56,14 @@ class LayoutChoiceType extends AbstractType
 
     /**
      * @param string $type
-     * @return ChoiceList
+     * @return ArrayChoiceList
      */
     protected function getChoiceList($type)
     {
         $layout = $this->locator->getLayouts($type);
+        return $layout;
 
-        return new ChoiceList($layout, $layout);
+        return new ArrayChoiceList($layout, $layout);
     }
 
     /**
