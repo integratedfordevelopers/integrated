@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\FormTypeBundle;
 
-use Integrated\Bundle\FormTypeBundle\DependencyInjection\Compiler\FormCoreExtensionOverridePass;
 use Integrated\Bundle\FormTypeBundle\DependencyInjection\Compiler\RegisterContentStyleParametersPass;
 use Integrated\Bundle\FormTypeBundle\DependencyInjection\IntegratedFormTypeExtension;
 
@@ -30,7 +29,6 @@ class IntegratedFormTypeBundle extends Bundle
 	{
 		parent::build($container);
 
-		$container->addCompilerPass(new FormCoreExtensionOverridePass());
 		$container->addCompilerPass(new RegisterContentStyleParametersPass());
 	}
 
