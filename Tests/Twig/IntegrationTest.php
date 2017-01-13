@@ -12,7 +12,8 @@
 namespace Integrated\Bundle\AssetBundle\Tests\Twig;
 
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
-use Integrated\Bundle\AssetBundle\Twig\Extension\AssetExtension;
+use Integrated\Bundle\AssetBundle\Twig\Extension\JavascriptExtension;
+use Integrated\Bundle\AssetBundle\Twig\Extension\StylesheetExtension;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -26,8 +27,8 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     {
         return [
             new TwigTestAssetExtension(),
-            new AssetExtension(new AssetManager(), 'integrated_stylesheets', 'stylesheets.html.twig'),
-            new AssetExtension(new AssetManager(), 'integrated_javascripts', 'javascripts.html.twig'),
+            new StylesheetExtension(new AssetManager(), 'integrated_stylesheets', 'stylesheets.html.twig'),
+            new JavascriptExtension(new AssetManager(), 'integrated_javascripts', 'javascripts.html.twig'),
         ];
     }
 
@@ -36,19 +37,10 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
      */
     public function testIntegration($file, $message, $condition, $templates, $exception, $outputs)
     {
-        $this->loadTemplate($templates, 'stylesheets.html.twig');
-        $this->loadTemplate($templates, 'javascripts.html.twig');
+        $templates['@IntegratedAssetBundle/Resources/views/Asset/javascripts.html.twig'] = file_get_contents(dirname(__FILE__).'/../../Resources/views/Asset/javascripts.html.twig');
+        $templates['@IntegratedAssetBundle/Resources/views/Asset/stylesheets.html.twig'] = file_get_contents(dirname(__FILE__).'/../../Resources/views/Asset/stylesheets.html.twig');
 
         $this->doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs);
-    }
-
-    /**
-     * @param array $templates
-     * @param string $name
-     */
-    protected function loadTemplate(&$templates, $name)
-    {
-        $templates[$name] = file_get_contents(dirname(__FILE__).'/../../Resources/views/Asset/'.$name);
     }
 
     /**

@@ -1,5 +1,5 @@
 --TEST--
-"integrated_javascripts" prepend external javascript
+"integrated_javascripts" prepend javascript
 --TEMPLATE--
 {% integrated_javascripts mode='append'
     'script2.js' %}

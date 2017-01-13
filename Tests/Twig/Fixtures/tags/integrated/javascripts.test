@@ -1,5 +1,5 @@
 --TEST--
-"integrated_javascripts" add external javascript
+"integrated_javascripts" add javascript
 --TEMPLATE--
 {% integrated_javascripts
     'script.js' %}
@@ -8,5 +8,4 @@
 {{ integrated_javascripts() }}
 --DATA--
 return array()
---EXPECT--
-<script type="text/javascript" src="/script.js"></script>
+--EXPECT--<script type="text/javascript" src="/script.js"></script>

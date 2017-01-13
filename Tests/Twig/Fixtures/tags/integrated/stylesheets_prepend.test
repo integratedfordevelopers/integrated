@@ -1,5 +1,5 @@
 --TEST--
-"integrated_stylesheets" prepend external stylesheet
+"integrated_stylesheets" prepend stylesheet
 --TEMPLATE--
 {% integrated_stylesheets mode='append'
     'style2.css' %}
