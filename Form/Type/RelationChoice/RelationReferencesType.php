@@ -21,7 +21,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
 use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\CollectionToDocumentTransformer;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -116,7 +115,7 @@ class RelationReferencesType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_relation_references';
     }

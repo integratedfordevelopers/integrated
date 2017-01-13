@@ -27,40 +27,40 @@
         <service id="integrated_formtype_form_type_datetime" class="%integrated_formtype_form_type_datetime.class%">
             <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
             <argument type="service" id="integrated_asset.manager.javascript_manager" />
-            <tag name="form.type" alias="integrated_datetime" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype_form_type_editor" class="%integrated_formtype_form_type_editor.class%">
             <argument>%integrated_content_styles%</argument>
 
-            <tag name="form.type" alias="integrated_editor" />
+            <tag name="form.type"/>
         </service>
 
         <service id="integrated_formtype_form_type_tinymce" class="%integrated_formtype_form_type_tinymce.class%">
             <argument>%integrated_content_styles%</argument>
 
-            <tag name="form.type" alias="integrated_tinymce" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype_form_type_wysihtml5x" class="%integrated_formtype_form_type_wysihtml5x.class%">
-            <tag name="form.type" alias="integrated_wysihtml5x" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype_form_type_sortable_collection" class="%integrated_formtype_form_type_sortable_collection.class%">
-            <tag name="form.type" alias="integrated_sortable_collection"/>
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype_form_type_integrated_collection" class="%integrated_formtype_form_type_integrated_collection.class%">
-            <tag name="form.type" alias="integrated_collection"/>
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype_form_type_select2" class="%integrated_formtype_form_type_select2.class%">
-            <tag name="form.type" alias="integrated_select2" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype.form.type.embedded_document" class="%integrated_formtype.form.type.embedded_document.class%">
             <argument type="service" id="integrated_content.metadata.factory.all_types" />
-            <tag name="form.type" alias="integrated_embedded_document"/>
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype.form.type.content_choice" class="%integrated_formtype.form.type.content_choice.class%">
@@ -71,12 +71,12 @@
                 <argument key="_format">json</argument>
             </argument>
 
-            <tag name="form.type" alias="integrated_content_choice" />
+            <tag name="form.type" />
         </service>
         
         <service id="integrated_formtype.form.type.relation_choice.relations" class="%integrated_formtype.form.type.relation_choice.relations.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <tag name="form.type" alias="integrated_relations_choice"/>
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype.form.type.relation_references_choice.relation" class="%integrated_formtype.form.type.relation_references_choice.relation.class%">
@@ -84,7 +84,7 @@
         </service>
 
         <service id="integrated_formtype.form.type.save_cancel" class="%integrated_formtype.form.type.save_cancel.class%">
-            <tag name="form.type" alias="integrated_save_cancel"/>
+            <tag name="form.type" />
         </service>
 
     </services>

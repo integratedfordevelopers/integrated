@@ -11,7 +11,8 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -20,9 +21,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class TinyMCEType extends EditorType
 {
     /**
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         @trigger_error(
             sprintf(
@@ -41,13 +42,13 @@ class TinyMCEType extends EditorType
      */
     public function getParent()
     {
-        return 'textarea';
+        return TextareaType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_tinymce';
     }

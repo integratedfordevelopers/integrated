@@ -50,7 +50,7 @@ class EmbeddedDocumentType extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_embedded_document';
     }

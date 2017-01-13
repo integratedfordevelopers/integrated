@@ -15,27 +15,27 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType as BaseCheckboxType;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class CheckboxType extends BaseCheckboxType
 {
-	public function buildView(FormView $view, FormInterface $form, array $options)
-	{
-		parent::buildView($view, $form, $options);
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        parent::buildView($view, $form, $options);
 
-		if ($options['align'] && !in_array('choice', $view->parent->vars['block_prefixes'])) {
+        if ($options['align'] && !in_array('choice', $view->parent->vars['block_prefixes'])) {
             $view->vars['attr']['align_widget'] = true;
-		}
-	}
+        }
+    }
 
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		parent::setDefaultOptions($resolver);
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
 
-		$resolver->setDefaults(['align' => true]);
-		$resolver->setAllowedTypes(['align' => 'bool']);
-	}
+        $resolver->setDefaults(['align' => true]);
+        $resolver->setAllowedTypes(['align' => 'bool']);
+    }
 }
