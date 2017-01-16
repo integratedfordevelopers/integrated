@@ -17,13 +17,12 @@ use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelDefaultDataListener;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelEnforcerListener;
 
+use Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
 
-use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -108,7 +107,7 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
             if ($choices) {
                 $operand = ChannelEnforcerListener::ADD;
 
-                $builder->add('channels', 'choice', [
+                $builder->add('channels', ChoiceType::class, [
                     'required' => false,
 
                     'choices' => $choices,
@@ -121,7 +120,7 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
                     'attr' => ['class' => 'channel-options']
                 ]);
 
-                $builder->add('primaryChannel', 'integrated_primary_channel');
+                $builder->add('primaryChannel', PrimaryChannelType::class);
 
                 $builder->addEventSubscriber(new ChannelDefaultDataListener($default));
             }
@@ -153,7 +152,9 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
      */
     protected function getChannels(array $ids = null)
     {
-        if ($ids === []) { return []; }
+        if ($ids === []) {
+            return [];
+        }
 
         $criteria = [];
 
