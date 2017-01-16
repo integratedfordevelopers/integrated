@@ -36,8 +36,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.9.9-dev",
-            "dev-INTEGRATED-634-upgrade-to-symfony-28-fir": "0.6.x-dev"
+            "dev-develop": "0.9.9-dev"
         }
     }
 }
