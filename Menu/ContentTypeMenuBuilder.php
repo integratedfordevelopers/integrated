@@ -75,7 +75,7 @@ class ContentTypeMenuBuilder
 
                 $child->addChild(
                     $document->getName(),
-                    ['route' => self::ROUTE, 'routeParameters' => ['type' => $document->getType()]]
+                    ['route' => self::ROUTE, 'routeParameters' => ['type' => $document->getId()]]
                 );
             }
         }
