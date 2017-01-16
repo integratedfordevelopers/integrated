@@ -12,13 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-use Integrated\Bundle\ContentBundle\Filter\ContentTypeFilter;
-use Integrated\Bundle\ContentBundle\Provider\MediaProvider;
-use Symfony\Component\Filesystem\LockHandler;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Traversable;
-
+use Integrated\Bundle\ContentBundle\Form\Type\ActionsType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
@@ -29,14 +23,18 @@ use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\LockHandler;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+use Traversable;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -278,7 +276,6 @@ class ContentController extends Controller
         if ($request->isMethod('post')) {
             $id = (array) $request->get('id');
             if (is_array($id)) {
-
                 if (count($id) == 0) {
                     $id[] = '';
                 }
@@ -407,7 +404,7 @@ class ContentController extends Controller
 
         $content = $type->getType()->create();
 
-        if (!$this->get('security.context')->isGranted(Permissions::CREATE, $content)) {
+        if (!$this->get('security.authorization_checker')->isGranted(Permissions::CREATE, $content)) {
             throw new AccessDeniedException();
         }
 
@@ -488,7 +485,7 @@ class ContentController extends Controller
         /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
         $type = $this->get('integrated.form.factory')->getType($content);
 
-        if (!$this->get('security.context')->isGranted(Permissions::VIEW, $content)) {
+        if (!$this->get('security.authorization_checker')->isGranted(Permissions::VIEW, $content)) {
             throw new AccessDeniedException();
         }
 
@@ -528,7 +525,7 @@ class ContentController extends Controller
                 return $this->redirect($url);
             }
 
-            if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
+            if (!$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content)) {
                 throw new AccessDeniedException();
             }
 
@@ -546,8 +543,6 @@ class ContentController extends Controller
                         $subscriber->setPriority($queue::PRIORITY_HIGH);
                     }
 
-                    // $dispatcher->dispatch(Event::PRE_FLUSH, new ArgSet($entity, $form));
-
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                     $dm = $this->get('doctrine_mongodb')->getManager();
                     $dm->flush();
@@ -558,7 +553,6 @@ class ContentController extends Controller
                     );
 
                     if ($this->has('integrated_solr.indexer')) {
-
                         $solrLock = new LockHandler('content:edited:solr');
                         $solrLock->lock(true);
 
@@ -594,7 +588,7 @@ class ContentController extends Controller
 
                 if (method_exists($locking['user'], 'getRelation')) {
                     if ($relation = $locking['user']->getRelation()) {
-                        if (method_exists($relation,'__toString')) {
+                        if (method_exists($relation, '__toString')) {
                             $user = (string) $relation;
                         }
                     }
@@ -632,7 +626,7 @@ class ContentController extends Controller
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
         $type = $this->get('integrated.form.resolver')->getType($content->getContentType());
 
-        if (!$this->get('security.context')->isGranted(Permissions::DELETE, $content)) {
+        if (!$this->get('security.authorization_checker')->isGranted(Permissions::DELETE, $content)) {
             throw new AccessDeniedException();
         }
 
@@ -642,7 +636,6 @@ class ContentController extends Controller
         $locking['locked'] = $locking['lock'] ? true : false;
 
         if ($locking['lock'] && $locking['owner']) {
-
             if ($request->query->has('lock') && $locking['lock']->getId() == $request->query->get('lock')) {
                 $locking['locked'] = false;
             }
@@ -727,7 +720,7 @@ class ContentController extends Controller
 
                 if (method_exists($locking['user'], 'getRelation')) {
                     if ($relation = $locking['user']->getRelation()) {
-                        if (method_exists($relation,'__toString')) {
+                        if (method_exists($relation, '__toString')) {
                             $user = (string) $relation;
                         }
                     }
@@ -765,7 +758,7 @@ class ContentController extends Controller
      */
     protected function getLock($object, $timeout = null)
     {
-        if (!$this->has('integrated_locking.dbal.manager') || !$this->get('security.context')->isGranted(Permissions::EDIT, $object)) {
+        if (!$this->has('integrated_locking.dbal.manager') || !$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $object)) {
             return [
                 'lock'    => null,
                 'user'    => null,
@@ -799,7 +792,7 @@ class ContentController extends Controller
                     'user'    => $this->getUser(),
                     'owner'   => true,
                     'new'     => true,
-                    'release' => function() use ($service, $lock) {
+                    'release' => function () use ($service, $lock) {
                         $service->release($lock);
                     }
                 ];
@@ -815,7 +808,7 @@ class ContentController extends Controller
                     'user'    => $this->getUser(),
                     'owner'   => true,
                     'new'     => false,
-                    'release' => function() use ($service, $lock) {
+                    'release' => function () use ($service, $lock) {
                         $service->release($lock);
                     }
                 ];
@@ -840,7 +833,7 @@ class ContentController extends Controller
                 'user'    => $user,
                 'owner'   => false,
                 'new'     => false,
-                'release' => function() use ($service, $lock) {
+                'release' => function () use ($service, $lock) {
                     $service->release($lock);
                 }
             ];
@@ -905,7 +898,7 @@ class ContentController extends Controller
 
                 if (method_exists($user, 'getRelation')) {
                     if ($relation = $user->getRelation()) {
-                        if (method_exists($relation,'__toString')) {
+                        if (method_exists($relation, '__toString')) {
                             $text = (string) $relation;
                         }
                     }
@@ -934,20 +927,16 @@ class ContentController extends Controller
         $queuecount = (int) $this->container->get('integrated_queue.dbal.provider')->count();
         $queuepercentage = 100;
         if ($queuecount > 0) {
-            $queuemaxcount = max($queuecount,$session->get('queuemaxcount'));
-            $session->set('queuemaxcount',$queuemaxcount);
+            $queuemaxcount = max($queuecount, $session->get('queuemaxcount'));
+            $session->set('queuemaxcount', $queuemaxcount);
             $queuepercentage = round(($queuemaxcount-$queuecount) / $queuemaxcount * 100);
-        }
-        else {
+        } else {
             $session->remove('queuemaxcount');
         }
 
         $email = '';
-//        if ($this->getUser()->getRelation() && $email = $this->getUser()->getRelation()->getEmail()) {
-//
-//        }
 
-        $avatarurl = "//www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
+        $avatarurl = "//www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s=45";
 
 
         /** @var $client \Solarium\Client */
@@ -1045,7 +1034,7 @@ class ContentController extends Controller
             'method' => 'POST',
         ]);
 
-        return $form->add('actions', 'content_actions', ['buttons' => ['create', 'cancel']]);
+        return $form->add('actions', ActionsType::class, ['buttons' => ['create', 'cancel']]);
     }
 
     /**
@@ -1057,13 +1046,13 @@ class ContentController extends Controller
      */
     protected function createEditForm(FormTypeInterface $type, ContentInterface $content, array $locking)
     {
-        $form = $this->createForm($type, $content,[
+        $form = $this->createForm($type, $content, [
             'action' => $this->generateUrl(
                 'integrated_content_content_edit',
-                    $locking['lock'] ?
-                        ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]
-                        :
-                        ['id' => $content->getId()]
+                $locking['lock'] ?
+                ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]
+                :
+                ['id' => $content->getId()]
             ),
             'method' => 'PUT',
             'attr' => ['class' => 'content-form'],
@@ -1071,19 +1060,19 @@ class ContentController extends Controller
             'validation_groups' => $locking['locked'] ? false : null
         ]);
 
-        $form->add('returnUrl', 'hidden', ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
+        $form->add('returnUrl', HiddenType::class, ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
 
         // load a different set of buttons based on the permissions and locking state
 
         if (!$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content)) {
-            return $form->add('actions', 'content_actions', ['buttons' => ['back']]);
+            return $form->add('actions', ActionsType::class, ['buttons' => ['back']]);
         }
 
         if ($locking['locked']) {
-            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'cancel']]);
+            return $form->add('actions', ActionsType::class, ['buttons' => ['reload', 'cancel']]);
         }
 
-        return $form->add('actions', 'content_actions', ['buttons' => ['save', 'cancel']]);
+        return $form->add('actions', ActionsType::class, ['buttons' => ['save', 'cancel']]);
     }
 
     /**
@@ -1101,10 +1090,10 @@ class ContentController extends Controller
 
         // load a different set of buttons based on the locking state
         if ($locking['locked'] || $notDelete) {
-            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'cancel']]);
+            return $form->add('actions', ActionsType::class, ['buttons' => ['reload', 'cancel']]);
         }
 
-        return $form->add('actions', 'content_actions', ['buttons' => ['delete', 'cancel']]);
+        return $form->add('actions', ActionsType::class, ['buttons' => ['delete', 'cancel']]);
     }
 
     /**

@@ -247,7 +247,7 @@ class SearchSelectionController extends Controller
     {
         $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedContentBundle:SearchSelection\SearchSelection');
 
-        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+        if (false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $builder->field('userId')->equals($this->getUser()->getId());
         }
 
