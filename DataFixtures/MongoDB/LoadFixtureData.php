@@ -19,17 +19,19 @@ use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsEx
 
 use Nelmio\Alice\Fixtures;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class LoadFixtureData extends ContainerAware implements FixtureInterface
+class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
 {
     use ArrayCollectionExtension;
     use ClassFieldsExtension;
+    use ContainerAwareTrait;
 
     /**
      * @var string
