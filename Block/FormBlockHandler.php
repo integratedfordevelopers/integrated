@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +27,8 @@ use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Form\FormFactory as ContentFormFactory;
 
-use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\True;
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
+use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue;
 
 /**
  * Form block handler
@@ -125,7 +129,7 @@ class FormBlockHandler extends BlockHandler
      * @param mixed $data
      * @param array $options
      * @param FormBlock $block
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createForm($type, $data = null, array $options = [], FormBlock $block = null)
     {
@@ -142,18 +146,18 @@ class FormBlockHandler extends BlockHandler
         $form->remove('source');
 
         if (null !== $block && $block->isRecaptcha()) {
-            $form->add('recaptcha', 'vihuvac_recaptcha', [
+            $form->add('recaptcha', VihuvacRecaptchaType::class, [
                 'mapped'      => false,
                 'label'       => ' ',
                 'constraints' => [
-                    new True(),
+                    new IsTrue(),
                 ],
             ]);
         }
 
-        $form->add('actions', 'form_actions', [
+        $form->add('actions', FormActionsType::class, [
             'buttons' => [
-                'submit' => ['type' => 'submit'],
+                'submit' => ['type' => SubmitType::class],
             ]
         ]);
 
