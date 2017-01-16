@@ -10,21 +10,21 @@
             <argument type="service" id="integrated_channel.form.config.type" />
             <argument type="string">channel_config_new</argument>
 
-            <tag name="form.type" alias="channel_config_new" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_channel.form.config.edit.type.proxy" class="%integrated_channel.form.proxy.type.class%">
             <argument type="service" id="integrated_channel.form.config.type" />
             <argument type="string">channel_config_edit</argument>
 
-            <tag name="form.type" alias="channel_config_edit" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_channel.form.config.delete.type.proxy" class="%integrated_channel.form.proxy.type.class%">
             <argument type="service" id="integrated_channel.form.delete.type" />
             <argument type="string">channel_config_delete</argument>
 
-            <tag name="form.type" alias="channel_config_delete" />
+            <tag name="form.type" />
         </service>
 
     </services>

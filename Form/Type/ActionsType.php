@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ChannelBundle\Form\Type;
 
 use Integrated\Common\Form\Type\ActionsType as BaseActionsType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -25,19 +26,19 @@ class ActionsType extends BaseActionsType
     {
         parent::__construct('integrated_channel_actions', [
             'create' => [
-                'type' => 'submit',
+                'type' => SubmitType::class,
                 'options' => ['label' => 'form.actions.create', 'translation_domain' => 'IntegratedChannelBundle']
             ],
             'save'   => [
-                'type' => 'submit',
+                'type' => SubmitType::class,
                 'options' => ['label' => 'form.actions.save', 'translation_domain' => 'IntegratedChannelBundle']
             ],
             'delete' => [
-                'type' => 'submit',
+                'type' => SubmitType::class,
                 'options' => ['label' => 'form.actions.delete', 'translation_domain' => 'IntegratedChannelBundle']
             ],
             'cancel' => [
-                'type' => 'submit',
+                'type' => SubmitType::class,
                 'options' => [
                     'label' => 'form.actions.cancel',
                     'translation_domain' => 'IntegratedChannelBundle',

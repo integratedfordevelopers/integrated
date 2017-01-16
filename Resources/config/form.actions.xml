@@ -10,7 +10,7 @@
             <argument type="service" id="integrated_channel.form.actions.type" />
             <argument type="string">channel_actions</argument>
 
-            <tag name="form.type" alias="channel_actions" />
+            <tag name="form.type" />
         </service>
 
     </services>

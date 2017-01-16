@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ChannelBundle\Controller;
 
 use Exception;
 
+use Integrated\Bundle\ChannelBundle\Form\Type\ActionsType;
+use Integrated\Bundle\ChannelBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ChannelBundle\Model\Config;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
@@ -220,7 +222,7 @@ class ConfigController extends Controller
      */
     protected function createNewForm(Config $data, AdapterInterface $adapter)
     {
-        $form = $this->createForm('channel_config_new', $data, [
+        $form = $this->createForm($this->get('integrated_channel.form.config.new.type.proxy'), $data, [
             'adapter' => $adapter,
             'action'  => $this->generateUrl(
                 'integrated_channel_config_new',
@@ -229,7 +231,7 @@ class ConfigController extends Controller
             'method'  => 'POST',
         ]);
 
-        $form->add('actions', 'channel_actions', ['buttons' => ['create', 'cancel']]);
+        $form->add('actions', ActionsType::class, ['buttons' => ['create', 'cancel']]);
 
         return $form;
     }
@@ -242,13 +244,13 @@ class ConfigController extends Controller
      */
     protected function createEditForm(Config $data, AdapterInterface $adapter)
     {
-        $form = $this->createForm('channel_config_edit', $data, [
+        $form = $this->createForm($this->get('integrated_channel.form.config.edit.type.proxy'), $data, [
             'adapter' => $adapter,
             'action'  => $this->generateUrl('integrated_channel_config_edit', ['id' => $data->getName()]),
             'method'  => 'PUT',
         ]);
 
-        $form->add('actions', 'channel_actions', ['buttons' => ['save', 'cancel']]);
+        $form->add('actions', ActionsType::class, ['buttons' => ['save', 'cancel']]);
 
         return $form;
     }
@@ -260,12 +262,12 @@ class ConfigController extends Controller
      */
     protected function createDeleteForm(Config $data)
     {
-        $form = $this->createForm('channel_config_delete', $data, [
+        $form = $this->createForm(DeleteFormType::class, $data, [
             'action'  => $this->generateUrl('integrated_channel_config_delete', ['id' => $data->getName()]),
             'method'  => 'DELETE',
         ]);
 
-        $form->add('actions', 'channel_actions', ['buttons' => ['delete', 'cancel']]);
+        $form->add('actions', ActionsType::class, ['buttons' => ['delete', 'cancel']]);
 
         return $form;
     }
