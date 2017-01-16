@@ -15,7 +15,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
@@ -66,7 +65,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @var PublishTime
-     * @Type\Field(type="integrated_publish_time")
+     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\PublishTimeType")
      */
     protected $publishTime;
 
@@ -77,7 +76,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @var bool
-     * @Type\Field(type="checkbox")
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\CheckboxType")
      */
     protected $disabled = false;
 

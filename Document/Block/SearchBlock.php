@@ -26,7 +26,7 @@ class SearchBlock extends Block
     /**
      * @var ContentBlock
      * @Type\Field(
-     *      type="document",
+     *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:Block\ContentBlock",
      *          "property"="title",
@@ -39,7 +39,7 @@ class SearchBlock extends Block
     /**
      * @var string
      * @Type\Field(
-     *      type="text",
+     *      type="Symfony\Component\Form\Extension\Core\Type\TextType",
      *      options={
      *          "label"="Results page URL"
      *      }

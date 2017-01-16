@@ -26,7 +26,7 @@ class File extends Content implements FileInterface
 {
     /**
      * @var StorageInterface
-     * @Type\Field(type="integrated_file_dropzone")
+     * @Type\Field(type="Integrated\Bundle\StorageBundle\Form\Type\DropzoneType")
      */
     protected $file;
 

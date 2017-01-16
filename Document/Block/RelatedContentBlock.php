@@ -48,7 +48,7 @@ class RelatedContentBlock extends Block
      * @var int
      * @Assert\NotBlank
      * @Type\Field(
-     *     type="choice",
+     *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
      *     options={
      *         "choices"={
      *             1="Show items which have the current document linked",
@@ -62,7 +62,7 @@ class RelatedContentBlock extends Block
     /**
      * @var ContentBlock
      * @Type\Field(
-     *      type="document",
+     *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:Relation\Relation",
      *          "property"="name",
@@ -76,7 +76,7 @@ class RelatedContentBlock extends Block
      * @var string
      * @Assert\NotBlank
      * @Type\Field(
-     *     type="choice",
+     *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
      *     options={
      *         "choices"={
      *             "publishTime.startDate"="Publication date"
@@ -90,7 +90,7 @@ class RelatedContentBlock extends Block
     /**
      * @var string
      * @Type\Field(
-     *     type="choice",
+     *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
      *     options={
      *         "choices"={
      *             "asc"="asc",
@@ -105,7 +105,7 @@ class RelatedContentBlock extends Block
      * @var int
      * @Assert\Length(min=0)
      * @Type\Field(
-     *      type="integer",
+     *      type="Symfony\Component\Form\Extension\Core\Type\IntegerType",
      *      options={
      *          "attr"={
      *              "min"=0
@@ -119,7 +119,7 @@ class RelatedContentBlock extends Block
      * @var int
      * @Assert\Length(min=0)
      * @Type\Field(
-     *      type="integer",
+     *      type="Symfony\Component\Form\Extension\Core\Type\IntegerType",
      *      options={
      *          "required"=false,
      *          "attr"={
@@ -132,7 +132,7 @@ class RelatedContentBlock extends Block
 
     /**
      * @var array
-     * @Type\Field(type="integrated_content_type_choice")
+     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice")
      */
     protected $contentTypes;
 

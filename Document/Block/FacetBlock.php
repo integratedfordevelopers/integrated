@@ -28,7 +28,7 @@ class FacetBlock extends Block
     /**
      * @var ContentBlock
      * @Type\Field(
-     *      type="document",
+     *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:Block\ContentBlock",
      *          "property"="title",
@@ -41,9 +41,9 @@ class FacetBlock extends Block
     /**
      * @var ArrayCollection
      * @Type\Field(
-     *      type="integrated_collection",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType",
      *      options={
-     *          "type"="integrated_embedded_document",
+     *          "type"="Integrated\Bundle\FormTypeBundle\Form\Type\EmbeddedDocumentType",
      *          "options"={
      *              "data_class"="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField"
      *          },

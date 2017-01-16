@@ -39,7 +39,7 @@ class ContentBlock extends Block
      * @var int
      * @Assert\Length(min=0)
      * @Type\Field(
-     *      type="integer",
+     *      type="Symfony\Component\Form\Extension\Core\Type\IntegerType",
      *      options={
      *          "attr"={
      *              "min"=0
@@ -53,7 +53,7 @@ class ContentBlock extends Block
      * @var int
      * @Assert\Length(min=0)
      * @Type\Field(
-     *      type="integer",
+     *      type="Symfony\Component\Form\Extension\Core\Type\IntegerType",
      *      options={
      *          "required"=false,
      *          "attr"={
@@ -67,7 +67,7 @@ class ContentBlock extends Block
     /**
      * @var string
      * @Type\Field(
-     *      type="text",
+     *      type="\Symfony\Component\Form\Extension\Core\Type\TextType",
      *      options={
      *          "required"=false
      *      }
@@ -78,7 +78,7 @@ class ContentBlock extends Block
     /**
      * @var array
      * @Type\Field(
-     *      type="bootstrap_collection",
+     *      type="Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType",
      *      options={
      *          "allow_add"=true,
      *          "allow_delete"=true,

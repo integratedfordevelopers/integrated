@@ -34,16 +34,16 @@ abstract class Relation extends Content
 
     /**
      * @var string
-     * @Type\Field(type="integrated_editor")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\EditorType")
      */
     protected $description;
 
     /**
      * @var Phonenumber[] | Collection
      * @Type\Field(
-     *      type="integrated_sortable_collection",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={
-     *          "type"="integrated_phonenumber",
+     *          "type"="Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType",
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }
@@ -60,9 +60,9 @@ abstract class Relation extends Content
     /**
      * @var Address[]
      * @Type\Field(
-     *      type="integrated_sortable_collection",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={
-     *          "type"="integrated_address",
+     *          "type"="Integrated\Bundle\ContentBundle\Form\Type\AddressType",
      *          "default_title"="New address",
      *          "allow_add"=true,
      *          "allow_delete"=true
