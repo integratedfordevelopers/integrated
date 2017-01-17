@@ -14,30 +14,33 @@ namespace Integrated\Common\Content\Form\Event;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class OptionsEvent extends FormEvent
 {
-	/**
-	 * @var OptionsResolverInterface
-	 */
-	private $resolver;
+    /**
+     * @var OptionsResolver
+     */
+    private $resolver;
 
-	public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata, OptionsResolverInterface $resolver)
-	{
-		parent::__construct($contentType, $metadata);
+    public function __construct(
+        ContentTypeInterface $contentType,
+        MetadataInterface $metadata,
+        OptionsResolver $resolver
+    ) {
+        parent::__construct($contentType, $metadata);
 
-		$this->resolver = $resolver;
-	}
+        $this->resolver = $resolver;
+    }
 
-	/**
-	 * @return OptionsResolverInterface
-	 */
-	public function getResolver()
-	{
-		return $this->resolver;
-	}
+    /**
+     * @return OptionsResolver
+     */
+    public function getResolver()
+    {
+        return $this->resolver;
+    }
 }

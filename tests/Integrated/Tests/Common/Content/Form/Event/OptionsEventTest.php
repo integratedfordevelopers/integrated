@@ -13,7 +13,7 @@ namespace Integrated\Tests\Common\Content\Form\Event;
 
 use Integrated\Common\Content\Form\Event\OptionsEvent;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -21,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class OptionsEventTest extends FormEventTest
 {
     /**
-     * @var OptionsResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var OptionsResolver | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $resolver;
 
@@ -29,7 +29,7 @@ class OptionsEventTest extends FormEventTest
     {
         parent::setUp();
 
-        $this->resolver = $this->getMock('Symfony\\Component\\OptionsResolver\\OptionsResolverInterface');
+        $this->resolver = $this->getMock('Symfony\\Component\\OptionsResolver\\OptionsResolver');
     }
 
     public function testGetResolver()
