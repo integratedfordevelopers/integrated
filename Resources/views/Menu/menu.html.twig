@@ -1,7 +1,7 @@
 {% extends 'BraincraftedBootstrapBundle:Menu:bootstrap.html.twig' %}
 
 {% block list %}
-    {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
         {% if item.level == 0 %}
             <ul class="dropdown-menu dropdown-top-fixed">
                 <li>
