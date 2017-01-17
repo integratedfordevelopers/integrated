@@ -43,6 +43,8 @@ class BlockTransformer implements DataTransformerInterface
         if ($block instanceof BlockInterface) {
             return $block->getId();
         }
+
+        return null;
     }
 
     /**

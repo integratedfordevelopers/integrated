@@ -11,12 +11,13 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type\Grid;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\PageBundle\Form\DataTransformer\BlockTransformer;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -49,13 +50,13 @@ class BlockType extends AbstractType
      */
     public function getParent()
     {
-        return 'hidden';
+        return HiddenType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_page_grid_block';
     }

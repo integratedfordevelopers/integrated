@@ -248,6 +248,8 @@ class Page
                 return $grid;
             }
         }
+
+        return null;
     }
 
     /**

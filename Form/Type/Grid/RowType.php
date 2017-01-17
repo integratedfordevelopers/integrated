@@ -11,7 +11,10 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type\Grid;
 
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Row;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,25 +28,28 @@ class RowType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('columns', 'collection', [
-            'type'         => 'integrated_page_grid_column',
+        $builder->add('columns', CollectionType::class, [
+            'entry_type'   => ColumnType::class,
             'allow_add'    => true,
             'allow_delete' => true,
             'prototype'    => false,
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\Grid\Row',
-        ));
+        $resolver->setDefaults([
+            'data_class' =>  Row::class,
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_page_grid_row';
     }
