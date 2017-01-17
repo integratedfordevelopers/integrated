@@ -11,25 +11,19 @@
 
 namespace Integrated\Bundle\SolrBundle\Tests\Solr\Type;
 
-use ArrayObject;
-use DateTime;
-
 use Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
 
-use Integrated\Bundle\SolrBundle\Tests\Solr\Type\FieldMapperTypeTestTestObject as TestObject;
+use Integrated\Bundle\SolrBundle\Tests\Fixtures\TestObject;
 
 /**
- * @covers Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType
+ * @covers \Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     *
-     */
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
@@ -242,9 +236,6 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /**
-     *
-     */
     public function testGetName()
     {
         self::assertEquals('integrated.fields', $this->getInstance()->getName());

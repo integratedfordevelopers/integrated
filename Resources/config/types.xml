@@ -4,45 +4,33 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_solr.type.clear.type.class">Integrated\Bundle\SolrBundle\Solr\Type\ClearType</parameter>
-        <parameter key="integrated_solr.type.copy.append.type.class">Integrated\Bundle\SolrBundle\Solr\Type\CopyAppendType</parameter>
-        <parameter key="integrated_solr.type.copy.type.class">Integrated\Bundle\SolrBundle\Solr\Type\CopyType</parameter>
-        <parameter key="integrated_solr.type.field.append.type.class">Integrated\Bundle\SolrBundle\Solr\Type\FieldAppendMapperType</parameter>
-        <parameter key="integrated_solr.type.field.type.class">Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType</parameter>
-        <parameter key="integrated_solr.type.remove.type.class">Integrated\Bundle\SolrBundle\Solr\Type\RemoveType</parameter>
-        <parameter key="integrated_solr.type.json.type.class">Integrated\Bundle\SolrBundle\Solr\Type\JsonType</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_solr.type.clear.type" class="%integrated_solr.type.clear.type.class%">
+        <service id="integrated_solr.type.clear.type" class="Integrated\Bundle\SolrBundle\Solr\Type\ClearType">
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_solr.type.copy.append.type" class="%integrated_solr.type.copy.append.type.class%">
+        <service id="integrated_solr.type.copy.append.type" class="Integrated\Bundle\SolrBundle\Solr\Type\CopyAppendType">
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_solr.type.copy.type" class="%integrated_solr.type.copy.type.class%">
+        <service id="integrated_solr.type.copy.type" class="Integrated\Bundle\SolrBundle\Solr\Type\CopyType">
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_solr.type.field.append.type" class="%integrated_solr.type.field.append.type.class%">
+        <service id="integrated_solr.type.field.append.type" class="Integrated\Bundle\SolrBundle\Solr\Type\FieldAppendMapperType">
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_solr.type.field.type" class="%integrated_solr.type.field.type.class%">
+        <service id="integrated_solr.type.field.type" class="Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType">
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_solr.type.remove.type" class="%integrated_solr.type.remove.type.class%">
+        <service id="integrated_solr.type.remove.type" class="Integrated\Bundle\SolrBundle\Solr\Type\RemoveType">
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_solr.type.json.type" class="%integrated_solr.type.json.type.class%">
+        <service id="integrated_solr.type.json.type" class="Integrated\Bundle\SolrBundle\Solr\Type\JsonType">
             <tag name="integrated_solr.type" />
         </service>
 

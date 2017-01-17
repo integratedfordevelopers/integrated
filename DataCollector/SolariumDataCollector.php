@@ -38,7 +38,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     protected $startTime;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function initPluginType()
     {
@@ -48,7 +48,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
@@ -115,7 +115,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function serialize()
     {
@@ -123,7 +123,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function unserialize($data)
     {

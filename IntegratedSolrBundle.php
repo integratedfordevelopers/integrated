@@ -26,7 +26,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class IntegratedSolrBundle extends Bundle
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
@@ -44,7 +44,7 @@ class IntegratedSolrBundle extends Bundle
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getContainerExtension()
     {

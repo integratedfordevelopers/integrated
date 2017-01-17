@@ -11,14 +11,16 @@
 
 namespace Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass;
 
+use Integrated\Common\Converter\Config\Provider\XmlProvider;
+
 use ReflectionClass;
 
 use Symfony\Component\Config\Resource\FileResource;
-
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -72,7 +74,7 @@ class RegisterConfigFileProviderPass implements CompilerPassInterface
             return null;
         }
 
-        $definition = new Definition('%integrated_solr.converter.config.provider.file.class%');
+        $definition = new Definition(XmlProvider::class);
         $definition->setPublic(false);
         $definition->setArguments([$this->addFinder($container, $dir . '/Resources/config/solr', $bundle)]);
 
@@ -103,7 +105,7 @@ class RegisterConfigFileProviderPass implements CompilerPassInterface
 
         $container->addResource(new FileResource($dir)); // not really sure what this does
 
-        $definition = new Definition('%integrated_solr.converter.finder.class%');
+        $definition = new Definition(Finder::class);
         $definition->setPublic(false);
         $definition->addMethodCall('in', [$dir]);
 
