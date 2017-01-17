@@ -11,14 +11,15 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraints\Callback;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
-
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\MaxDateTimeTransformer;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
+use Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -30,10 +31,10 @@ class PublishTimeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('startDate', 'integrated_datetime');
+        $builder->add('startDate', DateTimeType::class);
 
         $builder->add(
-            $builder->create('endDate', 'integrated_datetime')
+            $builder->create('endDate', DateTimeType::class)
                 ->addModelTransformer(new MaxDateTimeTransformer())
         );
     }
@@ -41,7 +42,7 @@ class PublishTimeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class'  => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime',
@@ -62,7 +63,7 @@ class PublishTimeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_publish_time';
     }

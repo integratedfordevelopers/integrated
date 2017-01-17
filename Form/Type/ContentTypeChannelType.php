@@ -13,48 +13,49 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
+use Integrated\Bundle\FormTypeBundle\Form\Type\CheckboxType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class ContentTypeChannelType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		/** @var Channel $channel */
-		$channel = $options['channel'];
+    /**
+     * @inheritdoc
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        /** @var Channel $channel */
+        $channel = $options['channel'];
 
-		$builder->add('selected', 'checkbox', [
-			'required' => false,
-			'label'    => $channel->getName()
-		]);
+        $builder->add('selected', CheckboxType::class, [
+            'required' => false,
+            'label'    => $channel->getName()
+        ]);
 
-		$builder->add('enforce', 'checkbox', [
-			'required' => false,
-		]);
-	}
+        $builder->add('enforce', CheckboxType::class, [
+            'required' => false,
+        ]);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setDefaultOptions(OptionsResolverInterface $resolver)
-	{
-		$resolver->setRequired(['channel']);
-		$resolver->setAllowedTypes(['channel' => 'Integrated\\Bundle\\ContentBundle\\Document\\Channel\\Channel']);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(['channel']);
+        $resolver->setAllowedTypes('channel', 'Integrated\\Bundle\\ContentBundle\\Document\\Channel\\Channel');
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getName()
-	{
-		return 'integrated_content_type_channel';
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getBlockPrefix()
+    {
+        return 'integrated_content_type_channel';
+    }
 }

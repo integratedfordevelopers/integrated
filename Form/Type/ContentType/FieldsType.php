@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType;
 
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\FieldsTransformer;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\FieldsTransformer;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -35,7 +35,7 @@ class FieldsType extends AbstractType
 
         $builder->add(
             'default',
-            'content_type_fields_collection_default',
+            Fields\Collection\DefaultType::class,
             [
                 'label' => false,
                 'metadata' => $metadata
@@ -44,10 +44,10 @@ class FieldsType extends AbstractType
 
         $builder->add(
             'custom',
-            'bootstrap_collection',
+            BootstrapCollectionType::class,
             [
                 'label' => false,
-                'type' => 'content_type_field_custom',
+                'entry_type' => Fields\CustomType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'add_button_text' => 'Add  custom field',
@@ -66,13 +66,13 @@ class FieldsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['metadata']);
-        $resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\Form\\Mapping\\MetadataInterface']);
+        $resolver->setAllowedTypes('metadata', 'Integrated\\Common\\Form\\Mapping\\MetadataInterface');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_content_type_fields';
     }

@@ -12,6 +12,10 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
+
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,14 +37,14 @@ class AddressType extends AbstractType
     {
         foreach ($options['fields'] as $field) {
             // Variables
-            $type = 'text';
+            $type = TextType::class;
             $default = ['required' => $builder->getRequired()];
             $override = isset($options['options'][$field]) ? $options['options'][$field] : [];
 
             // Spec may vary per field, but not per se
             switch ($field) {
                 case 'type':
-                    $type = 'choice';
+                    $type = ChoiceType::class;
                     $default = [
                         'placeholder' => '',
                         'required'    => false,
@@ -52,7 +56,7 @@ class AddressType extends AbstractType
                     ];
                     break;
                 case 'country':
-                    $type = 'country';
+                    $type = CountryType::class;
                     $default['placeholder'] = '';
                     break;
             }
@@ -78,7 +82,7 @@ class AddressType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_address';
     }

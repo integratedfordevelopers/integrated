@@ -12,8 +12,6 @@
         <parameter key="integrated_content.form.relations.listener.class">Integrated\Bundle\ContentBundle\EventListener\ContentRelationsIntegrationListener</parameter>
         <parameter key="integrated_content.form.channel.listener.class">Integrated\Bundle\ContentBundle\EventListener\ContentChannelIntegrationListener</parameter>
 
-        <parameter key="integrated_content.form.proxy.type.class">Integrated\Common\Form\Type\ProxyType</parameter>
-
         <parameter key="integrated_content.form.actions.type.class">Integrated\Bundle\ContentBundle\Form\Type\ActionsType</parameter>
 
         <parameter key="integrated_content.form.content.relations.type.class">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</parameter>
@@ -76,12 +74,8 @@
         <service id="integrated.form.resolver" alias="integrated_content.resolver.priority" />
         <service id="integrated.form.factory" alias="integrated_content.form.factory" />
 
-        <service id="integrated_content.form.channel.repository"
-                 class="Doctrine\Common\Persistence\ObjectRepository"
-                 factory-service="doctrine_mongodb"
-                 factory-method="getRepository"
-                 public="false"
-                >
+        <service id="integrated_content.form.channel.repository" class="Doctrine\Common\Persistence\ObjectRepository">
+            <factory service="doctrine_mongodb" method="getRepository" />
             <argument type="string">Integrated\Bundle\ContentBundle\Document\Channel\Channel</argument>
         </service>
 
@@ -93,7 +87,7 @@
 
         <service id="integrated_content.form.relations.listener" class="%integrated_content.form.relations.listener.class%">
             <argument type="string">relations</argument>
-            <argument type="string">content_relations</argument>
+            <argument type="string">Integrated\Bundle\ContentBundle\Form\Type\RelationsType</argument>
 
             <tag name="integrated_content.form.event_subscriber" />
         </service>
@@ -104,84 +98,107 @@
 
         <service id="integrated_content.form.type.image_choice" class="%integrated_content.form.type.image_choice.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <tag name="form.type" alias="integrated_image_choice" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.type.csv_array" class="%integrated_content.form.type.csv_array.class%">
-            <tag name="form.type" alias="integrated_csv_array" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.custom_fields_type" class="Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType">
-            <tag name="form.type" alias="integrated_custom_fields" />
+            <tag name="form.type" />
         </service>
 
-        <service id="integrated_content.form.actions.type" class="%integrated_content.form.actions.type.class%" />
+        <service id="integrated_content.form.actions.type" class="%integrated_content.form.actions.type.class%">
+            <tag name="form.type" />
+        </service>
 
 		<service id="integrated_content.form.content.relations.type" class="%integrated_content.form.content.relations.type.class%">
 			<argument type="service" id="doctrine_mongodb"/>
+            <tag name="form.type" />
 		</service>
 
         <service id="integrated_content.form.content_type.channel.repository" alias="integrated_content.form.channel.repository" />
 
-        <service id="integrated_content.form.content_type.type" class="%integrated_content.form.content_type.type.class%" />
+        <service id="integrated_content.form.content_type.type" class="%integrated_content.form.content_type.type.class%">
+            <tag name="form.type" />
+        </service>
 
         <!-- ContentType fields -->
-        <service id="integrated_content.form.type.content_type.fields_type" class="%integrated_content.form.type.content_type.fields_type.class%" />
-        <service id="integrated_content.form.type.content_type.fields.default_type" class="%integrated_content.form.type.content_type.fields.default_type.class%" />
+        <service id="integrated_content.form.type.content_type.fields_type" class="%integrated_content.form.type.content_type.fields_type.class%">
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_content.form.type.content_type.fields.default_type" class="%integrated_content.form.type.content_type.fields.default_type.class%">
+            <tag name="form.type" />
+        </service>
+
         <service id="integrated_content.form.type.content_type.fields.custom_type" class="%integrated_content.form.type.content_type.fields.custom_type.class%">
             <argument type="service" id="integrated_content.form.registry" />
+            <tag name="form.type" />
         </service>
-        <service id="integrated_content.form.type.content_type.fields.collection.default_type" class="%integrated_content.form.type.content_type.fields.collection.default_type.class%" />
 
-        <service id="integrated_content.form.content_type.relation.type" class="%integrated_content.form.content_type.relation.type.class%" />
+        <service id="integrated_content.form.type.content_type.fields.collection.default_type" class="%integrated_content.form.type.content_type.fields.collection.default_type.class%">
+            <tag name="form.type" />
+        </service>
 
-        <service id="integrated_content.form.content_type.channels.type" class="%integrated_content.form.content_type.channels.type.class%" />
+        <service id="integrated_content.form.content_type.relation.type" class="%integrated_content.form.content_type.relation.type.class%">
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_content.form.content_type.channels.type" class="%integrated_content.form.content_type.channels.type.class%">
+            <tag name="form.type" />
+        </service>
+
         <service id="integrated_content.form.content_type.channel.collection.type" class="%integrated_content.form.content_type.channel.collection.type.class%">
             <argument type="service" id="integrated_content.form.content_type.channel.repository" />
+            <tag name="form.type" />
         </service>
+
         <service id="integrated_content.form.content_type.channel.type" class="%integrated_content.form.content_type.channel.type.class%" />
         
         <service id="integrated_content.form.type.channel" class="%integrated_content.form.type.channel.class%">
-            <tag name="form.type" alias="channel" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.delete.type" class="%integrated_content.form.delete.type.class%" />
 
         <service id="integrated_content.form.type.relation" class="%integrated_content.form.type.relation.class%">
-            <tag name="form.type" alias="integrated_relation" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.type.phonenumber" class="%integrated_content.form.type.phonenumber.class%">
-            <tag name="form.type" alias="integrated_phonenumber" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.type.address" class="%integrated_content.form.type.address.class%">
-            <tag name="form.type" alias="integrated_address"/>
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype_form_type_author" class="%integrated_formtype_form_type_author.class%" scope="request">
             <argument type="service" id="doctrine_mongodb" />
-            <tag name="form.type" alias="integrated_author" />
+            <tag name="form.type" />
         </service>
         
         <service id="integrated_content.form.search_selection.type" class="%integrated_content.form.search_selection.type.class%">
             <argument type="service" id="security.authorization_checker" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.search_selection_choice.type" class="%integrated_content.form.search_selection_choice.type.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="security.token_storage" />
 
-            <tag name="form.type" alias="integrated_search_selection_choice" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.publish_time.type" class="%integrated_content.form.publish_time.type.class%">
-            <tag name="form.type" alias="integrated_publish_time" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_formtype.form.content_type_choice" class="%integrated_formtype.form.content_type_choice.class%">
             <argument type="service" id="integrated_content.content_type_repository" />
-            <tag name="form.type" alias="integrated_content_type_choice" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.listener.form_field" class="%integrated_content.form.listener.form_field.class%">
@@ -191,16 +208,16 @@
 
         <service id="integrated_content.form.type.primary_channel" class="%integrated_content.form.type.primary_channel.class%">
             <argument type="service" id="translator" />
-            <tag name="form.type" alias="integrated_primary_channel" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.type.job.company_job" class="%integrated_content.form.type.job.company_job.class%">
             <argument type="service" id="integrated_content.content_type.manager" />
-            <tag name="form.type" alias="integrated_company_job" />
+            <tag name="form.type" />
         </service>
 
         <service id="integrated_content.form.type.job.contact_persons" class="%integrated_content.form.type.job.contact_persons.class%">
-            <tag name="form.type" alias="integrated_contact_persons" />
+            <tag name="form.type" />
         </service>
     </services>
 

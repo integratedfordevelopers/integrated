@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -38,10 +39,10 @@ class SearchSelectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title', 'text');
+        $builder->add('title');
 
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            $builder->add('public', 'choice', [
+            $builder->add('public', ChoiceType::class, [
                 'label' => 'Available for',
                 'expanded' => true,
                 'choices' => [
@@ -55,7 +56,7 @@ class SearchSelectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_search_selection';
     }

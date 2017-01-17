@@ -28,7 +28,7 @@ class ContactPersonsType extends BootstrapCollectionType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'type' => 'integrated_company_job',
+            'type' => CompanyJobType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'label' => 'Contact persons',
@@ -39,7 +39,7 @@ class ContactPersonsType extends BootstrapCollectionType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_contact_persons';
     }
