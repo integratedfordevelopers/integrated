@@ -15,8 +15,8 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "lib-iconv": "*",
-        "symfony/symfony": "~2.7",
+        "symfony/polyfill-iconv": "~1.0",
+        "symfony/symfony": "~2.8",
         "jms/metadata": "~1.5"
     },
     "require-dev": {

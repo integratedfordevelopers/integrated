@@ -46,7 +46,6 @@ class AnnotationDriver implements DriverInterface
         $classMetadata = new MergeableClassMetadata($class->getName());
 
         foreach ($class->getProperties() as $reflectionProperty) {
-
             $propertyMetadata = new PropertyMetadata($class->getName(), $reflectionProperty->getName());
 
             /** @var \Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug $annotation */

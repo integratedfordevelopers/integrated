@@ -23,10 +23,6 @@ class Slugger implements SluggerInterface
      */
     public function slugify($string, $delimiter = '-')
     {
-        if (!extension_loaded('iconv')) {
-            throw new \RuntimeException('PHP: iconv module not loaded.');
-        }
-
         $locale = setlocale(LC_ALL, 0);
 
         setlocale(LC_ALL, 'en_US.UTF-8');
