@@ -4,15 +4,9 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_storage.database">Integrated\Bundle\StorageBundle\Storage\Database\DoctrineODMDatabase</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_storage.database" class="%integrated_storage.database%">
+        <service id="integrated_storage.database" class="Integrated\Bundle\StorageBundle\Storage\Database\DoctrineODMDatabase">
             <!--
                 Container put in intentionally, a developer can override the class parameter and make its own implementation.
                 The class its self is responsible for error checking its dependencies.

@@ -11,15 +11,25 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
+
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class ImageType extends FileType
+class ImageType extends AbstractType
 {
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getParent()
+    {
+        return FileType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'integrated_image';
     }

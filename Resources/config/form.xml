@@ -4,48 +4,39 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_storage.form.type.file.class">Integrated\Bundle\StorageBundle\Form\Type\FileType</parameter>
-        <parameter key="integrated_storage.form.type.image.class">Integrated\Bundle\StorageBundle\Form\Type\ImageType</parameter>
-
-        <parameter key="integrated_storage.form.type.file_dropzone.class">Integrated\Bundle\StorageBundle\Form\Type\DropzoneType</parameter>
-        <parameter key="integrated_storage.form.type.image_dropzone.class">Integrated\Bundle\StorageBundle\Form\Type\DropzoneType</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_storage.form.type.file" class="%integrated_storage.form.type.file.class%">
+        <service id="integrated_storage.form.type.file" class="Integrated\Bundle\StorageBundle\Form\Type\FileType">
             <argument type="service" id="integrated_storage.manager" />
 
-            <tag name="form.type" alias="integrated_file" />
+            <tag name="form.type" />
         </service>
 
-        <service id="integrated_storage.form.type.image" class="%integrated_storage.form.type.image.class%">
+        <service id="integrated_storage.form.type.image" class="Integrated\Bundle\StorageBundle\Form\Type\ImageType">
             <argument type="service" id="integrated_storage.manager" />
             <argument type="service" id="integrated_storage.decision" />
 
-            <tag name="form.type" alias="integrated_image" />
+            <tag name="form.type" />
         </service>
 
-        <service id="integrated_storage.form.type.file_dropzone" class="%integrated_storage.form.type.file_dropzone.class%">
+        <service id="integrated_storage.form.type.file_dropzone" class="Integrated\Bundle\StorageBundle\Form\Type\FileDropzoneType">
             <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
             <argument type="service" id="integrated_asset.manager.javascript_manager" />
             <argument type="service" id="translator" />
             <argument type="service" id="image.handling" />
-            <argument>file</argument>
-            <tag name="form.type" alias="integrated_file_dropzone" />
+
+            <tag name="form.type" />
         </service>
 
-        <service id="integrated_storage.form.type.image_dropzone" class="%integrated_storage.form.type.image_dropzone.class%">
+        <service id="integrated_storage.form.type.image_dropzone" class="Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneType">
             <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
             <argument type="service" id="integrated_asset.manager.javascript_manager" />
             <argument type="service" id="translator" />
             <argument type="service" id="image.handling" />
-            <argument>image</argument>
-            <tag name="form.type" alias="integrated_image_dropzone" />
+
+            <tag name="form.type" />
         </service>
+
     </services>
 
 </container>

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\StorageBundle\Form\EventSubscriber;
+namespace Integrated\Bundle\StorageBundle\Form\EventListener;
 
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;

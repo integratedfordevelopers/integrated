@@ -4,29 +4,15 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_storage.manager">Integrated\Bundle\StorageBundle\Storage\Manager</parameter>
-        <parameter key="integrated_storage.resolver">Integrated\Bundle\StorageBundle\Storage\Resolver</parameter>
-        <parameter key="integrated_storage.decision">Integrated\Bundle\StorageBundle\Storage\Decision</parameter>
-        <parameter key="integrated_storage.registry">Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry</parameter>
-        <parameter key="integrated_storage.filesystem_delete">Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove</parameter>
-        <parameter key="integrated_storage.cache_app">Integrated\Bundle\StorageBundle\Storage\Cache\AppCache</parameter>
-        <parameter key="integrated_storage.file_locator">Integrated\Bundle\StorageBundle\Locator\StorageLocator</parameter>
-        <parameter key="integrated_storage.reflection_cache">Integrated\Bundle\StorageBundle\Storage\Reflection\Cache\AppCache</parameter>
-        <parameter key="integrated_storage.intent_writer">Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_storage.manager" class="%integrated_storage.manager%">
+        <service id="integrated_storage.manager" class="Integrated\Bundle\StorageBundle\Storage\Manager">
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.resolver" />
             <argument type="service" id="logger" on-invalid="ignore"/>
         </service>
 
-        <service id="integrated_storage.resolver" class="%integrated_storage.resolver%">
+        <service id="integrated_storage.resolver" class="Integrated\Bundle\StorageBundle\Storage\Resolver">
             <!--
                 The first two arguments of this service are injected in the bundle extension (see DependencyInjection)
              -->
@@ -36,7 +22,7 @@
             <argument type="service" id="integrated_storage.registry" />
         </service>
 
-        <service id="integrated_storage.decision" class="%integrated_storage.decision%">
+        <service id="integrated_storage.decision" class="Integrated\Bundle\StorageBundle\Storage\Decision">
             <argument type="service" id="integrated_storage.registry" />
             <!--
                 Second argument is injected in the bundle extension (see DependencyInjection)
@@ -44,31 +30,29 @@
             <argument />
         </service>
 
-        <service id="integrated_storage.registry" class="%integrated_storage.registry%">
+        <service id="integrated_storage.registry" class="Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry">
             <argument type="service" id="knp_gaufrette.filesystem_map" />
         </service>
 
-        <service id="integrated_storage.reflection_cache" class="%integrated_storage.reflection_cache%">
+        <service id="integrated_storage.reflection_cache" class="Integrated\Bundle\StorageBundle\Storage\Reflection\Cache\AppCache">
             <argument>%kernel.environment%</argument>
             <argument>%kernel.cache_dir%</argument>
         </service>
 
-        <service id="integrated_storage.filesystem_delete" class="%integrated_storage.filesystem_delete%" />
+        <service id="integrated_storage.filesystem_delete" class="Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove" />
 
-        <service id="integrated_storage.cache_app" class="%integrated_storage.cache_app%">
+        <service id="integrated_storage.cache_app" class="Integrated\Bundle\StorageBundle\Storage\Cache\AppCache">
             <argument>%kernel.cache_dir%</argument>
             <argument type="service" id="integrated_storage.manager" />
         </service>
 
-        <service id="integrated_storage.intent_writer" class="%integrated_storage.intent_writer%">
+        <service id="integrated_storage.intent_writer" class="Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer">
             <argument type="service" id="integrated_storage.manager" />
             <argument type="service" id="integrated_storage.decision" />
             <argument type="service" id="integrated_storage.reflection_cache" />
         </service>
 
-        <!-- Overwrite the default file_locator service with our own -->
-        <service id="file_locator" alias="integrated_storage.file_locator" />
-        <service id="integrated_storage.file_locator" class="%integrated_storage.file_locator%">
+        <service id="integrated_storage.file_locator" class="Integrated\Bundle\StorageBundle\Locator\StorageLocator">
             <argument type="service" id="kernel" />
             <argument>%kernel.root_dir%/Resources</argument>
 

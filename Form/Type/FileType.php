@@ -14,14 +14,15 @@ namespace Integrated\Bundle\StorageBundle\Form\Type;
 use ArrayObject;
 
 use Integrated\Bundle\ContentBundle\Form\Util\FormUtil;
-
-use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
+use Integrated\Bundle\StorageBundle\Form\EventListener\FileEventSubscriber;
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\FileType as SymfonyFileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -63,14 +64,14 @@ class FileType extends AbstractType
         $constraints = new ArrayObject();
         $resolver->setNormalizer(
             'constraints',
-            function(Options $options, $value) use ($constraints)  {
+            function (Options $options, $value) use ($constraints) {
                 $constraints->exchangeArray(is_object($value) ? [$value] : (array) $value);
                 return [];
             }
         );
         $resolver->setNormalizer(
             'constraints_file',
-            function(Options $options) use ($constraints)  {
+            function (Options $options) use ($constraints) {
                 return $constraints->getArrayCopy();
             }
         );
@@ -81,7 +82,7 @@ class FileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'file', [
+        $builder->add('file', SymfonyFileType::class, [
             'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
             'required' => false,
             'mapped' => false,
@@ -89,7 +90,7 @@ class FileType extends AbstractType
             'constraints' => $options['constraints_file'],
         ]);
 
-        $builder->add('remove', 'checkbox', [
+        $builder->add('remove', CheckboxType::class, [
             'mapped' => false,
             'required' => false,
         ]);
@@ -100,7 +101,7 @@ class FileType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_file';
     }
