@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -19,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class SaveCancelType extends SubmitType
+class SaveCancelType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -48,6 +49,14 @@ class SaveCancelType extends SubmitType
 
         $resolver->setAllowedTypes('cancel_route', ['string']);
         $resolver->setAllowedTypes('cancel_route_parameters', ['array']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return SubmitType::class;
     }
 
     /**

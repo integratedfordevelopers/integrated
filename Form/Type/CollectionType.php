@@ -28,7 +28,7 @@ class CollectionType extends AbstractType
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {

@@ -22,18 +22,18 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class IntegratedFormTypeBundle extends Bundle
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function build(ContainerBuilder $container)
-	{
-		parent::build($container);
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
 
-		$container->addCompilerPass(new RegisterContentStyleParametersPass());
-	}
+        $container->addCompilerPass(new RegisterContentStyleParametersPass());
+    }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getContainerExtension()
     {

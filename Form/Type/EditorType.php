@@ -47,7 +47,7 @@ class EditorType extends AbstractType
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -55,9 +55,7 @@ class EditorType extends AbstractType
             'mode' => 'default',
         ]);
 
-        $resolver->setAllowedTypes([
-            'mode' => 'string',
-        ]);
+        $resolver->setAllowedTypes('mode', 'string');
     }
 
     /**
