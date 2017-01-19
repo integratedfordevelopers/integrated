@@ -19,18 +19,23 @@
 
     <services>
 
-        <service id="integrated_channel.form.actions.type" class="%integrated_channel.form.actions.type.class%" />
-
-        <service id="integrated_channel.form.config.type" class="%integrated_channel.form.config.type.class%">
-            <argument type="service" id="integrated_channel.adapter.registry" />
+        <service id="integrated_channel.form.actions.type" class="Integrated\Bundle\ChannelBundle\Form\Type\ActionsType">
+            <tag name="form.type" />
         </service>
 
-        <service id="integrated_channel.form.delete.type" class="%integrated_channel.form.delete.type.class%" />
+        <service id="integrated_channel.form.config.type" class="Integrated\Bundle\ChannelBundle\Form\Type\ConfigFormType">
+            <argument type="service" id="integrated_channel.adapter.registry" />
+            <tag name="form.type" />
+        </service>
 
-        <service id="integrated_channel.form.channel.choice.type" class="%integrated_channel.form.channel.choice.type.class%">
+        <service id="integrated_channel.form.delete.type" class="Integrated\Bundle\ChannelBundle\Form\Type\DeleteFormType">
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_channel.form.channel.choice.type" class="Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType">
             <argument type="service" id="integrated_channel.repository.channel" />
 
-            <tag name="form.type" alias="integrated_channel_choice" />
+            <tag name="form.type" />
         </service>
 
     </services>

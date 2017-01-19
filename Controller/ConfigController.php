@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ChannelBundle\Controller;
 use Exception;
 
 use Integrated\Bundle\ChannelBundle\Form\Type\ActionsType;
+use Integrated\Bundle\ChannelBundle\Form\Type\ConfigFormType;
 use Integrated\Bundle\ChannelBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ChannelBundle\Model\Config;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
@@ -222,7 +223,7 @@ class ConfigController extends Controller
      */
     protected function createNewForm(Config $data, AdapterInterface $adapter)
     {
-        $form = $this->createForm($this->get('integrated_channel.form.config.new.type.proxy'), $data, [
+        $form = $this->createForm(ConfigFormType::class, $data, [
             'adapter' => $adapter,
             'action'  => $this->generateUrl(
                 'integrated_channel_config_new',
@@ -244,7 +245,7 @@ class ConfigController extends Controller
      */
     protected function createEditForm(Config $data, AdapterInterface $adapter)
     {
-        $form = $this->createForm($this->get('integrated_channel.form.config.edit.type.proxy'), $data, [
+        $form = $this->createForm(ConfigFormType::class, $data, [
             'adapter' => $adapter,
             'action'  => $this->generateUrl('integrated_channel_config_edit', ['id' => $data->getName()]),
             'method'  => 'PUT',
