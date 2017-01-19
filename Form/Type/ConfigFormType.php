@@ -20,6 +20,7 @@ use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\ConfigurableInterface;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -27,9 +28,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -59,12 +57,12 @@ class ConfigFormType extends AbstractType
         /** @var AdapterInterface | ConfigurableInterface $adapter */
         $adapter = $options['adapter'];
 
-        $builder->add('name', 'text', [
+        $builder->add('name', TextType::class, [
             'label' => 'form.config.name',
             'translation_domain' => 'IntegratedChannelBundle'
         ]);
 
-        $builder->add('channels', 'integrated_channel_choice', [
+        $builder->add('channels', ChannelChoiceType::class, [
             'label' => 'form.config.channels',
             'translation_domain' => 'IntegratedChannelBundle',
 
@@ -148,7 +146,7 @@ class ConfigFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_channel_config';
     }
