@@ -57,7 +57,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     public function testFields()
     {
         /** @var Field | \PHPUnit_Framework_MockObject_MockObject $field1 */
-        $field1 = $this->getMock(Field::class, [], [], '', false);
+        $field1 = $this->getMockBuilder(Field::class)->disableOriginalConstructor()->getMock();
 
         $field1
             ->expects($this->once())
@@ -66,12 +66,12 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         ;
 
         /** @var Field | \PHPUnit_Framework_MockObject_MockObject $field2 */
-        $field2 = $this->getMock(Field::class, [], [], '', false);
+        $field2 = $this->getMockBuilder(Field::class)->disableOriginalConstructor()->getMock();
 
         // Set fields
-        $fields = array(
+        $fields = [
             'field1' => $field1
-        );
+        ];
 
         $this->contentType->addField($field1);
 
