@@ -4,12 +4,15 @@ namespace Integrated\Bundle\CommentBundle\EventListener;
 
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ODM\MongoDB\DocumentManager;
+
+use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\CommentBundle\Document\CommentContent;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Events;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -25,14 +28,27 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     protected $documentManager;
 
     /**
-     * CommentFormFieldsSubscriber constructor.
-     * @param DocumentManager $documentManager
+     * @var AssetManager
      */
-    public function __construct(DocumentManager $documentManager)
+    private $stylesheets;
+
+    /**
+     * @var AssetManager
+     */
+    private $javascripts;
+
+    /**
+     * @param DocumentManager $documentManager
+     * @param AssetManager $stylesheets
+     * @param AssetManager $javascripts
+     */
+    public function __construct(DocumentManager $documentManager, AssetManager $stylesheets, AssetManager $javascripts)
     {
         $this->documentManager = $documentManager;
-
+        $this->stylesheets = $stylesheets;
+        $this->javascripts = $javascripts;
     }
+
 
     /**
      * @return array
@@ -73,6 +89,9 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
                 $field->setOptions($options);
             }
         }
+
+        $this->stylesheets->add('bundles/integratedcomment/css/comments.css');
+        $this->javascripts->add('bundles/integratedcomment/js/comments.js');
     }
 
     /**

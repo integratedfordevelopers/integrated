@@ -89,7 +89,7 @@ $(function () {
     };
 
     var showModalComment = function () {
-        var contentId = $('#integrated_content_id').val();
+        var contentId = $('.content-form').data('content-id');
         $.ajax({
             type: 'GET',
             url: Routing.generate('integrated_comment_new', {content: contentId, field: fieldName}),
@@ -112,7 +112,7 @@ $(function () {
     var postComment = function (e) {
         e.preventDefault();
 
-        var contentId = $('#integrated_content_id').val();
+        var contentId = $('.content-form').data('content-id');
         $.ajax({
             type: 'POST',
             data: $(this).serialize(),

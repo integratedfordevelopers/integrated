@@ -17,9 +17,8 @@
         "php": ">=5.4",
         "symfony/symfony": "~2.7",
         "symfony/framework-bundle": "~2.2",
-        "doctrine/doctrine-fixtures-bundle": "~2.2",
-        "integrated/library": "~0.5",
-        "integrated/content-bundle": "~0.5",
+        "integrated/library": "~0.6",
+        "integrated/content-bundle": "~0.6",
         "integrated/user-bundle": "~0.5"
     },
     "require-dev": {
