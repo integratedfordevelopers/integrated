@@ -175,7 +175,7 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $event = $this->getEvent($this->getDocument('this-is-the-id', 'this-is-the-type'));
 
-        $this->queue->expects($this->once())
+        $this->queue->expects($this->exactly(2))
             ->method('push')
             ->with($this->anything(), $this->identicalTo(0), $this->identicalTo(42));
 
