@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Filter\ContentTypeFilter;
+use Integrated\Bundle\ContentBundle\Provider\MediaProvider;
 use Symfony\Component\Filesystem\LockHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Traversable;
@@ -47,11 +49,6 @@ class ContentController extends Controller
     protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
 
     /**
-     * @var string
-     */
-    protected $imageClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image';
-
-    /**
      * @Template()
      * @return array
      */
@@ -71,8 +68,7 @@ class ContentController extends Controller
         if ($request->query->get('remember') && $session->has('content_index_view')) {
             $request->query->add(unserialize($session->get('content_index_view')));
             $request->query->remove('remember');
-        }
-        elseif (!$request->query->has('_format')) {
+        } elseif (!$request->query->has('_format')) {
             $session->set('content_index_view',serialize($request->query->all()));
         }
 
@@ -94,10 +90,16 @@ class ContentController extends Controller
         $facetSet->setMinCount(1);
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
+
         $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
         $facetTitles['workflow_state'] = 'Workflow status';
+
         $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
         $facetTitles['workflow_assigned'] = 'Assigned user';
+
+        $facetSet->createFacetField('authors')->setField('facet_authors')->addExclude('authors');
+        $facetTitles['workflow_state'] = 'Author';
+
         $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
 
 
@@ -134,16 +136,16 @@ class ContentController extends Controller
 
         $active = [];
 
+        $helper = $query->getHelper();
+        $filter = function ($param) use ($helper) {
+            return $helper->escapePhrase($param);
+        };
+
         // If the request query contains a properties parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
         // TODO this code should be somewhere else
         $propertiesfilter = $request->query->get('properties');
         if (is_array($propertiesfilter)) {
-
-            $helper = $query->getHelper();
-            $filter = function($param) use($helper) {
-                return $helper->escapePhrase($param);
-            };
 
             $query
                 ->createFilterQuery('properties')
@@ -156,13 +158,7 @@ class ContentController extends Controller
 
         /** @var Relation $relation */
         foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
-
-            $helper = $query->getHelper();
-            $filter = function($param) use($helper) {
-                return $helper->escapePhrase($param);
-            };
-
-            $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
+            $name = preg_replace("/[^a-zA-Z]/", "", $relation->getName());
 
             //create relation facet field
             $facetSet->createFacetField($name)->setField('facet_' . $relation->getId())->addExclude($name);
@@ -184,11 +180,6 @@ class ContentController extends Controller
         if (is_array($contentType)) {
 
             if (count($contentType)) {
-                $helper = $query->getHelper();
-                $filter = function($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('contenttypes')
                     ->addTag('contenttypes')
@@ -200,13 +191,13 @@ class ContentController extends Controller
         // user has read rights to
 
         if ($this->has('integrated_workflow.solr.workflow.extension')) {
-            $filter = [];
+            $filterWorkflow = [];
 
             $user = $this->getUser();
 
             if ($user instanceof GroupableInterface) {
                 foreach ($user->getGroups() as $group) {
-                    $filter[] = $group->getId();
+                    $filterWorkflow[] = $group->getId();
                 }
             }
 
@@ -217,10 +208,10 @@ class ContentController extends Controller
                 ->setQuery('(*:* -security_workflow_read:[* TO *])');
 
             // allow content with group access
-            if ($filter) {
+            if ($filterWorkflow) {
                 $fq->setQuery(
                     $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
-                    [implode(') OR (', $filter)]
+                    [implode(') OR (', $filterWorkflow)]
                 );
             }
 
@@ -242,13 +233,7 @@ class ContentController extends Controller
         // TODO this should be somewhere else:
         $activeChannels = $request->query->get('channels');
         if (is_array($activeChannels)) {
-
             if (count($activeChannels)) {
-                $helper = $query->getHelper();
-                $filter = function($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('channels')
                     ->addTag('channels')
@@ -260,11 +245,6 @@ class ContentController extends Controller
         $activeStates = $request->query->get('workflow_state');
         if (is_array($activeStates)) {
             if (count($activeStates)) {
-                $helper = $query->getHelper();
-                $filter = function ($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('workflow_state')
                     ->addTag('workflow_state')
@@ -276,15 +256,21 @@ class ContentController extends Controller
         $activeAssigned = $request->query->get('workflow_assigned');
         if (is_array($activeAssigned)) {
             if (count($activeAssigned)) {
-                $helper = $query->getHelper();
-                $filter = function ($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('workflow_assigned')
                     ->addTag('workflow_assigned')
                     ->setQuery('facet_workflow_assigned: ((%1%))', [implode(') OR (', array_map($filter, $activeAssigned))]);
+            }
+        }
+
+
+        $activeAuthors = $request->query->get('authors');
+        if (is_array($activeAuthors)) {
+            if (count($activeAuthors)) {
+                $query
+                    ->createFilterQuery('authors')
+                    ->addTag('authors')
+                    ->setQuery('facet_authors: ((%1%))', [implode(') OR (', array_map($filter, $activeAuthors))]);
             }
         }
 
@@ -298,11 +284,6 @@ class ContentController extends Controller
                 }
 
                 if (count($id)) {
-                    $helper = $query->getHelper();
-                    $filter = function($param) use($helper) {
-                        return $helper->escapePhrase($param);
-                    };
-
                     $query
                         ->createFilterQuery('id')
                         ->addTag('id')
@@ -381,6 +362,7 @@ class ContentController extends Controller
         $active['channels'] = $activeChannels;
         $active['workflow_state'] = $activeStates;
         $active['workflow_assigned'] = $activeAssigned;
+        $active['authors'] = $activeAuthors;
 
         return array(
             'types'        => $types,
@@ -469,6 +451,7 @@ class ContentController extends Controller
                         'IntegratedContentBundle:Content:saved.iframe.html.twig',
                         array(
                             'id' => $content->getId(),
+                            'title' => method_exists($content, 'getTitle') ? $content->getTitle() : $content->getId(),
                             'relation' => $request->get('relation')
                         )
                     );
@@ -489,6 +472,7 @@ class ContentController extends Controller
             'form' => $form->createView(),
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
             'hasContentHistoryBundle' => false, // not needed here
+            'references' => json_encode($this->getReferences($content)),
         ];
     }
 
@@ -563,6 +547,8 @@ class ContentController extends Controller
                         $subscriber->setPriority($queue::PRIORITY_HIGH);
                     }
 
+                    // $dispatcher->dispatch(Event::PRE_FLUSH, new ArgSet($entity, $form));
+
                     /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
                     $dm = $this->get('doctrine_mongodb')->getManager();
                     $dm->flush();
@@ -625,12 +611,13 @@ class ContentController extends Controller
 
         return [
             'editable' => $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content),
-            'type'     => $type->getType(),
-            'form'     => $form->createView(),
-            'content'  => $content,
-            'locking'  => $locking,
+            'type'    => $type->getType(),
+            'form'    => $form->createView(),
+            'content' => $content,
+            'locking' => $locking,
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
             'hasContentHistoryBundle' => $this->has('integrated_content_history.controller.content_history'),
+            'references' => json_encode($this->getReferences($content)),
         ];
     }
 
@@ -962,7 +949,7 @@ class ContentController extends Controller
 //
 //        }
 
-        $avatarurl = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
+        $avatarurl = "//www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
 
 
         /** @var $client \Solarium\Client */
@@ -971,6 +958,8 @@ class ContentController extends Controller
         //
         $client = $this->get('solarium.client');
         $query = $client->createSelect();
+
+        $assignedContent = [];
 
         if ($user = $this->getUser()) {
             $userId = $user->getId();
@@ -1026,44 +1015,18 @@ class ContentController extends Controller
     }
 
     /**
-     * @return array
+     * @return JsonResponse
      */
-    public function browseImageAction()
+    public function mediaTypesAction($filter = null)
     {
-        $container = $this->container;
-
-        $repository = $container->get('integrated_content.content_type_repository');
-        $contentTypes = $repository->findAll();
-
-        $images = [];
-        /** @var ContentType $contentType */
-        foreach ($contentTypes as $contentType) {
-            $class = $contentType->getClass();
-
-            if ($class == $this->imageClass || is_subclass_of($class, $this->imageClass)) {
-                $images[] = $contentType;
-            }
-        }
-
-        if ($container->has('integrated_workflow.services.permission')) {
-            $accessImages = [];
-
-            $workflowPermission = $container->get('integrated_workflow.services.permission');
-            foreach ($images as $image) {
-                if ($workflowPermission->hasAccess($image)) {
-                    $accessImages[] = $image;
-                }
-            }
-            $images = $accessImages;
-        }
-
         $output = [];
+
         /** @var Image $image */
-        foreach ($images as $image) {
+        foreach ($this->container->get('integrated_content.provider.media')->getContentTypes($filter) as $contentType) {
             $output[] = [
-                'id' => $image->getId(),
-                'name' => $image->getName(),
-                'path' => $this->generateUrl('integrated_content_content_new', ['type'=>$image->getId()]),
+                'id' => $contentType->getId(),
+                'name' => $contentType->getName(),
+                'path' => $this->generateUrl('integrated_content_content_new', ['type' => $contentType->getId()]),
             ];
         }
 
@@ -1144,5 +1107,32 @@ class ContentController extends Controller
         }
 
         return $form->add('actions', 'content_actions', ['buttons' => ['delete', 'cancel']]);
+    }
+
+    /**
+     * @param ContentInterface $content
+     * @return array
+     */
+    protected function getReferences(ContentInterface $content)
+    {
+        $references = [];
+        /** @var \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation $relation */
+        foreach ($content->getRelations() as $relation) {
+            foreach ($relation->getReferences() as $reference) {
+                $properties = array(
+                    'id' => $reference->getId(),
+                    'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
+                );
+
+                if ($reference instanceof Image) {
+                    $properties['image'] = $this->get('image.handling')->open($reference->getFile())->cropResize(250, 250)->jpeg();
+                }
+
+                $references[$relation->getRelationId()][] = $properties;
+
+            }
+        }
+
+        return $references;
     }
 }

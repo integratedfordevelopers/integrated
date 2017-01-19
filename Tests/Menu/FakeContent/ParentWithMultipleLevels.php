@@ -18,4 +18,8 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
  */
 class ParentWithMultipleLevels extends Content
 {
+    public function __toString()
+    {
+        return 'string';
+    }
 }

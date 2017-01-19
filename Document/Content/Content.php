@@ -14,14 +14,14 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
+use Integrated\Common\Content\Embedded\RelationInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
 use Integrated\Common\Content\MetadataInterface;
@@ -34,82 +34,72 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  * Abstract base class for document types
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @ODM\Document(collection="content", repositoryClass="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository")
- * @ODM\Indexes({
- *   @ODM\Index(keys={"class"="asc"}),
- *   @ODM\Index(keys={"relations.references.$id"="asc", "class"="asc"})
- * })
- * @ODM\InheritanceType("SINGLE_COLLECTION")
- * @ODM\DiscriminatorField(fieldName="class")
- * @ODM\HasLifecycleCallbacks
  */
-class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
+abstract class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
 {
     use ExtensibleTrait;
 
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
      */
     protected $id;
 
     /**
      * @var string the type of the ContentType
-     * @ODM\String
-     * @ODM\Index
      */
     protected $contentType;
 
     /**
      * @var ArrayCollection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation")
      */
     protected $relations;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $createdAt;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $updatedAt;
 
     /**
      * @var PublishTime
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime")
      * @Type\Field(type="integrated_publish_time")
      */
     protected $publishTime;
 
     /**
      * @var bool
-     * @ODM\Boolean
      */
     protected $published = true;
 
     /**
      * @var bool
-     * @ODM\Boolean
      * @Type\Field(type="checkbox")
      */
     protected $disabled = false;
 
     /**
      * @var Metadata
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
      */
     protected $metadata;
 
     /**
      * @var Collection
-     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
      */
     protected $channels;
+
+    /**
+     * @var Channel
+     */
+    protected $primaryChannel;
+
+    /**
+     * @var Embedded\CustomFields
+     */
+    protected $customFields;
 
     /**
      * Constructor
@@ -163,80 +153,62 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * Get the relations of the document
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getRelations()
     {
+        //should always be instanceOf collection, but due to corrupt database can sometimes be null
+        if (!$this->relations instanceof Collection) {
+            $this->relations = new ArrayCollection();
+        }
+
         return $this->relations;
     }
 
     /**
-     * Set the relations of the document
-     *
-     * @param Collection $relations
-     * @return $this
+     * {@inheritdoc}
      */
     public function setRelations(Collection $relations)
     {
         foreach ($relations as $relation) {
-            // TODO: should we check if relation instanceof Relation
-            $this->addRelation($relation);
+            if ($relation instanceof RelationInterface) {
+                $this->addRelation($relation);
+            }
         }
 
         return $this;
     }
 
     /**
-     * Add relation to relations collection
-     *
-     * @param Relation $relation
-     * @return $this
+     * {@inheritdoc}
      */
-    public function addRelation(Relation $relation)
+    public function addRelation(RelationInterface $relation)
     {
         if ($exist = $this->getRelation($relation->getRelationId())) {
             $exist->addReferences($relation->getReferences());
         } else {
-            $this->relations->add($relation);
+            $this->getRelations()->add($relation);
         }
 
         return $this;
     }
 
     /**
-     * Add reference to relations collection
-     *
-     * @todo not compatible with latest relations version
-     * @param ContentInterface $content
-     * @throws \Exception
+     * {@inheritdoc}
      */
-    public function addReference(ContentInterface $content)
+    public function removeRelation(RelationInterface $relation)
     {
-        throw new \Exception('Method not longer supported');
-    }
-
-    /**
-     * Remove relation from relations collection
-     *
-     * @param Relation $relation
-     * @return $this
-     */
-    public function removeRelation(Relation $relation)
-    {
-        $this->relations->removeElement($relation);
+        $this->getRelations()->removeElement($relation);
         return $this;
     }
 
     /**
-     * @param $relationId
-     * @return Relation|false
+     * {@inheritdoc}
      */
     public function getRelation($relationId)
     {
-        return $this->relations->filter(function ($relation) use ($relationId) {
-            if ($relation instanceof Relation) {
+        return $this->getRelations()->filter(function ($relation) use ($relationId) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     return true;
                 }
@@ -252,8 +224,8 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
      */
     public function getRelationsByRelationType($relationType)
     {
-        return $this->relations->filter(function ($relation) use ($relationType) {
-            if ($relation instanceof Relation) {
+        return $this->getRelations()->filter(function ($relation) use ($relationType) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationType() == $relationType) {
                     return true;
                 }
@@ -272,7 +244,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
         if ($relations = $this->getRelationsByRelationType($relationType)) {
             $references = array();
 
-            /** @var Relation $relation */
+            /** @var RelationInterface $relation */
             foreach ($relations as $relation) {
                 $references = array_merge($references, $relation->getReferences()->toArray());
             }
@@ -284,14 +256,29 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
+     * @param $relationType
+     * @return Content|null
+     */
+    public function getReferenceByRelationType($relationType)
+    {
+        $references = $this->getReferencesByRelationType($relationType);
+
+        if (is_array($references) && count($references)) {
+            return $references[0];
+        }
+
+        return null;
+    }
+
+    /**
      * @param string $relationId
      * @param bool $published
      * @return ArrayCollection
      */
     public function getReferencesByRelationId($relationId, $published = true)
     {
-        foreach ($this->relations as $relation) {
-            if ($relation instanceof Relation) {
+        foreach ($this->getRelations() as $relation) {
+            if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     if ($references = $relation->getReferences()) {
                         if (true !== $published) {
@@ -527,7 +514,55 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @ODM\PreUpdate
+     * @return Channel|null
+     */
+    public function getPrimaryChannel()
+    {
+        if (null === $this->primaryChannel && $this->channels->count()) {
+            return $this->channels->first();
+        }
+
+        return $this->primaryChannel;
+    }
+
+    /**
+     * @param Channel|null $primaryChannel
+     * @return $this
+     */
+    public function setPrimaryChannel(Channel $primaryChannel = null)
+    {
+        $this->primaryChannel = $primaryChannel;
+        return $this;
+    }
+
+    /**
+     * @return Embedded\CustomFields
+     */
+    public function getCustomFields()
+    {
+        if ($this->customFields === null) {
+            $this->customFields = new Embedded\CustomFields();
+        }
+
+        return $this->customFields;
+    }
+
+    /**
+     * @param RegistryInterface|null $customFields
+     * @return $this
+     */
+    public function setCustomFields(RegistryInterface $customFields = null)
+    {
+        if ($customFields !== null && !$customFields instanceof Embedded\CustomFields) {
+            $customFields = new Embedded\CustomFields($customFields->toArray());
+        }
+
+        $this->customFields = $customFields;
+        return $this;
+    }
+
+    /**
+     * updateUpdatedAtOnPreUpdate
      */
     public function updateUpdatedAtOnPreUpdate()
     {
@@ -535,8 +570,7 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
     }
 
     /**
-     * @ODM\PrePersist
-     * @ODM\PreUpdate
+     * updatePublishTimeOnPreUpdate
      */
     public function updatePublishTimeOnPreUpdate()
     {
@@ -552,4 +586,9 @@ class Content implements ContentInterface, ExtensibleInterface, MetadataInterfac
             $this->publishTime->setEndDate(new \DateTime(PublishTime::DATE_MAX));
         }
     }
+
+    /**
+     * @return string
+     */
+    abstract public function __toString();
 }

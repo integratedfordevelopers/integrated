@@ -7,6 +7,11 @@ $(function() {
         var value = $(this).closest('.row').find('input:text').val();
         $primary_domain_input.val(value);
     });
+    $domains_collection.on('change', 'input[type=text]', function () {
+        if ($(this).closest('.row').find('.primary-domain-radio').is(":checked")) {
+            $primary_domain_input.val($(this).val());
+        }
+    });
 
     function refresh_checked_status() {
         /* if a domain input has entered domain name allow to set it as primary */

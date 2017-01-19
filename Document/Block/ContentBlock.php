@@ -14,8 +14,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Block;
 use Integrated\Bundle\BlockBundle\Document\Block\PublishTitleTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
@@ -25,7 +23,6 @@ use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Content block")
  */
 class ContentBlock extends Block
@@ -34,14 +31,12 @@ class ContentBlock extends Block
 
     /**
      * @var SearchSelection
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection")
      * @Type\Field(type="integrated_search_selection_choice")
      */
     protected $searchSelection;
 
     /**
      * @var int
-     * @ODM\Int
      * @Assert\Length(min=0)
      * @Type\Field(
      *      type="integer",
@@ -56,7 +51,6 @@ class ContentBlock extends Block
 
     /**
      * @var int
-     * @ODM\Int
      * @Assert\Length(min=0)
      * @Type\Field(
      *      type="integer",
@@ -72,7 +66,6 @@ class ContentBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(
      *      type="text",
      *      options={
@@ -84,7 +77,6 @@ class ContentBlock extends Block
 
     /**
      * @var array
-     * @ODM\Collection
      * @Type\Field(
      *      type="bootstrap_collection",
      *      options={
@@ -98,7 +90,6 @@ class ContentBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field(
      *       options={

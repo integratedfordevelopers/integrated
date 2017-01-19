@@ -14,7 +14,7 @@
 
         <service id="integrated_content.menu.content_type_menu_builder" class="%integrated_content.menu.content_type_menu_builder.class%">
             <argument type="service" id="knp_menu.factory" />
-            <argument type="service" id="integrated_content.content_type_repository" />
+            <argument type="service" id="integrated_content.content_type.manager" />
             <argument type="service" id="integrated_workflow.services.permission" on-invalid="ignore" />
         </service>
 

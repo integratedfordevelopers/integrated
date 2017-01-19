@@ -11,21 +11,17 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
-use ArrayIterator;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\Content\Registry;
 
 /**
  * Embedded document Metadata
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Metadata extends Registry
 {
-	/**
-	 * @var array
-	 * @ODM\Hash
-	 */
-	protected $data;
+    /**
+     * @var array
+     */
+    protected $data;
 }

@@ -39,6 +39,8 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
     {
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
+        $loader->load('controller.xml');
+
         $loader->load('channel.xml');
         $loader->load('converters.xml');
         $loader->load('extensions.xml');
@@ -49,6 +51,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('form.actions.xml');
         $loader->load('form.content.xml');
         $loader->load('form.content-type.xml');
+        $loader->load('form.registry.xml');
 
         $loader->load('manager.xml');
         $loader->load('manager.doctrine.xml');
@@ -59,6 +62,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('solr.xml');
         $loader->load('twig.xml');
         $loader->load('event_listeners.xml');
+        $loader->load('event_dispatchers.xml');
         $loader->load('repositories.xml');
         $loader->load('menu.xml');
 
@@ -70,6 +74,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('services.xml');
 
         $loader->load('mailer.xml');
+        $loader->load('services.xml');
 
         $configuration = new Configuration();
         $this->processConfiguration($configuration, $configs);

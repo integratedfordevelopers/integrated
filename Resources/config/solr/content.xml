@@ -64,6 +64,17 @@
                     </array>
                 </array>
 
+                <array>
+                    <string key="name">facet_authors</string>
+                    <array>
+                        <array key="authors">
+                            <string>@person.prefix</string>
+                            <string>@person.firstName</string>
+                            <string>@person.lastName</string>
+                        </array>
+                    </array>
+                </array>
+
             </options>
         </type>
 
@@ -96,7 +107,19 @@
                 <string key="content">description</string>
                 <string key="description">description</string>
 
+                <string key="extension_string">file.metadata.extension</string>
+
             </options>
+        </type>
+
+        <type name="integrated.storage">
+
+            <options>
+
+                <string key="file">file</string>
+
+            </options>
+
         </type>
 
     </class>
@@ -109,7 +132,9 @@
                 <string key="content">description</string>
                 <string key="description">description</string>
 
-                <string key="image_text">file.pathname</string>
+                <string key="image_string">file.pathname</string>
+                <string key="alternate_string">alt</string>
+                <string key="extension_string">file.metadata.extension</string>
 
             </options>
         </type>

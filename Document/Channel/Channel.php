@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
@@ -25,15 +24,12 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document(collection="channel")
- * @ODM\HasLifecycleCallbacks
  * @MongoDBUnique(fields="id")
  */
 class Channel implements ChannelInterface
 {
     /**
      * @var string
-     * @ODM\Id(strategy="NONE")
      * @Slug(fields={"name"}, separator="_")
      */
     protected $id;
@@ -41,32 +37,26 @@ class Channel implements ChannelInterface
     /**
      * @var string the name of the channel
      * @Assert\NotBlank()
-     * @ODM\String
-     * @ODM\Index
      */
     protected $name;
 
     /**
      * @var array
-     * @ODM\Collection
      */
     protected $domains;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $primaryDomain;
 
     /**
      * @var mixed[]
-     * @ODM\Hash
      */
     protected $options = [];
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $createdAt;
 
@@ -235,38 +225,12 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * @ODM\PrePersist
-     * @ODM\PreUpdate
+     *
      */
     public function defaultPrimaryDomain()
     {
         if (!$this->primaryDomain) {
             $this->primaryDomain = reset($this->domains);
-        }
-    }
-
-
-
-    /**
-     * @param ExecutionContextInterface $context
-     * @Assert\Callback
-     */
-    public function validate(ExecutionContextInterface $context)
-    {
-        foreach ($this->domains as $domain) {
-            if (!filter_var('admin@' . $domain, FILTER_VALIDATE_EMAIL)) {
-                $context->buildViolation('Domain ' . $domain . ' is not valid')
-                    ->atPath('domains')
-                    ->addViolation();
-
-                break;
-            }
-        }
-
-        if (!filter_var('admin@' . $this->primaryDomain, FILTER_VALIDATE_EMAIL)) {
-            $context->buildViolation('Primary domain ' . $domain . ' is not valid')
-                ->atPath('primaryDomain')
-                ->addViolation();
         }
     }
 }

@@ -7,11 +7,22 @@
     <parameters>
 
         <parameter key="integrated_content.services.search.content.referenced.class">Integrated\Bundle\ContentBundle\Services\SearchContentReferenced</parameter>
+        <parameter key="integrated_content.form_request_handler">Integrated\Bundle\ContentBundle\Form\RequestHandler\IntegratedHttpRequestHandler</parameter>
 
     </parameters>
     <services>
         <service id="integrated_content.services.search.content.referenced" class="%integrated_content.services.search.content.referenced.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
+
+        <!-- Overwrite the default form.type_extension.form.request_handler service with our own -->
+        <service id="form.type_extension.form.request_handler" alias="integrated_content.form_request_handler" />
+        <service id="integrated_content.form_request_handler" class="%integrated_content.form_request_handler%">
+
+            <argument type="service" id="form.server_params" />
+            <argument type="service" id="integrated_content.event_dispatcher" />
+
+        </service>
+
     </services>
 </container>

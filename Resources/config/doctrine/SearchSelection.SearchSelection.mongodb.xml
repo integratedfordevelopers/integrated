@@ -1,0 +1,19 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document
+        name="Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection"
+        collection="search_selection"
+        repository-class="Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository">
+
+        <field fieldName="id" id="true" strategy="NONE" />
+        <field fieldName="title" type="string" index="true" />
+        <field fieldName="filters" type="hash" />
+        <field fieldName="public" type="boolean" />
+        <field fieldName="userId" type="int" />
+
+    </document>
+
+</doctrine-mongo-mapping>

@@ -11,26 +11,22 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 
 /**
  * Embedded document Author
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Author
 {
     /**
      * @var string
-     * @ODM\String
      */
     protected $type;
 
     /**
      * @var Person
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person")
      */
     protected $person;
 

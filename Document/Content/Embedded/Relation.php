@@ -14,35 +14,28 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Content\Embedded\RelationInterface;
 
 /**
  * Embedded document Reference
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\EmbeddedDocument
  */
-class Relation
+class Relation implements RelationInterface
 {
     /**
      * @var string id of the Relation document
-     * @ODM\String
-     * @ODM\Index
      */
     protected $relationId;
 
     /**
      * @var string type of the Relation document
-     * @ODM\String
-     * @ODM\Index
      */
     protected $relationType;
 
     /**
      * @var Collection
-     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
      */
     protected $references;
 
@@ -65,7 +58,7 @@ class Relation
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getRelationId()
     {
@@ -83,7 +76,7 @@ class Relation
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getRelationType()
     {
@@ -103,9 +96,7 @@ class Relation
     }
 
     /**
-     * Get references of Relation
-     *
-     * @return ContentInterface[] | ArrayCollection
+     * {@inheritdoc}
      */
     public function getReferences()
     {

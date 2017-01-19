@@ -2,3 +2,21 @@
 #wrapper-holder {
     padding-bottom: 120px;
 }
+
+label.is-primary-channel {
+    font-weight: bold;
+}
+
+.select2-dropdown-image {
+    max-height: 40px;
+    margin-right: 5px;
+}
+
+div.select2-selected {
+    display: inline;
+}
+
+div.select2-selected img {
+    margin: 0 5px 0 -5px;
+    max-height: 40px;
+}

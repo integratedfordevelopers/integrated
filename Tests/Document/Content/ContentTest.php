@@ -12,33 +12,28 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\Debug;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomFields;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTest extends \PHPUnit_Framework_TestCase
+abstract class ContentTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var Content
-     */
-    private $content;
-
-    /**
-     * Setup the test
-     */
-    protected function setUp()
-    {
-        $this->content = new Content();
-    }
-
     /**
      * Content should implement ContentInterface
      */
     public function testInstanceOfContentInterface()
     {
-        $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->content);
+        $this->assertInstanceOf('Integrated\Common\Content\ContentInterface', $this->getContent());
+    }
+
+    /**
+     * Content should extend content
+     */
+    public function testInstanceOfContent()
+    {
+        $this->assertInstanceOf('Integrated\Bundle\ContentBundle\Document\Content\Content', $this->getContent());
     }
 
     /**
@@ -47,7 +42,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetIdFunction()
     {
         $id = 'abc123';
-        $this->assertEquals($id, $this->content->setId($id)->getId());
+        $this->assertEquals($id, $this->getContent()->setId($id)->getId());
     }
 
     /**
@@ -56,7 +51,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetContentTypeFunction()
     {
         $contentType = 'type';
-        $this->assertEquals($contentType, $this->content->setContentType($contentType)->getContentType());
+        $this->assertEquals($contentType, $this->getContent()->setContentType($contentType)->getContentType());
     }
 
     /**
@@ -76,8 +71,8 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $relations = new ArrayCollection(array($relation));
 
         // Asserts
-        $this->assertSame($this->content, $this->content->setRelations($relations));
-        $this->assertEquals($relations, $this->content->setRelations($relations)->getRelations());
+        $this->assertSame($this->getContent(), $this->getContent()->setRelations($relations));
+        $this->assertEquals($relations, $this->getContent()->setRelations($relations)->getRelations());
     }
 
     /**
@@ -86,15 +81,15 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     public function testRemoveRelationFunction()
     {
         // Get empty collection with relations
-        $relations = $this->content->getRelations();
+        $relations = $this->getContent()->getRelations();
 
         /* @var $relation \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation | \PHPUnit_Framework_MockObject_MockObject */
         $relation = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation');
 
         // Asserts
-        $this->assertSame($this->content, $this->content->addRelation($relation));
-        $this->assertSame($this->content, $this->content->removeRelation($relation));
-        $this->assertSame($relations, $this->content->getRelations());
+        $this->assertSame($this->getContent(), $this->getContent()->addRelation($relation));
+        $this->assertSame($this->getContent(), $this->getContent()->removeRelation($relation));
+        $this->assertSame($relations, $this->getContent()->getRelations());
     }
 
     /**
@@ -103,7 +98,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetCreatedAtFunction()
     {
         $createdAt = new \DateTime();
-        $this->assertSame($createdAt, $this->content->setCreatedAt($createdAt)->getCreatedAt());
+        $this->assertSame($createdAt, $this->getContent()->setCreatedAt($createdAt)->getCreatedAt());
     }
 
     /**
@@ -112,7 +107,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetUpdatedAtFunction()
     {
         $updatedAt = new \DateTime();
-        $this->assertSame($updatedAt, $this->content->setUpdatedAt($updatedAt)->getUpdatedAt());
+        $this->assertSame($updatedAt, $this->getContent()->setUpdatedAt($updatedAt)->getUpdatedAt());
     }
 
     /**
@@ -121,7 +116,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetPublishTimeStartDateFunction()
     {
         $publishedAt = new \DateTime();
-        $this->assertSame($publishedAt, $this->content->getPublishTime()->setStartDate($publishedAt)->getStartDate());
+        $this->assertSame($publishedAt, $this->getContent()->getPublishTime()->setStartDate($publishedAt)->getStartDate());
     }
 
     /**
@@ -130,7 +125,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetPublishTimeEndDateFunction()
     {
         $publishedUntil = new \DateTime();
-        $this->assertSame($publishedUntil, $this->content->getPublishTime()->setEndDate($publishedUntil)->getEndDate());
+        $this->assertSame($publishedUntil, $this->getContent()->getPublishTime()->setEndDate($publishedUntil)->getEndDate());
     }
 
     /**
@@ -138,8 +133,8 @@ class ContentTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAndSetDisabledFunction()
     {
-        $this->assertTrue($this->content->setDisabled(true)->isDisabled());
-        $this->assertFalse($this->content->setDisabled(false)->isDisabled());
+        $this->assertTrue($this->getContent()->setDisabled(true)->isDisabled());
+        $this->assertFalse($this->getContent()->setDisabled(false)->isDisabled());
     }
 
     /**
@@ -149,33 +144,30 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     {
         /* @var $metadata \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata | \PHPUnit_Framework_MockObject_MockObject */
         $metadata = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata');
-        $this->assertSame($metadata, $this->content->setMetadata($metadata)->getMetadata());
+        $this->assertSame($metadata, $this->getContent()->setMetadata($metadata)->getMetadata());
     }
 
     /**
      * Test get- and setChannels function
+     * @dataProvider getChannels
+     * @param ArrayCollection $channels
      */
-    public function testGetAndSetChannelsFunction()
+    public function testGetAndSetChannelsFunction(ArrayCollection $channels)
     {
-        $channels = new ArrayCollection();
-        $this->assertSame($channels->toArray(), $this->content->setChannels($channels)->getChannels());
+        $this->assertEquals($channels->toArray(), $this->getContent()->setChannels($channels)->getChannels());
     }
 
     /**
      * Test addChannel function
+     * @dataProvider getChannels
+     * @param ArrayCollection $channels
      */
-    public function testAddChannelFunction()
+    public function testAddChannelFunction(ArrayCollection $channels)
     {
-        /* @var $channel \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $channel = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
-
-        // Check if we can add
-        $this->content->addChannel($channel);
-        $this->assertContains($channel, $this->content->getChannels());
-
-        // Duplicate check
-        $this->content->addChannel($channel);
-        $this->assertCount(1, $this->content->getChannels());
+        foreach ($channels as $channel) {
+            $this->assertContains($channel, $this->getContent()->addChannel($channel)->getChannels());
+            $this->assertCount(count($this->getContent()->getChannels()), $this->getContent()->addChannel($channel)->getChannels());
+        }
     }
 
     /**
@@ -189,18 +181,46 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         /* @var $channel2 \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
         $channel2 = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
 
-        // Add channels
-        $this->content->addChannel($channel1)->addChannel($channel2);
-        $this->assertCount(2, $this->content->getChannels());
+        $this->getContent()->addChannel($channel1)->addChannel($channel2);
+        $this->getContent()->removeChannel($channel2);
 
-        // Remove channel2
-        $this->assertSame($this->content, $this->content->removeChannel($channel2));
-
-        // Channel1 should not be removed
-        $this->assertContains($channel1, $this->content->getChannels());
-
-        // Removal of channel that is not added
-        $this->content->removeChannel($channel2);
-        $this->assertCount(1, $this->content->getChannels());
+        $this->assertContains($channel1, $this->getContent()->getChannels());
+        $this->assertNotContains($channel2, $this->getContent()->getChannels());
     }
+
+    /**
+     * Test getCustomFields functions
+     */
+    public function testCustomFieldsFunction()
+    {
+        $this->isInstanceOf(CustomFields::class, $this->getContent()->getCustomFields());
+
+        $fields = new CustomFields(['field1' => 'value1', 'field2' => 'value2']);
+        $this->assertSame($fields, $this->getContent()->setCustomFields($fields)->getCustomFields());
+    }
+
+    /**
+     * @return \Integrated\Common\Content\Channel\ChannelInterface[]|\PHPUnit_Framework_MockObject_MockObject[]
+     */
+    public function getChannels()
+    {
+        return [
+            'single' => [
+                new ArrayCollection([
+                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface')
+                ])
+            ],
+            'multiple' => [
+                new ArrayCollection([
+                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface'),
+                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface')
+                ])
+            ]
+        ];
+    }
+
+    /**
+     * @return Content
+     */
+    abstract protected function getContent();
 }

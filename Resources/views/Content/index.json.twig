@@ -1,12 +1,19 @@
 {% spaceless %}
 {% set items = [] %}
 {% for content in pager %}
-    {% set item = {'id': content.type_id, 'title': content.title|default('(no title)'), 'content': null, 'image': null, 'disabled': content.disabled_int|first|default(0)} %}
+    {% set item = {'id': content.type_id, 'type': content.type_name,'title': content.title|default('(no title)'), 'content': null, 'image': null, 'disabled': content.disabled_int|first|default(0)} %}
     {% if content.content is defined %}
         {% set item = item|merge({'content': content.content|join('...')|striptags}) %}
     {% endif %}
-    {% if content.image_text is defined %}
-        {% set item = item|merge({'image': content.image_text}) %}
+    {% if content.image_string is defined %}
+        {% set item = item|merge({'image': content.image_string|first}) %}
+        {# todo add resized image for preview #}
+    {% endif %}
+    {% if content.extension_string is defined %}
+        {% set item = item|merge({'extension': content.extension_string[0]}) %}
+    {% endif %}
+    {% if content.alternate_string is defined %}
+        {% set item = item|merge({'alternate': content.alternate_string[0]}) %}
     {% endif %}
     {% set items = items|merge([item]) %}
 {% endfor %}
