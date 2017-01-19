@@ -12,6 +12,7 @@
 namespace Integrated\Tests\Common\Form\Mapping\Driver;
 
 use Integrated\Common\Form\Mapping\Metadata\Document;
+use Integrated\Common\Form\Mapping\Metadata\Field;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -55,13 +56,21 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testFields()
     {
-        // Mock Field
-        $field1 = $this->getMock('Integrated\Common\Form\Mapping\Metadata\Field');
-        $field2 = $this->getMock('Integrated\Common\Form\Mapping\Metadata\Field');
+        /** @var Field | \PHPUnit_Framework_MockObject_MockObject $field1 */
+        $field1 = $this->getMock(Field::class, [], [], '', false);
+
+        $field1
+            ->expects($this->once())
+            ->method('getName')
+            ->willReturn('field1')
+        ;
+
+        /** @var Field | \PHPUnit_Framework_MockObject_MockObject $field2 */
+        $field2 = $this->getMock(Field::class, [], [], '', false);
 
         // Set fields
         $fields = array(
-            $field1
+            'field1' => $field1
         );
 
         $this->contentType->addField($field1);
@@ -70,15 +79,17 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($fields, $this->contentType->getFields());
 
         // Stub getName
-        $field2->expects($this->exactly(2))
+        $field2
+            ->expects($this->once())
             ->method('getName')
-            ->will($this->returnValue('Henk'));
+            ->will($this->returnValue('field2'))
+        ;
 
         // Add field
         $this->contentType->addField($field2);
 
         // Assert
-        $this->assertSame($field2, $this->contentType->getField('Henk'));
-        $this->assertNull($this->contentType->getField('Henk de Vries'));
+        $this->assertSame($field2, $this->contentType->getField('field2'));
+        $this->assertNull($this->contentType->getField('field3'));
     }
 }
