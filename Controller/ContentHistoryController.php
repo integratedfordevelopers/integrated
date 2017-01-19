@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
@@ -30,7 +30,7 @@ class ContentHistoryController
     protected $templating;
 
     /**
-     * @var ObjectRepository
+     * @var DocumentRepository
      */
     protected $repository;
 
@@ -41,10 +41,10 @@ class ContentHistoryController
 
     /**
      * @param TwigEngine $templating
-     * @param ObjectRepository $repository
+     * @param DocumentRepository $repository
      * @param FormFactory $formFactory
      */
-    public function __construct(TwigEngine $templating, ObjectRepository $repository, FormFactory $formFactory)
+    public function __construct(TwigEngine $templating, DocumentRepository $repository, FormFactory $formFactory)
     {
         $this->templating = $templating;
         $this->repository = $repository;
