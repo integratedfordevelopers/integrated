@@ -11,7 +11,10 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type\Grid;
 
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,11 +28,9 @@ class ItemType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('order', 'hidden');
-
-        $builder->add('block', 'integrated_page_grid_block');
-
-        $builder->add('row', 'integrated_page_grid_row');
+        $builder->add('order', HiddenType::class);
+        $builder->add('block', BlockType::class);
+        $builder->add('row', RowType::class);
     }
 
     /**
@@ -37,15 +38,15 @@ class ItemType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\Grid\Item',
-        ));
+        $resolver->setDefaults([
+            'data_class' => Item::class,
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_page_grid_item';
     }

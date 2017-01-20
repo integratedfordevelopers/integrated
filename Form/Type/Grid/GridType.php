@@ -11,11 +11,14 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type\Grid;
 
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
+use Integrated\Bundle\PageBundle\Form\EventListener\ItemOrderListener;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Integrated\Bundle\PageBundle\Form\EventListener\ItemOrderListener;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -27,10 +30,9 @@ class GridType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id', 'hidden');
-
-        $builder->add('items', 'collection', [
-            'type'         => 'integrated_page_grid_item',
+        $builder->add('id', HiddenType::class);
+        $builder->add('items', CollectionType::class, [
+            'entry_type'   => ItemType::class,
             'allow_add'    => true,
             'allow_delete' => true,
             'prototype'    => false,
@@ -39,17 +41,20 @@ class GridType extends AbstractType
         $builder->addEventSubscriber(new ItemOrderListener());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\Grid\Grid',
-        ));
+        $resolver->setDefaults([
+            'data_class' =>  Grid::class,
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_page_grid_grid';
     }

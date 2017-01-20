@@ -15,12 +15,13 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "~2.7",
+        "symfony/symfony": "~2.8",
         "sensio/framework-extra-bundle": "~3.0",
         "doctrine/mongodb": "~1.3",
         "doctrine/mongodb-odm": "~1.1.2",
         "doctrine/mongodb-odm-bundle": "~3.2",
         "integrated/content-bundle": "~0.6",
+        "integrated/formtype-bundle": "~0.6",
         "integrated/block-bundle": "~0.6",
         "integrated/theme-bundle": "~0.6",
         "knplabs/knp-paginator-bundle": ">=2.4"

@@ -12,6 +12,9 @@
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,21 +28,20 @@ class PageType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title', 'text');
-
-        $builder->add('description', 'textarea', [
+        $builder->add('title', TextType::class);
+        $builder->add('description', TextareaType::class, [
             'required' => false,
         ]);
 
-        $builder->add('path', 'text', [
+        $builder->add('path', TextType::class, [
             'label' => 'URL',
         ]);
 
-        $builder->add('layout', 'integrated_page_layout_choice', [
+        $builder->add('layout', LayoutChoiceType::class, [
             'theme' => $options['theme'],
         ]);
 
-        $builder->add('disabled', 'checkbox', [
+        $builder->add('disabled', CheckboxType::class, [
             'required' => false,
         ]);
     }
@@ -57,7 +59,7 @@ class PageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_page_page';
     }
