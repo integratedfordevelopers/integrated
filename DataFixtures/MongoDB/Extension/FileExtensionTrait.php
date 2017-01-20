@@ -11,9 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension;
 
-use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-
-use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Faker\Image;
+use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util\CreateUtil;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -21,7 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-trait ImageExtension
+trait FileExtensionTrait
 {
     /**
      * @return ContainerInterface
@@ -29,17 +27,19 @@ trait ImageExtension
     abstract public function getContainer();
 
     /**
-     * @param int $width
-     * @param int $height
-     * @param null $category
-     * @param string $dir
-     * @return StorageInterface
+     * @param string $path
+     * @param string $name
+     * @return File
      */
-    public function createImage($width = 640, $height = 480, $category = null, $dir = '/tmp')
+    public function createFile($path, $name = '')
     {
-        return CreateUtil::path(
-            $this->getContainer()->get('integrated_storage.manager'),
-            Image::image($dir, $width, $height, $category)
-        );
+        return (new File())
+            ->setTitle($name)
+            ->setFile(
+                CreateUtil::path(
+                    $this->getContainer()->get('integrated_storage.manager'),
+                    $path
+                )
+            );
     }
 }

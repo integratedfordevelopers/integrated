@@ -66,7 +66,7 @@ class IntegratedStorageExtension extends Extension implements PrependExtensionIn
                 case 'twig':
                     $container->prependExtensionConfig(
                         $name,
-                        array('form_themes' => array($this->formTemplate))
+                        ['form_themes' => [$this->formTemplate]]
                     );
                     break;
             }
