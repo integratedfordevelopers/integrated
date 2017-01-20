@@ -40,7 +40,7 @@ class TextBlock extends Block
 
     /**
      * @var string
-     * @Type\Field(type="integrated_tinymce",options={"mode"="web"})
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\EditorType",options={"mode"="web"})
      */
     protected $content;
 

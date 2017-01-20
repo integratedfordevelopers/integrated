@@ -17,11 +17,9 @@
 
     <services>
 
-        <service id="integrated_block.metadata.driver.annotation.mapping"
-             class="%integrated_block.metadata.driver.annotation.mapping.class%"
-             factory-service="doctrine_mongodb.odm.default_configuration"
-             factory-method="getMetadataDriverImpl"
-             public="false" />
+        <service id="integrated_block.metadata.driver.annotation.mapping" class="%integrated_block.metadata.driver.annotation.mapping.class%" public="false">
+            <factory service="doctrine_mongodb.odm.default_configuration" method="getMetadataDriverImpl" />
+        </service>
 
         <service id="integrated_block.metadata.driver.annotation" class="%integrated_block.metadata.driver.annotation.class%">
             <argument type="service" id="integrated_block.metadata.driver.annotation.mapping" />

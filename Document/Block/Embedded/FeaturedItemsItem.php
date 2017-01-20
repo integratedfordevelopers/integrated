@@ -73,7 +73,7 @@ class FeaturedItemsItem
      * @var bool
      * @ODM\Boolean
      * @Type\Field(
-     *      type="checkbox",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\CheckboxType",
      *      options={
      *          "required"=false
      *      }
