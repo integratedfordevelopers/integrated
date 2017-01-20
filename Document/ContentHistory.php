@@ -158,7 +158,7 @@ class ContentHistory
      * @param Request | null $request
      * @return $this
      */
-    public function setRequest($request = null)
+    public function setRequest(Request $request = null)
     {
         $this->request = $request;
         return $this;

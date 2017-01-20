@@ -17,17 +17,17 @@ namespace Integrated\Bundle\ContentHistoryBundle\Document\Embedded;
 class Workflow
 {
     /**
-     * @var
+     * @var string
      */
     protected $state;
 
     /**
-     * @var
+     * @var string
      */
     protected $assigned;
 
     /**
-     * @var
+     * @var string
      */
     protected $deadline;
 
@@ -35,4 +35,76 @@ class Workflow
      * @var string
      */
     protected $comment;
+
+    /**
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string $state
+     * @return $this
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAssigned()
+    {
+        return $this->assigned;
+    }
+
+    /**
+     * @param string $assigned
+     * @return $this
+     */
+    public function setAssigned($assigned)
+    {
+        $this->assigned = $assigned;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeadline()
+    {
+        return $this->deadline;
+    }
+
+    /**
+     * @param string $deadline
+     * @return $this
+     */
+    public function setDeadline($deadline)
+    {
+        $this->deadline = $deadline;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @param string $comment
+     * @return $this
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+        return $this;
+    }
 }

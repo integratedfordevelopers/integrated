@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
@@ -57,9 +57,9 @@ class ContentHistorySubscriber implements EventSubscriber
     }
 
     /**
-     * @param LifecycleEventArgs $args
+     * @param OnFlushEventArgs $args
      */
-    public function onFlush($args)
+    public function onFlush(OnFlushEventArgs $args)
     {
         $dm = $args->getDocumentManager();
         $uow = $dm->getUnitOfWork();
