@@ -140,11 +140,9 @@ class SluggableSubscriber implements EventSubscriber
                             $args->getNewValue($propertyMetadata->name),
                             $propertyMetadata->slugSeparator
                         );
-
                     } elseif (null !== $propertyMetadata->getValue($object)) {
                         continue; // no changes
                     }
-
                 } else {
                     // generate custom slug
                     $slug = $this->slugger->slugify(
@@ -253,7 +251,6 @@ class SluggableSubscriber implements EventSubscriber
                     }
                 }
             }
-
         }
 
         return $slug;
@@ -294,7 +291,6 @@ class SluggableSubscriber implements EventSubscriber
             $query = $builder->count()->getQuery();
 
             return ($query->execute() === 0);
-
         } elseif ($uow instanceof ORMUnitOfWork) {
             throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
@@ -320,7 +316,6 @@ class SluggableSubscriber implements EventSubscriber
                     '/^' . preg_quote($slug, '/') . '(' . preg_quote($separator, '/') . '\d+)?$/'
                 ) // counter is optional
             ]));
-
         } elseif ($uow instanceof ORMUnitOfWork) {
             throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
@@ -337,7 +332,6 @@ class SluggableSubscriber implements EventSubscriber
 
         if ($uow instanceof ODMUnitOfWork) {
             return array_merge($uow->getScheduledDocumentInsertions(), $uow->getScheduledDocumentUpdates());
-
         } elseif ($uow instanceof ORMUnitOfWork) {
             return array_merge($uow->getScheduledEntityInsertions(), $uow->getScheduledEntityUpdates());
         }
@@ -362,7 +356,6 @@ class SluggableSubscriber implements EventSubscriber
             }
 
             return $om->getRepository($class);
-
         } elseif ($uow instanceof ORMUnitOfWork) {
             throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
@@ -380,7 +373,6 @@ class SluggableSubscriber implements EventSubscriber
 
             if ($uow instanceof ODMUnitOfWork) {
                 $uow->recomputeSingleDocumentChangeSet($classMetadata, $object);
-
             } elseif ($uow instanceof ORMUnitOfWork) {
                 $uow->recomputeSingleEntityChangeSet($classMetadata, $object);
             }
