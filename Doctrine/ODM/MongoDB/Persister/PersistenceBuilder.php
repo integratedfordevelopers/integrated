@@ -37,9 +37,15 @@ class PersistenceBuilder
     /**
      * @param object $document
      * @return array
+     *
+     * @throws \RuntimeException
      */
     public function prepareData($document)
     {
+        if (!is_object($document)) {
+            throw new \RuntimeException('The given argument should be an object.');
+        }
+
         $class = $this->dm->getClassMetadata(get_class($document));
         $data = [];
 
