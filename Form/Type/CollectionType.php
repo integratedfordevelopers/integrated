@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use Symfony\Component\Form\AbstractType;
 
 /**
@@ -23,13 +24,13 @@ class CollectionType extends AbstractType
      */
     public function getParent()
     {
-        return 'bootstrap_collection';
+        return BootstrapCollectionType::class;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_collection';
     }

@@ -61,7 +61,7 @@ class RelationsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_relations_choice';
     }
