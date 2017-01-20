@@ -436,8 +436,6 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
             ->willReturn($this->getField('field', 'type'));
 
         $builder = $this->getBuilder();
-        $builder->expects($this->never())
-            ->method($this->anything());
 
         $this->getInstance()->buildForm($builder, []);
     }
