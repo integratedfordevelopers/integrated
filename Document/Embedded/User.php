@@ -11,25 +11,18 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Document\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\EmbeddedDocument
  */
 class User
 {
     /**
      * @var int
-     * @ODM\Int
-     * @ODM\Index
      */
     protected $id;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $name;
 

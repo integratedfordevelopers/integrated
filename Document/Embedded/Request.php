@@ -11,24 +11,18 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Document\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\EmbeddedDocument
  */
 class Request
 {
     /**
      * @var string
-     * @ODM\String
      */
     protected $ipAddress;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $endpoint;
 

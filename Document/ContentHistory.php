@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Document;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Request;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User;
@@ -21,63 +19,51 @@ use DateTime;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\Document(collection="content_history")
- * @ODM\Index(keys={"contentId"="asc", "date"="desc"})
  */
 class ContentHistory
 {
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
      */
     protected $id;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $contentId;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $contentType;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $contentClass;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $action;
 
     /**
      * @var DateTime
-     * @ODM\Date
      */
     protected $date;
 
     /**
      * @var array
-     * @ODM\Hash(nullable=true)
      */
     protected $changeSet = [];
 
     /**
      * @var Request | null
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Request")
      */
     protected $request;
 
     /**
      * @var User | null
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User")
      */
     protected $user;
 
