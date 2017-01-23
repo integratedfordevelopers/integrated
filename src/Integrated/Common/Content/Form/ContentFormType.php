@@ -79,17 +79,17 @@ class ContentFormType extends AbstractType
         /** @var ContentTypeInterface $contentType */
         $contentType = $options['content_type'];
 
+        $metadata = $this->metadataFactory->getMetadata($contentType->getClass());
+
         // Allow events to change the options or add fields at the start of the form
         if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
-            $event = new BuilderEvent($contentType, $this->metadata, $builder);
+            $event = new BuilderEvent($contentType, $metadata, $builder);
             $event->setOptions($options);
 
             $dispatcher->dispatch(Events::PRE_BUILD, $event);
 
             $options = $event->getOptions();
         }
-
-        $metadata = $this->metadataFactory->getMetadata($contentType->getClass());
 
         foreach ($metadata->getFields() as $field) {
             // Allow events to add fields before the supplied field
@@ -212,18 +212,12 @@ class ContentFormType extends AbstractType
         };
 
         $resolver
-            ->setDefaults([
-                'content_type' => null
-            ])
-            ->setAllowedTypes('content_type', ContentTypeInterface::class);
-
-        $resolver
+            ->setDefaults(['content_type' => null,])
+            ->setAllowedTypes('content_type', ContentTypeInterface::class)
             ->setNormalizer('data_class', $dataClassNormalizer)
             ->setNormalizer('content_type', $contentTypeNormalizer)
             ->setNormalizer('empty_data', $emptyDataNormalizer)
-
         ;
-
     }
 
     /**
