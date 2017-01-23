@@ -49,7 +49,6 @@ class MetadataType extends AbstractType
         $metadata = $this->factory->getMetadata($options['data_class']); // @todo: auto-resolve class
 
         foreach ($metadata->getFields() as $field) {
-
             $builder->add($field->getName(), $field->getType(), $field->getOptions());
         }
     }
@@ -57,7 +56,7 @@ class MetadataType extends AbstractType
     /**
      * @inheritdoc
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return $this->name;
     }

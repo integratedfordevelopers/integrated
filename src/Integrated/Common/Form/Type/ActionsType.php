@@ -60,7 +60,7 @@ class ActionsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $buttonsNormalizer = function(Options $options, $buttons) {
+        $buttonsNormalizer = function (Options $options, $buttons) {
             $normalized = [];
 
             foreach ($buttons as $button) {
@@ -82,13 +82,13 @@ class ActionsType extends AbstractType
      */
     public function getParent()
     {
-        return 'form_actions';
+        return 'Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return $this->name;
     }
