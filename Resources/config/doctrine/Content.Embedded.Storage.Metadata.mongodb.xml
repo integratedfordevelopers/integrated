@@ -10,11 +10,6 @@
         <field fieldName="headers" type="hash" />
         <field fieldName="metadata" type="hash" />
 
-        <embed-one
-                field="metadata"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata"
-        />
-
     </embedded-document>
 
 </doctrine-mongo-mapping>
