@@ -13,36 +13,39 @@ namespace Integrated\Common\Content\Form;
 
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Event\FieldEvent;
-use Integrated\Common\Content\Form\Event\OptionsEvent;
 use Integrated\Common\Content\Form\Event\ViewEvent;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\Form\Mapping\MetadataInterface;
+use Integrated\Common\ContentType\ContentTypeRepositoryInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 
+use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class FormType extends AbstractType implements FormTypeInterface
+class ContentFormType extends AbstractType
 {
     /**
-     * @var ContentTypeInterface
+     * @var MetadataFactoryInterface
      */
-    protected $contentType;
+    protected $metadataFactory;
 
     /**
-     * @var MetadataInterface
+     * @var ContentTypeRepositoryInterface
      */
-    protected $metadata;
+    protected $repository;
 
     /**
      * @var EventDispatcherInterface
@@ -50,19 +53,19 @@ class FormType extends AbstractType implements FormTypeInterface
     protected $dispatcher = null;
 
     /**
-     * @var string
-     */
-    private $name = null;
-
-    /**
-     * @param ContentTypeInterface $contentType
-     * @param MetadataInterface $metadata
+     * @param MetadataFactoryInterface $metadataFactory
+     * @param ContentTypeRepositoryInterface $repository
      * @param EventDispatcherInterface $dispatcher
+     * @internal param MetadataInterface $metadata
+     * @internal param ContentTypeInterface $contentType
      */
-    public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata, EventDispatcherInterface $dispatcher = null)
-    {
-        $this->contentType = $contentType;
-        $this->metadata = $metadata;
+    public function __construct(
+        MetadataFactoryInterface $metadataFactory,
+        ContentTypeRepositoryInterface $repository,
+        EventDispatcherInterface $dispatcher = null
+    ) {
+        $this->metadataFactory = $metadataFactory;
+        $this->repository = $repository;
         $this->dispatcher = $dispatcher;
     }
 
@@ -73,9 +76,12 @@ class FormType extends AbstractType implements FormTypeInterface
     {
         $dispatcher = $this->getEventDispatcher();
 
+        /** @var ContentTypeInterface $contentType */
+        $contentType = $options['content_type'];
+
         // Allow events to change the options or add fields at the start of the form
         if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
-            $event = new BuilderEvent($this->contentType, $this->metadata, $builder);
+            $event = new BuilderEvent($contentType, $this->metadata, $builder);
             $event->setOptions($options);
 
             $dispatcher->dispatch(Events::PRE_BUILD, $event);
@@ -83,22 +89,23 @@ class FormType extends AbstractType implements FormTypeInterface
             $options = $event->getOptions();
         }
 
-        foreach ($this->metadata->getFields() as $field) {
+        $metadata = $this->metadataFactory->getMetadata($contentType->getClass());
 
+        foreach ($metadata->getFields() as $field) {
             // Allow events to add fields before the supplied field
             if ($dispatcher->hasListeners(Events::PRE_BUILD_FIELD)) {
-                $event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field->getName());
+                $event = new BuilderEvent($contentType, $metadata, $builder, $field->getName());
                 $event->setOptions($options);
 
                 $dispatcher->dispatch(Events::PRE_BUILD_FIELD, $event);
             }
 
-            if ($this->contentType->hasField($field->getName())) {
-                $config = $this->contentType->getField($field->getName());
+            if ($contentType->hasField($field->getName())) {
+                $config = $contentType->getField($field->getName());
 
                 // Allow events to change the supplied field options or even remove it from the form
                 if ($dispatcher->hasListeners(Events::BUILD_FIELD)) {
-                    $event = new FieldEvent($this->contentType, $this->metadata);
+                    $event = new FieldEvent($contentType, $metadata);
                     $event->setOptions($options);
                     $event->setData($builder->getData());
                     $event->setField(clone $config); // don't allow the original to be changed.
@@ -119,7 +126,7 @@ class FormType extends AbstractType implements FormTypeInterface
 
             // Allow events to add fields after the supplied field
             if ($dispatcher->hasListeners(Events::POST_BUILD_FIELD)) {
-                $event = new BuilderEvent($this->contentType, $this->metadata, $builder, $field->getName());
+                $event = new BuilderEvent($contentType, $metadata, $builder, $field->getName());
                 $event->setOptions($options);
 
                 $dispatcher->dispatch(Events::POST_BUILD_FIELD, $event);
@@ -128,7 +135,7 @@ class FormType extends AbstractType implements FormTypeInterface
 
         // Allow events to add fields at the end of the form
         if ($dispatcher->hasListeners(Events::POST_BUILD)) {
-            $event = new BuilderEvent($this->contentType, $this->metadata, $builder);
+            $event = new BuilderEvent($contentType, $metadata, $builder);
             $event->setOptions($options);
 
             $dispatcher->dispatch(Events::POST_BUILD, $event);
@@ -142,8 +149,13 @@ class FormType extends AbstractType implements FormTypeInterface
     {
         $dispatcher = $this->getEventDispatcher();
 
+        /** @var ContentTypeInterface $contentType */
+        $contentType = $options['content_type'];
+
+        $metadata = $this->metadataFactory->getMetadata($contentType->getClass());
+
         if ($dispatcher->hasListeners(Events::PRE_VIEW)) {
-            $event = new ViewEvent($this->contentType, $this->metadata, $view, $form);
+            $event = new ViewEvent($contentType, $metadata, $view, $form);
             $event->setOptions($options);
 
             $this->getEventDispatcher()->dispatch(Events::PRE_VIEW, $event);
@@ -157,8 +169,13 @@ class FormType extends AbstractType implements FormTypeInterface
     {
         $dispatcher = $this->getEventDispatcher();
 
+        /** @var ContentTypeInterface $contentType */
+        $contentType = $options['content_type'];
+
+        $metadata = $this->metadataFactory->getMetadata($contentType->getClass());
+
         if ($dispatcher->hasListeners(Events::POST_VIEW)) {
-            $event = new ViewEvent($this->contentType, $this->metadata, $view, $form);
+            $event = new ViewEvent($contentType, $metadata, $view, $form);
             $event->setOptions($options);
 
             $this->getEventDispatcher()->dispatch(Events::POST_VIEW, $event);
@@ -170,28 +187,43 @@ class FormType extends AbstractType implements FormTypeInterface
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $dispatcher = $this->getEventDispatcher();
+        $dataClassNormalizer = function (Options $options, $value) {
+            return $options['content_type']->getClass();
+        };
 
-        if ($dispatcher->hasListeners(Events::PRE_OPTIONS)) {
-            $dispatcher->dispatch(Events::PRE_OPTIONS, new OptionsEvent($this->contentType, $this->metadata, $resolver));
-        }
+        $contentTypeNormalizer = function (Options $options, $value) {
+            if (is_string($value)) {
+                $value = $this->repository->find($value);
+            }
 
-        $resolver->setDefaults([
-            'data_class' => $this->contentType->getClass(),
-            'empty_data' => function(FormInterface $form) { return $this->contentType->create(); },
-        ]);
+            if (!$value instanceof ContentTypeInterface) {
+                throw new InvalidOptionsException(sprintf(
+                    'The option "%s" could not be normalized to a valid "%s" object',
+                    'content_type',
+                    ContentTypeInterface::class
+                ));
+            }
 
-        if ($dispatcher->hasListeners(Events::POST_OPTIONS)) {
-            $dispatcher->dispatch(Events::POST_OPTIONS, new OptionsEvent($this->contentType, $this->metadata, $resolver));
-        }
-    }
+            return $value;
+        };
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
-    {
-        return $this->contentType;
+        $emptyDataNormalizer = function (Options $options, $value) {
+            return $options['content_type']->create();
+        };
+
+        $resolver
+            ->setDefaults([
+                'content_type' => null
+            ])
+            ->setAllowedTypes('content_type', ContentTypeInterface::class);
+
+        $resolver
+            ->setNormalizer('data_class', $dataClassNormalizer)
+            ->setNormalizer('content_type', $contentTypeNormalizer)
+            ->setNormalizer('empty_data', $emptyDataNormalizer)
+
+        ;
+
     }
 
     /**
@@ -199,20 +231,7 @@ class FormType extends AbstractType implements FormTypeInterface
      */
     public function getParent()
     {
-        return 'form';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        if (null === $this->name) {
-            $this->name = preg_replace('#[^a-zA-Z0-9\-_]#', '', 'integrated_content_form_' . $this->contentType->getId());
-            $this->name = strtolower($this->name);
-        }
-
-        return $this->name;
+        return FormType::class;
     }
 
     /**
