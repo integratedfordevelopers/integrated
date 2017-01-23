@@ -11,13 +11,14 @@
 
 namespace Integrated\Bundle\SolrBundle\DependencyInjection;
 
-use Symfony\Component\Config\FileLocator;
+use Solarium\Client;
+use Solarium\Core\Client\Endpoint;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -39,12 +40,12 @@ class IntegratedSolrExtension extends Extension
 
         $loader->load('converter.xml');
         $loader->load('event.xml');
+        $loader->load('event_listeners.xml');
         $loader->load('command.xml');
         $loader->load('indexer.xml');
         $loader->load('queue.xml');
         $loader->load('solarium.xml');
         $loader->load('task.xml');
-        $loader->load('subscriber.xml');
         $loader->load('types.xml');
         $loader->load('worker.xml');
 
@@ -55,13 +56,13 @@ class IntegratedSolrExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $endpoints = array();
+        $endpoints = [];
 
         foreach ($config['endpoints'] as $name => $options) {
             $options['key'] = $name;
             $container->setDefinition(
                 'solarium.client.endpoint.' . $name,
-                new Definition('%integrated_solr.solarium.endpoint.class%', array($options))
+                new Definition(Endpoint::class, [$options])
             );
 
             $endpoints[] = new Reference('solarium.client.endpoint.' . $name);
@@ -70,7 +71,7 @@ class IntegratedSolrExtension extends Extension
         $container->setDefinition(
             'solarium.client',
             new Definition(
-                '%integrated_solr.solarium.client.class%',
+                Client::class,
                 [
                     ['endpoint' => $endpoints],
                     new Reference('integrated_solr.event.dispatcher')
@@ -81,7 +82,7 @@ class IntegratedSolrExtension extends Extension
         if ($container->getParameter('kernel.debug')) {
             $container->getDefinition('solarium.client')->addMethodCall(
                 'registerPlugin',
-                array('solarium.client.logger', new Reference('integrated_solr.solarium.data_collector'))
+                ['solarium.client.logger', new Reference('integrated_solr.solarium.data_collector')]
             );
         }
     }

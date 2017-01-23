@@ -4,44 +4,31 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-		<parameter key="integrated_queue.dbal.schema.class">Integrated\Common\Queue\Provider\DBAL\Schema</parameter>
-		<parameter key="integrated_queue.dbal.provider.class">Integrated\Common\Queue\Provider\DBAL\QueueProvider</parameter>
-		<parameter key="integrated_queue.dbal.factory.class">Integrated\Common\Queue\QueueFactory</parameter>
-
-		<parameter key="integrated_queue.memory.provider.class">Integrated\Common\Queue\Provider\Memory\QueueProvider</parameter>
-		<parameter key="integrated_queue.memory.factoryr.class">Integrated\Common\Queue\QueueFactory</parameter>
-
-		<parameter key="integrated_queue.queue.class">Integrated\Common\Queue\Queue</parameter>
-
-    </parameters>
-
     <services>
 
 		<service id="integrated_queue.dbal.connection" alias="database_connection" /> <!-- config option -->
 
-		<service id="integrated_queue.dbal.schema" class="%integrated_queue.dbal.schema.class%">
+		<service id="integrated_queue.dbal.schema" class="Integrated\Common\Queue\Provider\DBAL\Schema">
 			<argument type="collection">
 				<argument key="queue_table_name">queue</argument> <!-- config option -->
 			</argument>
 			<argument type="service" id="integrated_queue.dbal.connection" />
 		</service>
 
-		<service id="integrated_queue.dbal.provider" class="%integrated_queue.dbal.provider.class%">
+		<service id="integrated_queue.dbal.provider" class="Integrated\Common\Queue\Provider\DBAL\QueueProvider">
 			<argument type="service" id="integrated_queue.dbal.connection" />
 			<argument type="collection">
 				<argument key="queue_table_name">queue</argument> <!-- config option -->
 			</argument>
 		</service>
 
-		<service id="integrated_queue.dbal.factory" class="%integrated_queue.dbal.factory.class%">
+		<service id="integrated_queue.dbal.factory" class="Integrated\Common\Queue\QueueFactory">
 			<argument type="service" id="integrated_queue.dbal.provider" />
 		</service>
 
-		<service id="integrated_queue.memory.provider" class="%integrated_queue.memory.provider.class%" />
+		<service id="integrated_queue.memory.provider" class="Integrated\Common\Queue\Provider\Memory\QueueProvider" />
 
-		<service id="integrated_queue.memory.factory" class="%integrated_queue.memory.factoryr.class%">
+		<service id="integrated_queue.memory.factory" class="Integrated\Common\Queue\QueueFactory">
 			<argument type="service" id="integrated_queue.memory.provider" />
 		</service>
 
@@ -49,13 +36,15 @@
 
 		<!-- the next service should be totally dynamically created -->
 
-		<service id="integrated_queue.solr_indexer" class="%integrated_queue.queue.class%">
+		<service id="integrated_queue.solr_indexer" class="Integrated\Common\Queue\Queue">
             <factory service="integrated_queue.factory" method="getQueue" />
+
             <argument type="string">solr-indexer</argument> <!-- config option -->
         </service>
 
-        <service id="integrated_queue.solr_worker" class="%integrated_queue.queue.class%">
+        <service id="integrated_queue.solr_worker" class="Integrated\Common\Queue\Queue">
             <factory service="integrated_queue.factory" method="getQueue" />
+
             <argument type="string">solr-worker</argument> <!-- config option -->
         </service>
 

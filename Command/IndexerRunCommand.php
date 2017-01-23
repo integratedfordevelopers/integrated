@@ -13,8 +13,7 @@ namespace Integrated\Bundle\SolrBundle\Command;
 
 use Exception;
 
-use Integrated\Bundle\SolrBundle\EventSubscriber\DoctrineClearEventSubscriber;
-use Integrated\Bundle\SolrBundle\EventSubscriber\MemoryEventSubscriber;
+use Integrated\Bundle\SolrBundle\EventListener\DoctrineClearEventSubscriber;
 use Integrated\Bundle\SolrBundle\Process\ArgumentProcess;
 use Integrated\Bundle\SolrBundle\Process\ProcessPoolGenerator;
 
@@ -159,7 +158,6 @@ The <info>%command.name%</info> command starts a indexer run.
             }
 
             $this->indexer->execute();
-
         } catch (Exception $e) {
             $output->writeln("Aborting: " . $e->getMessage());
 

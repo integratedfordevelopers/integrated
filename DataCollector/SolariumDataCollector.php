@@ -30,7 +30,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     /**
      * @var array
      */
-    protected $data = array();
+    protected $data = [];
 
     /**
      * @var float
@@ -38,17 +38,17 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     protected $startTime;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function initPluginType()
     {
         $dispatcher = $this->client->getEventDispatcher();
-        $dispatcher->addListener(Events::PRE_EXECUTE_REQUEST, array($this, 'preExecuteRequest'), 1000);
-        $dispatcher->addListener(Events::POST_EXECUTE_REQUEST, array($this, 'postExecuteRequest'), -1000);
+        $dispatcher->addListener(Events::PRE_EXECUTE_REQUEST, [$this, 'preExecuteRequest'], 1000);
+        $dispatcher->addListener(Events::POST_EXECUTE_REQUEST, [$this, 'postExecuteRequest'], -1000);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
@@ -74,12 +74,12 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
      */
     public function postExecuteRequest(PostExecuteRequest $event)
     {
-        $this->data['queries'][] = array(
+        $this->data['queries'][] = [
             'request'  => $event->getRequest(),
             'response' => $event->getResponse(),
             'duration' => microtime(true) - $this->startTime,
             'base_uri' => $event->getEndpoint()->getBaseUri(),
-        );
+        ];
     }
 
     /**
@@ -87,7 +87,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
      */
     public function getQueries()
     {
-        return isset($this->data['queries']) ? $this->data['queries'] : array();
+        return isset($this->data['queries']) ? $this->data['queries'] : [];
     }
 
     /**
@@ -115,7 +115,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function serialize()
     {
@@ -123,7 +123,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function unserialize($data)
     {
