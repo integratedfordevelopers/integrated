@@ -7,6 +7,8 @@
 
         <field fieldName="id" id="true" strategy="NONE" />
         <field fieldName="name" type="string" index="true" />
+        <field fieldName="logo" type="string" />
+        <field fieldName="color" type="string" />
         <field fieldName="domains" type="collection" />
         <field fieldName="primaryDomain" type="string" />
         <field fieldName="options" type="hash" />

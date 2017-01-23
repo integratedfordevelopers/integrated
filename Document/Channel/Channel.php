@@ -11,13 +11,14 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Channel document
@@ -39,6 +40,16 @@ class Channel implements ChannelInterface
      * @Assert\NotBlank()
      */
     protected $name;
+
+    /**
+     * @var StorageInterface
+     */
+    protected $logo;
+
+    /**
+     * @var string
+     */
+    protected $color;
 
     /**
      * @var array
@@ -102,6 +113,42 @@ class Channel implements ChannelInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return StorageInterface
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param StorageInterface $logo
+     * @return $this
+     */
+    public function setLogo(StorageInterface $logo = null)
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string $color
+     * @return $this
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+        return $this;
     }
 
     /**
