@@ -45,7 +45,6 @@ class RelationType extends AbstractType
                 ]
             )
         ;
-        $x=1==1;
     }
 
     /**
