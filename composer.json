@@ -15,7 +15,7 @@
   "prefer-stable": true,
   "require": {
     "php": ">=5.4",
-    "symfony/framework-bundle": "~2.7",
+    "symfony/framework-bundle": "~2.8",
     "knplabs/knp-menu-bundle": "~2.1",
     "integrated/content-bundle": "~0.6"
   },
