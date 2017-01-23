@@ -9,8 +9,28 @@
     {% endspaceless %}
 {% endblock %}
 
+{% block integrated_color_row %}
+{% spaceless %}
+    {% integrated_javascripts 'bundles/integratedformtype/components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js' %}{% endintegrated_javascripts %}
+    {% integrated_javascripts inline=true %}
+        $('.colorpicker-component').colorpicker();
+    {% endintegrated_javascripts %}
+
+    {{ block("form_row") }}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_color_widget %}
+{% spaceless %}
+    <div class="input-group colorpicker-component">
+        <input {{ block('widget_attributes') }} class="form-control" type="text" value="{{ value }}">
+        <span class="input-group-addon"><i></i></span>
+    </div>
+{% endspaceless %}
+{% endblock %}
+
 {% block integrated_wysihtml5x_widget  %}
-        <textarea {{ block('widget_attributes') }}   class="form-control integrated_wysihtml5x"> {% if value is not empty %} {{ value }} {% endif %}  </textarea>
+    <textarea {{ block('widget_attributes') }} class="form-control integrated_wysihtml5x">{% if value is not empty %}{{ value }}{% endif %}</textarea>
 {% endblock %}
 
 {% block integrated_tinymce_row %}

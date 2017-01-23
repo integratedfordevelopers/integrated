@@ -22,6 +22,12 @@
             <tag name="form.type" />
         </service>
 
+        <service id="integrated_form_type.form_type.color_type" class="Integrated\Bundle\FormTypeBundle\Form\Type\ColorType">
+            <argument type="service" id="integrated_asset.manager.stylesheet_manager" />
+
+            <tag name="form.type" />
+        </service>
+
         <service id="integrated_form_type.form_type.wysi_html5x_type" class="Integrated\Bundle\FormTypeBundle\Form\Type\WysiHtml5xType">
             <tag name="form.type" />
         </service>
