@@ -56,7 +56,7 @@ class StorageLocator extends FileLocator
     {
         if ($file instanceof StorageInterface) {
             try {
-                return $this->cache->path($file);
+                return $this->cache->path($file)->getPathname();
             } catch (\Exception $e) {
                 throw new \InvalidArgumentException('File not found.');
             }

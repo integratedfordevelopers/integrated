@@ -25,7 +25,7 @@ use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class DropzoneType extends AbstractType
+abstract class AbstractDropzoneType extends AbstractType
 {
     /**
      * @var AssetManager
@@ -59,13 +59,13 @@ class DropzoneType extends AbstractType
      * @param ImageHandling $imageHandling
      * @param string $type
      */
-    public function __construct(
+    protected function __construct(
         AssetManager $stylesheets,
         AssetManager $javascripts,
         TranslatorInterface $translator,
         ImageHandling $imageHandling,
-        $type)
-    {
+        $type
+    ) {
         $this->stylesheets = $stylesheets;
         $this->javascripts = $javascripts;
         $this->translator = $translator;
@@ -74,13 +74,10 @@ class DropzoneType extends AbstractType
     }
 
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        parent::buildForm($builder, $options);
-
         //make hidden instead of checkbox
         $builder->add('remove', 'hidden', [
             'mapped' => false,
@@ -96,25 +93,16 @@ class DropzoneType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        parent::buildView($view, $form, $options);
-
         $this->stylesheets->add('bundles/integratedstorage/components/jquery.filer/css/jquery.filer.css');
         $this->stylesheets->add('bundles/integratedstorage/components/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css');
         $this->stylesheets->add('bundles/integratedstorage/css/drag-drop.css');
         $this->javascripts->add('bundles/integratedstorage/components/jquery.filer/js/jquery.filer.js');
         $this->javascripts->add('bundles/integratedstorage/js/drag-drop.js');
 
-        $this->buildOptions($view);
-
         $view->vars['type'] = $this->type;
-    }
 
-    /**
-     * builds the variable options passed to the javascript
-     * @param array $view
-     */
-    protected function buildOptions($view)
-    {
+        // builds the variable options passed to the javascript
+
         $options = ['captions' => [
                 'removeConfirmation' => $this->translator->trans(sprintf('Are you sure you want to remove this %s?', $this->type)),
                 'errors' => [
@@ -138,21 +126,5 @@ class DropzoneType extends AbstractType
         }
 
         $view->vars['options'] = $options;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'integrated_file';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return sprintf('integrated_%s_dropzone', $this->type);
     }
 }

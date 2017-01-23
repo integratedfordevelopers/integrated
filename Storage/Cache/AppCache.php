@@ -13,6 +13,7 @@ namespace Integrated\Bundle\StorageBundle\Storage\Cache;
 
 use Integrated\Bundle\StorageBundle\Exception\NoFilesystemAvailableException;
 use Integrated\Bundle\StorageBundle\Storage\Util\DirectoryUtil;
+
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Cache\CacheInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -25,7 +26,7 @@ class AppCache implements CacheInterface
     /**
      * @const
      */
-    const CACHE_PATH = '%s/integrated/storage/file/%s';
+    const CACHE_PATH = '%s/integrated/storage/file';
 
     /**
      * @var ManagerInterface
@@ -49,32 +50,17 @@ class AppCache implements CacheInterface
 
     /**
      * {@inheritdoc}
+     * @throws \LogicException
      */
     public function path(StorageInterface $storage)
     {
         // Attempt to make a local copy of the file, it's probably not in a public storage
-        $file = new \SplFileInfo(
-            sprintf(
-                // Directory
-                self::CACHE_PATH,
-                $this->directory,
-                // The path in cache directory
-                sprintf(
-                    '%s/%s/%s',
-                    substr($storage->getIdentifier(), 0, 2),
-                    substr($storage->getIdentifier(), 2, 2),
-                    $storage->getIdentifier()
-                )
-            )
-        );
+        $file = DirectoryUtil::cachePathFile(sprintf(self::CACHE_PATH, $this->directory), $storage);
 
         // Check if a file exists
         if ($file->isFile()) {
-            return $file->getPathname();
+            return $file;
         }
-
-        // Create a directory
-        DirectoryUtil::createDirectory($this->directory, $file->getPath());
 
         // Open a file with write permission
         $write = $file->openFile('w');
@@ -90,7 +76,7 @@ class AppCache implements CacheInterface
             // Write it if we've got some content
             $write->fwrite($content);
 
-            return $write->getPathname();
+            return $write->openFile('r');
         }
 
         // Let's give it to the requestee, we failed

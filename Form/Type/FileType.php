@@ -63,14 +63,14 @@ class FileType extends AbstractType
         $constraints = new ArrayObject();
         $resolver->setNormalizer(
             'constraints',
-            function(Options $options, $value) use ($constraints)  {
+            function (Options $options, $value) use ($constraints) {
                 $constraints->exchangeArray(is_object($value) ? [$value] : (array) $value);
                 return [];
             }
         );
         $resolver->setNormalizer(
             'constraints_file',
-            function(Options $options) use ($constraints)  {
+            function (Options $options) use ($constraints) {
                 return $constraints->getArrayCopy();
             }
         );
@@ -100,14 +100,6 @@ class FileType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
-    {
-        return 'integrated_file';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $data = $form->getData();
@@ -121,5 +113,13 @@ class FileType extends AbstractType
         } elseif ($data instanceof StorageInterface) {
             $view->vars['preview'] = $data;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'integrated_file';
     }
 }
