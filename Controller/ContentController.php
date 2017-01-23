@@ -1123,7 +1123,7 @@ class ContentController extends Controller
                 );
 
                 if ($reference instanceof Image) {
-                    $properties['image'] = $this->get('image.handling')->open($reference->getFile())->cropResize(250, 250)->jpeg();
+                    $properties['image'] = $this->get('integrated_image.twig_extension')->image($reference->getFile())->cropResize(250, 250)->jpeg();
                 }
 
                 $references[$relation->getRelationId()][] = $properties;
