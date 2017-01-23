@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem;
 use Integrated\Common\Form\Mapping\Annotations as Type;
@@ -20,7 +19,6 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Feature item block")
  */
 class FeaturedItemsBlock extends Block
@@ -29,7 +27,6 @@ class FeaturedItemsBlock extends Block
     
     /**
      * @var ArrayCollection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem")
      * @Type\Field(
      *      type="integrated_sortable_collection",
      *      options={
