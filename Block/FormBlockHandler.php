@@ -13,19 +13,19 @@ namespace Integrated\Bundle\ContentBundle\Block;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\FormBlock;
 use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
-use Integrated\Common\Content\Form\FormFactory as ContentFormFactory;
+use Integrated\Common\Content\Form\ContentFormType;
+
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
 use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue;
@@ -37,11 +37,6 @@ use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue;
  */
 class FormBlockHandler extends BlockHandler
 {
-    /**
-     * @var ContentFormFactory
-     */
-    protected $contentFormFactory;
-
     /**
      * @var FormFactory
      */
@@ -63,15 +58,18 @@ class FormBlockHandler extends BlockHandler
     protected $formMailer;
 
     /**
-     * @param ContentFormFactory $contentFormFactory
+     *
      * @param FormFactory $formFactory
      * @param DocumentManager $documentManager
      * @param RequestStack $requestStack
      * @param FormMailer $formMailer
      */
-    public function __construct(ContentFormFactory $contentFormFactory, FormFactory $formFactory, DocumentManager $documentManager, RequestStack $requestStack, FormMailer $formMailer)
-    {
-        $this->contentFormFactory = $contentFormFactory;
+    public function __construct(
+        FormFactory $formFactory,
+        DocumentManager $documentManager,
+        RequestStack $requestStack,
+        FormMailer $formMailer
+    ) {
         $this->formFactory = $formFactory;
         $this->documentManager = $documentManager;
         $this->requestStack = $requestStack;
@@ -94,10 +92,9 @@ class FormBlockHandler extends BlockHandler
         }
 
         $contentType = $block->getContentType();
-        $type = $this->contentFormFactory->getType($contentType->getId());
 
-        $content = $type->getType()->create();
-        $form = $this->createForm($type, $content, ['method' => 'post'], $block);
+        $content = $contentType->create();
+        $form = $this->createForm($content, ['method' => 'post', 'content_type' => $contentType], $block);
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -125,15 +122,14 @@ class FormBlockHandler extends BlockHandler
     }
 
     /**
-     * @param \Integrated\Common\Content\Form\FormTypeInterface $type
      * @param mixed $data
      * @param array $options
      * @param FormBlock $block
      * @return \Symfony\Component\Form\FormInterface
      */
-    protected function createForm($type, $data = null, array $options = [], FormBlock $block = null)
+    protected function createForm($data = null, array $options = [], FormBlock $block = null)
     {
-        $form = $this->formFactory->createBuilder($type, $data, $options);
+        $form = $this->formFactory->createBuilder(ContentFormType::class, $data, $options);
 
         // remove irrelevant fields
         $form->remove('slug');

@@ -4,34 +4,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_content.block_handler.content.class">Integrated\Bundle\ContentBundle\Block\ContentBlockHandler</parameter>
-
-        <parameter key="integrated_content.block_handler.facet.class">Integrated\Bundle\ContentBundle\Block\FacetBlockHandler</parameter>
-
-        <parameter key="integrated_content.block_handler.form.class">Integrated\Bundle\ContentBundle\Block\FormBlockHandler</parameter>
-
-        <parameter key="integrated_content.block_handler.related_content.class">Integrated\Bundle\ContentBundle\Block\RelatedContentBlockHandler</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_content.block_handler.content" class="%integrated_content.block_handler.content.class%">
+        <service id="integrated_content.block_handler.content" class="Integrated\Bundle\ContentBundle\Block\ContentBlockHandler">
             <argument type="service" id="integrated_content.provider.solarium" />
             <argument type="service" id="request_stack" />
             <tag name="integrated.block" type="content" />
         </service>
 
-        <service id="integrated_content.block_handler.facet" class="%integrated_content.block_handler.facet.class%">
+        <service id="integrated_content.block_handler.facet" class="Integrated\Bundle\ContentBundle\Block\FacetBlockHandler">
             <argument type="service" id="integrated_block.registry.block_handler" />
             <argument type="service" id="request_stack" />
             <tag name="integrated.block" type="facet" />
         </service>
 
-        <service id="integrated_content.block_handler.form" class="%integrated_content.block_handler.form.class%">
-            <argument type="service" id="integrated.form.factory" />
+        <service id="integrated_content.block_handler.form" class="Integrated\Bundle\ContentBundle\Block\FormBlockHandler">
             <argument type="service" id="form.factory" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="request_stack" />
@@ -43,7 +30,7 @@
             <tag name="integrated.block" type="search" />
         </service>
 
-        <service id="integrated_content.block_handler.related_content" class="%integrated_content.block_handler.related_content.class%">
+        <service id="integrated_content.block_handler.related_content" class="Integrated\Bundle\ContentBundle\Block\RelatedContentBlockHandler">
             <argument type="service" id="knp_paginator" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />

@@ -20,6 +20,8 @@ use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Content\Form\ContentFormType;
+use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
 
@@ -399,16 +401,16 @@ class ContentController extends Controller
      */
     public function newAction(Request $request)
     {
-        /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
-        $type = $this->get('integrated.form.factory')->getType($request->get('type'));
+        /** @var ContentTypeInterface $contentType */
+        $contentType = $this->get('integrated_content.resolver')->getType($request->get('type'));
 
-        $content = $type->getType()->create();
+        $content = $contentType->create();
 
         if (!$this->get('security.authorization_checker')->isGranted(Permissions::CREATE, $content)) {
             throw new AccessDeniedException();
         }
 
-        $form = $this->createNewForm($type, $content, $request);
+        $form = $this->createNewForm($contentType, $content, $request);
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -456,7 +458,7 @@ class ContentController extends Controller
 
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success(
-                    $this->get('translator')->trans('The document %name% has been created', array('%name%' => $type->getType()->getName()))
+                    $this->get('translator')->trans('The document %name% has been created', array('%name%' => $contentType->getName()))
                 );
 
                 return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
@@ -465,7 +467,7 @@ class ContentController extends Controller
 
         return array(
             'editable' => true,
-            'type' => $type->getType(),
+            'type' => $contentType,
             'form' => $form->createView(),
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
             'references' => json_encode($this->getReferences($content)),
@@ -482,8 +484,8 @@ class ContentController extends Controller
      */
     public function editAction(Request $request, Content $content)
     {
-        /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
-        $type = $this->get('integrated.form.factory')->getType($content);
+        /** @var ContentTypeInterface $contentType */
+        $contentType = $this->get('integrated_content.resolver')->getType($content->getContentType());
 
         if (!$this->get('security.authorization_checker')->isGranted(Permissions::VIEW, $content)) {
             throw new AccessDeniedException();
@@ -508,7 +510,7 @@ class ContentController extends Controller
             }
         }
 
-        $form = $this->createEditForm($type, $content, $locking);
+        $form = $this->createEditForm($contentType, $content, $locking);
 
         if ($request->isMethod('put')) {
             $form->handleRequest($request);
@@ -549,7 +551,7 @@ class ContentController extends Controller
 
                     // Set flash message
                     $this->get('braincrafted_bootstrap.flash')->success(
-                        $this->get('translator')->trans('The changes to %name% are saved', array('%name%' => $type->getType()->getName()))
+                        $this->get('translator')->trans('The changes to %name% are saved', array('%name%' => $contentType->getName()))
                     );
 
                     if ($this->has('integrated_solr.indexer')) {
@@ -604,7 +606,7 @@ class ContentController extends Controller
 
         return array(
             'editable' => $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content),
-            'type'    => $type->getType(),
+            'type'    => $contentType,
             'form'    => $form->createView(),
             'content' => $content,
             'locking' => $locking,
@@ -1021,17 +1023,18 @@ class ContentController extends Controller
     }
 
     /**
-     * @param FormTypeInterface $type
-     * @param ContentInterface  $content
-     * @param Request           $request
+     * @param ContentTypeInterface $contentType
+     * @param ContentInterface $content
+     * @param Request request
      *
      * @return \Symfony\Component\Form\Form
      */
-    protected function createNewForm(FormTypeInterface $type, ContentInterface $content, Request $request)
+    protected function createNewForm(ContentTypeInterface $contentType, ContentInterface $content, Request $request)
     {
-        $form = $this->createForm($type, $content,[
+        $form = $this->createForm(ContentFormType::class, $content,[
             'action' => $this->generateUrl('integrated_content_content_new', ['type' => $request->get('type'), '_format' => $request->getRequestFormat(), 'relation' => $request->get('relation')]),
             'method' => 'POST',
+            'content_type' => $contentType
         ]);
 
         return $form->add('actions', ActionsType::class, ['buttons' => ['create', 'cancel']]);
@@ -1044,9 +1047,9 @@ class ContentController extends Controller
      *
      * @return \Symfony\Component\Form\Form
      */
-    protected function createEditForm(FormTypeInterface $type, ContentInterface $content, array $locking)
+    protected function createEditForm(ContentTypeInterface $contentType, ContentInterface $content, array $locking)
     {
-        $form = $this->createForm($type, $content, [
+        $form = $this->createForm(ContentFormType::class, $content, [
             'action' => $this->generateUrl(
                 'integrated_content_content_edit',
                 $locking['lock'] ?
@@ -1057,7 +1060,8 @@ class ContentController extends Controller
             'method' => 'PUT',
             'attr' => ['class' => 'content-form'],
             // don't display error's when the content is locked as the user can't save in the first place
-            'validation_groups' => $locking['locked'] ? false : null
+            'validation_groups' => $locking['locked'] ? false : null,
+            'content_type' => $contentType
         ]);
 
         $form->add('returnUrl', HiddenType::class, ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
