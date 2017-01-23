@@ -4,25 +4,16 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_storage.command_migrate">Integrated\Bundle\StorageBundle\Command\MigrateCommand</parameter>
-        <parameter key="integrated_storage.command_list">Integrated\Bundle\StorageBundle\Command\Filesystem\ListCommand</parameter>
-        <parameter key="integrated_storage.command_filesystem_remove">Integrated\Bundle\StorageBundle\Command\Filesystem\RemoveCommand</parameter>
-        <parameter key="integrated_storage.command_add">Integrated\Bundle\StorageBundle\Command\Filesystem\AddCommand</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_storage.command_filesystem_list" class="%integrated_storage.command_list%">
+        <service id="integrated_storage.command_filesystem_list" class="Integrated\Bundle\StorageBundle\Command\Filesystem\ListCommand">
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.resolver" />
 
             <tag name="console.command" />
         </service>
 
-        <service id="integrated_storage.command_filesystem_remove" class="%integrated_storage.command_filesystem_remove%">
+        <service id="integrated_storage.command_filesystem_remove" class="Integrated\Bundle\StorageBundle\Command\Filesystem\RemoveCommand">
             <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.manager" />
@@ -30,7 +21,7 @@
             <tag name="console.command" />
         </service>
 
-        <service id="integrated_storage.command_add" class="%integrated_storage.command_add%">
+        <service id="integrated_storage.command_add" class="Integrated\Bundle\StorageBundle\Command\Filesystem\AddCommand">
             <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.manager" />
@@ -39,7 +30,7 @@
             <tag name="console.command" />
         </service>
 
-        <service id="integrated_storage.command_migrate" class="%integrated_storage.command_migrate%">
+        <service id="integrated_storage.command_migrate" class="Integrated\Bundle\StorageBundle\Command\MigrateCommand">
             <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.manager" />
 
