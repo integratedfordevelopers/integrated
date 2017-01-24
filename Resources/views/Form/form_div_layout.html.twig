@@ -21,13 +21,13 @@
                     {{ form_widget(form.file) }}
                     {{ form_widget(form.remove) }}
                 </div>
+
+                {{ form_errors(form.file) }}
             </div>
         </div>
     {% endspaceless %}
 {% endblock %}
 
 {% block integrated_image_dropzone_row %}
-    {% set options = options|merge({'extensions': ['jpg', 'jpeg', 'png', 'gif']}) %}
-
     {{ block('integrated_file_dropzone_row') }}
 {% endblock %}

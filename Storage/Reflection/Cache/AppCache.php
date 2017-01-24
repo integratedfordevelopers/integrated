@@ -93,13 +93,13 @@ class AppCache implements ReflectionCacheInterface
         }
 
         // Build disk cache
-        if (null === $reflection || 'dev' == $this->environment) {
+        if (null === $reflection || 'dev' === $this->environment) {
             // Build new property reflection and do a one time lookup
             $reflection = new PropertyReflection($class);
             $reflection->getTargetProperties();
 
             // Write the reflection
-            DirectoryUtil::createDirectory($this->directory, $file->getPath());
+            DirectoryUtil::createDirectory($file->getPath());
             $file->openFile('w')->fwrite(serialize($reflection));
         }
 
