@@ -16,8 +16,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelDefaultDataListener;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelEnforcerListener;
-
 use Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType;
+
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
 
