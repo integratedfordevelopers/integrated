@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type\Job;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
@@ -18,15 +19,13 @@ use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class ContactPersonsType extends BootstrapCollectionType
+class ContactPersonsType extends AbstractType
 {
     /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
-
         $resolver->setDefaults([
             'type' => CompanyJobType::class,
             'allow_add' => true,
@@ -34,6 +33,11 @@ class ContactPersonsType extends BootstrapCollectionType
             'label' => 'Contact persons',
             'delete_button_text' => 'x'
         ]);
+    }
+
+    public function getParent()
+    {
+        return BootstrapCollectionType::class;
     }
 
     /**
