@@ -10,7 +10,7 @@
 
         <service id="integrated_content.form.content_form_type" class="Integrated\Common\Content\Form\ContentFormType">
             <argument type="service" id="integrated_content.metadata.factory" />
-            <argument type="service" id="integrated_content.content_type_repository" />
+            <argument type="service" id="integrated_content.resolver" />
             <argument type="service" id="integrated_content.form.factory.event_dispatcher" />
 
             <tag name="form.type" />
