@@ -86,10 +86,6 @@
             <tag name="form.type" />
         </service>
 
-        <service id="integrated_content.form.content_type.relation.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeRelationFormType">
-            <tag name="form.type" />
-        </service>
-
         <service id="integrated_content.form.content_type.channels.type" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChannelsType">
             <tag name="form.type" />
         </service>
