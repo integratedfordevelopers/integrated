@@ -16,6 +16,7 @@ use Integrated\Bundle\ContentBundle\Form\Type\ActionsType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
+use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
@@ -1081,7 +1082,7 @@ class ContentController extends Controller
      */
     protected function createDeleteForm(ContentInterface $content, array $locking, $notDelete = false)
     {
-        $form = $this->createForm('content_delete', $content, [
+        $form = $this->createForm(DeleteFormType::class, $content, [
             'action' => $this->generateUrl('integrated_content_content_delete', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
             'method' => 'DELETE',
         ]);
