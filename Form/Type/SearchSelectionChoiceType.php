@@ -61,17 +61,16 @@ class SearchSelectionChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $choices = [];
-
         if ($user = $this->getUser()) {
             foreach ($this->repository->findPublicByUserId($user->getId()) as $selection) {
-                /** @var \Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection $selection */
-                $choices[$selection->getId()] = $selection->getTitle();
+                $choices[] = $selection;
             }
         }
 
         $resolver->setDefaults([
-            'choices'     => $choices,
-            'placeholder' => '',
+            'choices' => $choices,
+            'choice_label' => 'title',
+            'placeholder' => ''
         ]);
     }
 
