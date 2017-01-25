@@ -35,7 +35,11 @@ class ContentTypeChannelsType extends AbstractType
             'required' => false,
         ]);
 
-        $builder->add('defaults', ContentTypeChannelCollectionType::class, ['label' => 'Channels', 'required' => false]);
+        $builder->add(
+            'defaults',
+            ContentTypeChannelCollectionType::class,
+            ['label' => 'Channels', 'required' => false]
+        );
 
         $builder->addViewTransformer(new ChannelsTransformer());
     }
@@ -47,4 +51,4 @@ class ContentTypeChannelsType extends AbstractType
     {
         return 'integrated_content_type_channels';
     }
-} 
+}
