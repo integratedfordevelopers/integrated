@@ -13,12 +13,12 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jurre de Jongh <jurre@e-active.nl>
