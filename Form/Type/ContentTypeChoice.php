@@ -40,15 +40,18 @@ class ContentTypeChoice extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $choices = [];
-
-        $contentTypes = $this->repository->findAll();
-        foreach ($contentTypes as $contentType) {
-            $choices[$contentType->getId()] = $contentType;
-        }
-        $resolver->setDefault('choices', $choices);
-        $resolver->setDefault('multiple', true);
-        $resolver->setDefault('attr', ['class' => 'basic-multiple']);
+        $resolver
+            ->setDefault('choices', $this->repository->findAll())
+            ->setDefaults([
+                'multiple' => true,
+                'choices' => $this->repository->findAll(),
+                'choice_label' => 'name',
+                'choice_value' => 'id',
+                'attr' => [
+                    'class' => 'basic-multiple'
+                ]
+            ])
+        ;
     }
 
     /**
