@@ -170,7 +170,6 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 
         switch ($job->getAction()) {
             case 'ADD':
-
                 // probably should make a solr document id generator service or something like that
                 $job->setOption('document.id', $document->getContentType() . '-' . $document->getId());
 
