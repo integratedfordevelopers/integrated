@@ -35,6 +35,9 @@ class ContactPersonsType extends AbstractType
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getParent()
     {
         return BootstrapCollectionType::class;
