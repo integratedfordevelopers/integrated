@@ -18,7 +18,6 @@ use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
 /**
  * Document type Relation\Person
