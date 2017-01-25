@@ -28,7 +28,7 @@ class FormBlock extends Block
     /**
      * @var ContentType
      * @Type\Field(
-     *      type="document",
+     *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:ContentType\ContentType",
      *          "property"="name",
