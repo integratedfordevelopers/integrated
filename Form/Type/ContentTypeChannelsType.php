@@ -28,10 +28,11 @@ class ContentTypeChannelsType extends AbstractType
     {
         $builder->add('options', ChoiceType::class, [
             'choices' => [
-                ''         => 'Enable channel field',
-                'hidden'   => 'Enable but hide channel field',
-                'disabled' => 'Disable channel field'
+                'Enable channel field' => '',
+                'Enable but hide channel field' => 'hidden',
+                'Disable channel field' => 'disabled'
             ],
+            'choices_as_values' => true,
             'required' => false,
         ]);
 
