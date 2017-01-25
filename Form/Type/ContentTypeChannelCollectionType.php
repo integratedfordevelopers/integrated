@@ -70,4 +70,4 @@ class ContentTypeChannelCollectionType extends AbstractType
 
         return $this->channels;
     }
-} 
+}
