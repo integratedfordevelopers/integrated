@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
-use Symfony\Component\Validator\Constraints as Assert;
-
-use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Common\Form\Mapping\Annotations as Type;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Related content block document
@@ -60,7 +60,7 @@ class RelatedContentBlock extends Block
     protected $typeBlock;
 
     /**
-     * @var ContentBlock
+     * @var Relation
      * @Type\Field(
      *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
