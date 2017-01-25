@@ -53,7 +53,7 @@ abstract class Relation extends Content
 
     /**
      * @var string
-     * @Type\Field(type="email")
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\EmailType")
      */
     protected $email;
 
