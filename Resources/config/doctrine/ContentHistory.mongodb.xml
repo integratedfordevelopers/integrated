@@ -1,0 +1,31 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory" collection="content_history">
+
+        <field fieldName="id" id="true" strategy="UUID" unique="true" />
+
+        <field fieldName="contentId" type="string" />
+        <field fieldName="contentType" type="string" />
+        <field fieldName="contentClass" type="string" />
+
+        <field fieldName="action" type="string" />
+        <field fieldName="date" type="date" />
+
+        <field fieldName="changeSet" type="hash" nullable="true" />
+
+        <embed-one field="request" target-document="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Request" />
+        <embed-one field="user" target-document="Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User" />
+
+        <indexes>
+            <index>
+                <key name="contentId" order="asc"/>
+                <key name="date" order="desc"/>
+            </index>
+        </indexes>
+
+    </document>
+
+</doctrine-mongo-mapping>

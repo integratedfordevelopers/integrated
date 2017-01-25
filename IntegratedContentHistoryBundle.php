@@ -12,10 +12,29 @@
 namespace Integrated\Bundle\ContentHistoryBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+
+use Integrated\Bundle\ContentHistoryBundle\DependencyInjection\Compiler\WorkflowSubscriberPass;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class IntegratedContentHistoryBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(
+            new RegisterListenersPass(
+                'integrated_content_history.event_dispatcher',
+                'integrated.content_history.event_listener',
+                'integrated.content_history.event_subscriber'
+            )
+        );
+    }
 }
