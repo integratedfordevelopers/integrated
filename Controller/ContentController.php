@@ -50,6 +50,7 @@ class ContentController extends Controller
 
     /**
      * @Template()
+     * @param Request $request
      * @return array
      */
     public function indexAction(Request $request)
@@ -69,7 +70,7 @@ class ContentController extends Controller
             $request->query->add(unserialize($session->get('content_index_view')));
             $request->query->remove('remember');
         } elseif (!$request->query->has('_format')) {
-            $session->set('content_index_view',serialize($request->query->all()));
+            $session->set('content_index_view', serialize($request->query->all()));
         }
 
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
@@ -109,7 +110,6 @@ class ContentController extends Controller
         $relation = $request->query->get('relation');
         $relations = array();
         if (null !== $relation) {
-
             $contentType = array();
 
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
@@ -125,11 +125,9 @@ class ContentController extends Controller
                     );
                 }
             }
-
         } else {
             $contentType = $request->query->get('contenttypes');
         }
-
 
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
@@ -146,7 +144,6 @@ class ContentController extends Controller
         // TODO this code should be somewhere else
         $propertiesfilter = $request->query->get('properties');
         if (is_array($propertiesfilter)) {
-
             $query
                 ->createFilterQuery('properties')
                 ->addTag('properties')
@@ -154,7 +151,6 @@ class ContentController extends Controller
 
             $active['properties'] = $propertiesfilter;
         }
-
 
         /** @var Relation $relation */
         foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
@@ -173,12 +169,9 @@ class ContentController extends Controller
 
                 $active[$name] = $relationfilter;
             }
-
         }
 
-
         if (is_array($contentType)) {
-
             if (count($contentType)) {
                 $query
                     ->createFilterQuery('contenttypes')
@@ -227,7 +220,6 @@ class ContentController extends Controller
                     array($person->getId())
                 );
             }
-
         }
 
         // TODO this should be somewhere else:
@@ -273,7 +265,6 @@ class ContentController extends Controller
                     ->setQuery('facet_authors: ((%1%))', [implode(') OR (', array_map($filter, $activeAuthors))]);
             }
         }
-
 
         if ($request->isMethod('post')) {
             $id = (array) $request->get('id');
@@ -583,7 +574,7 @@ class ContentController extends Controller
 
             if ($locking['owner']) {
                 $text = 'The document is currently locked by your self in a different browser or tab and can not be edited until this lock is released.';
-            } else if ($locking['user']) {
+            } elseif ($locking['user']) {
                 $user = $locking['user']->getUsername();
 
                 // we got a basic user name now try to get a better one
@@ -715,7 +706,7 @@ class ContentController extends Controller
 
             if ($locking['owner']) {
                 $text = 'The document is currently locked by your self in a different browser or tab and can not be deleted until this lock is released.';
-            } else if ($locking['user']) {
+            } elseif ($locking['user']) {
                 $user = $locking['user']->getUsername();
 
                 // we got a basic user name now try to get a better one
@@ -766,7 +757,8 @@ class ContentController extends Controller
                 'user'    => null,
                 'owner'   => false,
                 'new'     => false,
-                'release' => function() {}
+                'release' => function () {
+                }
             ];
         }
 
@@ -846,7 +838,8 @@ class ContentController extends Controller
             'user'  => null,
             'owner' => false,
             'new'   => false,
-            'release' => function() {}
+            'release' => function () {
+            }
         ];
     }
 
@@ -1004,6 +997,7 @@ class ContentController extends Controller
     }
 
     /**
+     * @param null $filter
      * @return JsonResponse
      */
     public function mediaTypesAction($filter = null)
@@ -1025,13 +1019,13 @@ class ContentController extends Controller
     /**
      * @param ContentTypeInterface $contentType
      * @param ContentInterface $content
-     * @param Request request
+     * @param Request $request
      *
      * @return \Symfony\Component\Form\Form
      */
     protected function createNewForm(ContentTypeInterface $contentType, ContentInterface $content, Request $request)
     {
-        $form = $this->createForm(ContentFormType::class, $content,[
+        $form = $this->createForm(ContentFormType::class, $content, [
             'action' => $this->generateUrl('integrated_content_content_new', ['type' => $request->get('type'), '_format' => $request->getRequestFormat(), 'relation' => $request->get('relation')]),
             'method' => 'POST',
             'content_type' => $contentType
@@ -1041,9 +1035,9 @@ class ContentController extends Controller
     }
 
     /**
-     * @param FormTypeInterface $type
-     * @param ContentInterface  $content
-     * @param array             $locking
+     * @param ContentTypeInterface $contentType
+     * @param ContentInterface $content
+     * @param array $locking
      *
      * @return \Symfony\Component\Form\Form
      */
@@ -1120,7 +1114,6 @@ class ContentController extends Controller
                 }
 
                 $references[$relation->getRelationId()][] = $properties;
-
             }
         }
 

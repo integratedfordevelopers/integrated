@@ -19,7 +19,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -34,6 +33,7 @@ class RelationController extends Controller
      * Lists all the Relation documents
      *
      * @Template()
+     * @param Request $request
      * @return array
      */
     public function indexAction(Request $request)

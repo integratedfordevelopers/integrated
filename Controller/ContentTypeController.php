@@ -239,7 +239,6 @@ class ContentTypeController extends Controller
                 // Set flash message and redirect to item page
                 $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
                 return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
-
             } else {
                 $dm->remove($contentType);
                 $dm->flush();
