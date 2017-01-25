@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -39,16 +40,17 @@ class SearchSelectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title');
+        $builder->add('title', TextType::class);
 
         if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             $builder->add('public', ChoiceType::class, [
                 'label' => 'Available for',
                 'expanded' => true,
                 'choices' => [
-                    1 => 'Everyone',
-                    0 => 'Me only',
+                    'Everyone' => 1,
+                    'Me only' => 0,
                 ],
+                'choices_as_values' => true
             ]);
         }
     }
