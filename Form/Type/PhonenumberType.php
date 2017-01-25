@@ -31,10 +31,11 @@ class PhonenumberType extends AbstractType
         if (in_array('type', $options['fields'])) {
             $builder->add('type', ChoiceType::class, [
                 'choices' => [
-                    'mobile' => 'Mobile',
-                    'work'   => 'Work',
-                    'home'   => 'Home'
-                ]
+                    'Mobile' => 'mobile',
+                    'Work' => 'work',
+                    'Home' => 'home'
+                ],
+                'choices_as_values' => true
             ]);
         }
 
