@@ -52,12 +52,4 @@ class MetadataType extends AbstractType
             $builder->add($field->getName(), $field->getType(), $field->getOptions());
         }
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function getBlockPrefix()
-    {
-        return $this->name;
-    }
 }

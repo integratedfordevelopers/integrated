@@ -16,7 +16,7 @@ use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Event\ViewEvent;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\ContentTypeRepositoryInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -43,9 +43,9 @@ class ContentFormType extends AbstractType
     protected $metadataFactory;
 
     /**
-     * @var ContentTypeRepositoryInterface
+     * @var ResolverInterface
      */
-    protected $repository;
+    protected $resolver;
 
     /**
      * @var EventDispatcherInterface
@@ -54,18 +54,16 @@ class ContentFormType extends AbstractType
 
     /**
      * @param MetadataFactoryInterface $metadataFactory
-     * @param ContentTypeRepositoryInterface $repository
+     * @param ResolverInterface $resolver
      * @param EventDispatcherInterface $dispatcher
-     * @internal param MetadataInterface $metadata
-     * @internal param ContentTypeInterface $contentType
      */
     public function __construct(
         MetadataFactoryInterface $metadataFactory,
-        ContentTypeRepositoryInterface $repository,
+        ResolverInterface $resolver,
         EventDispatcherInterface $dispatcher = null
     ) {
         $this->metadataFactory = $metadataFactory;
-        $this->repository = $repository;
+        $this->resolver = $resolver;
         $this->dispatcher = $dispatcher;
     }
 
@@ -193,7 +191,7 @@ class ContentFormType extends AbstractType
 
         $contentTypeNormalizer = function (Options $options, $value) {
             if (is_string($value)) {
-                $value = $this->repository->find($value);
+                $value = $this->resolver->getType($value);
             }
 
             if (!$value instanceof ContentTypeInterface) {
@@ -212,8 +210,8 @@ class ContentFormType extends AbstractType
         };
 
         $resolver
-            ->setDefaults(['content_type' => null,])
-            ->setAllowedTypes('content_type', ContentTypeInterface::class)
+            ->setRequired('content_type')
+            ->setAllowedTypes('content_type', [ContentTypeInterface::class, 'string'])
             ->setNormalizer('data_class', $dataClassNormalizer)
             ->setNormalizer('content_type', $contentTypeNormalizer)
             ->setNormalizer('empty_data', $emptyDataNormalizer)

@@ -84,12 +84,4 @@ class ActionsType extends AbstractType
     {
         return 'Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return $this->name;
-    }
 }

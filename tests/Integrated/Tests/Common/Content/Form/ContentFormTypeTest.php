@@ -19,7 +19,7 @@ use Integrated\Common\Content\Form\Events;
 
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\ContentTypeRepositoryInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Form\Mapping\AttributeInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
@@ -56,9 +56,9 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
     private $metadata;
 
     /**
-     * @var ContentTypeRepositoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
      */
-    private $repository;
+    private $resolver;
 
     /**
      * @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -77,7 +77,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
             ->willReturn($this->metadata)
         ;
 
-        $this->repository = $this->getMock(ContentTypeRepositoryInterface::class);
+        $this->resolver = $this->getMock(ResolverInterface::class);
         $this->dispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
     }
 
@@ -438,15 +438,15 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
 
         $resolver
             ->expects($this->once())
-            ->method('setDefaults')
-            ->with(['content_type' => null])
+            ->method('setRequired')
+            ->with('content_type')
             ->willReturn($resolver)
         ;
 
         $resolver
             ->expects($this->once())
             ->method('setAllowedTypes')
-            ->with('content_type', ContentTypeInterface::class)
+            ->with('content_type', [ContentTypeInterface::class, 'string'])
             ->willReturn($resolver)
         ;
 
@@ -481,7 +481,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getInstance()
     {
-        return new ContentFormType($this->metadataFactory, $this->repository, $this->dispatcher);
+        return new ContentFormType($this->metadataFactory, $this->resolver, $this->dispatcher);
     }
 
     /**
