@@ -16,7 +16,10 @@ namespace Integrated\Common\Content\Form;
  */
 final class Events
 {
-    private function __construct() {} // don't allow creation
+    private function __construct()
+    {
+        // don't allow creation
+    }
 
     const PRE_BUILD        = 'form.pre.build';
 
@@ -41,8 +44,4 @@ final class Events
      * finishView method.
      */
     const POST_VIEW        = 'form.post.view';
-
-    const PRE_OPTIONS      = 'form.pre.options';
-
-    const POST_OPTIONS     = 'form.post.options';
 }

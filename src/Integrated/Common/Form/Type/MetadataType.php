@@ -27,18 +27,11 @@ class MetadataType extends AbstractType
     private $factory;
 
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
      * @param MetadataFactoryInterface $factory
-     * @param string $name
      */
-    public function __construct(MetadataFactoryInterface $factory, $name)
+    public function __construct(MetadataFactoryInterface $factory)
     {
         $this->factory = $factory;
-        $this->name = $name;
     }
 
     /**
@@ -49,16 +42,7 @@ class MetadataType extends AbstractType
         $metadata = $this->factory->getMetadata($options['data_class']); // @todo: auto-resolve class
 
         foreach ($metadata->getFields() as $field) {
-
             $builder->add($field->getName(), $field->getType(), $field->getOptions());
         }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 }

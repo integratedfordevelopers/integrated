@@ -11,19 +11,21 @@
 
 namespace Integrated\Tests\Common\Content\Form;
 
+use Integrated\Common\Content\Form\ContentFormType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Event\FieldEvent;
-use Integrated\Common\Content\Form\Event\OptionsEvent;
 use Integrated\Common\Content\Form\Event\ViewEvent;
 use Integrated\Common\Content\Form\Events;
-use Integrated\Common\Content\Form\FormType;
 
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Form\Mapping\AttributeInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -32,38 +34,57 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use stdClass;
 
 /**
- * @covers Integrated\Common\Content\Form\FormType
+ * @covers Integrated\Common\Content\Form\ContentFormType
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class FormTypeTest extends \PHPUnit_Framework_TestCase
+class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $type;
+    /**
+     * @var ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $type;
+
+    /**
+     * @var MetadataFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $metadataFactory;
 
     /**
      * @var MetadataInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     private $metadata;
 
-	/**
-	 * @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $dispatcher;
+    /**
+     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $resolver;
 
-	protected function setUp()
-	{
+    /**
+     * @var EventDispatcherInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $dispatcher;
+
+    protected function setUp()
+    {
         $this->type = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
-        $this->metadata = $this->getMock('Integrated\\Common\\Form\\Mapping\\MetadataInterface');
-        $this->dispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
-	}
+        $this->metadataFactory = $this->getMock(MetadataFactoryInterface::class);
+        $this->metadata = $this->getMock(MetadataInterface::class);
 
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Integrated\\Common\\Content\\Form\\FormTypeInterface', $this->getInstance());
-	}
+        $this->metadataFactory
+            ->expects($this->any())
+            ->method('getMetadata')
+            ->willReturn($this->metadata)
+        ;
+
+        $this->resolver = $this->getMock(ResolverInterface::class);
+        $this->dispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+    }
+
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Symfony\Component\Form\FormTypeInterface', $this->getInstance());
+    }
 
     public function testBuildForm()
     {
@@ -110,7 +131,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
                 [$this->equalTo('field3'), $this->equalTo('type3'), $this->equalTo(['options3'])]
             );
 
-        $this->getInstance()->buildForm($builder, []);
+        $this->getInstance()->buildForm($builder, ['content_type' => $this->type]);
     }
 
     public function testBuildFormEventDispatcher()
@@ -119,27 +140,27 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
         $field = $this->getField('field', 'type');
 
         $callback = [
-            function(BuilderEvent $argument) use ($builder) {
+            function (BuilderEvent $argument) use ($builder) {
                 self::assertSame($this->type, $argument->getContentType());
                 self::assertSame($this->metadata, $argument->getMetadata());
                 self::assertSame($builder, $argument->getBuilder());
-                self::assertSame(['key' => 'value'], $argument->getOptions());
+                self::assertSame(['key' => 'value', 'content_type' => $this->type], $argument->getOptions());
 
                 return true;
             },
-            function(BuilderEvent $argument) use ($builder) {
+            function (BuilderEvent $argument) use ($builder) {
                 self::assertSame($this->type, $argument->getContentType());
                 self::assertSame($this->metadata, $argument->getMetadata());
                 self::assertSame($builder, $argument->getBuilder());
-                self::assertSame(['key' => 'value'], $argument->getOptions());
+                self::assertSame(['key' => 'value', 'content_type' => $this->type], $argument->getOptions());
                 self::assertSame('field', $argument->getField());
 
                 return true;
             },
-            function(FieldEvent $argument) use ($builder, $field) {
+            function (FieldEvent $argument) use ($builder, $field) {
                 self::assertSame($this->type, $argument->getContentType());
                 self::assertSame($this->metadata, $argument->getMetadata());
-                self::assertSame(['key' => 'value'], $argument->getOptions());
+                self::assertSame(['key' => 'value', 'content_type' => $this->type], $argument->getOptions());
                 self::assertNotSame($field, $argument->getField());
                 self::assertEquals($field, $argument->getField());
 
@@ -190,7 +211,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
             ->method('getField')
             ->willReturn($field);
 
-        $this->getInstance()->buildForm($builder, ['key' => 'value']);
+        $this->getInstance()->buildForm($builder, ['key' => 'value', 'content_type' => $this->type]);
     }
 
     public function testBuildFormNoMetadata()
@@ -206,25 +227,26 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
             ->method('getFields')
             ->willReturn([]);
 
-        $this->type->expects($this->never())
-            ->method($this->anything());
+        $this->type->expects($this->once())
+            ->method('getClass')
+            ->willReturn('class');
 
         $builder = $this->getBuilder();
         $builder->expects($this->never())
             ->method($this->anything());
 
-        $this->getInstance()->buildForm($builder, []);
+        $this->getInstance()->buildForm($builder, ['content_type' => $this->type]);
     }
 
     public function testBuildFormNoMetadataEventDispatcher()
     {
         $builder = $this->getBuilder();
 
-        $callback = function(BuilderEvent $argument) use ($builder) {
+        $callback = function (BuilderEvent $argument) use ($builder) {
             self::assertSame($this->type, $argument->getContentType());
             self::assertSame($this->metadata, $argument->getMetadata());
             self::assertSame($builder, $argument->getBuilder());
-            self::assertSame(['key' => 'value'], $argument->getOptions());
+            self::assertSame(['key' => 'value', 'content_type' => $this->type], $argument->getOptions());
 
             return true;
         };
@@ -248,169 +270,12 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
             ->method('getFields')
             ->willReturn([]);
 
-        $this->getInstance()->buildForm($builder, ['key' => 'value']);
-    }
-
-    /**
-     * @dataProvider buildFormChangeOptionsProvider
-     */
-    public function testBuildFormChangeOptions()
-    {
-        $callback = func_get_args();
-
-        $this->dispatcher->expects($this->exactly(5))
-            ->method('hasListeners')
-            ->willReturn(true);
-
-        $this->dispatcher->expects($this->exactly(5))
-            ->method('dispatch')
-            ->withConsecutive(
-                [$this->equalTo(Events::PRE_BUILD), $this->callback($callback[0])],
-                [$this->equalTo(Events::PRE_BUILD_FIELD), $this->callback($callback[1])],
-                [$this->equalTo(Events::BUILD_FIELD), $this->callback($callback[2])],
-                [$this->equalTo(Events::POST_BUILD_FIELD), $this->callback($callback[3])],
-                [$this->equalTo(Events::POST_BUILD), $this->callback($callback[4])]
-            );
-
-        $this->metadata->expects($this->once())
-            ->method('getFields')
-            ->willReturn([$this->getAttribute('field')]);
-
-        $this->type->expects($this->once())
-            ->method('hasField')
-            ->willReturn(true);
-
-        $this->type->expects($this->once())
-            ->method('getField')
-            ->willReturn($this->getField('field', 'type'));
-
-        $this->getInstance()->buildForm($this->getBuilder(), []);
-    }
-
-    public function buildFormChangeOptionsProvider()
-    {
-        // PHPUnit calls the callback twice, once when running the test and once again after the
-        // test is done. Because the argument is saved we have to choose between changing the
-        // argument or asserting its value. So to check every possible combination we have to run
-        // the test five times with different callback checks.
-
-        return [
-            [
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(FieldEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                }
-            ],
-            [
-                function(BuilderEvent $argument) {
-                    $argument->setOptions(['key' => 'value']);
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame(['key' => 'value'], $argument->getOptions());
-                    return true;
-                },
-                function(FieldEvent $argument) {
-                    self::assertSame(['key' => 'value'], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame(['key' => 'value'], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame(['key' => 'value'], $argument->getOptions());
-                    return true;
-                }
-            ],
-            [
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    $argument->setOptions(['key' => 'value']);
-                    return true;
-                },
-                function(FieldEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                }
-            ],
-            [
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(FieldEvent $argument) {
-                    $argument->setOptions(['key' => 'value']);
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                }
-            ],
-            [
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(FieldEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    $argument->setOptions(['key' => 'value']);
-                    return true;
-                },
-                function(BuilderEvent $argument) {
-                    self::assertSame([], $argument->getOptions());
-                    return true;
-                }
-            ],
-        ];
+        $this->getInstance()->buildForm($builder, ['key' => 'value', 'content_type' => $this->type]);
     }
 
     public function testBuildFormIgnoreField()
     {
-        $callback = function(FieldEvent $argument) {
+        $callback = function (FieldEvent $argument) {
             $argument->setIgnore(true);
             return true;
         };
@@ -437,12 +302,12 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
 
         $builder = $this->getBuilder();
 
-        $this->getInstance()->buildForm($builder, []);
+        $this->getInstance()->buildForm($builder, ['content_type' => $this->type]);
     }
 
     public function testBuildFormChangeField()
     {
-        $callback = function(FieldEvent $argument) {
+        $callback = function (FieldEvent $argument) {
             $argument->setField($this->getField('field2', 'type2', ['options2']));
             return true;
         };
@@ -472,7 +337,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with($this->equalTo('field1'), $this->equalTo('type2'), $this->equalTo(['options2']));
 
-        $this->getInstance()->buildForm($builder, []);
+        $this->getInstance()->buildForm($builder, ['content_type' => $this->type]);
     }
 
     public function testBuildView()
@@ -492,7 +357,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
         $this->dispatcher->expects($this->never())
             ->method('dispatch');
 
-        $this->getInstance()->buildView($view, $form, []);
+        $this->getInstance()->buildView($view, $form, ['content_type' => $this->type]);
     }
 
     public function testBuildViewEventDispatcher()
@@ -500,7 +365,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
         $view = $this->getView();
         $form = $this->getForm();
 
-        $callback = function(ViewEvent $argument) use ($view, $form) {
+        $callback = function (ViewEvent $argument) use ($view, $form) {
             self::assertSame($this->type, $argument->getContentType());
             self::assertSame($this->metadata, $argument->getMetadata());
             self::assertSame($view, $argument->getView());
@@ -518,7 +383,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
             ->method('dispatch')
             ->with($this->equalTo(Events::PRE_VIEW), $this->callback($callback));
 
-        $this->getInstance()->buildView($view, $form, []);
+        $this->getInstance()->buildView($view, $form, ['content_type' => $this->type]);
     }
 
     public function testFinishView()
@@ -538,7 +403,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
         $this->dispatcher->expects($this->never())
             ->method('dispatch');
 
-        $this->getInstance()->finishView($view, $form, []);
+        $this->getInstance()->finishView($view, $form, ['content_type' => $this->type]);
     }
 
     public function testFinishViewEventDispatcher()
@@ -546,7 +411,7 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
         $view = $this->getView();
         $form = $this->getForm();
 
-        $callback = function(ViewEvent $argument) use ($view, $form) {
+        $callback = function (ViewEvent $argument) use ($view, $form) {
             self::assertSame($this->type, $argument->getContentType());
             self::assertSame($this->metadata, $argument->getMetadata());
             self::assertSame($view, $argument->getView());
@@ -564,109 +429,39 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
             ->method('dispatch')
             ->with($this->equalTo(Events::POST_VIEW), $this->callback($callback));
 
-        $this->getInstance()->finishView($view, $form, []);
+        $this->getInstance()->finishView($view, $form, ['content_type' => $this->type]);
     }
 
-    public function testSetDefaultOptions()
-    {
-        $this->dispatcher->expects($this->exactly(2))
-            ->method('hasListeners')
-            ->willReturn(false);
-
-        $this->dispatcher->expects($this->never())
-            ->method('dispatch');
-
-        $object = new stdClass();
-
-        $this->type->expects($this->once())
-            ->method('getClass')
-            ->willReturn('the-class-name');
-
-//        $this->type->expects($this->once())
-//            ->method('create')
-//            ->willReturn($object);
-
-        $callback = function($argument) use ($object) {
-            self::assertEquals('the-class-name', $argument['data_class']);
-
-// this give a problem as seams phpunit checks arguments 2 times
-//            self::assertSame($object, $argument['empty_data']($this->getForm()));
-
-            return true;
-        };
-
-        $resolver = $this->getResolver();
-        $resolver->expects($this->once())
-            ->method('setDefaults')
-            ->with($this->callback($callback));
-
-        $this->getInstance()->setDefaultOptions($resolver);
-    }
-
-    public function testSetDefaultOptionsEventDispatcher()
+    public function testConfigureOptions()
     {
         $resolver = $this->getResolver();
 
-        $callback = function(OptionsEvent $argument) use ($resolver) {
-            self::assertSame($this->type, $argument->getContentType());
-            self::assertSame($this->metadata, $argument->getMetadata());
-            self::assertSame($resolver, $argument->getResolver());
+        $resolver
+            ->expects($this->once())
+            ->method('setRequired')
+            ->with('content_type')
+            ->willReturn($resolver)
+        ;
 
-            return true;
-        };
+        $resolver
+            ->expects($this->once())
+            ->method('setAllowedTypes')
+            ->with('content_type', [ContentTypeInterface::class, 'string'])
+            ->willReturn($resolver)
+        ;
 
-        $this->dispatcher->expects($this->exactly(2))
-            ->method('hasListeners')
-            ->withConsecutive(
-                [$this->equalTo(Events::PRE_OPTIONS)],
-                [$this->equalTo(Events::POST_OPTIONS)]
-            )
-            ->willReturn(true);
+        $resolver
+            ->expects($this->exactly(3))
+            ->method('setNormalizer')
+            ->willReturn($resolver)
+        ;
 
-        $this->dispatcher->expects($this->exactly(2))
-            ->method('dispatch')
-            ->withConsecutive(
-                [$this->equalTo(Events::PRE_OPTIONS), $this->callback($callback)],
-                [$this->equalTo(Events::POST_OPTIONS), $this->callback($callback)]
-            );
-
-        $this->getInstance()->setDefaultOptions($resolver);
+        $this->getInstance()->configureOptions($resolver);
     }
 
-    public function testGetType()
+    public function testGetParent()
     {
-        self::assertSame($this->type, $this->getInstance()->getType());
-    }
-
-	public function testGetParent()
-	{
-		self::assertEquals('form', $this->getInstance()->getParent());
-	}
-
-    /**
-     * @dataProvider getNameProvider
-     */
-    public function testGetName($name, $expected)
-    {
-        $this->type->expects($this->once())
-            ->method('getId')
-            ->willReturn($name);
-
-        $type = $this->getInstance();
-
-        self::assertEquals('integrated_content_form_' . $expected, $type->getName());
-        self::assertEquals('integrated_content_form_' . $expected, $type->getName());
-    }
-
-    public function getNameProvider()
-    {
-        return [
-            ['this-is-the-type-name1', 'this-is-the-type-name1'],
-            ['This-Is-The-Type-Name2', 'this-is-the-type-name2'],
-            ['this_is_the_type_name3', 'this_is_the_type_name3'],
-            ['this#is#the#type#name4', 'thisisthetypename4'],
-            ['This Is The Type Name5', 'thisisthetypename5'],
-        ];
+        self::assertEquals(FormType::class, $this->getInstance()->getParent());
     }
 
     public function testGetEventDispatcher()
@@ -682,11 +477,11 @@ class FormTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return FormType
+     * @return ContentFormType
      */
     protected function getInstance()
     {
-        return new FormType($this->type, $this->metadata, $this->dispatcher);
+        return new ContentFormType($this->metadataFactory, $this->resolver, $this->dispatcher);
     }
 
     /**

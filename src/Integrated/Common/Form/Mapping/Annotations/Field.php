@@ -11,6 +11,8 @@
 
 namespace Integrated\Common\Form\Mapping\Annotations;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 /**
  * Annotation for defining field options for properties of a document
  *
@@ -22,7 +24,7 @@ class Field
     /**
      * @var string
      */
-    protected $type = 'text';
+    protected $type = TextType::class;
 
     /**
      * @var array

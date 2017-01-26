@@ -17,114 +17,122 @@ use Integrated\Common\Solr\Converter\Object\ObjectWrapper;
 use Integrated\Common\Solr\Converter\Object\WrapperInterface;
 
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
-use Symfony\Component\Security\Core\Util\ClassUtils;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class Converter implements ConverterInterface
 {
-	protected $resolver;
+    /**
+     * @var ConverterSpecificationResolverInterface
+     */
+    protected $resolver;
 
-	private $el;
+    /**
+     * @var ExpressionLanguage
+     */
+    private $el;
 
-	public function __construct(ConverterSpecificationResolverInterface $resolver, ExpressionLanguage $expressionLanguage = null)
-	{
-		$this->resolver = $resolver;
-		$this->el = $expressionLanguage;
-	}
+    public function __construct(
+        ConverterSpecificationResolverInterface $resolver,
+        ExpressionLanguage $expressionLanguage = null
+    ) {
+        $this->resolver = $resolver;
+        $this->el = $expressionLanguage;
+    }
 
-	/**
-	 * @return ExpressionLanguage
-	 */
-	protected function getExpressionLanguage()
-	{
-		if ($this->el === null) {
-			$this->el = new ExpressionLanguage();
-		}
+    /**
+     * @return ExpressionLanguage
+     */
+    protected function getExpressionLanguage()
+    {
+        if ($this->el === null) {
+            $this->el = new ExpressionLanguage();
+        }
 
-		return $this->el;
-	}
+        return $this->el;
+    }
 
-	/**
-	 * Convert the object to a solr document
-	 *
-	 * @param object $object
-	 * @return array|null
-	 */
-	public function getFields($object)
-	{
-		$specs = $this->resolver->getSpecification(ClassUtils::getRealClass($object));
+    /**
+     * Convert the object to a solr document
+     *
+     * @param object $object
+     * @return array|null
+     */
+    public function getFields($object)
+    {
+        $specs = $this->resolver->getSpecification(ClassUtils::getRealClass($object));
 
-		if (!$specs) {
-			return null;
-		}
+        if (!$specs) {
+            return null;
+        }
 
-		$fields = array();
-		$object = new ObjectWrapper($object);
+        $fields = [];
+        $object = new ObjectWrapper($object);
 
-		foreach (array_keys($specs->getFields()) as $field) {
-			$fields[$field] = $this->getFieldValue($object, $field, $specs);
-		}
+        foreach (array_keys($specs->getFields()) as $field) {
+            $fields[$field] = $this->getFieldValue($object, $field, $specs);
+        }
 
-		return $fields;
-	}
+        return $fields;
+    }
 
-	public function getField($object, $field)
-	{
-		$specs = $this->resolver->getSpecification(ClassUtils::getRealClass($object));
+    public function getField($object, $field)
+    {
+        $specs = $this->resolver->getSpecification(ClassUtils::getRealClass($object));
 
-		if (!$specs) {
-			return null;
-		}
+        if (!$specs) {
+            return null;
+        }
 
-		return $this->getFieldValue(new ObjectWrapper($object), $field, $specs);
-	}
+        return $this->getFieldValue(new ObjectWrapper($object), $field, $specs);
+    }
 
-	protected function getFieldValue(WrapperInterface $object, $field, ConverterSpecificationInterface $specs)
-	{
-		if (!$specs->hasField($field)) {
-			return null;
-		}
+    protected function getFieldValue(WrapperInterface $object, $field, ConverterSpecificationInterface $specs)
+    {
+        if (!$specs->hasField($field)) {
+            return null;
+        }
 
-		$expression = $specs->getField($field);
+        $expression = $specs->getField($field);
 
-		if ($expression === null) {
-			$expression = 'data.' . $field . '.value()';
-		} else {
-			$expression = (string) $expression;
+        if ($expression === null) {
+            $expression = 'data.' . $field . '.value()';
+        } else {
+            $expression = (string) $expression;
 
-			$expression = str_replace('$', 'data', $expression);
-			$expression = str_replace('[]', '.multi()', $expression);
-		}
+            $expression = str_replace('$', 'data', $expression);
+            $expression = str_replace('[]', '.multi()', $expression);
+        }
 
-		try {
-			return $this->getExpressionLanguage()->evaluate($expression, array('data' => $object, 'document' => $object));
-		} catch (Exception $e) {
-			return null;
-		}
-	}
+        try {
+            return $this->getExpressionLanguage()->evaluate($expression, ['data' => $object, 'document' => $object]);
+        } catch (Exception $e) {
+            return null;
+        }
+    }
 
-	/**
-	 * Convert the object to a unique id
-	 *
-	 * @param object $object
-	 * @return string|null
-	 */
-	public function getId($object)
-	{
-		$specs = $this->resolver->getSpecification(ClassUtils::getRealClass($object));
+    /**
+     * Convert the object to a unique id
+     *
+     * @param object $object
+     * @return string|null
+     */
+    public function getId($object)
+    {
+        $specs = $this->resolver->getSpecification(ClassUtils::getRealClass($object));
 
-		if (!$specs) {
-			return null;
-		}
+        if (!$specs) {
+            return null;
+        }
 
-		$id = $specs->getId();
+        $id = $specs->getId();
 
-		if ($id === null) {
-			return null;
-		}
+        if ($id === null) {
+            return null;
+        }
 
-		return $this->getFieldValue(new ObjectWrapper($object), $id, $specs);
-	}
+        return $this->getFieldValue(new ObjectWrapper($object), $id, $specs);
+    }
 }

@@ -12,6 +12,7 @@
 namespace Integrated\Tests\Common\Form\Mapping\Annotations;
 
 use Integrated\Common\Form\Mapping\Annotations\Field;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -54,7 +55,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $field = new Field(array());
 
         // Asserts
-        $this->assertEquals('text', $field->getType());
+        $this->assertEquals(TextType::class, $field->getType());
         $this->assertSame(array(), $field->getOptions());
     }
 }

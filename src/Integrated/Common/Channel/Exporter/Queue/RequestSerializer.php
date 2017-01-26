@@ -17,7 +17,7 @@ use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\ChannelManagerInterface;
 
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Security\Core\Util\ClassUtils;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
