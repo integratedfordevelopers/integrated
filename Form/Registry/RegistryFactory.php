@@ -5,6 +5,9 @@ namespace Integrated\Bundle\ContentBundle\Form\Registry;
 use Integrated\Common\ContentType\Form\Custom\Type;
 use Integrated\Common\ContentType\Form\Custom\Type\Registry;
 
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 /**
  * Simple factory for Registry
  *
@@ -22,13 +25,13 @@ class RegistryFactory
         // Todo this must be configurable
         $text  = new Type();
         $text
-            ->setType('text')
+            ->setType(TextType::class)
             ->setName('Text')
         ;
 
         $textarea = new Type();
         $textarea
-            ->setType('textarea')
+            ->setType(TextareaType::class)
             ->setName('Textarea')
         ;
 

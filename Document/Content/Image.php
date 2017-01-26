@@ -26,7 +26,7 @@ class Image extends File
 {
     /**
      * @var StorageInterface
-     * @Type\Field(type="integrated_image_dropzone")
+     * @Type\Field(type="Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneTypee")
      * @Assert\File(mimeTypes="image/*")
      */
     protected $file;

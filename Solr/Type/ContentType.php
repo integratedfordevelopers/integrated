@@ -19,9 +19,7 @@ use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
-use Symfony\Component\Security\Core\Util\ClassUtils;
-
-use Integrated\Bundle\ContentBundle\Document\Content\Image;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -45,7 +43,7 @@ class ContentType implements TypeInterface
 
         if ($data instanceof Content) {
             $container->set('pub_active', $data->isPublished(false));
-        }        
+        }
 
         //Relation field and facet field for taxonomy and commercial relations
         $items = array_merge($data->getRelationsByRelationType('taxonomy')->toArray(),$data->getRelationsByRelationType('commercial')->toArray());
@@ -57,7 +55,6 @@ class ContentType implements TypeInterface
                 }
             }
         }
-
     }
 
     /**

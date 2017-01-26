@@ -13,12 +13,11 @@ namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\Collectio
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Integrated\Common\Form\Mapping\MetadataInterface;
-
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\Collection\DefaultTransformer;
+use Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\DefaultType as FieldType;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -34,7 +33,7 @@ class DefaultType extends AbstractType
         $metadata = $options['metadata'];
 
         foreach ($metadata->getFields() as $field) {
-            $builder->add($field->getName(), 'content_type_field', [
+            $builder->add($field->getName(), FieldType::class, [
                 'label' => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
                 'field' => $field,
             ]);
@@ -49,13 +48,13 @@ class DefaultType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['metadata']);
-        $resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\Form\\Mapping\\MetadataInterface']);
+        $resolver->setAllowedTypes('metadata', 'Integrated\\Common\\Form\\Mapping\\MetadataInterface');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_content_type_default_fields';
     }

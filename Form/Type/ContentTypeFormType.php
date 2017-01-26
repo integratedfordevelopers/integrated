@@ -11,9 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Integrated\Bundle\ContentBundle\Form\Type\ContentType\FieldsType;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,10 +35,10 @@ class ContentTypeFormType extends AbstractType
         $metadata = $options['metadata'];
 
         $builder
-            ->add('class', 'hidden')
-            ->add('name', 'text', ['label' => 'Name'])
-            ->add('fields', 'content_type_fields', ['metadata' => $metadata])
-            ->add('channels', 'content_type_channels', ['property_path' => 'options[channels]'])
+            ->add('class', HiddenType::class)
+            ->add('name', TextType::class, ['label' => 'Name'])
+            ->add('fields', FieldsType::class, ['metadata' => $metadata])
+            ->add('channels', ContentTypeChannelsType::class, ['property_path' => 'options[channels]'])
         ;
 
         foreach ($metadata->getOptions() as $option) {
@@ -52,13 +55,13 @@ class ContentTypeFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['metadata']);
-        $resolver->setAllowedTypes(['metadata' => 'Integrated\\Common\\Form\\Mapping\\MetadataInterface']);
+        $resolver->setAllowedTypes('metadata', 'Integrated\\Common\\Form\\Mapping\\MetadataInterface');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_content_type';
     }

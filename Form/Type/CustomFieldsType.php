@@ -53,14 +53,14 @@ class CustomFieldsType extends AbstractType
     {
         $resolver
             ->setRequired(['contentType'])
-            ->setAllowedTypes(['contentType' => ContentTypeInterface::class])
+            ->setAllowedTypes('contentType', ContentTypeInterface::class)
         ;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_custom_fields';
     }

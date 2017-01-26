@@ -11,11 +11,13 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
+
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
-
-use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -54,13 +56,13 @@ class PrimaryChannelType extends AbstractType
 
     public function getParent()
     {
-        return 'document';
+        return DocumentType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_primary_channel';
     }

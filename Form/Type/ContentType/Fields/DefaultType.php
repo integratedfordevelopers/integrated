@@ -12,12 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields;
 
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeField as ContentTypeFieldTransformer;
-
 use Integrated\Common\Form\Mapping\AttributeInterface;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -33,12 +32,12 @@ class DefaultType extends AbstractType
         /** @var AttributeInterface $field */
         $field = $options['field'];
 
-        $builder->add('enabled', 'checkbox', [
+        $builder->add('enabled', CheckboxType::class, [
             'required' => false,
             'label'    => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
         ]);
 
-        $builder->add('required', 'checkbox', ['required' => false]);
+        $builder->add('required', CheckboxType::class, ['required' => false]);
 
         $builder->addModelTransformer(new ContentTypeFieldTransformer($field));
     }
@@ -49,13 +48,13 @@ class DefaultType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['field']);
-        $resolver->setAllowedTypes(['field' => 'Integrated\\Common\\Form\\Mapping\\AttributeInterface']);
+        $resolver->setAllowedTypes('field', 'Integrated\\Common\\Form\\Mapping\\AttributeInterface');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_content_type_field';
     }

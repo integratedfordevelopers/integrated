@@ -12,6 +12,10 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Integrated\Common\ContentType\Form\Custom\TypeInterface;
@@ -43,9 +47,9 @@ class CustomType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'hidden');
+        $builder->add('name', HiddenType::class);
 
-        $builder->add('label', 'text', [
+        $builder->add('label', TextType::class, [
             'required' => true,
         ]);
 
@@ -57,12 +61,12 @@ class CustomType extends AbstractType
             $return[$type->getType()] = $type->getName();
         }
 
-        $builder->add('type', 'choice', [
+        $builder->add('type', ChoiceType::class, [
             'required' => true,
             'choices' => $return,
         ]);
 
-        $builder->add('required', 'checkbox', ['required' => false]);
+        $builder->add('required', CheckboxType::class, ['required' => false]);
 
         $builder->addModelTransformer(new CustomTransformer());
     }
@@ -70,7 +74,7 @@ class CustomType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_content_type_field_custom';
     }

@@ -11,13 +11,15 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type\Job;
 
-use Symfony\Component\Form\Extension\Core\Type\BaseType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
+use Integrated\Bundle\FormTypeBundle\Form\Type\ContentChoiceType;
+
+use Symfony\Component\Form\Extension\Core\Type\BaseType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -43,13 +45,13 @@ class CompanyJobType extends BaseType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('company', 'integrated_content_choice', [
+        $builder->add('company', ContentChoiceType::class, [
             'params' => ['_format' => 'json', 'contenttypes' => $this->getContentTypes()],
             'multiple' => false,
         ]);
 
-        $builder->add('function');
-        $builder->add('department');
+        $builder->add('function', TextType::class);
+        $builder->add('department', TextType::class);
     }
 
     /**
@@ -60,7 +62,9 @@ class CompanyJobType extends BaseType
     {
         $contentTypes = $this->contentTypeManager->filterInstanceOf(Company::class);
 
-        return array_map(function($contentType) { return $contentType->getId(); }, $contentTypes);
+        return array_map(function ($contentType) {
+            return $contentType->getId();
+        }, $contentTypes);
     }
 
     /**
@@ -74,7 +78,7 @@ class CompanyJobType extends BaseType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_company_job';
     }

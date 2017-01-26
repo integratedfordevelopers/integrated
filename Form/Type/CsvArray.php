@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\CsvArray as Transformer;
@@ -35,7 +36,7 @@ class CsvArray extends AbstractType
     /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_csv_array';
     }
@@ -45,6 +46,6 @@ class CsvArray extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return TextType::class;
     }
 }

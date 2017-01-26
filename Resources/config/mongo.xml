@@ -23,11 +23,9 @@
 
 	<services>
 
-        <service id="integrated_content.odm.mongo.mapping.driver"
-                 class="%integrated_content.odm.mongo.mapping.driver.class%"
-                 factory-service="doctrine_mongodb.odm.default_configuration"
-                 factory-method="getMetadataDriverImpl"
-                 public="false" />
+        <service id="integrated_content.odm.mongo.mapping.driver" class="%integrated_content.odm.mongo.mapping.driver.class%" public="false">
+            <factory service="doctrine_mongodb.odm.default_configuration" method="getMetadataDriverImpl" />
+        </service>
 
         <service id="integrated_content.odm.mongo.mapping.locator" class="%integrated_content.odm.mongo.mapping.locator.class%">
             <argument type="service" id="integrated_content.odm.mongo.mapping.driver" />
@@ -46,10 +44,9 @@
 
         </service>
 
-        <service id="integrated_content.odm.mongo.mapping.discriminator_map.resolver"
-                 class="%integrated_content.odm.mongo.mapping.discriminator_map.resolver.class%"
-                 factory-service="integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder"
-                 factory-method="getResolver" />
+        <service id="integrated_content.odm.mongo.mapping.discriminator_map.resolver" class="%integrated_content.odm.mongo.mapping.discriminator_map.resolver.class%">
+            <factory service="integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder" method="getResolver" />
+        </service>
 
         <service id="integrated_content.odm.mongo.mapping.discriminator_map.listener" class="%integrated_content.odm.mongo.mapping.discriminator_map.listener.class%">
             <argument type="service" id="integrated_content.odm.mongo.mapping.discriminator_map.resolver" />

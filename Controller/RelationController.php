@@ -10,12 +10,14 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -31,6 +33,7 @@ class RelationController extends Controller
      * Lists all the Relation documents
      *
      * @Template()
+     * @param Request $request
      * @return array
      */
     public function indexAction(Request $request)
@@ -95,7 +98,6 @@ class RelationController extends Controller
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->persist($relation);
@@ -141,7 +143,6 @@ class RelationController extends Controller
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->flush();
@@ -169,7 +170,6 @@ class RelationController extends Controller
 
         $form->handleRequest($request);
         if ($form->isValid()) {
-
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->remove($relation);
@@ -190,7 +190,7 @@ class RelationController extends Controller
     protected function createNewForm(Relation $relation)
     {
         $form = $this->createForm(
-            'integrated_relation',
+            RelationType::class,
             $relation,
             [
                 'action'   => $this->generateUrl('integrated_content_relation_create'),
@@ -198,7 +198,7 @@ class RelationController extends Controller
             ]
         );
 
-        $form->add('submit', 'submit', ['label' => 'Create']);
+        $form->add('submit', SubmitType::class, ['label' => 'Create']);
 
         return $form;
     }
@@ -212,7 +212,7 @@ class RelationController extends Controller
     protected function createEditForm(Relation $relation)
     {
         $form = $this->createForm(
-            'integrated_relation',
+            RelationType::class,
             $relation,
             [
                 'action'   => $this->generateUrl('integrated_content_relation_update', ['id' => $relation->getId()]),
@@ -220,7 +220,7 @@ class RelationController extends Controller
             ]
         );
 
-        $form->add('submit', 'submit', ['label' => 'Update']);
+        $form->add('submit', SubmitType::class, ['label' => 'Update']);
 
         return $form;
     }
@@ -236,7 +236,7 @@ class RelationController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('integrated_content_relation_delete', ['id' => $relation->getId()]))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
+            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
             ->getForm()
         ;
     }

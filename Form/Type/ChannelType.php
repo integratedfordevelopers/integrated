@@ -11,7 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -31,7 +34,7 @@ class ChannelType extends AbstractType
             'name'
         );
 
-        $builder->add('domains', 'bootstrap_collection', [
+        $builder->add('domains', BootstrapCollectionType::class, [
             'label'              => "Domains (example.com)",
             'allow_add'          => true,
             'allow_delete'       => true,
@@ -42,7 +45,7 @@ class ChannelType extends AbstractType
             'attr'               => ['class' => 'channel-domains']
         ]);
 
-        $builder->add('primaryDomain', 'hidden', ['attr' => ['class' => 'primary-domain-input']]);
+        $builder->add('primaryDomain', HiddenType::class, ['attr' => ['class' => 'primary-domain-input']]);
 
         //validate domain names
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
@@ -75,7 +78,7 @@ class ChannelType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'channel';
     }

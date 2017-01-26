@@ -11,12 +11,15 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
+use Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -63,7 +66,6 @@ class SearchSelectionController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $this->getDocumentManager()->persist($searchSelection);
             $this->getDocumentManager()->flush();
 
@@ -95,7 +97,6 @@ class SearchSelectionController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-
             $this->getDocumentManager()->flush();
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
@@ -129,7 +130,6 @@ class SearchSelectionController extends Controller
         $form->handleRequest($request);
 
         if ($form->has('submit') && $form->isValid()) {
-
             $this->getDocumentManager()->remove($searchSelection);
             $this->getDocumentManager()->flush();
 
@@ -178,7 +178,7 @@ class SearchSelectionController extends Controller
         $request = $this->get('request_stack')->getCurrentRequest();
 
         $form = $this->createForm(
-            $this->get('integrated_content.form.search_selection.type'),
+            SearchSelectionType::class,
             $searchSelection,
             [
                 'action' => $this->generateUrl('integrated_content_search_selection_new', $request ? $request->query->all() : []),
@@ -186,7 +186,7 @@ class SearchSelectionController extends Controller
             ]
         );
 
-        $form->add('actions', 'integrated_save_cancel', [
+        $form->add('actions', SaveCancelType::class, [
             'cancel_route' => 'integrated_content_search_selection_index',
             'label' => 'Create',
             'button_class' => '',
@@ -204,7 +204,7 @@ class SearchSelectionController extends Controller
     protected function createEditForm(SearchSelection $searchSelection)
     {
         $form = $this->createForm(
-            $this->get('integrated_content.form.search_selection.type'),
+            SearchSelectionType::class,
             $searchSelection,
             array(
                 'action' => $this->generateUrl('integrated_content_search_selection_edit', ['id' => $searchSelection->getId()]),
@@ -212,7 +212,7 @@ class SearchSelectionController extends Controller
             )
         );
 
-        $form->add('actions', 'integrated_save_cancel', ['cancel_route' => 'integrated_content_search_selection_index']);
+        $form->add('actions', SaveCancelType::class, ['cancel_route' => 'integrated_content_search_selection_index']);
 
         return $form;
     }
@@ -232,9 +232,9 @@ class SearchSelectionController extends Controller
             ->setMethod('DELETE');
 
         if ($notDelete) {
-            $form->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
+            $form->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
         } else {
-            $form->add('reload', 'submit', ['label' => 'Reload', 'attr' => ['class' => 'btn-default']]);
+            $form->add('reload', SubmitType::class, ['label' => 'Reload', 'attr' => ['class' => 'btn-default']]);
         }
 
         return $form->getForm();
@@ -247,7 +247,7 @@ class SearchSelectionController extends Controller
     {
         $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedContentBundle:SearchSelection\SearchSelection');
 
-        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN')) {
+        if (false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $builder->field('userId')->equals($this->getUser()->getId());
         }
 

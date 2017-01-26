@@ -49,7 +49,7 @@ class Article extends Content
 
     /**
      * @var ArrayCollection Embedded\Author[]
-     * @Type\Field(type="integrated_author", options={"label" = "Authors"})
+     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\AuthorType", options={"label" = "Authors"})
      */
     protected $authors;
 
@@ -66,25 +66,25 @@ class Article extends Content
 
     /**
      * @var string
-     * @Type\Field(type="textarea")
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\TextareaType")
      */
     protected $intro;
 
     /**
      * @var string
-     * @Type\Field(type="textarea")
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\TextareaType")
      */
     protected $description;
 
     /**
      * @var string
-     * @Type\Field(type="integrated_editor")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\EditorType")
      */
     protected $content;
 
     /**
      * @var Embedded\Address
-     * @Type\Field(type="integrated_address")
+     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\AddressType")
      */
     protected $address;
 

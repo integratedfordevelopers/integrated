@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,17 +29,18 @@ class PhonenumberType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if (in_array('type', $options['fields'])) {
-            $builder->add('type', 'choice', [
+            $builder->add('type', ChoiceType::class, [
                 'choices' => [
-                    'mobile' => 'Mobile',
-                    'work'   => 'Work',
-                    'home'   => 'Home'
-                ]
+                    'Mobile' => 'mobile',
+                    'Work' => 'work',
+                    'Home' => 'home'
+                ],
+                'choices_as_values' => true
             ]);
         }
 
         if (in_array('number', $options['fields'])) {
-            $builder->add('number', 'text', [
+            $builder->add('number', TextType::class, [
                 'label'       => 'Phone number',
                 'constraints' => [
                     new NotBlank(),
@@ -60,7 +63,7 @@ class PhonenumberType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_phonenumber';
     }

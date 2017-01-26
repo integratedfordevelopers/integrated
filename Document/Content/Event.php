@@ -22,13 +22,13 @@ class Event extends Article
 {
     /**
      * @var \DateTime
-     * @Type\Field(type="integrated_datetime")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType")
      */
     protected $startDate;
 
     /**
      * @var \DateTime
-     * @Type\Field(type="integrated_datetime")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType")
      */
     protected $endDate;
 

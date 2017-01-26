@@ -28,7 +28,7 @@ class FormBlock extends Block
     /**
      * @var ContentType
      * @Type\Field(
-     *      type="document",
+     *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:ContentType\ContentType",
      *          "property"="name",
@@ -51,7 +51,7 @@ class FormBlock extends Block
      *     @Assert\Email
      * })
      * @Type\Field(
-     *      type="bootstrap_collection",
+     *      type="Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType",
      *      options={
      *          "label"="Sent form to e-mail address(es)",
      *          "type"="email",

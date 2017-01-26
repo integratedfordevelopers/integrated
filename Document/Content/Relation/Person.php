@@ -18,7 +18,6 @@ use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
 /**
  * Document type Relation\Person
@@ -31,7 +30,10 @@ class Person extends Relation
 {
     /**
      * @var string
-     * @Type\Field(type="choice", options={"choices"={"Male"="Male", "Female"="Female"}})
+     * @Type\Field(
+     *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
+     *     options={"choices"={"Male"="Male", "Female"="Female"}}
+     * )
      */
     protected $gender;
 
@@ -68,13 +70,13 @@ class Person extends Relation
 
     /**
      * @var Collection Job[]
-     * @Type\Field(type="integrated_contact_persons")
+     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\Job\ContactPersonsType")
      */
     protected $jobs;
 
     /**
      * @var StorageInterface|null
-     * @Type\Field(type="integrated_image")
+     * @Type\Field(type="Integrated\Bundle\StorageBundle\Form\Type\ImageType")
      */
     protected $picture;
 

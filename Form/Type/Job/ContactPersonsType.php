@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type\Job;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
@@ -18,17 +19,15 @@ use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class ContactPersonsType extends BootstrapCollectionType
+class ContactPersonsType extends AbstractType
 {
     /**
      * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        parent::configureOptions($resolver);
-
         $resolver->setDefaults([
-            'type' => 'integrated_company_job',
+            'type' => CompanyJobType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'label' => 'Contact persons',
@@ -37,9 +36,17 @@ class ContactPersonsType extends BootstrapCollectionType
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return BootstrapCollectionType::class;
+    }
+
+    /**
      * @return string
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_contact_persons';
     }

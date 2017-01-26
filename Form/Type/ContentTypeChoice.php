@@ -14,8 +14,8 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 
 /**
  * @author Vasil Pascal <developer.optimum@gmail.com>
@@ -41,14 +41,21 @@ class ContentTypeChoice extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $choices = [];
-
         $contentTypes = $this->repository->findAll();
         foreach ($contentTypes as $contentType) {
-            $choices[$contentType->getId()] = $contentType;
+            $choices[$contentType->getName()] = $contentType->getId();
         }
-        $resolver->setDefault('choices', $choices);
-        $resolver->setDefault('multiple', true);
-        $resolver->setDefault('attr', ['class' => 'basic-multiple']);
+
+        $resolver
+            ->setDefaults([
+                'multiple' => true,
+                'choices' => $choices,
+                'choices_as_values' => true,
+                'attr' => [
+                    'class' => 'basic-multiple'
+                ]
+            ])
+        ;
     }
 
     /**
@@ -56,13 +63,13 @@ class ContentTypeChoice extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_content_type_choice';
     }
