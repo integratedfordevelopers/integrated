@@ -24,7 +24,7 @@ class ActionsType extends BaseActionsType
      */
     public function __construct()
     {
-        parent::__construct('integrated_content_actions', [
+        parent::__construct([
             'create'         => ['type' => SubmitType::class, 'options' => ['label' => 'Create', 'button_class' => 'orange']],
             'save'           => ['type' => SubmitType::class, 'options' => ['label' => 'Save', 'button_class' => 'orange']],
             'delete'         => ['type' => SubmitType::class, 'options' => ['label' => 'Delete', 'button_class' => 'orange']],
