@@ -13,8 +13,12 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 
+use Integrated\Bundle\FormTypeBundle\Form\Type\ColorType;
+use Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -30,9 +34,10 @@ class ChannelType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            'name'
-        );
+        $builder->add('name', TextType::class);
+
+        $builder->add('logo', ImageDropzoneType::class);
+        $builder->add('color', ColorType::class);
 
         $builder->add('domains', BootstrapCollectionType::class, [
             'label'              => "Domains (example.com)",
