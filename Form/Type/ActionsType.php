@@ -24,7 +24,7 @@ class ActionsType extends BaseActionsType
      */
     public function __construct()
     {
-        parent::__construct('integrated_channel_actions', [
+        parent::__construct([
             'create' => [
                 'type' => SubmitType::class,
                 'options' => ['label' => 'form.actions.create', 'translation_domain' => 'IntegratedChannelBundle']
