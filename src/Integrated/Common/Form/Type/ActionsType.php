@@ -26,11 +26,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ActionsType extends AbstractType
 {
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @var array
      */
     protected $buttons;
@@ -38,12 +33,10 @@ class ActionsType extends AbstractType
     /**
      * Constructor.
      *
-     * @param string $name
      * @param array  $buttons
      */
-    public function __construct($name, array $buttons)
+    public function __construct(array $buttons)
     {
-        $this->name = $name;
         $this->buttons = $buttons;
     }
 

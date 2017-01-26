@@ -23,7 +23,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -221,9 +220,9 @@ class ContentFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getBlockPrefix()
     {
-        return FormType::class;
+        return 'integrated_content';
     }
 
     /**
