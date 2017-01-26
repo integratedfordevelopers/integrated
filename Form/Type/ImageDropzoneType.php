@@ -14,6 +14,7 @@ namespace Integrated\Bundle\StorageBundle\Form\Type;
 use Gregwar\ImageBundle\Services\ImageHandling;
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\ImageBundle\Converter\Container;
+use Integrated\Bundle\ImageBundle\Converter\Format\WebFormat;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -24,6 +25,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 class ImageDropzoneType extends AbstractDropzoneType
 {
     /**
+     * @var WebFormat
+     */
+    protected $webFormat;
+
+    /**
      * @var Container
      */
     protected $converterContainer;
@@ -33,6 +39,7 @@ class ImageDropzoneType extends AbstractDropzoneType
      * @param AssetManager $javascripts
      * @param TranslatorInterface $translator
      * @param ImageHandling $imageHandling
+     * @param WebFormat $webFormat
      * @param Container $converterContainer
      */
     public function __construct(
@@ -40,8 +47,10 @@ class ImageDropzoneType extends AbstractDropzoneType
         AssetManager $javascripts,
         TranslatorInterface $translator,
         ImageHandling $imageHandling,
-        Container $converterContainer = null
+        WebFormat $webFormat,
+        Container $converterContainer
     ) {
+        $this->webFormat = $webFormat;
         $this->converterContainer = $converterContainer;
         parent::__construct($stylesheets, $javascripts, $translator, $imageHandling, 'image');
     }
@@ -54,7 +63,10 @@ class ImageDropzoneType extends AbstractDropzoneType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
-        $view->vars['options']['extensions'] = $this->converterContainer->formats()->toArray();
+        $view->vars['options']['extensions'] = array_merge(
+            $this->webFormat->getWebFormats()->toArray(),
+            $this->converterContainer->formats()->toArray()
+        );
     }
 
     /**
