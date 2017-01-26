@@ -53,14 +53,6 @@ class SaveCancelType extends SubmitType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
-    {
-        return SubmitType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'integrated_save_cancel';
