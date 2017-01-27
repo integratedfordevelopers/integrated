@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\ImageBundle\Twig\Extension;
 
-use Gregwar\ImageBundle\Extensions\ImageTwig;
 use Gregwar\ImageBundle\Services\ImageHandling;
 
 use Integrated\Bundle\ImageBundle\Converter\WebFormatConverter;
 use Integrated\Bundle\ImageBundle\Factory\StorageModelFactory;
+
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
@@ -29,24 +29,17 @@ class ImageExtension extends \Twig_Extension
     private $imageHandling;
 
     /**
-     * @var ImageTwig
-     */
-    private $imageTwig;
-
-    /**
      * @var WebFormatConverter
      */
     private $webFormatConverter;
 
     /**
      * @param ImageHandling $imageHandling
-     * @param ImageTwig $imageTwig
      * @param WebFormatConverter $webFormatConverter
      */
-    public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter)
+    public function __construct(ImageHandling $imageHandling, WebFormatConverter $webFormatConverter)
     {
         $this->imageHandling = $imageHandling;
-        $this->imageTwig = $imageTwig;
         $this->webFormatConverter = $webFormatConverter;
     }
 
@@ -73,7 +66,7 @@ class ImageExtension extends \Twig_Extension
             $image = $this->webFormatConverter->convert(StorageModelFactory::json($json))->getPathname();
         }
 
-        return $this->imageHandling->open((string) $image);
+        return $this->imageHandling->open($image);
     }
 
     /**
@@ -87,7 +80,7 @@ class ImageExtension extends \Twig_Extension
             $image = $this->webFormatConverter->convert($image)->getPathname();
         }
 
-        return $this->imageTwig->webImage($image);
+        return $this->imageHandling->open($image);
     }
 
     /**
@@ -101,7 +94,7 @@ class ImageExtension extends \Twig_Extension
             $image = $this->webFormatConverter->convert($image)->getPathname();
         }
 
-        return $this->imageTwig->image($image);
+        return $this->imageHandling->open($image);
     }
 
     /**
