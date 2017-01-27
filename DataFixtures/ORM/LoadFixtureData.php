@@ -57,7 +57,7 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
     public function generateSalt()
     {
         $generator = $this->container->get('security.secure_random');
-        return  base64_encode($generator->nextBytes(72));
+        return base64_encode($generator->nextBytes(72));
     }
 
     /**
