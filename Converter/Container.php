@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ImageBundle\Converter;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Integrated\Bundle\ImageBundle\Converter\Helper\ExtensionHelper;
 use Integrated\Bundle\ImageBundle\Exception\FormatException;
 
 use Integrated\Bundle\StorageBundle\Storage\Cache\AppCache;
@@ -99,13 +100,11 @@ class Container
         foreach ($this->adapters as $adapter) {
             foreach ($adapter->formats() as $format) {
                 if (!$supported->contains($format)) {
-                    // Dropzone does not seem to support lower/uppercase extension sensitivity
-                    $supported->add(strtolower($format));
-                    $supported->add(strtoupper($format));
+                    $supported->add($format);
                 }
             }
         }
 
-        return $supported;
+        return ExtensionHelper::caseTransformBoth($supported);
     }
 }

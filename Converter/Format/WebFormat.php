@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ImageBundle\Converter\Format;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Bundle\ImageBundle\Converter\Helper\ExtensionHelper;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
@@ -29,7 +30,7 @@ class WebFormat
      */
     public function __construct(array $webFormat)
     {
-        $this->webFormat = new ArrayCollection($webFormat);
+        $this->webFormat = ExtensionHelper::caseTransformBoth(new ArrayCollection($webFormat));
     }
 
     /**
@@ -39,5 +40,13 @@ class WebFormat
     public function isWebFormat(StorageInterface $storage)
     {
         return $this->webFormat->contains($storage->getMetadata()->getExtension());
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getWebFormats()
+    {
+        return $this->webFormat;
     }
 }
