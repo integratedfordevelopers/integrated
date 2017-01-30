@@ -10,7 +10,8 @@
 
             if (0 < relation.length) {
                 parent.$('.relation-items#{{ relation }}').append('<option selected value="{{ id }}">{{ title }}</option>').trigger('change');
-                parent.$("#relation-add-modal").modal('hide');
+                parent.$("#relation-add-modal .close").click();
+
             }
         {% endif %}
 
