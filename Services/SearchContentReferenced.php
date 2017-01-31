@@ -51,6 +51,10 @@ class SearchContentReferenced
             foreach ($associations as $assocFieldName) {
                 $assocClassName = $classMetadata->getAssociationTargetClass($assocFieldName);
 
+                if (!$assocClassName) {
+                    continue; // Skip empty class
+                }
+
                 if ($deleted['className'] == $assocClassName || is_subclass_of($deleted['className'], $assocClassName)) {
                     $items = $this->dm->createQueryBuilder($classMetadata->getName())
                         ->field($assocFieldName.'.$id')
