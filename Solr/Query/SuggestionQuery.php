@@ -72,7 +72,8 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
         $facet = [
             'field' => 'suggestions',
             'limit' => 5,
-            'prefix' => $helper->escapeTerm($this->query)
+            'prefix' => $helper->escapeTerm($this->query),
+            'method' => 'enum'
         ];
 
         $facet = new Field($facet);
