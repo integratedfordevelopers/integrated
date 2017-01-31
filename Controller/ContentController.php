@@ -98,7 +98,7 @@ class ContentController extends Controller
         $facetTitles['workflow_assigned'] = 'Assigned user';
 
         $facetSet->createFacetField('authors')->setField('facet_authors')->addExclude('authors');
-        $facetTitles['workflow_state'] = 'Author';
+        $facetTitles['authors'] = 'Author';
 
         $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
 
