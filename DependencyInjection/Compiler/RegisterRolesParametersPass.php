@@ -55,9 +55,30 @@ class RegisterRolesParametersPass implements CompilerPassInterface
 
         /** @var $option \DOMElement */
         foreach ($options as $option) {
-            if ($option->tagName == 'role' && strpos($option->nodeValue, 'ROLE_') == 0) {
-                $roleUpper = strtoupper($option->nodeValue);
-                $parameters[$roleUpper] = $roleUpper;
+            if ($option->tagName == 'role') {
+                $name = '';
+                $label = '';
+                $description = '';
+                $hidden = 0;
+                foreach ($option->getElementsByTagName('name') as $child) {
+                    $name = $child->nodeValue;
+                }
+                foreach ($option->getElementsByTagName('label') as $child) {
+                    $label = $child->nodeValue;
+                }
+                foreach ($option->getElementsByTagName('description') as $child) {
+                    $description = $child->nodeValue;
+                }
+                foreach ($option->getElementsByTagName('hidden') as $child) {
+                    $hidden = $child->nodeValue;
+                }
+                if (strpos($name, 'ROLE_') == 0) {
+                    if ($label == '') {
+                        $label = $name;
+                    }
+                    $roleUpper = strtoupper($name);
+                    $parameters[$roleUpper] = $label;
+                }
             }
         }
     }

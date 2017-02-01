@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <roles>
-    <!--<role>ROLE_EXPORT</role>-->
-    <!--<role>ROLE_USER</role>-->
-    <!--<role>ROLE_ADMIN</role>-->
+    <role>
+        <name>ROLE_ADMIN</name>
+        <label>Administrator</label>
+        <description></description>
+        <hidden>0</hidden>
+    </role>
 </roles>
