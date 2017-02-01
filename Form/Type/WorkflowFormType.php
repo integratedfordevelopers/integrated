@@ -12,10 +12,10 @@
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
-use Integrated\Bundle\UserBundle\Model\User;
+use Integrated\Bundle\WorkflowBundle\Form\EventListener\WorkflowDefaultDataListener;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -52,9 +52,7 @@ class WorkflowFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('state', 'workflow_state', ['label' => 'Workflow status', 'workflow' => $options['workflow']]);
-
         $builder->add('comment', 'textarea', ['required' => false, 'attr' => ['class' => 'comment']]);
-
         $builder->add('workflow', 'hidden', ['data' => $options['workflow'], 'attr' => ['class' => 'workflow-hidden']]);
 
         $builder->add(
@@ -62,7 +60,6 @@ class WorkflowFormType extends AbstractType
             'integrated_select2',
             [
                 'empty_value' => 'Not Assigned',
-                'data'  => $this->tokenStorage->getToken()->getUser()->getId(),
                 'required' => false,
                 'attr' => ['class' => 'assigned-choice'],
                 'choices' => $this->getAssigned(),
@@ -70,6 +67,8 @@ class WorkflowFormType extends AbstractType
         );
 
         $builder->add('deadline', 'integrated_datetime', ['attr' => ['class' => 'form-control deadline']]);
+
+        $builder->addEventSubscriber(new WorkflowDefaultDataListener($this->tokenStorage));
     }
 
     /**
