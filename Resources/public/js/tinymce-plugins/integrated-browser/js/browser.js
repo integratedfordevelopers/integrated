@@ -228,7 +228,7 @@ $(document).ready(function() {
         var buttonHtml = '';
 
         if (contentTypes.length == 1) {
-            buttonHtml = '<a target="_blank" href="'+image.path+'" class="btn btn-primary btn-content-add" role="button">Upload new '+ contentTypes[0].name +'</a>';
+            buttonHtml = '<a target="_blank" href="'+ contentTypes[0].path +'" class="btn btn-primary btn-content-add" role="button">Upload new '+ contentTypes[0].name +'</a>';
         } else if (contentTypes.length > 1) {
             buttonHtml =
                 '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
