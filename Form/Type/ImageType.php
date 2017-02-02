@@ -11,13 +11,36 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Integrated\Bundle\ImageBundle\Validator\Constraints\OnTheFlyFormatConverterConstraint;
+
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class ImageType extends FileType
+class ImageType extends AbstractType
 {
     /**
-     * @return string
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults([
+            'constraints' => [new OnTheFlyFormatConverterConstraint()]
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'integrated_file';
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getName()
     {
