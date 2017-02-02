@@ -15,12 +15,11 @@ use Integrated\Bundle\StorageBundle\Storage\Collection\Map\ContentReflectionMap;
 use Integrated\Bundle\StorageBundle\Storage\Collection\Map\FileMap;
 use Integrated\Bundle\StorageBundle\Storage\Collection\Walk\DocumentWalk;
 use Integrated\Bundle\StorageBundle\Storage\Collection\Walk\FilesystemWalk;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Cache\ObjectCache;
+use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Bundle\StorageBundle\Storage\Util\ProgressIteratorUtil;
 
 use Integrated\Common\Storage\Database\DatabaseInterface;
-use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\Console\Command\Command;
@@ -51,12 +50,22 @@ class RemoveCommand extends Command
     protected $storage;
 
     /**
-     * @param DatabaseInterface $database
-     * @param FilesystemRegistry $registry
-     * @param ManagerInterface $storage
+     * @var MetadataFactoryInterface
      */
-    public function __construct(DatabaseInterface $database, FilesystemRegistry $registry, ManagerInterface $storage)
-    {
+    private $metadata;
+
+    /**
+     * @param DatabaseInterface        $database
+     * @param FilesystemRegistry       $registry
+     * @param ManagerInterface         $storage
+     * @param MetadataFactoryInterface $metadata
+     */
+    public function __construct(
+        DatabaseInterface $database,
+        FilesystemRegistry $registry,
+        ManagerInterface $storage,
+        MetadataFactoryInterface $metadata
+    ) {
         $this->database = $database;
         $this->registry = $registry;
         $this->storage = $storage;
@@ -91,15 +100,14 @@ class RemoveCommand extends Command
 
         if ($this->registry->exists($filesystem)) {
             // This we'll need to do some work
-            $reflection = new ObjectCache();
             $iteratorUtil = new ProgressIteratorUtil($this->database->getObjects(), $output);
 
             $output->writeln('Running three steps; map, deleting files and save');
 
             $iteratorUtil
-                ->map(ContentReflectionMap::storageProperties($reflection))
-                ->map(FileMap::documentFilesystemContains($reflection, $filesystem))
-                ->walk(FilesystemWalk::remove($this->storage, $reflection, $filesystem))
+                ->map(ContentReflectionMap::storageProperties($this->metadata))
+                ->map(FileMap::documentFilesystemContains($this->metadata, $filesystem))
+                ->walk(FilesystemWalk::remove($this->storage, $this->metadata, $filesystem))
                 ->walk(DocumentWalk::save($this->database))
             ;
         } else {

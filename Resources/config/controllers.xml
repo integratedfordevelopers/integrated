@@ -13,7 +13,7 @@
     <services>
 
         <service id="integrated_storage.controller_file" class="%integrated_storage.controller_file%">
-            <argument type="service" id="integrated_storage.reflection_cache" />
+            <argument type="service" id="integrated_storage.metadata" />
         </service>
 
     </services>

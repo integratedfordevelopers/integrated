@@ -14,8 +14,8 @@ namespace Integrated\Bundle\StorageBundle\Command;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
 
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
+use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\PropertyReflection;
 
 use Integrated\Common\Storage\Database\DatabaseInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -48,18 +48,20 @@ class MigrateCommand extends Command
     protected $storage;
 
     /**
-     * @var array
+     * @var MetadataFactoryInterface
      */
-    protected $reflectionClasses = [];
+    private $metadata;
 
     /**
-     * @param DatabaseInterface $database
-     * @param ManagerInterface $storage
+     * @param DatabaseInterface        $database
+     * @param ManagerInterface         $storage
+     * @param MetadataFactoryInterface $metadata
      */
-    public function __construct(DatabaseInterface $database, ManagerInterface $storage)
+    public function __construct(DatabaseInterface $database, ManagerInterface $storage, MetadataFactoryInterface $metadata)
     {
         $this->database = $database;
         $this->storage = $storage;
+        $this->metadata = $metadata;
 
         parent::__construct();
     }
@@ -115,7 +117,7 @@ class MigrateCommand extends Command
 
         foreach ($data as $row) {
             // Walk over the properties of the class with reflection
-            foreach ($this->getReflectionClass($row['class'])->getTargetProperties() as $property) {
+            foreach ($this->metadata->getMetadata($row['class'])->getProperties() as $property) {
                 // Does the property exists?
                 $skip = !isset($row[$property->getPropertyName()]);
 
@@ -185,24 +187,11 @@ class MigrateCommand extends Command
     }
 
     /**
-     * @param string $class
-     * @return PropertyReflection
-     */
-    protected function getReflectionClass($class)
-    {
-        if (isset($this->reflectionClasses[$class])) {
-            return $this->reflectionClasses[$class];
-        }
-
-        return $this->reflectionClasses[$class] = new PropertyReflection($class);
-    }
-
-    /**
      * @param string $path
      * @param string $fileId
      * @param string $documentId
      * @param bool $allowDuplicate
-     * @return bool|\Symfony\Component\Finder\SplFileInfo
+     * @return bool|SplFileInfo
      */
     protected function getFile($path, $fileId, $documentId, $allowDuplicate = false)
     {
@@ -217,7 +206,7 @@ class MigrateCommand extends Command
             $iterator = $finder->getIterator();
             $iterator->rewind();
 
-            /** @var \Symfony\Component\Finder\SplFileInfo $file */
+            /** @var SplFileInfo $file */
             $file = clone $iterator->current();
 
             // Memory optimalization

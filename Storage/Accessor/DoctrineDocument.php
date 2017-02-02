@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\StorageBundle\Storage\Reflection\Document;
+namespace Integrated\Bundle\StorageBundle\Storage\Accessor;
 
 use Doctrine\Common\Util\ClassUtils;
 use Integrated\Common\Locks\Exception\LogicException;

@@ -13,8 +13,9 @@
         <parameter key="integrated_storage.filesystem_delete">Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove</parameter>
         <parameter key="integrated_storage.cache_app">Integrated\Bundle\StorageBundle\Storage\Cache\AppCache</parameter>
         <parameter key="integrated_storage.file_locator">Integrated\Bundle\StorageBundle\Locator\StorageLocator</parameter>
-        <parameter key="integrated_storage.reflection_cache">Integrated\Bundle\StorageBundle\Storage\Reflection\Cache\AppCache</parameter>
         <parameter key="integrated_storage.intent_writer">Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer</parameter>
+
+        <parameter key="integrated_storage.metadata_target">Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage</parameter>
 
     </parameters>
 
@@ -48,9 +49,11 @@
             <argument type="service" id="knp_gaufrette.filesystem_map" />
         </service>
 
-        <service id="integrated_storage.reflection_cache" class="%integrated_storage.reflection_cache%">
-            <argument>%kernel.environment%</argument>
-            <argument>%kernel.cache_dir%</argument>
+        <service id="integrated_storage.metadata" class="Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactory">
+            <factory class="Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactory" method="create" />
+
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="string">%integrated_storage.metadata_target%</argument>
         </service>
 
         <service id="integrated_storage.filesystem_delete" class="%integrated_storage.filesystem_delete%" />
@@ -63,7 +66,7 @@
         <service id="integrated_storage.intent_writer" class="%integrated_storage.intent_writer%">
             <argument type="service" id="integrated_storage.manager" />
             <argument type="service" id="integrated_storage.decision" />
-            <argument type="service" id="integrated_storage.reflection_cache" />
+            <argument type="service" id="integrated_storage.metadata" />
         </service>
 
         <!-- Overwrite the default file_locator service with our own -->
