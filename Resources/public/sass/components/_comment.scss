@@ -36,6 +36,36 @@
 	.media {
 		margin-bottom: 20px;
 	}
+
+	&.arrow-up {
+		&:before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 25px 25px 25px;
+			border-color: transparent transparent $color-white transparent;
+			top: -25px;
+			left: 50%;
+			margin-left: -25px;
+			z-index: 10;
+		}
+		&:after {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 26px 27px 26px;
+			border-color: transparent transparent $color-silver transparent;
+			top: -27px;
+			left: 50%;
+			margin-left: -26px;
+		}
+	}
+
+	&.arrow-left {
+		&:before, &:after {
+			left: 27px;
+		}
+	}
 }	
 .comment-body {
 	padding: 30px;
