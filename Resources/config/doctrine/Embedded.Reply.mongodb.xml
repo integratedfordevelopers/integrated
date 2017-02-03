@@ -3,16 +3,16 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <document name="Integrated\Bundle\CommentBundle\Document\CommentContent">
+    <embedded-document name="Integrated\Bundle\CommentBundle\Document\Embedded\Reply">
 
         <field fieldName="id" id="true" strategy="UUID" />
-        <field fieldName="field" type="string" />
-        <field fieldName="body" type="string" />
+        <field fieldName="date" type="date" />
+        <field fieldName="text" type="string" />
 
         <reference-one
-            field="content"
-            target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
+                field="author"
+                target-document="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person" />
 
-    </document>
+    </embedded-document>
 
 </doctrine-mongo-mapping>

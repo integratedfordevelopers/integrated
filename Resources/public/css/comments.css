@@ -1,4 +1,4 @@
-.comment-text-selected, .comment-added {
+.integrated-comment {
     background: #0199f8;
     border-radius: 3px;
     padding: 1px;
@@ -6,6 +6,30 @@
     position: relative;
 }
 
-.comment-added {
+.integrated-comment {
     background-color: rgba(1, 153, 248, 0.5);
+}
+
+.added-comment-line {
+    float: right;
+    color: #0199f8;
+}
+
+.added-comment-line:hover {
+    color: #8bd8f8;
+}
+
+.add-comment-button {
+    position:absolute;
+    background:#0199f8;
+    padding:10px 25px;
+    color:#fff;
+    border-radius:5px;
+    cursor:pointer;
+    margin:0 auto;
+    white-space:nowrap
+}
+
+.comment-reply {
+    margin-left: 25px;
 }

@@ -13,6 +13,7 @@ namespace Integrated\Bundle\CommentBundle\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Integrated\Bundle\CommentBundle\Document\Embedded\Reply;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 
@@ -54,7 +55,7 @@ class Comment
     /**
      * @var ArrayCollection
      */
-    protected $children;
+    protected $replies;
 
     /**
      * Comment constructor.
@@ -62,7 +63,7 @@ class Comment
     public function __construct()
     {
         $this->date = new \DateTime();
-        $this->children = new ArrayCollection();
+        $this->replies = new ArrayCollection();
     }
 
     /**
@@ -132,27 +133,53 @@ class Comment
     /**
      * @return ArrayCollection
      */
-    public function getChildren()
+    public function getReplies()
     {
-        return $this->children;
+        return $this->replies;
     }
 
     /**
-     * @param ArrayCollection $children
+     * @param ArrayCollection $replies
      */
-    public function setChildren($children)
+    public function setReplies($replies)
     {
-        $this->children = $children;
+        $this->replies = $replies;
     }
 
     /**
-     * @param Comment $child
+     * @param Reply $reply
      */
-    public function addChild(Comment $child)
+    public function addReply(Reply $reply)
     {
-        if (!$this->children->contains($child)) {
-            $this->children->add($child);
+        if (!$this->replies->contains($reply)) {
+            $this->replies->add($reply);
         }
+    }
+
+    /**
+     * @param $replyId
+     * @return Reply|null
+     */
+    public function getReplyById($replyId)
+    {
+        return $this->replies->filter(
+                function(Reply $reply) use ($replyId) {
+                    return $reply->getId() === $replyId;
+                }
+            )->first();
+    }
+
+    /**
+     * @param $replyId
+     * @return bool
+     */
+    public function removeReplyById($replyId)
+    {
+        if ($reply = $this->getReplyById($replyId)) {
+            return $this->replies->removeElement($reply);
+        }
+
+        return false;
     }
 
     /**

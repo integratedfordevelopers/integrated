@@ -18,9 +18,7 @@
             field="content"
             target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
 
-        <reference-many
-                field="children"
-                target-document="Integrated\Bundle\CommentBundle\Document\Comment" />
+        <embed-many field="replies" target-document="Integrated\Bundle\CommentBundle\Document\Embedded\Reply" />
     </document>
 
 </doctrine-mongo-mapping>

@@ -14,6 +14,7 @@ namespace Integrated\Bundle\CommentBundle\Controller;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\CommentBundle\Document\Comment;
+use Integrated\Bundle\CommentBundle\Document\Embedded\Reply;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\UserBundle\Model\User;
 
@@ -24,6 +25,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Class DefaultController
+ * @package Integrated\Bundle\CommentBundle\Controller
+ */
 class DefaultController
 {
     /**
@@ -68,37 +73,27 @@ class DefaultController
      * @param Content $content
      * @param string  $field
      * @param Request $request
-     * @return array|JsonResponse
+     * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
     public function newAction(Request $request, Content $content, $field)
     {
-        $form = $this->formFactory->create('integrated_comment', null, ['field' => $field]);
+        $comment = new Comment();
+        $comment->setContent($content);
+        $comment->setField($field);
+
+        $user = $this->getUser();
+        if ($user instanceof User && $relation = $user->getRelation()) {
+            $comment->setAuthor($relation);
+        }
+
+        $form = $this->formFactory->create('integrated_comment', $comment, [
+            'action' => $request->getUri()
+        ]);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $data = $form->getData();
-
-
-            $comment = new Comment();
-            $comment->setContent($content);
-            $comment->setText($data['text']);
-            $comment->setField($field);
-
-            $user = $this->getUser();
-            if ($user instanceof User && $relation = $user->getRelation()) {
-                $comment->setAuthor($relation);
-            }
-
             $this->dm->persist($comment);
-
-            if ($data['parent']) {
-                $parentComment = $this->dm->getRepository(Comment::class)->find($data['parent']);
-                if ($parentComment instanceof Comment) {
-                    $parentComment->addChild($comment);
-                }
-            }
-
             $this->dm->flush();
 
             return new JsonResponse(['id' => $comment->getId()]);
@@ -110,18 +105,70 @@ class DefaultController
     }
 
     /**
+     * @param Request $request
      * @param Comment $comment
-     * @return array
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function getAction(Comment $comment)
+    public function getAction(Request $request, Comment $comment)
     {
-        $form = $this->formFactory->create('integrated_comment', null, ['parent' => $comment->getId(), 'field' => $comment->getField()]);
+        $reply = new Reply();
+        $reply->setDate(new \DateTime());
+
+        $user = $this->getUser();
+        if ($user instanceof User && $relation = $user->getRelation()) {
+            $comment->setAuthor($relation);
+        }
+
+        $form = $this->formFactory->create('integrated_comment', $reply, [
+            'action' => $request->getUri()
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $comment->addReply($reply);
+            $this->dm->flush();
+
+            return new JsonResponse(['id' => $comment->getId()]);
+        }
 
         return $this->templating->renderResponse('IntegratedCommentBundle:Comment:get.html.twig',[
             'comment' => $comment,
             'form' => $form->createView(),
         ]);
 
+    }
+
+    /**
+     * @param Comment $comment
+     * @return JsonResponse
+     */
+    public function deleteAction(Comment $comment)
+    {
+        $this->dm->remove($comment);
+        $this->dm->flush();
+
+        return new JsonResponse([
+            'deleted' => true,
+            'id' => $comment->getId()
+        ]);
+    }
+
+    /**
+     * @param Comment $comment
+     * @param $replyId
+     * @return JsonResponse
+     */
+    public function deleteReply(Comment $comment, $replyId)
+    {
+        $result = $comment->removeReplyById($replyId);
+
+        $this->dm->flush();
+
+        return new JsonResponse([
+            'deleted' => $result,
+            'id' => $replyId
+        ]);
     }
 
     /**

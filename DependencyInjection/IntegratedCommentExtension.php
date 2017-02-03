@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Integrated\Bundle\CommentBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -27,5 +36,6 @@ class IntegratedCommentExtension extends Extension
         $loader->load('event_listeners.xml');
         $loader->load('controller.xml');
         $loader->load('form.xml');
+        $loader->load('twig.xml');
     }
 }
