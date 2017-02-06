@@ -13,8 +13,8 @@ namespace Integrated\Bundle\StorageBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
+use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
+use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
@@ -28,16 +28,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class FileController
 {
     /**
-     * @var ReflectionCacheInterface
+     * @var MetadataFactoryInterface
      */
-    private $reflection;
+    private $metadata;
 
     /**
-     * @param ReflectionCacheInterface $reflection
+     * @param MetadataFactoryInterface $metadata
      */
-    public function __construct(ReflectionCacheInterface $reflection)
+    public function __construct(MetadataFactoryInterface $metadata)
     {
-        $this->reflection = $reflection;
+        $this->metadata = $metadata;
     }
 
     /**
@@ -47,7 +47,7 @@ class FileController
     public function fileAction(Content $document)
     {
         // Read properties in the document containing a storage object
-        foreach ($this->reflection->getPropertyReflectionClass(get_class($document))->getTargetProperties() as $property) {
+        foreach ($this->metadata->getMetadata(get_class($document))->getProperties() as $property) {
             // Read out a property an check if its there is something and not void
             $reader = new DoctrineDocument($document);
             if ($storage = $reader->get($property->getPropertyName())) {

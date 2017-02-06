@@ -11,12 +11,11 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Collection\Map;
 
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
+use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
+use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
 
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-use Integrated\Common\Storage\DecisionInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -24,16 +23,16 @@ use Integrated\Common\Storage\DecisionInterface;
 class ContentReflectionMap
 {
     /**
-     * @param ReflectionCacheInterface $reflection
+     * @param MetadataFactoryInterface $metadata
      * @return \Closure
      */
-    public static function storageProperties(ReflectionCacheInterface $reflection)
+    public static function storageProperties(MetadataFactoryInterface $metadata)
     {
-        return function (ContentInterface $content) use ($reflection) {
+        return function (ContentInterface $content) use ($metadata) {
             // Create a document with some additional methods we're gonna need
             $document = new DoctrineDocument($content);
 
-            foreach ($reflection->getPropertyReflectionClass($document->getClassName())->getTargetProperties() as $property) {
+            foreach ($metadata->getMetadata($document->getClassName())->getProperties() as $property) {
                 /** @var StorageInterface|bool $file */
                 if ($file = $document->get($property->getPropertyName())) {
                     return $document;
