@@ -49,6 +49,10 @@ class OnTheFlyFormatConverterValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
+        if (null === $value) {
+            return;
+        }
+
         try {
             $this->container->find($this->webFormat, new StorageIntentUpload(null, $value));
         } catch (FormatException $formatException) {
