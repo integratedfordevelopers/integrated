@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
@@ -23,28 +23,23 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber;
  * Class for Relations
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @ODM\MappedSuperclass
  */
 abstract class Relation extends Content
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $accountnumber;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(type="integrated_editor")
      */
     protected $description;
 
     /**
      * @var Phonenumber[] | Collection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber")
      * @Type\Field(
      *      type="integrated_sortable_collection",
      *      options={
@@ -58,14 +53,12 @@ abstract class Relation extends Content
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(type="email")
      */
     protected $email;
 
     /**
      * @var Address[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address")
      * @Type\Field(
      *      type="integrated_sortable_collection",
      *      options={

@@ -102,7 +102,7 @@
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 
-    {% javascripts
+    {% javascripts filter='?uglifyjs2'
         '@integrated_js'
         '@IntegratedContentBundle/Resources/public/components/corejs-typeahead/dist/typeahead.bundle.js'
         '@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.js'
@@ -115,6 +115,12 @@
     %}
         <script src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
+    {% if app.request.locale %}
+    <script>
+        moment.locale('{{ app.request.locale }}');
+    </script>
+    {% endif %}
 
     {{ integrated_javascripts() }}
 

@@ -1,0 +1,14 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\ContentBundle\Document\Content\Event">
+
+        <field fieldName="startDate" type="date" />
+        <field fieldName="endDate" type="date" />
+        <field fieldName="website" type="string" />
+
+    </document>
+
+</doctrine-mongo-mapping>

@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
@@ -22,14 +21,12 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Facet block")
  */
 class FacetBlock extends Block
 {
     /**
      * @var ContentBlock
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Block\ContentBlock")
      * @Type\Field(
      *      type="document",
      *      options={
@@ -43,7 +40,6 @@ class FacetBlock extends Block
 
     /**
      * @var ArrayCollection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField")
      * @Type\Field(
      *      type="integrated_collection",
      *      options={

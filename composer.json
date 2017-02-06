@@ -30,7 +30,9 @@
         "integrated/block-bundle": "~0.6",
         "integrated/slug-bundle": "~0.6",
         "integrated/solr-bundle": "~0.6",
+        "integrated/image-bundle": "~0.6",
         "integrated/asset-bundle": "~0.5",
+        "integrated/workflow-bundle": "~0.6",
         "knplabs/knp-menu-bundle": "~2.1",
         "knplabs/knp-paginator-bundle": "~2.5",
         "nelmio/alice": "~1.7",
@@ -49,11 +51,6 @@
     "autoload":{
         "psr-4":{
             "Integrated\\Bundle\\ContentBundle\\": ""
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-INTEGRATED-43": "0.6.x-dev"
         }
     }
 }

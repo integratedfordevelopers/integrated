@@ -25,7 +25,7 @@ $(".relation-items").each(function() {
                     limit: 5,
                     sort: 'title',
                     _format: 'json',
-                    q: param.term + '*'
+                    q: typeof param.term != 'undefined' ? param.term + '*' : ''
                 };
             },
             processResults: function (data) {
@@ -61,7 +61,7 @@ $(".relation-items").each(function() {
             var image = '';
             if (data.image) {
                 image = data.image;
-            } else if (data.element) {
+            } else if (data.element && $(data.element).data('image')) {
                 image = $(data.element).data('image');
             }
 

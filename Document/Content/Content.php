@@ -14,9 +14,8 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 
@@ -35,15 +34,6 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  * Abstract base class for document types
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @ODM\Document(collection="content", repositoryClass="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository")
- * @ODM\Indexes({
- *   @ODM\Index(keys={"class"="asc"}),
- *   @ODM\Index(keys={"relations.references.$id"="asc", "class"="asc"})
- * })
- * @ODM\InheritanceType("SINGLE_COLLECTION")
- * @ODM\DiscriminatorField(fieldName="class")
- * @ODM\HasLifecycleCallbacks
  */
 abstract class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
 {
@@ -51,72 +41,65 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
      */
     protected $id;
 
     /**
      * @var string the type of the ContentType
-     * @ODM\String
-     * @ODM\Index
      */
     protected $contentType;
 
     /**
      * @var ArrayCollection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation")
      */
     protected $relations;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $createdAt;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $updatedAt;
 
     /**
      * @var PublishTime
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime")
      * @Type\Field(type="integrated_publish_time")
      */
     protected $publishTime;
 
     /**
      * @var bool
-     * @ODM\Boolean
      */
     protected $published = true;
 
     /**
      * @var bool
-     * @ODM\Boolean
      * @Type\Field(type="checkbox")
      */
     protected $disabled = false;
 
     /**
      * @var Metadata
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
      */
     protected $metadata;
 
     /**
      * @var Collection
-     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
      */
     protected $channels;
 
     /**
      * @var Channel
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Channel\Channel")
      */
     protected $primaryChannel;
+
+    /**
+     * @var Embedded\CustomFields
+     */
+    protected $customFields;
 
     /**
      * Constructor
@@ -174,6 +157,11 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getRelations()
     {
+        //should always be instanceOf collection, but due to corrupt database can sometimes be null
+        if (!$this->relations instanceof Collection) {
+            $this->relations = new ArrayCollection();
+        }
+
         return $this->relations;
     }
 
@@ -199,7 +187,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
         if ($exist = $this->getRelation($relation->getRelationId())) {
             $exist->addReferences($relation->getReferences());
         } else {
-            $this->relations->add($relation);
+            $this->getRelations()->add($relation);
         }
 
         return $this;
@@ -210,7 +198,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function removeRelation(RelationInterface $relation)
     {
-        $this->relations->removeElement($relation);
+        $this->getRelations()->removeElement($relation);
         return $this;
     }
 
@@ -219,7 +207,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getRelation($relationId)
     {
-        return $this->relations->filter(function ($relation) use ($relationId) {
+        return $this->getRelations()->filter(function ($relation) use ($relationId) {
             if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     return true;
@@ -236,7 +224,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getRelationsByRelationType($relationType)
     {
-        return $this->relations->filter(function ($relation) use ($relationType) {
+        return $this->getRelations()->filter(function ($relation) use ($relationType) {
             if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationType() == $relationType) {
                     return true;
@@ -289,7 +277,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getReferencesByRelationId($relationId, $published = true)
     {
-        foreach ($this->relations as $relation) {
+        foreach ($this->getRelations() as $relation) {
             if ($relation instanceof RelationInterface) {
                 if ($relation->getRelationId() == $relationId) {
                     if ($references = $relation->getReferences()) {
@@ -548,7 +536,33 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * @ODM\PreUpdate
+     * @return Embedded\CustomFields
+     */
+    public function getCustomFields()
+    {
+        if ($this->customFields === null) {
+            $this->customFields = new Embedded\CustomFields();
+        }
+
+        return $this->customFields;
+    }
+
+    /**
+     * @param RegistryInterface|null $customFields
+     * @return $this
+     */
+    public function setCustomFields(RegistryInterface $customFields = null)
+    {
+        if ($customFields !== null && !$customFields instanceof Embedded\CustomFields) {
+            $customFields = new Embedded\CustomFields($customFields->toArray());
+        }
+
+        $this->customFields = $customFields;
+        return $this;
+    }
+
+    /**
+     * updateUpdatedAtOnPreUpdate
      */
     public function updateUpdatedAtOnPreUpdate()
     {
@@ -556,8 +570,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * @ODM\PrePersist
-     * @ODM\PreUpdate
+     * updatePublishTimeOnPreUpdate
      */
     public function updatePublishTimeOnPreUpdate()
     {

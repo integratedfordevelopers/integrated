@@ -98,7 +98,7 @@ class ContentController extends Controller
         $facetTitles['workflow_assigned'] = 'Assigned user';
 
         $facetSet->createFacetField('authors')->setField('facet_authors')->addExclude('authors');
-        $facetTitles['workflow_state'] = 'Author';
+        $facetTitles['authors'] = 'Author';
 
         $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
 
@@ -466,13 +466,14 @@ class ContentController extends Controller
             }
         }
 
-        return array(
+        return [
             'editable' => true,
             'type' => $type->getType(),
             'form' => $form->createView(),
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
+            'hasContentHistoryBundle' => false, // not needed here
             'references' => json_encode($this->getReferences($content)),
-        );
+        ];
     }
 
     /**
@@ -608,15 +609,16 @@ class ContentController extends Controller
             $this->get('braincrafted_bootstrap.flash')->error($text);
         }
 
-        return array(
+        return [
             'editable' => $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content),
             'type'    => $type->getType(),
             'form'    => $form->createView(),
             'content' => $content,
             'locking' => $locking,
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
+            'hasContentHistoryBundle' => $this->has('integrated_content_history.controller.content_history'),
             'references' => json_encode($this->getReferences($content)),
-        );
+        ];
     }
 
     /**
@@ -1123,7 +1125,7 @@ class ContentController extends Controller
                 );
 
                 if ($reference instanceof Image) {
-                    $properties['image'] = $this->get('image.handling')->open($reference->getFile())->cropResize(250, 250)->jpeg();
+                    $properties['image'] = $this->get('integrated_image.twig_extension')->image($reference->getFile())->cropResize(250, 250)->jpeg();
                 }
 
                 $references[$relation->getRelationId()][] = $properties;

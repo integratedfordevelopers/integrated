@@ -24,11 +24,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
+use stdClass;
+
 /**
  * @author Michael Jongman <michael@e-active.nl>
  */
 class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
 {
+    const ROUTE = 'this-is-the-route';
+
     /**
      * @var UrlGeneratorInterface | \PHPUnit_Framework_MockObject_MockObject
      */
@@ -39,101 +43,93 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     protected $resolver;
 
-    /**
-     * @var Result | \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $result;
-
-    /**
-     * @var string
-     */
-    protected $route = 'test-route';
-
-    /**
-     * Set up
-     */
     public function setUp()
     {
         $this->generator = $this->getMock(UrlGeneratorInterface::class);
         $this->resolver = $this->getMock(ResolverInterface::class);
-        $this->result = $this->getMockBuilder(Result::class)->disableOriginalConstructor()->getMock();
     }
 
-    /**
-     * Normalizer must be an instance of the NormalizerInterface
-     */
+    protected function setUpNormalize()
+    {
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturnMap([
+                ['news', true],
+                ['blog', true],
+                ['invalid', false],
+                [null, false]
+            ]);
+
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('getType')
+            ->willReturnMap([
+                ['news', $this->getContentType('this-is-news')],
+                ['blog', $this->getContentType('this-is-a-blog')],
+            ]);
+
+        $this->generator->expects($this->atLeastOnce())
+            ->method('generate')
+            ->willReturnCallback(function ($route, $params) {
+                self::assertEquals(self::ROUTE, $route);
+                self::assertArrayHasKey('id', $params);
+                self::assertCount(1, $params);
+
+                $map = [
+                    'id_0' => 'url_0',
+                    'id_1' => 'url_1',
+                    'id_2' => 'url_2',
+                    'id_3' => 'url_3',
+                ];
+
+                if (array_key_exists($params['id'], $map)) {
+                    return $map[$params['id']];
+                }
+
+                return '';
+            });
+    }
+
+    protected function setUpNormalizeNoCalls()
+    {
+        $this->resolver->expects($this->never())
+            ->method($this->anything());
+
+        $this->generator->expects($this->never())
+            ->method($this->anything());
+    }
+
     public function testInterface()
     {
         self::assertInstanceOf(NormalizerInterface::class, $this->getInstance());
     }
 
     /**
-     * Testing if the first parameter is an instanceof Result
      * @expectedException InvalidArgumentException
      */
-    public function testNormalizerWithInvalidObject()
+    public function testNormalizeWithInvalidObject()
     {
-        $this->getInstance()->normalize('test');
+        $this->getInstance()->normalize('invalid');
     }
 
     /**
-     * Testing if the Result query function is an instanceof SuggestionQuery
      * @expectedException InvalidArgumentException
      */
-    public function testNormalizerWithInvalidQuery()
+    public function testNormalizeWithOutQuery()
     {
-        $this->result
-            ->expects($this->once())
-            ->method('getQuery')
-            ->willReturn(null)
-        ;
-
-        $this->getInstance()->normalize($this->result);
+        $this->getInstance()->normalize($this->getQueryResult());
     }
 
     /**
-     * Test the Normalizer with empty data
+     * @expectedException InvalidArgumentException
      */
-    public function testNormalizerWithEmptyData()
+    public function testNormalizeWithInvalidQuery()
     {
-        $query = $this->getMock(SuggestionQuery::class);
-        $facetSet = $this->getMock(FacetSet::class);
-
-        $facetSet
-            ->expects($this->once())
-            ->method('getFacet')
-            ->with('suggest')
-            ->willReturn([])
-        ;
-
-        $this->result
-            ->expects($this->once())
-            ->method('getFacetSet')
-            ->willReturn($facetSet)
-        ;
-
-        $this->result
-            ->expects($this->once())
-            ->method('getDocuments')
-            ->willReturn([])
-        ;
-
-        $this->result
-            ->expects($this->exactly(2))
-            ->method('getQuery')
-            ->willReturn($query)
-        ;
-
-        $this->assertEquals([], $this->getInstance()->normalize($this->result));
+        $this->getInstance()->normalize($this->getQueryResult(new stdClass()));
     }
 
-    /**
-     * Test the Normalizer with data
-     */
-    public function testNormalizerWithData()
+    public function testNormalize()
     {
-        $query = $this->getMock(SuggestionQuery::class);
-        $facetSet = $this->getMock(FacetSet::class);
+        $result = $this->getQueryResult($this->getQuery('this-is-the-query'));
 
         $suggestions = [
             'suggestion' => 5,
@@ -141,116 +137,127 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
             'suggestions' => 4
         ];
 
-        $facetSet
-            ->expects($this->once())
-            ->method('getFacet')
-            ->with('suggest')
-            ->willReturn($suggestions)
-        ;
-
-        $this->result
-            ->expects($this->exactly(2))
-            ->method('getQuery')
-            ->willReturn($query)
-        ;
-
-        $this->result
+        $result
             ->expects($this->once())
             ->method('getFacetSet')
-            ->willReturn($facetSet)
-        ;
+            ->willReturn($this->getFacetSet($suggestions));
 
-        $documents = [
-            new Document(
-                [
-                    'type_id' => 'id_0',
-                    'type_name' => 'news',
-                    'title' => 'title_0',
-                    'pub_time' => 'Invalid timestamp',
-                    'pub_edited' => '2015-01-01 08:00'
-                ]
-            ),
-            new Document(
-                [
-                    'type_id' => 'id_1',
-                    'type_name' => 'convert_to_news',
-                    'title' => 'title_1',
-                    'pub_time' => '2015-01-01',
-                ]
-            )
-        ];
-
-        $this->resolver
-            ->expects($this->exactly(2))
-            ->method('hasType')
-            ->withConsecutive(
-                [$this->equalTo('news')],
-                [$this->equalTo('convert_to_news')]
-            )
-            ->willReturnOnConsecutiveCalls(
-                false,
-                true
-            )
-        ;
-
-        $contentType = $this->getMock(ContentTypeInterface::class);
-
-        $this->resolver
-            ->expects($this->once())
-            ->method('getType')
-            ->with($this->equalTo('convert_to_news'))
-            ->willReturn($contentType)
-        ;
-
-        $contentType
-            ->expects($this->once())
-            ->method('getName')
-            ->willReturn('news')
-        ;
-
-        $this->generator
-            ->expects($this->exactly(2))
-            ->method('generate')
-            ->withConsecutive(
-                [$this->route, ['id' => 'id_0']],
-                [$this->route, ['id' => 'id_1']]
-            )
-            ->willReturnOnConsecutiveCalls(
-                'url_0',
-                'url_1'
-            )
-        ;
-
-        $this->result
+        $result
             ->expects($this->once())
             ->method('getDocuments')
-            ->willReturn($documents)
-        ;
+            ->willReturn($this->getDocuments());
 
-        $this->assertEquals(
-            [
-                'suggestions' => array_keys($suggestions),
-                'results' => [
-                    [
-                        'id' => 'id_0',
-                        'type' => 'news',
-                        'title' => 'title_0',
-                        'url' => 'url_0',
-                        'published' => null,
-                        'updated' => '2015-01-01 08:00'
-                    ],
-                    [
-                        'id' => 'id_1',
-                        'type' => 'news',
-                        'title' => 'title_1',
-                        'url' => 'url_1',
-                        'published' => '2015-01-01',
-                        'updated' => null
-                    ],
-                ]
-            ],
-            $this->getInstance()->normalize($this->result)
-        );
+        $this->setUpNormalize();
+
+        $expected = [
+            'query' => 'this-is-the-query',
+            'suggestions' => array_keys($suggestions),
+            'results' => $this->getDocumentsExpected()
+        ];
+
+        self::assertSame($expected, $this->getInstance()->normalize($result));
+    }
+
+    public function testNormalizeWithNoResults()
+    {
+        $result = $this->getQueryResult($this->getQuery('this-is-the-query'));
+
+        $result
+            ->expects($this->once())
+            ->method('getFacetSet')
+            ->willReturn($this->getFacetSet());
+
+        $result
+            ->expects($this->once())
+            ->method('getDocuments')
+            ->willReturn([]);
+
+        $this->setUpNormalizeNoCalls();
+
+        self::assertSame(['query' => 'this-is-the-query'], $this->getInstance()->normalize($result));
+    }
+
+    public function testNormalizeWithNoSuggestions()
+    {
+        $result = $this->getQueryResult($this->getQuery('this-is-the-query'));
+
+        $result
+            ->expects($this->once())
+            ->method('getFacetSet')
+            ->willReturn($this->getFacetSet());
+
+        $result
+            ->expects($this->once())
+            ->method('getDocuments')
+            ->willReturn($this->getDocuments());
+
+        $this->setUpNormalize();
+
+        $expected = [
+            'query' => 'this-is-the-query',
+            'results' => $this->getDocumentsExpected()
+        ];
+
+        self::assertSame($expected, $this->getInstance()->normalize($result));
+    }
+
+    public function testNormalizeWithNoDocuments()
+    {
+        $result = $this->getQueryResult($this->getQuery('this-is-the-query'));
+
+        $suggestions = [
+            'suggestion' => 5,
+            'suggest' => 0,
+            'suggestions' => 4
+        ];
+
+        $result
+            ->expects($this->once())
+            ->method('getFacetSet')
+            ->willReturn($this->getFacetSet($suggestions));
+
+        $result
+            ->expects($this->once())
+            ->method('getDocuments')
+            ->willReturn([]);
+
+        $this->setUpNormalizeNoCalls();
+
+        $expected = [
+            'query' => 'this-is-the-query',
+            'suggestions' => array_keys($suggestions)
+        ];
+
+        self::assertSame($expected, $this->getInstance()->normalize($result));
+    }
+
+    public function testNormalizeWithNoResultsAndEmptyQuery()
+    {
+        $result = $this->getQueryResult($this->getQuery(''));
+
+        $result
+            ->expects($this->once())
+            ->method('getFacetSet')
+            ->willReturn($this->getFacetSet());
+
+        $result
+            ->expects($this->once())
+            ->method('getDocuments')
+            ->willReturn([]);
+
+        self::assertSame(['query' => ''], $this->getInstance()->normalize($result));
+    }
+
+    public function testSupportsNormalization()
+    {
+        $normalizer = $this->getInstance();
+
+        self::assertFalse($normalizer->supportsNormalization(null));
+        self::assertFalse($normalizer->supportsNormalization('invalid'));
+        self::assertFalse($normalizer->supportsNormalization(new stdClass()));
+        self::assertFalse($normalizer->supportsNormalization($this->getQueryResult()));
+        self::assertFalse($normalizer->supportsNormalization($this->getQueryResult(new stdClass())));
+        self::assertTrue($normalizer->supportsNormalization($this->getQueryResult($this->getQuery())));
     }
 
     /**
@@ -258,6 +265,152 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getInstance()
     {
-        return new SuggestionNormalizer($this->generator, $this->route, $this->resolver);
+        return new SuggestionNormalizer($this->generator, self::ROUTE, $this->resolver);
+    }
+
+    /**
+     * @param object | null $query
+     * @return Result | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getQueryResult($query = null)
+    {
+        $mock = $this->getMockBuilder(Result::class)->disableOriginalConstructor()->getMock();
+        $mock
+            ->expects($this->atLeastOnce())
+            ->method('getQuery')
+            ->willReturn($query);
+
+        return $mock;
+    }
+
+    /**
+     * @param string | null $query
+     * @return SuggestionQuery | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getQuery($query = null)
+    {
+        $mock = $this->getMockBuilder(SuggestionQuery::class)->disableOriginalConstructor()->getMock();
+        $mock
+            ->expects($this->any())
+            ->method('getQuery')
+            ->with($this->equalTo(true))
+            ->willReturn($query);
+
+        return $mock;
+    }
+
+    /**
+     * @param array $facets
+     * @return FacetSet | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getFacetSet($facets = [])
+    {
+        $mock = $this->getMockBuilder(FacetSet::class)->disableOriginalConstructor()->getMock();
+        $mock
+            ->expects($this->once())
+            ->method('getFacet')
+            ->with('suggest')
+            ->willReturn($facets);
+
+        return $mock;
+    }
+
+    /**
+     * @param string $name
+     * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getContentType($name)
+    {
+        $mock = $this->getMock(ContentTypeInterface::class);
+        $mock
+            ->expects($this->atLeastOnce())
+            ->method('getName')
+            ->willReturn($name);
+
+        return $mock;
+    }
+
+    /**
+     * @return Document[]
+     */
+    protected function getDocuments()
+    {
+        return [
+            new Document([
+                'type_id' => 'id_0',
+                'type_name' => 'news',
+                'title' => 'title_0',
+                'pub_time' => 'invalid',
+                'pub_edited' => 'invalid'
+            ]),
+            new Document([
+                'type_id' => 'id_1',
+                'type_name' => 'blog',
+                'pub_time' => '2012-12-12T12:12:12Z',
+            ]),
+            new Document([
+                'type_id' => 'id_2',
+                'type_name' => 'invalid',
+                'title' => 'title_2',
+                'pub_edited' => '2012-12-12T12:12:12Z',
+            ]),
+            new Document([
+                'type_id' => 'id_3',
+                'type_name' => 'blog',
+                'title' => 'title_3',
+                'pub_time' => '2012-12-12T12:12:12Z',
+                'pub_edited' => 'invalid'
+            ]),
+            new Document([]),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    protected function getDocumentsExpected()
+    {
+        return [
+            [
+                'id' => 'id_0',
+                'type' => 'this-is-news',
+                'title' => 'title_0',
+                'url' => 'url_0',
+                'published' => null,
+                'updated' => null
+            ],
+            [
+                'id' => 'id_1',
+                'type' => 'this-is-a-blog',
+                'title' => '',
+                'url' => 'url_1',
+                'published' => '2012-12-12T12:12:12Z',
+                'updated' => null
+            ],
+            [
+                'id' => 'id_2',
+                'type' => 'invalid',
+                'title' => 'title_2',
+                'url' => 'url_2',
+                'published' => null,
+                'updated' => '2012-12-12T12:12:12Z'
+            ],
+            [
+                'id' => 'id_3',
+                'type' => 'this-is-a-blog',
+                'title' => 'title_3',
+                'url' => 'url_3',
+                'published' => '2012-12-12T12:12:12Z',
+                'updated' => null
+            ],
+            [
+                'id' => '',
+                'type' => '',
+                'title' => '',
+                'url' => '',
+                'published' => null,
+                'updated' => null
+            ],
+        ];
     }
 }

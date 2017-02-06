@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Solr\Query;
 
 use Integrated\Bundle\ContentBundle\Solr\Normalizer;
+use Integrated\Bundle\WorkflowBundle\EventListener\WorkflowMarkerInterface;
 
 use Solarium\QueryType\Select\Query\Query;
 use Solarium\QueryType\Select\Query\Component\Facet\Field;
@@ -20,7 +21,7 @@ use Solarium\Exception\InvalidArgumentException;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class SuggestionQuery extends Query
+class SuggestionQuery extends Query implements WorkflowMarkerInterface
 {
     /**
      * @var string
@@ -71,7 +72,8 @@ class SuggestionQuery extends Query
         $facet = [
             'field' => 'suggestions',
             'limit' => 5,
-            'prefix' => $helper->escapeTerm($this->query)
+            'prefix' => $helper->escapeTerm($this->query),
+            'method' => 'enum'
         ];
 
         $facet = new Field($facet);
