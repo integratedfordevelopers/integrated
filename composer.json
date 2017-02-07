@@ -1,9 +1,9 @@
 {
     "name": "integrated/page-bundle",
     "type": "symfony-bundle",
-    "description": "Integrated Page Bundle",
+    "description": "Provides the possibility for the user to create pages on Integrated websites, and front-end editing when combined with the website-bundle",
     "keywords": ["Integrated", "page"],
-    "homepage": "http://www.e-active.nl",
+    "homepage": "http://www.integratedfordevelopers.com",
     "license": "MIT",
     "authors": [
         {
@@ -25,6 +25,10 @@
         "integrated/theme-bundle": "~0.6",
         "knplabs/knp-paginator-bundle": ">=2.4"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
+        "phpunit/phpunit": "~4.8"
+    },
     "suggest": {
         "integrated/website-bundle": "Frontend block management for Integrated"
     },
@@ -33,10 +37,5 @@
             "Integrated\\Bundle\\PageBundle": ""
         }
     },
-    "target-dir": "Integrated/Bundle/PageBundle",
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "0.9.9-dev"
-        }
-    }
+    "target-dir": "Integrated/Bundle/PageBundle"
 }
