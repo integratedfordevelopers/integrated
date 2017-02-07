@@ -32,3 +32,12 @@
 {% block crumbs %}{% endblock %}
 {% block filters %}{% endblock %}
 {% block main_title %}{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $('button[data-dismiss="modal"]').click(function() {
+            parent.$("#relation-add-modal.modal").modal('hide');
+        });
+    </script>
+{% endblock %}
