@@ -15,8 +15,11 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
+        "doctrine/common": "master",
         "symfony/symfony": "~2.7",
+        "gregwar/image-bundle": "~2",
         "integrated/library": "~0.6",
+        "integrated/storage-bundle": "~0.6",
         "integrated/content-bundle": "~0.6"
     },
     "require-dev": {
