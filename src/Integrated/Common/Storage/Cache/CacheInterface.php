@@ -20,7 +20,7 @@ interface CacheInterface
 {
     /**
      * @param StorageInterface $storage
-     * @return string $path
+     * @return \SplFileInfo $path
      */
     public function path(StorageInterface $storage);
 }
