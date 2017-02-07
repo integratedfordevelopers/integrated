@@ -15,6 +15,7 @@
         <service id="integrated_image.twig_extension" class="%integrated_image.twig_extension%">
 
             <argument type="service" id="image.handling" />
+            <argument type="service" id="twig.extension.image" />
             <argument type="service" id="integrated_image.converter_web_format" />
 
             <tag name="twig.extension" />

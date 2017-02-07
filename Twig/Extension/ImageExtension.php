@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ImageBundle\Twig\Extension;
 
+use Gregwar\ImageBundle\Extensions\ImageTwig;
 use Gregwar\ImageBundle\Services\ImageHandling;
 
 use Integrated\Bundle\ImageBundle\Converter\WebFormatConverter;
@@ -34,13 +35,20 @@ class ImageExtension extends \Twig_Extension
     private $webFormatConverter;
 
     /**
+     * @var ImageTwig
+     */
+    private $imageTwig;
+
+    /**
      * @param ImageHandling $imageHandling
+     * @param ImageTwig $imageTwig
      * @param WebFormatConverter $webFormatConverter
      */
-    public function __construct(ImageHandling $imageHandling, WebFormatConverter $webFormatConverter)
+    public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter)
     {
         $this->imageHandling = $imageHandling;
         $this->webFormatConverter = $webFormatConverter;
+        $this->imageTwig = $imageTwig;
     }
 
     /**
@@ -80,7 +88,7 @@ class ImageExtension extends \Twig_Extension
             $image = $this->webFormatConverter->convert($image)->getPathname();
         }
 
-        return $this->imageHandling->open($image);
+        return $this->imageTwig->webImage($image);
     }
 
     /**

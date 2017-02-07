@@ -26,12 +26,6 @@
 
         </service>
 
-        <service id="integrated_image.twig_extension" class="Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension">
-            <argument type="service" id="image.handling" />
-
-            <tag name="twig.extension" />
-        </service>
-
     </services>
 
 </container>
