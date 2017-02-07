@@ -66,7 +66,7 @@ class ImageExtension extends \Twig_Extension
             $image = $this->webFormatConverter->convert(StorageModelFactory::json($json))->getPathname();
         }
 
-        return $this->imageHandling->open($image);
+        return $this->imageHandling->open((string) $image);
     }
 
     /**

@@ -11,8 +11,6 @@
 
 namespace Integrated\Bundle\ImageBundle\DependencyInjection;
 
-use Integrated\Bundle\ImageBundle\DependencyInjection\CompilerPass\ImageConverterCompilerPass;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
