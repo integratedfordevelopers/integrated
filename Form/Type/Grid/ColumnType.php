@@ -39,6 +39,9 @@ class ColumnType extends AbstractType
         $builder->addEventSubscriber(new ItemOrderListener());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
