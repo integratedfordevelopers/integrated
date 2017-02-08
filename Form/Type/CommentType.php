@@ -15,8 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class CommentType
- * @package Integrated\Bundle\CommentBundle\Form\Type
+ * @author Johan Liefers <johan@e-active.nl>
  */
 class CommentType extends AbstractType
 {

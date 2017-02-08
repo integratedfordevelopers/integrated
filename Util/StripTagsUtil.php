@@ -16,17 +16,9 @@ namespace Integrated\Bundle\CommentBundle\Util;
  */
 class StripTagsUtil
 {
-    /**
-     * Searches for integrated comment span tag and replaces it with a html comment tag
-     * @param $content
-     * @return string
-     */
-    public static function replaceSpanWithCommentTag($content)
-    {
-        $replacement = '<!--integrated-comment=$2-->$3<!--end-integrated-comment-->';
-
-        return self::replaceSpanWith($content, $replacement);
-    }
+    const COMMENT_REPLACEMENT = '<!--integrated-comment=$2-->$3<!--end-integrated-comment-->';
+    const SPAN_REPLACEMENT = '<span class="integrated-comment" data-comment-id="$2">$3</span>';
+    const ONLY_CONTENT_REPLACEMENT = '$3';
 
     /**
      * Searches for integrated comment span tag and replaces it with $replacement
@@ -39,28 +31,6 @@ class StripTagsUtil
         $pattern = '/(\<span class\=\"integrated-comment\" data-comment-id\=\"([\s\S]+?)\"\>)([\s\S]+?)(\<\/span\>)/';
 
         return preg_replace($pattern, $replacement, $content);
-    }
-
-    /**
-     * Searches for comment tag and replaces it with span tag
-     * @param $content
-     * @return string
-     */
-    public static function replaceCommentWithSpan($content)
-    {
-        $replacement = '<span class="integrated-comment" data-comment-id="$2">$3</span>';
-
-        return self::replaceCommentWith($content, $replacement);
-    }
-
-    /**
-     * Cleans up any comments of integrated comment-bundle, for example to strip comments on front-end
-     * @param $content
-     * @return string
-     */
-    public static function removeComments($content)
-    {
-        return self::replaceCommentWith($content, '$3');
     }
 
     /**

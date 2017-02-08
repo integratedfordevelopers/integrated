@@ -14,6 +14,7 @@ namespace Integrated\Bundle\CommentBundle\EventListener;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
+use Integrated\Bundle\CommentBundle\Document\Comment;
 use Integrated\Bundle\CommentBundle\Form\DataTransformer\CommentTagTransformer;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
@@ -24,7 +25,7 @@ use Integrated\Common\Content\Form\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- * Class ContentCommentSubscriber
+ * @author Johan Liefers <johan@e-active.nl>
  */
 class CommentFormFieldsSubscriber implements EventSubscriberInterface
 {
@@ -44,6 +45,11 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     private $javascripts;
 
     /**
+     * @var null|array
+     */
+    protected $comments = null;
+
+    /**
      * @param DocumentManager $documentManager
      * @param AssetManager $stylesheets
      * @param AssetManager $javascripts
@@ -54,7 +60,6 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
         $this->stylesheets = $stylesheets;
         $this->javascripts = $javascripts;
     }
-
 
     /**
      * @return array
@@ -81,9 +86,7 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
 
         $options = $field->getOptions();
 
-        $repository = $this->documentManager->getRepository('IntegratedCommentBundle:Comment');
-        //todo one query per request
-        if ($comment = $repository->findBy(['content.$id' => $content->getId(), 'field' => $field->getName()], ['date' => 'asc'])) {
+        if ($comment = $this->getComment($content->getId(), $field->getName())) {
             $comment = $comment[0];
             $options['attr'] = array('data-comment-id' => $comment->getId());
             $field->setOptions($options);
@@ -94,14 +97,46 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param FieldEvent $event
+     * @param BuilderEvent $event
      */
     public function postBuildField(BuilderEvent $event)
     {
         $field = $event->getBuilder()->get($event->getField());
 
-        if ($field->getType()->getName() == 'integrated_editor') {
+        if ('integrated_editor' == $field->getType()->getName()) {
             $field->addViewTransformer(new CommentTagTransformer());
         }
     }
+
+    /**
+     * @param string $contentId
+     * @return array|mixed
+     */
+    protected function getComments($contentId)
+    {
+        if (null === $this->comments) {
+            $comments = $this->documentManager->getRepository('IntegratedCommentBundle:Comment')
+                ->findBy(['content.$id' => $contentId], ['date' => 'asc']);
+
+            $this->comments = [];
+
+            foreach ($comments as $comment) {
+                $this->comments[$comment->getField()][] = $comment;
+            }
+        }
+
+        return $this->comments;
+    }
+
+    /**
+     * @param string $contentId
+     * @param string $fieldName
+     * @return Comment[]|null
+     */
+    protected function getComment($contentId, $fieldName) {
+        $comments = $this->getComments($contentId);
+
+        return isset($comments[$fieldName]) ? $comments[$fieldName] : null;
+    }
+
 }

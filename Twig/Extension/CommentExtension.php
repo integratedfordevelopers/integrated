@@ -28,9 +28,13 @@ class CommentExtension extends \Twig_Extension
         ];
     }
 
+    /**
+     * @param string $content
+     * @return string
+     */
     public function escape($content)
     {
-        return StripTagsUtil::removeComments($content);
+        return StripTagsUtil::replaceCommentWith($content, StripTagsUtil::ONLY_CONTENT_REPLACEMENT);
     }
 
     /**
