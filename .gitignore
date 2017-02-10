@@ -1,9 +1,9 @@
-/web/assetic/
-/web/bundles/
 /app/bootstrap.php.cache
 /app/cache/*
+/app/check.php
 /app/config/parameters.yml
 /app/logs/*
+/app/SymfonyRequirements.php
 !app/cache/.gitkeep
 !app/logs/.gitkeep
 /build/
@@ -11,8 +11,12 @@
 /bin/
 /components/
 /composer.phar
+/web/assetic/
+/web/bundles/
+/web/cache/
 /web/css/
 /web/js/
+/web/files/
 /web/fonts/
 /web/bower/
 /web/genghis.php
