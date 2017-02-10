@@ -1,198 +1,300 @@
 $(function () {
 
-    var $selectedParent = null;
-    var $container = null;
-    var flowOffset = {top:0,left:0};
-    var postCommentCallback = null;
-    var fieldName = null;
+    /**
+     * Show add comment button
+     * @param {string} fieldName
+     * @param {object} position
+     * @param {jQuery} $parent
+     * @param {jQuery} $container
+     */
+    var showCommentButton = function(fieldName, position, $parent, $container) {
+        var $div = $('<div class="add-comment-button hold">Add a Comment</div>');
+
+        $div.click(function(e) {
+            newComment(fieldName, position, $parent, $container);
+        });
+
+        removeControls();
+
+        $container.append($div);
+
+        positionElement($div, position);
+    };
+
+    /**
+     * @param {string} fieldName
+     * @param {object} position
+     * @param {jQuery} $parent
+     * @param {jQuery} $container
+     */
+    var newComment = function (fieldName, position, $parent, $container) {
+        $.ajax({
+            type: 'GET',
+            url: Routing.generate('integrated_comment_new', {content: $('.content-form').data('content-id'), field: fieldName}),
+            success: function(response) {
+                showModalComment(response,position, $parent,  $container);
+            }
+        });
+    };
+
+    /**
+     * @param {string} commentId
+     * @param {object} position
+     * @param {jQuery} $parent
+     * @param {jQuery} $container
+     */
+    var showAddedComment = function(commentId, position, $parent, $container) {
+        $.ajax({
+            type: 'GET',
+            url: Routing.generate('integrated_comment_get', {comment: commentId}),
+            success: function(response) {
+                showModalComment(response, position, $parent, $container);
+            }
+        });
+    };
+
+    /**
+     * @param {string} response
+     * @param {object} position
+     * @param {jQuery} $parent
+     * @param {jQuery} $container
+     */
+    var showModalComment = function(response, position, $parent, $container) {
+        removeControls();
+
+        var $modal = $(response);
+        $container.append($modal);
+
+        positionElement($modal, position);
+
+        $('form', $modal).bind('submit', function(e){
+            e.preventDefault();
+
+            postComment($(this), $parent);
+        });
+    };
+
+    /**
+     * @param {jQuery} $form
+     * @param {jQuery} $parent
+     */
+    var postComment = function ($form, $parent) {
+        $.ajax({
+            type: 'POST',
+            data: $form.serialize(),
+            dataType: 'json',
+            url: $form.attr("action"),
+            success: function (response) {
+                removeControls();
+
+                if ($parent) {
+                    if (!$parent.data('comment-id')) {
+                        $parent.data('comment-id', response.id);
+                    }
+
+                    createAddedCommentLine($parent);
+                } else {
+                    //apply integrated_comment format, adds span tag with data-comment-id
+                    tinymce.activeEditor.formatter.apply('integrated_comment', {value : response.id});
+                }
+            }
+        });
+    };
+
+    /**
+     * Add comment icon in the label of an integrated field
+     * @param $parent
+     */
+    var createAddedCommentLine = function($parent) {
+        var commentId = $parent.data('comment-id');
+        var $label = $parent.closest('.form-group').find('label');
+
+        //remove existing
+        $('.added-comment-line[data-comment-id="' + commentId + '"]').remove();
+
+        if (commentId) {
+            var comment = $('<div>').addClass('added-comment-line')
+                .attr('data-comment-id', commentId).data('comment-id', commentId)
+                .data('parent', $parent)
+                .append($('<span>').addClass('glyphicon glyphicon-comment'));
+
+            if ($label) {
+                //if input has label place it inside label
+                $label.append(comment)
+            } else {
+                //else place it after input
+                $parent.after(comment);
+            }
+        }
+    };
+
+    /**
+     * @param {jQuery} $element
+     * @returns {{top: *, left: *}}
+     */
+    var calculatePosition = function ($element) {
+        var offset = $element.offset();
+
+        return {top: (offset.top + $element.outerHeight()), left: offset.left};
+    };
+
+    /**
+     * positions element with provided position
+     *
+     * @param {jQuery} $element
+     * @param {object} position
+     */
+    var positionElement = function ($element, position) {
+        $element.css({
+            'z-index': 999,
+            position: 'absolute',
+            left: position.left,
+            top: position.top
+        });
+    };
+
+    /**
+     * Removes all buttons and modals related to comment bundle
+     */
+    var removeControls = function() {
+        $('.comment-holder, .add-comment-button').remove();
+    };
+    /**
+     * @param {string} fullName
+     * @returns {string}
+     */
+    var getFieldName = function(fullName) {
+        return /\[(.+)\]$/.exec(fullName)[1];
+    };
+
+    //
+    //
+    // Event listeners
+    //
+    //
+
+    /**
+     * Eventlistener for selecting input and textarea fields
+     */
+    $('input:text, textarea').bind('select', function (e) {
+        if (e.target.selectionStart != e.target.selectionEnd) {
+            var position = calculatePosition($(this));
+            var $container =  $('body');
+
+            if ($(this).data('comment-id') !== undefined) {
+                showAddedComment($(this).data('comment-id'), position, $(this), $container);
+            } else {
+                showCommentButton(getFieldName($(this).attr('name')), position, $(this), $container);
+            }
+        }
+    });
+
+    /**
+     * Add a commentIcon for all existing comments
+     */
+    $('[data-comment-id]').each(function() {
+        createAddedCommentLine($(this));
+    });
+
+    /**
+     * Check if someone clicks on a comment icon, if so show the comment modal
+     */
+    $(document).on('click', '.added-comment-line', function () {
+        showAddedComment($(this).data('comment-id'), calculatePosition($(this)), $(this).data('parent'), $('body'));
+    });
+
+    /**
+     * Check if delete button is clicked in modal
+     */
+    $(document).on('click', '.comment-holder .delete-comment', function (e) {
+        e.preventDefault();
+
+        $.get($(this).attr('href'), function (data) {
+            removeControls();
+
+            $('.added-comment-line[data-comment-id="' + data.id + '"]').remove();
+            if (tinymce.activeEditor != undefined) {
+                $('.integrated-comment[data-comment-id="' + data.id + '"]', tinymce.activeEditor.getDoc()).contents().unwrap();
+            }
+
+            $('[data-comment-id="' + data.id + '"]').removeAttr('data-comment-id').removeData('comment-id');
+        });
+        return false;
+    });
+
+    /**
+     * Remove comment modal
+     */
+    $(document).on('click', '.comment-holder .integrate-icon-cancel', function(e) {
+        e.preventDefault();
+
+        removeControls();
+
+        return false;
+    });
+
+    //
+    //
+    // tinymce custom part
+    //
+    //
 
     var tinyCommentCheckSelect = function (e) {
         if ($(e.target).hasClass('hold')) {
             return;
         }
 
-        var $tinyMCE = tinyMCE.activeEditor;
-
         removeControls();
 
-        $container = $($tinyMCE.getContainer().parentNode);
-        flowOffset = {top:0,left:0};
-        fieldName = getFieldName($('textarea', $container).attr('name'));
-        postCommentCallback = null;
+        var editor = tinymce.activeEditor;
+        var selectionContent = editor.selection.getContent();
+        var $container = $(editor.getContainer().parentNode);
+        var position = tinymcePosition();
 
-        var selectContent = $tinyMCE.selection.getContent();
+        if ($(e.target).hasClass('integrated-comment') && selectionContent == '') {
+            showAddedComment($(e.target).data('comment-id'), position, null, $container);
 
-        if ($(e.target).hasClass('comment-added') && selectContent == '') {
-            showAddedComment($(e.target));
             return;
-        } else if ($(e.rangeParent).hasClass('comment-added') && selectContent == '') {
-            showAddedComment($(e.rangeParent));
+        } else if ($(e.rangeParent).hasClass('integrated-comment') && selectionContent == '') {
+            showAddedComment($(e.rangeParent).data('comment-id'), position, null, $container);
+
             return;
-        } else if (selectContent == '') {
+        } else if (selectionContent == '') {
             return;
         }
 
-        $tinyMCE.selection.setContent('<span class="comment-text-selected">' + selectContent + '</span>');
+        var fieldName = getFieldName($(editor.getElement()).attr('name'));
 
-        $selectedParent = $('.comment-text-selected', $tinyMCE.getBody());
-        postCommentCallback = function (commentId) {
-            $selectedParent.removeClass('comment-text-selected').addClass('comment-added').attr('data-comment-id', commentId);
-        };
-
-        showCommentButton($selectedParent, $container);
+        showCommentButton(fieldName, position, null, $container);
     };
 
-    var textCommentCheckSelect = function (e) {
-        if (e.target.selectionStart != e.target.selectionEnd) {
-            removeControls();
+    /**
+     * @returns {{left: *, top: *}}
+     */
+    var tinymcePosition = function () {
+        var rectangle = tinymce.activeEditor.selection.getSel().getRangeAt(0).getBoundingClientRect();
+        var $container = $(tinymce.activeEditor.getContainer().parentNode);
+        var toolbarHeight = $('.mce-toolbar-grp', $container).outerHeight();
 
-            $selectedParent = $(this);
-            $container = $('body');
-            flowOffset.top = -25;
-            postCommentCallback = function (commentId) {
-                if ($selectedParent.next('.added-comment-line').length == 0) {
-                    createAddedCommentLine($selectedParent.attr('data-comment-id', commentId));
-                }
-            };
-            fieldName = getFieldName($selectedParent.attr('name'));
-
-            if ($(this).data('comment-id') !== undefined) {
-                showAddedComment($(this));
-            } else {
-                showCommentButton($selectedParent, $container);
-            }
-        }
+        //bottom position + toolbarheight + 10 pixel margin
+        return {left: rectangle.left, top: (rectangle.bottom + toolbarHeight + 10)};
     };
 
-    var removeControls = function() {
-        stripSelectSpan();
-        removeModalComment();
-        removeCommentButton();
-    };
-
-    var stripSelectSpan = function() {
-        $('.comment-text-selected', tinyMCE.activeEditor.getBody()).each(function() {
-            $(this).replaceWith($(this).html());
-        });
-    };
-
-    var showCommentButton = function($element, $container) {
-        var $div = $('<div class="add-comment-button hold">Add a Comment</div>');
-        $div.bind('click', showModalComment);
-
-        $container.append($div);
-        setCenterOfObject($div, $element);
-    };
-
-    var removeCommentButton = function() {
-        $('.add-comment-button').remove();
-    };
-
-    var showModalComment = function () {
-        var contentId = $('#integrated_content_id').val();
-        $.ajax({
-            type: 'GET',
-            url: Routing.generate('integrated_comment_new', {content: contentId, field: fieldName}),
-            success: function (response) {
-                var $modal = $(response);
-                removeCommentButton();
-
-                $container.append($modal);
-                setCenterOfObject($modal, $selectedParent);
-
-                $('form', $modal).bind('submit', postComment);
-            }
-        });
-    };
-
-    var removeModalComment = function () {
-        $('.comment-holder').remove();
-    };
-
-    var postComment = function (e) {
-        e.preventDefault();
-
-        var contentId = $('#integrated_content_id').val();
-        $.ajax({
-            type: 'POST',
-            data: $(this).serialize(),
-            dataType: 'json',
-            url: Routing.generate('integrated_comment_new', {content: contentId, field: fieldName}),
-            success: function (response) {
-                removeModalComment();
-                postCommentCallback.call(this, response.id);
-            }
-        });
-    };
-
-    var showAddedComment = function($parent) {
-        var commentId = $parent.data('comment-id');
-        $.ajax({
-            type: 'GET',
-            url: Routing.generate('integrated_comment_get', {comment: commentId}),
-            success: function (response) {
-                var $modal = $(response);
-                removeCommentButton();
-
-                $container.append($modal);
-                setCenterOfObject($modal, $parent);
-
-                $('form', $modal).bind('submit', postComment);
-            }
-        });
-    };
-
-    var setCenterOfObject = function($block, $parent) {
-        var parentOffset = $parent.offset();
-        var centerParent = parentOffset.left + ($parent.width() / 2);
-
-        var leftPosBlock = centerParent - ($block.width() / 2) + flowOffset.left;
-        var topPosBlock = parentOffset.top - $block.height() + flowOffset.top;
-
-        $block.css({
-            'z-index': 999,
-            position: 'absolute',
-            left: leftPosBlock,
-            top: topPosBlock
-        });
-    };
-
-    var getFieldName = function(fullName) {
-        return /\[(.+)\]$/.exec(fullName)[1];
-    };
-
-    var createAddedCommentLine = function($parent) {
-        var commentId = $parent.data('comment-id');
-        if (commentId) {
-            $parent.after('<div class="added-comment-line" data-comment-id="'+commentId+'">&nbsp;</div>');
-        }
-    };
-
-    var tinyMceInit = function () {
-        if (tinyMCE.activeEditor == undefined) {
+    /**
+     * Add event listeners to tinymce after tinymce is loaded
+     */
+    var tinymceInit = function () {
+        if (tinymce.activeEditor == undefined) {
             return;
         }
         clearInterval(waitForTiny);
 
-        tinyMCE.activeEditor.on('click', tinyCommentCheckSelect);
-        tinyMCE.activeEditor.on('keypress', tinyCommentCheckSelect);
-        tinyMCE.activeEditor.dom.loadCSS("/bundles/integratedcomment/css/comments.css");
+        tinymce.activeEditor.formatter.register('integrated_comment', {inline : 'span', 'classes' : 'integrated-comment', attributes: {'data-comment-id' : '%value'}});
+        tinymce.activeEditor.on('click', tinyCommentCheckSelect);
+        tinymce.activeEditor.on('keypress', tinyCommentCheckSelect);
+        tinymce.activeEditor.dom.loadCSS("/bundles/integratedcomment/css/comments.css");
     };
-    var waitForTiny = setInterval(tinyMceInit, 100);
 
-    $('input:text, textarea').bind('select', textCommentCheckSelect);
-    $(document).on('click', '.added-comment-line', function () {
-        $container = $('body');
-        var $prev = $(this).prev();
-        fieldName = getFieldName($prev.attr('name'));
-        showAddedComment($prev);
-    });
+    var waitForTiny = setInterval(tinymceInit, 100);
 
-    $(document).on('click', '.comment-holder .integrate-icon-cancel', function() {
-        removeControls();
-    });
-
-    $('[data-comment-id]').each(function() {
-        createAddedCommentLine($(this));
-    });
 });

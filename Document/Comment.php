@@ -1,60 +1,61 @@
 <?php
 
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Integrated\Bundle\CommentBundle\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-use Integrated\Bundle\CommentBundle\Document\Embedded\Author;
+
+use Integrated\Bundle\CommentBundle\Document\Embedded\Reply;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 
 /**
  * Class Comment
- *
- * @ODM\Document
  */
 class Comment
 {
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
      */
     protected $id;
 
     /**
-     * @var Author
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\CommentBundle\Document\Embedded\Author")
+     * @var Person
      */
     protected $author;
 
     /**
      * @var \DateTime
-     * @ODM\Date()
      */
     protected $date;
 
     /**
      * @var Content
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
      */
     protected $content;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $field;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $text;
 
     /**
      * @var ArrayCollection
-     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\CommentBundle\Document\Comment")
      */
-    protected $children;
+    protected $replies;
 
     /**
      * Comment constructor.
@@ -62,7 +63,7 @@ class Comment
     public function __construct()
     {
         $this->date = new \DateTime();
-        $this->children = new ArrayCollection();
+        $this->replies = new ArrayCollection();
     }
 
     /**
@@ -132,31 +133,57 @@ class Comment
     /**
      * @return ArrayCollection
      */
-    public function getChildren()
+    public function getReplies()
     {
-        return $this->children;
+        return $this->replies;
     }
 
     /**
-     * @param ArrayCollection $children
+     * @param ArrayCollection $replies
      */
-    public function setChildren($children)
+    public function setReplies($replies)
     {
-        $this->children = $children;
+        $this->replies = $replies;
     }
 
     /**
-     * @param Comment $child
+     * @param Reply $reply
      */
-    public function addChildren(Comment $child)
+    public function addReply(Reply $reply)
     {
-        if (!$this->children->contains($child)) {
-            $this->children->add($child);
+        if (!$this->replies->contains($reply)) {
+            $this->replies->add($reply);
         }
     }
 
     /**
-     * @return Author
+     * @param $replyId
+     * @return Reply|null
+     */
+    public function getReplyById($replyId)
+    {
+        return $this->replies->filter(
+                function(Reply $reply) use ($replyId) {
+                    return $reply->getId() === $replyId;
+                }
+            )->first();
+    }
+
+    /**
+     * @param $replyId
+     * @return bool
+     */
+    public function removeReplyById($replyId)
+    {
+        if ($reply = $this->getReplyById($replyId)) {
+            return $this->replies->removeElement($reply);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return Person
      */
     public function getAuthor()
     {
@@ -164,9 +191,9 @@ class Comment
     }
 
     /**
-     * @param Author $author
+     * @param Person|null $author
      */
-    public function setAuthor($author)
+    public function setAuthor(Person $author = null)
     {
         $this->author = $author;
     }

@@ -1,0 +1,24 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\CommentBundle\Document\Comment">
+
+        <field fieldName="id" id="true" strategy="UUID" />
+        <field fieldName="date" type="date" />
+        <field fieldName="field" type="string" />
+        <field fieldName="text" type="string" />
+
+        <reference-one
+            field="author"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person" />
+
+        <reference-one
+            field="content"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
+
+        <embed-many field="replies" target-document="Integrated\Bundle\CommentBundle\Document\Embedded\Reply" />
+    </document>
+
+</doctrine-mongo-mapping>

@@ -1,21 +1,31 @@
 <?php
 
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Integrated\Bundle\CommentBundle\EventListener;
 
-use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Bundle\CommentBundle\Document\CommentContent;
+
+use Integrated\Bundle\AssetBundle\Manager\AssetManager;
+use Integrated\Bundle\CommentBundle\Document\Comment;
+use Integrated\Bundle\CommentBundle\Form\DataTransformer\CommentTagTransformer;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Events;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 /**
- * Class ContentCommentSubscriber
+ * @author Johan Liefers <johan@e-active.nl>
  */
 class CommentFormFieldsSubscriber implements EventSubscriberInterface
 {
@@ -25,13 +35,30 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     protected $documentManager;
 
     /**
-     * CommentFormFieldsSubscriber constructor.
-     * @param DocumentManager $documentManager
+     * @var AssetManager
      */
-    public function __construct(DocumentManager $documentManager)
+    private $stylesheets;
+
+    /**
+     * @var AssetManager
+     */
+    private $javascripts;
+
+    /**
+     * @var null|array
+     */
+    protected $comments = null;
+
+    /**
+     * @param DocumentManager $documentManager
+     * @param AssetManager $stylesheets
+     * @param AssetManager $javascripts
+     */
+    public function __construct(DocumentManager $documentManager, AssetManager $stylesheets, AssetManager $javascripts)
     {
         $this->documentManager = $documentManager;
-
+        $this->stylesheets = $stylesheets;
+        $this->javascripts = $javascripts;
     }
 
     /**
@@ -41,7 +68,7 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     {
         return [
             Events::BUILD_FIELD => 'onBuildField',
-            Events::POST_BUILD => 'onPostBuild',
+            Events::POST_BUILD_FIELD => 'postBuildField',
         ];
     }
 
@@ -57,112 +84,59 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
         /** @var Content $content */
         $content = $formOptions['data'];
 
-        if ($field->getType() == 'integrated_tinymce') {
-            $repository = $this->documentManager->getRepository('IntegratedCommentBundle:CommentContent');
-            if ($replaceContent = $repository->findOneBy(['content.$id' => $content->getId()])) {
-                $setter = Inflector::camelize('set_'.$field->getName());
-                $content->$setter($replaceContent->getBody());
-            }
-        } else {
-            $options = $field->getOptions();
+        $options = $field->getOptions();
 
-            $repository = $this->documentManager->getRepository('IntegratedCommentBundle:Comment');
-            if ($comment = $repository->findBy(['content.$id' => $content->getId(), 'field' => $field->getName()], ['date' => 'asc'])) {
-                $comment = $comment[0];
-                $options['attr'] = array('data-comment-id' => $comment->getId());
-                $field->setOptions($options);
-            }
+        if ($comment = $this->getComment($content->getId(), $field->getName())) {
+            $comment = $comment[0];
+            $options['attr'] = array('data-comment-id' => $comment->getId());
+            $field->setOptions($options);
         }
+
+        $this->stylesheets->add('bundles/integratedcomment/css/comments.css');
+        $this->javascripts->add('bundles/integratedcomment/js/comments.js');
     }
 
     /**
      * @param BuilderEvent $event
      */
-    public function onPostBuild(BuilderEvent $event)
+    public function postBuildField(BuilderEvent $event)
     {
-        $builder = $event->getBuilder();
-        $builder->addEventListener(FormEvents::SUBMIT, array($this, 'onSubmit'));
+        $field = $event->getBuilder()->get($event->getField());
+
+        if ('integrated_editor' == $field->getType()->getName()) {
+            $field->addViewTransformer(new CommentTagTransformer());
+        }
     }
 
     /**
-     * @param FormEvent $event
+     * @param string $contentId
+     * @return array|mixed
      */
-    public function onSubmit(FormEvent $event)
+    protected function getComments($contentId)
     {
-        /** @var Content $content */
-        $content = $event->getData();
-        $form = $event->getForm();
+        if (null === $this->comments) {
+            $comments = $this->documentManager->getRepository('IntegratedCommentBundle:Comment')
+                ->findBy(['content.$id' => $contentId], ['date' => 'asc']);
 
-        foreach ($form->all() as $field) {
-            $fieldName = $field->getName();
-            $config = $field->getConfig();
-            $type = $config->getType();
+            $this->comments = [];
 
-            if ($type->getName() == 'integrated_tinymce') {
-                $repository = $this->documentManager->getRepository('IntegratedCommentBundle:CommentContent');
-
-                $getter = Inflector::camelize('get_'.$fieldName);
-                $setter = Inflector::camelize('set_'.$fieldName);
-
-                $body = $content->$getter();
-
-                if ($commentContent = $repository->findOneBy(['content.$id' => $content->getId(), 'field' => $fieldName])) {
-                    $commentContent->setBody($body);
-                    $this->documentManager->flush();
-                } else {
-                    $commentContent = new CommentContent();
-                    $commentContent->setContent($content);
-                    $commentContent->setField($fieldName);
-                    $commentContent->setBody($body);
-                    $this->documentManager->persist($commentContent);
-                    $this->documentManager->flush();
-                }
-
-                $stripComments = $this->stripComments($body);
-                $content->$setter($stripComments);
+            foreach ($comments as $comment) {
+                $this->comments[$comment->getField()][] = $comment;
             }
         }
+
+        return $this->comments;
     }
 
     /**
-     * @param $body
-     * @return string
+     * @param string $contentId
+     * @param string $fieldName
+     * @return Comment[]|null
      */
-    private function stripComments($body)
-    {
-        $domDocument = new \DOMDocument();
-        $domDocument->loadHTML($body);
+    protected function getComment($contentId, $fieldName) {
+        $comments = $this->getComments($contentId);
 
-        $xpath = new \DOMXPath($domDocument);
-        $nodeList = $xpath->query("//span[contains(@class, 'comment-added')]");
-
-        /** @var \DOMElement $item */
-        foreach ($nodeList as $item) {
-            $itemHtml = $this->getInnerHtml($item);
-
-            $newNode = $domDocument->createTextNode($itemHtml);
-
-            $item->parentNode->replaceChild($newNode, $item);
-        }
-
-        $html = $domDocument->saveHTML($xpath->query('//body')->item(0));
-
-        return preg_replace("/<\/?body>/i", "", $html);
+        return isset($comments[$fieldName]) ? $comments[$fieldName] : null;
     }
 
-    /**
-     * @param \DOMElement $domElement
-     * @return string
-     */
-    private function getInnerHtml(\DOMElement $domElement)
-    {
-        $innerHTML = "";
-
-        /** @var \DOMNode $child */
-        foreach ($domElement->childNodes as $child) {
-            $innerHTML .= $domElement->ownerDocument->saveHTML($child);
-        }
-
-        return $innerHTML;
-    }
 }

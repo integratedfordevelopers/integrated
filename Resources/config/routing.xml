@@ -5,12 +5,21 @@
     xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="integrated_comment_new" path="/comment/new/{content}/{field}">
-        <default key="_controller">IntegratedCommentBundle:Comment:new</default>
+        <default key="_controller">integrated_comment.controller.default:newAction</default>
         <option key="expose">true</option>
     </route>
 
+    <route id="integrated_comment_delete" path="/comment/delete/{comment}">
+        <default key="_controller">integrated_comment.controller.default:deleteAction</default>
+    </route>
+
+    <route id="integrated_comment_delete_reply" path="/comment/delete/{comment}/{replyId}">
+        <default key="_controller">integrated_comment.controller.default:deleteReply</default>
+    </route>
+
     <route id="integrated_comment_get" path="/comment/{comment}">
-        <default key="_controller">IntegratedCommentBundle:Comment:get</default>
+        <default key="_controller">integrated_comment.controller.default:getAction</default>
         <option key="expose">true</option>
     </route>
+
 </routes>
