@@ -1068,7 +1068,7 @@ class ContentController extends Controller
                         ['id' => $content->getId()]
             ),
             'method' => 'PUT',
-            'attr' => ['class' => 'content-form'],
+            'attr' => ['class' => 'content-form', 'data-content-id' => $content->getId()],
             // don't display error's when the content is locked as the user can't save in the first place
             'validation_groups' => $locking['locked'] ? false : null
         ]);
