@@ -85,7 +85,9 @@ class ImageExtension extends \Twig_Extension
     {
         if ($image instanceof StorageInterface) {
             // Returns the image in a webformat
-            $image = $this->webFormatConverter->convert($image)->getPathname();
+            return $this->imageHandling->open(
+                $this->webFormatConverter->convert($image)->getPathname()
+            );
         }
 
         return $this->imageTwig->webImage($image);
