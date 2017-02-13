@@ -12,6 +12,9 @@
     {% if content.extension_string is defined %}
         {% set item = item|merge({'extension': content.extension_string[0]}) %}
     {% endif %}
+    {% if content.mimetype_string is defined %}
+        {% set item = item|merge({'mimeType': content.mimetype_string[0]}) %}
+    {% endif %}
     {% if content.alternate_string is defined %}
         {% set item = item|merge({'alternate': content.alternate_string[0]}) %}
     {% endif %}
