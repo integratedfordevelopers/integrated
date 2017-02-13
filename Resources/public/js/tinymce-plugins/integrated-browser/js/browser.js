@@ -23,28 +23,22 @@ $(document).ready(function() {
     var previousCall = null;
 
     /**
-     * Render image lists into thumbnail container
-     * @param  object images    images collection retreived from the API
-     * @return void
+     * Render result lists into thumbnail container
+     * @param {object} images Collection retreived from the API
      */
-    function renderImage(images){
+    function render (images) {
         var rowTemplate = '<div class="row">{{thumbnails}}</div>';
-        var thumbnailTemplate =
-            '<div class="col-sm-3">'+
-            '<div class="thumbnail">'+
-            '<div class="thumbnail-img">'+
-            '<img src="{{img-source}}" class="img-responsive btn-insert-image" title="{{img-title}}" alt="{{img-alt}}" data-integrated-id="{{img-id}}" />'+
-            '</div>'+
-            '</div>'+
-            '</div>';
-
         var container       = $('#thumbnail-container');
         var temporaryHtml   = '';
         var temporaryThumb  = '';
 
         for(var i = 0; i < images.length; i++){
-            temporaryThumb += thumbnailTemplate.replace(
-                /\{\{img-source\}\}/g,
+            // Grab the item html
+            var item = renderItem(images[i]);
+
+            // Replace the variables
+            temporaryThumb += item.replace(
+                /\{\{source\}\}/g,
                 Routing.generate(
                     'integrated_storage_file',
                     {
@@ -54,17 +48,20 @@ $(document).ready(function() {
                     true
                 )
             ).replace(
-                /\{\{img-alt\}\}/g,
+                /\{\{alt\}\}/g,
                 images[i].title
             ).replace(
-                /\{\{img-id\}\}/g,
+                /\{\{id\}\}/g,
                 images[i].id
             ).replace(
-                /\{\{img-title\}\}/g,
+                /\{\{title\}\}/g,
                 images[i].title
             ).replace(
-                /\{\{img-alt\}\}/g,
+                /\{\{alt\}\}/g,
                 images[i].alternate
+            ).replace(
+                /\{\{mimetype\}\}/g,
+                images[i].mimeType
             );
 
             if(i % 4 == 3 || i == images.length - 1){
@@ -74,10 +71,31 @@ $(document).ready(function() {
         }
 
         if(images.length == 0){
-            temporaryHtml = '<p class="text-center">No images found.</p>';
+            temporaryHtml = '<p class="text-center">No content found.</p>';
         }
 
         container.html(temporaryHtml);
+    }
+
+    /**
+     * @param {object} item
+     * @returns {string}
+     */
+    function renderItem(item)
+    {
+        var html = '<div class="col-sm-3"><div class="thumbnail"><div class="thumbnail-img">';
+
+        if (item.mimeType.match('^video\/(.*)$')) {
+            html += '<video><source src="{{source}}" type="{{mimetype}}"></video>';
+        } else if (item.mimeType.match('^image\/(.*)$')) {
+            html += '<img src="{{source}}" class="img-responsive btn-insert-image" title="{{title}}" alt="{{alt}}" data-integrated-id="{{id}}" />';
+        } else {
+            html += '<p>Not supported content type</p>'
+        }
+
+        html += '</div></div></div>';
+
+        return html;
     }
 
     /**
@@ -101,11 +119,11 @@ $(document).ready(function() {
         var pageNum = '';
 
         /** hide the pagination if only one page found and return immediately */
-        if(page.pageCount == 1){
+        if(page.pageCount == 1) {
             container.html('');
             thumbnailContainer.css('height', '520px');
             return;
-        }else{
+        } else {
             thumbnailContainer.removeAttr('style');
         }
 
@@ -114,7 +132,7 @@ $(document).ready(function() {
             var i = page.page - 2 - (page.pageCount - page.page < 2 ? 2 - (page.pageCount - page.page) : 0);
             i <= page.page + 2 + (page.page <= 2 ? 3 - page.page : 0);
             i++
-        ){
+        ) {
             if(typeof page.pages[i] != 'undefined'){
                 pageNum +=  '<li '+(i == page.page ? 'class="active"' : '')+'>'+
                     '<a href="'+(i == page.page ? '#' : page.pages[i].href)+'">'+i+'</a>'+
@@ -141,10 +159,9 @@ $(document).ready(function() {
         );
 
         container.html(temporaryHtml);
-
     }
 
-    refreshImages = function() {
+    function refresh () {
         $('#thumbnail-container').loader('show');
 
         var params = {
@@ -160,12 +177,12 @@ $(document).ready(function() {
 
         previousCall =
             $.get(Routing.generate('integrated_content_content_index', params), function(data) {
-                renderImage(data.items);
+                render(data.items);
                 renderPagination(data.pagination);
             }, 'json')
                 .error(function(xhr, status){
                     if(status !== 'abort'){
-                        $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>');
+                        $('#thumbnail-container').html('<p class="text-center">Error occured while loading content</p>');
                     }
                 }).done(function () {
                 $('#thumbnail-container').loader('hide');
@@ -177,11 +194,11 @@ $(document).ready(function() {
      * Type ahead search handler
      */
     $(document).on('keyup', '#txt-search', function () {
-        refreshImages();
+        refresh();
     });
 
     $(document).on('change', '#type-search', function () {
-        refreshImages();
+        refresh();
     });
 
     /**
@@ -195,15 +212,15 @@ $(document).ready(function() {
 
         if(href !== '#'){
             $.get(href, function(data){
-                renderImage(data.items);
+                render(data.items);
                 renderPagination(data.pagination);
             }, 'json')
-            .error(function(){
-                $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
-            })
-            .done(function() {
-                $('#thumbnail-container').loader('hide');
-            });
+                .error(function(){
+                    $('#thumbnail-container').html('<p class="text-center">Error occured while loading content</p>')
+                })
+                .done(function() {
+                    $('#thumbnail-container').loader('hide');
+                });
         }
     });
 
@@ -250,7 +267,7 @@ $(document).ready(function() {
         }
 
         $('#type-search').html(searchHtml);
-        refreshImages();
+        refresh();
 
         $('.btn-content-add').click(function(e) {
             e.preventDefault();
@@ -261,7 +278,7 @@ $(document).ready(function() {
                 width: 800,
                 height: 600
             }).on('close', function () {
-                refreshImages();
+                refresh();
             });
         });
     }).error(function() {
