@@ -81,9 +81,9 @@ $(document).ready(function() {
         var html = '<div class="col-sm-3"><div class="thumbnail"><div class="thumbnail-img">';
 
         if (item.mimeType.match('^video\/(.*)$')) {
-            html += '<video poster="{{poster}}"><source src="{{source}}" type="{{mimeType}}"></video>';
+            html += '<video poster="{{poster}}" class="click-insert"><source src="{{source}}" type="{{mimeType}}"></video>';
         } else if (item.mimeType.match('^image\/(.*)$')) {
-            html += '<img src="{{source}}" class="img-responsive btn-insert-image" title="{{title}}" alt="{{title}}" data-integrated-id="{{id}}" />';
+            html += '<img src="{{source}}" class="img-responsive click-insert" title="{{title}}" alt="{{title}}" data-integrated-id="{{id}}" />';
         } else {
             html += '<p>Not supported content type</p>'
         }
@@ -223,10 +223,11 @@ $(document).ready(function() {
      * Image thumbnail click handler
      * insert the image into editor and close the window
      */
-    $('#thumbnail-container').on('click', '.btn-insert-image', function(e){
+    $('#thumbnail-container').on('click', '.click-insert', function(e){
         e.preventDefault();
-        var image = $(this);
-        image.removeClass('btn-insert-image');
+
+        var item = $(this);
+        item.removeClass('click-insert');
 
         // Inject the image
         tinymce.activeEditor.insertContent(image[0].outerHTML);
