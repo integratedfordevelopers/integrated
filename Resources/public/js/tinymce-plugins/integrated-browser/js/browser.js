@@ -27,6 +27,7 @@ $(document).ready(function() {
      * @param {object} images Collection retreived from the API
      */
     function render (images) {
+        var regex = /\{\{[a-z]+\}\}/gi;
         var rowTemplate = '<div class="row">{{thumbnails}}</div>';
         var container       = $('#thumbnail-container');
         var temporaryHtml   = '';
@@ -36,33 +37,27 @@ $(document).ready(function() {
             // Grab the item html
             var item = renderItem(images[i]);
 
-            // Replace the variables
-            temporaryThumb += item.replace(
-                /\{\{source\}\}/g,
-                Routing.generate(
-                    'integrated_storage_file',
-                    {
-                        id: images[i].id,
-                        ext: images[i].extension
-                    },
-                    true
-                )
-            ).replace(
-                /\{\{alt\}\}/g,
-                images[i].title
-            ).replace(
-                /\{\{id\}\}/g,
-                images[i].id
-            ).replace(
-                /\{\{title\}\}/g,
-                images[i].title
-            ).replace(
-                /\{\{alt\}\}/g,
-                images[i].alternate
-            ).replace(
-                /\{\{mimetype\}\}/g,
-                images[i].mimeType
+            // Grab the route
+            images[i].source = Routing.generate(
+                'integrated_storage_file',
+                {
+                    id: images[i].id,
+                    ext: images[i].extension
+                },
+                true
             );
+
+            // Parse values
+            var match = [];
+            while (null != (match = regex.exec(item))) {
+                item = item.replace(
+                    match[0],
+                    images[i][match[0].substr(2, (match[0].length-4))]
+                );
+            }
+
+            // Add it
+            temporaryThumb += item;
 
             if(i % 4 == 3 || i == images.length - 1){
                 temporaryHtml  += rowTemplate.replace(/\{\{thumbnails\}\}/g, temporaryThumb);
@@ -86,9 +81,9 @@ $(document).ready(function() {
         var html = '<div class="col-sm-3"><div class="thumbnail"><div class="thumbnail-img">';
 
         if (item.mimeType.match('^video\/(.*)$')) {
-            html += '<video><source src="{{source}}" type="{{mimetype}}"></video>';
+            html += '<video poster="{{poster}}"><source src="{{source}}" type="{{mimeType}}"></video>';
         } else if (item.mimeType.match('^image\/(.*)$')) {
-            html += '<img src="{{source}}" class="img-responsive btn-insert-image" title="{{title}}" alt="{{alt}}" data-integrated-id="{{id}}" />';
+            html += '<img src="{{source}}" class="img-responsive btn-insert-image" title="{{title}}" alt="{{title}}" data-integrated-id="{{id}}" />';
         } else {
             html += '<p>Not supported content type</p>'
         }
