@@ -72,13 +72,11 @@ class Container
     public function find($outputFormat, StorageInterface $image)
     {
         // Get a local file
-        if (!($image instanceof \SplFileInfo)) {
-            $image = $this->cache->path($image);
-        }
+        $file = $this->cache->path($image);
 
         foreach ($this->adapters as $converter) {
             try {
-                if ($converter->supports($outputFormat, $image)) {
+                if ($converter->supports($outputFormat, $file)) {
                     return $converter;
                 }
             } catch (FormatException $formatException) {
