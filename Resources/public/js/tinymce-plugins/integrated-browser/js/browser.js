@@ -1,14 +1,13 @@
 $(document).ready(function() {
-
     /**
-     * tinimce instance from the top level window object
+     * TinyMCE instance from the top level window object
      * @type object
      */
     var tinymce = top.tinymce;
 
     /**
-     * window modal object created by tinymce object
-     * @type object
+     * Window modal object created by tinymce object
+     * @type {Object}
      */
     var mcemodal = tinymce.activeEditor.windowManager.getWindows()[0];
 
@@ -81,7 +80,7 @@ $(document).ready(function() {
         var html = '<div class="col-sm-3"><div class="thumbnail"><div class="thumbnail-img">';
 
         if (item.mimeType.match('^video\/(.*)$')) {
-            html += '<video poster="{{poster}}" class="click-insert"><source src="{{source}}" type="{{mimeType}}"></video>';
+            html += '<video poster="{{poster}}" class="img-responsive click-insert"><source src="{{source}}" type="{{mimeType}}"></video>';
         } else if (item.mimeType.match('^image\/(.*)$')) {
             html += '<img src="{{source}}" class="img-responsive click-insert" title="{{title}}" alt="{{title}}" data-integrated-id="{{id}}" />';
         } else {
@@ -95,8 +94,7 @@ $(document).ready(function() {
 
     /**
      * Render pagination part of the image browser
-     * @param  object data  Pagination data retreived from the API
-     * @return void
+     * @param {object} page Pagination data retrieved from the API
      */
     function renderPagination(page){
         var paginationTemplate =
@@ -156,6 +154,9 @@ $(document).ready(function() {
         container.html(temporaryHtml);
     }
 
+    /**
+     * Refresh the content
+     */
     function refresh () {
         $('#thumbnail-container').loader('show');
 
@@ -192,6 +193,9 @@ $(document).ready(function() {
         refresh();
     });
 
+    /**
+     * Content type switcher
+     */
     $(document).on('change', '#type-search', function () {
         refresh();
     });
@@ -230,7 +234,7 @@ $(document).ready(function() {
         item.removeClass('click-insert');
 
         // Inject the image
-        tinymce.activeEditor.insertContent(image[0].outerHTML);
+        tinymce.activeEditor.insertContent(item[0].outerHTML);
         mcemodal.close();
     });
 
