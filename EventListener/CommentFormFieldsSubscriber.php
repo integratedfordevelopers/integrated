@@ -101,6 +101,10 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
      */
     public function postBuildField(BuilderEvent $event)
     {
+        if (!$event->getBuilder()->has($event->getField())) {
+            return;
+        }
+
         $field = $event->getBuilder()->get($event->getField());
 
         if ('integrated_editor' == $field->getType()->getName()) {
