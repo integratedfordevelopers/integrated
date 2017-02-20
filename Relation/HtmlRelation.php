@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Relation;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Std\DOMDocument;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -24,7 +25,7 @@ class HtmlRelation
      */
     public function read($html)
     {
-        $document = new \DOMDocument();
+        $document = new DOMDocument();
         $document->loadHTML($html);
 
         $xpath = new \DOMXPath($document);
