@@ -87,7 +87,7 @@ class ImageMagickAdapter implements AdapterInterface
         if (class_exists('\Imagick')) {
             try {
                 return new \Imagick($file);
-            } catch (\Exception $exception) {
+            } catch (\ImagickException $exception) {
                 // Intentionally left blank
             }
         }

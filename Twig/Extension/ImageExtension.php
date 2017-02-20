@@ -71,7 +71,11 @@ class ImageExtension extends \Twig_Extension
     {
         if ($json = json_decode($image)) {
             // Returns the image in a webformat
-            $image = $this->webFormatConverter->convert(StorageModelFactory::json($json))->getPathname();
+            try {
+                $image = $this->webFormatConverter->convert(StorageModelFactory::json($json))->getPathname();
+            } catch (\Exception $e) {
+                // Left blank
+            }
         }
 
         return $this->imageHandling->open((string) $image);
