@@ -1,3 +1,161 @@
+# Changelog Integrated version 0.5 #
+
+## Highlights ##
+- New backend design
+- New block for websites (for example related content block)
+- A lot of small new features and improvements
+
+## New Features ##
+- [a INTEGRATED-29](https://eactive.atlassian.net/browse/INTEGRATED-29) Use stable versions of all external bundles
+- [a INTEGRATED-109](https://eactive.atlassian.net/browse/INTEGRATED-109) Index needed on references
+- [a INTEGRATED-258](https://eactive.atlassian.net/browse/INTEGRATED-258) Load js files with Twig extension instead of config
+- [a INTEGRATED-277](https://eactive.atlassian.net/browse/INTEGRATED-277) [content-bundle] Related content block
+- [a INTEGRATED-368](https://eactive.atlassian.net/browse/INTEGRATED-368) Implement new css (sass) with header/footer
+- [a INTEGRATED-369](https://eactive.atlassian.net/browse/INTEGRATED-369) Implement new edit page design
+- [a INTEGRATED-392](https://eactive.atlassian.net/browse/INTEGRATED-392) [content-bundle] Use a resized image version on edit page
+- [a INTEGRATED-473](https://eactive.atlassian.net/browse/INTEGRATED-473) [workflow-bundle] Fix wrong text on Workflow delete page
+- [a INTEGRATED-478](https://eactive.atlassian.net/browse/INTEGRATED-478) [workflow-bundle] ROLE_ADMIN should always have full access to content
+- [a INTEGRATED-503](https://eactive.atlassian.net/browse/INTEGRATED-503) Upgrade select2 to version 4.0.0
+- [a INTEGRATED-518](https://eactive.atlassian.net/browse/INTEGRATED-518) [content-bundle] Show the "Unsaved changes" modal when click Cancel
+- [a INTEGRATED-535](https://eactive.atlassian.net/browse/INTEGRATED-535) Add ROLE parameter to create:user command
+- [a INTEGRATED-538](https://eactive.atlassian.net/browse/INTEGRATED-538) [user-bundle] Allow a bundle to define roles
+- [a INTEGRATED-553](https://eactive.atlassian.net/browse/INTEGRATED-553) [content-bundle] Re-apply styles in new design
+- [a INTEGRATED-573](https://eactive.atlassian.net/browse/INTEGRATED-573) Multiple bootstrap size in container block
+- [a INTEGRATED-600](https://eactive.atlassian.net/browse/INTEGRATED-600) [content-bundle] Embed many form type
+- [a INTEGRATED-631](https://eactive.atlassian.net/browse/INTEGRATED-631) Don't allow to delete content or search selections when referenced somewhere
+- [a INTEGRATED-640](https://eactive.atlassian.net/browse/INTEGRATED-640) [content-bundle] Allow multiple facets in facetblock
+- [a INTEGRATED-641](https://eactive.atlassian.net/browse/INTEGRATED-641) select2 component with ajax support
+- [a INTEGRATED-645](https://eactive.atlassian.net/browse/INTEGRATED-645) Support active content item in view for related content block
+- [a INTEGRATED-646](https://eactive.atlassian.net/browse/INTEGRATED-646) Exclude active item in related content block
+- [a INTEGRATED-648](https://eactive.atlassian.net/browse/INTEGRATED-648) Support filter on content types for relation block
+- [a INTEGRATED-651](https://eactive.atlassian.net/browse/INTEGRATED-651) [block-bundle] Inject active document in Twig in base block handler
+- [a INTEGRATED-656](https://eactive.atlassian.net/browse/INTEGRATED-656) [solr-bundle] Add Json solrtype
+- [a INTEGRATED-660](https://eactive.atlassian.net/browse/INTEGRATED-660) [block-bundle] ContentItemsBlock
+- [a INTEGRATED-663](https://eactive.atlassian.net/browse/INTEGRATED-663) [workflow-bundle] Update "Assigned" userlist when changing to next status
+- [a INTEGRATED-664](https://eactive.atlassian.net/browse/INTEGRATED-664) Allow an assigned user to write to the content item
+- [a INTEGRATED-667](https://eactive.atlassian.net/browse/INTEGRATED-667) Allow search on specific field in ContentController
+- [a INTEGRATED-668](https://eactive.atlassian.net/browse/INTEGRATED-668) [solr-bundle] Solr propertyType
+- [a INTEGRATED-670](https://eactive.atlassian.net/browse/INTEGRATED-670) [website-bundle] Support options in integrated_block twig extension
+- [a INTEGRATED-676](https://eactive.atlassian.net/browse/INTEGRATED-676) [integrated] Add translation tags in the integrated bundles
+- [a INTEGRATED-677](https://eactive.atlassian.net/browse/INTEGRATED-677) [formtype-bundle] FormType for relations in manual coded forms
+- [a INTEGRATED-682](https://eactive.atlassian.net/browse/INTEGRATED-682) Select current user as default assignee for new articles until another next status is chosen
+- [a INTEGRATED-683](https://eactive.atlassian.net/browse/INTEGRATED-683) Disable the assigned list when changing to the next status
+- [a INTEGRATED-687](https://eactive.atlassian.net/browse/INTEGRATED-687) Sass with scssphp to remove Ruby dependency
+- [a INTEGRATED-688](https://eactive.atlassian.net/browse/INTEGRATED-688) [content-bundle] Sort search selections by title
+- [a INTEGRATED-690](https://eactive.atlassian.net/browse/INTEGRATED-690) Add status and assignee to content navigator
+- [a INTEGRATED-695](https://eactive.atlassian.net/browse/INTEGRATED-695) Split base view header in different views to be able to override parts
+- [a INTEGRATED-696](https://eactive.atlassian.net/browse/INTEGRATED-696) Use a nicer datetime picker
+- [a INTEGRATED-697](https://eactive.atlassian.net/browse/INTEGRATED-697) Show username/password only when checkbox is on
+- [a INTEGRATED-703](https://eactive.atlassian.net/browse/INTEGRATED-703) Author of an article should always be able to read (see, not write) his articles
+- [a INTEGRATED-706](https://eactive.atlassian.net/browse/INTEGRATED-706) [content-bundle] Delete references of relation
+- [a INTEGRATED-709](https://eactive.atlassian.net/browse/INTEGRATED-709) [workflow-bundle] Configure the visibility of comment, assignee and deadline
+- [a INTEGRATED-715](https://eactive.atlassian.net/browse/INTEGRATED-715) Refactor FileConstraintNormalizer to excellent code
+- [a INTEGRATED-733](https://eactive.atlassian.net/browse/INTEGRATED-733) Use storage object instead of referenceone for person picture and company logo
+- [a INTEGRATED-744](https://eactive.atlassian.net/browse/INTEGRATED-744) [solr-bundle] Move PropertyType and RelationJsonType from SolrBundle to ContentBundle, add unit tests and improve code
+- [a INTEGRATED-754](https://eactive.atlassian.net/browse/INTEGRATED-754) Improve Integrated dropdown menu's
+- [a INTEGRATED-755](https://eactive.atlassian.net/browse/INTEGRATED-755) Remove duplicate 'blocks' item from dropdown menu
+- [a INTEGRATED-756](https://eactive.atlassian.net/browse/INTEGRATED-756) [content-bundle] Improve Integrated add 'relation' modal
+- [a INTEGRATED-761](https://eactive.atlassian.net/browse/INTEGRATED-761) [storage-bundle] Wospixel image provider in storagebundle
+- [a INTEGRATED-784](https://eactive.atlassian.net/browse/INTEGRATED-784) Filter unpublished items in getReferencesBy...
+- [a INTEGRATED-788](https://eactive.atlassian.net/browse/INTEGRATED-788) [block-bundle] Split twig file for inheritance
+- [a INTEGRATED-812](https://eactive.atlassian.net/browse/INTEGRATED-812) [content-bundle] getUsedBy filter publish optional
+- [a INTEGRATED-816](https://eactive.atlassian.net/browse/INTEGRATED-816) [block-bundle] Add role specific to bundles
+- [a INTEGRATED-817](https://eactive.atlassian.net/browse/INTEGRATED-817) [deployment-bundle] Add migration tools
+- [a INTEGRATED-832](https://eactive.atlassian.net/browse/INTEGRATED-832) [deployment-bundle] abstractmigration add command execute function
+- [a INTEGRATED-833](https://eactive.atlassian.net/browse/INTEGRATED-833) [content-bundle] Add sort direction to related content block
+- [a INTEGRATED-836](https://eactive.atlassian.net/browse/INTEGRATED-836) Featured items block
+- [a INTEGRATED-849](https://eactive.atlassian.net/browse/INTEGRATED-849) Refactor StorageTrait into StorageExtension 
+- [a INTEGRATED-853](https://eactive.atlassian.net/browse/INTEGRATED-853) Allow selected navigation items to be highlighted
+- [a INTEGRATED-862](https://eactive.atlassian.net/browse/INTEGRATED-862) Remove duplicated content type Image and File 
+- [a INTEGRATED-864](https://eactive.atlassian.net/browse/INTEGRATED-864) Fix for strorage data fixtures
+- [a INTEGRATED-869](https://eactive.atlassian.net/browse/INTEGRATED-869) Use FilterContainer by default
+- [a INTEGRATED-873](https://eactive.atlassian.net/browse/INTEGRATED-873) StorageIntendUpload should not read full identity map
+- [a INTEGRATED-885](https://eactive.atlassian.net/browse/INTEGRATED-885) Change block limit to 5000 in "Add block" modal dialog
+- [a INTEGRATED-897](https://eactive.atlassian.net/browse/INTEGRATED-897) Revert unreviewed commit
+- [a INTEGRATED-1020](https://eactive.atlassian.net/browse/INTEGRATED-1020) Script to convert Mongo relation to Integrated relation
+- [a INTEGRATED-1023](https://eactive.atlassian.net/browse/INTEGRATED-1023) Allow username and password for solr
+
+## Bug Fixes ##
+- [a INTEGRATED-185](https://eactive.atlassian.net/browse/INTEGRATED-185) Assigned field should refresh after selecting workflow status
+- [a INTEGRATED-284](https://eactive.atlassian.net/browse/INTEGRATED-284) Create new menu isn't responsive
+- [a INTEGRATED-286](https://eactive.atlassian.net/browse/INTEGRATED-286) Relation show page can fire 500
+- [a INTEGRATED-327](https://eactive.atlassian.net/browse/INTEGRATED-327) Error while deleting a workflow when default state has been set
+- [a INTEGRATED-333](https://eactive.atlassian.net/browse/INTEGRATED-333) Workflow re-index fails in some situations
+- [a INTEGRATED-335](https://eactive.atlassian.net/browse/INTEGRATED-335) [workflow-bundle] Content types without access are shown in "Create new" window
+- [a INTEGRATED-427](https://eactive.atlassian.net/browse/INTEGRATED-427) [library] Create/fix unit tests for feature/block
+- [a INTEGRATED-479](https://eactive.atlassian.net/browse/INTEGRATED-479) Crash when PublishTime field is used, but not filled
+- [a INTEGRATED-524](https://eactive.atlassian.net/browse/INTEGRATED-524) Deleting an author results in a 500 when editing or indexing the document
+- [a INTEGRATED-638](https://eactive.atlassian.net/browse/INTEGRATED-638) Sass is not available in vagrant
+- [a INTEGRATED-649](https://eactive.atlassian.net/browse/INTEGRATED-649) Using a null relation in function getUsedByd in ContentRepository does not work
+- [a INTEGRATED-650](https://eactive.atlassian.net/browse/INTEGRATED-650) maxItems and sortBy do not work for related content block
+- [a INTEGRATED-654](https://eactive.atlassian.net/browse/INTEGRATED-654) [workflow-bundle] All menu-options from the 'Create new'-menu are visible for every role
+- [a INTEGRATED-662](https://eactive.atlassian.net/browse/INTEGRATED-662) Block bundle layout is broken
+- [a INTEGRATED-669](https://eactive.atlassian.net/browse/INTEGRATED-669) Solr indexering doesn't skip and retry on error in document converter
+- [a INTEGRATED-685](https://eactive.atlassian.net/browse/INTEGRATED-685) [67039] Facet filtering with same name as search selection gives problems
+- [a INTEGRATED-704](https://eactive.atlassian.net/browse/INTEGRATED-704) Gray Integrated button is poorly visible (only when mouseover)
+- [a INTEGRATED-717](https://eactive.atlassian.net/browse/INTEGRATED-717) Author select component is broken after upgrade to version 4 of select2
+- [a INTEGRATED-727](https://eactive.atlassian.net/browse/INTEGRATED-727) [content-bundle] Require function doesn't work properly
+- [a INTEGRATED-729](https://eactive.atlassian.net/browse/INTEGRATED-729) [content-bundle] Related contentblock shows inactive documents
+- [a INTEGRATED-730](https://eactive.atlassian.net/browse/INTEGRATED-730) [website-bundle] Editbar should only be visible with ROLE_ADMIN
+- [a INTEGRATED-741](https://eactive.atlassian.net/browse/INTEGRATED-741) [storage-bundle] StorageManager delete function error
+- [a INTEGRATED-749](https://eactive.atlassian.net/browse/INTEGRATED-749) [block-bundle] Exception: TypeError: Cannot read property 'items' of undefined at $group reduce setup:18
+- [a INTEGRATED-758](https://eactive.atlassian.net/browse/INTEGRATED-758) [content-bundle] Uncaught ReferenceError: tinymce is not defined on pages without a tinymce editor
+- [a INTEGRATED-759](https://eactive.atlassian.net/browse/INTEGRATED-759) [block-bundle] Fix integrated facet filter for blocks and improve overview
+- [a INTEGRATED-782](https://eactive.atlassian.net/browse/INTEGRATED-782) Selecting content types for related content block does not work in Symfony 2.7.9 and later
+- [a INTEGRATED-785](https://eactive.atlassian.net/browse/INTEGRATED-785) Readonly workflows do not seem to work
+- [a INTEGRATED-790](https://eactive.atlassian.net/browse/INTEGRATED-790) [user-bundle] LoadFixtureData classname is wrong
+- [a INTEGRATED-798](https://eactive.atlassian.net/browse/INTEGRATED-798) [content-bundle] Fix content block search selection
+- [a INTEGRATED-799](https://eactive.atlassian.net/browse/INTEGRATED-799) Call to member function error in StorageBundle
+- [a INTEGRATED-800](https://eactive.atlassian.net/browse/INTEGRATED-800) [content-bundle] Add author names to solr mapping for Article
+- [a INTEGRATED-806](https://eactive.atlassian.net/browse/INTEGRATED-806) [storage-bundle] Image faker is imcompatible with new faker function of fzaninotto
+- [a INTEGRATED-808](https://eactive.atlassian.net/browse/INTEGRATED-808) [content-bundle] Document is missing in contentblockhandler
+- [a INTEGRATED-818](https://eactive.atlassian.net/browse/INTEGRATED-818) [content-bundle] RelationBlockContentTypes is not working
+- [a INTEGRATED-820](https://eactive.atlassian.net/browse/INTEGRATED-820) [formtype-bundle] Fix collection form type
+- [a INTEGRATED-821](https://eactive.atlassian.net/browse/INTEGRATED-821) workflow:index command should do a lock to prevent simultaneous runs
+- [a INTEGRATED-822](https://eactive.atlassian.net/browse/INTEGRATED-822) [formtype-bundle] integrated references should only show active items
+- [a INTEGRATED-829](https://eactive.atlassian.net/browse/INTEGRATED-829) Re-index items which use an item that is updated
+- [a INTEGRATED-838](https://eactive.atlassian.net/browse/INTEGRATED-838) [formtype-bundle] integrated_sortable_collection is not sortable
+- [a INTEGRATED-839](https://eactive.atlassian.net/browse/INTEGRATED-839) [slug-bundle] Slug is recomputed for same document
+- [a INTEGRATED-845](https://eactive.atlassian.net/browse/INTEGRATED-845) Relation can't be edited when content type is removed which use it
+- [a INTEGRATED-848](https://eactive.atlassian.net/browse/INTEGRATED-848) [content-bundle] Integrated style improvements (breadcrumbs, orange button, title)
+- [a INTEGRATED-851](https://eactive.atlassian.net/browse/INTEGRATED-851) [storage-bundle] EmbedMany properties must trigger an Storage Intent Upload change
+- [a INTEGRATED-852](https://eactive.atlassian.net/browse/INTEGRATED-852) [content-bundle] Field of type has invalid form type 
+- [a INTEGRATED-854](https://eactive.atlassian.net/browse/INTEGRATED-854) [storage-bundle] Remove image without uploaded file
+- [a INTEGRATED-855](https://eactive.atlassian.net/browse/INTEGRATED-855) Deadline is not hidden on edit when field is set to disabled 
+- [a INTEGRATED-856](https://eactive.atlassian.net/browse/INTEGRATED-856) [block-bundle] Optional publish end time
+- [a INTEGRATED-857](https://eactive.atlassian.net/browse/INTEGRATED-857) Image browser is not multi domain compatible
+- [a INTEGRATED-859](https://eactive.atlassian.net/browse/INTEGRATED-859) RelationExtension for DataFixtures
+- [a INTEGRATED-866](https://eactive.atlassian.net/browse/INTEGRATED-866) Expected argument of type "string", "NULL" given
+- [a INTEGRATED-868](https://eactive.atlassian.net/browse/INTEGRATED-868) Z-index on block options
+- [a INTEGRATED-874](https://eactive.atlassian.net/browse/INTEGRATED-874) [export-bundle] Export error
+- [a INTEGRATED-883](https://eactive.atlassian.net/browse/INTEGRATED-883) Classpath for RelationJsonType and PropertyType seems to be wrong
+- [a INTEGRATED-890](https://eactive.atlassian.net/browse/INTEGRATED-890) Integrated fails with Twig 1.26 / 1.26.1
+- [a INTEGRATED-891](https://eactive.atlassian.net/browse/INTEGRATED-891) Can't add article with workflow: Next status is mandatory
+- [a INTEGRATED-903](https://eactive.atlassian.net/browse/INTEGRATED-903) ROLE_ADMIN doesn't see all menu items
+- [a INTEGRATED-908](https://eactive.atlassian.net/browse/INTEGRATED-908) Allow access to storage object for use in (for example) resized images for solr result for 0.5
+- [a INTEGRATED-977](https://eactive.atlassian.net/browse/INTEGRATED-977) solr:worker:run can run simultaneously
+- [a INTEGRATED-1022](https://eactive.atlassian.net/browse/INTEGRATED-1022) /vagrant share is duplicate with Vagrant 1.9
+
+## Package versions ##
+- integrated-asset-bundle       0.5
+- integrated-block-bundle       0.5
+- integrated-channel-bundle     0.5
+- integrated-content-bundle     0.5
+- integrated-formtype-bundle    0.5
+- integrated-library            0.5
+- integrated-locking-bundle     0.4
+- integrated-menu-bundle        0.5
+- integrated-page-bundle        0.5
+- integrated-puphpet            0.5
+- integrated-slug-bundle        0.5
+- integrated-solr-bundle        0.5
+- integrated-storage-bundle     0.5
+- integrated-theme-bundle       0.4
+- integrated-user-bundle        0.5
+- integrated-website-bundle     0.5
+- integrated-workflow-bundle    0.5
+
+
 # Changelog Integrated version 0.4 #
 
 ## Highlights ##

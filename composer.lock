@@ -1531,7 +1531,7 @@
         },
         {
             "name": "integrated/asset-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-asset-bundle.git",
@@ -1581,11 +1581,11 @@
                 "asset",
                 "asset manager"
             ],
-            "time": "2016-10-17 13:57:02"
+            "time": "2016-10-17T13:57:02+00:00"
         },
         {
             "name": "integrated/block-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-block-bundle.git",
@@ -1641,11 +1641,11 @@
                 "Integrated",
                 "block"
             ],
-            "time": "2016-11-07 08:34:39"
+            "time": "2016-11-07T09:34:39+00:00"
         },
         {
             "name": "integrated/channel-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-channel-bundle.git",
@@ -1691,11 +1691,11 @@
                 "Integrated",
                 "channel"
             ],
-            "time": "2016-11-07 08:32:36"
+            "time": "2016-11-07T08:32:36+00:00"
         },
         {
             "name": "integrated/content-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-content-bundle.git",
@@ -1767,11 +1767,11 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2016-11-14 20:42:29"
+            "time": "2016-11-14T21:42:29+00:00"
         },
         {
             "name": "integrated/formtype-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "target-dir": "Integrated/Bundle/FormTypeBundle",
             "source": {
                 "type": "git",
@@ -1826,11 +1826,11 @@
                 "Integrated",
                 "form"
             ],
-            "time": "2016-11-25 10:55:59"
+            "time": "2016-11-25T11:55:59+00:00"
         },
         {
             "name": "integrated/library",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-library.git",
@@ -1907,7 +1907,7 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2017-02-07 13:37:57"
+            "time": "2017-02-07T14:37:57+00:00"
         },
         {
             "name": "integrated/locking-bundle",
@@ -1961,7 +1961,7 @@
         },
         {
             "name": "integrated/menu-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-menu-bundle.git",
@@ -2005,11 +2005,11 @@
                 "Integrated",
                 "menu"
             ],
-            "time": "2016-07-13 15:07:12"
+            "time": "2016-07-13T15:07:12+00:00"
         },
         {
             "name": "integrated/page-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "target-dir": "Integrated/Bundle/PageBundle",
             "source": {
                 "type": "git",
@@ -2064,11 +2064,11 @@
                 "Integrated",
                 "page"
             ],
-            "time": "2017-02-07 14:03:53"
+            "time": "2017-02-07T14:03:53+00:00"
         },
         {
             "name": "integrated/puphpet",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-puphpet.git",
@@ -2098,11 +2098,11 @@
                 "puphpet",
                 "vagrant"
             ],
-            "time": "2017-02-08 13:37:13"
+            "time": "2017-02-08T13:37:13+00:00"
         },
         {
             "name": "integrated/slug-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "target-dir": "Integrated/Bundle/SlugBundle",
             "source": {
                 "type": "git",
@@ -2148,11 +2148,11 @@
                 "Integrated",
                 "slug"
             ],
-            "time": "2016-06-20 14:33:22"
+            "time": "2016-06-20T14:33:22+00:00"
         },
         {
             "name": "integrated/solr-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "target-dir": "Integrated/Bundle/SolrBundle",
             "source": {
                 "type": "git",
@@ -2197,11 +2197,11 @@
                 "Integrated",
                 "solr"
             ],
-            "time": "2017-02-10 08:26:35"
+            "time": "2017-02-10T08:26:35+00:00"
         },
         {
             "name": "integrated/storage-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-storage-bundle.git",
@@ -2246,7 +2246,7 @@
                 "Integrated",
                 "storage"
             ],
-            "time": "2016-11-08 09:38:35"
+            "time": "2016-11-08T10:38:35+00:00"
         },
         {
             "name": "integrated/theme-bundle",
@@ -2297,7 +2297,7 @@
         },
         {
             "name": "integrated/user-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-user-bundle.git",
@@ -2347,11 +2347,11 @@
                 "Integrated",
                 "content"
             ],
-            "time": "2017-01-27 21:34:12"
+            "time": "2017-01-27T22:34:12+00:00"
         },
         {
             "name": "integrated/website-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/integratedfordevelopers/integrated-website-bundle.git",
@@ -2411,11 +2411,11 @@
                 "Integrated",
                 "website"
             ],
-            "time": "2016-11-07 15:22:03"
+            "time": "2016-11-07T15:22:03+00:00"
         },
         {
             "name": "integrated/workflow-bundle",
-            "version": "0.5.x-dev",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://bitbucket.org/eactive/integrated-workflow-bundle.git",
@@ -2468,7 +2468,7 @@
                 "Integrated",
                 "workflow"
             ],
-            "time": "2016-10-17 12:01:10"
+            "time": "2016-10-17T14:01:10+00:00"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -3632,16 +3632,16 @@
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.5",
+            "version": "v5.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "cd142238a339459b10da3d8234220963f392540c"
+                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/cd142238a339459b10da3d8234220963f392540c",
-                "reference": "cd142238a339459b10da3d8234220963f392540c",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
+                "reference": "81fdccfaf8bdc5d5d7a1ef6bb3a61bbb1a6c4a3e",
                 "shasum": ""
             },
             "require": {
@@ -3682,7 +3682,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-12-29T10:02:40+00:00"
+            "time": "2017-02-13T07:52:53+00:00"
         },
         {
             "name": "symfony/assetic-bundle",
