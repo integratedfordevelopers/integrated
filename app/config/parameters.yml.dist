@@ -20,9 +20,11 @@ parameters:
     mongodb_database:  integrated
     mongodb_options:   {db: integrated}
 
-    solr_host:         ~
-    solr_port:         ~
-    solr_core:         ~
+    solr_host:         solr.integratedcloudhosting.com
+    solr_port:         80
+    solr_username:     your@email.address
+    solr_password:     choose-a-password
+    solr_core:         choose-a-core-name
     solr_timeout:      30
 
     bower_bin:         /usr/local/bin/bower

@@ -124,6 +124,8 @@ integrated_solr:
         default:
             host: %solr_host%
             port: %solr_port%
+            username: %solr_username%
+            password: %solr_password%
             core: %solr_core%
             timeout: %solr_timeout%
 
