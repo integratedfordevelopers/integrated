@@ -41,7 +41,7 @@ class RouterResourcePass implements CompilerPassInterface
         }
 
         file_put_contents($file, Yaml::dump([
-            '_integrated_locking_api'  => ['resource' => '@IntegratedLockingBundle/Resources/config/routing/api.xml'],
+            '_integrated_locking_api'  => ['resource' => '@IntegratedLockingBundle/Resources/config/routing.xml'],
             '_integrated_locking'      => ['resource' => $container->getParameter('router.resource')],
         ]));
 
