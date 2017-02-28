@@ -4,14 +4,14 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-	<route id="integrated_user_login" pattern="/login">
+	<route id="integrated_user_login" path="/login">
 		<default key="_controller">IntegratedUserBundle:Security:login</default>
 	</route>
 
-	<route id="integrated_user_check" pattern="/login-check">
+	<route id="integrated_user_check" path="/login-check">
 		<!--<requirement key="_method">POST</requirement>-->
 	</route>
 
-	<route id="integrated_user_logout" pattern="/logout" />
+	<route id="integrated_user_logout" path="/logout" />
 
 </routes>

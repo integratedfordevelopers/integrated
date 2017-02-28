@@ -19,11 +19,11 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class DeleteFormType extends AbstractType
 {
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getName()
-	{
-		return 'integrated_user_delete';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'integrated_user_delete';
+    }
 }

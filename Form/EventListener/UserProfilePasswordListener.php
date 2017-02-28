@@ -13,17 +13,14 @@ namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 
-use Integrated\Common\Content\Extension\Event;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-
-use Symfony\Component\Security\Core\Util\SecureRandomInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -33,22 +30,15 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class UserProfilePasswordListener implements EventSubscriberInterface
 {
     /**
-     * @var SecureRandomInterface
-     */
-    private $generator;
-
-    /**
      * @var EncoderFactoryInterface
      */
     private $encoderFactory;
 
     /**
-     * @param SecureRandomInterface $generator
      * @param EncoderFactoryInterface $encoder
      */
-    public function __construct(SecureRandomInterface $generator, EncoderFactoryInterface $encoder)
+    public function __construct(EncoderFactoryInterface $encoder)
     {
-        $this->generator = $generator;
         $this->encoderFactory = $encoder;
     }
 
@@ -79,7 +69,7 @@ class UserProfilePasswordListener implements EventSubscriberInterface
             $inheritedPasswordOptions['required'] = false;
         }
         
-        $event->getForm()->add('password', 'password', $inheritedPasswordOptions);
+        $event->getForm()->add('password', PasswordType::class, $inheritedPasswordOptions);
     }
 
     /**
@@ -98,19 +88,11 @@ class UserProfilePasswordListener implements EventSubscriberInterface
         // the user model.
 
         if ($password = $form->get('password')->getData()) {
-            $salt = base64_encode($this->getGenerator()->nextBytes(72));
+            $salt = base64_encode(random_bytes(72));
 
             $user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
             $user->setSalt($salt);
         }
-    }
-
-    /**
-     * @return SecureRandomInterface
-     */
-    protected function getGenerator()
-    {
-        return $this->generator;
     }
 
     /**

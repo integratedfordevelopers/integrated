@@ -21,8 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Symfony\Component\Security\Core\Util\SecureRandom;
-use Symfony\Component\Security\Core\Util\SecureRandomInterface;
 
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
@@ -35,11 +33,6 @@ class CreateUserCommand extends ContainerAwareCommand
      * @var UserManagerInterface
      */
     private $manager;
-
-    /**
-     * @var SecureRandomInterface
-     */
-    private $generator;
 
     /**
      * @var EncoderFactoryInterface
@@ -99,7 +92,7 @@ The <info>%command.name%</info> command creates a new user
 
         $user = $manager->create();
 
-        $salt = base64_encode($this->getGenerator()->nextBytes(72));
+        $salt = base64_encode(random_bytes(72));
 
         $user->setUsername($username);
         $user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
@@ -134,18 +127,6 @@ The <info>%command.name%</info> command creates a new user
         }
 
         return 0;
-    }
-
-    /**
-     * @return SecureRandomInterface
-     */
-    protected function getGenerator()
-    {
-        if ($this->generator === null) {
-            $this->generator = $this->getContainer()->get('security.secure_random');
-        }
-
-        return $this->generator;
     }
 
     /**

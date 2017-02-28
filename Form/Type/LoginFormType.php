@@ -14,6 +14,7 @@ namespace Integrated\Bundle\UserBundle\Form\Type;
 use Integrated\Bundle\UserBundle\Form\EventListener\SecurityLoginListener;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -69,11 +70,11 @@ class LoginFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('_username', 'text');
-        $builder->add('_password', 'password');
+        $builder->add('_username', Type\TextType::class);
+        $builder->add('_password', Type\PasswordType::class);
 
         if ($options['auth_remember']) {
-            $builder->add('_remember_me', 'checkbox', ['required' => false]);
+            $builder->add('_remember_me', Type\CheckboxType::class, ['required' => false]);
         }
 
         if ($options['auth_target_path']) {
@@ -87,7 +88,7 @@ class LoginFormType extends AbstractType
             $builder->add('_target_path', 'hidden', $config);
         }
 
-        $builder->add('login', 'submit');
+        $builder->add('login', Type\SubmitType::class);
 
         if ($request = $this->getRequest($options)) {
             $builder->addEventSubscriber(new SecurityLoginListener($request, $this->getTranslator($options), $this->getTranslationDomain($options)));
@@ -114,7 +115,7 @@ class LoginFormType extends AbstractType
         // those values as default for this form.
 
         $resolver->setDefault('csrf_field_name', '_csrf_token');
-        $resolver->setDefault('intention', 'authenticate');
+        $resolver->setDefault('csrf_token_id', 'authenticate');
 
         $resolver->setDefault('auth_remember', true);
         $resolver->setDefault('auth_target_path', null);
@@ -129,7 +130,7 @@ class LoginFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_user_security_login_form';
     }

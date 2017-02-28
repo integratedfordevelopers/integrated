@@ -20,6 +20,7 @@ use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Integrated\Bundle\UserBundle\Validator\Constraints\UniqueUser;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -27,7 +28,6 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Util\SecureRandomInterface;
 
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -46,11 +46,6 @@ class ProfileFormType extends AbstractType
     private $manager;
 
     /**
-     * @var SecureRandomInterface
-     */
-    private $generator;
-
-    /**
      * @var EncoderFactoryInterface
      */
     private $encoderFactory;
@@ -59,14 +54,11 @@ class ProfileFormType extends AbstractType
      * Constructor.
      *
      * @param UserManagerInterface $manager
-     * @param SecureRandomInterface $generator
      * @param EncoderFactoryInterface $encoder
      */
-    public function __construct(UserManagerInterface $manager, SecureRandomInterface $generator, EncoderFactoryInterface $encoder)
+    public function __construct(UserManagerInterface $manager, EncoderFactoryInterface $encoder)
     {
         $this->manager = $manager;
-
-        $this->generator = $generator;
         $this->encoderFactory = $encoder;
     }
 
@@ -76,7 +68,7 @@ class ProfileFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['optional']) {
-            $builder->add('enabled', 'checkbox', [
+            $builder->add('enabled', Type\CheckboxType::class, [
                 'mapped' => false,
                 'required' => false,
                 'label' => 'Enable login',
@@ -89,7 +81,7 @@ class ProfileFormType extends AbstractType
             $builder->addEventSubscriber(new UserProfileOptionalListener());
         }
 
-        $builder->add('username', 'text', [
+        $builder->add('username', Type\TextType::class, [
             'constraints' => [
                 new NotBlank(),
                 new Length(['min' => 3])
@@ -97,7 +89,7 @@ class ProfileFormType extends AbstractType
             'attr' => ['autocomplete' => 'off']
         ]);
 
-        $builder->add('password', 'password', [
+        $builder->add('password', Type\PasswordType::class, [
             'mapped' => false,
             'constraints' => [
                 new Length(['min' => 6])
@@ -106,18 +98,18 @@ class ProfileFormType extends AbstractType
         ]);
 
         if (!$options['optional']) {
-            $builder->add('enabled', 'checkbox', [
+            $builder->add('enabled', Type\CheckboxType::class, [
                 'required' => false,
                 'label' => 'Enable login'
             ]);
         }
 
-        $builder->add('groups', 'user_group_choice', [
+        $builder->add('groups', GroupType::class, [
             'multiple' => true,
             'expanded' => true
         ]);
 
-        $builder->addEventSubscriber(new UserProfilePasswordListener($this->generator, $this->encoderFactory));
+        $builder->addEventSubscriber(new UserProfilePasswordListener($this->encoderFactory));
         $builder->addEventSubscriber(new UserProfileExtensionListener('integrated.extension.user'));
 
         if ($options['optional']) {
@@ -193,7 +185,7 @@ class ProfileFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_user_profile_form';
     }

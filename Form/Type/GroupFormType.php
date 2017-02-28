@@ -17,6 +17,7 @@ use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
 use Integrated\Bundle\UserBundle\Validator\Constraints\UniqueGroup;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -46,7 +47,6 @@ class GroupFormType extends AbstractType
     public function __construct(GroupManagerInterface $manager, RoleManagerInterface $roleManager)
     {
         $this->manager = $manager;
-
         $this->roleManager = $roleManager;
     }
 
@@ -55,7 +55,7 @@ class GroupFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text', [
+        $builder->add('name', TextType::class, [
             'required' => false,
             'constraints' => [
                 new NotBlank(),
@@ -63,7 +63,7 @@ class GroupFormType extends AbstractType
             ]
         ]);
 
-        $builder->add('roles', 'user_role_choice');
+        $builder->add('roles', RoleType::class);
 
         $transformer = new RoleToEntityTransformer($this->roleManager);
         $builder->get('roles')->addModelTransformer($transformer);
@@ -74,16 +74,17 @@ class GroupFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefault('empty_data', function(FormInterface $form) { return $this->getManager()->create(); });
+        $resolver->setDefault('empty_data', function (FormInterface $form) {
+            return $this->getManager()->create();
+        });
         $resolver->setDefault('data_class', $this->getManager()->getClassName());
-
         $resolver->setDefault('constraints', new UniqueGroup($this->manager));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_user_group_form';
     }

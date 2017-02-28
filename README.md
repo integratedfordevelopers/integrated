@@ -25,7 +25,7 @@ for a integrated website.
 				pattern:  ^/
 				anonymous: ~
 				form_login:
-					csrf_provider: form.csrf_provider
+					csrf_token_generator: security.csrf.token_manager
 
 					login_path:    integrated_user_login
 					check_path:    integrated_user_check

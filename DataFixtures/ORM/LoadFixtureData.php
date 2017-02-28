@@ -13,8 +13,9 @@ namespace Integrated\Bundle\UserBundle\DataFixtures\ORM;
 
 use Integrated\Bundle\UserBundle\Model\User;
 
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\DependencyInjection\ContainerAware;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
@@ -24,8 +25,10 @@ use Nelmio\Alice\Fixtures;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class LoadFixtureData extends ContainerAware implements FixtureInterface
+class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
 {
+    use ContainerAwareTrait;
+
     /**
      * @var string
      */
