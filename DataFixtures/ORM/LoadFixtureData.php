@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\UserBundle\DataFixtures\ORM;
 
 use Integrated\Bundle\UserBundle\Model\User;
+
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\DependencyInjection\ContainerAware;
 
 use Doctrine\Common\Persistence\ObjectManager;

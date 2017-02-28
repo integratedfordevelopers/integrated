@@ -135,7 +135,7 @@ class ProfileFormType extends AbstractType
                 return $this->getManager()->create(); // if not optional then it should always return a user
             }
 
-            return function(FormInterface $form) {
+            return function (FormInterface $form) {
                 if ($form->has('enabled') && $form->get('enabled')->getData() == false) {
                     return null;
                 }
