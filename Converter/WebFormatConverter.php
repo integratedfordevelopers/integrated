@@ -65,6 +65,6 @@ class WebFormatConverter
             return $this->appCache->path($image);
         }
 
-        return $this->container->find($this->format, $image)->convert($this->format, $this->appCache->path($image));
+        return $this->container->find($this->format, $image)->convert($this->format, $image);
     }
 }

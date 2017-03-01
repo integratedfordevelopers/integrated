@@ -15,6 +15,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ImageBundle\Converter\AdapterInterface;
 use Integrated\Bundle\ImageBundle\Exception\FormatException;
 use Integrated\Bundle\ImageBundle\Exception\RunTimeFormatException;
+use Integrated\Bundle\StorageBundle\Storage\Cache\AppCache;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -27,43 +29,63 @@ class ImageMagickAdapter implements AdapterInterface
     const NAME = 'Imagick';
 
     /**
-     * {@inheritdoc}
+     * @var AppCache
      */
-    public function supports($outputFormat, \SplFileInfo $image)
-    {
-        if ($imagick = $this->getImageMagick($image->getPathname())) {
-            return true;
-        }
+    private $cache;
 
-        throw FormatException::notSupportedFormat($image->getExtension(), $outputFormat, self::NAME);
+    /**
+     * @param AppCache $cache
+     */
+    public function __construct(AppCache $cache)
+    {
+        $this->cache = $cache;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function convert($outputFormat, \SplFileInfo $image)
+    public function convert($outputFormat, StorageInterface $image)
     {
-        if ($imagick = $this->getImageMagick($image->getPathname())) {
-            // Make a reasonable path based on the cache path but in a conversion folder
-            $file = new \SplFileInfo(sprintf('%s/%s.%s', $image->getPath(), $image->getFilename(), $outputFormat));
+        $file = $this->cache->path($image);
 
-            if ($file->isFile()) {
-                return $file;
-            } else {
-                // Attempt conversion
-                $imagick->setImageFormat($outputFormat);
-                $imagick->writeImage($file);
-
-                // Make sure we'll end up with something
-                if ($file->isFile()) {
-                    return $file;
-                } else {
-                    throw RunTimeFormatException::conversionFileCreateFail(self::NAME, $image->getPathname(), $outputFormat);
-                }
-            }
+        // Check if've got a video
+        if (preg_match('/^video\/(.*)$', $image->getMetadata()->getExtension())) {
+            // Open the file on the tenth frame, this saves a us a hell of a lot memory
+            // When no frame is specified Imagick will write every frame on /tmp
+            $imagick = new \Imagick(
+                sprintf(
+                    '%s[10]',
+                    $file->getPathname()
+                )
+            );
+        } else {
+            // Open a we should do with anything that is not video
+            $imagick = new \Imagick($this->cache->path($image));
         }
 
-        throw FormatException::notSupportedFormat($image->getExtension(), $outputFormat, self::NAME);
+        // Make a reasonable path based on the cache path but in a conversion folder
+        $cache = new \SplFileInfo(sprintf('%s/%s.%s', $file->getPath(), $file->getFilename(), $outputFormat));
+
+        // Check if've got a
+        if ($cache->isFile()) {
+            return $cache;
+        } else {
+            // Attempt conversion
+            $imagick->setImageFormat($outputFormat);
+            $imagick->writeImage($cache->getPathname());
+
+            // Remove any /tmp files created during conversion
+            $imagick->clear();
+
+            // Make sure we'll end up with something
+            if ($file->isFile()) {
+                // Return the freshly converted file
+                return $file;
+            } else {
+                // The last resort, this is the last outcome of any the above statements
+                throw RunTimeFormatException::conversionFileCreateFail(self::NAME, $image->getPathname(), $outputFormat);
+            }
+        }
     }
 
     /**
@@ -76,22 +98,5 @@ class ImageMagickAdapter implements AdapterInterface
         }
 
         return new ArrayCollection();
-    }
-
-    /**
-     * @param string $file
-     * @return bool|\Imagick
-     */
-    protected function getImageMagick($file)
-    {
-        if (class_exists('\Imagick')) {
-            try {
-                return new \Imagick($file);
-            } catch (\ImagickException $exception) {
-                // Intentionally left blank
-            }
-        }
-
-        return false;
     }
 }
