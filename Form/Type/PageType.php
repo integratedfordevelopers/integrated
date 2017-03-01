@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\WebsiteBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,8 +26,8 @@ class PageType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('grids', 'collection', [
-            'type'         => 'integrated_page_grid_grid',
+        $builder->add('grids', CollectionType::class, [
+            'entry_type'   => 'integrated_page_grid_grid',
             'allow_add'    => true,
             'allow_delete' => true,
             'prototype'    => false,
@@ -47,7 +48,7 @@ class PageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_website_page';
     }

@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Connector;
 
+use Integrated\Bundle\WebsiteBundle\Form\Type\ConfigurationType;
 use Integrated\Common\Channel\Connector\ConfigurationInterface;
 
 /**
@@ -18,13 +19,11 @@ use Integrated\Common\Channel\Connector\ConfigurationInterface;
  */
 class WebsiteConfiguration implements ConfigurationInterface
 {
-    const FORM = 'integrated_website_configuration';
-
     /**
      * {@inheritdoc}
      */
     public function getForm()
     {
-        return self::FORM;
+        return ConfigurationType::class;
     }
 }
