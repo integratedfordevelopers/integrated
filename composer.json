@@ -15,7 +15,7 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "~2.7"
+        "symfony/symfony": "~2.8"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "2.*",

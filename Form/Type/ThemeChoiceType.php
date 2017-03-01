@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ThemeBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
@@ -41,6 +42,7 @@ class ThemeChoiceType extends AbstractType
     {
         $resolver->setDefaults([
             'choices' => $this->getChoices(),
+            'choices_as_values' => true
         ]);
     }
 
@@ -59,13 +61,13 @@ class ThemeChoiceType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_theme_theme_choice';
     }
