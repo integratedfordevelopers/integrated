@@ -76,7 +76,12 @@ abstract class ManagerValidator extends ConstraintValidator
                 continue;
             }
 
-            $this->context->addViolationAt($fields[0], $constraint->message, array(), $criteria[$fields[0]]);
+            $this->context
+                ->buildViolation($constraint->message)
+                ->atPath($fields[0])
+                ->setInvalidValue($criteria[$fields[0]])
+                ->addViolation()
+            ;
 
             return;
         }
