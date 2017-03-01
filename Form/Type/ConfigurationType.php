@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Form\Type;
 
+use Integrated\Bundle\ThemeBundle\Form\Type\ThemeChoiceType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -24,13 +26,13 @@ class ConfigurationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('theme', 'integrated_theme_theme_choice');
+        $builder->add('theme', ThemeChoiceType::class);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_website_configuration';
     }

@@ -11,10 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
+use Integrated\Bundle\PageBundle\Document\Page\Page;
+use Integrated\Bundle\WebsiteBundle\Form\Type\PageType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
-use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -69,7 +70,7 @@ class PageController extends Controller
     protected function createEditForm(Page $page)
     {
         return $this->createForm(
-            'integrated_website_page',
+            PageType::class,
             $page,
             [
                 'action' => $this->generateUrl('integrated_website_page_edit', ['id' => $page->getId()]),

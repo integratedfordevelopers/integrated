@@ -11,12 +11,13 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
+use Integrated\Bundle\PageBundle\Document\Page\Page;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
+use Integrated\Bundle\WebsiteBundle\Form\Type\PageType;
+
 use Symfony\Bridge\Twig\Form\TwigRendererInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormView;
-
-use Integrated\Bundle\PageBundle\Document\Page\Page;
-use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -87,7 +88,7 @@ class GridExtension extends \Twig_Extension
 
                 $page->addGrid($grid);
 
-                $form = $this->form->create('integrated_website_page', $page)->createView();
+                $form = $this->form->create(PageType::class, $page)->createView();
 
                 // Render form for the newly added grid
                 return $this->renderer->searchAndRenderBlock(
