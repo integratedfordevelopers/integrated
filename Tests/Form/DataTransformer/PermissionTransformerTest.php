@@ -21,171 +21,143 @@ use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
  */
 class PermissionTransformerTest extends \PHPUnit_Framework_TestCase
 {
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Symfony\\Component\\Form\\DataTransformerInterface', $this->getInstance());
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Symfony\\Component\\Form\\DataTransformerInterface', $this->getInstance());
+    }
 
-	public function testTransform()
-	{
-		$permission1 = new Permission();
-		$permission1->setGroup('group-1');
-		$permission1->addMask(Permission::READ);
-		$permission1->addMask(Permission::WRITE);
+    public function testTransform()
+    {
+        $permission1 = new Permission();
+        $permission1->setGroup('group-1');
+        $permission1->addMask(Permission::READ);
+        $permission1->addMask(Permission::WRITE);
 
-		$permission2 = new Permission();
-		$permission2->setGroup('group-2');
-		$permission2->addMask(Permission::READ);
+        $permission2 = new Permission();
+        $permission2->setGroup('group-2');
+        $permission2->addMask(Permission::READ);
 
-		$permission3 = new Permission();
-		$permission3->setGroup('group-3');
-		$permission3->addMask(Permission::WRITE);
+        $permission3 = new Permission();
+        $permission3->setGroup('group-3');
+        $permission3->addMask(Permission::WRITE);
 
-		$permission4 = new Permission();
-		$permission4->setGroup('group-4');
+        $permission4 = new Permission();
+        $permission4->setGroup('group-4');
 
-		$result = $this->getInstance()->transform([$permission1, $permission2, $permission3, $permission4]);
+        $result = $this->getInstance()->transform([$permission1, $permission2, $permission3, $permission4]);
 
-		$this->assertCount(2, $result['read']);
-		$this->assertCount(2, $result['write']);
+        $this->assertCount(2, $result['read']);
+        $this->assertCount(2, $result['write']);
 
-		$ids = [];
+        $this->assertContains('group-1', $result['read']);
+        $this->assertContains('group-2', $result['read']);
 
-		foreach ($result['read'] as $object) {
-			$this->assertInternalType('object', $object);
-			$this->assertObjectHasAttribute('id', $object);
 
-			$ids[] = $object->id;
-		}
+        $this->assertContains('group-1', $result['write']);
+        $this->assertContains('group-3', $result['write']);
+    }
 
-		$this->assertContains('group-1', $ids);
-		$this->assertContains('group-2', $ids);
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
+     */
+    public function testTransformInvalidType()
+    {
+        $this->getInstance()->transform('invalid');
+    }
 
-		$ids = [];
+    /**
+     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
+     */
+    public function testTransformInvalidArrayContentType()
+    {
+        $this->getInstance()->transform(['invalid', 'invalid']);
+    }
 
-		foreach ($result['write'] as $object) {
-			$this->assertInternalType('object', $object);
-			$this->assertObjectHasAttribute('id', $object);
+    public function testTransformEmpty()
+    {
+        $expected = [
+            'read'  => [],
+            'write' => []
+        ];
 
-			$ids[] = $object->id;
-		}
+        $this->assertEquals($expected, $this->getInstance()->transform(''));
+        $this->assertEquals($expected, $this->getInstance()->transform(null));
+        $this->assertEquals($expected, $this->getInstance()->transform([]));
+        $this->assertEquals($expected, $this->getInstance()->transform(new ArrayCollection()));
+    }
 
-		$this->assertContains('group-1', $ids);
-		$this->assertContains('group-3', $ids);
-	}
+    public function testReverseTransform()
+    {
+        $group1 = 'group-1';
+        $group2 = 'group-2';
+        $group3 = 'group-3';
 
-	/**
-	 * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-	 */
-	public function testTransformInvalidType()
-	{
-		$this->getInstance()->transform('invalid');
-	}
+        $result = $this->getInstance()->reverseTransform(['read' => [$group1, $group2], 'write' => [$group1, $group3, $group3]]);
 
-	/**
-	 * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-	 */
-	public function testTransformInvalidArrayContentType()
-	{
-		$this->getInstance()->transform(['invalid', 'invalid']);
-	}
+        $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
+        $this->assertCount(3, $result);
 
-	public function testTransformEmpty()
-	{
-		$expected = [
-			'read'  => [],
-			'write' => []
-		];
+        $ids = [];
 
-		$this->assertEquals($expected, $this->getInstance()->transform(''));
-		$this->assertEquals($expected, $this->getInstance()->transform(null));
-		$this->assertEquals($expected, $this->getInstance()->transform([]));
-		$this->assertEquals($expected, $this->getInstance()->transform(new ArrayCollection()));
-	}
+        foreach ($result as $object) {
+            $this->assertInstanceOf('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\Permission', $object);
 
-	public function testReverseTransform()
-	{
-		$group1 = $this->getMock('Integrated\\Bundle\\UserBundle\\Model\\GroupInterface');
-		$group1->expects($this->atLeastOnce())
-			->method('getId')
-			->willReturn('group-1');
+            /** @var Permission $object */
 
-		$group2 = $this->getMock('Integrated\\Bundle\\UserBundle\\Model\\GroupInterface');
-		$group2->expects($this->atLeastOnce())
-			->method('getId')
-			->willReturn('group-2');
+            switch($object->getGroup()) {
+                case 'group-1':
+                    $this->assertTrue($object->hasMask(Permission::READ));
+                    $this->assertTrue($object->hasMask(Permission::WRITE));
+                    break;
 
-		$group3 = $this->getMock('Integrated\\Bundle\\UserBundle\\Model\\GroupInterface');
-		$group3->expects($this->atLeastOnce())
-			->method('getId')
-			->willReturn('group-3');
+                case 'group-2':
+                    $this->assertTrue($object->hasMask(Permission::READ));
+                    $this->assertFalse($object->hasMask(Permission::WRITE));
+                    break;
 
-		$result = $this->getInstance()->reverseTransform(['read' => [$group1, $group2], 'write' => [$group1, $group3, $group3]]);
+                case 'group-3':
+                    $this->assertFalse($object->hasMask(Permission::READ));
+                    $this->assertTrue($object->hasMask(Permission::WRITE));
+                    break;
+            }
 
-		$this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
-		$this->assertCount(3, $result);
+            $ids[] = $object->getGroup();
+        }
 
-		$ids = [];
+        $this->assertContains('group-1', $ids);
+        $this->assertContains('group-2', $ids);
+        $this->assertContains('group-3', $ids);
+    }
 
-		foreach ($result as $object) {
-			$this->assertInstanceOf('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\Permission', $object);
+    public function testReverseTransformEmpty()
+    {
+        $result = $this->getInstance()->reverseTransform('');
 
-			/** @var Permission $object */
+        $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
+        $this->assertCount(0, $result);
 
-			switch($object->getGroup()) {
-				case 'group-1':
-					$this->assertTrue($object->hasMask(Permission::READ));
-					$this->assertTrue($object->hasMask(Permission::WRITE));
-					break;
+        $result = $this->getInstance()->reverseTransform(null);
 
-				case 'group-2':
-					$this->assertTrue($object->hasMask(Permission::READ));
-					$this->assertFalse($object->hasMask(Permission::WRITE));
-					break;
+        $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
+        $this->assertCount(0, $result);
 
-				case 'group-3':
-					$this->assertFalse($object->hasMask(Permission::READ));
-					$this->assertTrue($object->hasMask(Permission::WRITE));
-					break;
-			}
+        $result = $this->getInstance()->reverseTransform([]);
 
-			$ids[] = $object->getGroup();
-		}
+        $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
+        $this->assertCount(0, $result);
 
-		$this->assertContains('group-1', $ids);
-		$this->assertContains('group-2', $ids);
-		$this->assertContains('group-3', $ids);
-	}
+        $result = $this->getInstance()->reverseTransform(['read' => [], 'write' => []]);
 
-	public function testReverseTransformEmpty()
-	{
-		$result = $this->getInstance()->reverseTransform('');
+        $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
+        $this->assertCount(0, $result);
+    }
 
-		$this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
-		$this->assertCount(0, $result);
-
-		$result = $this->getInstance()->reverseTransform(null);
-
-		$this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
-		$this->assertCount(0, $result);
-
-		$result = $this->getInstance()->reverseTransform([]);
-
-		$this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
-		$this->assertCount(0, $result);
-
-		$result = $this->getInstance()->reverseTransform(['read' => [], 'write' => []]);
-
-		$this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
-		$this->assertCount(0, $result);
-	}
-
-	/**
-	 * @return PermissionTransformer
-	 */
-	protected function getInstance()
-	{
-		return new PermissionTransformer();
-	}
+    /**
+     * @return PermissionTransformer
+     */
+    protected function getInstance()
+    {
+        return new PermissionTransformer();
+    }
 }
  
