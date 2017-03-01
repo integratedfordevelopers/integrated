@@ -1,32 +1,22 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
-    <parameters>
-
-        <parameter key="integrated_theme.templating.theme_manager.class">Integrated\Bundle\ThemeBundle\Templating\ThemeManager</parameter>
-
-        <parameter key="integrated_theme.form.type.theme_choice.class">Integrated\Bundle\ThemeBundle\Form\Type\ThemeChoiceType</parameter>
-
-        <parameter key="integrated_theme.twig.theme_extension.class">Integrated\Bundle\ThemeBundle\Twig\Extension\ThemeExtension</parameter>
-
-    </parameters>
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
 
-        <service id="integrated_theme.templating.theme_manager" class="%integrated_theme.templating.theme_manager.class%">
+        <service id="integrated_theme.templating.theme_manager" class="Integrated\Bundle\ThemeBundle\Templating\ThemeManager">
             <argument type="service" id="kernel" />
             <argument type="service" id="templating.name_parser" />
         </service>
 
-        <service id="integrated_theme.form.type.theme_choice" class="%integrated_theme.form.type.theme_choice.class%">
+        <service id="integrated_theme.form.type.theme_choice" class="Integrated\Bundle\ThemeBundle\Form\Type\ThemeChoiceType">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <tag name="form.type" alias="integrated_theme_theme_choice" />
+            <tag name="form.type" />
         </service>
 
-        <service id="integrated_theme.twig.theme_extension" class="%integrated_theme.twig.theme_extension.class%" public="false">
+        <service id="integrated_theme.twig.theme_extension" class="Integrated\Bundle\ThemeBundle\Twig\Extension\ThemeExtension" public="false">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <tag name="twig.extension" />
         </service>

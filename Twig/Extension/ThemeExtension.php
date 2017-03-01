@@ -16,7 +16,7 @@ use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ThemeExtension extends \Twig_Extension
+class ThemeExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
 {
     /**
      * @var ThemeManager
