@@ -19,7 +19,7 @@ use Integrated\Bundle\WorkflowBundle\Solr\Extension\WorkflowExtension;
 
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
 
@@ -33,7 +33,7 @@ use stdClass;
 class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ContentTypeResolverInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     private $resolver;
 
@@ -49,7 +49,7 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->resolver = $this->getMock('Integrated\\Common\\ContentType\\Resolver\\ContentTypeResolverInterface');
+        $this->resolver = $this->getMock(ResolverInterface::class);
         $this->workflow = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
         $this->definition = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
     }
@@ -68,12 +68,16 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
         $content = $this->getContent();
         $container = $this->getContainer();
 
-        $this->resolver->expects($this->once())
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturn(true);
+
+        $this->resolver->expects($this->atLeastOnce())
             ->method('getType')
-            ->with($this->anything(), $this->equalTo('this-is-the-content-type'))
+            ->with($this->equalTo('this-is-the-content-type'))
             ->willReturn($this->getContentType('this-is-the-workflow-id'));
 
-        $this->workflow->expects($this->once())
+        $this->workflow->expects($this->atLeastOnce())
             ->method('findOneBy')
             ->with($this->identicalTo(['content' => $content]))
             ->willReturn($this->getWorkflow($state));
@@ -135,10 +139,9 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $container = $this->getContainer();
 
-        $this->resolver->expects($this->once())
-            ->method('getType')
-            ->with($this->anything(), $this->equalTo('this-is-the-content-type'))
-            ->willReturn(null);
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturn(false);
 
         $this->workflow->expects($this->never())
             ->method($this->anything());
@@ -155,9 +158,13 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $container = $this->getContainer();
 
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturn(true);
+
         $this->resolver->expects($this->once())
             ->method('getType')
-            ->with($this->anything(), $this->equalTo('this-is-the-content-type'))
+            ->with($this->equalTo('this-is-the-content-type'))
             ->willReturn($this->getContentType());
 
         $this->workflow->expects($this->never())
@@ -179,12 +186,16 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
         $content = $this->getContent();
         $container = $this->getContainer();
 
-        $this->resolver->expects($this->once())
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturn(true);
+
+        $this->resolver->expects($this->atLeastOnce())
             ->method('getType')
-            ->with($this->anything(), $this->equalTo('this-is-the-content-type'))
+            ->with($this->equalTo('this-is-the-content-type'))
             ->willReturn($this->getContentType('this-is-the-workflow-id'));
 
-        $this->workflow->expects($this->once())
+        $this->workflow->expects($this->atLeastOnce())
             ->method('findOneBy')
             ->with($this->identicalTo(['content' => $content]))
             ->willReturn($this->getWorkflow());
@@ -207,12 +218,16 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
         $content = $this->getContent();
         $container = $this->getContainer();
 
-        $this->resolver->expects($this->once())
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturn(true);
+
+        $this->resolver->expects($this->atLeastOnce())
             ->method('getType')
-            ->with($this->anything(), $this->equalTo('this-is-the-content-type'))
+            ->with($this->equalTo('this-is-the-content-type'))
             ->willReturn($this->getContentType('this-is-the-workflow-id'));
 
-        $this->workflow->expects($this->once())
+        $this->workflow->expects($this->atLeastOnce())
             ->method('findOneBy')
             ->with($this->identicalTo(['content' => $content]))
             ->willReturn(null);
@@ -232,9 +247,13 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
         $content = $this->getContent();
         $container = $this->getContainer();
 
-        $this->resolver->expects($this->once())
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturn(true);
+
+        $this->resolver->expects($this->atLeastOnce())
             ->method('getType')
-            ->with($this->anything(), $this->equalTo('this-is-the-content-type'))
+            ->with($this->equalTo('this-is-the-content-type'))
             ->willReturn($this->getContentType('this-is-the-workflow-id'));
 
         $this->workflow->expects($this->once())
@@ -257,9 +276,13 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
         $content = $this->getContent();
         $container = $this->getContainer();
 
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturn(true);
+
         $this->resolver->expects($this->once())
             ->method('getType')
-            ->with($this->anything(), $this->equalTo('this-is-the-content-type'))
+            ->with($this->equalTo('this-is-the-content-type'))
             ->willReturn($this->getContentType('this-is-the-workflow-id'));
 
         $this->workflow->expects($this->once())
@@ -284,9 +307,9 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
         $container->set('security_workflow_read', 'this-should-be-removed');
         $container->set('security_workflow_write', 'this-should-be-removed');
 
-        $this->resolver->expects($this->once())
-            ->method('getType')
-            ->willReturn(null);
+        $this->resolver->expects($this->atLeastOnce())
+            ->method('hasType')
+            ->willReturn(false);
 
         $this->getInstance()->build($container, $this->getContent());
 
