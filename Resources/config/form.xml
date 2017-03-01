@@ -4,48 +4,39 @@
 		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-	<parameters>
-
-		<parameter key="integrated_workflow.form.proxy.type.class">Integrated\Common\Form\Type\ProxyType</parameter>
-
-		<parameter key="integrated_workflow.form.definition.type.class">Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionFormType</parameter>
-		<parameter key="integrated_workflow.form.definition.permissions.type.class">Integrated\Bundle\WorkflowBundle\Form\Type\PermissionsType</parameter>
-		<parameter key="integrated_workflow.form.definition.state.type.class">Integrated\Bundle\WorkflowBundle\Form\Type\StateType</parameter>
-
-		<parameter key="integrated_workflow.form.definition.choice.type.class">Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionType</parameter>
-
-		<parameter key="integrated_workflow.form.workflow.type.class">Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowFormType</parameter>
-		<parameter key="integrated_workflow.form.workflow.state.type.class">Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowStateType</parameter>
-		<parameter key="integrated_workflow.form.workflow.state.choice.type.class">Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowStateChoiceType</parameter>
-
-		<parameter key="integrated_workflow.form.delete.type.class">Integrated\Bundle\WorkflowBundle\Form\Type\DeleteFormType</parameter>
-
-	</parameters>
-
 	<services>
 
-		<service id="integrated_workflow.form.definition.type" class="%integrated_workflow.form.definition.type.class%" />
-		<service id="integrated_workflow.form.definition.permissions.type" class="%integrated_workflow.form.definition.permissions.type.class%" />
-		<service id="integrated_workflow.form.definition.state.type" class="%integrated_workflow.form.definition.state.type.class%" />
-
-		<service id="integrated_workflow.form.definition.choice.repository" alias="integrated_workflow.repository.definition" />
-
-		<service id="integrated_workflow.form.definition.choice.type" class="%integrated_workflow.form.definition.choice.type.class%">
-			<argument type="service" id="integrated_workflow.form.definition.choice.repository" />
+		<service id="integrated_workflow.form.definition.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionFormType">
+			<tag name="form.type" />
 		</service>
 
-		<service id="integrated_workflow.form.workflow.state.repository" alias="integrated_workflow.repository.definition" />
+		<service id="integrated_workflow.form.definition.permissions.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\PermissionsType">
+			<tag name="form.type" />
+		</service>
 
-		<service id="integrated_workflow.form.workflow.type" class="%integrated_workflow.form.workflow.type.class%">
+		<service id="integrated_workflow.form.definition.state.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\StateType">
+			<tag name="form.type" />
+		</service>
+
+		<service id="integrated_workflow.form.definition.choice.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionType">
+			<argument type="service" id="integrated_workflow.repository.definition" />
+			<tag name="form.type" />
+		</service>
+
+		<service id="integrated_workflow.form.workflow.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowFormType">
 			<argument type="service" id="integrated_user.user.manager" />
 			<argument type="service" id="security.token_storage" />
+			<tag name="form.type" />
 		</service>
 
-		<service id="integrated_workflow.form.workflow.state.type" class="%integrated_workflow.form.workflow.state.type.class%">
-			<argument type="service" id="integrated_workflow.form.workflow.state.repository" />
+		<service id="integrated_workflow.form.workflow.state.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowStateType">
+			<argument type="service" id="integrated_workflow.repository.definition" />
+			<tag name="form.type" />
 		</service>
 
-		<service id="integrated_workflow.form.delete.type" class="%integrated_workflow.form.delete.type.class%" />
+		<service id="integrated_workflow.form.delete.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\DeleteFormType">
+			<tag name="form.type" />
+		</service>
 
 	</services>
 

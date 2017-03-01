@@ -16,6 +16,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -47,7 +48,7 @@ class ExtractTransitionsFromDataListener implements EventSubscriberInterface
             $form->remove('transitions');
         }
 
-        $form->add('transitions', 'choice', [
+        $form->add('transitions', ChoiceType::class, [
             'required' => false,
 
             'choices' => $this->getChoices($event->getData()),

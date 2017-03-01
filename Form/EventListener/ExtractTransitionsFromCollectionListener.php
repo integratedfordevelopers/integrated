@@ -13,12 +13,11 @@ namespace Integrated\Bundle\WorkflowBundle\Form\EventListener;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Symfony\Component\Form\Extension\Core\ChoiceList\SimpleChoiceList;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -79,7 +78,7 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
                 $child->remove('transactions');
             }
 
-            $child->add('transitions', 'choice', [
+            $child->add('transitions', ChoiceType::class, [
                 'required' => false,
 
                 // The transitions will be "manually" mapped because potential new States that are
@@ -90,6 +89,7 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
                 'mapped' => false,
 
                 'choices' => $this->getChoicesFiltered($data, $child->getName()),
+                'choices_as_values' => true,
 
                 'multiple' => true,
                 'expanded' => false,
@@ -255,6 +255,6 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
             unset($choices[$current]);
         }
 
-        return $choices;
+        return array_flip($choices);
     }
 } 

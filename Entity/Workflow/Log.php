@@ -13,7 +13,7 @@ namespace Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use DateTime;
 
-use Symfony\Component\Security\Core\Util\ClassUtils;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
@@ -23,203 +23,203 @@ use Integrated\Bundle\UserBundle\Model\UserInterface;
  */
 class Log
 {
-	/**
-	 * @var int
-	 */
-	private $id = null;
+    /**
+     * @var int
+     */
+    private $id = null;
 
-	/**
-	 * @var State
-	 */
-	private $owner;
+    /**
+     * @var State
+     */
+    private $owner;
 
-	/**
-	 * @var DateTime
-	 */
-	private $timestamp;
+    /**
+     * @var DateTime
+     */
+    private $timestamp;
 
-	/**
-	 * @var string
-	 */
-	private $user_id = null;
+    /**
+     * @var string
+     */
+    private $user_id = null;
 
-	/**
-	 * @var string
-	 */
-	private $user_class = null;
+    /**
+     * @var string
+     */
+    private $user_class = null;
 
-	/**
-	 * @var UserInterface
-	 */
-	private $user_instance = null;
+    /**
+     * @var UserInterface
+     */
+    private $user_instance = null;
 
-	/**
-	 * @var Definition\State
-	 */
-	private $state;
+    /**
+     * @var Definition\State
+     */
+    private $state;
 
-	/**
-	 * @var string
-	 */
-	private $comment = null;
+    /**
+     * @var string
+     */
+    private $comment = null;
 
-	/**
-	 * @var DateTime
-	 */
-	private $deadline = null;
+    /**
+     * @var DateTime
+     */
+    private $deadline = null;
 
-	public function __construct()
-	{
-		$this->timestamp = new DateTime();
-	}
+    public function __construct()
+    {
+        $this->timestamp = new DateTime();
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @return State
-	 */
-	public function getOwner()
-	{
-		return $this->state;
-	}
+    /**
+     * @return State
+     */
+    public function getOwner()
+    {
+        return $this->state;
+    }
 
-	/**
-	 * @param State $state
-	 * @return $this
-	 */
-	public function setOwner(State $state = null)
-	{
-		if ($this->owner !== $state && $this->owner !== null) {
-			$this->owner->removeLog($this);
-		}
+    /**
+     * @param State $state
+     * @return $this
+     */
+    public function setOwner(State $state = null)
+    {
+        if ($this->owner !== $state && $this->owner !== null) {
+            $this->owner->removeLog($this);
+        }
 
-		$this->owner = $state;
+        $this->owner = $state;
 
-		if ($this->owner) {
-			$this->owner->addLog($this);
-		}
+        if ($this->owner) {
+            $this->owner->addLog($this);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
 
 
-	/**
-	 * @return DateTime
-	 */
-	public function getTimestamp()
-	{
-		return $this->timestamp;
-	}
+    /**
+     * @return DateTime
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
 
-	/**
-	 * @param DateTime $timestamp
-	 * @return $this
-	 */
-	public function setTimestamp(DateTime $timestamp = null)
-	{
-		$this->timestamp = $timestamp;
-		return $this;
-	}
+    /**
+     * @param DateTime $timestamp
+     * @return $this
+     */
+    public function setTimestamp(DateTime $timestamp = null)
+    {
+        $this->timestamp = $timestamp;
+        return $this;
+    }
 
-	/**
-	 * @return UserInterface
-	 */
-	public function getUser()
-	{
-		return $this->user_instance;
-	}
+    /**
+     * @return UserInterface
+     */
+    public function getUser()
+    {
+        return $this->user_instance;
+    }
 
-	/**
-	 * @param UserInterface $user
-	 * @return $this
-	 */
-	public function setUser($user)
-	{
-		if ($user instanceof UserInterface)	{
-			$this->user_id = $user->getId();
-			$this->user_class = ClassUtils::getRealClass($user);
-			$this->user_instance = $user;
-		} else {
-			$this->user_id = null;
-			$this->user_class = null;
-			$this->user_instance = null;
-		}
+    /**
+     * @param UserInterface $user
+     * @return $this
+     */
+    public function setUser($user)
+    {
+        if ($user instanceof UserInterface) {
+            $this->user_id = $user->getId();
+            $this->user_class = ClassUtils::getRealClass($user);
+            $this->user_instance = $user;
+        } else {
+            $this->user_id = null;
+            $this->user_class = null;
+            $this->user_instance = null;
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getUserId()
-	{
-		return $this->user_id;
-	}
+    /**
+     * @return string
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getUserClass()
-	{
-		return $this->user_class;
-	}
+    /**
+     * @return string
+     */
+    public function getUserClass()
+    {
+        return $this->user_class;
+    }
 
-	/**
-	 * @return Definition\State
-	 */
-	public function getState()
-	{
-		return $this->state;
-	}
+    /**
+     * @return Definition\State
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
 
-	/**
-	 * @param Definition\State $state
-	 */
-	public function setState(Definition\State $state = null)
-	{
-		$this->state = $state;
-	}
+    /**
+     * @param Definition\State $state
+     */
+    public function setState(Definition\State $state = null)
+    {
+        $this->state = $state;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getComment()
-	{
-		return $this->comment;
-	}
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
 
-	/**
-	 * @param string $comment
-	 * @return $this
-	 */
-	public function setComment($comment)
-	{
-		$this->comment = $comment;
-		return $this;
-	}
+    /**
+     * @param string $comment
+     * @return $this
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+        return $this;
+    }
 
-	/**
-	 * @return DateTime
-	 */
-	public function getDeadline()
-	{
-		return $this->deadline;
-	}
+    /**
+     * @return DateTime
+     */
+    public function getDeadline()
+    {
+        return $this->deadline;
+    }
 
-	/**
-	 * @param DateTime $deadline
-	 * @return $this
-	 */
-	public function setDeadline(DateTime $deadline = null)
-	{
-		$this->deadline = $deadline;
-		return $this;
-	}
+    /**
+     * @param DateTime $deadline
+     * @return $this
+     */
+    public function setDeadline(DateTime $deadline = null)
+    {
+        $this->deadline = $deadline;
+        return $this;
+    }
 }

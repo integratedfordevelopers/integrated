@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
+
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractDefaultStateFromCollectionListener;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromCollectionListener;
@@ -18,6 +20,7 @@ use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromCo
 use Integrated\Common\Validator\Constraints\UniqueEntry;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -38,16 +41,16 @@ class DefinitionFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text', [
+        $builder->add('name', TextType::class, [
             'constraints' => [
                 new NotBlank(),
                 new Length(['min' => 3])
             ]
         ]);
 
-        $builder->add('states', 'bootstrap_collection', [
+        $builder->add('states', BootstrapCollectionType::class, [
             'label'        => 'Statuses',
-            'type'         => 'workflow_definition_state',
+            'entry_type'   => StateType::class,
             'allow_add'    => true,
             'allow_delete' => true,
             'options'      => ['transitions' => 'empty'],
@@ -103,7 +106,7 @@ class DefinitionFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_workflow_definition';
     }

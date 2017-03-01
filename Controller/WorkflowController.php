@@ -11,17 +11,21 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+
 use Integrated\Bundle\UserBundle\Model\Group;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
-
+use Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionFormType;
+use Integrated\Bundle\WorkflowBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +40,7 @@ class WorkflowController extends Controller
      * Generate a list of workflow definitions
      *
      * @param Request $request
-     * @return array
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -63,15 +67,15 @@ class WorkflowController extends Controller
     public function newAction(Request $request)
     {
         $form = $this->createForm(
-            'workflow_definition_new',
+            DefinitionFormType::class,
             null,
             [
                 'action' => $this->generateUrl('integrated_workflow_new'),
                 'method' => 'POST',
             ],
             [
-                'create' => ['type' => 'submit', 'options' => ['label' => 'Create']],
-                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
             ]
         );
 
@@ -118,15 +122,15 @@ class WorkflowController extends Controller
         }
 
         $form = $this->createForm(
-            'workflow_definition_edit',
+            DefinitionFormType::class,
             $workflow,
             [
                 'action' => $this->generateUrl('integrated_workflow_edit', ['id' => $workflow->getId()]),
                 'method' => 'PUT',
             ],
             [
-                'save' => ['type' => 'submit', 'options' => ['label' => 'Save']],
-                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
             ]
         );
 
@@ -173,15 +177,15 @@ class WorkflowController extends Controller
         }
 
         $form = $this->createForm(
-            'workflow_definition_delete',
+            DeleteFormType::class,
             $workflow,
             [
                 'action' => $this->generateUrl('integrated_workflow_delete', ['id' => $workflow->getId()]),
                 'method' => 'DELETE',
             ],
             [
-                'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete']],
-                'cancel' => ['type' => 'submit', 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
             ]
         );
 
@@ -296,7 +300,7 @@ class WorkflowController extends Controller
         $form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
 
         if ($buttons) {
-            $form->add('actions', 'form_actions', [
+            $form->add('actions', FormActionsType::class, [
                 'buttons' => $buttons
             ]);
         }

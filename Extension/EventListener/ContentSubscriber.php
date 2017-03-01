@@ -316,7 +316,7 @@ E-mail: ' . $person->getEmail() . '',
             return null;
         }
 
-        if (null === $token = $this->container->get('security.context')->getToken()) {
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
             return null;
         }
 

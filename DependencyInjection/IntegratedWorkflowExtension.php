@@ -41,8 +41,6 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
         $loader->load('repository.xml');
 
         $loader->load('form.xml');
-        $loader->load('form.definition.xml');
-        $loader->load('form.workflow.xml');
 
         $loader->load('security.xml');
 

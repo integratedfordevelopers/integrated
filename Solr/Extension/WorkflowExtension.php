@@ -19,11 +19,8 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\ContentType\ResolverInterface;
-use Integrated\Common\ContentType\Exception\ExceptionInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
-
-use Symfony\Component\Security\Core\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -31,7 +28,7 @@ use Symfony\Component\Security\Core\Util\ClassUtils;
 class WorkflowExtension implements TypeExtensionInterface
 {
     /**
-     * @var ContentTypeResolverInterface
+     * @var ResolverInterface
      */
     private $resolver;
 
@@ -55,7 +52,6 @@ class WorkflowExtension implements TypeExtensionInterface
     public function __construct(ResolverInterface $resolver, ObjectRepository $workflow, ObjectRepository $definition)
     {
         $this->resolver = $resolver;
-
         $this->workflow = $workflow;
         $this->definition = $definition;
     }

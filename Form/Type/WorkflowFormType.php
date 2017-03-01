@@ -11,9 +11,13 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
+use Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\Select2Type;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
-use Integrated\Bundle\UserBundle\Model\User;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,17 +55,17 @@ class WorkflowFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('state', 'workflow_state', ['label' => 'Workflow status', 'workflow' => $options['workflow']]);
+        $builder->add('state', WorkflowStateType::class, ['label' => 'Workflow status', 'workflow' => $options['workflow']]);
 
-        $builder->add('comment', 'textarea', ['required' => false, 'attr' => ['class' => 'comment']]);
+        $builder->add('comment', TextareaType::class, ['required' => false, 'attr' => ['class' => 'comment']]);
 
-        $builder->add('workflow', 'hidden', ['data' => $options['workflow'], 'attr' => ['class' => 'workflow-hidden']]);
+        $builder->add('workflow', HiddenType::class, ['data' => $options['workflow'], 'attr' => ['class' => 'workflow-hidden']]);
 
         $builder->add(
             'assigned',
-            'integrated_select2',
+            Select2Type::class,
             [
-                'empty_value' => 'Not Assigned',
+                'placeholder' => 'Not Assigned',
                 'data'  => $this->tokenStorage->getToken()->getUser()->getId(),
                 'required' => false,
                 'attr' => ['class' => 'assigned-choice'],
@@ -69,7 +73,7 @@ class WorkflowFormType extends AbstractType
             ]
         );
 
-        $builder->add('deadline', 'integrated_datetime', ['attr' => ['class' => 'form-control deadline']]);
+        $builder->add('deadline', DateTimeType::class, ['attr' => ['class' => 'form-control deadline']]);
     }
 
     /**
@@ -101,7 +105,7 @@ class WorkflowFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_workflow';
     }
