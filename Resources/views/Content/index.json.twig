@@ -16,7 +16,7 @@
         {% set item = item|merge({'mimeType': content.mimetype_string[0]}) %}
 
         {% if 'video' in content.mimetype_string[0] %}
-            {% set item = item|merge({'poster': image_json(content.file)}) %}
+            {% set item = item|merge({'poster': image_json(content.file).__toString()}) %}
         {% endif %}
     {% endif %}
     {% if content.alternate_string is defined %}
