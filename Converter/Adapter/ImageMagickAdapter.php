@@ -49,18 +49,13 @@ class ImageMagickAdapter implements AdapterInterface
         $file = $this->cache->path($image);
 
         // Check if've got a video
-        if (preg_match('/^video\/(.*)$', $image->getMetadata()->getExtension())) {
+        if (preg_match('/^video\/(.*)$/', $image->getMetadata()->getMimeType())) {
             // Open the file on the tenth frame, this saves a us a hell of a lot memory
             // When no frame is specified Imagick will write every frame on /tmp
-            $imagick = new \Imagick(
-                sprintf(
-                    '%s[10]',
-                    $file->getPathname()
-                )
-            );
+            $imagick = new \Imagick(sprintf('%s[10]', $file->getPathname()));
         } else {
             // Open a we should do with anything that is not video
-            $imagick = new \Imagick($this->cache->path($image));
+            $imagick = new \Imagick($file->getPathname());
         }
 
         // Make a reasonable path based on the cache path but in a conversion folder
@@ -78,9 +73,9 @@ class ImageMagickAdapter implements AdapterInterface
             $imagick->clear();
 
             // Make sure we'll end up with something
-            if ($file->isFile()) {
+            if ($cache->isFile()) {
                 // Return the freshly converted file
-                return $file;
+                return $cache;
             } else {
                 // The last resort, this is the last outcome of any the above statements
                 throw RunTimeFormatException::conversionFileCreateFail(self::NAME, $image->getPathname(), $outputFormat);

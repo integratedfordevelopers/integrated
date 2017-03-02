@@ -72,7 +72,7 @@ class Container
     public function find($outputFormat, StorageInterface $image)
     {
         foreach ($this->adapters as $converter) {
-            if ($converter->formats()->contains($image->getMetadata()->getExtension())) {
+            if (ExtensionHelper::caseTransformBoth($converter->formats())->contains($image->getMetadata()->getExtension())) {
                 return $converter;
             }
         }
