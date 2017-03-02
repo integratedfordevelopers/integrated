@@ -23,9 +23,8 @@
         "phpunit/phpunit": "4.2.*"
     },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\SolrBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\SolrBundle\\": ""
         }
-    },
-    "target-dir": "Integrated/Bundle/SolrBundle"
+    }
 }
