@@ -64,7 +64,7 @@ abstract class ManagerValidator extends ConstraintValidator
 
         $result = $constraint->manger->{$constraint->method}($criteria);
 
-        if (!is_array($result) && $result instanceof \Iterator) {
+        if (!is_array($result) && !$result instanceof \Iterator) {
             $result = [$result];
         }
 

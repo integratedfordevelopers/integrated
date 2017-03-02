@@ -8,9 +8,7 @@
 		<default key="_controller">IntegratedUserBundle:Security:login</default>
 	</route>
 
-	<route id="integrated_user_check" path="/login-check">
-		<!--<requirement key="_method">POST</requirement>-->
-	</route>
+	<route id="integrated_user_check" path="/login-check" />
 
 	<route id="integrated_user_logout" path="/logout" />
 
