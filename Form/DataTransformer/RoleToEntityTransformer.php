@@ -20,7 +20,9 @@ use Symfony\Component\Form\DataTransformerInterface;
  */
 class RoleToEntityTransformer implements DataTransformerInterface
 {
-    /** @var RoleManagerInterface  */
+    /**
+     * @var RoleManagerInterface
+     */
     private $manager;
 
     /**

@@ -17,10 +17,10 @@ use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
 use Integrated\Common\Form\DataTransformer\ValueToChoiceTransformer;
 
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -28,18 +28,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class GroupType extends AbstractType
 {
-	/**
-	 * @var GroupManagerInterface
-	 */
-	private $manager;
+    /**
+     * @var GroupManagerInterface
+     */
+    private $manager;
 
-	/**
-	 * @param GroupManagerInterface $manager
-	 */
-	public function __construct(GroupManagerInterface $manager)
-	{
-		$this->manager = $manager;
-	}
+    /**
+     * @param GroupManagerInterface $manager
+     */
+    public function __construct(GroupManagerInterface $manager)
+    {
+        $this->manager = $manager;
+    }
 
     /**
      * {@inheritdoc}
@@ -63,7 +63,7 @@ class GroupType extends AbstractType
 
                 $builder->resetViewTransformers();
 
-                foreach($transformers as $transformer) {
+                foreach ($transformers as $transformer) {
                     $builder->addViewTransformer($transformer);
                 }
 
@@ -92,24 +92,24 @@ class GroupType extends AbstractType
     /**
      * {@inheritdoc}
      */
-	public function getParent()
-	{
-		return 'entity';
-	}
+    public function getParent()
+    {
+        return EntityType::class;
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_user_group_choice';
     }
 
-	/**
-	 * @return GroupManagerInterface
-	 */
-	public function getManager()
-	{
-		return $this->manager;
-	}
+    /**
+     * @return GroupManagerInterface
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
 }
