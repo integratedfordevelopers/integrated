@@ -53,7 +53,7 @@ class DefinitionFormType extends AbstractType
             'entry_type'   => StateType::class,
             'allow_add'    => true,
             'allow_delete' => true,
-            'options'      => ['transitions' => 'empty'],
+            'entry_options'      => ['transitions' => 'empty'],
             'constraints'  => [
                 new Count(['min' => 1]),
                 new UniqueEntry(['fields' => ['name'], 'caseInsensitive' => true])
