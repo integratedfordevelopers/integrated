@@ -94,7 +94,7 @@ class ImageMagickAdapter implements AdapterInterface
     public function formats()
     {
         if (class_exists('\Imagick')) {
-            return new ArrayCollection(\Imagick::queryFormats());
+            return new ArrayCollection((new \Imagick())->queryFormats());
         }
 
         return new ArrayCollection();
