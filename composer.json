@@ -28,11 +28,10 @@
       "integrated-content-bundle": "Allows use of the integrated_editor formtype"
     },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\FormTypeBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\FormTypeBundle\\": ""
         }
     },
-    "target-dir": "Integrated/Bundle/FormTypeBundle",
     "extra": {
         "branch-alias": {
             "dev-develop": "0.9.9-dev"
