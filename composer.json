@@ -34,9 +34,8 @@
         "integrated/website-bundle": "Frontend block management for Integrated"
     },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\PageBundle": ""
+        "psr-4":{
+            "Integrated\\Bundle\\PageBundle\\": ""
         }
-    },
-    "target-dir": "Integrated/Bundle/PageBundle"
+    }
 }
