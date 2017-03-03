@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Form\Type;
 
+use Integrated\Bundle\PageBundle\Form\Type\Grid\GridType;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,7 +29,7 @@ class PageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('grids', CollectionType::class, [
-            'entry_type'   => 'integrated_page_grid_grid',
+            'entry_type'   => GridType::class,
             'allow_add'    => true,
             'allow_delete' => true,
             'prototype'    => false,
