@@ -71,16 +71,9 @@ class Container
      */
     public function find($outputFormat, StorageInterface $image)
     {
-        // Get a local file
-        $file = $this->cache->path($image);
-
         foreach ($this->adapters as $converter) {
-            try {
-                if ($converter->supports($outputFormat, $file)) {
-                    return $converter;
-                }
-            } catch (FormatException $formatException) {
-                // Intentionally left blank
+            if (ExtensionHelper::caseTransformBoth($converter->formats())->contains($image->getMetadata()->getExtension())) {
+                return $converter;
             }
         }
 

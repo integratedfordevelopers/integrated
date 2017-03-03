@@ -19,24 +19,6 @@ class FormatException extends \ErrorException
     /**
      * @param string $inputFormat
      * @param string $outputFormat
-     * @param string $converter
-     * @return static
-     */
-    public static function notSupportedFormat($inputFormat, $outputFormat, $converter)
-    {
-        return new static(
-            sprintf(
-                'Format %s can not be converted in to %s, this format is not supported by %s.',
-                $inputFormat,
-                $outputFormat,
-                $converter
-            )
-        );
-    }
-
-    /**
-     * @param string $inputFormat
-     * @param string $outputFormat
      * @return static
      */
     public static function noSupportingConverter($inputFormat, $outputFormat)
