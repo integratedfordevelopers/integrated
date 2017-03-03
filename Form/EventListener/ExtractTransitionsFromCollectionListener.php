@@ -14,6 +14,7 @@ namespace Integrated\Bundle\WorkflowBundle\Form\EventListener;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
+use Integrated\Bundle\WorkflowBundle\Form\Model;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -90,6 +91,8 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
 
                 'choices' => $this->getChoicesFiltered($data, $child->getName()),
                 'choices_as_values' => true,
+                'choice_label' => 'label',
+                'choice_value' => 'value',
 
                 'multiple' => true,
                 'expanded' => false,
@@ -148,7 +151,13 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
                 $hash = spl_object_hash($data);
 
                 if (isset($index[$hash])) {
-                    $selection[] = $index[$hash];
+                    $state = new Model\State();
+                    $state
+                        ->setValue($index[$hash])
+                        ->setLabel($data->getName())
+                    ;
+
+                    $selection[] = $state;
                 }
             }
 
@@ -203,8 +212,12 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
             // correspond directly to the index of the child in the collection.
 
             foreach ($child->get('transitions')->getData() as $value) {
-                if (isset($index[$value])) {
-                    $data->addTransition($index[$value]);
+                if (!$value instanceof Model\State) {
+                    continue;
+                }
+
+                if (isset($index[$value->getValue()])) {
+                    $data->addTransition($index[$value->getValue()]);
                 }
             }
         }
@@ -218,11 +231,12 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
      *
      * @param array $data
      *
-     * @return array
+     * @return Model\State[]
      */
     protected function getChoices(array $data)
     {
         $choices = [];
+
 
         // The data could be a array of objects if its converted from the pre_set_data and
         // a array of scalars when its converted from the pre_submit. Also the name value
@@ -233,9 +247,13 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
             $name = $this->accessor->getValue($value, is_object($value) ? 'name' : '[name]');
             $name = trim($name);
 
-            if ($name) {
-                $choices[$index] = $name;
-            }
+            $state = new Model\State();
+            $state
+                ->setValue($index)
+                ->setLabel($name)
+            ;
+
+            $choices[$index] = $state;
         }
 
         return $choices;
@@ -247,7 +265,7 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
      * @param array $choices
      * @param int $current
      *
-     * @return array
+     * @return Model\State[]
      */
     protected function getChoicesFiltered(array $choices, $current)
     {
@@ -255,6 +273,6 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
             unset($choices[$current]);
         }
 
-        return array_flip($choices);
+        return $choices;
     }
-} 
+}
