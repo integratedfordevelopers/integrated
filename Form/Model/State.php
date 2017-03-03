@@ -18,38 +18,28 @@ class State
     protected $label;
 
     /**
+     * State constructor.
+     * @param string $value
+     * @param string $label
+     */
+    public function __construct($value, $label)
+    {
+        $this->value = $value;
+        $this->label = $label;
+    }
+
+    /**
      * @return string
      */
     public function getValue()
     {
         return $this->value;
     }
-
-    /**
-     * @param string $value
-     * @return $this
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-        return $this;
-    }
-
     /**
      * @return string
      */
     public function getLabel()
     {
         return $this->label;
-    }
-
-    /**
-     * @param string $label
-     * @return $this
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-        return $this;
     }
 }

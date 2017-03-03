@@ -151,13 +151,7 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
                 $hash = spl_object_hash($data);
 
                 if (isset($index[$hash])) {
-                    $state = new Model\State();
-                    $state
-                        ->setValue($index[$hash])
-                        ->setLabel($data->getName())
-                    ;
-
-                    $selection[] = $state;
+                    $selection[] = new Model\State($index[$hash], $data->getName());
                 }
             }
 
@@ -247,13 +241,7 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
             $name = $this->accessor->getValue($value, is_object($value) ? 'name' : '[name]');
             $name = trim($name);
 
-            $state = new Model\State();
-            $state
-                ->setValue($index)
-                ->setLabel($name)
-            ;
-
-            $choices[$index] = $state;
+            $choices[$index] = new Model\State($index, $name);
         }
 
         return $choices;
