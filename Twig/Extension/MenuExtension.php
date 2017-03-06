@@ -115,8 +115,6 @@ class MenuExtension extends \Twig_Extension
 
         $edit = isset($context['edit']) && true === $context['edit'];
         $menu = $this->provider->get($name);
-        $this->matcher->setActive($menu);
-
 
         $html = '';
 
@@ -133,6 +131,8 @@ class MenuExtension extends \Twig_Extension
         }
 
         if ($menu) {
+            $this->matcher->setActive($menu);
+
             $html .= $this->helper->render($menu, $options);
         }
 
