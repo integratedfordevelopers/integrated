@@ -30,7 +30,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for field, changeSet in contentHistory.changeSet %}
+            {% for field, changeSet in contentHistory.changeSet if changeSet is not null %}
                 {% set isUpdate = contentHistory.action == 'update' %}
 
                 <tr>

@@ -4,6 +4,8 @@
     {{ value }}
 {% elseif value|get_type == 'object' and value|get_class == 'MongoDate' %}
     {{ value.toDatetime()|localizeddate }}
-{% else %}
+{% elseif value is not null %}
     <i>{% trans %}Not yet supported{% endtrans %}</i>
+{% else %}
+    -
 {% endif %}

@@ -24,9 +24,9 @@
             </div>
         {% endfor %}
 
-        {#% if documents|length > limit %}
+        {% if documents|length > limit %}
             <br />
-            <a href="">Show full history</a>
-        {% endif %#}
+            <a href="{{ path('integrated_content_history_index', { 'id': content.id }) }}">Show full history</a>
+        {% endif %}
     </div>
 {% endif %}
