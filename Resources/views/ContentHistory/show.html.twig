@@ -1,23 +1,53 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 
+{% block header %}{% endblock %}
+{% block crumbs %}{% endblock %}
+
 {% block content %}
+<section class="section-white section-padding section-shadow section-radius">
+    <p>
+        <b>{% trans %}Date{% endtrans %}:</b> {{ contentHistory.date|localizeddate }}<br />
+        <b>{% trans %}Action{% endtrans %}:</b> {{ contentHistory.action|trans }}<br />
+        <b>{% trans %}User{% endtrans %}:</b> {{ contentHistory.user.name|default('Unknown'|trans) }} {% if contentHistory.user.id is defined %}(#{{ contentHistory.user.id }}){% endif %}<br />
+        <b>{% trans %}Endpoint{% endtrans %}:</b> {{ contentHistory.request.endpoint }}<br />
+        <b>{% trans %}IP address{% endtrans %}:</b> {{ contentHistory.request.ipAddress }}
+    </p>
 
-<p>Date: {{ contentHistory.date|localizeddate }}</p>
-<p>Action: {{ contentHistory.action }}</p>
-<p>User: {{ contentHistory.user.name }} {% if contentHistory.user.id is defined %}(#{{ contentHistory.user.id }}){% endif %}</p>
-<p>Endpoint: {{ contentHistory.request.endpoint }}</p>
-<p>IP address: {{ contentHistory.request.ipAddress }}</p>
+    {% set showOld = contentHistory.action in ['delete', 'update'] %}
+    {% set showNew = contentHistory.action in ['insert', 'update'] %}
 
-{% if contentHistory.action == 'insert' %}
+    <br />
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>{% trans %}Field{% endtrans %}</th>
+                {% if showOld %}
+                    <th>{% trans %}Old value{% endtrans %}</th>
+                {% endif %}
+                {% if showNew %}
+                    <th>{% trans %}New value{% endtrans %}</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for field, changeSet in contentHistory.changeSet %}
+                {% set isUpdate = contentHistory.action == 'update' %}
 
-    {% for field in form if field.vars.data is not empty %}
-        <p>
-            {{ form_label(field) }}:
-            {{ form_widget(field) }}
-        </p>
-    {% endfor %}
-
-
-{% endif %}
-
+                <tr>
+                    <td>{{ field }}</td>
+                    {% if showOld %}
+                        <td>
+                            {% include '@IntegratedContentHistory/value.html.twig' with { 'value': isUpdate and changeSet[0] is defined ? changeSet[0] : changeSet } %}
+                        </td>
+                    {% endif %}
+                    {% if showNew %}
+                        <td>
+                            {% include '@IntegratedContentHistory/value.html.twig' with { 'value': isUpdate and changeSet[1] is defined ? changeSet[1] : changeSet } %}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
 {% endblock %}

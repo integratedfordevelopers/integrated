@@ -1,0 +1,9 @@
+{% if value|get_type == 'boolean' %}
+    {{ value ? 'true'|trans : 'false'|trans }}
+{% elseif value|get_type in ['string', 'integer', 'double'] %}
+    {{ value }}
+{% elseif value|get_type == 'object' and value|get_class == 'MongoDate' %}
+    {{ value.toDatetime()|localizeddate }}
+{% else %}
+    <i>{% trans %}Not yet supported{% endtrans %}</i>
+{% endif %}

@@ -34,6 +34,6 @@ class IntegratedContentHistoryExtension extends Extension
         $loader->load('controllers.xml');
         $loader->load('doctrine.xml');
         $loader->load('event_subscribers.xml');
-        $loader->load('forms.xml');
+        $loader->load('twig.xml');
     }
 }
