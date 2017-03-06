@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
+use Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionType;
 use Integrated\Common\Content\Extension\Event\MetadataEvent;
 use Integrated\Common\Content\Extension\Event\Subscriber\MetadataSubscriberInterface;
 use Integrated\Common\Content\Extension\Events;
@@ -61,7 +62,7 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 
         $attr = $metadata->newOption('workflow');
 
-        $attr->setType('workflow_definition_choice');
+        $attr->setType(DefinitionType::class);
         $attr->setOption('choice_data', 'scalar');
 
         $metadata->addOption($attr);

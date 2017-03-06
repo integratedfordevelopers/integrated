@@ -22,7 +22,8 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 
 use Integrated\Bundle\WorkflowBundle\Security\WorkflowVoter;
 
-use Integrated\Common\ContentType\Mapping\MetadataFactoryInterface;
+use Integrated\Common\Form\Mapping\MetadataInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 
 use Integrated\Common\Security\Permissions;
@@ -72,12 +73,12 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     {
         $this->manager = $this->getMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
         $this->resolver = $this->getMock('Integrated\\Common\\ContentType\\ResolverInterface');
-        $this->metadata = $this->getMock('Integrated\\Common\\ContentType\\Mapping\\MetadataFactoryInterface');
+        $this->metadata = $this->getMock(MetadataFactoryInterface::class);
     }
 
     protected function setUpMetadata($class, $exists = true)
     {
-        $metadata = $this->getMock('Integrated\\Common\\ContentType\\Mapping\\MetadataInterface');
+        $metadata = $this->getMock(MetadataInterface::class);
         $metadata->expects($this->atLeastOnce())
             ->method('hasOption')
             ->with('workflow')
@@ -582,7 +583,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getUser(array $groups = [])
     {
-        $mock = $this->getMock('Integrated\\Bundle\\UserBundle\\Model\\GroupableInterface');
+        $mock = $this->getMock('Integrated\Bundle\UserBundle\Model\User');
 
         if ($groups) {
             foreach ($groups as $index => $name) {

@@ -18,49 +18,49 @@ use Integrated\Bundle\UserBundle\Model\UserInterface;
 
 use Integrated\Common\Content\ContentInterface;
 
-use Symfony\Component\Security\Core\Util\ClassUtils;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class StateRepository extends EntityRepository
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
-	{
-		return parent::findBy($this->convertCriteria($criteria), $orderBy, $limit, $offset);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+    {
+        return parent::findBy($this->convertCriteria($criteria), $orderBy, $limit, $offset);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function findOneBy(array $criteria, array $orderBy = null)
-	{
-		return parent::findOneBy($this->convertCriteria($criteria), $orderBy);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function findOneBy(array $criteria, array $orderBy = null)
+    {
+        return parent::findOneBy($this->convertCriteria($criteria), $orderBy);
+    }
 
-	protected function convertCriteria(array $criteria)
-	{
-		if (isset($criteria['content'])) {
-			if ($criteria['content'] instanceof ContentInterface) {
-				$criteria['content_id'] = $criteria['content']->getId();
-				$criteria['content_class'] = ClassUtils::getRealClass($criteria['content']);
+    protected function convertCriteria(array $criteria)
+    {
+        if (isset($criteria['content'])) {
+            if ($criteria['content'] instanceof ContentInterface) {
+                $criteria['content_id'] = $criteria['content']->getId();
+                $criteria['content_class'] = ClassUtils::getRealClass($criteria['content']);
 
-				unset($criteria['content']);
-			}
-		}
+                unset($criteria['content']);
+            }
+        }
 
-		if (isset($criteria['assigned'])) {
-			if ($criteria['assigned'] instanceof UserInterface || $criteria['assigned'] instanceof GroupInterface) {
-				$criteria['assigned_id'] = $criteria['assigned']->getId();
-				$criteria['assigned_class'] = ClassUtils::getRealClass($criteria['assigned']);
+        if (isset($criteria['assigned'])) {
+            if ($criteria['assigned'] instanceof UserInterface || $criteria['assigned'] instanceof GroupInterface) {
+                $criteria['assigned_id'] = $criteria['assigned']->getId();
+                $criteria['assigned_class'] = ClassUtils::getRealClass($criteria['assigned']);
 
-				unset($criteria['assigned']);
-			}
-		}
+                unset($criteria['assigned']);
+            }
+        }
 
-		return $criteria;
-	}
-} 
+        return $criteria;
+    }
+}

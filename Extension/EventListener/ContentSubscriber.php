@@ -312,11 +312,11 @@ E-mail: ' . $person->getEmail() . '',
      */
     protected function getUser()
     {
-        if (!$this->container->has('security.context')) {
+        if (!$this->container->has('security.token_storage')) {
             return null;
         }
 
-        if (null === $token = $this->container->get('security.context')->getToken()) {
+        if (null === $token = $this->container->get('security.token_storage')->getToken()) {
             return null;
         }
 

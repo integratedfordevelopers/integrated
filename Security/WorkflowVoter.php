@@ -16,22 +16,22 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
-use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 
+use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\User;
+
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
-use Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use Integrated\Common\Content\ContentInterface;
-
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\Registry;
-use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Mapping\MetadataInterface;
 use Integrated\Common\ContentType\ResolverInterface;
+
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
+use Integrated\Common\Form\Mapping\MetadataInterface;
 
 use Integrated\Common\Security\Permissions;
 
@@ -39,7 +39,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use Symfony\Component\Security\Core\Util\ClassUtils;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

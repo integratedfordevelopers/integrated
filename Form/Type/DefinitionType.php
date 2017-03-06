@@ -15,6 +15,7 @@ use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
 use Integrated\Common\Form\DataTransformer\ValueToChoiceTransformer;
 
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -91,10 +92,10 @@ class DefinitionType extends AbstractType
         $resolver->setDefault('choice_data', 'object');
         $resolver->setDefault('choice_value', 'id');
         $resolver->setDefault('choice_label', 'name');
-
+        $resolver->setDefault('choices_as_values', true);
         $resolver->addAllowedValues('choice_data', ['object', 'scalar']);
 
-        $resolver->setDefault('empty_value', 'None');
+        $resolver->setDefault('placeholder', 'None');
         $resolver->setDefault('empty_data', null);
 
         $resolver->setDefault('required', false);
@@ -105,13 +106,13 @@ class DefinitionType extends AbstractType
      */
     public function getParent()
     {
-        return 'entity';
+        return EntityType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_workflow_definition_choice';
     }

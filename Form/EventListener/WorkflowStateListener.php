@@ -16,6 +16,8 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -78,7 +80,7 @@ class WorkflowStateListener implements EventSubscriberInterface
             return; // no valid state found
         }
 
-        $form->add('current', 'text', [
+        $form->add('current', TextType::class, [
             'read_only' => true,
             'mapped' => false,
             'data' => $data->getName(),
@@ -92,7 +94,7 @@ class WorkflowStateListener implements EventSubscriberInterface
             return; // seams there are no next states
         }
 
-        $form->add('next', 'choice', [
+        $form->add('next', ChoiceType::class, [
             'label' => 'Next status',
 
             'choices' => $choices,

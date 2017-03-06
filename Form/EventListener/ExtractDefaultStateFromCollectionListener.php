@@ -64,7 +64,6 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
 
         $states = $form->get('states');
         foreach ($states->all() as $child) {
-
             $state = $child->getData();
             if (!$state instanceof State) {
                 continue;
@@ -96,7 +95,6 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
 
         $states = $form->get('states');
         foreach ($states->all() as $child) {
-
             $state = $child->getData();
             if (!$state instanceof State) {
                 continue;

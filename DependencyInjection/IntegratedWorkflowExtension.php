@@ -41,8 +41,6 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
         $loader->load('repository.xml');
 
         $loader->load('form.xml');
-        $loader->load('form.definition.xml');
-        $loader->load('form.workflow.xml');
 
         $loader->load('security.xml');
 
@@ -71,7 +69,7 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
         foreach ($container->getExtensions() as $name => $extension) {
             switch ($name) {
                 case 'twig':
-                    $container->prependExtensionConfig($name, ['form'  => ['resources' => ['IntegratedWorkflowBundle:Form:form_div_layout.html.twig']]]);
+                    $container->prependExtensionConfig($name, ['form_themes' => ['IntegratedWorkflowBundle:Form:form_div_layout.html.twig']]);
                     break;
             }
         }

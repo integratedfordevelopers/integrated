@@ -116,7 +116,7 @@ class WorkflowStateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_workflow_state';
     }

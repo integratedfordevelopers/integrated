@@ -13,6 +13,7 @@ namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Integrated\Bundle\UserBundle\Form\Type\GroupType;
 use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
 
 use Symfony\Component\Form\AbstractType;
@@ -33,8 +34,8 @@ class PermissionsType extends AbstractType
     {
         $builder->addViewTransformer(new PermissionTransformer());
 
-        $builder->add('read', 'user_group_choice', ['required' => false, 'multiple' => true, 'choice_data' => 'scalar', 'attr' => ['class' => 'select2']]);
-        $builder->add('write', 'user_group_choice', ['required' => false, 'multiple' => true, 'choice_data' => 'scalar', 'attr' => ['class' => 'select2']]);
+        $builder->add('read', GroupType::class, ['required' => false, 'multiple' => true, 'choice_data' => 'scalar', 'attr' => ['class' => 'select2']]);
+        $builder->add('write', GroupType::class, ['required' => false, 'multiple' => true, 'choice_data' => 'scalar', 'attr' => ['class' => 'select2']]);
     }
 
     /**
@@ -53,7 +54,7 @@ class PermissionsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_workflow_definition_permissions';
     }

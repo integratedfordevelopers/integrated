@@ -13,9 +13,10 @@ namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromDataListener;
-
 use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -34,7 +35,7 @@ class StateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', 'text', [
+        $builder->add('name', Type\TextType::class, [
             'constraints' => [
                 new NotBlank(),
                 new Length(['min' => 3])
@@ -44,9 +45,9 @@ class StateType extends AbstractType
             ]
         ]);
 
-        $builder->add('publishable', 'checkbox', ['label' => 'Publish', 'required' => false]);
+        $builder->add('publishable', Type\CheckboxType::class, ['label' => 'Publish', 'required' => false]);
 
-        $builder->add('default', 'checkbox', [
+        $builder->add('default', Type\CheckboxType::class, [
             'required' => false,
             'mapped' => false,
             'attr' => [
@@ -55,38 +56,42 @@ class StateType extends AbstractType
         ]);
 
         $choiceFlags = [
-            StateVisibleConfig::OPTIONAL => 'Optional',
-            StateVisibleConfig::REQUIRED => 'Required',
-            StateVisibleConfig::DISABLED => 'Disabled',
+            'Optional' => StateVisibleConfig::OPTIONAL,
+            'Required' => StateVisibleConfig::REQUIRED,
+            'Disabled' => StateVisibleConfig::DISABLED
         ];
 
-        $builder->add('comment', 'choice', [
+        $builder->add('comment', Type\ChoiceType::class, [
             'expanded' => true,
             'choices' => $choiceFlags,
+            'choices_as_values' => true
         ]);
 
-        $builder->add('assignee', 'choice', [
+        $builder->add('assignee', Type\ChoiceType::class, [
             'expanded' => true,
             'choices' => $choiceFlags,
+            'choices_as_values' => true
         ]);
 
-        $builder->add('deadline', 'choice', [
+        $builder->add('deadline', Type\ChoiceType::class, [
             'expanded' => true,
             'choices' => $choiceFlags,
+            'choices_as_values' => true
         ]);
 
-        $builder->add('permissions', 'workflow_definition_permissions', ['required' => false]);
+        $builder->add('permissions', PermissionsType::class, ['required' => false]);
 
         if ($options['transitions'] == 'data') {
             $builder->addEventSubscriber(new ExtractTransitionsFromDataListener());
         }
 
         if ($options['transitions'] == 'empty') {
-            $builder->add('transitions', 'choice', [
+            $builder->add('transitions', Type\ChoiceType::class, [
                 'required' => false,
                 'mapped'   => false,
 
                 'choices'  => [],
+                'choices_as_values' => true,
 
                 'multiple' => true,
                 'expanded' => false,
@@ -113,7 +118,7 @@ class StateType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_workflow_definition_state';
     }
