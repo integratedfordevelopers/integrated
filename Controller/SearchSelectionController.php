@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
+use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -38,7 +39,7 @@ class SearchSelectionController extends Controller
 
         return [
             'selection' => $selection,
-            'documents' => $this->get('integrated_content.provider.solarium')->execute($request),
+            'documents' => $this->get('integrated_content.provider.solarium')->execute(new ContentBlock(), $request),
         ];
     }
 }
