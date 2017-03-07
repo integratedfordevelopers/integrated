@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\LockHandler;
 
 /**
@@ -47,12 +46,22 @@ The <info>%command.name%</info> command starts a solr worker run.
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $worker = $this->getContainer()->get('integrated_solr.worker');
+        $lock = new LockHandler(self::class);
 
-        if (null !== ($tasks = $input->getOption('tasks'))) {
-            $worker->setOption('tasks', intval($tasks));
+        if (!$lock->lock()) {
+            return;
         }
 
-        $worker->execute();
+        try {
+            $worker = $this->getContainer()->get('integrated_solr.worker');
+
+            if (null !== ($tasks = $input->getOption('tasks'))) {
+                $worker->setOption('tasks', intval($tasks));
+            }
+
+            $worker->execute();
+        } finally {
+            $lock->release();
+        }
     }
 }
