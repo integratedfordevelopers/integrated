@@ -25,4 +25,29 @@ class CustomField extends Field
      * @Slug(fields={"getLabel"})
      */
     protected $name;
+
+    /**
+     * @var string
+     */
+    protected $type;
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set the type of the field
+     *
+     * @param string $type The type of the form field
+     * @return $this
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+        return $this;
+    }
 }

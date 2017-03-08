@@ -12,11 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\Form\EventListener;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
+use Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -24,7 +24,6 @@ use Symfony\Component\Validator\Constraints\Valid;
 class CustomFieldListener implements EventSubscriberInterface
 {
     const FORM_NAME = 'customFields';
-    const FORM_TYPE = 'integrated_custom_fields';
 
     /**
      * {@inheritdoc}
@@ -41,20 +40,15 @@ class CustomFieldListener implements EventSubscriberInterface
      */
     public function onPostBuild(BuilderEvent $event)
     {
-        $contentType = $event->getContentType();
-        $builder = $event->getBuilder();
+        $type = $event->getContentType();
 
-        foreach ($contentType->getFields() as $field) {
+        foreach ($type->getFields() as $field) {
             if ($field instanceof CustomField) {
-                $builder->add(
-                    self::FORM_NAME,
-                    self::FORM_TYPE,
-                    [
-                        'contentType' => $contentType
-                    ]
-                );
+                $event->getBuilder()->add(self::FORM_NAME, CustomFieldsType::class, [
+                    'contentType' => $type
+                ]);
 
-                break;
+                return;
             }
         }
     }

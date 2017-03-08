@@ -49,15 +49,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test type property
-     */
-    public function testType()
-    {
-        $type = 'type';
-        $this->assertEquals($type, $this->field->setType($type)->getType());
-    }
-
-    /**
      * Test options property
      */
     public function testOptions()
@@ -79,6 +70,5 @@ class FieldTest extends \PHPUnit_Framework_TestCase
         $label = 'label';
         $this->field->setOptions(['label' => $label]);
         $this->assertSame($label, $this->field->getLabel());
-
     }
 }

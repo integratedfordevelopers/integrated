@@ -34,7 +34,7 @@ class DefaultType extends AbstractType
 
         $builder->add('enabled', CheckboxType::class, [
             'required' => false,
-            'label'    => $field->hasOption('label') ? $field->getOption('label') : ucfirst($field->getName()),
+            'label'    => $field->getOption('label') ?: ucfirst($field->getName()),
         ]);
 
         $builder->add('required', CheckboxType::class, ['required' => false]);
@@ -48,7 +48,7 @@ class DefaultType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['field']);
-        $resolver->setAllowedTypes('field', 'Integrated\\Common\\Form\\Mapping\\AttributeInterface');
+        $resolver->setAllowedTypes('field', AttributeInterface::class);
     }
 
     /**
