@@ -22,58 +22,59 @@ use Symfony\Component\Form\FormView;
  */
 class ViewEvent extends FormEvent
 {
-	/**
-	 * @var FormView
-	 */
-	private $view;
+    /**
+     * @var FormView
+     */
+    private $view;
 
-	/**
-	 * @var FormInterface
-	 */
-	private $form;
+    /**
+     * @var FormInterface
+     */
+    private $form;
 
-	/**
-	 * @var array
-	 */
-	private $options = [];
+    /**
+     * @var array
+     */
+    private $options = [];
 
-	public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata, FormView $view, FormInterface $form)
-	{
-		parent::__construct($contentType, $metadata);
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(
+        ContentTypeInterface $contentType,
+        MetadataInterface $metadata,
+        FormView $view,
+        FormInterface $form,
+        array $options
+    ) {
+        parent::__construct($contentType, $metadata);
 
-		$this->view = $view;
-		$this->form = $form;
-	}
+        $this->view = $view;
+        $this->form = $form;
+        $this->options = $options;
+    }
 
-	/**
-	 * @return FormView
-	 */
-	public function getView()
-	{
-		return $this->view;
-	}
+    /**
+     * @return FormView
+     */
+    public function getView()
+    {
+        return $this->view;
+    }
 
-	/**
-	 * @return FormInterface
-	 */
-	public function getForm()
-	{
-		return $this->form;
-	}
+    /**
+     * @return FormInterface
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
 
-	/**
-	 * @param array $options
-	 */
-	public function setOptions(array $options)
-	{
-		$this->options = $options;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getOptions()
-	{
-		return $this->options;
-	}
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 }

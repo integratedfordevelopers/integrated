@@ -21,39 +21,41 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class FormEvent extends Event
 {
-	/**
-	 * @var ContentTypeInterface
-	 */
-	private $contentType;
+    /**
+     * @var ContentTypeInterface
+     */
+    private $contentType;
 
-	/**
-	 * @var MetadataInterface
-	 */
-	private $metadata;
+    /**
+     * @var MetadataInterface
+     */
+    private $metadata;
 
-	/**
-	 * @param ContentTypeInterface $contentType
-	 * @param MetadataInterface $metadata
-	 */
-	public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata)
-	{
-		$this->contentType = $contentType;
-		$this->metadata = $metadata;
-	}
+    /**
+     * Event constructor.
+     *
+     * @param ContentTypeInterface $contentType
+     * @param MetadataInterface    $metadata
+     */
+    public function __construct(ContentTypeInterface $contentType, MetadataInterface $metadata)
+    {
+        $this->contentType = $contentType;
+        $this->metadata = $metadata;
+    }
 
-	/**
-	 * @return ContentTypeInterface
-	 */
-	public function getContentType()
-	{
-		return $this->contentType;
-	}
+    /**
+     * @return ContentTypeInterface
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
 
-	/**
-	 * @return MetadataInterface
-	 */
-	public function getMetadata()
-	{
-		return $this->metadata;
-	}
+    /**
+     * @return MetadataInterface
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
 }

@@ -109,18 +109,4 @@ class Field implements AttributeEditorInterface
         $this->options[$name] = $value;
         return $this;
     }
-
-    /**
-     * Shortcut to get the label of an element
-     *
-     * @return string
-     */
-    public function getLabel()
-    {
-        if (isset($this->options['label'])) {
-            return $this->options['label'];
-        }
-
-        return ucfirst($this->name);
-    }
 }

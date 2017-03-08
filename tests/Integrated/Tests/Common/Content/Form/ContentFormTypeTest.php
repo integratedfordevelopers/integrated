@@ -20,11 +20,13 @@ use Integrated\Common\Content\Form\Events;
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
+use Integrated\Common\Form\Mapping\AttributeEditorInterface;
 use Integrated\Common\Form\Mapping\AttributeInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -34,7 +36,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use stdClass;
 
 /**
- * @covers Integrated\Common\Content\Form\ContentFormType
+ * @covers \Integrated\Common\Content\Form\ContentFormType
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -67,7 +69,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->type = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        $this->type = $this->getMock(ContentTypeInterface::class);
         $this->metadataFactory = $this->getMock(MetadataFactoryInterface::class);
         $this->metadata = $this->getMock(MetadataInterface::class);
 
@@ -78,12 +80,12 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->resolver = $this->getMock(ResolverInterface::class);
-        $this->dispatcher = $this->getMock('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface');
+        $this->dispatcher = $this->getMock(EventDispatcherInterface::class);
     }
 
     public function testInterface()
     {
-        $this->assertInstanceOf('Symfony\Component\Form\FormTypeInterface', $this->getInstance());
+        $this->assertInstanceOf(AbstractType::class, $this->getInstance());
     }
 
     public function testBuildForm()
@@ -98,9 +100,9 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
         $this->metadata->expects($this->once())
             ->method('getFields')
             ->willReturn([
-                $this->getAttribute('field1'),
-                $this->getAttribute('field2'),
-                $this->getAttribute('field3')
+                $this->getAttribute('field1', 'type1', ['options1', 'options' => '1']),
+                $this->getAttribute('field2', 'type2', ['options2', 'options' => '2']),
+                $this->getAttribute('field3', 'type3', ['options3', 'options' => '3'])
             ]);
 
         $this->type->expects($this->exactly(3))
@@ -119,16 +121,16 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
                 [$this->equalTo('field3')]
             )
             ->willReturnOnConsecutiveCalls(
-                $this->getField('field1', 'type1', ['options1']),
-                $this->getField('field3', 'type3', ['options3'])
+                $this->getField('field1', ['override1']),
+                $this->getField('field3', ['override3'])
             );
 
         $builder = $this->getBuilder();
         $builder->expects($this->exactly(2))
             ->method('add')
             ->withConsecutive(
-                [$this->equalTo('field1'), $this->equalTo('type1'), $this->equalTo(['options1'])],
-                [$this->equalTo('field3'), $this->equalTo('type3'), $this->equalTo(['options3'])]
+                [$this->equalTo('field1'), $this->equalTo('type1'), $this->equalTo(['override1', 'options' => '1'])],
+                [$this->equalTo('field3'), $this->equalTo('type3'), $this->equalTo(['override3', 'options' => '3'])]
             );
 
         $this->getInstance()->buildForm($builder, ['content_type' => $this->type]);
@@ -137,14 +139,15 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
     public function testBuildFormEventDispatcher()
     {
         $builder = $this->getBuilder();
-        $field = $this->getField('field', 'type');
+        $field = $this->getField('field');
 
         $callback = [
             function (BuilderEvent $argument) use ($builder) {
                 self::assertSame($this->type, $argument->getContentType());
                 self::assertSame($this->metadata, $argument->getMetadata());
                 self::assertSame($builder, $argument->getBuilder());
-                self::assertSame(['key' => 'value', 'content_type' => $this->type], $argument->getOptions());
+                self::assertSame(['key' => 'value'], $argument->getOptions());
+                self::assertNull($argument->getField());
 
                 return true;
             },
@@ -152,7 +155,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
                 self::assertSame($this->type, $argument->getContentType());
                 self::assertSame($this->metadata, $argument->getMetadata());
                 self::assertSame($builder, $argument->getBuilder());
-                self::assertSame(['key' => 'value', 'content_type' => $this->type], $argument->getOptions());
+                self::assertSame(['key' => 'value'], $argument->getOptions());
                 self::assertSame('field', $argument->getField());
 
                 return true;
@@ -160,9 +163,11 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
             function (FieldEvent $argument) use ($builder, $field) {
                 self::assertSame($this->type, $argument->getContentType());
                 self::assertSame($this->metadata, $argument->getMetadata());
-                self::assertSame(['key' => 'value', 'content_type' => $this->type], $argument->getOptions());
-                self::assertNotSame($field, $argument->getField());
-                self::assertEquals($field, $argument->getField());
+                self::assertSame(['key' => 'value'], $argument->getOptions());
+                self::assertInstanceOf(AttributeEditorInterface::class, $argument->getField());
+                self::assertSame('field', $argument->getField()->getName());
+                self::assertSame('type', $argument->getField()->getType());
+                self::assertSame(['key' => 'value'], $argument->getField()->getOptions());
 
                 return true;
             },
@@ -197,11 +202,15 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
                 [$this->equalTo(Events::PRE_BUILD_FIELD), $this->callback($callback[1])],
                 [$this->equalTo(Events::POST_BUILD_FIELD), $this->callback($callback[1])],
                 [$this->equalTo(Events::POST_BUILD), $this->callback($callback[0])]
-            );
+            )
+            ->willReturnArgument(1);
 
         $this->metadata->expects($this->once())
             ->method('getFields')
-            ->willReturn([$this->getAttribute('field'), $this->getAttribute('field')]);
+            ->willReturn([
+                $this->getAttribute('field', 'type', ['key' => 'value']),
+                $this->getAttribute('field', 'type', ['key' => 'value'])
+            ]);
 
         $this->type->expects($this->exactly(2))
             ->method('hasField')
@@ -246,7 +255,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
             self::assertSame($this->type, $argument->getContentType());
             self::assertSame($this->metadata, $argument->getMetadata());
             self::assertSame($builder, $argument->getBuilder());
-            self::assertSame(['key' => 'value', 'content_type' => $this->type], $argument->getOptions());
+            self::assertSame(['key' => 'value'], $argument->getOptions());
 
             return true;
         };
@@ -264,7 +273,8 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
             ->withConsecutive(
                 [$this->equalTo(Events::PRE_BUILD), $this->callback($callback)],
                 [$this->equalTo(Events::POST_BUILD), $this->callback($callback)]
-            );
+            )
+            ->willReturnArgument(1);
 
         $this->metadata->expects($this->once())
             ->method('getFields')
@@ -286,11 +296,12 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->dispatcher->expects($this->once())
             ->method('dispatch')
-            ->with($this->equalTo(Events::BUILD_FIELD), $this->callback($callback));
+            ->with($this->equalTo(Events::BUILD_FIELD), $this->callback($callback))
+            ->willReturnArgument(1);
 
         $this->metadata->expects($this->once())
             ->method('getFields')
-            ->willReturn([$this->getAttribute('field')]);
+            ->willReturn([$this->getAttribute('field', 'type')]);
 
         $this->type->expects($this->once())
             ->method('hasField')
@@ -298,7 +309,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->type->expects($this->once())
             ->method('getField')
-            ->willReturn($this->getField('field', 'type'));
+            ->willReturn($this->getField('field'));
 
         $builder = $this->getBuilder();
 
@@ -308,7 +319,10 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
     public function testBuildFormChangeField()
     {
         $callback = function (FieldEvent $argument) {
-            $argument->setField($this->getField('field2', 'type2', ['options2']));
+            $argument->getField()
+                ->setType('type2')
+                ->setOptions(['options2']);
+
             return true;
         };
 
@@ -318,11 +332,12 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->dispatcher->expects($this->once())
             ->method('dispatch')
-            ->with($this->equalTo(Events::BUILD_FIELD), $this->callback($callback));
+            ->with($this->equalTo(Events::BUILD_FIELD), $this->callback($callback))
+            ->willReturnArgument(1);
 
         $this->metadata->expects($this->once())
             ->method('getFields')
-            ->willReturn([$this->getAttribute('field1')]);
+            ->willReturn([$this->getAttribute('field1', 'type1', ['options1'])]);
 
         $this->type->expects($this->once())
             ->method('hasField')
@@ -330,7 +345,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
 
         $this->type->expects($this->once())
             ->method('getField')
-            ->willReturn($this->getField('field1', 'type1', ['options1']));
+            ->willReturn($this->getField('field1', ['options1']));
 
         $builder = $this->getBuilder();
         $builder->expects($this->once())
@@ -473,7 +488,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
     {
         $this->dispatcher = null;
 
-        self::assertInstanceOf('Symfony\\Component\\EventDispatcher\\EventDispatcherInterface', $this->getInstance()->getEventDispatcher());
+        self::assertInstanceOf(EventDispatcherInterface::class, $this->getInstance()->getEventDispatcher());
     }
 
     /**
@@ -518,36 +533,41 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name
+     * @param string $type
+     * @param array  $options
      *
      * @return AttributeInterface | \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getAttribute($name)
+    protected function getAttribute($name, $type, array $options = [])
     {
         $mock = $this->getMock('Integrated\\Common\\Form\\Mapping\\AttributeInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getName')
             ->willReturn($name);
 
+        $mock->expects($this->any())
+            ->method('getType')
+            ->willReturn($type);
+
+        $mock->expects($this->any())
+            ->method('getOptions')
+            ->willReturn($options);
+
         return $mock;
     }
 
     /**
      * @param string $name
-     * @param string $type
      * @param array  $options
      *
      * @return ContentTypeFieldInterface | \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getField($name, $type, array $options = [])
+    protected function getField($name, array $options = [])
     {
         $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeFieldInterface');
         $mock->expects($this->any())
             ->method('getName')
             ->willReturn($name);
-
-        $mock->expects($this->any())
-            ->method('getType')
-            ->willReturn($type);
 
         $mock->expects($this->any())
             ->method('getOptions')

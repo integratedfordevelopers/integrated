@@ -16,30 +16,30 @@ namespace Integrated\Common\Form\Mapping;
  */
 interface AttributeInterface
 {
-	/**
-	 * @return string
-	 */
-	public function getName();
+    /**
+     * @return string
+     */
+    public function getName();
 
-	/**
-	 * @return string
-	 */
-	public function getType();
+    /**
+     * @return string
+     */
+    public function getType();
 
-	/**
-	 * @return array
-	 */
-	public function getOptions();
+    /**
+     * @return array
+     */
+    public function getOptions();
 
-	/**
-	 * @param string $name
-	 * @return mixed
-	 */
-	public function getOption($name);
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function getOption($name);
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasOption($name);
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasOption($name);
 }

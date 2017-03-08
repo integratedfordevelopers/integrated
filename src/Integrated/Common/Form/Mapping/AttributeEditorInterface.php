@@ -16,22 +16,22 @@ namespace Integrated\Common\Form\Mapping;
  */
 interface AttributeEditorInterface extends AttributeInterface
 {
-	/**
-	 * @param string $type
-	 * @return self
-	 */
-	public function setType($type);
+    /**
+     * @param string $type
+     * @return self
+     */
+    public function setType($type);
 
-	/**
-	 * @param array $options
-	 * @return self
-	 */
-	public function setOptions(array $options);
+    /**
+     * @param array $options
+     * @return self
+     */
+    public function setOptions(array $options);
 
-	/**
-	 * @param string $name
-	 * @param mixed $value
-	 * @return self
-	 */
-	public function setOption($name, $value);
+    /**
+     * @param string $name
+     * @param mixed  $value
+     * @return self
+     */
+    public function setOption($name, $value);
 }
