@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Tests\Form\EventListener;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Bundle\ContentBundle\Form\EventListener\CustomFieldListener;
+use Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
 use Integrated\Common\ContentType\ContentTypeInterface;
@@ -100,7 +101,7 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with(
                 CustomFieldListener::FORM_NAME,
-                CustomFieldListener::FORM_TYPE,
+                CustomFieldsType::class,
                 [
                     'contentType' => $contentType
                 ]
@@ -134,7 +135,7 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
         ;
 
         $event
-            ->expects($this->once())
+            ->expects($this->never())
             ->method('getBuilder')
             ->willReturn($builder)
         ;
