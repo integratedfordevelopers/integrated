@@ -12,22 +12,38 @@
 namespace Integrated\Tests\Common\Content\Form\Event;
 
 use Integrated\Common\Content\Form\Event\FieldEvent;
-use Integrated\Common\ContentType\ContentTypeFieldInterface;
+use Integrated\Common\Form\Mapping\AttributeEditorInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class FieldEventTest extends FormEventTest
 {
-    public function testSetAndGetField()
+    /**
+     * @var AttributeEditorInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $field;
+
+    /**
+     * @var array
+     */
+    protected $options = ['value 1', 'value 2', 'key' => 'value'];
+
+    protected function setUp()
     {
-        $event = $this->getInstance();
+        parent::setUp();
 
-        self::assertNull($event->getField());
+        $this->field = $this->getMock(AttributeEditorInterface::class);
+    }
 
-        $event->setField($field = $this->getField());
+    public function testGetField()
+    {
+        self::assertSame($this->field, $this->getInstance()->getField());
+    }
 
-        self::assertSame($field, $event->getField());
+    public function testGetOptions()
+    {
+        self::assertSame($this->options, $this->getInstance()->getOptions());
     }
 
     public function testSetAndGetIgnore()
@@ -45,31 +61,11 @@ class FieldEventTest extends FormEventTest
         self::assertFalse($event->isIgnored());
     }
 
-    public function testSetAndGetOptions()
-    {
-        $event = $this->getInstance();
-
-        self::assertSame([], $event->getOptions());
-
-        $options = ['value 1', 'value 2', 'key' => 'value'];
-        $event->setOptions($options);
-
-        self::assertSame($options, $event->getOptions());
-    }
-
     /**
      * @return FieldEvent
      */
     protected function getInstance()
     {
-        return new FieldEvent($this->type, $this->metadata);
-    }
-
-    /**
-     * @return ContentTypeFieldInterface | \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function getField()
-    {
-        return $this->getMock('Integrated\\Common\\ContentType\\ContentTypeFieldInterface');
+        return new FieldEvent($this->type, $this->metadata, $this->field, $this->options);
     }
 }

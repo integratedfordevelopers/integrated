@@ -17,6 +17,7 @@ use Integrated\Common\Content\Form\Event\ViewEvent;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
+use Integrated\Common\Form\Mapping\Metadata\Field;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -73,69 +74,70 @@ class ContentFormType extends AbstractType
     {
         $dispatcher = $this->getEventDispatcher();
 
-        /** @var ContentTypeInterface $contentType */
-        $contentType = $options['content_type'];
+        /** @var ContentTypeInterface $type */
+        $type = $options['content_type'];
+        unset($options['content_type']);
 
-        $metadata = $this->metadataFactory->getMetadata($contentType->getClass());
+        $metadata = $this->metadataFactory->getMetadata($type->getClass());
 
         // Allow events to change the options or add fields at the start of the form
         if ($dispatcher->hasListeners(Events::PRE_BUILD)) {
-            $event = new BuilderEvent($contentType, $metadata, $builder);
-            $event->setOptions($options);
-
-            $dispatcher->dispatch(Events::PRE_BUILD, $event);
-
-            $options = $event->getOptions();
+            $options = $dispatcher->dispatch(Events::PRE_BUILD, new BuilderEvent(
+                $type,
+                $metadata,
+                $builder,
+                $options
+            ))->getOptions();
         }
 
         foreach ($metadata->getFields() as $field) {
             // Allow events to add fields before the supplied field
             if ($dispatcher->hasListeners(Events::PRE_BUILD_FIELD)) {
-                $event = new BuilderEvent($contentType, $metadata, $builder, $field->getName());
-                $event->setOptions($options);
-
-                $dispatcher->dispatch(Events::PRE_BUILD_FIELD, $event);
+                $dispatcher->dispatch(Events::PRE_BUILD_FIELD, new BuilderEvent(
+                    $type,
+                    $metadata,
+                    $builder,
+                    $options,
+                    $field->getName()
+                ));
             }
 
-            if ($contentType->hasField($field->getName())) {
-                $config = $contentType->getField($field->getName());
+            if ($type->hasField($field->getName())) {
+                $config = new Field($field->getName());
+
+                $config->setType($field->getType());
+                $config->setOptions($type->getField($field->getName())->getOptions() + $field->getOptions());
 
                 // Allow events to change the supplied field options or even remove it from the form
                 if ($dispatcher->hasListeners(Events::BUILD_FIELD)) {
-                    $event = new FieldEvent($contentType, $metadata);
-                    $event->setOptions($options);
+                    $event = new FieldEvent($type, $metadata, $config, $options);
                     $event->setData($builder->getData());
-                    $event->setField(clone $config); // don't allow the original to be changed.
 
-                    $dispatcher->dispatch(Events::BUILD_FIELD, $event);
-
-                    $config = $event->isIgnored() ? null : $event->getField();
+                    if ($dispatcher->dispatch(Events::BUILD_FIELD, $event)->isIgnored()) {
+                        $config = null;
+                    }
                 }
 
                 if ($config) {
-                    // The config could be changed but even though it possible don't accept a new field
-                    // name. The correct way to change the field name is to ignore this field and add a
-                    // new field before or after this field by using the PRE or POST_BUILD_FIELD event.
-
-                    $builder->add($field->getName(), $config->getType(), $config->getOptions());
+                    $builder->add($config->getName(), $config->getType(), $config->getOptions());
                 }
             }
 
             // Allow events to add fields after the supplied field
             if ($dispatcher->hasListeners(Events::POST_BUILD_FIELD)) {
-                $event = new BuilderEvent($contentType, $metadata, $builder, $field->getName());
-                $event->setOptions($options);
-
-                $dispatcher->dispatch(Events::POST_BUILD_FIELD, $event);
+                $dispatcher->dispatch(Events::POST_BUILD_FIELD, new BuilderEvent(
+                    $type,
+                    $metadata,
+                    $builder,
+                    $options,
+                    $field->getName()
+                ));
             }
         }
 
         // Allow events to add fields at the end of the form
         if ($dispatcher->hasListeners(Events::POST_BUILD)) {
-            $event = new BuilderEvent($contentType, $metadata, $builder);
-            $event->setOptions($options);
-
-            $dispatcher->dispatch(Events::POST_BUILD, $event);
+            $dispatcher->dispatch(Events::POST_BUILD, new BuilderEvent($type, $metadata, $builder, $options));
         }
     }
 
@@ -146,17 +148,21 @@ class ContentFormType extends AbstractType
     {
         $dispatcher = $this->getEventDispatcher();
 
-        /** @var ContentTypeInterface $contentType */
-        $contentType = $options['content_type'];
-
-        $metadata = $this->metadataFactory->getMetadata($contentType->getClass());
-
-        if ($dispatcher->hasListeners(Events::PRE_VIEW)) {
-            $event = new ViewEvent($contentType, $metadata, $view, $form);
-            $event->setOptions($options);
-
-            $this->getEventDispatcher()->dispatch(Events::PRE_VIEW, $event);
+        if (!$dispatcher->hasListeners(Events::PRE_VIEW)) {
+            return;
         }
+
+        /** @var ContentTypeInterface $type */
+        $type = $options['content_type'];
+        unset($options['content_type']);
+
+        $dispatcher->dispatch(Events::PRE_VIEW, new ViewEvent(
+            $type,
+            $this->metadataFactory->getMetadata($type->getClass()),
+            $view,
+            $form,
+            $options
+        ));
     }
 
     /**
@@ -166,17 +172,21 @@ class ContentFormType extends AbstractType
     {
         $dispatcher = $this->getEventDispatcher();
 
-        /** @var ContentTypeInterface $contentType */
-        $contentType = $options['content_type'];
-
-        $metadata = $this->metadataFactory->getMetadata($contentType->getClass());
-
-        if ($dispatcher->hasListeners(Events::POST_VIEW)) {
-            $event = new ViewEvent($contentType, $metadata, $view, $form);
-            $event->setOptions($options);
-
-            $this->getEventDispatcher()->dispatch(Events::POST_VIEW, $event);
+        if (!$dispatcher->hasListeners(Events::POST_VIEW)) {
+            return;
         }
+
+        /** @var ContentTypeInterface $type */
+        $type = $options['content_type'];
+        unset($options['content_type']);
+
+        $dispatcher->dispatch(Events::POST_VIEW, new ViewEvent(
+            $type,
+            $this->metadataFactory->getMetadata($type->getClass()),
+            $view,
+            $form,
+            $options
+        ));
     }
 
     /**
@@ -184,10 +194,6 @@ class ContentFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $dataClassNormalizer = function (Options $options, $value) {
-            return $options['content_type']->getClass();
-        };
-
         $contentTypeNormalizer = function (Options $options, $value) {
             if (is_string($value)) {
                 $value = $this->resolver->getType($value);
@@ -204,6 +210,10 @@ class ContentFormType extends AbstractType
             return $value;
         };
 
+        $dataClassNormalizer = function (Options $options, $value) {
+            return $options['content_type']->getClass();
+        };
+
         $emptyDataNormalizer = function (Options $options, $value) {
             return $options['content_type']->create();
         };
@@ -211,8 +221,8 @@ class ContentFormType extends AbstractType
         $resolver
             ->setRequired('content_type')
             ->setAllowedTypes('content_type', [ContentTypeInterface::class, 'string'])
-            ->setNormalizer('data_class', $dataClassNormalizer)
             ->setNormalizer('content_type', $contentTypeNormalizer)
+            ->setNormalizer('data_class', $dataClassNormalizer)
             ->setNormalizer('empty_data', $emptyDataNormalizer)
         ;
     }

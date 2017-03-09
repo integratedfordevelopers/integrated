@@ -25,6 +25,11 @@ class BuilderEventTest extends FormEventTest
      */
     protected $builder;
 
+    /**
+     * @var array
+     */
+    protected $options = ['value 1', 'value 2', 'key' => 'value'];
+
     protected function setUp()
     {
         parent::setUp();
@@ -49,12 +54,11 @@ class BuilderEventTest extends FormEventTest
     {
         $event = $this->getInstance();
 
+        self::assertSame($this->options, $event->getOptions());
+
+        $event->setOptions([]);
+
         self::assertSame([], $event->getOptions());
-
-        $options = ['value 1', 'value 2', 'key' => 'value'];
-        $event->setOptions($options);
-
-        self::assertSame($options, $event->getOptions());
     }
 
     /**
@@ -64,6 +68,6 @@ class BuilderEventTest extends FormEventTest
      */
     protected function getInstance($field = null)
     {
-        return new BuilderEvent($this->type, $this->metadata, $this->builder, $field);
+        return new BuilderEvent($this->type, $this->metadata, $this->builder, $this->options, $field);
     }
 }
