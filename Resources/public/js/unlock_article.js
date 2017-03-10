@@ -4,6 +4,7 @@ var modal = $("#content-edit-modal");
 /* handle BACK|FORWARD buttons in browser */
 history.pushState(null, null, location.href);
 window.onpopstate = function(e){
+    $(':focus').blur();
     if ($('form.content-form').data('changed')) {
         $('.live-page', modal).data('return_url', document.referrer);
         modal.modal();
@@ -18,6 +19,7 @@ window.onpopstate = function(e){
 form.on('change', function () {
     form.data('changed', true);
 });
+
 $(function () {
     if (typeof tinymce !== 'undefined') {
         tinymce.on('AddEditor', function (e) {
