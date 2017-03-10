@@ -80,7 +80,7 @@ $(document).ready(function() {
         var html = '<div class="col-sm-3"><div class="thumbnail"><div class="thumbnail-img">';
 
         if (item.mimeType.match('^video\/(.*)$')) {
-            html += '<video poster="{{poster}}" class="img-responsive click-insert"><source src="{{source}}" type="{{mimeType}}"></video>';
+            html += '<video poster="{{poster}}" controls class="img-responsive click-insert"><source src="{{source}}" type="{{mimeType}}"></video>';
         } else if (item.mimeType.match('^image\/(.*)$')) {
             html += '<img src="{{source}}" class="img-responsive click-insert" title="{{title}}" alt="{{title}}" data-integrated-id="{{id}}" />';
         } else {
