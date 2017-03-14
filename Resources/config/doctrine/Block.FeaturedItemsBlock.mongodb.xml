@@ -5,6 +5,9 @@
 
     <document name="Integrated\Bundle\BlockBundle\Document\Block\FeaturedItemsBlock">
 
+        <field name="publishedTitle" type="string" />
+        <field name="useTitle" type="boolean" />
+
         <embed-many field="items" target-document="Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem" />
 
     </document>
