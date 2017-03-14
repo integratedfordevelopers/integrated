@@ -22,7 +22,7 @@ $(".relation-items").each(function() {
             data: function(param) {
                 return {
                     relation: relation_id,
-                    limit: 5,
+                    limit: 100,
                     sort: 'title',
                     _format: 'json',
                     q: typeof param.term != 'undefined' ? param.term + '*' : ''
