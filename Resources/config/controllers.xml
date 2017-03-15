@@ -7,7 +7,7 @@
     <services>
 
         <service id="integrated_storage.controller_file" class="Integrated\Bundle\StorageBundle\Controller\FileController">
-            <argument type="service" id="integrated_storage.reflection_cache" />
+            <argument type="service" id="integrated_storage.metadata" />
         </service>
 
     </services>

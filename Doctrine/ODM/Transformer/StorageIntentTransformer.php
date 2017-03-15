@@ -12,9 +12,9 @@
 namespace Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer;
 
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
+use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
+use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
 
 use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -35,20 +35,20 @@ class StorageIntentTransformer
     protected $decision;
 
     /**
-     * @var ReflectionCacheInterface
+     * @var MetadataFactoryInterface
      */
-    protected $reflection;
+    protected $metadata;
 
     /**
-     * @param ManagerInterface $manager
-     * @param DecisionInterface $decision
-     * @param ReflectionCacheInterface $reflection
+     * @param ManagerInterface         $manager
+     * @param DecisionInterface        $decision
+     * @param MetadataFactoryInterface $metadata
      */
-    public function __construct(ManagerInterface $manager, DecisionInterface $decision, ReflectionCacheInterface $reflection)
+    public function __construct(ManagerInterface $manager, DecisionInterface $decision, MetadataFactoryInterface $metadata)
     {
         $this->manager = $manager;
-        $this->reflection = $reflection;
         $this->decision = $decision;
+        $this->metadata = $metadata;
     }
 
     /**
@@ -56,11 +56,10 @@ class StorageIntentTransformer
      */
     public function transform(DoctrineDocument $document)
     {
-        // Fetch the reflection class from cache
-        $reflection = $this->reflection->getPropertyReflectionClass($document->getClassName());
+        $metadata = $this->metadata->getMetadata($document->getClassName());
 
         // Check if we've got a property that has
-        foreach ($reflection->getTargetProperties() as $property) {
+        foreach ($metadata->getProperties() as $property) {
             // Extract the value
             $value = $document->get($property->getPropertyName());
             if ($value instanceof StorageIntentUpload) {

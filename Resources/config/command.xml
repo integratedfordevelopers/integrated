@@ -17,6 +17,7 @@
             <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="integrated_storage.metadata" />
 
             <tag name="console.command" />
         </service>
@@ -26,6 +27,7 @@
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.manager" />
             <argument type="service" id="integrated_storage.decision" />
+            <argument type="service" id="integrated_storage.metadata" />
 
             <tag name="console.command" />
         </service>
@@ -33,6 +35,7 @@
         <service id="integrated_storage.command_migrate" class="Integrated\Bundle\StorageBundle\Command\MigrateCommand">
             <argument type="service" id="integrated_storage.database" />
             <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="integrated_storage.metadata" />
 
             <tag name="console.command" />
         </service>
