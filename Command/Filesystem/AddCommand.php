@@ -15,8 +15,7 @@ use Integrated\Bundle\StorageBundle\Storage\Collection\Map\ContentReflectionMap;
 use Integrated\Bundle\StorageBundle\Storage\Collection\Map\FileMap;
 use Integrated\Bundle\StorageBundle\Storage\Collection\Walk\DocumentWalk;
 use Integrated\Bundle\StorageBundle\Storage\Collection\Walk\FilesystemWalk;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Cache\ObjectCache;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\PropertyReflection;
+use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Util\ProgressIteratorUtil;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 
@@ -52,26 +51,34 @@ class AddCommand extends Command
     protected $storage;
 
     /**
-     * @var PropertyReflection[]
-     */
-    protected $reflectionClasses;
-
-    /**
      * @var DecisionInterface
      */
     private $decision;
 
     /**
-     * @param DatabaseInterface $database
-     * @param FilesystemRegistry $registry
-     * @param ManagerInterface $storage
+     * @var MetadataFactoryInterface
      */
-    public function __construct(DatabaseInterface $database, FilesystemRegistry $registry, ManagerInterface $storage, DecisionInterface $decision)
-    {
+    private $metadata;
+
+    /**
+     * @param DatabaseInterface        $database
+     * @param FilesystemRegistry       $registry
+     * @param ManagerInterface         $storage
+     * @param DecisionInterface        $decision
+     * @param MetadataFactoryInterface $metadata
+     */
+    public function __construct(
+        DatabaseInterface $database,
+        FilesystemRegistry $registry,
+        ManagerInterface $storage,
+        DecisionInterface $decision,
+        MetadataFactoryInterface $metadata
+    ) {
         $this->database = $database;
         $this->registry = $registry;
         $this->storage = $storage;
         $this->decision = $decision;
+        $this->metadata = $metadata;
 
         parent::__construct();
     }
@@ -102,15 +109,14 @@ class AddCommand extends Command
 
         if ($this->registry->exists($filesystem)) {
             // This we'll need to do some work
-            $reflection = new ObjectCache();
             $iteratorUtil = new ProgressIteratorUtil($this->database->getObjects(), $output);
 
             $output->writeln('Running four steps; fetch, check for adding, writing file and save database');
 
             $iteratorUtil
-                ->map(ContentReflectionMap::storageProperties($reflection))
+                ->map(ContentReflectionMap::storageProperties($this->metadata))
                 ->map(FileMap::documentAllowed($this->decision, $filesystem))
-                ->walk(FilesystemWalk::add($this->storage, $reflection, $filesystem))
+                ->walk(FilesystemWalk::add($this->storage, $this->metadata, $filesystem))
                 ->walk(DocumentWalk::save($this->database))
             ;
         } else {

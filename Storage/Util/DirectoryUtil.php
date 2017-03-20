@@ -11,24 +11,57 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Util;
 
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
 class DirectoryUtil
 {
     /**
-     * @param string $mount
      * @param string $directory
+     * @param StorageInterface $storage
+     * @param string|null $overwriteExtension
+     * @return \SplFileInfo
      */
-    public static function createDirectory($mount, $directory)
+    public static function cachePathFile($directory, StorageInterface $storage, $overwriteExtension = null)
     {
-        // Create the directory
-        $directories = explode('/', str_replace($mount, '', $directory));
-        for ($i = 1; $i <= count($directories); $i++) {
-            $dir = sprintf('%s/%s', $mount, implode('/', array_slice($directories, 0, $i)));
+        // Create the filename
+        $file = new \SplFileInfo(
+            sprintf(
+                '%s/%s/%s/%s',
+                $directory,
+                substr($storage->getIdentifier(), 0, 2),
+                substr($storage->getIdentifier(), 2, 2),
+                $overwriteExtension ?: $storage->getIdentifier()
+            )
+        );
 
-            if (!is_dir($dir)) {
-                mkdir($dir);
+        // Create a directory
+        DirectoryUtil::createDirectory($file->getPath());
+
+        return $file;
+    }
+
+    /**
+     * @param string $directory
+     * @throws \LogicException
+     */
+    public static function createDirectory($directory)
+    {
+        // Skip existing directories
+        if (!is_dir($directory)) {
+            // Create a directory array
+            $directories = explode('/', $directory);
+
+            $max = count($directories);
+            for ($i = 2; $i <= $max; $i++) {
+                $dir = implode('/', array_slice($directories, 0, $i));
+
+                // You might wanna read is as check as follows: if it exists, make it, check if it did
+                if (!is_dir($dir) && !@mkdir($dir) && !is_dir($dir)) {
+                    throw new \LogicException(sprintf('Can not create directory %s', $dir));
+                }
             }
         }
     }

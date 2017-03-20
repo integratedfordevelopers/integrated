@@ -33,6 +33,8 @@
             <argument type="service" id="integrated_asset.manager.javascript_manager" />
             <argument type="service" id="translator" />
             <argument type="service" id="image.handling" />
+            <argument type="service" id="integrated_image.format_web" />
+            <argument type="service" id="integrated_image.container_converter" />
 
             <tag name="form.type" />
         </service>

@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Collection\Walk;
 
+use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\ReflectionCacheInterface;
+use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -34,15 +34,16 @@ class FilesystemWalk
     const REMOVE = 'remove';
 
     /**
-     * @param ManagerInterface $storage
-     * @param ReflectionCacheInterface $reflection
-     * @param string $filesystem
+     * @param ManagerInterface         $storage
+     * @param MetadataFactoryInterface $metadata
+     * @param string                   $filesystem
+     *
      * @return \Closure
      */
-    public static function remove(ManagerInterface $storage, ReflectionCacheInterface $reflection, $filesystem)
+    public static function remove(ManagerInterface $storage, MetadataFactoryInterface $metadata, $filesystem)
     {
-        return function(DoctrineDocument $document) use ($storage, $reflection, $filesystem) {
-            foreach ($reflection->getPropertyReflectionClass($document->getClassName())->getTargetProperties() as $property) {
+        return function (DoctrineDocument $document) use ($storage, $metadata, $filesystem) {
+            foreach ($metadata->getMetadata($document->getClassName())->getProperties() as $property) {
                 /** @var StorageInterface|bool $file */
                 if ($file = $document->get($property->getPropertyName())) {
                     // Get the list
@@ -68,15 +69,16 @@ class FilesystemWalk
     }
 
     /**
-     * @param ManagerInterface $storage
-     * @param ReflectionCacheInterface $reflection
-     * @param string $filesystem
+     * @param ManagerInterface         $storage
+     * @param MetadataFactoryInterface $metadata
+     * @param string                   $filesystem
+     *
      * @return \Closure
      */
-    public static function add(ManagerInterface $storage, ReflectionCacheInterface $reflection, $filesystem)
+    public static function add(ManagerInterface $storage, MetadataFactoryInterface $metadata, $filesystem)
     {
-        return function(DoctrineDocument $document) use ($storage, $reflection, $filesystem) {
-            foreach ($reflection->getPropertyReflectionClass($document->getClassName())->getTargetProperties() as $property) {
+        return function (DoctrineDocument $document) use ($storage, $metadata, $filesystem) {
+            foreach ($metadata->getMetadata($document->getClassName())->getProperties() as $property) {
                 /** @var StorageInterface|bool $file */
                 if ($file = $document->get($property->getPropertyName())) {
                     // Get the list

@@ -21,7 +21,7 @@ use Doctrine\ODM\MongoDB\Events;
 use Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove;
 use Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer;
 use Integrated\Bundle\StorageBundle\Storage\Command\DeleteCommand;
-use Integrated\Bundle\StorageBundle\Storage\Reflection\Document\DoctrineDocument;
+use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -34,12 +34,12 @@ class FileEventListener implements EventSubscriber
     /**
      * @var ManagerInterface
      */
-    protected $manager;
+    private $manager;
 
     /**
      * @var FilesystemRemove
      */
-    protected $filesystemRemove;
+    private $filesystemRemove;
 
     /**
      * @var StorageIntentTransformer

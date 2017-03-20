@@ -9,16 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\StorageBundle\Storage\Reflection;
+namespace Integrated\Bundle\StorageBundle\Storage\Mapping;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-interface ReflectionCacheInterface
+interface PropertyInterface
 {
     /**
-     * @param string $class
-     * @return PropertyReflection
+     * @return string
      */
-    public function getPropertyReflectionClass($class);
+    public function getPropertyName();
+
+    /**
+     * @param array $document
+     * @return string | null
+     */
+    public function getFileId(array $document);
 }

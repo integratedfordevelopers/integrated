@@ -78,7 +78,7 @@ class StorageIntentUpload extends File implements StorageInterface
     public function getMetadata()
     {
         return new Metadata(
-            $this->uploadedFile->getExtension(),
+            $this->uploadedFile->getClientOriginalExtension(),
             $this->uploadedFile->getMimeType(),
             new ArrayCollection(),
             new ArrayCollection()
