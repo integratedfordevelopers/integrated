@@ -15,6 +15,7 @@
         <service id="integrated_image.validator_converter" class="%integrated_image.validator_converter%">
             <argument type="service" id="integrated_image.container_converter" />
             <argument>%integated_image.converter.web_format%</argument>
+            <argument>%integrated_image.format%</argument>
 
             <tag name="validator.constraint_validator" alias="integrated_image.validator_ontheformatflyconverter"/>
         </service>

@@ -17,17 +17,12 @@
 
     <services>
 
+        <service id="integrated_image.container_converter" class="%integrated_image.container_converter%" />
+
         <service id="integated_image.converter_imagemagick" class="%integated_image.converter_magick%">
             <argument type="service" id="integrated_storage.cache_app" />
 
             <tag name="integrated_image.converter" />
-        </service>
-
-        <service id="integrated_image.container_converter" class="%integrated_image.container_converter%">
-
-            <argument>%kernel.cache_dir%</argument>
-            <argument type="service" id="integrated_storage.cache_app" />
-
         </service>
 
         <service id="integrated_image.converter_web_format" class="%integrated_image.converter_web_format%">
