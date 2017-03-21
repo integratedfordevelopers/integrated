@@ -17,10 +17,10 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Gregwar\ImageBundle\Services\ImageHandling;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
+use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -43,9 +43,9 @@ abstract class AbstractDropzoneType extends AbstractType
     private $translator;
 
     /**
-     * @var ImageHandling
+     * @var ImageExtension
      */
-    private $imageHandling;
+    private $imageExtension;
 
     /**
      * @var string
@@ -56,20 +56,20 @@ abstract class AbstractDropzoneType extends AbstractType
      * @param AssetManager $stylesheets
      * @param AssetManager $javascripts
      * @param TranslatorInterface $translator
-     * @param ImageHandling $imageHandling
+     * @param ImageExtension $imageExtension
      * @param string $type
      */
     protected function __construct(
         AssetManager $stylesheets,
         AssetManager $javascripts,
         TranslatorInterface $translator,
-        ImageHandling $imageHandling,
+        ImageExtension $imageExtension,
         $type
     ) {
         $this->stylesheets = $stylesheets;
         $this->javascripts = $javascripts;
         $this->translator = $translator;
-        $this->imageHandling = $imageHandling;
+        $this->imageExtension = $imageExtension;
         $this->type = $type;
     }
 
@@ -102,29 +102,25 @@ abstract class AbstractDropzoneType extends AbstractType
         $view->vars['type'] = $this->type;
 
         // builds the variable options passed to the javascript
-
-        $options = ['captions' => [
+        $dropzone['captions'] = [
                 'removeConfirmation' => $this->translator->trans(sprintf('Are you sure you want to remove this %s?', $this->type)),
                 'errors' => [
                     'filesLimit' => $this->translator->trans('You can only upload one ' . $this->type),
                     'filesType' => $this->translator->trans('Only Images are allowed to be uploaded.'),
                 ]
-        ]];
+        ];
 
         if (isset($view->vars['preview']) && $view->vars['preview'] instanceof StorageInterface) {
             /** @var StorageInterface $preview */
             $preview = $view->vars['preview'];
 
-            $options['files'] = [[
+            $dropzone['files'] = [[
                 'name' => $preview->getPathname(),
                 'type' => $preview->getMetadata()->getMimeType(),
-                'file' => $resizedPath = (false === strpos($preview->getMetadata()->getMimeType(), 'image') ?
-                    $preview->getPathname() :
-                    $this->imageHandling->open($preview)->cropResize(300, 150)->jpeg()
-                ),
+                'file' => $this->imageExtension->image($preview)->cropResize(300, 150)->jpeg()
             ]];
         }
 
-        $view->vars['options'] = $options;
+        $view->vars['options'] = $dropzone;
     }
 }
