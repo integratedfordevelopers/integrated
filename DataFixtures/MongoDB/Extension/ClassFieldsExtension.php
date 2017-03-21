@@ -62,7 +62,6 @@ trait ClassFieldsExtension
 
             $fields[$field->getName()] = (new Field())
                 ->setName($field->getName())
-                ->setType($field->getType())
                 ->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
         }
 
