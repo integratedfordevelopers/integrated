@@ -25,33 +25,15 @@ use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 class Container
 {
     /**
-     * @const string
-     */
-    const DIRECTORY = 'integrated/converter';
-
-    /**
-     * @var AppCache
-     */
-    private $cache;
-
-    /**
-     * @var string
-     */
-    private $directory;
-
-    /**
      * @var ArrayCollection|AdapterInterface[]
      */
     private $adapters;
 
     /**
-     * @param string $directory
-     * @param AppCache $cache
+     * Initialize class properties
      */
-    public function __construct($directory, AppCache $cache)
+    public function __construct()
     {
-        $this->cache = $cache;
-        $this->directory = $directory;
         $this->adapters = new ArrayCollection();
     }
 

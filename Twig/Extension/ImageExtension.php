@@ -74,11 +74,12 @@ class ImageExtension extends \Twig_Extension
             try {
                 $image = $this->webFormatConverter->convert(StorageModelFactory::json($json))->getPathname();
             } catch (\Exception $e) {
-                // Left blank
+                // Set the fallback image
+                $image = false;
             }
         }
 
-        return $this->imageHandling->open((string) $image);
+        return $this->imageHandling->open($image);
     }
 
     /**
@@ -88,10 +89,13 @@ class ImageExtension extends \Twig_Extension
     public function webImage($image)
     {
         if ($image instanceof StorageInterface) {
-            // Returns the image in a webformat
-            return $this->imageHandling->open(
-                $this->webFormatConverter->convert($image)->getPathname()
-            );
+            try {
+                // Returns the image in a webformat
+                return $this->imageHandling->open($this->webFormatConverter->convert($image)->getPathname());
+            } catch (\Exception $e) {
+                // Set the fallback image
+                $image = false;
+            }
         }
 
         return $this->imageTwig->webImage($image);
@@ -104,8 +108,13 @@ class ImageExtension extends \Twig_Extension
     public function image($image)
     {
         if ($image instanceof StorageInterface) {
-            // Returns the image in a webformat
-            $image = $this->webFormatConverter->convert($image)->getPathname();
+            try {
+                // Returns the image in a webformat
+                $image = $this->webFormatConverter->convert($image)->getPathname();
+            } catch (\Exception $e) {
+                // Set the fallback image
+                $image = false;
+            }
         }
 
         return $this->imageHandling->open($image);
