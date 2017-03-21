@@ -18,6 +18,7 @@ use Integrated\Bundle\ContentBundle\Form\Util\FormUtil;
 use Integrated\Bundle\StorageBundle\Form\EventSubscriber\FileEventSubscriber;
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
 
+use Integrated\Bundle\StorageBundle\Storage\Cache\AppCache;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
@@ -35,16 +36,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class FileType extends AbstractType
 {
     /**
-     * @var ManagerInterface
+     * @var AppCache
      */
-    protected $manager;
+    private $appCache;
 
     /**
      * @param ManagerInterface $manager
      */
-    public function __construct(ManagerInterface $manager)
+    public function __construct(AppCache $appCache)
     {
-        $this->manager = $manager;
+        $this->appCache = $appCache;
     }
 
     /**
@@ -82,7 +83,6 @@ class FileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('file', 'file', [
-            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage',
             'required' => false,
             'mapped' => false,
             'empty_data' => null,
@@ -94,7 +94,7 @@ class FileType extends AbstractType
             'required' => false,
         ]);
 
-        $builder->addEventSubscriber(new FileEventSubscriber($this->manager));
+        $builder->addEventSubscriber(new FileEventSubscriber($this->appCache));
     }
 
     /**

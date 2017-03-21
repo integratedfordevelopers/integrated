@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer;
 
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
+use Integrated\Bundle\StorageBundle\Form\Upload\StorageOriginal;
 use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
 use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
@@ -73,6 +74,9 @@ class StorageIntentTransformer
                         $this->decision->getFilesystems($document)
                     )
                 );
+            } elseif ($value instanceof StorageOriginal) {
+                // Set back the original value
+                $document->set($property->getPropertyName(), $value->getOriginal());
             } elseif (is_array($value)) {
                 // Only change the property whenever there's an embedded intent upload since changing triggers stuff
                 $changes = 0;
