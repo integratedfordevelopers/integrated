@@ -66,11 +66,13 @@ $(document).ready(function () {
     });
 
     $('button[type="submit"]').click(function() {
-        $('button[type="submit"]').addClass('button-submitted').off("click").click(function(e) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-        });
-        $(this).prepend('<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>');
+        if ($(this).get(0).form && $(this).get(0).form.checkValidity()) {
+            $('button[type="submit"]').addClass('button-submitted').off("click").click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            });
+            $(this).prepend('<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>');
+        }
     });
 });
 
