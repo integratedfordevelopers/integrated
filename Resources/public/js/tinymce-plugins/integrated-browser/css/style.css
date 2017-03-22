@@ -10,6 +10,7 @@
     position: relative;
     height: 150px;
     overflow: hidden;
+    cursor: pointer;
 }
 .thumbnail-img img {
     position: absolute;
@@ -24,4 +25,9 @@
 .thumbnail img.portrait {
     width: 100%;
     height: auto;
+}
+.thumbnail-img video {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }

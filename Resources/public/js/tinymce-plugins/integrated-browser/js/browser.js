@@ -1,14 +1,13 @@
 $(document).ready(function() {
-
     /**
-     * tinimce instance from the top level window object
+     * TinyMCE instance from the top level window object
      * @type object
      */
     var tinymce = top.tinymce;
 
     /**
-     * window modal object created by tinymce object
-     * @type object
+     * Window modal object created by tinymce object
+     * @type {Object}
      */
     var mcemodal = tinymce.activeEditor.windowManager.getWindows()[0];
 
@@ -23,49 +22,41 @@ $(document).ready(function() {
     var previousCall = null;
 
     /**
-     * Render image lists into thumbnail container
-     * @param  object images    images collection retreived from the API
-     * @return void
+     * Render result lists into thumbnail container
+     * @param {object} images Collection retreived from the API
      */
-    function renderImage(images){
+    function render (images) {
+        var regex = /\{\{[a-z]+\}\}/gi;
         var rowTemplate = '<div class="row">{{thumbnails}}</div>';
-        var thumbnailTemplate =
-            '<div class="col-sm-3">'+
-            '<div class="thumbnail">'+
-            '<div class="thumbnail-img">'+
-            '<img src="{{img-source}}" class="img-responsive btn-insert-image" title="{{img-title}}" alt="{{img-alt}}" data-integrated-id="{{img-id}}" />'+
-            '</div>'+
-            '</div>'+
-            '</div>';
-
         var container       = $('#thumbnail-container');
         var temporaryHtml   = '';
         var temporaryThumb  = '';
 
         for(var i = 0; i < images.length; i++){
-            temporaryThumb += thumbnailTemplate.replace(
-                /\{\{img-source\}\}/g,
-                Routing.generate(
-                    'integrated_storage_file',
-                    {
-                        id: images[i].id,
-                        ext: images[i].extension
-                    },
-                    true
-                )
-            ).replace(
-                /\{\{img-alt\}\}/g,
-                images[i].title
-            ).replace(
-                /\{\{img-id\}\}/g,
-                images[i].id
-            ).replace(
-                /\{\{img-title\}\}/g,
-                images[i].title
-            ).replace(
-                /\{\{img-alt\}\}/g,
-                images[i].alternate
+            // Grab the item html
+            var item = renderItem(images[i]);
+
+            // Grab the route
+            images[i].source = Routing.generate(
+                'integrated_storage_file',
+                {
+                    id: images[i].id,
+                    ext: images[i].extension
+                },
+                true
             );
+
+            // Parse values
+            var match = [];
+            while (null != (match = regex.exec(item))) {
+                item = item.replace(
+                    match[0],
+                    images[i][match[0].substr(2, (match[0].length-4))]
+                );
+            }
+
+            // Add it
+            temporaryThumb += item;
 
             if(i % 4 == 3 || i == images.length - 1){
                 temporaryHtml  += rowTemplate.replace(/\{\{thumbnails\}\}/g, temporaryThumb);
@@ -74,16 +65,36 @@ $(document).ready(function() {
         }
 
         if(images.length == 0){
-            temporaryHtml = '<p class="text-center">No images found.</p>';
+            temporaryHtml = '<p class="text-center">No content found.</p>';
         }
 
         container.html(temporaryHtml);
     }
 
     /**
+     * @param {object} item
+     * @returns {string}
+     */
+    function renderItem(item)
+    {
+        var html = '<div class="col-sm-3"><div class="thumbnail"><div class="thumbnail-img">';
+
+        if (item.mimeType.match('^video\/(.*)$')) {
+            html += '<video poster="{{poster}}" controls class="img-responsive click-insert" data-integrated-id="{{id}}"><source src="{{source}}" type="{{mimeType}}"></video>';
+        } else if (item.mimeType.match('^image\/(.*)$')) {
+            html += '<img src="{{source}}" class="img-responsive click-insert" title="{{title}}" alt="{{title}}" data-integrated-id="{{id}}" />';
+        } else {
+            html += '<p>Not supported content type</p>'
+        }
+
+        html += '</div></div></div>';
+
+        return html;
+    }
+
+    /**
      * Render pagination part of the image browser
-     * @param  object data  Pagination data retreived from the API
-     * @return void
+     * @param {object} page Pagination data retrieved from the API
      */
     function renderPagination(page){
         var paginationTemplate =
@@ -101,11 +112,11 @@ $(document).ready(function() {
         var pageNum = '';
 
         /** hide the pagination if only one page found and return immediately */
-        if(page.pageCount == 1){
+        if(page.pageCount == 1) {
             container.html('');
             thumbnailContainer.css('height', '520px');
             return;
-        }else{
+        } else {
             thumbnailContainer.removeAttr('style');
         }
 
@@ -114,7 +125,7 @@ $(document).ready(function() {
             var i = page.page - 2 - (page.pageCount - page.page < 2 ? 2 - (page.pageCount - page.page) : 0);
             i <= page.page + 2 + (page.page <= 2 ? 3 - page.page : 0);
             i++
-        ){
+        ) {
             if(typeof page.pages[i] != 'undefined'){
                 pageNum +=  '<li '+(i == page.page ? 'class="active"' : '')+'>'+
                     '<a href="'+(i == page.page ? '#' : page.pages[i].href)+'">'+i+'</a>'+
@@ -141,10 +152,12 @@ $(document).ready(function() {
         );
 
         container.html(temporaryHtml);
-
     }
 
-    refreshImages = function() {
+    /**
+     * Refresh the content
+     */
+    function refresh () {
         $('#thumbnail-container').loader('show');
 
         var params = {
@@ -160,12 +173,12 @@ $(document).ready(function() {
 
         previousCall =
             $.get(Routing.generate('integrated_content_content_index', params), function(data) {
-                renderImage(data.items);
+                render(data.items);
                 renderPagination(data.pagination);
             }, 'json')
                 .error(function(xhr, status){
                     if(status !== 'abort'){
-                        $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>');
+                        $('#thumbnail-container').html('<p class="text-center">Error occured while loading content</p>');
                     }
                 }).done(function () {
                 $('#thumbnail-container').loader('hide');
@@ -177,11 +190,14 @@ $(document).ready(function() {
      * Type ahead search handler
      */
     $(document).on('keyup', '#txt-search', function () {
-        refreshImages();
+        refresh();
     });
 
+    /**
+     * Content type switcher
+     */
     $(document).on('change', '#type-search', function () {
-        refreshImages();
+        refresh();
     });
 
     /**
@@ -195,15 +211,15 @@ $(document).ready(function() {
 
         if(href !== '#'){
             $.get(href, function(data){
-                renderImage(data.items);
+                render(data.items);
                 renderPagination(data.pagination);
             }, 'json')
-            .error(function(){
-                $('#thumbnail-container').html('<p class="text-center">Error occured while loading image</p>')
-            })
-            .done(function() {
-                $('#thumbnail-container').loader('hide');
-            });
+                .error(function(){
+                    $('#thumbnail-container').html('<p class="text-center">Error occured while loading content</p>')
+                })
+                .done(function() {
+                    $('#thumbnail-container').loader('hide');
+                });
         }
     });
 
@@ -211,13 +227,14 @@ $(document).ready(function() {
      * Image thumbnail click handler
      * insert the image into editor and close the window
      */
-    $('#thumbnail-container').on('click', '.btn-insert-image', function(e){
+    $('#thumbnail-container').on('click', '.click-insert', function(e){
         e.preventDefault();
-        var image = $(this);
-        image.removeClass('btn-insert-image');
+
+        var item = $(this);
+        item.removeClass('click-insert');
 
         // Inject the image
-        tinymce.activeEditor.insertContent(image[0].outerHTML);
+        tinymce.activeEditor.insertContent(item[0].outerHTML);
         mcemodal.close();
     });
 
@@ -228,7 +245,7 @@ $(document).ready(function() {
         var buttonHtml = '';
 
         if (contentTypes.length == 1) {
-            buttonHtml = '<a target="_blank" href="'+image.path+'" class="btn btn-primary btn-content-add" role="button">Upload new '+ contentTypes[0].name +'</a>';
+            buttonHtml = '<a target="_blank" href="'+ contentTypes[0].path +'" class="btn btn-primary btn-content-add" role="button">Upload new '+ contentTypes[0].name +'</a>';
         } else if (contentTypes.length > 1) {
             buttonHtml =
                 '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
@@ -250,7 +267,7 @@ $(document).ready(function() {
         }
 
         $('#type-search').html(searchHtml);
-        refreshImages();
+        refresh();
 
         $('.btn-content-add').click(function(e) {
             e.preventDefault();
@@ -261,7 +278,7 @@ $(document).ready(function() {
                 width: 800,
                 height: 600
             }).on('close', function () {
-                refreshImages();
+                refresh();
             });
         });
     }).error(function() {
