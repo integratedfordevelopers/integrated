@@ -100,7 +100,7 @@ class ContentController extends Controller
         $facetTitles['workflow_assigned'] = 'Assigned user';
 
         $facetSet->createFacetField('authors')->setField('facet_authors')->addExclude('authors');
-        $facetTitles['workflow_state'] = 'Author';
+        $facetTitles['authors'] = 'Author';
 
         $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
 
@@ -1055,7 +1055,7 @@ class ContentController extends Controller
                 ['id' => $content->getId()]
             ),
             'method' => 'PUT',
-            'attr' => ['class' => 'content-form'],
+            'attr' => ['class' => 'content-form', 'data-content-id' => $content->getId()],
             // don't display error's when the content is locked as the user can't save in the first place
             'validation_groups' => $locking['locked'] ? false : null,
             'content_type' => $contentType
