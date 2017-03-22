@@ -12,11 +12,10 @@
 namespace Integrated\Bundle\StorageBundle\Form\EventListener;
 
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
-use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
+use Integrated\Bundle\StorageBundle\Form\Upload\StorageOriginal;
+use Integrated\Bundle\StorageBundle\Storage\Cache\AppCache;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-use Integrated\Common\Storage\DecisionInterface;
-use Integrated\Common\Storage\ManagerInterface;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -30,16 +29,16 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class FileEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ManagerInterface
+     * @var AppCache
      */
-    protected $manager;
+    protected $appCache;
 
     /**
-     * @param ManagerInterface $manager
+     * @param AppCache $manager
      */
-    public function __construct(ManagerInterface $manager)
+    public function __construct(AppCache $manager)
     {
-        $this->manager = $manager;
+        $this->appCache = $manager;
     }
 
     /**
@@ -73,8 +72,10 @@ class FileEventSubscriber implements EventSubscriberInterface
                  new StorageIntentUpload($event->getForm()->getData(), $upload)
             );
         } elseif ($original instanceof StorageInterface) {
-            // Set the something we don't know
-            $event->setData($original);
+            // Set the file again for the validator
+            $event->setData(
+                new StorageOriginal($this->appCache->path($original), $original)
+            );
         } else {
             // Last resort
             $event->setData($upload);

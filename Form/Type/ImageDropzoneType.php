@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
-use Gregwar\ImageBundle\Services\ImageHandling;
-
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
+
 use Integrated\Bundle\ImageBundle\Converter\Container;
 use Integrated\Bundle\ImageBundle\Converter\Format\WebFormat;
+use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -37,11 +37,10 @@ class ImageDropzoneType extends AbstractDropzoneType
     protected $converterContainer;
 
     /**
-     * ImageDropzoneType constructor.
      * @param AssetManager $stylesheets
      * @param AssetManager $javascripts
      * @param TranslatorInterface $translator
-     * @param ImageHandling $imageHandling
+     * @param ImageExtension $imageExtension
      * @param WebFormat $webFormat
      * @param Container $converterContainer
      */
@@ -49,22 +48,25 @@ class ImageDropzoneType extends AbstractDropzoneType
         AssetManager $stylesheets,
         AssetManager $javascripts,
         TranslatorInterface $translator,
-        ImageHandling $imageHandling,
+        ImageExtension $imageExtension,
         WebFormat $webFormat,
         Container $converterContainer
     ) {
         $this->webFormat = $webFormat;
         $this->converterContainer = $converterContainer;
 
-        parent::__construct($stylesheets, $javascripts, $translator, $imageHandling, 'image');
+        parent::__construct($stylesheets, $javascripts, $translator, $imageExtension, 'image');
     }
 
     /**
-     * {@inheritdoc}
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
+
         $view->vars['options']['extensions'] = array_merge(
             $this->webFormat->getWebFormats()->toArray(),
             $this->converterContainer->formats()->toArray()
@@ -74,8 +76,16 @@ class ImageDropzoneType extends AbstractDropzoneType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getName()
     {
         return 'integrated_image_dropzone';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'integrated_image';
     }
 }
