@@ -18,6 +18,7 @@ use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsEx
 
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\FileExtensionTrait;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\ImageExtensionTrait;
+use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\VideoExtensionTrait;
 
 use Nelmio\Alice\Fixtures;
 
@@ -35,6 +36,7 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
     use ContainerAwareTrait;
     use FileExtensionTrait;
     use ImageExtensionTrait;
+    use VideoExtensionTrait;
     use ClassFieldsExtension;
 
     /**
