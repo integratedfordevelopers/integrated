@@ -112,14 +112,22 @@ A controller might look like the following:
 ### Data fixtures ###
 In order to make use of the StorageBundle in fixtures the file must exist on disk and must be created by an StorageManager. The manager creates the file on the disk as configured in the application. The file exists and is placed on the correct filesystem with the required properties. To use the helper you must add a trait to your *LoadFixtureData* class and the *LoadFixtureData* class must be *ContainerAware* to have access to the container.
 
-
 	// Required class and trait
-	use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Faker\StorageTrait;
-	use Symfony\Component\DependencyInjection\ContainerAware;
+    use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\FileExtensionTrait;
+    use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\ImageExtensionTrait;
+    use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\VideoExtensionTrait;
+	use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+	use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+    use Symfony\Component\DependencyInjection\ContainerInterface;
 	...
-	class LoadFixtureData extends ContainerAware implements FixtureInterface {
-		// The trait to include the public helper
-		use StorageTrait;
+	class LoadFixtureData implements FixtureInterface, ContainerAwareInterface {
+	    // The trait to include the public helper
+        use FileExtensionTrait;
+        use ImageExtensionTrait;
+        use VideoExtensionTrait;
+        
+        use ContainerAwareTrait;
+
  
 Now you can use the following in your *alice/Fixtures.yml* file:
 
@@ -129,6 +137,9 @@ Now you can use the following in your *alice/Fixtures.yml* file:
     <createFile($this->fake('image', '', '/tmp', 300, 400, 'business'), 'name')>
 	# Create a storage object (file) (might be slower because it uses lorempixel)
     <createStorage($this->fake('image', '', '/tmp', 300, 400, 'city'))>
+	# Create a random video (storage object) (from wosvideo.e-activesites.nl)
+    <createVideo()>
+    
 
 Depending on your implementation you can remove the type and extension requirements or as a parameter in whole. 
 

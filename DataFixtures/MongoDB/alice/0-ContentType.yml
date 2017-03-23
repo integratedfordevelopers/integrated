@@ -10,3 +10,9 @@ Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
     name:        File
     class:       Integrated\Bundle\ContentBundle\Document\Content\File
     fields:      <classfields($class, ['title'])>
+
+  Video:
+    id:          video
+    name:        Video
+    class:       Integrated\Bundle\ContentBundle\Document\Content\Video
+    fields:      <classfields($class, ['title'])>
