@@ -42,8 +42,7 @@ $(document).ready(function() {
                 {
                     id: images[i].id,
                     ext: images[i].extension
-                },
-                true
+                }
             );
 
             // Parse values
@@ -161,14 +160,18 @@ $(document).ready(function() {
         $('#thumbnail-container').loader('show');
 
         var params = {
-            "contenttypes[]": $('#type-search').val(),
             "q": $('#txt-search').val(),
             "_format": "json"
         };
 
+        var selectedContentTypes = getSelectedContentTypes();
+
+        for (var i in selectedContentTypes) {
+            params["contenttypes[" + i + "]"] = selectedContentTypes[i];
+        }
+
         if(previousCall !== null){
             previousCall.abort();
-            previousCall = null;
         }
 
         previousCall =
@@ -184,7 +187,28 @@ $(document).ready(function() {
                 $('#thumbnail-container').loader('hide');
             })
         ;
-    };
+    }
+
+    /**
+     *
+     * @returns {[string]}
+     */
+    function getSelectedContentTypes() {
+        var selected = $('#type-search').val();
+
+        if (selected) {
+            return [selected];
+        } else {
+
+            var options = $('#type-search option');
+
+            return $.map(options ,function(option) {
+                if (option.value) {
+                    return option.value;
+                }
+            });
+        }
+    }
 
     /**
      * Type ahead search handler
@@ -249,7 +273,7 @@ $(document).ready(function() {
         } else if (contentTypes.length > 1) {
             buttonHtml =
                 '<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
-                'Upload new image <span class="caret"></span></button>' +
+                'Upload new ' + options['mode'] + '<span class="caret"></span></button>' +
                 '<ul class="dropdown-menu">';
 
             for (var i in contentTypes) {
@@ -262,9 +286,18 @@ $(document).ready(function() {
         $('#button_wrap').html(buttonHtml);
 
         var searchHtml = '';
-        for (var i in contentTypes) {
-            searchHtml += '<option value="'+ contentTypes[i].id +'">'+ contentTypes[i].name +'</option>';
+        if (contentTypes.length) {
+            if (contentTypes.length > 1) {
+                searchHtml += '<option value="">All content types</option>';
+            }
+
+            for (var i in contentTypes) {
+                searchHtml += '<option value="'+ contentTypes[i].id +'">'+ contentTypes[i].name +'</option>';
+            }
+        } else {
+            searchHtml += '<option>No content types available</option>';
         }
+
 
         $('#type-search').html(searchHtml);
         refresh();
