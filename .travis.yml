@@ -3,5 +3,5 @@ install:
 before_script:
 - php composer.phar update -n
 script:
+- vendor/bin/phpcs . --ignore=*/vendor/* --standard=PSR2
 - vendor/bin/phpunit -c phpunit.xml
-- vendor/bin/phpcs --standard=PSR2 --severity=error .
