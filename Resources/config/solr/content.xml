@@ -38,9 +38,7 @@
                     <string key="name">author</string>
                     <array>
                         <array key="authors">
-                            <string>@person.prefix</string>
-                            <string>@person.firstName</string>
-                            <string>@person.lastName</string>
+                            <string>@person.id</string>
                         </array>
                     </array>
                 </array>
@@ -66,8 +64,37 @@
                     </array>
                 </array>
 
+                <array>
+                    <string key="name">facet_authors</string>
+                    <array>
+                        <array key="authors">
+                            <string>@person.prefix</string>
+                            <string>@person.firstName</string>
+                            <string>@person.lastName</string>
+                        </array>
+                    </array>
+                </array>
+
             </options>
         </type>
+
+        <type name="integrated.json">
+            <options>
+
+                <array>
+                    <string key="name">authors_string</string>
+                    <array key="authors">
+                        <string key="id">@person.id</string>
+                        <string key="slug">@person.slug</string>
+                        <string key="prefix">@person.prefix</string>
+                        <string key="first_name">@person.firstName</string>
+                        <string key="last_name">@person.lastName</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
         <type name="integrated.has_image" />
 
     </class>
@@ -80,7 +107,20 @@
                 <string key="content">description</string>
                 <string key="description">description</string>
 
+                <string key="extension_string">file.metadata.extension</string>
+                <string key="mimetype_string">file.metadata.mimeType</string>
+
             </options>
+        </type>
+
+        <type name="integrated.storage">
+
+            <options>
+
+                <string key="file">file</string>
+
+            </options>
+
         </type>
 
     </class>
@@ -93,7 +133,9 @@
                 <string key="content">description</string>
                 <string key="description">description</string>
 
-                <string key="image_text">file.pathname</string>
+                <string key="image_string">file.pathname</string>
+                <string key="alternate_string">alt</string>
+                <string key="extension_string">file.metadata.extension</string>
 
             </options>
         </type>

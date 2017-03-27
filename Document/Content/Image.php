@@ -11,19 +11,23 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Document type Image
  *
  * @author Johnny Borg <johnny@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Image")
  */
 class Image extends File
 {
-
+    /**
+     * @var StorageInterface
+     * @Type\Field(type="Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneType")
+     * @Assert\File(mimeTypes="image/*")
+     */
+    protected $file;
 }

@@ -23,51 +23,51 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class ContentTypeChannelCollectionType extends AbstractType
 {
-	/**
-	 * @var ObjectRepository
-	 */
-	private $repository;
+    /**
+     * @var ObjectRepository
+     */
+    private $repository;
 
-	/**
-	 * @var null
-	 */
-	private $channels = null;
+    /**
+     * @var null
+     */
+    private $channels = null;
 
-	/**
-	 * @param ObjectRepository $repository
-	 */
-	public function __construct(ObjectRepository $repository)
-	{
-		$this->repository = $repository;
-	}
+    /**
+     * @param ObjectRepository $repository
+     */
+    public function __construct(ObjectRepository $repository)
+    {
+        $this->repository = $repository;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		foreach ($this->getChannels() as $channel) {
-			$builder->add($channel->getId(), 'content_type_channel', ['channel' => $channel]);
-		}
-	}
+    /**
+     * @inheritdoc
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        foreach ($this->getChannels() as $channel) {
+            $builder->add($channel->getId(), ContentTypeChannelType::class, ['channel' => $channel]);
+        }
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getName()
-	{
-		return 'integrated_content_type_channel_collection';
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getBlockPrefix()
+    {
+        return 'integrated_content_type_channel_collection';
+    }
 
-	/**
-	 * @return Channel[]
-	 */
-	public function getChannels()
-	{
-		if ($this->channels === null) {
-			$this->channels = $this->repository->findAll();
-		}
+    /**
+     * @return Channel[]
+     */
+    public function getChannels()
+    {
+        if ($this->channels === null) {
+            $this->channels = $this->repository->findAll();
+        }
 
-		return $this->channels;
-	}
-} 
+        return $this->channels;
+    }
+}

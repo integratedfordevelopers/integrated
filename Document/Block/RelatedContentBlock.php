@@ -11,20 +11,17 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
-use Symfony\Component\Validator\Constraints as Assert;
-
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
-use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Common\Form\Mapping\Annotations as Type;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Related content block document
  *
  * @author Vasil Pascal <developer.optimum@gmail.com>
  *
- * @ODM\Document
  * @Type\Document("Related Content block")
  */
 class RelatedContentBlock extends Block
@@ -42,7 +39,6 @@ class RelatedContentBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field
      */
@@ -50,10 +46,9 @@ class RelatedContentBlock extends Block
 
     /**
      * @var int
-     * @ODM\Int
      * @Assert\NotBlank
      * @Type\Field(
-     *     type="choice",
+     *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
      *     options={
      *         "choices"={
      *             1="Show items which have the current document linked",
@@ -65,10 +60,9 @@ class RelatedContentBlock extends Block
     protected $typeBlock;
 
     /**
-     * @var ContentBlock
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Relation\Relation")
+     * @var Relation
      * @Type\Field(
-     *      type="document",
+     *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:Relation\Relation",
      *          "property"="name",
@@ -80,10 +74,9 @@ class RelatedContentBlock extends Block
 
     /**
      * @var string
-     * @ODM\String)
      * @Assert\NotBlank
      * @Type\Field(
-     *     type="choice",
+     *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
      *     options={
      *         "choices"={
      *             "publishTime.startDate"="Publication date"
@@ -93,12 +86,26 @@ class RelatedContentBlock extends Block
      */
     protected $sortBy;
 
+
+    /**
+     * @var string
+     * @Type\Field(
+     *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
+     *     options={
+     *         "choices"={
+     *             "asc"="asc",
+     *             "desc"="desc"
+     *          },
+     *     }
+     * )
+     */
+    protected $sortDirection;
+
     /**
      * @var int
-     * @ODM\Int
      * @Assert\Length(min=0)
      * @Type\Field(
-     *      type="integer",
+     *      type="Symfony\Component\Form\Extension\Core\Type\IntegerType",
      *      options={
      *          "attr"={
      *              "min"=0
@@ -110,10 +117,9 @@ class RelatedContentBlock extends Block
 
     /**
      * @var int
-     * @ODM\Int
      * @Assert\Length(min=0)
      * @Type\Field(
-     *      type="integer",
+     *      type="Symfony\Component\Form\Extension\Core\Type\IntegerType",
      *      options={
      *          "required"=false,
      *          "attr"={
@@ -126,14 +132,7 @@ class RelatedContentBlock extends Block
 
     /**
      * @var array
-     * @ODM\Collection
-     * @Type\Field(
-     *     type="integrated_relation_block_content_types",
-     *     options={
-     *         "multiple"=true,
-     *         "expanded"=true,
-     *     }
-     * )
+     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice")
      */
     protected $contentTypes;
 
@@ -209,6 +208,24 @@ class RelatedContentBlock extends Block
     public function setSortBy($sortBy)
     {
         $this->sortBy = $sortBy;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSortDirection()
+    {
+        return $this->sortDirection;
+    }
+
+    /**
+     * @param string $sortDirection
+     * @return $this
+     */
+    public function setSortDirection($sortDirection)
+    {
+        $this->sortDirection = $sortDirection;
+        return $this;
     }
 
     /**

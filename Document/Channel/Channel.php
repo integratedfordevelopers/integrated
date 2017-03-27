@@ -11,27 +11,26 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Channel document
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document(collection="channel")
  * @MongoDBUnique(fields="id")
  */
 class Channel implements ChannelInterface
 {
     /**
      * @var string
-     * @ODM\Id(strategy="NONE")
      * @Slug(fields={"name"}, separator="_")
      */
     protected $id;
@@ -39,26 +38,36 @@ class Channel implements ChannelInterface
     /**
      * @var string the name of the channel
      * @Assert\NotBlank()
-     * @ODM\String
-     * @ODM\Index
      */
     protected $name;
 
     /**
+     * @var StorageInterface
+     */
+    protected $logo;
+
+    /**
+     * @var string
+     */
+    protected $color;
+
+    /**
      * @var array
-     * @ODM\Collection
      */
     protected $domains;
 
     /**
+     * @var string
+     */
+    protected $primaryDomain;
+
+    /**
      * @var mixed[]
-     * @ODM\Hash
      */
     protected $options = [];
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $createdAt;
 
@@ -104,6 +113,42 @@ class Channel implements ChannelInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return StorageInterface
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param StorageInterface $logo
+     * @return $this
+     */
+    public function setLogo(StorageInterface $logo = null)
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param string $color
+     * @return $this
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+        return $this;
     }
 
     /**
@@ -208,5 +253,31 @@ class Channel implements ChannelInterface
     {
         $this->createdAt = $createdAt;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrimaryDomain()
+    {
+        return $this->primaryDomain;
+    }
+
+    /**
+     * @param string $primaryDomain
+     */
+    public function setPrimaryDomain($primaryDomain)
+    {
+        $this->primaryDomain = $primaryDomain;
+    }
+
+    /**
+     *
+     */
+    public function defaultPrimaryDomain()
+    {
+        if (!$this->primaryDomain) {
+            $this->primaryDomain = reset($this->domains);
+        }
     }
 }

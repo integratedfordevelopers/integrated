@@ -10,17 +10,20 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType;
+use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Common\ContentType\Event\ContentTypeEvent;
 use Integrated\Common\ContentType\Events;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -244,7 +247,6 @@ class ContentTypeController extends Controller
                 // Set flash message and redirect to item page
                 $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
                 return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
-
             } else {
                 $dm->remove($contentType);
                 $dm->flush();
@@ -284,7 +286,7 @@ class ContentTypeController extends Controller
     protected function createNewForm(ContentType $contentType, MetadataInterface $metadata)
     {
         $form = $this->createForm(
-            'content_type_new',
+            ContentTypeFormType::class,
             $contentType,
             [
                 'action'   => $this->generateUrl('integrated_content_content_type_create'),
@@ -292,7 +294,7 @@ class ContentTypeController extends Controller
                 'metadata' => $metadata
             ],
             [
-                'submit' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+                'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
             ]
         );
 
@@ -309,7 +311,7 @@ class ContentTypeController extends Controller
     protected function createEditForm(ContentType $contentType, MetadataInterface $metadata)
     {
         $form = $this->createForm(
-            'content_type_edit',
+            ContentTypeFormType::class,
             $contentType,
             [
                 'action'   => $this->generateUrl('integrated_content_content_type_update', ['id' => $contentType->getId()]),
@@ -317,7 +319,7 @@ class ContentTypeController extends Controller
                 'metadata' => $metadata
             ],
             [
-                'submit' => ['type' => 'submit', 'options' => ['label' => 'Save']],
+                'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
             ]
         );
 
@@ -333,14 +335,14 @@ class ContentTypeController extends Controller
     protected function createDeleteForm(ContentType $contentType)
     {
         $form = $this->createForm(
-            'content_type_delete',
+            DeleteFormType::class,
             $contentType,
             [
                 'action' => $this->generateUrl('integrated_content_content_type_delete', ['id' => $contentType->getId()]),
                 'method' => 'DELETE',
             ],
             [
-                'delete' => ['type' => 'submit', 'options' => ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]],
+                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]],
             ]
         );
 
@@ -356,7 +358,7 @@ class ContentTypeController extends Controller
         $form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
 
         if ($buttons) {
-            $form->add('actions', 'form_actions', [
+            $form->add('actions', FormActionsType::class, [
                 'buttons' => $buttons
             ]);
         }

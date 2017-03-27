@@ -14,35 +14,29 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Metadata implements MetadataInterface
 {
     /**
      * @var string
-     * @ODM\String
      */
     protected $extension;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $mimeType;
 
     /**
      * @var array
-     * @ODM\Hash
      */
     protected $headers = [];
 
     /**
      * @var array
-     * @ODM\Hash
      */
     protected $metadata = [];
 

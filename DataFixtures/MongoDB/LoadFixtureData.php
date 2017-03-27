@@ -11,23 +11,28 @@
 
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 
-use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
+use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ArrayCollectionExtension;
+use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
 
-use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Nelmio\Alice\Fixtures;
 
-use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class LoadFixtureData extends ContainerAware implements FixtureInterface
+class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
 {
+    use ArrayCollectionExtension;
+    use ClassFieldsExtension;
+    use ContainerAwareTrait;
+
     /**
      * @var string
      */
@@ -37,11 +42,6 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
      * @var string
      */
     protected $locale = 'en_US';
-
-    /**
-     * @var MetadataFactoryInterface
-     */
-    private $metadata = null;
 
     /**
      * @inheritdoc
@@ -59,67 +59,10 @@ class LoadFixtureData extends ContainerAware implements FixtureInterface
     }
 
     /**
-     * create a list of field based on the class.
-     *
-     * The field list will always reflect the current field configuration of the
-     * class. It is possible to supply a list of fields that are required and that
-     * should be ignored.
-     *
-     * @param string   $class
-     * @param string[] $required  set the required flag for these fields
-     * @param string[] $filter    a list of field that are white or black listed basted on $blacklist
-     * @param bool     $blacklist if true then $filter is a blacklist and a white list if false
-     *
-     * @return Field[]
+     * @return ContainerInterface
      */
-    public function classfields($class, array $required = [], array $filter = [], $blacklist = true)
+    public function getContainer()
     {
-        $fields = [];
-
-        if (!$metadata = $this->getMetadata()->getMetadata($class)) {
-            return $fields;
-        }
-
-        $required = array_map('strtolower', $required);
-        $filter = array_map('strtolower', $filter);
-        $blacklist = (bool) $blacklist;
-
-        if (!$blacklist) {
-            $filter = array_merge($filter, $required);
-        }
-
-        foreach ($metadata->getFields() as $field) {
-            if ($blacklist === in_array(strtolower($field->getName()), $filter)) {
-                continue;
-            }
-
-            $fields[$field->getName()] = (new Field())
-                ->setName($field->getName())
-                ->setType($field->getType())
-                ->setOptions($field->getOptions() + ['required' => in_array(strtolower($field->getName()), $required)]);
-        }
-
-        return $fields;
-    }
-
-    /**
-     * @param array $elements
-     * @return ArrayCollection
-     */
-    public function arrayCollection(array $elements)
-    {
-        return new ArrayCollection($elements);
-    }
-
-    /**
-     * @return MetadataFactoryInterface
-     */
-    protected function getMetadata()
-    {
-        if ($this->metadata === null) {
-            $this->metadata = $this->container->get('integrated_content.metadata.factory');
-        }
-
-        return $this->metadata;
+        return $this->container;
     }
 }

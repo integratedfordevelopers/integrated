@@ -10,8 +10,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -212,7 +213,7 @@ class ChannelController extends Controller
     protected function createCreateForm(Channel $channel)
     {
         $form = $this->createForm(
-            $this->get('integrated_content.form.type.channel'),
+            Form\ChannelType::class,
             $channel,
             array(
                 'action' => $this->generateUrl('integrated_content_channel_create'),
@@ -220,7 +221,7 @@ class ChannelController extends Controller
             )
         );
 
-        $form->add('submit', 'submit', array('label' => 'Save'));
+        $form->add('submit', SubmitType::class, array('label' => 'Save'));
 
         return $form;
     }
@@ -233,16 +234,12 @@ class ChannelController extends Controller
      */
     protected function createEditForm(Channel $channel)
     {
-        $form = $this->createForm(
-            $this->get('integrated_content.form.type.channel'),
-            $channel,
-            array(
-                'action' => $this->generateUrl('integrated_content_channel_update', array('id' => $channel->getId())),
-                'method' => 'PUT',
-            )
-        );
+        $form = $this->createForm(Form\ChannelType::class, $channel, [
+            'action' => $this->generateUrl('integrated_content_channel_update', array('id' => $channel->getId())),
+            'method' => 'PUT',
+        ]);
 
-        $form->add('submit', 'submit', array('label' => 'Save'));
+        $form->add('submit', SubmitType::class, array('label' => 'Save'));
 
         return $form;
     }
@@ -259,7 +256,7 @@ class ChannelController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('integrated_content_channel_delete', array('id' => $id)))
             ->setMethod('DELETE')
-            ->add('submit', 'submit', array('label' => 'Delete', 'attr'=> array('class' => 'btn-danger')))
+            ->add('submit', SubmitType::class, array('label' => 'Delete', 'attr'=> array('class' => 'btn-danger')))
             ->getForm();
     }
 

@@ -19,6 +19,9 @@
                 <p>
                     {% trans with {'%name%':  searchSelection.title} %}You are about to delete "%name%", click the delete button below to confirm the action.{% endtrans %}
                 </p>
+                {% if referenced %}
+                    {% include '@IntegratedContent/referencedAlert.html.twig' with {'referenced':referenced} only %}
+                {% endif %}
                 {{ form(form) }}
             </section>
         </div>

@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
@@ -25,22 +24,18 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Article")
  */
 class Article extends Content
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $title;
 
     /**
      * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
      * @Slug(fields={"title"})
      * @Type\Field
      */
@@ -48,56 +43,48 @@ class Article extends Content
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $subtitle;
 
     /**
      * @var ArrayCollection Embedded\Author[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author")
-     * @Type\Field(type="integrated_author", options={"label" = "Authors"})
+     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\AuthorType", options={"label" = "Authors"})
      */
     protected $authors;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $source;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $locale;
 
     /**
      * @var string
-     * @ODM\String
-     * @Type\Field(type="textarea")
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\TextareaType")
      */
     protected $intro;
 
     /**
      * @var string
-     * @ODM\String
-     * @Type\Field(type="textarea")
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\TextareaType")
      */
     protected $description;
 
     /**
      * @var string
-     * @ODM\String
-     * @Type\Field(type="integrated_tinymce")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\EditorType")
      */
     protected $content;
 
     /**
      * @var Embedded\Address
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address")
-     * @Type\Field(type="integrated_address")
+     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\AddressType")
      */
     protected $address;
 

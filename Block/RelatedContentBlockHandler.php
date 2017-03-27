@@ -97,7 +97,9 @@ class RelatedContentBlockHandler extends BlockHandler
         }
 
 
+        $excludeDocument = null;
         if ($block->getTypeBlock() == RelatedContentBlock::SHOW_LINKED) {
+            $excludeDocument = $document;
             $document = $document->getReferenceByRelationId($block->getRelation()->getId());
             if (!$document) {
                 return;
@@ -105,7 +107,7 @@ class RelatedContentBlockHandler extends BlockHandler
         }
 
         $query = $this->dm->getRepository('IntegratedContentBundle:Content\Content')
-            ->getUsedBy($document, $block->getRelation());
+            ->getUsedBy($document, $block->getRelation(), $excludeDocument);
 
         $contentTypes = $block->getContentTypes();
         if ($contentTypes) {
@@ -113,7 +115,7 @@ class RelatedContentBlockHandler extends BlockHandler
         }
 
         if ($block->getSortBy()) {
-            $query->sort($block->getSortBy());
+            $query->sort($block->getSortBy(), $block->getSortDirection());
         }
 
         $pageParam = $block->getId() . '-page';

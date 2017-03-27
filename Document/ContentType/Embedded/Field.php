@@ -11,32 +11,22 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 
 /**
  * Embedded document Field
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Field implements ContentTypeFieldInterface
 {
     /**
-     * @var string The name of the property of the content type
-     * @ODM\String
+     * @var string
      */
     protected $name;
 
     /**
-     * @var string The type of the form field
-     * @ODM\String
-     */
-    protected $type;
-
-    /**
-     * @var array The options of the form field
-     * @ODM\Hash
+     * @var array
      */
     protected $options = array();
 
@@ -57,26 +47,6 @@ class Field implements ContentTypeFieldInterface
     public function setName($name)
     {
         $this->name = $name;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * Set the type of the field
-     *
-     * @param string $type The type of the form field
-     * @return $this
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
         return $this;
     }
 
@@ -104,9 +74,14 @@ class Field implements ContentTypeFieldInterface
      * Added shortcut to getLabel of field
      *
      * @return string
+     *
+     * @deprecated since version 0.7, this object does not contain all the options
+     *             so the label can not be determined based solely on this object.
      */
     public function getLabel()
     {
+        @trigger_error('The ' . __METHOD__ . ' method is deprecated since version 0.7.', E_USER_DEPRECATED);
+
         return isset($this->options['label']) ? $this->options['label'] : ucfirst($this->getName());
     }
 }

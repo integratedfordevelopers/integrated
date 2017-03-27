@@ -10,16 +10,23 @@
 
         <parameter key="integrated_content.twig.array_extension.class">Integrated\Bundle\ContentBundle\Twig\Extension\ArrayExtension</parameter>
 
+        <parameter key="integrated_content.twig.channel_extension.class">Integrated\Bundle\ContentBundle\Twig\Extension\ChannelExtension</parameter>
+
     </parameters>
 
     <services>
 
         <service id="integrated_content.twig.json_pagination_extension" class="%integrated_content.twig.json_pagination_extension.class%">
+            <argument type="service" id="router" />
             <tag name="twig.extension" />
-            <argument type="service" id="router"/>
         </service>
 
         <service id="integrated_content.twig.array_extension" class="%integrated_content.twig.array_extension.class%">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_content.twig.channel_extension" class="%integrated_content.twig.channel_extension.class%">
+            <argument type="service" id="service_container" />
             <tag name="twig.extension" />
         </service>
 

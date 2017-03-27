@@ -12,9 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
@@ -24,16 +21,14 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Form block")
  */
 class FormBlock extends Block
 {
     /**
      * @var ContentType
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType")
      * @Type\Field(
-     *      type="document",
+     *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:ContentType\ContentType",
      *          "property"="name",
@@ -45,7 +40,6 @@ class FormBlock extends Block
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field
      */
@@ -53,12 +47,11 @@ class FormBlock extends Block
 
     /**
      * @var array
-     * @ODM\Collection
      * @Assert\All({
      *     @Assert\Email
      * })
      * @Type\Field(
-     *      type="bootstrap_collection",
+     *      type="Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType",
      *      options={
      *          "label"="Sent form to e-mail address(es)",
      *          "type"="email",
@@ -72,7 +65,6 @@ class FormBlock extends Block
 
     /**
      * @var bool
-     * @ODM\Boolean
      * @Type\Field(
      *      type="checkbox",
      *      options={

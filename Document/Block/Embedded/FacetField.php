@@ -11,28 +11,23 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  *
- * @ODM\EmbeddedDocument
  * @Type\Document("FacetField")
  */
 class FacetField
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $name;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $field;

@@ -44,7 +44,11 @@
         <h4 class="sub_title">{{this.title}} <small>({{pagination.numFound}})</small></h4>
         {{#each items}}
             <p class="alert-dismissable closable" data-remove="{{ this.id }}">
-                <button aria-hidden="true" data-dismiss="alert" class="close glyphicon glyphicon-remove" type="button"></button>
+                {% endverbatim %}
+                    {% if editable is not defined or editable %}
+                        <button aria-hidden="true" data-dismiss="alert" class="close glyphicon glyphicon-remove" type="button"></button>
+                    {% endif %}
+                {% verbatim %}
                 {{this.title}}
             </p>
         {{else}}
@@ -120,26 +124,5 @@
     {{/if}}
 </script>
 {% endverbatim %}
-<script>
-    var relations = [];
 
-    $.fn.relation = function() {
-
-        relations[$(this).data('relation')] = new Relation($(this).data('relation'), "{{ path('integrated_content_content_index')}}");
-        relations[$(this).data('relation')].loadOptions();
-
-        return relations[$(this).data('relation')];
-    };
-
-    $('.form-relations input[data-relation]').each(function() {
-        $(this).relation();
-    });
-
-    $('#relations-search').submit(function(ev){
-        ev.preventDefault();
-        $('.form-relations input[data-relation]').each(function() {
-            $(this).relation();
-        });
-    });
-</script>
 {% endautoescape %}

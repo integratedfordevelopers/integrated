@@ -32,21 +32,20 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test instance of
+     */
+    public function testInstanceOf()
+    {
+        $this->assertInstanceOf('Integrated\Common\ContentType\ContentTypeFieldInterface', $this->field);
+    }
+
+    /**
      * Test name property
      */
     public function testName()
     {
-        $name = 'henk';
+        $name = 'name';
         $this->assertEquals($name, $this->field->setName($name)->getName());
-    }
-
-    /**
-     * Test type property
-     */
-    public function testType()
-    {
-        $type = 'henk';
-        $this->assertEquals($type, $this->field->setType($type)->getType());
     }
 
     /**
@@ -54,7 +53,22 @@ class FieldTest extends \PHPUnit_Framework_TestCase
      */
     public function testOptions()
     {
-        $options = array('label' => 'Test', 'required' => false);
+        $options = array('label' => 'label', 'required' => false);
         $this->assertEquals($options, $this->field->setOptions($options)->getOptions());
+    }
+
+    /**
+     * Test getLabel function
+     */
+    public function testGetLabelFunction()
+    {
+        $name = 'name';
+        $this->field->setName($name);
+
+        $this->assertSame(ucfirst($name), $this->field->getLabel());
+
+        $label = 'label';
+        $this->field->setOptions(['label' => $label]);
+        $this->assertSame($label, $this->field->getLabel());
     }
 }

@@ -1,23 +1,42 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
-{% block content %}
 
-<ol class="breadcrumb">
-    <li>
-        <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
-    </li>
-    <li class="active">{% trans %}Delete{% endtrans %}</li>
-</ol>
-
-<div class="page-header">
-    <h1>{% trans %}Delete{% endtrans %} <small>{{ type.name }}</small></h1>
-</div>
-
-<div class="row">
-    <div class="col-md-9">
-        <p>
-            {% trans with {'%name%':  content.id} %}You are about to delete "%name%", click the delete button below to confirm the action.{% endtrans %}
-        </p>
-        {{ form(form) }}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('integrated_content_content_index', { 'contenttypes': [ type.id ] }) }}">{{ type.name|trans }}</a>
+                </li>
+                <li class="active">{% trans %}Delete{% endtrans %}</li>
+            </ol>
+        </div>
     </div>
-</div>
+{% endblock %}
+
+{% block content %}
+    <h1 class="main-title font-regular">
+        {% trans %}Delete{% endtrans %} {{ type.name }}
+        <i class="integrate-icon-edit"></i>
+    </h1>
+
+    <div class="row">
+        <div class="col-md-12">
+            <section class="section-white section-padding section-shadow section-radius">
+                <p>
+                    {% trans with {'%name%': content.title|default(content.name|default(content.id)) } %}
+                        You are about to delete "%name%", click the delete button below to confirm the action.
+                    {% endtrans %}
+                </p>
+
+                {% if referenced %}
+                    {% include '@IntegratedContent/referencedAlert.html.twig' with { 'referenced': referenced } only %}
+                {% endif %}
+
+                {{ form(form) }}
+            </section>
+        </div>
+    </div>
 {% endblock %}

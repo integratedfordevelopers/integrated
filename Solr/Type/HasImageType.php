@@ -16,8 +16,6 @@ use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
 
-use Symfony\Component\Security\Core\Util\ClassUtils;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
 
 /**

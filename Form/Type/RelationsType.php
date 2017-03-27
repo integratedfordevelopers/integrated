@@ -14,8 +14,9 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Validator\Constraints\RelationNotNull;
@@ -58,8 +59,13 @@ class RelationsType extends AbstractType
         $relations = $this->manager->getRepository(self::REPOSITORY)->findBy(array('sources.$id' => $type->getId()), array('name' => 'ASC'));
 
         foreach ($relations as $relation) {
+            $contentTypes = [];
+
             foreach ($relation->getTargets() as $contentType) {
-                $url[] = $contentType->getType();
+                $contentTypes[] = [
+                    'type' => $contentType->getType(),
+                    'name' => $contentType->getName(),
+                ];
             }
 
             $constraints = [];
@@ -69,11 +75,11 @@ class RelationsType extends AbstractType
                 ]);
             }
 
-            $builder->add($relation->getId(), 'hidden', [
-                'attr' => [
-                    'data-title'    => $relation->getName(),
-                    'data-relation' => $relation->getId(),
-                    'data-multiple' => $relation->isMultiple()
+            $builder->add($relation->getId(), HiddenType::class, ['attr' => [
+                'data-title'    => $relation->getName(),
+                'data-relation' => $relation->getId(),
+                'data-multiple' => $relation->isMultiple(),
+                'data-types'    => json_encode($contentTypes),
                 ],
                 'constraints' => $constraints,
             ]);
@@ -83,14 +89,20 @@ class RelationsType extends AbstractType
         $builder->addModelTransformer(new RelationsTransformer($relations, $this->manager->getManager()));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    /**
+     * {@inheritdoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(['data_class' => null]);
         $resolver->setRequired(['content_type']);
-        $resolver->setAllowedTypes(['content_type' => 'Integrated\\Common\\ContentType\\ContentTypeInterface']);
+        $resolver->setAllowedTypes('content_type', 'Integrated\\Common\\ContentType\\ContentTypeInterface');
     }
 
-    public function getName()
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
     {
         return 'integrated_content_relations';
     }

@@ -11,10 +11,17 @@
 
 	<route id="integrated_content_content_new" path="/new">
 		<default key="_controller">IntegratedContentBundle:Content:new</default>
+		<option key="expose">true</option>
 	</route>
 
 	<route id="integrated_content_content_new_rest" path="/" methods="POST">
 		<default key="_controller">IntegratedContentBundle:Content:new</default>
+	</route>
+
+	<route id="integrated_content_content_media_types" path="/media_types/{filter}"  methods="GET">
+		<default key="_controller">IntegratedContentBundle:Content:mediaTypes</default>
+		<default key="filter">null</default>
+		<option key="expose">true</option>
 	</route>
 
 	<route id="integrated_content_content_edit" path="/{id}"  methods="GET">

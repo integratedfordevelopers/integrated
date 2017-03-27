@@ -13,13 +13,10 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 
 /**
@@ -27,50 +24,45 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Person")
  */
 class Person extends Relation
 {
     /**
      * @var string
-     * @ODM\String
-     * @Type\Field(type="choice", options={"choices"={"Male"="Male", "Female"="Female"}})
+     * @Type\Field(
+     *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
+     *     options={"choices"={"Male"="Male", "Female"="Female"}}
+     * )
      */
     protected $gender;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $prefix;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $nickname;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(options={"label"="First name"})
      */
     protected $firstName;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(options={"label"="Last name"})
      */
     protected $lastName;
 
     /**
      * @var string
-     * @ODM\String
-     * @ODM\UniqueIndex(sparse=true)
      * @Slug(fields={"firstName", "lastName"})
      * @Type\Field
      */
@@ -78,14 +70,13 @@ class Person extends Relation
 
     /**
      * @var Collection Job[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job")
+     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\Job\ContactPersonsType")
      */
     protected $jobs;
 
     /**
-     * @var FileInterface
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\File")
-     * @Type\Field(type="integrated_image_choice")
+     * @var StorageInterface|null
+     * @Type\Field(type="Integrated\Bundle\StorageBundle\Form\Type\ImageType")
      */
     protected $picture;
 
@@ -282,7 +273,7 @@ class Person extends Relation
     /**
      * Get the picture of the document
      *
-     * @return FileInterface
+     * @return StorageInterface|null
      */
     public function getPicture()
     {
@@ -292,10 +283,10 @@ class Person extends Relation
     /**
      * Set the picture of the document
      *
-     * @param FileInterface $picture
+     * @param StorageInterface|null $picture
      * @return $this
      */
-    public function setPicture(FileInterface $picture)
+    public function setPicture(StorageInterface $picture = null)
     {
         $this->picture = $picture;
         return $this;
@@ -304,15 +295,15 @@ class Person extends Relation
     /**
      * Get the relative cover image URL for person (picture)
      *
-     * @return string
+     * @return string|null
      */
     public function getCover()
     {
-        if ($this->getPicture()) {
-            if ($this->getPicture()->getFile() instanceof StorageInterface) {
-                return $this->getPicture()->getFile()->getPathname();
-            }
+        if ($this->getPicture() instanceof StorageInterface) {
+            return $this->getPicture()->getPathname();
         }
+
+        return null;
     }
 
     /**

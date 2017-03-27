@@ -11,40 +11,33 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * Document type File
  *
  * @author Johnny Borg <johnny@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("File")
  */
 class File extends Content implements FileInterface
 {
     /**
      * @var StorageInterface
-     * @Type\Field(type="integrated_file")
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
+     * @Type\Field(type="Integrated\Bundle\StorageBundle\Form\Type\FileDropzoneType")
      */
     protected $file;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $title;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $description;

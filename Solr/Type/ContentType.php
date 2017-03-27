@@ -19,9 +19,7 @@ use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
-use Symfony\Component\Security\Core\Util\ClassUtils;
-
-use Integrated\Bundle\ContentBundle\Document\Content\Image;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -57,7 +55,6 @@ class ContentType implements TypeInterface
                 }
             }
         }
-
     }
 
     /**

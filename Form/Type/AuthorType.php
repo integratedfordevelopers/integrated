@@ -12,8 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\AuthorTransformer;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -49,13 +52,13 @@ class AuthorType extends AbstractType
      */
     public function getParent()
     {
-        return 'text';
+        return TextType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_author';
     }

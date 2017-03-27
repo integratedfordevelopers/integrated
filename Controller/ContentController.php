@@ -11,27 +11,33 @@
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Symfony\Component\Filesystem\LockHandler;
-use Traversable;
-
+use Integrated\Bundle\ContentBundle\Document\Content\Image;
+use Integrated\Bundle\ContentBundle\Form\Type\ActionsType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
+use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Content\Form\ContentFormType;
+use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Filesystem\LockHandler;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+use Traversable;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -45,6 +51,7 @@ class ContentController extends Controller
 
     /**
      * @Template()
+     * @param Request $request
      * @return array
      */
     public function indexAction(Request $request)
@@ -63,9 +70,8 @@ class ContentController extends Controller
         if ($request->query->get('remember') && $session->has('content_index_view')) {
             $request->query->add(unserialize($session->get('content_index_view')));
             $request->query->remove('remember');
-        }
-        elseif (!$request->query->has('_format')) {
-            $session->set('content_index_view',serialize($request->query->all()));
+        } elseif (!$request->query->has('_format')) {
+            $session->set('content_index_view', serialize($request->query->all()));
         }
 
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
@@ -86,10 +92,16 @@ class ContentController extends Controller
         $facetSet->setMinCount(1);
         $facetSet->createFacetField('contenttypes')->setField('type_name')->addExclude('contenttypes');
         $facetSet->createFacetField('channels')->setField('facet_channels')->addExclude('channels');
+
         $facetSet->createFacetField('workflow_state')->setField('facet_workflow_state')->addExclude('workflow_state');
         $facetTitles['workflow_state'] = 'Workflow status';
+
         $facetSet->createFacetField('workflow_assigned')->setField('facet_workflow_assigned')->addExclude('workflow_assigned');
         $facetTitles['workflow_assigned'] = 'Assigned user';
+
+        $facetSet->createFacetField('authors')->setField('facet_authors')->addExclude('authors');
+        $facetTitles['authors'] = 'Author';
+
         $facetSet->createFacetField('properties')->setField('facet_properties')->addExclude('properties');
 
 
@@ -99,7 +111,6 @@ class ContentController extends Controller
         $relation = $request->query->get('relation');
         $relations = array();
         if (null !== $relation) {
-
             $contentType = array();
 
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
@@ -115,28 +126,25 @@ class ContentController extends Controller
                     );
                 }
             }
-
         } else {
             $contentType = $request->query->get('contenttypes');
         }
-
 
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
 
         $active = [];
 
+        $helper = $query->getHelper();
+        $filter = function ($param) use ($helper) {
+            return $helper->escapePhrase($param);
+        };
+
         // If the request query contains a properties parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
         // TODO this code should be somewhere else
         $propertiesfilter = $request->query->get('properties');
         if (is_array($propertiesfilter)) {
-
-            $helper = $query->getHelper();
-            $filter = function($param) use($helper) {
-                return $helper->escapePhrase($param);
-            };
-
             $query
                 ->createFilterQuery('properties')
                 ->addTag('properties')
@@ -145,16 +153,9 @@ class ContentController extends Controller
             $active['properties'] = $propertiesfilter;
         }
 
-
         /** @var Relation $relation */
         foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
-
-            $helper = $query->getHelper();
-            $filter = function($param) use($helper) {
-                return $helper->escapePhrase($param);
-            };
-
-            $name = preg_replace("/[^a-zA-Z]/","",$relation->getName());
+            $name = preg_replace("/[^a-zA-Z]/", "", $relation->getName());
 
             //create relation facet field
             $facetSet->createFacetField($name)->setField('facet_' . $relation->getId())->addExclude($name);
@@ -169,18 +170,10 @@ class ContentController extends Controller
 
                 $active[$name] = $relationfilter;
             }
-
         }
 
-
         if (is_array($contentType)) {
-
             if (count($contentType)) {
-                $helper = $query->getHelper();
-                $filter = function($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('contenttypes')
                     ->addTag('contenttypes')
@@ -192,11 +185,13 @@ class ContentController extends Controller
         // user has read rights to
 
         if ($this->has('integrated_workflow.solr.workflow.extension')) {
-            $filter = [];
+            $filterWorkflow = [];
 
-            if (($user = $this->getUser()) && $user instanceof GroupableInterface) {
+            $user = $this->getUser();
+
+            if ($user instanceof GroupableInterface) {
                 foreach ($user->getGroups() as $group) {
-                    $filter[] = $group->getId();
+                    $filterWorkflow[] = $group->getId();
                 }
             }
 
@@ -207,31 +202,31 @@ class ContentController extends Controller
                 ->setQuery('(*:* -security_workflow_read:[* TO *])');
 
             // allow content with group access
-            if ($filter) {
+            if ($filterWorkflow) {
                 $fq->setQuery(
                     $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
-                    [implode(') OR (', $filter)]
+                    [implode(') OR (', $filterWorkflow)]
                 );
             }
 
             // always allow access to assinged content
             $fq->setQuery(
                 $fq->getQuery() . ' OR facet_workflow_assigned_id: %1%',
-                array($this->getUser()->getId())
+                array($user->getId())
             );
 
+            if ($person = $user->getRelation()) {
+                $fq->setQuery(
+                    $fq->getQuery().' OR author: %1%*',
+                    array($person->getId())
+                );
+            }
         }
 
         // TODO this should be somewhere else:
         $activeChannels = $request->query->get('channels');
         if (is_array($activeChannels)) {
-
             if (count($activeChannels)) {
-                $helper = $query->getHelper();
-                $filter = function($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('channels')
                     ->addTag('channels')
@@ -243,11 +238,6 @@ class ContentController extends Controller
         $activeStates = $request->query->get('workflow_state');
         if (is_array($activeStates)) {
             if (count($activeStates)) {
-                $helper = $query->getHelper();
-                $filter = function ($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('workflow_state')
                     ->addTag('workflow_state')
@@ -259,11 +249,6 @@ class ContentController extends Controller
         $activeAssigned = $request->query->get('workflow_assigned');
         if (is_array($activeAssigned)) {
             if (count($activeAssigned)) {
-                $helper = $query->getHelper();
-                $filter = function ($param) use($helper) {
-                    return $helper->escapePhrase($param);
-                };
-
                 $query
                     ->createFilterQuery('workflow_assigned')
                     ->addTag('workflow_assigned')
@@ -272,20 +257,24 @@ class ContentController extends Controller
         }
 
 
+        $activeAuthors = $request->query->get('authors');
+        if (is_array($activeAuthors)) {
+            if (count($activeAuthors)) {
+                $query
+                    ->createFilterQuery('authors')
+                    ->addTag('authors')
+                    ->setQuery('facet_authors: ((%1%))', [implode(') OR (', array_map($filter, $activeAuthors))]);
+            }
+        }
+
         if ($request->isMethod('post')) {
             $id = (array) $request->get('id');
             if (is_array($id)) {
-
                 if (count($id) == 0) {
                     $id[] = '';
                 }
 
                 if (count($id)) {
-                    $helper = $query->getHelper();
-                    $filter = function($param) use($helper) {
-                        return $helper->escapePhrase($param);
-                    };
-
                     $query
                         ->createFilterQuery('id')
                         ->addTag('id')
@@ -364,6 +353,7 @@ class ContentController extends Controller
         $active['channels'] = $activeChannels;
         $active['workflow_state'] = $activeStates;
         $active['workflow_assigned'] = $activeAssigned;
+        $active['authors'] = $activeAuthors;
 
         return array(
             'types'        => $types,
@@ -403,16 +393,16 @@ class ContentController extends Controller
      */
     public function newAction(Request $request)
     {
-        /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
-        $type = $this->get('integrated.form.factory')->getType($request->get('type'));
+        /** @var ContentTypeInterface $contentType */
+        $contentType = $this->get('integrated_content.resolver')->getType($request->get('type'));
 
-        $content = $type->getType()->create();
+        $content = $contentType->create();
 
-        if (!$this->get('security.context')->isGranted(Permissions::CREATE, $content)) {
+        if (!$this->get('security.authorization_checker')->isGranted(Permissions::CREATE, $content)) {
             throw new AccessDeniedException();
         }
 
-        $form = $this->createNewForm($type, $content, $request);
+        $form = $this->createNewForm($contentType, $content, $request);
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -452,6 +442,7 @@ class ContentController extends Controller
                         'IntegratedContentBundle:Content:saved.iframe.html.twig',
                         array(
                             'id' => $content->getId(),
+                            'title' => method_exists($content, 'getTitle') ? $content->getTitle() : $content->getId(),
                             'relation' => $request->get('relation')
                         )
                     );
@@ -459,18 +450,21 @@ class ContentController extends Controller
 
                 // Set flash message
                 $this->get('braincrafted_bootstrap.flash')->success(
-                    $this->get('translator')->trans('The document %name% has been created', array('%name%' => $type->getType()->getName()))
+                    $this->get('translator')->trans('The document %name% has been created', array('%name%' => $contentType->getName()))
                 );
 
                 return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
             }
         }
 
-        return array(
-            'type' => $type->getType(),
+        return [
+            'editable' => true,
+            'type' => $contentType,
             'form' => $form->createView(),
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
-        );
+            'hasContentHistoryBundle' => false, // not needed here
+            'references' => json_encode($this->getReferences($content)),
+        ];
     }
 
     /**
@@ -483,10 +477,10 @@ class ContentController extends Controller
      */
     public function editAction(Request $request, Content $content)
     {
-        /** @var $type \Integrated\Common\Content\Form\FormTypeInterface */
-        $type = $this->get('integrated.form.factory')->getType($content);
+        /** @var ContentTypeInterface $contentType */
+        $contentType = $this->get('integrated_content.resolver')->getType($content->getContentType());
 
-        if (!$this->get('security.context')->isGranted(Permissions::VIEW, $content)) {
+        if (!$this->get('security.authorization_checker')->isGranted(Permissions::VIEW, $content)) {
             throw new AccessDeniedException();
         }
 
@@ -509,7 +503,7 @@ class ContentController extends Controller
             }
         }
 
-        $form = $this->createEditForm($type, $content, $locking);
+        $form = $this->createEditForm($contentType, $content, $locking);
 
         if ($request->isMethod('put')) {
             $form->handleRequest($request);
@@ -526,7 +520,7 @@ class ContentController extends Controller
                 return $this->redirect($url);
             }
 
-            if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
+            if (!$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content)) {
                 throw new AccessDeniedException();
             }
 
@@ -550,11 +544,10 @@ class ContentController extends Controller
 
                     // Set flash message
                     $this->get('braincrafted_bootstrap.flash')->success(
-                        $this->get('translator')->trans('The changes to %name% are saved', array('%name%' => $type->getType()->getName()))
+                        $this->get('translator')->trans('The changes to %name% are saved', array('%name%' => $contentType->getName()))
                     );
 
                     if ($this->has('integrated_solr.indexer')) {
-
                         $solrLock = new LockHandler('content:edited:solr');
                         $solrLock->lock(true);
 
@@ -583,14 +576,14 @@ class ContentController extends Controller
 
             if ($locking['owner']) {
                 $text = 'The document is currently locked by your self in a different browser or tab and can not be edited until this lock is released.';
-            } else if ($locking['user']) {
+            } elseif ($locking['user']) {
                 $user = $locking['user']->getUsername();
 
                 // we got a basic user name now try to get a better one
 
                 if (method_exists($locking['user'], 'getRelation')) {
                     if ($relation = $locking['user']->getRelation()) {
-                        if (method_exists($relation,'__toString')) {
+                        if (method_exists($relation, '__toString')) {
                             $user = (string) $relation;
                         }
                     }
@@ -604,13 +597,16 @@ class ContentController extends Controller
             $this->get('braincrafted_bootstrap.flash')->error($text);
         }
 
-        return array(
-            'type'    => $type->getType(),
+        return [
+            'editable' => $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content),
+            'type'    => $contentType,
             'form'    => $form->createView(),
             'content' => $content,
             'locking' => $locking,
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
-        );
+            'hasContentHistoryBundle' => $this->has('integrated_content_history.controller.content_history'),
+            'references' => json_encode($this->getReferences($content)),
+        ];
     }
 
     /**
@@ -626,7 +622,7 @@ class ContentController extends Controller
         /** @var $type \Integrated\Common\ContentType\ContentTypeInterface */
         $type = $this->get('integrated.form.resolver')->getType($content->getContentType());
 
-        if (!$this->get('security.context')->isGranted(Permissions::DELETE, $content)) {
+        if (!$this->get('security.authorization_checker')->isGranted(Permissions::DELETE, $content)) {
             throw new AccessDeniedException();
         }
 
@@ -636,7 +632,6 @@ class ContentController extends Controller
         $locking['locked'] = $locking['lock'] ? true : false;
 
         if ($locking['lock'] && $locking['owner']) {
-
             if ($request->query->has('lock') && $locking['lock']->getId() == $request->query->get('lock')) {
                 $locking['locked'] = false;
             }
@@ -648,10 +643,12 @@ class ContentController extends Controller
 
                 $locking['locked'] = false;
             }
-
         }
 
-        $form = $this->createDeleteForm($content, $locking);
+        $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
+        $referenced = $contentReferenced->getReferenced($content);
+
+        $form = $this->createDeleteForm($content, $locking, count($referenced) > 0);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
@@ -712,14 +709,14 @@ class ContentController extends Controller
 
             if ($locking['owner']) {
                 $text = 'The document is currently locked by your self in a different browser or tab and can not be deleted until this lock is released.';
-            } else if ($locking['user']) {
+            } elseif ($locking['user']) {
                 $user = $locking['user']->getUsername();
 
                 // we got a basic user name now try to get a better one
 
                 if (method_exists($locking['user'], 'getRelation')) {
                     if ($relation = $locking['user']->getRelation()) {
-                        if (method_exists($relation,'__toString')) {
+                        if (method_exists($relation, '__toString')) {
                             $user = (string) $relation;
                         }
                     }
@@ -737,7 +734,8 @@ class ContentController extends Controller
             'type'    => $type,
             'form'    => $form->createView(),
             'content' => $content,
-            'locking' => $locking
+            'locking' => $locking,
+            'referenced' => $referenced,
         );
     }
 
@@ -756,13 +754,14 @@ class ContentController extends Controller
      */
     protected function getLock($object, $timeout = null)
     {
-        if (!$this->has('integrated_locking.dbal.manager') || !$this->get('security.context')->isGranted(Permissions::EDIT, $object)) {
+        if (!$this->has('integrated_locking.dbal.manager') || !$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $object)) {
             return [
                 'lock'    => null,
                 'user'    => null,
                 'owner'   => false,
                 'new'     => false,
-                'release' => function() {}
+                'release' => function () {
+                }
             ];
         }
 
@@ -790,7 +789,7 @@ class ContentController extends Controller
                     'user'    => $this->getUser(),
                     'owner'   => true,
                     'new'     => true,
-                    'release' => function() use ($service, $lock) {
+                    'release' => function () use ($service, $lock) {
                         $service->release($lock);
                     }
                 ];
@@ -806,7 +805,7 @@ class ContentController extends Controller
                     'user'    => $this->getUser(),
                     'owner'   => true,
                     'new'     => false,
-                    'release' => function() use ($service, $lock) {
+                    'release' => function () use ($service, $lock) {
                         $service->release($lock);
                     }
                 ];
@@ -831,7 +830,7 @@ class ContentController extends Controller
                 'user'    => $user,
                 'owner'   => false,
                 'new'     => false,
-                'release' => function() use ($service, $lock) {
+                'release' => function () use ($service, $lock) {
                     $service->release($lock);
                 }
             ];
@@ -842,7 +841,8 @@ class ContentController extends Controller
             'user'  => null,
             'owner' => false,
             'new'   => false,
-            'release' => function() {}
+            'release' => function () {
+            }
         ];
     }
 
@@ -896,7 +896,7 @@ class ContentController extends Controller
 
                 if (method_exists($user, 'getRelation')) {
                     if ($relation = $user->getRelation()) {
-                        if (method_exists($relation,'__toString')) {
+                        if (method_exists($relation, '__toString')) {
                             $text = (string) $relation;
                         }
                     }
@@ -925,20 +925,16 @@ class ContentController extends Controller
         $queuecount = (int) $this->container->get('integrated_queue.dbal.provider')->count();
         $queuepercentage = 100;
         if ($queuecount > 0) {
-            $queuemaxcount = max($queuecount,$session->get('queuemaxcount'));
-            $session->set('queuemaxcount',$queuemaxcount);
+            $queuemaxcount = max($queuecount, $session->get('queuemaxcount'));
+            $session->set('queuemaxcount', $queuemaxcount);
             $queuepercentage = round(($queuemaxcount-$queuecount) / $queuemaxcount * 100);
-        }
-        else {
+        } else {
             $session->remove('queuemaxcount');
         }
 
         $email = '';
-//        if ($this->getUser()->getRelation() && $email = $this->getUser()->getRelation()->getEmail()) {
-//
-//        }
 
-        $avatarurl = "http://www.gravatar.com/avatar/" . md5( strtolower( trim( $email ) ) ) . "?s=45";
+        $avatarurl = "//www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "?s=45";
 
 
         /** @var $client \Solarium\Client */
@@ -947,6 +943,8 @@ class ContentController extends Controller
         //
         $client = $this->get('solarium.client');
         $query = $client->createSelect();
+
+        $assignedContent = [];
 
         if ($user = $this->getUser()) {
             $userId = $user->getId();
@@ -1002,74 +1000,126 @@ class ContentController extends Controller
     }
 
     /**
-     * @param FormTypeInterface $type
-     * @param ContentInterface  $content
-     * @param Request           $request
-     *
-     * @return \Symfony\Component\Form\Form
+     * @param null $filter
+     * @return JsonResponse
      */
-    protected function createNewForm(FormTypeInterface $type, ContentInterface $content, Request $request)
+    public function mediaTypesAction($filter = null)
     {
-        $form = $this->createForm($type, $content,[
-            'action' => $this->generateUrl('integrated_content_content_new', ['type' => $request->get('type'), '_format' => $request->getRequestFormat(), 'relation' => $request->get('relation')]),
-            'method' => 'POST',
-        ]);
+        $output = [];
 
-        return $form->add('actions', 'content_actions', ['buttons' => ['create', 'cancel']]);
+        /** @var Image $image */
+        foreach ($this->container->get('integrated_content.provider.media')->getContentTypes($filter) as $contentType) {
+            $output[] = [
+                'id' => $contentType->getId(),
+                'name' => $contentType->getName(),
+                'path' => $this->generateUrl('integrated_content_content_new', ['type' => $contentType->getId()]),
+            ];
+        }
+
+        return new JsonResponse($output);
     }
 
     /**
-     * @param FormTypeInterface $type
-     * @param ContentInterface  $content
-     * @param array             $locking
+     * @param ContentTypeInterface $contentType
+     * @param ContentInterface $content
+     * @param Request $request
      *
      * @return \Symfony\Component\Form\Form
      */
-    protected function createEditForm(FormTypeInterface $type, ContentInterface $content, array $locking)
+    protected function createNewForm(ContentTypeInterface $contentType, ContentInterface $content, Request $request)
     {
-        $form = $this->createForm($type, $content,[
-            'action' => $this->generateUrl('integrated_content_content_edit', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
-            'method' => 'PUT',
-            'attr' => ['class' => 'content-form'],
-
-            // don't display error's when the content is locked as the user can't save in the first place
-            'validation_groups' => $locking['locked'] ? false : null
+        $form = $this->createForm(ContentFormType::class, $content, [
+            'action' => $this->generateUrl('integrated_content_content_new', ['type' => $request->get('type'), '_format' => $request->getRequestFormat(), 'relation' => $request->get('relation')]),
+            'method' => 'POST',
+            'content_type' => $contentType
         ]);
 
-        $form->add('returnUrl', 'hidden', ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
+        return $form->add('actions', ActionsType::class, ['buttons' => ['create', 'cancel']]);
+    }
+
+    /**
+     * @param ContentTypeInterface $contentType
+     * @param ContentInterface $content
+     * @param array $locking
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function createEditForm(ContentTypeInterface $contentType, ContentInterface $content, array $locking)
+    {
+        $form = $this->createForm(ContentFormType::class, $content, [
+            'action' => $this->generateUrl(
+                'integrated_content_content_edit',
+                $locking['lock'] ?
+                ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]
+                :
+                ['id' => $content->getId()]
+            ),
+            'method' => 'PUT',
+            'attr' => ['class' => 'content-form', 'data-content-id' => $content->getId()],
+            // don't display error's when the content is locked as the user can't save in the first place
+            'validation_groups' => $locking['locked'] ? false : null,
+            'content_type' => $contentType
+        ]);
+
+        $form->add('returnUrl', HiddenType::class, ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
 
         // load a different set of buttons based on the permissions and locking state
 
-        if (!$this->get('security.context')->isGranted(Permissions::EDIT, $content)) {
-            return $form->add('actions', 'content_actions', ['buttons' => ['back']]);
+        if (!$this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content)) {
+            return $form->add('actions', ActionsType::class, ['buttons' => ['back']]);
         }
 
         if ($locking['locked']) {
-            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'reload_changed', 'cancel']]);
+            return $form->add('actions', ActionsType::class, ['buttons' => ['reload', 'cancel']]);
         }
 
-        return $form->add('actions', 'content_actions', ['buttons' => ['save', 'cancel']]);
+        return $form->add('actions', ActionsType::class, ['buttons' => ['save', 'cancel']]);
     }
 
     /**
      * @param ContentInterface $content
-     * @param array            $locking
-     *
-     * @return \Symfony\Component\Form\Form
+     * @param array $locking
+     * @param bool|true $notDelete
+     * @return $this|\Symfony\Component\Form\FormInterface
      */
-    protected function createDeleteForm(ContentInterface $content, array $locking)
+    protected function createDeleteForm(ContentInterface $content, array $locking, $notDelete = false)
     {
-        $form = $this->createForm('content_delete', $content, [
+        $form = $this->createForm(DeleteFormType::class, $content, [
             'action' => $this->generateUrl('integrated_content_content_delete', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
             'method' => 'DELETE',
         ]);
 
         // load a different set of buttons based on the locking state
-
-        if ($locking['locked']) {
-            return $form->add('actions', 'content_actions', ['buttons' => ['reload', 'cancel']]);
+        if ($locking['locked'] || $notDelete) {
+            return $form->add('actions', ActionsType::class, ['buttons' => ['reload', 'cancel']]);
         }
 
-        return $form->add('actions', 'content_actions', ['buttons' => ['delete', 'cancel']]);
+        return $form->add('actions', ActionsType::class, ['buttons' => ['delete', 'cancel']]);
+    }
+
+    /**
+     * @param ContentInterface $content
+     * @return array
+     */
+    protected function getReferences(ContentInterface $content)
+    {
+        $references = [];
+        /** @var \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation $relation */
+        foreach ($content->getRelations() as $relation) {
+            foreach ($relation->getReferences() as $reference) {
+                $properties = array(
+                    'id' => $reference->getId(),
+                    'title' => method_exists($reference, 'getTitle') ? $reference->getTitle() : $reference->getId(),
+                );
+
+                if ($reference instanceof Image) {
+                    $properties['image'] = $this->get('integrated_image.twig_extension')->image($reference->getFile())->cropResize(250, 250)->jpeg();
+                }
+
+                $references[$relation->getRelationId()][] = $properties;
+            }
+        }
+
+        return $references;
     }
 }

@@ -8,7 +8,7 @@
 
         {% for name, count in facet %}
             {% set params = {(block.field): (name in filter) ? filter|unset_value(name) : filter|merge([name])} %}
-            {% set params = app.request.query.all|merge(app.request.attributes.get('_route_params')|merge(params)) %}
+            {% set params = app.request.query.all|merge(app.request.attributes.get('_route_params')|merge(params))|merge({(block.block.id ~ '-page'): 1}) %}
 
             <div>
                 <label>

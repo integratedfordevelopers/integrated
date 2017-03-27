@@ -12,18 +12,17 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class DeleteFormType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function getName()
-	{
-		return 'integrated_content_delete';
-	}
-} 
+    /**
+     * @inheritdoc
+     */
+    public function getBlockPrefix()
+    {
+        return 'integrated_content_delete';
+    }
+}

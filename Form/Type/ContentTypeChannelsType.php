@@ -11,12 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-
-use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
-
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ChannelsTransformer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -24,30 +21,35 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class ContentTypeChannelsType extends AbstractType
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		$builder->add('options', 'choice', [
-			'choices' => [
-				''         => 'Enable channel field',
-				'hidden'   => 'Enable but hide channel field',
-				'disabled' => 'Disable channel field'
-			],
-			'required' => false,
-		]);
+    /**
+     * @inheritdoc
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add('options', ChoiceType::class, [
+            'choices' => [
+                'Enable channel field' => '',
+                'Enable but hide channel field' => 'hidden',
+                'Disable channel field' => 'disabled'
+            ],
+            'choices_as_values' => true,
+            'required' => false,
+        ]);
 
-		$builder->add('defaults', 'content_type_channel_collection', ['label' => 'Channels', 'required' => false]);
+        $builder->add(
+            'defaults',
+            ContentTypeChannelCollectionType::class,
+            ['label' => 'Channels', 'required' => false]
+        );
 
-		$builder->addViewTransformer(new ChannelsTransformer());
-	}
+        $builder->addViewTransformer(new ChannelsTransformer());
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getName()
-	{
-		return 'integrated_content_type_channels';
-	}
-} 
+    /**
+     * @inheritdoc
+     */
+    public function getBlockPrefix()
+    {
+        return 'integrated_content_type_channels';
+    }
+}

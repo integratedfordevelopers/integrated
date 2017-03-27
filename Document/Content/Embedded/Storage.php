@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
+use Integrated\Bundle\ContentBundle\Extension\LocatableStorageInterfaceTrait;
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\ResolverInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 /**
  * This document covers the database existence, it is not allowed to create a new instance manually.
@@ -24,32 +24,28 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
  * Any changes to the filesystem must be passed by a command trough the manager handler.
  *
  * @author Johnny Borg <johnny@e-active.nl>
- * @ODM\EmbeddedDocument
  */
 class Storage implements StorageInterface, \ArrayAccess
 {
+    use LocatableStorageInterfaceTrait;
+
     /**
      * @var string
-     * @ODM\Index
-     * @ODM\String
      */
     protected $identifier;
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $pathname;
 
     /**
      * @var Storage\Metadata
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata")
      */
     protected $metadata;
 
     /**
      * @var ArrayCollection
-     * @ODM\Collection
      */
     protected $filesystems;
 
@@ -108,49 +104,5 @@ class Storage implements StorageInterface, \ArrayAccess
     public function getMetadata()
     {
         return $this->metadata;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __toString()
-    {
-        return $this->pathname;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetExists($offset)
-    {
-        return strlen($this->pathname) > ($offset+1);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetGet($offset)
-    {
-        if (0 === $offset) {
-            return '@';
-        }
-
-        return substr($this->pathname, ($offset+1), 1);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->pathname{($offset+1)} = $value;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->pathname{($offset+1)});
     }
 }

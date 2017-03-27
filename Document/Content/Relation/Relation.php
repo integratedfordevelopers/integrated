@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
@@ -23,32 +23,27 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber;
  * Class for Relations
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @ODM\MappedSuperclass
  */
-class Relation extends Content
+abstract class Relation extends Content
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $accountnumber;
 
     /**
      * @var string
-     * @ODM\String
-     * @Type\Field(type="integrated_tinymce")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\EditorType")
      */
     protected $description;
 
     /**
      * @var Phonenumber[] | Collection
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber")
      * @Type\Field(
-     *      type="integrated_sortable_collection",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={
-     *          "type"="integrated_phonenumber",
+     *          "type"="Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType",
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }
@@ -58,18 +53,16 @@ class Relation extends Content
 
     /**
      * @var string
-     * @ODM\String
-     * @Type\Field(type="email")
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\EmailType")
      */
     protected $email;
 
     /**
      * @var Address[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address")
      * @Type\Field(
-     *      type="integrated_sortable_collection",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={
-     *          "type"="integrated_address",
+     *          "type"="Integrated\Bundle\ContentBundle\Form\Type\AddressType",
      *          "default_title"="New address",
      *          "allow_add"=true,
      *          "allow_delete"=true

@@ -11,9 +11,14 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jurre de Jongh <jurre@e-active.nl>
@@ -21,59 +26,43 @@ use Symfony\Component\Form\FormBuilderInterface;
 class AddressType extends AbstractType
 {
     /**
+     * @const array
+     */
+    const PROPERTIES = ['type', 'name', 'country', 'address1', 'address2', 'zipcode', 'city'];
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (in_array('type', $options['fields'])) {
-            $builder->add('type', 'choice', [
-                'placeholder' => '',
-                'required'    => false,
-                'choices'     => [
-                    'postal'   => 'Postal address',
-                    'visiting' => 'Visiting address',
-                    'mailing'  => 'Mailing address',
-                ],
-            ]);
-        }
+        foreach ($options['fields'] as $field) {
+            // Variables
+            $type = TextType::class;
+            $default = ['required' => $builder->getRequired()];
+            $override = isset($options['options'][$field]) ? $options['options'][$field] : [];
 
-        if (in_array('name', $options['fields'])) {
-            $builder->add('name', 'text', [
-                'required' => false,
-            ]);
-        }
+            // Spec may vary per field, but not per se
+            switch ($field) {
+                case 'type':
+                    $type = ChoiceType::class;
+                    $default = [
+                        'placeholder' => '',
+                        'required'    => false,
+                        'choices'     => [
+                            'postal'   => 'Postal address',
+                            'visiting' => 'Visiting address',
+                            'mailing'  => 'Mailing address',
+                        ],
+                    ];
+                    break;
+                case 'country':
+                    $type = CountryType::class;
+                    $default['placeholder'] = '';
+                    break;
+            }
 
-        if (in_array('address1', $options['fields'])) {
-            $builder->add('address1', 'text', [
-                'label'    => 'Address line 1',
-                'required' => false,
-            ]);
-        }
-
-        if (in_array('address2', $options['fields'])) {
-            $builder->add('address2', 'text', [
-                'label'    => 'Address line 2',
-                'required' => false,
-            ]);
-        }
-
-        if (in_array('zipcode', $options['fields'])) {
-            $builder->add('zipcode', 'text', [
-                'required' => false,
-            ]);
-        }
-
-        if (in_array('city', $options['fields'])) {
-            $builder->add('city', 'text', [
-                'required' => false,
-            ]);
-        }
-
-        if (in_array('country', $options['fields'])) {
-            $builder->add('country', 'country', [
-                'placeholder' => '',
-                'required'    => false,
-            ]);
+            // Add into the form
+            $builder->add($field, $type, array_merge($default, $override));
         }
     }
 
@@ -82,16 +71,18 @@ class AddressType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        // Set defaults for the resolver
         $resolver->setDefaults([
-            'data_class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Embedded\\Address',
-            'fields'     => ['type', 'name', 'country', 'address1', 'address2', 'zipcode', 'city'], // @todo validate options (INTEGRATED-627)
+            'data_class' => Address::class,
+            'options' => [],
+            'fields'     => self::PROPERTIES, // @todo validate options (INTEGRATED-627)
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_address';
     }
