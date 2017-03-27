@@ -15,7 +15,6 @@ use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 

@@ -31,7 +31,6 @@ class ContentTypePageType extends AbstractType
     protected $controllerManager;
 
     /**
-    /**
      * ContentTypePageType constructor.
      * @param ContentTypeControllerManager $controllerManager
      */

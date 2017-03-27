@@ -28,7 +28,7 @@ class Controller extends BaseController
      */
     protected function clearRoutingCache()
     {
-        $pattern = '/^app(Dev|Prod)Url(Matcher|Generator).php/';
+        $pattern = '/^app(.*)Url(Matcher|Generator).php/';
 
         $finder = new Finder();
 
@@ -71,7 +71,7 @@ class Controller extends BaseController
             throw new \RuntimeException('Unable to get the request');
         }
 
-        $channel = $this->getChannelManager()->find($request->query->get('channel'));
+        $channel = $this->getChannelManager()->find($request->attributes->get('_channel'));
 
         if (!$channel instanceof Channel) {
             $channels = $this->getChannels();
