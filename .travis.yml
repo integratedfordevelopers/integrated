@@ -4,4 +4,4 @@ before_script:
 - php composer.phar update -n
 script:
 - vendor/bin/phpunit -c phpunit.xml
-- vendor/bin/phpcs --standard=PSR2 --severity=error .
+- vendor/bin/phpcs . --ignore=*/vendor/* --standard=PSR2
