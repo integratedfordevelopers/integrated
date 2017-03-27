@@ -45,13 +45,6 @@ class IntegratedContentBundle extends Bundle
         $container->addCompilerPass(new PriorityResolverBuilderPass());
         $container->addCompilerPass(new ThemeManagerPass());
         $container->addCompilerPass(new EventDispatcherPass());
-        $container->addCompilerPass(
-            new RegisterListenersPass(
-                'integrated_content.event_dispatcher',
-                'integrated_content.event_listener',
-                'integrated_content.event_subscriber'
-            )
-        );
     }
 
     /**
