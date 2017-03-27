@@ -11,11 +11,12 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
+use Integrated\Bundle\PageBundle\Locator\LayoutLocator;
+
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
-
-use Integrated\Bundle\PageBundle\Locator\LayoutLocator;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -41,24 +42,15 @@ class LayoutChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'theme'   => 'default',
+            'theme' => 'default',
+            'choices_as_values' => true,
+            'directory' => null,
             'choices' => function (Options $options) {
-                return $this->getChoices($options['theme'], $options['directory']);
-            },
-            'directory' => null
+                $layout = $this->locator->getLayouts($options['theme'], $options['directory']);
+
+                return array_combine($layout, $layout);
+            }
         ]);
-    }
-
-    /**
-     * @param string $theme
-     * @param string|null $directory
-     * @return array
-     */
-    protected function getChoices($theme, $directory = null)
-    {
-        $layout = $this->locator->getLayouts($theme, $directory);
-
-        return array_combine($layout, $layout);
     }
 
     /**
@@ -66,13 +58,13 @@ class LayoutChoiceType extends AbstractType
      */
     public function getParent()
     {
-        return 'choice';
+        return ChoiceType::class;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_page_layout_choice';
     }

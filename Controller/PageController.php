@@ -11,11 +11,15 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
+use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
+use Integrated\Bundle\PageBundle\Form\Type\PageType;
+use Integrated\Bundle\PageBundle\Document\Page\Page;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -164,7 +168,7 @@ class PageController extends Controller
         $channel = $this->getSelectedChannel();
 
         $form = $this->createForm(
-            'integrated_page_page',
+            PageType::class,
             $page,
             [
                 'action' => $this->generateUrl('integrated_page_page_new', ['channel' => $channel->getId()]),
@@ -173,7 +177,7 @@ class PageController extends Controller
             ]
         );
 
-        $form->add('actions', 'integrated_save_cancel', [
+        $form->add('actions', SaveCancelType::class, [
             'cancel_route' => 'integrated_page_page_index',
             'cancel_route_parameters' => ['channel' => $this->getSelectedChannel()->getId()],
             'label' => 'Create',
@@ -193,16 +197,19 @@ class PageController extends Controller
         $channel = $page->getChannel();
 
         $form = $this->createForm(
-            'integrated_page_page',
+            PageType::class,
             $page,
             [
-                'action' => $this->generateUrl('integrated_page_page_edit', ['id' => $page->getId(), 'channel' => $channel->getId()]),
+                'action' => $this->generateUrl(
+                    'integrated_page_page_edit',
+                    ['id' => $page->getId(), 'channel' => $channel->getId()]
+                ),
                 'method' => 'PUT',
                 'theme'  => $this->getTheme($channel),
             ]
         );
 
-        $form->add('actions', 'integrated_save_cancel', [
+        $form->add('actions', SaveCancelType::class, [
             'cancel_route' => 'integrated_page_page_index',
             'cancel_route_parameters' => ['channel' => $this->getSelectedChannel()->getId()],
         ]);
@@ -221,7 +228,7 @@ class PageController extends Controller
 
         $builder->setAction($this->generateUrl('integrated_page_page_delete', ['id' => $id]));
         $builder->setMethod('DELETE');
-        $builder->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
+        $builder->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 
         return $builder->getForm();
     }

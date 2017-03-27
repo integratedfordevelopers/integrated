@@ -1,9 +1,9 @@
 {
     "name": "integrated/page-bundle",
     "type": "symfony-bundle",
-    "description": "Integrated Page Bundle",
+    "description": "Provides the possibility for the user to create pages on Integrated websites, and front-end editing when combined with the website-bundle",
     "keywords": ["Integrated", "page"],
-    "homepage": "http://www.e-active.nl",
+    "homepage": "http://www.integratedfordevelopers.com",
     "license": "MIT",
     "authors": [
         {
@@ -15,29 +15,27 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": ">=2.4",
-        "symfony/framework-bundle": ">=2.2",
-        "sensio/framework-extra-bundle": "~2.3",
-        "doctrine/mongodb": ">=1.0.0",
-        "doctrine/mongodb-odm": "*",
-        "doctrine/mongodb-odm-bundle": "~3.0",
-        "integrated/content-bundle": "~0.3",
-        "integrated/block-bundle": "~0.3",
-        "integrated/theme-bundle": "~0.2",
+        "symfony/symfony": "~2.8",
+        "sensio/framework-extra-bundle": "~3.0",
+        "doctrine/mongodb": "~1.3",
+        "doctrine/mongodb-odm": "~1.1.2",
+        "doctrine/mongodb-odm-bundle": "~3.2",
+        "integrated/content-bundle": "~0.6",
+        "integrated/formtype-bundle": "~0.6",
+        "integrated/block-bundle": "~0.6",
+        "integrated/theme-bundle": "~0.6",
         "knplabs/knp-paginator-bundle": ">=2.4"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*",
+        "phpunit/phpunit": "~4.8"
     },
     "suggest": {
         "integrated/website-bundle": "Frontend block management for Integrated"
     },
     "autoload":{
-        "psr-0":{
-            "Integrated\\Bundle\\PageBundle": ""
-        }
-    },
-    "target-dir": "Integrated/Bundle/PageBundle",
-    "extra": {
-        "branch-alias": {
-            "dev-develop": "0.9.9-dev"
+        "psr-4":{
+            "Integrated\\Bundle\\PageBundle\\": ""
         }
     }
 }
