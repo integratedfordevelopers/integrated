@@ -76,7 +76,7 @@ class ImageDropzoneType extends AbstractDropzoneType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_image_dropzone';
     }
@@ -86,6 +86,6 @@ class ImageDropzoneType extends AbstractDropzoneType
      */
     public function getParent()
     {
-        return 'integrated_image';
+        return ImageType::class;
     }
 }
