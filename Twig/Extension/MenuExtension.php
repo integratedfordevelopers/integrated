@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
+use Integrated\Bundle\MenuBundle\Matcher\RecursiveActiveMatcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Doctrine\ODM\MongoDB\Id\UuidGenerator;
@@ -58,16 +59,23 @@ class MenuExtension extends \Twig_Extension
     protected $generator;
 
     /**
+     * @var RecursiveActiveMatcher
+     */
+    private $matcher;
+
+    /**
      * @param DatabaseMenuProvider $provider
      * @param DatabaseMenuFactory $factory
      * @param Helper $helper
+     * @param RecursiveActiveMatcher $matcher
      * @param string $template
      */
-    public function __construct(DatabaseMenuProvider $provider, DatabaseMenuFactory $factory, Helper $helper, $template)
+    public function __construct(DatabaseMenuProvider $provider, DatabaseMenuFactory $factory, Helper $helper, RecursiveActiveMatcher $matcher, $template)
     {
         $this->provider = $provider;
         $this->factory = $factory;
         $this->helper = $helper;
+        $this->matcher = $matcher;
 
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults([
@@ -123,6 +131,8 @@ class MenuExtension extends \Twig_Extension
         }
 
         if ($menu) {
+            $this->matcher->setActive($menu);
+
             $html .= $this->helper->render($menu, $options);
         }
 

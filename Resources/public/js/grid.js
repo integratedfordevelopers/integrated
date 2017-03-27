@@ -1,5 +1,15 @@
 !function($, Routing) {
 
+    /**
+     * @type object|null
+     */
+    var previousCall = null;
+
+    /**
+     * @type string|null
+     */
+    var collection = null;
+
     var createBlock = function(name, index, value, element) {
 
         if (element == undefined) {
@@ -157,33 +167,30 @@
     $(document).on('click', '[data-action="integrated-website-block-add"]', function(e) {
         e.preventDefault();
 
-        var collection = $('#' + $(this).attr('data-collection-id'));
+        collection = $('#' + $(this).attr('data-collection-id'));
 
         $.ajax({
-            url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 999 }), // @todo paging (INTEGRATED-423)
+            url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 10}),
             dataType: 'json',
             success: function(data) {
 
                 var template = Handlebars.compile($('#integrated_website_template_modal_block_add').html());
 
-                var html = $(template({
-                    blocks: data
-                }));
+                var html = $(template(data));
 
                 var dialog = bootbox.dialog({
                     title: 'Add block',
                     message: html
                 });
-
-                html.find('[data-action="integrated-website-block-choose"]').click(function() {
-
-                    addBlock(collection, $(this).attr('data-id'));
-                    dialog.modal('hide');
-                });
             }
         });
 
         // @todo error handling (INTEGRATED-420)
+    });
+
+    $(document).on('click', '[data-action="integrated-website-block-choose"]', function() {
+        addBlock(collection, $(this).attr('data-id'));
+        $('.modal.in').modal('hide');
     });
 
     $(document).on('click', '[data-action="integrated-website-block-remove"]', function(e) {
@@ -319,5 +326,52 @@
             }
         }
     });
+
+    $(document).on('change', '#add_block_filters_form input, #add_block_filters_form select', function() {
+        $('#add_block_filters_form').submit();
+    });
+
+    $(document).on('submit', '#add_block_filters_form', function(e) {
+        e.preventDefault();
+
+        refreshBlockData($(this).attr('action') + '&' + $(this).serialize());
+
+        return false;
+    });
+
+
+    $(document).on('click', '#add_block_pagination a', function(e) {
+        e.preventDefault();
+
+        refreshBlockData($(this).attr('href'));
+
+        return false;
+    });
+
+    function refreshBlockData(url) {
+        $('#add_block_results').html('Loading blocks...');
+
+        if(previousCall !== null){
+            previousCall.abort();
+            previousCall = null;
+        }
+
+        previousCall = $.ajax({
+            url: url,
+            dataType: 'json',
+            success: function(data) {
+
+                data.type = $('[name="integrated_block_filter[type][]"]').val();
+                data.q = $('[name="integrated_block_filter[q]"]').val();
+                data.channels = $('[name="integrated_block_filter[channels][]"]').val();
+
+                var template = Handlebars.compile($('#integrated_website_template_modal_block_add').html());
+
+                var html = $(template(data));
+
+                $('#add_block_results').parent().replaceWith(html);
+            }
+        });
+    }
 
 }(window.jQuery, window.Routing);
