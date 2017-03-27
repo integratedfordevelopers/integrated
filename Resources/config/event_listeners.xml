@@ -15,13 +15,13 @@
         <service id="integrated_page.event_listener.content_type_changed" class="Integrated\Bundle\PageBundle\EventListener\ContentTypeChangedListener">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_page.services.content_type_page" />
-            <tag name="integrated_content.event_subscriber" />
+            <tag name="integrated_content.event" />
         </service>
 
         <service id="integrated_page.event_listener.channel_changed" class="Integrated\Bundle\PageBundle\EventListener\ChannelChangedListener">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_page.services.content_type_page" />
-            <tag name="integrated_content.event_subscriber" />
+            <tag name="integrated_content.event" />
         </service>
 
     </services>
