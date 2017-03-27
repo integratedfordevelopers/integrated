@@ -3,5 +3,5 @@ install:
 before_script:
 - php composer.phar install -n
 script:
-- bin/phpunit -c app/phpunit.xml
-- bin/phpcs --standard=PSR2 --severity=error src/
+- bin/phpunit -c phpunit.xml
+- bin/phpcs --standard=PSR2 --severity=error .
