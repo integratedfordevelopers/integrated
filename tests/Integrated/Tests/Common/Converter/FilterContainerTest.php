@@ -48,6 +48,34 @@ class FilterContainerTest extends ContainerTest
     }
 
     /**
+     * @dataProvider controlCharacterProvider
+     * @param $character
+     */
+    public function testSetAddAndGetControlCharacters($character)
+    {
+        $container = $this->getInstance();
+
+        $container->add('key', $character);
+        $this->assertEmpty($container->get('key')[0]);
+    }
+
+    /**
+     * @return array
+     */
+    public function controlCharacterProvider()
+    {
+        return [
+            'null' => ["\x00"],
+            "tab" => ["\x09"],
+            "vertical tab" => ["\x0B"],
+            "form feed" => ["\x0C"],
+            'shift out' => ["\x0E"],
+            'unit separator' => ["\x1F"],
+            'delete' => ["\x7F"]
+        ];
+    }
+
+    /**
      * @return FilterContainer
      */
     protected function getInstance()

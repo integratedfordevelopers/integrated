@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Storage\Database;
 
-use Integrated\Common\Content\Document\Storage\FileInterface;
+use Doctrine\ODM\MongoDB\Cursor;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -19,34 +19,22 @@ use Integrated\Common\Content\Document\Storage\FileInterface;
 interface DatabaseInterface
 {
     /**
-     * @return array
+     * @return \MongoCursor
      */
     public function getRows();
 
     /**
-     * @return FileInterface[]
+     * @return Cursor
      */
     public function getObjects();
 
     /**
-     * @param FileInterface $file
+     * @param object $object
      */
-    public function saveObject(FileInterface $file);
+    public function saveObject($object);
 
     /**
      * @param array $row
      */
     public function saveRow(array $row);
-
-    /**
-     * Called occasionally to cleanup/flush the local entities from the manager
-     * Can be left empty if not needed (ODM and ORM require it for memory issues)
-     */
-    public function commit();
-
-    /**
-     * @param string $oldClass
-     * @param string $newClass
-     */
-    public function updateContentType($oldClass, $newClass);
 }

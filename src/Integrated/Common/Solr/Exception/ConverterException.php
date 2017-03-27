@@ -9,13 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\MongoDB\ContentType;
+namespace Integrated\Common\Solr\Exception;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ClassMetadataLoadFinderSubscriberTest extends \PHPUnit_Framework_TestCase
+class ConverterException extends RuntimeException
 {
-
 }
- 

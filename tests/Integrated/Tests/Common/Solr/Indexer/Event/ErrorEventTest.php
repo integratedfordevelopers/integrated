@@ -17,29 +17,30 @@ use Integrated\Common\Solr\Exception\ExceptionInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ErrorEventTest extends AbstractEventTest
+class ErrorEventTest extends MessageEventTest
 {
-	/**
-	 * @var ExceptionInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $exception;
+    /**
+     * @var ExceptionInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $exception;
 
-	/**
-	 * @var ErrorEvent
-	 */
-	protected $event;
+    public function setUp()
+    {
+        parent::setUp();
 
-	public function setUp()
-	{
-		parent::setUp();
+        $this->exception = $this->getMock(ExceptionInterface::class);
+    }
 
-		$this->exception = $this->getMock('Integrated\Common\Solr\Exception\ExceptionInterface');
-		$this->event = new ErrorEvent($this->indexer, $this->exception);
-	}
+    public function testGetException()
+    {
+        self::assertSame($this->exception, $this->getInstance()->getException());
+    }
 
-	public function testGetException()
-	{
-		$this->assertSame($this->exception, $this->event->getException());
-	}
+    /**
+     * @return ErrorEvent
+     */
+    protected function getInstance()
+    {
+        return new ErrorEvent($this->indexer, $this->message, $this->exception);
+    }
 }
- 

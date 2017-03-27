@@ -9,13 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\MongoDB\ContentType\Mapping;
+namespace Integrated\Tests\Common\Solr\Task\Event;
+
+use Integrated\Common\Solr\Task\Event\WorkerEvent;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ClassMetadataFactoryTest extends \PHPUnit_Framework_TestCase
+class WorkerEventTest extends AbstractEventTest
 {
-
+    protected function getInstance()
+    {
+        return new WorkerEvent($this->worker);
+    }
 }
- 

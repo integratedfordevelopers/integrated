@@ -22,21 +22,26 @@ use Symfony\Component\Form\FormView;
 class ViewEventTest extends FormEventTest
 {
     /**
-     * @var FormInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var FormView | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $view;
 
     /**
-     * @var FormView | \PHPUnit_Framework_MockObject_MockObject
+     * @var FormInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $form;
+
+    /**
+     * @var array
+     */
+    protected $options = ['value 1', 'value 2', 'key' => 'value'];
 
     protected function setUp()
     {
         parent::setUp();
 
-        $this->view = $this->getMock('Symfony\\Component\\Form\\FormView');
-        $this->form = $this->getMock('Symfony\\Component\\Form\\FormInterface');
+        $this->view = $this->getMock(FormView::class);
+        $this->form = $this->getMock(FormInterface::class);
     }
 
     public function testGetView()
@@ -49,16 +54,9 @@ class ViewEventTest extends FormEventTest
         self::assertSame($this->form, $this->getInstance()->getForm());
     }
 
-    public function testSetAndGetOptions()
+    public function testGetOptions()
     {
-        $event = $this->getInstance();
-
-        self::assertSame([], $event->getOptions());
-
-        $options = ['value 1', 'value 2', 'key' => 'value'];
-        $event->setOptions($options);
-
-        self::assertSame($options, $event->getOptions());
+        self::assertSame($this->options, $this->getInstance()->getOptions());
     }
 
     /**
@@ -66,6 +64,6 @@ class ViewEventTest extends FormEventTest
      */
     protected function getInstance()
     {
-        return new ViewEvent($this->type, $this->metadata, $this->view, $this->form);
+        return new ViewEvent($this->type, $this->metadata, $this->view, $this->form, $this->options);
     }
 }

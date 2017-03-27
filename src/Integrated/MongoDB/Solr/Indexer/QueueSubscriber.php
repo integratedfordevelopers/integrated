@@ -20,7 +20,7 @@ use Integrated\Common\Queue\QueueAwareInterface;
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Solr\Indexer\Job;
 
-use Symfony\Component\Security\Core\Util\ClassUtils;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -170,7 +170,6 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 
         switch ($job->getAction()) {
             case 'ADD':
-
                 // probably should make a solr document id generator service or something like that
                 $job->setOption('document.id', $document->getContentType() . '-' . $document->getId());
 
@@ -188,11 +187,11 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 
         $this->getQueue()->push($job, 0, $this->priority);
 
-        if ($this->priority >= QueueInterface::PRIORITY_MEDIUM_HIGH) {
+        if ($this->priority > QueueInterface::PRIORITY_MEDIUM_HIGH) {
             $this->getQueue()->push(new Job('COMMIT', ['softcommit' => 'true']), 0, $this->priority);
 
             //Do this only one time
-            $this->setPriority(QueueInterface::PRIORITY_MEDIUM);
+            $this->setPriority(QueueInterface::PRIORITY_MEDIUM_HIGH);
         }
     }
 }

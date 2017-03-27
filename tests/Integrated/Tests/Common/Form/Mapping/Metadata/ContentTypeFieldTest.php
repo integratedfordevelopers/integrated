@@ -60,17 +60,4 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
         $this->contentTypeField->setOptions($options);
         $this->assertEquals($options, $this->contentTypeField->getOptions());
     }
-
-    /**
-     * Test getLabel function
-     */
-    public function testGetLabelFunction()
-    {
-        $this->assertEquals(ucfirst(self::NAME), $this->contentTypeField->getLabel());
-
-        $options = array('label' => 'Henk de Vries');
-        $this->contentTypeField->setOptions($options);
-
-        $this->assertEquals($options['label'], $this->contentTypeField->getLabel());
-    }
 }

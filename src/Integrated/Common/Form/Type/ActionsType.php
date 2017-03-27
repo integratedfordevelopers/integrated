@@ -26,11 +26,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ActionsType extends AbstractType
 {
     /**
-     * @var string
-     */
-    protected $name;
-
-    /**
      * @var array
      */
     protected $buttons;
@@ -38,12 +33,10 @@ class ActionsType extends AbstractType
     /**
      * Constructor.
      *
-     * @param string $name
      * @param array  $buttons
      */
-    public function __construct($name, array $buttons)
+    public function __construct(array $buttons)
     {
-        $this->name = $name;
         $this->buttons = $buttons;
     }
 
@@ -60,7 +53,7 @@ class ActionsType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $buttonsNormalizer = function(Options $options, $buttons) {
+        $buttonsNormalizer = function (Options $options, $buttons) {
             $normalized = [];
 
             foreach ($buttons as $button) {
@@ -82,14 +75,6 @@ class ActionsType extends AbstractType
      */
     public function getParent()
     {
-        return 'form_actions';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->name;
+        return 'Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType';
     }
 }

@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\MongoDB\ContentType;
+namespace Integrated\Common\Solr\Task\Tasks\Doctrine;
+
+use Integrated\Common\Solr\Task\Tasks\ReferenceQueueTask;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DiscriminatorMapBuilderSubscriberTest extends \PHPUnit_Framework_TestCase
+class MongoDBReferenceQueueTask extends ReferenceQueueTask
 {
-
 }
- 

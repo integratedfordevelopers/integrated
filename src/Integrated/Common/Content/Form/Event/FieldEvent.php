@@ -11,73 +11,98 @@
 
 namespace Integrated\Common\Content\Form\Event;
 
-use Integrated\Common\ContentType\ContentTypeFieldInterface;
+use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Common\Form\Mapping\AttributeEditorInterface;
+use Integrated\Common\Form\Mapping\MetadataInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class FieldEvent extends FormEvent
 {
-	/**
-	 * @var ContentTypeFieldInterface
-	 */
-	private $field = null;
+    /**
+     * @var AttributeEditorInterface
+     */
+    private $field;
 
-	/**
-	 * @var array
-	 */
-	private $options = [];
+    /**
+     * @var array
+     */
+    private $options;
 
-	/**
-	 * @var bool
-	 */
-	private $ignore = false;
+    /**
+     * @var bool
+     */
+    private $ignore = false;
 
-	/**
-	 * @param ContentTypeFieldInterface $field
-	 */
-	public function setField(ContentTypeFieldInterface $field)
-	{
-		$this->field = $field;
-	}
+    /**
+     * @var mixed
+     */
+    private $data = null;
 
-	/**
-	 * @return null | ContentTypeFieldInterface
-	 */
-	public function getField()
-	{
-		return $this->field;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(
+        ContentTypeInterface $type,
+        MetadataInterface $metadata,
+        AttributeEditorInterface $field,
+        array $options
+    ) {
+        parent::__construct($type, $metadata);
 
-	/**
-	 * @param boolean $ignore
-	 */
-	public function setIgnore($ignore)
-	{
-		$this->ignore = (bool) $ignore;
-	}
+        $this->field = $field;
+        $this->options = $options;
+    }
 
-	/**
-	 * @return boolean
-	 */
-	public function isIgnored()
-	{
-		return $this->ignore;
-	}
+    /**
+     * @return AttributeEditorInterface
+     */
+    public function getField()
+    {
+        return $this->field;
+    }
 
-	/**
-	 * @param array $options
-	 */
-	public function setOptions(array $options)
-	{
-		$this->options = $options;
-	}
+    /**
+     * @return array
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getOptions()
-	{
-		return $this->options;
-	}
+    /**
+     * @param boolean $ignore
+     */
+    public function setIgnore($ignore)
+    {
+        $this->ignore = (bool)$ignore;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIgnored()
+    {
+        return $this->ignore;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @param mixed $data
+     * @return $this
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
 }
