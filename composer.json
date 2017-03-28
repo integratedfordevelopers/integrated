@@ -26,6 +26,10 @@
         "integrated/theme-bundle": "~0.6",
         "knplabs/knp-paginator-bundle": "~2.5"
     },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
+    },
     "suggest": {
         "integrated/page-bundle": "Extend block bundle functionality"
     },
