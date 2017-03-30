@@ -42,7 +42,8 @@ class ContentTypeController extends Controller
     /**
      * Lists all the ContentType documents
      *
-     * @Template()
+     * @Template
+     *
      * @return array
      */
     public function indexAction()
@@ -51,55 +52,55 @@ class ContentTypeController extends Controller
         $dm = $this->get('doctrine_mongodb')->getManager();
         $documents = $dm->getRepository($this->contentTypeClass)->findAll();
 
-        // Get al documentTypes
         $documentTypes = $this->getMetadata()->getAllMetadata();
 
-        return array(
+        return [
             'documents' => $documents,
             'documentTypes' => $documentTypes
-        );
+        ];
     }
 
     /**
      * Display a list of Content documents
      *
-     * @Template()
+     * @Template
+     *
      * @return array
      */
     public function selectAction()
     {
-        // Get all the document types
         $documentTypes = $this->getMetadata()->getAllMetadata();
 
-        return array(
+        return [
             'documentTypes' => $documentTypes
-        );
+        ];
     }
 
     /**
      * Finds and displays a ContentType document
      *
-     * @Template()
+     * @Template
+     *
      * @param ContentType $contentType
      * @return array
      */
     public function showAction(ContentType $contentType)
     {
-        // Create form
         $form = $this->createDeleteForm($contentType);
 
-        return array(
+        return [
             'form' => $form->createView(),
             'contentType' => $contentType
-        );
+        ];
     }
 
     /**
-     * Displays a form to create a new ContentType document
+     * Creates a new ContentType document
      *
-     * @Template()
+     * @Template
+     *
      * @param Request $request
-     * @return array
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction(Request $request)
     {
@@ -109,119 +110,67 @@ class ContentTypeController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
         }
 
-        // Create contentType
         $contentType = new ContentType();
         $contentType->setClass($metadata->getClass());
 
-        // Create form
         $form = $this->createNewForm($contentType, $metadata);
-
-        return array(
-            'form' => $form->createView()
-        );
-    }
-
-    /**
-     * Creates a new ContentType document
-     *
-     * @Template("IntegratedContentBundle:ContentType:new.html.twig")
-     * @param Request $request
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function createAction(Request $request)
-    {
-        // @TODO: this should be passed by a query variable instead of this way
-        $metadata = $this->getMetadata()->getMetadata($request->get('content_type_new')['class']);
-
-        if (!$metadata) {
-            return $this->redirect($this->generateUrl('integrated_content_content_type_select'));
-        }
-
-        // Create contentType
-        $contentType = new ContentType();
-        $contentType->setClass($metadata->getClass());
-
-        // Create form
-        $form = $this->createNewForm($contentType, $metadata);
-
-        // Validate request
         $form->handleRequest($request);
-        if ($form->isValid()) {
+
+        if ($form->isSubmitted() && $form->isValid()) {
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->persist($contentType);
             $dm->flush();
 
-            // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
-            return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
+            return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
         }
 
-        return array(
+        return [
             'form' => $form->createView()
-        );
-    }
-
-    /**
-     * Display a form to edit an existing ContentType document
-     *
-     * @Template
-     * @param ContentType $contentType
-     * @return array
-     */
-    public function editAction(ContentType $contentType)
-    {
-        $metadata = $this->getMetadata()->getMetadata($contentType->getClass());
-
-        // Create form
-        $form = $this->createEditForm($contentType, $metadata);
-
-        return array(
-            'form' => $form->createView(),
-            'contentType' => $contentType
-        );
+        ];
     }
 
     /**
      * Edits an existing ContentType document
      *
-     * @Template("IntegratedContentBundle:ContentType:edit.html.twig")
-     * @param Request $request
+     * @Template
+     *
+     * @param Request     $request
      * @param ContentType $contentType
+     *
      * @return array|\Symfony\Component\HttpFoundation\Response
      */
-    public function updateAction(Request $request, ContentType $contentType)
+    public function editAction(Request $request, ContentType $contentType)
     {
         $metadata = $this->getMetadata()->getMetadata($contentType->getClass());
 
-        // Create form
         $form = $this->createEditForm($contentType, $metadata);
-
-        // Validate request
         $form->handleRequest($request);
-        if ($form->isValid()) {
+
+        if ($form->isSubmitted() && $form->isValid()) {
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
             $dm->flush();
 
-            // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
-            return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
+            return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
         }
 
-        return array(
+        return [
             'form' => $form->createView(),
             'contentType' => $contentType
-        );
+        ];
     }
 
     /**
      * Deletes a ContentType document
      *
-     * @param Request $request
+     * @param Request     $request
      * @param ContentType $contentType
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, ContentType $contentType)
@@ -229,16 +178,18 @@ class ContentTypeController extends Controller
         $form = $this->createDeleteForm($contentType);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
 
             // Only delete ContentType when there are no Content items
-            $count = count($dm->getRepository($contentType->getClass())->findBy(array('contentType' => $contentType->getId())));
+            $count = count($dm->getRepository($contentType->getClass())->findBy(['contentType' => $contentType->getId()]));
+
             if ($count > 0) {
                 // Set flash message and redirect to item page
                 $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
-                return $this->redirect($this->generateUrl('integrated_content_content_type_show', array('id' => $contentType->getId())));
+
+                return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
             } else {
                 $dm->remove($contentType);
                 $dm->flush();
@@ -268,18 +219,19 @@ class ContentTypeController extends Controller
     /**
      * Creates a form to create a ContentType document
      *
-     * @param ContentType $contentType
+     * @param ContentType       $type
      * @param MetadataInterface $metadata
+     *
      * @return \Symfony\Component\Form\Form
      */
-    protected function createNewForm(ContentType $contentType, MetadataInterface $metadata)
+    protected function createNewForm(ContentType $type, MetadataInterface $metadata)
     {
         $form = $this->createForm(
             ContentTypeFormType::class,
-            $contentType,
+            $type,
             [
-                'action'   => $this->generateUrl('integrated_content_content_type_create'),
-                'method'   => 'POST',
+                'action' => $this->generateUrl('integrated_content_content_type_new', ['class' => $type->getClass()]),
+                'method' => 'POST',
                 'metadata' => $metadata
             ],
             [
@@ -293,18 +245,19 @@ class ContentTypeController extends Controller
     /**
      * Creates a form to edit a ContentType document.
      *
-     * @param ContentType $contentType
+     * @param ContentType       $type
      * @param MetadataInterface $metadata
+     *
      * @return \Symfony\Component\Form\Form
      */
-    protected function createEditForm(ContentType $contentType, MetadataInterface $metadata)
+    protected function createEditForm(ContentType $type, MetadataInterface $metadata)
     {
         $form = $this->createForm(
             ContentTypeFormType::class,
-            $contentType,
+            $type,
             [
-                'action'   => $this->generateUrl('integrated_content_content_type_update', ['id' => $contentType->getId()]),
-                'method'   => 'PUT',
+                'action' => $this->generateUrl('integrated_content_content_type_edit', ['id' => $type->getId()]),
+                'method' => 'PUT',
                 'metadata' => $metadata
             ],
             [
@@ -318,16 +271,16 @@ class ContentTypeController extends Controller
     /**
      * Creates a form to delete a ContentType document.
      *
-     * @param ContentType $contentType
+     * @param ContentType $type
      * @return \Symfony\Component\Form\Form
      */
-    protected function createDeleteForm(ContentType $contentType)
+    protected function createDeleteForm(ContentType $type)
     {
         $form = $this->createForm(
             DeleteFormType::class,
-            $contentType,
+            $type,
             [
-                'action' => $this->generateUrl('integrated_content_content_type_delete', ['id' => $contentType->getId()]),
+                'action' => $this->generateUrl('integrated_content_content_type_delete', ['id' => $type->getId()]),
                 'method' => 'DELETE',
             ],
             [
@@ -339,7 +292,7 @@ class ContentTypeController extends Controller
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createForm($type, $data = null, array $options = [], array $buttons = [])
     {
