@@ -187,6 +187,8 @@ $(function () {
                 showCommentButton(getFieldName($(this).attr('name')), position, $(this), $container);
             }
         }
+    }).bind('blur', function (e) {
+        removeControls();
     });
 
     /**
@@ -284,7 +286,7 @@ $(function () {
      * Add event listeners to tinymce after tinymce is loaded
      */
     var tinymceInit = function () {
-        if (tinymce.activeEditor == undefined) {
+        if (typeof tinymce == 'undefined' || tinymce.activeEditor == undefined) {
             return;
         }
         clearInterval(waitForTiny);
@@ -292,6 +294,7 @@ $(function () {
         tinymce.activeEditor.formatter.register('integrated_comment', {inline : 'span', 'classes' : 'integrated-comment', attributes: {'data-comment-id' : '%value'}});
         tinymce.activeEditor.on('click', tinyCommentCheckSelect);
         tinymce.activeEditor.on('keypress', tinyCommentCheckSelect);
+        tinymce.activeEditor.on('blur', removeControls);
         tinymce.activeEditor.dom.loadCSS("/bundles/integratedcomment/css/comments.css");
     };
 
