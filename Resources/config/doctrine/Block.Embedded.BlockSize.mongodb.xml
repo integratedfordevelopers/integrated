@@ -6,6 +6,10 @@
     <embedded-document name="Integrated\Bundle\BlockBundle\Document\Block\Embedded\BlockSize">
 
         <field name="size" type="int" />
+        <field name="sizeXs" type="int" />
+        <field name="sizeSm" type="int" />
+        <field name="sizeMd" type="int" />
+        <field name="sizeLg" type="int" />
 
         <reference-one field="block" target-document="Integrated\Bundle\BlockBundle\Document\Block\Block" />
 

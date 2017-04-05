@@ -31,25 +31,21 @@ class BlockSize
 
     /**
      * @var int
-     * @ODM\Int
      */
     protected $sizeXs;
 
     /**
      * @var int
-     * @ODM\Int
      */
     protected $sizeSm;
 
     /**
      * @var int
-     * @ODM\Int
      */
     protected $sizeMd;
 
     /**
      * @var int
-     * @ODM\Int
      */
     protected $sizeLg;
 
