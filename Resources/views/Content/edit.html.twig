@@ -64,16 +64,19 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4" for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label>
                             <div class="col-sm-8 relation">
-                                <select
-                                        multiple
-                                        id="{{ relation.vars.name }}"
-                                        data-multiple="{{ relation.vars.attr['data-multiple'] }}"
-                                        data-types="{{ relation.vars.attr['data-types'] }}"
-                                        class="relation-items form-control"
-                                >
-                                </select>
-
-                                <div class="add-wrapper margin-top"></div>
+                                <div class="input-group">
+                                    <select
+                                            multiple
+                                            id="{{ relation.vars.name }}"
+                                            data-multiple="{{ relation.vars.attr['data-multiple'] }}"
+                                            data-types="{{ relation.vars.attr['data-types'] }}"
+                                            class="relation-items form-control"
+                                    >
+                                    </select>
+                                    <span class="input-group-btn" data-add="1">
+                                        <a class="btn btn-default"></a>
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
