@@ -107,6 +107,7 @@
                 <div class="aside-holder section-gray section-shadow section-radius">
                     <form>
                         <input type="hidden" value="{{ app.request.query.get('q') }}" name="q" />
+                        <input type="hidden" value="{{ app.request.query.get('sort') }}" name="sort" />
                         {% for key, facet in facets %}
                             {% if facet|length > 0 %}
                             <div class="aside-item-holder">
