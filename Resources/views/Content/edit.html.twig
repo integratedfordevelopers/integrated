@@ -66,20 +66,18 @@
                             <div class="col-sm-8 relation">
                                 <div class="input-group">
                                     <select
-                                            multiple
-                                            id="{{ relation.vars.name }}"
-                                            data-multiple="{{ relation.vars.attr['data-multiple'] }}"
-                                            data-types="{{ relation.vars.attr['data-types'] }}"
-                                            class="relation-items form-control"
+                                        multiple
+                                        id="{{ relation.vars.name }}"
+                                        data-multiple="{{ relation.vars.attr['data-multiple'] }}"
+                                        data-types="{{ relation.vars.attr['data-types'] }}"
+                                        class="relation-items form-control"
+                                        style="display: none; width: 100%"
                                     >
                                     </select>
-                                    <span class="input-group-btn" data-add="1">
-                                        <a class="btn btn-default"></a>
-                                    </span>
+                                    <span class="input-group-btn" data-add="1"></span>
                                 </div>
                             </div>
                         </div>
-
                     {% endfor %}
                 </div>
             {% endif %}
@@ -137,12 +135,14 @@
                 {{#if relations}}
                 {{#equals relations.length 1}}
                     <a data-title="Add {{relations.0.name}}" class="btn btn-gray add-relation font-size-13" data-href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
-                        {% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        <span class="sr-only">{% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}:</span>
                     </a>
                 {{else}}
                 <div class="btn-group add-relation">
                     <button type="button" class="btn btn-gray dropdown-toggle font-size-13" data-toggle="dropdown" aria-expanded="false">
-                        {% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}<span class="caret"></span>
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        <span class="sr-only">{% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}:</span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         {{#each relations}}

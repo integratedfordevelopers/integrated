@@ -5,7 +5,7 @@ $(".relation-items").each(function() {
 
     var $relation = $(this);
     var defaultValues = $.parseJSON($('#default_references').val());
-    var $addWrapper = $relation.find('[data-add="1"]');
+    var $addWrapper = $relation.next('[data-add="1"]');
 
     if (defaultValues[relation_id] !== undefined && defaultValues[relation_id].length) {
         $.each(defaultValues[relation_id], function() {
