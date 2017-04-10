@@ -159,6 +159,12 @@
         <service id="integrated_content.form.type.job.contact_persons" class="Integrated\Bundle\ContentBundle\Form\Type\Job\ContactPersonsType">
             <tag name="form.type" />
         </service>
+
+        <service id="integrated_content.form.type.bulk_action_form" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionFormType">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_content.services.bulk.action" />
+            <tag name="form.type" />
+        </service>
     </services>
 
 </container>

@@ -1,5 +1,19 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
+    {% for flash_message in app.session.flashBag.get('notice') %}
+        <div class="row alert alert-info">
+            {{ flash_message }}
+        </div>
+    {% endfor %}
+    {% for type, flash_messages in app.session.flashBag.all %}
+        <div class="row alert alert{{ type == "success" ? "-success" : "-warning" }}">
+            <ul>
+            {% for flash_message in flash_messages %}
+                <li>{{ flash_message }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
     <div class="row">
 
         <div class="col-md-8 push-sm-down">
@@ -22,6 +36,17 @@
                 </li>
 
                 {{ render(controller('IntegratedContentBundle:SearchSelection:menu')) }}
+
+                <li class="dropdown">
+                    <a href data-toggle="dropdown" role="button">{% trans %}Tools{% endtrans %} <b class="caret"></b></a>
+
+                    <ul role="menu" class="dropdown-menu">
+
+                            {{ render(controller('IntegratedContentBundle:Bulk:menu')) }}
+
+                    </ul>
+                </li>
+
             </ul>
             <section class="section-white section-padding section-shadow section-radius">
                 <ul class="list-unstyled list-content">

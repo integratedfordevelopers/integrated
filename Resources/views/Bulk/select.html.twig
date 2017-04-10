@@ -1,0 +1,133 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% form_theme form _self %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <ul class="alert alert-danger">
+                {% for error in errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-8 push-sm-down">
+            <h1>{% trans %}Step 1 of 3: Choose Issues{% endtrans %}</h1>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-gray-thin" href="{{ path("integrated_content_content_index", filters) }}" style="margin-right:10px;">Cancel</a>
+            {{ form_widget(form.save) }}
+        </div>
+    </div>
+    <br/>
+    {{ form_errors(form.selection) }}
+    {% if results|length >= limit %}
+        <ul class="alert alert-danger">
+            <li>
+                Bulk change is limited to {{ limit | number_format }} items at once. Only the
+                first {{ limit | number_format }} items have been included.
+            </li>
+        </ul>
+    {% endif %}
+    <div class="row">
+        <section class="section-white section-padding section-shadow section-radius">
+            <div class="container">
+                {% if results|length == 1 %}
+                    Choose if you wish to perform a bulk action for this content.
+                {% elseif results|length > 0 %}
+                    Choose for which of the {{ results | length }} contents you wish to perform a bulk action.
+                    When no contents are deselected, the bulk action(s) will apply to all contents in the selection.
+                {% else %}
+                    Please make a selection for which contents you want to apply a bulk action.
+                {% endif %}
+            </div>
+            <hr/>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="bulkedit-select-all" name="all" value="on" onClick="checkAll(this)" checked="checked"/></th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Created</th>
+                    <th>Edited</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for content in form.selection %}
+                    <tr>
+                        <td>
+                            {{ form_widget(content) }}
+                        </td>
+                        <td>
+                            <a href="{{ path('integrated_content_content_edit', {id: results[content.vars.value].type_id}) }}">
+                                {{ results[content.vars.value].title|default }}
+                            </a>
+                        </td>
+                        <td>
+                            {% if results[content.vars.value].type_name is defined %}
+                                {{ results[content.vars.value].type_name | capitalize }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if results[content.vars.value].pub_created is defined %}
+                                {{ results[content.vars.value].pub_created|localizeddate('medium') }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if results[content.vars.value].pub_edited is defined %}
+                                {{ results[content.vars.value].pub_edited|localizeddate('medium') }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="text-danger">
+                            {% trans %}No items found{% endtrans %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="pull-right">
+            <a class="btn btn-gray-thin" href="{{ path("integrated_content_content_index", filters) }}" style="margin-right:10px;">Cancel</a>
+            {{ form_widget(form.saveAndAdd) }}
+        </div>
+    </div>
+    {{ form_widget(form._token) }}
+    {{ form_end(form, {'render_rest': false}) }}
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+        function checkAll(source) {
+            var checkboxes = document.getElementsByTagName('input');
+            if (source.checked) {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = true;
+                    }
+                }
+            } else {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    console.log(i)
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = false;
+                    }
+                }
+            }
+        }
+
+    </script>
+
+{% endblock javascript %}

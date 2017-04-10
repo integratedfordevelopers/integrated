@@ -1,0 +1,47 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-8 push-sm-down">
+            <h1>{% trans %}Step 3 of 3: Confirmation{% endtrans %}</h1>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-gray-thin" href="{{ path("integrated_content_bulk_edit", filters) }}" style="margin-right:10px;">Back</a>
+            {{ form_widget(form.confirm) }}
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <section class="section-white section-padding section-shadow section-radius">
+            <ul>
+                {% for flash_message in app.session.flashBag.get('notice') %}
+                    <div class="row alert alert-info">
+                        {{ flash_message }}
+                    </div>
+                {% endfor %}
+                {% for type, flash_messages in app.session.flashBag.all %}
+                    <ul class="row alert alert{{ type == "error" ? "-danger" : "" }}{{ type == "notice" ? "-warning" : "" }}">
+                        {% for flash_message in flash_messages %}
+                            <li>{{ flash_message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+                <hr/>
+                {% for relation,references in referencegroups %}
+                    {% if references is not empty  %}
+                        <li>
+                            <strong>{{ delimiter in relation ? "(" : "" }}{{ relation | replace({ ( delimiter ) : ') ' }) }}</strong>
+                            <ul>
+                                {% for reference in references %}
+                                    <li>&emsp;- {{ reference }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

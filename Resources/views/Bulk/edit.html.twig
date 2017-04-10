@@ -1,0 +1,63 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-8 push-sm-down">
+            <h1>{% trans %}Step 2 of 3: Choose Operation{% endtrans %}</h1>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-gray-thin" href="{{ path("integrated_content_bulk_select", filters) }}" style="margin-right:10px;">Back</a>
+            <button class="btn btn-orange" onclick="$('form').submit()">Next</button>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+            <section class="section-white section-padding section-shadow section-radius">
+                <div class="container">
+                    {% if selection | length > 1 %}
+                        Choose the operation you wish to perform on the selected {{ selection | length }} contents.
+                    {% elseif selection | length == 1 %}
+                        Choose the operation you wish to perform on the selected content.
+                    {% endif %}
+                </div>
+                <hr/>
+                {{ form(form, { 'style': 'horizontal', 'label_col': 2, 'widget_col': 4, 'col_size': 'sm' }) }}
+            </section>
+    </div>    <br/>
+    <div class="row">
+        <div class="pull-right">
+            <a class="btn btn-gray-thin" href="{{ path("integrated_content_bulk_select", filters) }}" style="margin-right:10px;">Back</a>
+            <button class="btn btn-orange" onclick="$('form').submit()">Next</button>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function () {
+            $(".form-group").each(function () {
+                if($(this).children("label").length > 0){
+                    var height = $(this).children('div').height();
+                    $(this).css('min-height', height);
+                    $(this).children("label").prepend("<input type='checkbox'/>&emsp;");
+                    $(this).children("div").hide();
+                }
+            });
+
+            $("input:checkbox").click(function () {
+                if ($(this).is(":checked")) {
+                    $(this).parents("div.form-group").children("div").show();
+                } else {
+                    $(this).parents("div.form-group").children("div").hide();
+                }
+            });
+
+        });
+    </script>
+
+    {% javascripts '@IntegratedContentBundle/Resources/public/js/bulk_relation.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascript %}
