@@ -18,10 +18,10 @@
         "symfony/symfony": "~2.8",
         "twig/twig": "1.*",
         "doctrine/inflector": "1.*"
-},
+    },
     "require-dev": {
-        "squizlabs/php_codesniffer": "2.*",
-        "phpunit/phpunit": "~4.8"
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
     },
     "autoload":{
         "psr-4":{
