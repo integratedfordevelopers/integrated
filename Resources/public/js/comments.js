@@ -159,6 +159,7 @@ $(function () {
     var removeControls = function() {
         $('.comment-holder, .add-comment-button').remove();
     };
+
     /**
      * @param {string} fullName
      * @returns {string}
@@ -166,6 +167,10 @@ $(function () {
     var getFieldName = function(fullName) {
         return /\[(.+)\]$/.exec(fullName)[1];
     };
+
+    function removeCommentButton() {
+        $('.add-comment-button').remove();
+    }
 
     //
     //
@@ -187,8 +192,10 @@ $(function () {
                 showCommentButton(getFieldName($(this).attr('name')), position, $(this), $container);
             }
         }
-    }).bind('blur', function (e) {
-        removeControls();
+    }).click(function() {
+        removeCommentButton();
+    }).focusout(function() {
+        removeCommentButton();
     });
 
     /**
@@ -286,7 +293,7 @@ $(function () {
      * Add event listeners to tinymce after tinymce is loaded
      */
     var tinymceInit = function () {
-        if (typeof tinymce == 'undefined' || tinymce.activeEditor == undefined) {
+        if (tinymce.activeEditor == undefined) {
             return;
         }
         clearInterval(waitForTiny);
@@ -294,10 +301,9 @@ $(function () {
         tinymce.activeEditor.formatter.register('integrated_comment', {inline : 'span', 'classes' : 'integrated-comment', attributes: {'data-comment-id' : '%value'}});
         tinymce.activeEditor.on('click', tinyCommentCheckSelect);
         tinymce.activeEditor.on('keypress', tinyCommentCheckSelect);
-        tinymce.activeEditor.on('blur', removeControls);
+        tinymce.activeEditor.on('focusout', removeCommentButton);
         tinymce.activeEditor.dom.loadCSS("/bundles/integratedcomment/css/comments.css");
     };
 
     var waitForTiny = setInterval(tinymceInit, 100);
-
 });
