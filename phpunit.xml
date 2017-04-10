@@ -11,15 +11,11 @@
          syntaxCheck="false"
          bootstrap="./vendor/autoload.php"
         >
+
     <testsuites>
         <testsuite name="IntegratedStorageBundle Test Suite">
             <directory>./Tests</directory>
         </testsuite>
     </testsuites>
 
-    <!--<filter>-->
-        <!--<whitelist>-->
-            <!--<directory>./src/Integrated/</directory>-->
-        <!--</whitelist>-->
-    <!--</filter>-->
 </phpunit>
