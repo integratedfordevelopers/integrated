@@ -22,7 +22,8 @@
         "braincrafted/bootstrap-bundle": "~2.2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
     },
     "suggest": {
       "integrated-content-bundle": "Allows use of the integrated_editor formtype"
