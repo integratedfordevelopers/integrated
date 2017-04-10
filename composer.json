@@ -23,7 +23,8 @@
         "fzaninotto/faker": "~1.6"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.4.*"
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
     },
     "suggest": {
         "ext-imagick": "Allows more image formats to be uploaded"
