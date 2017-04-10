@@ -27,8 +27,8 @@
         "knplabs/knp-paginator-bundle": ">=2.4"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "2.*",
-        "phpunit/phpunit": "~4.8"
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
     },
     "suggest": {
         "integrated/website-bundle": "Frontend block management for Integrated"
