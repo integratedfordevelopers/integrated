@@ -2,7 +2,7 @@
     "name": "integrated/channel-bundle",
     "type": "symfony-bundle",
     "description": "Provides the possibility to use and configure connectors on Integrated installation, which get or distribute content",
-    "keywords": ["integrated", "channel"],
+    "keywords": ["integrated", "channel", "multi-site"],
     "homepage": "http://www.integratedfordevelopers.com",
     "license": "MIT",
     "authors": [
@@ -22,8 +22,8 @@
         "doctrine/doctrine-bundle": "~1.6"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "2.*",
-        "phpunit/phpunit": "~4.8"
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
     },
     "autoload":{
         "psr-4":{
