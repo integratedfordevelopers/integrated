@@ -74,7 +74,7 @@
                                         style="display: none; width: 100%"
                                     >
                                     </select>
-                                    <span class="input-group-btn" data-add="1"></span>
+                                    <span class="input-group-addon" data-add="1"></span>
                                 </div>
                             </div>
                         </div>
@@ -134,13 +134,13 @@
             <script id="add-template" type="text/xhandlebars-template">
                 {{#if relations}}
                 {{#equals relations.length 1}}
-                    <a data-title="Add {{relations.0.name}}" class="btn btn-gray add-relation font-size-13" data-href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
+                    <button data-title="Add {{relations.0.name}}" class="add-relation font-size-13" data-href="{{relations.0.href}}" data-modal="add-modal">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                         <span class="sr-only">{% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}:</span>
-                    </a>
+                    </button>
                 {{else}}
-                <div class="btn-group add-relation">
-                    <button type="button" class="btn btn-gray dropdown-toggle font-size-13" data-toggle="dropdown" aria-expanded="false">
+                <div class="add-relation">
+                    <button type="button" class="dropdown-toggle font-size-13" data-toggle="dropdown" aria-expanded="false">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                         <span class="sr-only">{% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}:</span>
                     </button>

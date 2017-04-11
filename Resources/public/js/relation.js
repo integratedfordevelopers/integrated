@@ -105,7 +105,7 @@ var resizeIFrame = function(height, iFrame) {
     iFrame.attr('height', height);
 };
 
-$('.relations').on('click', 'a[data-modal]', function(e){
+$('.relations').on('click', '[data-modal]', function(e){
     e.preventDefault();
 
     if ($(this).parents('.btn-group').length) {
