@@ -15,18 +15,17 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.4",
-        "symfony/symfony": "~2.8",
+        "symfony/symfony": "~2.8 || ~3.0",
         "sp/bower-bundle": "~0.11",
         "friendsofsymfony/jsrouting-bundle": "~1.5",
-        "integrated/asset-bundle": "~0.5",
+        "integrated/library": "~0.7",
+        "integrated/asset-bundle": "~0.7",
+        "integrated/content-bundle": "~0.7",
         "braincrafted/bootstrap-bundle": "~2.2.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^2.8",
         "phpunit/phpunit": "^5.7"
-    },
-    "suggest": {
-      "integrated-content-bundle": "Allows use of the integrated_editor formtype"
     },
     "autoload":{
         "psr-4":{
