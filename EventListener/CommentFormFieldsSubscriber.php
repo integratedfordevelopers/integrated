@@ -143,5 +143,4 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
 
         return isset($comments[$fieldName]) ? $comments[$fieldName] : null;
     }
-
 }

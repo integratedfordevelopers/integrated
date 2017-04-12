@@ -136,7 +136,6 @@ class DefaultController
             'comment' => $comment,
             'form' => $form->createView(),
         ]);
-
     }
 
     /**
