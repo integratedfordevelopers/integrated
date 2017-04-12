@@ -16,12 +16,13 @@
     "require": {
         "php": ">=5.4",
         "ext-mongo": "~1.2",
-        "symfony/symfony": "~2.7",
+        "symfony/symfony": "~2.8 || ~3.0",
         "symfony/framework-bundle": "~2.2",
         "doctrine/mongodb": ">=1.0.0",
         "doctrine/mongodb-odm": "*",
         "doctrine/mongodb-odm-bundle": "~3.0",
-        "integrated/content-bundle": "~0.5"
+        "integrated/library": "~0.7",
+        "integrated/content-bundle": "~0.7"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^2.8",
