@@ -5,7 +5,7 @@ $(".relation-items").each(function() {
 
     var $relation = $(this);
     var defaultValues = $.parseJSON($('#default_references').val());
-    var $addWrapper = $relation.next('.add-wrapper');
+    var $addWrapper = $relation.next('[data-add="1"]');
 
     if (defaultValues[relation_id] !== undefined && defaultValues[relation_id].length) {
         $.each(defaultValues[relation_id], function() {
@@ -105,11 +105,10 @@ var resizeIFrame = function(height, iFrame) {
     iFrame.attr('height', height);
 };
 
-$('.relations').on('click', 'a[data-modal]', function(e){
+$('.relations').on('click', '[data-modal]', function(e){
     e.preventDefault();
-
-    if ($(this).parents('.btn-group').length) {
-        var modal = $(this).parents('.btn-group').next('#relation-add-modal');
+    if ($(this).parents('.add-relation').length) {
+        var modal = $(this).parents('.add-relation').next('#relation-add-modal');
     } else {
         var modal = $(this).next('#relation-add-modal');
     }
