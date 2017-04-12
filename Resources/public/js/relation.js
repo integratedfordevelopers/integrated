@@ -107,9 +107,8 @@ var resizeIFrame = function(height, iFrame) {
 
 $('.relations').on('click', '[data-modal]', function(e){
     e.preventDefault();
-
-    if ($(this).parents('.btn-group').length) {
-        var modal = $(this).parents('.btn-group').next('#relation-add-modal');
+    if ($(this).parents('.add-relation').length) {
+        var modal = $(this).parents('.add-relation').next('#relation-add-modal');
     } else {
         var modal = $(this).next('#relation-add-modal');
     }
