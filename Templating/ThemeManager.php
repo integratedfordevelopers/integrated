@@ -66,7 +66,6 @@ class ThemeManager
     {
         if ($this->hasTheme($theme)) {
             $this->getTheme($theme)->addPath($path);
-
         } else {
             $this->registerTheme($theme, [$path]);
         }
