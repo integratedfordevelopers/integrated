@@ -41,7 +41,8 @@ class StripTagsUtil
      */
     public static function replaceCommentWith($content, $replacement)
     {
-        $pattern = '/(\<\!\-\-integrated\-comment\=([\s\S]+?)\-\-\>)([\s\S]+?)(\<\!\-\-end\-integrated\-comment\-\-\>)/';
+        $pattern = '/(\<\!\-\-integrated\-comment\=([\s\S]+?)\-\-\>)'
+            . '([\s\S]+?)(\<\!\-\-end\-integrated\-comment\-\-\>)/';
 
         return preg_replace($pattern, $replacement, $content);
     }

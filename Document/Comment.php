@@ -163,10 +163,10 @@ class Comment
     public function getReplyById($replyId)
     {
         return $this->replies->filter(
-                function(Reply $reply) use ($replyId) {
-                    return $reply->getId() === $replyId;
-                }
-            )->first();
+            function (Reply $reply) use ($replyId) {
+                return $reply->getId() === $replyId;
+            }
+        )->first();
     }
 
     /**

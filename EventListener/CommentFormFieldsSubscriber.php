@@ -137,10 +137,10 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
      * @param string $fieldName
      * @return Comment[]|null
      */
-    protected function getComment($contentId, $fieldName) {
+    protected function getComment($contentId, $fieldName)
+    {
         $comments = $this->getComments($contentId);
 
         return isset($comments[$fieldName]) ? $comments[$fieldName] : null;
     }
-
 }
