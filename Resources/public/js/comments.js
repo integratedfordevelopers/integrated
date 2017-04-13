@@ -10,7 +10,7 @@ $(function () {
     var showCommentButton = function(fieldName, position, $parent, $container) {
         var $div = $('<div class="add-comment-button hold">Add a Comment</div>');
 
-        $div.click(function(e) {
+        $div.mousedown(function(e) {
             newComment(fieldName, position, $parent, $container);
         });
 
@@ -192,7 +192,7 @@ $(function () {
                 showCommentButton(getFieldName($(this).attr('name')), position, $(this), $container);
             }
         }
-    }).click(function() {
+    }).mousedown(function() {
         removeCommentButton();
     }).focusout(function() {
         removeCommentButton();
