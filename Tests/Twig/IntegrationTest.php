@@ -51,4 +51,3 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
         return dirname(__FILE__).'/Fixtures/';
     }
 }
-
