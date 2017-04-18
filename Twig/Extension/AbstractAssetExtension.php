@@ -50,7 +50,11 @@ abstract class AbstractAssetExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction($this->getTag(), [$this, 'render'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_SimpleFunction(
+                $this->getTag(),
+                [$this, 'render'],
+                ['is_safe' => ['html'], 'needs_environment' => true]
+            ),
         ];
     }
 
