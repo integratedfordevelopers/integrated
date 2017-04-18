@@ -238,7 +238,7 @@ class PageController extends Controller
      */
     protected function clearRoutingCache()
     {
-        $pattern = '/^app(Dev|Prod)Url(Matcher|Generator).php/';
+        $pattern = '/^app(.*)Url(Matcher|Generator).php/';
 
         $finder = new Finder();
 
