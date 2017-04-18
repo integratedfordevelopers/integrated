@@ -52,32 +52,3 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     }
 }
 
-class TwigTestAssetExtension extends \Twig_Extension
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
-    {
-        return [
-            new \Twig_SimpleFunction('asset', [$this, 'asset'], ['is_safe' => ['html']]),
-        ];
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function asset($path)
-    {
-        return '/'.$path;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'asset_extension';
-    }
-}
