@@ -37,8 +37,13 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
      */
     public function testIntegration($file, $message, $condition, $templates, $exception, $outputs)
     {
-        $templates['@IntegratedAssetBundle/Resources/views/Asset/javascripts.html.twig'] = file_get_contents(dirname(__FILE__).'/../../Resources/views/Asset/javascripts.html.twig');
-        $templates['@IntegratedAssetBundle/Resources/views/Asset/stylesheets.html.twig'] = file_get_contents(dirname(__FILE__).'/../../Resources/views/Asset/stylesheets.html.twig');
+        $templates['@IntegratedAssetBundle/Resources/views/Asset/javascripts.html.twig'] = file_get_contents(
+            dirname(__FILE__).'/../../Resources/views/Asset/javascripts.html.twig'
+        );
+
+        $templates['@IntegratedAssetBundle/Resources/views/Asset/stylesheets.html.twig'] = file_get_contents(
+            dirname(__FILE__).'/../../Resources/views/Asset/stylesheets.html.twig'
+        );
 
         $this->doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs);
     }
@@ -49,35 +54,5 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     protected function getFixturesDir()
     {
         return dirname(__FILE__).'/Fixtures/';
-    }
-}
-
-class TwigTestAssetExtension extends \Twig_Extension
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function getFunctions()
-    {
-        return [
-            new \Twig_SimpleFunction('asset', [$this, 'asset'], ['is_safe' => ['html']]),
-        ];
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    public function asset($path)
-    {
-        return '/'.$path;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'asset_extension';
     }
 }
