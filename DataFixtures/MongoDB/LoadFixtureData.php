@@ -16,6 +16,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
 
+use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ContentTypeExtension;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\FileExtensionTrait;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\ImageExtensionTrait;
 
@@ -36,6 +37,7 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
     use FileExtensionTrait;
     use ImageExtensionTrait;
     use ClassFieldsExtension;
+    use ContentTypeExtension;
 
     /**
      * @inheritdoc
