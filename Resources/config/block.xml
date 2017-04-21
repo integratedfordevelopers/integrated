@@ -36,6 +36,10 @@
             <tag name="integrated.block" type="text" />
         </service>
 
+        <service id="integrated_block.block_handler.html" class="%integrated_block.block_handler.class%">
+            <tag name="integrated.block" type="html" />
+        </service>
+
         <service id="integrated_block.block_handler.container" class="%integrated_block.block_handler.class%">
             <tag name="integrated.block" type="container" />
         </service>
