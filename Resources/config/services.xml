@@ -11,6 +11,10 @@
             <tag name="form.type" />
         </service>
 
+        <service id="integrated_formtype_form_type_ace" class="Integrated\Bundle\FormTypeBundle\Form\Type\AceType">
+            <tag name="form.type" alias="integrated_ace" />
+        </service>
+
         <service id="integrated_form_type.form_type.editor_type" class="Integrated\Bundle\FormTypeBundle\Form\Type\EditorType">
             <argument>%integrated_content_styles%</argument>
 
