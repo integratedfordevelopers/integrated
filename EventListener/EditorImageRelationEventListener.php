@@ -73,7 +73,7 @@ class EditorImageRelationEventListener implements EventSubscriberInterface
             } else {
                 $relation = (new Relation())
                     ->setRelationId(EditorType::RELATION)
-                    ->setRelationType(EditorType::RELATION)
+                    ->setRelationType('embedded')
                 ;
             }
 
