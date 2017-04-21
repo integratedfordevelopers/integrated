@@ -24,6 +24,11 @@
             <tag name="doctrine.event_subscriber" />
         </service>
 
+        <service id="integrated_slug.twig.slugger_extension" class="Integrated\Bundle\SlugBundle\Twig\Extension\SluggerExtension">
+            <argument type="service" id="integrated_slug.slugger" />
+            <tag name="twig.extension" />
+        </service>
+
     </services>
 
 </container>
