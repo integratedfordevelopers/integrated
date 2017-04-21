@@ -31,7 +31,9 @@ class ContentBlock extends Block
 
     /**
      * @var SearchSelection
-     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType")
+     * @Type\Field(
+     *      type="Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType"
+     * )
      */
     protected $searchSelection;
 

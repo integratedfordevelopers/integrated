@@ -1,0 +1,8 @@
+Integrated\Bundle\ContentBundle\Document\Relation\Relation:
+  relation-keyword:
+    id:       keywords
+    name:     Keywords
+    type:     taxonomy
+    sources:  [@Article, @Blog]
+    targets:  [@Taxonomy]
+    multiple: true
