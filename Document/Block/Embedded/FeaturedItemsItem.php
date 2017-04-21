@@ -11,43 +11,36 @@
 
 namespace Integrated\Bundle\BlockBundle\Document\Block\Embedded;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  *
- * @ODM\EmbeddedDocument
  * @Type\Document("FeaturedItemsItem")
  */
 class FeaturedItemsItem
 {
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $title;
 
     /**
      * @var StorageInterface
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage")
      * @Type\Field(type="integrated_image")
      */
     protected $image;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field
      */
     protected $link;
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(
      *      type="choice",
      *      options={
@@ -64,14 +57,12 @@ class FeaturedItemsItem
 
     /**
      * @var string
-     * @ODM\String
      * @Type\Field(type="textarea")
      */
     protected $text;
 
     /**
      * @var bool
-     * @ODM\Boolean
      * @Type\Field(
      *      type="Symfony\Component\Form\Extension\Core\Type\CheckboxType",
      *      options={
@@ -83,7 +74,6 @@ class FeaturedItemsItem
 
     /**
      * @var int
-     * @ODM\Float
      * @Type\Field(type="hidden", options={"attr"={"data-itemorder"="collection"}})
      */
     protected $order;

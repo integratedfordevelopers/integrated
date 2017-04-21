@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;

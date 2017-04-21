@@ -12,21 +12,18 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  *
- * @ODM\Document
  * @Type\Document("Content items block")
  */
 class ContentItemsBlock extends Block
 {
     /**
      * @var ArrayCollection
-     * @ODM\ReferenceMany(targetDocument="Integrated\Bundle\ContentBundle\Document\Content\Content")
      * @Type\Field(type="integrated_content_choice")
      */
     protected $items;
