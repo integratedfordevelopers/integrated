@@ -16,13 +16,19 @@ label.is-primary-channel {
     margin-right: 5px;
 }
 
-div.select2-selected {
-    display: inline;
+.select2-selection__choice {
+    max-width: 100%;
 }
 
-div.select2-selected img {
+.select2-selected {
+  display: inline-block;
+  max-width: 95%;
+  overflow: hidden;
+
+  img {
     margin: 0 5px 0 -5px;
     max-height: 40px;
+  }
 }
 .button-submitted {
     cursor: not-allowed;
