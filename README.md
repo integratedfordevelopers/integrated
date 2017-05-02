@@ -33,6 +33,10 @@ for a integrated website.
 				logout:
 					path:   integrated_user_logout
 					target: /
+                remember_me:
+                    secret:   '%secret%'
+                    lifetime: 2592000 # 30 days
+                    path:     /					
 
 		access_control:
 			- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
