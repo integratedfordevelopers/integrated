@@ -31,7 +31,7 @@ class ContactPersonsType extends BootstrapCollectionType
             'type' => 'integrated_company_job',
             'allow_add' => true,
             'allow_delete' => true,
-            'label' => 'Contact persons',
+            'label' => 'Jobs',
             'delete_button_text' => 'x'
         ]);
     }
