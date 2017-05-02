@@ -136,7 +136,7 @@ class ContentSubscriber implements ContentSubscriberInterface
         $data = is_array($data = $event->getData()) ? array_filter($data) : []; // filter out empty fields
         $data = $data + [
             'comment'  => '',
-            'state'    => $this->getState($content),
+            'state'    => ($state = $this->getState($content)) ? $state->getState() : null,
             'assigned' => null,
             'deadline' => null,
         ];
