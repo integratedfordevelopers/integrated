@@ -305,18 +305,7 @@ class PageController extends Controller
      */
     protected function getTheme(Channel $channel)
     {
-        $theme = 'default';
-
-        if ($configs = $this->getConfigResolver()->getConfigs($channel)) {
-            foreach ($configs as $config) {
-                if ($config->getAdapter() === 'website') {
-                    $theme = $config->getOptions()->get('theme');
-                    break;
-                }
-            }
-        }
-
-        return $theme;
+        return $this->get('integrated_page.theme_resolver')->getTheme($channel);
     }
 
     /**
