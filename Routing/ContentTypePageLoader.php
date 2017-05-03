@@ -11,14 +11,13 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Routing;
 
+use Integrated\Bundle\PageBundle\Services\UrlResolver;
+
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-
-use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
-use Integrated\Bundle\PageBundle\Services\RouteResolver;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -38,23 +37,18 @@ class ContentTypePageLoader extends Loader
     protected $dm;
 
     /**
-     * @var RouteResolver
+     * @var UrlResolver
      */
-    protected $routeResolver;
-
-    /**
-     * @var \Integrated\Bundle\PageBundle\Document\Page\ContentTypePage
-     */
-    protected $page;
+    protected $urlResolver;
 
     /**
      * @param DocumentManager $dm
-     * @param RouteResolver $routeResolver
+     * @param UrlResolver $urlResolver
      */
-    public function __construct(DocumentManager $dm, RouteResolver $routeResolver)
+    public function __construct(DocumentManager $dm, UrlResolver $urlResolver)
     {
         $this->dm = $dm;
-        $this->routeResolver = $routeResolver;
+        $this->urlResolver = $urlResolver;
     }
 
     /**
@@ -76,11 +70,8 @@ class ContentTypePageLoader extends Loader
                 continue;
             }
 
-            $this->page = $page;
-            $this->routeResolver->setContentTypePage($page);
-
             $route = new Route(
-                $this->routeResolver->getRoutePath(),
+                $this->urlResolver->getRoutePath($page),
                 ['_controller' => sprintf('%s:%s', $page->getControllerService(), $page->getControllerAction())],
                 [],
                 [],
@@ -90,7 +81,7 @@ class ContentTypePageLoader extends Loader
                 'request.attributes.get("_channel") == "' . $page->getChannel()->getId() . '"'
             );
 
-            $routes->add($this->routeResolver->getRouteName(), $route);
+            $routes->add($this->urlResolver->getRouteName($page), $route);
         }
         $this->loaded = true;
 

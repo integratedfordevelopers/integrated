@@ -20,7 +20,7 @@
 
         <service id="integrated_website.routing.content_type_page_loader" class="%integrated_website.routing.content_type_page_loader.class%">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <argument type="service" id="integrated_page.services.route_resolver" />
+            <argument type="service" id="integrated_page.services.url_resolver" />
             <tag name="routing.loader" />
         </service>
 
