@@ -16,6 +16,11 @@ namespace Integrated\Bundle\ThemeBundle\Exception;
  */
 class CircularFallbackException extends \ErrorException
 {
+    /**
+     * @param string $template
+     * @param array $fallbackStack
+     * @return CircularFallbackException
+     */
     public static function templateNotFound($template, array $fallbackStack)
     {
         return new self(sprintf(
