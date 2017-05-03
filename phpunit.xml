@@ -11,9 +11,11 @@
          syntaxCheck="false"
          bootstrap="./vendor/autoload.php"
         >
+
     <testsuites>
         <testsuite name="IntegratedContentBundle Test Suite">
             <directory>./Tests</directory>
         </testsuite>
     </testsuites>
+
 </phpunit>

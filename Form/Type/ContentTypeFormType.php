@@ -35,7 +35,6 @@ class ContentTypeFormType extends AbstractType
         $metadata = $options['metadata'];
 
         $builder
-            ->add('class', HiddenType::class)
             ->add('name', TextType::class, ['label' => 'Name'])
             ->add('fields', FieldsType::class, ['metadata' => $metadata])
             ->add('channels', ContentTypeChannelsType::class, ['property_path' => 'options[channels]'])

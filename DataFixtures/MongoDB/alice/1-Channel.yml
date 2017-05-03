@@ -1,4 +1,5 @@
 Integrated\Bundle\ContentBundle\Document\Channel\Channel:
-  channel{1..5}:
-    name (unique): <domainName()>
-    domains: [<url()>]
+  channel-my-channel:
+    id:      my_channel
+    name:    My channel
+    domains: [localhost, my-channel.com]
