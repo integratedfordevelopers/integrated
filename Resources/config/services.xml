@@ -17,9 +17,8 @@
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
-        <service id="integrated_page.services.route_resolver" class="Integrated\Bundle\PageBundle\Services\RouteResolver">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <argument type="service" id="router" />
+        <service id="integrated_page.services.route_cache" class="Integrated\Bundle\PageBundle\Services\RouteCache">
+            <argument type="service">%kernel.cache_dir%</argument>
         </service>
 
         <service id="integrated_page.services.url_resolver" class="Integrated\Bundle\PageBundle\Services\UrlResolver">
@@ -27,6 +26,11 @@
             <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="router.default" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+        </service>
+
+        <service id="integrated_page.services.solr_url_extractor" class="Integrated\Bundle\PageBundle\Services\SolrUrlExtractor">
+            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="router.default" />
         </service>
 
     </services>

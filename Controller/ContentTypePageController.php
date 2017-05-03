@@ -67,7 +67,7 @@ class ContentTypePageController extends Controller
 
             $this->getDocumentManager()->flush();
 
-            $this->clearRoutingCache();
+            $this->get('integrated_page.services.route_cache')->clear();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 

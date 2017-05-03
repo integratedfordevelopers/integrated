@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
+use Integrated\Bundle\PageBundle\Form\EventListener\ContentTypePageListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -57,30 +58,7 @@ class ContentTypePageType extends AbstractType
 //            'directory' => sprintf('/content/%s', $contentTypePage->getContentType()->getId())
 //        ]);
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $contentTypePage = $event->getData();
-
-            if (!$contentTypePage instanceof ContentTypePage) {
-                return;
-            }
-
-            $className = $contentTypePage->getContentType()->getClass();
-            $controller = $this->controllerManager->getController($className);
-
-            if (!is_array($controller)) {
-                throw new \Exception(sprintf('Controller service for class "%s" is not defined', $className));
-            }
-
-            $contentTypePage->setControllerService($controller['service']);
-
-            if (count($controller['controller_actions']) > 1) {
-                $event->getForm()->add('controller_action', 'choice', [
-                    'choices' => array_combine($controller['controller_actions'], $controller['controller_actions'])
-                ]);
-            } else {
-                $contentTypePage->setControllerAction($controller['controller_actions'][0]);
-            }
-        });
+        $builder->addEventSubscriber(new ContentTypePageListener($this->controllerManager));
     }
 
     /**

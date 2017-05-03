@@ -13,7 +13,6 @@ namespace Integrated\Bundle\PageBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Finder\Finder;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
@@ -22,22 +21,6 @@ use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
  */
 class Controller extends BaseController
 {
-    /**
-     * The routing cache needs to be cleared after a change.
-     * This is faster then clearing the cache with the responsible command.
-     */
-    protected function clearRoutingCache()
-    {
-        $pattern = '/^app(.*)Url(Matcher|Generator).php/';
-
-        $finder = new Finder();
-
-        /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach ($finder->files()->in($this->get('kernel')->getCacheDir())->depth(0)->name($pattern) as $file) {
-            @unlink($file->getRealPath());
-        }
-    }
-
     /**
      * @return array
      */

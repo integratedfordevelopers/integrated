@@ -76,7 +76,7 @@ class PageController extends Controller
             $dm->persist($page);
             $dm->flush();
 
-            $this->clearRoutingCache();
+            $this->get('integrated_page.services.route_cache')->clear();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page created');
 
@@ -106,7 +106,7 @@ class PageController extends Controller
 
             $this->getDocumentManager()->flush();
 
-            $this->clearRoutingCache();
+            $this->get('integrated_page.services.route_cache')->clear();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 
@@ -144,7 +144,7 @@ class PageController extends Controller
             $dm->remove($page);
             $dm->flush();
 
-            $this->clearRoutingCache();
+            $this->get('integrated_page.services.route_cache')->clear();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page deleted');
 

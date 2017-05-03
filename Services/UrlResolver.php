@@ -13,10 +13,9 @@ namespace Integrated\Bundle\PageBundle\Services;
 
 use Symfony\Component\Routing\Router;
 
-use Solarium\QueryType\Select\Result\Document;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
+use Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\ContentInterface;
@@ -24,7 +23,7 @@ use Integrated\Common\Content\ContentInterface;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
-class UrlResolver extends RouteResolver
+class UrlResolver
 {
     /**
      * @var ContentTypeControllerManager
@@ -40,6 +39,16 @@ class UrlResolver extends RouteResolver
      * @var ContentTypePage[]
      */
     protected $contentTypePages = [];
+
+    /**
+     * @var Router
+     */
+    protected $router;
+
+    /**
+     * @var DocumentManager
+     */
+    protected $dm;
 
     /**
      * @param ContentTypeControllerManager $controllerManager
@@ -60,20 +69,41 @@ class UrlResolver extends RouteResolver
     }
 
     /**
-     * @param ContentInterface|array $document
+     * Returns the correct path for symfony routing module (replace "#[string]#" with "{[string}")
+     * @param ContentTypePage $page
+     * @return string
+     */
+    public function getRoutePath(ContentTypePage $page)
+    {
+        return preg_replace_callback(
+            '/(#)([\s\S]+?)(#)/',
+            function ($matches) use ($page) {
+                return sprintf('{%s}', $matches[2]);
+            },
+            $page->getPath()
+        );
+    }
+
+    /**
+     * @param ContentTypePage $page
+     * @return string
+     */
+    public function getRouteName(ContentTypePage $page)
+    {
+        return sprintf('%s_%s', ContentTypePageLoader::ROUTE_PREFIX, $page->getId());
+    }
+
+    /**
+     * @param ContentInterface $document
      * @param null $channelId
      * @return string
      */
-    public function generateUrl($document, $channelId = null)
+    public function generateUrl(ContentInterface $document, $channelId = null)
     {
-        if ($document instanceof Document || is_array($document)) {
-            return $this->getSolrUrl($document, $channelId);
-        }
-
         $page = $this->getContentTypePageById($document->getContentType(), $channelId);
+
         if ($page instanceof ContentTypePage) {
-            $this->setContentTypePage($page);
-            return $this->resolveUrl($document);
+            return $this->getContentTypePageUrl($page, $document);
         }
 
         // fallback /app_*.php/contentType/slug, in production /contentType/slug
@@ -86,69 +116,59 @@ class UrlResolver extends RouteResolver
         );
     }
 
-    /**
-     * @param Document|array $document
-     * @param string|null $channelId
-     * @return string|null
-     */
-    protected function getSolrUrl($document, $channelId = null)
-    {
-        if (null === $channelId) {
-            $channelId = $this->channelContext->getChannel()->getId();
-        }
-
-        $arrayKey = sprintf('url_%s', $channelId);
-
-        if (isset($document[$arrayKey])) {
-            $url = $document[$arrayKey];
-
-            //add app_*.php if not in production
-            return $this->router->getContext()->getBaseUrl() . $url;
-        }
-
-        //url is not in solr document
-        return null;
-    }
-
 
     /**
+     * todo INTEGRATED-440 add Slug and getReferenceByRelationIdto ContentInterface
+     * @param ContentTypePage $page
      * @param ContentInterface $document
      * @return string
      */
-    public function resolveUrl($document)
+    public function getContentTypePageUrl(ContentTypePage $page, ContentInterface $document)
     {
         return $this->router->generate(
-            $this->getRouteName(),
-            $this->resolveParameters($document)
+            $this->getRouteName($page),
+            $this->getRoutingParamaters($page, $document)
         );
     }
 
     /**
-     * @param $document
+     * @param ContentTypePage $page
      * @return array
      */
-    public function resolveParameters($document)
+    protected function getRoutingParamaters(ContentTypePage $page, ContentInterface $content)
     {
-        //todo INTEGRATED-440 add Slug to ContentInterface
-        $parameters = ['slug' => $document->getSlug()];
+        $parameters = ['slug' => $content->getSlug()];
 
-        //register relations
-        $this->matchRelations();
+        foreach ($this->getRelationIds($page) as $relationId) {
+            if ($relation = $content->getReferenceByRelationId($relationId)) {
+                // keep track of last document
+                // if there is a previous relation then the new reference should be searched that relation
+                // first time use current document
+                $content = $relation;
 
-        $relation = null;
-        foreach (array_reverse($this->relations) as $relationId) {
-            //if there is a previous relation then the new reference should be searched that relation
-            if ($relation) {
-                $document = $relation;
+                $parameters[$relationId] = $relation->getSlug();
+            } else {
+                //no relation found, as fallback use relationId
+                $parameters[$relationId] = $relationId;
             }
-
-            //todo INTEGRATED-440 add getReferenceByRelationId to ContentInterface
-            $relation = $document->getReferenceByRelationId($relationId);
-
-            $parameters[$relationId] = $relation ? $relation->getSlug() : $relationId;
         }
 
         return $parameters;
+    }
+
+    /**
+     * @param ContentTypePage $page
+     * @return array
+     */
+    protected function getRelationIds(ContentTypePage $page)
+    {
+        $relationIds = [];
+
+        foreach (preg_match_all('/(#)([\s\S]+?)(#)/', $page->getPath(), $matches) as $match) {
+            $relationIds[] = $match[0];
+        }
+
+        return $relationIds;
     }
 
     /**

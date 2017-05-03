@@ -18,6 +18,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class ContentTypeControllerManager
 {
+    /**
+     * @var ArrayCollection
+     */
     private $controllers;
 
     /**
