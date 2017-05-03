@@ -46,7 +46,6 @@ class ContentImageListener
     protected $slugger;
 
     /**
-     * ContentImageListener constructor.
      * @param ThemeManager $themeManager
      * @param ObjectManager $objectManager
      * @param EngineInterface $templating

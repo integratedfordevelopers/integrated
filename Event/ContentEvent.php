@@ -26,8 +26,7 @@ class ContentEvent extends Event
     protected $content;
 
     /**
-     * ContentEvent constructor.
-     * @param $content
+     * @param string $content
      */
     public function __construct($content)
     {
