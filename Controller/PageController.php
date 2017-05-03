@@ -28,7 +28,7 @@ class PageController extends Controller
      */
     public function showAction(Page $page)
     {
-        return $this->render($page->getLayout(), [
+        return $this->render($this->locateTemplate($page->getLayout()), [
             'page' => $page,
             'edit' => false,
         ]);
@@ -56,11 +56,20 @@ class PageController extends Controller
         $this->get('integrated_asset.manager.javascript_manager')
             ->add('bundles/integratedcontent/js/handlebars.helpers.js');
 
-        return $this->render($page->getLayout(), [
+        return $this->render($this->locateTemplate($page->getLayout()), [
             'page' => $page,
             'form' => $form->createView(),
             'edit' => true,
         ]);
+    }
+
+    /**
+     * @param string $view
+     * @return string
+     */
+    protected function locateTemplate($view)
+    {
+        return $this->get('integrated_theme.templating.theme_manager')->locateTemplate($view);
     }
 
     /**
