@@ -9,7 +9,7 @@
                             <i class="icon-jfi-cloud-up-o"></i>
                         </div>
                         <div class="jFiler-input-text">
-                            <h3>{{ "Drag&Drop a " ~ type ~ " here"|trans }}</h3>
+                            <h3>{{ "Drag&Drop " ~ (type|first in ['a', 'e', 'i', 'u', 'o'] ? 'an ' : 'a ')  ~ type ~ " here"|trans }}</h3>
                             <span>{% trans %}or click to browse{% endtrans %}</span>
                         </div>
                     </div>
