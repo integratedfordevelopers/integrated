@@ -161,7 +161,7 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
         $document = $event->getDocument();
 
         // @codeCoverageIgnoreStart
-        if (!$document instanceof ContentInterface) {
+        if (!$document instanceof ContentInterface || !$document->getContentType() || !$document->getId()) {
             return;
         }
         // @codeCoverageIgnoreEnd
