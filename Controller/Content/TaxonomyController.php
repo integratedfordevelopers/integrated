@@ -60,7 +60,7 @@ class TaxonomyController
         $this->blockManager->setDocument($taxonomy);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Taxonomy/' . $page->getLayout()),
+            $this->themeManager->locateTemplate('content/Taxonomy/show/' . $page->getLayout()),
             [
                 'taxonomy' => $taxonomy,
                 'page' => $page,

@@ -60,7 +60,7 @@ class EventController
         $this->blockManager->setDocument($event);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Event/' . $page->getLayout()),
+            $this->themeManager->locateTemplate('content/Event/show/' . $page->getLayout()),
             [
                 'event' => $event,
                 'page' => $page,

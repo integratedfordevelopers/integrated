@@ -60,7 +60,7 @@ class JobPostingController
         $this->blockManager->setDocument($jobPosting);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/JobPosting/' . $page->getLayout()),
+            $this->themeManager->locateTemplate('content/JobPosting/show/' . $page->getLayout()),
             [
                 'jobPosting' => $jobPosting,
                 'page' => $page,
