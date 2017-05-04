@@ -10,6 +10,11 @@
             <argument type="service" id="integrated_theme.templating.theme_manager" />
         </service>
 
+        <service id="integrated_page.theme_resolver" class="Integrated\Bundle\PageBundle\Resolver\ThemeResolver">
+            <argument type="service" id="integrated_channel.config.resolver" />
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+        </service>
+
         <service id="integrated_page.services.content_type_controller_manager" class="Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager" />
 
         <service id="integrated_page.services.content_type_page" class="Integrated\Bundle\PageBundle\Services\ContentTypePageService">
