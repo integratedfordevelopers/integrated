@@ -48,15 +48,23 @@ class ContentTypePageType extends AbstractType
         /** @var ContentTypePage $contentTypePage */
         $contentTypePage = $builder->getData();
 
+        $builder->add('title');
+
         $builder->add('path', 'text', [
             'label' => 'URL'
         ]);
 
-        //todo implement layout in controller
-//        $builder->add('layout', 'integrated_page_layout_choice', [
-//            'theme' => $options['theme'],
-//            'directory' => sprintf('/content/%s', $contentTypePage->getContentType()->getId())
-//        ]);
+        if (!preg_match('/Content\\\(.+)Controller$/', get_class($options['controller']), $matchController)) {
+            throw new \InvalidArgumentException(sprintf('The "%s" class does not look like a contentTypeController class (it must be in a "Controller\Content" sub-namespace and the class name must end with "Controller")', get_class($options['controller'])));
+        }
+        if (!preg_match('/^(.+)Action$/', $contentTypePage->getControllerAction(), $matchAction)) {
+            throw new \InvalidArgumentException(sprintf('The "%s" method does not look like an action method (it does not end with Action)', $contentTypePage->getControllerAction()));
+        }
+
+        $builder->add('layout', LayoutChoiceType::class, [
+            'theme' => $options['theme'],
+            'directory' => sprintf('/content/%s/%s', $matchController[1], $matchAction[1])
+        ]);
 
         $builder->addEventSubscriber(new ContentTypePageListener($this->controllerManager));
     }
@@ -70,6 +78,10 @@ class ContentTypePageType extends AbstractType
             'data_class' => 'Integrated\Bundle\PageBundle\Document\Page\ContentTypePage',
             'theme' => 'default',
         ]);
+
+        $resolver->setRequired('controller');
+
+        $resolver->setAllowedTypes('controller', 'object');
     }
 
     /**

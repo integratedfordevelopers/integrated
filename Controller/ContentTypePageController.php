@@ -96,6 +96,7 @@ class ContentTypePageController extends Controller
             [
                 'method' => 'PUT',
                 'theme'  => $this->getTheme($channel),
+                'controller' => $this->get($page->getControllerService()),
             ]
         );
 

@@ -23,7 +23,7 @@
         </service>
 
         <service id="integrated_page.services.route_cache" class="Integrated\Bundle\PageBundle\Services\RouteCache">
-            <argument type="service">%kernel.cache_dir%</argument>
+            <argument type="string">%kernel.cache_dir%</argument>
         </service>
 
         <service id="integrated_page.services.url_resolver" class="Integrated\Bundle\PageBundle\Services\UrlResolver">
