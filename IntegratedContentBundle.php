@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle;
 
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\EventDispatcherPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegistryBuilderPass;
