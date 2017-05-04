@@ -16,6 +16,7 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -50,16 +51,20 @@ class CompanyController
     }
 
     /**
+     * @param ContentTypePage $page
      * @param Company $company
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Company $company)
+    public function showAction(ContentTypePage $page, Company $company)
     {
         $this->blockManager->setDocument($company);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Company/default.html.twig'),
-            ['company' => $company]
+            $this->themeManager->locateTemplate('content/Company/' . $page->getLayout()),
+            [
+                'company' => $company,
+                'page' => $page,
+            ]
         );
     }
 }

@@ -16,6 +16,7 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\JobPosting;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -50,16 +51,20 @@ class JobPostingController
     }
 
     /**
+     * @param ContentTypePage $page
      * @param JobPosting $jobPosting
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(JobPosting $jobPosting)
+    public function showAction(ContentTypePage $page, JobPosting $jobPosting)
     {
         $this->blockManager->setDocument($jobPosting);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/JobPosting/default.html.twig'),
-            ['jobPosting' => $jobPosting]
+            $this->themeManager->locateTemplate('content/JobPosting/' . $page->getLayout()),
+            [
+                'jobPosting' => $jobPosting,
+                'page' => $page,
+            ]
         );
     }
 }

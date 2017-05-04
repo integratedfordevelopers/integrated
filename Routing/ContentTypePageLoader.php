@@ -72,7 +72,7 @@ class ContentTypePageLoader extends Loader
 
             $route = new Route(
                 $this->urlResolver->getRoutePath($page),
-                ['_controller' => sprintf('%s:%s', $page->getControllerService(), $page->getControllerAction())],
+                ['_controller' => sprintf('%s:%s', $page->getControllerService(), $page->getControllerAction()), 'page' => $page->getId()],
                 [],
                 [],
                 '',

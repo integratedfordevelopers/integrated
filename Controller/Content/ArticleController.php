@@ -13,6 +13,7 @@ namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
@@ -50,16 +51,20 @@ class ArticleController
     }
 
     /**
+     * @param ContentTypePage $page
      * @param Article $article
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Article $article)
+    public function showAction(ContentTypePage $page, Article $article)
     {
         $this->blockManager->setDocument($article);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Article/default.html.twig'),
-            ['article' => $article]
+            $this->themeManager->locateTemplate('content/Article/' . $page->getLayout()),
+            [
+                'article' => $article,
+                'page' => $page,
+            ]
         );
     }
 }
