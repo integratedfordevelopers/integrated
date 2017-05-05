@@ -648,7 +648,7 @@ class ContentController extends Controller
         $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
         $referenced = $contentReferenced->getReferenced($content);
 
-        $form = $this->createDeleteForm($locking, count($referenced) > 0);
+        $form = $this->createDeleteForm($content, $locking, count($referenced) > 0);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
@@ -1077,11 +1077,12 @@ class ContentController extends Controller
     }
 
     /**
+     * @param ContentInterface $content
      * @param array $locking
      * @param bool|true $notDelete
      * @return FormTypeInterface
      */
-    protected function createDeleteForm(array $locking, $notDelete = false)
+    protected function createDeleteForm(ContentInterface $content, array $locking, $notDelete = false)
     {
         $form = $this->createForm(DeleteFormType::class, null, [
             'action' => $this->generateUrl('integrated_content_content_delete', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
