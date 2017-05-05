@@ -24,7 +24,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
  */
 class ContentTypePageLoader extends Loader
 {
-    const ROUTE_PREFIX = 'integrated_content_type_page';
+    const ROUTE_PREFIX = 'integrated_website_content_type_page';
 
     /**
      * @var bool
