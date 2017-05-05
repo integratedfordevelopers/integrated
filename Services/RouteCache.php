@@ -10,6 +10,7 @@
  */
 
 namespace Integrated\Bundle\PageBundle\Services;
+
 use Symfony\Component\Finder\Finder;
 
 /**
