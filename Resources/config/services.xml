@@ -12,6 +12,8 @@
 
         <parameter key="integrated_theme.twig.theme_extension.class">Integrated\Bundle\ThemeBundle\Twig\Extension\ThemeExtension</parameter>
 
+        <parameter key="integrated_theme.event_listener.content_image_listener.class">Integrated\Bundle\ThemeBundle\EventListener\Objects\ContentImageListener</parameter>
+
     </parameters>
 
     <services>
@@ -29,6 +31,15 @@
         <service id="integrated_theme.twig.theme_extension" class="%integrated_theme.twig.theme_extension.class%" public="false">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_theme.event_listener.content_image_listener" class="%integrated_theme.event_listener.content_image_listener.class%">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="integrated_slug.slugger" />
+            <argument>%kernel.environment%</argument>
+            <tag name="kernel.event_listener" event="content.event" method="replaceImages" />
         </service>
 
     </services>
