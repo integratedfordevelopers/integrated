@@ -16,6 +16,7 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Event;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -50,16 +51,20 @@ class EventController
     }
 
     /**
+     * @param ContentTypePage $page
      * @param Event $event
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Event $event)
+    public function showAction(ContentTypePage $page, Event $event)
     {
         $this->blockManager->setDocument($event);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Event/default.html.twig'),
-            ['event' => $event]
+            $this->themeManager->locateTemplate('content/Event/show/' . $page->getLayout()),
+            [
+                'event' => $event,
+                'page' => $page,
+            ]
         );
     }
 }

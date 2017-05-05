@@ -12,6 +12,12 @@
         <parameter key="integrated_website.controller.content.job_posting.class">Integrated\Bundle\WebsiteBundle\Controller\Content\JobPostingController</parameter>
         <parameter key="integrated_website.controller.content.taxonomy.class">Integrated\Bundle\WebsiteBundle\Controller\Content\TaxonomyController</parameter>
 
+        <parameter key="integrated_website.controller.content_type.article.class">Integrated\Bundle\ContentBundle\Document\Content\Article</parameter>
+        <parameter key="integrated_website.controller.content_type.company.class">Integrated\Bundle\ContentBundle\Document\Content\Relation\Company</parameter>
+        <parameter key="integrated_website.controller.content_type.event.class">Integrated\Bundle\ContentBundle\Document\Content\Event</parameter>
+        <parameter key="integrated_website.controller.content_type.job_posting.class">Integrated\Bundle\ContentBundle\Document\Content\JobPosting</parameter>
+        <parameter key="integrated_website.controller.content_type.taxonomy.class">Integrated\Bundle\WebsiteBundle\Controller\Content\TaxonomyController</parameter>
+
     </parameters>
 
     <services>
@@ -20,30 +26,35 @@
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.article.class%" />
         </service>
 
         <service id="integrated_website.controller.content.company" class="%integrated_website.controller.content.company.class%">
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.company.class%" />
         </service>
 
         <service id="integrated_website.controller.content.event" class="%integrated_website.controller.content.event.class%">
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.event.class%" />
         </service>
 
         <service id="integrated_website.controller.content.job_posting" class="%integrated_website.controller.content.job_posting.class%">
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="%integrated_website.controller.content_type.job_posting.class%" />
         </service>
 
         <service id="integrated_website.controller.content.taxonomy" class="%integrated_website.controller.content.taxonomy.class%">
             <argument type="service" id="templating" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="integrated_block.templating.block_manager" />
+            <tag name="integrated_page.contenttype_controller" class="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy" />
         </service>
 
     </services>

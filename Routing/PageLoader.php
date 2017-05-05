@@ -88,7 +88,7 @@ class PageLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
-        return 'page' === $type;
+        return 'integrated_website_page' === $type;
     }
 
     /**
