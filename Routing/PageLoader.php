@@ -77,7 +77,7 @@ class PageLoader implements LoaderInterface
                 $condition
             );
 
-            $routes->add('integrated_website_page_' . $page->getId(), $route);
+            $routes->add('integrated_content_page_' . $page->getId(), $route);
         }
 
         return $routes;
@@ -88,7 +88,7 @@ class PageLoader implements LoaderInterface
      */
     public function supports($resource, $type = null)
     {
-        return 'page' === $type;
+        return 'integrated_content_page' === $type;
     }
 
     /**
