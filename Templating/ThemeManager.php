@@ -143,6 +143,11 @@ class ThemeManager
      */
     public function locateTemplate($template, $theme = null)
     {
+        // keep BC
+        if ('@' == substr($template, 0, 1)) {
+            return $template;
+        }
+
         $theme = $this->getTheme(null === $theme ? $this->getActiveTheme() : $theme);
 
         $this->fallbackStack[$theme->getId()] = 1;
