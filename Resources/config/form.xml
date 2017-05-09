@@ -43,5 +43,10 @@
 			<tag name="form.type" />
 		</service>
 
+        <service id="integrated_user.form.scope.type" class="Integrated\Bundle\UserBundle\Form\Type\ScopeFormType">
+            <argument type="service" id="integrated_user.scope.manager" />
+            <tag name="form.type" />
+        </service>
+
 	</services>
 </container>
