@@ -8,7 +8,6 @@
 
         <parameter key="integrated_content.event_listener.configure_menu_subscriber.class">Integrated\Bundle\ContentBundle\EventListener\ConfigureMenuSubscriber</parameter>
         <parameter key="integrated_content.event_listener.editor_image_relation">Integrated\Bundle\ContentBundle\EventListener\EditorImageRelationEventListener</parameter>
-        <parameter key="integrated_content.event_listener.content_image_listener.class">Integrated\Bundle\ContentBundle\EventListener\Objects\ContentImageListener</parameter>
 
     </parameters>
 
@@ -17,14 +16,6 @@
         <service id="integrated_content.event_listener.configure_menu_subscriber" class="%integrated_content.event_listener.configure_menu_subscriber.class%">
             <argument type="service" id="security.authorization_checker" />
             <tag name="kernel.event_subscriber" />
-        </service>
-
-        <service id="integrated_content.event_listener.content_image_listener" class="%integrated_content.event_listener.content_image_listener.class%">
-            <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-            <argument type="service" id="templating" />
-            <argument type="service" id="integrated_slug.slugger" />
-            <tag name="kernel.event_listener" event="content.event" method="replaceImages" />
         </service>
 
     </services>
