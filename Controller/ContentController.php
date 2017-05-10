@@ -669,35 +669,37 @@ class ContentController extends Controller
 
             // this is not rest compatible since a button click is required to save
             if ($form->get('actions')->getData() == 'delete') {
-                if ($this->has('integrated_solr.indexer')) {
-                    //higher priority for content edited in Integrated
-                    $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
-                    $queue = $subscriber->getQueue();
-                    $subscriber->setPriority($queue::PRIORITY_HIGH);
+                if ($form->isValid()) {
+                    if ($this->has('integrated_solr.indexer')) {
+                        //higher priority for content edited in Integrated
+                        $subscriber = $this->get('integrated_solr.indexer.mongodb.subscriber');
+                        $queue = $subscriber->getQueue();
+                        $subscriber->setPriority($queue::PRIORITY_HIGH);
+                    }
+
+                    /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+                    $dm = $this->get('doctrine_mongodb')->getManager();
+
+                    $dm->remove($content);
+                    $dm->flush();
+
+                    // Set flash message
+                    $this->get('braincrafted_bootstrap.flash')->success(
+                        $this->get('translator')->trans('The document %name% has been deleted', array('%name%' => $type->getName()))
+                    );
+
+                    if ($this->has('integrated_solr.indexer')) {
+                        $indexer = $this->get('integrated_solr.indexer');
+                        $indexer->setOption('queue.size', 2);
+                        $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+                    }
+
+                    if (!$locking['locked']) {
+                        $locking['release']();
+                    }
+
+                    return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
                 }
-
-                /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-                $dm = $this->get('doctrine_mongodb')->getManager();
-
-                $dm->remove($content);
-                $dm->flush();
-
-                // Set flash message
-                $this->get('braincrafted_bootstrap.flash')->success(
-                    $this->get('translator')->trans('The document %name% has been deleted', array('%name%' => $type->getName()))
-                );
-
-                if ($this->has('integrated_solr.indexer')) {
-                    $indexer = $this->get('integrated_solr.indexer');
-                    $indexer->setOption('queue.size', 2);
-                    $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-                }
-
-                if (!$locking['locked']) {
-                    $locking['release']();
-                }
-
-                return $this->redirect($this->generateUrl('integrated_content_content_index', ['remember' => 1]));
             }
         }
 
@@ -1078,11 +1080,11 @@ class ContentController extends Controller
      * @param ContentInterface $content
      * @param array $locking
      * @param bool|true $notDelete
-     * @return $this|\Symfony\Component\Form\FormInterface
+     * @return FormTypeInterface
      */
     protected function createDeleteForm(ContentInterface $content, array $locking, $notDelete = false)
     {
-        $form = $this->createForm(DeleteFormType::class, $content, [
+        $form = $this->createForm(DeleteFormType::class, null, [
             'action' => $this->generateUrl('integrated_content_content_delete', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
             'method' => 'DELETE',
         ]);
