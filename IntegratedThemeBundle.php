@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\ThemeBundle;
 
+use Integrated\Bundle\ThemeBundle\DependencyInjection\Compiler\ThemeManagerPass;
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -18,4 +21,13 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class IntegratedThemeBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new ThemeManagerPass());
+    }
 }
