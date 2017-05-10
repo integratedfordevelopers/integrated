@@ -160,6 +160,12 @@
         <service id="integrated_content.form.type.job.contact_persons" class="Integrated\Bundle\ContentBundle\Form\Type\Job\ContactPersonsType">
             <tag name="form.type" />
         </service>
+
+        <service id="integrated_content.event_listener.scope_subscriber" class="Integrated\Bundle\ContentBundle\Form\EventListener\ScopeEventSubscriber">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <tag name="doctrine_mongodb.odm.event_listener" event="postLoad" />
+        </service>
+
     </services>
 
 </container>

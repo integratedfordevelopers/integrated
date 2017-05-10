@@ -13,6 +13,8 @@
         <field fieldName="options" type="hash" />
         <field fieldName="createdAt" type="date" />
 
+        <field fieldName="scope" type="string" />
+
         <embed-one
                 field="logo"
                 target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage"
