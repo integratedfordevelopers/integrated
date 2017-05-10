@@ -21,7 +21,7 @@
             <tag name="twig.extension" />
         </service>
 
-        <service id="integrated_theme.event_listener.content_image_listener" class="%integrated_theme.event_listener.content_image_listener.class%">
+        <service id="integrated_theme.event_listener.content_image_listener" class="Integrated\Bundle\ThemeBundle\EventListener\Objects\ContentImageListener">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="templating" />
