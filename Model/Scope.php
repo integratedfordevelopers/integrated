@@ -35,8 +35,7 @@ class Scope implements ScopeInterface
     }
 
     /**
-     * @param string $name
-     * @return $this
+     * {@inheritdoc}
      */
     public function setName($name)
     {
@@ -45,7 +44,7 @@ class Scope implements ScopeInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {

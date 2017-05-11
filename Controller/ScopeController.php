@@ -16,6 +16,7 @@ use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\ScopeFormType;
 use Integrated\Bundle\UserBundle\Model\Scope;
+use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -192,11 +193,7 @@ class ScopeController extends Controller
     }
 
     /**
-     * @param string|\Symfony\Component\Form\FormTypeInterface $type
-     * @param null $data
-     * @param array $options
-     * @param array $buttons
-     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
+     * {@inheritdoc}
      */
     public function createForm($type, $data = null, array $options = [], array $buttons = [])
     {
@@ -213,7 +210,7 @@ class ScopeController extends Controller
     }
 
     /**
-     * @return object
+     * @return ScopeManagerInterface
      */
     protected function getManager()
     {

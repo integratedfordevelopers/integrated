@@ -35,7 +35,7 @@ class ScopeManager implements ScopeManagerInterface
 
     /**
      * @param ObjectManager $om
-     * @param $class
+     * @param string $class
      */
     public function __construct(ObjectManager $om, $class)
     {
@@ -64,7 +64,7 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function create()
     {
@@ -73,8 +73,7 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @param ScopeInterface $scope
-     * @param bool $flush
+     * {@inheritdoc}
      */
     public function persist(ScopeInterface $scope, $flush = true)
     {
@@ -86,8 +85,7 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @param ScopeInterface $scope
-     * @param bool $flush
+     * {@inheritdoc}
      */
     public function remove(ScopeInterface $scope, $flush = true)
     {
@@ -98,14 +96,16 @@ class ScopeManager implements ScopeManagerInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function clear()
     {
         $this->om->clear($this->repository->getClassName());
     }
 
     /**
-     * @param mixed $id
-     * @return null|object
+     * {@inheritdoc}
      */
     public function find($id)
     {
@@ -113,7 +113,7 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public function findAll()
     {
@@ -122,7 +122,7 @@ class ScopeManager implements ScopeManagerInterface
 
     /**
      * @param $name
-     * @return null|object
+     * @return null|ScopeInterface
      */
     public function findByName($name)
     {
@@ -130,11 +130,7 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @param array $criteria
-     * @param array|null $orderBy
-     * @param null $limit
-     * @param null $offset
-     * @return array
+     * {@inheritdoc}
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
@@ -142,7 +138,7 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getClassName()
     {
