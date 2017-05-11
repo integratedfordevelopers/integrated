@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\BlockBundle\Templating;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 use Doctrine\ODM\MongoDB\DocumentRepository;
@@ -70,10 +72,11 @@ class BlockManager
 
     /**
      * @param BlockInterface|string $block
+     * @param array $options
      *
      * @return null|string
      */
-    public function render($block)
+    public function render($block, array $options = [])
     {
         if (is_string($block)) {
             $block = $this->repository->find($block);
@@ -98,12 +101,15 @@ class BlockManager
                         $handler->setDocument($this->document);
                     }
 
+                    $handler->configureOptions($resolver = new OptionsResolver());
+                    $options = $resolver->resolve($options);
+
                     if ($template = $this->themeManager->locateTemplate('blocks/' . $block->getType() . '/' . $block->getLayout())) {
                         $handler->setTemplate($template);
                     }
                 }
 
-                return $handler->execute($block);
+                return $handler->execute($block, $options);
             }
         }
     }

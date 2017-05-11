@@ -13,24 +13,27 @@ namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
- * ContainerBlock document
+ * @author Johan Liefers <johan@e-active.nl>
  *
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @Type\Document("Container block")
+ * @Type\Document("Feature item block")
  */
-class ContainerBlock extends Block
+class FeaturedItemsBlock extends Block
 {
+    use PublishTitleTrait;
+    
     /**
      * @var ArrayCollection
      * @Type\Field(
      *      type="integrated_sortable_collection",
      *      options={
-     *          "type"="integrated_block_size",
-     *          "default_title"="New block",
+     *          "type"="integrated_embedded_document",
+     *          "options"={
+     *              "data_class"="Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem"
+     *          },
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }
@@ -39,10 +42,12 @@ class ContainerBlock extends Block
     protected $items;
 
     /**
+     * General object init
      */
     public function __construct()
     {
         parent::__construct();
+
         $this->items = new ArrayCollection();
     }
 
@@ -51,16 +56,40 @@ class ContainerBlock extends Block
      */
     public function getItems()
     {
-        return $this->items->toArray();
+        $items = $this->items->toArray();
+
+        usort($items, function ($a, $b) {
+            return $a->getOrder() - $b->getOrder();
+        });
+
+        return $items;
     }
 
     /**
      * @param array $items
      * @return $this
      */
-    public function setItems(array $items)
+    public function setItems(array $items = [])
     {
         $this->items = new ArrayCollection($items);
+        return $this;
+    }
+
+    /**
+     * @param FeaturedItemsItem $item
+     * @return $this
+     */
+    public function addItem(FeaturedItemsItem $item) {
+        $this->items->add($item);
+        return $this;
+    }
+
+    /**
+     * @param FeaturedItemsItem $item
+     * @return $this
+     */
+    public function removeItem(FeaturedItemsItem $item) {
+        $this->items->removeElement($item);
         return $this;
     }
 
@@ -69,6 +98,6 @@ class ContainerBlock extends Block
      */
     public function getType()
     {
-        return 'container';
+        return 'featured_items';
     }
 }

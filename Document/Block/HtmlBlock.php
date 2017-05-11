@@ -15,14 +15,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
+
 /**
- * TextBlock document
- *
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @Type\Document("Text block")
+ * @Type\Document("HTML block")
  */
-class TextBlock extends Block
+class HtmlBlock extends Block
 {
     use PublishTitleTrait;
 
@@ -39,7 +37,7 @@ class TextBlock extends Block
 
     /**
      * @var string
-     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\EditorType",options={"mode"="web"})
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\AceType")
      */
     protected $content;
 
@@ -66,6 +64,6 @@ class TextBlock extends Block
      */
     public function getType()
     {
-        return 'text';
+        return 'html';
     }
 }

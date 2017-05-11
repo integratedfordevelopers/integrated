@@ -9,5 +9,14 @@
     }]) %}
 {% endfor %}
 
-{{ data|json_encode|raw }}
+{% set json = {'blocks': data,
+    'filters': {
+        'type': facetFilter.type.vars.choices,
+        'channels': facetFilter.channels.vars.choices
+    },
+    'pagination': blocks|json_pagination
+} %}
+
+
+{{ json|json_encode|raw }}
 {% endspaceless %}

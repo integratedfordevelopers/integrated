@@ -11,9 +11,12 @@
 
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
-use Integrated\Bundle\BlockBundle\Document\Block\Block;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
+use Integrated\Common\Block\BlockInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -26,11 +29,39 @@ class BlockExtension extends \Twig_Extension
     protected $container;
 
     /**
-     * @param ContainerInterface $container
+     * @var BlockUsageProvider
      */
-    public function __construct(ContainerInterface $container)
-    {
+    protected $blockUsageProvider;
+
+    /**
+     * @var MetadataFactoryInterface
+     */
+    protected $metadataFactory;
+
+    /**
+     * @var bool
+     */
+    private $pageBundleInstalled;
+
+    /**
+     * @var array
+     */
+    protected $pages = [];
+
+    /**
+     * @param ContainerInterface $container
+     * @param BlockUsageProvider $blockUsageProvider
+     * @param MetadataFactoryInterface $metadataFactory
+     */
+    public function __construct(
+        ContainerInterface $container,
+        BlockUsageProvider $blockUsageProvider,
+        MetadataFactoryInterface $metadataFactory
+    ) {
         $this->container = $container; // @todo remove service container (INTEGRATED-445)
+        $this->blockUsageProvider = $blockUsageProvider;
+        $this->metadataFactory = $metadataFactory;
+        $this->pageBundleInstalled = isset($container->getParameter('kernel.bundles')['IntegratedPageBundle']);
     }
 
     /**
@@ -40,24 +71,37 @@ class BlockExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_SimpleFunction('integrated_find_channels', [$this, 'findChannels']),
+            new \Twig_SimpleFunction('integrated_find_pages', [$this, 'findPages']),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFilters()
+    {
+        return [
+            new \Twig_SimpleFilter('integrated_block_type', [$this, 'getBlockTypeName']),
         ];
     }
 
     /**
      * @param \Twig_Environment $environment
      * @param \Integrated\Common\Block\BlockInterface|string $block
+     * @param array $options
      *
      * @return null|string
      *
      * @throws \Exception
      */
-    public function renderBlock(\Twig_Environment $environment, $block)
+    public function renderBlock(\Twig_Environment $environment, $block, array $options = [])
     {
         $id = $block instanceof Block ? $block->getId() : $block;
 
         try {
             // fatal errors are not catched
-            $html = $this->container->get('integrated_block.templating.block_manager')->render($block);
+            $html = $this->container->get('integrated_block.templating.block_manager')->render($block, $options);
 
             if (!$html) {
                 return $environment->render($this->locateTemplate('blocks/empty.html.twig'), ['id' => $id]);
@@ -84,6 +128,52 @@ class BlockExtension extends \Twig_Extension
     protected function locateTemplate($template)
     {
         return $this->container->get('integrated_theme.templating.theme_manager')->locateTemplate($template);
+    }
+
+    /**
+     * @param \Integrated\Common\Block\BlockInterface $block
+     *
+     * @return \Integrated\Bundle\ContentBundle\Document\Channel\Channel[]
+     */
+    public function findChannels(BlockInterface $block)
+    {
+        $channels = [];
+
+        if ($this->pageBundleInstalled) {
+            /* Get all pages which was associated with current Block document */
+            $pages = $this->findPages($block);
+
+            foreach ($pages as $page) {
+                if (array_key_exists('channel', $page)) {
+                    $channels[$page['channel']['$id']] = $this->blockUsageProvider->getChannel($page['channel']['$id']);
+                }
+            }
+        }
+
+        return $channels;
+    }
+
+    /**
+     * @param \Integrated\Common\Block\BlockInterface $block
+     *
+     * @return array
+     */
+    public function findPages(BlockInterface $block)
+    {
+        if ($this->pageBundleInstalled) {
+            return $this->blockUsageProvider->getPagesPerBlock($block->getId());
+        }
+
+        return [];
+    }
+
+    /**
+     * @param BlockInterface $block
+     * @return string
+     */
+    public function getBlockTypeName(BlockInterface $block)
+    {
+        return $this->metadataFactory->getMetadata(get_class($block))->getType();
     }
 
     /**

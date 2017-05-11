@@ -13,8 +13,6 @@ namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
@@ -22,24 +20,18 @@ use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 /**
  * Block document
  *
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\Document(collection="block", indexes={@ODM\Index(keys={"class"="asc"})})
- * @ODM\InheritanceType("SINGLE_COLLECTION")
- * @ODM\DiscriminatorField(fieldName="class")
+ * @author Ger Jan van den Bosch <gerjan@e-active.nl
  */
 abstract class Block implements BlockInterface
 {
     /**
      * @var string
-     * @ODM\Id(strategy="NONE")
      * @Slug(fields={"title"}, separator="_")
      */
     protected $id;
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Type\Field
      */
@@ -47,41 +39,40 @@ abstract class Block implements BlockInterface
 
     /**
      * @var string
-     * @ODM\String
      */
     protected $layout;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $createdAt;
 
     /**
      * @var \DateTime
-     * @ODM\Date
      */
     protected $updatedAt;
 
     /**
      * @var \DateTime
-     * @ODM\Date
-     * @Type\Field(type="integrated_datetime")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType")
      */
     protected $publishedAt;
 
     /**
      * @var \DateTime
-     * @ODM\Date
-     * @Type\Field(type="integrated_datetime")
+     * @Type\Field(
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType",
+     *      options={
+     *          "required"=false
+     *      }
+     * )
      */
     protected $publishedUntil;
 
     /**
      * @var bool
-     * @ODM\Boolean
      * @Type\Field(
-     *      type="checkbox",
+     *      type="Symfony\Component\Form\Extension\Core\Type\CheckboxType",
      *      options={
      *          "required"=false
      *      }
@@ -91,7 +82,6 @@ abstract class Block implements BlockInterface
 
     /**
      * @var bool
-     * @ODM\Boolean
      */
     protected $locked = false;
 

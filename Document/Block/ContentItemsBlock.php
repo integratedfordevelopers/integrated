@@ -16,33 +16,25 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
- * ContainerBlock document
+ * @author Johan Liefers <johan@e-active.nl>
  *
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @Type\Document("Container block")
+ * @Type\Document("Content items block")
  */
-class ContainerBlock extends Block
+class ContentItemsBlock extends Block
 {
     /**
      * @var ArrayCollection
-     * @Type\Field(
-     *      type="integrated_sortable_collection",
-     *      options={
-     *          "type"="integrated_block_size",
-     *          "default_title"="New block",
-     *          "allow_add"=true,
-     *          "allow_delete"=true
-     *      }
-     * )
+     * @Type\Field(type="integrated_content_choice")
      */
     protected $items;
 
     /**
+     * General object init
      */
     public function __construct()
     {
         parent::__construct();
+
         $this->items = new ArrayCollection();
     }
 
@@ -51,7 +43,9 @@ class ContainerBlock extends Block
      */
     public function getItems()
     {
-        return $this->items->toArray();
+        $items = $this->items->toArray();
+
+        return $items;
     }
 
     /**
@@ -69,6 +63,6 @@ class ContainerBlock extends Block
      */
     public function getType()
     {
-        return 'container';
+        return 'content_items';
     }
 }

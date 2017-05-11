@@ -12,12 +12,18 @@
 
         <parameter key="integrated_block.configure_menu.class">Integrated\Bundle\BlockBundle\EventListener\ConfigureMenuListener</parameter>
 
+        <parameter key="integrated_block.provider.block_usage.class">Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider</parameter>
+
+        <parameter key="integrated_block.provider.filter_query.class">Integrated\Bundle\BlockBundle\Provider\FilterQueryProvider</parameter>
+
     </parameters>
 
     <services>
 
         <service id="integrated_block.twig.block_extension" class="%integrated_block.twig.block_extension.class%">
             <argument type="service" id="service_container" />
+            <argument type="service" id="integrated_block.provider.block_usage" />
+            <argument type="service" id="integrated_block.metadata.factory" />
             <tag name="twig.extension" />
         </service>
 
@@ -28,6 +34,16 @@
         <service id="integrated_block.configure_menu" class="%integrated_block.configure_menu.class%">
             <argument type="service" id="security.authorization_checker" />
             <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="integrated_block.provider.block_usage" class="%integrated_block.provider.block_usage.class%">
+            <argument type="service" id="doctrine_mongodb" />
+        </service>
+
+        <service id="integrated_block.provider.filter_query" class="%integrated_block.provider.filter_query.class%">
+            <argument type="service" id="doctrine_mongodb" />
+            <argument type="service" id="integrated_block.provider.block_usage" />
+            <argument>%kernel.bundles%</argument>
         </service>
 
         <service id="integrated_block.block_repository" class="Doctrine\Common\Persistence\ObjectRepository">

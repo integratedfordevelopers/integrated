@@ -11,13 +11,17 @@
 
 namespace Integrated\Bundle\BlockBundle\Controller;
 
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\BlockBundle\Form\Type\BlockFilterType;
+use Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType;
+use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
+use Integrated\Common\Block\BlockInterface;
+use Integrated\Common\Form\Type\MetadataType;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Integrated\Common\Block\BlockInterface;
-use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -33,17 +37,27 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedBlockBundle:Block\Block');
+        $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
+        $data = $request->query->get('integrated_block_filter');
+        $queryProvider = $this->get('integrated_block.provider.filter_query');
+
+        $facetFilter = $this->createForm(BlockFilterType::class, null, [
+            'blockIds' => $queryProvider->getBlockIds($data)
+        ]);
+        $facetFilter->handleRequest($request);
 
         $pagination = $this->getPaginator()->paginate(
-            $builder,
+            $queryProvider->getBlocksByChannelQueryBuilder($data),
             $request->query->get('page', 1),
-            $request->query->get('limit', 20)
+            $request->query->get('limit', 20),
+            ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc', 'query_type' => 'block_overview']
         );
 
         return [
             'blocks'  => $pagination,
             'factory' => $this->getFactory(),
+            'pageBundleInstalled' => $pageBundleInstalled,
+            'facetFilter' => $facetFilter->createView()
         ];
     }
 
@@ -107,6 +121,7 @@ class BlockController extends Controller
      */
     public function editAction(Request $request, Block $block)
     {
+
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
@@ -137,12 +152,18 @@ class BlockController extends Controller
             throw $this->createNotFoundException(sprintf('Block "%s" is locked.', $block->getId()));
         }
 
+        /* check if current Block not used on some page */
+        $dm = $this->getDocumentManager();
+        if ($this->container->has('integrated_page.form.type.page')) {
+            if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
+                throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
+            }
+        }
+
         $form = $this->createDeleteForm($block->getId());
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $dm = $this->getDocumentManager();
-
             $dm->remove($block);
             $dm->flush();
 
@@ -167,7 +188,7 @@ class BlockController extends Controller
         $class = get_class($block);
 
         $form = $this->createForm(
-            $this->get('integrated_block.form.metadata.type.block'),
+            MetadataType::class,
             $block,
             [
                 'action' => $this->generateUrl('integrated_block_block_new', ['class' => $class]),
@@ -176,11 +197,15 @@ class BlockController extends Controller
             ]
         );
 
-        $form->add('layout', 'integrated_block_layout_choice', [
+        $form->add('layout', LayoutChoiceType::class, [
             'type' => $block->getType(),
         ]);
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', SaveCancelType::class, [
+            'cancel_route' => 'integrated_block_block_index',
+            'label' => 'Create',
+            'button_class' => '',
+        ]);
 
         return $form;
     }
@@ -193,7 +218,7 @@ class BlockController extends Controller
     protected function createEditForm(BlockInterface $block)
     {
         $form = $this->createForm(
-            $this->get('integrated_block.form.metadata.type.block'),
+            MetadataType::class,
             $block,
             [
                 'action' => $this->generateUrl('integrated_block_block_edit', ['id' => $block->getId()]),
@@ -202,11 +227,11 @@ class BlockController extends Controller
             ]
         );
 
-        $form->add('layout', 'integrated_block_layout_choice', [
+        $form->add('layout', LayoutChoiceType::class, [
             'type' => $block->getType(),
         ]);
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', SaveCancelType::class, ['cancel_route' => 'integrated_block_block_index']);
 
         return $form;
     }

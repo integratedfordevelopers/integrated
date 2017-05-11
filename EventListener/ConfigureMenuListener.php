@@ -17,15 +17,14 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Class ConfigureMenuListener
- * @package Integrated\Bundle\BlockBundle\EventListener
  * @author Michael Jongman <michael@e-active.nl>
  */
 class ConfigureMenuListener implements EventSubscriberInterface
 {
     const MENU = 'integrated_menu';
+    const MENU_WEBSITE = 'Website';
+    const ROLE_BLOCK_MANAGER = 'ROLE_BLOCK_MANAGER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
-    const MENU_MANAGE = 'Manage';
 
     /**
      * @var AuthorizationCheckerInterface
@@ -45,9 +44,9 @@ class ConfigureMenuListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure'
-        );
+        ];
     }
 
     /**
@@ -55,20 +54,21 @@ class ConfigureMenuListener implements EventSubscriberInterface
      */
     public function onMenuConfigure(ConfigureMenuEvent $event)
     {
-        if (!$this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
+        if (!$this->authorizationChecker->isGranted(self::ROLE_BLOCK_MANAGER) &&
+            !$this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
             return;
         }
 
         $menu = $event->getMenu();
+
         if ($menu->getName() !== self::MENU) {
             return;
         }
 
-
-        if (!$label = $menu->getChild(self::MENU_MANAGE)) {
-            $label = $menu->addChild(self::MENU_MANAGE);
+        if (!$label = $menu->getChild(self::MENU_WEBSITE)) {
+            $label = $menu->addChild(self::MENU_WEBSITE);
         }
 
-        $label->addChild('Blocks', array('route' => 'integrated_block_block_index'));
+        $label->addChild('Blocks', ['route' => 'integrated_block_block_index']);
     }
 }

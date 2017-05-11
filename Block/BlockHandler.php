@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\BlockBundle\Block;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\ContentInterface;
@@ -77,7 +79,7 @@ class BlockHandler implements BlockHandlerInterface
      * @param ContentInterface $document
      * @return $this
      */
-    public function setDocument($document)
+    public function setDocument(ContentInterface $document)
     {
         $this->document = $document;
         return $this;
@@ -97,10 +99,20 @@ class BlockHandler implements BlockHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function execute(BlockInterface $block)
+    public function execute(BlockInterface $block, array $options)
     {
         return $this->render([
-            'block' => $block,
+            'block'    => $block,
+            'document' => $this->getDocument(),
         ]);
+    }
+
+    /**
+     * Configures the options for this block handler.
+     *
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
     }
 }
