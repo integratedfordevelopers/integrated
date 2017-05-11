@@ -11,15 +11,14 @@
 
 namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
-use Integrated\Bundle\WebsiteBundle\Connector\WebsiteManifest;
-use Integrated\Common\Channel\Connector\Config\ResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+use Integrated\Bundle\PageBundle\Resolver\ThemeResolver;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -37,26 +36,26 @@ class WebsiteConfigurationListener implements EventSubscriberInterface
     private $themeManager;
 
     /**
-     * @var ResolverInterface
+     * @var ThemeResolver
      */
     private $resolver;
 
     /**
      * @param ChannelContextInterface $context
      * @param ThemeManager $themeManager
-     * @param ResolverInterface $resolver
+     * @param ThemeResolver $resolver
      */
     public function __construct(
         ChannelContextInterface $context,
         ThemeManager $themeManager,
-        ResolverInterface $resolver
+        ThemeResolver $resolver
     ) {
         $this->context = $context;
         $this->themeManager = $themeManager;
         $this->resolver = $resolver;
     }
 
-    /**s
+    /**
      * @inheritdoc
      */
     public static function getSubscribedEvents()
@@ -77,17 +76,6 @@ class WebsiteConfigurationListener implements EventSubscriberInterface
             return;
         }
 
-        $theme = 'default';
-
-        if ($configs = $this->resolver->getConfigs($channel)) {
-            foreach ($configs as $config) {
-                if ($config->getAdapter() === WebsiteManifest::NAME) {
-                    $theme = $config->getOptions()->get('theme');
-                    break;
-                }
-            }
-        }
-
-        $this->themeManager->setActiveTheme($theme);
+        $this->themeManager->setActiveTheme($this->resolver->getTheme($channel));
     }
 }

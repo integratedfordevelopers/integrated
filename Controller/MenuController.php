@@ -12,25 +12,16 @@
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Doctrine\ODM\MongoDB\Id\UuidGenerator;
-
-use Integrated\Bundle\MenuBundle\Document\Menu;
-use Integrated\Bundle\MenuBundle\Document\MenuItem;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
 class MenuController extends Controller
 {
-    /**
-     * @var UuidGenerator
-     */
-    protected $generator;
-
     /**
      * @Template
      *
@@ -40,64 +31,64 @@ class MenuController extends Controller
     public function renderAction(Request $request)
     {
         $data = (array) json_decode($request->getContent(), true);
-
         $menu = null;
-        $options = isset($data['options']) ? $data['options'] : [];
 
         if (isset($data['data'])) {
             $menu = $this->getMenuFactory()->fromArray($data['data']);
-
-            $this->generator = new UuidGenerator();
-
-            if ($menu instanceof Menu) {
-                $this->prepareItems($menu, $options);
-            }
         }
 
         return [
             'menu'    => $menu,
-            'options' => $options,
+            'options' => isset($data['options']) ? $data['options'] : [],
         ];
     }
 
     /**
-     * @param MenuItem $menu
-     * @param array $options
-     * @param int $depth
+     * @Template
+     *
+     * @param Request $request
+     * @return JsonResponse
      */
-    protected function prepareItems(MenuItem $menu, array $options = [], $depth = 1)
+    public function saveAction(Request $request)
     {
-        $menu->setChildrenAttribute('class', 'integrated-website-menu-list');
+        // @todo security check (INTEGRATED-383)
 
-        if (1 === $depth) {
-            $menu->setChildrenAttribute('data-json', json_encode($menu->toArray(false)));
+        $dm = $this->getDocumentManager();
+        $data = (array) json_decode($request->getContent(), true);
+
+        if (isset($data['menu'])) {
+            foreach ((array) $data['menu'] as $array) { // support multiple menu's
+                if ($menu = $this->getMenuFactory()->fromArray((array) $array)) {
+                    if ($menu2 = $this->getMenuProvider()->get($menu->getName())) {
+                        $menu2->setChildren($menu->getChildren());
+                    } else {
+                        $menu->setChannel($this->getChannel());
+
+                        $dm->persist($menu);
+                    }
+                }
+            }
+
+            $dm->flush();
         }
 
-        /** @var MenuItem $child */
-        foreach ($menu->getChildren() as $child) {
-            $child->setAttributes([
-                'class'       => 'integrated-website-menu-item',
-                'data-action' => 'integrated-website-menu-item-edit',
-                'data-json'   => json_encode($child->toArray(false)),
-            ]);
+        return new JsonResponse();
+    }
 
-            $this->prepareItems($child, $options, $depth + 1);
-        }
+    /**
+     * @return \Doctrine\ODM\MongoDB\DocumentManager
+     */
+    protected function getDocumentManager()
+    {
+        return $this->get('doctrine_mongodb')->getManager();
+    }
 
-        if (isset($options['depth']) && $depth <= (int) $options['depth']) {
-            $uuid = $this->generator->generateV5($this->generator->generateV4(), uniqid(rand(), true));
-
-            $child = $menu->addChild('+', [
-                'uri'        => '#',
-                'attributes' => [
-                    'class'       => 'integrated-website-menu-item',
-                    'data-action' => 'integrated-website-menu-item-add',
-                ],
-            ]);
-
-            $child->setId($uuid);
-            $child->setAttribute('data-json', json_encode($child->toArray(false)));
-        }
+    /**
+     * @return \Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider
+     */
+    protected function getMenuProvider()
+    {
+        return $this->get('integrated_menu.provider.database_menu_provider');
     }
 
     /**
@@ -106,5 +97,13 @@ class MenuController extends Controller
     protected function getMenuFactory()
     {
         return $this->get('integrated_menu.menu.database_menu_factory');
+    }
+
+    /**
+     * @return \Integrated\Common\Content\Channel\ChannelInterface|null
+     */
+    protected function getChannel()
+    {
+        return $this->get('channel.context')->getChannel();
     }
 }

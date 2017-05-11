@@ -81,7 +81,7 @@ class PageController
      */
     public function showAction(Page $page)
     {
-        return $this->templating->renderResponse($page->getLayout(), [
+        return $this->templating->renderResponse($this->locateTemplate($page->getLayout()), [
             'page' => $page,
             'integrated_block_edit' => false,
             'integrated_menu_edit' => false,
@@ -113,7 +113,7 @@ class PageController
             // @todo response 201
         }
 
-        return $this->templating->renderResponse($page->getLayout(), [
+        return $this->templating->renderResponse($this->locateTemplate($page->getLayout()), [
             'page' => $page,
             'integrated_block_edit' => true,
             'integrated_menu_edit' => true,

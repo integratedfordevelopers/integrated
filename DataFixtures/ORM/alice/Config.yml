@@ -1,0 +1,10 @@
+Integrated\Bundle\ChannelBundle\Model\Config:
+  website-config-my-channel:
+    name:     My channel
+    adapter:  website
+    channels: [my_channel]
+    options:  @website-config-my-channel-options
+
+Integrated\Bundle\ChannelBundle\Model\Options (local):
+  website-config-my-channel-options:
+    set: [theme, default]

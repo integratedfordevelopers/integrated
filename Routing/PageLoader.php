@@ -52,7 +52,8 @@ class PageLoader implements LoaderInterface
 
         $routes = new RouteCollection();
 
-        $pages = $this->dm->getRepository('IntegratedPageBundle:Page\Page')->findAll(); // @todo publication filters (INTEGRATED-425)
+        $pages = $this->dm->getRepository('IntegratedPageBundle:Page\Page')->findAll();
+        // @todo publication filters (INTEGRATED-425)
 
         /** @var \Integrated\Bundle\PageBundle\Document\Page\Page $page */
         foreach ($pages as $page) {

@@ -42,7 +42,11 @@ class GridExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_grid', [$this, 'renderGrid'], ['is_safe' => ['html'], 'needs_environment' => true, 'needs_context' => true]),
+            new \Twig_SimpleFunction(
+                'integrated_grid',
+                [$this, 'renderGrid'],
+                ['is_safe' => ['html'], 'needs_environment' => true, 'needs_context' => true]
+            ),
         ];
     }
 

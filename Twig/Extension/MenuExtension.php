@@ -11,12 +11,17 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
+use Integrated\Bundle\MenuBundle\Matcher\RecursiveActiveMatcher;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Doctrine\ODM\MongoDB\Id\UuidGenerator;
 
 use Knp\Menu\Twig\Helper;
 
 use Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider;
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
+use Integrated\Bundle\MenuBundle\Document\Menu;
+use Integrated\Bundle\MenuBundle\Document\MenuItem;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -39,26 +44,47 @@ class MenuExtension extends \Twig_Extension
     protected $helper;
 
     /**
+     * @var string
+     */
+    protected $template;
+
+    /**
      * @var OptionsResolver
      */
     protected $resolver;
 
     /**
+     * @var UuidGenerator
+     */
+    protected $generator;
+
+    /**
+     * @var RecursiveActiveMatcher
+     */
+    private $matcher;
+
+    /**
      * @param DatabaseMenuProvider $provider
      * @param DatabaseMenuFactory $factory
      * @param Helper $helper
+     * @param RecursiveActiveMatcher $matcher
+     * @param string $template
      */
-    public function __construct(DatabaseMenuProvider $provider, DatabaseMenuFactory $factory, Helper $helper)
+    public function __construct(DatabaseMenuProvider $provider, DatabaseMenuFactory $factory, Helper $helper, RecursiveActiveMatcher $matcher, $template)
     {
         $this->provider = $provider;
         $this->factory = $factory;
         $this->helper = $helper;
+        $this->matcher = $matcher;
 
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults([
             'depth' => 1,
             'style' => 'tabs',
+            'template' => $template,
         ]);
+
+        $this->generator = new UuidGenerator();
     }
 
     /**
@@ -67,7 +93,12 @@ class MenuExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_menu', [$this, 'renderMenu'], ['is_safe' => ['html'], 'needs_context' => true]),
+            new \Twig_SimpleFunction(
+                'integrated_menu',
+                [$this, 'renderMenu'],
+                ['is_safe' => ['html'], 'needs_context' => true]
+            ),
+            new \Twig_SimpleFunction('integrated_menu_prepare', [$this, 'prepareMenu'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -94,10 +125,14 @@ class MenuExtension extends \Twig_Extension
                 $menu = $this->factory->createItem($name);
             }
 
-            $html .= '<script type="text/json">' . json_encode(['data' => $menu->toArray(), 'options' => $options]) . '</script>';
+            $html .= '<script type="text/json">' . json_encode(
+                ['data' => $menu->toArray(), 'options' => $options]
+            ) . '</script>';
         }
 
         if ($menu) {
+            $this->matcher->setActive($menu);
+
             $html .= $this->helper->render($menu, $options);
         }
 
@@ -106,6 +141,64 @@ class MenuExtension extends \Twig_Extension
         }
 
         return $html;
+    }
+
+    /**
+     * @param Menu $menu
+     * @param array $options
+     * @return string
+     */
+    public function prepareMenu(Menu $menu = null, array $options = [])
+    {
+        $html = '';
+
+        if ($menu) {
+            $this->prepareItems($menu, $options);
+
+            $html = $this->helper->render($menu, $options);
+        }
+
+        return $html;
+    }
+
+    /**
+     * @param MenuItem $menu
+     * @param array $options
+     * @param int $depth
+     */
+    protected function prepareItems(MenuItem $menu, array $options = [], $depth = 1)
+    {
+        $menu->setChildrenAttribute('class', 'integrated-website-menu-list');
+
+        if (1 === $depth) {
+            $menu->setChildrenAttribute('data-json', json_encode($menu->toArray(false)));
+        }
+
+        /** @var MenuItem $child */
+        foreach ($menu->getChildren() as $child) {
+            $child->setAttributes([
+                'class'       => 'integrated-website-menu-item',
+                'data-action' => 'integrated-website-menu-item-edit',
+                'data-json'   => json_encode($child->toArray(false)),
+            ]);
+
+            $this->prepareItems($child, $options, $depth + 1); // recursion
+        }
+
+        if (isset($options['depth']) && $depth <= (int) $options['depth']) {
+            $uuid = $this->generator->generateV5($this->generator->generateV4(), uniqid(rand(), true));
+
+            $child = $menu->addChild('+', [
+                'uri'        => '#',
+                'attributes' => [
+                    'class'       => 'integrated-website-menu-item',
+                    'data-action' => 'integrated-website-menu-item-add',
+                ],
+            ]);
+
+            $child->setId($uuid);
+            $child->setAttribute('data-json', json_encode($child->toArray(false)));
+        }
     }
 
     /**

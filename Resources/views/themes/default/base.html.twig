@@ -11,14 +11,14 @@
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 
-    {% if app.user|default and is_granted('ROLE_ADMIN') %}
-        {% block stylesheets %}
-            {% stylesheets output='css/edit.css'
-                '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
-                <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
-            {% endstylesheets %}
-        {% endblock %}
-    {% endif %}
+    {% block stylesheets %}
+        {% stylesheets output='css/styles.css' 
+            '@IntegratedWebsiteBundle/Resources/less/styles.less' %}
+            <link rel="stylesheet" type="text/css" href="{{ asset_url }}" />
+        {% endstylesheets %}
+
+        {{ integrated_stylesheets() }}
+    {% endblock %}
 </head>
 <body>
 
@@ -46,6 +46,8 @@
             '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
             <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
+
+        {{ integrated_javascripts() }}
     {% endblock %}
 
     {{ include('@IntegratedWebsite/handlebars/grid.html.twig') }}
