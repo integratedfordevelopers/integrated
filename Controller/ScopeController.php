@@ -15,6 +15,7 @@ use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\ScopeFormType;
+use Integrated\Bundle\UserBundle\Model\Scope;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -81,31 +82,30 @@ class ScopeController extends Controller
             }
 
             if ($form->isValid()) {
-                $user = $form->getData();
+                $scope = $form->getData();
 
-                $this->getManager()->persist($user);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is created', $user->getName()));
+                $this->getManager()->persist($scope);
+                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is created', $scope->getName()));
 
                 return $this->redirect($this->generateUrl('integrated_user_scope_index'));
             }
         }
 
-        return array(
+        return [
             'form' => $form->createView()
-        );
+        ];
     }
 
     /**
      * @Template
      *
+     * @param Scope $scope
      * @param Request $request
      * @return array | Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function editAction(Request $request)
+    public function editAction(Scope $scope, Request $request)
     {
-        $scope = $this->getManager()->find($request->get('id'));
-
         if (!$scope) {
             throw $this->createNotFoundException();
         }
@@ -148,13 +148,12 @@ class ScopeController extends Controller
     /**
      * @Template
      *
+     * @param Scope $scope
      * @param Request $request
      * @return array | Response
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Scope $scope, Request $request)
     {
-        $scope = $this->getManager()->find($request->get('id'));
-
         if (!$scope) {
             return $this->redirect($this->generateUrl('integrated_user_scope_index')); // scope is already gone
         }
@@ -180,22 +179,24 @@ class ScopeController extends Controller
                 return $this->redirect($this->generateUrl('integrated_user_scope_index'));
             }
 
-            if ($form->isValid()) {
-                $this->getManager()->remove($scope);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is removed', $scope->getName()));
+            $this->getManager()->remove($scope);
+            $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is removed', $scope->getName()));
 
-                return $this->redirect($this->generateUrl('integrated_user_scope_index'));
-            }
+            return $this->redirect($this->generateUrl('integrated_user_scope_index'));
         }
 
-        return array(
+        return [
             'scope' => $scope,
             'form' => $form->createView()
-        );
+        ];
     }
 
     /**
-     * @inheritdoc
+     * @param string|\Symfony\Component\Form\FormTypeInterface $type
+     * @param null $data
+     * @param array $options
+     * @param array $buttons
+     * @return \Symfony\Component\Form\Form|\Symfony\Component\Form\FormInterface
      */
     public function createForm($type, $data = null, array $options = [], array $buttons = [])
     {
@@ -212,15 +213,10 @@ class ScopeController extends Controller
     }
 
     /**
-     * @return ScopeManagerInterface
-     * @throws \LogicException
+     * @return object
      */
     protected function getManager()
     {
-        if (!$this->container->has('integrated_user.scope.manager')) {
-            throw new \LogicException('The UserBundle is not registered in your application.');
-        }
-
         return $this->container->get('integrated_user.scope.manager');
     }
 }

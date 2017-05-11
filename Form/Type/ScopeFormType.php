@@ -18,8 +18,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @author Michael Jongman <michael@e-active.nl>
@@ -46,11 +44,7 @@ class ScopeFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class, [
-            'required' => false,
-            'constraints' => [
-                new NotBlank(),
-                new Length(['min' => 3])
-            ]
+            'required' => false
         ]);
     }
 

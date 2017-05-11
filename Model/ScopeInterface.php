@@ -12,8 +12,7 @@
 namespace Integrated\Bundle\UserBundle\Model;
 
 /**
- * Interface ScopeInterface
- * @package Integrated\Bundle\UserBundle\Model
+ * @author Michael Jongman <michael@e-active.nl>
  */
 interface ScopeInterface
 {

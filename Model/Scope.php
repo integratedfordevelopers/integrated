@@ -35,15 +35,17 @@ class Scope implements ScopeInterface
     }
 
     /**
-     * @inheritdoc
+     * @param string $name
+     * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getName()
     {

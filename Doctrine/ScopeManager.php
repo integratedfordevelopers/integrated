@@ -64,7 +64,7 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function create()
     {
@@ -73,7 +73,8 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * @param ScopeInterface $scope
+     * @param bool $flush
      */
     public function persist(ScopeInterface $scope, $flush = true)
     {
@@ -85,7 +86,8 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * @param ScopeInterface $scope
+     * @param bool $flush
      */
     public function remove(ScopeInterface $scope, $flush = true)
     {
@@ -96,16 +98,14 @@ class ScopeManager implements ScopeManagerInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function clear()
     {
         $this->om->clear($this->repository->getClassName());
     }
 
     /**
-     * @inheritdoc
+     * @param mixed $id
+     * @return null|object
      */
     public function find($id)
     {
@@ -113,7 +113,7 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * @return array
      */
     public function findAll()
     {
@@ -121,15 +121,20 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * @param $name
+     * @return null|object
      */
-    public function findByName($criteria)
+    public function findByName($name)
     {
-        return $this->repository->findOneBy(['name' => $criteria]);
+        return $this->repository->findOneBy(['name' => $name]);
     }
 
     /**
-     * @inheritdoc
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
@@ -137,7 +142,7 @@ class ScopeManager implements ScopeManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getClassName()
     {
