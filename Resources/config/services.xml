@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
-    <parameters>
-
-        <parameter key="integrated_page.layout_locator.class">Integrated\Bundle\PageBundle\Locator\LayoutLocator</parameter>
-
-        <parameter key="integrated_page.grid.factory.class">Integrated\Bundle\PageBundle\Grid\GridFactory</parameter>
-
-    </parameters>
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
 
-        <service id="integrated_page.layout_locator" class="%integrated_page.layout_locator.class%">
+        <service id="integrated_page.layout_locator" class="Integrated\Bundle\PageBundle\Locator\LayoutLocator">
             <argument type="service" id="integrated_theme.templating.theme_manager" />
         </service>
 
-        <service id="integrated_page.grid.factory" class="%integrated_page.grid.factory.class%">
+        <service id="integrated_page.theme_resolver" class="Integrated\Bundle\PageBundle\Resolver\ThemeResolver">
+            <argument type="service" id="integrated_channel.config.resolver" />
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+        </service>
+
+        <service id="integrated_page.grid.factory" class="Integrated\Bundle\PageBundle\Grid\GridFactory">
             <argument type="service" id="integrated_block.block_repository" />
         </service>
 
     </services>
+
 </container>

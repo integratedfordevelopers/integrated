@@ -11,14 +11,17 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
+use Integrated\Bundle\PageBundle\Form\Type\PageType;
+use Integrated\Bundle\PageBundle\Document\Page\Page;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
-use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -167,7 +170,7 @@ class PageController extends Controller
         $channel = $this->getSelectedChannel();
 
         $form = $this->createForm(
-            'integrated_page_page',
+            PageType::class,
             $page,
             [
                 'action' => $this->generateUrl('integrated_page_page_new', ['channel' => $channel->getId()]),
@@ -176,7 +179,12 @@ class PageController extends Controller
             ]
         );
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', SaveCancelType::class, [
+            'cancel_route' => 'integrated_page_page_index',
+            'cancel_route_parameters' => ['channel' => $this->getSelectedChannel()->getId()],
+            'label' => 'Create',
+            'button_class' => '',
+        ]);
 
         return $form;
     }
@@ -191,16 +199,22 @@ class PageController extends Controller
         $channel = $page->getChannel();
 
         $form = $this->createForm(
-            'integrated_page_page',
+            PageType::class,
             $page,
             [
-                'action' => $this->generateUrl('integrated_page_page_edit', ['id' => $page->getId(), 'channel' => $channel->getId()]),
+                'action' => $this->generateUrl(
+                    'integrated_page_page_edit',
+                    ['id' => $page->getId(), 'channel' => $channel->getId()]
+                ),
                 'method' => 'PUT',
                 'theme'  => $this->getTheme($channel),
             ]
         );
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('actions', SaveCancelType::class, [
+            'cancel_route' => 'integrated_page_page_index',
+            'cancel_route_parameters' => ['channel' => $this->getSelectedChannel()->getId()],
+        ]);
 
         return $form;
     }
@@ -216,7 +230,7 @@ class PageController extends Controller
 
         $builder->setAction($this->generateUrl('integrated_page_page_delete', ['id' => $id]));
         $builder->setMethod('DELETE');
-        $builder->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
+        $builder->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 
         return $builder->getForm();
     }
@@ -227,7 +241,7 @@ class PageController extends Controller
      */
     protected function clearRoutingCache()
     {
-        $pattern = '/^app(Dev|Prod)Url(Matcher|Generator).php/';
+        $pattern = '/^app(.*)Url(Matcher|Generator).php/';
 
         $finder = new Finder();
 
@@ -291,18 +305,7 @@ class PageController extends Controller
      */
     protected function getTheme(Channel $channel)
     {
-        $theme = 'default';
-
-        if ($configs = $this->getConfigResolver()->getConfigs($channel)) {
-            foreach ($configs as $config) {
-                if ($config->getAdapter() === 'website') {
-                    $theme = $config->getOptions()->get('theme');
-                    break;
-                }
-            }
-        }
-
-        return $theme;
+        return $this->get('integrated_page.theme_resolver')->getTheme($channel);
     }
 
     /**

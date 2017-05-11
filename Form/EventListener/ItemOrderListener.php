@@ -44,7 +44,6 @@ class ItemOrderListener implements EventSubscriberInterface
             $items = $data->getItems();
 
             usort($items, function ($a, $b) {
-
                 if (!$a instanceof Item || !$b instanceof Item || $a->getOrder() == $b->getOrder()) {
                     return 0;
                 }

@@ -25,6 +25,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
 {
     const MENU = 'integrated_menu';
     const MENU_WEBSITE = 'Website';
+    const ROLE_PAGE_MANAGER = 'ROLE_PAGE_MANAGER';
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
     /**
@@ -60,7 +61,8 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
+        if ($this->authorizationChecker->isGranted(self::ROLE_PAGE_MANAGER) ||
+            $this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
             if (!$menuWebsite = $menu->getChild(self::MENU_WEBSITE)) {
                 $menuWebsite = $menu->addChild(self::MENU_WEBSITE);
             }
