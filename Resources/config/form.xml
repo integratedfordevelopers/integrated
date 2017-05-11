@@ -1,47 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-	<services>
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
 
-		<service id="integrated_user.form.login.type" class="Integrated\Bundle\UserBundle\Form\Type\LoginFormType">
-			<argument type="service" id="request_stack" />
-			<argument type="service" id="translator" />
-			<argument>%validator.translation_domain%</argument>
-			<tag name="form.type" />
-		</service>
+        <service id="integrated_user.form.login.type" class="Integrated\Bundle\UserBundle\Form\Type\LoginFormType">
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="translator"/>
+            <argument>%validator.translation_domain%</argument>
+            <tag name="form.type"/>
+        </service>
 
-		<service id="integrated_user.form.profile.type" class="Integrated\Bundle\UserBundle\Form\Type\ProfileFormType">
-			<argument type="service" id="integrated_user.user.manager" />
-			<argument type="service" id="security.encoder_factory" />
-			<tag name="form.type" />
-		</service>
+        <service id="integrated_user.form.profile.type" class="Integrated\Bundle\UserBundle\Form\Type\ProfileFormType">
+            <argument type="service" id="integrated_user.user.manager"/>
+            <argument type="service" id="security.encoder_factory"/>
+            <tag name="form.type"/>
+        </service>
 
-		<service id="integrated_user.form.profile.choice.type" class="Integrated\Bundle\UserBundle\Form\Type\ProfileType">
-			<argument type="service" id="integrated_user.user.manager" />
-			<tag name="form.type" />
-		</service>
+        <service id="integrated_user.form.profile.choice.type" class="Integrated\Bundle\UserBundle\Form\Type\ProfileType">
+            <argument type="service" id="integrated_user.user.manager"/>
+            <tag name="form.type"/>
+        </service>
 
-		<service id="integrated_user.form.group.type" class="Integrated\Bundle\UserBundle\Form\Type\GroupFormType">
-			<argument type="service" id="integrated_user.group.manager" />
-			<argument type="service" id="integrated_user.role.manager" />
-			<tag name="form.type" />
-		</service>
+        <service id="integrated_user.form.group.type" class="Integrated\Bundle\UserBundle\Form\Type\GroupFormType">
+            <argument type="service" id="integrated_user.group.manager"/>
+            <argument type="service" id="integrated_user.role.manager"/>
+            <tag name="form.type"/>
+        </service>
 
-		<service id="integrated_user.form.group.choice.type" class="Integrated\Bundle\UserBundle\Form\Type\GroupType">
-			<argument type="service" id="integrated_user.group.manager" />
-			<tag name="form.type" />
-		</service>
+        <service id="integrated_user.form.group.choice.type" class="Integrated\Bundle\UserBundle\Form\Type\GroupType">
+            <argument type="service" id="integrated_user.group.manager"/>
+            <tag name="form.type"/>
+        </service>
 
-		<service id="integrated_user.form.role.choice.type" class="Integrated\Bundle\UserBundle\Form\Type\RoleType">
-			<argument type="service" id="integrated_user.role.manager" />
-			<tag name="form.type" />
-		</service>
+        <service id="integrated_user.form.role.choice.type" class="Integrated\Bundle\UserBundle\Form\Type\RoleType">
+            <argument type="service" id="integrated_user.role.manager"/>
+            <tag name="form.type"/>
+        </service>
 
-		<service id="integrated_user.form.delete.type" class="Integrated\Bundle\UserBundle\Form\Type\DeleteFormType">
-			<tag name="form.type" />
-		</service>
+        <service id="integrated_user.form.delete.type" class="Integrated\Bundle\UserBundle\Form\Type\DeleteFormType">
+            <tag name="form.type"/>
+        </service>
 
-	</services>
+        <service id="integrated_user.form.scope.type" class="Integrated\Bundle\UserBundle\Form\Type\ScopeFormType">
+            <argument type="service" id="integrated_user.scope.manager"/>
+            <tag name="form.type"/>
+        </service>
+
+    </services>
 </container>

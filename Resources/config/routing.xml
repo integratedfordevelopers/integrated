@@ -6,5 +6,6 @@
 
 	<import resource="@IntegratedUserBundle/Resources/config/routing/profile.xml" prefix="/user" />
     <import resource="@IntegratedUserBundle/Resources/config/routing/group.xml" prefix="/group" />
+    <import resource="@IntegratedUserBundle/Resources/config/routing/scope.xml" prefix="/scope" />
 	<!--<import resource="@IntegratedUserBundle/Resources/config/routing/role.xml" prefix="/roles/" />-->
 </routes>
