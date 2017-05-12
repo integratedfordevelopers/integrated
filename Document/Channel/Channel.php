@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 
+use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
@@ -70,6 +71,16 @@ class Channel implements ChannelInterface
      * @var \DateTime
      */
     protected $createdAt;
+
+    /**
+     * @var Scope
+     */
+    protected $scopeInstance = null;
+
+    /**
+     * @var null
+     */
+    protected $scope = null;
 
     /**
      * Constructor
@@ -279,5 +290,24 @@ class Channel implements ChannelInterface
         if (!$this->primaryDomain) {
             $this->primaryDomain = reset($this->domains);
         }
+    }
+
+    /**
+     * @return Scope
+     */
+    public function getScope()
+    {
+        return $this->scopeInstance;
+    }
+
+    /**
+     * @param Scope|null $scope
+     * @return $this
+     */
+    public function setScope(Scope $scope = null)
+    {
+        $this->scopeInstance = $scope;
+        $this->scope = $scope ? $scope->getId() : null;
+        return $this;
     }
 }
