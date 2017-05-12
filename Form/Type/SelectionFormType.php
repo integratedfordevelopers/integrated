@@ -20,7 +20,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class BulkSelectionType extends AbstractType
+class SelectionFormType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -28,23 +28,23 @@ class BulkSelectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('selection', ChoiceType::class, [
-                'choices' => $options['selection'],
-                'choices_as_values' => true,
-                'choice_label' => function ($value, $key, $index) {
-                    return $key;
-                },
-                'multiple' => true,
-                'expanded' => true,
-                'invalid_message' => 'This selection is not valid.',
-                'data' => $options['selection'],
-                'required' => true,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'A selection is required to go further.',
-                    ]),
-                ]
+            'label' => false,
+            'choices' => $options['content'],
+            'choices_as_values' => true,
+            'choice_label' => function ($value, $key, $index) {
+                return $key;
+            },
+            'multiple' => true,
+            'expanded' => true,
+            'error_bubbling' => true,
+            'data' => $options['content'],
+            'required' => true,
+            'constraints' => [
+                new NotBlank([
+                    'message' => 'A selection is required to go further.',
+                ]),
             ]
-        );
+        ]);
     }
 
     /**
@@ -52,9 +52,7 @@ class BulkSelectionType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'selection'         => '',
-        ));
+        $resolver->setRequired('content');
     }
 
     /**

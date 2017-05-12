@@ -8,25 +8,11 @@
 
         <parameter key="integrated_content.services.search.content.referenced.class">Integrated\Bundle\ContentBundle\Services\SearchContentReferenced</parameter>
         <parameter key="integrated_content.form_request_handler">Integrated\Bundle\ContentBundle\Form\RequestHandler\IntegratedHttpRequestHandler</parameter>
-        <parameter key="integrated_content.services.bulk.selector.class">Integrated\Bundle\ContentBundle\Services\BulkSelector</parameter>
-        <parameter key="integrated_content.services.bulk.action.class">Integrated\Bundle\ContentBundle\Services\BulkAction</parameter>
 
     </parameters>
     <services>
         <service id="integrated_content.services.search.content.referenced" class="%integrated_content.services.search.content.referenced.class%">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-        </service>
-
-        <service id="integrated_content.services.bulk.selector" class="%integrated_content.services.bulk.selector.class%">
-            <argument type="service" id="solarium.client" />
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-            <argument type="service" id="security.token_storage" />
-            <argument type="service" id="integrated_workflow.solr.workflow.extension" on-invalid="null" />
-        </service>
-
-        <service id="integrated_content.services.bulk.action" class="%integrated_content.services.bulk.action.class%">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-            <argument type="service" id="doctrine_mongodb.odm.default_connection" />
         </service>
 
         <!-- Overwrite the default form.type_extension.form.request_handler service with our own -->

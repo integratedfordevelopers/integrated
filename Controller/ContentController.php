@@ -365,7 +365,8 @@ class ContentController extends Controller
             'facets'       => $result->getFacetSet()->getFacets(),
             'locks'        => $this->getLocks($paginator),
             'relations'    => $relations,
-            'facetTitles'  => $facetTitles
+            'facetTitles'  => $facetTitles,
+            'filters'      => $request->query->all()
         );
     }
 

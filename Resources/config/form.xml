@@ -160,11 +160,11 @@
             <tag name="form.type" />
         </service>
 
-        <service id="integrated_content.form.type.bulk_action_form" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionFormType">
+        <service id="integrated_bundle_content.form_type_bulk_fields.references_choice_type" class="Integrated\Bundle\ContentBundle\Form\Type\Bulk\Fields\ReferencesChoiceType">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <argument type="service" id="integrated_content.services.bulk.action" />
             <tag name="form.type" />
         </service>
+
     </services>
 
 </container>

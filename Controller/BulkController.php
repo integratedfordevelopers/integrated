@@ -1,51 +1,110 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Patrick
- * Date: 21/03/2017
- * Time: 12:36
+
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Integrated\Bundle\ContentBundle\Controller;
 
-use Integrated\Bundle\ContentBundle\Form\Type\BulkActionFormType;
-use Integrated\Bundle\ContentBundle\Form\Type\BulkSelectionType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
+use Exception;
+
+use Integrated\Bundle\ContentBundle\Bulk\BuildState;
+use Integrated\Bundle\ContentBundle\Form\Type\Bulk\ActionsFormType;
+use Integrated\Bundle\ContentBundle\Form\Type\SelectionFormType;
+use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
+use Integrated\Bundle\ContentBundle\Bulk\ContentProvider;
+use Integrated\Bundle\ContentBundle\Bulk\ActionProvider;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+/**
+ * @author Patrick Mestebeld <patrick@e-active.nl>
+ */
 class BulkController extends Controller
 {
     /**
+     * @var DocumentManager
+     */
+    protected $dm;
+
+    /**
+     * @var ContentProvider
+     */
+    protected $contentProvider;
+
+    /**
+     * @var ActionProvider
+     */
+    protected $actionProvider;
+
+    /**
+     * BulkController constructor.
+     * @param DocumentManager $dm
+     * @param ContentProvider $contentProvider
+     * @param ActionProvider $actionProvider
+     * @param ContainerInterface $container
+     */
+    public function __construct(
+        DocumentManager $dm,
+        ContentProvider $contentProvider,
+        ActionProvider $actionProvider,
+        ContainerInterface $container
+    ) {
+        $this->dm = $dm;
+        $this->contentProvider = $contentProvider;
+        $this->actionProvider = $actionProvider;
+        $this->container = $container;
+    }
+
+    /**
      * @Template()
      * @param Request $request
-     * @return array
+     * @return array | RedirectResponse
      */
     public function selectAction(Request $request)
     {
         // Fetch Content selection.
-        $bulkSelector = $this->get('integrated_content.services.bulk.selector');
-        $selectionLimit = $this->container->getParameter('bulk_action_limit');
-        $results = $bulkSelector->selection($request, $selectionLimit);
+        $limit = 1000;
+        $contents = $this->contentProvider->getContentFromSolr($request, $limit + 1);
 
-        $form = $this->createSelectForm($results);
+        if (!$contents) {
+            return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
+        }
+
+        $form = $this->createForm(SelectionFormType::class, null, ['content' => array_slice($contents, 0, $limit)]);
         $form->handleRequest($request);
 
-        // Get selection, save it in session and redirect when form is valid.
         if ($form->isSubmitted() && $form->isValid()) {
-            $selection = $form->getData();
-            $session = $request->getSession();
-            $session->set('selection', $selection);
+            $data = $form->getData();
 
-            return $this->redirectToRoute('integrated_content_bulk_edit', $request ? $request->query->all() : []);
+            if ($bulkAction = $this->dm->getRepository(BulkAction::class)->find($request->get('bulkid'))) {
+                $bulkAction->setSelection($data['selection']);
+            } else {
+                $bulkAction = new BulkAction($data['selection']);
+                $this->dm->persist($bulkAction);
+                $request->query->add(['bulkid' => $bulkAction->getId()]);
+            }
+
+            $this->dm->flush();
+            return $this->redirectToRoute('integrated_content_bulk_configure', $request->query->all());
         }
 
         return [
-            'filters' => $request ? $request->query->all() : [],
-            'results' => $results,
-            'limit' => $selectionLimit,
+            'filters' => $request->query->all(),
+            'contents' => $contents,
+            'limit' => $limit,
             'form' => $form->createView(),
         ];
     }
@@ -53,31 +112,39 @@ class BulkController extends Controller
     /**
      * @Template()
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
-    public function editAction(Request $request)
+    public function configureAction(Request $request)
     {
-        $session = $request->getSession();
-        $selection = $session->get('selection');
+        //Fetch BulkAction by ID
+        $bulkAction = $this->dm->getRepository(BulkAction::class)->find($request->get('bulkid'));
 
-        // Get all possible relations.
-        $bulkAction = $this->get('integrated_content.services.bulk.action');
-        $relations = $bulkAction->getAllRelations();
+        if (!$bulkAction instanceof BulkAction) {
+            return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
+        }
 
-        $form = $this->createBulkActionForm($relations);
+        //Set actions to BulkAction
+        $bulkAction->addActions($this->actionProvider->getActions($bulkAction->getActions()));
+
+        $form = $this->createForm(ActionsFormType::class, $bulkAction);
         $form->handleRequest($request);
 
-        // Set references in session and redirect if form is valid.
         if ($form->isSubmitted() && $form->isValid()) {
-            $references = $form->getData();
-            $session->set('references', $references);
+            $bulkAction = $form->getData();
 
-            return $this->redirectToRoute('integrated_content_bulk_confirm', $request ? $request->query->all() : []);
+            if (!$bulkAction instanceof BulkAction) {
+                return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
+            }
+
+            $bulkAction->setState(BuildState::CONFIGURED);
+            $this->dm->flush();
+
+            return $this->redirectToRoute('integrated_content_bulk_confirm', $request->query->all());
         }
 
         return [
-            'filters' => $request ? $request->query->all() : [],
-            'selection' => $selection['selection'],
+            'filters' => $request->query->all(),
+            'selection' => $bulkAction->getSelection(),
             'form' => $form->createView(),
         ];
     }
@@ -85,117 +152,49 @@ class BulkController extends Controller
     /**
      * @Template()
      * @param Request $request
-     * @return array
+     * @return array|RedirectResponse
      */
     public function confirmAction(Request $request)
     {
-        $session = $request->getSession();
-        $selection = $session->get('selection');
-        $references = $session->get('references');
+        $bulkAction = $this->dm->getRepository(BulkAction::class)->find($request->get('bulkid'));
 
-        $bulkAction = $this->get('integrated_content.services.bulk.action');
+        if (!$bulkAction instanceof BulkAction) {
+            return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
+        }
 
-        $form = $this->createConfirmForm();
+        // Check if bulk action state is correct and redirect if not.
+        if ($bulkAction->getState() !== BuildState::CONFIGURED) {
+            $this->addFlash('danger', 'This bulk action has not completed all steps correctly.');
+            $request->query->remove('bulkid');
+            return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
+        }
+
+        $form = $this->createFormBuilder()->getForm();
         $form->handleRequest($request);
 
-        // If form submitted execute bulk action.
+        // If form submitted try to execute all bulk action.
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($session instanceof Session) {
-                $executed = $bulkAction->execute($selection['selection'], $references, $session);
+            try {
+                $bulkAction->setState(BuildState::CONFIRMED);
+                $bulkAction->executeAll();
+                $this->dm->flush();
 
-                // If bulk actions was completed successfully redirect to indexpage.
-                if ($executed) {
-                    return $this->redirectToRoute('integrated_content_content_index', $request ? $request->query->all() : []);
-                }
+                $this->addFlash('success', 'It seems all bulk actions were executed successfully! :)');
+                $request->query->remove('bulkid');
+                return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
+            } catch (Exception $e) {
+                $this->addFlash(
+                    'danger',
+                    'Whoops! It seems something went wrong during the execution of this bulk action! The following error has given: "' . $e->getMessage() . '"'
+                );
             }
-        } else {
-            $number = count($selection['selection']);
-
-            $this->addFlash(
-                'message',
-                "Please confirm that you wish to " . $bulkAction->actionsToString($references, " the following ") . " for the selected " . ($number > 1 ? "$number contents." : "content.")
-            );
         }
 
         return [
-            'filters' => $request ? $request->query->all() : [],
-            'referencegroups' => $bulkAction->getReferenceNames($references),
+            'filters' => $request->query->all(),
+            'contents' => $bulkAction->getSelection(),
+            'actions' => $bulkAction->getActions(),
             'form' => $form->createView(),
-            'delimiter' => $bulkAction::BULK_DELIMITER,
         ];
-    }
-
-    /**
-     * Shows the menu.
-     * @Template
-     */
-    public function menuAction()
-    {
-        /** @var Request $request */
-        $request = $this->get('request_stack')->getMasterRequest();
-
-        return [
-            'filters' => $request ? $request->query->all() : []
-        ];
-    }
-
-    /**
-     * Creating form for bulk-selection.
-     * @param $results
-     * @return \Symfony\Component\Form\Form
-     */
-    protected function createSelectForm($results)
-    {
-
-        $selection = [];
-
-        foreach ($results as $result) {
-            $selection[$result['title']] = $result['type_id'];
-        }
-
-        $form = $this->createForm(BulkSelectionType::class, $empty = [], ['selection' => $selection])
-            ->add('save', SubmitType::class, [
-                'label' => 'Next',
-                'attr' => ['class' => 'btn-orange']
-            ])
-            ->add('saveAndAdd', SubmitType::class, [
-                'label' => 'Next',
-                'attr' => ['class' => 'btn-orange']
-            ]);
-
-        return $form;
-    }
-
-    /**
-     * Creating form for bulk-action.
-     * @param $relations
-     * @return \Symfony\Component\Form\Form
-     */
-    protected function createBulkActionForm($relations)
-    {
-        $form = $this->createForm(BulkActionFormType::class, $empty = [], ['relations' => $relations])
-            ->add('save', SubmitType::class, [
-                'label' => 'Submit',
-                'attr' => [
-                    'class' => 'btn-orange',
-                    'style' => 'display: none'
-                ]
-            ]);
-
-        return $form;
-    }
-
-    /**
-     * Creating form for bulk-confirmation.
-     * @return \Symfony\Component\Form\Form
-     */
-    protected function createConfirmForm()
-    {
-        return $this->createFormBuilder($empty = [])
-            ->add('confirm', SubmitType::class, [
-                'label' => 'Confirm',
-                'attr' => ['class' => 'btn-orange']
-            ])
-            ->getForm();
     }
 }

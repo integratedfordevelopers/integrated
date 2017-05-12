@@ -1,0 +1,86 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% form_theme form _self %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <ul class="alert alert-danger">
+                {% for error in errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <div class="row mb-10">
+        <div class="col-md-8 push-sm-down">
+            <h1>{% trans %}Step 2 of 3: Choose Operation{% endtrans %}</h1>
+        </div>
+        <div class="pull-right">
+            <a class="btn btn-gray-thin mr-10" href="{{ path("integrated_content_bulk_select", filters) }}">{% trans %}Back{% endtrans %}</a>
+            <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
+        </div>
+    </div>
+    <div class="row mt-10">
+        <section class="section-white section-padding section-shadow section-radius">
+            <div class="container">
+                {% trans %}Choose the operation you wish to perform on the selected{% endtrans %} {{ selection|length > 1 ? selection|length ~ ' contents' : 'content' }}.
+            </div>
+            <hr/>
+                {{ form_errors(form) }}
+                {% for action in form.actions %}
+                    <div class="row mb-10">
+                        <div class="row col-md-8 bulk_subform ">
+                            {{ form_row(action.references, {'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm'}) }}
+                        </div>
+                    </div>
+                {% endfor %}
+        </section>
+    </div>
+    <div class="row mt-10">
+        <div class="pull-right">
+            <a class="btn btn-gray-thin mr-10" href="{{ path("integrated_content_bulk_select", filters) }}">{% trans %}Back{% endtrans %}</a>
+            <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock content %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function () {
+            implementSelect2();
+
+            $(".bulk_subform .form-group").each(function () {
+                if ($(this).children("label").length > 0) {
+                    $(this).css('min-height', $(this).children('div').height());
+                    $(this).children("label").prepend("<input type='checkbox' class='mr-10'/>");
+
+                    if($(this).find("option").length > 0){
+                        $(this).find(":checkbox").prop('checked', true);
+                    } else {
+                        $(this).children("div").hide();
+                    }
+                }
+            });
+
+            $(":checkbox").click(function () {
+                if ($(this).is(":checked")) {
+                    $(this).parents("div.form-group").children("div").show();
+                } else {
+                    $(this).parents("div.form-group").children("div").hide();
+                }
+            });
+
+        });
+    </script>
+
+    {% javascripts '@IntegratedContentBundle/Resources/public/js/bulk_relation.js' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascript %}

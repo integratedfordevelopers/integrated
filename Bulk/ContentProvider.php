@@ -1,32 +1,31 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Patrick
- * Date: 24/03/2017
- * Time: 08:45
+
+/*
+ * This file is part of the Integrated package.
+ *
+ * (c) e-Active B.V. <integrated@e-active.nl>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Services;
+namespace Integrated\Bundle\ContentBundle\Bulk;
 
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\WorkflowBundle\Solr\Extension\WorkflowExtension;
-use Solarium\Client;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Solarium\Client;
+use Solarium\QueryType\Select\Query\Query;
 
 /**
- * Class BulkSelector
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class BulkSelector
+class ContentProvider
 {
-    /**
-     * @var string
-     */
-    private $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
-
     /**
      * @var Client
      */
@@ -48,17 +47,17 @@ class BulkSelector
     private $workflowExtension;
 
     /**
-     * BulkSelection constructor.
+     * ContentProvider constructor.
      * @param Client $client
      * @param DocumentManager $dm
      * @param TokenStorageInterface $tokenStorage
-     * @param WorkflowExtension|null $workflowExtension
+     * @param bool $workflowExtension
      */
     public function __construct(
         Client $client,
         DocumentManager $dm,
         TokenStorageInterface $tokenStorage,
-        WorkflowExtension $workflowExtension = null
+        $workflowExtension = false
     ) {
         $this->client = $client;
         $this->dm = $dm;
@@ -71,32 +70,18 @@ class BulkSelector
      * @param $limit
      * @return array
      */
-    public function selection(Request $request, $limit)
+    public function getContentFromSolr(Request $request, $limit)
     {
-        //remember search state
-        $session = $request->getSession();
-        if ($request->query->get('remember') && $session->has('content_index_view')) {
-            $request->query->add(unserialize($session->get('content_index_view')));
-            $request->query->remove('remember');
-        } elseif (!$request->query->has('_format')) {
-            $session->set('content_index_view', serialize($request->query->all()));
-        }
-
-        /** @var $client \Solarium\Client */
-        $client = $this->client;
-        $query = $client->createSelect();
+        $query = $this->client->createSelect();
 
         // If the request query contains a relation parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
         $relation = $request->query->get('relation');
         if (null !== $relation) {
-            $contentType = array();
-
-            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-            $dm = $this->dm;
+            $contentType = [];
 
             /** @var Relation $relation */
-            if ($relation = $dm->getRepository($this->relationClass)->find($relation)) {
+            if ($relation = $this->dm->getRepository(Relation::class)->find($relation)) {
                 foreach ($relation->getTargets() as $target) {
                     $contentType[] = $target->getType();
                 }
@@ -104,10 +89,6 @@ class BulkSelector
         } else {
             $contentType = $request->query->get('contenttypes');
         }
-
-        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-
-        $dm = $this->dm;
 
         $helper = $query->getHelper();
         $filter = function ($param) use ($helper) {
@@ -125,7 +106,7 @@ class BulkSelector
         }
 
         /** @var Relation $relation */
-        foreach ($dm->getRepository($this->relationClass)->findAll() as $relation) {
+        foreach ($this->dm->getRepository(Relation::class)->findAll() as $relation) {
             $name = preg_replace("/[^a-zA-Z]/", "", $relation->getName());
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
@@ -149,45 +130,8 @@ class BulkSelector
 
         // If the workflow bundle is loaded then only display the results that the
         // user has read rights to
-
-//        if ($this->has('integrated_workflow.solr.workflow.extension')) {
         if ($this->workflowExtension) {
-            $filterWorkflow = [];
-
-            $user = $this->tokenStorage->getToken()->getUser();
-
-            if ($user instanceof GroupableInterface) {
-                foreach ($user->getGroups() as $group) {
-                    $filterWorkflow[] = $group->getId();
-                }
-            }
-
-            // allow content without workflow
-            $fq = $query->createFilterQuery('workflow')
-                ->addTag('workflow')
-                ->addTag('security')
-                ->setQuery('(*:* -security_workflow_read:[* TO *])');
-
-            // allow content with group access
-            if ($filterWorkflow) {
-                $fq->setQuery(
-                    $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
-                    [implode(') OR (', $filterWorkflow)]
-                );
-            }
-
-            // always allow access to assinged content
-            $fq->setQuery(
-                $fq->getQuery() . ' OR facet_workflow_assigned_id: %1%',
-                array($user->getId())
-            );
-
-            if ($person = $user->getRelation()) {
-                $fq->setQuery(
-                    $fq->getQuery() . ' OR author: %1%*',
-                    array($person->getId())
-                );
-            }
+            $this->addWorkflowFilter($query);
         }
 
         $activeChannels = $request->query->get('channels');
@@ -265,24 +209,54 @@ class BulkSelector
         $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
 
         $query->setRows($limit);
-        $results = $client->select($query);
-
-
+        $iterator = $this->client->select($query)->getIterator();
         $contents = [];
 
-        foreach ($results as $result) {
-            $contents[$result['type_id']] = [
-                'id' => $result['id'],
-                'type_id' => $result['type_id'],
-                'type_name' => $result['type_name'],
-                'type_class' => $result['type_class'],
-                'pub_active' => $result['pub_active'],
-                'title' => $result['title'],
-                'slug' => $result['slug'],
-                'pub_created' => $result['pub_created'],
-                'pub_edited' => $result['pub_edited'],
-            ];
+        while ($iterator->valid()) {
+            $content = $iterator->current();
+            if (isset($content['type_id']) && $content = $this->dm->getRepository(Content::class)->find($content['type_id'])) {
+                $contents[$content->getId()] = $content;
+            }
+            $iterator->next();
         }
+
         return $contents;
+    }
+
+    /**
+     * @param Query $query
+     * @return \Solarium\QueryType\Select\Query\FilterQuery
+     */
+    protected function addWorkflowFilter(Query $query)
+    {
+        $filterWorkflow = [];
+
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        if ($user instanceof GroupableInterface) {
+            foreach ($user->getGroups() as $group) {
+                $filterWorkflow[] = $group->getId();
+            }
+        }
+
+        // allow content without workflow
+        $fq = $query->createFilterQuery('workflow')
+            ->addTag('workflow')
+            ->addTag('security')
+            ->setQuery('(*:* -security_workflow_read:[* TO *])');
+
+        // allow content with group access
+        if ($filterWorkflow) {
+            $fq->setQuery($fq->getQuery() . ' OR security_workflow_read: ((%1%))', [implode(') OR (', $filterWorkflow)]);
+        }
+
+        // always allow access to assinged content
+        $fq->setQuery($fq->getQuery() . ' OR facet_workflow_assigned_id: %1%', [$user->getId()]);
+
+        if ($person = $user->getRelation()) {
+            $fq->setQuery($fq->getQuery() . ' OR author: %1%*', [$person->getId()]);
+        }
+
+        return $fq;
     }
 }

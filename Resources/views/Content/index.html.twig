@@ -1,19 +1,5 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
 {% block content %}
-    {% for flash_message in app.session.flashBag.get('notice') %}
-        <div class="row alert alert-info">
-            {{ flash_message }}
-        </div>
-    {% endfor %}
-    {% for type, flash_messages in app.session.flashBag.all %}
-        <div class="row alert alert{{ type == "success" ? "-success" : "-warning" }}">
-            <ul>
-            {% for flash_message in flash_messages %}
-                <li>{{ flash_message }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-    {% endfor %}
     <div class="row">
 
         <div class="col-md-8 push-sm-down">
@@ -41,9 +27,9 @@
                     <a href data-toggle="dropdown" role="button">{% trans %}Tools{% endtrans %} <b class="caret"></b></a>
 
                     <ul role="menu" class="dropdown-menu">
-
-                            {{ render(controller('IntegratedContentBundle:Bulk:menu')) }}
-
+                        <li role="presentation">
+                            <a href="{{ path('integrated_content_bulk_select', filters) }}" tabindex="-1" role="menuitem">Bulk change this selection</a>
+                        </li>
                     </ul>
                 </li>
 
