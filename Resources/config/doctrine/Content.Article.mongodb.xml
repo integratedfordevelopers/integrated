@@ -5,7 +5,7 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Article">
 
-        <field fieldName="title" type="string" index="true" />
+        <field fieldName="title" type="string" />
         <field fieldName="slug" type="string" unique="true" sparse="true" />
         <field fieldName="subtitle" type="string" />
         <field fieldName="source" type="string" />

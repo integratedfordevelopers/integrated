@@ -12,6 +12,13 @@
     {% if content.extension_string is defined %}
         {% set item = item|merge({'extension': content.extension_string[0]}) %}
     {% endif %}
+    {% if content.mimetype_string is defined %}
+        {% set item = item|merge({'mimeType': content.mimetype_string[0]}) %}
+
+        {% if 'video' in content.mimetype_string[0] %}
+            {% set item = item|merge({'poster': image_json(content.file).__toString()}) %}
+        {% endif %}
+    {% endif %}
     {% if content.alternate_string is defined %}
         {% set item = item|merge({'alternate': content.alternate_string[0]}) %}
     {% endif %}

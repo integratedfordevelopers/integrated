@@ -30,7 +30,7 @@ class ContactPersonsType extends AbstractType
             'type' => CompanyJobType::class,
             'allow_add' => true,
             'allow_delete' => true,
-            'label' => 'Contact persons',
+            'label' => 'Jobs',
             'delete_button_text' => 'x'
         ]);
     }

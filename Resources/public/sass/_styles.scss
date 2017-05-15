@@ -1,3 +1,7 @@
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
 /* STYLES */
 #wrapper-holder {
     padding-bottom: 120px;
@@ -12,13 +16,34 @@ label.is-primary-channel {
     margin-right: 5px;
 }
 
-div.select2-selected {
-    display: inline;
+.select2-selection__choice {
+    max-width: 100%;
 }
 
-div.select2-selected img {
+.select2-selected {
+  display: inline-block;
+  max-width: 95%;
+  overflow: hidden;
+
+  img {
     margin: 0 5px 0 -5px;
     max-height: 40px;
+  }
+}
+
+.button-submitted {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+.button-submitted .glyphicon-refresh {
+  margin-right: 10px;
+  -webkit-animation:spin 3s linear infinite;
+  -moz-animation:spin 3s linear infinite;
+  animation:spin 3s linear infinite;
+}
+
+.add-relation {
+  position: relative;
 }
 
 .mt-10 {

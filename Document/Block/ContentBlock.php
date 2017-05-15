@@ -31,7 +31,9 @@ class ContentBlock extends Block
 
     /**
      * @var SearchSelection
-     * @Type\Field(type="integrated_search_selection_choice")
+     * @Type\Field(
+     *      type="Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionChoiceType"
+     * )
      */
     protected $searchSelection;
 
@@ -67,7 +69,7 @@ class ContentBlock extends Block
     /**
      * @var string
      * @Type\Field(
-     *      type="\Symfony\Component\Form\Extension\Core\Type\TextType",
+     *      type="Symfony\Component\Form\Extension\Core\Type\TextType",
      *      options={
      *          "required"=false
      *      }

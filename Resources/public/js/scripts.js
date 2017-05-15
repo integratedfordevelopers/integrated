@@ -64,6 +64,16 @@ $(document).ready(function () {
         $(this).closest('.filters_list').find('.to_show').slideToggle(200);
         $(this).hide();
     });
+
+    $('button[type="submit"]').click(function() {
+        if ($(this).get(0).form && $(this).get(0).form.checkValidity()) {
+            $('button[type="submit"]').addClass('button-submitted').off("click").click(function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            });
+            $(this).prepend('<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>');
+        }
+    });
 });
 
 $(document).ready(function () {
