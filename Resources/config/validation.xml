@@ -17,4 +17,29 @@
         </property>
 
     </class>
+
+    <class name="Integrated\Bundle\UserBundle\Model\User">
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">
+                <value>username</value>
+                <value>scope</value>
+            </option>
+            <option name="message">This username is already in use</option>
+        </constraint>
+
+        <property name="username">
+            <constraint name="NotBlank"></constraint>
+            <constraint name="Length">
+                <option name="min">3</option>
+            </constraint>
+        </property>
+
+        <property name="password">
+            <constraint name="Length">
+                <option name="min">6</option>
+            </constraint>
+        </property>
+
+    </class>
 </constraint-mapping>

@@ -70,6 +70,11 @@ class User implements UserInterface
     protected $relation = null;
 
     /**
+     * @var Scope
+     */
+    protected $scope;
+
+    /**
      * @var \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
      */
     protected $relation_instance = null;
@@ -301,6 +306,24 @@ class User implements UserInterface
     public function getRelation()
     {
         return $this->relation_instance;
+    }
+
+    /**
+     * @return Scope
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * @param Scope $scope
+     * @return $this
+     */
+    public function setScope(Scope $scope)
+    {
+        $this->scope = $scope;
+        return $this;
     }
 
     /**

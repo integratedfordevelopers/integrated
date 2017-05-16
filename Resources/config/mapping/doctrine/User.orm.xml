@@ -5,11 +5,15 @@
 
     <entity name="Integrated\Bundle\UserBundle\Model\User" table="security_users">
 
+		<unique-constraints>
+			<unique-constraint columns="username,scope"></unique-constraint>
+		</unique-constraints>
+
 		<id name="id" column="id" type="integer">
 			<generator strategy="AUTO" />
 		</id>
 
-		<field name="username" column="username" type="string" length="255" unique="true" />
+		<field name="username" column="username" type="string" length="255" />
 
 		<field name="password" column="password" type="string" />
 
@@ -22,6 +26,12 @@
 		<field name="enabled" column="enabled" type="boolean" />
 
 		<field name="relation" column="relation" type="string" nullable="true" />
+
+		<many-to-one target-entity="Scope" field="scope">
+			<join-columns>
+				<join-column name="scope" referenced-column-name="id" />
+			</join-columns>
+		</many-to-one>
 
 		<many-to-many field="groups" target-entity="Group">
 			<join-table name="security_user_groups">
