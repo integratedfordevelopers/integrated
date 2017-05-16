@@ -13,6 +13,7 @@ namespace Integrated\Bundle\UserBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\ScopeFormType;
 use Integrated\Bundle\UserBundle\Model\Scope;
@@ -21,6 +22,7 @@ use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormBuilder;
@@ -180,10 +182,18 @@ class ScopeController extends Controller
                 return $this->redirect($this->generateUrl('integrated_user_scope_index'));
             }
 
-            $this->getManager()->remove($scope);
-            $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is removed', $scope->getName()));
+            /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
+            $dm = $this->get('doctrine_mongodb')->getManager();
+            if ($channels = $dm->getRepository(Channel::class)->findBy(['scope' => (string) $scope->getId()])) {
+                $form->addError(
+                    new FormError('This scope is in use by channels.')
+                );
+            } else {
+                $this->getManager()->remove($scope);
+                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is removed', $scope->getName()));
 
-            return $this->redirect($this->generateUrl('integrated_user_scope_index'));
+                return $this->redirect($this->generateUrl('integrated_user_scope_index'));
+            }
         }
 
         return [
