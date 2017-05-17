@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<services>
+
+        <service id="integrated_content.json_ld.normalizer" class="Integrated\Common\Normalizer\Normalizer">
+            <argument type="service" id="integrated_content.json_ld.resolver" />
+        </service>
+
+        <service id="integrated_content.json_ld.resolver" class="Integrated\Common\Normalizer\Processor\ProcessorResolver">
+            <argument type="service" id="integrated_content.json_ld.registry" />
+            <argument type="service" id="integrated_content.json_ld.processor_factory" />
+        </service>
+
+        <service id="integrated_content.json_ld.registry" class="Integrated\Common\Normalizer\Processor\ProcessorRegistry">
+            <factory service="integrated_content.json_ld.registry_builder" method="getRegistry" />
+        </service>
+
+        <service id="integrated_content.json_ld.registry_builder" class="Integrated\Common\Normalizer\Processor\ProcessorRegistryBuilder" public="false" />
+
+        <service id="integrated_content.json_ld.processor_factory" class="Integrated\Common\Normalizer\Processor\ResolvedProcessorFactory" public="false">
+            <argument type="service" id="integrated_content.json_ld.container_factory" />
+        </service>
+
+        <service id="integrated_content.json_ld.container_factory" class="Integrated\Common\Normalizer\ContainerFactory" public="false" />
+
+        <service id="integrated_content.json_ld.url_generator" class="Integrated\Bundle\ContentBundle\JsonLD\UrlGenerator" public="false" />
+
+        <!-- add some default processors -->
+
+        <service id="integrated_content.json_ld.processor.address" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\AddressProcessor" public="false">
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.author" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\AuthorProcessor" public="false">
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.article" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\ArticleProcessor" public="false">
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Article" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.company" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\CompanyProcessor" public="false">
+            <argument type="service" id="integrated_content.json_ld.url_generator" />
+
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.content" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\ContentProcessor" public="false">
+            <argument type="service" id="integrated_content.json_ld.url_generator" />
+
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Content" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.event" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\EventProcessor" public="false">
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Event" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.image" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\ImageProcessor" public="false">
+            <argument type="service" id="integrated_content.json_ld.url_generator" />
+
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Image" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.images" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\ImagesProcessor" public="false">
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Article" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.keywords" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\KeywordsProcessor" public="false">
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Article" />
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.location" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\LocationProcessor" public="false">
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.person" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\PersonProcessor" public="false">
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person" />
+        </service>
+
+        <service id="integrated_content.json_ld.processor.taxonomy" class="Integrated\Bundle\ContentBundle\JsonLD\Processor\TaxonomyProcessor" public="false">
+            <tag name="integrated_content.json_ld.processor" class="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy" />
+        </service>
+
+	</services>
+
+</container>

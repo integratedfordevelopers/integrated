@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<services>
+
+        <service id="integrated_content.serializer.json_ld.normalizer" class="Integrated\Bundle\ContentBundle\JsonLD\Serializer\Normalizer">
+            <argument type="service" id="integrated_content.json_ld.normalizer" />
+
+            <tag name="serializer.normalizer" priority="32" />
+        </service>
+
+        <service id="integrated_content.serializer.json_ld_null.normalizer" class="Integrated\Common\Content\Serializer\JsonLBNullNormalizer">
+            <tag name="serializer.normalizer" priority="16" />
+        </service>
+
+        <service id="integrated_content.serializer.json_ld.encoder" class="Integrated\Common\Content\Serializer\JsonLDEncoder">
+            <tag name="serializer.encoder" />
+        </service>
+
+	</services>
+
+</container>
