@@ -13,11 +13,16 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\AuthorTransformer;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  * @author Jurre de Jongh <jurre@e-active.nl>
@@ -30,11 +35,18 @@ class AuthorType extends AbstractType
     private $mr;
 
     /**
-     * @param ManagerRegistry $mr
+     * @var ContentTypeManager
      */
-    public function __construct(ManagerRegistry $mr)
+    private $contentTypeManager;
+
+    /**
+     * @param ManagerRegistry $mr
+     * @param ContentTypeManager $contentTypeManager
+     */
+    public function __construct(ManagerRegistry $mr, ContentTypeManager $contentTypeManager)
     {
         $this->mr = $mr;
+        $this->contentTypeManager = $contentTypeManager;
     }
 
     /**
@@ -45,6 +57,20 @@ class AuthorType extends AbstractType
         $transformer = new AuthorTransformer($this->mr);
 
         $builder->addModelTransformer($transformer);
+    }
+
+
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $contentTypes = [];
+
+        foreach ($this->contentTypeManager->filterInstanceOf(Person::class) as $contentType) {
+            if ($contentType instanceof ContentType) {
+                $contentTypes[] = $contentType->getId();
+            }
+        }
+
+        $view->vars['contentTypes'] = $contentTypes;
     }
 
     /**

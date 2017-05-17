@@ -93,8 +93,6 @@
         <type name="integrated.fields">
             <options>
 
-                <string key="logo">logo.pathname</string>
-
                 <array>
                     <string key="name">url</string>
                     <array>
@@ -104,6 +102,12 @@
                     </array>
                 </array>
 
+            </options>
+        </type>
+
+        <type name="integrated.storage">
+            <options>
+                <string key="logo">logo</string>
             </options>
         </type>
 

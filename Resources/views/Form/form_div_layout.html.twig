@@ -233,7 +233,7 @@
                 $("#{{ id }}").select2({
                     multiple: true,
                     ajax: {
-                        url: "{{path('integrated_content_content_index', { 'contenttypes[]': 'author' })}}",
+                        url: "{{ path('integrated_content_content_index', { 'contenttypes': contentTypes })|raw }}",
                         dataType: 'json',
                         data: function (term, page) {
                             return {
