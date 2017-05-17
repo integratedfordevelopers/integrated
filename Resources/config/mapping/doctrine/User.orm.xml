@@ -13,19 +13,13 @@
 			<generator strategy="AUTO" />
 		</id>
 
-		<field name="username" column="username" type="string" length="255" />
-
-		<field name="password" column="password" type="string" />
-
-		<field name="salt" column="password_salt" type="string" nullable="true" />
-
-		<field name="email" column="email" type="string" length="255" unique="true" nullable="true" />
-
-		<field name="locked" column="locked" type="boolean" />
-
-		<field name="enabled" column="enabled" type="boolean" />
-
-		<field name="relation" column="relation" type="string" nullable="true" />
+		<field name="username" />
+		<field name="password"  />
+		<field name="salt" column="password_salt" nullable="true" />
+		<field name="email" unique="true" nullable="true" />
+		<field name="locked" type="boolean" />
+		<field name="enabled" type="boolean" />
+		<field name="relation" nullable="true" />
 
 		<many-to-one target-entity="Scope" field="scope">
 			<join-columns>
