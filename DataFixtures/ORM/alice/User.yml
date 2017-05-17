@@ -1,6 +1,10 @@
 Integrated\Bundle\UserBundle\Model\Scope:
   scope1:
-    name:     Public
+    name: Public
+    admin: false
+  scope2:
+    name: Admin
+    admin: true
 
 Integrated\Bundle\UserBundle\Model\Role:
   ROLE_ADMIN:
@@ -24,6 +28,12 @@ Integrated\Bundle\UserBundle\Model\Group:
 Integrated\Bundle\UserBundle\Model\User:
   user1:
     username: admin
+    salt:     <generateSalt()>
+    password: <generatePassword(@self, 'admin')>
+    groups:   [@group1]
+    scope:    @scope2
+  user2:
+    username: public
     salt:     <generateSalt()>
     password: <generatePassword(@self, 'admin')>
     groups:   [@group1]
