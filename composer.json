@@ -28,25 +28,9 @@
     },
     "autoload": {
         "psr-0": {
-            "Integrated\\MongoDB\\Content\\": "src/",
-            "Integrated\\MongoDB\\ContentType\\": "src/",
-            "Integrated\\MongoDB\\Serializer\\": "src/",
-            "Integrated\\MongoDB\\Solr\\": "src/",
+            "Integrated\\MongoDB\\": "src/",
             "Integrated\\Doctrine\\": "src/",
-            "Integrated\\Common\\Block\\": "src/",
-            "Integrated\\Common\\Channel\\": "src/",
-            "Integrated\\Common\\Content\\": "src/",
-            "Integrated\\Common\\Content\\Document\\": "src/",
-            "Integrated\\Common\\ContentType\\": "src/",
-            "Integrated\\Common\\Converter\\": "src/",
-            "Integrated\\Common\\Form\\": "src/",
-            "Integrated\\Common\\Locks\\": "src/",
-            "Integrated\\Common\\Queue\\": "src/",
-            "Integrated\\Common\\Security\\": "src/",
-            "Integrated\\Common\\Solr\\": "src/",
-            "Integrated\\Common\\Storage\\": "src/",
-            "Integrated\\Common\\Validator\\": "src/",
-            "Integrated\\Common\\Workflow\\": "src/"
+            "Integrated\\Common\\": "src/"
         }
     },
     "autoload-dev": {
