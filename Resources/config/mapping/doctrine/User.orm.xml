@@ -14,7 +14,7 @@
 		</id>
 
 		<field name="username" />
-		<field name="password"  />
+		<field name="password" />
 		<field name="salt" column="password_salt" nullable="true" />
 		<field name="email" unique="true" nullable="true" />
 		<field name="locked" type="boolean" />
