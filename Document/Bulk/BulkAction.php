@@ -16,6 +16,7 @@ use Integrated\Bundle\ContentBundle\Bulk\ActionInterface;
 use Integrated\Bundle\ContentBundle\Bulk\BuildState;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Form\Mapping\Annotations as Type;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
@@ -44,6 +45,10 @@ class BulkAction
 
     /**
      * @var ArrayCollection
+     * @Assert\Count(
+     *     min = 1,
+     *     minMessage = "You must select at least one item."
+     * )
      */
     protected $selection;
 
@@ -54,12 +59,11 @@ class BulkAction
 
     /**
      * BulkAction constructor.
-     * @param $selection
      */
-    public function __construct($selection)
+    public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->selection = new ArrayCollection($selection);
+        $this->selection = new ArrayCollection();
         $this->actions = new ArrayCollection();
         $this->state = BuildState::SELECTED;
     }
@@ -158,13 +162,16 @@ class BulkAction
     }
 
     /**
-     * @param array $contents
+     * @param ArrayCollection $contents
      * @return $this
      */
-    public function setSelection(array $contents)
+    public function setSelection(ArrayCollection $contents)
     {
-        $this->selection = new ArrayCollection($contents);
+        if ($this->containsNotAll($contents, Content::class)) {
+            throw new \RuntimeException('Items in ArrayCollection do not all implement ' . Content::class);
+        }
 
+        $this->selection = $contents;
         return $this;
     }
 
@@ -183,11 +190,7 @@ class BulkAction
      */
     public function setActions(ArrayCollection $actions)
     {
-        $notAllActions = $actions->exists(function ($key, $element) {
-            return !$element instanceof ActionInterface;
-        });
-
-        if ($notAllActions) {
+        if ($this->containsNotAll($actions, ActionInterface::class)) {
             throw new \RuntimeException('Items in ArrayCollection do not all implement ' . ActionInterface::class);
         }
 
@@ -221,35 +224,13 @@ class BulkAction
     }
 
     /**
-     * @return $this
+     * @param ArrayCollection $array
+     * @param $class
+     * @return bool
      */
-    public function executeAll()
-    {
-        if ($this->getState() !== BuildState::CONFIRMED) {
-            throw new \RuntimeException("Its seems not all steps have been completed.");
-        }
-
-        foreach ($this->getSelection() as $content) {
-            $this->executeActionsOnContent($content);
-        }
-
-        $this->setState(BuildState::EXECUTED);
-        $this->setExecutedAt(new \DateTime());
-
-        return $this;
-    }
-
-    /**
-     * @param Content $content
-     * @return $this
-     */
-    protected function executeActionsOnContent(Content $content)
-    {
-        foreach ($this->getActions() as $action) {
-            if ($action instanceof ActionInterface) {
-                $action->execute($content);
-            }
-        }
-        return $this;
+    protected function containsNotAll(ArrayCollection $array, $class){
+        return $array->exists(function ($key, $element) use ($class) {
+            return !$element instanceof $class;
+        });
     }
 }

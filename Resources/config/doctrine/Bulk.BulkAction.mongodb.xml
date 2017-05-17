@@ -3,7 +3,7 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <document name="Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction" collection="content">
+    <document name="Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction" collection="bulkaction">
 
         <field fieldName="id" id="true" strategy="UUID"/>
         <field fieldName="state" type="int"/>

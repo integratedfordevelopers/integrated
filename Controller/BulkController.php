@@ -16,6 +16,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
 
 use Integrated\Bundle\ContentBundle\Bulk\BuildState;
+use Integrated\Bundle\ContentBundle\Bulk\BulkExecutor;
 use Integrated\Bundle\ContentBundle\Form\Type\Bulk\ActionsFormType;
 use Integrated\Bundle\ContentBundle\Form\Type\SelectionFormType;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
@@ -50,21 +51,29 @@ class BulkController extends Controller
     protected $actionProvider;
 
     /**
+     * @var BulkExecutor
+     */
+    protected $bulkExecutor;
+
+    /**
      * BulkController constructor.
      * @param DocumentManager $dm
      * @param ContentProvider $contentProvider
      * @param ActionProvider $actionProvider
+     * @param BulkExecutor $bulkExecutor
      * @param ContainerInterface $container
      */
     public function __construct(
         DocumentManager $dm,
         ContentProvider $contentProvider,
         ActionProvider $actionProvider,
+        BulkExecutor $bulkExecutor,
         ContainerInterface $container
     ) {
         $this->dm = $dm;
         $this->contentProvider = $contentProvider;
         $this->actionProvider = $actionProvider;
+        $this->bulkExecutor = $bulkExecutor;
         $this->container = $container;
     }
 
@@ -83,16 +92,20 @@ class BulkController extends Controller
             return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
         }
 
-        $form = $this->createForm(SelectionFormType::class, null, ['content' => array_slice($contents, 0, $limit)]);
+        $bulkAction = $this->dm->getRepository(BulkAction::class)->find($request->get('bulkid'));
+
+        if (!$bulkAction instanceof BulkAction) {
+            $request->query->remove('bulkid');
+            $bulkAction = new BulkAction();
+        }
+
+        $form = $this->createForm(SelectionFormType::class, $bulkAction, ['content' => array_slice($contents, 0, $limit)]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+            $bulkAction = $form->getData();
 
-            if ($bulkAction = $this->dm->getRepository(BulkAction::class)->find($request->get('bulkid'))) {
-                $bulkAction->setSelection($data['selection']);
-            } else {
-                $bulkAction = new BulkAction($data['selection']);
+            if (!$request->query->has('bulkid')) {
                 $this->dm->persist($bulkAction);
                 $request->query->add(['bulkid' => $bulkAction->getId()]);
             }
@@ -176,7 +189,7 @@ class BulkController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $bulkAction->setState(BuildState::CONFIRMED);
-                $bulkAction->executeAll();
+                $this->bulkExecutor->execute($bulkAction);
                 $this->dm->flush();
 
                 $this->addFlash('success', 'It seems all bulk actions were executed successfully! :)');

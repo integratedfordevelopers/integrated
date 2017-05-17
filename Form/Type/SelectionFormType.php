@@ -11,11 +11,13 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
+
+use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
@@ -34,17 +36,14 @@ class SelectionFormType extends AbstractType
             'choice_label' => function ($value, $key, $index) {
                 return $key;
             },
+            'error_bubbling' => true,
             'multiple' => true,
             'expanded' => true,
-            'error_bubbling' => true,
             'data' => $options['content'],
             'required' => true,
-            'constraints' => [
-                new NotBlank([
-                    'message' => 'A selection is required to go further.',
-                ]),
-            ]
         ]);
+
+        $builder->get('selection')->addModelTransformer(new CollectionToArrayTransformer());
     }
 
     /**
@@ -53,6 +52,9 @@ class SelectionFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired('content');
+        $resolver->setDefaults([
+            "data" => BulkAction::class,
+        ]);
     }
 
     /**
