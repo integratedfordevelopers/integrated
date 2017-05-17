@@ -29,7 +29,7 @@
 
 		<many-to-one target-entity="Scope" field="scope">
 			<join-columns>
-				<join-column name="scope" referenced-column-name="id" />
+				<join-column name="scope" referenced-column-name="id" nullable="true" />
 			</join-columns>
 		</many-to-one>
 
