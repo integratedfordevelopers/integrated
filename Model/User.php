@@ -19,363 +19,370 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class User implements UserInterface
 {
-	/**
-	 * @var string
-	 */
-	protected $id;
+    /**
+     * @var string
+     */
+    protected $id;
 
-	/**
-	 * @var string
-	 */
-	protected $username;
+    /**
+     * @var string
+     */
+    protected $username;
 
-	/**
-	 * @var string
-	 */
-	protected $password;
+    /**
+     * @var string
+     */
+    protected $password;
 
-	/**
-	 * @var null | string
-	 */
-	protected $salt = null;
+    /**
+     * @var null | string
+     */
+    protected $salt = null;
 
-	/**
-	 * @var null | string
-	 */
-	protected $email = null;
+    /**
+     * @var null | string
+     */
+    protected $email = null;
 
-	/**
-	 * @var Collection | GroupInterface[]
-	 */
-	protected $groups;
+    /**
+     * @var Collection | GroupInterface[]
+     */
+    protected $groups;
 
-	/**
-	 * @var Collection | RoleInterface[]
-	 */
-	protected $roles = array();
+    /**
+     * @var Collection | RoleInterface[]
+     */
+    protected $roles = array();
 
-	/**
-	 * @var bool
-	 */
-	protected $locked = false;
+    /**
+     * @var bool
+     */
+    protected $locked = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $enabled = true;
+    /**
+     * @var bool
+     */
+    protected $enabled = true;
 
-	/**
-	 * @var string
-	 */
-	protected $relation = null;
+    /**
+     * @var string
+     */
+    protected $relation = null;
 
-	/**
-	 * @var \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
-	 */
-	protected $relation_instance = null;
+    /**
+     * @var Scope
+     */
+    protected $scope;
 
-	public function __construct()
-	{
-		$this->groups = new ArrayCollection();
-		$this->roles = new ArrayCollection();
-	}
+    /**
+     * @var \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
+     */
+    protected $relation_instance = null;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function serialize()
-	{
-		return serialize([
-			$this->id,
-			$this->username,
-			$this->password,
-			$this->salt,
-		]);
-	}
+    public function __construct()
+    {
+        $this->groups = new ArrayCollection();
+        $this->roles = new ArrayCollection();
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function unserialize($serialized)
-	{
-		$data = unserialize($serialized);
+    /**
+     * @inheritdoc
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt,
+        ]);
+    }
 
-		list(
-			$this->id,
-			$this->username,
-			$this->password,
-			$this->salt,
-		) = $data;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function unserialize($serialized)
+    {
+        $data = unserialize($serialized);
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+        list(
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->salt,
+        ) = $data;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setUsername($username)
-	{
-		$this->username = (string) $username;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getUsername()
-	{
-		return $this->username;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function setUsername($username)
+    {
+        $this->username = (string) $username;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setPassword($password)
-	{
-		$this->password = (string) $password;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getPassword()
-	{
-		return $this->password;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function setPassword($password)
+    {
+        $this->password = (string) $password;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setSalt($salt)
-	{
-		$this->salt = $salt !== null ? (string) $salt : null;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getSalt()
-	{
-		return $this->salt;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt !== null ? (string) $salt : null;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setEmail($email)
-	{
-		$this->email = $email !== null ? (string) $email : null;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getEmail()
-	{
-		return $this->email;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email !== null ? (string) $email : null;
+    }
 
-	/**
-	 * @param GroupInterface $group
-	 */
-	public function addGroup(GroupInterface $group)
-	{
-		if (!$this->groups->contains($group)) {
-			$this->groups->add($group);
-		}
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
 
-	/**
-	 * @param GroupInterface $group
-	 */
-	public function removeGroup(GroupInterface $group)
-	{
-		$this->groups->removeElement($group);
-	}
+    /**
+     * @param GroupInterface $group
+     */
+    public function addGroup(GroupInterface $group)
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups->add($group);
+        }
+    }
 
-	/**
-	 * @param GroupInterface $group
-	 * @return bool
-	 */
-	public function hasGroup(GroupInterface $group)
-	{
-		return $this->groups->contains($group);
-	}
+    /**
+     * @param GroupInterface $group
+     */
+    public function removeGroup(GroupInterface $group)
+    {
+        $this->groups->removeElement($group);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getGroups()
-	{
-		return $this->groups->toArray();
-	}
+    /**
+     * @param GroupInterface $group
+     * @return bool
+     */
+    public function hasGroup(GroupInterface $group)
+    {
+        return $this->groups->contains($group);
+    }
 
-	/**
-	 * @param GroupInterface[] $groups
-	 */
-	public function setGroups($groups)
-	{
-		$this->groups = new ArrayCollection();
+    /**
+     * @inheritdoc
+     */
+    public function getGroups()
+    {
+        return $this->groups->toArray();
+    }
 
-		foreach ($groups as $group) {
-			$this->addGroup($group);
-		}
-	}
+    /**
+     * @param GroupInterface[] $groups
+     */
+    public function setGroups($groups)
+    {
+        $this->groups = new ArrayCollection();
 
-	/**
-	 * @param RoleInterface $role
-	 */
-	public function addRole(RoleInterface $role)
-	{
-		if (!$this->roles->contains($role)) {
-			$this->roles->add($role);
-		}
-	}
+        foreach ($groups as $group) {
+            $this->addGroup($group);
+        }
+    }
 
-	/**
-	 * @param RoleInterface $role
-	 */
-	public function removeRole(RoleInterface $role)
-	{
-		$this->roles->removeElement($role);
-	}
+    /**
+     * @param RoleInterface $role
+     */
+    public function addRole(RoleInterface $role)
+    {
+        if (!$this->roles->contains($role)) {
+            $this->roles->add($role);
+        }
+    }
 
-	/**
-	 * @param RoleInterface $role
-	 * @return bool
-	 */
-	public function hasRole(RoleInterface $role)
-	{
-		return $this->roles->contains($role);
-	}
+    /**
+     * @param RoleInterface $role
+     */
+    public function removeRole(RoleInterface $role)
+    {
+        $this->roles->removeElement($role);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getRoles()
-	{
-		$roles = $this->roles->toArray();
+    /**
+     * @param RoleInterface $role
+     * @return bool
+     */
+    public function hasRole(RoleInterface $role)
+    {
+        return $this->roles->contains($role);
+    }
 
-		foreach ($this->getGroups() as $group) {
-			$roles = array_merge($roles, $group->getRoles());
-		}
+    /**
+     * @inheritdoc
+     */
+    public function getRoles()
+    {
+        $roles = $this->roles->toArray();
 
-		return array_unique($roles);
-	}
+        foreach ($this->getGroups() as $group) {
+            $roles = array_merge($roles, $group->getRoles());
+        }
 
-//	/**
-//	 * @param RoleInterface[] $roles
-//	 */
-//	public function setRoles($roles)
-//	{
-//		$this->roles = new ArrayCollection();
-//
-//		foreach ($roles as $role) {
-//			$this->addRole($role);
-//		}
-//	}
+        return array_unique($roles);
+    }
 
-	/**
-	 * @param bool $locked
-	 */
-	public function setLocked($locked = true)
-	{
-		$this->locked = (bool) $locked;
-	}
+    /**
+     * @param bool $locked
+     */
+    public function setLocked($locked = true)
+    {
+        $this->locked = (bool) $locked;
+    }
 
-	/**
-	 * @param bool $enabled
-	 */
-	public function setEnabled($enabled = true)
-	{
-		$this->enabled = (bool) $enabled;
-	}
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled($enabled = true)
+    {
+        $this->enabled = (bool) $enabled;
+    }
 
-	/**
-	 * @param \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation $relation
-	 */
-	public function setRelation($relation = null)
-	{
-		$relation = $relation instanceof \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation ? $relation : null;
+    /**
+     * @param \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation $relation
+     */
+    public function setRelation($relation = null)
+    {
+        $relation = $relation instanceof \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation ? $relation : null;
 
-		$this->relation = $relation ? $relation->getId() : null;
-		$this->relation_instance = $relation;
-	}
+        $this->relation = $relation ? $relation->getId() : null;
+        $this->relation_instance = $relation;
+    }
 
-	/**
-	 * @return \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
-	 */
-	public function getRelation()
-	{
-//		try	{
-//			if ($this->relation_instance instanceof \Doctrine\Common\Persistence\Proxy && !$this->relation_instance->__isInitialized()) {
-//				$this->relation_instance->__load();
-//			}
-//		} catch (\Exception $e) {
-//			$this->relation_instance = null;
-//		}
+    /**
+     * @return \Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation
+     */
+    public function getRelation()
+    {
+        return $this->relation_instance;
+    }
 
-		return $this->relation_instance;
-	}
+    /**
+     * @return ScopeInterface
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function isAccountNonExpired()
-	{
-		return true; // @todo implement
-	}
+    /**
+     * @param ScopeInterface $scope
+     * @return $this
+     */
+    public function setScope(ScopeInterface $scope)
+    {
+        $this->scope = $scope;
+        return $this;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function isAccountNonLocked()
-	{
-		return !$this->locked;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function isAccountNonExpired()
+    {
+        return true; // @todo implement
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function isCredentialsNonExpired()
-	{
-		return true; // @todo implement
-	}
+    /**
+     * @inheritdoc
+     */
+    public function isAccountNonLocked()
+    {
+        return !$this->locked;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function isEnabled()
-	{
-		return $this->enabled;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function isCredentialsNonExpired()
+    {
+        return true; // @todo implement
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function eraseCredentials() { /* do nothing as there are no unsecured credentials, password should be encrypted */ }
+    /**
+     * @inheritdoc
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
 
-	/**
-	 * Get the string representation of the user object.
-	 *
-	 * This can be use full for debugging
-	 *
-	 * @return string
-	 */
-	public function __toString()
-	{
-		return sprintf("ID: %s\nUsername: %s\nEnabled: %s\nLocked: %s\nExpired (account): %s\nExpired (credentials): %s",
-			$this->getId(),
-			$this->getUsername(),
-			$this->isEnabled() ? 'TRUE' : 'FALSE',
-			$this->isAccountNonLocked() ? 'FALSE' : 'TRUE',
-			$this->isAccountNonExpired() ? 'FALSE' : 'TRUE',
-			$this->isCredentialsNonExpired() ? 'FALSE' : 'TRUE'
-		);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function eraseCredentials()
+    {
+        /* do nothing as there are no unsecured credentials, password should be encrypted */
+    }
+
+    /**
+     * Get the string representation of the user object.
+     *
+     * This can be use full for debugging
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf(
+            "ID: %s\nUsername: %s\nEnabled: %s\nLocked: %s\nExpired (account): %s\nExpired (credentials): %s",
+            $this->getId(),
+            $this->getUsername(),
+            $this->isEnabled() ? 'TRUE' : 'FALSE',
+            $this->isAccountNonLocked() ? 'FALSE' : 'TRUE',
+            $this->isAccountNonExpired() ? 'FALSE' : 'TRUE',
+            $this->isCredentialsNonExpired() ? 'FALSE' : 'TRUE'
+        );
+    }
 }

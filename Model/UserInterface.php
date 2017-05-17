@@ -19,38 +19,48 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  */
 interface UserInterface extends AdvancedUserInterface, GroupableInterface, Serializable
 {
-	/**
-	 * @return string
-	 */
-	public function getId();
+    /**
+     * @return string
+     */
+    public function getId();
 
-	/**
-	 * @param string $username
-	 */
-	public function setUsername($username);
+    /**
+     * @param string $username
+     */
+    public function setUsername($username);
 
-	/**
-	 * @param string $password
-	 */
-	public function setPassword($password);
+    /**
+     * @param string $password
+     */
+    public function setPassword($password);
 
-	/**
-	 * @param string $salt
-	 */
-	public function setSalt($salt);
+    /**
+     * @param string $salt
+     */
+    public function setSalt($salt);
 
-	/**
-	 * @param string $email
-	 */
-	public function setEmail($email);
+    /**
+     * @param string $email
+     */
+    public function setEmail($email);
 
-	/**
-	 * @return string
-	 */
-	public function getEmail();
+    /**
+     * @return string
+     */
+    public function getEmail();
 
     /**
      * @param RoleInterface $role
      */
-	public function addRole(RoleInterface $role);
+    public function addRole(RoleInterface $role);
+
+    /**
+     * @param ScopeInterface $scope
+     */
+    public function setScope(ScopeInterface $scope);
+
+    /**
+     * @return ScopeInterface
+     */
+    public function getScope();
 }

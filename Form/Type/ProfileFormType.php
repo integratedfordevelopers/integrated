@@ -16,9 +16,10 @@ use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileExtensionListener
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileOptionalListener;
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfilePasswordListener;
 
+use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-use Integrated\Bundle\UserBundle\Validator\Constraints\UniqueUser;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -109,6 +110,11 @@ class ProfileFormType extends AbstractType
             'expanded' => true
         ]);
 
+        $builder->add('scope', EntityType::class, [
+            'class' => Scope::class,
+            'choice_label' => 'name'
+        ]);
+
         $builder->addEventSubscriber(new UserProfilePasswordListener($this->encoderFactory));
         $builder->addEventSubscriber(new UserProfileExtensionListener('integrated.extension.user'));
 
@@ -170,8 +176,6 @@ class ProfileFormType extends AbstractType
 
         $resolver->setDefault('data_class', $this->getManager()->getClassName());
         $resolver->setDefault('empty_data', $emptyData);
-
-        $resolver->setDefault('constraints', new UniqueUser($this->manager));
         $resolver->setDefault('validation_groups', $validationGroups);
 
         // everything can be left empty if enabled is not checked
@@ -179,7 +183,6 @@ class ProfileFormType extends AbstractType
         $resolver->setDefault('optional', false);
         $resolver->setDefault('attr', array('class' => 'integrated-user-form'));
         $resolver->setAllowedTypes('optional', ['bool']);
-
     }
 
     /**

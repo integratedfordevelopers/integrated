@@ -1,3 +1,7 @@
+Integrated\Bundle\UserBundle\Model\Scope:
+  scope1:
+    name:     Public
+
 Integrated\Bundle\UserBundle\Model\Role:
   ROLE_ADMIN:
     __construct: ['ROLE_ADMIN', 'Administrator']
@@ -23,3 +27,4 @@ Integrated\Bundle\UserBundle\Model\User:
     salt:     <generateSalt()>
     password: <generatePassword(@self, 'admin')>
     groups:   [@group1]
+    scope:    @scope1
