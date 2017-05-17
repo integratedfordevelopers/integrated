@@ -155,8 +155,8 @@ class ScopeController extends Controller
      */
     public function deleteAction(Scope $scope, Request $request)
     {
-        if (!$scope) {
-            return $this->redirect($this->generateUrl('integrated_user_scope_index')); // scope is already gone
+        if (!$scope || $scope->isAdmin()) {
+            return $this->redirect($this->generateUrl('integrated_user_scope_index'));
         }
 
         $form = $this->createForm(

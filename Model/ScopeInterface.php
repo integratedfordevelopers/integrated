@@ -31,4 +31,15 @@ interface ScopeInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * @return boolean
+     */
+    public function isAdmin();
+
+    /**
+     * @param boolean $admin
+     * @return $this
+     */
+    public function setAdmin($admin);
 }

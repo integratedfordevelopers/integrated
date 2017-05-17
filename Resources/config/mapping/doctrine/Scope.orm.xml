@@ -9,7 +9,8 @@
 			<generator strategy="AUTO" />
 		</id>
 
-		<field name="name" column="name" type="string" length="255" unique="true" />
+		<field name="name" unique="true" />
+		<field name="admin" type="boolean" />
 
     </entity>
 

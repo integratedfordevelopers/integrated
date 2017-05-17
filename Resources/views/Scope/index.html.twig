@@ -37,7 +37,9 @@
                             <td>{{ scope.name }}</td>
                             <td>
                                 <a href="{{ path('integrated_user_scope_edit', {'id': scope.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
-                                <a href="{{ path('integrated_user_scope_delete', {'id': scope.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                                {% if not scope.admin %}
+                                    <a href="{{ path('integrated_user_scope_delete', {'id': scope.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                                {% endif %}
                             </td>
                         </tr>
 
