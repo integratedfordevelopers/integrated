@@ -117,7 +117,7 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function findAll()
     {
-        return $this->repository->findAll();
+        return $this->repository->findBy(['admin' => false]);
     }
 
     /**
