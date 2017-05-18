@@ -19,6 +19,7 @@ use Integrated\Bundle\UserBundle\Form\Type\ScopeFormType;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
 
+use Integrated\Bundle\UserBundle\Model\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -182,13 +183,27 @@ class ScopeController extends Controller
                 return $this->redirect($this->generateUrl('integrated_user_scope_index'));
             }
 
+            $hasRelations = false;
+
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
             if ($channels = $dm->getRepository(Channel::class)->findBy(['scope' => (string) $scope->getId()])) {
                 $form->addError(
                     new FormError('This scope is in use by channels.')
                 );
-            } else {
+
+                $hasRelations = true;
+            }
+
+            if ($users = $this->getDoctrine()->getManager()->getRepository(User::class)->findBy(['scope' => $scope])) {
+                $form->addError(
+                    new FormError('This scope is in use by users.')
+                );
+
+                $hasRelations = true;
+            }
+
+            if (false === $hasRelations) {
                 $this->getManager()->remove($scope);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The scope %s is removed', $scope->getName()));
 
