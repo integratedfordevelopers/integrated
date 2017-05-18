@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\Entity;
 use Integrated\Bundle\UserBundle\Form\DataMapper\UserMapper;
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileExtensionListener;
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileOptionalListener;
@@ -112,7 +114,13 @@ class ProfileFormType extends AbstractType
 
         $builder->add('scope', EntityType::class, [
             'class' => Scope::class,
-            'choice_label' => 'name'
+            'choice_label' => 'name',
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('Scope')
+                    ->addSelect('CASE WHEN Scope.name = :name THEN 1 ELSE 0 END AS HIDDEN sortCondition')
+                    ->setParameter('name', 'Integrated')
+                    ->orderBy('sortCondition', 'DESC');
+            }
         ]);
 
         $builder->addEventSubscriber(new UserProfilePasswordListener($this->encoderFactory));
