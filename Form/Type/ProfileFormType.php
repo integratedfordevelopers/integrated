@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Mapping\Entity;
+
 use Integrated\Bundle\UserBundle\Form\DataMapper\UserMapper;
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileExtensionListener;
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileOptionalListener;
