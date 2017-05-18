@@ -50,7 +50,7 @@ class CreateUserCommand extends ContainerAwareCommand
 
             ->addArgument('username', InputArgument::REQUIRED, 'The username')
             ->addArgument('password', InputArgument::REQUIRED, 'The password')
-            ->addArgument('scope', InputArgument::REQUIRED, 'The scope')
+            ->addArgument('scope', InputArgument::OPTIONAL, 'The scope')
             ->addArgument('roles', InputArgument::OPTIONAL, 'Roles')
             ->addArgument('email', InputArgument::OPTIONAL, 'The email address')
 
