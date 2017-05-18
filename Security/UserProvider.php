@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\UserBundle\Security;
 
+use Integrated\Bundle\UserBundle\Model\Scope;
+use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -23,80 +25,96 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class UserProvider implements UserProviderInterface
 {
-	/**
-	 * @var UserManagerInterface
-	 */
-	private $manger;
+    /**
+     * @var UserManagerInterface
+     */
+    private $manager;
 
-	/**
-	 * @param UserManagerInterface $manager
-	 */
-	public function __construct(UserManagerInterface $manager)
-	{
-		$this->manger = $manager;
+    /**
+     * @param UserManagerInterface $manager
+     */
+    public function __construct(UserManagerInterface $manager)
+    {
+        $this->manager = $manager;
 
-		if (!is_subclass_of($this->manger->getClassName(), 'Integrated\\Bundle\\UserBundle\\Model\\UserInterface')) {
-			throw new UnsupportedUserException(sprintf('The user class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\UserInterface', $this->manger->getClassName()));
-		}
-	}
+        if (!is_subclass_of($this->manager->getClassName(), 'Integrated\\Bundle\\UserBundle\\Model\\UserInterface')) {
+            throw new UnsupportedUserException(
+                sprintf(
+                    'The user class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\UserInterface',
+                    $this->manager->getClassName()
+                )
+            );
+        }
+    }
 
-	/**
-	 * @return UserManagerInterface
-	 */
-	public function getManager()
-	{
-		return $this->manger;
-	}
+    /**
+     * @return UserManagerInterface
+     */
+    public function getManager()
+    {
+        return $this->manager;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function loadUserByUsername($username)
-	{
-		$user = $this->manger->findByUsername($username);
+    /**
+     * {@inheritdoc}
+     */
+    public function loadUserByUsername($username)
+    {
+        /** @var User $user */
+        $user = $this->manager->findByUsernameAndScope($username, new Scope());
 
-		if (!$user) {
-			$exception = new UsernameNotFoundException(sprintf('No user with the username "%s" exits', $username));
-			$exception->setUsername($username);
+        if (!$user) {
+            $exception = new UsernameNotFoundException(sprintf('No user with the username "%s" exists', $username));
+            $exception->setUsername($username);
 
-			throw $exception;
-		}
+            throw $exception;
+        }
 
-		return $user;
-	}
+        return $user;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function refreshUser(UserInterface $user)
-	{
-		if (!$this->supportsClass($user)) {
-			throw new UnsupportedUserException(sprintf('The user class "%s" is not a instance or subclass of %s', get_class($user), $this->manger->getClassName()));
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function refreshUser(UserInterface $user)
+    {
+        if (!$this->supportsClass($user)) {
+            throw new UnsupportedUserException(
+                sprintf(
+                    'The user class "%s" is not a instance or subclass of %s',
+                    get_class($user),
+                    $this->manager->getClassName()
+                )
+            );
+        }
 
-		/** @var \Integrated\Bundle\UserBundle\Model\UserInterface $user */
+        /** @var \Integrated\Bundle\UserBundle\Model\UserInterface $user */
+        $loaded = $this->manager->find($user->getId());
 
-		$loaded = $this->manger->find($user->getId());
+        if (!$loaded) {
+            $exception = new UsernameNotFoundException(
+                sprintf(
+                    'The user with id "%s" could not be refreshed',
+                    $user->getId()
+                )
+            );
+            $exception->setUsername($user->getUsername());
 
-		if (!$loaded) {
-			$exception = new UsernameNotFoundException(sprintf('The user with id "%s" could not be refreshed', $user->getId()));
-			$exception->setUsername($user->getUsername());
+            throw $exception;
+        }
 
-			throw $exception;
-		}
+        return $loaded;
+    }
 
-		return $loaded;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsClass($class)
+    {
+        if (is_object($class)) {
+            $class = get_class($class);
+        }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function supportsClass($class)
-	{
-		if (is_object($class)) {
-			$class = get_class($class);
-		}
-
-		return $class === $this->manger->getClassName() || is_subclass_of($class, $this->manger->getClassName());
-	}
+        return $class === $this->manager->getClassName() || is_subclass_of($class, $this->manager->getClassName());
+    }
 }
