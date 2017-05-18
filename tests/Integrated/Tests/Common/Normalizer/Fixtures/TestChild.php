@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\Common\Normalizer\Fixutures;
+namespace Integrated\Tests\Common\Normalizer\Fixtures;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

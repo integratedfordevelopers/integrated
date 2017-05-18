@@ -21,6 +21,9 @@ class ProcessorRegistryBuilder
      */
     protected $processors = [];
 
+    /**
+     * @var bool[][]
+     */
     protected $processorIndex = [];
 
     /**

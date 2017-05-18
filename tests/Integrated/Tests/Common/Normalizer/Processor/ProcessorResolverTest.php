@@ -17,9 +17,9 @@ use Integrated\Common\Normalizer\Processor\RegistryInterface;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessorFactoryInterface;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessorInterface;
 use Integrated\Common\Normalizer\Processor\ResolverInterface;
-use Integrated\Tests\Common\Normalizer\Fixutures\TestChild;
-use Integrated\Tests\Common\Normalizer\Fixutures\TestClass;
-use Integrated\Tests\Common\Normalizer\Fixutures\TestParent;
+use Integrated\Tests\Common\Normalizer\Fixtures\TestChild;
+use Integrated\Tests\Common\Normalizer\Fixtures\TestClass;
+use Integrated\Tests\Common\Normalizer\Fixtures\TestParent;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

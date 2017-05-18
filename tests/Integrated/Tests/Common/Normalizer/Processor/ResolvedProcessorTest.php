@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Integrated\Tests\Common\Normalizer\Processor;
 
 use Exception;

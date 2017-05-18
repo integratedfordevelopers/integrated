@@ -20,7 +20,6 @@ use stdClass as Object;
  */
 class JsonLBNullNormalizerTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testInterface()
     {
         self::assertInstanceOf(NormalizerInterface::class, $this->getInstance());

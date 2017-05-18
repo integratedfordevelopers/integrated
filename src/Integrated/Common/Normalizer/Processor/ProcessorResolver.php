@@ -77,6 +77,10 @@ class ProcessorResolver implements ResolverInterface
         return $this->setInstance($object, $this->factory->createProcessor($processors));
     }
 
+    /**
+     * @param ReflectionClass $reflection
+     * @return array
+     */
     protected function resolve(ReflectionClass $reflection)
     {
         $processors = [];

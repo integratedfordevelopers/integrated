@@ -42,14 +42,14 @@ class JsonLDNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider createNormalize
      */
-    public function testNormalize($object, array $options, array $result, $exspected)
+    public function testNormalize($object, array $options, array $result, $expected)
     {
         $this->normalizer->expects($this->once())
             ->method('normalize')
             ->with($this->identicalTo($object), $options)
             ->willReturn($result);
 
-        self::assertEquals($exspected, $this->getInstance()->normalize($object, 'json-ld', $options));
+        self::assertEquals($expected, $this->getInstance()->normalize($object, 'json-ld', $options));
     }
 
     public function createNormalize()
