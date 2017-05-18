@@ -25,7 +25,7 @@
                 <value>username</value>
                 <value>scope</value>
             </option>
-            <option name="message">This username is already in use</option>
+            <option name="message">This username is already in use in this scope</option>
         </constraint>
 
         <property name="username">
