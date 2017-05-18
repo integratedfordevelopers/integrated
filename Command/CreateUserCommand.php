@@ -22,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
+use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
 /**
@@ -49,11 +50,9 @@ class CreateUserCommand extends ContainerAwareCommand
 
             ->addArgument('username', InputArgument::REQUIRED, 'The username')
             ->addArgument('password', InputArgument::REQUIRED, 'The password')
+            ->addArgument('scope', InputArgument::OPTIONAL, 'The scope')
             ->addArgument('roles', InputArgument::OPTIONAL, 'Roles')
             ->addArgument('email', InputArgument::OPTIONAL, 'The email address')
-
-//			->addOption('disabled', 'd')
-//			->addOption('locked', 'l')
 
             ->setDescription('Create a user')
             ->setHelp('
@@ -68,27 +67,21 @@ The <info>%command.name%</info> command creates a new user
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $username = $input->getArgument('username'); // @todo validate input
-        $password = $input->getArgument('password'); // @todo validate input
+        $username = $input->getArgument('username');
+        $password = $input->getArgument('password');
 
         $email = null;
 
         if ($input->hasArgument('email')) {
-            $email = $input->getArgument('email'); // @todo validate input
+            $email = $input->getArgument('email');
         }
 
         $roles = null;
         if ($input->hasArgument('roles')) {
-            $roles = explode(',', $input->getArgument('roles'));
+            $roles = array_filter(explode(',', $input->getArgument('roles')));
         }
 
         $manager = $this->getManager();
-
-        if ($manager->findByUsername($username)) {
-            $output->writeln(sprintf('Aborting: user with username "%s" already exist', $username));
-
-            return 1;
-        }
 
         $user = $manager->create();
 
@@ -98,6 +91,32 @@ The <info>%command.name%</info> command creates a new user
         $user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
         $user->setSalt($salt);
         $user->setEmail($email);
+
+        $scopeName = 'Integrated';
+        if ($input->hasArgument('scope')) {
+            $scopeName = $input->getArgument('scope');
+        }
+
+        $scopeManager = $this->getContainer()->get('integrated_user.scope.manager');
+        if (!$scope = $scopeManager->findByName($scopeName)) {
+            $scope = new Scope();
+            $scope
+                ->setName($scopeName)
+                ->setAdmin(true)
+            ;
+
+            $scopeManager->persist($scope, true);
+        }
+
+        $user->setScope($scope);
+
+        $validator = $this->getContainer()->get('validator');
+        $errors = $validator->validate($user);
+
+        if (count($errors) > 0) {
+            $output->writeln(sprintf('Aborting: user model not valid: %s', (string) $errors));
+            return 1;
+        }
 
         if ($roles) {
             $roleManager = $this->getContainer()->get('integrated_user.role.manager');
@@ -116,7 +135,6 @@ The <info>%command.name%</info> command creates a new user
                 }
             }
         }
-
 
         try {
             $manager->persist($user);

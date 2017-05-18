@@ -309,7 +309,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Scope
+     * @return ScopeInterface
      */
     public function getScope()
     {
@@ -317,10 +317,10 @@ class User implements UserInterface
     }
 
     /**
-     * @param Scope $scope
+     * @param ScopeInterface $scope
      * @return $this
      */
-    public function setScope(Scope $scope)
+    public function setScope(ScopeInterface $scope)
     {
         $this->scope = $scope;
         return $this;

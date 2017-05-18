@@ -27,6 +27,11 @@ class Scope implements ScopeInterface
     protected $name;
 
     /**
+     * @var bool
+     */
+    protected $admin = false;
+
+    /**
      * @return string
      */
     public function getId()
@@ -49,5 +54,22 @@ class Scope implements ScopeInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAdmin()
+    {
+        return $this->admin;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAdmin($admin)
+    {
+        $this->admin = $admin;
+        return $this;
     }
 }
