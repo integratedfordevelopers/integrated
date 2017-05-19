@@ -128,6 +128,10 @@ class BlockController extends Controller
         if ($form->isValid()) {
             $this->getDocumentManager()->flush();
 
+            if ('iframe.html' === $request->getRequestFormat()) {
+                return $this->render('IntegratedBlockBundle:Block:saved.iframe.html.twig', ['id' => $block->getId()]);
+            }
+
             $this->get('braincrafted_bootstrap.flash')->success('Block updated');
 
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
@@ -221,7 +225,6 @@ class BlockController extends Controller
             MetadataType::class,
             $block,
             [
-                'action' => $this->generateUrl('integrated_block_block_edit', ['id' => $block->getId()]),
                 'method' => 'PUT',
                 'data_class' => get_class($block),
             ]
