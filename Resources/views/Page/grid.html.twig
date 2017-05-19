@@ -2,24 +2,28 @@
 {% if grid.items is defined %}
     {% for item in grid.items %}
         {% if item.block %}
-            {% if item.attributes|length %}
-                <div{% for key, value in item.attributes %} {{ key }}="{{ value }}"{% endfor %}>
+            {% if edit|default %}<div class="integrated-website-sortable" data-block-type="block" data-id="{{ item.block.id }}">{% endif %}
+                {% if item.attributes|length %}
+                    <div{% for key, value in item.attributes %} {{ key }}="{{ value }}"{% endfor %}>
+                        {{ integrated_block(item.block) }}
+                    </div>
+                {% else %}
                     {{ integrated_block(item.block) }}
-                </div>
-            {% else %}
-                {{ integrated_block(item.block) }}
-            {% endif %}
+                {% endif %}
+            {% if edit|default %}</div>{% endif %}
         {% endif %}
 
         {% if item.row %}
-            <div class="row">
+            <div class="row{% if edit|default %} integrated-website-sortable" data-block-type="row{% endif %}"
+                {%- for key, value in item.attributes %} {{ key }}="{{ value }}"{% endfor %}>
                 {% for column in item.row.columns %}
-                    <div class="col-sm-{{ column.size }}">
+                    <div class="col-sm-{{ column.size }}{% if edit|default %} integrated-website-col integrated-website-droppable"
+                         data-block-type="column" data-size="{{ column.size }}{% endif %}">
                         {{ include('IntegratedWebsiteBundle:Page:grid.html.twig', { 'grid': column }) }}
                     </div>
                 {% endfor %}
             </div>
-        {% endif %}
+    {% endif %}
     {% endfor %}
 {% endif %}
 {% endspaceless %}

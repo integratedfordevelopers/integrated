@@ -11,16 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
-use Symfony\Component\HttpFoundation\Request;
-
-use Doctrine\ODM\MongoDB\DocumentManager;
-
-use Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider;
-use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
+use Integrated\Bundle\AssetBundle\Manager\AssetManager;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
-use Integrated\Bundle\PageBundle\Grid\GridFactory;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
+
+use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -33,46 +28,25 @@ class PageController
     protected $templating;
 
     /**
-     * @var DocumentManager
+     * @var ThemeManager
      */
-    protected $dm;
+    protected $themeManager;
 
     /**
-     * @var ChannelContextInterface
+     * @var AssetManager
      */
-    protected $channelContext;
-
-    /**
-     * @var DatabaseMenuProvider
-     */
-    protected $menuProvider;
-
-    /**
-     * @var DatabaseMenuFactory
-     */
-    protected $menuFactory;
-
-    /**
-     * @var GridFactory
-     */
-    protected $gridFactory;
+    protected $javascrips;
 
     /**
      * @param TwigEngine $templating
-     * @param DocumentManager $dm
-     * @param ChannelContextInterface $channelContext
-     * @param DatabaseMenuProvider $menuProvider
-     * @param DatabaseMenuFactory $menuFactory
-     * @param GridFactory $gridFactory
+     * @param ThemeManager $themeManager
+     * @param AssetManager $javascrips
      */
-    public function __construct(TwigEngine $templating, DocumentManager $dm, ChannelContextInterface $channelContext, DatabaseMenuProvider $menuProvider, DatabaseMenuFactory $menuFactory, GridFactory $gridFactory)
+    public function __construct(TwigEngine $templating, ThemeManager $themeManager, AssetManager $javascrips)
     {
         $this->templating = $templating;
-        $this->dm = $dm;
-        $this->channelContext = $channelContext;
-        $this->menuProvider = $menuProvider;
-        $this->menuFactory = $menuFactory;
-        $this->gridFactory = $gridFactory;
+        $this->themeManager = $themeManager;
+        $this->javascrips = $javascrips;
     }
 
     /**
@@ -81,7 +55,7 @@ class PageController
      */
     public function showAction(Page $page)
     {
-        return $this->templating->renderResponse($this->locateTemplate($page->getLayout()), [
+        return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
             'page' => $page,
             'integrated_block_edit' => false,
             'integrated_menu_edit' => false,
@@ -89,65 +63,22 @@ class PageController
     }
 
     /**
-     * @param Request $request
      * @param Page $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Page $page)
+    public function editAction(Page $page)
     {
         // @todo security check (INTEGRATED-383)
 
-        if ($request->isMethod('POST')) {
-            $data = (array) json_decode($request->getContent(), true);
+        $this->javascrips->add('/bundles/integratedwebsite/js/page.js');
+        $this->javascrips->add('/bundles/integratedwebsite/js/menu.js');
+        $this->javascrips->add('/bundles/integratedwebsite/js/jquery-sortable.js');
+        $this->javascrips->add('/bundles/integratedwebsite/js/grid.js');
 
-            if (isset($data['menus'])) {
-                $this->handleMenuData((array) $data['menus']);
-            }
-
-            if (isset($data['grids'])) {
-                $this->handleGridData((array) $data['grids']);
-            }
-
-            $this->dm->flush();
-
-            // @todo response 201
-        }
-
-        return $this->templating->renderResponse($this->locateTemplate($page->getLayout()), [
+        return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
             'page' => $page,
             'integrated_block_edit' => true,
             'integrated_menu_edit' => true,
         ]);
-    }
-
-    /**
-     * @param array $data
-     */
-    protected function handleMenuData(array $data = [])
-    {
-        foreach ($data as $array) {
-            if ($menu = $this->menuFactory->fromArray((array) $array)) {
-                if ($menu2 = $this->menuProvider->get($menu->getName())) {
-                    $menu2->setChildren($menu->getChildren());
-
-                } else {
-                    $menu->setChannel($this->channelContext->getChannel());
-
-                    $this->dm->persist($menu);
-                }
-            }
-        }
-    }
-
-    /**
-     * @param array $data
-     */
-    protected function handleGridData(array $data = [])
-    {
-        foreach ($data as $array) {
-            if ($grid = $this->gridFactory->fromArray((array) $array)) {
-
-            }
-        }
     }
 }

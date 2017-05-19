@@ -39,20 +39,13 @@
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
 {% if integrated_block_edit|default or integrated_menu_edit|default %}
-    {% block javascripts %}
-        {% javascripts output='js/scripts.js'
-            '@IntegratedWebsiteBundle/Resources/public/js/page.js'
-            '@IntegratedWebsiteBundle/Resources/public/js/menu.js'
-            '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
-            <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-
-        {{ integrated_javascripts() }}
-    {% endblock %}
-
     {{ include('@IntegratedWebsite/handlebars/grid.html.twig') }}
     {{ include('@IntegratedWebsite/handlebars/menu.html.twig') }}
 {% endif %}
+
+{% block javascripts %}
+    {{ integrated_javascripts() }}
+{% endblock %}
 
 </body>
 </html>

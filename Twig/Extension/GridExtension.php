@@ -67,7 +67,7 @@ class GridExtension extends \Twig_Extension
         $html = '';
 
         if ($edit) {
-            $html .= '<div class="integrated-website-grid">';
+            $html .= '<div class="integrated-website-grid integrated-website-droppable" data-id="' . $id . '">';
         }
 
         if ($page instanceof Page) {
