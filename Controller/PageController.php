@@ -35,7 +35,7 @@ class PageController
     /**
      * @var AssetManager
      */
-    protected $javascrips;
+    protected $javascripts;
 
     /**
      * @param TwigEngine $templating
@@ -46,7 +46,7 @@ class PageController
     {
         $this->templating = $templating;
         $this->themeManager = $themeManager;
-        $this->javascrips = $javascrips;
+        $this->javascripts = $javascrips;
     }
 
     /**
@@ -70,10 +70,10 @@ class PageController
     {
         // @todo security check (INTEGRATED-383)
 
-        $this->javascrips->add('/bundles/integratedwebsite/js/page.js');
-        $this->javascrips->add('/bundles/integratedwebsite/js/menu.js');
-        $this->javascrips->add('/bundles/integratedwebsite/js/jquery-sortable.js');
-        $this->javascrips->add('/bundles/integratedwebsite/js/grid.js');
+        $this->javascripts->add('/bundles/integratedwebsite/js/page.js');
+        $this->javascripts->add('/bundles/integratedwebsite/js/menu.js');
+        $this->javascripts->add('/bundles/integratedwebsite/js/jquery-sortable.js');
+        $this->javascripts->add('/bundles/integratedwebsite/js/grid.js');
 
         return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
             'page' => $page,

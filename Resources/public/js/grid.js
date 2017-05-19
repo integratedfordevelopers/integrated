@@ -46,7 +46,6 @@
         $before.before($block);
 
         refreshBlock($block);
-
     };
 
     /**
@@ -56,7 +55,6 @@
         $.ajax({
             url: Routing.generate('integrated_block_block_show', { 'id': $block.data('id'), '_format': 'json' }),
             dataType: 'json',
-            async: false,
             success: function(data) {
                 $block.html(data.html);
                 $block.prepend(createBlockButtons());
