@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\JsonLD\Processor;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-
 use Integrated\Bundle\ContentBundle\JsonLD\UrlGenerator;
 use Integrated\Common\Normalizer\ContainerInterface;
 use Integrated\Common\Normalizer\Processor\Context;
