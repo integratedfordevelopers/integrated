@@ -74,7 +74,8 @@ abstract class Block implements BlockInterface
      * @Type\Field(
      *      type="Symfony\Component\Form\Extension\Core\Type\CheckboxType",
      *      options={
-     *          "required"=false
+     *          "required"=false,
+     *          "attr"={"align_with_widget"=true}
      *      }
      * )
      */
