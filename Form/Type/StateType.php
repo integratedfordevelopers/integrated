@@ -45,15 +45,30 @@ class StateType extends AbstractType
             ]
         ]);
 
-        $builder->add('publishable', Type\CheckboxType::class, ['label' => 'Publish', 'required' => false]);
-
-        $builder->add('default', Type\CheckboxType::class, [
-            'required' => false,
-            'mapped' => false,
-            'attr' => [
-                'class' => 'state_default_input_field'
+        $builder->add(
+            'publishable',
+            Type\CheckboxType::class,
+            [
+                'label' => 'Publish',
+                'required' => false,
+                'attr' => [
+                    'align_with_widget' => true
+                ]
             ]
-        ]);
+        );
+
+        $builder->add(
+            'default',
+            Type\CheckboxType::class,
+            [
+                'required' => false,
+                'mapped' => false,
+                'attr' => [
+                    'class' => 'state_default_input_field',
+                    'align_with_widget' => true
+                ]
+            ]
+        );
 
         $choiceFlags = [
             'Optional' => StateVisibleConfig::OPTIONAL,
