@@ -74,7 +74,16 @@ class LoginFormType extends AbstractType
         $builder->add('_password', Type\PasswordType::class);
 
         if ($options['auth_remember']) {
-            $builder->add('_remember_me', Type\CheckboxType::class, ['required' => false]);
+            $builder->add(
+                '_remember_me',
+                Type\CheckboxType::class,
+                [
+                    'required' => false,
+                    'attr' => [
+                        'align_with_widget' => true
+                    ]
+                ]
+            );
         }
 
         if ($options['auth_target_path']) {

@@ -71,12 +71,19 @@ class ProfileFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['optional']) {
-            $builder->add('enabled', Type\CheckboxType::class, [
-                'mapped' => false,
-                'required' => false,
-                'label' => 'Enable login',
-                'attr' => ['class' => 'login-visible-control'],
-            ]);
+            $builder->add(
+                'enabled',
+                Type\CheckboxType::class,
+                [
+                    'mapped' => false,
+                    'required' => false,
+                    'label' => 'Enable login',
+                    'attr' => [
+                        'class' => 'login-visible-control',
+                        'align_with_widget' => true
+                    ],
+                ]
+            );
 
             // this has to be a event listener as data will not be mapped to this
             // field, even if mapped is set to true, when the field value is false.
@@ -101,10 +108,17 @@ class ProfileFormType extends AbstractType
         ]);
 
         if (!$options['optional']) {
-            $builder->add('enabled', Type\CheckboxType::class, [
-                'required' => false,
-                'label' => 'Enable login'
-            ]);
+            $builder->add(
+                'enabled',
+                Type\CheckboxType::class,
+                [
+                    'required' => false,
+                    'label' => 'Enable login',
+                    'attr' => [
+                        'align_with_widget' => true
+                    ]
+                ]
+            );
         }
 
         $builder->add('groups', GroupType::class, [
