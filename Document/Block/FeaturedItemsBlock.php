@@ -28,9 +28,9 @@ class FeaturedItemsBlock extends Block
     /**
      * @var ArrayCollection
      * @Type\Field(
-     *      type="integrated_sortable_collection",
+     *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={
-     *          "type"="integrated_embedded_document",
+     *          "type"="Integrated\Bundle\FormTypeBundle\Form\Type\EmbeddedDocumentType",
      *          "options"={
      *              "data_class"="Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem"
      *          },
