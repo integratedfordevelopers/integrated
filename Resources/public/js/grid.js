@@ -278,7 +278,7 @@
     /**
      * Make grid sortable and make sure serialized data is returned in correct way
      */
-    $('.integrated-website-grid').jsortable({
+    $('.integrated-website-grid').integratedSortable({
         containerSelector: '.integrated-website-droppable',
         itemSelector: '.integrated-website-sortable',
         placeholder: '<div class="integrated-website-item-placeholder" style="height: 50px;"></div>',
