@@ -3,20 +3,9 @@
 {% block style %}
     {{ parent() }}
 
-    <style type="text/css">
-        #wrapper-holder {
-            padding-bottom: 85px;
-        }
-
-        #wrapper-holder > .container {
-            width: auto;
-            background: #fff;
-        }
-
-        #wrapper-holder > .container .section-radius {
-            box-shadow: none;
-        }
-    </style>
+    {% stylesheets "@IntegratedBlockBundle/Resources/public/css/iframe.css" %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
 {% endblock %}
 
 {% block header %}{% endblock %}
