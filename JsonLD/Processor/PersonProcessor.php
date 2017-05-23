@@ -31,6 +31,7 @@ class PersonProcessor implements ProcessorInterface
         }
 
         $data->set('@type', 'Person');
+        $data->set('name', implode(' ', array_filter([$object->getFirstName(), $object->getLastName()])));
         $data->set('givenName', $object->getFirstName());
         $data->set('familyName', $object->getLastName());
         $data->set('additionalName', $object->getPrefix());

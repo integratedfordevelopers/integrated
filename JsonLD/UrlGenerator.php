@@ -27,7 +27,7 @@ class UrlGenerator
     public function generateUrl($content)
     {
         if ($content instanceof StorageInterface) {
-            return $content->getPathname();
+            return '/storage/' . $content->getIdentifier();
         }
 
         if ($content instanceof Image) {
@@ -61,13 +61,13 @@ class UrlGenerator
 
         if ($domain) {
             return sprintf(
-                'https://%s%s',
+                'https://%s/storage/%s',
                 $domain,
-                $content->getFile()->getPathname()
+                $content->getFile()->getIdentifier()
             );
         }
 
-        return null;
+        return '/storage/' . $content->getFile()->getIdentifier();
     }
 
     /**
