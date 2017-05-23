@@ -41,6 +41,12 @@ class FeaturedItemsItem
 
     /**
      * @var string
+     * @Type\Field
+     */
+    protected $linkText;
+
+    /**
+     * @var string
      * @Type\Field(
      *      type="choice",
      *      options={
@@ -57,7 +63,7 @@ class FeaturedItemsItem
 
     /**
      * @var string
-     * @Type\Field(type="textarea")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\EditorType",options={"mode"="web"})
      */
     protected $text;
 
@@ -130,6 +136,24 @@ class FeaturedItemsItem
     public function setLink($link)
     {
         $this->link = $link;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLinkText()
+    {
+        return $this->linkText;
+    }
+
+    /**
+     * @param string $linkText
+     * @return $this
+     */
+    public function setLinkText($linkText)
+    {
+        $this->linkText = $linkText;
         return $this;
     }
 
