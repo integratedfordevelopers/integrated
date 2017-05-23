@@ -28,7 +28,7 @@
     };
 
     var saveGrids = function (pageId) {
-        var grids = $('.integrated-website-grid').jsortable('serialize').get();
+        var grids = $('.integrated-website-grid').integratedSortable('serialize').get();
 
         $.ajax({
             type: 'POST',
