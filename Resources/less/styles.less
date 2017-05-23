@@ -8,21 +8,30 @@
   height: @integratedWebsiteBodyMarginTop;
 }
 
-.integrated-website-section {
-  position: relative;
+.integrated-website-grid {
+  min-height: 100px;
 
-  .integrated-website-sortable {
-    min-height: 100px;
-
-    .integrated-website-item-placeholder {
-      background: #f5f5f5;
-      margin-bottom: 20px;
-    }
+  .row, [data-block-type="block"] {
+    position: relative;
   }
 
-  .integrated-website-row .integrated-website-section {
+  .dragged {
+    position: absolute;
+  }
+
+  .integrated-website-item-placeholder {
+    background: #f5f5f5;
+    margin-bottom: 20px;
+  }
+
+  [data-block-type="row"], [data-block-type="column"] {
     border: 1px #bbb dotted;
     margin: -1px -1px 20px -1px;
+    min-height: 30px;
+  }
+
+  .integrated-website-col {
+    min-height: 100px;
   }
 
   .integrated-website-helper-icon {
@@ -37,9 +46,9 @@
     z-index: 1;
   }
 
-  [data-action="integrated-website-cols-config"] {
+  .row-buttons {
     position: absolute;
-    margin-left: -8px;
+    right: -28px;
   }
 }
 

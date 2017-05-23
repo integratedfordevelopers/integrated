@@ -11,88 +11,74 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
+use Integrated\Bundle\AssetBundle\Manager\AssetManager;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
-use Integrated\Bundle\WebsiteBundle\Form\Type\PageType;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class PageController extends Controller
+class PageController
 {
+    /**
+     * @var TwigEngine
+     */
+    protected $templating;
+
+    /**
+     * @var ThemeManager
+     */
+    protected $themeManager;
+
+    /**
+     * @var AssetManager
+     */
+    protected $javascripts;
+
+    /**
+     * @param TwigEngine $templating
+     * @param ThemeManager $themeManager
+     * @param AssetManager $javascrips
+     */
+    public function __construct(TwigEngine $templating, ThemeManager $themeManager, AssetManager $javascrips)
+    {
+        $this->templating = $templating;
+        $this->themeManager = $themeManager;
+        $this->javascripts = $javascrips;
+    }
+
     /**
      * @param Page $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Page $page)
     {
-        return $this->render($this->locateTemplate($page->getLayout()), [
+        return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
             'page' => $page,
-            'edit' => false,
+            'integrated_block_edit' => false,
+            'integrated_menu_edit' => false,
         ]);
     }
 
     /**
-     * @param Request $request
      * @param Page $page
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editAction(Request $request, Page $page)
+    public function editAction(Page $page)
     {
         // @todo security check (INTEGRATED-383)
-        // @todo use json (INTEGRATED-515)
 
-        $form = $this->createEditForm($page);
-        $form->handleRequest($request);
+        $this->javascripts->add('/bundles/integratedwebsite/js/page.js');
+        $this->javascripts->add('/bundles/integratedwebsite/js/menu.js');
+        $this->javascripts->add('/bundles/integratedwebsite/components/integrated.jquery-sortable/source/js/jquery-sortable-min.js');
+        $this->javascripts->add('/bundles/integratedwebsite/js/grid.js');
 
-        if ($form->isValid()) {
-            $this->getDocumentManager()->flush();
-
-            return $this->redirect($this->generateUrl('integrated_website_page_' . $page->getId()));
-        }
-
-        $this->get('integrated_asset.manager.javascript_manager')
-            ->add('bundles/integratedcontent/js/handlebars.helpers.js');
-
-        return $this->render($this->locateTemplate($page->getLayout()), [
+        return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
             'page' => $page,
-            'form' => $form->createView(),
-            'edit' => true,
+            'integrated_block_edit' => true,
+            'integrated_menu_edit' => true,
         ]);
-    }
-
-    /**
-     * @param string $view
-     * @return string
-     */
-    protected function locateTemplate($view)
-    {
-        return $this->get('integrated_theme.templating.theme_manager')->locateTemplate($view);
-    }
-
-    /**
-     * @param Page $page
-     * @return \Symfony\Component\Form\Form
-     */
-    protected function createEditForm(Page $page)
-    {
-        return $this->createForm(
-            PageType::class,
-            $page,
-            [
-                'action' => $this->generateUrl('integrated_website_page_edit', ['id' => $page->getId()]),
-                'method' => 'POST',
-            ]
-        );
-    }
-
-    /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->get('doctrine_mongodb')->getManager();
     }
 }

@@ -1,0 +1,7 @@
+{% spaceless %}
+{% set data = {
+    'html': include('@IntegratedWebsite/Page/grid.html.twig')|trim,
+} %}
+
+{{ data|json_encode|raw }}
+{% endspaceless %}

@@ -11,13 +11,10 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
-use Integrated\Bundle\WebsiteBundle\Form\Type\PageType;
-
-use Symfony\Bridge\Twig\Form\TwigRendererInterface;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Form\FormView;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -25,23 +22,18 @@ use Symfony\Component\Form\FormView;
 class GridExtension extends \Twig_Extension
 {
     /**
-     * @var TwigRendererInterface
+     * @var OptionsResolver
      */
-    private $renderer;
+    protected $resolver;
 
     /**
-     * @var FormFactory
      */
-    private $form;
-
-    /**
-     * @param TwigRendererInterface $renderer
-     * @param FormFactory $form
-     */
-    public function __construct(TwigRendererInterface $renderer, FormFactory $form)
+    public function __construct()
     {
-        $this->renderer = $renderer;
-        $this->form = $form;
+        $this->resolver = new OptionsResolver();
+        $this->resolver->setDefaults([
+            'template' => 'IntegratedWebsiteBundle:Page:grid.html.twig',
+        ]);
     }
 
     /**
@@ -62,46 +54,41 @@ class GridExtension extends \Twig_Extension
      * @param \Twig_Environment $environment
      * @param array $context
      * @param string $id
-     * @param string $template
+     * @param array $options
      * @return string
      */
-    public function renderGrid(
-        \Twig_Environment $environment,
-        $context,
-        $id,
-        $template = 'IntegratedWebsiteBundle:Page:grid.html.twig'
-    ) {
-        if (isset($context['form']) && ($form = $context['form']) instanceof FormView) {
-            /** @var FormView $form */
+    public function renderGrid(\Twig_Environment $environment, $context, $id, array $options = [])
+    {
+        $options = $this->resolver->resolve($options);
 
-            foreach ($form->offsetGet('grids') as $grid) {
-                if ($grid->vars['value'] instanceof Grid && $grid->vars['value']->getId() == $id) {
-                    return $this->renderer->searchAndRenderBlock($grid, 'row');
-                }
-            }
+        $edit = isset($context['integrated_block_edit']) && true === $context['integrated_block_edit'];
+        $page = isset($context['page']) ? $context['page'] : null;
 
-            if (isset($form->vars['value']) && ($page = $form->vars['value']) instanceof Page) {
-                /** @var Page $page */
+        $html = '';
 
-                $grid = new Grid();
-                $grid->setId($id);
-
-                $page->addGrid($grid);
-
-                $form = $this->form->create(PageType::class, $page)->createView();
-
-                // Render form for the newly added grid
-                return $this->renderer->searchAndRenderBlock(
-                    $form->offsetGet('grids')->offsetGet($page->indexOf($grid)),
-                    'row'
-                );
-            }
+        if ($edit) {
+            $html .= '<div class="integrated-website-grid integrated-website-droppable" data-id="' . $id . '">';
         }
 
-        if (isset($context['page']) && ($page = $context['page']) instanceof Page) {
-            /** @var Page $page */
-            return $environment->render($template, ['grid' => $page->getGrid($id)]);
+        if ($page instanceof Page) {
+            $grid = $page->getGrid($id);
+
+            if (!$grid instanceof Grid) {
+                $grid = new Grid($id);
+            }
+
+            if ($edit) {
+                $html .= '<script type="text/json">' . json_encode(['data' => $grid->toArray()]) . '</script>';
+            }
+
+            $html .= $environment->render($options['template'], ['grid' => $grid]);
         }
+
+        if ($edit) {
+            $html .= '</div>';
+        }
+
+        return $html;
     }
 
     /**
