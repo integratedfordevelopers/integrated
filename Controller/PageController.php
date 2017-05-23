@@ -72,7 +72,7 @@ class PageController
 
         $this->javascripts->add('/bundles/integratedwebsite/js/page.js');
         $this->javascripts->add('/bundles/integratedwebsite/js/menu.js');
-        $this->javascripts->add('/bundles/integratedwebsite/js/jquery-sortable.js');
+        $this->javascripts->add('/bundles/integratedwebsite/components/integrated.jquery-sortable/source/js/jquery-sortable-min.js');
         $this->javascripts->add('/bundles/integratedwebsite/js/grid.js');
 
         return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
