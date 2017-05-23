@@ -94,7 +94,7 @@ The <info>%command.name%</info> command creates a new user
 
         $scopeName = 'Integrated';
         if ($input->hasArgument('scope')) {
-            $scopeName = $input->getArgument('scope') ? $input->getArgument('scope') : $scopeName;
+            $scopeName = $input->getArgument('scope') ?: $scopeName;
         }
 
         $scopeManager = $this->getContainer()->get('integrated_user.scope.manager');

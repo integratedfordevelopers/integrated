@@ -70,7 +70,7 @@ The <info>%command.name%</info> command replaces the password of the user
 
         $scopeName = 'Integrated';
         if ($input->hasArgument('scope')) {
-            $scopeName = $input->getArgument('scope') ? $input->getArgument('scope') : 'Integrated';
+            $scopeName = $input->getArgument('scope') ?: $scopeName;
         }
 
         $scopeManager = $this->getContainer()->get('integrated_user.scope.manager');
