@@ -13,6 +13,7 @@ namespace Integrated\Bundle\UserBundle\Command;
 
 use Exception;
 
+use Integrated\Bundle\UserBundle\Model\Scope;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Input\InputArgument;
@@ -49,6 +50,7 @@ class ChangePasswordCommand extends ContainerAwareCommand
 
             ->addArgument('username', InputArgument::REQUIRED, 'The username')
             ->addArgument('password', InputArgument::REQUIRED, 'The password')
+            ->addArgument('scope', InputArgument::OPTIONAL, 'The scope')
 
             ->setDescription('Change password of a user')
             ->setHelp('
@@ -66,7 +68,19 @@ The <info>%command.name%</info> command replaces the password of the user
         $username = $input->getArgument('username'); // @todo validate input
         $password = $input->getArgument('password'); // @todo validate input
 
-        $user = $this->getManager()->findByUsername($username);
+        $scopeName = 'Integrated';
+        if ($input->hasArgument('scope')) {
+            $scopeName = $input->getArgument('scope') ? $input->getArgument('scope') : 'Integrated';
+        }
+
+        $scopeManager = $this->getContainer()->get('integrated_user.scope.manager');
+        if (!$scope = $scopeManager->findByName($scopeName)) {
+            $output->writeln(sprintf('Aborting: scope with name "%s" does not exist', $scopeName));
+
+            return 1;
+        }
+
+        $user = $this->getManager()->findByUsernameAndScope($username, $scope);
 
         if (!$user) {
             $output->writeln(sprintf('Aborting: user with username "%s" does not exist', $username));
