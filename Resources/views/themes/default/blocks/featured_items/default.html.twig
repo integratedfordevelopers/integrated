@@ -29,11 +29,11 @@
                             </h4>
 
                             <div class="card-text">
-                                {{ item.text|default }}
+                                {{ item.text|default|raw }}
                             </div>
 
                             {% if item.link %}
-                                <a href="{{ item.link }}" {% if item.target %}target="{{ item.target }}"{% endif %}>Read more</a>
+                                <a href="{{ item.link }}" {% if item.target %}target="{{ item.target }}"{% endif %}>{{ item.linkText|default }}</a>
                             {% endif %}
                         </div>
                     </div>
