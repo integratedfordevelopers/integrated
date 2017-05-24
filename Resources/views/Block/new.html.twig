@@ -15,7 +15,8 @@
     <div class="row">
         <div class="col-md-12 push-sm-down">
             <h1 class="main-title font-regular">{% trans %}New{% endtrans %} <small>{% trans %}Block{% endtrans %}</small></h1>
-            <section class="section-white section-padding section-shadow section-radius">
+            {% block form_section %}
+                <section class="section-white section-padding section-shadow section-radius">
                 {{ form_start(form, { 'style': 'horizontal' }) }}
                 <div id="integrated_block_block">
                     {{ form_errors(form) }}
@@ -40,6 +41,7 @@
                 </div>
                 {{ form_end(form) }}
             </section>
+            {% endblock %}
         </div>
     </div>
 {% endblock %}

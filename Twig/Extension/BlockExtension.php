@@ -77,6 +77,7 @@ class BlockExtension extends \Twig_Extension
             ),
             new \Twig_SimpleFunction('integrated_find_channels', [$this, 'findChannels']),
             new \Twig_SimpleFunction('integrated_find_pages', [$this, 'findPages']),
+            new \Twig_SimpleFunction('integrated_find_block_types', [$this, 'findBlockTypes']),
         ];
     }
 
@@ -185,6 +186,14 @@ class BlockExtension extends \Twig_Extension
     public function getBlockTypeName(BlockInterface $block)
     {
         return $this->metadataFactory->getMetadata(get_class($block))->getType();
+    }
+
+    /**
+     * @return array
+     */
+    public function findBlockTypes()
+    {
+        return $this->metadataFactory->getAllMetadata();
     }
 
     /**
