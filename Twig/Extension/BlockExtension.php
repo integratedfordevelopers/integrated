@@ -70,7 +70,11 @@ class BlockExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_block', [$this, 'renderBlock'], ['is_safe' => ['html'], 'needs_environment' => true]),
+            new \Twig_SimpleFunction(
+                'integrated_block',
+                [$this, 'renderBlock'],
+                ['is_safe' => ['html'], 'needs_environment' => true, 'needs_context' => true]
+            ),
             new \Twig_SimpleFunction('integrated_find_channels', [$this, 'findChannels']),
             new \Twig_SimpleFunction('integrated_find_pages', [$this, 'findPages']),
         ];
@@ -88,6 +92,7 @@ class BlockExtension extends \Twig_Extension
 
     /**
      * @param \Twig_Environment $environment
+     * @param array $context
      * @param \Integrated\Common\Block\BlockInterface|string $block
      * @param array $options
      *
@@ -95,20 +100,23 @@ class BlockExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderBlock(\Twig_Environment $environment, $block, array $options = [])
+    public function renderBlock(\Twig_Environment $environment, $context, $block, array $options = [])
     {
         $id = $block instanceof Block ? $block->getId() : $block;
+        $edit = isset($context['integrated_block_edit']) && true === $context['integrated_block_edit'];
 
         try {
             // fatal errors are not catched
             $html = $this->container->get('integrated_block.templating.block_manager')->render($block, $options);
 
             if (!$html) {
-                return $environment->render($this->locateTemplate('blocks/empty.html.twig'), ['id' => $id]);
+                return $environment->render($this->locateTemplate('blocks/empty.html.twig'), [
+                    'integrated_block_edit' => $edit,
+                    'id' => $id,
+                ]);
             }
 
             return $html;
-
         } catch (\Exception $e) {
             if ('prod' !== $this->container->getParameter('kernel.environment')) {
                 throw $e;
@@ -116,7 +124,10 @@ class BlockExtension extends \Twig_Extension
                 $this->container->get('logger')->error(sprintf('Block "%s" contains an error', $id));
             }
 
-            return $environment->render($this->locateTemplate('blocks/error.html.twig'), ['id' => $id]);
+            return $environment->render($this->locateTemplate('blocks/error.html.twig'), [
+                'integrated_block_edit' => $edit,
+                'id' => $id,
+            ]);
         }
     }
 
