@@ -1,4 +1,7 @@
 !function($, Routing, JSON) {
+
+    var $blockTarget = null;
+
     /**
      * @param {jQuery} $element
      * @param data
@@ -128,7 +131,7 @@
     $(document).on('click', '[data-action="integrated-website-block-add"]', function(e) {
         e.preventDefault();
 
-        var $before = $(this).parent();
+        $blockTarget = $(this).parent();
 
         $.ajax({
             url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 10}),
@@ -140,7 +143,7 @@
                 var html = $(template(data));
 
                 $(html).on('click', '[data-action="integrated-website-block-choose"]', function(e) {
-                    addBlock($(this).attr('data-id'), $before);
+                    addBlock($(this).attr('data-id'), $blockTarget);
 
                     $('.modal.in').modal('hide');
                 });
@@ -170,9 +173,29 @@
     $(document).on('click', '[data-action="integrated-website-block-edit"]', function(e) {
         e.preventDefault();
 
+        $blockTarget = null;
+
         var blockId = $(this).closest('[data-block-type="block"]').data('id');
+        createIframe(Routing.generate('integrated_block_block_edit', { 'id': blockId, '_format': 'iframe.html'}), 'Edit block', null);
+    });
+
+    /**
+     * Handle new block button
+     */
+    $(document).on('click', '[data-action="integrated-website-block-new"]', function(e) {
+        e.preventDefault();
+
+        $('.modal.in').modal('hide');
+        createIframe($(this).attr('href'), 'Add block', $(this).parent());
+    });
+
+    /**
+     * @param url
+     * @param title
+     */
+    var createIframe = function(url, title) {
         var iFrame = $('<iframe frameborder="0" style="width: 100%; max-height:100%; display: none;">')
-            .attr('src', Routing.generate('integrated_block_block_edit', { 'id': blockId, '_format': 'iframe.html'}))
+            .attr('src', url)
             .load(function(){
                 var windowHeight = $(window).height() - 160;
                 var iframeHeight = $(this).context.contentWindow.document.body.scrollHeight;
@@ -189,13 +212,13 @@
             });
 
         var dialog = bootbox.dialog({
-            title: 'Edit block',
+            title: title,
             message: $('<div>')
                 .append('<div class="text-center iframe-loading"><i class="fa fa-spin fa-spinner"></i> Loading...</div>')
                 .append(iFrame),
             size: 'large'
         });
-    });
+    };
 
     /**
      * Handle block edit in iframe
@@ -203,9 +226,15 @@
     document.addEventListener('block-added', function (e) {
         $('.modal.in').modal('hide');
 
-        $('[data-id="' + e.detail + '"]').each(function () {
-            refreshBlock($(this));
-        });
+        if ($blockTarget) {
+            //new block inserted
+            addBlock(e.detail, $blockTarget);
+        } else {
+            //update block
+            $('[data-id="' + e.detail + '"]').each(function () {
+                refreshBlock($(this));
+            });
+        }
     }, false);
 
     /**
