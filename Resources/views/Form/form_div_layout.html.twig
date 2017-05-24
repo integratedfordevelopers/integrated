@@ -1,4 +1,4 @@
-{% block workflow_row  %}
+{% block integrated_workflow_row  %}
     {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' workflow')|trim }) %}
 
     <div {{ block('widget_container_attributes') }}>
@@ -6,75 +6,68 @@
     </div>
 {% endblock %}
 
-{% block workflow_state_row  %}
+{% block integrated_workflow_state_row %}
     {{ block('form_rows') }}
 {% endblock %}
 
-{% block workflow_state_text_widget  %}
+{% block workflow_state_text_widget %}
     <p class="form-control-static">{{ value }}</p>
 {% endblock %}
 
-{% block workflow_definition_permissions_row  %}
+{% block workflow_definition_permissions_row %}
     {{ block('form_rows') }}
 {% endblock %}
 
-{% block workflow_definition_transitions_row  %}
+{% block workflow_definition_transitions_row %}
     {{ block('form_row') }}
     {{ form_row(form.override) }}
 {% endblock %}
 
-{% block workflow_definition_transitions_widget  %}
+{% block workflow_definition_transitions_widget %}
     {{ form_widget(form.selection) }}
 {% endblock %}
 
 {% block workflow_definition_state_collection_widget %}
-{% spaceless %}
-    {% if prototype is defined %}
-        {% set prototype_vars = {} %}
-        {% if style is defined %}
-            {% set prototype_vars = prototype_vars|merge({'style': style}) %}
-        {% endif %}
+    {% spaceless %}
+        {% if prototype is defined %}
+            {% set prototype_vars = {} %}
+            {% if style is defined %}
+                {% set prototype_vars = prototype_vars|merge({'style': style}) %}
+            {% endif %}
 
-        {% set prototype_html = '<div class="col-lg-11">' ~ form_widget(prototype, prototype_vars) ~ '</div>' %}
-        {% if form.vars.allow_delete %}
-            {% set prototype_html = prototype_html ~ '<div class="col-lg-1"><a href class="btn btn-danger btn-small" data-removefield="collection" data-field="__id__"><span class="glyphicon glyphicon-remove"></span></a></div>' %}
-        {% endif %}
+            {% set prototype_html = '<div class="col-lg-11">' ~ form_widget(prototype, prototype_vars) ~ '</div>' %}
+            {% if form.vars.allow_delete %}
+                {% set prototype_html = prototype_html ~ '<div class="col-lg-1"><a href class="btn btn-danger btn-small" data-removefield="collection" data-field="__id__"><span class="glyphicon glyphicon-remove"></span></a></div>' %}
+            {% endif %}
 
-        {% set attr = attr|merge({'data-prototype': prototype_html }) %}
-        {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
-    {% endif %}
-    <div {{ block('widget_container_attributes') }}>
-        <ul class="integrated-collection">
-            {% for field in form %}
-                <li>
-                    <div class="col-lg-11">
-                        {{ form_widget(field) }}
-                        {{ form_errors(field) }}
-                    </div>
-                    {% if form.vars.allow_delete %}
-                        <div class="col-lg-1">
-                            <div class="form-group">
-                                <a href class="btn btn-danger btn-small state_delete_button" data-removefield="collection" data-field="{{ field.vars.id }}"><span class="glyphicon glyphicon-remove"></span></a>
-                            </div>
-                            {# uncomment to see order changing button mock up #}
-                            {#<div class="form-group">#}
-                                {#<div class="btn-group-vertical">#}
-                                    {#<a href class="btn btn-primary btn-small" data-field="{{ field.vars.id }}"><span class="glyphicon glyphicon-chevron-up"></span></a>#}
-                                    {#<a href class="btn btn-primary btn-small" data-field="{{ field.vars.id }}"><span class="glyphicon glyphicon-chevron-down"></span></a>#}
-                                {#</div>#}
-                            {#</div>#}
+            {% set attr = attr|merge({'data-prototype': prototype_html }) %}
+            {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            <ul class="integrated-collection">
+                {% for field in form %}
+                    <li>
+                        <div class="col-lg-11">
+                            {{ form_widget(field) }}
+                            {{ form_errors(field) }}
                         </div>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+                        {% if form.vars.allow_delete %}
+                            <div class="col-lg-1">
+                                <div class="form-group">
+                                    <a href class="btn btn-danger btn-small state_delete_button" data-removefield="collection" data-field="{{ field.vars.id }}"><span class="glyphicon glyphicon-remove"></span></a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
 
-        {% if form.vars.allow_add %}
-            <div class="integrated-collection-button">
-                <a href class="btn btn-success btn-small state_add_button" data-addfield="collection" data-collection="{{ form.vars.id }}" data-prototype-name="{{ prototype_name }}"><span class="glyphicon glyphicon-plus"></a>
-            </div>
-        {% endif %}
+            {% if form.vars.allow_add %}
+                <div class="integrated-collection-button">
+                    <a href class="btn btn-success btn-small state_add_button" data-addfield="collection" data-collection="{{ form.vars.id }}" data-prototype-name="{{ prototype_name }}"><span class="glyphicon glyphicon-plus"></a>
+                </div>
+            {% endif %}
 
-    </div>
-{% endspaceless %}
+        </div>
+    {% endspaceless %}
 {% endblock workflow_definition_state_collection_widget %}
