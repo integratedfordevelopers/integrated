@@ -13,7 +13,9 @@ namespace Integrated\Bundle\UserBundle\Command;
 
 use Exception;
 
+use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Model\Scope;
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Input\InputArgument;
@@ -80,7 +82,7 @@ The <info>%command.name%</info> command replaces the password of the user
             return 1;
         }
 
-        $user = $this->getManager()->findByUsernameAndScope($username, $scope);
+        $user = $this->findUserByScope($username, $scope);
 
         if (!$user) {
             $output->writeln(sprintf('Aborting: user with username "%s" does not exist', $username));
@@ -127,5 +129,32 @@ The <info>%command.name%</info> command replaces the password of the user
         }
 
         return $this->manager;
+    }
+
+    /**
+     * @param string $username
+     * @param Scope $scope
+     * @return UserInterface|null
+     * @throws Exception
+     */
+    protected function findUserByScope($username, Scope $scope)
+    {
+        $manager = $this->getManager();
+        if (!$manager instanceof UserManager) {
+            throw new \Exception(sprintf('Manager should be instance of %s', UserManager::class));
+        }
+
+        return $manager->createQueryBuilder()
+            ->select('User')
+            ->leftJoin('User.scope', 'Scope')
+            ->where('User.username = :username')
+            ->andWhere('User.scope = :scope')
+            ->setParameters([
+                'username' => $username,
+                'scope' => (int) $scope->getId()
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 }
