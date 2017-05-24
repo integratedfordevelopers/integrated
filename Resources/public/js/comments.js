@@ -293,7 +293,7 @@ $(function () {
      * Add event listeners to tinymce after tinymce is loaded
      */
     var tinymceInit = function () {
-        if (tinymce.activeEditor == undefined) {
+        if (typeof tinymce == 'undefined' || tinymce.activeEditor == undefined || tinymce.activeEditor.formatter == undefined) {
             return;
         }
         clearInterval(waitForTiny);
