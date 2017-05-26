@@ -55,6 +55,7 @@ class GridExtension extends \Twig_Extension
      * @param array $context
      * @param string $id
      * @param array $options
+     *
      * @return string
      */
     public function renderGrid(\Twig_Environment $environment, $context, $id, array $options = [])
@@ -81,7 +82,10 @@ class GridExtension extends \Twig_Extension
                 $html .= '<script type="text/json">' . json_encode(['data' => $grid->toArray()]) . '</script>';
             }
 
-            $html .= $environment->render($options['template'], ['grid' => $grid]);
+            $html .= $environment->render($options['template'], [
+                'integrated_block_edit' => $edit,
+                'grid' => $grid,
+            ]);
         }
 
         if ($edit) {

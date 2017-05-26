@@ -20,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Bundle\PageBundle\Grid\GridFactory;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
