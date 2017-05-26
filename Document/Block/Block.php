@@ -268,4 +268,12 @@ abstract class Block implements BlockInterface
         $this->locked = (bool) $locked;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getId();
+    }
 }

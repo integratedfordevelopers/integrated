@@ -12,9 +12,12 @@
 namespace Integrated\Bundle\BlockBundle\Controller;
 
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\BlockBundle\Document\Block\TextBlock;
 use Integrated\Bundle\BlockBundle\Form\Type\BlockFilterType;
 use Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType;
+use Integrated\Bundle\BlockBundle\Form\Type\TextBlockType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
+use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Type\MetadataType;
 
@@ -113,6 +116,34 @@ class BlockController extends Controller
         return [
             'form' => $form->createView(),
         ];
+    }
+
+    /**
+     * @param Request $request
+     * @param Page $parentPage
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function newTextBlockAction(Request $request, Page $parentPage)
+    {
+        $block = new TextBlock();
+
+        $block->setParentPage($parentPage);
+        $block->setLayout('borderless.html.twig');
+
+        $form = $this->createForm(TextBlockType::class, $block);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $this->getDocumentManager()->persist($block);
+            $this->getDocumentManager()->flush();
+
+            return $this->render('IntegratedBlockBundle:Block:saved.iframe.html.twig', ['id' => $block->getId()]);
+        }
+
+        return $this->render('IntegratedBlockBundle:Block:new.iframe.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**

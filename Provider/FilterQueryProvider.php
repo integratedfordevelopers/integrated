@@ -55,10 +55,13 @@ class FilterQueryProvider
     {
         $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
 
+        $qb->field('parentPage')->exists(false);
+
         $type = isset($data['type']) ? array_filter($data['type']) : null;
         if ($type) {
             $qb->field('class')->in($data['type']);
         }
+
 
         if (isset($data['q'])) {
             $qb->field('title')->equals(new \MongoRegex('/' . $data['q'] . '/i'));

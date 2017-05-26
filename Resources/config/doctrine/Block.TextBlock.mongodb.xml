@@ -10,6 +10,8 @@
         <field name="publishedTitle" type="string" />
         <field name="useTitle" type="boolean" />
 
+        <reference-one field="parentPage" target-document="Integrated\Bundle\PageBundle\Document\Page\Page" />
+
     </document>
 
 </doctrine-mongo-mapping>
