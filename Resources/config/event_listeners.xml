@@ -12,6 +12,10 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="integrated_page.event_listener.grid_item" class="Integrated\Bundle\PageBundle\EventListener\GridItemSubscriber">
+            <tag name="doctrine_mongodb.odm.event_subscriber" />
+        </service>
+
     </services>
 
 </container>
