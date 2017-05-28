@@ -22,7 +22,7 @@
         <service id="integrated_website.website_configuration" class="%integrated_website.website_configuration.class%">
             <argument type="service" id="integrated_content.channel.context" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
-            <argument type="service" id="integrated_channel.config.resolver" />
+            <argument type="service" id="integrated_page.theme_resolver" />
             <tag name="kernel.event_subscriber" />
         </service>
 

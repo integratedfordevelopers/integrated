@@ -22,26 +22,12 @@
 </head>
 <body>
 
-{% if form|default and edit|default %}
-    {# TODO: auto generate (INTEGRATED-384) #}
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-{% endif %}
-
 <div class="container">
     <br />
     {{ integrated_menu('main', { 'depth': 2 }) }}
     <br />
     {{ integrated_grid('main') }}
 </div>
-
-{% if form|default and edit|default %}
-    {# TODO: auto generate (INTEGRATED-384) #}
-    {{ form_row(form._token) }}
-    {{ form_end(form, { 'render_rest': false }) }}
-
-    {{ include('IntegratedWebsiteBundle::handlebars.html.twig') }}
-{% endif %}
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
@@ -52,14 +38,15 @@
 <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
-{% block javascripts %}
-    {% javascripts output='js/scripts.js'
-        '@IntegratedWebsiteBundle/Resources/public/js/page.js'
-        '@IntegratedWebsiteBundle/Resources/public/js/menu.js'
-        '@IntegratedWebsiteBundle/Resources/public/js/grid.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+{% if integrated_block_edit|default %}
+    {{ include('@IntegratedWebsite/handlebars/grid.html.twig') }}
+{% endif %}
 
+{% if integrated_menu_edit|default %}
+    {{ include('@IntegratedWebsite/handlebars/menu.html.twig') }}
+{% endif %}
+
+{% block javascripts %}
     {{ integrated_javascripts() }}
 {% endblock %}
 

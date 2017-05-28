@@ -70,8 +70,13 @@ class MenuExtension extends \Twig_Extension
      * @param RecursiveActiveMatcher $matcher
      * @param string $template
      */
-    public function __construct(DatabaseMenuProvider $provider, DatabaseMenuFactory $factory, Helper $helper, RecursiveActiveMatcher $matcher, $template)
-    {
+    public function __construct(
+        DatabaseMenuProvider $provider,
+        DatabaseMenuFactory $factory,
+        Helper $helper,
+        RecursiveActiveMatcher $matcher,
+        $template
+    ) {
         $this->provider = $provider;
         $this->factory = $factory;
         $this->helper = $helper;
@@ -113,7 +118,7 @@ class MenuExtension extends \Twig_Extension
     {
         $options = $this->resolver->resolve($options);
 
-        $edit = isset($context['edit']) && true === $context['edit'];
+        $edit = isset($context['integrated_menu_edit']) && true === $context['integrated_menu_edit'];
         $menu = $this->provider->get($name);
 
         $html = '';

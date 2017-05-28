@@ -1,173 +1,137 @@
-!function($, Routing) {
+!function($, Routing, JSON) {
+
+    var $blockTarget = null;
 
     /**
-     * @type object|null
+     * @param {jQuery} $element
+     * @param data
      */
-    var previousCall = null;
+    var createGrid = function($element, data) {
+        $.ajax({
+            type: 'POST',
+            url: Routing.generate('integrated_website_grid_render'),
+            data: data,
+            success: function(result) {
+                $element.html(result.html);
 
-    /**
-     * @type string|null
-     */
-    var collection = null;
+                $('[data-block-type="row"]', $element).each(function () {
+                    $(this).append(createRowButtons());
+                });
 
-    var createBlock = function(name, index, value, element) {
+                $('[data-block-type="column"]', $element).each(function () {
+                    $(this).append(createColumnButtons());
+                });
 
-        if (element == undefined) {
+                $element.append(createColumnButtons());
 
-            $.ajax({
-                url: Routing.generate('integrated_block_block_show', { 'id': value, '_format': 'json' }),
-                dataType: 'json',
-                async: false,
-                success: function(data) {
-                    element = data.html;
-                }
-            });
-
-            // @todo error handling (INTEGRATED-420)
-        }
-
-        var template = Handlebars.compile($('#integrated_website_template_block').html());
-
-        var html = template({
-            id: getId(name),
-            name: name,
-            index: index,
-            value: value,
-            element: element
-        });
-
-        return $(html);
-    }
-
-    var addBlock = function(collection, value, element) {
-        var index = incrementIndex(collection);
-        var name = collection.attr('data-name') + '[' + index + ']';
-
-        var block = createBlock(name, index, value, element);
-        block.find('script').remove(); // @todo find a way to insert javascript elements (INTEGRATED-421)
-
-        addRemoveButton(block);
-
-        collection.append(block);
-
-        updateOrder(collection);
-    }
-
-    var removeBlock = function(element) {
-        var collection = getCollection(element);
-
-        $('#' + element.attr('data-element-id')).remove();
-
-        updateOrder(collection);
-    }
-
-    var addRemoveButton = function(element) {
-        var id = element.closest('.integrated-website-block').find('input[data-field="integrated-website-block"]').val();
-
-        element.find('.integrated-website-block-element').before(
-            '<div class="integrated-website-block-options">' +
-                '<a href="' + Routing.generate('integrated_block_block_edit', { 'id': id }) + '" class="integrated-website-helper-icon" title="Edit block">' +
-                    '<span class="glyphicon glyphicon-pencil"></span>' +
-                '</a>' +
-                '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" data-element-id="' + element.attr('id') + '" title="Remove block">' +
-                    '<span class="glyphicon glyphicon-remove"></span>' +
-                '</a>' +
-            '</div>'
-        );
-    }
-
-    var addButtons = function(collection) {
-        collection.after(
-            '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-add" data-collection-id="' + collection.attr('id') + '" title="Add block">' +
-                '<span class="glyphicon glyphicon-plus"></span>' +
-            '</a>' +
-            '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-add" data-collection-id="' + collection.attr('id') + '" title="Add columns">' +
-                '<span class="glyphicon glyphicon-th-large"></span>' +
-            '</a>'
-        );
-    }
-
-    var addConfigButton = function(row) {
-        row.append(
-            '<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-config" title="Configure columns">' +
-                '<span class="glyphicon glyphicon-wrench"></span>' +
-            '</a>'
-        );
-    }
-
-    var getCollection = function(element) {
-        var button = element.closest('.integrated-website-section').children('[data-action="integrated-website-block-add"]');
-
-        return $('#' + button.attr('data-collection-id'));
-    }
-
-    var getId = function(name) {
-        return name.replace(/]\[/g, '_').replace('[', '_').replace(/]$/, '');
-    }
-
-    var incrementIndex = function(collection) {
-        var index = parseInt(collection.attr('data-index')) || collection.children().length;
-
-        collection.attr('data-index', (index+1));
-
-        return index;
-    }
-
-    var getIndex = function(element) {
-        return parseInt(element.children('input[data-field="integrated-website-item-order"]').attr('data-index'));
-    }
-
-    var updateOrder = function(collection) {
-        collection.children().each(function(index, element) {
-
-            $(element).children('input[data-field="integrated-website-item-order"]').val(index);
-        });
-    }
-
-    $('.integrated-website-sortable').sortable({
-        connectWith: '.integrated-website-sortable',
-        placeholder: 'integrated-website-item-placeholder',
-        forcePlaceholderSize: true,
-        scroll: false,
-        opacity: 0.7,
-        cursor: 'move',
-
-        stop: function(e, ui) {
-            var collection = getCollection(ui.item);
-
-            if (ui.item.hasClass('integrated-website-block')) {
-
-                var index = incrementIndex(collection);
-                var name = collection.attr('data-name') + '[' + index + ']';
-
-                var value = ui.item.children('input[data-field="integrated-website-block"]').val();
-                var element = ui.item.children('.integrated-website-block-element').html();
-
-                var block = createBlock(name, index, value, element);
-
-                addRemoveButton(block);
-
-                ui.item.replaceWith(block);
+                $('[data-block-type="block"]', $element).each(function () {
+                    $(this).prepend(createBlockButtons());
+                });
+            },
+            error: function(result) {
+                // @todo error handling (INTEGRATED-420)
+                alert('An error has occurred!');
+                console.log(result.responseText);
             }
+        });
+    };
 
-            updateOrder(collection);
-        }
+    /**
+     * @param {string} blockId
+     * @param {jQuery} $before
+     */
+    var addBlock = function(blockId, $before) {
+        var $block = $('<div>')
+            .attr('data-id', blockId)
+            .attr('data-block-type', 'block')
+            .addClass('integrated-website-sortable');
+
+        $before.before($block);
+
+        refreshBlock($block);
+    };
+
+    /**
+     * @param {jQuery} $block
+     */
+    var refreshBlock = function($block) {
+        $.ajax({
+            url: Routing.generate('integrated_block_block_show', { 'id': $block.data('id'), '_format': 'json' }),
+            dataType: 'json',
+            success: function(data) {
+                $block.html(data.html);
+                $block.prepend(createBlockButtons());
+            }
+        });
+
+        // @todo error handling (INTEGRATED-420)
+    };
+    /**
+     * @return {jQuery}
+     */
+    var createRow = function () {
+        return $('<div>')
+            .addClass('row integrated-website-sortable')
+            .attr('data-block-type', 'row');
+    };
+
+    /**
+     * @param size
+     */
+    var createColumn = function(size) {
+        return $('<div>')
+            .addClass('integrated-website-col integrated-website-droppable col-sm-' + size)
+            .attr('data-block-type', 'column')
+            .data('size', size)
+            .append(createColumnButtons());
+    };
+
+    /**
+     * @return {jQuery}
+     */
+    var createRowButtons = function () {
+        return $('<div class="row-buttons">')
+            .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-config" title="Configure columns"><span class="glyphicon glyphicon-wrench"></span></a>');
+    };
+
+    /**
+     * @return {jQuery}
+     */
+    var createColumnButtons = function () {
+        return $('<div class="block-buttons">')
+            .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-add" title="Add block"><span class="glyphicon glyphicon-plus"></span></a>')
+            .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-add" title="Add columns"><span class="glyphicon glyphicon-th-large"></span></a>');
+
+    };
+
+    /**
+     * @return {jQuery}
+     */
+    var createBlockButtons = function() {
+        return $('<div class="integrated-website-block-options">')
+            .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>')
+            .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-remove" title="Remove block"><span class="glyphicon glyphicon-remove"></span></a>');
+    };
+
+    /**
+     * Render grids on page load
+     */
+    $('.integrated-website-grid').each(function() {
+        var $element = $(this);
+        var $script = $element.find('script[type="text/json"]');
+
+        createGrid($(this), $script.html());
+
+        $script.remove();
     });
 
-    $('.integrated-website-sortable .integrated-website-block').each(function(index, item) {
-        addRemoveButton($(item));
-    });
-
-    $('.integrated-website-sortable').each(function(index, item) {
-        addButtons($(item));
-    });
-
-    addConfigButton($('.integrated-website-section .integrated-website-row'));
-
+    /**
+     * Handle add block button
+     */
     $(document).on('click', '[data-action="integrated-website-block-add"]', function(e) {
         e.preventDefault();
 
-        collection = $('#' + $(this).attr('data-collection-id'));
+        $blockTarget = $(this).parent();
 
         $.ajax({
             url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 10}),
@@ -178,154 +142,211 @@
 
                 var html = $(template(data));
 
+                $(html).on('click', '[data-action="integrated-website-block-choose"]', function(e) {
+                    addBlock($(this).attr('data-id'), $blockTarget);
+
+                    $('.modal.in').modal('hide');
+                });
+
                 var dialog = bootbox.dialog({
                     title: 'Add block',
                     message: html
                 });
             }
         });
-
-        // @todo error handling (INTEGRATED-420)
     });
 
-    $(document).on('click', '[data-action="integrated-website-block-choose"]', function() {
-        addBlock(collection, $(this).attr('data-id'));
-        $('.modal.in').modal('hide');
-    });
-
+    /**
+     * Handle remove block button
+     */
     $(document).on('click', '[data-action="integrated-website-block-remove"]', function(e) {
         e.preventDefault();
 
         if (confirm('Are you sure?')) {
-            removeBlock($(this));
+            $(this).closest('[data-block-type="block"]').remove();
         }
     });
 
-    $(document).on('click', '[data-action="integrated-website-cols-add"]', function(e) {
+    /**
+     * Handle edit block button
+     */
+    $(document).on('click', '[data-action="integrated-website-block-edit"]', function(e) {
         e.preventDefault();
 
-        var collection = $('#' + $(this).attr('data-collection-id'));
-        var index = incrementIndex(collection);
-        var name = collection.attr('data-name') + '[' + index + ']';
-        var id = getId(name);
+        $blockTarget = null;
+
+        var blockId = $(this).closest('[data-block-type="block"]').data('id');
+        createIframe(Routing.generate('integrated_block_block_edit', { 'id': blockId, '_format': 'iframe.html'}), 'Edit block', null);
+    });
+
+    /**
+     * Handle new block button
+     */
+    $(document).on('click', '[data-action="integrated-website-block-new"]', function(e) {
+        e.preventDefault();
+
+        $('.modal.in').modal('hide');
+        createIframe($(this).attr('href'), 'Add block', $(this).parent());
+    });
+
+    /**
+     * @param url
+     * @param title
+     */
+    var createIframe = function(url, title) {
+        var iFrame = $('<iframe frameborder="0" style="width: 100%; max-height:100%; display: none;">')
+            .attr('src', url)
+            .load(function(){
+                var windowHeight = $(window).height() - 160;
+                var iframeHeight = $(this).context.contentWindow.document.body.scrollHeight;
+
+                $(this).height(windowHeight > iframeHeight ? iframeHeight : windowHeight);
+
+                $(this).show();
+                $(this).siblings('.iframe-loading').hide();
+
+                //handle cancel button in iframe
+                $(this).contents().find('.integrated-cancel-button').click(function () {
+                    $('.modal.in').modal('hide');
+                });
+            });
+
+        var dialog = bootbox.dialog({
+            title: title,
+            message: $('<div>')
+                .append('<div class="text-center iframe-loading"><i class="fa fa-spin fa-spinner"></i> Loading...</div>')
+                .append(iFrame),
+            size: 'large'
+        });
+    };
+
+    /**
+     * Handle block edit in iframe
+     */
+    document.addEventListener('block-added', function (e) {
+        $('.modal.in').modal('hide');
+
+        if ($blockTarget) {
+            //new block inserted
+            addBlock(e.detail, $blockTarget);
+        } else {
+            //update block
+            $('[data-id="' + e.detail + '"]').each(function () {
+                refreshBlock($(this));
+            });
+        }
+    }, false);
+
+    /**
+     * Add columns
+     */
+    $(document).on('click', '[data-action="integrated-website-cols-add"]', function(e) {
+        e.preventDefault();
 
         var total = parseInt(prompt('How many columns do you want?'));
 
         if (total) {
-
-            var data = [];
+            var $row = createRow();
 
             for (var i = 0; i < total; i++) {
-
                 var size = parseInt(prompt('Size of column ' + (i+1) + '?'));
 
                 if (size) {
-
-                    data.push({
-                        id: id,
-                        name: name,
-                        index: i,
-                        size: size
-                    });
+                    $row.append(createColumn(size));
                 }
             }
 
-            if (total == data.length) {
+            $row.append(createRowButtons());
 
-                var template = Handlebars.compile($('#integrated_website_template_cols').html());
-
-                var html = $(template({
-                    id: id,
-                    name: name,
-                    index: index,
-                    columns: data
-                }));
-
-                collection.append(html);
-
-                updateOrder(collection);
-
-                html.find('.integrated-website-sortable').each(function(index, item) {
-                    addButtons($(item));
-                });
-
-                addConfigButton(html.closest('.row'));
-
-                // @todo bind sortable (INTEGRATED-422)
-            }
+            $(this).parent().before($row);
         }
     });
 
+    /**
+     * Update row and columns
+     */
     $(document).on('click', '[data-action="integrated-website-cols-config"]', function(e) {
         e.preventDefault();
 
-        var oldRow = $(this).closest('.integrated-website-row');
-        var oldColumns = oldRow.children('.integrated-website-cols').children('.integrated-website-col');
+        var $row = $(this).closest('[data-block-type="row"]');
+        var $oldColumns = $row.children('[data-block-type="column"]');
 
-        var collection = getCollection(oldRow);
-        var index = getIndex(oldRow);
-        var name = collection.attr('data-name') + '[' + index + ']';
-        var id = getId(name);
+        var total = parseInt(prompt('How many columns do you want?', $oldColumns.length));
 
-        var total = prompt('How many columns do you want?', oldColumns.length);
-
-        if (total == 0) {
-            oldRow.remove();
-
-        } else if (total = parseInt(total)) {
-
-            var data = [];
+        if (total) {
+            $row.children('.row-buttons').remove();
 
             for (var i = 0; i < total; i++) {
+                var oldSize = '';
 
-                var oldSize = $(oldColumns[i]).children('input[data-field="integrated-website-col-size"]').val();
+                if ($oldColumns[i]) {
+                    oldSize = $($oldColumns[i]).data('size');
+                }
 
                 var size = parseInt(prompt('Size of column ' + (i+1) + '?', oldSize));
 
                 if (size) {
-
-                    data.push({
-                        id: id,
-                        name: name,
-                        index: i,
-                        size: size
-                    });
+                    if ($oldColumns[i]) {
+                        $($oldColumns[i]).attr('class', 'col-sm-' + size).data('size', size);
+                    } else {
+                        $row.append(createColumn(size));
+                    }
                 }
             }
 
-            if (total == data.length) {
+            //if there were more columns, remove the last columns
+            $oldColumns.slice(i).remove();
 
-                var template = Handlebars.compile($('#integrated_website_template_cols').html());
+            $row.append(createRowButtons());
+        } else {
+            //no count, so remove entire row
+            $row.remove();
+        }
+    });
 
-                var html = $(template({
-                    id: id,
-                    name: name,
-                    index: index,
-                    columns: data
-                }));
+    /**
+     * Make grid sortable and make sure serialized data is returned in correct way
+     */
+    $('.integrated-website-grid').integratedSortable({
+        containerSelector: '.integrated-website-droppable',
+        itemSelector: '.integrated-website-sortable',
+        placeholder: '<div class="integrated-website-item-placeholder" style="height: 50px;"></div>',
+        tolerance: 100,
+        delay: 100,
+        vertical: false,
+        onDrop: function ($item, container, _super, event) {
+            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
+            $("body").removeClass(container.group.options.bodyClass);
 
-                var newColumns = html.children('.integrated-website-cols').children('.integrated-website-col');
+            //buttons should always come behind
+            $item.after($item.prev('.block-buttons'));
+        },
+        serialize: function (parent, children) {
+            if (parent.hasClass('integrated-website-grid')) {
+                return {
+                    'id': parent.data('id'),
+                    'items': children
+                }
+            }
+            if ('block' === parent.data('blockType')) {
+                return {'block': parent.data('id')};
+            } else if ('row' === parent.data('blockType')) {
+                return {'row': {'columns': children}};
+            } else if ('column' === parent.data('blockType')) {
+                var data =  {'size': parent.data('size')};
 
-                for (i = 0; i < total; i++) {
-                    $(newColumns[i]).children('.integrated-website-section').children('.integrated-website-sortable').append(
-                        $(oldColumns[i]).children('.integrated-website-section').children('.integrated-website-sortable').children()
-                    );
+                if (children) {
+                    data.items = children;
                 }
 
-                oldRow.replaceWith(html);
-
-                updateOrder(collection);
-
-                html.find('.integrated-website-sortable').each(function(index, item) {
-                    addButtons($(item));
-                });
-
-                addConfigButton(html.closest('.integrated-website-row'));
-
-                // @todo bind sortable (INTEGRATED-422)
+                return data;
             }
         }
     });
+
+    /**
+     * Modal eventlisteners
+     */
 
     $(document).on('change', '#add_block_filters_form input, #add_block_filters_form select', function() {
         $('#add_block_filters_form').submit();
@@ -373,5 +394,6 @@
             }
         });
     }
+}(window.jQuery, window.Routing, JSON);
 
-}(window.jQuery, window.Routing);
+var Integrated = Integrated || {};

@@ -6,6 +6,9 @@
 
     <parameters>
 
+        <parameter key="integrated_website.controller.page.class">Integrated\Bundle\WebsiteBundle\Controller\PageController</parameter>
+        <parameter key="integrated_website.controller.grid.class">Integrated\Bundle\WebsiteBundle\Controller\GridController</parameter>
+
         <parameter key="integrated_website.controller.content.article.class">Integrated\Bundle\WebsiteBundle\Controller\Content\ArticleController</parameter>
         <parameter key="integrated_website.controller.content.company.class">Integrated\Bundle\WebsiteBundle\Controller\Content\CompanyController</parameter>
         <parameter key="integrated_website.controller.content.event.class">Integrated\Bundle\WebsiteBundle\Controller\Content\EventController</parameter>
@@ -21,6 +24,17 @@
     </parameters>
 
     <services>
+
+        <service id="integrated_website.controller.page" class="%integrated_website.controller.page.class%">
+            <argument type="service" id="templating" />
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <argument type="service" id="integrated_asset.manager.javascript_manager" />
+        </service>
+
+        <service id="integrated_website.controller.grid" class="%integrated_website.controller.grid.class%">
+            <argument type="service" id="integrated_page.grid.factory" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+        </service>
 
         <service id="integrated_website.controller.content.article" class="%integrated_website.controller.content.article.class%">
             <argument type="service" id="templating" />

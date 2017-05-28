@@ -66,7 +66,7 @@ class PageLoader implements LoaderInterface
             $route = new Route(
                 $page->getPath(),
                 [
-                    '_controller' => 'IntegratedWebsiteBundle:Page:show', // @todo config option (INTEGRATED-426)
+                    '_controller' => 'integrated_website.controller.page:showAction',
                     'id' => $page->getId(),
                 ],
                 [],

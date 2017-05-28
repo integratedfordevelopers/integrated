@@ -1,3 +1,5 @@
+{% include '@IntegratedWebsiteBundle/Resources/views/json-ld.html.twig' with {content: article} %}
+
 <h1>{{ article.title }}</h1>
 
-{{ article.content|raw }}
+{{ article.content|integrated_content }}
