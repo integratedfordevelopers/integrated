@@ -15,6 +15,10 @@
             <argument type="service" id="integrated_theme.templating.theme_manager" />
         </service>
 
+        <service id="integrated_page.grid.factory" class="Integrated\Bundle\PageBundle\Grid\GridFactory">
+            <argument type="service" id="integrated_block.block_repository" />
+        </service>
+
         <service id="integrated_page.services.content_type_controller_manager" class="Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager" />
 
         <service id="integrated_page.services.content_type_page" class="Integrated\Bundle\PageBundle\Services\ContentTypePageService">
