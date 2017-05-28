@@ -66,7 +66,16 @@ class CustomType extends AbstractType
             'choices' => $return,
         ]);
 
-        $builder->add('required', CheckboxType::class, ['required' => false]);
+        $builder->add(
+            'required',
+            CheckboxType::class,
+            [
+                'required' => false,
+                'attr' => [
+                    'align_with_widget' => true
+                ]
+            ]
+        );
 
         $builder->addModelTransformer(new CustomTransformer());
     }

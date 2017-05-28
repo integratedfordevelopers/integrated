@@ -12,6 +12,8 @@
 
         <parameter key="integrated_content.twig.channel_extension.class">Integrated\Bundle\ContentBundle\Twig\Extension\ChannelExtension</parameter>
 
+        <parameter key="integrated_content.twig.integrated_content_extension.class">Integrated\Bundle\ContentBundle\Twig\Extension\IntegratedContentExtension</parameter>
+
     </parameters>
 
     <services>
@@ -27,6 +29,17 @@
 
         <service id="integrated_content.twig.channel_extension" class="%integrated_content.twig.channel_extension.class%">
             <argument type="service" id="service_container" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_content.twig.integrated_content_extension" class="%integrated_content.twig.integrated_content_extension.class%">
+            <argument type="service" id="event_dispatcher" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_content.twig.json_ld_extension" class="Integrated\Bundle\ContentBundle\Twig\Extension\JsonLDExtension">
+            <argument type="service" id="serializer" />
+
             <tag name="twig.extension" />
         </service>
 

@@ -1080,11 +1080,11 @@ class ContentController extends Controller
      * @param ContentInterface $content
      * @param array $locking
      * @param bool|true $notDelete
-     * @return $this|\Symfony\Component\Form\FormInterface
+     * @return FormTypeInterface
      */
     protected function createDeleteForm(ContentInterface $content, array $locking, $notDelete = false)
     {
-        $form = $this->createForm(DeleteFormType::class, $content, [
+        $form = $this->createForm(DeleteFormType::class, null, [
             'action' => $this->generateUrl('integrated_content_content_delete', $locking['locked'] ? ['id' => $content->getId()] : ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]),
             'method' => 'DELETE',
         ]);
