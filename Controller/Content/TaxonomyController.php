@@ -16,6 +16,7 @@ use Symfony\Bundle\TwigBundle\TwigEngine;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -50,16 +51,20 @@ class TaxonomyController
     }
 
     /**
+     * @param ContentTypePage $page
      * @param Taxonomy $taxonomy
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAction(Taxonomy $taxonomy)
+    public function showAction(ContentTypePage $page, Taxonomy $taxonomy)
     {
         $this->blockManager->setDocument($taxonomy);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Taxonomy/default.html.twig'),
-            ['taxonomy' => $taxonomy]
+            $this->themeManager->locateTemplate('content/Taxonomy/show/' . $page->getLayout()),
+            [
+                'taxonomy' => $taxonomy,
+                'page' => $page,
+            ]
         );
     }
 }
