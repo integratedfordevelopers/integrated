@@ -49,7 +49,7 @@ class GridItemSubscriber implements EventSubscriber
             return;
         }
 
-        foreach ($this->getDbTextBlocks($args->getDocumentManager(), $document) as $block) {
+        foreach ($this->findTextBlocks($args->getDocumentManager(), $document) as $block) {
             $args->getDocumentManager()->remove($block);
         }
     }
@@ -65,9 +65,9 @@ class GridItemSubscriber implements EventSubscriber
             return;
         }
 
-        $oldBlocks = $this->getDbTextBlocks($args->getDocumentManager(), $document);
+        $oldBlocks = $this->findTextBlocks($args->getDocumentManager(), $document);
 
-        $newBlocks = $this->getTextBlocks($document);
+        $newBlocks = $this->getGridTextBlocks($document);
 
         foreach (array_diff($oldBlocks, $newBlocks) as $removedBlock) {
             $args->getDocumentManager()->remove($removedBlock);
@@ -79,7 +79,7 @@ class GridItemSubscriber implements EventSubscriber
      * @param Page $page
      * @return array|TextBlock[]
      */
-    protected function getDbTextBlocks(DocumentManager $dm, Page $page)
+    protected function findTextBlocks(DocumentManager $dm, Page $page)
     {
         return $dm->getRepository(TextBlock::class)->findBy(['parentPage' => $page]);
     }
@@ -88,13 +88,13 @@ class GridItemSubscriber implements EventSubscriber
      * @param Page $page
      * @return array
      */
-    protected function getTextBlocks(Page $page)
+    protected function getGridTextBlocks(Page $page)
     {
         $blocks = [];
 
         foreach ($page->getGrids() as $grid) {
             if ($grid instanceof Grid) {
-                $blocks = array_merge($blocks, $this->getGridTextBlocks($grid, $page));
+                $blocks = array_merge($blocks, $this->getGridItemsTextBlocks($grid, $page));
             }
         }
 
@@ -106,7 +106,7 @@ class GridItemSubscriber implements EventSubscriber
      * @param Page $page
      * @return array
      */
-    protected function getGridTextBlocks(ItemsInterface $grid, Page $page)
+    protected function getGridItemsTextBlocks(ItemsInterface $grid, Page $page)
     {
         $blocks = [];
 
@@ -123,7 +123,7 @@ class GridItemSubscriber implements EventSubscriber
 
             if ($item->getRow()) {
                 foreach ($item->getRow()->getColumns() as $column) {
-                    $blocks = array_merge($blocks, $this->getGridTextBlocks($column, $page));
+                    $blocks = array_merge($blocks, $this->getGridItemsTextBlocks($column, $page));
                 }
             }
         }
