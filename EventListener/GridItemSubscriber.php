@@ -74,6 +74,11 @@ class GridItemSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * @param DocumentManager $dm
+     * @param Page $page
+     * @return array|TextBlock[]
+     */
     protected function getDbTextBlocks(DocumentManager $dm, Page $page)
     {
         return $dm->getRepository(TextBlock::class)->findBy(['parentPage' => $page]);
