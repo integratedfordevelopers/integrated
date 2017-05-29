@@ -17,9 +17,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Common\ContentType\Event\ContentTypeEvent;
 use Integrated\Common\ContentType\Events;
-use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Services\ContentTypePageService;
 
 /**
@@ -71,7 +69,10 @@ class ContentTypeChangedListener implements EventSubscriberInterface
             $channels = $this->getChannelRepository()->findAll();
 
             foreach ($channels as $channel) {
-                if (!$this->getPageRepository()->findOneBy(['channel.$id' => $channel->getId(), 'contentType.$id' => $contentType->getId()])) {
+                if (!$this->getPageRepository()->findOneBy([
+                    'channel.$id' => $channel->getId(),
+                    'contentType.$id' => $contentType->getId()
+                ])) {
                     $this->contentTypePageService->addContentType($contentType, $channel);
                 }
             }
