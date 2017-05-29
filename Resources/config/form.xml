@@ -16,6 +16,11 @@
             <tag name="form.type" />
         </service>
 
+        <service id="integrated_page.form.content_type_page.page" class="Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType">
+            <argument type="service" id="integrated_page.services.content_type_controller_manager" />
+            <tag name="form.type" alias="integrated_page_content_type_page" />
+        </service>
+
     </services>
 
 </container>

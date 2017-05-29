@@ -19,6 +19,29 @@
             <argument type="service" id="integrated_block.block_repository" />
         </service>
 
+        <service id="integrated_page.services.content_type_controller_manager" class="Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager" />
+
+        <service id="integrated_page.services.content_type_page" class="Integrated\Bundle\PageBundle\Services\ContentTypePageService">
+            <argument type="service" id="integrated_page.services.content_type_controller_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+        </service>
+
+        <service id="integrated_page.services.route_cache" class="Integrated\Bundle\PageBundle\Services\RouteCache">
+            <argument type="string">%kernel.cache_dir%</argument>
+        </service>
+
+        <service id="integrated_page.services.url_resolver" class="Integrated\Bundle\PageBundle\Services\UrlResolver">
+            <argument type="service" id="integrated_page.services.content_type_controller_manager" />
+            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="router.default" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+        </service>
+
+        <service id="integrated_page.services.solr_url_extractor" class="Integrated\Bundle\PageBundle\Services\SolrUrlExtractor">
+            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="router.default" />
+        </service>
+
     </services>
 
 </container>

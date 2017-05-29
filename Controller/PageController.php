@@ -11,14 +11,11 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
-use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -79,7 +76,7 @@ class PageController extends Controller
             $dm->persist($page);
             $dm->flush();
 
-            $this->clearRoutingCache();
+            $this->get('integrated_page.services.route_cache')->clear();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page created');
 
@@ -109,7 +106,7 @@ class PageController extends Controller
 
             $this->getDocumentManager()->flush();
 
-            $this->clearRoutingCache();
+            $this->get('integrated_page.services.route_cache')->clear();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 
@@ -147,7 +144,7 @@ class PageController extends Controller
             $dm->remove($page);
             $dm->flush();
 
-            $this->clearRoutingCache();
+            $this->get('integrated_page.services.route_cache')->clear();
 
             $this->get('braincrafted_bootstrap.flash')->success('Page deleted');
 
@@ -233,110 +230,5 @@ class PageController extends Controller
         $builder->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 
         return $builder->getForm();
-    }
-
-    /**
-     * The routing cache needs to be cleared after a change.
-     * This is faster then clearing the cache with the responsible command.
-     */
-    protected function clearRoutingCache()
-    {
-        $pattern = '/^app(.*)Url(Matcher|Generator).php/';
-
-        $finder = new Finder();
-
-        /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach ($finder->files()->in($this->get('kernel')->getCacheDir())->depth(0)->name($pattern) as $file) {
-            @unlink($file->getRealPath());
-        }
-    }
-
-    /**
-     * @return array
-     */
-    protected function getChannels()
-    {
-        $channels = [];
-
-        foreach ($this->getChannelManager()->findAll() as $channel) {
-            if ($configs = $this->getConfigResolver()->getConfigs($channel)) {
-                foreach ($configs as $config) {
-                    if ($config->getAdapter() === 'website') {
-                        $channels[] = $channel;
-                    }
-                }
-            }
-        }
-
-        return $channels;
-    }
-
-    /**
-     * @return \Integrated\Common\Channel\ChannelInterface
-     *
-     * @throws \RuntimeException
-     */
-    protected function getSelectedChannel()
-    {
-        $request = $this->get('request_stack')->getCurrentRequest();
-
-        if (!$request instanceof Request) {
-            throw new \RuntimeException('Unable to get the request');
-        }
-
-        $channel = $this->getChannelManager()->find($request->query->get('channel'));
-
-        if (!$channel instanceof Channel) {
-            $channels = $this->getChannels();
-            $channel  = reset($channels);
-        }
-
-        if (!$channel instanceof Channel) {
-            throw new \RuntimeException('Please configure at least one channel');
-        }
-
-        return $channel;
-    }
-
-    /**
-     * @param Channel $channel
-     *
-     * @return string
-     */
-    protected function getTheme(Channel $channel)
-    {
-        return $this->get('integrated_page.theme_resolver')->getTheme($channel);
-    }
-
-    /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->get('doctrine_mongodb')->getManager();
-    }
-
-    /**
-     * @return \Knp\Component\Pager\Paginator
-     */
-    protected function getPaginator()
-    {
-        return $this->get('knp_paginator');
-    }
-
-    /**
-     * @return \Integrated\Common\Channel\Connector\Config\ResolverInterface
-     */
-    protected function getConfigResolver()
-    {
-        return $this->get('integrated_channel.config.resolver');
-    }
-
-    /**
-     * @return \Integrated\Common\Content\Channel\ChannelManagerInterface
-     */
-    protected function getChannelManager()
-    {
-        return $this->get('integrated_content.channel.manager');
     }
 }

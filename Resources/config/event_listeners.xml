@@ -12,6 +12,18 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
+        <service id="integrated_page.event_listener.content_type_changed" class="Integrated\Bundle\PageBundle\EventListener\ContentTypeChangedListener">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.services.content_type_page" />
+            <tag name="integrated_content.event" />
+        </service>
+
+        <service id="integrated_page.event_listener.channel_changed" class="Integrated\Bundle\PageBundle\EventListener\ChannelChangedListener">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.services.content_type_page" />
+            <tag name="integrated_content.event" />
+        </service>
+
         <service id="integrated_page.event_listener.grid_item" class="Integrated\Bundle\PageBundle\EventListener\GridItemSubscriber">
             <tag name="doctrine_mongodb.odm.event_subscriber" />
         </service>
