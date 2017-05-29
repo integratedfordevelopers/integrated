@@ -43,6 +43,9 @@ class PageType extends AbstractType
 
         $builder->add('disabled', CheckboxType::class, [
             'required' => false,
+            'attr' => [
+                'align_with_widget' => true
+            ]
         ]);
     }
 
