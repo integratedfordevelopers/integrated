@@ -16,7 +16,7 @@ use Doctrine\MongoDB\Events;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
-use Integrated\Bundle\BlockBundle\Document\Block\TextBlock;
+use Integrated\Bundle\BlockBundle\Document\Block\InlineBlock;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\ItemsInterface;
@@ -49,7 +49,7 @@ class GridItemSubscriber implements EventSubscriber
             return;
         }
 
-        foreach ($this->findTextBlocks($args->getDocumentManager(), $document) as $block) {
+        foreach ($this->findInlineBlocks($args->getDocumentManager(), $document) as $block) {
             $args->getDocumentManager()->remove($block);
         }
     }
@@ -65,9 +65,9 @@ class GridItemSubscriber implements EventSubscriber
             return;
         }
 
-        $oldBlocks = $this->findTextBlocks($args->getDocumentManager(), $document);
+        $oldBlocks = $this->findInlineBlocks($args->getDocumentManager(), $document);
 
-        $newBlocks = $this->getGridTextBlocks($document);
+        $newBlocks = $this->getGridInlineBlocks($document);
 
         foreach (array_diff($oldBlocks, $newBlocks) as $removedBlock) {
             $args->getDocumentManager()->remove($removedBlock);
@@ -77,24 +77,24 @@ class GridItemSubscriber implements EventSubscriber
     /**
      * @param DocumentManager $dm
      * @param Page $page
-     * @return array|TextBlock[]
+     * @return array|InlineBlock[]
      */
-    protected function findTextBlocks(DocumentManager $dm, Page $page)
+    protected function findInlineBlocks(DocumentManager $dm, Page $page)
     {
-        return $dm->getRepository(TextBlock::class)->findBy(['parentPage' => $page]);
+        return $dm->getRepository(InlineBlock::class)->findBy(['page' => $page]);
     }
 
     /**
      * @param Page $page
      * @return array
      */
-    protected function getGridTextBlocks(Page $page)
+    protected function getGridInlineBlocks(Page $page)
     {
         $blocks = [];
 
         foreach ($page->getGrids() as $grid) {
             if ($grid instanceof Grid) {
-                $blocks = array_merge($blocks, $this->getGridItemsTextBlocks($grid, $page));
+                $blocks = array_merge($blocks, $this->getGridItemsInlineBlocks($grid, $page));
             }
         }
 
@@ -106,7 +106,7 @@ class GridItemSubscriber implements EventSubscriber
      * @param Page $page
      * @return array
      */
-    protected function getGridItemsTextBlocks(ItemsInterface $grid, Page $page)
+    protected function getGridItemsInlineBlocks(ItemsInterface $grid, Page $page)
     {
         $blocks = [];
 
@@ -117,13 +117,13 @@ class GridItemSubscriber implements EventSubscriber
 
             $block = $item->getBlock();
 
-            if ($block instanceof TextBlock && $page == $block->getParentPage()) {
+            if ($block instanceof InlineBlock && $page == $block->getPage()) {
                 $blocks[$block->getId()] = $block;
             }
 
             if ($item->getRow()) {
                 foreach ($item->getRow()->getColumns() as $column) {
-                    $blocks = array_merge($blocks, $this->getGridItemsTextBlocks($column, $page));
+                    $blocks = array_merge($blocks, $this->getGridItemsInlineBlocks($column, $page));
                 }
             }
         }
