@@ -100,6 +100,7 @@
     var createColumnButtons = function () {
         return $('<div class="block-buttons">')
             .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-add" title="Add block"><span class="glyphicon glyphicon-plus"></span></a>')
+            .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-textblock-add" title="Add textblock"><span class="glyphicon glyphicon-font"></span></a>')
             .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-cols-add" title="Add columns"><span class="glyphicon glyphicon-th-large"></span></a>');
 
     };
@@ -176,7 +177,7 @@
         $blockTarget = null;
 
         var blockId = $(this).closest('[data-block-type="block"]').data('id');
-        createIframe(Routing.generate('integrated_block_block_edit', { 'id': blockId, '_format': 'iframe.html'}), 'Edit block', null);
+        createIframe(Routing.generate('integrated_block_block_edit', { 'id': blockId, '_format': 'iframe.html'}), 'Edit block');
     });
 
     /**
@@ -186,7 +187,22 @@
         e.preventDefault();
 
         $('.modal.in').modal('hide');
-        createIframe($(this).attr('href'), 'Add block', $(this).parent());
+        createIframe($(this).attr('href'), 'Add block');
+    });
+
+    /**
+     * Handle new textblock button
+     */
+    $(document).on('click', '[data-action="integrated-website-textblock-add"]', function(e) {
+        e.preventDefault();
+
+        $blockTarget = $(this).parent();
+
+        var pageId = $('[data-action="integrated-website-page-save"]').data('id');
+
+        $('.modal.in').modal('hide');
+
+        createIframe(Routing.generate('integrated_block_inline_text_block_create', { 'id': pageId}), 'New block');
     });
 
     /**
