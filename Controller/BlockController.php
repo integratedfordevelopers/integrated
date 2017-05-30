@@ -125,7 +125,6 @@ class BlockController extends Controller
      */
     public function editAction(Request $request, Block $block)
     {
-
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
@@ -193,21 +192,9 @@ class BlockController extends Controller
      */
     protected function createCreateForm(BlockInterface $block)
     {
-        $class = get_class($block);
+        $form = $this->createEditForm($block);
 
-        $form = $this->createForm(
-            MetadataType::class,
-            $block,
-            [
-                'method' => 'POST',
-                'data_class' => $class,
-            ]
-        );
-
-        $form->add('layout', LayoutChoiceType::class, [
-            'type' => $block->getType(),
-        ]);
-
+        //overwrite edit form
         $form->add('actions', SaveCancelType::class, [
             'cancel_route' => 'integrated_block_block_index',
             'label' => 'Create',

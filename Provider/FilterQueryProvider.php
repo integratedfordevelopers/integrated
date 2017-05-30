@@ -14,6 +14,7 @@ namespace Integrated\Bundle\BlockBundle\Provider;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -58,6 +59,8 @@ class FilterQueryProvider
         $type = isset($data['type']) ? array_filter($data['type']) : null;
         if ($type) {
             $qb->field('class')->in($data['type']);
+        } else {
+            $qb->field('class')->notEqual(InlineTextBlock::class);
         }
 
         if (isset($data['q'])) {
