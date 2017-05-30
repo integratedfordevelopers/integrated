@@ -63,5 +63,4 @@ class ContentTypePageService
         $this->dm->persist($contentTypePage);
         $this->dm->flush($contentTypePage);
     }
-
 }

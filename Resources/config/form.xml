@@ -10,30 +10,6 @@
             <tag name="form.type" />
         </service>
 
-        <service id="integrated_page.form.type.grid" class="Integrated\Bundle\PageBundle\Form\Type\Grid\GridType">
-            <tag name="form.type" />
-        </service>
-
-        <service id="integrated_page.form.type.item" class="Integrated\Bundle\PageBundle\Form\Type\Grid\ItemType">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-
-            <tag name="form.type" />
-        </service>
-
-        <service id="integrated_page.form.type.block" class="Integrated\Bundle\PageBundle\Form\Type\Grid\BlockType">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-
-            <tag name="form.type" />
-        </service>
-
-        <service id="integrated_page.form.type.row" class="Integrated\Bundle\PageBundle\Form\Type\Grid\RowType">
-            <tag name="form.type" />
-        </service>
-
-        <service id="integrated_page.form.type.column" class="Integrated\Bundle\PageBundle\Form\Type\Grid\ColumnType">
-            <tag name="form.type" />
-        </service>
-
         <service id="integrated_page.form.type.layout_choice" class="Integrated\Bundle\PageBundle\Form\Type\LayoutChoiceType">
             <argument type="service" id="integrated_page.layout_locator" />
 

@@ -70,7 +70,10 @@ class ChannelChangedListener implements EventSubscriberInterface
 
         /** @var ContentType $contentType */
         foreach ($contentTypes as $contentType) {
-            if (!$this->getPageRepository()->findOneBy(['channel.$id' => $channel->getId(), 'contentType.$id' => $contentType->getId()])) {
+            if (!$this->getPageRepository()->findOneBy([
+                'channel.$id' => $channel->getId(),
+                'contentType.$id' => $contentType->getId()
+            ])) {
                 $this->contentTypePageService->addContentType($contentType, $channel);
             }
         }

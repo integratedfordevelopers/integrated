@@ -39,13 +39,17 @@ class ContentTypeControllerManager
     public function addController($serviceId, $attributes)
     {
         if (!array_key_exists('class', $attributes)) {
-            throw new \InvalidArgumentException(sprintf('class is a required attribute of the tag in service "%s"', $serviceId));
+            throw new \InvalidArgumentException(
+                sprintf('class is a required attribute of the tag in service "%s"', $serviceId)
+            );
         }
 
         $className = $attributes['class'];
 
         if ($this->controllers->containsKey($className)) {
-            throw new \Exception(sprintf('You can only define one content controller service for class "%s"', $className));
+            throw new \Exception(
+                sprintf('You can only define one content controller service for class "%s"', $className)
+            );
         }
 
         if (array_key_exists('controller_actions', $attributes)) {

@@ -18,7 +18,7 @@ use Symfony\Component\Finder\Finder;
  */
 class RouteCache
 {
-    CONST CACHE_PATH_REGEX = '/^app(.*)Url(Matcher|Generator).php/';
+    const CACHE_PATH_REGEX = '/^app(.*)Url(Matcher|Generator).php/';
 
     /**
      * @var string
