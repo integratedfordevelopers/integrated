@@ -16,7 +16,7 @@ use Doctrine\MongoDB\Events;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
-use Integrated\Bundle\BlockBundle\Document\Block\InlineBlock;
+use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\ItemsInterface;
@@ -77,11 +77,11 @@ class GridItemSubscriber implements EventSubscriber
     /**
      * @param DocumentManager $dm
      * @param Page $page
-     * @return array|InlineBlock[]
+     * @return array|InlineTextBlock[]
      */
     protected function findInlineBlocks(DocumentManager $dm, Page $page)
     {
-        return $dm->getRepository(InlineBlock::class)->findBy(['page' => $page]);
+        return $dm->getRepository(InlineTextBlock::class)->findBy(['page' => $page]);
     }
 
     /**
@@ -117,7 +117,7 @@ class GridItemSubscriber implements EventSubscriber
 
             $block = $item->getBlock();
 
-            if ($block instanceof InlineBlock && $page == $block->getPage()) {
+            if ($block instanceof InlineTextBlock && $page == $block->getPage()) {
                 $blocks[$block->getId()] = $block;
             }
 
