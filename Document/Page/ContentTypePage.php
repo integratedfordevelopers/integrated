@@ -27,6 +27,12 @@ class ContentTypePage extends Page
 {
     /**
      * @var string
+     * @ODM\Id(strategy="UUID")
+     */
+    protected $id;
+
+    /**
+     * @var string
      * @ODM\String
      * @Assert\NotBlank
      * @Assert\Regex(
