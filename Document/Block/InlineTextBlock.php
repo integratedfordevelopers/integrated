@@ -100,7 +100,7 @@ class InlineTextBlock extends Block
      */
     public function getType()
     {
-        return 'inline';
+        return 'inline_text';
     }
 
     /**
