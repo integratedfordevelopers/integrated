@@ -17,9 +17,9 @@ use Integrated\Bundle\PageBundle\Document\Page\Page;
 /**
  * @author Johan Liefers <johan@e-active.nl>
  *
- * @Type\Document("Inline block")
+ * @Type\Document("Inline text block")
  */
-class InlineBlock extends Block
+class InlineTextBlock extends Block
 {
     /**
      * @var string

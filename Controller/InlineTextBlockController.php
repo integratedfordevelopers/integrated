@@ -11,8 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Controller;
 
-use Integrated\Bundle\BlockBundle\Document\Block\InlineBlock;
-use Integrated\Bundle\BlockBundle\Form\Type\InlineBlockType;
+use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Johan Liefers@e-active.nl>
  */
-class InlineBlockController extends BlockController
+class InlineTextBlockController extends BlockController
 {
     /**
      * @param Request $request
@@ -29,7 +28,7 @@ class InlineBlockController extends BlockController
      */
     public function createAction(Request $request, Page $page)
     {
-        $block = new InlineBlock($page);
+        $block = new InlineTextBlock($page);
 
         $form = $this->createCreateForm($block);
 

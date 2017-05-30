@@ -27,8 +27,8 @@
         <default key="_controller">IntegratedBlockBundle:Block:delete</default>
     </route>
 
-    <route id="integrated_block_inline_block_create" path="/inline/new/{id}" methods="GET|PUT">
-        <default key="_controller">IntegratedBlockBundle:InlineBlock:create</default>
+    <route id="integrated_block_inline_text_block_create" path="/inline-text/new/{id}" methods="GET|PUT">
+        <default key="_controller">IntegratedBlockBundle:InlineTextBlock:create</default>
         <option key="expose">true</option>
     </route>
 </routes>
