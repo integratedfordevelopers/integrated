@@ -12,12 +12,9 @@
 namespace Integrated\Bundle\BlockBundle\Controller;
 
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
-use Integrated\Bundle\BlockBundle\Document\Block\TextBlock;
 use Integrated\Bundle\BlockBundle\Form\Type\BlockFilterType;
 use Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType;
-use Integrated\Bundle\BlockBundle\Form\Type\TextBlockType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
-use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Type\MetadataType;
 
@@ -119,34 +116,6 @@ class BlockController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @param Page $parentPage
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function newTextBlockAction(Request $request, Page $parentPage)
-    {
-        $block = new TextBlock();
-
-        $block->setParentPage($parentPage);
-        $block->setLayout('borderless.html.twig');
-
-        $form = $this->createForm(TextBlockType::class, $block);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $this->getDocumentManager()->persist($block);
-            $this->getDocumentManager()->flush();
-
-            return $this->render('IntegratedBlockBundle:Block:saved.iframe.html.twig', ['id' => $block->getId()]);
-        }
-
-        return $this->render('IntegratedBlockBundle:Block:new.iframe.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Template
      *
      * @param Request $request
@@ -156,7 +125,6 @@ class BlockController extends Controller
      */
     public function editAction(Request $request, Block $block)
     {
-
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
@@ -224,21 +192,9 @@ class BlockController extends Controller
      */
     protected function createCreateForm(BlockInterface $block)
     {
-        $class = get_class($block);
+        $form = $this->createEditForm($block);
 
-        $form = $this->createForm(
-            MetadataType::class,
-            $block,
-            [
-                'method' => 'POST',
-                'data_class' => $class,
-            ]
-        );
-
-        $form->add('layout', LayoutChoiceType::class, [
-            'type' => $block->getType(),
-        ]);
-
+        //overwrite edit form
         $form->add('actions', SaveCancelType::class, [
             'cancel_route' => 'integrated_block_block_index',
             'label' => 'Create',

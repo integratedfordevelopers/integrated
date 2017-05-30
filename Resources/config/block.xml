@@ -52,5 +52,9 @@
             <tag name="integrated.block" type="featured_items" />
         </service>
 
+        <service id="integrated_block.block_handler.inline" class="%integrated_block.block_handler.class%">
+            <tag name="integrated.block" type="inline" />
+        </service>
+
     </services>
 </container>

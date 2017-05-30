@@ -14,6 +14,7 @@ namespace Integrated\Bundle\BlockBundle\Provider;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\BlockBundle\Document\Block\InlineBlock;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -55,13 +56,12 @@ class FilterQueryProvider
     {
         $qb = $this->mr->getManager()->createQueryBuilder(Block::class);
 
-        $qb->field('parentPage')->exists(false);
-
         $type = isset($data['type']) ? array_filter($data['type']) : null;
         if ($type) {
             $qb->field('class')->in($data['type']);
+        } else {
+            $qb->field('class')->notEqual(InlineBlock::class);
         }
-
 
         if (isset($data['q'])) {
             $qb->field('title')->equals(new \MongoRegex('/' . $data['q'] . '/i'));

@@ -3,12 +3,12 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <document name="Integrated\Bundle\BlockBundle\Document\Block\TextBlock">
+    <document name="Integrated\Bundle\BlockBundle\Document\Block\InlineBlock">
 
+        <field name="id" id="true" strategy="UUID" />
         <field name="content" type="string" />
 
-        <field name="publishedTitle" type="string" />
-        <field name="useTitle" type="boolean" />
+        <reference-one field="page" target-document="Integrated\Bundle\PageBundle\Document\Page\Page" />
 
     </document>
 

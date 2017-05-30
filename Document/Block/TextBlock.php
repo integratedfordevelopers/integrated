@@ -11,11 +11,9 @@
 
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
-use Integrated\Common\Form\Mapping\Annotations as Type;
-use Integrated\Bundle\PageBundle\Document\Page\Page;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
+use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * TextBlock document
@@ -46,11 +44,6 @@ class TextBlock extends Block
     protected $content;
 
     /**
-     * @var Page|null
-     */
-    protected $parentPage = null;
-
-    /**
      * @return string
      */
     public function getContent()
@@ -65,24 +58,6 @@ class TextBlock extends Block
     public function setContent($content)
     {
         $this->content = $content;
-        return $this;
-    }
-
-    /**
-     * @return Page|null
-     */
-    public function getParentPage()
-    {
-        return $this->parentPage;
-    }
-
-    /**
-     * @param Page|null $parentPage
-     * @return $this
-     */
-    public function setParentPage(Page $parentPage = null)
-    {
-        $this->parentPage = $parentPage;
         return $this;
     }
 
