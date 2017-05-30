@@ -71,7 +71,7 @@ class ContentTypePageController extends Controller
 
             $this->get('braincrafted_bootstrap.flash')->success('Page updated');
 
-            return $this->redirect($this->generateUrl('integrated_page_content_type_page_index', ['channel' => $channel->getId()]));
+            return $this->redirectToRoute('integrated_page_content_type_page_index', ['channel' => $channel->getId()]);
         }
 
         return [
