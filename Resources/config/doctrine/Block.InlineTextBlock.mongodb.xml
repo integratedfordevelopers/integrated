@@ -3,7 +3,7 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <document name="Integrated\Bundle\BlockBundle\Document\Block\InlineBlock">
+    <document name="Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock">
 
         <field name="id" id="true" strategy="UUID" />
         <field name="content" type="string" />
