@@ -1,6 +1,13 @@
 !function($, Routing) {
+
+    var success = 0;
+    var target = null;
+
     $('[data-action="integrated-website-page-save"]').click(function(e) {
         e.preventDefault();
+
+        success = 0;
+        target = $(this).data('target');
 
         saveMenus();
         saveGrids($(this).data('id'));
@@ -19,11 +26,8 @@
             data: JSON.stringify({
                 'menu': menus
             }),
-            error: function(result) {
-                // @todo error handling (INTEGRATED-420)
-                alert('An error has occurred saving the menu(s)!');
-                console.log(result.responseText);
-            }
+            success: handleSuccess,
+            error: handleError
         });
     };
 
@@ -37,13 +41,22 @@
                 'grids': grids,
                 'page': pageId
             }),
-            error: function(result) {
-                // @todo error handling (INTEGRATED-420)
-                alert('An error has occurred saving the grid(s)!');
-                console.log(result.responseText);
-            }
+            success: handleSuccess,
+            error: handleError
         });
     };
+
+    var handleSuccess = function () {
+        if (2 === ++success && target) {
+            window.location.replace(target);
+        }
+    };
+
+    var handleError = function (result) {
+        // @todo error handling (INTEGRATED-420)
+        alert('An error has occurred saving the grid(s)!');
+        console.log(result.responseText);
+    }
 
 }(window.jQuery, window.Routing);
 
