@@ -202,7 +202,7 @@
 
         $('.modal.in').modal('hide');
 
-        createIframe(Routing.generate('integrated_block_inline_block_create', { 'id': pageId}), 'New block');
+        createIframe(Routing.generate('integrated_block_inline_text_block_create', { 'id': pageId}), 'New block');
     });
 
     /**
