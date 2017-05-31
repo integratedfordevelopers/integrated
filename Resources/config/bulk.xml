@@ -19,7 +19,7 @@
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
 
-        <service id="integrated_content.bulk.bulk_handler_interface" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler\BulkHandlerInterface" />
+        <service id="integrated_content.bulk.bulk_handler" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler\BulkHandler" />
 
     </services>
 </container>
