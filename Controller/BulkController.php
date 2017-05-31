@@ -16,7 +16,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
 
 use Integrated\Bundle\ContentBundle\Bulk\BuildState;
-use Integrated\Bundle\ContentBundle\Bulk\BulkExecutor;
+use Integrated\Bundle\ContentBundle\Bulk\BulkHandler\BulkHandlerInterface;
 use Integrated\Bundle\ContentBundle\Form\Type\Bulk\ActionsFormType;
 use Integrated\Bundle\ContentBundle\Form\Type\SelectionFormType;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
@@ -51,29 +51,29 @@ class BulkController extends Controller
     protected $actionProvider;
 
     /**
-     * @var BulkExecutor
+     * @var BulkHandlerInterface
      */
-    protected $bulkExecutor;
+    protected $bulkHandler;
 
     /**
      * BulkController constructor.
      * @param DocumentManager $dm
      * @param ContentProvider $contentProvider
      * @param ActionProvider $actionProvider
-     * @param BulkExecutor $bulkExecutor
+     * @param BulkHandlerInterface $bulkHandler
      * @param ContainerInterface $container
      */
     public function __construct(
         DocumentManager $dm,
         ContentProvider $contentProvider,
         ActionProvider $actionProvider,
-        BulkExecutor $bulkExecutor,
+        BulkHandlerInterface $bulkHandler,
         ContainerInterface $container
     ) {
         $this->dm = $dm;
         $this->contentProvider = $contentProvider;
         $this->actionProvider = $actionProvider;
-        $this->bulkExecutor = $bulkExecutor;
+        $this->bulkHandler = $bulkHandler;
         $this->container = $container;
     }
 
@@ -189,7 +189,7 @@ class BulkController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $bulkAction->setState(BuildState::CONFIRMED);
-                $this->bulkExecutor->execute($bulkAction);
+                $this->bulkHandler->execute($bulkAction);
                 $this->dm->flush();
 
                 $this->addFlash('success', 'It seems all bulk actions were executed successfully! :)');

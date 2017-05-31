@@ -9,11 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk;
+namespace Integrated\Bundle\ContentBundle\Bulk\ActionHandler;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
+ * @author Patrick Mestebeld <patrick@e-active.nl>
  */
 interface ActionHandlerInterface
 {
+    /**
+     * @param ContentInterface $content
+     * @param array $options
+     * @return void
+     */
+    public function execute(ContentInterface $content, array $options);
 }

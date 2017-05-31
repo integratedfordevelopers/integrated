@@ -10,43 +10,18 @@
 
 namespace Integrated\Bundle\ContentBundle\Bulk;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
-
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
 interface ActionInterface
 {
     /**
-     * @param Content $content
-     * @return mixed
-     */
-    public function execute(Content $content);
-
-    /**
      * @return string
      */
-    public function getTypeOfAction();
-
-    /**
-     * @return string
-     */
-    public function getTargetName();
+    public function getName();
 
     /**
      * @return array
      */
-    public function getChangeNames();
-
-    /**
-     * @return array
-     */
-    public function getFieldsPreBuildConfig();
-
-    /**
-     * @param $data
-     * @return mixed
-     */
-    public function getFieldsPostBuildConfig($data);
-
+    public function getOptions();
 }

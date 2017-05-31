@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Bulk;
 use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Bulk\ActionInterface;
 use Integrated\Bundle\ContentBundle\Bulk\BuildState;
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -167,8 +167,8 @@ class BulkAction
      */
     public function setSelection(ArrayCollection $contents)
     {
-        if ($this->containsNotAll($contents, Content::class)) {
-            throw new \RuntimeException('Items in ArrayCollection do not all implement ' . Content::class);
+        if ($this->containsNotAll($contents, ContentInterface::class)) {
+            throw new \RuntimeException('Items in ArrayCollection do not all implement ' . ContentInterface::class);
         }
 
         $this->selection = $contents;
@@ -200,9 +200,9 @@ class BulkAction
 
 
     /**
-     * @param ArrayCollection $actions
-     * @return $this
-     */
+ * @param ArrayCollection $actions
+ * @return $this
+ */
     public function addActions(ArrayCollection $actions)
     {
         foreach ($actions as $action) {
@@ -219,6 +219,30 @@ class BulkAction
     {
         if (!$this->actions->contains($action)) {
             $this->actions->add($action);
+        }
+        return $this;
+    }
+
+    /**
+     * @param ArrayCollection $actions
+     * @return $this
+     */
+    public function removeActions(ArrayCollection $actions)
+    {
+        foreach ($actions as $action) {
+            $this->removeAction($action);
+        }
+        return $this;
+    }
+
+    /**
+     * @param ActionInterface $action
+     * @return $this
+     */
+    public function removeAction(ActionInterface $action)
+    {
+        if ($this->actions->contains($action)) {
+            $this->actions->remove($action);
         }
         return $this;
     }

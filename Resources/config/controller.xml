@@ -16,7 +16,7 @@
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="integrated_content.bulk.content_provider" />
             <argument type="service" id="integrated_content.bulk.action_provider" />
-            <argument type="service" id="integrated_content.bulk.bulk_executor"/>
+            <argument type="service" id="integrated_content.bulk.bulk_handler_interface"/>
             <argument type="service" id="service_container" />
         </service>
 
