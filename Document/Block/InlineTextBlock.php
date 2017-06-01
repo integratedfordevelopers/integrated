@@ -13,7 +13,6 @@ namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -29,7 +28,7 @@ class InlineTextBlock extends Block
     protected $content;
 
     /**
-     * @var Page
+     * @var AbstractPage
      */
     protected $page;
 
@@ -89,7 +88,7 @@ class InlineTextBlock extends Block
     }
 
     /**
-     * @return Page
+     * @return AbstractPage
      */
     public function getPage()
     {
