@@ -21,8 +21,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -40,7 +38,6 @@ class GroupFormType extends AbstractType
     private $roleManager;
 
     /**
-     * GroupFormType constructor.
      * @param GroupManagerInterface $manager
      * @param RoleManagerInterface  $roleManager
      */
@@ -56,11 +53,7 @@ class GroupFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class, [
-            'required' => false,
-            'constraints' => [
-                new NotBlank(),
-                new Length(['min' => 3])
-            ]
+            'required' => false
         ]);
 
         $builder->add('roles', RoleType::class);
