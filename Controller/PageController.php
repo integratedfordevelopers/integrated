@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
-use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 
@@ -32,21 +31,15 @@ class PageController
      */
     protected $themeManager;
 
-    /**
-     * @var AssetManager
-     */
-    protected $javascripts;
 
     /**
      * @param TwigEngine $templating
      * @param ThemeManager $themeManager
-     * @param AssetManager $javascrips
      */
-    public function __construct(TwigEngine $templating, ThemeManager $themeManager, AssetManager $javascrips)
+    public function __construct(TwigEngine $templating, ThemeManager $themeManager)
     {
         $this->templating = $templating;
         $this->themeManager = $themeManager;
-        $this->javascripts = $javascrips;
     }
 
     /**
@@ -56,29 +49,7 @@ class PageController
     public function showAction(Page $page)
     {
         return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
-            'page' => $page,
-            'integrated_block_edit' => false,
-            'integrated_menu_edit' => false,
-        ]);
-    }
-
-    /**
-     * @param Page $page
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function editAction(Page $page)
-    {
-        // @todo security check (INTEGRATED-383)
-
-        $this->javascripts->add('/bundles/integratedwebsite/js/page.js');
-        $this->javascripts->add('/bundles/integratedwebsite/js/menu.js');
-        $this->javascripts->add('/bundles/integratedwebsite/components/integrated.jquery-sortable/source/js/jquery-sortable-min.js');
-        $this->javascripts->add('/bundles/integratedwebsite/js/grid.js');
-
-        return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
-            'page' => $page,
-            'integrated_block_edit' => true,
-            'integrated_menu_edit' => true,
+            'page' => $page
         ]);
     }
 }

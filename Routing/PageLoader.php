@@ -23,6 +23,8 @@ use Doctrine\ODM\MongoDB\DocumentManager;
  */
 class PageLoader implements LoaderInterface
 {
+    const ROUTE_PREFIX = 'integrated_website_page_';
+
     /**
      * @var bool
      */
@@ -77,7 +79,7 @@ class PageLoader implements LoaderInterface
                 $condition
             );
 
-            $routes->add('integrated_website_page_' . $page->getId(), $route);
+            $routes->add(self::ROUTE_PREFIX . $page->getId(), $route);
         }
 
         return $routes;

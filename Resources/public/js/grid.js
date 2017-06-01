@@ -4,35 +4,20 @@
 
     /**
      * @param {jQuery} $element
-     * @param data
      */
-    var createGrid = function($element, data) {
-        $.ajax({
-            type: 'POST',
-            url: Routing.generate('integrated_website_grid_render'),
-            data: data,
-            success: function(result) {
-                $element.html(result.html);
+    var initGrid = function($element) {
+        $('[data-block-type="row"]', $element).each(function () {
+            $(this).append(createRowButtons());
+        });
 
-                $('[data-block-type="row"]', $element).each(function () {
-                    $(this).append(createRowButtons());
-                });
+        $('[data-block-type="column"]', $element).each(function () {
+            $(this).append(createColumnButtons());
+        });
 
-                $('[data-block-type="column"]', $element).each(function () {
-                    $(this).append(createColumnButtons());
-                });
+        $element.append(createColumnButtons());
 
-                $element.append(createColumnButtons());
-
-                $('[data-block-type="block"]', $element).each(function () {
-                    $(this).prepend(createBlockButtons());
-                });
-            },
-            error: function(result) {
-                // @todo error handling (INTEGRATED-420)
-                alert('An error has occurred!');
-                console.log(result.responseText);
-            }
+        $('[data-block-type="block"]', $element).each(function () {
+            $(this).prepend(createBlockButtons());
         });
     };
 
@@ -115,15 +100,10 @@
     };
 
     /**
-     * Render grids on page load
+     * Init grid buttons on page load
      */
     $('.integrated-website-grid').each(function() {
-        var $element = $(this);
-        var $script = $element.find('script[type="text/json"]');
-
-        createGrid($(this), $script.html());
-
-        $script.remove();
+        initGrid($(this));
     });
 
     /**

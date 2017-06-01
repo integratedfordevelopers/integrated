@@ -8,6 +8,7 @@
 
         <parameter key="integrated_website.routing.page_loader.class">Integrated\Bundle\WebsiteBundle\Routing\PageLoader</parameter>
         <parameter key="integrated_website.routing.content_type_page_loader.class">Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader</parameter>
+        <parameter key="integrated_website.service.editable_checker.class">Integrated\Bundle\WebsiteBundle\Service\EditableChecker</parameter>
 
     </parameters>
 
@@ -22,6 +23,12 @@
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <argument type="service" id="integrated_page.services.url_resolver" />
             <tag name="routing.loader" />
+        </service>
+
+        <service id="integrated_website.service.editable_checker" class="%integrated_website.service.editable_checker.class%">
+            <argument type="service" id="security.authorization_checker" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="request_stack" />
         </service>
 
     </services>

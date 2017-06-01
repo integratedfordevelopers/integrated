@@ -26,7 +26,9 @@
     <br />
     {{ integrated_menu('main', { 'depth': 2 }) }}
     <br />
-    {{ integrated_grid('main') }}
+    {% block content %}
+        {{ integrated_grid('main') }}
+    {% endblock %}
 </div>
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -38,11 +40,11 @@
 <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script type="text/javascript" src="{{ path('fos_js_routing_js', { 'callback': 'fos.Router.setData' }) }}"></script>
 
-{% if integrated_block_edit|default %}
+{% if app.request.attributes.get('integrated_block_edit') %}
     {{ include('@IntegratedWebsite/handlebars/grid.html.twig') }}
 {% endif %}
 
-{% if integrated_menu_edit|default %}
+{% if app.request.attributes.get('integrated_menu_edit') %}
     {{ include('@IntegratedWebsite/handlebars/menu.html.twig') }}
 {% endif %}
 
