@@ -19,26 +19,21 @@ use Integrated\Bundle\BlockBundle\Document\Block\Block;
  * Item document
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\EmbeddedDocument
  */
 class Item
 {
     /**
      * @var int
-     * @ODM\Int
      */
     protected $order;
 
     /**
      * @var Block
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\BlockBundle\Document\Block\Block")
      */
     protected $block;
 
     /**
      * @var Row
-     * @ODM\EmbedOne(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Row")
      */
     protected $row;
 

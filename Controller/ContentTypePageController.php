@@ -32,8 +32,8 @@ class ContentTypePageController extends Controller
     {
         $channel = $this->getSelectedChannel();
 
-        $builder = $this->getDocumentManager()->createQueryBuilder(ContentTypePage::class);
-        $builder->field('channel.$id')->equals($channel->getId());
+        $builder = $this->getDocumentManager()->createQueryBuilder(ContentTypePage::class)
+            ->field('channel.$id')->equals($channel->getId());
 
         $pagination = $this->getPaginator()->paginate(
             $builder,

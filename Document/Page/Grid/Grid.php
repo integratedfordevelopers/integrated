@@ -11,27 +11,22 @@
 
 namespace Integrated\Bundle\PageBundle\Document\Page\Grid;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Grid document
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\EmbeddedDocument
  */
 class Grid implements ItemsInterface
 {
     /**
      * @var string
-     * @ODM\String
      */
     protected $id;
 
     /**
      * @var Item[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Item")
      */
     protected $items;
 

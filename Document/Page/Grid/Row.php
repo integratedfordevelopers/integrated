@@ -11,21 +11,17 @@
 
 namespace Integrated\Bundle\PageBundle\Document\Page\Grid;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Row document
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- *
- * @ODM\EmbeddedDocument
  */
 class Row
 {
     /**
      * @var Column[]
-     * @ODM\EmbedMany(targetDocument="Integrated\Bundle\PageBundle\Document\Page\Grid\Column", strategy="set")
      */
     protected $columns;
 
