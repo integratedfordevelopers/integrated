@@ -12,21 +12,21 @@
     </div>
     <div class="row">
         <section class="section-white section-padding section-shadow section-radius">
-            {% trans %}Please confirm that you wish to{% endtrans %}{{ actions|length > 1 ? ': ' : ' ' }}
-            {% for action in actions %}
-                {{ action.getTypeOfAction() }} {% trans %}the following{% endtrans %} {{ action.getTargetName() }}
-                {% if loop.last == false %}
-                    {{ loop.revindex == 2 ? '&' : ',' }}
-                {% endif %}
-            {% endfor %}
-            {% trans %}for the selected{% endtrans %} {{ contents|length > 1 ? contents|length ~ ' contents' : 'content' }}.
+            {#-  #}{% trans %}Please confirm that you wish to{% endtrans %}{{ actionTranlators|length > 1 ? ': ' : ' ' }}{#  -#}
+            {% for translator in actionTranlators %}{#  -#}
+                {{ translator.getKindOfAction() }} {% trans %}the following{% endtrans %} {{ translator.getTarget() }}{#  -#}
+                {% if loop.last == false %}{#  -#}
+                    {{ loop.revindex == 2 ? ' & ' : ', ' }}{#  -#}
+                {% endif %}{#  -#}
+            {% endfor %}{#  -#}
+            {#-  #} {% trans %}for the selected{% endtrans %} {{ contents|length > 1 ? contents|length ~ ' contents' : 'content' }}.{#  -#}
             <hr/>
             <ul>
-                {% for action in actions %}
+                {% for translator in actionTranlators %}
                     <li>
-                        <strong>{{ action.getTypeOfAction() }} {{ action.getTargetName() }}:</strong>
+                        <strong>{{ translator.getKindOfAction() }} {{ translator.getTarget() }}:</strong>
                         <ul>
-                            {% for change in action.getChangeNames() %}
+                            {% for change in translator.getChanges() %}
                                 <li> - {{ change }}</li>
                             {% endfor %}
                         </ul>

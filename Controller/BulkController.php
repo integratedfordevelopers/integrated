@@ -15,6 +15,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Exception;
 
+use Integrated\Bundle\ContentBundle\Bulk\ActionTranslator\ActionTranslatorProvider;
 use Integrated\Bundle\ContentBundle\Bulk\BuildState;
 use Integrated\Bundle\ContentBundle\Bulk\BulkHandler\BulkHandlerInterface;
 use Integrated\Bundle\ContentBundle\Form\Type\Bulk\ActionsFormType;
@@ -56,11 +57,16 @@ class BulkController extends Controller
     protected $bulkHandler;
 
     /**
-     * BulkController constructor.
+     * @var ActionTranslatorProvider
+     */
+    protected $actionTranslatorProvider;
+
+    /**
      * @param DocumentManager $dm
      * @param ContentProvider $contentProvider
      * @param ActionProvider $actionProvider
      * @param BulkHandlerInterface $bulkHandler
+     * @param ActionTranslatorProvider $actionTranslatorProvider
      * @param ContainerInterface $container
      */
     public function __construct(
@@ -68,12 +74,14 @@ class BulkController extends Controller
         ContentProvider $contentProvider,
         ActionProvider $actionProvider,
         BulkHandlerInterface $bulkHandler,
+        ActionTranslatorProvider $actionTranslatorProvider,
         ContainerInterface $container
     ) {
         $this->dm = $dm;
         $this->contentProvider = $contentProvider;
         $this->actionProvider = $actionProvider;
         $this->bulkHandler = $bulkHandler;
+        $this->actionTranslatorProvider = $actionTranslatorProvider;
         $this->container = $container;
     }
 
@@ -169,6 +177,7 @@ class BulkController extends Controller
      */
     public function confirmAction(Request $request)
     {
+        /* @var BulkAction $bulkAction */
         $bulkAction = $this->dm->getRepository(BulkAction::class)->find($request->get('bulkid'));
 
         if (!$bulkAction instanceof BulkAction) {
@@ -187,13 +196,16 @@ class BulkController extends Controller
 
         // If form submitted try to execute all bulk action.
         if ($form->isSubmitted() && $form->isValid()) {
+            $bulkAction->setState(BuildState::CONFIRMED);
             try {
-                $bulkAction->setState(BuildState::CONFIRMED);
-                $this->bulkHandler->execute($bulkAction);
+                $this->bulkHandler->execute($bulkAction->getSelection(), $bulkAction->getActions());
+                $bulkAction->setState(BuildState::EXECUTED);
+                $bulkAction->setExecutedAt(new \DateTime());
+
                 $this->dm->flush();
 
-                $this->addFlash('success', 'It seems all bulk actions were executed successfully! :)');
                 $request->query->remove('bulkid');
+                $this->addFlash('success', 'It seems all bulk actions were executed successfully! :)');
                 return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
             } catch (Exception $e) {
                 $this->addFlash(
@@ -206,7 +218,7 @@ class BulkController extends Controller
         return [
             'filters' => $request->query->all(),
             'contents' => $bulkAction->getSelection(),
-            'actions' => $bulkAction->getActions(),
+            'actionTranlators' => $this->actionTranslatorProvider->getTranslators($bulkAction->getActions()),
             'form' => $form->createView(),
         ];
     }

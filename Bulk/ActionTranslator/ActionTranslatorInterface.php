@@ -9,20 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk;
+namespace Integrated\Bundle\ContentBundle\Bulk\ActionTranslator;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-interface ActionInterface
+interface ActionTranslatorInterface
 {
     /**
      * @return string
      */
-    public function getName();
+    public function getKindOfAction();
+
+    /**
+     * @return string
+     */
+    public function getTarget();
 
     /**
      * @return array
      */
-    public function getOptions();
+    public function getChanges();
 }

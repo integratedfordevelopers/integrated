@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Bulk\ActionHandler;
 
+use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Common\Content\ContentInterface;
@@ -19,7 +20,7 @@ use Integrated\Common\Content\Relation\RelationInterface;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class AddReferenceActionHandler implements ActionHandlerInterface
+class AddReferenceActionHandler extends RelationActionHandler
 {
     /**
      * @param ContentInterface $content
@@ -27,20 +28,19 @@ class AddReferenceActionHandler implements ActionHandlerInterface
      * @return $this
      */
     public function execute(ContentInterface $content, array $options){
-        // TODO make sure this works with option instead of $this->attributes
-        if ($embeddedRelation = $content->getRelation($this->relation->getId())) {
-            if ($embeddedRelation instanceof EmbeddedRelation) {
-                $embeddedRelation->addReferences($this->references);
-            }
-        } elseif ($relation = $this->getRelation()) {
-            if ($this->checkRelCon($relation, $content)) {
-                $embeddedRelation = new EmbeddedRelation();
-                $embeddedRelation->setRelationId($relation->getId());
-                $embeddedRelation->setRelationType($relation->getType());
-                $embeddedRelation->addReferences($this->references);
+        $this->validateOptions($options);
 
-                $content->addRelation($embeddedRelation);
+        if ($embeddedRelation = $content->getRelation($options['relation']->getId())) {
+            if ($embeddedRelation instanceof EmbeddedRelation) {
+                $embeddedRelation->addReferences($options['references']);
             }
+        } elseif ($this->checkRelCon($options['relation'], $content)) {
+            $embeddedRelation = new EmbeddedRelation();
+            $embeddedRelation->setRelationId($options['relation']->getId());
+            $embeddedRelation->setRelationType($options['relation']->getType());
+            $embeddedRelation->addReferences($options['references']);
+
+            $content->addRelation($embeddedRelation);
         } else {
             throw new \RuntimeException('No Relation could be fetched.');
         }
@@ -55,7 +55,10 @@ class AddReferenceActionHandler implements ActionHandlerInterface
      */
     private function checkRelCon(RelationInterface $relation, ContentInterface $content)
     {
-        return $relation->getSources()->exists(function ($key, $element) use ($content) {
+        $sources = $relation->getSources();
+
+        /* @var Collection $sources */
+        return $sources->exists(function ($key, $element) use ($content) {
             return $element instanceof ContentType && $element->getId() === $content->getContentType();
         });
     }

@@ -12,6 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Bulk\BulkHandler;
 
 use Doctrine\Common\Collections\Collection;
+use Integrated\Bundle\ContentBundle\Bulk\ActionInterface;
+use Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistry;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
@@ -19,27 +21,39 @@ use Doctrine\Common\Collections\Collection;
 class BulkHandler implements BulkHandlerInterface
 {
     /**
-     * @param Collection $contents [ ContentInterface ]
-     * @param Collection $actions [ ActionInterface ]
+     * @var ActionHandlerRegistry
+     */
+    private $registry;
+
+    /**
+     * @param ActionHandlerRegistry $registry
+     */
+    public function __construct(ActionHandlerRegistry $registry)
+    {
+        $this->registry = $registry;
+    }
+
+    /**
+     * @param Collection $contents
+     * @param Collection $actions
      * @return $this
      */
     public function execute(Collection $contents, Collection $actions)
     {
-        // TODO make sure this works
-//        if ($bulkAction->getState() !== BuildState::CONFIRMED) {
-//            throw new \RuntimeException("Its seems not all steps have been completed.");
-//        }
-//
-//        foreach ($bulkAction->getSelection() as $content) {
-//            foreach ($bulkAction->getActions() as $action) {
-//                if ($action instanceof ActionInterface) {
-//                    $action->execute($content);
-//                }
-//            }
-//        }
-//
-//        $bulkAction->setState(BuildState::EXECUTED);
-//        $bulkAction->setExecutedAt(new \DateTime());
+        /* @var ActionInterface $action */
+        foreach ($actions->getIterator() as $action) {
+            if (!$this->registry->hasHandler($action->getName())) {
+                new \RuntimeException('ActionHandler does not exist.');
+            }
+        }
+
+        /* @var ActionInterface $action */
+        foreach ($actions->getIterator() as $action) {
+            $handler = $this->registry->getHandler($action->getName());
+            foreach ($contents->getIterator() as $content){
+                $handler->execute($content, $action->getOptions());
+            }
+        }
 
         return $this;
     }

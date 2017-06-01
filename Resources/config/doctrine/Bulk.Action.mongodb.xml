@@ -3,9 +3,10 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <embedded-document name="Integrated\Bundle\ContentBundle\Document\Bulk\Embedded\RemoveReferenceAction">
+    <embedded-document name="Integrated\Bundle\ContentBundle\Document\Bulk\Action">
 
-        <field fieldName="actionType" type="string"/>
+        <field fieldName="id" type="string" />
+        <field fieldName="name" type="string" />
 
     </embedded-document>
 

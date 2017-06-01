@@ -8,6 +8,8 @@
 
         <service id="integrated_content.bulk.registry.action_handler_registry" class="Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistry" />
 
+        <service id="integrated_content.bulk.action_translator.action_translator_factory" class="Integrated\Bundle\ContentBundle\Bulk\ActionTranslator\ActionTranslatorFactory" />
+
         <service id="integrated_content.bulk.content_provider" class="Integrated\Bundle\ContentBundle\Bulk\ContentProvider">
             <argument type="service" id="solarium.client" />
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
@@ -19,7 +21,17 @@
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
         </service>
 
-        <service id="integrated_content.bulk.bulk_handler" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler\BulkHandler" />
+        <service id="integrated_content.bulk.bulk_handler" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler\BulkHandler">
+            <argument type="service" id="integrated_content.bulk.registry.action_handler_registry"/>
+        </service>
+
+        <service id="integrated_content.bulk.validation_bulk_handler_decorator" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler\ValidationBulkHandlerDecorator">
+            <argument type="service" id="integrated_content.bulk.bulk_handler"/>
+        </service>
+
+        <service id="integrated_content.bulk.action_translator.action_translator_provider" class="Integrated\Bundle\ContentBundle\Bulk\ActionTranslator\ActionTranslatorProvider">
+            <argument type="service" id="integrated_content.bulk.action_translator.action_translator_factory"/>
+        </service>
 
     </services>
 </container>

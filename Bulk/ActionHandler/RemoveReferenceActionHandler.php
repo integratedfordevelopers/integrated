@@ -17,17 +17,19 @@ use Integrated\Common\Content\ContentInterface;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class RemoveReferenceActionHandler implements ActionHandlerInterface
+class RemoveReferenceActionHandler extends RelationActionHandler
 {
     /**
      * @param ContentInterface $content
+     * @param array $options
      * @return $this
      */
     public function execute(ContentInterface $content, array $options){
-        // TODO make sure this works with option instead of $this->attributes
-        if ($embeddedRelation = $content->getRelation($this->relation->getId())) {
+        $this->validateOptions($options);
+
+        if ($embeddedRelation = $content->getRelation($options['relation']->getId())) {
             if ($embeddedRelation instanceof EmbeddedRelation) {
-                foreach ($this->getReferences() as $reference) {
+                foreach ($options['references'] as $reference) {
                     $embeddedRelation->removeReference($reference);
                 }
                 if (count($embeddedRelation->getReferences()) == 0) {

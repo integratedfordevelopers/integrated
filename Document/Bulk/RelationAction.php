@@ -14,6 +14,9 @@ namespace Integrated\Bundle\ContentBundle\Document\Bulk;
 use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
+/**
+ * @author Patrick Mestebeld <patrick@e-active.nl>
+ */
 class RelationAction extends Action
 {
     /**
@@ -30,9 +33,8 @@ class RelationAction extends Action
      * RelationAction constructor.
      * @param Relation $relation
      */
-    public function __construct(Relation $relation)
+    public function __construct()
     {
-        $this->relation = $relation;
         $this->references = new ArrayCollection();
     }
 
@@ -72,13 +74,14 @@ class RelationAction extends Action
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getOptions()
     {
-        $array = [];
-
-        $array['relation'] = $this->getRelation();
-        $array['references'] = $this->getReferences()->toArray();
-
-        return $array;
+        return [
+            'relation' => $this->getRelation(),
+            'references' =>$this->getReferences()
+        ];
     }
 }

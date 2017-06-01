@@ -14,8 +14,7 @@
 
         <embed-many field="actions">
             <discriminator-map>
-                <discriminator-mapping value="AddReferenceAction" class="Integrated\Bundle\ContentBundle\Document\Bulk\Embedded\AddReferenceAction" />
-                <discriminator-mapping value="RemoveReferenceAction" class="Integrated\Bundle\ContentBundle\Document\Bulk\Embedded\RemoveReferenceAction" />
+                <discriminator-mapping value="RelationAction" class="Integrated\Bundle\ContentBundle\Document\Bulk\RelationAction" />
             </discriminator-map>
         </embed-many>
 
