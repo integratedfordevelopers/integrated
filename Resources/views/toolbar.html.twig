@@ -1,28 +1,30 @@
-{% if app.user|default and is_granted('ROLE_ADMIN') %}
-    <div class="navbar navbar-fixed-top integrated-website-toolbar">
-        <div class="container">
+<div class="navbar navbar-fixed-top integrated-website-toolbar">
+    <div class="container">
 
-            <div class="navbar-header">
-                <a href="{{ path('integrated_content_content_index') }}" class="navbar-brand">Integrated</a>
-            </div>
+        <div class="navbar-header">
+            <a href="{{ path('integrated_content_content_index') }}" class="navbar-brand">Integrated</a>
+        </div>
 
-            <div class="pull-right">
-                {% if app.request.attributes.get('_route') == 'integrated_website_page_edit' %}
-                    <a href="javascript:;" class="btn btn-default navbar-btn" data-action="integrated-website-page-save" data-id="{{ page.id }}" data-target="{{ path('integrated_website_page_' ~  page.id) }}">
-                        Save
-                    </a>
+        <div class="pull-right">
+            {% set params = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
 
-                    <a href="{{ path('integrated_website_page_' ~  page.id) }}" class="btn btn-default navbar-btn">
-                        Cancel
-                    </a>
-                {% else %}
-                    <a href="{{ path('integrated_website_page_edit', { 'id': page.id }) }}" class="btn btn-default navbar-btn">
-                        Edit
-                    </a>
-                {% endif %}
-            </div>
+            {% if app.request.query.get('integrated_website_edit') %}
+                <a href="javascript:;" class="btn btn-default navbar-btn" data-action="integrated-website-page-save"
+                   {% if app.request.attributes.get('page').id|default %}data-id="{{ app.request.attributes.get('page').id }}" {% endif %}
+                   data-target="{{ path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 0})) }}">
+                    Save
+                </a>
+
+                <a href="{{ path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 0})) }}" class="btn btn-default navbar-btn">
+                    Cancel
+                </a>
+            {% else %}
+                <a href="{{  path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 1})) }}" class="btn btn-default navbar-btn">
+                    Edit
+                </a>
+            {% endif %}
         </div>
     </div>
+</div>
 
-    <div class="integrated-website-body-margin-top"></div>
-{% endif %}
+<div class="integrated-website-body-margin-top"></div>

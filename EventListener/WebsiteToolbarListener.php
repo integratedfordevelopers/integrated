@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
+use Integrated\Bundle\WebsiteBundle\Service\EditableChecker;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Response;
-
-use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -29,11 +29,26 @@ class WebsiteToolbarListener implements EventSubscriberInterface
     protected $twig;
 
     /**
-     * @param \Twig_Environment $twig
+     * @var EditableChecker
      */
-    public function __construct(\Twig_Environment $twig)
+    protected $websiteEditableChecker;
+
+    /**
+     * @param \Twig_Environment $twig
+     * @param EditableChecker $websiteEditableChecker
+     */
+    public function __construct(\Twig_Environment $twig, EditableChecker $websiteEditableChecker)
     {
         $this->twig = $twig;
+        $this->websiteEditableChecker = $websiteEditableChecker;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getSubscribedEvents()
+    {
+        return [KernelEvents::RESPONSE => ['onKernelResponse', -128]];
     }
 
     /**
@@ -45,43 +60,26 @@ class WebsiteToolbarListener implements EventSubscriberInterface
             return;
         }
 
-        // @todo security check (INTEGRATED-383)
-
-        $request = $event->getRequest();
-
-        $page = $request->attributes->get('page');
-
-        if ($page instanceof Page) {
-            $this->injectToolbar($event->getResponse(), $page);
+        if ($this->websiteEditableChecker->checkEditable()) {
+            $this->injectToolbar($event->getResponse());
         }
     }
 
     /**
      * @param Response $response
-     * @param Page $page
      */
-    protected function injectToolbar(Response $response, Page $page)
+    protected function injectToolbar(Response $response)
     {
         $content = $response->getContent();
         $pos = stripos($content, '<body');
 
         if (false !== $pos) {
-            $toolbar = $this->twig->render('IntegratedWebsiteBundle::toolbar.html.twig', [
-                'page' => $page,
-            ]);
+            $toolbar = $this->twig->render('IntegratedWebsiteBundle::toolbar.html.twig');
 
             $end = stripos($content, '>', $pos) + 1;
             $content = substr_replace($content, "\n" . $toolbar, $end, 0);
 
             $response->setContent($content);
         }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function getSubscribedEvents()
-    {
-        return [KernelEvents::RESPONSE => ['onKernelResponse', -128]];
     }
 }

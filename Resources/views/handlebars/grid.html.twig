@@ -19,7 +19,7 @@
                 <button class="btn btn-default" type="button" data-toggle="dropdown">New
                     <span class="caret"></span></button>
                     <ul class="dropdown-menu">
-                        {% for metadata in integrated_find_block_types() %}
+                        {% for metadata in integrated_find_block_types() if 'InlineTextBlock' not in metadata.class %}
                             <li role="presentation">
                                 <a href="{{ path('integrated_block_block_new', {'_format': 'iframe.html', 'class': metadata.class}) }}" data-action="integrated-website-block-new">{{ metadata.type|default(metadata.class) }}</a>
                             </li>

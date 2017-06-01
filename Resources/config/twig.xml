@@ -15,8 +15,7 @@
     <services>
 
         <service id="integrated_website.twig.grid_extension" class="%integrated_website.twig.grid_extension.class%">
-            <argument type="service" id="twig.form.renderer" />
-            <argument type="service" id="form.factory" />
+            <argument type="service" id="request_stack" />
             <tag name="twig.extension" />
         </service>
 
@@ -25,6 +24,7 @@
             <argument type="service" id="integrated_menu.menu.database_menu_factory" />
             <argument type="service" id="knp_menu.helper" />
             <argument type="service" id="integrated_menu.matcher.recursive" />
+            <argument type="service" id="request_stack" />
             <argument>%knp_menu.renderer.twig.template%</argument>
 
             <tag name="twig.extension" />

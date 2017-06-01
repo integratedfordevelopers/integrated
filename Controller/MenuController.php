@@ -44,14 +44,12 @@ class MenuController extends Controller
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      * @return JsonResponse
      */
     public function saveAction(Request $request)
     {
-        // @todo security check (INTEGRATED-383)
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $dm = $this->getDocumentManager();
         $data = (array) json_decode($request->getContent(), true);

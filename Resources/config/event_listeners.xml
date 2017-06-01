@@ -6,6 +6,8 @@
 
     <parameters>
 
+        <parameter key="integrated_website.website_editable.class">Integrated\Bundle\WebsiteBundle\EventListener\WebsiteEditableListener</parameter>
+
         <parameter key="integrated_website.website_toolbar.class">Integrated\Bundle\WebsiteBundle\EventListener\WebsiteToolbarListener</parameter>
 
         <parameter key="integrated_website.website_configuration.class">Integrated\Bundle\WebsiteBundle\EventListener\WebsiteConfigurationListener</parameter>
@@ -14,8 +16,15 @@
 
     <services>
 
+        <service id="integrated_website.website_editable" class="%integrated_website.website_editable.class%">
+            <argument type="service" id="integrated_website.service.editable_checker" />
+            <argument type="service" id="integrated_asset.manager.javascript_manager" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
         <service id="integrated_website.website_toolbar" class="%integrated_website.website_toolbar.class%">
             <argument type="service" id="twig" />
+            <argument type="service" id="integrated_website.service.editable_checker" />
             <tag name="kernel.event_subscriber" />
         </service>
 

@@ -1,5 +1,11 @@
-{% include '@IntegratedWebsiteBundle/Resources/views/json-ld.html.twig' with {content: article} %}
+{% extends 'IntegratedWebsiteBundle:themes/default:base.html.twig' %}
 
-<h1>{{ article.title }}</h1>
+{% block content %}
+    {% include 'IntegratedWebsiteBundle::json-ld.html.twig' with {content: article} %}
 
-{{ article.content|integrated_content }}
+    <h1>{{ article.title }}</h1>
+
+    {{ article.content|integrated_content }}
+
+    {{ integrated_grid('below_article') }}
+{% endblock %}

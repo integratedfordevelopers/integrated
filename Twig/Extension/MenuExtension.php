@@ -11,17 +11,19 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
-use Integrated\Bundle\MenuBundle\Matcher\RecursiveActiveMatcher;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Doctrine\ODM\MongoDB\Id\UuidGenerator;
-
-use Knp\Menu\Twig\Helper;
 
 use Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider;
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
 use Integrated\Bundle\MenuBundle\Document\Menu;
 use Integrated\Bundle\MenuBundle\Document\MenuItem;
+use Integrated\Bundle\MenuBundle\Matcher\RecursiveActiveMatcher;
+
+use Knp\Menu\Twig\Helper;
+
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -64,10 +66,16 @@ class MenuExtension extends \Twig_Extension
     private $matcher;
 
     /**
+     * @var Request|null
+     */
+    protected $request;
+
+    /**
      * @param DatabaseMenuProvider $provider
      * @param DatabaseMenuFactory $factory
      * @param Helper $helper
      * @param RecursiveActiveMatcher $matcher
+     * @param RequestStack $requestStack
      * @param string $template
      */
     public function __construct(
@@ -75,12 +83,14 @@ class MenuExtension extends \Twig_Extension
         DatabaseMenuFactory $factory,
         Helper $helper,
         RecursiveActiveMatcher $matcher,
+        RequestStack $requestStack,
         $template
     ) {
         $this->provider = $provider;
         $this->factory = $factory;
         $this->helper = $helper;
         $this->matcher = $matcher;
+        $this->request = $requestStack->getMasterRequest();
 
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults([
@@ -118,7 +128,7 @@ class MenuExtension extends \Twig_Extension
     {
         $options = $this->resolver->resolve($options);
 
-        $edit = isset($context['integrated_menu_edit']) && true === $context['integrated_menu_edit'];
+        $edit = $this->request && $this->request->attributes->get('integrated_menu_edit');
         $menu = $this->provider->get($name);
 
         $html = '';

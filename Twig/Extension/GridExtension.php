@@ -11,10 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use Integrated\Bundle\PageBundle\Document\Page\Page;
+use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
+
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -27,9 +28,16 @@ class GridExtension extends \Twig_Extension
     protected $resolver;
 
     /**
+     * @var RequestStack|null
      */
-    public function __construct()
+    protected $request;
+
+    /**
+     */
+    public function __construct(RequestStack $requestStack)
     {
+        $this->request = $requestStack->getMasterRequest();
+
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults([
             'template' => 'IntegratedWebsiteBundle:Page:grid.html.twig',
@@ -62,37 +70,21 @@ class GridExtension extends \Twig_Extension
     {
         $options = $this->resolver->resolve($options);
 
-        $edit = isset($context['integrated_block_edit']) && true === $context['integrated_block_edit'];
         $page = isset($context['page']) ? $context['page'] : null;
 
-        $html = '';
-
-        if ($edit) {
-            $html .= '<div class="integrated-website-grid integrated-website-droppable" data-id="' . $id . '">';
-        }
-
-        if ($page instanceof Page) {
+        if ($page instanceof AbstractPage) {
             $grid = $page->getGrid($id);
 
             if (!$grid instanceof Grid) {
                 $grid = new Grid($id);
             }
 
-            if ($edit) {
-                $html .= '<script type="text/json">' . json_encode(['data' => $grid->toArray()]) . '</script>';
-            }
-
-            $html .= $environment->render($options['template'], [
-                'integrated_block_edit' => $edit,
+            return $environment->render($options['template'], [
                 'grid' => $grid,
             ]);
         }
 
-        if ($edit) {
-            $html .= '</div>';
-        }
-
-        return $html;
+        return '';
     }
 
     /**
