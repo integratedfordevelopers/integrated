@@ -8,7 +8,7 @@
         <field name="id" id="true" strategy="UUID" />
         <field name="content" type="string" />
 
-        <reference-one field="page" target-document="Integrated\Bundle\PageBundle\Document\Page\Page" />
+        <reference-one field="page" target-document="Integrated\Bundle\PageBundle\Document\Page\AbstractPage" />
 
     </document>
 

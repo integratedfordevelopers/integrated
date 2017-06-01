@@ -104,7 +104,6 @@ class BlockExtension extends \Twig_Extension
     public function renderBlock(\Twig_Environment $environment, $context, $block, array $options = [])
     {
         $id = $block instanceof Block ? $block->getId() : $block;
-        $edit = isset($context['integrated_block_edit']) && true === $context['integrated_block_edit'];
 
         try {
             // fatal errors are not catched
@@ -112,7 +111,6 @@ class BlockExtension extends \Twig_Extension
 
             if (!$html) {
                 return $environment->render($this->locateTemplate('blocks/empty.html.twig'), [
-                    'integrated_block_edit' => $edit,
                     'id' => $id,
                 ]);
             }
@@ -126,7 +124,6 @@ class BlockExtension extends \Twig_Extension
             }
 
             return $environment->render($this->locateTemplate('blocks/error.html.twig'), [
-                'integrated_block_edit' => $edit,
                 'id' => $id,
             ]);
         }
