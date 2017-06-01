@@ -17,7 +17,6 @@ use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

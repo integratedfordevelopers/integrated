@@ -18,7 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -47,9 +46,10 @@ class GridController extends Controller
 
         $grids = [];
 
-        if (isset($data['grids']) ) {
+        if (isset($data['grids'])) {
             foreach ($data['grids'] as $grid) {
                 $grid = $this->get('integrated_page.grid.factory')->fromArray($grid);
+
                 if ($grid instanceof Grid) {
                     $grids[] = $grid;
                 }

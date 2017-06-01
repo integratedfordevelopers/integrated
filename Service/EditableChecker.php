@@ -57,7 +57,8 @@ class EditableChecker
     /**
      * @return bool
      */
-    public function checkEditable() {
+    public function checkEditable()
+    {
         if (null === $this->request) {
             return false;
         }
