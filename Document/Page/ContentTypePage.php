@@ -13,27 +13,16 @@ namespace Integrated\Bundle\PageBundle\Document\Page;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
- *
- * @ODM\Document(collection="content_type_page")
  */
-class ContentTypePage extends Page
+class ContentTypePage extends AbstractPage
 {
     /**
      * @var string
-     * @ODM\Id(strategy="UUID")
-     */
-    protected $id;
-
-    /**
-     * @var string
-     * @ODM\String
      * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern="/{slug}/",
@@ -44,21 +33,18 @@ class ContentTypePage extends Page
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      */
     protected $controllerService;
 
     /**
      * @var string
-     * @ODM\String
      * @Assert\NotBlank
      */
     protected $controllerAction;
 
     /**
      * @var ContentType
-     * @ODM\ReferenceOne(targetDocument="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType")
      */
     protected $contentType;
 
