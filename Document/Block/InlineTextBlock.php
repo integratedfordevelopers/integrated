@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
+use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-use Integrated\Bundle\PageBundle\Document\Page\Page;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -28,7 +28,7 @@ class InlineTextBlock extends Block
     protected $content;
 
     /**
-     * @var Page
+     * @var AbstractPage
      */
     protected $page;
 
@@ -58,9 +58,9 @@ class InlineTextBlock extends Block
     protected $disabled = false;
 
     /**
-     * @param Page $page
+     * @param AbstractPage $page
      */
-    public function __construct(Page $page)
+    public function __construct(AbstractPage $page)
     {
         parent::__construct();
 
@@ -88,7 +88,7 @@ class InlineTextBlock extends Block
     }
 
     /**
-     * @return Page
+     * @return AbstractPage
      */
     public function getPage()
     {
