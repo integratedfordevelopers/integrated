@@ -46,4 +46,22 @@
         </property>
 
     </class>
+
+    <class name="Integrated\Bundle\UserBundle\Model\Group">
+
+        <property name="name">
+            <constraint name="NotBlank" />
+            <constraint name="Length">
+                <option name="min">3</option>
+            </constraint>
+        </property>
+
+        <property name="roles">
+            <constraint name="Count">
+                <option name="min">1</option>
+            </constraint>
+        </property>
+
+    </class>
+
 </constraint-mapping>
