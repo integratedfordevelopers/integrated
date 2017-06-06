@@ -22,7 +22,6 @@ class Column implements ItemsInterface
 {
     /**
      * @var int
-     * @ODM\Int
      */
     protected $size;
 
