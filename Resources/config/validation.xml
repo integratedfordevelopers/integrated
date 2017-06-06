@@ -56,12 +56,6 @@
             </constraint>
         </property>
 
-        <property name="roles">
-            <constraint name="Count">
-                <option name="min">1</option>
-            </constraint>
-        </property>
-
     </class>
 
 </constraint-mapping>
