@@ -34,14 +34,20 @@ class RelationType extends AbstractType
                 'multiple',
                 null,
                 [
-                    'required' => false
+                    'required' => false,
+                    'attr' => [
+                        'align_with_widget' => true
+                    ]
                 ]
             )
             ->add(
                 'required',
                 null,
                 [
-                    'required' => false
+                    'required' => false,
+                    'attr' => [
+                        'align_with_widget' => true
+                    ]
                 ]
             )
         ;

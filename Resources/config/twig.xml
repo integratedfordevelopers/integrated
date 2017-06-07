@@ -37,6 +37,12 @@
             <tag name="twig.extension" />
         </service>
 
+        <service id="integrated_content.twig.json_ld_extension" class="Integrated\Bundle\ContentBundle\Twig\Extension\JsonLDExtension">
+            <argument type="service" id="serializer" />
+
+            <tag name="twig.extension" />
+        </service>
+
     </services>
 
 </container>
