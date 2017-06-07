@@ -10,15 +10,9 @@
         <field fieldName="createdAt" type="date"/>
         <field fieldName="executedAt" type="date"/>
 
+        <embed-many field="actions" strategy="set" />
+
         <reference-many field="selection" target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
-
-        <embed-many field="actions">
-            <discriminator-map>
-                <discriminator-mapping value="RelationAction" class="Integrated\Bundle\ContentBundle\Document\Bulk\RelationAction" />
-            </discriminator-map>
-        </embed-many>
-
-        <discriminator-field name="class" />
 
     </document>
 

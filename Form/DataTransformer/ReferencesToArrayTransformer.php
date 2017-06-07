@@ -13,7 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
+
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -27,7 +29,6 @@ class ReferencesToArrayTransformer implements DataTransformerInterface
     protected $dm;
 
     /**
-     * ReferencesToArrayTransformer constructor.
      * @param DocumentManager $dm
      */
     public function __construct(DocumentManager $dm)
@@ -42,9 +43,13 @@ class ReferencesToArrayTransformer implements DataTransformerInterface
     {
         $array = [];
 
+        if (null === $value) {
+            return $array;
+        }
+
         foreach ($value as $reference) {
             if ($reference instanceof Content) {
-                $array[$reference->getId()] = $reference->getId();
+                $array[$reference->getId()] = (string) $reference;
             }
         }
 

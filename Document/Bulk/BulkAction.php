@@ -12,10 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\Document\Bulk;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Integrated\Bundle\ContentBundle\Bulk\ActionInterface;
 use Integrated\Bundle\ContentBundle\Bulk\BuildState;
 use Integrated\Common\Content\ContentInterface;
-use Integrated\Common\Form\Mapping\Annotations as Type;
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -44,7 +45,7 @@ class BulkAction
     protected $executedAt;
 
     /**
-     * @var ArrayCollection
+     * @var ContentInterface[]
      * @Assert\Count(
      *     min = 1,
      *     minMessage = "You must select at least one item."
@@ -53,7 +54,7 @@ class BulkAction
     protected $selection;
 
     /**
-     * @var ArrayCollection
+     * @var ActionInterface[]
      */
     protected $actions;
 
@@ -154,7 +155,7 @@ class BulkAction
     }
 
     /**
-     * @return ArrayCollection
+     * @return ContentInterface[]
      */
     public function getSelection()
     {
@@ -175,9 +176,8 @@ class BulkAction
         return $this;
     }
 
-
     /**
-     * @return ArrayCollection
+     * @return ActionInterface[]
      */
     public function getActions()
     {
@@ -185,29 +185,33 @@ class BulkAction
     }
 
     /**
-     * @param ArrayCollection $actions
+     * @param ActionInterface[] $actions
      * @return $this
      */
-    public function setActions(ArrayCollection $actions)
+    public function setActions($actions)
     {
-        if ($this->containsNotAll($actions, ActionInterface::class)) {
-            throw new \RuntimeException('Items in ArrayCollection do not all implement ' . ActionInterface::class);
+        $this->actions = [];
+        if (is_array($actions) || ($actions instanceof \Traversable)) {
+            foreach ($actions as $action) {
+                $this->addAction($action);
+            }
         }
 
-        $this->actions = $actions;
         return $this;
     }
 
-
     /**
- * @param ArrayCollection $actions
+ * @param ActionInterface[] $actions
  * @return $this
  */
-    public function addActions(ArrayCollection $actions)
+    public function addActions($actions)
     {
-        foreach ($actions as $action) {
-            $this->addAction($action);
+        if (is_array($actions) || ($actions instanceof \Traversable)) {
+            foreach ($actions as $action) {
+                $this->addAction($action);
+            }
         }
+
         return $this;
     }
 
@@ -252,7 +256,8 @@ class BulkAction
      * @param $class
      * @return bool
      */
-    protected function containsNotAll(ArrayCollection $array, $class){
+    protected function containsNotAll(ArrayCollection $array, $class)
+    {
         return $array->exists(function ($key, $element) use ($class) {
             return !$element instanceof $class;
         });

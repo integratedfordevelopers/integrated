@@ -18,11 +18,10 @@ use Exception;
 use Integrated\Bundle\ContentBundle\Bulk\ActionTranslator\ActionTranslatorProvider;
 use Integrated\Bundle\ContentBundle\Bulk\BuildState;
 use Integrated\Bundle\ContentBundle\Bulk\BulkHandler\BulkHandlerInterface;
-use Integrated\Bundle\ContentBundle\Form\Type\Bulk\ActionsFormType;
+use Integrated\Bundle\ContentBundle\Form\Type\Bulk\BulkActionType;
 use Integrated\Bundle\ContentBundle\Form\Type\SelectionFormType;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Integrated\Bundle\ContentBundle\Bulk\ContentProvider;
-use Integrated\Bundle\ContentBundle\Bulk\ActionProvider;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -47,11 +46,6 @@ class BulkController extends Controller
     protected $contentProvider;
 
     /**
-     * @var ActionProvider
-     */
-    protected $actionProvider;
-
-    /**
      * @var BulkHandlerInterface
      */
     protected $bulkHandler;
@@ -64,7 +58,6 @@ class BulkController extends Controller
     /**
      * @param DocumentManager $dm
      * @param ContentProvider $contentProvider
-     * @param ActionProvider $actionProvider
      * @param BulkHandlerInterface $bulkHandler
      * @param ActionTranslatorProvider $actionTranslatorProvider
      * @param ContainerInterface $container
@@ -72,14 +65,12 @@ class BulkController extends Controller
     public function __construct(
         DocumentManager $dm,
         ContentProvider $contentProvider,
-        ActionProvider $actionProvider,
         BulkHandlerInterface $bulkHandler,
         ActionTranslatorProvider $actionTranslatorProvider,
         ContainerInterface $container
     ) {
         $this->dm = $dm;
         $this->contentProvider = $contentProvider;
-        $this->actionProvider = $actionProvider;
         $this->bulkHandler = $bulkHandler;
         $this->actionTranslatorProvider = $actionTranslatorProvider;
         $this->container = $container;
@@ -144,19 +135,10 @@ class BulkController extends Controller
             return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
         }
 
-        //Set actions to BulkAction
-        $bulkAction->addActions($this->actionProvider->getActions($bulkAction->getActions()));
-
-        $form = $this->createForm(ActionsFormType::class, $bulkAction);
+        $form = $this->createForm(BulkActionType::class, $bulkAction);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $bulkAction = $form->getData();
-
-            if (!$bulkAction instanceof BulkAction) {
-                return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
-            }
-
             $bulkAction->setState(BuildState::CONFIGURED);
             $this->dm->flush();
 

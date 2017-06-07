@@ -17,10 +17,6 @@
             <argument>false</argument>
         </service>
 
-        <service id="integrated_content.bulk.action_provider" class="Integrated\Bundle\ContentBundle\Bulk\ActionProvider">
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-        </service>
-
         <service id="integrated_content.bulk.bulk_handler" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler\BulkHandler">
             <argument type="service" id="integrated_content.bulk.registry.action_handler_registry"/>
         </service>

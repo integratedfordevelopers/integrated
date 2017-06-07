@@ -9,16 +9,22 @@
 * file that was distributed with this source code.
 */
 
-namespace Integrated\Bundle\ContentBundle\Document\Bulk;
+namespace Integrated\Bundle\ContentBundle\Document\Bulk\Action;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Bundle\ContentBundle\Bulk\ActionInterface;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class RelationAction extends Action
+class RelationAction implements ActionInterface
 {
+    /**
+     * @var string
+     */
+    protected $name;
+
     /**
      * @var Relation
      */
@@ -31,11 +37,28 @@ class RelationAction extends Action
 
     /**
      * RelationAction constructor.
-     * @param Relation $relation
      */
     public function __construct()
     {
         $this->references = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
     }
 
     /**

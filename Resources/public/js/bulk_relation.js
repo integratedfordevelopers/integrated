@@ -28,5 +28,16 @@ function implementSelect2() {
                 }
             }
         });
+
+
+        var value;
+        if ($(this).data('value')) {
+            value = $(this).data('value');
+            for (var i in value) {
+                $(this).append('<option selected="selected" value="' + i + '">' + value[i] + '</option>');
+            }
+
+            $(this).trigger('change');
+        }
     });
 }

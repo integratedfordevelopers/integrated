@@ -171,6 +171,11 @@
             <tag name="form.type" />
         </service>
 
+        <service id="integrated_content.form.type.bulk.actions_type" class="Integrated\Bundle\ContentBundle\Form\Type\Bulk\ActionsType">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="form.type" />
+        </service>
+
     </services>
 
 </container>

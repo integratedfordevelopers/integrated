@@ -3,12 +3,12 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <embedded-document name="Integrated\Bundle\ContentBundle\Document\Bulk\RelationAction">
+    <embedded-document name="Integrated\Bundle\ContentBundle\Document\Bulk\Action\RelationAction">
 
-        <reference-one field="relation"/>
-        <reference-many
-            field="references"
-            target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
+        <field name="name" type="string" />
+
+        <reference-one field="relation" target-document="Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation" />
+        <reference-many field="references" target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
 
     </embedded-document>
 
