@@ -123,6 +123,16 @@ class Comment extends Content
      */
     public function __toString()
     {
-        return ($this->title ? $this->title : substr($this->comment, 0, 60) . '...');
+        $string = $this->title;
+
+        if (!$string) {
+            if (strlen($this->comment > 60)) {
+                $string = substr($this->comment, 0, 60) . '...';
+            } else {
+                $string = $this->comment;
+            }
+        }
+
+        return $string;
     }
 }
