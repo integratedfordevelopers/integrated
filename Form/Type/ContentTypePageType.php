@@ -46,8 +46,6 @@ class ContentTypePageType extends AbstractType
         /** @var ContentTypePage $contentTypePage */
         $contentTypePage = $builder->getData();
 
-        $builder->add('title');
-
         $builder->add('path', 'text', [
             'label' => 'URL'
         ]);
