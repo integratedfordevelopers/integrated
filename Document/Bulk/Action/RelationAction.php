@@ -104,7 +104,7 @@ class RelationAction implements ActionInterface
     {
         return [
             'relation' => $this->getRelation(),
-            'references' =>$this->getReferences()
+            'references' => $this->getReferences()
         ];
     }
 }

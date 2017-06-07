@@ -7,7 +7,7 @@
 
         <field name="name" type="string" />
 
-        <reference-one field="relation" target-document="Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation" />
+        <reference-one field="relation" target-document="Integrated\Bundle\ContentBundle\Document\Relation\Relation" />
         <reference-many field="references" target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
 
     </embedded-document>

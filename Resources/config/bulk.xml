@@ -29,5 +29,13 @@
             <argument type="service" id="integrated_content.bulk.action_translator.action_translator_factory"/>
         </service>
 
+        <service id="integrated_content.bulk.action_handler.add_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\ActionHandler\AddReferenceActionHandler">
+            <tag name="integrated_content.bulk.action_handler" />
+        </service>
+
+        <service id="integrated_content.bulk_action_handler.remove_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\ActionHandler\RemoveReferenceActionHandler">
+            <tag name="integrated_content.bulk.action_handler" />
+        </service>
+
     </services>
 </container>

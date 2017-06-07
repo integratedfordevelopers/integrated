@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle;
 
+use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ActionHandlerRegistryPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ContentProviderPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\EventDispatcherPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -46,6 +47,7 @@ class IntegratedContentBundle extends Bundle
         $container->addCompilerPass(new ThemeManagerPass());
         $container->addCompilerPass(new EventDispatcherPass());
         $container->addCompilerPass(new ContentProviderPass());
+        $container->addCompilerPass(new ActionHandlerRegistryPass());
     }
 
     /**

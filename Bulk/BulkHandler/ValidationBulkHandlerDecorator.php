@@ -63,7 +63,7 @@ class ValidationBulkHandlerDecorator implements BulkHandlerInterface
      * @return Collection
      */
     private function filterCollection(Collection $collection, $class){
-        return $collection->filter(function ($key, $element) use ($class){
+        return $collection->filter(function ($element) use ($class){
             return $element instanceof $class;
         });
     }
