@@ -12,13 +12,10 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type\Bulk\Fields;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Bundle\ContentBundle\Document\Bulk\Action\RelationAction;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ReferencesToArrayTransformer;
-use Integrated\Common\Content\Form\Event\FormEvent;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
