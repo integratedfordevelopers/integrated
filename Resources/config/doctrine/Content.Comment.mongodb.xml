@@ -10,10 +10,6 @@
         <field fieldName="email" type="string" />
         <field fieldName="comment" type="string" />
 
-        <embed-one
-                field="author"
-                target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author" />
-
     </document>
 
 </doctrine-mongo-mapping>
