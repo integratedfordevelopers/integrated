@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ContentBundle;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ActionHandlerRegistryPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ContentProviderPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\EventDispatcherPass;
-
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegistryBuilderPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\FormFactoryEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\MetadataEventDispatcherPass;
