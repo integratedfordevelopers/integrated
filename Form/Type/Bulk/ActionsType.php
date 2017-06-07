@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Form\Type\Bulk;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
+use Integrated\Bundle\ContentBundle\Bulk\ActionHandler\AddReferenceActionHandler;
+use Integrated\Bundle\ContentBundle\Bulk\ActionHandler\RemoveReferenceActionHandler;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Integrated\Bundle\ContentBundle\Document\Bulk\Action\RelationAction;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
@@ -84,10 +86,9 @@ class ActionsType extends AbstractType
                         RelationActionType::class,
                         [
                             'relation' => $relation,
-                            // ToDo: handler should be a real handler class
-                            'handler' => 'HANDLER_ADD',
+                            'handler' => AddReferenceActionHandler::class,
                             'label' => sprintf('Add %s', $relation->getName()),
-                            'data' => $getAction('HANDLER_ADD', $relation),
+                            'data' => $getAction(AddReferenceActionHandler::class, $relation),
                         ]
                     );
 
@@ -96,10 +97,9 @@ class ActionsType extends AbstractType
                         RelationActionType::class,
                         [
                             'relation' => $relation,
-                            // ToDo: handler should be a real handler class
-                            'handler' => 'HANDLER_REMOVE',
+                            'handler' => RemoveReferenceActionHandler::class,
                             'label' => sprintf('Remove %s', $relation->getName()),
-                            'data' => $getAction('HANDLER_REMOVE', $relation),
+                            'data' => $getAction(RemoveReferenceActionHandler::class, $relation),
                         ]
                     );
                 }
