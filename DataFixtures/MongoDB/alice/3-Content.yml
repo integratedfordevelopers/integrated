@@ -61,6 +61,15 @@ Integrated\Bundle\ContentBundle\Document\Content\Relation\Company:
     channels: <numberBetween(1, 5)>x @channel*
 #    logo:
 
+Integrated\Bundle\ContentBundle\Document\Content\Comment:
+  comment{1..100}:
+    contentType: comment
+    title: <sentence()>
+    name: <firstName()> <lastName()>
+    email: <email()>
+    comment: <paragraph()>
+
+
 # -------------------------------------------- #
 # Below here local embedded objects            #
 # -------------------------------------------- #

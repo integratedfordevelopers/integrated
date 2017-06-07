@@ -28,3 +28,8 @@ Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
     class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
     name: Employee
     fields: <classfields($class, ['firstName', 'lastName', 'email'], ['nickname'])>
+
+  Comment:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Comment
+    name: Comment
+    fields: <classfields($class, ['title', 'name', 'email', 'comment'])>
