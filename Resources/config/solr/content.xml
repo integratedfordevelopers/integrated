@@ -150,6 +150,15 @@
                 <string key="content">description</string>
                 <string key="description">description</string>
 
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/taxonomy/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
+
             </options>
         </type>
 
