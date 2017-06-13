@@ -349,10 +349,18 @@ class SluggableSubscriber implements EventSubscriber
 
         if ($uow instanceof ODMUnitOfWork) {
             $classMetadata = $om->getClassMetadata($class);
+            $reflection = $classMetadata->getReflectionClass();
 
-            if (count($classMetadata->parentClasses)) {
-                // get parent class
-                $class = end($classMetadata->parentClasses);
+            $parents = [];
+
+            // get parent class
+            while ($parent = $reflection->getParentClass()) {
+                $parents[] = $parent->getName();
+                $reflection = $parent;
+            }
+
+            if (count($parents)) {
+                $class = end($parents);
             }
 
             return $om->getRepository($class);
