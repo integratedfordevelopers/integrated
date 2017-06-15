@@ -215,4 +215,18 @@
 
     </class>
 
+    <class name="">
+        <type name="integrated.fields">
+            <options>
+
+                <string key="title">title</string>
+                <string key="name">name</string>
+                <string key="email">email</string>
+                <string key="comment">comment</string>
+                <string key="comment_index">comment</string>
+
+            </options>
+        </type>
+    </class>
+
 </converter-mapping>
