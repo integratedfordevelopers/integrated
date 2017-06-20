@@ -13,10 +13,15 @@ namespace Integrated\Bundle\ChannelBundle\Controller;
 
 use Exception;
 
+use Integrated\Bundle\ChannelBundle\Event\FilterResponseConfigEvent;
+use Integrated\Bundle\ChannelBundle\Event\FormConfigEvent;
+use Integrated\Bundle\ChannelBundle\Event\GetResponseConfigEvent;
 use Integrated\Bundle\ChannelBundle\Form\Type\ActionsType;
 use Integrated\Bundle\ChannelBundle\Form\Type\ConfigFormType;
 use Integrated\Bundle\ChannelBundle\Form\Type\DeleteFormType;
+use Integrated\Bundle\ChannelBundle\IntegratedChannelEvents;
 use Integrated\Bundle\ChannelBundle\Model\Config;
+
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
@@ -24,6 +29,7 @@ use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -43,6 +49,11 @@ class ConfigController extends Controller
     protected $registry;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $dispatcher;
+
+    /**
      * Constructor/
      *
      * @param ConfigManagerInterface $manager
@@ -52,10 +63,12 @@ class ConfigController extends Controller
     public function __construct(
         ConfigManagerInterface $manager,
         RegistryInterface $registry,
+        EventDispatcherInterface $dispatcher,
         ContainerInterface $container
     ) {
         $this->manager = $manager;
         $this->registry = $registry;
+        $this->dispatcher = $dispatcher;
 
         $this->container = $container;
     }
@@ -94,24 +107,41 @@ class ConfigController extends Controller
         $data = new Config();
         $data->setAdapter($adapter->getManifest()->getName());
 
+        $event = new GetResponseConfigEvent($data, $request);
+
+        if ($this->dispatcher->dispatch(IntegratedChannelEvents::CONFIG_CREATE_REQUEST, $event)->getResponse()) {
+            return $event->getResponse();
+        }
+
         $form = $this->createNewForm($data, $adapter);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
+        if ($form->get('actions')->getData() == 'cancel') {
+            return $this->redirect($this->generateUrl('integrated_channel_config_index'));
+        }
 
-            if ($form->get('actions')->getData() == 'cancel') {
-                return $this->redirect($this->generateUrl('integrated_channel_config_index'));
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $event = $this->dispatcher->dispatch(
+                IntegratedChannelEvents::CONFIG_CREATE_SUBMITTED,
+                new FormConfigEvent($data, $request, $form)
+            );
 
-            if ($form->isValid()) {
-                $this->manager->persist($data);
+            $this->manager->persist($data);
 
+            if (!$response = $event->getResponse()) {
                 if ($message = $this->getFlashMessage()) {
                     $message->success(sprintf('The config %s is saved', $data->getName()));
                 }
 
-                return $this->redirect($this->generateUrl('integrated_channel_config_index'));
+                $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
             }
+
+            $this->dispatcher->dispatch(
+                IntegratedChannelEvents::CONFIG_CREATE_RESPONSE,
+                new FilterResponseConfigEvent($data, $request, $response)
+            );
+
+            return $response;
         }
 
         return $this->render('IntegratedChannelBundle:Config:new.html.twig', [
@@ -129,6 +159,7 @@ class ConfigController extends Controller
      */
     public function editAction(Request $request, $id)
     {
+        /** @var Config $data */
         $data = $this->manager->find($id);
 
         if (!$data) {
@@ -141,24 +172,41 @@ class ConfigController extends Controller
             throw $this->createNotFoundException('Not Found', $e);
         }
 
+        $event = new GetResponseConfigEvent($data, $request);
+
+        if ($this->dispatcher->dispatch(IntegratedChannelEvents::CONFIG_EDIT_REQUEST, $event)->getResponse()) {
+            return $event->getResponse();
+        }
+
         $form = $this->createEditForm($data, $adapter);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('put')) {
-            $form->handleRequest($request);
+        if ($form->get('actions')->getData() == 'cancel') {
+            return $this->redirect($this->generateUrl('integrated_channel_config_index'));
+        }
 
-            if ($form->get('actions')->getData() == 'cancel') {
-                return $this->redirect($this->generateUrl('integrated_channel_config_index'));
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $event = $this->dispatcher->dispatch(
+                IntegratedChannelEvents::CONFIG_EDIT_SUBMITTED,
+                new FormConfigEvent($data, $request, $form)
+            );
 
-            if ($form->isValid()) {
-                $this->manager->persist($data);
+            $this->manager->persist($data);
 
+            if (!$response = $event->getResponse()) {
                 if ($message = $this->getFlashMessage()) {
                     $message->success(sprintf('The changes to the config %s are saved', $data->getName()));
                 }
 
-                return $this->redirect($this->generateUrl('integrated_channel_config_index'));
+                $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
             }
+
+            $this->dispatcher->dispatch(
+                IntegratedChannelEvents::CONFIG_EDIT_RESPONSE,
+                new FilterResponseConfigEvent($data, $request, $response)
+            );
+
+            return $response;
         }
 
         return $this->render('IntegratedChannelBundle:Config:edit.html.twig', [
@@ -176,6 +224,7 @@ class ConfigController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
+        /** @var Config $data */
         $data = $this->manager->find($id);
 
         // It should always be possible to delete a connector even if the adaptor itself does
@@ -186,30 +235,38 @@ class ConfigController extends Controller
             return $this->redirect($this->generateUrl('integrated_channel_config_index')); // data is already gone
         }
 
+        $event = new GetResponseConfigEvent($data, $request);
+
+        if ($this->dispatcher->dispatch(IntegratedChannelEvents::CONFIG_DELETE_REQUEST, $event)->getResponse()) {
+            return $event->getResponse();
+        }
+
         $form = $this->createDeleteForm($data);
+        $form->handleRequest($request);
 
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
+        if ($form->get('actions')->getData() == 'cancel') {
+            return $this->redirect($this->generateUrl('integrated_channel_config_index'));
+        }
 
-            if ($form->get('actions')->getData() == 'cancel') {
-                return $this->redirect($this->generateUrl('integrated_channel_config_index'));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->manager->remove($data);
+
+            if ($message = $this->getFlashMessage()) {
+                $message->success(sprintf('The config %s is removed', $data->getName()));
             }
 
-            if ($form->isValid()) {
-                $this->manager->remove($data);
+            $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
 
-                if ($message = $this->getFlashMessage()) {
-                    $message->success(sprintf('The config %s is removed', $data->getName()));
-                }
+            $this->dispatcher->dispatch(
+                IntegratedChannelEvents::CONFIG_DELETE_RESPONSE,
+                new FilterResponseConfigEvent($data, $request, $response)
+            );
 
-                return $this->redirect($this->generateUrl('integrated_channel_config_index'));
-            }
+            return $response;
         }
 
         return $this->render('IntegratedChannelBundle:Config:delete.html.twig', [
-            'adapter' => $this->registry->hasAdapter(
-                $data->getAdapter()
-            ) ? $this->registry->getAdapter($data->getAdapter()) : null,
+            'adapter' => $this->registry->hasAdapter($data->getAdapter()) ? $this->registry->getAdapter($data->getAdapter()) : null,
             'data'    => $data,
             'form'    => $form->createView()
         ]);
