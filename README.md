@@ -41,8 +41,8 @@ To enable the facebook connector set the consumer in the config
     # app/config/config.yml
     integrated_social:
         facebook:
-            app_id: '%twitter_app_id%'
-            app_secret: '%twitter_app_secret%'
+            app_id: '%facebook_app_id%'
+            app_secret: '%facebook_app_secret%'
 
 ## License ##
 This bundle is under the MIT license. See the complete license in the bundle:
