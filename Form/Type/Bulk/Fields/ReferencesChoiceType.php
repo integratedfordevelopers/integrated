@@ -44,7 +44,10 @@ class ReferencesChoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $transformer = new ReferencesToArrayTransformer($this->dm);
-        $builder->addModelTransformer($transformer);
+        $builder
+            ->addModelTransformer($transformer)
+            ->resetViewTransformers()
+        ;
     }
 
     /**
