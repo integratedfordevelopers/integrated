@@ -19,6 +19,7 @@ use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterAdapter
 use Integrated\Bundle\ChannelBundle\DependencyInjection\IntegratedChannelExtension;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -40,6 +41,12 @@ class IntegratedChannelBundle extends Bundle
         $container->addCompilerPass(new RegisterConfigPass());
         $container->addCompilerPass(new RegisterConfigResolverPass());
         $container->addCompilerPass(new RegisterAdapterPass());
+
+        $container->addCompilerPass(new RegisterListenersPass(
+            'event_dispatcher',
+            'integrated_channel.event_listener',
+            'integrated_channel.event_subscriber'
+        ));
     }
 
     /**
