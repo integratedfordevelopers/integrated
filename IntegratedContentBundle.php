@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle;
 
-use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ActionHandlerRegistryPass;
+use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ActionHandlerRegistryBuilderPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ContentProviderPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\EventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegistryBuilderPass;
@@ -50,7 +50,7 @@ class IntegratedContentBundle extends Bundle
         $container->addCompilerPass(new EventDispatcherPass());
         $container->addCompilerPass(new RegistryBuilderPass('integrated_content.json_ld.registry_builder', 'integrated_content.json_ld.processor'));
         $container->addCompilerPass(new ContentProviderPass());
-        $container->addCompilerPass(new ActionHandlerRegistryPass());
+        $container->addCompilerPass(new ActionHandlerRegistryBuilderPass());
     }
 
     /**

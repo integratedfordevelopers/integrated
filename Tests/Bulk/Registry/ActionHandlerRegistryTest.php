@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Bulk\Registry;
 
-use Integrated\Bundle\ContentBundle\Bulk\ActionHandlerInterface;
+use Integrated\Bundle\ContentBundle\Bulk\ActionHandler\ActionHandlerInterface;
 use Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistry;
 
 /**
@@ -20,44 +20,45 @@ use Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistry;
 class ActionHandlerRegistryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ActionHandlerRegistry
+     * @var ActionHandlerInterface[]
      */
-    private $registry;
+    protected $handlers;
 
     /**
-     * Setup the test
+     * @var ActionHandlerRegistry
      */
-    protected function setUp()
+    protected $registry;
+
+    public function setUp()
     {
-        $this->registry = new ActionHandlerRegistry();
+        $this->handlers = [
+            'class1' => $this->getMockBuilder(ActionHandlerInterface::class)->getMock(),
+            'class2' => $this->getMockBuilder(ActionHandlerInterface::class)->getMock()
+        ];
+
+        $this->registry = new ActionHandlerRegistry($this->handlers);
     }
 
-    public function testSetAndGetHandlers()
+    public function testHasHandlerWithValidHandler()
     {
-        $handler1 = $this->getMockBuilder(ActionHandlerInterface::class)->getMock();
-        $handler2 = $this->getMockBuilder(ActionHandlerInterface::class)->getMock();
-
-        $this->assertSame($this->registry, $this->registry->setHandlers([$handler1, $handler2]));
-        $this->assertCount(1, $this->registry->getHandlers());
-        $this->assertArrayHasKey(get_class($handler2), $this->registry->getHandlers());
+        $this->assertTrue($this->registry->hasHandler('class1'));
     }
 
-    public function testAddAndHasHandler()
+    public function testHasHandlerWithInvalidHandler()
     {
-        $handler = $this->getMockBuilder(ActionHandlerInterface::class)->getMock();
-
-        $this->assertSame($this->registry, $this->registry->addHandler($handler));
-        $this->assertTrue($this->registry->hasHandler(get_class($handler)));
-        $this->assertFalse($this->registry->hasHandler('UNKNOWN_KEY'));
+        $this->assertFalse($this->registry->hasHandler('UNKNOWN_CLASS'));
     }
 
-    public function testGetHandler()
+    public function testGetHandlerWithValidHandler()
     {
-        $handler = $this->getMockBuilder(ActionHandlerInterface::class)->getMock();
+        $this->assertSame($this->handlers['class1'], $this->registry->getHandler('class1'));
+    }
 
-        $this->registry->addHandler($handler);
-
-        $this->assertInstanceOf(ActionHandlerInterface::class, $this->registry->getHandler(get_class($handler)));
-        $this->assertNull($this->registry->getHandler('UNKNOWN_KEY'));
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testRegistryWithInvalidHandler()
+    {
+        $this->registry->getHandler('UNKNOWN_CLASS');
     }
 }

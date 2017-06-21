@@ -17,7 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ActionHandlerRegistryPass implements CompilerPassInterface
+class ActionHandlerRegistryBuilderPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
@@ -28,10 +28,10 @@ class ActionHandlerRegistryPass implements CompilerPassInterface
             return;
         }
 
-        $registry = $container->getDefinition('integrated_content.bulk.registry.action_handler_registry');
+        $builder = $container->getDefinition('integrated_content.bulk.registry.action_handler_registry_builder');
 
         foreach ($container->findTaggedServiceIds('integrated_content.bulk.action_handler') as $service => $tags) {
-            $registry->addMethodCall('addHandler', [$container->getDefinition($service)]);
+            $builder->addMethodCall('addHandler', [$container->getDefinition($service)]);
         }
     }
 }
