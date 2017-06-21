@@ -1,5 +1,10 @@
 !function($, Routing, JSON) {
 
+    /**
+     * @type object|null
+     */
+    var previousCall = null;
+
     var $blockTarget = null;
 
     /**
@@ -121,20 +126,21 @@
 
                 var template = Handlebars.compile($('#integrated_website_template_modal_block_add').html());
 
-                var html = $(template(data));
-
-                $(html).on('click', '[data-action="integrated-website-block-choose"]', function(e) {
-                    addBlock($(this).attr('data-id'), $blockTarget);
-
-                    $('.modal.in').modal('hide');
-                });
-
                 var dialog = bootbox.dialog({
                     title: 'Add block',
-                    message: html
+                    message: $(template(data))
                 });
             }
         });
+    });
+
+    /**
+     * Handle choose block button
+     */
+    $(document).on('click', '[data-action="integrated-website-block-choose"]', function(e) {
+        addBlock($(this).attr('data-id'), $blockTarget);
+
+        $('.modal.in').modal('hide');
     });
 
     /**
