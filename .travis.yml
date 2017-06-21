@@ -3,5 +3,5 @@ install:
 before_script:
 - php composer.phar update -n
 script:
-- vendor/bin/phpcs . --ignore=*/vendor/* --standard=PSR2 --extensions=php
+- vendor/bin/phpcs . --ignore=*/vendor/* --standard=PSR2 --extensions=php --runtime-set ignore_warnings_on_exit 1
 - vendor/bin/phpunit -c phpunit.xml
