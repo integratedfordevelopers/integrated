@@ -1,18 +1,16 @@
 <doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
                         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
-                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <document name="Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction" collection="bulkaction">
+    <document name="Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction" collection="bulkaction" repository-class="Integrated\Bundle\ContentBundle\Document\Bulk\BulkActionRepository">
 
         <field fieldName="id" id="true" strategy="UUID"/>
-        <field fieldName="state" type="int"/>
         <field fieldName="createdAt" type="date"/>
         <field fieldName="executedAt" type="date"/>
 
-        <embed-many field="actions" strategy="set" />
+        <embed-many field="actions" strategy="set"/>
 
-        <reference-many field="selection" target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
+        <reference-many field="selection" target-document="Integrated\Bundle\ContentBundle\Document\Content\Content"/>
 
     </document>
 

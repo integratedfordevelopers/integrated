@@ -18,13 +18,11 @@ use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegist
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\FormFactoryEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\MetadataEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\PriorityResolverBuilderPass;
-use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\TemplatingPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ThemeManagerPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\IntegratedContentExtension;
 use Integrated\Common\Normalizer\DependencyInjection\RegistryBuilderPass;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**

@@ -9,7 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk\ActionHandler;
+namespace Integrated\Bundle\ContentBundle\Bulk\Action;
+
 use Integrated\Common\Content\ContentInterface;
 
 /**

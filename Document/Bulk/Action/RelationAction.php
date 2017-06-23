@@ -12,8 +12,9 @@
 namespace Integrated\Bundle\ContentBundle\Document\Bulk\Action;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Integrated\Bundle\ContentBundle\Bulk\ActionInterface;
+use Integrated\Bundle\ContentBundle\Bulk\Action\ActionInterface;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
@@ -23,17 +24,17 @@ class RelationAction implements ActionInterface
     /**
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * @var Relation
      */
-    protected $relation;
+    private $relation;
 
     /**
-     * @var ArrayCollection contains ContentInterface
+     * @var ArrayCollection|ContentInterface[]
      */
-    protected $references;
+    private $references;
 
     /**
      * RelationAction constructor.
@@ -80,20 +81,47 @@ class RelationAction implements ActionInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return \ArrayIterator|\Traversable
      */
     public function getReferences()
     {
-        return $this->references;
+        return $this->references->getIterator();
     }
 
     /**
-     * @param ArrayCollection $references
+     * @param ContentInterface[] $references
      * @return $this
      */
-    public function setReferences(ArrayCollection $references)
+    public function setReferences($references)
     {
-        $this->references = $references;
+        $this->references->clear();
+        if (is_array($references) || $references instanceof \Traversable) {
+            foreach ($references as $reference) {
+                $this->addReference($reference);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @param ContentInterface $reference
+     * @return $this
+     */
+    public function addReference(ContentInterface $reference)
+    {
+        if (!$this->references->contains($reference)) {
+            $this->references->add($reference);
+        }
+        return $this;
+    }
+
+    /**
+     * @param ContentInterface $reference
+     * @return $this
+     */
+    public function removeReference(ContentInterface $reference)
+    {
+        $this->references->removeElement($reference);
         return $this;
     }
 

@@ -22,28 +22,10 @@ class ContainsLegitReferences extends Constraint
     /**
      * @var string
      */
-    public $message = 'The value for relation "{{ relation }}" seems not valid.';
+    public $message = 'The given reference(s) does not all seem to correspond the target of the relation "{{ relation }}".';
 
     /**
      * @var Relation
      */
     public $relation;
-
-    /**
-     * @return Relation
-     */
-    public function getRelation()
-    {
-        return $this->relation;
-    }
-
-    /**
-     * @param Relation $relation
-     * @return $this
-     */
-    public function setRelation(Relation $relation)
-    {
-        $this->relation = $relation;
-        return $this;
-    }
 }

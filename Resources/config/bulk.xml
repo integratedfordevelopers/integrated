@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://symfony.com/schema/dic/services
-        http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
 
@@ -12,34 +11,31 @@
             <factory service="integrated_content.bulk.registry.action_handler_registry_builder" method="getRegistry" />
         </service>
 
-        <service id="integrated_content.bulk.action_translator.action_translator_factory" class="Integrated\Bundle\ContentBundle\Bulk\ActionTranslator\ActionTranslatorFactory" />
+        <service id="integrated_content.bulk.action.translator.action_translator_factory" class="Integrated\Bundle\ContentBundle\Bulk\Action\Translator\ActionTranslatorFactory" />
 
-        <service id="integrated_content.bulk.content_provider" class="Integrated\Bundle\ContentBundle\Bulk\ContentProvider">
+        <service id="integrated_content.bulk.content_provider" class="Integrated\Bundle\ContentBundle\Provider\ContentProvider">
             <argument type="service" id="solarium.client" />
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="security.token_storage" />
             <argument>false</argument>
         </service>
 
-        <service id="integrated_content.bulk.bulk_handler" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler\BulkHandler">
+        <service id="integrated_content.bulk.bulk_handler" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler">
             <argument type="service" id="integrated_content.bulk.registry.action_handler_registry"/>
         </service>
 
-        <service id="integrated_content.bulk.validation_bulk_handler_decorator" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler\ValidationBulkHandlerDecorator">
-            <argument type="service" id="integrated_content.bulk.bulk_handler"/>
+        <service id="integrated_content.bulk.action.translator.action_translator_provider" class="Integrated\Bundle\ContentBundle\Bulk\Action\Translator\ActionTranslatorProvider">
+            <argument type="service" id="integrated_content.bulk.action.translator.action_translator_factory"/>
         </service>
 
-        <service id="integrated_content.bulk.action_translator.action_translator_provider" class="Integrated\Bundle\ContentBundle\Bulk\ActionTranslator\ActionTranslatorProvider">
-            <argument type="service" id="integrated_content.bulk.action_translator.action_translator_factory"/>
-        </service>
-
-        <service id="integrated_content.bulk.action_handler.add_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\ActionHandler\AddReferenceActionHandler">
+        <service id="integrated_content.bulk.action.handler.add_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceActionHandler">
             <tag name="integrated_content.bulk.action_handler" />
         </service>
 
-        <service id="integrated_content.bulk_action_handler.remove_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\ActionHandler\RemoveReferenceActionHandler">
+        <service id="integrated_content.bulk.action.handler.remove_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceActionHandler">
             <tag name="integrated_content.bulk.action_handler" />
         </service>
 
     </services>
+
 </container>

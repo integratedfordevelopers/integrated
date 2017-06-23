@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk\ActionHandler;
+namespace Integrated\Bundle\ContentBundle\Bulk\Action\Handler;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
 use Integrated\Common\Content\ContentInterface;
@@ -17,14 +17,15 @@ use Integrated\Common\Content\ContentInterface;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class RemoveReferenceActionHandler extends RelationActionHandler
+class RemoveReferenceActionHandler extends AbstractRelationActionHandler
 {
     /**
      * @param ContentInterface $content
      * @param array $options
-     * @return $this
+     * @return void
      */
-    public function execute(ContentInterface $content, array $options){
+    public function execute(ContentInterface $content, array $options)
+    {
         $this->validateOptions($options);
 
         if ($embeddedRelation = $content->getRelation($options['relation']->getId())) {
@@ -37,7 +38,5 @@ class RemoveReferenceActionHandler extends RelationActionHandler
                 }
             }
         }
-
-        return $this;
     }
 }

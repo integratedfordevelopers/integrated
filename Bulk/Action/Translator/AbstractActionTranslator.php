@@ -9,24 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk\ActionTranslator;
+namespace Integrated\Bundle\ContentBundle\Bulk\Action\Translator;
 
-use Integrated\Bundle\ContentBundle\Bulk\ActionInterface;
+use Integrated\Bundle\ContentBundle\Bulk\Action\ActionInterface;
+use Integrated\Bundle\ContentBundle\Bulk\Action\ActionTranslatorInterface;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-abstract class ActionTranslator implements ActionTranslatorInterface
+abstract class AbstractActionTranslator implements ActionTranslatorInterface
 {
     /**
      * @var ActionInterface
      */
     protected $action;
-
-    /**
-     * @var array
-     */
-    protected $actionOptions = [];
 
     /**
      * @return ActionInterface
@@ -43,7 +39,6 @@ abstract class ActionTranslator implements ActionTranslatorInterface
     public function setAction(ActionInterface $action)
     {
         $this->action = $action;
-        $this->actionOptions = $action->getOptions();
         return $this;
     }
 
@@ -60,7 +55,7 @@ abstract class ActionTranslator implements ActionTranslatorInterface
      */
     protected function getActionOptions()
     {
-        return $this->actionOptions;
+        return $this->action->getOptions();
     }
 
     /**
@@ -69,8 +64,9 @@ abstract class ActionTranslator implements ActionTranslatorInterface
      */
     protected function getActionOption($optionName)
     {
-        if (isset($this->actionOptions[$optionName])) {
-            return $this->actionOptions[$optionName];
+        if (key_exists($optionName, $this->action->getOptions())) {
+            $options = $this->action->getOptions();
+            return $options[$optionName];
         }
 
         return null;

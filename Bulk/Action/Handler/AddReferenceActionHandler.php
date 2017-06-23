@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk\ActionHandler;
+namespace Integrated\Bundle\ContentBundle\Bulk\Action\Handler;
 
 use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
@@ -20,32 +20,29 @@ use Integrated\Common\Content\Relation\RelationInterface;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class AddReferenceActionHandler extends RelationActionHandler
+class AddReferenceActionHandler extends AbstractRelationActionHandler
 {
     /**
      * @param ContentInterface $content
      * @param array $options
-     * @return $this
+     * @return void
      */
-    public function execute(ContentInterface $content, array $options){
-        $this->validateOptions($options);
+    public function execute(ContentInterface $content, array $options)
+    {
+        $options = $this->validateOptions($options);
 
         if ($embeddedRelation = $content->getRelation($options['relation']->getId())) {
             if ($embeddedRelation instanceof EmbeddedRelation) {
                 $embeddedRelation->addReferences($options['references']);
             }
-        } elseif ($this->checkRelCon($options['relation'], $content)) {
+        } elseif ($this->checkRelationContent($options['relation'], $content)) {
             $embeddedRelation = new EmbeddedRelation();
             $embeddedRelation->setRelationId($options['relation']->getId());
             $embeddedRelation->setRelationType($options['relation']->getType());
             $embeddedRelation->addReferences($options['references']);
 
             $content->addRelation($embeddedRelation);
-        } else {
-            throw new \RuntimeException('No Relation could be fetched.');
         }
-
-        return $this;
     }
 
     /**
@@ -53,7 +50,7 @@ class AddReferenceActionHandler extends RelationActionHandler
      * @param ContentInterface $content
      * @return bool
      */
-    private function checkRelCon(RelationInterface $relation, ContentInterface $content)
+    private function checkRelationContent(RelationInterface $relation, ContentInterface $content)
     {
         $sources = $relation->getSources();
 

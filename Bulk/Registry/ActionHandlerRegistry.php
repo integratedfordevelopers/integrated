@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Bulk\Registry;
 
-use Integrated\Bundle\ContentBundle\Bulk\ActionHandler\ActionHandlerInterface;
+use Integrated\Bundle\ContentBundle\Bulk\Action\ActionHandlerInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

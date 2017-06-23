@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type\Bulk;
+namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Integrated\Bundle\ContentBundle\Event\BulkActionFormEvent;
@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormEvents;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ActionsType extends AbstractType
+class BulkActionsType extends AbstractType
 {
     /**
      * @var EventDispatcherInterface

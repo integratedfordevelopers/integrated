@@ -15,34 +15,33 @@
 
 {% block content %}
     {{ form_start(form) }}
-    <div class="row mb-10">
-        <div class="col-md-8 push-sm-down">
-            <h1>{% trans %}Step 2 of 3: Choose Operation{% endtrans %}</h1>
-        </div>
-        <div class="pull-right">
-            <a class="btn btn-gray-thin mr-10" href="{{ path("integrated_content_bulk_select", filters) }}">{% trans %}Back{% endtrans %}</a>
-            <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
-        </div>
+    <div class="pull-right">
+        <a class="btn btn-gray-thin" href="{{ path("integrated_content_bulk_select", app.request.query.all|merge({'id': id })) }}">{% trans %}Back{% endtrans %}</a>&nbsp;
+        <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
     </div>
-    <div class="row mt-10">
-        <section class="section-white section-padding section-shadow section-radius">
+    <h1>{% trans %}Step 2 of 3: Choose Operation{% endtrans %}</h1>
+    <div class="row">
+        <section class="section-white section-padding section-shadow section-radius section-margin">
             <div class="container">
-                {% trans %}Choose the operation you wish to perform on the selected{% endtrans %} {{ selection|length > 1 ? selection|length ~ ' contents' : 'content' }}.
+                {% trans %}Choose the operation you wish to perform on the selected{% endtrans %} {#  -#}
+                {% transchoice selection %}{#  -#}
+                {1} content|]1,Inf[ %selection% contents{#  -#}
+                {% endtranschoice  %}{#  -#}
             </div>
             <hr/>
-                {{ form_errors(form) }}
-                {% for action in form.actions %}
-                    <div class="row mb-10">
-                        <div class="row col-md-8 bulk_subform">
-                            {{ form_row(action.references, {'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm', 'attr': {'data-value': action.references.vars.value|json_encode} }) }}
-                        </div>
+            {{ form_errors(form) }}
+            {% for action in form.actions %}
+                <div class="row">
+                    <div class="row col-md-8 bulk_subform">
+                        {{ form_row(action.references, {'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm', 'attr': {'data-value': action.references.vars.value|json_encode} }) }}
                     </div>
-                {% endfor %}
+                </div>
+            {% endfor %}
         </section>
     </div>
-    <div class="row mt-10">
+    <div class="row">
         <div class="pull-right">
-            <a class="btn btn-gray-thin mr-10" href="{{ path("integrated_content_bulk_select", filters) }}">{% trans %}Back{% endtrans %}</a>
+            <a class="btn btn-gray-thin" href="{{ path("integrated_content_bulk_select", app.request.query.all|merge({'id': id })) }}">{% trans %}Back{% endtrans %}</a>
             <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
         </div>
     </div>
@@ -59,9 +58,9 @@
             $(".bulk_subform .form-group").each(function () {
                 if ($(this).children("label").length > 0) {
                     $(this).css('min-height', $(this).children('div').height());
-                    $(this).children("label").prepend("<input type='checkbox' class='mr-10'/>");
+                    $(this).children("label").prepend("<input type='checkbox'/>&nbsp;");
 
-                    if($(this).find("option").length > 0){
+                    if ($(this).find("option").length > 0) {
                         $(this).find(":checkbox").prop('checked', true);
                     } else {
                         $(this).children("div").hide();

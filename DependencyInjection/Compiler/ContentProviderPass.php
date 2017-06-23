@@ -28,7 +28,7 @@ class ContentProviderPass implements CompilerPassInterface
             return;
         }
 
-        $definition = $container->getDefinition('integrated_content.bulk.content_provider');
+        $definition = $container->getDefinition('integrated_content.provider.content_provider');
         $definition->replaceArgument(3, true);
     }
 }

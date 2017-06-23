@@ -13,11 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Document\Bulk;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Integrated\Bundle\ContentBundle\Bulk\ActionInterface;
-use Integrated\Bundle\ContentBundle\Bulk\BuildState;
+use Integrated\Bundle\ContentBundle\Bulk\Action\ActionInterface;
 use Integrated\Common\Content\ContentInterface;
-
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
@@ -27,36 +24,32 @@ class BulkAction
     /**
      * @var string
      */
-    protected $id;
-
-    /**
-     * @var int
-     */
-    protected $state;
+    private $id;
 
     /**
      * @var \DateTime
      */
-    protected $createdAt;
+    private $createdAt;
 
     /**
      * @var \DateTime
      */
-    protected $executedAt;
+    private $executedAt;
 
     /**
-     * @var ContentInterface[]
-     * @Assert\Count(
-     *     min = 1,
-     *     minMessage = "You must select at least one item."
-     * )
+     * @var string
      */
-    protected $selection;
+    private $searchQuery;
 
     /**
-     * @var ActionInterface[]
+     * @var ArrayCollection|ContentInterface[]
      */
-    protected $actions;
+    private $selection;
+
+    /**
+     * @var ArrayCollection|ActionInterface[]
+     */
+    private $actions;
 
     /**
      * BulkAction constructor.
@@ -66,7 +59,6 @@ class BulkAction
         $this->createdAt = new \DateTime();
         $this->selection = new ArrayCollection();
         $this->actions = new ArrayCollection();
-        $this->state = BuildState::SELECTED;
     }
 
     /**
@@ -75,47 +67,6 @@ class BulkAction
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param string $id
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getState()
-    {
-        return $this->state;
-    }
-
-    /**
-     * @param int $state
-     */
-    public function setState($state)
-    {
-        switch ($state) {
-            case BuildState::SELECTED:
-                $this->state = BuildState::SELECTED;
-                break;
-            case BuildState::CONFIGURED:
-                $this->state = BuildState::CONFIGURED;
-                break;
-            case BuildState::CONFIRMED:
-                $this->state = BuildState::CONFIRMED;
-                break;
-            case BuildState::EXECUTED:
-                $this->state = BuildState::EXECUTED;
-                break;
-            default:
-                throw new \RuntimeException("State does not exist.");
-        }
     }
 
     /**
@@ -155,24 +106,64 @@ class BulkAction
     }
 
     /**
+     * @return string
+     */
+    public function getSearchQuery()
+    {
+        return $this->searchQuery;
+    }
+
+    /**
+     * @param string $searchQuery
+     */
+    public function setSearchQuery($searchQuery)
+    {
+        $this->searchQuery = $searchQuery;
+    }
+
+    /**
      * @return ContentInterface[]
      */
     public function getSelection()
     {
-        return $this->selection;
+        return $this->selection->toArray();
     }
 
     /**
-     * @param ArrayCollection $contents
+     * @param ContentInterface[] $contents
      * @return $this
      */
-    public function setSelection(ArrayCollection $contents)
+    public function setSelection($contents)
     {
-        if ($this->containsNotAll($contents, ContentInterface::class)) {
-            throw new \RuntimeException('Items in ArrayCollection do not all implement ' . ContentInterface::class);
+        $this->selection->clear();
+        if (is_array($contents) || $contents instanceof \Traversable) {
+            foreach ($contents as $content) {
+                $this->addSelection($content);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @param ContentInterface $content
+     * @return $this
+     */
+    public function addSelection(ContentInterface $content)
+    {
+        if (!$this->selection->contains($content)) {
+            $this->selection->add($content);
         }
 
-        $this->selection = $contents;
+        return $this;
+    }
+
+    /**
+     * @param ContentInterface $content
+     * @return $this
+     */
+    public function removeSelection(ContentInterface $content)
+    {
+        $this->selection->removeElement($content);
         return $this;
     }
 
@@ -181,7 +172,7 @@ class BulkAction
      */
     public function getActions()
     {
-        return $this->actions;
+        return $this->actions->toArray();
     }
 
     /**
@@ -190,28 +181,12 @@ class BulkAction
      */
     public function setActions($actions)
     {
-        $this->actions = [];
-        if (is_array($actions) || ($actions instanceof \Traversable)) {
+        $this->actions->clear();
+        if (is_array($actions) || $actions instanceof \Traversable) {
             foreach ($actions as $action) {
                 $this->addAction($action);
             }
         }
-
-        return $this;
-    }
-
-    /**
- * @param ActionInterface[] $actions
- * @return $this
- */
-    public function addActions($actions)
-    {
-        if (is_array($actions) || ($actions instanceof \Traversable)) {
-            foreach ($actions as $action) {
-                $this->addAction($action);
-            }
-        }
-
         return $this;
     }
 
@@ -228,38 +203,12 @@ class BulkAction
     }
 
     /**
-     * @param ArrayCollection $actions
-     * @return $this
-     */
-    public function removeActions(ArrayCollection $actions)
-    {
-        foreach ($actions as $action) {
-            $this->removeAction($action);
-        }
-        return $this;
-    }
-
-    /**
      * @param ActionInterface $action
      * @return $this
      */
     public function removeAction(ActionInterface $action)
     {
-        if ($this->actions->contains($action)) {
-            $this->actions->remove($action);
-        }
+        $this->actions->removeElement($action);
         return $this;
-    }
-
-    /**
-     * @param ArrayCollection $array
-     * @param $class
-     * @return bool
-     */
-    protected function containsNotAll(ArrayCollection $array, $class)
-    {
-        return $array->exists(function ($key, $element) use ($class) {
-            return !$element instanceof $class;
-        });
     }
 }

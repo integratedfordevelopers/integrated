@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -9,9 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk;
+namespace Integrated\Bundle\ContentBundle\Provider;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\WorkflowBundle\Solr\Extension\WorkflowExtension;
@@ -253,6 +254,7 @@ class ContentProvider
         // always allow access to assinged content
         $fq->setQuery($fq->getQuery() . ' OR facet_workflow_assigned_id: %1%', [$user->getId()]);
 
+        /* @var Person $person*/
         if ($person = $user->getRelation()) {
             $fq->setQuery($fq->getQuery() . ' OR author: %1%*', [$person->getId()]);
         }

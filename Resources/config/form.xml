@@ -166,12 +166,12 @@
             <tag name="doctrine_mongodb.odm.event_listener" event="postLoad" />
         </service>
 
-        <service id="integrated_bundle_content.form_type_bulk_fields.references_choice_type" class="Integrated\Bundle\ContentBundle\Form\Type\Bulk\Fields\ReferencesChoiceType">
+        <service id="integrated_bundle_content.form.type.fields.references_choice_type" class="Integrated\Bundle\ContentBundle\Form\Type\Fields\ReferencesChoiceType">
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
             <tag name="form.type" />
         </service>
 
-        <service id="integrated_content.form.type.bulk.actions_type" class="Integrated\Bundle\ContentBundle\Form\Type\Bulk\ActionsType">
+        <service id="integrated_content.form.type.bulk_actions_type" class="Integrated\Bundle\ContentBundle\Form\Type\BulkActionsType">
             <argument type="service" id="event_dispatcher" />
             <tag name="form.type" />
         </service>

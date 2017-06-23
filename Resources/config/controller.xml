@@ -14,9 +14,9 @@
 
         <service id="integrated_content.controller.bulk_controller" class="Integrated\Bundle\ContentBundle\Controller\BulkController">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-            <argument type="service" id="integrated_content.bulk.content_provider" />
-            <argument type="service" id="integrated_content.bulk.validation_bulk_handler_decorator"/>
-            <argument type="service" id="integrated_content.bulk.action_translator.action_translator_provider"/>
+            <argument type="service" id="integrated_content.provider.content_provider" />
+            <argument type="service" id="integrated_content.bulk.bulk_handler"/>
+            <argument type="service" id="integrated_content.bulk.action.translator.action_translator_provider"/>
             <argument type="service" id="service_container" />
         </service>
 

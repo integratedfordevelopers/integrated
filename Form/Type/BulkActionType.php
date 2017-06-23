@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type\Bulk;
+namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 
@@ -29,7 +29,7 @@ class BulkActionType extends AbstractType
     {
         $builder->add(
             'actions',
-            ActionsType::class
+            BulkActionsType::class
         );
     }
 

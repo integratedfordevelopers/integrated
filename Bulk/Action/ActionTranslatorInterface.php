@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Integrated package.
  *
@@ -8,30 +9,25 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk;
+namespace Integrated\Bundle\ContentBundle\Bulk\Action;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-final class BuildState
+interface ActionTranslatorInterface
 {
     /**
-     * @var int
+     * @return string
      */
-    const SELECTED = 0;
+    public function getKindOfAction();
 
     /**
-     * @var int
+     * @return string
      */
-    const CONFIGURED = 1;
+    public function getTarget();
 
     /**
-     * @var int
+     * @return array
      */
-    const CONFIRMED = 2;
-
-    /**
-     * @var int
-     */
-    const EXECUTED = 3;
+    public function getChanges();
 }

@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Bulk\Registry;
 
-use Integrated\Bundle\ContentBundle\Bulk\ActionHandler\ActionHandlerInterface;
+use Integrated\Bundle\ContentBundle\Bulk\Action\ActionHandlerInterface;
 use Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistry;
 
 /**

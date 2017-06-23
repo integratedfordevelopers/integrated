@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk\ActionTranslator;
+namespace Integrated\Bundle\ContentBundle\Bulk\Action\Translator;
 
-use Integrated\Bundle\ContentBundle\Bulk\ActionHandler\AddReferenceActionHandler;
-use Integrated\Bundle\ContentBundle\Bulk\ActionHandler\RemoveReferenceActionHandler;
+use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceActionHandler;
+use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceActionHandler;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
@@ -24,7 +24,7 @@ use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class RelationActionTranslator extends ActionTranslator
+class RelationActionTranslator extends AbstractActionTranslator
 {
     /**
      * @return string
@@ -49,7 +49,7 @@ class RelationActionTranslator extends ActionTranslator
         /* @var Relation $relation */
         $relation = $this->getActionOption('relation');
 
-        if($relation instanceof Relation){
+        if ($relation instanceof Relation) {
             return $relation->getName();
         }
 

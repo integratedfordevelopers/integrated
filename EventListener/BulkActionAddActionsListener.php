@@ -13,13 +13,15 @@ namespace Integrated\Bundle\ContentBundle\EventListener;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
-use Integrated\Bundle\ContentBundle\Bulk\ActionHandler;
+use Integrated\Bundle\ContentBundle\Bulk\Action\ActionInterface;
+use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceActionHandler;
+use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceActionHandler;
 use Integrated\Bundle\ContentBundle\Document\Bulk\Action\RelationAction;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Event\BulkActionFormEvent;
 use Integrated\Bundle\ContentBundle\Events\BulkActionFormEvents;
-use Integrated\Bundle\ContentBundle\Form\Type\Bulk\Action\RelationActionType;
+use Integrated\Bundle\ContentBundle\Form\Type\BulkRelationActionType;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -69,30 +71,30 @@ class BulkActionAddActionsListener implements EventSubscriberInterface
             foreach ($relations as $relation) {
                 $event->getForm()->add(
                     sprintf('add_%s', $relation->getId()),
-                    RelationActionType::class,
+                    BulkRelationActionType::class,
                     [
                         'relation' => $relation,
-                        'handler' => ActionHandler\AddReferenceActionHandler::class,
+                        'handler' => AddReferenceActionHandler::class,
                         'label' => sprintf('Add %s', $relation->getName()),
                         'data' => $this->getAction(
                             $event->getBulkAction(),
                             $relation,
-                            ActionHandler\AddReferenceActionHandler::class
+                            AddReferenceActionHandler::class
                         )
                     ]
                 );
 
                 $event->getForm()->add(
                     sprintf('delete_%s', $relation->getId()),
-                    RelationActionType::class,
+                    BulkRelationActionType::class,
                     [
                         'relation' => $relation,
-                        'handler' => ActionHandler\RemoveReferenceActionHandler::class,
+                        'handler' => RemoveReferenceActionHandler::class,
                         'label' => sprintf('Remove %s', $relation->getName()),
                         'data' => $this->getAction(
                             $event->getBulkAction(),
                             $relation,
-                            ActionHandler\RemoveReferenceActionHandler::class
+                            RemoveReferenceActionHandler::class
                         )
                     ]
                 );
@@ -104,7 +106,7 @@ class BulkActionAddActionsListener implements EventSubscriberInterface
      * @param BulkAction $bulkAction
      * @param Relation $relation
      * @param string $handler
-     * @return \Integrated\Bundle\ContentBundle\Bulk\ActionInterface|null
+     * @return ActionInterface|null
      */
     protected function getAction(BulkAction $bulkAction, Relation $relation, $handler)
     {

@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Bulk\ActionTranslator;
+namespace Integrated\Bundle\ContentBundle\Bulk\Action\Translator;
 
-use Doctrine\Common\Collections\Collection;
+use Integrated\Bundle\ContentBundle\Bulk\Action\ActionInterface;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
@@ -32,14 +32,14 @@ class ActionTranslatorProvider
     }
 
     /**
-     * @param Collection $collection
+     * @param ActionInterface[] $actions
      * @return array
      */
-    public function getTranslators(Collection $collection)
+    public function getTranslators($actions)
     {
         $translators = [];
 
-        foreach ($collection->getIterator() as $action) {
+        foreach ($actions as $action) {
             $translators[] = $this->translatorFactory->getActionTranslator($action);
         }
 

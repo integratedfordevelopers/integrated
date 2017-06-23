@@ -28,7 +28,7 @@
 
                     <ul role="menu" class="dropdown-menu">
                         <li role="presentation">
-                            <a href="{{ path('integrated_content_bulk_select', filters) }}" tabindex="-1" role="menuitem">Bulk change this selection</a>
+                            <a href="{{ path('integrated_content_bulk_select', app.request.query.all) }}" tabindex="-1" role="menuitem">{% trans %}Bulk change this selection{% endtrans %}</a>
                         </li>
                     </ul>
                 </li>

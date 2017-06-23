@@ -13,7 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 
-use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentsToIdTransformer;
+use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,20 +31,13 @@ class SelectionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('selection', ChoiceType::class, [
-            'label' => false,
-            'choices' => $options['content'],
-            'choices_as_values' => true,
-            'choice_label' => function ($value, $key, $index) {
-                return $key;
-            },
-            'error_bubbling' => true,
-            'multiple' => true,
-            'expanded' => true,
-            'data' => $options['content'],
-            'required' => true,
-        ]);
-
-        $builder->get('selection')->addModelTransformer(new CollectionToArrayTransformer());
+                'label' => false,
+                'choices' => $options['contents'],
+                'choices_as_values' => true,
+                'error_bubbling' => true,
+                'multiple' => true,
+                'expanded' => true,
+            ]);
     }
 
     /**
@@ -51,9 +45,19 @@ class SelectionFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('content');
+        $resolver->setRequired('contents');
+
+        $resolver->setAllowedTypes('contents', 'array')
+            ->setAllowedValues('contents', function (array $contents) {
+                foreach ($contents as $content) {
+                    if (!$content instanceof ContentInterface) {
+                        return false;
+                    }
+                }
+                return true;
+            });
         $resolver->setDefaults([
-            "data" => BulkAction::class,
+            'data_class' => BulkAction::class,
         ]);
     }
 

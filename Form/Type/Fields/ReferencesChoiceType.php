@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type\Bulk\Fields;
+namespace Integrated\Bundle\ContentBundle\Form\Type\Fields;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ReferencesToArrayTransformer;
@@ -43,11 +43,9 @@ class ReferencesChoiceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $transformer = new ReferencesToArrayTransformer($this->dm);
         $builder
-            ->addModelTransformer($transformer)
-            ->resetViewTransformers()
-        ;
+            ->addModelTransformer(new ReferencesToArrayTransformer($this->dm))
+            ->resetViewTransformers();
     }
 
     /**

@@ -30,8 +30,8 @@ class ActionHandlerRegistryBuilderPass implements CompilerPassInterface
 
         $builder = $container->getDefinition('integrated_content.bulk.registry.action_handler_registry_builder');
 
-        foreach ($container->findTaggedServiceIds('integrated_content.bulk.action_handler') as $service => $tags) {
-            $builder->addMethodCall('addHandler', [$container->getDefinition($service)]);
+        foreach ($container->findTaggedServiceIds('integrated_content.bulk.action.handler') as $service => $tags) {
+            $registry->addMethodCall('addHandler', [$container->getDefinition($service)]);
         }
     }
 }

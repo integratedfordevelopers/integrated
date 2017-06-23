@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Integrated package.
  *
  * (c) e-Active B.V. <integrated@e-active.nl>
@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type\Bulk\Action;
+namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Bulk\Action\RelationAction;
 use Integrated\Bundle\ContentBundle\Form\EventListener\BulkRelationActionListener;
-use Integrated\Bundle\ContentBundle\Form\Type\Bulk\Fields\ReferencesChoiceType;
+use Integrated\Bundle\ContentBundle\Form\Type\Fields\ReferencesChoiceType;
 use Integrated\Common\Content\Relation\RelationInterface;
 
 use Symfony\Component\Form\AbstractType;
@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class RelationActionType extends AbstractType
+class BulkRelationActionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -39,6 +39,7 @@ class RelationActionType extends AbstractType
                 'label' => $options['label'],
                 'attr' => [
                     'data-id' => $relation->getId(),
+
                     'class' => 'relation-items',
                 ],
             ]
