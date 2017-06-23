@@ -172,7 +172,7 @@
         </service>
 
         <service id="integrated_content.form.type.bulk.actions_type" class="Integrated\Bundle\ContentBundle\Form\Type\Bulk\ActionsType">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="event_dispatcher" />
             <tag name="form.type" />
         </service>
 

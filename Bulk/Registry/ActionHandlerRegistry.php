@@ -21,38 +21,14 @@ class ActionHandlerRegistry
     /**
      * @var ActionHandlerInterface[]
      */
-    protected $handlers = [];
-
-    /**
-     * @return ActionHandlerInterface[]
-     */
-    public function getHandlers()
-    {
-        return $this->handlers;
-    }
+    private $handlers = [];
 
     /**
      * @param ActionHandlerInterface[] $handlers
-     * @return $this
      */
-    public function setHandlers($handlers)
+    public function __construct($handlers)
     {
-        $this->handlers = [];
-        foreach ($handlers as $handler) {
-            $this->addHandler($handler);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ActionHandlerInterface $handler
-     * @return $this
-     */
-    public function addHandler(ActionHandlerInterface $handler)
-    {
-        $this->handlers[get_class($handler)] = $handler;
-        return $this;
+        $this->handlers = $handlers;
     }
 
     /**
@@ -66,7 +42,7 @@ class ActionHandlerRegistry
 
     /**
      * @param string $name
-     * @return ActionHandlerInterface|null
+     * @return ActionHandlerInterface
      */
     public function getHandler($name)
     {
@@ -74,6 +50,6 @@ class ActionHandlerRegistry
             return $this->handlers[$name];
         }
 
-        return null;
+        throw new \InvalidArgumentException(sprintf('%s is not a registered handler', $name));
     }
 }

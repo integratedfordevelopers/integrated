@@ -6,7 +6,11 @@
 
     <services>
 
-        <service id="integrated_content.bulk.registry.action_handler_registry" class="Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistry" />
+        <service id="integrated_content.bulk.registry.action_handler_registry_builder" class="Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistryBuilder" />
+
+        <service id="integrated_content.bulk.registry.action_handler_registry" class="Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistry">
+            <factory service="integrated_content.bulk.registry.action_handler_registry_builder" method="getRegistry" />
+        </service>
 
         <service id="integrated_content.bulk.action_translator.action_translator_factory" class="Integrated\Bundle\ContentBundle\Bulk\ActionTranslator\ActionTranslatorFactory" />
 

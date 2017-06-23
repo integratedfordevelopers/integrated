@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type\Bulk\Action;
 
 use Integrated\Bundle\ContentBundle\Document\Bulk\Action\RelationAction;
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\RelationActionTransformer;
+use Integrated\Bundle\ContentBundle\Form\EventListener\BulkRelationActionListener;
 use Integrated\Bundle\ContentBundle\Form\Type\Bulk\Fields\ReferencesChoiceType;
 use Integrated\Common\Content\Relation\RelationInterface;
 
@@ -44,8 +44,7 @@ class RelationActionType extends AbstractType
             ]
         );
 
-        $builder->get('references')->resetViewTransformers();
-        $builder->addModelTransformer(new RelationActionTransformer($relation, $options['handler']));
+        $builder->addEventSubscriber(new BulkRelationActionListener());
     }
 
     /**
