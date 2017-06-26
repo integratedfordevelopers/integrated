@@ -125,6 +125,7 @@ class BlockExtension extends \Twig_Extension
 
             return $environment->render($this->locateTemplate('blocks/error.html.twig'), [
                 'id' => $id,
+                'name' => $block->getTitle(),
             ]);
         }
     }

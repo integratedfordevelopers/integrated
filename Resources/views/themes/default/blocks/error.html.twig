@@ -1,7 +1,7 @@
 {% if app.request.attributes.get('integrated_block_edit') %}
     <div class="panel panel-danger">
         <div class="panel-heading">
-            {% trans with { '%id%': id } %}Block "%id%" contains an error{% endtrans %}
+            {% trans with { '%name%': name, '%id%': id } %}Block "%name%" (id: %id%) contains an error{% endtrans %}
         </div>
     </div>
 {% endif %}
