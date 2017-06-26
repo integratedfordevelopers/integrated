@@ -385,3 +385,15 @@
 
     {{ block('integrated_collection_widget') }}
 {% endblock %}
+
+{% block bulk_actions_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block bulk_relation_action_row %}
+    <div class="row">
+        <div class="row col-md-8 bulk_subform">
+            {{ form_row(form.references, {'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm', 'attr': {'data-value': form.references.vars.value|json_encode} }) }}
+        </div>
+    </div>
+{% endblock %}

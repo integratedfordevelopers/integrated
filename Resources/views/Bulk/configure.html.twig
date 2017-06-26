@@ -30,13 +30,7 @@
             </div>
             <hr/>
             {{ form_errors(form) }}
-            {% for action in form.actions %}
-                <div class="row">
-                    <div class="row col-md-8 bulk_subform">
-                        {{ form_row(action.references, {'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm', 'attr': {'data-value': action.references.vars.value|json_encode} }) }}
-                    </div>
-                </div>
-            {% endfor %}
+            {{ form_row(form.actions) }}
         </section>
     </div>
     <div class="row">
