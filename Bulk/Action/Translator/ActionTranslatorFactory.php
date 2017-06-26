@@ -26,7 +26,7 @@ class ActionTranslatorFactory
     public function getActionTranslator(ActionInterface $action)
     {
         $reflectionClass = new \ReflectionClass($action);
-        $className = "\\Integrated\\Bundle\\ContentBundle\\Bulk\\ActionTranslator\\" . $reflectionClass->getShortName() . 'Translator';
+        $className = "\\Integrated\\Bundle\\ContentBundle\\Bulk\\Action\\Translator\\" . $reflectionClass->getShortName() . 'Translator';
         $actionTranslator = new $className();
 
         if (!$actionTranslator instanceof AbstractActionTranslator) {
