@@ -123,17 +123,15 @@ class Comment extends Content
      */
     public function getDescriptor()
     {
-        $string = $this->title;
-
-        if (!$string) {
-            if (strlen($this->comment) > 60) {
-                $string = substr($this->comment, 0, 60) . '...';
-            } else {
-                $string = $this->comment;
-            }
+        if ($this->title) {
+            return $this->title;
         }
 
-        return $string;
+        if (strlen($this->comment) > 60) {
+            return substr($this->comment, 0, 60) . '...';
+        }
+
+        return $this->comment;
     }
 
     /**
@@ -141,16 +139,6 @@ class Comment extends Content
      */
     public function __toString()
     {
-        $string = $this->title;
-
-        if (!$string) {
-            if (strlen($this->comment) > 60) {
-                $string = substr($this->comment, 0, 60) . '...';
-            } else {
-                $string = $this->comment;
-            }
-        }
-
-        return $string;
+        return $this->getDescriptor();
     }
 }
