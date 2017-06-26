@@ -51,10 +51,13 @@
             success: function(data) {
                 $block.html(data.html);
                 $block.prepend(createBlockButtons());
+            },
+            error: function (result) {
+                // @todo error handling (INTEGRATED-420)
+                alert('An error occurred rendering the block!');
+                console.log(result.responseText);
             }
         });
-
-        // @todo error handling (INTEGRATED-420)
     };
     /**
      * @return {jQuery}
