@@ -121,12 +121,30 @@ class Comment extends Content
     /**
      * @return string
      */
+    public function getDescriptor()
+    {
+        $string = $this->title;
+
+        if (!$string) {
+            if (strlen($this->comment) > 60) {
+                $string = substr($this->comment, 0, 60) . '...';
+            } else {
+                $string = $this->comment;
+            }
+        }
+
+        return $string;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         $string = $this->title;
 
         if (!$string) {
-            if (strlen($this->comment > 60)) {
+            if (strlen($this->comment) > 60) {
                 $string = substr($this->comment, 0, 60) . '...';
             } else {
                 $string = $this->comment;
