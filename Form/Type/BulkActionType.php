@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
+use Integrated\Bundle\ContentBundle\Form\EventListener\BulkActionListener;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,6 +32,8 @@ class BulkActionType extends AbstractType
             'actions',
             BulkActionsType::class
         );
+
+        $builder->addEventSubscriber(new BulkActionListener());
     }
 
     /**

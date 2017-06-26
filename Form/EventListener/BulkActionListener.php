@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\EventListener;
 
 use Integrated\Bundle\ContentBundle\Document\Bulk\Action\RelationAction;
+use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -20,7 +21,7 @@ use Symfony\Component\Form\FormEvents;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class BulkRelationActionListener implements EventSubscriberInterface
+class BulkActionListener implements EventSubscriberInterface
 {
     /**
      * {@inheritdoc}
@@ -39,24 +40,18 @@ class BulkRelationActionListener implements EventSubscriberInterface
     public function onSubmit(FormEvent $event)
     {
         $data = $event->getData();
-        $form = $event->getForm();
 
-        if (!$data instanceof RelationAction) {
+        if (!$data instanceof BulkAction) {
             return;
         }
 
-        if (!$form->getConfig()->hasOption('relation')) {
-            return;
+        foreach ($data->getActions() as $action) {
+            if ($action instanceof RelationAction) {
+                if ($action->getReferences()->count() == 0) {
+                    $data->removeAction($action);
+                }
+            }
         }
-
-        if (!$form->getConfig()->hasOption('handler')) {
-            return;
-        }
-
-        $data
-            ->setRelation($form->getConfig()->getOption('relation'))
-            ->setName($form->getConfig()->getOption('handler'))
-        ;
 
         $event->setData($data);
     }
