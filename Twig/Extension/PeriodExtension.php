@@ -15,7 +15,7 @@ class PeriodExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFunction(
                 'integrated_period_formatter',
-                array($this, 'periodFilter'),
+                [$this, 'periodFilter'],
                 ['needs_environment' => true]
             )
         ];
