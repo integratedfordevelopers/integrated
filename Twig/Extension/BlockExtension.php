@@ -73,7 +73,7 @@ class BlockExtension extends \Twig_Extension
             new \Twig_SimpleFunction(
                 'integrated_block',
                 [$this, 'renderBlock'],
-                ['is_safe' => ['html'], 'needs_environment' => true, 'needs_context' => true]
+                ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new \Twig_SimpleFunction('integrated_find_channels', [$this, 'findChannels']),
             new \Twig_SimpleFunction('integrated_find_pages', [$this, 'findPages']),
@@ -93,7 +93,6 @@ class BlockExtension extends \Twig_Extension
 
     /**
      * @param \Twig_Environment $environment
-     * @param array $context
      * @param \Integrated\Common\Block\BlockInterface|string $block
      * @param array $options
      *
@@ -101,9 +100,14 @@ class BlockExtension extends \Twig_Extension
      *
      * @throws \Exception
      */
-    public function renderBlock(\Twig_Environment $environment, $context, $block, array $options = [])
+    public function renderBlock(\Twig_Environment $environment, $block, array $options = [])
     {
-        $id = $block instanceof Block ? $block->getId() : $block;
+        if ($block instanceof BlockInterface) {
+            $id = $block->getId();
+        } else {
+            $id = $block;
+            $block = $this->container->get('integrated_block.templating.block_manager')->getBlock($id);
+        }
 
         try {
             // fatal errors are not catched
@@ -112,6 +116,7 @@ class BlockExtension extends \Twig_Extension
             if (!$html) {
                 return $environment->render($this->locateTemplate('blocks/empty.html.twig'), [
                     'id' => $id,
+                    'block' => $block,
                 ]);
             }
 
@@ -125,7 +130,7 @@ class BlockExtension extends \Twig_Extension
 
             return $environment->render($this->locateTemplate('blocks/error.html.twig'), [
                 'id' => $id,
-                'name' => $block->getTitle(),
+                'block' => $block,
             ]);
         }
     }
