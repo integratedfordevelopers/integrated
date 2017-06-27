@@ -14,8 +14,8 @@ namespace Integrated\Bundle\ContentBundle\EventListener;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\ContentBundle\Bulk\Action\ActionInterface;
-use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceActionHandler;
-use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceActionHandler;
+use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceHandler;
+use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceHandler;
 use Integrated\Bundle\ContentBundle\Document\Bulk\Action\RelationAction;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
@@ -74,12 +74,12 @@ class BulkActionAddActionsListener implements EventSubscriberInterface
                     BulkRelationActionType::class,
                     [
                         'relation' => $relation,
-                        'handler' => AddReferenceActionHandler::class,
+                        'handler' => AddReferenceHandler::class,
                         'label' => sprintf('Add %s', $relation->getName()),
                         'data' => $this->getAction(
                             $event->getBulkAction(),
                             $relation,
-                            AddReferenceActionHandler::class
+                            AddReferenceHandler::class
                         )
                     ]
                 );
@@ -89,12 +89,12 @@ class BulkActionAddActionsListener implements EventSubscriberInterface
                     BulkRelationActionType::class,
                     [
                         'relation' => $relation,
-                        'handler' => RemoveReferenceActionHandler::class,
+                        'handler' => RemoveReferenceHandler::class,
                         'label' => sprintf('Remove %s', $relation->getName()),
                         'data' => $this->getAction(
                             $event->getBulkAction(),
                             $relation,
-                            RemoveReferenceActionHandler::class
+                            RemoveReferenceHandler::class
                         )
                     ]
                 );

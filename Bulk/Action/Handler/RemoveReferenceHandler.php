@@ -17,7 +17,7 @@ use Integrated\Common\Content\ContentInterface;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class RemoveReferenceActionHandler extends AbstractRelationActionHandler
+class RemoveReferenceHandler extends AbstractRelationHandler
 {
     /**
      * @param ContentInterface $content

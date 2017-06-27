@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Bulk\Action\Translator;
 
-use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceActionHandler;
-use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceActionHandler;
+use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceHandler;
+use Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceHandler;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
@@ -32,9 +32,9 @@ class RelationActionTranslator extends AbstractActionTranslator
     public function getKindOfAction()
     {
         switch ($this->action->getName()) {
-            case AddReferenceActionHandler::class:
+            case AddReferenceHandler::class:
                 return "add";
-            case RemoveReferenceActionHandler::class:
+            case RemoveReferenceHandler::class:
                 return "remove";
             default:
                 return "";

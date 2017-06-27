@@ -22,7 +22,7 @@ class BulkActionRepository extends DocumentRepository
      * @param $id
      * @return BulkAction|array|null
      */
-    public function findOneByIdAndNotExcuted($id)
+    public function findOneByIdAndNotExecuted($id)
     {
         return $this->createQueryBuilder()
             ->field('id')->equals($id)

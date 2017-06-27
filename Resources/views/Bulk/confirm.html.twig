@@ -15,7 +15,8 @@
                     {{ loop.revindex == 2 ? ' & ' : ', ' }}{#  -#}
                 {% endif %}{#  -#}
             {% endfor %}{#  -#}
-            {#-  #} {% trans %}for the selected{% endtrans %} {{ contents|length > 1 ? contents|length ~ ' contents' : 'content' }}.{#  -#}
+            {#-  #} {% trans %}for the selected{% endtrans %} {#  -#}
+            {%  transchoice  contents %}{1}content|]1,Inf[ %contents% contents{% endtranschoice %}.{#  -#}
             <hr/>
             <ul>
                 {% for translator in actionTranslators %}

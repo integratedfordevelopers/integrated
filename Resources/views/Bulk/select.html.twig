@@ -76,9 +76,12 @@
                 $(':checkbox').prop('checked', $(this).prop('checked'));
             });
 
-            if (!$(':checked').length) {
+            if ($(':checked').length === $('tbody :checkbox').length) {
+                $('#bulkedit-select-all').prop('checked', true);
+            } else if (!$(':checked').length) {
                 $('#bulkedit-select-all').trigger('click');
             }
+
         });
     </script>
 

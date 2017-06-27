@@ -89,7 +89,7 @@ class BulkController extends Controller
             return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
         }
 
-        if (!$bulkAction = $this->dm->getRepository(BulkAction::class)->findOneByIdAndNotExcuted($request->get('id'))) {
+        if (!$bulkAction = $this->dm->getRepository(BulkAction::class)->findOneByIdAndNotExecuted($request->get('id'))) {
             $bulkAction = new BulkAction();
         }
 
@@ -99,6 +99,10 @@ class BulkController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /* @var BulkAction $bulkAction */
             $bulkAction = $form->getData();
+
+            $searchQuery = $request->query->all();
+            unset($searchQuery['id']);
+            $bulkAction->setSearchQuery(http_build_query($searchQuery));
 
             if (!$bulkAction->getId()) {
                 $this->dm->persist($bulkAction);
@@ -125,18 +129,18 @@ class BulkController extends Controller
     public function configureAction(Request $request, BulkAction $bulkAction)
     {
         if ($bulkAction->getExecutedAt()) {
-            $this->addFlash('danger', 'This bulk action was all ready executed and can not be configured.');
+            $this->addFlash('danger', 'This bulk action was already executed and can not be configured.');
             $request->query->remove('id');
             return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
         }
-
-        dump($request);
 
         $form = $this->createForm(BulkActionType::class, $bulkAction);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /* @var BulkAction $bulkAction */
             $bulkAction = $form->getData();
+            $request->query->set('id', $bulkAction->getId());
             $this->dm->flush();
 
             return $this->redirectToRoute('integrated_content_bulk_confirm', $request->query->all());
@@ -157,9 +161,9 @@ class BulkController extends Controller
      */
     public function confirmAction(Request $request, BulkAction $bulkAction)
     {
-        // Check if bulk action is not allready executed
+        // Check if bulk action is not already executed
         if ($bulkAction->getExecutedAt()) {
-            $this->addFlash('danger', 'This bulk action was all ready executed.');
+            $this->addFlash('danger', 'This bulk action was already executed.');
             $request->query->remove('id');
             return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
         }
@@ -188,7 +192,7 @@ class BulkController extends Controller
 
         return [
             'id' => $bulkAction->getId(),
-            'contents' => $bulkAction->getSelection(),
+            'contents' => count($bulkAction->getSelection()),
             'actionTranslators' => $this->actionTranslatorProvider->getTranslators($bulkAction->getActions()),
             'form' => $form->createView(),
         ];

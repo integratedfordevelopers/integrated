@@ -5,13 +5,13 @@
 
     <services>
 
-        <service id="integrated_content.bulk.registry.action_handler_registry_builder" class="Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistryBuilder" />
+        <service id="integrated_content.bulk.registry.action_handler_registry_builder" class="Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistryBuilder" public="false"/>
 
         <service id="integrated_content.bulk.registry.action_handler_registry" class="Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistry">
             <factory service="integrated_content.bulk.registry.action_handler_registry_builder" method="getRegistry" />
         </service>
 
-        <service id="integrated_content.bulk.action.translator.action_translator_factory" class="Integrated\Bundle\ContentBundle\Bulk\Action\Translator\ActionTranslatorFactory" />
+        <service id="integrated_content.bulk.action.translator.action_translator_factory" class="Integrated\Bundle\ContentBundle\Bulk\Action\Translator\ActionTranslatorFactory" public="false"/>
 
         <service id="integrated_content.bulk.content_provider" class="Integrated\Bundle\ContentBundle\Provider\ContentProvider">
             <argument type="service" id="solarium.client" />
@@ -28,12 +28,12 @@
             <argument type="service" id="integrated_content.bulk.action.translator.action_translator_factory"/>
         </service>
 
-        <service id="integrated_content.bulk.action.handler.add_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceActionHandler">
-            <tag name="integrated_content.bulk.action_handler" />
+        <service id="integrated_content.bulk.action.handler.add_reference_handler" class="Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceHandler" public="false">
+            <tag name="integrated_content.bulk.action.handler" />
         </service>
 
-        <service id="integrated_content.bulk.action.handler.remove_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceActionHandler">
-            <tag name="integrated_content.bulk.action_handler" />
+        <service id="integrated_content.bulk.action.handler.remove_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceHandler" public="false">
+            <tag name="integrated_content.bulk.action.handler" />
         </service>
 
     </services>

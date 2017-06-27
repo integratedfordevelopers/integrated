@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Bulk\Action\Handler;
 
-use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\ContentBundle\Bulk\Action\ActionHandlerInterface;
 use Integrated\Common\Content\Relation\RelationInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-abstract class AbstractRelationActionHandler implements ActionHandlerInterface
+abstract class AbstractRelationHandler implements ActionHandlerInterface
 {
     protected function validateOptions(array $options)
     {
@@ -27,7 +26,7 @@ abstract class AbstractRelationActionHandler implements ActionHandlerInterface
 
         $resolver->setRequired(['relation', 'references']);
         $resolver->addAllowedTypes('relation', RelationInterface::class);
-        $resolver->addAllowedTypes('references', Collection::class); // TODO try to remove this collection
+        $resolver->addAllowedTypes('references', [\Traversable::class, 'array']);
 
         return $resolver->resolve($options);
     }

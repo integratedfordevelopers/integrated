@@ -20,7 +20,7 @@ use Integrated\Common\Content\Relation\RelationInterface;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class AddReferenceActionHandler extends AbstractRelationActionHandler
+class AddReferenceHandler extends AbstractRelationHandler
 {
     /**
      * @param ContentInterface $content
@@ -33,13 +33,17 @@ class AddReferenceActionHandler extends AbstractRelationActionHandler
 
         if ($embeddedRelation = $content->getRelation($options['relation']->getId())) {
             if ($embeddedRelation instanceof EmbeddedRelation) {
-                $embeddedRelation->addReferences($options['references']);
+                foreach ($options['references'] as $reference) {
+                    $embeddedRelation->addReference($reference);
+                }
             }
         } elseif ($this->checkRelationContent($options['relation'], $content)) {
             $embeddedRelation = new EmbeddedRelation();
             $embeddedRelation->setRelationId($options['relation']->getId());
             $embeddedRelation->setRelationType($options['relation']->getType());
-            $embeddedRelation->addReferences($options['references']);
+            foreach ($options['references'] as $reference) {
+                $embeddedRelation->addReference($reference);
+            }
 
             $content->addRelation($embeddedRelation);
         }
