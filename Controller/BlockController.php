@@ -68,8 +68,10 @@ class BlockController extends Controller
      *
      * @return array
      */
-    public function showAction(Block $block)
+    public function showAction(Request $request, Block $block)
     {
+        $request->attributes->set('integrated_block_edit', true);
+
         return [
             'block' => $block,
         ];

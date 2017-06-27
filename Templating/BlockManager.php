@@ -79,7 +79,7 @@ class BlockManager
     public function render($block, array $options = [])
     {
         if (is_string($block)) {
-            $block = $this->repository->find($block);
+            $block = $this->getBlock($block);
         }
 
         if ($block instanceof BlockInterface) {
@@ -112,6 +112,15 @@ class BlockManager
                 return $handler->execute($block, $options);
             }
         }
+    }
+
+    /**
+     * @param string $id
+     * @return Block|null
+     */
+    public function getBlock($id)
+    {
+        return $this->repository->find($id);
     }
 
     /**
