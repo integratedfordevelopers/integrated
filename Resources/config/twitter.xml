@@ -11,7 +11,7 @@
         </service>
 
         <service id="integrated_social.twitter.adapter" class="Integrated\Bundle\SocialBundle\Connector\TwitterAdapter" public="false">
-            <argument type="service" id="integrated_social.facebook.adapter.exporter_factory" />
+            <argument type="service" id="integrated_social.twitter.adapter.exporter_factory" />
 
             <tag name="integrated_channel.connector" />
         </service>
