@@ -38,6 +38,11 @@ class RelatedContentBlock extends Block
     const SHOW_LINKED = 2;
 
     /**
+     * Show items linked by the current document
+     */
+    const SHOW_LINKED_BY = 3;
+
+    /**
      * @var string
      * @Assert\NotBlank
      * @Type\Field
@@ -53,6 +58,7 @@ class RelatedContentBlock extends Block
      *         "choices"={
      *             1="Show items which have the current document linked",
      *             2="Show items which share linked items with the current document",
+     *             3="Show items linked by the current document",
      *          },
      *     }
      * )
