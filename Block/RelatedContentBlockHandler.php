@@ -11,14 +11,17 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
-use Integrated\Common\Content\ContentInterface;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+
 use Knp\Component\Pager\Paginator;
+
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
+
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -28,11 +31,11 @@ use Doctrine\ODM\MongoDB\DocumentManager;
  */
 class RelatedContentBlockHandler extends BlockHandler
 {
-
     /**
      * @var Paginator
-     * */
+     */
     private $paginator;
+
     /**
      * @var RequestStack
      */
@@ -46,6 +49,7 @@ class RelatedContentBlockHandler extends BlockHandler
     /**
      * @param Paginator $paginator
      * @param RequestStack $requestStack
+     * @param DocumentManager $dm
      */
     public function __construct(Paginator $paginator, RequestStack $requestStack, DocumentManager $dm)
     {
@@ -60,19 +64,19 @@ class RelatedContentBlockHandler extends BlockHandler
     public function execute(BlockInterface $block, array $options)
     {
         if (!$block instanceof RelatedContentBlock) {
-            return;
+            return null;
         }
 
         $request = $this->requestStack->getCurrentRequest();
 
         if (!$request instanceof Request) {
-            return;
+            return null;
         }
 
         $pagination = $this->getPagination($block, $request);
 
-        if (!count($pagination)) {
-            return;
+        if (null ===  $pagination || !count($pagination)) {
+            return null;
         }
 
         return $this->render([
@@ -85,43 +89,20 @@ class RelatedContentBlockHandler extends BlockHandler
     /**
      * @param RelatedContentBlock $block
      * @param Request $request
-     * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination|null
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface|null
      */
     public function getPagination(RelatedContentBlock $block, Request $request)
     {
-        /** @var Article $document */
-        $document = $this->getDocument();
+        $target = $this->getQuery($block);
 
-        if (!$document instanceof ContentInterface) {
-            return;
-        }
-
-
-        $excludeDocument = null;
-        if ($block->getTypeBlock() == RelatedContentBlock::SHOW_LINKED) {
-            $excludeDocument = $document;
-            $document = $document->getReferenceByRelationId($block->getRelation()->getId());
-            if (!$document) {
-                return;
-            }
-        }
-
-        $query = $this->dm->getRepository('IntegratedContentBundle:Content\Content')
-            ->getUsedBy($document, $block->getRelation(), $excludeDocument);
-
-        $contentTypes = $block->getContentTypes();
-        if ($contentTypes) {
-            $query->field('contentType')->in($contentTypes);
-        }
-
-        if ($block->getSortBy()) {
-            $query->sort($block->getSortBy(), $block->getSortDirection());
+        if (null === $target) {
+            return null;
         }
 
         $pageParam = $block->getId() . '-page';
 
         return $this->paginator->paginate(
-            $query,
+            $target,
             $request->query->get($pageParam, 1),
             $block->getItemsPerPage(),
             [
@@ -130,4 +111,66 @@ class RelatedContentBlockHandler extends BlockHandler
             ]
         );
     }
+
+    /**
+     * @param RelatedContentBlock $block
+     * @return \Doctrine\MongoDB\Query\Builder|\Doctrine\Common\Collections\ArrayCollection|null
+     */
+    protected function getQuery(RelatedContentBlock $block)
+    {
+        /** @var Article $document */
+        $document = $this->getDocument();
+
+        if (!$document instanceof Content) {
+            return null;
+        }
+
+        switch ($block->getTypeBlock()) {
+            case RelatedContentBlock::SHOW_LINKED_BY:
+                $query = $this->getLinkedByQuery($document, $block);
+
+                break;
+            case RelatedContentBlock::SHOW_LINKED:
+                if (!$linkedDocument = $document->getReferenceByRelationId($block->getRelation()->getId())) {
+                    return null;
+                }
+
+                $query = $this->dm->getRepository(Content::class)->getUsedBy($linkedDocument, $block->getRelation(), $document);
+
+                break;
+            default:
+                $query = $this->dm->getRepository(Content::class)->getUsedBy($document, $block->getRelation());
+
+                break;
+        }
+
+        if ($block->getContentTypes()) {
+            $query->field('contentType')->in($block->getContentTypes());
+        }
+
+        if ($block->getSortBy()) {
+            $query->sort($block->getSortBy(), $block->getSortDirection());
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param Content $document
+     * @param RelatedContentBlock $block
+     * @return \Doctrine\MongoDB\Query\Builder
+     */
+    protected function getLinkedByQuery(Content $document, RelatedContentBlock $block)
+    {
+        $ids = [];
+
+        foreach ($document->getReferencesByRelationId($block->getRelation()->getId()) as $content) {
+            $ids[$content->getId()] = $content->getId();
+        }
+
+        return $this->dm->getRepository(Content::class)
+            ->createQueryBuilder()
+            ->field('_id')->in($ids);
+    }
+
 }
