@@ -19,6 +19,7 @@ use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\FormBlock;
 use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Form\ContentFormType;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -58,22 +59,30 @@ class FormBlockHandler extends BlockHandler
     protected $formMailer;
 
     /**
+     * @var ChannelContextInterface
+     */
+    protected $channelContext;
+
+    /**
      *
      * @param FormFactory $formFactory
      * @param DocumentManager $documentManager
      * @param RequestStack $requestStack
      * @param FormMailer $formMailer
+     * @param ChannelContextInterface $channelContext
      */
     public function __construct(
         FormFactory $formFactory,
         DocumentManager $documentManager,
         RequestStack $requestStack,
-        FormMailer $formMailer
+        FormMailer $formMailer,
+        ChannelContextInterface $channelContext
     ) {
         $this->formFactory = $formFactory;
         $this->documentManager = $documentManager;
         $this->requestStack = $requestStack;
         $this->formMailer = $formMailer;
+        $this->channelContext = $channelContext;
     }
 
     /**
@@ -100,6 +109,10 @@ class FormBlockHandler extends BlockHandler
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+                if ($channel = $this->channelContext->getChannel()) {
+                    $content->addChannel($channel);
+                }
+
                 $this->documentManager->persist($content);
                 $this->documentManager->flush();
                 
