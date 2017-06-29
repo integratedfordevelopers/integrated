@@ -31,11 +31,11 @@ use Doctrine\ODM\MongoDB\DocumentManager;
  */
 class RelatedContentBlockHandler extends BlockHandler
 {
-
     /**
      * @var Paginator
-     * */
+     */
     private $paginator;
+
     /**
      * @var RequestStack
      */
@@ -49,6 +49,7 @@ class RelatedContentBlockHandler extends BlockHandler
     /**
      * @param Paginator $paginator
      * @param RequestStack $requestStack
+     * @param DocumentManager $dm
      */
     public function __construct(Paginator $paginator, RequestStack $requestStack, DocumentManager $dm)
     {

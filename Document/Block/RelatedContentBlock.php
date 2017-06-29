@@ -26,7 +26,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class RelatedContentBlock extends Block
 {
-
     /**
      * Show items which have the current document linked
      */
@@ -91,7 +90,6 @@ class RelatedContentBlock extends Block
      * )
      */
     protected $sortBy;
-
 
     /**
      * @var string
