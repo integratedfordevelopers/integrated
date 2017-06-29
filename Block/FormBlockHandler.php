@@ -13,10 +13,13 @@ namespace Integrated\Bundle\ContentBundle\Block;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\FormBlock;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Form\ContentFormType;
@@ -100,6 +103,8 @@ class FormBlockHandler extends BlockHandler
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+                $this->linkActiveDocument($block, $content);
+
                 $this->documentManager->persist($content);
                 $this->documentManager->flush();
                 
@@ -158,5 +163,24 @@ class FormBlockHandler extends BlockHandler
         ]);
 
         return $form->getForm();
+    }
+
+    /**
+     * Link active document to content item as integrated relation
+     * @param FormBlock $block
+     * @param Content $content
+     */
+    public function linkActiveDocument(FormBlock $block, Content $content)
+    {
+        if (!$this->getDocument() || !$block->getLinkRelation()) {
+            return;
+        }
+
+        $relation = new Relation();
+        $relation->setRelationId($block->getLinkRelation()->getId());
+        $relation->setRelationType($block->getLinkRelation()->getType());
+        $relation->setReferences(new ArrayCollection([$this->getDocument()]));
+
+        $content->addRelation($relation);
     }
 }

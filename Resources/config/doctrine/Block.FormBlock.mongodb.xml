@@ -13,6 +13,10 @@
                 field="contentType"
                 target-document="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" />
 
+        <reference-one
+                field="linkRelation"
+                target-document="Integrated\Bundle\ContentBundle\Document\Relation\Relation" />
+
     </document>
 
 </doctrine-mongo-mapping>
