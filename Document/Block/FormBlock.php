@@ -11,10 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Form block document
@@ -73,6 +75,22 @@ class FormBlock extends Block
      * )
      */
     protected $recaptcha = false;
+
+
+    /**
+     * @var Relation
+     * @Type\Field(
+     *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
+     *      options={
+     *          "label"="Link to content item",
+     *          "class"="IntegratedContentBundle:Relation\Relation",
+     *          "property"="name",
+     *          "placeholder"="Do not link",
+     *          "required"=false,
+     *      }
+     * )
+     */
+    protected $linkRelation;
 
     /**
      * @return ContentType
@@ -143,6 +161,24 @@ class FormBlock extends Block
     public function setRecaptcha($recaptcha)
     {
         $this->recaptcha = $recaptcha;
+        return $this;
+    }
+
+    /**
+     * @return Relation
+     */
+    public function getLinkRelation()
+    {
+        return $this->linkRelation;
+    }
+
+    /**
+     * @param Relation $linkRelation
+     * @return $this
+     */
+    public function setLinkRelation($linkRelation)
+    {
+        $this->linkRelation = $linkRelation;
         return $this;
     }
 
