@@ -164,8 +164,10 @@ class UrlResolver
     {
         $relationIds = [];
 
-        foreach (preg_match_all('/(#)([\s\S]+?)(#)/', $page->getPath(), $matches) as $match) {
-            $relationIds[] = $match[0];
+        if (preg_match_all('/(#)([\s\S]+?)(#)/', $page->getPath(), $matches)) {
+            foreach ($matches as $match) {
+                $relationIds[] = $match[0];
+            }
         }
 
         return $relationIds;
