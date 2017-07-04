@@ -16,13 +16,13 @@
                 <div class="media">
                     {% if document.cover|default %}
                         <div class="media-left">
-                            <a title="{{ document.title }}" href="{{ document.url }}">
+                            <a title="{{ document.title }}" href="{{ integrated_url(document) }}">
                                 <img src="{{ web_image(document.cover).zoomCrop(150, 100) }}" alt="{{ document.title }}" />
                             </a>
                         </div>
                     {% endif %}
                     <div class="media-body">
-                        <p><a href="{{ document.url }}" class="media-red-title">{{ document.title }}</a></p>
+                        <p><a href="{{ integrated_url(document) }}" class="media-red-title">{{ document.title }}</a></p>
                         <p>{{ document.intro[0]|default(document.content[0])|striptags }}</p>
                     </div>
                 </div>

@@ -8,7 +8,7 @@
             {% for document in pagination %}
 
                 <li>
-                    <a href="{{ document.url|default }}">
+                    <a href="{{ integrated_url(document) }}">
                         {{ document.title|default }}
                     </a>
                 </li>
