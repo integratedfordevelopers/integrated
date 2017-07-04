@@ -33,6 +33,7 @@
 
         <service id="integrated_website.twig.url_extension" class="%integrated_website.twig.url_extension.class%">
             <argument type="service" id="integrated_page.services.url_resolver" />
+            <argument type="service" id="integrated_page.services.solr_url_extractor" />
             <tag name="twig.extension" />
         </service>
 
