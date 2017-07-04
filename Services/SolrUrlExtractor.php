@@ -60,6 +60,11 @@ class SolrUrlExtractor
             return $this->router->getContext()->getBaseUrl() . $url;
         }
 
+        //fallback
+        if (isset($document['url'])) {
+            return $document['url'];
+        }
+
         //url is not in solr document
         return null;
     }
