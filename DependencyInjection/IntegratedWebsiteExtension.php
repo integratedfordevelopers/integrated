@@ -37,5 +37,6 @@ class IntegratedWebsiteExtension extends Extension
         $loader->load('connector.xml');
         $loader->load('controllers.xml');
         $loader->load('twig.xml');
+        $loader->load('solr.xml');
     }
 }
