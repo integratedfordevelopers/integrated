@@ -11,30 +11,22 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Integrated\Common\Bulk\Form\ConfigInterface;
+use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @author Jan Sanne Mulder <jansanne@e-active.nl>
+ * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class BulkActionType extends AbstractType
+class BulkConfigureType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var ConfigInterface $config */
-        $config = $options['config'];
-
-        $label = $config->getOptions();
-        $label = isset($label['label']) ? $label['label'] : $config->getName();
-
-        $builder->add('active', CheckboxType::class, ['label' => $label, 'required' => false]);
-        $builder->add('action', $config->getType(), $config->getOptions());
+        $builder->add('actions', BulkActionsType::class, ['content' => $options['content']]);
     }
 
     /**
@@ -42,9 +34,8 @@ class BulkActionType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setRequired('config')
-            ->setAllowedTypes('config', ConfigInterface::class);
+        $resolver->setRequired('content');
+        $resolver->setDefault('data_class', BulkAction::class);
     }
 
     /**
@@ -52,6 +43,6 @@ class BulkActionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'integrated_content_bulk_action';
+        return 'integrated_content_bulk_configure';
     }
 }

@@ -20,7 +20,7 @@ class BulkActionRepository extends DocumentRepository
 {
     /**
      * @param $id
-     * @return BulkAction|array|null
+     * @return BulkAction
      */
     public function findOneByIdAndNotExecuted($id)
     {

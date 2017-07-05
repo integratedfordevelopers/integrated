@@ -18,11 +18,6 @@
             <tag name="kernel.event_subscriber" />
         </service>
 
-        <service id="integrated_content.event_listener.bulk_action_add_actions_listener" class="Integrated\Bundle\ContentBundle\EventListener\BulkActionAddActionsListener">
-            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
-            <tag name="kernel.event_subscriber" />
-        </service>
-
     </services>
 
 </container>

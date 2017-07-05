@@ -14,32 +14,39 @@
 {% endblock form_errors %}
 
 {% block content %}
+
     {{ form_start(form) }}
+
     <div class="pull-right">
         <a class="btn btn-gray-thin" href="{{ path("integrated_content_content_index", app.request.query.all) }}">{% trans %}Cancel{% endtrans %}</a>&nbsp;
         <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
     </div>
+
     <h1>{% trans %}Step 1 of 3: Choose Issues{% endtrans %}</h1>
+
     {{ form_errors(form) }}
-    {% if contents|length > limit %}
+
+    {% if content|length > limit %}
         <ul class="alert alert-danger">
             <li>
-                {% trans %}The bulk action is limited to change %limit% contents at once. Only the first %limit% contents have been included.{% endtrans %}
+                {% trans %}The bulk action is limited to change %limit% content items at once. Only the first %limit% content items have been included.{% endtrans %}
             </li>
         </ul>
     {% endif %}
+
     <div class="row">
         <section class="section-white section-padding section-shadow section-radius section-margin">
+
             <div class="container">
-                {% trans %}Choose for which of the{% endtrans %} {# -#}
-                {{ contents|length > limit ? limit : contents | length }} {# -#}
-                {% trans %}content(s) you wish to perform a bulk action. When no contents are deselected, the bulk action(s) will apply to all contents in the selection.{% endtrans %}{# -#}
+                {% trans with {'%count%': min([content|length, limit])} %}Choose for which of the %count% content items you wish to perform a bulk action.{% endtrans %}
             </div>
+
             <hr/>
+
             <table class="table">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" id="bulkedit-select-all"/></th>
+                    <th><input type="checkbox" id="{{ form.vars['full_name'] }}_selection_all"/></th>
                     <th>{% trans %}Title{% endtrans %}</th>
                     <th>{% trans %}Type{% endtrans %}</th>
                     <th>{% trans %}Created{% endtrans %}</th>
@@ -47,24 +54,28 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for content in form.selection %}
+                {% for item in form.selection %}
                     <tr>
-                        <td>{{ form_widget(content) }}</td>
-                        <td><a href="{{ path('integrated_content_content_edit', {id: contents[content.vars.label].id}) }}">{{ contents[content.vars.label]|content_name }}</a></td>
-                        <td>{{ contents[content.vars.label].getContentType() is defined ? contents[content.vars.label].getContentType() | capitalize : "" }}</td>
-                        <td>{{ contents[content.vars.label].getCreatedAt() is defined  ? contents[content.vars.label].getCreatedAt()|localizeddate('medium') : "" }}</td>
-                        <td>{{ contents[content.vars.label].getUpdatedAt() is defined  ? contents[content.vars.label].getUpdatedAt()|localizeddate('medium') : "" }}</td>
+                        <td>{{ form_widget(item) }}</td>
+                        <td><a href="{{ path('integrated_content_content_edit', {id: content[item.vars.label].id}) }}">{{ content[item.vars.label] }}</a></td>
+                        <td>{{ content[item.vars.label].getContentType()|capitalize }}</td>
+                        <td>{{ content[item.vars.label].getCreatedAt()|localizeddate('medium') }}</td>
+                        <td>{{ content[item.vars.label].getUpdatedAt()|localizeddate('medium') }}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+
         </section>
     </div>
+
     <div class="pull-right">
         <a class="btn btn-gray-thin" href="{{ path("integrated_content_content_index", app.request.query.all) }}">{% trans %}Cancel{% endtrans %}</a>&nbsp;
         <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
     </div>
+
     {{ form_end(form) }}
+
 {% endblock %}
 
 {% block javascript %}
@@ -72,16 +83,11 @@
 
     <script>
         $(document).ready(function () {
-            $('#bulkedit-select-all').click(function () {
+            $('#{{ form.vars['full_name'] }}_selection_all').click(function () {
                 $(':checkbox').prop('checked', $(this).prop('checked'));
             });
 
-            if ($(':checked').length === $('tbody :checkbox').length) {
-                $('#bulkedit-select-all').prop('checked', true);
-            } else if (!$(':checked').length) {
-                $('#bulkedit-select-all').trigger('click');
-            }
-
+            $('#{{ form.vars['full_name'] }}_selection_all').prop('checked', $('form[name="{{ form.vars['full_name'] }}"] tbody :checkbox:checked').length == $('form[name="{{ form.vars['full_name'] }}"] tbody :checkbox').length);
         });
     </script>
 

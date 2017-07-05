@@ -14,32 +14,38 @@
 {% endblock form_errors %}
 
 {% block content %}
-    {{ form_start(form) }}
+
+    {{ form_start(form, {'style': 'horizontal', 'label_col': 3, 'widget_col': 9, 'col_size': 'sm'}) }}
+
     <div class="pull-right">
-        <a class="btn btn-gray-thin" href="{{ path("integrated_content_bulk_select", app.request.query.all|merge({'id': id })) }}">{% trans %}Back{% endtrans %}</a>&nbsp;
+        <a class="btn btn-gray-thin" href="{{ path("integrated_content_bulk_select", {'id': id }) }}">{% trans %}Back{% endtrans %}</a>&nbsp;
         <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
     </div>
+
     <h1>{% trans %}Step 2 of 3: Choose Operation{% endtrans %}</h1>
+
     <div class="row">
         <section class="section-white section-padding section-shadow section-radius section-margin">
+
             <div class="container">
-                {% trans %}Choose the operation you wish to perform on the selected{% endtrans %} {#  -#}
-                {% transchoice selection %}{#  -#}
-                {1} content|]1,Inf[ %selection% contents{#  -#}
-                {% endtranschoice  %}{#  -#}
+                {% transchoice selection %}{1}Choose the operations you wish to perform on the selected content item|]1,Inf[Choose the operation you wish to perform on the selected %selection% content items{% endtranschoice  %}
             </div>
+
             <hr/>
+
             {{ form_errors(form) }}
             {{ form_row(form.actions) }}
+
         </section>
     </div>
-    <div class="row">
-        <div class="pull-right">
-            <a class="btn btn-gray-thin" href="{{ path("integrated_content_bulk_select", app.request.query.all|merge({'id': id })) }}">{% trans %}Back{% endtrans %}</a>
-            <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
-        </div>
+
+    <div class="pull-right">
+        <a class="btn btn-gray-thin" href="{{ path("integrated_content_bulk_select", {'id': id }) }}">{% trans %}Back{% endtrans %}</a>
+        <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
     </div>
+
     {{ form_end(form) }}
+
 {% endblock content %}
 
 {% block javascript %}
@@ -49,27 +55,19 @@
         $(document).ready(function () {
             implementSelect2();
 
-            $(".bulk_subform .form-group").each(function () {
-                if ($(this).children("label").length > 0) {
-                    $(this).css('min-height', $(this).children('div').height());
-                    $(this).children("label").prepend("<input type='checkbox'/>&nbsp;");
+            $('[data-action-toggle="1"] input:checkbox')
+                .click(toggle)
+                .each(toggle);
 
-                    if ($(this).find("option").length > 0) {
-                        $(this).find(":checkbox").prop('checked', true);
-                    } else {
-                        $(this).children("div").hide();
-                    }
-                }
-            });
+            function toggle() {
+                var self = $(this);
 
-            $(":checkbox").click(function () {
-                if ($(this).is(":checked")) {
-                    $(this).parents("div.form-group").children("div").show();
+                if (self.is(':checked')) {
+                    self.parents('[data-action-toggle="1"]').next().show()
                 } else {
-                    $(this).parents("div.form-group").children("div").hide();
+                    self.parents('[data-action-toggle="1"]').next().hide()
                 }
-            });
-
+            }
         });
     </script>
 

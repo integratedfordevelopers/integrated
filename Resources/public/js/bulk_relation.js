@@ -13,7 +13,7 @@ function implementSelect2() {
                         limit: 5,
                         sort: 'title',
                         _format: 'json',
-                        q: typeof param.term != 'undefined' ? param.term + '*' : ''
+                        q: typeof param.term !== 'undefined' ? param.term + '*' : ''
                     };
                 },
                 processResults: function (data) {
@@ -28,7 +28,6 @@ function implementSelect2() {
                 }
             }
         });
-
 
         var value;
         if ($(this).data('value')) {

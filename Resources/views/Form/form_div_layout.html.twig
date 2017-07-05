@@ -386,14 +386,42 @@
     {{ block('integrated_collection_widget') }}
 {% endblock %}
 
-{% block bulk_actions_row %}
+{% block integrated_content_bulk_actions_row %}
     {{ form_widget(form) }}
 {% endblock %}
 
-{% block bulk_relation_action_row %}
-    <div class="row">
-        <div class="row col-md-8 bulk_subform">
-            {{ form_row(form.references, {'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm', 'attr': {'data-value': form.references.vars.value|json_encode} }) }}
+{% block integrated_content_bulk_action_row %}
+{% spaceless %}
+    <div class="form-group">
+
+        <div class="col-sm-3" data-action-toggle="1">
+            {{ form_row(form.active, {'no_form_group': true}) }}
         </div>
+
+        <div class="col-sm-9"{% if not form.active.vars['data'] %} style=""{% endif %}>
+            {{ form_widget(form.action) }}
+        </div>
+
     </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_bulk_action_readonly_row %}
+{% spaceless %}
+    <div class="form-group">
+
+        {{ form_label(form.active) }}
+
+        <div class="col-sm-9">
+            {{ form_widget(form.action) }}
+        </div>
+
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_bulk_action_relation_widget %}
+{% spaceless %}
+    {{ form_widget(form.references, {'attr': {'data-value': form.references.vars.value|json_encode}}) }}
+{% endspaceless %}
 {% endblock %}

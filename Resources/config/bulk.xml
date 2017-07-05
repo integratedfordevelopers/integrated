@@ -5,35 +5,40 @@
 
     <services>
 
-        <service id="integrated_content.bulk.registry.action_handler_registry_builder" class="Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistryBuilder" public="false"/>
+        <service id="integrated_content.bulk.handler_registry_builder" class="Integrated\Common\Bulk\Action\HandlerFactoryRegistryBuilder" public="false" />
 
-        <service id="integrated_content.bulk.registry.action_handler_registry" class="Integrated\Bundle\ContentBundle\Bulk\Registry\ActionHandlerRegistry">
-            <factory service="integrated_content.bulk.registry.action_handler_registry_builder" method="getRegistry" />
+        <service id="integrated_content.bulk.handler_registry" class="Integrated\Common\Bulk\Action\HandlerFactoryRegistry">
+            <factory service="integrated_content.bulk.handler_registry_builder" method="getRegistry" />
         </service>
 
-        <service id="integrated_content.bulk.action.translator.action_translator_factory" class="Integrated\Bundle\ContentBundle\Bulk\Action\Translator\ActionTranslatorFactory" public="false"/>
-
-        <service id="integrated_content.bulk.content_provider" class="Integrated\Bundle\ContentBundle\Provider\ContentProvider">
-            <argument type="service" id="solarium.client" />
-            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
-            <argument type="service" id="security.token_storage" />
-            <argument>false</argument>
+        <service id="integrated_content.bulk.handler" class="Integrated\Common\Bulk\BulkHandler">
+            <argument type="service" id="integrated_content.bulk.handler_registry"/>
         </service>
 
-        <service id="integrated_content.bulk.bulk_handler" class="Integrated\Bundle\ContentBundle\Bulk\BulkHandler">
-            <argument type="service" id="integrated_content.bulk.registry.action_handler_registry"/>
+        <service id="integrated_content.bulk.action.relaction_add_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\RelationHandlerFactory" public="false">
+            <argument type="string">Integrated\Bundle\ContentBundle\Bulk\RelationAddHandler</argument>
+
+            <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\RelationAddHandler" />
         </service>
 
-        <service id="integrated_content.bulk.action.translator.action_translator_provider" class="Integrated\Bundle\ContentBundle\Bulk\Action\Translator\ActionTranslatorProvider">
-            <argument type="service" id="integrated_content.bulk.action.translator.action_translator_factory"/>
+        <service id="integrated_content.bulk.action.relation_remove_handler_factory" class="Integrated\Bundle\ContentBundle\Bulk\RelationHandlerFactory" public="false">
+            <argument type="string">Integrated\Bundle\ContentBundle\Bulk\RelationRemoveHandler</argument>
+
+            <tag name="integrated_content.bulk.handler" class="Integrated\Bundle\ContentBundle\Bulk\RelationRemoveHandler" />
         </service>
 
-        <service id="integrated_content.bulk.action.handler.add_reference_handler" class="Integrated\Bundle\ContentBundle\Bulk\Action\Handler\AddReferenceHandler" public="false">
-            <tag name="integrated_content.bulk.action.handler" />
+        <service id="integrated_content.bulk.form.chain_provider_builder" class="Integrated\Common\Bulk\Form\ChainProviderBuilder" public="false" />
+
+        <service id="integrated_content.bulk.form.chian_provider" class="Integrated\Common\Bulk\Form\ChainProvider" public="false">
+            <factory service="integrated_content.bulk.form.chain_provider_builder" method="getProvider" />
         </service>
 
-        <service id="integrated_content.bulk.action.handler.remove_reference_action_handler" class="Integrated\Bundle\ContentBundle\Bulk\Action\Handler\RemoveReferenceHandler" public="false">
-            <tag name="integrated_content.bulk.action.handler" />
+        <service id="integrated_content.bulk.form.provider" alias="integrated_content.bulk.form.chian_provider" />
+
+        <service id="integrated_content.bulk.form.relation_provider" class="Integrated\Bundle\ContentBundle\Bulk\RelationFormProvider" public="false">
+            <argument type="service" id="doctrine_mongodb" />
+
+            <tag name="integrated_content.bulk.form.provider" />
         </service>
 
     </services>
