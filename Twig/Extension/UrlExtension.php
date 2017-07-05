@@ -56,12 +56,12 @@ class UrlExtension extends \Twig_Extension
      */
     public function getUrl($document)
     {
-       if ($document instanceof ContentInterface) {
-           return $this->urlResolver->generateUrl($document);
-       }
+        if ($document instanceof ContentInterface) {
+            return $this->urlResolver->generateUrl($document);
+        }
 
-       //probably solr document
-       return $this->solrUrlExtractor->getUrl($document);
+        //probably solr document
+        return $this->solrUrlExtractor->getUrl($document);
     }
 
     /**
