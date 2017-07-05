@@ -11,7 +11,9 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
+use Integrated\Bundle\PageBundle\Services\SolrUrlExtractor;
 use Integrated\Bundle\PageBundle\Services\UrlResolver;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -24,11 +26,18 @@ class UrlExtension extends \Twig_Extension
     protected $urlResolver;
 
     /**
-     * @param UrlResolver $urlResolver
+     * @var SolrUrlExtractor
      */
-    public function __construct(UrlResolver $urlResolver)
+    protected $solrUrlExtractor;
+
+    /**
+     * @param UrlResolver $urlResolver
+     * @param SolrUrlExtractor $solrUrlExtractor
+     */
+    public function __construct(UrlResolver $urlResolver, SolrUrlExtractor $solrUrlExtractor)
     {
         $this->urlResolver = $urlResolver;
+        $this->solrUrlExtractor = $solrUrlExtractor;
     }
 
     /**
@@ -37,8 +46,22 @@ class UrlExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_url', [$this->urlResolver, 'generateUrl']),
+            new \Twig_SimpleFunction('integrated_url', [$this, 'getUrl']),
         ];
+    }
+
+    /**
+     * @param mixed $document
+     * @return null|string
+     */
+    public function getUrl($document)
+    {
+        if ($document instanceof ContentInterface) {
+            return $this->urlResolver->generateUrl($document);
+        }
+
+        //probably solr document
+        return $this->solrUrlExtractor->getUrl($document);
     }
 
     /**
