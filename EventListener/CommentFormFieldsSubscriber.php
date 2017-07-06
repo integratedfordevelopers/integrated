@@ -24,6 +24,7 @@ use Integrated\Common\Content\Form\Events;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -98,7 +99,8 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     public function onBuildField(FieldEvent $event)
     {
         $masterRequest = $this->requestStack->getMasterRequest();
-        if ($masterRequest->attributes->get('_route') !== 'integrated_content_content_edit') {
+        if ($masterRequest instanceof Request
+            && $masterRequest->attributes->get('_route') !== 'integrated_content_content_edit') {
             return;
         }
 
