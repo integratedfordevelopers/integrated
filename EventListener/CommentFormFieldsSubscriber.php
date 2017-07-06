@@ -22,7 +22,9 @@ use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Events;
 
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -45,6 +47,16 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     private $javascripts;
 
     /**
+     * @var RequestStack
+     */
+    private $requestStack;
+
+    /**
+     * @var Router
+     */
+    private $router;
+
+    /**
      * @var null|array
      */
     protected $comments = null;
@@ -53,12 +65,20 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
      * @param DocumentManager $documentManager
      * @param AssetManager $stylesheets
      * @param AssetManager $javascripts
+     * @param RequestStack $requestStack
      */
-    public function __construct(DocumentManager $documentManager, AssetManager $stylesheets, AssetManager $javascripts)
-    {
+    public function __construct(
+        DocumentManager $documentManager,
+        AssetManager $stylesheets,
+        AssetManager $javascripts,
+        Router $router,
+        RequestStack $requestStack
+    ) {
         $this->documentManager = $documentManager;
         $this->stylesheets = $stylesheets;
         $this->javascripts = $javascripts;
+        $this->router = $router;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -77,6 +97,11 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
      */
     public function onBuildField(FieldEvent $event)
     {
+        $masterRequest = $this->requestStack->getMasterRequest();
+        if ($masterRequest->attributes->get('_route') !== 'integrated_content_content_edit') {
+            return;
+        }
+
         /** @var Field $field */
         $field = $event->getField();
 
