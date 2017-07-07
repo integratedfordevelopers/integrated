@@ -18,38 +18,38 @@ use Symfony\Component\EventDispatcher\Event as BaseEvent;
  */
 class Event extends BaseEvent
 {
-	/**
-	 *
-	 */
-	const CONTENT      = 'extension.event.content';
+    /**
+     *
+     */
+    const CONTENT      = 'extension.event.content';
 
-	/**
-	 *
-	 */
-	const CONTENT_TYPE = 'extension.event.contenttype';
+    /**
+     *
+     */
+    const CONTENT_TYPE = 'extension.event.contenttype';
 
-	/**
-	 *
-	 */
-	const METADATA     = 'extension.event.medadata';
+    /**
+     *
+     */
+    const METADATA     = 'extension.event.medadata';
 
-	/**
-	 *
-	 */
-	const UNKNOWN      = 'extension.event.unknown';
+    /**
+     *
+     */
+    const UNKNOWN      = 'extension.event.unknown';
 
-	/**
-	 * @var string
-	 */
-	private $eventType;
+    /**
+     * @var string
+     */
+    private $eventType;
 
-	public function __construct($eventType = null)
-	{
-		$this->eventType = $eventType === null ? self::UNKNOWN : (string) $eventType;
-	}
+    public function __construct($eventType = null)
+    {
+        $this->eventType = $eventType === null ? self::UNKNOWN : (string) $eventType;
+    }
 
-	public function getEventType()
-	{
-		return $this->eventType;
-	}
+    public function getEventType()
+    {
+        return $this->eventType;
+    }
 }

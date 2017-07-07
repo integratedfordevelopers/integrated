@@ -13,9 +13,7 @@ namespace Integrated\Tests\Common\ContentType\Resolver;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Resolver\MongoDBIterator;
 use Integrated\Common\ContentType\Resolver\MongoDBResolver;
-
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

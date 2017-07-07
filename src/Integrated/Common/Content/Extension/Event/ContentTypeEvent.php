@@ -19,23 +19,23 @@ use Integrated\Common\Content\Extension\Event;
  */
 class ContentTypeEvent extends Event
 {
-	/**
-	 * @var ContentTypeInterface
-	 */
-	private $type;
+    /**
+     * @var ContentTypeInterface
+     */
+    private $type;
 
-	public function __construct(ContentTypeInterface $type)
-	{
-		parent::__construct(self::CONTENT_TYPE);
+    public function __construct(ContentTypeInterface $type)
+    {
+        parent::__construct(self::CONTENT_TYPE);
 
-		$this->type = $type;
-	}
+        $this->type = $type;
+    }
 
-	/**
-	 * @return ContentTypeInterface
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
+    /**
+     * @return ContentTypeInterface
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 }

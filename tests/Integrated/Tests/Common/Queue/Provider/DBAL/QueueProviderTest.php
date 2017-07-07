@@ -23,51 +23,50 @@ use Doctrine\DBAL\Connection;
  */
 class QueueProviderTest extends \PHPUnit_Framework_TestCase
 {
-	const PAYLOAD = 'O:8:"stdClass":0:{}'; // serialized stdClass;
+    const PAYLOAD = 'O:8:"stdClass":0:{}'; // serialized stdClass;
 
-	/**
-	 * @var QueueProvider
-	 */
-	protected $provider;
+    /**
+     * @var QueueProvider
+     */
+    protected $provider;
 
-	/**
-	 * @var Connection | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $connection;
+    /**
+     * @var Connection | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $connection;
 
-	protected function setUp()
-	{
-		$options = array(
-			'queue_table_name' => 'queue'
-		);
+    protected function setUp()
+    {
+        $options = array(
+            'queue_table_name' => 'queue'
+        );
 
-		$this->connection = $this->getMock('Doctrine\DBAL\Connection', array(), array(), '', false);
-		$this->provider = new QueueProvider($this->connection, $options);
-	}
+        $this->connection = $this->getMock('Doctrine\DBAL\Connection', array(), array(), '', false);
+        $this->provider = new QueueProvider($this->connection, $options);
+    }
 
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Integrated\Common\Queue\Provider\QueueProviderInterface', $this->provider);
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Integrated\Common\Queue\Provider\QueueProviderInterface', $this->provider);
+    }
 
-	public function testPush()
-	{
-		$this->connection->expects($this->once())
-			->method('insert')
-			->with($this->identicalTo('queue'));
+    public function testPush()
+    {
+        $this->connection->expects($this->once())
+            ->method('insert')
+            ->with($this->identicalTo('queue'));
 
-		$this->provider->push('channel', new stdClass());
-	}
+        $this->provider->push('channel', new stdClass());
+    }
 
-	public function testPull()
-	{
+    public function testPull()
+    {
 //		$this->assert
 //
 //		$this->assertEquals()
-	}
+    }
 
-	public function testCount()
-	{
-
-	}
+    public function testCount()
+    {
+    }
 }

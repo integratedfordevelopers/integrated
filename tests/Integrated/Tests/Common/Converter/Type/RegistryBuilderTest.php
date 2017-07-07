@@ -22,9 +22,9 @@ use Integrated\Common\Converter\Type\TypeInterface;
 class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-   	 * @var ResolvedTypeFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
-   	 */
-   	private $factory;
+     * @var ResolvedTypeFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $factory;
 
     protected function setUp()
     {

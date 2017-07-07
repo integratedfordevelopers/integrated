@@ -43,14 +43,14 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->provider->expects($this->once())
             ->method('getTypes')
-            ->with($this->equalTo('Integrated\\Tests\\Common\\Converter\\Config\\TestClass'))
+            ->with($this->equalTo(Fixtures\TestClass::class))
             ->willReturn([$this->getType()]);
 
-        $config = $resolver->getConfig('Integrated\\Tests\\Common\\Converter\\Config\\TestClass');
+        $config = $resolver->getConfig(Fixtures\TestClass::class);
 
         self::assertInstanceOf($this->CONFIG_INTERFACE, $config);
         self::assertFalse($config->hasParent());
-        self::assertSame($config, $resolver->getConfig('Integrated\\Tests\\Common\\Converter\\Config\\TestClass'));
+        self::assertSame($config, $resolver->getConfig(Fixtures\TestClass::class));
     }
 
     public function testGetConfigParent()
@@ -60,19 +60,19 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
         $this->provider->expects($this->exactly(2))
             ->method('getTypes')
             ->withConsecutive(
-                [$this->equalTo('Integrated\\Tests\\Common\\Converter\\Config\\TestParent')],
-                [$this->equalTo('Integrated\\Tests\\Common\\Converter\\Config\\TestChild')]
+                [$this->equalTo(Fixtures\TestParent::class)],
+                [$this->equalTo(Fixtures\TestChild::class)]
             )
             ->willReturnOnConsecutiveCalls(
                 [$this->getType()],
                 []
             );
 
-        $config = $resolver->getConfig('Integrated\\Tests\\Common\\Converter\\Config\\TestChild');
+        $config = $resolver->getConfig(Fixtures\TestChild::class);
 
         self::assertInstanceOf($this->CONFIG_INTERFACE, $config);
         self::assertFalse($config->hasParent());
-        self::assertSame($config, $resolver->getConfig('Integrated\\Tests\\Common\\Converter\\Config\\TestParent'));
+        self::assertSame($config, $resolver->getConfig(Fixtures\TestParent::class));
     }
 
     public function testGetConfigParentAndChild()
@@ -82,19 +82,19 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
         $this->provider->expects($this->exactly(2))
             ->method('getTypes')
             ->withConsecutive(
-                [$this->equalTo('Integrated\\Tests\\Common\\Converter\\Config\\TestParent')],
-                [$this->equalTo('Integrated\\Tests\\Common\\Converter\\Config\\TestChild')]
+                [$this->equalTo(Fixtures\TestParent::class)],
+                [$this->equalTo(Fixtures\TestChild::class)]
             )
             ->willReturnOnConsecutiveCalls(
                 [$this->getType()],
                 [$this->getType()]
             );
 
-        $config = $resolver->getConfig('Integrated\\Tests\\Common\\Converter\\Config\\TestChild');
+        $config = $resolver->getConfig(Fixtures\TestChild::class);
 
         self::assertInstanceOf($this->CONFIG_INTERFACE, $config);
         self::assertTrue($config->hasParent());
-        self::assertSame($config->getParent(), $resolver->getConfig('Integrated\\Tests\\Common\\Converter\\Config\\TestParent'));
+        self::assertSame($config->getParent(), $resolver->getConfig(Fixtures\TestParent::class));
     }
 
     public function testGetConfigNothingFound()
@@ -103,7 +103,7 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
             ->method('getTypes')
             ->willReturn([]);
 
-        self::assertNull($this->getInstance()->getConfig('Integrated\\Tests\\Common\\Converter\\Config\\TestClass'));
+        self::assertNull($this->getInstance()->getConfig(Fixtures\TestChild::class));
     }
 
     public function testGetConfigLowerAndUpperCaseClassName()
@@ -112,12 +112,12 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
 
         $this->provider->expects($this->once())
             ->method('getTypes')
-            ->with($this->equalTo('Integrated\\Tests\\Common\\Converter\\Config\\TestClass'))
+            ->with($this->equalTo(Fixtures\TestClass::class))
             ->willReturn([$this->getType()]);
 
         self::assertSame(
-            $resolver->getConfig('integrated\\tests\\common\\converter\\config\\testclass'),
-            $resolver->getConfig('INTEGRATED\\TESTS\\COMMON\\CONVERTER\\CONFIG\\TESTCLASS')
+            $resolver->getConfig('integrated\\tests\\common\\converter\\config\\fixtures\\testclass'),
+            $resolver->getConfig('INTEGRATED\\TESTS\\COMMON\\CONVERTER\\CONFIG\\FIXTURES\\TESTCLASS')
         );
     }
 
@@ -131,7 +131,7 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConfigInvalidClass()
     {
-        self::assertNull($this->getInstance()->getConfig('Integrated\\Tests\\Common\\Converter\\Config\\DoesNotExist'));
+        self::assertNull($this->getInstance()->getConfig('Integrated\\Tests\\Common\\Converter\\Config\\Fixtures\\DoesNotExist'));
     }
 
     /**
@@ -150,7 +150,3 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
         return $this->getMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface');
     }
 }
-
-class TestParent {}
-class TestChild extends TestParent {}
-class TestClass {}

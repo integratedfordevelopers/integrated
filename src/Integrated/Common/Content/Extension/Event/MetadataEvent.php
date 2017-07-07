@@ -19,23 +19,23 @@ use Integrated\Common\Form\Mapping\MetadataEditorInterface;
  */
 class MetadataEvent extends Event
 {
-	/**
-	 * @var MetadataEditorInterface
-	 */
-	private $metadata;
+    /**
+     * @var MetadataEditorInterface
+     */
+    private $metadata;
 
-	public function __construct(MetadataEditorInterface $metadata)
-	{
-		parent::__construct(self::METADATA);
+    public function __construct(MetadataEditorInterface $metadata)
+    {
+        parent::__construct(self::METADATA);
 
-		$this->metadata = $metadata;
-	}
+        $this->metadata = $metadata;
+    }
 
-	/**
-	 * @return MetadataEditorInterface
-	 */
-	public function getMetadata()
-	{
-		return $this->metadata;
-	}
+    /**
+     * @return MetadataEditorInterface
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
 }

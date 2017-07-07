@@ -26,76 +26,76 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class RequestAwareChannelContext implements ChannelContextInterface
 {
-	/**
-	 * @var ChannelManagerInterface
-	 */
-	private $manager;
+    /**
+     * @var ChannelManagerInterface
+     */
+    private $manager;
 
-	/**
-	 * @var RequestStack
-	 */
-	private $stack;
+    /**
+     * @var RequestStack
+     */
+    private $stack;
 
-	/**
-	 * @var string
-	 */
-	private $attribute;
+    /**
+     * @var string
+     */
+    private $attribute;
 
-	/**
-	 * @param ChannelManagerInterface $manager
-	 * @param RequestStack $stack
-	 * @param string $attribute
-	 */
-	public function __construct(ChannelManagerInterface $manager, RequestStack $stack, $attribute = '_channel')
-	{
-		$this->manager = $manager;
-		$this->stack = $stack;
-		$this->attribute = $attribute;
-	}
+    /**
+     * @param ChannelManagerInterface $manager
+     * @param RequestStack $stack
+     * @param string $attribute
+     */
+    public function __construct(ChannelManagerInterface $manager, RequestStack $stack, $attribute = '_channel')
+    {
+        $this->manager = $manager;
+        $this->stack = $stack;
+        $this->attribute = $attribute;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getChannel()
-	{
-		$request = $this->getRequest();
+    /**
+     * @inheritdoc
+     */
+    public function getChannel()
+    {
+        $request = $this->getRequest();
 
-		if (!$request) {
-			return null;
-		}
+        if (!$request) {
+            return null;
+        }
 
-		if (!$request->attributes->has($this->attribute)) {
-			return null;
-		}
+        if (!$request->attributes->has($this->attribute)) {
+            return null;
+        }
 
-		return $this->manager->find($request->attributes->get($this->attribute));
-	}
+        return $this->manager->find($request->attributes->get($this->attribute));
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setChannel(ChannelInterface $channel = null)
-	{
-		$request = $this->getRequest();
+    /**
+     * @inheritdoc
+     */
+    public function setChannel(ChannelInterface $channel = null)
+    {
+        $request = $this->getRequest();
 
-		if (!$request) {
-			return; // no request so can not store the channel
-		}
+        if (!$request) {
+            return; // no request so can not store the channel
+        }
 
-		if ($channel) {
-			$request->attributes->set($this->attribute, $channel->getId());
-		} else {
-			$request->attributes->remove($this->attribute);
-		}
-	}
+        if ($channel) {
+            $request->attributes->set($this->attribute, $channel->getId());
+        } else {
+            $request->attributes->remove($this->attribute);
+        }
+    }
 
-	/**
-	 * Get the current request object
-	 *
-	 * @return null | Request
-	 */
-	protected function getRequest()
-	{
-		return $this->stack->getCurrentRequest();
-	}
+    /**
+     * Get the current request object
+     *
+     * @return null | Request
+     */
+    protected function getRequest()
+    {
+        return $this->stack->getCurrentRequest();
+    }
 }

@@ -16,8 +16,8 @@ namespace Integrated\Common\Queue;
  */
 interface QueueAwareInterface
 {
-	/**
-	 * @param QueueInterface $queue
-	 */
-	public function setQueue(QueueInterface $queue);
+    /**
+     * @param QueueInterface $queue
+     */
+    public function setQueue(QueueInterface $queue);
 }

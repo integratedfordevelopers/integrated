@@ -58,4 +58,3 @@ class DoctrineLocatorTest extends \PHPUnit_Framework_TestCase
         return new DoctrineLocator($this->driver);
     }
 }
- 

@@ -49,7 +49,6 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         $type = $this->getType();
 
         self::assertSame($type, $this->getInstance(['test' => $type])->getType('test'));
-
     }
 
     /**

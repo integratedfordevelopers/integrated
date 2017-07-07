@@ -210,7 +210,8 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
         $this->registry->expects($this->exactly($count))
             ->method('getHandler')
             ->with($this->equalTo('stdClass'))
-            ->willReturn(function () {});
+            ->willReturn(function () {
+            });
 
         $instance->execute();
     }

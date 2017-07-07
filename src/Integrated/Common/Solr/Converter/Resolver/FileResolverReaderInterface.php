@@ -19,9 +19,9 @@ use Integrated\Common\Solr\Converter\ConverterSpecificationInterface;
  */
 interface FileResolverReaderInterface
 {
-	/**
-	 * @param SplFileInfo $file
-	 * @return ConverterSpecificationInterface[]
-	 */
-	public function read(SplFileInfo $file);
+    /**
+     * @param SplFileInfo $file
+     * @return ConverterSpecificationInterface[]
+     */
+    public function read(SplFileInfo $file);
 }

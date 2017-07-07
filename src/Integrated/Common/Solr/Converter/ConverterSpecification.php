@@ -16,39 +16,39 @@ namespace Integrated\Common\Solr\Converter;
  */
 class ConverterSpecification implements ConverterSpecificationInterface
 {
-	public $classes = array();
+    public $classes = array();
 
-	public $fields = array();
+    public $fields = array();
 
-	public $id = null;
+    public $id = null;
 
-	public function hasClass($class)
-	{
-		return in_array($class, $this->classes);
-	}
+    public function hasClass($class)
+    {
+        return in_array($class, $this->classes);
+    }
 
-	public function getClasses()
-	{
-		return $this->classes;
-	}
+    public function getClasses()
+    {
+        return $this->classes;
+    }
 
-	public function hasField($field)
-	{
-		return array_key_exists($field, $this->fields);
-	}
+    public function hasField($field)
+    {
+        return array_key_exists($field, $this->fields);
+    }
 
-	public function getField($field)
-	{
-		return $this->fields[$field];
-	}
+    public function getField($field)
+    {
+        return $this->fields[$field];
+    }
 
-	public function getFields()
-	{
-		return $this->fields;
-	}
+    public function getFields()
+    {
+        return $this->fields;
+    }
 
-	public function getId()
-	{
-		return $this->id;
-	}
+    public function getId()
+    {
+        return $this->id;
+    }
 }

@@ -63,10 +63,10 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver->expects($this->once())
             ->method('getConfig')
-            ->with($this->equalTo('Integrated\\Tests\\Common\\Converter\\TestClass'))
+            ->with($this->equalTo(\stdClass::class))
             ->willReturn($this->getConfig([$this->getType('type-1', null), $this->getType('type-2', ['options'])]));
 
-        $data = new TestClass();
+        $data = new \stdClass();
 
         $type1 = $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
         $type1->expects($this->once())
@@ -98,13 +98,13 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver->expects($this->once())
             ->method('getConfig')
-            ->with($this->equalTo('Integrated\\Tests\\Common\\Converter\\TestClass'))
+            ->with($this->equalTo(\stdClass::class))
             ->willReturn(null);
 
         $this->registry->expects($this->never())
             ->method($this->anything());
 
-        self::assertSame($container, $this->getInstance()->convert(new TestClass()));
+        self::assertSame($container, $this->getInstance()->convert(new \stdClass()));
     }
 
     /**
@@ -118,7 +118,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver->expects($this->once())
             ->method('getConfig')
-            ->with($this->equalTo('Integrated\\Tests\\Common\\Converter\\TestClass'))
+            ->with($this->equalTo(\stdClass::class))
             ->willReturn($this->getConfig([$this->getType('does-not-exist')]));
 
         $this->registry->expects($this->any())
@@ -126,7 +126,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('does-not-exist'))
             ->willThrowException($this->getMock('Integrated\\Common\\Converter\\Exception\\RuntimeException'));
 
-        $this->getInstance()->convert(new TestClass());
+        $this->getInstance()->convert(new \stdClass());
     }
 
     /**
@@ -219,5 +219,3 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 }
-
-class TestClass {}

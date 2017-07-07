@@ -16,20 +16,20 @@ namespace Integrated\Common\Content\Extension;
  */
 interface RegistryInterface
 {
-	/**
-	 * @return ExtensionInterface[]
-	 */
-	public function getExtensions();
+    /**
+     * @return ExtensionInterface[]
+     */
+    public function getExtensions();
 
-	/**
-	 * @param string $name
-	 * @return bool
-	 */
-	public function hasExtension($name);
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasExtension($name);
 
-	/**
-	 * @param string $name
-	 * @return ExtensionInterface | null
-	 */
-	public function getExtension($name);
+    /**
+     * @param string $name
+     * @return ExtensionInterface | null
+     */
+    public function getExtension($name);
 }

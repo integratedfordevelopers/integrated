@@ -85,20 +85,9 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
 
         // TODO: mock reflection class
         // Create reflection class
-        $class = new \ReflectionClass(new Test());
+        $class = new \ReflectionClass(new \stdClass());
 
         // Assert
         $this->assertNull($this->driver->loadMetadataForClass($class));
     }
-}
-
-
-/**
- * Dummy class with two properties
- * @todo reflection class should be mocked
- */
-class Test
-{
-    protected $property1;
-    protected $property2;
 }

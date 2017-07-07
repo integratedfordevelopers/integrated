@@ -140,7 +140,7 @@ class XmlProvider extends AbstractFileProvider
     protected function parsePrimitive(SimpleXMLElement $element)
     {
         switch ($element->getName()) {
-            case 'array';
+            case 'array':
                 return $this->parseArray($element);
 
             case 'string':
@@ -180,8 +180,7 @@ class XmlProvider extends AbstractFileProvider
 
         try {
             $content = $file->getContents();
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             throw new RuntimeException($e->getMessage(), 0, $e);
         }
 

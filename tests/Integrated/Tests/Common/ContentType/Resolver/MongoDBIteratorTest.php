@@ -14,7 +14,6 @@ namespace Integrated\Tests\Common\ContentType\Resolver;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\Resolver\MongoDBIterator;
 
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */

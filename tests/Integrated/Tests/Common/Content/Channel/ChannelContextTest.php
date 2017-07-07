@@ -18,33 +18,32 @@ use Integrated\Common\Content\Channel\ChannelContext;
  */
 class ChannelContextTest extends \PHPUnit_Framework_TestCase
 {
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Integrated\\Common\\Content\\Channel\\ChannelContextInterface', $this->getInstance());
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Integrated\\Common\\Content\\Channel\\ChannelContextInterface', $this->getInstance());
+    }
 
-	public function testSetGetChannel()
-	{
-		$channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
-		$instance = $this->getInstance();
+    public function testSetGetChannel()
+    {
+        $channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $instance = $this->getInstance();
 
-		$this->assertNull($instance->getChannel());
+        $this->assertNull($instance->getChannel());
 
-		$instance->setChannel($channel);
+        $instance->setChannel($channel);
 
-		$this->assertSame($channel, $instance->getChannel());
+        $this->assertSame($channel, $instance->getChannel());
 
-		$instance->setChannel();
+        $instance->setChannel();
 
-		$this->assertNull($instance->getChannel());
-	}
+        $this->assertNull($instance->getChannel());
+    }
 
-	/**
-	 * @return ChannelContext
-	 */
-	protected function getInstance()
-	{
-		return new ChannelContext();
-	}
+    /**
+     * @return ChannelContext
+     */
+    protected function getInstance()
+    {
+        return new ChannelContext();
+    }
 }
- 

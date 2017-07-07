@@ -19,24 +19,24 @@ use Symfony\Component\EventDispatcher\Event;
  */
 class MetadataEvent extends Event
 {
-	/**
-	 * @var MetadataEditorInterface
-	 */
-	protected $metadata;
+    /**
+     * @var MetadataEditorInterface
+     */
+    protected $metadata;
 
-	/**
-	 * @param MetadataEditorInterface $metadata
-	 */
-	public function __construct(MetadataEditorInterface $metadata)
-	{
-		$this->metadata = $metadata;
-	}
+    /**
+     * @param MetadataEditorInterface $metadata
+     */
+    public function __construct(MetadataEditorInterface $metadata)
+    {
+        $this->metadata = $metadata;
+    }
 
-	/**
-	 * @return MetadataEditorInterface
-	 */
-	public function getMetadata()
-	{
-		return $this->metadata;
-	}
+    /**
+     * @return MetadataEditorInterface
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
 }

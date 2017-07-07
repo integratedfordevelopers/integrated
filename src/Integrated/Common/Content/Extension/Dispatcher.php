@@ -32,97 +32,97 @@ use Symfony\Component\EventDispatcher\ImmutableEventDispatcher;
  */
 class Dispatcher implements DispatcherInterface, RegistryInterface
 {
-	/**
-	 * @var RegistryInterface
-	 */
-	private $registry;
+    /**
+     * @var RegistryInterface
+     */
+    private $registry;
 
-	/**
-	 * @var EventDispatcherInterface[]
-	 */
-	private $dispatcher = [
-		'content'  => null,
-		'type'     => null,
-		'metadata' => null
-	];
+    /**
+     * @var EventDispatcherInterface[]
+     */
+    private $dispatcher = [
+        'content'  => null,
+        'type'     => null,
+        'metadata' => null
+    ];
 
-	/**
-	 * @param RegistryInterface $registry
-	 */
-	public function __construct(RegistryInterface $registry)
-	{
-		$this->registry   = $registry;
+    /**
+     * @param RegistryInterface $registry
+     */
+    public function __construct(RegistryInterface $registry)
+    {
+        $this->registry   = $registry;
 
-		$this->dispatcher = [
-			'content'  => new EventDispatcher(),
-			'type'     => new EventDispatcher(),
-			'metadata' => new EventDispatcher()
-		];
+        $this->dispatcher = [
+            'content'  => new EventDispatcher(),
+            'type'     => new EventDispatcher(),
+            'metadata' => new EventDispatcher()
+        ];
 
-		foreach ($this->registry->getExtensions() as $extension) {
-			foreach ($extension->getSubscribers() as $subscriber) {
-				if ($subscriber instanceof ContentSubscriberInterface) {
-					$this->dispatcher['content']->addSubscriber($subscriber);
-				}
+        foreach ($this->registry->getExtensions() as $extension) {
+            foreach ($extension->getSubscribers() as $subscriber) {
+                if ($subscriber instanceof ContentSubscriberInterface) {
+                    $this->dispatcher['content']->addSubscriber($subscriber);
+                }
 
-				if ($subscriber instanceof ContentTypeSubscriberInterface) {
-					$this->dispatcher['type']->addSubscriber($subscriber);
-				}
+                if ($subscriber instanceof ContentTypeSubscriberInterface) {
+                    $this->dispatcher['type']->addSubscriber($subscriber);
+                }
 
-				if ($subscriber instanceof MetadataSubscriberInterface) {
-					$this->dispatcher['metadata']->addSubscriber($subscriber);
-				}
-			}
-		}
+                if ($subscriber instanceof MetadataSubscriberInterface) {
+                    $this->dispatcher['metadata']->addSubscriber($subscriber);
+                }
+            }
+        }
 
-		$this->dispatcher = [
-			'content'  => new ImmutableEventDispatcher($this->dispatcher['content']),
-			'type'     => new ImmutableEventDispatcher($this->dispatcher['type']),
-			'metadata' => new ImmutableEventDispatcher($this->dispatcher['metadata'])
-		];
-	}
+        $this->dispatcher = [
+            'content'  => new ImmutableEventDispatcher($this->dispatcher['content']),
+            'type'     => new ImmutableEventDispatcher($this->dispatcher['type']),
+            'metadata' => new ImmutableEventDispatcher($this->dispatcher['metadata'])
+        ];
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getExtensions()
-	{
-		return $this->registry->getExtensions();
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getExtensions()
+    {
+        return $this->registry->getExtensions();
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function hasExtension($name)
-	{
-		return $this->registry->hasExtension($name);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function hasExtension($name)
+    {
+        return $this->registry->hasExtension($name);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getExtension($name)
-	{
-		return $this->registry->getExtension($name);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getExtension($name)
+    {
+        return $this->registry->getExtension($name);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function dispatch($eventName, $object)
-	{
-		if ($object instanceof ContentInterface) {
-			return $this->dispatcher['content']->dispatch($eventName, new ContentEvent($object));
-		}
+    /**
+     * @inheritdoc
+     */
+    public function dispatch($eventName, $object)
+    {
+        if ($object instanceof ContentInterface) {
+            return $this->dispatcher['content']->dispatch($eventName, new ContentEvent($object));
+        }
 
-		if ($object instanceof ContentTypeInterface) {
-			return $this->dispatcher['type']->dispatch($eventName, new ContentTypeEvent($object));
-		}
+        if ($object instanceof ContentTypeInterface) {
+            return $this->dispatcher['type']->dispatch($eventName, new ContentTypeEvent($object));
+        }
 
-		if ($object instanceof MetadataEditorInterface) {
-			return $this->dispatcher['metadata']->dispatch($eventName, new MetadataEvent($object));
-		}
+        if ($object instanceof MetadataEditorInterface) {
+            return $this->dispatcher['metadata']->dispatch($eventName, new MetadataEvent($object));
+        }
 
-		return new Event();
-	}
+        return new Event();
+    }
 }

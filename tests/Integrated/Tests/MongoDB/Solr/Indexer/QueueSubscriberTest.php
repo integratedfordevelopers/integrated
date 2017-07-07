@@ -98,8 +98,10 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSubscribedEvents()
     {
-        $this->assertEquals([Events::postPersist, Events::postUpdate, Events::postRemove],
-                $this->subscriber->getSubscribedEvents());
+        $this->assertEquals(
+            [Events::postPersist, Events::postUpdate, Events::postRemove],
+            $this->subscriber->getSubscribedEvents()
+        );
     }
 
     public function testPostPersist()

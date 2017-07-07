@@ -18,36 +18,36 @@ use Serializable;
  */
 interface QueueMessageInterface
 {
-	/**
-	 * Delete the message from the queue.
-	 */
-	public function delete();
+    /**
+     * Delete the message from the queue.
+     */
+    public function delete();
 
-	/**
-	 * Release the lock from the message so that an other queue worker can pick it up.
-	 *
-	 * @param int $delay
-	 */
-	public function release($delay = 0);
+    /**
+     * Release the lock from the message so that an other queue worker can pick it up.
+     *
+     * @param int $delay
+     */
+    public function release($delay = 0);
 
-	/**
-	 * The number of times this message has been picked up from the queue.
-	 *
-	 * @return int
-	 */
-	public function getAttempts();
+    /**
+     * The number of times this message has been picked up from the queue.
+     *
+     * @return int
+     */
+    public function getAttempts();
 
-	/**
-	 * Get the message payload.
-	 *
-	 * @return mixed
-	 */
-	public function getPayload();
+    /**
+     * Get the message payload.
+     *
+     * @return mixed
+     */
+    public function getPayload();
 
-	/**
-	 * Get the message priority
-	 *
-	 * @return int
-	 */
-	public function getPriority();
+    /**
+     * Get the message priority
+     *
+     * @return int
+     */
+    public function getPriority();
 }

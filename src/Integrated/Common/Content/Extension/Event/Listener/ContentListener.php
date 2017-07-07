@@ -22,37 +22,37 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class ContentListener
 {
-	/**
-	 * @var ExtensionInterface
-	 */
-	protected $extension;
+    /**
+     * @var ExtensionInterface
+     */
+    protected $extension;
 
-	/**
-	 * @var callable
-	 */
-	protected $listener;
+    /**
+     * @var callable
+     */
+    protected $listener;
 
-	public function __construct(ExtensionInterface $extension, callable $listener)
-	{
-		$this->extension = $extension;
-		$this->listener = $listener;
-	}
+    public function __construct(ExtensionInterface $extension, callable $listener)
+    {
+        $this->extension = $extension;
+        $this->listener = $listener;
+    }
 
-	public function __invoke(ContentEvent $event, $eventName, EventDispatcherInterface $dispatcher)
-	{
-		$event = clone $event;
-		$event->setData(null);
+    public function __invoke(ContentEvent $event, $eventName, EventDispatcherInterface $dispatcher)
+    {
+        $event = clone $event;
+        $event->setData(null);
 
-		$content = $event->getContent();
+        $content = $event->getContent();
 
-		if ($content instanceof ExtensibleInterface){
-			$event->setData($content->getExtensions()->get($this->extension->getName()));
-		}
+        if ($content instanceof ExtensibleInterface) {
+            $event->setData($content->getExtensions()->get($this->extension->getName()));
+        }
 
-		call_user_func($this->listener, $event, $eventName, $dispatcher);
+        call_user_func($this->listener, $event, $eventName, $dispatcher);
 
-		if ($content instanceof ExtensibleInterface){
-			$content->getExtensions()->set($this->extension->getName(), $event->getData());
-		}
-	}
-} 
+        if ($content instanceof ExtensibleInterface) {
+            $content->getExtensions()->set($this->extension->getName(), $event->getData());
+        }
+    }
+}

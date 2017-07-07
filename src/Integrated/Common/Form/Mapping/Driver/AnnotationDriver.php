@@ -25,61 +25,61 @@ use Integrated\Common\Form\Mapping\MetadataEditorInterface;
  */
 class AnnotationDriver implements DriverInterface
 {
-	const DOCUMENT_CLASS = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Document';
+    const DOCUMENT_CLASS = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Document';
 
-	const FIELD_CLASS    = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Field';
+    const FIELD_CLASS    = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Field';
 
-	/**
-	 * @var MappingDriver
-	 */
-	protected $driver;
+    /**
+     * @var MappingDriver
+     */
+    protected $driver;
 
-	/**
-	 * @var Reader
-	 */
-	protected $reader;
+    /**
+     * @var Reader
+     */
+    protected $reader;
 
-	public function __construct(MappingDriver $driver, Reader $reader)
-	{
-		$this->driver = $driver;
-		$this->reader = $reader;
-	}
+    public function __construct(MappingDriver $driver, Reader $reader)
+    {
+        $this->driver = $driver;
+        $this->reader = $reader;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getAllClassNames()
-	{
-		return $this->driver->getAllClassNames();
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getAllClassNames()
+    {
+        return $this->driver->getAllClassNames();
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function loadMetadataForClass($class, MetadataEditorInterface $metadata)
-	{
-		/* @var $document Document */
-		$document = $this->reader->getClassAnnotation($metadata->getReflection(), self::DOCUMENT_CLASS);
+    /**
+     * @inheritdoc
+     */
+    public function loadMetadataForClass($class, MetadataEditorInterface $metadata)
+    {
+        /* @var $document Document */
+        $document = $this->reader->getClassAnnotation($metadata->getReflection(), self::DOCUMENT_CLASS);
 
-		if ($document == null) {
-			return;
-		}
+        if ($document == null) {
+            return;
+        }
 
-		$metadata->setType($document->getName());
+        $metadata->setType($document->getName());
 
-		foreach ($metadata->getReflection()->getProperties() as $prop) {
-			/* @var $field Field */
-   			$field = $this->reader->getPropertyAnnotation($prop, self::FIELD_CLASS);
+        foreach ($metadata->getReflection()->getProperties() as $prop) {
+            /* @var $field Field */
+            $field = $this->reader->getPropertyAnnotation($prop, self::FIELD_CLASS);
 
-			if ($field == null) {
-				continue;
-			}
+            if ($field == null) {
+                continue;
+            }
 
-			$metadataField = $metadata->newField($prop->getName())
-				->setType($field->getType())
-				->setOptions($field->getOptions());
+            $metadataField = $metadata->newField($prop->getName())
+                ->setType($field->getType())
+                ->setOptions($field->getOptions());
 
-			$metadata->addField($metadataField);
-		}
-	}
+            $metadata->addField($metadataField);
+        }
+    }
 }

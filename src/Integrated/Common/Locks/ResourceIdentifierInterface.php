@@ -16,5 +16,5 @@ namespace Integrated\Common\Locks;
  */
 interface ResourceIdentifierInterface
 {
-	public function getIdentifier();
+    public function getIdentifier();
 }

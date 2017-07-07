@@ -16,17 +16,17 @@ namespace Integrated\Common\Content\Channel;
  */
 interface ChannelContextInterface
 {
-	/**
-	 * Get the current channel
-	 *
-	 * @return null | ChannelInterface
-	 */
-	public function getChannel();
+    /**
+     * Get the current channel
+     *
+     * @return null | ChannelInterface
+     */
+    public function getChannel();
 
-	/**
-	 * Set the current channel
-	 *
-	 * @param ChannelInterface $channel
-	 */
-	public function setChannel(ChannelInterface $channel = null);
+    /**
+     * Set the current channel
+     *
+     * @param ChannelInterface $channel
+     */
+    public function setChannel(ChannelInterface $channel = null);
 }

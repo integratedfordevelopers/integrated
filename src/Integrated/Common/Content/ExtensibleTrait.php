@@ -16,19 +16,19 @@ namespace Integrated\Common\Content;
  */
 trait ExtensibleTrait
 {
-	protected $extensions = null;
+    protected $extensions = null;
 
-	/**
-	 * Get list of all the extensions names
-	 *
-	 * @return string[]
-	 */
-	public function getExtensions()
-	{
-		if ($this->extensions === null) {
-			$this->extensions = new Registry();
-		}
+    /**
+     * Get list of all the extensions names
+     *
+     * @return string[]
+     */
+    public function getExtensions()
+    {
+        if ($this->extensions === null) {
+            $this->extensions = new Registry();
+        }
 
-		return $this->extensions;
-	}
+        return $this->extensions;
+    }
 }

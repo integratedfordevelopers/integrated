@@ -20,81 +20,81 @@ use Symfony\Component\Finder\Finder;
  */
 class FileResolver implements ConverterSpecificationResolverInterface
 {
-	/**
-	 * @var FileResolverReaderInterface
-	 */
-	protected $reader;
+    /**
+     * @var FileResolverReaderInterface
+     */
+    protected $reader;
 
-	/**
-	 * @var Finder
-	 */
-	protected $finder;
+    /**
+     * @var Finder
+     */
+    protected $finder;
 
-	/**
-	 * @var bool
-	 */
-	protected $loaded = false;
+    /**
+     * @var bool
+     */
+    protected $loaded = false;
 
-	/**
-	 * @var ConverterSpecificationInterface[]
-	 */
-	protected $specs = array();
+    /**
+     * @var ConverterSpecificationInterface[]
+     */
+    protected $specs = array();
 
-	public function __construct(FileResolverReaderInterface $reader, Finder $finder)
-	{
-		$this->reader = $reader;
-		$this->finder = clone $finder;
-	}
+    public function __construct(FileResolverReaderInterface $reader, Finder $finder)
+    {
+        $this->reader = $reader;
+        $this->finder = clone $finder;
+    }
 
-	protected function load()
-	{
-		if ($this->loaded !== false) {
-			return;
-		}
+    protected function load()
+    {
+        if ($this->loaded !== false) {
+            return;
+        }
 
-		$this->loaded = true;
+        $this->loaded = true;
 
-		// the files that a read first have a lower priority then the last one so
-		// evey new spec is added to the beginning of the array
+        // the files that a read first have a lower priority then the last one so
+        // evey new spec is added to the beginning of the array
 
-		foreach ($this->finder as $file) {
-			foreach ($this->reader->read($file) as $spec) {
-				array_unshift($this->specs, $spec);
-			}
-		}
-	}
+        foreach ($this->finder as $file) {
+            foreach ($this->reader->read($file) as $spec) {
+                array_unshift($this->specs, $spec);
+            }
+        }
+    }
 
-	/**
-	 * @param $class
-	 * @return bool
-	 */
-	public function hasSpecification($class)
-	{
-		$this->load();
+    /**
+     * @param $class
+     * @return bool
+     */
+    public function hasSpecification($class)
+    {
+        $this->load();
 
-		foreach ($this->specs as $spec) {
-			if ($spec->hasClass($class)) {
-				return true;
-			}
-		}
+        foreach ($this->specs as $spec) {
+            if ($spec->hasClass($class)) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * @param $class
-	 * @return ConverterSpecificationInterface
-	 */
-	public function getSpecification($class)
-	{
-		$this->load();
+    /**
+     * @param $class
+     * @return ConverterSpecificationInterface
+     */
+    public function getSpecification($class)
+    {
+        $this->load();
 
-		foreach ($this->specs as $spec) {
-			if ($spec->hasClass($class)) {
-				return $spec;
-			}
-		}
+        foreach ($this->specs as $spec) {
+            if ($spec->hasClass($class)) {
+                return $spec;
+            }
+        }
 
-		return null;
-	}
-} 
+        return null;
+    }
+}

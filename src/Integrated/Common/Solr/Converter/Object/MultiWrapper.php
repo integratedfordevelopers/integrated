@@ -16,173 +16,185 @@ namespace Integrated\Common\Solr\Converter\Object;
  */
 class MultiWrapper implements WrapperInterface
 {
-	/**
-	 * @var WrapperInterface[]
-	 */
-	protected $values;
+    /**
+     * @var WrapperInterface[]
+     */
+    protected $values;
 
-	public function __construct(array $values)
-	{
-		$this->values = $values;
-	}
+    public function __construct(array $values)
+    {
+        $this->values = $values;
+    }
 
-	public function value()
-	{
-		$values = array();
+    public function value()
+    {
+        $values = array();
 
-		foreach ($this->values as $value) {
-			$values[] = $value->value();
-		}
+        foreach ($this->values as $value) {
+            $values[] = $value->value();
+        }
 
-		return array_filter($values);
-	}
+        return array_filter($values);
+    }
 
-	public function raw()
-	{
-		$values = array();
+    public function raw()
+    {
+        $values = array();
 
-		foreach ($this->values as $value) {
-			$values[] = $value->raw();
-		}
+        foreach ($this->values as $value) {
+            $values[] = $value->raw();
+        }
 
-		return $values;
-	}
+        return $values;
+    }
 
-	public function multi()
-	{
-		$changed = false;
-		$values = array();
+    public function multi()
+    {
+        $changed = false;
+        $values = array();
 
-		foreach ($this->values as $key => $value) {
-			$values[$key] = $value->multi();
+        foreach ($this->values as $key => $value) {
+            $values[$key] = $value->multi();
 
-			// if nothing changed then $this can be returned.
+            // if nothing changed then $this can be returned.
 
-			if ($values[$key] !== $value) {
-				$changed = true;
-			}
-		}
+            if ($values[$key] !== $value) {
+                $changed = true;
+            }
+        }
 
-		if ($changed){
-			return new MultiWrapper($values);
-		}
+        if ($changed) {
+            return new MultiWrapper($values);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function concat($glue, $pieces = null, $keepempty = false)
-	{
-		$values = array();
+    public function concat($glue, $pieces = null, $keepempty = false)
+    {
+        $values = array();
 
-		foreach ($this->values as $value) {
-			$values[] = $value->concat($glue, $pieces, $keepempty);
-		}
+        foreach ($this->values as $value) {
+            $values[] = $value->concat($glue, $pieces, $keepempty);
+        }
 
-		return new MultiWrapper($values);
-	}
+        return new MultiWrapper($values);
+    }
 
-	public function combine($glue, $pieces = null, $keepempty = false)
-	{
-		$values = array();
+    public function combine($glue, $pieces = null, $keepempty = false)
+    {
+        $values = array();
 
-		foreach ($this->values as $value) {
-			$result = $value->combine($glue, $pieces, $keepempty);
+        foreach ($this->values as $value) {
+            $result = $value->combine($glue, $pieces, $keepempty);
 
-			if ($result instanceof self) {
-				$values = array_merge($result->values); // yeah cheating :P
-			} else {
-				$values[] = $result;
-			}
-		}
+            if ($result instanceof self) {
+                $values = array_merge($result->values); // yeah cheating :P
+            } else {
+                $values[] = $result;
+            }
+        }
 
-		return new MultiWrapper($values);
-	}
+        return new MultiWrapper($values);
+    }
 
-	public function isEmpty()
-	{
-		return empty($this->values);
-	}
+    public function isEmpty()
+    {
+        return empty($this->values);
+    }
 
-	public function isValue()
-	{
-		return false;
-	}
+    public function isValue()
+    {
+        return false;
+    }
 
-	public function isArray()
-	{
-		return false;
-	}
+    public function isArray()
+    {
+        return false;
+    }
 
-	public function isScalar()
-	{
-		return false;
-	}
+    public function isScalar()
+    {
+        return false;
+    }
 
-	public function isObject()
-	{
-		return false;
-	}
+    public function isObject()
+    {
+        return false;
+    }
 
-	public function offsetExists($offset)
-	{
-		foreach ($this->values as $value) {
-			if (!$value->offsetExists($offset)) {
-				return false;
-			}
-		}
+    public function offsetExists($offset)
+    {
+        foreach ($this->values as $value) {
+            if (!$value->offsetExists($offset)) {
+                return false;
+            }
+        }
 
-		return !$this->isEmpty();
-	}
+        return !$this->isEmpty();
+    }
 
-	public function offsetGet($offset)
-	{
-		$values = array();
+    public function offsetGet($offset)
+    {
+        $values = array();
 
-		foreach ($this->values as $value) {
-			$values[] = $value->offsetGet($offset);
-		}
+        foreach ($this->values as $value) {
+            $values[] = $value->offsetGet($offset);
+        }
 
-		return new MultiWrapper($values);
-	}
+        return new MultiWrapper($values);
+    }
 
-	public function offsetSet($offset, $value) { /* not supported. */ }
+    public function offsetSet($offset, $value)
+    {
+        /* not supported. */
+    }
 
-	public function offsetUnset($offset) { /* not supported. */ }
+    public function offsetUnset($offset)
+    {
+        /* not supported. */
+    }
 
-	public function __isset($name)
-	{
-		foreach ($this->values as $value) {
-			if (!$value->__isset($name)) {
-				return false;
-			}
-		}
+    public function __isset($name)
+    {
+        foreach ($this->values as $value) {
+            if (!$value->__isset($name)) {
+                return false;
+            }
+        }
 
-		return !$this->isEmpty();
-	}
+        return !$this->isEmpty();
+    }
 
-	public function __get($name)
-	{
-		$values = array();
+    public function __get($name)
+    {
+        $values = array();
 
-		foreach ($this->values as $value) {
-			$values[] = $value->__get($name);
-		}
+        foreach ($this->values as $value) {
+            $values[] = $value->__get($name);
+        }
 
-		return new MultiWrapper($values);
-	}
+        return new MultiWrapper($values);
+    }
 
-	function __set($name, $value) { /* not supported. */ }
+    public function __set($name, $value)
+    {
+        /* not supported. */
+    }
 
-	function __unset($name) { /* not supported. */ }
+    public function __unset($name)
+    {
+        /* not supported. */
+    }
 
-	public function __call($name, array $arguments)
-	{
-		$values = array();
+    public function __call($name, array $arguments)
+    {
+        $values = array();
 
-		foreach ($this->values as $value) {
-			$values[] = $value->__call($name, $arguments);
-		}
+        foreach ($this->values as $value) {
+            $values[] = $value->__call($name, $arguments);
+        }
 
-		return new MultiWrapper($values);
-	}
-} 
+        return new MultiWrapper($values);
+    }
+}

@@ -36,7 +36,7 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetTypeNoString()
     {
-       $this->getInstance()->getType(['not a string']);
+        $this->getInstance()->getType(['not a string']);
     }
 
     /**

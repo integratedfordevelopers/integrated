@@ -16,5 +16,5 @@ namespace Integrated\Common\Solr\Converter;
  */
 interface ConverterAwareInterface
 {
-	public function setConverter(ConverterInterface $converter);
+    public function setConverter(ConverterInterface $converter);
 }

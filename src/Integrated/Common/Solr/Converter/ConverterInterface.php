@@ -19,18 +19,18 @@ use Solarium\QueryType\Update\Query\Document\DocumentInterface;
 interface ConverterInterface
 {
     /**
-	 * Convert the object to a array of fields
-	 *
+     * Convert the object to a array of fields
+     *
      * @param object $object
      * @return array|null
      */
     public function getFields($object);
 
-	/**
-	 * Convert the object to a unique id
-	 *
-	 * @param object $object
-	 * @return string|null
-	 */
-	public function getId($object);
+    /**
+     * Convert the object to a unique id
+     *
+     * @param object $object
+     * @return string|null
+     */
+    public function getId($object);
 }
