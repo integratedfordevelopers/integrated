@@ -30,6 +30,14 @@ interface ContentInterface
      */
     public function getId();
 
+
+    /**
+     * Return the Slug of the content
+     *
+     * @return mixed
+     */
+    public function getSlug();
+
     /**
      * Return the contentType of the Content
      *
