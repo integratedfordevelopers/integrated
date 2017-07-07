@@ -55,7 +55,7 @@ class BulkActionRelationType extends AbstractType
                 $action = new RelationAction();
 
                 $action->setRelation($options['relation']);
-                $action->setName($options['relation_handler']);
+                $action->setHandler($options['relation_handler']);
 
                 return $action;
             });

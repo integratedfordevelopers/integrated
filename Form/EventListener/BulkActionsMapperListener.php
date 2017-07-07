@@ -68,11 +68,11 @@ class BulkActionsMapperListener implements EventSubscriberInterface
                 continue;
             }
 
-            if (!isset($this->mappings[$action->getName()])) {
+            if (!isset($this->mappings[$action->getHandler()])) {
                 continue;
             }
 
-            foreach ($this->mappings[$action->getName()] as $mapping) {
+            foreach ($this->mappings[$action->getHandler()] as $mapping) {
                 if ($mapping['matcher']->match($action) && $parent = $event->getForm()->get($mapping['name'])) {
                     $parent->get('active')->setData(true);
                     $parent->get('action')->setData($action);

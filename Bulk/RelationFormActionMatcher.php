@@ -45,7 +45,7 @@ class RelationFormActionMatcher implements ActionMatcherInterface
      */
     public function match(BulkActionInterface $action)
     {
-        if ($action->getName() !== $this->handler) {
+        if ($action->getHandler() !== $this->handler) {
             return false;
         }
 

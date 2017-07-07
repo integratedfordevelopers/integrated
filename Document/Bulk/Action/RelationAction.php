@@ -24,7 +24,7 @@ class RelationAction implements BulkActionInterface
     /**
      * @var string
      */
-    private $name;
+    private $handler;
 
     /**
      * @var Relation
@@ -47,18 +47,18 @@ class RelationAction implements BulkActionInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getHandler()
     {
-        return $this->name;
+        return $this->handler;
     }
 
     /**
-     * @param string $name
+     * @param string $handler
      * @return $this
      */
-    public function setName($name)
+    public function setHandler($handler)
     {
-        $this->name = $name;
+        $this->handler = $handler;
         return $this;
     }
 
