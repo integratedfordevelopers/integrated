@@ -34,9 +34,17 @@ interface ContentInterface
     /**
      * Return the Slug of the content
      *
-     * @return mixed
+     * @return string
      */
     public function getSlug();
+    
+    /**
+     * Set the slug of the Content
+     *
+     * @param string $slug
+     * @return ContentInterface
+     */
+    public function setSlug($slug);
 
     /**
      * Return the contentType of the Content
