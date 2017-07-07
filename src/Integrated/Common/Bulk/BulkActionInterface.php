@@ -19,7 +19,7 @@ interface BulkActionInterface
     /**
      * @return string
      */
-    public function getName();
+    public function getHandler();
 
     /**
      * @return array

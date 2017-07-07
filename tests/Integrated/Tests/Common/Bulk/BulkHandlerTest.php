@@ -161,7 +161,7 @@ class BulkHandlerTest extends \PHPUnit_Framework_TestCase
         $mock = $this->createMock(BulkActionInterface::class);
 
         $mock->expects($this->any())
-            ->method('getName')
+            ->method('getHandler')
             ->willReturn($name);
 
         $mock->expects($this->any())

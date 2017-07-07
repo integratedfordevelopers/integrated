@@ -60,7 +60,7 @@ class BulkHandler implements BulkHandlerInterface
                 throw new UnexpectedTypeException($action, BulkActionInterface::class);
             }
 
-            $handlers[] = $this->registry->getFactory($action->getName())->createHandler($action->getOptions());
+            $handlers[] = $this->registry->getFactory($action->getHandler())->createHandler($action->getOptions());
         }
 
         foreach ($handlers as $handler) {
