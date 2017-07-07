@@ -26,6 +26,7 @@ use Integrated\Common\Content\ExtensibleTrait;
 use Integrated\Common\Content\MetadataInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\RegistryInterface;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
@@ -42,6 +43,13 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      * @var string
      */
     protected $id;
+
+    /**
+     * @var string
+     * @Slug(fields={"id"})
+     * @Type\Field
+     */
+    protected $slug;
 
     /**
      * @var string the type of the ContentType
@@ -134,6 +142,28 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * Get the slug of the document
+     *
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * Set the slug of the document
+     *
+     * @param string $slug
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
         return $this;
     }
 

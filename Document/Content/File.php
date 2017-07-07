@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Document type File
@@ -24,6 +25,13 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  */
 class File extends Content implements FileInterface
 {
+    /**
+     * @var string
+     * @Slug(fields={"title"})
+     * @Type\Field
+     */
+    protected $slug;
+    
     /**
      * @var StorageInterface
      * @Type\Field(type="Integrated\Bundle\StorageBundle\Form\Type\FileDropzoneType")
