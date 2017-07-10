@@ -12,19 +12,19 @@
 namespace Integrated\Bundle\ContentBundle\Document\Bulk\Action;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Integrated\Bundle\ContentBundle\Bulk\Action\ActionInterface;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Common\Bulk\BulkActionInterface;
 use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class RelationAction implements ActionInterface
+class RelationAction implements BulkActionInterface
 {
     /**
      * @var string
      */
-    private $name;
+    private $handler;
 
     /**
      * @var Relation
@@ -47,18 +47,18 @@ class RelationAction implements ActionInterface
     /**
      * @return string
      */
-    public function getName()
+    public function getHandler()
     {
-        return $this->name;
+        return $this->handler;
     }
 
     /**
-     * @param string $name
+     * @param string $handler
      * @return $this
      */
-    public function setName($name)
+    public function setHandler($handler)
     {
-        $this->name = $name;
+        $this->handler = $handler;
         return $this;
     }
 

@@ -12,8 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
-
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentsToIdTransformer;
 use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -23,7 +21,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class SelectionFormType extends AbstractType
+class BulkSelectionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -31,13 +29,13 @@ class SelectionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('selection', ChoiceType::class, [
-                'label' => false,
-                'choices' => $options['contents'],
-                'choices_as_values' => true,
-                'error_bubbling' => true,
-                'multiple' => true,
-                'expanded' => true,
-            ]);
+            'label' => false,
+            'choices' => $options['content'],
+            'choices_as_values' => true,
+            'error_bubbling' => true,
+            'multiple' => true,
+            'expanded' => true,
+        ]);
     }
 
     /**
@@ -45,20 +43,20 @@ class SelectionFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired('contents');
-
-        $resolver->setAllowedTypes('contents', 'array')
-            ->setAllowedValues('contents', function (array $contents) {
-                foreach ($contents as $content) {
-                    if (!$content instanceof ContentInterface) {
+        $resolver
+            ->setRequired('content')
+            ->setAllowedTypes('content', 'array')
+            ->setAllowedValues('content', function (array $content) {
+                foreach ($content as $item) {
+                    if (!$item instanceof ContentInterface) {
                         return false;
                     }
                 }
+
                 return true;
             });
-        $resolver->setDefaults([
-            'data_class' => BulkAction::class,
-        ]);
+
+        $resolver->setDefault('data_class', BulkAction::class);
     }
 
     /**

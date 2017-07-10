@@ -15,12 +15,12 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Exception;
 
-use Integrated\Bundle\ContentBundle\Bulk\Action\Translator\ActionTranslatorProvider;
-use Integrated\Bundle\ContentBundle\Bulk\BulkHandlerInterface;
-use Integrated\Bundle\ContentBundle\Form\Type\BulkActionType;
-use Integrated\Bundle\ContentBundle\Form\Type\SelectionFormType;
+use Integrated\Bundle\ContentBundle\Form\Type\BulkActionConfirmType;
+use Integrated\Bundle\ContentBundle\Form\Type\BulkConfigureType;
+use Integrated\Bundle\ContentBundle\Form\Type\BulkSelectionType;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Integrated\Bundle\ContentBundle\Provider\ContentProvider;
+use Integrated\Common\Bulk\BulkHandlerInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -50,71 +50,63 @@ class BulkController extends Controller
     protected $bulkHandler;
 
     /**
-     * @var ActionTranslatorProvider
-     */
-    protected $actionTranslatorProvider;
-
-    /**
      * @param DocumentManager $dm
      * @param ContentProvider $contentProvider
      * @param BulkHandlerInterface $bulkHandler
-     * @param ActionTranslatorProvider $actionTranslatorProvider
      * @param ContainerInterface $container
      */
     public function __construct(
         DocumentManager $dm,
         ContentProvider $contentProvider,
         BulkHandlerInterface $bulkHandler,
-        ActionTranslatorProvider $actionTranslatorProvider,
         ContainerInterface $container
     ) {
         $this->dm = $dm;
         $this->contentProvider = $contentProvider;
         $this->bulkHandler = $bulkHandler;
-        $this->actionTranslatorProvider = $actionTranslatorProvider;
         $this->container = $container;
     }
 
     /**
      * @Template()
-     * @param Request $request
-     * @return array | RedirectResponse
+     *
+     * @param Request         $request
+     * @param BulkAction|null $bulk
+     *
+     * @return array|RedirectResponse
      */
-    public function selectAction(Request $request)
+    public function selectAction(Request $request, BulkAction $bulk = null)
     {
         // Fetch Content selection.
         $limit = 1000;
 
-        if (!$contents = $this->contentProvider->getContentFromSolr($request, $limit + 1)) {
+        if ($bulk) {
+            $request->query->replace($bulk->getFilters());
+        }
+
+        if (!$content = $this->contentProvider->getContentFromSolr($request, $limit + 1)) {
             return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
         }
 
-        if (!$bulkAction = $this->dm->getRepository(BulkAction::class)->findOneByIdAndNotExecuted($request->get('id'))) {
-            $bulkAction = new BulkAction();
-        }
-
-        $form = $this->createForm(SelectionFormType::class, $bulkAction, ['contents' => array_slice($contents, 0, $limit)]);
+        $form = $this->createForm(BulkSelectionType::class, $bulk, ['content' => array_slice($content, 0, $limit)]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* @var BulkAction $bulkAction */
-            $bulkAction = $form->getData();
+            /* @var BulkAction $bulk */
+            $bulk = $form->getData();
+            $bulk->setFilters($request->query->all());
 
-            $searchQuery = $request->query->all();
-            unset($searchQuery['id']);
-            $bulkAction->setSearchQuery(http_build_query($searchQuery));
-
-            if (!$bulkAction->getId()) {
-                $this->dm->persist($bulkAction);
-                $request->query->set('id', $bulkAction->getId());
+            if (!$bulk->getId()) {
+                $this->dm->persist($bulk);
             }
 
             $this->dm->flush();
-            return $this->redirectToRoute('integrated_content_bulk_configure', $request->query->all());
+
+            return $this->redirectToRoute('integrated_content_bulk_configure', ['id' => $bulk->getId()]);
         }
 
         return [
-            'contents' => $contents,
+            'content' => $content,
             'limit' => $limit,
             'form' => $form->createView(),
         ];
@@ -122,66 +114,61 @@ class BulkController extends Controller
 
     /**
      * @Template()
-     * @param Request $request
-     * @param BulkAction $bulkAction
+     *
+     * @param Request    $request
+     * @param BulkAction $bulk
+     *
      * @return array|RedirectResponse
      */
-    public function configureAction(Request $request, BulkAction $bulkAction)
+    public function configureAction(Request $request, BulkAction $bulk)
     {
-        if ($bulkAction->getExecutedAt()) {
-            $this->addFlash('danger', 'This bulk action was already executed and can not be configured.');
-            $request->query->remove('id');
-            return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
+        if ($bulk->getExecutedAt()) {
+            return $this->redirectToRoute('integrated_content_content_index', $bulk->getFilters());
         }
 
-        $form = $this->createForm(BulkActionType::class, $bulkAction);
+        $form = $this->createForm(BulkConfigureType::class, $bulk, ['content' => $bulk->getSelection()]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /* @var BulkAction $bulkAction */
-            $bulkAction = $form->getData();
-            $request->query->set('id', $bulkAction->getId());
             $this->dm->flush();
 
-            return $this->redirectToRoute('integrated_content_bulk_confirm', $request->query->all());
+            return $this->redirectToRoute('integrated_content_bulk_confirm', ['id' => $bulk->getId()]);
         }
 
         return [
-            'id' => $bulkAction->getId(),
-            'selection' => count($bulkAction->getSelection()),
+            'id' => $bulk->getId(),
+            'selection' => count($bulk->getSelection()),
             'form' => $form->createView(),
         ];
     }
 
     /**
      * @Template()
-     * @param Request $request
-     * @param BulkAction $bulkAction
+     *
+     * @param Request    $request
+     * @param BulkAction $bulk
+     *
      * @return array|RedirectResponse
      */
-    public function confirmAction(Request $request, BulkAction $bulkAction)
+    public function confirmAction(Request $request, BulkAction $bulk)
     {
-        // Check if bulk action is not already executed
-        if ($bulkAction->getExecutedAt()) {
-            $this->addFlash('danger', 'This bulk action was already executed.');
-            $request->query->remove('id');
-            return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
+        if ($bulk->getExecutedAt()) {
+            return $this->redirectToRoute('integrated_content_content_index', $bulk->getFilters());
         }
 
-        $form = $this->createFormBuilder()->getForm();
+        $form = $this->createForm(BulkActionConfirmType::class, $bulk, ['content' => $bulk->getSelection()]);
         $form->handleRequest($request);
 
-        // If form submitted try to execute all bulk action.
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->bulkHandler->execute($bulkAction->getSelection(), $bulkAction->getActions());
-                $bulkAction->setExecutedAt(new \DateTime());
+                $this->bulkHandler->execute($bulk->getSelection(), $bulk->getActions());
+                $bulk->setExecutedAt(new \DateTime());
 
                 $this->dm->flush();
 
-                $request->query->remove('id');
-                $this->addFlash('success', 'It seems all bulk actions were executed successfully! :)');
-                return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
+                $this->addFlash('success', 'All bulk actions were executed successfully!');
+
+                return $this->redirectToRoute('integrated_content_content_index', $bulk->getFilters());
             } catch (Exception $e) {
                 $this->addFlash(
                     'danger',
@@ -191,9 +178,8 @@ class BulkController extends Controller
         }
 
         return [
-            'id' => $bulkAction->getId(),
-            'contents' => count($bulkAction->getSelection()),
-            'actionTranslators' => $this->actionTranslatorProvider->getTranslators($bulkAction->getActions()),
+            'id' => $bulk->getId(),
+            'selection' => count($bulk->getSelection()),
             'form' => $form->createView(),
         ];
     }

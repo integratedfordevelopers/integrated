@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Bulk;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Integrated\Bundle\ContentBundle\Bulk\Action\ActionInterface;
+use Integrated\Common\Bulk\BulkActionInterface;
 use Integrated\Common\Content\ContentInterface;
 
 /**
@@ -37,9 +37,9 @@ class BulkAction
     private $executedAt;
 
     /**
-     * @var string
+     * @var string | null
      */
-    private $searchQuery;
+    private $filters = null;
 
     /**
      * @var ArrayCollection|ContentInterface[]
@@ -47,7 +47,7 @@ class BulkAction
     private $selection;
 
     /**
-     * @var ArrayCollection|ActionInterface[]
+     * @var ArrayCollection|BulkActionInterface[]
      */
     private $actions;
 
@@ -106,19 +106,19 @@ class BulkAction
     }
 
     /**
-     * @return string
+     * @return array | null
      */
-    public function getSearchQuery()
+    public function getFilters()
     {
-        return $this->searchQuery;
+        return $this->filters === null ? null : json_decode($this->filters, true);
     }
 
     /**
-     * @param string $searchQuery
+     * @param array $filters
      */
-    public function setSearchQuery($searchQuery)
+    public function setFilters(array $filters = null)
     {
-        $this->searchQuery = $searchQuery;
+        $this->filters = $filters === null ? null : json_encode($filters);
     }
 
     /**
@@ -168,7 +168,7 @@ class BulkAction
     }
 
     /**
-     * @return ActionInterface[]
+     * @return BulkActionInterface[]
      */
     public function getActions()
     {
@@ -176,7 +176,7 @@ class BulkAction
     }
 
     /**
-     * @param ActionInterface[] $actions
+     * @param BulkActionInterface[] $actions
      * @return $this
      */
     public function setActions($actions)
@@ -191,10 +191,10 @@ class BulkAction
     }
 
     /**
-     * @param ActionInterface $action
+     * @param BulkActionInterface $action
      * @return $this
      */
-    public function addAction(ActionInterface $action)
+    public function addAction(BulkActionInterface $action)
     {
         if (!$this->actions->contains($action)) {
             $this->actions->add($action);
@@ -203,10 +203,10 @@ class BulkAction
     }
 
     /**
-     * @param ActionInterface $action
+     * @param BulkActionInterface $action
      * @return $this
      */
-    public function removeAction(ActionInterface $action)
+    public function removeAction(BulkActionInterface $action)
     {
         $this->actions->removeElement($action);
         return $this;

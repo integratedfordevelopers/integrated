@@ -12,40 +12,33 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Bulk\Action\RelationAction;
-use Integrated\Bundle\ContentBundle\Form\EventListener\BulkRelationActionListener;
-use Integrated\Bundle\ContentBundle\Form\Type\Fields\ReferencesChoiceType;
 use Integrated\Common\Content\Relation\RelationInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class BulkRelationActionType extends AbstractType
+class BulkActionRelationType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $relation = $options['relation'];
-
         $builder->add(
             'references',
-            ReferencesChoiceType::class,
+            BulkActionRelationReferencesType::class,
             [
                 'label' => $options['label'],
                 'attr' => [
-                    'data-id' => $relation->getId(),
-
+                    'data-id' => $options['relation']->getId(),
                     'class' => 'relation-items',
                 ],
             ]
         );
-
-        $builder->addEventSubscriber(new BulkRelationActionListener());
     }
 
     /**
@@ -54,11 +47,25 @@ class BulkRelationActionType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefault('data_class', RelationAction::class)
-            ->setRequired(['relation', 'handler', 'label'])
+            ->setRequired(['relation', 'relation_handler'])
             ->setAllowedTypes('relation', RelationInterface::class)
-            ->setAllowedTypes('handler', 'string')
-            ->setAllowedTypes('label', 'string')
-        ;
+            ->setAllowedTypes('relation_handler', 'string')
+            ->setDefault('data_class', RelationAction::class)
+            ->setDefault('empty_data', function (Options $options) {
+                $action = new RelationAction();
+
+                $action->setRelation($options['relation']);
+                $action->setHandler($options['relation_handler']);
+
+                return $action;
+            });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'integrated_content_bulk_action_relation';
     }
 }

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Form\Type\Fields;
+namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ReferencesToArrayTransformer;
@@ -17,11 +17,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Count;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
  */
-class ReferencesChoiceType extends AbstractType
+class BulkActionRelationReferencesType extends AbstractType
 {
     /**
      * @var DocumentManager
@@ -29,7 +30,6 @@ class ReferencesChoiceType extends AbstractType
     protected $dm;
 
     /**
-     * ReferencesType constructor.
      * @param DocumentManager $dm
      */
     public function __construct(DocumentManager $dm)
@@ -55,7 +55,7 @@ class ReferencesChoiceType extends AbstractType
     {
         $resolver->setDefaults([
             'multiple' => true,
-            'required' => false,
+            'required' => false
         ]);
     }
 
@@ -65,5 +65,13 @@ class ReferencesChoiceType extends AbstractType
     public function getParent()
     {
         return ChoiceType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'integrated_content_bulk_action_relation_references';
     }
 }
