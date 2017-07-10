@@ -18,35 +18,35 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ContainerAwareDocumentNormalizer extends DocumentNormalizer
 {
-	/**
-	 * @var ContainerInterface
-	 */
-	protected $container;
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
-	/**
-	 * @var string
-	 */
-	protected $service;
+    /**
+     * @var string
+     */
+    protected $service;
 
-	/**
-	 * @param ContainerInterface $container
-	 * @param string $service the name of the document manager service to use
-	 */
-	public function __construct(ContainerInterface $container, $service)
-	{
-		$this->container = $container;
-		$this->service = $service;
-	}
+    /**
+     * @param ContainerInterface $container
+     * @param string $service the name of the document manager service to use
+     */
+    public function __construct(ContainerInterface $container, $service)
+    {
+        $this->container = $container;
+        $this->service = $service;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function getDocumentManager()
-	{
-		if ($this->dm === null) {
-			$this->dm = $this->container->get($this->service);
-		}
+    /**
+     * @inheritdoc
+     */
+    protected function getDocumentManager()
+    {
+        if ($this->dm === null) {
+            $this->dm = $this->container->get($this->service);
+        }
 
-		return $this->dm;
-	}
-} 
+        return $this->dm;
+    }
+}

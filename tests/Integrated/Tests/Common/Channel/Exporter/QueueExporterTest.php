@@ -51,9 +51,9 @@ class QueueExporterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->queue = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
-        $this->serializer = $this->getMock('Integrated\\Common\\Channel\\Exporter\\Queue\\RequestSerializerInterface');
-        $this->exporter = $this->getMock('Integrated\\Common\\Channel\\Exporter\\ExporterInterface');
+        $this->queue = $this->createMock('Integrated\\Common\\Queue\\QueueInterface');
+        $this->serializer = $this->createMock('Integrated\\Common\\Channel\\Exporter\\Queue\\RequestSerializerInterface');
+        $this->exporter = $this->createMock('Integrated\\Common\\Channel\\Exporter\\ExporterInterface');
     }
 
     public function testInterface()
@@ -214,7 +214,7 @@ class QueueExporterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMessage()
     {
-        return $this->getMock('Integrated\\Common\\Queue\\QueueMessageInterface');
+        return $this->createMock('Integrated\\Common\\Queue\\QueueMessageInterface');
     }
 
     /**
@@ -222,6 +222,6 @@ class QueueExporterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getChannel()
     {
-        return $this->getMock('Integrated\\Common\\Channel\\ChannelInterface');
+        return $this->createMock('Integrated\\Common\\Channel\\ChannelInterface');
     }
 }

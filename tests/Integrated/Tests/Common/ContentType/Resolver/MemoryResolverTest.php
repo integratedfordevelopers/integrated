@@ -36,7 +36,7 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetTypeNoString()
     {
-       $this->getInstance()->getType(['not a string']);
+        $this->getInstance()->getType(['not a string']);
     }
 
     /**
@@ -92,6 +92,6 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType()
     {
-        return $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        return $this->createMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
     }
 }

@@ -21,9 +21,12 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     public function testHasHandler()
     {
         $handlers = [
-            'class1' => function () {},
-            'class2' => function () {},
-            'class3' => function () {}
+            'class1' => function () {
+            },
+            'class2' => function () {
+            },
+            'class3' => function () {
+            }
         ];
 
         $registry = $this->getInstance($handlers);
@@ -37,9 +40,12 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     public function testGetHandler()
     {
         $handlers = [
-            'class1' => function () {},
-            'class2' => function () {},
-            'class3' => function () {}
+            'class1' => function () {
+            },
+            'class2' => function () {
+            },
+            'class3' => function () {
+            }
         ];
 
         $registry = $this->getInstance($handlers);
@@ -61,9 +67,12 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     public function testGetHandlers()
     {
         $handlers = [
-            'class1' => function () {},
-            'class2' => function () {},
-            'class3' => function () {}
+            'class1' => function () {
+            },
+            'class2' => function () {
+            },
+            'class3' => function () {
+            }
         ];
 
         self::assertSame($handlers, $this->getInstance($handlers)->getHandlers());

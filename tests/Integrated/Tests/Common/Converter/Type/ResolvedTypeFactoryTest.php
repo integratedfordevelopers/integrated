@@ -27,7 +27,7 @@ class ResolvedTypeFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $factory = $this->getInstance();
 
-        self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\ResolvedType', $factory->createType($this->getMock('Integrated\\Common\\Converter\\Type\\TypeInterface'), []));
+        self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\ResolvedType', $factory->createType($this->createMock('Integrated\\Common\\Converter\\Type\\TypeInterface'), []));
     }
 
     /**

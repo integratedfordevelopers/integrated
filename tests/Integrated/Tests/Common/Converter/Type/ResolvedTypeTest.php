@@ -28,7 +28,7 @@ class ResolvedTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->type = $this->getMock('Integrated\\Common\\Converter\\Type\\TypeInterface');
+        $this->type = $this->createMock('Integrated\\Common\\Converter\\Type\\TypeInterface');
     }
 
     public function testInterface()
@@ -62,7 +62,7 @@ class ResolvedTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testBuild()
     {
-        $container = $this->getMock('Integrated\\Common\\Converter\\ContainerInterface');
+        $container = $this->createMock('Integrated\\Common\\Converter\\ContainerInterface');
 
         $this->type->expects($this->once())
             ->method('build')
@@ -87,7 +87,7 @@ class ResolvedTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildOrder()
     {
-        $container = $this->getMock('Integrated\\Common\\Converter\\ContainerInterface');
+        $container = $this->createMock('Integrated\\Common\\Converter\\ContainerInterface');
 
         $this->type->expects($this->any())
             ->method('build')
@@ -115,6 +115,6 @@ class ResolvedTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getTypeExtension()
     {
-        return $this->getMock('Integrated\\Common\\Converter\\Type\\TypeExtensionInterface');
+        return $this->createMock('Integrated\\Common\\Converter\\Type\\TypeExtensionInterface');
     }
 }

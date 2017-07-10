@@ -53,10 +53,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     public function testAddFunction()
     {
         /** @var \Integrated\Common\ContentType\Form\Custom\TypeInterface | \PHPUnit_Framework_MockObject_MockObject  $mock1 */
-        $mock1 = $this->getMock('Integrated\Common\ContentType\Form\Custom\TypeInterface');
+        $mock1 = $this->createMock('Integrated\Common\ContentType\Form\Custom\TypeInterface');
 
         /** @var \Integrated\Common\ContentType\Form\Custom\TypeInterface | \PHPUnit_Framework_MockObject_MockObject $mock2 */
-        $mock2 = $this->getMock('Integrated\Common\ContentType\Form\Custom\TypeInterface');
+        $mock2 = $this->createMock('Integrated\Common\ContentType\Form\Custom\TypeInterface');
 
         // Add mock1 two times and mock2 one time
         $this->assertSame($this->registry, $this->registry->add($mock1));
@@ -73,10 +73,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     public function testHasFunction()
     {
         /** @var \Integrated\Common\ContentType\Form\Custom\TypeInterface | \PHPUnit_Framework_MockObject_MockObject  $mock1 */
-        $mock1 = $this->getMock('Integrated\Common\ContentType\Form\Custom\TypeInterface');
+        $mock1 = $this->createMock('Integrated\Common\ContentType\Form\Custom\TypeInterface');
 
         /** @var \Integrated\Common\ContentType\Form\Custom\TypeInterface | \PHPUnit_Framework_MockObject_MockObject $mock2 */
-        $mock2 = $this->getMock('Integrated\Common\ContentType\Form\Custom\TypeInterface');
+        $mock2 = $this->createMock('Integrated\Common\ContentType\Form\Custom\TypeInterface');
 
         // Add mock1
         $this->assertSame($this->registry, $this->registry->add($mock1));

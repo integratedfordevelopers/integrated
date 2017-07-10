@@ -19,29 +19,29 @@ use ReflectionClass;
  */
 class ObjectWrapper implements WrapperInterface
 {
-	/**
-	 * @var mixed
-	 */
-	protected $value;
+    /**
+     * @var mixed
+     */
+    protected $value;
 
-	public function __construct($value)
-	{
-		$this->value = $value;
-	}
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
 
-	public function value()
-	{
-		if (is_scalar($this->value)) {
-			return $this->value;
-		}
+    public function value()
+    {
+        if (is_scalar($this->value)) {
+            return $this->value;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public function raw()
-	{
-		return $this->value;
-	}
+    public function raw()
+    {
+        return $this->value;
+    }
 
     public function int()
     {
@@ -49,296 +49,306 @@ class ObjectWrapper implements WrapperInterface
     }
 
     public function multi()
-	{
-		// check if its a array else nothing changes..
+    {
+        // check if its a array else nothing changes..
 
-		if ($this->isArray()) {
-			$values = array();
+        if ($this->isArray()) {
+            $values = array();
 
-			foreach ($this->value as $value) {
-				$values[] = new self($value);
-			}
+            foreach ($this->value as $value) {
+                $values[] = new self($value);
+            }
 
-			return new MultiWrapper($values);
-		}
+            return new MultiWrapper($values);
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	public function concat($glue, $pieces = null, $keepempty = false)
-	{
-		// variable argument order stuff
-		// so check and reorder variables if required.
+    public function concat($glue, $pieces = null, $keepempty = false)
+    {
+        // variable argument order stuff
+        // so check and reorder variables if required.
 
-		switch (func_num_args()) {
-			case 1:
-				$pieces = $glue;
-				$glue = '';
+        switch (func_num_args()) {
+            case 1:
+                $pieces = $glue;
+                $glue = '';
 
-				break;
+                break;
 
-			case 2:
+            case 2:
+                if (!is_array($pieces)) {
+                    $keepempty = $pieces;
+                    $pieces = $glue;
+                    $glue = '';
+                }
 
-				if (!is_array($pieces)) {
-					$keepempty = $pieces;
-					$pieces = $glue;
-					$glue = '';
-				}
+                break;
+        }
 
-				break;
-		}
+        $glue = (string) $glue;
+        $pieces = (array) $pieces;
+        $keepempty = (bool) $keepempty;
 
-		$glue = (string) $glue;
-		$pieces = (array) $pieces;
-		$keepempty = (bool) $keepempty;
+        // start collection all the values
+        // $pieces that start with a @ are considered variable names.
 
-		// start collection all the values
-		// $pieces that start with a @ are considered variable names.
+        $values = array();
 
-		$values = array();
+        foreach ($pieces as $value) {
+            if ($value[0] == '@') {
+                $value = $this->__get(substr($value, 1))->value();
+            }
 
-		foreach ($pieces as $value) {
-			if ($value[0] == '@') {
-				$value = $this->__get(substr($value, 1))->value();
-			}
+            $values[] = $value;
+        }
 
-			$values[] = $value;
-		}
+        if (!$keepempty) {
+            $values = array_filter($values);
+        }
 
-		if (!$keepempty) {
-			$values = array_filter($values);
-		}
+        return new self(implode($glue, $values));
+    }
 
-		return new self(implode($glue, $values));
-	}
+    public function combine($glue, $pieces = null, $keepempty = false)
+    {
+        // variable argument order stuff
+        // so check and reorder variables if required.
 
-	public function combine($glue, $pieces = null, $keepempty = false)
-	{
-		// variable argument order stuff
-		// so check and reorder variables if required.
+        switch (func_num_args()) {
+            case 1:
+                $pieces = $glue;
+                $glue = '';
 
-		switch (func_num_args()) {
-			case 1:
-				$pieces = $glue;
-				$glue = '';
+                break;
 
-				break;
+            case 2:
+                if (!is_array($pieces)) {
+                    $keepempty = $pieces;
+                    $pieces = $glue;
+                    $glue = '';
+                }
 
-			case 2:
+                break;
+        }
 
-				if (!is_array($pieces)) {
-					$keepempty = $pieces;
-					$pieces = $glue;
-					$glue = '';
-				}
+        $glue = (string) $glue;
+        $pieces = (array) $pieces;
+        $keepempty = (bool) $keepempty;
 
-				break;
-		}
+        // combine all the variables in to a concated array
+
+        $values = array(
+            $this->value()
+        );
+
+        while ($piece = array_shift($pieces)) {
+            $left = $values;
 
-		$glue = (string) $glue;
-		$pieces = (array) $pieces;
-		$keepempty = (bool) $keepempty;
+            if ($piece instanceof WrapperInterface) {
+                $right = $piece->value();
+            } else {
+                $right = $piece;
+            }
+
+            if (!is_array($right)) {
+                $right = array($right);
+            }
+
+            $values = array();
+
+            foreach ($left as $left_value) {
+                foreach ($right as $right_value) {
+                    $values[] = $left_value . $glue . $right_value;
+                }
+            }
+        }
+
+        $values = array_map('trim', $values);
+
+        if (!$keepempty) {
+            $values = array_filter($values);
+        }
+
+        // put all of it together
 
-		// combine all the variables in to a concated array
+        $result = array();
 
-		$values = array(
-			$this->value()
-		);
+        foreach ($values as $value) {
+            $result[] = new self($value);
+        }
 
-		while ($piece = array_shift($pieces)) {
-			$left = $values;
+        if (count($result) > 0) {
+            return new MultiWrapper($result);
+        }
+
+        return new self(null);
+    }
 
-			if ($piece instanceof WrapperInterface) {
-				$right = $piece->value();
-			} else {
-				$right = $piece;
-			}
+    public function isEmpty()
+    {
+        return empty($this->value);
+    }
 
-			if (!is_array($right)) {
-				$right = array($right);
-			}
+    public function isValue()
+    {
+        return is_scalar($this->value);
+    }
 
-			$values = array();
+    public function isArray()
+    {
+        return is_array($this->value) || $this->value instanceof ArrayAccess;
+    }
 
-			foreach ($left as $left_value) {
-				foreach ($right as $right_value) {
-					$values[] = $left_value . $glue . $right_value;
-				}
-			}
-		}
+    public function isScalar()
+    {
+        return is_scalar($this->value);
+    }
 
-		$values = array_map('trim', $values);
+    public function isObject()
+    {
+        return is_object($this->value);
+    }
 
-		if (!$keepempty) {
-			$values = array_filter($values);
-		}
+    public function offsetExists($offset)
+    {
+        if ($this->isArray()) {
+            return isset($this->value[$offset]);
+        }
 
-		// put all of it together
+        return false;
+    }
 
-		$result = array();
+    public function offsetGet($offset)
+    {
+        if ($this->offsetExists($offset)) {
+            return new self(null);
+        }
 
-		foreach ($values as $value) {
-			$result[] = new self($value);
-		}
+        return new self($this->value[$offset]);
+    }
 
-		if (count($result) > 0) {
-			return new MultiWrapper($result);
-		}
+    public function offsetSet($offset, $value)
+    {
+        /* not supported. */
+    }
 
-		return new self(null);
-	}
+    public function offsetUnset($offset)
+    {
+        /* not supported. */
+    }
 
-	public function isEmpty()
-	{
-		return empty($this->value);
-	}
+    public function __isset($name)
+    {
+        if ($this->isScalar()) {
+            return false;
+        }
 
-	public function isValue()
-	{
-		return is_scalar($this->value);
-	}
+        $value = $this->value;
 
-	public function isArray()
-	{
-		return is_array($this->value) || $this->value instanceof ArrayAccess;
-	}
+        // if the $value is a array get the first entry in that array this
+        // will be done only ones as if its a array in a array then the config
+        // should reflect that.
 
-	public function isScalar()
-	{
-		return is_scalar($this->value);
-	}
+        if ($this->isArray()) {
+            $value = isset($value[0]) ? $value[0] : null;
+        }
 
-	public function isObject()
-	{
-		return is_object($this->value);
-	}
+        // So it has to be a object or else its not possible to call a property
+        // in the first place
 
-	public function offsetExists($offset)
-	{
-		if ($this->isArray()) {
-			return isset($this->value[$offset]);
-		}
+        if (is_object($value)) {
+            $reflection = new ReflectionClass($value);
 
-		return false;
-	}
+            if ($reflection->hasProperty($name) && ($prop = $reflection->getProperty($name)) && $prop->isPublic()) {
+                return $prop->getValue($value) !== null;
+            }
 
-	public function offsetGet($offset)
-	{
-		if ($this->offsetExists($offset)) {
-			return new self(null);
-		}
+            $method = 'get' . ucfirst($name);
 
-		return new self($this->value[$offset]);
-	}
+            if ($reflection->hasMethod($method) && ($method = $reflection->getMethod($method)) && $method->isPublic() && $method->getNumberOfRequiredParameters() == 0) {
+                return $method->invoke($value) !== null;
+            }
 
-	public function offsetSet($offset, $value) { /* not supported. */ }
+            // @todo check for __get, __isset or __call
+        }
 
-	public function offsetUnset($offset) { /* not supported. */ }
+        return false;
+    }
 
-	public function __isset($name)
-	{
-		if ($this->isScalar()) {
-			return false;
-		}
+    public function __get($name)
+    {
+        if ($this->isScalar()) {
+            return new self(null);
+        }
 
-		$value = $this->value;
+        $value = $this->value;
 
-		// if the $value is a array get the first entry in that array this
-		// will be done only ones as if its a array in a array then the config
-		// should reflect that.
+        // if the $value is a array get the first entry in that array this
+        // will be done only ones as if its a array in a array then the config
+        // should reflect that.
 
-		if ($this->isArray()) {
-			$value = isset($value[0]) ? $value[0] : null;
-		}
+        if ($this->isArray()) {
+            $value = isset($value[0]) ? $value[0] : null;
+        }
 
-		// So it has to be a object or else its not possible to call a property
-		// in the first place
+        // So it has to be a object or else its not possible to call a property
+        // in the first place
 
-		if (is_object($value)) {
-			$reflection = new ReflectionClass($value);
+        if (is_object($value)) {
+            $reflection = new ReflectionClass($value);
 
-			if ($reflection->hasProperty($name) && ($prop = $reflection->getProperty($name)) && $prop->isPublic()) {
-				return $prop->getValue($value) !== null;
-			}
+            if ($reflection->hasProperty($name) && ($prop = $reflection->getProperty($name)) && $prop->isPublic()) {
+                return new self($prop->getValue($value));
+            }
 
-			$method = 'get' . ucfirst($name);
+            $method = 'get' . ucfirst($name);
 
-			if ($reflection->hasMethod($method) && ($method = $reflection->getMethod($method)) && $method->isPublic() && $method->getNumberOfRequiredParameters() == 0) {
-				return $method->invoke($value) !== null;
-			}
+            if ($reflection->hasMethod($method) && ($method = $reflection->getMethod($method)) && $method->isPublic() && $method->getNumberOfRequiredParameters() == 0) {
+                return new self($method->invoke($value));
+            }
 
-			// @todo check for __get, __isset or __call
-		}
+            // @todo check for __get, __isset or __call
+        }
 
-		return false;
-	}
+        return new self(null);
+    }
 
-	public function __get($name)
-	{
-		if ($this->isScalar()) {
-			return new self(null);
-		}
+    public function __set($name, $value)
+    {
+        /* not supported. */
+    }
 
-		$value = $this->value;
+    public function __unset($name)
+    {
+        /* not supported. */
+    }
 
-		// if the $value is a array get the first entry in that array this
-		// will be done only ones as if its a array in a array then the config
-		// should reflect that.
+    public function __call($name, array $arguments)
+    {
+        if ($this->isScalar()) {
+            return new self(null);
+        }
 
-		if ($this->isArray()) {
-			$value = isset($value[0]) ? $value[0] : null;
-		}
+        $value = $this->value;
 
-		// So it has to be a object or else its not possible to call a property
-		// in the first place
+        // if the $value is a array get the first entry in that array this
+        // will be done only ones as if its a array in a array then the config
+        // should reflect that.
 
-		if (is_object($value)) {
-			$reflection = new ReflectionClass($value);
+        if ($this->isArray()) {
+            $value = isset($value[0]) ? $value[0] : null;
+        }
 
-			if ($reflection->hasProperty($name) && ($prop = $reflection->getProperty($name)) && $prop->isPublic()) {
-				return new self($prop->getValue($value));
-			}
+        if (is_object($value)) {
+            $reflection = new ReflectionClass($value);
 
-			$method = 'get' . ucfirst($name);
+            if ($reflection->hasMethod($name) && ($method = $reflection->getMethod($name)) && $method->isPublic() && $method->getNumberOfRequiredParameters() <= count($arguments)) {
+                return new self($method->invokeArgs($value, $arguments));
+            }
+        }
 
-			if ($reflection->hasMethod($method) && ($method = $reflection->getMethod($method)) && $method->isPublic() && $method->getNumberOfRequiredParameters() == 0) {
-				return new self($method->invoke($value));
-			}
-
-			// @todo check for __get, __isset or __call
-		}
-
-		return new self(null);
-	}
-
-	public function __set($name, $value) { /* not supported. */ }
-
-	public function __unset($name) { /* not supported. */ }
-
-	public function __call($name, array $arguments)
-	{
-		if ($this->isScalar()) {
-			return new self(null);
-		}
-
-		$value = $this->value;
-
-		// if the $value is a array get the first entry in that array this
-		// will be done only ones as if its a array in a array then the config
-		// should reflect that.
-
-		if ($this->isArray()) {
-			$value = isset($value[0]) ? $value[0] : null;
-		}
-
-		if (is_object($value)) {
-			$reflection = new ReflectionClass($value);
-
-			if ($reflection->hasMethod($name) && ($method = $reflection->getMethod($name)) && $method->isPublic() && $method->getNumberOfRequiredParameters() <= count($arguments)) {
-				return new self($method->invokeArgs($value, $arguments));
-			}
-		}
-
-		return new self(null);
-	}
+        return new self(null);
+    }
 }

@@ -30,117 +30,117 @@ use Traversable;
  */
 class UniqueEntryValidator extends ConstraintValidator
 {
-	/**
-	 * @var ExecutionContextInterface
-	 */
-	protected $context;
+    /**
+     * @var ExecutionContextInterface
+     */
+    protected $context;
 
-	/**
-	 * @var PropertyAccessor
-	 */
-	private $accessor = null;
+    /**
+     * @var PropertyAccessor
+     */
+    private $accessor = null;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function validate($entries, Constraint $constraint)
-	{
-		if (!$constraint instanceof UniqueEntry) {
-			throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\\UniqueEntry');
-		}
+    /**
+     * @inheritdoc
+     */
+    public function validate($entries, Constraint $constraint)
+    {
+        if (!$constraint instanceof UniqueEntry) {
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\\UniqueEntry');
+        }
 
-		if (!is_array($entries) && !$entries instanceof Traversable) {
-			throw new UnexpectedTypeException($entries, 'array or Traversable');
-		}
+        if (!is_array($entries) && !$entries instanceof Traversable) {
+            throw new UnexpectedTypeException($entries, 'array or Traversable');
+        }
 
-		$fields = (array) $constraint->fields;
+        $fields = (array) $constraint->fields;
 
-		if (!count($fields)) {
-			throw new ConstraintDefinitionException('At least one field has to be specified.');
-		}
+        if (!count($fields)) {
+            throw new ConstraintDefinitionException('At least one field has to be specified.');
+        }
 
-		$accessor = $this->getPropertyAccessor();
-		$hashmap = [];
+        $accessor = $this->getPropertyAccessor();
+        $hashmap = [];
 
-		foreach ($entries as $index => $entry) {
-			$values = [];
+        foreach ($entries as $index => $entry) {
+            $values = [];
 
-			foreach ($fields as $fieldName) {
-				if (!$accessor->isReadable($entry, $fieldName)) {
-					throw new ConstraintDefinitionException(sprintf("The field '%s' is not readable, so its value can not be determent.", $fieldName));
-				}
+            foreach ($fields as $fieldName) {
+                if (!$accessor->isReadable($entry, $fieldName)) {
+                    throw new ConstraintDefinitionException(sprintf("The field '%s' is not readable, so its value can not be determent.", $fieldName));
+                }
 
-				if (null === ($value = $accessor->getValue($entry, $fieldName))) {
-					continue;
-				}
+                if (null === ($value = $accessor->getValue($entry, $fieldName))) {
+                    continue;
+                }
 
-				if ($constraint->caseInsensitive) {
-					$value = strtolower($value);
-				}
+                if ($constraint->caseInsensitive) {
+                    $value = strtolower($value);
+                }
 
-				$values[$fieldName] = $value;
-			}
+                $values[$fieldName] = $value;
+            }
 
-			if (!$values) {
-				continue; // don't process empty values
-			}
+            if (!$values) {
+                continue; // don't process empty values
+            }
 
-			$hash = json_encode($values);
+            $hash = json_encode($values);
 
-			if (isset($hashmap[$hash])) {
-				// combined field value is already encountered before so this entry is
-				// not unique.
+            if (isset($hashmap[$hash])) {
+                // combined field value is already encountered before so this entry is
+                // not unique.
 
-				$value = reset($values);
-				$name = key($values);
+                $value = reset($values);
+                $name = key($values);
 
-				$builder = $this->context->buildViolation($constraint->message);
+                $builder = $this->context->buildViolation($constraint->message);
 
-				self::fixViolationPath($builder);
+                self::fixViolationPath($builder);
 
-				$builder->atPath('children[' . $index . '].children[' . $name . '].data')
-					->setInvalidValue($value)
-					->addViolation();
-			}
+                $builder->atPath('children[' . $index . '].children[' . $name . '].data')
+                    ->setInvalidValue($value)
+                    ->addViolation();
+            }
 
-			$hashmap[$hash] = true;
-		}
-	}
+            $hashmap[$hash] = true;
+        }
+    }
 
-	/**
-	 * @return PropertyAccessor
-	 */
-	public function getPropertyAccessor()
-	{
-		if ($this->accessor === null) {
-			$this->accessor = PropertyAccess::createPropertyAccessor();
-		}
+    /**
+     * @return PropertyAccessor
+     */
+    public function getPropertyAccessor()
+    {
+        if ($this->accessor === null) {
+            $this->accessor = PropertyAccess::createPropertyAccessor();
+        }
 
-		return $this->accessor;
-	}
+        return $this->accessor;
+    }
 
-	/**
-	 * This is a work around for a possible bug.
-	 *
-	 * Seams there is a bug, or if not its working really weird, that screws up
-	 * the validation path big time in a collection. So we use some reflection
-	 * magic to fix this.
-	 *
-	 * @param ConstraintViolationBuilderInterface $builder
-	 */
-	private static function fixViolationPath(ConstraintViolationBuilderInterface $builder)
-	{
-		$reflection = new \ReflectionClass($builder);
+    /**
+     * This is a work around for a possible bug.
+     *
+     * Seams there is a bug, or if not its working really weird, that screws up
+     * the validation path big time in a collection. So we use some reflection
+     * magic to fix this.
+     *
+     * @param ConstraintViolationBuilderInterface $builder
+     */
+    private static function fixViolationPath(ConstraintViolationBuilderInterface $builder)
+    {
+        $reflection = new \ReflectionClass($builder);
 
-		if ($reflection->hasProperty('propertyPath')) {
-			$prop = $reflection->getProperty('propertyPath');
-			$prop->setAccessible(true);
+        if ($reflection->hasProperty('propertyPath')) {
+            $prop = $reflection->getProperty('propertyPath');
+            $prop->setAccessible(true);
 
-			$value = $prop->getValue($builder);
+            $value = $prop->getValue($builder);
 
-			if (null !== ($pos = strpos($value, '.data'))) {
-				$prop->setValue($builder, substr($value, 0, $pos));
-			}
-		}
-	}
+            if (null !== ($pos = strpos($value, '.data'))) {
+                $prop->setValue($builder, substr($value, 0, $pos));
+            }
+        }
+    }
 }

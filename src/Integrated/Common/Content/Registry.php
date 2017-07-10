@@ -18,136 +18,136 @@ use ArrayIterator;
  */
 class Registry implements RegistryInterface
 {
-	/**
-	 * @var array
-	 */
-	protected $data;
+    /**
+     * @var array
+     */
+    protected $data;
 
-	/**
-	 * @param array $data
-	 */
-	public function __construct(array $data = [])
-	{
-		$this->data = $data;
-	}
+    /**
+     * @param array $data
+     */
+    public function __construct(array $data = [])
+    {
+        $this->data = $data;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function toArray()
-	{
-		return $this->data;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function toArray()
+    {
+        return $this->data;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function add($value)
-	{
-		if ($value === null) {
-			return $this;
-		}
+    /**
+     * @inheritdoc
+     */
+    public function add($value)
+    {
+        if ($value === null) {
+            return $this;
+        }
 
-		$this->data[] = $value;
-		return $this;
-	}
+        $this->data[] = $value;
+        return $this;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function set($key, $value)
-	{
-		if ($value === null) {
-			return $this->remove($key);
-		}
+    /**
+     * @inheritdoc
+     */
+    public function set($key, $value)
+    {
+        if ($value === null) {
+            return $this->remove($key);
+        }
 
-		$this->data[$key] = $value;
-		return $this;
-	}
+        $this->data[$key] = $value;
+        return $this;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function get($key)
-	{
-		return isset($this->data[$key]) ? $this->data[$key] : null;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function get($key)
+    {
+        return isset($this->data[$key]) ? $this->data[$key] : null;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function remove($key)
-	{
-		unset($this->data[$key]);
-		return $this;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function remove($key)
+    {
+        unset($this->data[$key]);
+        return $this;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function has($key)
-	{
-		return isset($this->data[$key]);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function has($key)
+    {
+        return isset($this->data[$key]);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function clear()
-	{
-		$this->data = [];
-		return $this;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function clear()
+    {
+        $this->data = [];
+        return $this;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function count()
-	{
-		return count($this->data);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function count()
+    {
+        return count($this->data);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getIterator()
-	{
-		return new ArrayIterator($this->data);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getIterator()
+    {
+        return new ArrayIterator($this->data);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function offsetExists($offset)
-	{
-		return $this->has($offset);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function offsetExists($offset)
+    {
+        return $this->has($offset);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function offsetGet($offset)
-	{
-		return $this->get($offset);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function offsetSet($offset, $value)
-	{
-		if ($offset === null) {
-			$this->add($value);
-		} else {
-			$this->set($offset, $value);
-		}
-	}
+    /**
+     * @inheritdoc
+     */
+    public function offsetSet($offset, $value)
+    {
+        if ($offset === null) {
+            $this->add($value);
+        } else {
+            $this->set($offset, $value);
+        }
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function offsetUnset($offset)
-	{
-		$this->remove($offset);
-	}
-} 
+    /**
+     * @inheritdoc
+     */
+    public function offsetUnset($offset)
+    {
+        $this->remove($offset);
+    }
+}

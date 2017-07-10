@@ -16,10 +16,10 @@ namespace Integrated\Common\Content;
  */
 interface ExtensibleInterface
 {
-	/**
-	 * Get list of all the extensions names
-	 *
-	 * @return RegistryInterface
-	 */
-	public function getExtensions();
+    /**
+     * Get list of all the extensions names
+     *
+     * @return RegistryInterface
+     */
+    public function getExtensions();
 }

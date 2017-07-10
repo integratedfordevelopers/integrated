@@ -19,44 +19,44 @@ use Integrated\Common\Content\Extension\Event;
  */
 class ContentEvent extends Event
 {
-	/**
-	 * @var mixed
-	 */
-	private $data = null;
+    /**
+     * @var mixed
+     */
+    private $data = null;
 
-	/**
-	 * @var ContentInterface
-	 */
-	private $content;
+    /**
+     * @var ContentInterface
+     */
+    private $content;
 
-	public function __construct(ContentInterface $content)
-	{
-		parent::__construct(self::CONTENT);
+    public function __construct(ContentInterface $content)
+    {
+        parent::__construct(self::CONTENT);
 
-		$this->content = $content;
-	}
+        $this->content = $content;
+    }
 
-	/**
-	 * @param mixed $data
-	 */
-	public function setData($data)
-	{
-		$this->data = $data;
-	}
+    /**
+     * @param mixed $data
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getData()
-	{
-		return $this->data;
-	}
+    /**
+     * @return mixed
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
 
-	/**
-	 * @return ContentInterface
-	 */
-	public function getContent()
-	{
-		return $this->content;
-	}
+    /**
+     * @return ContentInterface
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
 }

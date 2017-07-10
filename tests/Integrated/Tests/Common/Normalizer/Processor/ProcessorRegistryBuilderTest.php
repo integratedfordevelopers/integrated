@@ -66,6 +66,6 @@ class ProcessorRegistryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProcessor()
     {
-        return $this->getMock(ProcessorInterface::class);
+        return $this->createMock(ProcessorInterface::class);
     }
 }

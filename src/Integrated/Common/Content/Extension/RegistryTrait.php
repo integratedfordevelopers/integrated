@@ -16,21 +16,21 @@ namespace Integrated\Common\Content\Extension;
  */
 trait RegistryTrait
 {
-	/**
-	 * @var ExtensionInterface[]
-	 */
-	protected $extensions = [];
+    /**
+     * @var ExtensionInterface[]
+     */
+    protected $extensions = [];
 
-	protected function addExtension(ExtensionInterface $extension)
-	{
-		$name = $extension->getName();
+    protected function addExtension(ExtensionInterface $extension)
+    {
+        $name = $extension->getName();
 
-		if (isset($this->extensions[$name])) {
-			throw new \LogicException();
-		}
+        if (isset($this->extensions[$name])) {
+            throw new \LogicException();
+        }
 
-		$this->extensions[$name] = $extension;
+        $this->extensions[$name] = $extension;
 
-		return $this;
-	}
-} 
+        return $this;
+    }
+}

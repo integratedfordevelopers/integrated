@@ -18,66 +18,66 @@ use Integrated\Common\Queue\Provider\QueueProviderInterface;
  */
 class QueueProvider implements QueueProviderInterface
 {
-	private $queue = array();
+    private $queue = array();
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function push($channel, $payload, $delay = 0, $priority = 0)
-	{
-		// this is a in memory queue so delay is ignored.
-		// TODO: for now also ignore priority
+    /**
+     * {@inheritdoc}
+     */
+    public function push($channel, $payload, $delay = 0, $priority = 0)
+    {
+        // this is a in memory queue so delay is ignored.
+        // TODO: for now also ignore priority
 
-		$channel = (string) $channel;
+        $channel = (string) $channel;
 
-		if (!isset($this->queue[$channel])) {
-			$this->queue[$channel] = [];
-		}
+        if (!isset($this->queue[$channel])) {
+            $this->queue[$channel] = [];
+        }
 
-		$this->queue[$channel][] = ['payload' => $payload, 'attempts' => 0, 'priority' => min(max((int) $priority, -10), 10)];
-	}
+        $this->queue[$channel][] = ['payload' => $payload, 'attempts' => 0, 'priority' => min(max((int) $priority, -10), 10)];
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function pull($channel, $limit = 1)
-	{
-		$channel = (string) $channel;
+    /**
+     * {@inheritdoc}
+     */
+    public function pull($channel, $limit = 1)
+    {
+        $channel = (string) $channel;
 
-		if (!isset($this->queue[$channel])) {
-			return [];
-		}
+        if (!isset($this->queue[$channel])) {
+            return [];
+        }
 
-		$limit = (int) $limit;
-		$limit = $limit > 1 ? $limit : 1;
+        $limit = (int) $limit;
+        $limit = $limit > 1 ? $limit : 1;
 
-		$results = [];
+        $results = [];
 
-		foreach (array_splice($this->queue[$channel], 0, $limit) as $row) {
-			$release = function() use ($channel, $row) {
-				$row['attempts']++;
-				array_unshift($this->queue[$channel], $row);
-			};
+        foreach (array_splice($this->queue[$channel], 0, $limit) as $row) {
+            $release = function () use ($channel, $row) {
+                $row['attempts']++;
+                array_unshift($this->queue[$channel], $row);
+            };
 
-			$results[] = new QueueMessage($row['payload'], $row['attempts'], $row['priority'], $release);
-		}
+            $results[] = new QueueMessage($row['payload'], $row['attempts'], $row['priority'], $release);
+        }
 
-		return $results;
-	}
+        return $results;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function clear($channel)
-	{
-		$this->queue[$channel] = [];
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function clear($channel)
+    {
+        $this->queue[$channel] = [];
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function count($channel)
-	{
-		return isset($this->queue[$channel]) ? count($this->queue[$channel]) : 0;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function count($channel)
+    {
+        return isset($this->queue[$channel]) ? count($this->queue[$channel]) : 0;
+    }
 }

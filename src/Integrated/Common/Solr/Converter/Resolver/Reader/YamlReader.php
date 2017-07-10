@@ -23,79 +23,79 @@ use Symfony\Component\Yaml\Yaml;
  */
 class YamlReader implements FileResolverReaderInterface
 {
-	/**
-	 * @param SplFileInfo $file
-	 * @return ConverterSpecificationInterface[]
-	 */
-	public function read(SplFileInfo $file)
-	{
-		$input = $file->getContents();
+    /**
+     * @param SplFileInfo $file
+     * @return ConverterSpecificationInterface[]
+     */
+    public function read(SplFileInfo $file)
+    {
+        $input = $file->getContents();
 
-		if (!$data = Yaml::parse($input)) {
-			return [];
-		}
+        if (!$data = Yaml::parse($input)) {
+            return [];
+        }
 
-		$specs = [];
+        $specs = [];
 
-		if (isset($data['convert'])) {
-			foreach ($data['convert'] as $config) {
-				$spec = new ConverterSpecification();
+        if (isset($data['convert'])) {
+            foreach ($data['convert'] as $config) {
+                $spec = new ConverterSpecification();
 
-				$spec->classes = $this->getClasses($config);
-				$spec->fields = $this->getFields($config);
-				$spec->id = $this->getId($config);
+                $spec->classes = $this->getClasses($config);
+                $spec->fields = $this->getFields($config);
+                $spec->id = $this->getId($config);
 
-				$specs[] = $spec;
-			}
-		}
+                $specs[] = $spec;
+            }
+        }
 
-		// @todo implement ignore
+        // @todo implement ignore
 
-		return $specs;
-	}
+        return $specs;
+    }
 
-	/**
-	 * @param array $data
-	 * @return array
-	 */
-	protected function getClasses(array $data)
-	{
-		if (!isset($data['class'])) {
-			return [];
-		}
+    /**
+     * @param array $data
+     * @return array
+     */
+    protected function getClasses(array $data)
+    {
+        if (!isset($data['class'])) {
+            return [];
+        }
 
-		$classes = $data['class'];
+        $classes = $data['class'];
 
-		if (!is_array($classes)) {
-			$classes = [$classes];
-		}
+        if (!is_array($classes)) {
+            $classes = [$classes];
+        }
 
-		return $classes;
-	}
+        return $classes;
+    }
 
-	/**
-	 * @param array $data
-	 * @return array
-	 */
-	protected function getFields(array $data)
-	{
-		if (!isset($data['fields'])) {
-			return [];
-		}
+    /**
+     * @param array $data
+     * @return array
+     */
+    protected function getFields(array $data)
+    {
+        if (!isset($data['fields'])) {
+            return [];
+        }
 
-		return $data['fields']; // @todo do integer check
-	}
+        return $data['fields']; // @todo do integer check
+    }
 
-	/**
-	 * @param array $data
-	 * @return string | null
-	 */
-	protected function getId(array $data)
-	{
-		if (!isset($data['id'])) {
-			return null;
-		}
+    /**
+     * @param array $data
+     * @return string | null
+     */
+    protected function getId(array $data)
+    {
+        if (!isset($data['id'])) {
+            return null;
+        }
 
-		return (string) $data['id'];
-	}
+        return (string) $data['id'];
+    }
 }

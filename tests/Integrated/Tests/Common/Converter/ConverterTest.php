@@ -43,9 +43,9 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->registry = $this->getMock('Integrated\\Common\\Converter\\Type\\RegistryInterface');
-        $this->resolver = $this->getMock('Integrated\\Common\\Converter\\Config\\ConfigResolverInterface');
-        $this->factory  = $this->getMock('Integrated\\Common\\Converter\\ContainerFactoryInterface');
+        $this->registry = $this->createMock('Integrated\\Common\\Converter\\Type\\RegistryInterface');
+        $this->resolver = $this->createMock('Integrated\\Common\\Converter\\Config\\ConfigResolverInterface');
+        $this->factory  = $this->createMock('Integrated\\Common\\Converter\\ContainerFactoryInterface');
     }
 
     public function testInterface()
@@ -63,17 +63,17 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver->expects($this->once())
             ->method('getConfig')
-            ->with($this->equalTo('Integrated\\Tests\\Common\\Converter\\TestClass'))
+            ->with($this->equalTo(\stdClass::class))
             ->willReturn($this->getConfig([$this->getType('type-1', null), $this->getType('type-2', ['options'])]));
 
-        $data = new TestClass();
+        $data = new \stdClass();
 
-        $type1 = $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
+        $type1 = $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
         $type1->expects($this->once())
             ->method('build')
             ->with($this->identicalTo($container), $this->identicalTo($data), $this->equalTo([]));
 
-        $type2 = $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
+        $type2 = $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
         $type2->expects($this->once())
             ->method('build')
             ->with($this->identicalTo($container), $this->identicalTo($data), $this->equalTo(['options']));
@@ -98,13 +98,13 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver->expects($this->once())
             ->method('getConfig')
-            ->with($this->equalTo('Integrated\\Tests\\Common\\Converter\\TestClass'))
+            ->with($this->equalTo(\stdClass::class))
             ->willReturn(null);
 
         $this->registry->expects($this->never())
             ->method($this->anything());
 
-        self::assertSame($container, $this->getInstance()->convert(new TestClass()));
+        self::assertSame($container, $this->getInstance()->convert(new \stdClass()));
     }
 
     /**
@@ -118,15 +118,15 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->resolver->expects($this->once())
             ->method('getConfig')
-            ->with($this->equalTo('Integrated\\Tests\\Common\\Converter\\TestClass'))
+            ->with($this->equalTo(\stdClass::class))
             ->willReturn($this->getConfig([$this->getType('does-not-exist')]));
 
         $this->registry->expects($this->any())
             ->method('getType')
             ->with($this->equalTo('does-not-exist'))
-            ->willThrowException($this->getMock('Integrated\\Common\\Converter\\Exception\\RuntimeException'));
+            ->willThrowException($this->createMock('Integrated\\Common\\Converter\\Exception\\RuntimeException'));
 
-        $this->getInstance()->convert(new TestClass());
+        $this->getInstance()->convert(new \stdClass());
     }
 
     /**
@@ -164,7 +164,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContainer()
     {
-        $mock = $this->getMock('Integrated\\Common\\Converter\\ContainerInterface');
+        $mock = $this->createMock('Integrated\\Common\\Converter\\ContainerInterface');
         $mock->expects($this->never())
             ->method($this->anything()); // the convert self should not nothing with the container
 
@@ -177,7 +177,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getConfig(array $types)
     {
-        $mock = $this->getMock('Integrated\\Common\\Converter\\Config\\ConfigInterface');
+        $mock = $this->createMock('Integrated\\Common\\Converter\\Config\\ConfigInterface');
 
         $mock->expects($this->any())
             ->method('hasParent')
@@ -202,7 +202,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType($name, array $options = null)
     {
-        $mock = $this->getMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface');
+        $mock = $this->createMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface');
 
         $mock->expects($this->any())
             ->method('getName')
@@ -219,5 +219,3 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 }
-
-class TestClass {}

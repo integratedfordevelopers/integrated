@@ -78,7 +78,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getAdapter(ManifestInterface $manifest)
     {
-        $mock = $this->getMock('Integrated\\Common\\Channel\\Connector\\AdapterInterface');
+        $mock = $this->createMock('Integrated\\Common\\Channel\\Connector\\AdapterInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getManifest')
             ->willReturn($manifest);
@@ -92,7 +92,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getManifest($name)
     {
-        $mock = $this->getMock('Integrated\\Common\\Channel\\Connector\\Adapter\\ManifestInterface');
+        $mock = $this->createMock('Integrated\\Common\\Channel\\Connector\\Adapter\\ManifestInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getName')
             ->willReturn($name);

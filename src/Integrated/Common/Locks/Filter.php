@@ -16,13 +16,13 @@ namespace Integrated\Common\Locks;
  */
 class Filter
 {
-	/**
-	 * @var ResourceInterface | ResourceInterface[]
-	 */
-	public $resources = [];
+    /**
+     * @var ResourceInterface | ResourceInterface[]
+     */
+    public $resources = [];
 
-	/**
-	 * @var ResourceInterface | ResourceInterface[]
-	 */
-	public $owners   = [];
-} 
+    /**
+     * @var ResourceInterface | ResourceInterface[]
+     */
+    public $owners   = [];
+}

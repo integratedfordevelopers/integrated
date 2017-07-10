@@ -16,18 +16,18 @@ namespace Integrated\Common\Content\Extension;
  */
 interface RegistryBuilderInterface
 {
-	/**
-	 * Add a extension to the registry.
-	 *
-	 * The extension name needs to be unique or an exception will be thrown
-	 *
-	 * @param ExtensionInterface $extension
-	 * @return self
-	 */
-	public function addExtension(ExtensionInterface $extension);
+    /**
+     * Add a extension to the registry.
+     *
+     * The extension name needs to be unique or an exception will be thrown
+     *
+     * @param ExtensionInterface $extension
+     * @return self
+     */
+    public function addExtension(ExtensionInterface $extension);
 
-	/**
-	 * @return RegistryInterface
-	 */
-	public function getRegistry();
+    /**
+     * @return RegistryInterface
+     */
+    public function getRegistry();
 }

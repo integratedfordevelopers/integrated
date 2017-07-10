@@ -24,22 +24,22 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class MetadataFactoryAdaptor extends AbstractAdaptor implements EventSubscriberInterface
 {
-	/**
-	 * @inheritdoc
-	 */
-	public static function getSubscribedEvents()
-	{
-		return [
-			MetadataEvents::METADATA => 'dispatch'
-		];
-	}
+    /**
+     * @inheritdoc
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            MetadataEvents::METADATA => 'dispatch'
+        ];
+    }
 
-	public function dispatch(MetadataEvent $event)
-	{
-		if (($dispatcher = $this->getDispatcher()) === null) {
-			return;
-		}
+    public function dispatch(MetadataEvent $event)
+    {
+        if (($dispatcher = $this->getDispatcher()) === null) {
+            return;
+        }
 
-		$this->dispatcher->dispatch(ExtensionEvents::METADATA, $event->getMetadata());
-	}
+        $this->dispatcher->dispatch(ExtensionEvents::METADATA, $event->getMetadata());
+    }
 }

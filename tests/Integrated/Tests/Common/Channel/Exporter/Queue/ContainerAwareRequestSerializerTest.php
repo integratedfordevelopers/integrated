@@ -29,7 +29,7 @@ class ContainerAwareRequestSerializerTest extends RequestSerializerTest
     {
         parent::setUp();
 
-        $this->container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
+        $this->container = $this->createMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
         $this->container->expects($this->any())
             ->method('get')
             ->willReturnMap([

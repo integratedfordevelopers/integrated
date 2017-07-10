@@ -33,8 +33,8 @@ class BatchOperationTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->message = $this->getMock(QueueMessageInterface::class);
-        $this->command = $this->getMock(AbstractCommand::class);
+        $this->message = $this->createMock(QueueMessageInterface::class);
+        $this->command = $this->createMock(AbstractCommand::class);
     }
 
     public function testConstructorNullCommand()
@@ -55,7 +55,7 @@ class BatchOperationTest extends \PHPUnit_Framework_TestCase
 
     public function testSetCommand()
     {
-        $command = $this->getMock(AbstractCommand::class);
+        $command = $this->createMock(AbstractCommand::class);
 
         $instance = $this->getInstance();
         $instance->setCommand($command);

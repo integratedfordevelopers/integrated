@@ -51,4 +51,3 @@ class TypeConfigTest extends \PHPUnit_Framework_TestCase
         return new TypeConfig($this->name, $options);
     }
 }
- 

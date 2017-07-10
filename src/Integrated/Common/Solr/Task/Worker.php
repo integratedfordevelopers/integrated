@@ -66,9 +66,7 @@ class Worker extends Configurable
             'tasks' => 1000,
         ]);
 
-        $resolver->setAllowedTypes([
-            'tasks' => 'integer',
-        ]);
+        $resolver->setAllowedTypes('tasks', 'integer');
     }
 
     /**

@@ -24,7 +24,8 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
             'class1' => [$this, 'testAddHandler'],
             'class2' => [RegistryBuilderTest::class, 'assertTrue'],
             'class3' => 'is_object',
-            'class4' => function () {},
+            'class4' => function () {
+            },
         ];
 
         $builder = $this->getInstance();
@@ -48,7 +49,8 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
             'class1' => [$this, 'testAddHandler'],
             'class2' => [RegistryBuilderTest::class, 'assertTrue'],
             'class3' => 'is_object',
-            'class4' => function () {},
+            'class4' => function () {
+            },
         ];
 
         $builder = $this->getInstance();

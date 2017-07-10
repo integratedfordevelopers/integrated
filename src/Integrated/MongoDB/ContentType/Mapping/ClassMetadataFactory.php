@@ -26,132 +26,132 @@ use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory as BaseClassMetadataFactor
  */
 class ClassMetadataFactory extends BaseClassMetadataFactory
 {
-	/**
-	 * @var DocumentManager
-	 */
-	private $dm;
+    /**
+     * @var DocumentManager
+     */
+    private $dm;
 
-	/**
-	 * @var EventManager
-	 */
-	private $evm;
+    /**
+     * @var EventManager
+     */
+    private $evm;
 
-	/**
-	 * @var ClassMetadataLoadFinderSubscriber
-	 */
-	private $matcher;
+    /**
+     * @var ClassMetadataLoadFinderSubscriber
+     */
+    private $matcher;
 
-	/**
-	 * @var DiscriminatorMapBuilderSubscriber
-	 */
-	private $builder;
+    /**
+     * @var DiscriminatorMapBuilderSubscriber
+     */
+    private $builder;
 
-	/**
-	 * When set to true then any call made to functions is from internal sources.
-	 *
-	 * @var bool
-	 */
-	private $internal = false;
+    /**
+     * When set to true then any call made to functions is from internal sources.
+     *
+     * @var bool
+     */
+    private $internal = false;
 
-	/**
-	 * This will contain all the ClassMetadata instance every made.
-	 *
-	 * The classes are stored in a registery so that they are only create for
-	 * a class ones.
-	 *
-	 * @var array
-	 */
-	private $registery = array();
+    /**
+     * This will contain all the ClassMetadata instance every made.
+     *
+     * The classes are stored in a registery so that they are only create for
+     * a class ones.
+     *
+     * @var array
+     */
+    private $registery = array();
 
-	public function __construct()
-	{
-		$this->matcher = new ClassMetadataLoadFinderSubscriber();
-		$this->builder = new DiscriminatorMapBuilderSubscriber($this);
-	}
+    public function __construct()
+    {
+        $this->matcher = new ClassMetadataLoadFinderSubscriber();
+        $this->builder = new DiscriminatorMapBuilderSubscriber($this);
+    }
 
-	public function addManagedClass($class)
-	{
-		$this->matcher->addClass($class);
-		$this->builder->addClass($class);
-	}
+    public function addManagedClass($class)
+    {
+        $this->matcher->addClass($class);
+        $this->builder->addClass($class);
+    }
 
-	public function setDocumentManager(DocumentManager $dm)
-	{
-		if ($this->dm) {
-			$this->evm->removeEventSubscriber($this->matcher);
-			$this->evm->removeEventSubscriber($this->builder);
+    public function setDocumentManager(DocumentManager $dm)
+    {
+        if ($this->dm) {
+            $this->evm->removeEventSubscriber($this->matcher);
+            $this->evm->removeEventSubscriber($this->builder);
 
-			$this->evm = null;
-		}
+            $this->evm = null;
+        }
 
-		$this->dm = $dm;
+        $this->dm = $dm;
 
-		parent::setDocumentManager($dm);
+        parent::setDocumentManager($dm);
 
-		$this->evm = $this->dm->getEventManager();
+        $this->evm = $this->dm->getEventManager();
 
-		$this->evm->addEventSubscriber($this->matcher);
-		$this->evm->addEventSubscriber($this->builder);
-	}
+        $this->evm->addEventSubscriber($this->matcher);
+        $this->evm->addEventSubscriber($this->builder);
+    }
 
-	public function getAllMetadata()
-	{
-		$this->internal = true;
+    public function getAllMetadata()
+    {
+        $this->internal = true;
 
-		$metadata = parent::getAllMetadata();
+        $metadata = parent::getAllMetadata();
 
-		$this->updateCache();
+        $this->updateCache();
 
-		$this->matcher->clearMatches();
-		$this->internal = false;
+        $this->matcher->clearMatches();
+        $this->internal = false;
 
-		return $metadata;
-	}
+        return $metadata;
+    }
 
-	public function getMetadataFor($className)
-	{
-		$metadata = parent::getMetadataFor($className);
+    public function getMetadataFor($className)
+    {
+        $metadata = parent::getMetadataFor($className);
 
-		if ($this->internal) {
-			return $metadata;
-		}
+        if ($this->internal) {
+            return $metadata;
+        }
 
-		$this->internal = true;
+        $this->internal = true;
 
-		if ($this->matcher->hasMatches()) {
-			parent::getAllMetadata();
-		}
+        if ($this->matcher->hasMatches()) {
+            parent::getAllMetadata();
+        }
 
-		$this->updateCache();
+        $this->updateCache();
 
-		$this->matcher->clearMatches();
-		$this->internal = false;
+        $this->matcher->clearMatches();
+        $this->internal = false;
 
-		return $metadata;
-	}
+        return $metadata;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function newClassMetadataInstance($className)
-	{
-		if (!isset($this->registery[$className])) {
-			$this->registery[$className] = parent::newClassMetadataInstance($className);
-		}
+    /**
+     * @inheritdoc
+     */
+    protected function newClassMetadataInstance($className)
+    {
+        if (!isset($this->registery[$className])) {
+            $this->registery[$className] = parent::newClassMetadataInstance($className);
+        }
 
-		return $this->registery[$className];
-	}
+        return $this->registery[$className];
+    }
 
-	private function updateCache()
-	{
-		if ($this->builder->hasChanges()) {
-			$cache = $this->getCacheDriver();
+    private function updateCache()
+    {
+        if ($this->builder->hasChanges()) {
+            $cache = $this->getCacheDriver();
 
-			foreach ($this->builder->getChanges() as $meta) {
-				$cache->save($meta->name . $this->cacheSalt, $meta, null);
-			}
-		}
+            foreach ($this->builder->getChanges() as $meta) {
+                $cache->save($meta->name . $this->cacheSalt, $meta, null);
+            }
+        }
 
-		$this->builder->clearChanges();
-	}
+        $this->builder->clearChanges();
+    }
 }

@@ -16,13 +16,16 @@ namespace Integrated\Common\Content\Extension;
  */
 class RegistryBuilder implements RegistryBuilderInterface
 {
-	use RegistryTrait { addExtension as public; }
+    use RegistryTrait
+    {
+        addExtension as public;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getRegistry()
-	{
-		return new Registry($this->extensions);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getRegistry()
+    {
+        return new Registry($this->extensions);
+    }
 }

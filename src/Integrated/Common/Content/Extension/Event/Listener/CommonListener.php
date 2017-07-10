@@ -21,26 +21,26 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class CommonListener
 {
-	/**
-	 * @var ExtensionInterface
-	 */
-	protected $extension;
+    /**
+     * @var ExtensionInterface
+     */
+    protected $extension;
 
-	/**
-	 * @var callable
-	 */
-	protected $listener;
+    /**
+     * @var callable
+     */
+    protected $listener;
 
-	public function __construct(ExtensionInterface $extension, callable $listener)
-	{
-		$this->extension = $extension;
-		$this->listener = $listener;
-	}
+    public function __construct(ExtensionInterface $extension, callable $listener)
+    {
+        $this->extension = $extension;
+        $this->listener = $listener;
+    }
 
-	public function __invoke(Event $event, $eventName, EventDispatcherInterface $dispatcher)
-	{
-		$event = clone $event;
+    public function __invoke(Event $event, $eventName, EventDispatcherInterface $dispatcher)
+    {
+        $event = clone $event;
 
-		call_user_func($this->listener, $event, $eventName, $dispatcher);
-	}
-} 
+        call_user_func($this->listener, $event, $eventName, $dispatcher);
+    }
+}

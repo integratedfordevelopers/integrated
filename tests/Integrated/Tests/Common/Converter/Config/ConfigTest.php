@@ -28,8 +28,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->types = [
-            $this->getMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface'),
-            $this->getMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface')
+            $this->createMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface'),
+            $this->createMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface')
         ];
     }
 
@@ -71,7 +71,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     protected function getConfig()
     {
-        return $this->getMock('Integrated\\Common\\Converter\\Config\\ConfigInterface');
+        return $this->createMock('Integrated\\Common\\Converter\\Config\\ConfigInterface');
     }
 }
- 

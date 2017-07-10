@@ -33,7 +33,7 @@ class FieldEventTest extends FormEventTest
     {
         parent::setUp();
 
-        $this->field = $this->getMock(AttributeEditorInterface::class);
+        $this->field = $this->createMock(AttributeEditorInterface::class);
     }
 
     public function testGetField()

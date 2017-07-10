@@ -16,5 +16,5 @@ namespace Integrated\Common\Content\Extension;
  */
 interface AdaptorInterface
 {
-	public function setDispatcher(DispatcherInterface $dispatcher);
+    public function setDispatcher(DispatcherInterface $dispatcher);
 }

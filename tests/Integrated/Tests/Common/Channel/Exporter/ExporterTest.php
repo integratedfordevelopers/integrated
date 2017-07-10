@@ -50,8 +50,8 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->registry = $this->getMock('Integrated\\Common\\Channel\\Connector\\Adapter\\RegistryInterface');
-        $this->resolver = $this->getMock('Integrated\\Common\\Channel\\Connector\\Config\\ResolverInterface');
+        $this->registry = $this->createMock('Integrated\\Common\\Channel\\Connector\\Adapter\\RegistryInterface');
+        $this->resolver = $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\ResolverInterface');
     }
 
     public function testInterface()
@@ -181,7 +181,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getChannel($id)
     {
-        $mock = $this->getMock('Integrated\\Common\\Channel\\ChannelInterface');
+        $mock = $this->createMock('Integrated\\Common\\Channel\\ChannelInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getId')
             ->willReturn($id);
@@ -194,7 +194,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getExporter()
     {
-        return $this->getMock('Integrated\\Common\\Channel\\Exporter\\ExporterInterface');
+        return $this->createMock('Integrated\\Common\\Channel\\Exporter\\ExporterInterface');
     }
 
     /**
@@ -205,7 +205,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getConfig($adaptor, OptionsInterface $options = null)
     {
-        $mock = $this->getMock('Integrated\\Common\\Channel\\Connector\\Config\\ConfigInterface');
+        $mock = $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\ConfigInterface');
         $mock->expects($this->once())
             ->method('getAdapter')
             ->willReturn($adaptor);
@@ -224,7 +224,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getOptions()
     {
-        return $this->getMock('Integrated\\Common\\Channel\\Connector\\Config\\OptionsInterface');
+        return $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\OptionsInterface');
     }
 
     /**
@@ -236,7 +236,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
     protected function getAdapter(OptionsInterface $options = null, ExporterInterface $exporter = null)
     {
         if ($options) {
-            $mock = $this->getMock('Integrated\\Tests\\Common\\Channel\\Fixtures\\ExportableInterface');
+            $mock = $this->createMock('Integrated\\Tests\\Common\\Channel\\Fixtures\\ExportableInterface');
             $mock->expects($this->once())
                 ->method('getExporter')
                 ->with($this->identicalTo($options))
@@ -245,6 +245,6 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
             return $mock;
         }
 
-        return $this->getMock('Integrated\\Common\\Channel\\Connector\\AdapterInterface');
+        return $this->createMock('Integrated\\Common\\Channel\\Connector\\AdapterInterface');
     }
 }

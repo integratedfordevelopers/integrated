@@ -11,15 +11,15 @@
 
 namespace Integrated\Common\Content\Extension;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface AS BaseEventSubscriberInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface as BaseEventSubscriberInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 interface EventSubscriberInterface extends BaseEventSubscriberInterface
 {
-	/**
-	 * @return ExtensionInterface
-	 */
-	public function getExtension();
+    /**
+     * @return ExtensionInterface
+     */
+    public function getExtension();
 }

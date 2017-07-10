@@ -39,7 +39,7 @@ class ContextTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->resolver = $this->getMock(ResolverInterface::class);
+        $this->resolver = $this->createMock(ResolverInterface::class);
     }
 
     public function testGetOptions()
@@ -70,7 +70,7 @@ class ContextTest extends \PHPUnit_Framework_TestCase
 
         $instance = $this->getInstance();
 
-        $mock = $this->getMock(ResolvedProcessorInterface::class);
+        $mock = $this->createMock(ResolvedProcessorInterface::class);
         $mock->expects($this->once())
             ->method('process')
             ->with($this->identicalTo($object), $this->callback(function (Context $context) use ($options, $instance) {

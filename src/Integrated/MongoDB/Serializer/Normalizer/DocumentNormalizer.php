@@ -24,102 +24,102 @@ use Doctrine\ODM\MongoDB\DocumentManager;
  */
 class DocumentNormalizer extends SerializerAwareNormalizer implements NormalizerInterface, DenormalizerInterface
 {
-	/**
-	 * @var DocumentManager
-	 */
-	protected $dm = null;
+    /**
+     * @var DocumentManager
+     */
+    protected $dm = null;
 
-	/**
-	 * @param DocumentManager $dm
-	 */
-	public function __construct(DocumentManager $dm)
-	{
-		$this->dm = $dm;
-	}
+    /**
+     * @param DocumentManager $dm
+     */
+    public function __construct(DocumentManager $dm)
+    {
+        $this->dm = $dm;
+    }
 
-	/**
-	 * @return DocumentManager
-	 */
-	protected function getDocumentManager()
-	{
-		return $this->dm;
-	}
+    /**
+     * @return DocumentManager
+     */
+    protected function getDocumentManager()
+    {
+        return $this->dm;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function denormalize($data, $class, $format = null, array $context = array())
-	{
-		try {
-			$document = $this->getDocumentManager()->getRepository($class)->find($data);
-		} catch(Exception $e) {
-			return null;
-		}
+    /**
+     * @inheritdoc
+     */
+    public function denormalize($data, $class, $format = null, array $context = array())
+    {
+        try {
+            $document = $this->getDocumentManager()->getRepository($class)->find($data);
+        } catch (Exception $e) {
+            return null;
+        }
 
-		return $document;
-	}
+        return $document;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function normalize($object, $format = null, array $context = array())
-	{
-		$meta = $this->getDocumentManager()->getClassMetadata(get_class($object));
+    /**
+     * @inheritdoc
+     */
+    public function normalize($object, $format = null, array $context = array())
+    {
+        $meta = $this->getDocumentManager()->getClassMetadata(get_class($object));
 
-		if (!$meta) {
-			return null;
-		}
+        if (!$meta) {
+            return null;
+        }
 
-		$keys = array();
+        $keys = array();
 
-		foreach ($meta->getIdentifierFieldNames() as $field) {
-			$keys[$field] = $meta->getFieldValue($object, $field);
-		}
+        foreach ($meta->getIdentifierFieldNames() as $field) {
+            $keys[$field] = $meta->getFieldValue($object, $field);
+        }
 
-		return $keys;
-	}
+        return $keys;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function supportsDenormalization($data, $type, $format = null)
-	{
-		if (!is_array($data)) {
-			return false;
-		}
+    /**
+     * @inheritdoc
+     */
+    public function supportsDenormalization($data, $type, $format = null)
+    {
+        if (!is_array($data)) {
+            return false;
+        }
 
-		return $this->supports($type);
-	}
+        return $this->supports($type);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function supportsNormalization($data, $format = null)
-	{
-		return $this->supports(get_class($data));
-	}
+    /**
+     * @inheritdoc
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $this->supports(get_class($data));
+    }
 
-	/**
-	 * Check if the class is a mongodb document class registered by the
-	 * registered document manager.
-	 *
-	 * @param $class
-	 * @return bool
-	 */
-	protected function supports($class)
-	{
-		$meta = $this->getDocumentManager()->getClassMetadata($class);
+    /**
+     * Check if the class is a mongodb document class registered by the
+     * registered document manager.
+     *
+     * @param $class
+     * @return bool
+     */
+    protected function supports($class)
+    {
+        $meta = $this->getDocumentManager()->getClassMetadata($class);
 
-		if ($meta->isMappedSuperclass || $meta->isEmbeddedDocument) {
-			return false;
-		}
+        if ($meta->isMappedSuperclass || $meta->isEmbeddedDocument) {
+            return false;
+        }
 
-		$identifier = $meta->getIdentifierFieldNames();
+        $identifier = $meta->getIdentifierFieldNames();
 
-		if (empty($identifier)) {
-			return false;
-		}
+        if (empty($identifier)) {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

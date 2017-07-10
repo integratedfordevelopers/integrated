@@ -19,42 +19,41 @@ use Integrated\MongoDB\Serializer\Normalizer\ContainerAwareDocumentNormalizer;
  */
 class ContainerAwareDocumentNormalizerTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $container;
+    /**
+     * @var ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $container;
 
-	/**
-	 * @var ContainerAwareDocumentNormalizer
-	 */
-	private $normalizer;
+    /**
+     * @var ContainerAwareDocumentNormalizer
+     */
+    private $normalizer;
 
-	protected function setUp()
-	{
-		$this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-		$this->normalizer = new ContainerAwareDocumentNormalizer($this->container, 'the-service-id');
-	}
+    protected function setUp()
+    {
+        $this->container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->normalizer = new ContainerAwareDocumentNormalizer($this->container, 'the-service-id');
+    }
 
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface', $this->normalizer);
-		$this->assertInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface', $this->normalizer);
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface', $this->normalizer);
+        $this->assertInstanceOf('Symfony\Component\Serializer\Normalizer\DenormalizerInterface', $this->normalizer);
+    }
 
-	public function testGetDocumentManager()
-	{
-		$manger = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')->disableOriginalConstructor()->getMock();
-		$this->container->expects($this->once())->method('get')->with($this->identicalTo('the-service-id'))->will($this->returnValue($manger));
+    public function testGetDocumentManager()
+    {
+        $manger = $this->getMockBuilder('Doctrine\ODM\MongoDB\DocumentManager')->disableOriginalConstructor()->getMock();
+        $this->container->expects($this->once())->method('get')->with($this->identicalTo('the-service-id'))->will($this->returnValue($manger));
 
-		$class = new \ReflectionClass($this->normalizer);
+        $class = new \ReflectionClass($this->normalizer);
 
-		$method = $class->getMethod('getDocumentManager');
-		$method->setAccessible(true);
+        $method = $class->getMethod('getDocumentManager');
+        $method->setAccessible(true);
 
-		$this->assertSame($manger, $method->invoke($this->normalizer));
-		$this->assertSame($manger, $method->invoke($this->normalizer));
-	}
+        $this->assertSame($manger, $method->invoke($this->normalizer));
+        $this->assertSame($manger, $method->invoke($this->normalizer));
+    }
 
-	// I don't know what getClassMetadata does if a class can not be found ...
+    // I don't know what getClassMetadata does if a class can not be found ...
 }
- 

@@ -28,7 +28,7 @@ class RepositoryResolverTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->repository = $this->getMock('Integrated\\Common\\Channel\\Connector\\Config\\ConfigRepositoryInterface');
+        $this->repository = $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\ConfigRepositoryInterface');
     }
 
     public function testInterface()
@@ -109,7 +109,7 @@ class RepositoryResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getConfig($name)
     {
-        $mock = $this->getMock('Integrated\\Common\\Channel\\Connector\\Config\\ConfigInterface');
+        $mock = $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\ConfigInterface');
         $mock->expects($this->any())
             ->method('getName')
             ->willReturn($name);
@@ -122,6 +122,6 @@ class RepositoryResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getChannel()
     {
-        return $this->getMock('Integrated\\Common\\Channel\\ChannelInterface');
+        return $this->createMock('Integrated\\Common\\Channel\\ChannelInterface');
     }
 }

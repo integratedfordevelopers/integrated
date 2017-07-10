@@ -22,181 +22,180 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var ChannelManagerInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $manager;
+    /**
+     * @var ChannelManagerInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $manager;
 
-	/**
-	 * @var RequestStack | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $stack;
+    /**
+     * @var RequestStack | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $stack;
 
-	protected function setUp()
-	{
-		$this->manager = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelManagerInterface');
-        $this->stack = $this->getMock('Symfony\\Component\\HttpFoundation\\RequestStack');
-	}
+    protected function setUp()
+    {
+        $this->manager = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelManagerInterface');
+        $this->stack = $this->createMock('Symfony\\Component\\HttpFoundation\\RequestStack');
+    }
 
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Integrated\\Common\\Content\\Channel\\ChannelContextInterface', $this->getInstance());
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Integrated\\Common\\Content\\Channel\\ChannelContextInterface', $this->getInstance());
+    }
 
-	public function testSetChannel()
-	{
-		$request = new Request();
+    public function testSetChannel()
+    {
+        $request = new Request();
 
-		$this->stack->expects($this->any())
-			->method('getCurrentRequest')
-			->willReturn($request);
+        $this->stack->expects($this->any())
+            ->method('getCurrentRequest')
+            ->willReturn($request);
 
-		$channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
-		$channel->expects($this->atLeastOnce())
-			->method('getId')
-			->willReturn('this-is-the-id');
+        $channel = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $channel->expects($this->atLeastOnce())
+            ->method('getId')
+            ->willReturn('this-is-the-id');
 
-		$this->getInstance()->setChannel($channel);
+        $this->getInstance()->setChannel($channel);
 
-		$this->assertTrue($request->attributes->has('_channel'));
-		$this->assertEquals('this-is-the-id', $request->attributes->get('_channel'));
-	}
+        $this->assertTrue($request->attributes->has('_channel'));
+        $this->assertEquals('this-is-the-id', $request->attributes->get('_channel'));
+    }
 
-	public function testSetChannelAttributeKey()
-	{
-		$request = new Request();
+    public function testSetChannelAttributeKey()
+    {
+        $request = new Request();
 
-		$this->stack->expects($this->any())
-			->method('getCurrentRequest')
-			->willReturn($request);
+        $this->stack->expects($this->any())
+            ->method('getCurrentRequest')
+            ->willReturn($request);
 
-		$channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
-		$channel->expects($this->atLeastOnce())
-			->method('getId')
-			->willReturn('this-is-the-id');
+        $channel = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $channel->expects($this->atLeastOnce())
+            ->method('getId')
+            ->willReturn('this-is-the-id');
 
-		$this->getInstance('_the_attribute_key_')->setChannel($channel);
+        $this->getInstance('_the_attribute_key_')->setChannel($channel);
 
-		$this->assertFalse($request->attributes->has('_channel'));
-		$this->assertTrue($request->attributes->has('_the_attribute_key_'));
-		$this->assertEquals('this-is-the-id', $request->attributes->get('_the_attribute_key_'));
-	}
+        $this->assertFalse($request->attributes->has('_channel'));
+        $this->assertTrue($request->attributes->has('_the_attribute_key_'));
+        $this->assertEquals('this-is-the-id', $request->attributes->get('_the_attribute_key_'));
+    }
 
-	public function testSetChannelNoRequest()
-	{
-		$this->stack->expects($this->any())
-			->method('getCurrentRequest')
-			->willReturn(null);
+    public function testSetChannelNoRequest()
+    {
+        $this->stack->expects($this->any())
+            ->method('getCurrentRequest')
+            ->willReturn(null);
 
-		$this->getInstance()->setChannel($this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface')); // should not return a error
-	}
+        $this->getInstance()->setChannel($this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface')); // should not return a error
+    }
 
-	public function testSetChannelNull()
-	{
-		$request = new Request();
-		$request->attributes->set('_channel', 'should-be-removed');
+    public function testSetChannelNull()
+    {
+        $request = new Request();
+        $request->attributes->set('_channel', 'should-be-removed');
 
-		$this->stack->expects($this->any())
-			->method('getCurrentRequest')
-			->willReturn($request);
+        $this->stack->expects($this->any())
+            ->method('getCurrentRequest')
+            ->willReturn($request);
 
-		$this->getInstance()->setChannel();
+        $this->getInstance()->setChannel();
 
-		$this->assertFalse($request->attributes->has('_channel'));
-	}
+        $this->assertFalse($request->attributes->has('_channel'));
+    }
 
-	public function testGetChannel()
-	{
-		$request = new Request();
-		$request->attributes->set('_channel', 'this-is-the-id');
+    public function testGetChannel()
+    {
+        $request = new Request();
+        $request->attributes->set('_channel', 'this-is-the-id');
 
-		$this->stack->expects($this->any())
-			->method('getCurrentRequest')
-			->willReturn($request);
+        $this->stack->expects($this->any())
+            ->method('getCurrentRequest')
+            ->willReturn($request);
 
-		$channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $channel = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
 
-		$this->manager->expects($this->atLeastOnce())
-			->method('find')
-			->with($this->equalTo('this-is-the-id'))
-			->willReturn($channel);
+        $this->manager->expects($this->atLeastOnce())
+            ->method('find')
+            ->with($this->equalTo('this-is-the-id'))
+            ->willReturn($channel);
 
-		$this->assertSame($channel, $this->getInstance()->getChannel());
-	}
+        $this->assertSame($channel, $this->getInstance()->getChannel());
+    }
 
-	public function testGetChannelAttributeKey()
-	{
-		$request = new Request();
-		$request->attributes->set('_the_attribute_key_', 'this-is-the-id');
+    public function testGetChannelAttributeKey()
+    {
+        $request = new Request();
+        $request->attributes->set('_the_attribute_key_', 'this-is-the-id');
 
-		$this->stack->expects($this->any())
-			->method('getCurrentRequest')
-			->willReturn($request);
+        $this->stack->expects($this->any())
+            ->method('getCurrentRequest')
+            ->willReturn($request);
 
-		$channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $channel = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
 
-		$this->manager->expects($this->atLeastOnce())
-			->method('find')
-			->with($this->equalTo('this-is-the-id'))
-			->willReturn($channel);
+        $this->manager->expects($this->atLeastOnce())
+            ->method('find')
+            ->with($this->equalTo('this-is-the-id'))
+            ->willReturn($channel);
 
-		$this->assertSame($channel, $this->getInstance('_the_attribute_key_')->getChannel());
-	}
+        $this->assertSame($channel, $this->getInstance('_the_attribute_key_')->getChannel());
+    }
 
-	public function testGetChannelNoRequest()
-	{
-		$this->stack->expects($this->any())
-			->method('getCurrentRequest')
-			->willReturn(null);
+    public function testGetChannelNoRequest()
+    {
+        $this->stack->expects($this->any())
+            ->method('getCurrentRequest')
+            ->willReturn(null);
 
-		$this->manager->expects($this->never())
-			->method($this->anything());
+        $this->manager->expects($this->never())
+            ->method($this->anything());
 
-		$this->assertNull($this->getInstance()->getChannel());
-	}
+        $this->assertNull($this->getInstance()->getChannel());
+    }
 
-	public function testGetChannelNotSet()
-	{
-		$request = new Request();
+    public function testGetChannelNotSet()
+    {
+        $request = new Request();
 
-		$this->stack->expects($this->any())
-			->method('getCurrentRequest')
-			->willReturn($request);
+        $this->stack->expects($this->any())
+            ->method('getCurrentRequest')
+            ->willReturn($request);
 
-		$this->manager->expects($this->never())
-			->method($this->anything());
+        $this->manager->expects($this->never())
+            ->method($this->anything());
 
-		$this->assertNull($this->getInstance()->getChannel());
-	}
+        $this->assertNull($this->getInstance()->getChannel());
+    }
 
-	public function testGetChannelNotFound()
-	{
-		$request = new Request();
-		$request->attributes->set('_channel', 'this-is-the-id');
+    public function testGetChannelNotFound()
+    {
+        $request = new Request();
+        $request->attributes->set('_channel', 'this-is-the-id');
 
-		$this->stack->expects($this->any())
-			->method('getCurrentRequest')
-			->willReturn($request);
+        $this->stack->expects($this->any())
+            ->method('getCurrentRequest')
+            ->willReturn($request);
 
-		$this->manager->expects($this->atLeastOnce())
-			->method('find')
-			->with($this->equalTo('this-is-the-id'))
-			->willReturn(null);
+        $this->manager->expects($this->atLeastOnce())
+            ->method('find')
+            ->with($this->equalTo('this-is-the-id'))
+            ->willReturn(null);
 
-		$this->assertNull($this->getInstance()->getChannel());
-	}
+        $this->assertNull($this->getInstance()->getChannel());
+    }
 
-	/**
-	 * @param string $attribute
-	 * @return RequestAwareChannelContext
-	 */
-	protected function getInstance($attribute = null)
-	{
-		if (null === $attribute) {
-			return new RequestAwareChannelContext($this->manager, $this->stack);
-		}
+    /**
+     * @param string $attribute
+     * @return RequestAwareChannelContext
+     */
+    protected function getInstance($attribute = null)
+    {
+        if (null === $attribute) {
+            return new RequestAwareChannelContext($this->manager, $this->stack);
+        }
 
-		return new RequestAwareChannelContext($this->manager, $this->stack, $attribute);
-	}
+        return new RequestAwareChannelContext($this->manager, $this->stack, $attribute);
+    }
 }
- 

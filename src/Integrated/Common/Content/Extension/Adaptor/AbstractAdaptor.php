@@ -19,24 +19,24 @@ use Integrated\Common\Content\Extension\DispatcherInterface;
  */
 abstract class AbstractAdaptor implements AdaptorInterface
 {
-	/**
-	 * @var DispatcherInterface | null
-	 */
-	protected $dispatcher = null;
+    /**
+     * @var DispatcherInterface | null
+     */
+    protected $dispatcher = null;
 
-	/**
-	 * @param DispatcherInterface $dispatcher
-	 */
-	public function setDispatcher(DispatcherInterface $dispatcher)
-	{
-		$this->dispatcher = $dispatcher;
-	}
+    /**
+     * @param DispatcherInterface $dispatcher
+     */
+    public function setDispatcher(DispatcherInterface $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+    }
 
-	/**
-	 * @return DispatcherInterface|null
-	 */
-	public function getDispatcher()
-	{
-		return $this->dispatcher;
-	}
-} 
+    /**
+     * @return DispatcherInterface|null
+     */
+    public function getDispatcher()
+    {
+        return $this->dispatcher;
+    }
+}

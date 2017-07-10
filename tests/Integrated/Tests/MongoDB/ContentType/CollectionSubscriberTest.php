@@ -19,79 +19,86 @@ use Doctrine\ODM\MongoDB\Events;
  */
 class CollectionSubscriberTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var CollectionSubscriber
-	 */
-	private $subscriber;
+    /**
+     * @var CollectionSubscriber
+     */
+    private $subscriber;
 
-	protected function setUp()
-	{
-		$this->subscriber = new CollectionSubscriber('stdClass', 'collection');
-	}
+    protected function setUp()
+    {
+        $this->subscriber = new CollectionSubscriber('stdClass', 'collection');
+    }
 
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Doctrine\Common\EventSubscriber', $this->subscriber);
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Doctrine\Common\EventSubscriber', $this->subscriber);
+    }
 
-	public function testGetClass()
-	{
-		$this->assertEquals('stdClass', $this->subscriber->getClass());
-	}
+    public function testGetClass()
+    {
+        $this->assertEquals('stdClass', $this->subscriber->getClass());
+    }
 
-	public function testGetCollection()
-	{
-		$this->assertEquals('collection', $this->subscriber->getCollection());
-	}
+    public function testGetCollection()
+    {
+        $this->assertEquals('collection', $this->subscriber->getCollection());
+    }
 
-	public function testGetSubscribedEvents()
-	{
-		$this->assertEquals(array(Events::loadClassMetadata), $this->subscriber->getSubscribedEvents());
-	}
+    public function testGetSubscribedEvents()
+    {
+        $this->assertEquals(array(Events::loadClassMetadata), $this->subscriber->getSubscribedEvents());
+    }
 
-	public function testloadClassMetadata()
-	{
-		$meta = $this->getMock('Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo', array('setCollection'), array('stdClass'));
-		$meta->expects($this->once())
-			->method('setCollection')
-			->with($this->identicalTo('collection'));
+    public function testloadClassMetadata()
+    {
+        $meta = $this->getMockBuilder('Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo')
+            ->setMethods(['setCollection'])
+            ->setConstructorArgs(['stdClass'])
+            ->getMock();
 
-		$event = $this->getMock('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs', array(), array(), '', false);
-		$event->expects($this->atLeastOnce())
-			->method('getClassMetadata')
-			->will($this->returnValue($meta));
+        $meta->expects($this->once())
+            ->method('setCollection')
+            ->with($this->identicalTo('collection'));
 
-		$this->subscriber->loadClassMetadata($event);
-	}
+        $event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
+        $event->expects($this->atLeastOnce())
+            ->method('getClassMetadata')
+            ->will($this->returnValue($meta));
 
-	public function testloadClassMetadataWithSubclass()
-	{
-		$class = $this->getMockClass('stdClass');
+        $this->subscriber->loadClassMetadata($event);
+    }
 
-		$meta = $this->getMock('Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo', array('setCollection'), array($class));
-		$meta->expects($this->never())
-			->method('setCollection');
+    public function testloadClassMetadataWithSubclass()
+    {
+        $class = $this->getMockClass('stdClass');
 
-		$event = $this->getMock('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs', array(), array(), '', false);
-		$event->expects($this->atLeastOnce())
-			->method('getClassMetadata')
-			->will($this->returnValue($meta));
+        $meta = $this->getMockBuilder('Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo')->setMethods(['setCollection'])->setConstructorArgs([$class])->getMock();
+        $meta->expects($this->never())
+            ->method('setCollection');
 
-		$this->subscriber->loadClassMetadata($event);
-	}
+        $event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
+        $event->expects($this->atLeastOnce())
+            ->method('getClassMetadata')
+            ->will($this->returnValue($meta));
 
-	public function testloadClassMetadataWithInvalidClass()
-	{
-		$meta = $this->getMock('Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo', array('setCollection'), array('ArrayObject'));
-		$meta->expects($this->never())
-			->method('setCollection');
+        $this->subscriber->loadClassMetadata($event);
+    }
 
-		$event = $this->getMock('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs', array(), array(), '', false);
-		$event->expects($this->atLeastOnce())
-			->method('getClassMetadata')
-			->will($this->returnValue($meta));
+    public function testloadClassMetadataWithInvalidClass()
+    {
+        $meta = $this->getMockBuilder('Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo')
+            ->setMethods(['setCollection'])
+            ->setConstructorArgs(['ArrayObject'])
+            ->getMock();
 
-		$this->subscriber->loadClassMetadata($event);
-	}
+        $meta->expects($this->never())
+            ->method('setCollection');
+
+        $event = $this->getMockBuilder('Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs')->disableOriginalConstructor()->getMock();
+        $event->expects($this->atLeastOnce())
+            ->method('getClassMetadata')
+            ->will($this->returnValue($meta));
+
+        $this->subscriber->loadClassMetadata($event);
+    }
 }
- 

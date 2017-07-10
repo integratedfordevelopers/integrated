@@ -26,7 +26,7 @@ class ClassTreeMapResolverTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->locator = $this->getMock('Integrated\\Doctrine\\ODM\\MongoDB\\Mapping\\Locator\\ClassLocatorInterface');
+        $this->locator = $this->createMock('Integrated\\Doctrine\\ODM\\MongoDB\\Mapping\\Locator\\ClassLocatorInterface');
     }
 
     protected function setUpLocator()
@@ -34,14 +34,14 @@ class ClassTreeMapResolverTest extends \PHPUnit_Framework_TestCase
         $this->locator->expects($this->once())
             ->method('getClassNames')
             ->willReturn([
-                'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestClass',
-                'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild4',
-                'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild3',
-                'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild2',
-                'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild1',
-                'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestRoot2',
-                'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestRoot1',
-                'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestBase',
+                Fixtures\TestClass::class,
+                Fixtures\TestChild4::class,
+                Fixtures\TestChild3::class,
+                Fixtures\TestChild2::class,
+                Fixtures\TestChild1::class,
+                Fixtures\TestRoot2::class.
+                Fixtures\TestRoot1::class,
+                Fixtures\TestBase::class
             ]);
     }
 
@@ -50,11 +50,10 @@ class ClassTreeMapResolverTest extends \PHPUnit_Framework_TestCase
         $this->setUpLocator();
 
         $expected = [
-            'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild1' => 'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild1',
-            'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestRoot1'  => 'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestRoot1',
+            Fixtures\TestChild1::class => Fixtures\TestChild1::class
         ];
 
-        self::assertEquals($expected, $this->getInstance()->resolve('Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestRoot1'));
+        self::assertEquals($expected, $this->getInstance()->resolve(Fixtures\TestRoot1::class));
     }
 
     public function testResolveChild()
@@ -62,17 +61,16 @@ class ClassTreeMapResolverTest extends \PHPUnit_Framework_TestCase
         $this->setUpLocator();
 
         $expected = [
-            'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild4' => 'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild4',
-            'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild3' => 'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild3',
-            'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild2' => 'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild2',
-            'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestRoot2'  => 'Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestRoot2',
+            Fixtures\TestChild4::class => Fixtures\TestChild4::class,
+            Fixtures\TestChild3::class => Fixtures\TestChild3::class,
+            Fixtures\TestChild2::class => Fixtures\TestChild2::class,
         ];
 
         $resolver = $this->getInstance();
 
-        self::assertEquals($expected, $resolver->resolve('Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild4'));
-        self::assertEquals($expected, $resolver->resolve('Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild3'));
-        self::assertEquals($expected, $resolver->resolve('Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestChild2'));
+        self::assertEquals($expected, $resolver->resolve(Fixtures\TestChild4::class));
+        self::assertEquals($expected, $resolver->resolve(Fixtures\TestChild3::class));
+        self::assertEquals($expected, $resolver->resolve(Fixtures\TestChild2::class));
     }
 
     public function testResolveNotInRoot()
@@ -82,8 +80,8 @@ class ClassTreeMapResolverTest extends \PHPUnit_Framework_TestCase
 
         $resolver = $this->getInstance();
 
-        self::assertNull($resolver->resolve('Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestBase'));
-        self::assertNull($resolver->resolve('Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestClass'));
+        self::assertNull($resolver->resolve(Fixtures\TestBase::class));
+        self::assertNull($resolver->resolve(Fixtures\TestClass::class));
     }
 
     /**
@@ -91,15 +89,6 @@ class ClassTreeMapResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getInstance()
     {
-        return new ClassTreeMapResolver($this->locator, ['Integrated\\Tests\\Doctrine\\ODM\\MongoDB\\Mapping\\TestRoot1', 'Integrated\\Tests\Doctrine\\ODM\\MongoDB\\Mapping\\TestRoot2']);
+        return new ClassTreeMapResolver($this->locator, [Fixtures\TestRoot1::class, Fixtures\TestRoot2::class]);
     }
 }
-
-class TestBase {}
-class TestRoot1 extends TestBase {}
-class TestRoot2 extends TestBase {}
-class TestChild1 extends TestRoot1 {}
-class TestChild2 extends TestRoot2 {}
-class TestChild3 extends TestRoot2 {}
-class TestChild4 extends TestRoot2 {}
-class TestClass {}

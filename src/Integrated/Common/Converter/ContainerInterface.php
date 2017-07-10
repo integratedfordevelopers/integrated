@@ -17,59 +17,59 @@ namespace Integrated\Common\Converter;
 interface ContainerInterface extends \Countable, \IteratorAggregate
 {
     /**
-   	 * Add the value to the given container key.
-   	 *
-   	 * @param null | string | float | int | bool $value
+     * Add the value to the given container key.
      *
-   	 * @return ContainerInterface
-   	 */
+     * @param null | string | float | int | bool $value
+     *
+     * @return ContainerInterface
+     */
     public function add($key, $value);
 
     /**
-   	 * Set the value for the given container key.
-   	 *
-   	 * @param string $key
-   	 * @param null | string | float | int | bool $value
+     * Set the value for the given container key.
      *
-   	 * @return ContainerInterface
-   	 */
+     * @param string $key
+     * @param null | string | float | int | bool $value
+     *
+     * @return ContainerInterface
+     */
     public function set($key, $value);
 
     /**
-   	 * Remove the value for the given container key.
-   	 *
-   	 * @param $key
-   	 * @return ContainerInterface
-   	 */
+     * Remove the value for the given container key.
+     *
+     * @param $key
+     * @return ContainerInterface
+     */
     public function remove($key);
 
     /**
-   	 * Check if a container key exists.
-   	 *
-   	 * @param $key
-   	 * @return bool
-   	 */
+     * Check if a container key exists.
+     *
+     * @param $key
+     * @return bool
+     */
     public function has($key);
 
     /**
-   	 * Get the value from the given container key.
-   	 *
-   	 * @param $key
-   	 * @return mixed[]
-   	 */
+     * Get the value from the given container key.
+     *
+     * @param $key
+     * @return mixed[]
+     */
     public function get($key);
 
     /**
-   	 * Clear all the container data.
-   	 *
-   	 * @return ContainerInterface
-   	 */
+     * Clear all the container data.
+     *
+     * @return ContainerInterface
+     */
     public function clear();
 
     /**
      * Return the container data as a associative array.
      *
-   	 * @return array
-   	 */
+     * @return array
+     */
     public function toArray();
 }

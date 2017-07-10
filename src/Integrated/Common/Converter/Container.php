@@ -20,9 +20,9 @@ use Integrated\Common\Converter\Exception\UnexpectedTypeException;
 class Container implements ContainerInterface
 {
     /**
-   	 * @var array
-   	 */
-   	protected $data = [];
+     * @var array
+     */
+    protected $data = [];
 
     /**
      * {@inheritdoc}

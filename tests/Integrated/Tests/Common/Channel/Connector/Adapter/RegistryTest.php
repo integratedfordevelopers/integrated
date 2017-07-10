@@ -92,6 +92,6 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     protected function getAdapter()
     {
-        return $this->getMock('Integrated\\Common\\Channel\\Connector\\AdapterInterface');
+        return $this->createMock('Integrated\\Common\\Channel\\Connector\\AdapterInterface');
     }
 }
