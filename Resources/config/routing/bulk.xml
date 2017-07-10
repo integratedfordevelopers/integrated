@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="integrated_content_bulk_select" path="/select/{id}">
+        <default key="_controller">integrated_content.controller.bulk_controller:selectAction</default>
+        <default key="id" />
+    </route>
+
+    <route id="integrated_content_bulk_configure" path="/configure/{id}">
+        <default key="_controller">integrated_content.controller.bulk_controller:configureAction</default>
+    </route>
+
+    <route id="integrated_content_bulk_confirm" path="/confirm/{id}">
+        <default key="_controller">integrated_content.controller.bulk_controller:confirmAction</default>
+    </route>
+
+</routes>

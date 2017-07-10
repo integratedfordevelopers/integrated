@@ -4,20 +4,20 @@
 
 /* STYLES */
 #wrapper-holder {
-    padding-bottom: 120px;
+  padding-bottom: 120px;
 }
 
 label.is-primary-channel {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .select2-dropdown-image {
-    max-height: 40px;
-    margin-right: 5px;
+  max-height: 40px;
+  margin-right: 5px;
 }
 
 .select2-selection__choice {
-    max-width: 100%;
+  max-width: 100%;
 }
 
 .select2-selected {
@@ -30,17 +30,35 @@ label.is-primary-channel {
     max-height: 40px;
   }
 }
+
 .button-submitted {
-    cursor: not-allowed;
-    opacity: 0.65;
+  cursor: not-allowed;
+  opacity: 0.65;
 }
+
 .button-submitted .glyphicon-refresh {
-    margin-right: 10px;
-    -webkit-animation:spin 3s linear infinite;
-    -moz-animation:spin 3s linear infinite;
-    animation:spin 3s linear infinite;
+  margin-right: 10px;
+  -webkit-animation: spin 3s linear infinite;
+  -moz-animation: spin 3s linear infinite;
+  animation: spin 3s linear infinite;
 }
 
 .add-relation {
-    position: relative;
+  position: relative;
+}
+
+.section-margin {
+  margin-bottom: 20px !important;
+}
+
+.bulk-readonly {
+  position: relative;
+}
+
+.bulk-readonly-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }

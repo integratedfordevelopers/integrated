@@ -22,6 +22,17 @@
                 </li>
 
                 {{ render(controller('IntegratedContentBundle:SearchSelection:menu')) }}
+
+                <li class="dropdown">
+                    <a href data-toggle="dropdown" role="button">{% trans %}Tools{% endtrans %} <b class="caret"></b></a>
+
+                    <ul role="menu" class="dropdown-menu">
+                        <li role="presentation">
+                            <a href="{{ path('integrated_content_bulk_select', app.request.query.all) }}" tabindex="-1" role="menuitem">{% trans %}Bulk change this selection{% endtrans %}</a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
             <section class="section-white section-padding section-shadow section-radius">
                 <ul class="list-unstyled list-content">
