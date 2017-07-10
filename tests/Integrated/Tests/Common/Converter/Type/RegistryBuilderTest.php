@@ -28,7 +28,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->factory = $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeFactoryInterface');
+        $this->factory = $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeFactoryInterface');
     }
 
     public function testInterface()
@@ -43,7 +43,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getInstance();
         $builder->addType($type);
 
-        $resolved = $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
+        $resolved = $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
 
         $this->factory->expects($this->once())
             ->method('createType')
@@ -62,7 +62,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getInstance();
         $builder->addTypes([$type1, $type2, $type3]);
 
-        $resolved = $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
+        $resolved = $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
 
         $this->factory->expects($this->exactly(2))
             ->method('createType')
@@ -87,7 +87,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addTypeExtension($extension);
         $builder->addType($type);
 
-        $resolved = $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
+        $resolved = $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
 
         $this->factory->expects($this->once())
             ->method('createType')
@@ -117,7 +117,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addTypeExtensions([$extension1, $extension2]);
         $builder->addType($type);
 
-        $resolved = $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
+        $resolved = $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
 
         $this->factory->expects($this->once())
             ->method('createType')
@@ -155,7 +155,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType($name)
     {
-        $mock = $this->getMock('Integrated\\Common\\Converter\\Type\\TypeInterface');
+        $mock = $this->createMock('Integrated\\Common\\Converter\\Type\\TypeInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getName')
             ->willReturn($name);
@@ -169,7 +169,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getTypeExtension($name)
     {
-        $mock = $this->getMock('Integrated\\Common\\Converter\\Type\\TypeExtensionInterface');
+        $mock = $this->createMock('Integrated\\Common\\Converter\\Type\\TypeExtensionInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getName')
             ->willReturn($name);

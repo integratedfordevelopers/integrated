@@ -114,7 +114,7 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getConfig($name)
     {
-        $mock = $this->getMock('Integrated\\Common\\Channel\\Connector\\Config\\ConfigInterface');
+        $mock = $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\ConfigInterface');
         $mock->expects($this->any())
             ->method('getName')
             ->willReturn($name);
@@ -128,7 +128,7 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getChannel($id)
     {
-        $mock = $this->getMock('Integrated\\Common\\Channel\\ChannelInterface');
+        $mock = $this->createMock('Integrated\\Common\\Channel\\ChannelInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getId')
             ->willReturn($id);

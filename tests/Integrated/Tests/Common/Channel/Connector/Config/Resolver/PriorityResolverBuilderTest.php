@@ -102,6 +102,6 @@ class PriorityResolverBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getResolver()
     {
-        return $this->getMock('Integrated\\Common\\Channel\\Connector\\Config\\ResolverInterface');
+        return $this->createMock('Integrated\\Common\\Channel\\Connector\\Config\\ResolverInterface');
     }
 }

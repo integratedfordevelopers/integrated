@@ -34,7 +34,7 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->serializer = $this->getMock(SerializerInterface::class);
+        $this->serializer = $this->createMock(SerializerInterface::class);
     }
 
     public function testInterface()
@@ -152,6 +152,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContent()
     {
-        return $this->getMock(ContentInterface::class);
+        return $this->createMock(ContentInterface::class);
     }
 }

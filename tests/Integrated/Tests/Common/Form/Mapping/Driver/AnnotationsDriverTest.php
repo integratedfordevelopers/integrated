@@ -37,7 +37,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         // Mock Reader
-        $this->reader = $this->getMock('Doctrine\Common\Annotations\Reader');
+        $this->reader = $this->createMock('Doctrine\Common\Annotations\Reader');
 
         // Create Driver
         //$this->driver = new AnnotationDriver($this->reader);

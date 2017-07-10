@@ -41,17 +41,17 @@ class ContentTypeQueueTaskHandlerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = $this->getMock(ContentTypeProviderInterface::class);
-        $this->queue = $this->getMock(QueueInterface::class);
+        $this->provider = $this->createMock(ContentTypeProviderInterface::class);
+        $this->queue = $this->createMock(QueueInterface::class);
         $this->factory = $this->getMockBuilder(JobFactory::class)->disableOriginalConstructor()->getMock();
     }
 
     public function testInvoke()
     {
-        $content1 = $this->getMock(ContentInterface::class);
-        $content2 = $this->getMock(ContentInterface::class);
+        $content1 = $this->createMock(ContentInterface::class);
+        $content2 = $this->createMock(ContentInterface::class);
         $content3 = new stdClass();
-        $content4 = $this->getMock(ContentInterface::class);
+        $content4 = $this->createMock(ContentInterface::class);
 
         $this->provider->expects($this->once())
             ->method('getContent')
@@ -132,6 +132,6 @@ class ContentTypeQueueTaskHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContent()
     {
-        return $this->getMock(ContentInterface::class);
+        return $this->createMock(ContentInterface::class);
     }
 }

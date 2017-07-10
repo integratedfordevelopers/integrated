@@ -23,10 +23,10 @@ class RegistryBuilderPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
-        $service1 = $this->getMock(Definition::class);
-        $service2 = $this->getMock(Definition::class);
+        $service1 = $this->createMock(Definition::class);
+        $service2 = $this->createMock(Definition::class);
 
-        $definition = $this->getMock(Definition::class);
+        $definition = $this->createMock(Definition::class);
         $definition->expects($this->exactly(3))
             ->method('addMethodCall')
             ->withConsecutive(
@@ -84,6 +84,6 @@ class RegistryBuilderPassTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContainer()
     {
-        return $this->getMock(ContainerBuilder::class);
+        return $this->createMock(ContainerBuilder::class);
     }
 }

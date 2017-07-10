@@ -28,7 +28,7 @@ class MessageEventTest extends AbstractEventTest
     {
         parent::setUp();
 
-        $this->message = $this->getMock(QueueMessageInterface::class);
+        $this->message = $this->createMock(QueueMessageInterface::class);
     }
 
     public function testGetMessage()

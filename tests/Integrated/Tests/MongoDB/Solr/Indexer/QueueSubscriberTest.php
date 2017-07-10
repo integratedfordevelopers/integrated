@@ -43,8 +43,8 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->queue = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
-        $this->serializer = $this->getMock('Symfony\\Component\\Serializer\\SerializerInterface');
+        $this->queue = $this->createMock('Integrated\\Common\\Queue\\QueueInterface');
+        $this->serializer = $this->createMock('Symfony\\Component\\Serializer\\SerializerInterface');
 
         $this->subscriber = new QueueSubscriber($this->queue, $this->serializer);
     }
@@ -60,7 +60,7 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($this->queue, $this->subscriber->getQueue());
 
-        $mock = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
+        $mock = $this->createMock('Integrated\\Common\\Queue\\QueueInterface');
         $this->subscriber->setQueue($mock);
 
         $this->assertSame($mock, $this->subscriber->getQueue());
@@ -70,7 +70,7 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame($this->serializer, $this->subscriber->getSerializer());
 
-        $mock = $this->getMock('Symfony\\Component\\Serializer\\SerializerInterface');
+        $mock = $this->createMock('Symfony\\Component\\Serializer\\SerializerInterface');
         $this->subscriber->setSerializer($mock);
 
         $this->assertSame($mock, $this->subscriber->getSerializer());
@@ -193,7 +193,7 @@ class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected function getDocument($id, $type)
     {
-        $mock = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $mock = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getId')
             ->willReturn($id);

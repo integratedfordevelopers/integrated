@@ -35,7 +35,7 @@ class ContentTypeFactoryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         // Mock Driver\DriverInterface
-        $this->driver = $this->getMock('Integrated\Common\Form\Mapping\DriverInterface');
+        $this->driver = $this->createMock('Integrated\Common\Form\Mapping\DriverInterface');
 
         // Create ContentTypeFactory
         $this->factory = new MetadataFactory($this->driver);

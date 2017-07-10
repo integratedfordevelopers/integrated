@@ -28,7 +28,7 @@ class ErrorEventTest extends MessageEventTest
     {
         parent::setUp();
 
-        $this->exception = $this->getMock(ExceptionInterface::class);
+        $this->exception = $this->createMock(ExceptionInterface::class);
     }
 
     public function testGetException()

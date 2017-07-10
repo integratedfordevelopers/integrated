@@ -25,7 +25,7 @@ class ChannelContextTest extends \PHPUnit_Framework_TestCase
 
     public function testSetGetChannel()
     {
-        $channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $channel = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
         $instance = $this->getInstance();
 
         $this->assertNull($instance->getChannel());

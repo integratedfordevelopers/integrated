@@ -31,7 +31,7 @@ class QueueFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = $this->getMock('Integrated\Common\Queue\Provider\QueueProviderInterface');
+        $this->provider = $this->createMock('Integrated\Common\Queue\Provider\QueueProviderInterface');
         $this->factory = new QueueFactory($this->provider);
     }
 

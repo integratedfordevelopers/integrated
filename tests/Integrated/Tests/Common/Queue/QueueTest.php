@@ -31,7 +31,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = $this->getMock('Integrated\Common\Queue\Provider\QueueProviderInterface');
+        $this->provider = $this->createMock('Integrated\Common\Queue\Provider\QueueProviderInterface');
         $this->queue = new Queue($this->provider, 'channel');
     }
 
@@ -92,7 +92,7 @@ class QueueTest extends \PHPUnit_Framework_TestCase
 
     public function testPull()
     {
-        $message = $this->getMock('Integrated\Common\Queue\QueueMessageInterface');
+        $message = $this->createMock('Integrated\Common\Queue\QueueMessageInterface');
 
         $this->provider->expects($this->once())
             ->method('pull')
@@ -104,8 +104,8 @@ class QueueTest extends \PHPUnit_Framework_TestCase
 
     public function testPullWithLimit()
     {
-        $message1 = $this->getMock('Integrated\Common\Queue\QueueMessageInterface');
-        $message2 = $this->getMock('Integrated\Common\Queue\QueueMessageInterface');
+        $message1 = $this->createMock('Integrated\Common\Queue\QueueMessageInterface');
+        $message2 = $this->createMock('Integrated\Common\Queue\QueueMessageInterface');
 
         $this->provider->expects($this->once())
             ->method('pull')

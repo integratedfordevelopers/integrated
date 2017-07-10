@@ -91,10 +91,10 @@ class Indexer extends Configurable implements IndexerInterface
             'batch.size' => 100,
         ]);
 
-        $resolver->setAllowedTypes([
-            'queue.size' => 'integer',
-            'batch.size' => 'integer',
-        ]);
+        $resolver
+            ->setAllowedTypes('queue.size', 'integer')
+            ->setAllowedTypes('batch.size', 'integer')
+        ;
     }
 
     /**

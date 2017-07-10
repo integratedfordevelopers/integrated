@@ -82,6 +82,6 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType()
     {
-        return $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
+        return $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
     }
 }

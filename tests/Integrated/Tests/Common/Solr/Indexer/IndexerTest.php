@@ -73,11 +73,11 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->factory = $this->getMock(CommandFactoryInterface::class);
-//        $this->batch = $this->getMock(Batch::class);
+        $this->factory = $this->createMock(CommandFactoryInterface::class);
+//        $this->batch = $this->createMock(Batch::class);
         $this->batch = new Batch();
-        $this->queue = $this->getMock(QueueInterface::class);
-        $this->client = $this->getMock(Client::class);
+        $this->queue = $this->createMock(QueueInterface::class);
+        $this->client = $this->createMock(Client::class);
         $this->dispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->disableArgumentCloning()->getMock();
     }
 
@@ -120,7 +120,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
         self::assertInstanceOf(QueueInterface::class, $instance->getQueue());
 
-        $this->queue = $this->getMock(QueueInterface::class);
+        $this->queue = $this->createMock(QueueInterface::class);
 
         $instance->setQueue($this->queue);
 
@@ -136,7 +136,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
         self::assertNull($instance->getClient());
 
-        $this->client = $this->getMock(Client::class);
+        $this->client = $this->createMock(Client::class);
 
         $instance->setClient($this->client);
 
@@ -152,7 +152,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
         self::assertInstanceOf(EventDispatcherInterface::class, $instance->getEventDispatcher());
 
-        $this->dispatcher = $this->getMock(EventDispatcherInterface::class);
+        $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $instance->setEventDispatcher($this->dispatcher);
 
@@ -301,7 +301,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $this->client->expects($this->never())
             ->method($this->anything());
 
-        $client = $this->getMock(Client::class);
+        $client = $this->createMock(Client::class);
         $client->expects($this->once())
             ->method('createUpdate')
             ->willReturn($query);
@@ -959,7 +959,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getJob()
     {
-        return $this->getMock(JobInterface::class);
+        return $this->createMock(JobInterface::class);
     }
 
     /**
@@ -967,7 +967,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getCommand()
     {
-        return $this->getMock(AbstractCommand::class);
+        return $this->createMock(AbstractCommand::class);
     }
 
     /**
@@ -978,7 +978,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMessage($payload, $delete = true)
     {
-        $mock = $this->getMock(QueueMessageInterface::class);
+        $mock = $this->createMock(QueueMessageInterface::class);
         $mock->expects($this->any())
             ->method('getPayload')
             ->willReturn($payload);
@@ -994,7 +994,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getQuery()
     {
-        return $this->getMock(Query::class);
+        return $this->createMock(Query::class);
     }
 
     /**
@@ -1002,6 +1002,6 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getQueryResult()
     {
-        return $this->getMock(ResultInterface::class);
+        return $this->createMock(ResultInterface::class);
     }
 }

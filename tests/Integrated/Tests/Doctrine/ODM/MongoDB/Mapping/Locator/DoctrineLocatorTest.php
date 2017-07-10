@@ -27,7 +27,7 @@ class DoctrineLocatorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->driver = $this->getMock('Doctrine\\Common\\Persistence\\Mapping\\Driver\\MappingDriver');
+        $this->driver = $this->createMock('Doctrine\\Common\\Persistence\\Mapping\\Driver\\MappingDriver');
     }
 
     public function testInterface()

@@ -34,8 +34,8 @@ class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->manager = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelManagerInterface');
-        $this->stack = $this->getMock('Symfony\\Component\\HttpFoundation\\RequestStack');
+        $this->manager = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelManagerInterface');
+        $this->stack = $this->createMock('Symfony\\Component\\HttpFoundation\\RequestStack');
     }
 
     public function testInterface()
@@ -51,7 +51,7 @@ class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
             ->method('getCurrentRequest')
             ->willReturn($request);
 
-        $channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $channel = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
         $channel->expects($this->atLeastOnce())
             ->method('getId')
             ->willReturn('this-is-the-id');
@@ -70,7 +70,7 @@ class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
             ->method('getCurrentRequest')
             ->willReturn($request);
 
-        $channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $channel = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
         $channel->expects($this->atLeastOnce())
             ->method('getId')
             ->willReturn('this-is-the-id');
@@ -88,7 +88,7 @@ class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
             ->method('getCurrentRequest')
             ->willReturn(null);
 
-        $this->getInstance()->setChannel($this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface')); // should not return a error
+        $this->getInstance()->setChannel($this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface')); // should not return a error
     }
 
     public function testSetChannelNull()
@@ -114,7 +114,7 @@ class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
             ->method('getCurrentRequest')
             ->willReturn($request);
 
-        $channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $channel = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
 
         $this->manager->expects($this->atLeastOnce())
             ->method('find')
@@ -133,7 +133,7 @@ class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
             ->method('getCurrentRequest')
             ->willReturn($request);
 
-        $channel = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $channel = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
 
         $this->manager->expects($this->atLeastOnce())
             ->method('find')

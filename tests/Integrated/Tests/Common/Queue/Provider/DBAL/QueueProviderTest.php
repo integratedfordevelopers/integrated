@@ -41,7 +41,7 @@ class QueueProviderTest extends \PHPUnit_Framework_TestCase
             'queue_table_name' => 'queue'
         );
 
-        $this->connection = $this->getMock('Doctrine\DBAL\Connection', array(), array(), '', false);
+        $this->connection = $this->createMock('Doctrine\DBAL\Connection', array(), array(), '', false);
         $this->provider = new QueueProvider($this->connection, $options);
     }
 

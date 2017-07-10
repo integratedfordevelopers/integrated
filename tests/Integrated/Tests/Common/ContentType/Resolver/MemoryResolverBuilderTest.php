@@ -64,7 +64,7 @@ class MemoryResolverBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType($name)
     {
-        $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        $mock = $this->createMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getId')
             ->willReturn($name);

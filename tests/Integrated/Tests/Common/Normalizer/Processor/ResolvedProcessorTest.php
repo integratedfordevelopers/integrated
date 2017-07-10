@@ -39,7 +39,7 @@ class ResolvedProcessorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->factory = $this->getMock(ContainerFactoryInterface::class);
+        $this->factory = $this->createMock(ContainerFactoryInterface::class);
     }
 
     public function testInterface()
@@ -57,9 +57,9 @@ class ResolvedProcessorTest extends \PHPUnit_Framework_TestCase
             ->method('createContainer')
             ->willReturn($container);
 
-        $this->processors[] = $this->getMock(ProcessorInterface::class);
-        $this->processors[] = $this->getMock(ProcessorInterface::class);
-        $this->processors[] = $this->getMock(ProcessorInterface::class);
+        $this->processors[] = $this->createMock(ProcessorInterface::class);
+        $this->processors[] = $this->createMock(ProcessorInterface::class);
+        $this->processors[] = $this->createMock(ProcessorInterface::class);
 
         foreach ($this->processors as $processor) {
             $processor->expects($this->once())
@@ -92,8 +92,8 @@ class ResolvedProcessorTest extends \PHPUnit_Framework_TestCase
             ->method('createContainer')
             ->willReturn($this->getContainer());
 
-        $this->processors[] = $this->getMock(ProcessorInterface::class);
-        $this->processors[] = $this->getMock(ProcessorInterface::class);
+        $this->processors[] = $this->createMock(ProcessorInterface::class);
+        $this->processors[] = $this->createMock(ProcessorInterface::class);
 
         $this->processors[0]->expects($this->any())
             ->method('process')
@@ -119,7 +119,7 @@ class ResolvedProcessorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContainer()
     {
-        return $this->getMock(ContainerInterface::class);
+        return $this->createMock(ContainerInterface::class);
     }
 
     /**

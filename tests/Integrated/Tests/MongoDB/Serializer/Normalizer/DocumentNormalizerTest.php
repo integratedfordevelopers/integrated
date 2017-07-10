@@ -55,7 +55,7 @@ class DocumentNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $object = new \stdClass();
 
-        $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
         $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->will($this->returnValue($object));
 
         $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->will($this->returnValue($repository));
@@ -65,7 +65,7 @@ class DocumentNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testDenormalizeNotFound()
     {
-        $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
         $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->will($this->returnValue(null));
 
         $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->will($this->returnValue($repository));
@@ -75,7 +75,7 @@ class DocumentNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testDenormalizeError()
     {
-        $repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
+        $repository = $this->createMock('Doctrine\Common\Persistence\ObjectRepository');
         $repository->expects($this->once())->method('find')->with($this->identicalTo(['id' => 'data']))->will($this->throwException(new \Exception()));
 
         $this->manger->expects($this->once())->method('getRepository')->with($this->identicalTo('class'))->will($this->returnValue($repository));

@@ -46,7 +46,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->registry = $this->getMockBuilder(Registry::class)->disableOriginalConstructor()->getMock();
-        $this->queue = $this->getMock(QueueInterface::class);
+        $this->queue = $this->createMock(QueueInterface::class);
         $this->dispatcher = $this->getMockBuilder(EventDispatcherInterface::class)->disableArgumentCloning()->getMock();
     }
 
@@ -69,7 +69,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
 
         self::assertInstanceOf(EventDispatcherInterface::class, $instance->getEventDispatcher());
 
-        $this->dispatcher = $this->getMock(EventDispatcherInterface::class);
+        $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
 
         $instance->setEventDispatcher($this->dispatcher);
 
@@ -245,7 +245,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMessage($task)
     {
-        $mock = $this->getMock(QueueMessageInterface::class);
+        $mock = $this->createMock(QueueMessageInterface::class);
 
         $mock->expects($this->any())
             ->method('getPayload')

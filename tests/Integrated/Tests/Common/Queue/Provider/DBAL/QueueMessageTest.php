@@ -88,11 +88,11 @@ class QueueMessageTest extends \PHPUnit_Framework_TestCase
 
     public function testRelease()
     {
-        $delete = $this->getMock('stdClass', array('callback'));
+        $delete = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
         $delete->expects($this->never())
             ->method('callback');
 
-        $release = $this->getMock('stdClass', array('callback'));
+        $release = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
         $release->expects($this->once())
             ->method('callback')
             ->with($this->identicalTo(0));
@@ -111,7 +111,7 @@ class QueueMessageTest extends \PHPUnit_Framework_TestCase
 
     public function testReleaseWithDelay()
     {
-        $release = $this->getMock('stdClass', array('callback'));
+        $release = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
         $release->expects($this->once())
             ->method('callback')
             ->with($this->identicalTo(42));
@@ -125,11 +125,11 @@ class QueueMessageTest extends \PHPUnit_Framework_TestCase
 
     public function testDelete()
     {
-        $delete = $this->getMock('stdClass', array('callback'));
+        $delete = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
         $delete->expects($this->once())
             ->method('callback');
 
-        $release = $this->getMock('stdClass', array('callback'));
+        $release = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
         $release->expects($this->never())
             ->method('callback');
 

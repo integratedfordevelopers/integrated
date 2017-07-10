@@ -31,7 +31,7 @@ class ContainerAwareDocumentNormalizerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
+        $this->container = $this->createMock('Symfony\Component\DependencyInjection\ContainerInterface');
         $this->normalizer = new ContainerAwareDocumentNormalizer($this->container, 'the-service-id');
     }
 

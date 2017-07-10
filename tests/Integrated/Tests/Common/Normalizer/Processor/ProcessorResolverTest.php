@@ -38,8 +38,8 @@ class ProcessorResolverTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->registry = $this->getMock(RegistryInterface::class);
-        $this->factory = $this->getMock(ResolvedProcessorFactoryInterface::class);
+        $this->registry = $this->createMock(RegistryInterface::class);
+        $this->factory = $this->createMock(ResolvedProcessorFactoryInterface::class);
     }
 
     public function testInterface()
@@ -139,7 +139,7 @@ class ProcessorResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProcessor()
     {
-        return $this->getMock(ProcessorInterface::class);
+        return $this->createMock(ProcessorInterface::class);
     }
 
     /**
@@ -147,6 +147,6 @@ class ProcessorResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getResolvedProcessor()
     {
-        return $this->getMock(ResolvedProcessorInterface::class);
+        return $this->createMock(ResolvedProcessorInterface::class);
     }
 }

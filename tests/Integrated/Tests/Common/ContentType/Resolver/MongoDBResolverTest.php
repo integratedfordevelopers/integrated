@@ -143,7 +143,7 @@ class MongoDBResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType($name = null)
     {
-        $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        $mock = $this->createMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
 
         if ($name !== null) {
             $mock->expects($this->atLeastOnce())

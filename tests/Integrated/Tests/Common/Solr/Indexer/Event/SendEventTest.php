@@ -28,7 +28,7 @@ class SendEventTest extends AbstractEventTest
     {
         parent::setUp();
 
-        $this->query = $this->getMock(Query::class);
+        $this->query = $this->createMock(Query::class);
     }
 
     public function testGetQuery()

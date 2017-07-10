@@ -29,7 +29,7 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->provider = $this->getMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface');
+        $this->provider = $this->createMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface');
     }
 
     public function testInterface()
@@ -147,6 +147,6 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType()
     {
-        return $this->getMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface');
+        return $this->createMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface');
     }
 }
