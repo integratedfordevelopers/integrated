@@ -162,7 +162,7 @@ class ParentAwareConfigIteratorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType()
     {
-        return $this->getMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface');
+        return $this->createMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface');
     }
 
     /**
@@ -173,7 +173,7 @@ class ParentAwareConfigIteratorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getConfig(array $types = [], ConfigInterface $parent = null)
     {
-        $mock = $this->getMock('Integrated\\Common\\Converter\\Config\\ConfigInterface');
+        $mock = $this->createMock('Integrated\\Common\\Converter\\Config\\ConfigInterface');
         $mock->expects($this->once())
             ->method('getParent')
             ->willReturn($parent);

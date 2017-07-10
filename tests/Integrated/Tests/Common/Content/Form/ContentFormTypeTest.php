@@ -69,9 +69,9 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->type = $this->getMock(ContentTypeInterface::class);
-        $this->metadataFactory = $this->getMock(MetadataFactoryInterface::class);
-        $this->metadata = $this->getMock(MetadataInterface::class);
+        $this->type = $this->createMock(ContentTypeInterface::class);
+        $this->metadataFactory = $this->createMock(MetadataFactoryInterface::class);
+        $this->metadata = $this->createMock(MetadataInterface::class);
 
         $this->metadataFactory
             ->expects($this->any())
@@ -79,8 +79,8 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
             ->willReturn($this->metadata)
         ;
 
-        $this->resolver = $this->getMock(ResolverInterface::class);
-        $this->dispatcher = $this->getMock(EventDispatcherInterface::class);
+        $this->resolver = $this->createMock(ResolverInterface::class);
+        $this->dispatcher = $this->createMock(EventDispatcherInterface::class);
     }
 
     public function testInterface()
@@ -504,7 +504,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getBuilder()
     {
-        return $this->getMock('Symfony\\Component\\Form\\FormBuilderInterface');
+        return $this->createMock('Symfony\\Component\\Form\\FormBuilderInterface');
     }
 
     /**
@@ -512,7 +512,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getView()
     {
-        return $this->getMock('Symfony\\Component\\Form\\FormView');
+        return $this->createMock('Symfony\\Component\\Form\\FormView');
     }
 
     /**
@@ -520,7 +520,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getForm()
     {
-        return $this->getMock('Symfony\\Component\\Form\\FormInterface');
+        return $this->createMock('Symfony\\Component\\Form\\FormInterface');
     }
 
     /**
@@ -528,7 +528,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getResolver()
     {
-        return $this->getMock('Symfony\\Component\\OptionsResolver\\OptionsResolver');
+        return $this->createMock('Symfony\\Component\\OptionsResolver\\OptionsResolver');
     }
 
     /**
@@ -540,7 +540,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getAttribute($name, $type, array $options = [])
     {
-        $mock = $this->getMock('Integrated\\Common\\Form\\Mapping\\AttributeInterface');
+        $mock = $this->createMock('Integrated\\Common\\Form\\Mapping\\AttributeInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getName')
             ->willReturn($name);
@@ -564,7 +564,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getField($name, array $options = [])
     {
-        $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeFieldInterface');
+        $mock = $this->createMock('Integrated\\Common\\ContentType\\ContentTypeFieldInterface');
         $mock->expects($this->any())
             ->method('getName')
             ->willReturn($name);

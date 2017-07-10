@@ -13,9 +13,7 @@ namespace Integrated\Tests\Common\ContentType\Resolver;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Resolver\MongoDBIterator;
 use Integrated\Common\ContentType\Resolver\MongoDBResolver;
-
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -145,7 +143,7 @@ class MongoDBResolverTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType($name = null)
     {
-        $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        $mock = $this->createMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
 
         if ($name !== null) {
             $mock->expects($this->atLeastOnce())

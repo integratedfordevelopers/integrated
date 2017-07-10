@@ -112,11 +112,11 @@ class ChainProviderTest extends \PHPUnit_Framework_TestCase
         $provider->addProvider($providers[2]);
 
         $types = [
-            $this->getMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
-            $this->getMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
-            $this->getMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
-            $this->getMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
-            $this->getMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
+            $this->createMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
+            $this->createMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
+            $this->createMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
+            $this->createMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
+            $this->createMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface'),
         ];
 
         $providers[0]->expects($this->once())
@@ -150,6 +150,6 @@ class ChainProviderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProvider()
     {
-        return $this->getMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface');
+        return $this->createMock('Integrated\\Common\\Converter\\Config\\TypeProviderInterface');
     }
 }

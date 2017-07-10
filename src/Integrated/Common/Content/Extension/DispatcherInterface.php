@@ -18,12 +18,12 @@ use Symfony\Component\EventDispatcher\Event;
  */
 interface DispatcherInterface
 {
-	/**
-	 * Only ContentInterface objects will be processed by the dispatch function.
-	 *
-	 * @param string $event
-	 * @param object $object
-	 * @return Event
-	 */
-	public function dispatch($event, $object);
+    /**
+     * Only ContentInterface objects will be processed by the dispatch function.
+     *
+     * @param string $event
+     * @param object $object
+     * @return Event
+     */
+    public function dispatch($event, $object);
 }

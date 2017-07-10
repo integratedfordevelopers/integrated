@@ -31,7 +31,7 @@ class JsonLDNormalizerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->normalizer = $this->getMock(NormalizerInterface::class);
+        $this->normalizer = $this->createMock(NormalizerInterface::class);
     }
 
     public function testInterface()
@@ -56,25 +56,25 @@ class JsonLDNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                $this->getMock(ContentInterface::class),
+                $this->createMock(ContentInterface::class),
                 [],
                 ['array1'],
                 ['@context' => 'http://schema.org', 'array1']
             ],
             [
-                $this->getMock(ContentInterface::class),
+                $this->createMock(ContentInterface::class),
                 ['key' => 'value'],
                 ['array2'],
                 ['@context' => 'http://schema.org', 'array2']
             ],
             [
-                $this->getMock(ContentInterface::class),
+                $this->createMock(ContentInterface::class),
                 [],
                 ['array3', '@context' => 'http://example.org'],
                 ['@context' => 'http://example.org', 'array3']
             ],
             [
-                $this->getMock(ContentInterface::class),
+                $this->createMock(ContentInterface::class),
                 ['key' => 'value'],
                 [],
                 null
@@ -86,7 +86,7 @@ class JsonLDNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $normalizer = $this->getInstance();
 
-        $object = $this->getMock(ContentInterface::class);
+        $object = $this->createMock(ContentInterface::class);
 
         self::assertTrue($normalizer->supportsNormalization($object, 'json-ld'));
         self::assertFalse($normalizer->supportsNormalization($object, 'json'));

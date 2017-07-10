@@ -16,15 +16,15 @@ namespace Integrated\Common\Solr\Converter;
  */
 interface ConverterSpecificationResolverInterface
 {
-	/**
-	 * @param $class
-	 * @return bool
-	 */
-	public function hasSpecification($class);
+    /**
+     * @param $class
+     * @return bool
+     */
+    public function hasSpecification($class);
 
-	/**
-	 * @param $class
-	 * @return ConverterSpecificationInterface
-	 */
-	public function getSpecification($class);
-} 
+    /**
+     * @param $class
+     * @return ConverterSpecificationInterface
+     */
+    public function getSpecification($class);
+}

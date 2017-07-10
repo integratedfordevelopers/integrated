@@ -44,8 +44,8 @@ class RequestSerializerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->serializer = $this->getMock('Symfony\\Component\\Serializer\\SerializerInterface');
-        $this->manager = $this->getMock('Integrated\\Common\\Channel\\ChannelManagerInterface');
+        $this->serializer = $this->createMock('Symfony\\Component\\Serializer\\SerializerInterface');
+        $this->manager = $this->createMock('Integrated\\Common\\Channel\\ChannelManagerInterface');
     }
 
     public function testInterface()
@@ -161,7 +161,7 @@ class RequestSerializerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getChannel($id)
     {
-        $mock = $this->getMock('Integrated\\Common\\Channel\\ChannelInterface');
+        $mock = $this->createMock('Integrated\\Common\\Channel\\ChannelInterface');
         $mock->expects($this->any())
             ->method('getId')
             ->willReturn($id);

@@ -40,8 +40,8 @@ class ViewEventTest extends FormEventTest
     {
         parent::setUp();
 
-        $this->view = $this->getMock(FormView::class);
-        $this->form = $this->getMock(FormInterface::class);
+        $this->view = $this->createMock(FormView::class);
+        $this->form = $this->createMock(FormInterface::class);
     }
 
     public function testGetView()

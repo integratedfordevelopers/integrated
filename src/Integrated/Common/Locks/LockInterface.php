@@ -28,31 +28,31 @@ interface LockInterface
 //	 */
 //	public function refresh();
 
-	/**
-	 * Get the lock identifier
-	 *
-	 * @return string
-	 */
-	public function getId();
+    /**
+     * Get the lock identifier
+     *
+     * @return string
+     */
+    public function getId();
 
-	/**
-	 * Get the lock request
-	 *
-	 * @return RequestInterface
-	 */
-	public function getRequest();
+    /**
+     * Get the lock request
+     *
+     * @return RequestInterface
+     */
+    public function getRequest();
 
-	/**
-	 * Get the created time
-	 *
-	 * @return Datetime
-	 */
-	public function getCreated();
+    /**
+     * Get the created time
+     *
+     * @return Datetime
+     */
+    public function getCreated();
 
-	/**
-	 * Get the expire time
-	 *
-	 * @return Datetime
-	 */
-	public function getExpires();
+    /**
+     * Get the expire time
+     *
+     * @return Datetime
+     */
+    public function getExpires();
 }

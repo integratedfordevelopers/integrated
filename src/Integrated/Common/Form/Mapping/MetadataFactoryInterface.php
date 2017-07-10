@@ -16,14 +16,14 @@ namespace Integrated\Common\Form\Mapping;
  */
 interface MetadataFactoryInterface
 {
-	/**
-	 * @param string $class
-	 * @return MetadataInterface
-	 */
-	public function getMetadata($class);
+    /**
+     * @param string $class
+     * @return MetadataInterface
+     */
+    public function getMetadata($class);
 
-	/**
-	 * @return MetadataInterface[]
-	 */
-	public function getAllMetadata();
+    /**
+     * @return MetadataInterface[]
+     */
+    public function getAllMetadata();
 }

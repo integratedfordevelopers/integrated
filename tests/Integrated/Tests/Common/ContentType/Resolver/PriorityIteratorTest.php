@@ -138,7 +138,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType($name)
     {
-        $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        $mock = $this->createMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $mock->expects($this->any())
             ->method('getId')
             ->willReturn($name);
@@ -153,7 +153,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getResolver(array $types = [])
     {
-        $mock = $this->getMock('Integrated\\Common\\ContentType\\ResolverInterface');
+        $mock = $this->createMock('Integrated\\Common\\ContentType\\ResolverInterface');
         $mock->expects($this->any())
             ->method('getTypes')
             ->willReturn(new Iterator($types));

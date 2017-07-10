@@ -30,7 +30,7 @@ class DiscriminatorMapMetadataSubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->resolver = $this->getMock('Integrated\\Doctrine\\ODM\\MongoDB\\Mapping\\DiscriminatorMapResolverInterface');
+        $this->resolver = $this->createMock('Integrated\\Doctrine\\ODM\\MongoDB\\Mapping\\DiscriminatorMapResolverInterface');
     }
 
     public function testInterface()
@@ -70,7 +70,7 @@ class DiscriminatorMapMetadataSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->resolver->expects($this->never())
             ->method($this->anything());
 
-        $this->getInstance()->loadClassMetadata($this->getEvent($this->getMock('Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata')));
+        $this->getInstance()->loadClassMetadata($this->getEvent($this->createMock('Doctrine\\Common\\Persistence\\Mapping\\ClassMetadata')));
     }
 
     public function testLoadClassMetadataNoMapResolve()

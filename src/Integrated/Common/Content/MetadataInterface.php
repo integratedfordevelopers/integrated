@@ -16,14 +16,14 @@ namespace Integrated\Common\Content;
  */
 interface MetadataInterface
 {
-	/**
-	 * @return RegistryInterface
-	 */
-	public function getMetadata();
+    /**
+     * @return RegistryInterface
+     */
+    public function getMetadata();
 
-	/**
-	 * @param RegistryInterface $metadata
-	 * @return self
-	 */
-	public function setMetadata(RegistryInterface $metadata);
+    /**
+     * @param RegistryInterface $metadata
+     * @return self
+     */
+    public function setMetadata(RegistryInterface $metadata);
 }

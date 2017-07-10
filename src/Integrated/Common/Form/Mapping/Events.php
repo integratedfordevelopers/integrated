@@ -16,10 +16,12 @@ namespace Integrated\Common\Form\Mapping;
  */
 final class Events
 {
-	private function __construct() {} // don't allow creation
+    private function __construct()
+    {
+    } // don't allow creation
 
-	/**
-	 *
-	 */
-	const METADATA = 'metadata';
+    /**
+     *
+     */
+    const METADATA = 'metadata';
 }

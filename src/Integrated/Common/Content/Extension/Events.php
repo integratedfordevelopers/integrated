@@ -16,7 +16,9 @@ namespace Integrated\Common\Content\Extension;
  */
 final class Events
 {
-	private function __construct() {} // don't allow creation
+    private function __construct()
+    {
+    } // don't allow creation
 
 //	/**
 //	 *
@@ -53,45 +55,45 @@ final class Events
 //	 */
 //	const CONTENT_POST_DELETE = 'extension.content.delete.post';
 
-	const METADATA   = 'extension.metadata';
+    const METADATA   = 'extension.metadata';
 
-	/**
-	 *
-	 */
-	const PRE_READ   = 'extension.read.pre';
+    /**
+     *
+     */
+    const PRE_READ   = 'extension.read.pre';
 
-	/**
-	 *
-	 */
-	const POST_READ   = 'extension.read.post';
+    /**
+     *
+     */
+    const POST_READ   = 'extension.read.post';
 
-	/**
-	 *
-	 */
-	const PRE_CREATE  = 'extension.create.pre';
+    /**
+     *
+     */
+    const PRE_CREATE  = 'extension.create.pre';
 
-	/**
-	 *
-	 */
-	const POST_CREATE = 'extension.create.post';
+    /**
+     *
+     */
+    const POST_CREATE = 'extension.create.post';
 
-	/**
-	 *
-	 */
-	const PRE_UPDATE  = 'extension.update.pre';
+    /**
+     *
+     */
+    const PRE_UPDATE  = 'extension.update.pre';
 
-	/**
-	 *
-	 */
-	const POST_UPDATE = 'extension.update.post';
+    /**
+     *
+     */
+    const POST_UPDATE = 'extension.update.post';
 
-	/**
-	 *
-	 */
-	const PRE_DELETE  = 'extension.delete.pre';
+    /**
+     *
+     */
+    const PRE_DELETE  = 'extension.delete.pre';
 
-	/**
-	 *
-	 */
-	const POST_DELETE = 'extension.delete.post';
+    /**
+     *
+     */
+    const POST_DELETE = 'extension.delete.post';
 }

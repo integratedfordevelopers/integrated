@@ -44,8 +44,8 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->converter = $this->getMock(ConverterInterface::class);
-        $this->serializer = $this->getMock(SerializerInterface::class);
+        $this->converter = $this->createMock(ConverterInterface::class);
+        $this->serializer = $this->createMock(SerializerInterface::class);
     }
 
     public function testInterface()
@@ -400,7 +400,7 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function getJob($action = null, array $options = [])
     {
-        $mock = $this->getMock(JobInterface::class);
+        $mock = $this->createMock(JobInterface::class);
         $mock->expects($this->atLeastOnce())
             ->method('hasAction')
             ->willReturn($action ? true : false);
@@ -434,7 +434,7 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContainer(array $data = [])
     {
-        $mock = $this->getMock(ContainerInterface::class);
+        $mock = $this->createMock(ContainerInterface::class);
         $mock->expects($this->any())
             ->method('count')
             ->willReturn(count($data));

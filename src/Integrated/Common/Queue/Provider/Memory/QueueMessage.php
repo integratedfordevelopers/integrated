@@ -19,86 +19,86 @@ use Integrated\Common\Queue\QueueMessageInterface;
  */
 class QueueMessage implements QueueMessageInterface
 {
-	/**
-	 * @var mixed
-	 */
-	private $payload;
+    /**
+     * @var mixed
+     */
+    private $payload;
 
-	/**
-	 * @var int
-	 */
-	private $attempts;
+    /**
+     * @var int
+     */
+    private $attempts;
 
-	/**
-	 * @var int
-	 */
-	private $priority;
+    /**
+     * @var int
+     */
+    private $priority;
 
-	/**
-	 * @var Closure | null
-	 */
-	private $release = null;
+    /**
+     * @var Closure | null
+     */
+    private $release = null;
 
-	/**
-	 * @param mixed $payload
-	 * @param int $attempts
-	 * @param int $priority
-	 * @param callable $release
-	 */
-	public function __construct($payload, $attempts, $priority, Closure $release)
-	{
-		$this->payload = $payload;
-		$this->attempts = $attempts;
-		$this->priority = $priority;
+    /**
+     * @param mixed $payload
+     * @param int $attempts
+     * @param int $priority
+     * @param callable $release
+     */
+    public function __construct($payload, $attempts, $priority, Closure $release)
+    {
+        $this->payload = $payload;
+        $this->attempts = $attempts;
+        $this->priority = $priority;
 
-		$this->release = $release;
-	}
+        $this->release = $release;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function delete()
-	{
-		// release should be cleared as after a delete the message can not
-		// be returned anymore;
+    /**
+     * {@inheritdoc}
+     */
+    public function delete()
+    {
+        // release should be cleared as after a delete the message can not
+        // be returned anymore;
 
-		$this->release = null;
-	}
+        $this->release = null;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function release($delay = 0)
-	{
-		if ($this->release !== null) {
-			$release = $this->release;
-			$release();
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function release($delay = 0)
+    {
+        if ($this->release !== null) {
+            $release = $this->release;
+            $release();
+        }
 
-		$this->release = null;
-	}
+        $this->release = null;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getAttempts()
-	{
-		return $this->attempts;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttempts()
+    {
+        return $this->attempts;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getPayload()
-	{
-		return $this->payload;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getPayload()
+    {
+        return $this->payload;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getPriority()
-	{
-		return $this->priority;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriority()
+    {
+        return $this->priority;
+    }
 }

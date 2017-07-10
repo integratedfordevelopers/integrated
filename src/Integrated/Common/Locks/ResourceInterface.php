@@ -16,19 +16,19 @@ namespace Integrated\Common\Locks;
  */
 interface ResourceInterface
 {
-	/**
-	 * @param ResourceInterface $resource
-	 * @return bool
-	 */
-	public function equals(ResourceInterface $resource);
+    /**
+     * @param ResourceInterface $resource
+     * @return bool
+     */
+    public function equals(ResourceInterface $resource);
 
-	/**
-	 * @return string
-	 */
-	public function getType();
+    /**
+     * @return string
+     */
+    public function getType();
 
-	/**
-	 * @return string | null
-	 */
-	public function getIdentifier();
+    /**
+     * @return string | null
+     */
+    public function getIdentifier();
 }

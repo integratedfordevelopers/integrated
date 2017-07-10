@@ -19,160 +19,160 @@ use Integrated\Common\Queue\Provider\Memory\QueueProvider;
  */
 class QueueProviderTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var QueueProvider
-	 */
-	protected $provider;
+    /**
+     * @var QueueProvider
+     */
+    protected $provider;
 
-	protected function setUp()
-	{
-		$this->provider = new QueueProvider();
-	}
+    protected function setUp()
+    {
+        $this->provider = new QueueProvider();
+    }
 
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Integrated\Common\Queue\Provider\QueueProviderInterface', $this->provider);
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Integrated\Common\Queue\Provider\QueueProviderInterface', $this->provider);
+    }
 
-	public function testPush()
-	{
-		$this->assertEquals(0, $this->provider->count('channel'));
-		$this->provider->push('channel', 'payload');
-		$this->assertEquals(1, $this->provider->count('channel'));
-		$this->provider->push('channel', 'payload');
-		$this->assertEquals(2, $this->provider->count('channel'));
-	}
+    public function testPush()
+    {
+        $this->assertEquals(0, $this->provider->count('channel'));
+        $this->provider->push('channel', 'payload');
+        $this->assertEquals(1, $this->provider->count('channel'));
+        $this->provider->push('channel', 'payload');
+        $this->assertEquals(2, $this->provider->count('channel'));
+    }
 
-	public function testPull()
-	{
-		$this->provider->push('channel', 'payload');
-		$this->provider->push('channel', 'payload');
+    public function testPull()
+    {
+        $this->provider->push('channel', 'payload');
+        $this->provider->push('channel', 'payload');
 
-		$result = $this->provider->pull('channel');
+        $result = $this->provider->pull('channel');
 
-		$this->assertInternalType('array', $result);
-		$this->assertCount(1, $result);
-		$this->assertContainsOnlyInstancesOf('Integrated\Common\Queue\Provider\Memory\QueueMessage', $result);
-		$this->assertEquals(1, $this->provider->count('channel'));
-	}
+        $this->assertInternalType('array', $result);
+        $this->assertCount(1, $result);
+        $this->assertContainsOnlyInstancesOf('Integrated\Common\Queue\Provider\Memory\QueueMessage', $result);
+        $this->assertEquals(1, $this->provider->count('channel'));
+    }
 
-	public function testPullWithLimit()
-	{
-		$this->provider->push('channel', 'payload');
-		$this->provider->push('channel', 'payload');
+    public function testPullWithLimit()
+    {
+        $this->provider->push('channel', 'payload');
+        $this->provider->push('channel', 'payload');
 
-		$result = $this->provider->pull('channel', 2);
+        $result = $this->provider->pull('channel', 2);
 
-		$this->assertCount(2, $result);
-		$this->assertContainsOnlyInstancesOf('Integrated\Common\Queue\Provider\Memory\QueueMessage', $result);
-		$this->assertEquals(0, $this->provider->count('channel'));
-	}
+        $this->assertCount(2, $result);
+        $this->assertContainsOnlyInstancesOf('Integrated\Common\Queue\Provider\Memory\QueueMessage', $result);
+        $this->assertEquals(0, $this->provider->count('channel'));
+    }
 
-	public function testPullWithLimitBiggerThenQueue()
-	{
-		$this->provider->push('channel', 'payload');
-		$this->provider->push('channel', 'payload');
+    public function testPullWithLimitBiggerThenQueue()
+    {
+        $this->provider->push('channel', 'payload');
+        $this->provider->push('channel', 'payload');
 
-		$result = $this->provider->pull('channel', 4);
+        $result = $this->provider->pull('channel', 4);
 
-		$this->assertCount(2, $result);
-		$this->assertEquals(0, $this->provider->count('channel'));
-	}
+        $this->assertCount(2, $result);
+        $this->assertEquals(0, $this->provider->count('channel'));
+    }
 
-	public function testPullOrder()
-	{
-		$this->provider->push('channel', 'payload1');
-		$this->provider->push('channel', 'payload2');
-		$this->provider->push('channel', 'payload3');
+    public function testPullOrder()
+    {
+        $this->provider->push('channel', 'payload1');
+        $this->provider->push('channel', 'payload2');
+        $this->provider->push('channel', 'payload3');
 
-		/** @var QueueMessage $message */
-		$message = $this->provider->pull('channel');
-		$message = array_pop($message);
+        /** @var QueueMessage $message */
+        $message = $this->provider->pull('channel');
+        $message = array_pop($message);
 
-		$this->assertEquals('payload1', $message->getPayload());
-	}
+        $this->assertEquals('payload1', $message->getPayload());
+    }
 
-	public function testPullOrderAfterRelease()
-	{
-		$this->provider->push('channel', 'payload1');
-		$this->provider->push('channel', 'payload2');
-		$this->provider->push('channel', 'payload3');
+    public function testPullOrderAfterRelease()
+    {
+        $this->provider->push('channel', 'payload1');
+        $this->provider->push('channel', 'payload2');
+        $this->provider->push('channel', 'payload3');
 
-		/** @var QueueMessage $message */
-		$message = $this->provider->pull('channel');
-		$message = array_pop($message);
+        /** @var QueueMessage $message */
+        $message = $this->provider->pull('channel');
+        $message = array_pop($message);
 
-		$this->provider->pull('channel'); // ignore
+        $this->provider->pull('channel'); // ignore
 
-		$message->release();
+        $message->release();
 
-		$message = $this->provider->pull('channel');
-		$message = array_pop($message);
+        $message = $this->provider->pull('channel');
+        $message = array_pop($message);
 
-		$this->assertEquals('payload1', $message->getPayload());
-	}
+        $this->assertEquals('payload1', $message->getPayload());
+    }
 
-	public function testPullNoneExistingChannel()
-	{
-		$result = $this->provider->pull('channel');
+    public function testPullNoneExistingChannel()
+    {
+        $result = $this->provider->pull('channel');
 
-		$this->assertInternalType('array', $result);
-		$this->assertCount(0, $result);
-	}
+        $this->assertInternalType('array', $result);
+        $this->assertCount(0, $result);
+    }
 
-	public function testRelease()
-	{
-		$this->provider->push('channel', 'payload');
-		$this->provider->push('channel', 'payload');
+    public function testRelease()
+    {
+        $this->provider->push('channel', 'payload');
+        $this->provider->push('channel', 'payload');
 
-		/** @var QueueMessage $message */
-		$message = $this->provider->pull('channel');
-		$message = array_pop($message);
+        /** @var QueueMessage $message */
+        $message = $this->provider->pull('channel');
+        $message = array_pop($message);
 
-		$this->assertEquals(1, $this->provider->count('channel'));
+        $this->assertEquals(1, $this->provider->count('channel'));
 
-		$message->release();
+        $message->release();
 
-		$this->assertEquals(2, $this->provider->count('channel'));
-	}
+        $this->assertEquals(2, $this->provider->count('channel'));
+    }
 
-	public function testAttempts()
-	{
-		$this->provider->push('channel', 'payload');
+    public function testAttempts()
+    {
+        $this->provider->push('channel', 'payload');
 
-		/** @var QueueMessage $message */
-		$message = $this->provider->pull('channel');
-		$message = array_pop($message);
+        /** @var QueueMessage $message */
+        $message = $this->provider->pull('channel');
+        $message = array_pop($message);
 
-		$this->assertEquals(0, $message->getAttempts());
+        $this->assertEquals(0, $message->getAttempts());
 
-		$message->release();
+        $message->release();
 
-		$message = $this->provider->pull('channel');
-		$message = array_pop($message);
+        $message = $this->provider->pull('channel');
+        $message = array_pop($message);
 
-		$this->assertEquals(1, $message->getAttempts());
-	}
+        $this->assertEquals(1, $message->getAttempts());
+    }
 
-	public function testClear()
-	{
-		$this->provider->push('channel1', 'payload');
-		$this->provider->push('channel1', 'payload');
-		$this->provider->push('channel2', 'payload');
+    public function testClear()
+    {
+        $this->provider->push('channel1', 'payload');
+        $this->provider->push('channel1', 'payload');
+        $this->provider->push('channel2', 'payload');
 
-		$this->provider->clear('channel1');
+        $this->provider->clear('channel1');
 
-		$this->assertEmpty($this->provider->pull('channel1'));
-		$this->assertNotEmpty($this->provider->pull('channel2'));
-	}
+        $this->assertEmpty($this->provider->pull('channel1'));
+        $this->assertNotEmpty($this->provider->pull('channel2'));
+    }
 
-	public function testCount()
-	{
-		$this->provider->push('channel1', 'payload');
-		$this->provider->push('channel1', 'payload');
-		$this->provider->push('channel2', 'payload');
+    public function testCount()
+    {
+        $this->provider->push('channel1', 'payload');
+        $this->provider->push('channel1', 'payload');
+        $this->provider->push('channel2', 'payload');
 
-		$this->assertEquals(2, $this->provider->count('channel1'));
-		$this->assertEquals(1, $this->provider->count('channel2'));
-	}
+        $this->assertEquals(2, $this->provider->count('channel1'));
+        $this->assertEquals(1, $this->provider->count('channel2'));
+    }
 }

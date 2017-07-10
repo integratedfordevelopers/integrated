@@ -16,39 +16,39 @@ namespace Integrated\Common\Content\Extension;
  */
 class Registry implements RegistryInterface
 {
-	use RegistryTrait;
+    use RegistryTrait;
 
-	/**
-	 * @param ExtensionInterface[] $extensions
-	 */
-	public function __construct(array $extensions)
-	{
-		foreach($extensions as $extension) {
-			$this->addExtension($extension);
-		}
-	}
+    /**
+     * @param ExtensionInterface[] $extensions
+     */
+    public function __construct(array $extensions)
+    {
+        foreach ($extensions as $extension) {
+            $this->addExtension($extension);
+        }
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function hasExtension($name)
-	{
-		return isset($this->extensions[$name]);
-	}
+    /**
+     * @inheritdoc
+     */
+    public function hasExtension($name)
+    {
+        return isset($this->extensions[$name]);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getExtension($name)
-	{
-		return $this->extensions[$name];
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getExtension($name)
+    {
+        return $this->extensions[$name];
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getExtensions()
-	{
-		return $this->extensions;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getExtensions()
+    {
+        return $this->extensions;
+    }
 }

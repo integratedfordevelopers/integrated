@@ -49,7 +49,6 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         $type = $this->getType();
 
         self::assertSame($type, $this->getInstance(['test' => $type])->getType('test'));
-
     }
 
     /**
@@ -83,6 +82,6 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType()
     {
-        return $this->getMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
+        return $this->createMock('Integrated\\Common\\Converter\\Type\\ResolvedTypeInterface');
     }
 }

@@ -11,8 +11,7 @@
 
 namespace Integrated\Tests\Common\Solr;
 
-use Integrated\Common\Solr\Configurable as BaseConfigurable;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Integrated\Tests\Common\Solr\Fixtures\Configurable;
 
 /**
  * @covers Integrated\Common\Solr\Configurable
@@ -77,16 +76,5 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
     public function getInstance(array $options = [])
     {
         return new Configurable($options);
-    }
-}
-
-class Configurable extends BaseConfigurable
-{
-    protected function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'key1' => 'default1',
-            'key2' => 'default2'
-        ]);
     }
 }

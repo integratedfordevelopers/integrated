@@ -16,22 +16,22 @@ namespace Integrated\Common\Content\Extension;
  */
 interface ExtensionInterface
 {
-	/**
-	 * Return a list of event subscribers to add to the event dispatcher.
-	 *
-	 * @return EventSubscriberInterface[]
-	 */
-	public function getSubscribers();
+    /**
+     * Return a list of event subscribers to add to the event dispatcher.
+     *
+     * @return EventSubscriberInterface[]
+     */
+    public function getSubscribers();
 
 //	/**
 //	 * @return Dependency
 //	 */
 //	public function getDependencies();
 
-	/**
-	 * @return string
-	 */
-	public function getName();
+    /**
+     * @return string
+     */
+    public function getName();
 
 //	/**
 //	 * @return string

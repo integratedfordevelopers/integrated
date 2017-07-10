@@ -14,7 +14,6 @@ namespace Integrated\Tests\Common\ContentType\Resolver;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\Resolver\MongoDBIterator;
 
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -110,7 +109,7 @@ class MongoDBIteratorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType($name)
     {
-        $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        $mock = $this->createMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $mock->expects($this->any())
             ->method('getId')
             ->willReturn($name);

@@ -16,56 +16,56 @@ namespace Integrated\Common\Content;
  */
 interface RegistryInterface extends \ArrayAccess, \Countable, \IteratorAggregate
 {
-	/**
-	 * @return array
-	 */
-	public function toArray();
+    /**
+     * @return array
+     */
+    public function toArray();
 
-	/**
-	 * Add the value to the registry
-	 *
-	 * @param mixed $value
-	 * @return self
-	 */
-	public function add($value);
+    /**
+     * Add the value to the registry
+     *
+     * @param mixed $value
+     * @return self
+     */
+    public function add($value);
 
-	/**
-	 * Set the value for the given key
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return self
-	 */
-	public function set($key, $value);
+    /**
+     * Set the value for the given key
+     *
+     * @param string $key
+     * @param mixed $value
+     * @return self
+     */
+    public function set($key, $value);
 
-	/**
-	 * Get the value from the given key
-	 *
-	 * @param $key
-	 * @return mixed
-	 */
-	public function get($key);
+    /**
+     * Get the value from the given key
+     *
+     * @param $key
+     * @return mixed
+     */
+    public function get($key);
 
-	/**
-	 * Remove the value for the given key
-	 *
-	 * @param $key
-	 * @return self
-	 */
-	public function remove($key);
+    /**
+     * Remove the value for the given key
+     *
+     * @param $key
+     * @return self
+     */
+    public function remove($key);
 
-	/**
-	 * Check if a registry key exists.
-	 *
-	 * @param $key
-	 * @return bool
-	 */
-	public function has($key);
+    /**
+     * Check if a registry key exists.
+     *
+     * @param $key
+     * @return bool
+     */
+    public function has($key);
 
-	/**
-	 * Clear all the registry data
-	 *
-	 * @return self
-	 */
-	public function clear();
+    /**
+     * Clear all the registry data
+     *
+     * @return self
+     */
+    public function clear();
 }

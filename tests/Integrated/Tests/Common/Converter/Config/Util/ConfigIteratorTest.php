@@ -28,7 +28,7 @@ class ConfigIteratorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->config = $this->getMock('Integrated\\Common\\Converter\\Config\\ConfigInterface');
+        $this->config = $this->createMock('Integrated\\Common\\Converter\\Config\\ConfigInterface');
     }
 
     public function testInterface()
@@ -122,7 +122,6 @@ class ConfigIteratorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getType()
     {
-        return $this->getMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface');
+        return $this->createMock('Integrated\\Common\\Converter\\Config\\TypeConfigInterface');
     }
 }
- 

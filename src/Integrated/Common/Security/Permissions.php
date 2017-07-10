@@ -16,11 +16,11 @@ namespace Integrated\Common\Security;
  */
 final class Permissions
 {
-	const VIEW   = 'view';
+    const VIEW   = 'view';
 
-	const CREATE = 'create';
+    const CREATE = 'create';
 
-	const EDIT   = 'edit';
+    const EDIT   = 'edit';
 
-	const DELETE = 'delete';
-} 
+    const DELETE = 'delete';
+}

@@ -18,33 +18,33 @@ use Integrated\Common\Queue\Provider\QueueProviderInterface;
  */
 class QueueFactory implements QueueFactoryInterface
 {
-	/**
-	 * @var QueueProviderInterface
-	 */
-	private $provider;
+    /**
+     * @var QueueProviderInterface
+     */
+    private $provider;
 
-	/**
-	 * @var QueueInterface[]
-	 */
-	private $registry = array();
+    /**
+     * @var QueueInterface[]
+     */
+    private $registry = array();
 
-	/**
-	 * @param $provider
-	 */
-	public function __construct($provider)
-	{
-		$this->provider = $provider;
-	}
+    /**
+     * @param $provider
+     */
+    public function __construct($provider)
+    {
+        $this->provider = $provider;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getQueue($channel)
-	{
-		if (!isset($this->registry[$channel])) {
-			$this->registry[$channel] = new Queue($this->provider, $channel);
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function getQueue($channel)
+    {
+        if (!isset($this->registry[$channel])) {
+            $this->registry[$channel] = new Queue($this->provider, $channel);
+        }
 
-		return $this->registry[$channel];
-	}
+        return $this->registry[$channel];
+    }
 }

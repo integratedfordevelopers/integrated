@@ -15,7 +15,6 @@ use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 
 use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
 
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -28,7 +27,7 @@ class ValuesToChoicesTransformerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->choiceList = $this->getMock('Symfony\\Component\\Form\\ChoiceList\\ChoiceListInterface');
+        $this->choiceList = $this->createMock('Symfony\\Component\\Form\\ChoiceList\\ChoiceListInterface');
     }
 
     public function testInterface()

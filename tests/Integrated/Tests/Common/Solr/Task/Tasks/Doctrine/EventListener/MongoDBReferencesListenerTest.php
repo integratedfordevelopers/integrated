@@ -34,7 +34,7 @@ class MongoDBReferencesListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->queue = $this->getMock(QueueInterface::class);
+        $this->queue = $this->createMock(QueueInterface::class);
     }
 
     public function testInterface()
@@ -106,7 +106,7 @@ class MongoDBReferencesListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContent($id)
     {
-        $mock = $this->getMock(ContentInterface::class);
+        $mock = $this->createMock(ContentInterface::class);
         $mock->expects($this->atLeastOnce())
             ->method('getId')
             ->willReturn($id);

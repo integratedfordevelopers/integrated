@@ -28,7 +28,7 @@ abstract class AbstractEventTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->indexer = $this->getMock(IndexerInterface::class);
+        $this->indexer = $this->createMock(IndexerInterface::class);
     }
 
     public function testParent()

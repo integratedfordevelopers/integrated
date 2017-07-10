@@ -16,15 +16,15 @@ namespace Integrated\Common\Solr\Converter;
  */
 interface ConverterSpecificationInterface
 {
-	public function hasClass($class);
+    public function hasClass($class);
 
-	public function getClasses();
+    public function getClasses();
 
-	public function hasField($field);
+    public function hasField($field);
 
-	public function getField($field);
+    public function getField($field);
 
-	public function getFields();
+    public function getFields();
 
-	public function getId();
-} 
+    public function getId();
+}

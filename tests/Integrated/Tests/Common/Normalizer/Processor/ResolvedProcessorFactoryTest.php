@@ -31,7 +31,7 @@ class ResolvedProcessorFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->factory = $this->getMock(ContainerFactoryInterface::class);
+        $this->factory = $this->createMock(ContainerFactoryInterface::class);
     }
 
     public function testInterface()

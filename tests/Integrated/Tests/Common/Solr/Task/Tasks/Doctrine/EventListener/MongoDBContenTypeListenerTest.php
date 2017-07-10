@@ -34,7 +34,7 @@ class MongoDBContentTypeListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->queue = $this->getMock(QueueInterface::class);
+        $this->queue = $this->createMock(QueueInterface::class);
     }
 
     public function testInterface()
@@ -85,7 +85,7 @@ class MongoDBContentTypeListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContentType($id)
     {
-        $mock = $this->getMock(ContentTypeInterface::class);
+        $mock = $this->createMock(ContentTypeInterface::class);
         $mock->expects($this->atLeastOnce())
             ->method('getId')
             ->willReturn($id);

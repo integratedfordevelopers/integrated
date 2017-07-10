@@ -35,8 +35,8 @@ class ErrorEventTest extends WorkerEventTest
     {
         parent::setUp();
 
-        $this->message = $this->getMock(QueueMessageInterface::class);
-        $this->exception = $this->getMock(Exception::class);
+        $this->message = $this->createMock(QueueMessageInterface::class);
+        $this->exception = $this->createMock(Exception::class);
     }
 
     public function testGetMessage()

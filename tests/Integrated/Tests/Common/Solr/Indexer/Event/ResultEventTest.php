@@ -28,7 +28,7 @@ class ResultEventTest extends AbstractEventTest
     {
         parent::setUp();
 
-        $this->result = $this->getMock(ResultInterface::class);
+        $this->result = $this->createMock(ResultInterface::class);
     }
 
     public function testGetResult()

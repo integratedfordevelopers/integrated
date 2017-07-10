@@ -22,69 +22,69 @@ use Doctrine\Common\EventSubscriber;
  */
 class CollectionSubscriber implements EventSubscriber
 {
-	private $class;
+    private $class;
 
-	private $collection;
+    private $collection;
 
-	/**
-	 *
-	 *
-	 * @param string $class
-	 * @param string $collection
-	 *
-	 * @throws InvalidArgumentException if the class does not exist
-	 */
-	public function __construct($class, $collection)
-	{
-		if (!class_exists($class)) {
-			throw new InvalidArgumentException(sprintf('The class "%s" does not exist', $class));
-		}
+    /**
+     *
+     *
+     * @param string $class
+     * @param string $collection
+     *
+     * @throws InvalidArgumentException if the class does not exist
+     */
+    public function __construct($class, $collection)
+    {
+        if (!class_exists($class)) {
+            throw new InvalidArgumentException(sprintf('The class "%s" does not exist', $class));
+        }
 
-		$this->class = $class;
-		$this->collection = $collection;
-	}
+        $this->class = $class;
+        $this->collection = $collection;
+    }
 
-	/**
-	 * return the class;
-	 *
-	 * @return string
-	 */
-	public function getClass()
-	{
-		return $this->class;
-	}
+    /**
+     * return the class;
+     *
+     * @return string
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
 
-	/**
-	 * return the collection
-	 *
-	 * @return string
-	 */
-	public function getCollection()
-	{
-		return $this->collection;
-	}
+    /**
+     * return the collection
+     *
+     * @return string
+     */
+    public function getCollection()
+    {
+        return $this->collection;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getSubscribedEvents()
-	{
-		return array(
-			Events::loadClassMetadata
-		);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubscribedEvents()
+    {
+        return array(
+            Events::loadClassMetadata
+        );
+    }
 
-	/**
-	 * Set the collection of the content class based on the configuration
-	 *
-	 * @param LoadClassMetadataEventArgs $event
-	 */
-	public function loadClassMetadata(LoadClassMetadataEventArgs $event)
-	{
-		$class = $event->getClassMetadata();
+    /**
+     * Set the collection of the content class based on the configuration
+     *
+     * @param LoadClassMetadataEventArgs $event
+     */
+    public function loadClassMetadata(LoadClassMetadataEventArgs $event)
+    {
+        $class = $event->getClassMetadata();
 
-		if ($class->getName() == $this->class) {
-			$class->setCollection($this->collection);
-		}
-	}
-} 
+        if ($class->getName() == $this->class) {
+            $class->setCollection($this->collection);
+        }
+    }
+}

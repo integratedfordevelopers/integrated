@@ -23,123 +23,123 @@ use Doctrine\Common\EventSubscriber;
  */
 class ClassMetadataLoadFinderSubscriber implements EventSubscriber
 {
-	/**
-	 * @var array
-	 */
-	private $classes = array();
+    /**
+     * @var array
+     */
+    private $classes = array();
 
-	/**
-	 * @var array
-	 */
-	private $matches = array();
+    /**
+     * @var array
+     */
+    private $matches = array();
 
-	public function hasMatch($class)
-	{
-		return isset($this->matches[strtolower($class)]);
-	}
+    public function hasMatch($class)
+    {
+        return isset($this->matches[strtolower($class)]);
+    }
 
-	public function addMatch($class)
-	{
-		$this->matches[strtolower($class)] = $class;
-	}
+    public function addMatch($class)
+    {
+        $this->matches[strtolower($class)] = $class;
+    }
 
-	public function removeMatch($class)
-	{
-		$class = strtolower($class);
+    public function removeMatch($class)
+    {
+        $class = strtolower($class);
 
-		if (isset($this->matches[$class])) {
-			unset($this->matches[$class]);
-		}
-	}
+        if (isset($this->matches[$class])) {
+            unset($this->matches[$class]);
+        }
+    }
 
-	public function hasMatches()
-	{
-		return count($this->matches) ? true : false;
-	}
+    public function hasMatches()
+    {
+        return count($this->matches) ? true : false;
+    }
 
-	public function setMatches(array $classes)
-	{
-		$this->clearMatches();
+    public function setMatches(array $classes)
+    {
+        $this->clearMatches();
 
-		foreach ($classes as $class) {
-			$this->addMatch($class);
-		}
-	}
+        foreach ($classes as $class) {
+            $this->addMatch($class);
+        }
+    }
 
-	public function getMatches()
-	{
-		return $this->matches;
-	}
+    public function getMatches()
+    {
+        return $this->matches;
+    }
 
-	public function clearMatches()
-	{
-		$this->matches = array();
-	}
+    public function clearMatches()
+    {
+        $this->matches = array();
+    }
 
-	public function hasClass($class)
-	{
-		return isset($this->classes[strtolower($class)]);
-	}
+    public function hasClass($class)
+    {
+        return isset($this->classes[strtolower($class)]);
+    }
 
-	public function addClass($class)
-	{
-		$this->classes[strtolower($class)] = $class;
-	}
+    public function addClass($class)
+    {
+        $this->classes[strtolower($class)] = $class;
+    }
 
-	public function removeClass($class)
-	{
-		$class = strtolower($class);
+    public function removeClass($class)
+    {
+        $class = strtolower($class);
 
-		if (isset($this->classes[$class])) {
-			unset($this->classes[$class]);
-		}
-	}
+        if (isset($this->classes[$class])) {
+            unset($this->classes[$class]);
+        }
+    }
 
-	public function hasClasses()
-	{
-		return count($this->classes) ? true : false;
-	}
+    public function hasClasses()
+    {
+        return count($this->classes) ? true : false;
+    }
 
-	public function setClasses(array $classes)
-	{
-		$this->clearClasses();
+    public function setClasses(array $classes)
+    {
+        $this->clearClasses();
 
-		foreach ($classes as $class) {
-			$this->addClass($class);
-		}
-	}
+        foreach ($classes as $class) {
+            $this->addClass($class);
+        }
+    }
 
-	public function getClasses()
-	{
-		return $this->classes;
-	}
+    public function getClasses()
+    {
+        return $this->classes;
+    }
 
-	public function clearClasses()
-	{
-		$this->classes = array();
-	}
+    public function clearClasses()
+    {
+        $this->classes = array();
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getSubscribedEvents()
-	{
-		return array(
-			Events::loadClassMetadata
-		);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubscribedEvents()
+    {
+        return array(
+            Events::loadClassMetadata
+        );
+    }
 
-	/**
-	 * Check the class name against a list of classes to see if its loaded or not.
-	 *
-	 * @param LoadClassMetadataEventArgs $event
-	 */
-	public function loadClassMetadata(LoadClassMetadataEventArgs $event)
-	{
-		$class = $event->getClassMetadata()->getName();
+    /**
+     * Check the class name against a list of classes to see if its loaded or not.
+     *
+     * @param LoadClassMetadataEventArgs $event
+     */
+    public function loadClassMetadata(LoadClassMetadataEventArgs $event)
+    {
+        $class = $event->getClassMetadata()->getName();
 
-		if ($this->hasClass($class)) {
-			$this->addMatch($class);
-		}
-	}
+        if ($this->hasClass($class)) {
+            $this->addMatch($class);
+        }
+    }
 }

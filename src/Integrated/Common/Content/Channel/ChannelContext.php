@@ -18,24 +18,24 @@ namespace Integrated\Common\Content\Channel;
  */
 class ChannelContext implements ChannelContextInterface
 {
-	/**
-	 * @var null | ChannelInterface
-	 */
-	private $channel = null;
+    /**
+     * @var null | ChannelInterface
+     */
+    private $channel = null;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getChannel()
-	{
-		return $this->channel;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setChannel(ChannelInterface $channel = null)
-	{
-		$this->channel = $channel;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function setChannel(ChannelInterface $channel = null)
+    {
+        $this->channel = $channel;
+    }
 }
