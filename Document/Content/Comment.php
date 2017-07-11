@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Document type Comment
@@ -29,6 +30,13 @@ class Comment extends Content
      * @Type\Field
      */
     protected $title;
+    
+    /**
+     * @var string
+     * @Slug(fields={"title"})
+     * @Type\Field
+     */
+    protected $slug;
 
     /**
      * @var string

@@ -6,7 +6,6 @@
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy">
 
         <field fieldName="title" type="string" />
-        <field fieldName="slug" type="string" unique="true" sparse="true" />
         <field fieldName="description" type="string" />
 
     </document>
