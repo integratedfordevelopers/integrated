@@ -10,7 +10,6 @@
         <field fieldName="nickname" type="string" />
         <field fieldName="firstName" type="string" />
         <field fieldName="lastName" type="string" />
-        <field fieldName="slug" type="string" unique="true" sparse="true" />
 
         <embed-one
             field="picture"

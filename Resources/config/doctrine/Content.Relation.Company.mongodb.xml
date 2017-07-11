@@ -6,7 +6,6 @@
     <document name="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company">
 
         <field fieldName="name" type="string" />
-        <field fieldName="slug" type="string" unique="true" sparse="true" />
         <field fieldName="website" type="string" />
 
         <embed-one
