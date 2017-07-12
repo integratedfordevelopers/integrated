@@ -248,7 +248,7 @@ class ContentProvider
 
         // allow content with group access
         if ($filterWorkflow) {
-            $fq->setQuery($fq->getQuery() . ' OR security_workflow_read: ((%1%))', [implode(') OR (', $filterWorkflow)]);
+            $fq->setQuery($fq->getQuery() . ' OR (security_workflow_read: ((%1%)) AND security_workflow_write: ((%1%)))', [implode(') OR (', $filterWorkflow)]);
         }
 
         // always allow access to assinged content
