@@ -54,7 +54,7 @@ class Controller extends BaseController
             throw new \RuntimeException('Unable to get the request');
         }
 
-        $channel = $this->getChannelManager()->find($request->attributes->get('_channel'));
+        $channel = $this->getChannelManager()->find($request->query->get('channel'));
 
         if (!$channel instanceof Channel) {
             $channels = $this->getChannels();
