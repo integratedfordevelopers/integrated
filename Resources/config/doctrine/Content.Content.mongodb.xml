@@ -11,7 +11,7 @@
 
         <field fieldName="id" id="true" strategy="UUID" />
         <field fieldName="slug" type="string" unique="true" />
-        <field fieldName="contentType" type="string" index="true" />
+        <field fieldName="contentType" type="string" index="true" sparse="true"/>
         <field fieldName="createdAt" type="date" />
         <field fieldName="updatedAt" type="date" />
         <field fieldName="published" type="boolean" />
