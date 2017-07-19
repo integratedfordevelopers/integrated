@@ -30,13 +30,6 @@ class Comment extends Content
      * @Type\Field
      */
     protected $title;
-    
-    /**
-     * @var string
-     * @Slug(fields={"title"})
-     * @Type\Field
-     */
-    protected $slug;
 
     /**
      * @var string
