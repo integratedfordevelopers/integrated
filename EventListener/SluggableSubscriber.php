@@ -160,6 +160,10 @@ class SluggableSubscriber implements EventSubscriber
                     );
                 }
 
+                if ($propertyMetadata->slugLengthLimit) {
+                    $slug = substr($slug, 0, $propertyMetadata->slugLengthLimit);
+                }
+
                 $id = $event == 'preUpdate' && method_exists($object, 'getId') ? $object->getId() : null;
 
                 // generate unique slug
