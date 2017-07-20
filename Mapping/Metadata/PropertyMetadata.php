@@ -29,4 +29,9 @@ class PropertyMetadata extends BasePropertyMetadata
      * @var string
      */
     public $slugSeparator = '-';
+
+    /**
+     * @var int
+     */
+    public $slugLengthLimit = 200;
 }

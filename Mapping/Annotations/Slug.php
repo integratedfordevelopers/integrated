@@ -32,4 +32,9 @@ final class Slug extends Annotation
      * @var string
      */
     public $separator = '-';
+
+    /**
+     * @var int
+     */
+    public $lengthLimit = 200;
 }

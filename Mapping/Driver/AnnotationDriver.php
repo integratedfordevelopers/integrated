@@ -57,6 +57,7 @@ class AnnotationDriver implements DriverInterface
             if (null !== $annotation) {
                 $propertyMetadata->slugFields = $annotation->fields;
                 $propertyMetadata->slugSeparator = $annotation->separator;
+                $propertyMetadata->slugLengthLimit = $annotation->lengthLimit;
             }
 
             $classMetadata->addPropertyMetadata($propertyMetadata);
