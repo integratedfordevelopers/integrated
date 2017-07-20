@@ -51,6 +51,10 @@ class UrlGenerator
     {
         $domain = null;
 
+        if (!$content->getFile()) {
+            return null;
+        }
+
         if ($channel = $content->getPrimaryChannel()) {
             $domain = $channel->getPrimaryDomain();
 
