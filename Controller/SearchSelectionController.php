@@ -232,9 +232,9 @@ class SearchSelectionController extends Controller
             ->setMethod('DELETE');
 
         if ($notDelete) {
-            $form->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
-        } else {
             $form->add('reload', SubmitType::class, ['label' => 'Reload', 'attr' => ['class' => 'btn-default']]);
+        } else {
+            $form->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
         }
 
         return $form->getForm();
