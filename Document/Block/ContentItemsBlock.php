@@ -24,7 +24,7 @@ class ContentItemsBlock extends Block
 {
     /**
      * @var ArrayCollection
-     * @Type\Field(type="integrated_content_choice")
+     * @Type\Field(type="Integrated\Bundle\FormTypeBundle\Form\Type\ContentChoiceType")
      */
     protected $items;
 
