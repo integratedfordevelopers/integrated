@@ -12,7 +12,7 @@
 namespace Integrated\Common\Solr\Task\Provider;
 
 use Integrated\Common\Content\ContentInterface;
-use Traversable;
+use Iterator;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -23,7 +23,7 @@ interface ContentProviderInterface
      * Get a all the referenced content for the given id.
      *
      * @param string $id
-     * @return Traversable | ContentInterface[]
+     * @return Iterator | ContentInterface[]
      */
     public function getReferenced($id);
 }
