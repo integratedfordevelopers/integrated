@@ -28,8 +28,18 @@
             <argument type="service" id="integrated_solr.task.reference_queue_handler.mongodb_provider.repository" />
         </service>
 
-        <service id="integrated_solr.task.reference_queue_handler" class="Integrated\Common\Solr\Task\Tasks\ReferenceQueueTaskHandler">
+        <service id="integrated_solr.task.reference_queue_handler.content_type_detach_decorator" class="Integrated\Bundle\SolrBundle\Decorator\ContentTypeProviderDetachDecorator">
             <argument type="service" id="integrated_solr.task.reference_queue_handler.mongodb_provider" />
+            <argument type="service" id="integrated_content.doctrine.object_manager" />
+        </service>
+
+        <service id="integrated_solr.task.reference_queue_handler.content_detach_decorator" class="Integrated\Bundle\SolrBundle\Decorator\ContentProviderDetachDecorator">
+            <argument type="service" id="integrated_solr.task.reference_queue_handler.mongodb_provider" />
+            <argument type="service" id="integrated_content.doctrine.object_manager" />
+        </service>
+
+        <service id="integrated_solr.task.reference_queue_handler" class="Integrated\Common\Solr\Task\Tasks\ReferenceQueueTaskHandler">
+            <argument type="service" id="integrated_solr.task.reference_queue_handler.content_detach_decorator" />
             <argument type="service" id="integrated_solr.queue.indexer" />
             <argument type="service" id="integrated_solr.indexer.job_factory" />
 
@@ -37,7 +47,7 @@
         </service>
 
         <service id="integrated_solr.task.content_type_queue_handler" class="Integrated\Common\Solr\Task\Tasks\ContentTypeQueueTaskHandler">
-            <argument type="service" id="integrated_solr.task.reference_queue_handler.mongodb_provider" />
+            <argument type="service" id="integrated_solr.task.reference_queue_handler.content_type_detach_decorator" />
             <argument type="service" id="integrated_solr.queue.indexer" />
             <argument type="service" id="integrated_solr.indexer.job_factory" />
 
