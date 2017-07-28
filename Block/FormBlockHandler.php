@@ -129,7 +129,9 @@ class FormBlockHandler extends BlockHandler
 
                 $this->formMailer->send($data, $block->getEmailAddresses());
 
-                return new RedirectResponse($block->getReturnUrl());
+                if ($block->getReturnUrl()) {
+                    return new RedirectResponse($block->getReturnUrl());
+                }
             }
         }
 

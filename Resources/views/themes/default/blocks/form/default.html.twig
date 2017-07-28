@@ -4,6 +4,10 @@
     </div>
 
     <div class="panel-body">
-        {{ form(form, { 'style': 'horizontal', 'label_col': 3, 'widget_col': 9, 'col_size': 'sm' }) }}
+        {% if form.vars.submitted and form.vars.valid %}
+            {{ block.textAfterSubmit }}
+        {% else %}
+            {{ form(form, { 'style': 'horizontal', 'label_col': 3, 'widget_col': 9, 'col_size': 'sm' }) }}
+        {% endif %}
     </div>
 </div>
