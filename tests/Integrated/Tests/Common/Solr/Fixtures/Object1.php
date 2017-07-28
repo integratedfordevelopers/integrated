@@ -28,6 +28,16 @@ class Object1 implements ContentInterface
         return 'id1';
     }
 
+    public function getSlug()
+    {
+        return 'id1';
+    }
+
+    public function setSlug($slug)
+    {
+        throw new \Exception();
+    }
+
     public function getContentType()
     {
         return 'type1';
