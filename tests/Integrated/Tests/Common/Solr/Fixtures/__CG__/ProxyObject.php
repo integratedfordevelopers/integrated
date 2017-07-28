@@ -28,6 +28,16 @@ class ProxyObject implements ContentInterface
         return 'proxy-id';
     }
 
+    public function getSlug()
+    {
+        return 'proxy-id';
+    }
+
+    public function setSlug($slug)
+    {
+        throw new \Exception();
+    }
+
     public function getContentType()
     {
         return 'proxy-type';
