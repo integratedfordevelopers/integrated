@@ -42,10 +42,25 @@ class FormBlock extends Block
 
     /**
      * @var string
-     * @Assert\NotBlank
-     * @Type\Field
+     * @Type\Field(
+     *     type="text",
+     *     options={
+     *          "required"=false,
+     *     }
+     * )
      */
     protected $returnUrl;
+
+    /**
+     * @var string
+     * @Type\Field(
+     *     type="textarea",
+     *     options={
+     *          "required"=false,
+     *     }
+     * )
+     */
+    protected $textAfterSubmit;
 
     /**
      * @var array
@@ -125,6 +140,24 @@ class FormBlock extends Block
     public function setReturnUrl($returnUrl)
     {
         $this->returnUrl = $returnUrl;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTextAfterSubmit()
+    {
+        return $this->textAfterSubmit;
+    }
+
+    /**
+     * @param string $textAfterSubmit
+     * @return $this
+     */
+    public function setTextAfterSubmit($textAfterSubmit)
+    {
+        $this->textAfterSubmit = $textAfterSubmit;
         return $this;
     }
 
