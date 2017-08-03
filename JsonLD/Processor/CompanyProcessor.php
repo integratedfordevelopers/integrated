@@ -48,7 +48,9 @@ class CompanyProcessor implements ProcessorInterface
         $data->set('name', $object->getName());
 
         if ($numbers = $object->getPhonenumbers()) {
-            $data->set('telephone', $numbers[0]->getNumber());
+            if (isset($numbers[0])) {
+                $data->set('telephone', $numbers[0]->getNumber());
+            }
 
             foreach ($numbers as $number) {
                 $data->add('contactPoint', [
