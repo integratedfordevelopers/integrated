@@ -199,7 +199,7 @@
      * @param title
      */
     var createIframe = function(url, title) {
-        var iFrame = $('<iframe frameborder="0" style="width: 100%; max-height:100%; display: none;">')
+        var iFrame = $('<iframe frameborder="0" style="width: 100%; max-height:100%; display: auto;">')
             .attr('src', url)
             .load(function(){
                 var windowHeight = $(window).height() - 160;
