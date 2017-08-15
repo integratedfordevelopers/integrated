@@ -205,7 +205,7 @@
                 var windowHeight = $(window).height() - 160;
                 var iframeHeight = $(this).context.contentWindow.document.body.scrollHeight;
 
-                $(this).height(windowHeight > iframeHeight ? iframeHeight : windowHeight);
+                $(this).height(windowHeight > iframeHeight && iframeHeight ? iframeHeight : windowHeight);
 
                 $(this).show();
                 $(this).siblings('.iframe-loading').hide();
