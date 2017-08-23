@@ -34,12 +34,17 @@ class SearchSelectionController extends Controller
      */
     public function rssAction(Request $request, SearchSelection $selection)
     {
-        $request = $request->duplicate(); // don't change original request
-        $request->query->add($selection->getFilters());
+        $block = new ContentBlock();
+        $block->setSearchSelection($selection);
+
+        if ($itemsPerPage = $request->query->get('itemsPerPage')) {
+            $itemsPerPage = ($itemsPerPage > 500) ? 500 : $itemsPerPage;
+            $block->setItemsPerPage($itemsPerPage);
+        }
 
         return [
             'selection' => $selection,
-            'documents' => $this->get('integrated_content.provider.solarium')->execute(new ContentBlock(), $request),
+            'documents' => $this->get('integrated_content.provider.solarium')->execute($block, $request),
         ];
     }
 }
