@@ -140,6 +140,12 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
         try {
             if ($selection = $block->getSearchSelection()) {
                 $this->addFacetFilters($query, $block, (array) $selection->getFilters(), array_merge($options, ['search_selection' => true]));
+
+                if (is_array($selection->getInternalParams())) {
+                    foreach ($selection->getInternalParams() as $key => $value) {
+                        $query->addParam($key, $value);
+                    }
+                }
             }
         } catch (DocumentNotFoundException $e) {
             // search selection is removed

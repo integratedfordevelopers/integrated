@@ -40,6 +40,16 @@ class SearchSelection
     protected $filters = [];
 
     /**
+     * @var array
+     */
+    protected $internalParams = [];
+
+    /**
+     * @var bool
+     */
+    protected $locked = false;
+
+    /**
      * @var bool
      */
     protected $public = false;
@@ -94,6 +104,24 @@ class SearchSelection
     }
 
     /**
+     * @return array
+     */
+    public function getInternalParams()
+    {
+        return $this->internalParams;
+    }
+
+    /**
+     * @param array $internalParams
+     * @return SearchSelection
+     */
+    public function setInternalParams(array $internalParams = [])
+    {
+        $this->internalParams = $internalParams;
+        return $this;
+    }
+
+    /**
      * @param string $key
      * @return array
      */
@@ -110,6 +138,24 @@ class SearchSelection
     public function setFilter($key, $value)
     {
         $this->filters[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isLocked()
+    {
+        return $this->locked;
+    }
+
+    /**
+     * @param boolean $locked
+     * @return SearchSelection
+     */
+    public function setLocked($locked)
+    {
+        $this->locked = $locked;
         return $this;
     }
 

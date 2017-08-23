@@ -11,6 +11,8 @@
         <field fieldName="id" id="true" strategy="NONE" />
         <field fieldName="title" type="string" index="true" />
         <field fieldName="filters" type="hash" />
+        <field fieldName="internalParams" type="hash" />
+        <field fieldName="locked" type="boolean" />
         <field fieldName="public" type="boolean" />
         <field fieldName="userId" type="int" />
 
