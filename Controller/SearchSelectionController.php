@@ -20,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -93,6 +94,10 @@ class SearchSelectionController extends Controller
     {
         // TODO: security check
 
+        if ($searchSelection->isLocked()) {
+            throw new AccessDeniedException();
+        }
+
         $form = $this->createEditForm($searchSelection);
         $form->handleRequest($request);
 
@@ -122,6 +127,10 @@ class SearchSelectionController extends Controller
     public function deleteAction(Request $request, SearchSelection $searchSelection)
     {
         // TODO: security check
+
+        if ($searchSelection->isLocked()) {
+            throw new AccessDeniedException();
+        }
 
         $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
         $referenced = $contentReferenced->getReferenced($searchSelection);

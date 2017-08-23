@@ -26,8 +26,10 @@
                                 <td>{{ searchSelection.title }}</td>
                                 <td>{{ searchSelection.id|default }}</td>
                                 <td>
+                                    {% if not searchSelection.locked %}
                                     <a href="{{ path('integrated_content_search_selection_edit', { 'id': searchSelection.id }) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
                                     <a href="{{ path('integrated_content_search_selection_delete', { 'id': searchSelection.id }) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                                    {% endif %}
                                 </td>
                             </tr>
 
