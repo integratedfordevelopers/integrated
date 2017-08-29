@@ -246,7 +246,8 @@ class SluggableSubscriber implements EventSubscriber
         $pattern = '/(.+)' . preg_quote($separator, '/') . '(\d+)$/i';
 
         if (preg_match($pattern, $slug, $match)) {
-            if (!empty($slugFields) && !$this->checkIfFieldValue($object, $match[2], $slugFields)) {
+            // Check if integer at the end of the slug matches any slug fields, if not, remove the int
+            if (!$this->checkIfFieldValue($object, $match[2], $slugFields)) {
                 // remove counter from slug
                 $slug = $match[1];
             }
