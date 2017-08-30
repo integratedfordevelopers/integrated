@@ -13,8 +13,8 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
 #    location: 20%? @location_embed*
     channels: <numberBetween(1, 5)>x @channel*
 
-  article{1..20}:
-    contentType: article
+  news{1..20}:
+    contentType: news
     disabled: <boolean(10)>
     title: <sentence()>
     subtitle: 15%? <sentence()>
