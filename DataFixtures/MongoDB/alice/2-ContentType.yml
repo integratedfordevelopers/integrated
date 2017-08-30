@@ -4,6 +4,11 @@ Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
     name: Article
     fields: <classfields($class, ['title', 'Intro', 'content'])>
 
+  News:
+    class: Integrated\Bundle\ContentBundle\Document\Content\News
+    name: News
+    fields: <classfields($class, ['title', 'Intro', 'content'])>
+
   Blog:
     class: Integrated\Bundle\ContentBundle\Document\Content\Article
     name: Blog

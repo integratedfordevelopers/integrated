@@ -13,6 +13,18 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
 #    location: 20%? @location_embed*
     channels: <numberBetween(1, 5)>x @channel*
 
+  article{1..20}:
+    contentType: article
+    disabled: <boolean(10)>
+    title: <sentence()>
+    subtitle: 15%? <sentence()>
+    authors: <randomElement([1,1,1,1,1,1,1,2,2,3])>x @author_embed*
+    intro: 40%? <paragraph()>
+    content: <paragraphs(rand(6, 12), true)>
+    source: 40%? <sentence()>
+    locale: <locale()>
+    channels: <numberBetween(1, 5)>x @channel*
+
   blog{1..50}:
     contentType: blog
     disabled: <boolean(10)>
