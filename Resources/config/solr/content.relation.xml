@@ -81,7 +81,15 @@
                     </array>
                 </array>
 
-                <string key="cover">cover</string>
+                <type name="integrated.storage">
+
+                    <options>
+
+                        <string key="cover">cover</string>
+
+                    </options>
+
+                </type>
 
             </options>
         </type>

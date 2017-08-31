@@ -341,7 +341,7 @@ class Article extends Content
     /**
      * Get the relative cover image URL for article
      *
-     * @return string
+     * @return StorageInterface
      */
     public function getCover()
     {
@@ -350,7 +350,7 @@ class Article extends Content
             foreach ($items as $item) {
                 if ($item instanceof FileInterface) {
                     if ($item->getFile() instanceof StorageInterface) {
-                        return $item->getFile()->getPathname();
+                        return $item->getFile();
                     }
                 }
             }
