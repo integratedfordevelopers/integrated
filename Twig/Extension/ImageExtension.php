@@ -57,7 +57,6 @@ class ImageExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('integrated_image_json', [$this, 'imageJson'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('integrated_image', [$this, 'image'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('image_json', [$this, 'imageJson'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('web_image', [$this, 'webImage'], ['is_safe' => ['html']]),
@@ -117,6 +116,11 @@ class ImageExtension extends \Twig_Extension
                 // Set the fallback image
                 $image = false;
             }
+        }
+
+        //detect json format
+        if (strpos($image, '{')) {
+            return $this->imageJson($image);
         }
 
         return $this->imageHandling->open($image);
