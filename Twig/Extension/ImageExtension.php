@@ -57,6 +57,8 @@ class ImageExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
+            new \Twig_SimpleFunction('integrated_image_json', [$this, 'imageJson'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('integrated_image', [$this, 'image'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('image_json', [$this, 'imageJson'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('web_image', [$this, 'webImage'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('image', [$this, 'image'], ['is_safe' => ['html']])
