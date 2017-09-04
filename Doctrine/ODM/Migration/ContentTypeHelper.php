@@ -73,7 +73,7 @@ trait ContentTypeHelper
     }
 
     /**
-     * @param $contentTypeId
+     * @param string $contentTypeId
      * @param array $requiredFields
      * @param array $optionalFields
      * @return ContentType
@@ -147,7 +147,7 @@ trait ContentTypeHelper
     }
 
     /**
-     * @param $contentTypeId
+     * @param string $contentTypeId
      * @param array $removeFields
      * @return ContentType
      */

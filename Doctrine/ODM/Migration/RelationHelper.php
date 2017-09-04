@@ -14,8 +14,8 @@ use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 trait RelationHelper
 {
     /**
-     * @param $name
-     * @param $id
+     * @param string $name
+     * @param string $id
      * @param array|Collection $sources
      * @param array|Collection $targets
      * @param bool $multiple
