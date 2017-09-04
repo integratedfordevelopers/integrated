@@ -19,7 +19,7 @@
 
         <service id="integrated_image.container_converter" class="%integrated_image.container_converter%" />
 
-        <service id="integrated_image.converter_imagemagick" class="%integated_image.converter_magick%">
+        <service id="integrated_image.converter_imagemagick" class="%integrated_image.converter_magick%">
             <argument type="service" id="integrated_storage.cache_app" />
 
             <tag name="integrated_image.converter" />
