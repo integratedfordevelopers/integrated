@@ -119,7 +119,7 @@ class ImageExtension extends \Twig_Extension
         }
 
         //detect json format
-        if (strpos($image, '{')) {
+        if (strpos($image, '{') === 0) {
             return $this->imageJson($image);
         }
 
