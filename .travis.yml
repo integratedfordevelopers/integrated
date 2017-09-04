@@ -1,7 +1,2 @@
-install:
-- curl -sS https://getcomposer.org/installer | php
-before_script:
-- php -d memory_limit=-1 composer.phar update -n
 script:
-- vendor/bin/phpcs . --ignore=*/vendor/* --standard=PSR2 --extensions=php
-- vendor/bin/phpunit -c phpunit.xml
+- curl -sS https://getcomposer.org/installer | php
