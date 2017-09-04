@@ -46,17 +46,6 @@
                 <string key="source">source</string>
                 <string key="locale">locale</string>
 
-
-                <type name="integrated.storage">
-
-                    <options>
-
-                        <string key="cover">cover</string>
-
-                    </options>
-
-                </type>
-
                 <string key="address_name">address.name</string>
                 <string key="address_address1">address.address1</string>
                 <string key="address_address2">address.address2</string>
@@ -86,6 +75,16 @@
                 </array>
 
             </options>
+        </type>
+
+        <type name="integrated.storage">
+
+            <options>
+
+                <string key="cover">cover</string>
+
+            </options>
+
         </type>
 
         <type name="integrated.json">

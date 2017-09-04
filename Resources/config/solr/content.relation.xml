@@ -81,17 +81,17 @@
                     </array>
                 </array>
 
-                <type name="integrated.storage">
+            </options>
+        </type>
 
-                    <options>
+        <type name="integrated.storage">
 
-                        <string key="cover">cover</string>
+            <options>
 
-                    </options>
-
-                </type>
+                <string key="cover">cover</string>
 
             </options>
+
         </type>
 
     </class>
