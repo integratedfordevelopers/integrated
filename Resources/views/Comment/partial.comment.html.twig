@@ -4,7 +4,7 @@
 <div class="media">
     {% if comment.author.picture|default(comment.author.cover|default) %}
         <div class="media-left">
-            <img class="media-object img-circle" src="{{ image(comment.author.picture|default(comment.author.cover)).cropResize(50) }}">
+            <img class="media-object img-circle" src="{{ integrated_image(comment.author.picture|default(comment.author.cover)).cropResize(50) }}">
         </div>
     {% endif %}
     <div class="media-body">
