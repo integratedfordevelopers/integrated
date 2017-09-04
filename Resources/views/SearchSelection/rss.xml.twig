@@ -16,6 +16,9 @@
                 <pubDate>{{ document.pub_created|date('D, d M Y H:i:s O') }}</pubDate>
                 <link>{{ app.request.schemeAndHttpHost }}{{ document.url|default }}</link>
                 <description><![CDATA[ {{ content|raw }}]]></description>
+                {% if document.cover|default %}
+                    <enclosure url="{{ app.request.schemeAndHttpHost }}{{ integrated_image(document.cover).zoomCrop(150, 150, '#ffffff', 'center', 'top') }}" />
+                {% endif %}
             </item>
 
         {% endfor %}
