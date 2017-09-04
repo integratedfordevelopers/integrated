@@ -17,7 +17,7 @@
                     {% if document.cover|default %}
                         <div class="media-left">
                             <a title="{{ document.title }}" href="{{ integrated_url(document) }}">
-                                <img src="{{ web_image(document.cover).zoomCrop(150, 100) }}" alt="{{ document.title }}" />
+                                <img src="{{ integrated_image(document.cover).zoomCrop(150, 100) }}" alt="{{ document.title }}" />
                             </a>
                         </div>
                     {% endif %}

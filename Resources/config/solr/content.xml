@@ -45,7 +45,17 @@
 
                 <string key="source">source</string>
                 <string key="locale">locale</string>
-                <string key="cover">cover</string>
+
+
+                <type name="integrated.storage">
+
+                    <options>
+
+                        <string key="cover">cover</string>
+
+                    </options>
+
+                </type>
 
                 <string key="address_name">address.name</string>
                 <string key="address_address1">address.address1</string>
