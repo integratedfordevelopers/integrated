@@ -6,11 +6,11 @@
 
     <parameters>
 
-        <parameter key="integated_image.converter_magick">Integrated\Bundle\ImageBundle\Converter\Adapter\ImageMagickAdapter</parameter>
+        <parameter key="integrated_image.converter_magick">Integrated\Bundle\ImageBundle\Converter\Adapter\ImageMagickAdapter</parameter>
         <parameter key="integrated_image.container_converter">Integrated\Bundle\ImageBundle\Converter\Container</parameter>
         <parameter key="integrated_image.converter_web_format">Integrated\Bundle\ImageBundle\Converter\WebFormatConverter</parameter>
 
-        <parameter key="integated_image.converter.web_format">png</parameter>
+        <parameter key="integrated_image.converter.web_format">png</parameter>
 
     </parameters>
 
@@ -19,7 +19,7 @@
 
         <service id="integrated_image.container_converter" class="%integrated_image.container_converter%" />
 
-        <service id="integated_image.converter_imagemagick" class="%integated_image.converter_magick%">
+        <service id="integrated_image.converter_imagemagick" class="%integated_image.converter_magick%">
             <argument type="service" id="integrated_storage.cache_app" />
 
             <tag name="integrated_image.converter" />
@@ -30,7 +30,7 @@
             <argument type="service" id="integrated_image.container_converter" />
             <argument type="service" id="integrated_image.format_web" />
             <argument type="service" id="integrated_storage.cache_app" />
-            <argument>%integated_image.converter.web_format%</argument>
+            <argument>%integrated_image.converter.web_format%</argument>
 
         </service>
 
