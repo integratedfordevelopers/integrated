@@ -46,8 +46,11 @@ class ContentTypeChangedListener implements EventSubscriberInterface
      * @param ContentTypePageService $contentTypePageService
      * @param RouteCache $routeCache
      */
-    public function __construct(DocumentManager $dm, ContentTypePageService $contentTypePageService, RouteCache $routeCache)
-    {
+    public function __construct(
+        DocumentManager $dm,
+        ContentTypePageService $contentTypePageService,
+        RouteCache $routeCache
+    ) {
         $this->dm = $dm;
         $this->contentTypePageService = $contentTypePageService;
         $this->routeCache = $routeCache;
