@@ -13,13 +13,14 @@ namespace Integrated\Bundle\WebsiteBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class IntegratedWebsiteExtension extends Extension
+class IntegratedWebsiteExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -38,5 +39,22 @@ class IntegratedWebsiteExtension extends Extension
         $loader->load('controllers.xml');
         $loader->load('twig.xml');
         $loader->load('solr.xml');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        foreach ($container->getExtensions() as $name => $extension) {
+            switch ($name) {
+                case 'twig':
+                    $container->prependExtensionConfig(
+                        $name,
+                        ['exception_controller' => 'integrated_website.controller.error:showAction']
+                    );
+                    break;
+            }
+        }
     }
 }
