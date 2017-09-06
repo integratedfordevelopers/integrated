@@ -17,6 +17,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 use Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\ContentInterface;
 
@@ -181,7 +182,11 @@ class UrlResolver
     protected function getContentTypePageById($contentTypeId, $channelId = null)
     {
         if (null === $channelId) {
-            $channelId = $this->channelContext->getChannel()->getId();
+            $channel = $this->channelContext->getChannel();
+
+            if ($channel instanceof Channel) {
+                $channelId = $channel->getId();
+            }
         }
 
         if (isset($this->contentTypePages[$channelId][$contentTypeId])) {
