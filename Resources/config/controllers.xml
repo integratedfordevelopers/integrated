@@ -6,6 +6,7 @@
 
     <parameters>
 
+        <parameter key="integrated_website.controller.error.class">Integrated\Bundle\WebsiteBundle\Controller\ErrorController</parameter>
         <parameter key="integrated_website.controller.page.class">Integrated\Bundle\WebsiteBundle\Controller\PageController</parameter>
         <parameter key="integrated_website.controller.grid.class">Integrated\Bundle\WebsiteBundle\Controller\GridController</parameter>
 
@@ -26,6 +27,12 @@
     </parameters>
 
     <services>
+
+        <service id="integrated_website.controller.error" class="%integrated_website.controller.error.class%">
+            <argument type="service" id="twig" />
+            <argument>%kernel.debug%</argument>
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+        </service>
 
         <service id="integrated_website.controller.page" class="%integrated_website.controller.page.class%">
             <argument type="service" id="templating" />

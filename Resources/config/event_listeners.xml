@@ -6,6 +6,8 @@
 
     <parameters>
 
+        <parameter key="integrated_website.redirect_content.class">Integrated\Bundle\WebsiteBundle\EventListener\RedirectContentSubscriber</parameter>
+
         <parameter key="integrated_website.website_editable.class">Integrated\Bundle\WebsiteBundle\EventListener\WebsiteEditableListener</parameter>
 
         <parameter key="integrated_website.website_toolbar.class">Integrated\Bundle\WebsiteBundle\EventListener\WebsiteToolbarListener</parameter>
@@ -15,6 +17,13 @@
     </parameters>
 
     <services>
+
+        <service id="integrated_website.redirect_content" class="%integrated_website.redirect_content.class%">
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="integrated_page.services.url_resolver" />
+            <argument type="service" id="router" />
+            <tag name="kernel.event_subscriber" />
+        </service>
 
         <service id="integrated_website.website_editable" class="%integrated_website.website_editable.class%">
             <argument type="service" id="integrated_website.service.editable_checker" />
