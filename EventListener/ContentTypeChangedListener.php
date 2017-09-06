@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\PageBundle\EventListener;
 
+use Integrated\Bundle\PageBundle\Services\RouteCache;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -35,14 +36,21 @@ class ContentTypeChangedListener implements EventSubscriberInterface
      */
     protected $contentTypePageService;
 
+   /**
+     * @var RouteCache
+     */
+    protected $routeCache;
+
     /**
      * @param DocumentManager $dm
      * @param ContentTypePageService $contentTypePageService
+     * @param RouteCache $routeCache
      */
-    public function __construct(DocumentManager $dm, ContentTypePageService $contentTypePageService)
+    public function __construct(DocumentManager $dm, ContentTypePageService $contentTypePageService, RouteCache $routeCache)
     {
         $this->dm = $dm;
         $this->contentTypePageService = $contentTypePageService;
+        $this->routeCache = $routeCache;
     }
 
     /**
@@ -68,13 +76,18 @@ class ContentTypeChangedListener implements EventSubscriberInterface
         if (isset($channelOption['disabled']) && $channelOption['disabled'] == 0) {
             $channels = $this->getChannelRepository()->findAll();
 
+            $newContentTypePage = false;
             foreach ($channels as $channel) {
                 if (!$this->getPageRepository()->findOneBy([
                     'channel.$id' => $channel->getId(),
                     'contentType.$id' => $contentType->getId()
                 ])) {
+                    $newContentTypePage = true;
                     $this->contentTypePageService->addContentType($contentType, $channel);
                 }
+            }
+            if ($newContentTypePage) {
+                $this->routeCache->clear();
             }
         } else {
             $this->deletePagesByContentType($contentType);
