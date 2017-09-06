@@ -9,12 +9,20 @@
         <parameter key="integrated_content.event_listener.configure_menu_subscriber.class">Integrated\Bundle\ContentBundle\EventListener\ConfigureMenuSubscriber</parameter>
         <parameter key="integrated_content.event_listener.editor_image_relation">Integrated\Bundle\ContentBundle\EventListener\EditorImageRelationEventListener</parameter>
 
+        <parameter key="integrated_content.event_listener.channel_exception.class">Integrated\Bundle\ContentBundle\EventListener\ChannelExceptionSubscriber</parameter>
+
     </parameters>
 
     <services>
 
         <service id="integrated_content.event_listener.configure_menu_subscriber" class="%integrated_content.event_listener.configure_menu_subscriber.class%">
             <argument type="service" id="security.authorization_checker" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="integrated_content.event_listener.channel_exception" class="%integrated_content.event_listener.channel_exception.class%">
+            <argument type="service" id="router" />
+            <argument type="service" id="channel.context" />
             <tag name="kernel.event_subscriber" />
         </service>
 
