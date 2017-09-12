@@ -62,17 +62,22 @@ class AppCache implements CacheInterface
             return $file;
         }
 
+        // Whenever the filesystem(s) are down or does not contain the file (anymore) we'll end up with this exception
+        try {
+            // Read it
+            $content = $this->fileManager->read($storage);
+        } catch (NoFilesystemAvailableException $exception) {
+            throw new \InvalidArgumentException($exception->getMessage());
+        }
+
+        // Do not put an empty file in cache, otherwise GD will throw a fatal
+        if (!$content) {
+            throw new \InvalidArgumentException('File is empty');
+        }
+
         // Open a file with write permission
         $write = $file->openFile('w');
         if ($write->isWritable()) {
-            // Whenever the filesystem(s) are down or does not contain the file (anymore) we'll end up with this exception
-            try {
-                // Read it
-                $content = $this->fileManager->read($storage);
-            } catch (NoFilesystemAvailableException $exception) {
-                throw new \InvalidArgumentException($exception->getMessage());
-            }
-
             // Write it if we've got some content
             $write->fwrite($content);
 
