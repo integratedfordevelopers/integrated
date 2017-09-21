@@ -133,6 +133,15 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
             $query->setQuery($search);
 
+            $sort_default = 'rel';
+            $sort_options = $this->getSortOptions();
+
+            $sort = $request->query->get('sort', $sort_default);
+            $sort = trim(strtolower($sort));
+            $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
+
+            $query->addSort($sort_options[$sort]['field'], $sort_options[$sort]['order']);
+
             // It would be strange to exclude items when a search text is entered
             $options['exclude'] = false;
         }
