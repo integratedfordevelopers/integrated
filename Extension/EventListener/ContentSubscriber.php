@@ -103,12 +103,7 @@ class ContentSubscriber implements ContentSubscriberInterface
         // check if there is a workflow state for this item else just set
         // everything to empty.
 
-        $data = [
-            'comment'  => '',
-            'state'    => null,
-            'assigned' => null,
-            'deadline' => null,
-        ];
+        $data = null;
 
         if ($state = $this->getState($content)) {
             $data = [
@@ -151,9 +146,7 @@ class ContentSubscriber implements ContentSubscriberInterface
             $data['assigned'] = $this->container->get('integrated_user.user.manager')->find($data['assigned']);
         }
 
-        if ($data['assigned']
-            && !$this->hasAssignedAccess($data['assigned'], $data['state'], $data['state'] == $workflow->getDefault())
-        ) {
+        if ($data['assigned'] && !$this->hasAssignedAccess($data['assigned'], $data['state'], $data['state'] == $workflow->getDefault()) ) {
             $data['assigned'] = null;
         }
 
@@ -245,12 +238,9 @@ E-mail: ' . $person->getEmail() . '',
                                 'text/plain'
                             );
                         $this->getContainer()->get('mailer')->send($message);
-
                     }
                 }
-
             }
-
         }
 
         if ($data['deadline'] !== $state->getDeadline()) {
