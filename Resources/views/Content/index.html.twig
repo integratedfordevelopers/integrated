@@ -1,4 +1,13 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">{% trans %}Content navigator{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
 {% block content %}
     <div class="row">
 

@@ -5,7 +5,7 @@
         <div class="container">
             <ol class="breadcrumb">
                 <li>
-                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
+                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Content navigator{% endtrans %}</a>
                 </li>
                 <li>
                     <a href="{{ path('integrated_content_content_index', { 'contenttypes': [ type.id ] }) }}">{{ type.name|trans }}</a>
@@ -41,15 +41,6 @@
         {#</ul>#}
     </div>
     {% endblock %}
-
-{% block main_title %}
-    <h1 class="main-title font-regular">
-        {% block pageTitle %}
-            {% trans %}Edit{% endtrans %} {{ type.name }}
-        {% endblock %}
-        <i class="integrate-icon-edit"></i>
-    </h1>
-{% endblock %}
 
 <div class="row">
 
