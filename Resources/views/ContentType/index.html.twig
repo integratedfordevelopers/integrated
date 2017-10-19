@@ -1,4 +1,15 @@
 {% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">
+                    {% trans %}Content types{% endtrans %}
+                </li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
@@ -23,8 +34,9 @@
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>{% trans %}ID{% endtrans %}</th>
                             <th>{% trans %}Name{% endtrans %}</th>
-                            <th>{% trans %}Type{% endtrans %}</th>
+                            <th>{% trans %}Document type{% endtrans %}</th>
                             <th>{% trans %}Created{% endtrans %}</th>
                             <th>{% trans %}Actions{% endtrans %}</th>
                         </tr>
@@ -33,15 +45,22 @@
                         {% for document in documents %}
                         <tr>
                             <td>
+                                {{ document.id }}
+                            </td>
+                            <td>
                                 <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}">
                                     {{ document.name }}
                                 </a>
                             </td>
                             <td>
-                                {{ document.id }}
+                                {% for type in documentTypes %}
+                                    {% if type.class == document.class %}
+                                        {{ type.type }}
+                                    {% endif %}
+                                {% endfor %}
                             </td>
                             <td>
-                                {{ document.createdAt|date }}
+                                {{ document.createdAt|localizeddate("medium", "none") }}
                             </td>
                             <td>
                                 <a href="{{ path('integrated_content_content_type_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
