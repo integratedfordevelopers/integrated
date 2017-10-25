@@ -5,7 +5,7 @@
 
     <document name="Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory" collection="content_history">
 
-        <field fieldName="id" id="true" strategy="UUID" unique="true" />
+        <field fieldName="id" id="true" strategy="UUID" />
 
         <field fieldName="contentId" type="string" />
         <field fieldName="contentType" type="string" />
