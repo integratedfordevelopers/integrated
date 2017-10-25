@@ -5,7 +5,7 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" collection="content_type">
 
-        <field fieldName="id" id="true" strategy="NONE" unique="true" />
+        <field fieldName="id" id="true" strategy="NONE" />
         <field fieldName="class" type="string" />
         <field fieldName="name" type="string" />
         <field fieldName="options" type="hash" />
