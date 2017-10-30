@@ -13,12 +13,14 @@ namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Integrated\Common\Content\ContentInterface;
 
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
+use Doctrine\Common\Persistence\ObjectRepository;
+
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
@@ -26,6 +28,19 @@ use Symfony\Component\Security\Acl\Util\ClassUtils;
  */
 class ContentType implements TypeInterface
 {
+    /**
+     * @var ObjectRepository
+     */
+    protected $contentTypeRepo;
+
+    /**
+     * @param ObjectRepository $contentTypeRepo
+     */
+    public function __construct(ObjectRepository $contentTypeRepo)
+    {
+        $this->contentTypeRepo = $contentTypeRepo;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -45,7 +60,9 @@ class ContentType implements TypeInterface
             $container->set('pub_active', $data->isPublished(false));
         }
 
-        $container->set('facet_contenttype', $data->getContentType());
+        if ($contentType = $this->contentTypeRepo->find($data->getContentType())) {
+            $container->set('facet_contenttype', $contentType->getName());
+        }
 
         // Relation field and facet field for taxonomy, commercial and edition relations
         $items = array_merge(
