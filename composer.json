@@ -1,20 +1,24 @@
 {
-    "name": "integrated/library",
+    "name": "integrated/integrated",
     "type": "library",
-    "description": "Integrated Library",
-    "keywords": ["Integrated", "content"],
-    "homepage": "http://www.e-active.nl",
+    "description": "Integrated PHP framework",
+    "keywords": [
+        "Integrated",
+        "content store",
+        "publishing"
+    ],
+    "homepage": "https://www.integratedfordevelopers.com",
     "license": "MIT",
     "authors": [
         {
             "name": "e-Active",
-            "homepage": "http://www.e-active.nl"
+            "homepage": "https://www.e-active.nl"
         }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=5.5",
+        "php": ">=5.6",
         "symfony/symfony": "~2.8 || ~3.0",
         "symfony/security-acl": "~2.8 || ~3.0",
         "doctrine/orm": "~2.5",
@@ -23,22 +27,25 @@
         "solarium/solarium": "~3.7",
         "psr/log": "~1.0"
     },
+    "replace": {
+        "integrated/library": "self.version"
+    },
     "require-dev": {
         "squizlabs/php_codesniffer": "^2.8",
         "phpunit/phpunit": "^5.7"
     },
     "autoload": {
-        "psr-0": {
-            "Integrated\\MongoDB\\": "src/",
-            "Integrated\\Doctrine\\": "src/",
-            "Integrated\\Common\\": "src/"
+        "psr-4": {
+            "Integrated\\MongoDB\\": "src/MongoDB",
+            "Integrated\\Doctrine\\": "src/Doctrine",
+            "Integrated\\Common\\": "src/Common"
         }
     },
     "autoload-dev": {
-        "psr-0": {
-            "Integrated\\Tests\\MongoDB\\": "tests/",
-            "Integrated\\Tests\\Doctrine\\": "tests/",
-            "Integrated\\Tests\\Common\\": "tests/"
+        "psr-4": {
+            "Integrated\\Tests\\MongoDB\\": "tests/MongoDB",
+            "Integrated\\Tests\\Doctrine\\": "tests/Doctrine",
+            "Integrated\\Tests\\Common\\": "tests/Common"
         }
     }
 }
