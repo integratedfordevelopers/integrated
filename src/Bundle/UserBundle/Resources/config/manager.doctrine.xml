@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_user.doctrine.object_manager" alias="doctrine.orm.entity_manager"/> <!-- config option -->
+
+        <service id="integrated_user.user.manager.doctrine" class="Integrated\Bundle\UserBundle\Doctrine\UserManager">
+            <argument type="service" id="integrated_user.doctrine.object_manager"/>
+            <argument>%integrated_user.user.class%</argument>
+        </service>
+
+        <service id="integrated_user.group.manager.doctrine" class="Integrated\Bundle\UserBundle\Doctrine\GroupManager">
+            <argument type="service" id="integrated_user.doctrine.object_manager"/>
+            <argument>%integrated_user.group.class%</argument>
+        </service>
+
+        <service id="integrated_user.role.manager.doctrine" class="Integrated\Bundle\UserBundle\Doctrine\RoleManager">
+            <argument type="service" id="integrated_user.doctrine.object_manager"/>
+            <argument type="service" id="event_dispatcher"/>
+            <argument>%integrated_user.role.class%</argument>
+            <argument>%integrated_roles%</argument>
+        </service>
+
+        <service id="integrated_user.scope.manager.doctrine" class="Integrated\Bundle\UserBundle\Doctrine\ScopeManager">
+            <argument type="service" id="integrated_user.doctrine.object_manager"/>
+            <argument>%integrated_user.scope.class%</argument>
+        </service>
+
+    </services>
+
+</container>

@@ -1,0 +1,39 @@
+{
+    "name": "integrated/user-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated User Bundle",
+    "keywords": ["Integrated", "content"],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "~2.8 || ~3.0",
+        "doctrine/orm": "~2.4",
+        "doctrine/doctrine-bundle": "~1.3",
+        "integrated/library": "~0.7",
+        "integrated/content-bundle": "~0.7",
+        "integrated/menu-bundle": "~0.7"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload":{
+        "psr-4":{
+            "Integrated\\Bundle\\UserBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.x-dev"
+        }
+    }
+}

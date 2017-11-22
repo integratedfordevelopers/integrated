@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<constraint-mapping xmlns="http://symfony.com/schema/dic/constraint-mapping"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://symfony.com/schema/dic/constraint-mapping http://symfony.com/schema/dic/constraint-mapping/constraint-mapping-1.0.xsd">
+
+    <class name="Integrated\Bundle\UserBundle\Model\Scope">
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">name</option>
+        </constraint>
+
+        <property name="name">
+            <constraint name="NotBlank"/>
+            <constraint name="Length">
+                <option name="min">3</option>
+            </constraint>
+        </property>
+
+    </class>
+
+    <class name="Integrated\Bundle\UserBundle\Model\User">
+
+        <constraint name="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity">
+            <option name="fields">
+                <value>username</value>
+                <value>scope</value>
+            </option>
+            <option name="message">This username is already in use in this scope</option>
+        </constraint>
+
+        <property name="username">
+            <constraint name="NotBlank" />
+            <constraint name="Length">
+                <option name="min">3</option>
+            </constraint>
+        </property>
+
+        <property name="password">
+            <constraint name="Length">
+                <option name="min">6</option>
+            </constraint>
+        </property>
+
+        <property name="scope">
+            <constraint name="NotBlank" />
+        </property>
+
+    </class>
+
+    <class name="Integrated\Bundle\UserBundle\Model\Group">
+
+        <property name="name">
+            <constraint name="NotBlank" />
+            <constraint name="Length">
+                <option name="min">3</option>
+            </constraint>
+        </property>
+
+    </class>
+
+</constraint-mapping>

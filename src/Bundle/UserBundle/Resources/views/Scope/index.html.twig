@@ -1,0 +1,57 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button" id="drop_1">Options <b class="caret"></b></a>
+                    <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
+                        <li role="presentation"><a href="{{ path('integrated_user_scope_new') }}" tabindex="-1" role="menuitem">New</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <section class="section-white section-padding section-shadow section-radius">
+
+                <table class="table table-striped table-hover">
+
+                    <colgroup>
+                        <col style="width: 3em" />
+                        <col />
+                        <col style="width: 5em" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for scope in scopes %}
+
+                        <tr>
+                            <td>{{ scope.id }}</td>
+                            <td>{{ scope.name }}</td>
+                            <td>
+                                <a href="{{ path('integrated_user_scope_edit', {'id': scope.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
+                                {% if not scope.admin %}
+                                    <a href="{{ path('integrated_user_scope_delete', {'id': scope.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                   {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {{ knp_pagination_render(scopes) }}
+
+            </section>
+        </div>
+    </div>
+{% endblock %}
