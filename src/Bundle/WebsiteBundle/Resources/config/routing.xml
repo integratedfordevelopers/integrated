@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/grid.xml" prefix="/grid" />
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/menu.xml" prefix="/menu" />
+
+    <import resource="@IntegratedWebsiteBundle/Resources/config/routing/search_selection.xml" />
+    
+    <import resource="." type="integrated_website_page" />
+    <import resource="." type="integrated_website_content_type_page" />
+</routes>

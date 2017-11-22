@@ -1,0 +1,30 @@
+<div class="navbar navbar-fixed-top integrated-website-toolbar">
+    <div class="container">
+
+        <div class="navbar-header">
+            <a href="{{ path('integrated_content_content_index') }}" class="navbar-brand">Integrated</a>
+        </div>
+
+        <div class="pull-right">
+            {% set params = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
+
+            {% if app.request.query.get('integrated_website_edit') %}
+                <a href="javascript:;" class="btn btn-default navbar-btn" data-action="integrated-website-page-save"
+                   {% if app.request.attributes.get('page').id|default %}data-id="{{ app.request.attributes.get('page').id }}" {% endif %}
+                   data-target="{{ path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 0})) }}">
+                    Save
+                </a>
+
+                <a href="{{ path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 0})) }}" class="btn btn-default navbar-btn">
+                    Cancel
+                </a>
+            {% else %}
+                <a href="{{  path(app.request.attributes.get('_route'), params|merge({'integrated_website_edit': 1})) }}" class="btn btn-default navbar-btn">
+                    Edit
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="integrated-website-body-margin-top"></div>

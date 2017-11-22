@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>{{ selection.title|default }}</title>
+        <link>{{ url('integrated_website_search_selection_rss', { 'id': selection.id }) }}</link>
+
+        {% spaceless %}
+        {% for document in documents %}
+            {% set content = document.content|default %}
+            {% if content is iterable %}
+                {% set content = content|first %}
+            {% endif %}
+
+            <item>
+                <title>{{ document.title|default }}</title>
+                <pubDate>{{ document.pub_created|date('D, d M Y H:i:s O') }}</pubDate>
+                <link>{{ app.request.schemeAndHttpHost }}{{ integrated_url(document) }}</link>
+                <description><![CDATA[ {{ content|striptags|truncate(200, true) }}]]></description>
+                {% if document.cover|default %}
+                    <enclosure url="{{ app.request.schemeAndHttpHost }}{{ integrated_image(document.cover).zoomCrop(150, 150, '#ffffff', 'center', 'top') }}" />
+                {% endif %}
+            </item>
+
+        {% endfor %}
+        {% endspaceless %}
+    </channel>
+</rss>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_website.routing.page_loader.class">Integrated\Bundle\WebsiteBundle\Routing\PageLoader</parameter>
+        <parameter key="integrated_website.routing.content_type_page_loader.class">Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader</parameter>
+        <parameter key="integrated_website.service.editable_checker.class">Integrated\Bundle\WebsiteBundle\Service\EditableChecker</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_website.routing.page_loader" class="%integrated_website.routing.page_loader.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="routing.loader" />
+        </service>
+
+        <service id="integrated_website.routing.content_type_page_loader" class="%integrated_website.routing.content_type_page_loader.class%">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <argument type="service" id="integrated_page.services.url_resolver" />
+            <tag name="routing.loader" />
+        </service>
+
+        <service id="integrated_website.service.editable_checker" class="%integrated_website.service.editable_checker.class%">
+            <argument type="service" id="security.authorization_checker" />
+            <argument type="service" id="security.token_storage" />
+            <argument type="service" id="request_stack" />
+        </service>
+
+    </services>
+</container>

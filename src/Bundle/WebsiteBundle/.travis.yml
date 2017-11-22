@@ -1,0 +1,7 @@
+#install:
+#- curl -sS https://getcomposer.org/installer | php
+#before_script:
+#- php composer.phar update -n
+script:
+#- vendor/bin/phpcs . --ignore=*/vendor/* --standard=psr2-without-line-limit.xml --extensions=php
+#- vendor/bin/phpunit -c phpunit.xml
