@@ -1,0 +1,57 @@
+#relations-search {
+  position: relative;
+}
+
+#relations-q {
+  padding-right: 30px;
+}
+
+.submit_btn {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+#relations-result {
+  margin-top: 20px;
+
+  .item_row {
+    margin-bottom: 20px;
+  }
+
+  .item_row,
+  .pagination {
+    width: 100%;
+  }
+
+  .btn.btn-default {
+    background-color: #286090;
+    border-color: #204d74;
+  }
+
+  .custom_list {
+    margin-bottom: 0px;
+
+    li label {
+      font-weight: normal;
+    }
+  }
+}
+
+.custom_list {
+  &.li_with_margin {
+    li {
+      margin-bottom: 15px;
+
+      p.alert-dismissable {
+        margin-bottom: 0px;
+      }
+    }
+    h4.sub_title {
+      margin-bottom: 0px;
+    }
+  }
+}
+.to_show {
+  display: none;
+}

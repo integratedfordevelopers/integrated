@@ -1,0 +1,46 @@
+{% extends 'BraincraftedBootstrapBundle:Menu:bootstrap.html.twig' %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+        {% if item.level == 0 %}
+            <ul class="dropdown-menu dropdown-top-fixed">
+                <li>
+                    <div class="megamenu-content">
+                        {{ block('children') }}
+                    </div>
+                </li>
+            </ul>
+        {% else %}
+            {{ block('children') }}
+        {% endif %}
+    {%  else %}
+        {% if item.level == 0 %}
+            <ul class="dropdown-menu dropdown-top-fixed">
+                <li>
+                    {% trans %}No content types added{% endtrans %}
+                </li>
+            </ul>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block item %}
+    {% if item.displayed %}
+        {% if item.level == 1 %}
+            <ul class="list">
+                <li class="dropdown-header">
+                    {{ block('label') }}
+                </li>
+                {{ block('list') }}
+            </ul>
+        {% else %}
+            <li>
+                {% if item.uri %}
+                    {{ block('linkElement') }}
+                {% else %}
+                    {{ block('label') }}
+                {% endif %}
+            </li>
+        {% endif %}
+    {% endif %}
+{% endblock %}

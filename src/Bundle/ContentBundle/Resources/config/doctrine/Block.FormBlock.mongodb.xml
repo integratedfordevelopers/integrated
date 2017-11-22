@@ -1,0 +1,23 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\ContentBundle\Document\Block\FormBlock">
+
+        <field fieldName="returnUrl" type="string" />
+        <field fieldName="textAfterSubmit" type="string" />
+        <field fieldName="emailAddresses" type="collection" />
+        <field fieldName="recaptcha" type="boolean" />
+
+        <reference-one
+                field="contentType"
+                target-document="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" />
+
+        <reference-one
+                field="linkRelation"
+                target-document="Integrated\Bundle\ContentBundle\Document\Relation\Relation" />
+
+    </document>
+
+</doctrine-mongo-mapping>

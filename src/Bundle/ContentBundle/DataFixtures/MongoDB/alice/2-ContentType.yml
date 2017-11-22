@@ -1,0 +1,40 @@
+Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
+  Article:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Article
+    name: Article
+    fields: <classfields($class, ['title', 'Intro', 'content'])>
+
+  News:
+    class: Integrated\Bundle\ContentBundle\Document\Content\News
+    name: News
+    fields: <classfields($class, ['title', 'Intro', 'content'])>
+
+  Blog:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Article
+    name: Blog
+    fields: <classfields($class, ['title', 'content'])>
+
+  Taxonomy:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Taxonomy
+    name: Taxonomy
+    fields: <classfields($class, ['title'])>
+
+  Company:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Company
+    name: Company
+    fields: <classfields($class, ['name'])>
+
+  Author:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
+    name: Author
+    fields: <classfields($class, ['firstName', 'lastName'])>
+
+  Employee:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
+    name: Employee
+    fields: <classfields($class, ['firstName', 'lastName', 'email'], ['nickname'])>
+
+  Comment:
+    class: Integrated\Bundle\ContentBundle\Document\Content\Comment
+    name: Comment
+    fields: <classfields($class, ['title', 'name', 'email', 'comment'])>

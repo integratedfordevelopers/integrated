@@ -1,0 +1,39 @@
+/* Set some custom paths */
+$icon-font-path: '/bundles/integratedcontent/components/bootstrap-sass-official/assets/fonts/bootstrap/';
+$custom-font-path: '/bundles/integratedcontent/';
+
+@import '../components/bootstrap-sass-official/assets/stylesheets/bootstrap';
+@import url('//fonts.googleapis.com/css?family=PT+Sans:400,700');
+@import "../components/bourbon/app/assets/stylesheets/bourbon";
+
+// we want the mixin from bootstrap so load them again to override the changes made by bourbon
+@import '../components/bootstrap-sass-official/assets/stylesheets/bootstrap/mixins';
+
+@import 'components/fonts';
+@import 'components/variables';
+@import 'components/mixins';
+@import 'components/typography';
+@import 'components/buttons';
+@import 'components/forms';
+@import 'components/nav';
+@import 'components/megamenu';
+@import 'components/reset';
+@import 'components/dropdown';
+@import 'components/badge';
+@import 'components/list';
+@import 'components/breadcrumb';
+@import 'components/aside';
+@import 'components/media';
+@import 'components/select2';
+@import 'components/table';
+@import 'components/tinymce';
+@import 'components/typeahead';
+@import 'components/prefooter';
+@import 'components/modal';
+@import 'components/comment';
+@import 'components/filters';
+
+@import 'partials/header';
+@import 'partials/footer';
+
+@import 'styles';

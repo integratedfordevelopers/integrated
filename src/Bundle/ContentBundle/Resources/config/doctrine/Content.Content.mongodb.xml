@@ -1,0 +1,67 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <mapped-superclass
+        name="Integrated\Bundle\ContentBundle\Document\Content\Content"
+        repository-class="Integrated\Bundle\ContentBundle\Document\Content\ContentRepository"
+        collection="content"
+        inheritance-type="SINGLE_COLLECTION">
+
+        <field fieldName="id" id="true" strategy="UUID" />
+        <field fieldName="slug" type="string" unique="true" sparse="true" />
+        <field fieldName="contentType" type="string" index="true" />
+        <field fieldName="createdAt" type="date" />
+        <field fieldName="updatedAt" type="date" />
+        <field fieldName="published" type="boolean" />
+        <field fieldName="disabled" type="boolean" />
+        <field fieldName="customFields" type="hash" />
+
+        <embed-one
+            field="publishTime"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime" />
+
+        <embed-one
+            field="metadata"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata" />
+
+        <embed-one
+            field="customFields"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomFields" />
+
+        <embed-many
+            field="relations"
+            target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation" />
+
+        <reference-one
+            field="primaryChannel"
+            target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel"
+        />
+
+        <reference-many
+            field="channels"
+            target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel" />
+
+        <discriminator-field name="class" />
+        
+        <lifecycle-callbacks>
+            <lifecycle-callback type="preUpdate" method="updateUpdatedAtOnPreUpdate"/>
+            <lifecycle-callback type="preUpdate" method="updatePublishTimeOnPreUpdate"/>
+            <lifecycle-callback type="prePersist" method="updatePublishTimeOnPreUpdate"/>
+        </lifecycle-callbacks>
+
+        <indexes>
+            <index>
+                <key name="class" order="asc"/>
+            </index>
+            <index>
+                <key name="relations.references.$id" order="asc"/>
+                <key name="class" order="asc"/>
+            </index>
+        </indexes>
+        
+
+    </mapped-superclass>
+
+</doctrine-mongo-mapping>

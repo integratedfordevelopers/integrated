@@ -1,0 +1,25 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\ContentBundle\Document\Relation\Relation" collection="relation">
+
+        <field fieldName="id" id="true" strategy="NONE" />
+        <field fieldName="name" type="string" index="true" />
+        <field fieldName="type" type="string" />
+        <field fieldName="multiple" type="boolean" />
+        <field fieldName="required" type="boolean" />
+        <field fieldName="createdAt" type="date" />
+
+        <reference-many
+                field="sources"
+                target-document="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" />
+
+        <reference-many
+                field="targets"
+                target-document="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" />
+
+    </document>
+
+</doctrine-mongo-mapping>

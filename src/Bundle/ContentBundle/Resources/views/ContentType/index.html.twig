@@ -1,0 +1,83 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="active">
+                    {% trans %}Content types{% endtrans %}
+                </li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown" role="button" id="drop_1">{% trans %}Create new{% endtrans %} <b class="caret"></b></a>
+                    <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
+                        {% for type in documentTypes %}
+                            {% if type.type %}
+                                <li role="presentation">
+                                    <a href="{{ path('integrated_content_content_type_new') }}?class={{ type.class }}">
+                                        {{ type.type }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+
+            <section class="section-white section-padding section-shadow section-radius">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans %}ID{% endtrans %}</th>
+                            <th>{% trans %}Name{% endtrans %}</th>
+                            <th>{% trans %}Document type{% endtrans %}</th>
+                            <th>{% trans %}Created{% endtrans %}</th>
+                            <th>{% trans %}Actions{% endtrans %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for document in documents %}
+                        <tr>
+                            <td>
+                                {{ document.id }}
+                            </td>
+                            <td>
+                                <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}">
+                                    {{ document.name }}
+                                </a>
+                            </td>
+                            <td>
+                                {% for type in documentTypes %}
+                                    {% if type.class == document.class %}
+                                        {{ type.type }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {{ document.createdAt|localizeddate("medium", "none") }}
+                            </td>
+                            <td>
+                                <a href="{{ path('integrated_content_content_type_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
+                                    {{ icon('pencil') }}
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4">
+                                {% trans %}No content types added{% endtrans %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+{% endblock %}

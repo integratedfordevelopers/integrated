@@ -1,0 +1,37 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+
+    {% block crumbs %}
+        <ol class="breadcrumb">
+            <li>
+                <a href="{{ path('integrated_content_content_index') }}">{% trans %}Home{% endtrans %}</a>
+            </li>
+            <li class="active">{{ content }} {% trans %}used by{% endtrans %}</li>
+        </ol>
+    {% endblock %}
+
+    <div class="content_columns_holder">
+        <div class="col-sm-8 content_column">
+            <div class="content_column_inner">
+                {% for content in pagination %}
+                    <div class="item_row">
+                        <h3 class="title">
+                            <a href="{{ path('integrated_content_content_edit', {id: content.id}) }}">
+                                {{ content }}
+                            </a>
+                        </h3>
+                    </div>
+                {% else %}
+                    <div class="item_row">
+                        <p class="text-danger">{% trans %}No items found{% endtrans %}</p>
+                    </div>
+                {% endfor %}
+                <div class="item_row">
+                    <div class="pull-right">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

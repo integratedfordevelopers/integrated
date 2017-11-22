@@ -1,0 +1,38 @@
+/* BREADCRUMB */
+.breadcrumb-holder {
+	background: $color-alabaster;
+	border-bottom: 1px solid $color-gallery;
+	padding: 25px 0;
+	margin-bottom: 20px;
+	@include respond-to(phones) {
+		padding: 15px 0;
+	}
+}
+.breadcrumb {
+	margin-bottom: 0;
+	padding: 0;
+	background: transparent;
+	>li {
+		color: $color-dusty-gray;
+		margin-right: 10px;
+		&:last-child {
+			margin-right: 0;
+		}
+		>a {
+			color: $color-dove-gray;
+			text-decoration: underline;
+			&:hover {
+				text-decoration: none;
+				color: $color-link-hover;
+			}
+		}
+	}
+	>li + li {
+		&:before {
+			content: '>';
+			position: relative;
+			left: -5px;
+			color: $color-dove-gray;
+		}
+	}
+}

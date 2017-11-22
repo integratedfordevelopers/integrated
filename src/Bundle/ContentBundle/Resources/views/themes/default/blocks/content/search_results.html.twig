@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <div class="pull-right">
+            <span>
+                {{ pagination.paginationData.firstItemNumber }}-{{ pagination.paginationData.lastItemNumber }}
+            </span>
+            {% trans %}of about{% endtrans %}
+            <span>{{ pagination.getTotalItemCount }}</span>
+            {% trans %}results{% endtrans %}
+        </div>
+    </div>
+
+    <div class="panel-body">
+        <div class="media-holder">
+            {% for document in pagination %}
+                <div class="media">
+                    {% if document.cover|default %}
+                        <div class="media-left">
+                            <a title="{{ document.title }}" href="{{ integrated_url(document) }}">
+                                <img src="{{ integrated_image(document.cover).zoomCrop(150, 100) }}" alt="{{ document.title }}" />
+                            </a>
+                        </div>
+                    {% endif %}
+                    <div class="media-body">
+                        <p><a href="{{ integrated_url(document) }}" class="media-red-title">{{ document.title }}</a></p>
+                        <p>{{ document.intro[0]|default(document.content[0])|striptags }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {{ knp_pagination_render(pagination) }}
+    </div>
+</div>
+

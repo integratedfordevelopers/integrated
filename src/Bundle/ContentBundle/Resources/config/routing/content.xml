@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+	<route id="integrated_content_content_index" path="/" methods="GET, POST">
+		<default key="_controller">IntegratedContentBundle:Content:index</default>
+        <option key="expose">true</option>
+	</route>
+
+	<route id="integrated_content_content_new" path="/new">
+		<default key="_controller">IntegratedContentBundle:Content:new</default>
+		<option key="expose">true</option>
+	</route>
+
+	<route id="integrated_content_content_new_rest" path="/" methods="POST">
+		<default key="_controller">IntegratedContentBundle:Content:new</default>
+	</route>
+
+	<route id="integrated_content_content_media_types" path="/media_types/{filter}"  methods="GET">
+		<default key="_controller">IntegratedContentBundle:Content:mediaTypes</default>
+		<default key="filter">null</default>
+		<option key="expose">true</option>
+	</route>
+
+	<route id="integrated_content_content_edit" path="/{id}"  methods="GET">
+		<default key="_controller">IntegratedContentBundle:Content:edit</default>
+	</route>
+
+	<route id="integrated_content_content_edit_rest" path="/{id}" methods="PUT">
+		<default key="_controller">IntegratedContentBundle:Content:edit</default>
+	</route>
+
+	<route id="integrated_content_content_delete" path="/{id}/delete">
+		<default key="_controller">IntegratedContentBundle:Content:delete</default>
+	</route>
+
+	<route id="integrated_content_content_delete_rest" path="/{id}" methods="DELETE">
+		<default key="_controller">IntegratedContentBundle:Content:delete</default>
+	</route>
+
+    <route id="integrated_content_content_used_by" path="/{id}/used-by"  methods="GET">
+        <default key="_controller">IntegratedContentBundle:Content:usedBy</default>
+    </route>
+
+    <route id="integrated_content_content_show" path="/{id}/show"  methods="GET">
+        <default key="_controller">IntegratedContentBundle:Content:show</default>
+    </route>
+
+</routes>

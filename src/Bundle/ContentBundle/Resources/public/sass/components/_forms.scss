@@ -1,0 +1,247 @@
+/* FORMS */
+.form-control {
+	box-shadow: none;
+	border-radius: 0px;
+	border-color: $color-silver;
+	@include custom-placeholder($color: $input-color-placeholder, $font-size: $input-font-size-placeholder, $line-height: $input-line-height-placeholder);
+	&:focus {
+		box-shadow: none;
+		border-color: $color-silver;
+		@include custom-placeholder($color: $input-color-placeholder-focus, $font-size: $input-font-size-placeholder, $line-height: $input-line-height-placeholder);
+	}
+	&.field-transparent {
+		border: none;
+		border-radius: 3px;
+		&:focus {
+			border: 1px solid $color-silver;
+		}
+	}
+}
+
+.form-group {
+	&:last-child {
+		margin-bottom: 0;
+	}
+	&.large-group {
+		margin-bottom: 0;
+		&:first-of-type {
+			.form-control {
+				border-top: none;
+			}
+		}
+		.form-control {
+			height: 50px;
+			border-bottom: none;
+			@include respond-to(phones) {
+				height: 34px; 
+			}
+		}
+		label {
+			padding-top: 13px;
+		}
+	}
+	&.arrow-group {
+		.select2-container {
+			position: relative;
+			&:before {
+				font-family: 'fontello';
+				@extend .integrate-icon-down;
+				position: absolute;
+				right: 15px;
+				top: 50%;
+				margin-top: -12px;
+			}
+		}
+	}
+}
+
+label {
+	font-weight: $font-medium;
+}
+
+.form-horizontal {
+	label {
+		&.control-label {
+			text-align: left;
+			padding-left: 30px;
+			@include respond-to(phones) {
+				padding-left: 15px;
+			}
+		}
+	}
+}
+
+
+.nav-form-holder {
+	@include clearfix();
+	@include display(flex);
+	flex-direction: row-reverse;
+	.nav-form-inner {
+		@include transition(300ms);
+		width: 300px;
+		@extend .pull-right;
+		&.full-width {
+			width: 100%;
+		}
+		@include respond-to(phones) {
+	  		width: 100%;
+	  		float: none !important;
+	  	}
+	}
+	.form-group {
+		display: block;
+	}
+	.form-control {
+		display: block;
+		width: 100%;
+	}
+	.search-form {
+		width: 100%;
+		@include respond-to(phones) {
+			padding: 8px 0;
+			margin: 0;
+			border: none;
+			box-shadow: none;
+		}
+		.form-control {
+			line-height: inherit;
+		}
+	}
+}
+.search-form {
+	button {
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 100%;
+	}
+	.form-control {
+		padding-right: 30px;
+		border: none;
+		box-shadow: none;
+		border-radius: 6px;
+		@include custom-placeholder($color: $input-color-placeholder, $font-size: $input-font-size-placeholder, $line-height: $input-line-height-placeholder);
+		&:focus {
+			box-shadow: none;
+			@include custom-placeholder($color: $input-color-placeholder-focus, $font-size: $input-font-size-placeholder, $line-height: $input-line-height-placeholder);
+		}
+	}
+}
+
+.input-group-holder {
+	.item {
+		@include respond-to(phones) {
+			margin-bottom: 20px;
+		}
+		&:last-child {
+			margin-bottom: 0;
+		}
+		&:first-child {
+			.form-control {
+				border-right: none;
+				@include respond-to(phones) {
+					border-right: 1px solid $color-silver; 
+				}
+			}
+		}
+		&:last-child {
+			.form-control {
+				border-left: none;
+				@include respond-to(phones) {
+					border-left: 1px solid $color-silver; 
+				}
+			}
+		}
+	}
+}
+
+.selected-pictures-holder {
+	@include respond-to(phones) {
+		margin-top: 10px;
+	}
+	.pictures-holder-item {
+		@include clearfix();
+		display: table;
+		width: 100%;
+		table-layout: fixed;
+		a {
+			display: table-cell;
+			width: 100%;
+			position: relative;
+			&:before, &:after {
+				@include transition(250ms);
+				opacity: 0;
+			}
+			&:hover {
+				&:after, &:before {
+					opacity: 1;
+				}
+			}
+			&:before {
+				font-family: 'fontello';
+				@extend .integrate-icon-cancel-circled;
+				color: $color-white;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 16px;
+				height: 16px;
+				margin-top: -8px;
+				margin-left: -4px;
+				z-index: 10;
+			}
+			&:after {
+				content: '';
+				background: rgba($color-black, .2);
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+			}
+			img {
+				max-width: 100%;
+			}
+		}
+	}
+}
+
+/* List group form */
+.form-list-group {
+	border: 1px solid $color-silver;
+	border-bottom: none;
+	margin-bottom: 0;
+	padding: 10px 15px;
+	&.form-list-group-footer {
+		padding-top: 20px;
+		padding-bottom: 20px;
+		text-align: center;
+	}
+	&:first-child {
+		border-radius: 4px 4px 0 0;
+	}
+	&:last-child {
+		border: 1px solid $color-silver;
+		border-radius: 0 0 4px 4px;
+	}
+	label {
+		margin-bottom: 0;
+	}
+	input {
+		margin-right: 10px;
+	}
+}
+
+.input-group-author {
+    height: 100%;
+
+    .btn {
+        padding: 0px 10px;
+        color: $color-mine-shaft;
+        height: 100%;
+        box-sizing: content-box;
+        border: 1px solid $color-silver;
+    }
+}

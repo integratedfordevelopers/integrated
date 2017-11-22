@@ -1,0 +1,427 @@
+{% use "IntegratedFormTypeBundle:Form:form_div_layout.html.twig" %}
+
+{% block integrated_content_type_default_fields_row %}
+    {{ form_row(form, {widget_col: '12'}) }}
+{% endblock %}
+
+{% block integrated_content_type_default_fields_widget %}
+{% spaceless %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th width="40%">{% trans %}Fields{% endtrans %}</th>
+            <th>{% trans %}Required{% endtrans %}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for field in form %}
+            <tr>
+                <td>
+                    {% set element = field.enabled  %}
+                    {{ block('content_type_checkbox_widget') }}
+                </td>
+                <td>
+                    <div class="checkbox">
+                        <label>{{ form_widget(field.required) }}</label>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endspaceless %}
+{% endblock %}
+
+
+{% block translatable_text_widget %}
+{% spaceless %}
+    {% for field in form %}
+        <div class="input-group" style="margin-bottom: 15px">
+            <span class="input-group-addon">
+                {{ field.vars.label }}
+            </span>
+            {{ form_widget(field) }}
+        </div>
+    {% endfor %}
+{% endspaceless %}
+{%  endblock %}
+
+{% block translatable_textarea_widget %}
+    {% spaceless %}
+        {% for field in form %}
+            <div class="input-group" style="margin-bottom: 15px">
+            <span class="input-group-addon">
+                {{ field.vars.label }}
+            </span>
+                {{ form_widget(field) }}
+            </div>
+        {% endfor %}
+    {% endspaceless %}
+{%  endblock %}
+
+{% block content_type_checkbox_widget %}
+    {% spaceless %}
+        <div class="checkbox">
+            {% if element.vars.label is not same as(false) %}
+                <label for="{{ element.vars.id }}">
+                    <input id="{{ element.vars.id }}" name="{{ element.vars.full_name  }}" type="checkbox" {% if element.vars.value is defined %} value="{{ element.vars.value }}"{% endif %}{% if element.vars.checked %} checked="checked"{% endif %}/>
+                    {{ element.vars.label|trans({}, translation_domain) }}
+                </label>
+            {% else %}
+                {{ form_widget(field) }}
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block content_type_radio_widget %}
+    {% spaceless %}
+        <div class="radio">
+            {% if element.vars.label is not same as(false) %}
+                <label for="{{ element.vars.id }}">
+                    <input id="{{ element.vars.id }}" name="{{ element.vars.full_name  }}" type="radio" {% if element.vars.value is defined %} value="{{ element.vars.value }}"{% endif %}{% if element.vars.checked %} checked="checked"{% endif %}/>
+                    {{ element.vars.label|trans({}, translation_domain) }}
+                </label>
+            {% else %}
+                {{ form_widget(field) }}
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_relations_row %}
+    <div class="form-relations" style="display: none;">
+        {{ block('form_row') }}
+    </div>
+{% endblock %}
+
+{% block integrated_file_row %}
+    {% spaceless %}
+        <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
+            {{ form_label(form) }}
+            <div class="col-sm-8">
+                {% set preview = form.vars.preview|default %}
+                {% if preview %}
+                    <a href="{{ preview }}" target="_blank" style="display: block; margin-bottom: 6px;">
+                        {% trans %}Download{% endtrans %}
+                    </a>
+                {% endif %}
+                {{ form_widget(form.file) }}
+                {% if preview %}
+                    <div class="checkbox">
+                        <label>
+                            {{ form_widget(form.remove) }}
+                            {%  if (form.remove.vars.label) %}
+                                {{ form.remove.vars.label }}
+                            {% else %}
+                                {% trans %}Remove{% endtrans %}
+                            {%  endif %}
+                        </label>
+                    </div>
+                {% endif %}
+                {{ form_errors(form.file) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_image_row %}
+    {% spaceless %}
+        <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
+            {{ form_label(form) }}
+            <div class="col-sm-8">
+                {% set preview = form.vars.preview|default %}
+                {% if preview %}
+                    <img style="max-width: 200px; margin-bottom: 10px;" src="{{ image(preview) }}" />
+                {% endif %}
+                {{ form_widget(form.file) }}
+                {% if preview %}
+                    <div class="checkbox">
+                        <label>
+                            {{ form_widget(form.remove) }}
+                            {%  if (form.remove.vars.label) %}
+                                {{ form.remove.vars.label }}
+                            {% else %}
+                                {% trans %}Remove{% endtrans %}
+                            {%  endif %}
+                        </label>
+                    </div>
+                {% endif %}
+                {{ form_errors(form.file) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_type_channels_widget  %}
+    {% for element in form %}
+        {% set label_attr = element.vars.label_attr|merge({'class': (element.vars.label_attr.class|default('') ~ ' sr-only')|trim}) %}
+        {{ form_row(element, {widget_col: '12', label_col: '12', label_attr: label_attr}) }}
+    {% endfor %}
+{% endblock %}
+
+{% block integrated_content_type_channel_collection_widget %}
+{% spaceless %}
+    <table class="table">
+        <colgroup>
+            <col style="width:40%" />
+            <col />
+        </colgroup>
+
+        <thead>
+            <tr>
+                <th>{% trans %}Default{% endtrans %}</th>
+                <th>{% trans %}Enforce{% endtrans %}</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for channel in form %}
+            <tr>
+                <td>
+                    {% set element = channel.selected  %}
+                    {{ block('content_type_checkbox_widget') }}
+                </td>
+                <td>
+                    <div class="checkbox">
+                        <label>{{ form_widget(channel.enforce) }}</label>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_author_widget  %}
+
+    <div class="input-group input-group-author">
+        <select multiple id="{{ id }}" name="{{ full_name }}[persons][]" class="col-md-12 integrated_select2" style="width: 100%; padding: 0;">
+            {% if value is not empty %}
+                {% for item in value %}
+                    <option selected value="{{ item.id }}">{{ item.text }}</option>
+                {% endfor %}
+            {% endif %}
+        </select>
+        <span class="input-group-btn">
+            <button id="types-btn" class="btn btn-default" type="button">
+                <span class="caret"></span>
+            </button>
+        </span>
+    </div>
+
+    <div style="clear: both;"></div>
+
+    <div id="authorTypes">
+        {% if value is not empty %}
+            {% for item in value %}
+                <div id="type_{{ item.id }}" style="margin-top: 10px;" class="input-group input-group"><span class="input-group-addon">{{ item.text }}</span><input type="text" class="form-control type-text" name="{{ full_name }}[types][{{ item.id }}]" value="{{ item.type }}" placeholder="Type" /></div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function(event) {
+
+                $(".change-name-author").each(function() {
+                    var id = $(this).attr('name');
+
+                    $(this).attr('name', '{{ full_name }}[types][' + id + ']');
+                });
+
+                $("#{{ id }}").select2({
+                    multiple: true,
+                    ajax: {
+                        url: "{{ path('integrated_content_content_index', { 'contenttypes': contentTypes })|raw }}",
+                        dataType: 'json',
+                        data: function (term, page) {
+                            return {
+                                q: term.term,
+                                _format: 'json',
+                                page_limit: 10
+                            };
+                        },
+                        processResults: function (data) {
+                            return {
+                                results: $.map(data.items, function (item) {
+                                    return {
+                                        text: item.title,
+                                        id: item.id
+                                    }
+                                })
+                            };
+                        }
+                    },
+                    dropdownCssClass: "bigdrop"
+                }).on("change", function(e) {
+                    if(e.hasOwnProperty('added')) {
+                    }
+
+                    if(e.hasOwnProperty('removed')) {
+                        $("#type_" + e.removed.id).remove();
+                    }
+                }).on("select2:select", function(e) {
+                    var data = e.params.data;
+                    $("#authorTypes").append('<div id="type_' + data.id + '" style="margin-top: 10px;" class="input-group input-group"><span class="input-group-addon">' + data.text + '</span><input type="text" class="form-control type-text" name="{{ full_name }}[types][' + data.id + ']" placeholder="Type" /></div>');
+
+                }).on("select2:unselect", function(e) {
+                    var id = e.params.data.id;
+                    $("#type_" + id).remove();
+                });
+
+                $('#types-btn').on("click", function(e) {
+                    $('#authorTypes').toggle();
+                });
+
+                {% if value is not empty %}
+                {% autoescape false %}
+                $("#{{ id }}").select2('data', {{ value|json_encode() }});
+                {% endautoescape %}
+                {% endif %}
+            });
+    </script>
+{% endblock %}
+
+{% block integrated_publishtime_widget  %}
+{% spaceless %}
+    <div class="col-sm-6">
+        <div class="form-group">
+            {{ form_widget(form.startDate) }}
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="form-group">
+            {{ form_widget(form.endDate) }}
+        </div>
+    </div>
+
+    {{ form_errors(form.startDate) }}
+    {{ form_errors(form.endDate) }}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_image_choice_widget  %}
+{% spaceless %}
+    {{ form(form) }}
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function(e) {
+
+            $('#{{ form.vars.id }}').select2({
+                ajax: {
+                    url: '{{ path('integrated_content_content_index', { 'contenttypes[]': 'image' }) }}',
+                    dataType: 'json',
+                    data: function (term, page) {
+                        return {
+                            q: term,
+                            page: page,
+                            limit: 20,
+                            _format: 'json'
+                        };
+                    },
+                    results: function (data, page) {
+                        return {
+                            results: $.map(data.items, function (item) {
+                                return {
+                                    id: item.id,
+                                    text: item.title
+                                }
+                            }),
+                            more: (page * data.pagination.numItemsPerPage) < data.pagination.numFound
+                        };
+                    }
+                },
+                initSelection: function (element, callback) {
+                    if (element.val()) {
+                        $.ajax('{{ path('integrated_content_content_index') }}' + element.val() + '/show?_format=json', {
+                            dataType: 'json'
+                        }).done(function(data) {
+                            callback({id: data.id, text: data.title});
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+{% endspaceless %}
+{% endblock %}
+
+{% block _channel_domains_entry_widget %}
+    {% spaceless %}
+        {% set attr = attr|merge({ 'class': (attr.class|default('') ~ ' form-control')|trim }) %}
+        <input type="text" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+        <label>
+            <input class="primary-domain-radio" type="radio" name="check_primary_domain" disabled> {{ 'Primary domain'|trans }}
+        </label>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_actions_row %}
+    {% spaceless %}
+        <section class="section-white prefooter-holder">
+            <div class="container text-center">
+                {{ form_widget(form) }}
+            </div><!-- container -->
+        </section>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_primary_channel_row %}
+    <div class="hidden">
+        {{ form_widget(form) }}
+    </div>
+
+    {% integrated_javascripts mode='append'
+    'bundles/integratedcontent/js/primary_channel.js' %}
+    {% endintegrated_javascripts %}
+{% endblock %}
+
+{% block integrated_contact_persons_widget %}
+    {% integrated_javascripts mode='append'
+    'bundles/integratedcontent/js/contact_persons.js' %}
+    {% endintegrated_javascripts %}
+
+    {{ block('integrated_collection_widget') }}
+{% endblock %}
+
+{% block integrated_content_bulk_actions_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block integrated_content_bulk_action_row %}
+{% spaceless %}
+    <div class="form-group">
+
+        <div class="col-sm-3" data-action-toggle="1">
+            {{ form_row(form.active, {'no_form_group': true}) }}
+        </div>
+
+        <div class="col-sm-9"{% if not form.active.vars['data'] %} style=""{% endif %}>
+            {{ form_widget(form.action) }}
+        </div>
+
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_bulk_action_readonly_row %}
+{% spaceless %}
+    <div class="form-group">
+
+        {{ form_label(form.active) }}
+
+        <div class="col-sm-9">
+            {{ form_widget(form.action) }}
+        </div>
+
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_bulk_action_relation_widget %}
+{% spaceless %}
+    {{ form_widget(form.references, {'attr': {'data-value': form.references.vars.value|json_encode}}) }}
+{% endspaceless %}
+{% endblock %}

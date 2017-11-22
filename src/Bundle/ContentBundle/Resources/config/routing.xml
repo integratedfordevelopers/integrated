@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+	<import resource="@IntegratedContentBundle/Resources/config/routing/content.xml" prefix="/content/" />
+    <import resource="@IntegratedContentBundle/Resources/config/routing/content_type.xml" prefix="/contenttype/" />
+    <import resource="@IntegratedContentBundle/Resources/config/routing/channel.xml" prefix="/channel/" />
+    <import resource="@IntegratedContentBundle/Resources/config/routing/relation.xml" prefix="/relation/" />
+    <import resource="@IntegratedContentBundle/Resources/config/routing/search_selection.xml" prefix="/search-selection/" />
+    <import resource="@IntegratedContentBundle/Resources/config/routing/search.xml" />
+    <import resource="@IntegratedContentBundle/Resources/config/routing/bulk.xml"  prefix="/bulk/"/>
+
+    <import resource="@FOSJsRoutingBundle/Resources/config/routing/routing.xml" />
+    <import resource="@IntegratedBlockBundle/Resources/config/routing.xml" />
+
+</routes>

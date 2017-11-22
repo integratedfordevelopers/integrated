@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<converter-mapping>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="title">name</string>
+                <string key="title_sort">name</string>
+
+                <string key="content">description</string>
+                <string key="description">description</string>
+
+                <string key="email_text">email</string>
+
+                <array>
+                    <string key="name">phonenumber_text</string>
+                    <array>
+                        <string key="phonenumbers" />
+                    </array>
+                </array>
+
+                <array>
+                    <string key="name">address_text</string>
+                    <array>
+                        <array key="addresses">
+                            <string>@address1</string>
+                            <string>@address2</string>
+                            <string>@zipcode</string>
+                            <string>@city</string>
+                            <string>@state</string>
+                            <string>@country</string>
+                        </array>
+                    </array>
+                </array>
+
+                <string key="address_name">addresses.first.name</string>
+                <string key="address_address1">addresses.first.address1</string>
+                <string key="address_address2">addresses.first.address2</string>
+                <string key="address_zipcode">addresses.first.zipcode</string>
+                <string key="address_city">addresses.first.city</string>
+                <string key="address_state">addresses.first.state</string>
+                <string key="address_country">addresses.first.country</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">title</string>
+                    <array>
+                        <string>@prefix</string>
+                        <string>@firstName</string>
+                        <string>@lastName</string>
+                    </array>
+                </array>
+
+                <array>
+                    <string key="name">title_sort</string>
+                    <array>
+                        <string>@prefix</string>
+                        <string>@firstName</string>
+                        <string>@lastName</string>
+                    </array>
+                </array>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/person/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+        <type name="integrated.storage">
+
+            <options>
+
+                <string key="cover">cover</string>
+
+            </options>
+
+        </type>
+
+    </class>
+
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">url</string>
+                    <array>
+                        <string key="separator" />
+                        <string>/content/company/</string>
+                        <string>@slug</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+        <type name="integrated.storage">
+            <options>
+                <string key="logo">logo</string>
+            </options>
+        </type>
+
+    </class>
+
+</converter-mapping>

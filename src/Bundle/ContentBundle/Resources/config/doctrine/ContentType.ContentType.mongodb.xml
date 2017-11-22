@@ -1,0 +1,24 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\ContentBundle\Document\ContentType\ContentType" collection="content_type">
+
+        <field fieldName="id" id="true" strategy="NONE" />
+        <field fieldName="class" type="string" />
+        <field fieldName="name" type="string" />
+        <field fieldName="options" type="hash" />
+        <field fieldName="createdAt" type="date" />
+
+        <embed-many field="fields">
+            <discriminator-map>
+                <discriminator-mapping value="default" class="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field" />
+                <discriminator-mapping value="custom" class="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField" />
+            </discriminator-map>
+            <default-discriminator-value value="default" />
+        </embed-many>
+
+    </document>
+
+</doctrine-mongo-mapping>
