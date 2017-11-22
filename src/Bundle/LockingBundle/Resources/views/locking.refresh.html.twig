@@ -1,0 +1,23 @@
+{% if lock %}
+
+<script type="application/javascript">
+
+    (function($, url, id) {
+
+        var execute = function() {
+            setTimeout(function() { refresh(); }, 5000); // 5 sec
+        };
+
+        var refresh = function() {
+            $.get(url, {lock: id}).done(execute);
+        };
+
+//        $.ready(function(){
+            execute();
+//        });
+
+    })(jQuery, "{{ path('integrated_locking_api_refresh')|e('js') }}", "{{ lock.id|e('js') }}");
+
+</script>
+
+{% endif %}

@@ -1,0 +1,31 @@
+{
+    "name": "integrated/locking-bundle",
+    "type": "symfony-bundle",
+    "description": "Provides an interface to manage database locks and keep a lock active by Ajax request",
+    "keywords": ["Integrated", "locking"],
+    "homepage": "http://www.integratedfordevelopers.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "~2.8 || ~3.0",
+        "integrated/library": "~0.7"
+    },
+    "require-dev": {
+        "doctrine/dbal": "~2.5",
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload":{
+        "psr-4":{
+            "Integrated\\Bundle\\LockingBundle\\": ""
+        }
+    }
+}
