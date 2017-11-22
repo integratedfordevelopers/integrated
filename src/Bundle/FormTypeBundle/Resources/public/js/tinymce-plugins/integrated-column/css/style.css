@@ -1,0 +1,7 @@
+[class*="col-sm-"], [class*="col-md-"], [class*="col-lg-"]{
+    border: dotted 1px #aaa;
+}
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
