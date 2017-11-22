@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_page.layout_locator" class="Integrated\Bundle\PageBundle\Locator\LayoutLocator">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+        </service>
+
+        <service id="integrated_page.theme_resolver" class="Integrated\Bundle\PageBundle\Resolver\ThemeResolver">
+            <argument type="service" id="integrated_channel.config.resolver" />
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+        </service>
+
+        <service id="integrated_page.grid.factory" class="Integrated\Bundle\PageBundle\Grid\GridFactory">
+            <argument type="service" id="integrated_block.block_repository" />
+        </service>
+
+        <service id="integrated_page.services.content_type_controller_manager" class="Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager" />
+
+        <service id="integrated_page.services.content_type_page" class="Integrated\Bundle\PageBundle\Services\ContentTypePageService">
+            <argument type="service" id="integrated_page.services.content_type_controller_manager" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+        </service>
+
+        <service id="integrated_page.services.route_cache" class="Integrated\Bundle\PageBundle\Services\RouteCache">
+            <argument type="string">%kernel.cache_dir%</argument>
+        </service>
+
+        <service id="integrated_page.services.url_resolver" class="Integrated\Bundle\PageBundle\Services\UrlResolver">
+            <argument type="service" id="integrated_page.services.content_type_controller_manager" />
+            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="router.default" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+        </service>
+
+        <service id="integrated_page.services.solr_url_extractor" class="Integrated\Bundle\PageBundle\Services\SolrUrlExtractor">
+            <argument type="service" id="integrated_content.channel.context" />
+            <argument type="service" id="router.default" />
+        </service>
+
+    </services>
+
+</container>

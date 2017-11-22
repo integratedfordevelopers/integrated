@@ -1,0 +1,28 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <mapped-superclass name="Integrated\Bundle\PageBundle\Document\Page\AbstractPage" collection="page" inheritance-type="SINGLE_COLLECTION">
+
+        <field fieldName="id" id="true" strategy="UUID" />
+        <field fieldName="path" type="string" />
+        <field fieldName="layout" type="string" />
+        <field fieldName="createdAt" type="date" />
+        <field fieldName="updatedAt" type="date" />
+
+        <embed-many field="grids" target-document="Integrated\Bundle\PageBundle\Document\Page\Grid\Grid" />
+
+        <reference-one field="channel" target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel" />
+
+        <discriminator-field name="class" />
+
+        <discriminator-map>
+            <discriminator-mapping value="Page" class="Page" />
+            <discriminator-mapping value="ContentTypePage" class="ContentTypePage" />
+        </discriminator-map>
+
+        <default-discriminator-value value="Page" />
+
+    </mapped-superclass>
+
+</doctrine-mongo-mapping>

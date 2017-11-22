@@ -1,0 +1,14 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\PageBundle\Document\Page\Page">
+
+        <field fieldName="title" type="string" />
+        <field fieldName="description" type="string" />
+        <field fieldName="disabled" type="boolean" />
+        <field fieldName="locked" type="boolean" />
+
+    </document>
+
+</doctrine-mongo-mapping>
