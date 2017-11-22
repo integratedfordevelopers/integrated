@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_storage.metadata_target">Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_storage.manager" class="Integrated\Bundle\StorageBundle\Storage\Manager">
+            <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.resolver" />
+            <argument type="service" id="logger" on-invalid="ignore"/>
+        </service>
+
+        <service id="integrated_storage.resolver" class="Integrated\Bundle\StorageBundle\Storage\Resolver">
+            <!--
+                The first two arguments of this service are injected in the bundle extension (see DependencyInjection)
+             -->
+            <argument />
+            <argument />
+
+            <argument type="service" id="integrated_storage.registry" />
+        </service>
+
+        <service id="integrated_storage.decision" class="Integrated\Bundle\StorageBundle\Storage\Decision">
+            <argument type="service" id="integrated_storage.registry" />
+            <!--
+                Second argument is injected in the bundle extension (see DependencyInjection)
+            -->
+            <argument />
+        </service>
+
+        <service id="integrated_storage.registry" class="Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry">
+            <argument type="service" id="knp_gaufrette.filesystem_map" />
+        </service>
+
+        <service id="integrated_storage.metadata" class="Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactory">
+            <factory class="Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactory" method="create" />
+
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="string">%integrated_storage.metadata_target%</argument>
+        </service>
+
+        <service id="integrated_storage.filesystem_delete" class="Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove" />
+
+        <service id="integrated_storage.cache_app" class="Integrated\Bundle\StorageBundle\Storage\Cache\AppCache">
+            <argument>%kernel.cache_dir%</argument>
+            <argument type="service" id="integrated_storage.manager" />
+        </service>
+
+        <service id="integrated_storage.intent_writer" class="Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer">
+            <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="integrated_storage.decision" />
+            <argument type="service" id="integrated_storage.metadata" />
+        </service>
+
+        <service id="integrated_storage.file_locator" class="Integrated\Bundle\StorageBundle\Locator\StorageLocator">
+            <argument type="service" id="kernel" />
+            <argument>%kernel.root_dir%/Resources</argument>
+
+            <argument type="collection" />
+
+            <argument type="service" id="integrated_storage.cache_app" />
+
+        </service>
+    </services>
+
+</container>

@@ -1,0 +1,33 @@
+{% block integrated_file_dropzone_row %}
+    {% spaceless %}
+        <div class="form-group{% if not form.vars.valid %} has-error{% endif %}">
+            {{ form_label(form) }}
+            <div class="col-sm-8">
+                {% set changeInput %}
+                    <div class="jFiler-input-inner dropzone-empty">
+                        <div class="jFiler-input-icon">
+                            <i class="icon-jfi-cloud-up-o"></i>
+                        </div>
+                        <div class="jFiler-input-text">
+                            <h3>{{ "Drag&Drop " ~ (type|first in ['a', 'e', 'i', 'u', 'o'] ? 'an ' : 'a ')  ~ type ~ " here"|trans }}</h3>
+                            <span>{% trans %}or click to browse{% endtrans %}</span>
+                        </div>
+                    </div>
+                {% endset %}
+
+                {% set options = options|merge({'changeInput': changeInput}) %}
+
+                <div class="jFiler-input-dragDrop integrated-dropzone {% if required %}required{% endif %}" data-options="{{ options|json_encode }}">
+                    {{ form_widget(form.file) }}
+                    {{ form_widget(form.remove) }}
+                </div>
+
+                {{ form_errors(form.file) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_image_dropzone_row %}
+    {{ block('integrated_file_dropzone_row') }}
+{% endblock %}

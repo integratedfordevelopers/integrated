@@ -1,0 +1,18 @@
+Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
+  Image:
+    id:          image
+    name:        Image
+    class:       Integrated\Bundle\ContentBundle\Document\Content\Image
+    fields:      <classfields($class, ['title'])>
+
+  File:
+    id:          file
+    name:        File
+    class:       Integrated\Bundle\ContentBundle\Document\Content\File
+    fields:      <classfields($class, ['title'])>
+
+  Video:
+    id:          video
+    name:        Video
+    class:       Integrated\Bundle\ContentBundle\Document\Content\Video
+    fields:      <classfields($class, ['title'])>

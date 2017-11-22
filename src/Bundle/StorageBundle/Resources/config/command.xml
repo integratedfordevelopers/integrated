@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_storage.command_filesystem_list" class="Integrated\Bundle\StorageBundle\Command\Filesystem\ListCommand">
+            <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.resolver" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_storage.command_filesystem_remove" class="Integrated\Bundle\StorageBundle\Command\Filesystem\RemoveCommand">
+            <argument type="service" id="integrated_storage.database" />
+            <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="integrated_storage.metadata" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_storage.command_add" class="Integrated\Bundle\StorageBundle\Command\Filesystem\AddCommand">
+            <argument type="service" id="integrated_storage.database" />
+            <argument type="service" id="integrated_storage.registry" />
+            <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="integrated_storage.decision" />
+            <argument type="service" id="integrated_storage.metadata" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_storage.command_migrate" class="Integrated\Bundle\StorageBundle\Command\MigrateCommand">
+            <argument type="service" id="integrated_storage.database" />
+            <argument type="service" id="integrated_storage.manager" />
+            <argument type="service" id="integrated_storage.metadata" />
+
+            <tag name="console.command" />
+        </service>
+
+    </services>
+
+</container>
