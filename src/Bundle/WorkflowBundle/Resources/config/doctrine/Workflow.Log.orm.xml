@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log" table="workflow_history">
+
+		<id name="id" column="id" type="integer">
+			<generator strategy="AUTO" />
+		</id>
+
+		<field name="timestamp" column="timestamp" type="datetime" />
+
+		<field name="user_id" column="user_id" type="string" length="50" nullable="true" />
+
+		<field name="user_class" column="user_class" type="string" length="255" nullable="true" />
+
+		<field name="comment" column="comment" type="text" nullable="true" />
+
+		<field name="deadline" column="deadline" type="datetime" nullable="true" />
+
+		<many-to-one field="owner" target-entity="Integrated\Bundle\WorkflowBundle\Entity\Workflow\State" inversed-by="logs" />
+
+		<many-to-one field="state" target-entity="Integrated\Bundle\WorkflowBundle\Entity\Definition\State" />
+
+    </entity>
+
+</doctrine-mapping>

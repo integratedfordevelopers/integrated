@@ -1,0 +1,55 @@
+{% extends 'IntegratedWorkflowBundle::layout.html.twig' %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+
+            <ul class="list-inline">
+                <li>
+                    <a href="{{ path('integrated_workflow_new') }}" role="button" id="drop_1">{% trans %}Create new{% endtrans %}</a>
+                </li>
+            </ul>
+
+            <section class="section-white section-padding section-shadow section-radius">
+
+                <table class="table table-striped table-hover">
+
+                    <colgroup>
+                        <col />
+                        <col style="width: 5em" />
+                    </colgroup>
+
+                    <thead>
+                        <tr>
+                            <th>Workflow</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for workflow in pager %}
+
+                        <tr>
+                            <td>{{ workflow.name }} <small>({{ workflow.id }})</small></td>
+                            <td>
+                                <a href="{{ path('integrated_workflow_edit', {'id': workflow.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a href="{{ path('integrated_workflow_delete', {'id': workflow.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                {{ knp_pagination_render(pager) }}
+
+            </section>
+
+        </div>
+    </div>
+
+{% endblock %}

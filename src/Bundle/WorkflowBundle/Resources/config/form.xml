@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<services>
+
+		<service id="integrated_workflow.form.definition.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionFormType">
+			<tag name="form.type" />
+		</service>
+
+		<service id="integrated_workflow.form.definition.permissions.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\PermissionsType">
+			<tag name="form.type" />
+		</service>
+
+		<service id="integrated_workflow.form.definition.state.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\StateType">
+			<tag name="form.type" />
+		</service>
+
+		<service id="integrated_workflow.form.definition.choice.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionType">
+			<argument type="service" id="integrated_workflow.repository.definition" />
+			<tag name="form.type" />
+		</service>
+
+		<service id="integrated_workflow.form.workflow.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowFormType">
+			<argument type="service" id="integrated_user.user.manager" />
+			<argument type="service" id="security.token_storage" />
+			<tag name="form.type" />
+		</service>
+
+		<service id="integrated_workflow.form.workflow.state.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowStateType">
+			<argument type="service" id="integrated_workflow.repository.definition" />
+			<tag name="form.type" />
+		</service>
+
+		<service id="integrated_workflow.form.delete.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\DeleteFormType">
+			<tag name="form.type" />
+		</service>
+
+	</services>
+
+</container>
