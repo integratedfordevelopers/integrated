@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_channel.form.proxy.type.class">Integrated\Common\Form\Type\ProxyType</parameter>
+
+        <parameter key="integrated_channel.form.actions.type.class">Integrated\Bundle\ChannelBundle\Form\Type\ActionsType</parameter>
+
+        <parameter key="integrated_channel.form.config.type.class">Integrated\Bundle\ChannelBundle\Form\Type\ConfigFormType</parameter>
+        <parameter key="integrated_channel.form.delete.type.class">Integrated\Bundle\ChannelBundle\Form\Type\DeleteFormType</parameter>
+
+        <parameter key="integrated_channel.form.channel.choice.type.class">Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_channel.form.actions.type" class="Integrated\Bundle\ChannelBundle\Form\Type\ActionsType">
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_channel.form.config.type" class="Integrated\Bundle\ChannelBundle\Form\Type\ConfigFormType">
+            <argument type="service" id="integrated_channel.adapter.registry" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_channel.form.delete.type" class="Integrated\Bundle\ChannelBundle\Form\Type\DeleteFormType">
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_channel.form.channel.choice.type" class="Integrated\Bundle\ChannelBundle\Form\Type\ChannelChoiceType">
+            <argument type="service" id="integrated_channel.repository.channel" />
+
+            <tag name="form.type" />
+        </service>
+
+    </services>
+
+</container>
