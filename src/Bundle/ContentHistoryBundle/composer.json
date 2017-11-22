@@ -1,0 +1,41 @@
+{
+    "name": "integrated/content-history-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Content History Bundle",
+    "keywords": ["Integrated", "content", "history"],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "ext-mongo": "~1.2",
+        "symfony/symfony": "~2.8 || ~3.0",
+        "symfony/framework-bundle": "~2.2",
+        "doctrine/mongodb": ">=1.0.0",
+        "doctrine/mongodb-odm": "*",
+        "doctrine/mongodb-odm-bundle": "~3.0",
+        "integrated/library": "~0.7",
+        "integrated/content-bundle": "~0.7"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload":{
+        "psr-4":{
+            "Integrated\\Bundle\\ContentHistoryBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.9-dev"
+        }
+    }
+}

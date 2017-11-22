@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="integrated_content_history_index" path="/{id}" methods="GET">
+        <default key="_controller">integrated_content_history.controller.content_history:indexAction</default>
+    </route>
+
+    <route id="integrated_content_history_show" path="/{id}/show" methods="GET">
+        <default key="_controller">integrated_content_history.controller.content_history:showAction</default>
+    </route>
+
+</routes>
