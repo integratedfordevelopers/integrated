@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_slug.slugger" class="Integrated\Bundle\SlugBundle\Slugger\Slugger" />
+
+        <service id="integrated_slug.metadata.annotation_driver" class="Integrated\Bundle\SlugBundle\Mapping\Driver\AnnotationDriver" public="false">
+            <argument type="service" id="annotation_reader" />
+        </service>
+
+        <service id="integrated_slug.metadata_factory" class="Metadata\MetadataFactory" public="false">
+            <argument type="service" id="integrated_slug.metadata.annotation_driver" />
+        </service>
+
+        <service id="integrated_slug.event_listener.sluggable_subscriber.slugger" class="Integrated\Bundle\SlugBundle\EventListener\SluggableSubscriber">
+            <argument type="service" id="integrated_slug.metadata_factory" />
+            <argument type="service" id="integrated_slug.slugger" />
+
+            <tag name="doctrine_mongodb.odm.event_subscriber" />
+            <tag name="doctrine.event_subscriber" />
+        </service>
+
+        <service id="integrated_slug.twig.slugger_extension" class="Integrated\Bundle\SlugBundle\Twig\Extension\SluggerExtension">
+            <argument type="service" id="integrated_slug.slugger" />
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+
+</container>
