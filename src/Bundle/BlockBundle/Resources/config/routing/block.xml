@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="integrated_block_block_index" path="/" methods="GET">
+        <default key="_controller">IntegratedBlockBundle:Block:index</default>
+        <option key="expose">true</option>
+    </route>
+
+    <route id="integrated_block_block_new" path="/new" methods="GET|PUT">
+        <default key="_controller">IntegratedBlockBundle:Block:new</default>
+    </route>
+
+    <route id="integrated_block_block_show" path="/{id}" methods="GET">
+        <default key="_controller">IntegratedBlockBundle:Block:show</default>
+        <option key="expose">true</option>
+    </route>
+
+    <route id="integrated_block_block_edit" path="/{id}/edit" methods="GET|PUT">
+        <default key="_controller">IntegratedBlockBundle:Block:edit</default>
+        <option key="expose">true</option>
+    </route>
+
+    <route id="integrated_block_block_delete" path="/{id}/delete" methods="GET|DELETE">
+        <default key="_controller">IntegratedBlockBundle:Block:delete</default>
+    </route>
+
+    <route id="integrated_block_inline_text_block_create" path="/inline-text/new/{id}" methods="GET|PUT">
+        <default key="_controller">IntegratedBlockBundle:InlineTextBlock:create</default>
+        <option key="expose">true</option>
+    </route>
+</routes>

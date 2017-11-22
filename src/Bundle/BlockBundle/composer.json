@@ -1,0 +1,48 @@
+{
+    "name": "integrated/block-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Block Bundle",
+    "keywords": ["Integrated", "block"],
+    "homepage": "http://www.integratedfordevelopers.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=5.4",
+        "symfony/symfony": "~2.8 || ~3.0",
+        "sensio/framework-extra-bundle": "~3.0",
+        "doctrine/mongodb": "~1.3",
+        "doctrine/mongodb-odm": "~1.1",
+        "doctrine/mongodb-odm-bundle": "~3.2",
+        "integrated/library": "~0.7",
+        "integrated/content-bundle": "~0.7",
+        "integrated/formtype-bundle": "~0.7",
+        "integrated/menu-bundle": "~0.7",
+        "integrated/slug-bundle": "~0.7",
+        "integrated/theme-bundle": "~0.7",
+        "knplabs/knp-paginator-bundle": "~2.5"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
+    },
+    "suggest": {
+        "integrated/page-bundle": "Extend block bundle functionality"
+    },
+    "autoload":{
+        "psr-4":{
+            "Integrated\\Bundle\\BlockBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.9.9-dev"
+        }
+    }
+}

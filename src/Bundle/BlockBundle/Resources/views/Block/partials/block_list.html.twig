@@ -1,0 +1,103 @@
+<section class="section-white section-padding section-shadow section-radius">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <table class="table table-fixed">
+                <colgroup>
+                    <col />
+                    <col />
+                    <col />
+                    {% if pageBundleInstalled %}
+                        <col style="width: 60px;" />
+                    {% endif %}
+                    <col style="width: 60px;" />
+                </colgroup>
+
+                <thead>
+                <tr>
+                    <th>{{ knp_pagination_sortable(blocks, 'Block name', 'title') }}</th>
+                    <th>{{ knp_pagination_sortable(blocks, 'Short code', 'id') }}</th>
+                    <th>{{ knp_pagination_sortable(blocks, 'Type', 'type') }}</th>
+                    {% if pageBundleInstalled %}
+                        <th>{% trans %}Usage{% endtrans %}</th>
+                    {% endif %}
+                    <th>{% trans %}Actions{% endtrans %}</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for block in blocks %}
+                    <tr>
+                        <td class="break-word">
+                            {{ block.title }}
+                        </td>
+                        <td class="break-word">
+                            {{ block.id }}
+                        </td>
+                        <td>
+                            {{ block|integrated_block_type }}
+                        </td>
+                        {% if pageBundleInstalled %}
+                            <td>
+                                {% set pageList %}
+                                    {% if integrated_find_pages(block)|length %}
+                                        <h3>
+                                            {% trans %}Channels{% endtrans %}
+                                        </h3>
+                                        <ul class="list-bullet">
+                                            {% for channel in integrated_find_channels(block) %}
+                                                <li>{{ channel.name }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                        <h3>
+                                            {% trans %}Pages{% endtrans %}
+                                        </h3>
+                                        <ul class="list-bullet">
+                                            {% for page in integrated_find_pages(block) %}
+                                                <li>{{ page.title }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                {% endset %}
+
+                                {% if pageList|trim %}
+                                    <span class="glyphicon glyphicon-list-alt" data-toggle="popover" data-trigger="hover" data-content="{{ pageList|e }}" data-html="true" data-placement="left"></span>
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                        <td>
+                            <a href="{{ path('integrated_block_block_edit', { 'id': block.id }) }}"  title="{% trans %}Edit{% endtrans %}">
+                                {{ icon('pencil') }}
+                            </a>
+                            {% if not block.locked %}
+                                {% if pageBundleInstalled and not integrated_find_pages(block) %}
+                                    <a href="{{ path('integrated_block_block_delete', { 'id': block.id }) }}" title="{% trans %}Delete{% endtrans %}">
+                                        {{ icon('remove-circle') }}
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% else %}
+
+                    <tr>
+                        <td colspan="4">
+                            {% if facetFilter.vars.value.q|default or facetFilter.vars.value.type|default or facetFilter.vars.value.channels|default  %}
+                                {% trans %}No blocks found{% endtrans %}
+                            {% else %}
+                                {% trans %}No blocks added{% endtrans %}
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+            </table>
+
+            {{ knp_pagination_render(blocks) }}
+        </div>
+    </div>
+</section>

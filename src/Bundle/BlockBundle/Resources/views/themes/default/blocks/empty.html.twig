@@ -1,0 +1,7 @@
+{% if app.request.attributes.get('integrated_block_edit') %}
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            {% trans with { '%title%': block.title|default('undefined'), '%id%': id } %}Block "%title%" (id: %id%) is empty{% endtrans %}
+        </div>
+    </div>
+{% endif %}
