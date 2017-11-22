@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<converter-mapping>
+
+    <class name="Test\Field\Mapper\Simple">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="field1">field1</string>
+                <string key="field2">field2</string>
+                <string key="field3">field3</string>
+                <string key="field4">field4</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\Advanced">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <string>@field1</string>
+                    <string>@field2</string>
+                    <string>@field3</string>
+                    <string>@field4</string>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\AdvancedAndSimple">
+
+        <type name="integrated.fields">
+            <options>
+
+                <string key="field">field1</string>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <string>@field2</string>
+                    <string>@field3</string>
+                    <string>@field4</string>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\AdvancedDouble">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <string>@field1</string>
+                    <string>@field2</string>
+                </array>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <string>@field3</string>
+                    <string>@field4</string>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\AdvancedWithOutNameKey'">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string>field</string>
+
+                    <string>@field1</string>
+                    <string>@field2</string>
+                    <string>@field3</string>
+                    <string>@field4</string>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\AdvancedWithRandomKeys">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="2">field</string>
+
+                    <string key="ignore">@field1</string>
+                    <string key="0">@field2</string>
+                    <string key="x">@field3</string>
+                    <string>@field4</string>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\AdvancedWithNameNotAtStart">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string>@field1</string>
+                    <string>@field2</string>
+
+                    <string key="name">field</string>
+
+                    <string>@field3</string>
+                    <string>@field4</string>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\StaticText">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <string>@field1</string>
+                    <string>@field2</string>
+                    <string>static text 1</string>
+                    <string>static text 2</string>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\Array">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <array>
+                        <array key="arrayObject" />
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\CombiningFields">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <array>
+                        <array key="arrayObject">
+                            <string>@field1</string>
+                            <string>@field2</string>
+                            <string>@field3</string>
+                        </array>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\CombiningFieldsWithSeparator">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <array>
+                        <string key="separator">#</string>
+
+                        <array key="arrayObject">
+                            <string>@field1</string>
+                            <string>@field2</string>
+                            <string>@field3</string>
+                        </array>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\CombiningFieldsAdvanced1">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <array>
+                        <string>@field1</string>
+
+                        <array key="arrayObject">
+                            <string>@field1</string>
+                            <string>@field2</string>
+                            <string>@field3</string>
+                        </array>
+
+                        <string>static text</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\CombiningFieldsAdvanced2">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <array>
+                        <string>@field1</string>
+                        <array key="arrayObject[array1]" />
+                        <string>static text</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\CombiningFieldsWithSeparatorAdvanced1">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <array>
+                        <string key="separator">#</string>
+
+                        <string>@field1</string>
+
+                        <array key="arrayObject">
+                            <string key="separator" />
+
+                            <string>@field1</string>
+                            <string>@field2</string>
+                            <string>@field3</string>
+                        </array>
+
+                        <string>static text</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Field\Mapper\CombiningFieldsWithSeparatorAdvanced2">
+
+        <type name="integrated.fields">
+            <options>
+
+                <array>
+                    <string key="name">field</string>
+
+                    <array>
+                        <string key="separator">#</string>
+
+                        <string>@field1</string>
+                        <array key="arrayObject[array1]" />
+                        <string>static text</string>
+                    </array>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+</converter-mapping>

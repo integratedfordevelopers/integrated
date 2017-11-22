@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_solr.converter.type.resolved_factory" class="Integrated\Common\Converter\Type\ResolvedTypeFactory" />
+
+        <service id="integrated_solr.converter.type.registry_builder" class="Integrated\Common\Converter\Type\RegistryBuilder">
+            <call method="setResolvedTypeFactory">
+                <argument type="service" id="integrated_solr.converter.type.resolved_factory" />
+            </call>
+        </service>
+
+        <service id="integrated_solr.converter.type.registry" class="Integrated\Common\Converter\Type\RegistryInterface">
+            <factory service="integrated_solr.converter.type.registry_builder" method="getRegistry" />
+        </service>
+
+        <service id="integrated_solr.converter.config.provider.chain" class="Integrated\Common\Converter\Config\Provider\ChainProvider" />
+        <service id="integrated_solr.converter.config.provider" alias="integrated_solr.converter.config.provider.chain" />
+
+        <service id="integrated_solr.converter.config.resolver" class="Integrated\Common\Converter\Config\ConfigResolver">
+            <argument type="service" id="integrated_solr.converter.config.provider" />
+        </service>
+
+        <service id="integrated_solr.converter.container_factory" class="Integrated\Common\Converter\FilterContainerFactory" />
+
+        <service id="integrated_solr.converter" class="Integrated\Common\Converter\Converter">
+            <argument type="service" id="integrated_solr.converter.type.registry" />
+            <argument type="service" id="integrated_solr.converter.config.resolver" />
+            <argument type="service" id="integrated_solr.converter.container_factory" />
+        </service>
+
+    </services>
+
+</container>
