@@ -13,7 +13,6 @@ namespace Integrated\Bundle\StorageBundle\Command\Filesystem;
 
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Bundle\StorageBundle\Storage\Resolver;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -37,7 +36,7 @@ class ListCommand extends Command
 
     /**
      * @param FilesystemRegistry $registry
-     * @param Resolver $resolverStorage
+     * @param Resolver           $resolverStorage
      */
     public function __construct(FilesystemRegistry $registry, Resolver $resolverStorage)
     {
@@ -82,7 +81,7 @@ class ListCommand extends Command
                         sprintf(
                             "\t public: %s",
                             $options['public']
-                        )
+                        ),
                     ]
                 );
             }

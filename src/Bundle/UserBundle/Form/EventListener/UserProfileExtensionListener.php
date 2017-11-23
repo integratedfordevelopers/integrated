@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
 use Integrated\Common\Content\ExtensibleInterface;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -41,10 +39,10 @@ class UserProfileExtensionListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::POST_SUBMIT => 'postSubmit'
-        );
+            FormEvents::POST_SUBMIT => 'postSubmit',
+        ];
     }
 
     /**

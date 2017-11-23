@@ -14,7 +14,6 @@ namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Identifier\IdentifierInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
-
 use Gaufrette\Adapter;
 
 /**
@@ -38,8 +37,8 @@ class AdapterReader implements ReaderInterface
     protected $identifier;
 
     /**
-     * @param Adapter $adapter
-     * @param StorageInterface $storage
+     * @param Adapter             $adapter
+     * @param StorageInterface    $storage
      * @param IdentifierInterface $identifier
      */
     public function __construct(Adapter $adapter, StorageInterface $storage, IdentifierInterface $identifier = null)

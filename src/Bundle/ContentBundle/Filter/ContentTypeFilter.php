@@ -20,8 +20,9 @@ class ContentTypeFilter
     const FILTER_VIDEO = 'video';
 
     /**
-     * @param string $class
+     * @param string      $class
      * @param string|null $filter
+     *
      * @return bool
      */
     public static function match($class, $filter)
@@ -30,6 +31,6 @@ class ContentTypeFilter
             return true;
         }
 
-        return ($filter == strtolower(substr($class, strrpos($class, '\\') + 1)));
+        return $filter == strtolower(substr($class, strrpos($class, '\\') + 1));
     }
 }

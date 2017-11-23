@@ -17,14 +17,15 @@ class PeriodExtension extends \Twig_Extension
                 'integrated_period_formatter',
                 [$this, 'periodFilter'],
                 ['needs_environment' => true]
-            )
+            ),
         ];
     }
 
     /**
      * @param \Twig_Environment $twig
-     * @param \DateTime $startDate
-     * @param \DateTime $endDate
+     * @param \DateTime         $startDate
+     * @param \DateTime         $endDate
+     *
      * @return string
      */
     public function periodFilter(\Twig_Environment $twig, $startDate, $endDate)

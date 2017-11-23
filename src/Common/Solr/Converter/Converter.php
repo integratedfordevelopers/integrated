@@ -12,10 +12,8 @@
 namespace Integrated\Common\Solr\Converter;
 
 use Exception;
-
 use Integrated\Common\Solr\Converter\Object\ObjectWrapper;
 use Integrated\Common\Solr\Converter\Object\WrapperInterface;
-
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
@@ -55,9 +53,10 @@ class Converter implements ConverterInterface
     }
 
     /**
-     * Convert the object to a solr document
+     * Convert the object to a solr document.
      *
      * @param object $object
+     *
      * @return array|null
      */
     public function getFields($object)
@@ -98,7 +97,7 @@ class Converter implements ConverterInterface
         $expression = $specs->getField($field);
 
         if ($expression === null) {
-            $expression = 'data.' . $field . '.value()';
+            $expression = 'data.'.$field.'.value()';
         } else {
             $expression = (string) $expression;
 
@@ -114,9 +113,10 @@ class Converter implements ConverterInterface
     }
 
     /**
-     * Convert the object to a unique id
+     * Convert the object to a unique id.
      *
      * @param object $object
+     *
      * @return string|null
      */
     public function getId($object)

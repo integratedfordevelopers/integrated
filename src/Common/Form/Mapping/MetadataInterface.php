@@ -19,9 +19,10 @@ use ReflectionClass;
 interface MetadataInterface
 {
     /**
-     * Checks if the document is a type of the given class or interface
+     * Checks if the document is a type of the given class or interface.
      *
      * @param string $class
+     *
      * @return bool
      */
     public function isTypeOf($class);
@@ -48,12 +49,14 @@ interface MetadataInterface
 
     /**
      * @param string $name
+     *
      * @return AttributeInterface
      */
     public function getField($name);
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function hasField($name);
@@ -65,12 +68,14 @@ interface MetadataInterface
 
     /**
      * @param string $name
+     *
      * @return AttributeInterface
      */
     public function getOption($name);
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function hasOption($name);

@@ -27,7 +27,7 @@ class MessageEvent extends IndexerEvent
     /**
      * Event constructor.
      *
-     * @param IndexerInterface $indexer
+     * @param IndexerInterface      $indexer
      * @param QueueMessageInterface $message
      */
     public function __construct(IndexerInterface $indexer, QueueMessageInterface $message)

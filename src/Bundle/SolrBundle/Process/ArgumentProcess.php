@@ -42,7 +42,7 @@ class ArgumentProcess
      */
     public function isParentProcess()
     {
-        return (false === strpos($this->argument, ':'));
+        return false === strpos($this->argument, ':');
     }
 
     /**
@@ -63,6 +63,7 @@ class ArgumentProcess
 
     /**
      * @return int
+     *
      * @throws FormatException
      */
     public function getProcessMax()

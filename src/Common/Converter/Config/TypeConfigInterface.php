@@ -32,8 +32,6 @@ interface TypeConfigInterface
 
     /**
      * Get the type options.
-     *
-     * @return null | array
      */
     public function getOptions();
 }

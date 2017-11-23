@@ -12,12 +12,9 @@
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
-
 use Integrated\Bundle\BlockBundle\Locator\LayoutLocator;
 
 /**
@@ -60,11 +57,13 @@ class LayoutChoiceType extends AbstractType
 
     /**
      * @param $type
+     *
      * @return array
      */
     protected function getChoiceList($type)
     {
         $layout = $this->locator->getLayouts($type);
+
         return $layout;
     }
 

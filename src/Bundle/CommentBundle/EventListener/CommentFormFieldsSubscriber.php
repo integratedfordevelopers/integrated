@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\CommentBundle\EventListener;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\CommentBundle\Document\Comment;
 use Integrated\Bundle\CommentBundle\Form\DataTransformer\CommentTagTransformer;
@@ -21,7 +20,6 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Events;
-
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -64,9 +62,9 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
 
     /**
      * @param DocumentManager $documentManager
-     * @param AssetManager $stylesheets
-     * @param AssetManager $javascripts
-     * @param RequestStack $requestStack
+     * @param AssetManager    $stylesheets
+     * @param AssetManager    $javascripts
+     * @param RequestStack    $requestStack
      */
     public function __construct(
         DocumentManager $documentManager,
@@ -115,7 +113,7 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
 
         if ($comment = $this->getComment($content->getId(), $field->getName())) {
             $comment = $comment[0];
-            $options['attr'] = array('data-comment-id' => $comment->getId());
+            $options['attr'] = ['data-comment-id' => $comment->getId()];
             $field->setOptions($options);
         }
 
@@ -141,6 +139,7 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
 
     /**
      * @param string $contentId
+     *
      * @return array|mixed
      */
     protected function getComments($contentId)
@@ -162,6 +161,7 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     /**
      * @param string $contentId
      * @param string $fieldName
+     *
      * @return Comment[]|null
      */
     protected function getComment($contentId, $fieldName)

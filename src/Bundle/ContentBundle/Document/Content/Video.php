@@ -13,11 +13,10 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Document type Image
+ * Document type Image.
  *
  * @author Johnny Borg <johnny@e-active.nl>
  *

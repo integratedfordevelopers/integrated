@@ -13,13 +13,12 @@ namespace Integrated\Bundle\ContentBundle\Document\Block;
 
 use Integrated\Bundle\BlockBundle\Document\Block\PublishTitleTrait;
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 
 /**
- * Content block document
+ * Content block document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
@@ -111,11 +110,13 @@ class ContentBlock extends Block
 
     /**
      * @param SearchSelection $searchSelection
+     *
      * @return $this
      */
     public function setSearchSelection(SearchSelection $searchSelection = null)
     {
         $this->searchSelection = $searchSelection;
+
         return $this;
     }
 
@@ -129,11 +130,13 @@ class ContentBlock extends Block
 
     /**
      * @param int $itemsPerPage
+     *
      * @return $this
      */
     public function setItemsPerPage($itemsPerPage)
     {
         $this->itemsPerPage = $itemsPerPage;
+
         return $this;
     }
 
@@ -147,11 +150,13 @@ class ContentBlock extends Block
 
     /**
      * @param int $maxItems
+     *
      * @return $this
      */
     public function setMaxItems($maxItems)
     {
         $this->maxItems = $maxItems;
+
         return $this;
     }
 
@@ -165,11 +170,13 @@ class ContentBlock extends Block
 
     /**
      * @param string $readMoreUrl
+     *
      * @return $this
      */
     public function setReadMoreUrl($readMoreUrl)
     {
         $this->readMoreUrl = $readMoreUrl;
+
         return $this;
     }
 
@@ -183,11 +190,13 @@ class ContentBlock extends Block
 
     /**
      * @param array $facetFields
+     *
      * @return $this
      */
     public function setFacetFields(array $facetFields = [])
     {
         $this->facetFields = $facetFields;
+
         return $this;
     }
 

@@ -48,11 +48,13 @@ class Event extends Article
 
     /**
      * @param \DateTime $startDate
+     *
      * @return $this
      */
     public function setStartDate(\DateTime $startDate = null)
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
@@ -66,11 +68,13 @@ class Event extends Article
 
     /**
      * @param \DateTime $endDate
+     *
      * @return $this
      */
     public function setEndDate(\DateTime $endDate = null)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
@@ -84,11 +88,13 @@ class Event extends Article
 
     /**
      * @param string $website
+     *
      * @return $this
      */
     public function setWebsite($website)
     {
         $this->website = $website;
+
         return $this;
     }
 }

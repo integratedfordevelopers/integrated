@@ -12,7 +12,7 @@
 namespace Integrated\Common\Content\Channel;
 
 /**
- * Simple channel context to current channel in
+ * Simple channel context to current channel in.
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -24,7 +24,7 @@ class ChannelContext implements ChannelContextInterface
     private $channel = null;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getChannel()
     {
@@ -32,7 +32,7 @@ class ChannelContext implements ChannelContextInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setChannel(ChannelInterface $channel = null)
     {

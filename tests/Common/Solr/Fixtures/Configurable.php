@@ -23,7 +23,7 @@ class Configurable extends BaseConfigurable
     {
         $resolver->setDefaults([
             'key1' => 'default1',
-            'key2' => 'default2'
+            'key2' => 'default2',
         ]);
     }
 }

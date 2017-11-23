@@ -28,7 +28,7 @@ class Asset
 
     /**
      * @param string $content
-     * @param bool $inline
+     * @param bool   $inline
      */
     public function __construct($content, $inline = false)
     {
@@ -46,16 +46,18 @@ class Asset
 
     /**
      * @param string $content
+     *
      * @return $this
      */
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isInline()
     {
@@ -63,12 +65,14 @@ class Asset
     }
 
     /**
-     * @param boolean $inline
+     * @param bool $inline
+     *
      * @return $this
      */
     public function setInline($inline)
     {
         $this->inline = (bool) $inline;
+
         return $this;
     }
 }

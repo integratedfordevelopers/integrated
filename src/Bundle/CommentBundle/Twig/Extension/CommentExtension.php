@@ -30,6 +30,7 @@ class CommentExtension extends \Twig_Extension
 
     /**
      * @param string $content
+     *
      * @return string
      */
     public function escape($content)

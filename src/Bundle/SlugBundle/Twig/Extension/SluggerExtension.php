@@ -44,6 +44,7 @@ class SluggerExtension extends \Twig_Extension
     /**
      * @param string $string
      * @param string $delimiter
+     *
      * @return string
      */
     public function slugify($string, $delimiter = '-')

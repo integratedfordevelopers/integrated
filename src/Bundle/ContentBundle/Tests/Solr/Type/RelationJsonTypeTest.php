@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type;
 
 use Integrated\Bundle\ContentBundle\Solr\Type\RelationJsonType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
 
@@ -22,8 +21,6 @@ use Integrated\Common\Converter\ContainerInterface;
  */
 class RelationJsonTypeTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     */
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
@@ -33,8 +30,8 @@ class RelationJsonTypeTest extends \PHPUnit_Framework_TestCase
      * @dataProvider buildProvider
      *
      * @param Content $content
-     * @param array $options
-     * @param string $expected
+     * @param array   $options
+     * @param string  $expected
      */
     public function testBuild(Content $content, array $options, $expected)
     {
@@ -55,16 +52,16 @@ class RelationJsonTypeTest extends \PHPUnit_Framework_TestCase
                 $this->getStub(),
                 [
                     'relation_id' => 'dummy',
-                    'properties'  => ['key' => 'id', 'type' => 'contentType'],
-                    'alias'       => 'field'
+                    'properties' => ['key' => 'id', 'type' => 'contentType'],
+                    'alias' => 'field',
                 ],
                 [
                     'field' => [
                         json_encode([
-                            ['key' => 'value', 'type' => 'content']
-                        ])
-                    ]
-                ]
+                            ['key' => 'value', 'type' => 'content'],
+                        ]),
+                    ],
+                ],
             ],
         ];
     }

@@ -17,14 +17,12 @@ namespace Integrated\Common\Content\Channel;
 interface ChannelContextInterface
 {
     /**
-     * Get the current channel
-     *
-     * @return null | ChannelInterface
+     * Get the current channel.
      */
     public function getChannel();
 
     /**
-     * Set the current channel
+     * Set the current channel.
      *
      * @param ChannelInterface $channel
      */

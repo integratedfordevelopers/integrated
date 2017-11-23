@@ -17,28 +17,28 @@ namespace Integrated\Common\Block;
 interface BlockInterface
 {
     /**
-     * Get the block id
+     * Get the block id.
      *
      * @return string
      */
     public function getId();
 
     /**
-     * Get the block title
+     * Get the block title.
      *
      * @return string
      */
     public function getTitle();
 
     /**
-     * Get the block layout
+     * Get the block layout.
      *
      * @return string
      */
     public function getLayout();
 
     /**
-     * Get the block type
+     * Get the block type.
      *
      * @return string
      */

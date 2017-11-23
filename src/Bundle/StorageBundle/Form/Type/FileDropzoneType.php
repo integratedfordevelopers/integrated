@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
-use Gregwar\ImageBundle\Services\ImageHandling;
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -22,10 +21,10 @@ use Symfony\Component\Translation\TranslatorInterface;
 class FileDropzoneType extends AbstractDropzoneType
 {
     /**
-     * @param AssetManager $stylesheets
-     * @param AssetManager $javascripts
+     * @param AssetManager        $stylesheets
+     * @param AssetManager        $javascripts
      * @param TranslatorInterface $translator
-     * @param ImageExtension $imageExtension
+     * @param ImageExtension      $imageExtension
      */
     public function __construct(
         AssetManager $stylesheets,

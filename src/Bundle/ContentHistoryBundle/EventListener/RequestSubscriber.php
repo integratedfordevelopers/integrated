@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
-
 use Integrated\Bundle\ContentHistoryBundle\Event\ContentHistoryEvent;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded;
 
@@ -60,7 +59,7 @@ class RequestSubscriber implements EventSubscriberInterface
                 $request = new Embedded\Request();
 
                 $request->setIpAddress($masterRequest->getClientIp());
-                $request->setEndpoint($masterRequest->getSchemeAndHttpHost() . $masterRequest->getRequestUri());
+                $request->setEndpoint($masterRequest->getSchemeAndHttpHost().$masterRequest->getRequestUri());
 
                 $event->getContentHistory()->setRequest($request);
             }

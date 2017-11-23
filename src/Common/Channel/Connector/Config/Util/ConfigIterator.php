@@ -54,7 +54,7 @@ class ConfigIterator extends ArrayIterator
     }
 
     /**
-     * Check whether the current element of the iterator is acceptable
+     * Check whether the current element of the iterator is acceptable.
      *
      * @return bool
      */

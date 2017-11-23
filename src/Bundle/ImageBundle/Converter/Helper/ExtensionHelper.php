@@ -20,6 +20,7 @@ class ExtensionHelper
 {
     /**
      * @param ArrayCollection $collection
+     *
      * @return ArrayCollection
      */
     public static function caseTransformBoth(ArrayCollection $collection)

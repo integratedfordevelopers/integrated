@@ -16,9 +16,9 @@ namespace Integrated\Common\Solr\Converter;
  */
 class ConverterSpecification implements ConverterSpecificationInterface
 {
-    public $classes = array();
+    public $classes = [];
 
-    public $fields = array();
+    public $fields = [];
 
     public $id = null;
 

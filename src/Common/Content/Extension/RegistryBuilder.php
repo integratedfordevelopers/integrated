@@ -22,7 +22,7 @@ class RegistryBuilder implements RegistryBuilderInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRegistry()
     {

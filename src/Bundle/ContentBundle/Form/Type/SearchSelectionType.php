@@ -50,7 +50,7 @@ class SearchSelectionType extends AbstractType
                     'Everyone' => 1,
                     'Me only' => 0,
                 ],
-                'choices_as_values' => true
+                'choices_as_values' => true,
             ]);
         }
     }

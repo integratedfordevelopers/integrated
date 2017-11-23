@@ -28,7 +28,7 @@ class MultiWrapper implements WrapperInterface
 
     public function value()
     {
-        $values = array();
+        $values = [];
 
         foreach ($this->values as $value) {
             $values[] = $value->value();
@@ -39,7 +39,7 @@ class MultiWrapper implements WrapperInterface
 
     public function raw()
     {
-        $values = array();
+        $values = [];
 
         foreach ($this->values as $value) {
             $values[] = $value->raw();
@@ -51,7 +51,7 @@ class MultiWrapper implements WrapperInterface
     public function multi()
     {
         $changed = false;
-        $values = array();
+        $values = [];
 
         foreach ($this->values as $key => $value) {
             $values[$key] = $value->multi();
@@ -64,7 +64,7 @@ class MultiWrapper implements WrapperInterface
         }
 
         if ($changed) {
-            return new MultiWrapper($values);
+            return new self($values);
         }
 
         return $this;
@@ -72,18 +72,18 @@ class MultiWrapper implements WrapperInterface
 
     public function concat($glue, $pieces = null, $keepempty = false)
     {
-        $values = array();
+        $values = [];
 
         foreach ($this->values as $value) {
             $values[] = $value->concat($glue, $pieces, $keepempty);
         }
 
-        return new MultiWrapper($values);
+        return new self($values);
     }
 
     public function combine($glue, $pieces = null, $keepempty = false)
     {
-        $values = array();
+        $values = [];
 
         foreach ($this->values as $value) {
             $result = $value->combine($glue, $pieces, $keepempty);
@@ -95,7 +95,7 @@ class MultiWrapper implements WrapperInterface
             }
         }
 
-        return new MultiWrapper($values);
+        return new self($values);
     }
 
     public function isEmpty()
@@ -136,13 +136,13 @@ class MultiWrapper implements WrapperInterface
 
     public function offsetGet($offset)
     {
-        $values = array();
+        $values = [];
 
         foreach ($this->values as $value) {
             $values[] = $value->offsetGet($offset);
         }
 
-        return new MultiWrapper($values);
+        return new self($values);
     }
 
     public function offsetSet($offset, $value)
@@ -168,13 +168,13 @@ class MultiWrapper implements WrapperInterface
 
     public function __get($name)
     {
-        $values = array();
+        $values = [];
 
         foreach ($this->values as $value) {
             $values[] = $value->__get($name);
         }
 
-        return new MultiWrapper($values);
+        return new self($values);
     }
 
     public function __set($name, $value)
@@ -189,12 +189,12 @@ class MultiWrapper implements WrapperInterface
 
     public function __call($name, array $arguments)
     {
-        $values = array();
+        $values = [];
 
         foreach ($this->values as $value) {
             $values[] = $value->__call($name, $arguments);
         }
 
-        return new MultiWrapper($values);
+        return new self($values);
     }
 }

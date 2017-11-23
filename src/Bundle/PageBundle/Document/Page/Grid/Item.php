@@ -11,12 +11,10 @@
 
 namespace Integrated\Bundle\PageBundle\Document\Page\Grid;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
 /**
- * Item document
+ * Item document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -52,11 +50,13 @@ class Item
 
     /**
      * @param int $order
+     *
      * @return Item
      */
     public function setOrder($order)
     {
         $this->order = (int) $order;
+
         return $this;
     }
 
@@ -70,6 +70,7 @@ class Item
 
     /**
      * @param Block $block
+     *
      * @return $this
      */
     public function setBlock(Block $block = null)
@@ -79,6 +80,7 @@ class Item
         }
 
         $this->block = $block;
+
         return $this;
     }
 
@@ -92,6 +94,7 @@ class Item
 
     /**
      * @param Row $row
+     *
      * @return $this
      */
     public function setRow(Row $row = null)
@@ -101,6 +104,7 @@ class Item
         }
 
         $this->row = $row;
+
         return $this;
     }
 
@@ -134,16 +138,19 @@ class Item
 
     /**
      * @param array $attributes
+     *
      * @return $this
      */
     public function setAttributes(array $attributes = [])
     {
         $this->attributes = $attributes;
+
         return $this;
     }
 
     /**
      * @param string $key
+     *
      * @return bool
      */
     public function hasAttribute($key)
@@ -153,6 +160,7 @@ class Item
 
     /**
      * @param string $key
+     *
      * @return string|null
      */
     public function getAttribute($key)
@@ -165,11 +173,13 @@ class Item
     /**
      * @param string $key
      * @param string $value
+     *
      * @return $this
      */
     public function setAttribute($key, $value)
     {
         $this->attributes[$key] = $value;
+
         return $this;
     }
 }

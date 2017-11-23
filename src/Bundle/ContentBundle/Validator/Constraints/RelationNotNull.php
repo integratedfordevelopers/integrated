@@ -38,11 +38,13 @@ class RelationNotNull extends Constraint
 
     /**
      * @param string $relation
+     *
      * @return $this
      */
     public function setRelation($relation)
     {
         $this->relation = $relation;
+
         return $this;
     }
 }

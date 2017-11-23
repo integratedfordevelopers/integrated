@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
-
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
@@ -31,9 +30,8 @@ class PageController
      */
     protected $themeManager;
 
-
     /**
-     * @param TwigEngine $templating
+     * @param TwigEngine   $templating
      * @param ThemeManager $themeManager
      */
     public function __construct(TwigEngine $templating, ThemeManager $themeManager)
@@ -44,12 +42,13 @@ class PageController
 
     /**
      * @param Page $page
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Page $page)
     {
         return $this->templating->renderResponse($this->themeManager->locateTemplate($page->getLayout()), [
-            'page' => $page
+            'page' => $page,
         ]);
     }
 }

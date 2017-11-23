@@ -22,7 +22,7 @@ use Integrated\Common\Normalizer\Processor\ProcessorInterface;
 class TaxonomyProcessor implements ProcessorInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerInterface $data, $object, Context $context)
     {

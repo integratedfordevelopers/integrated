@@ -23,15 +23,11 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
      */
     private $manager;
 
-    /**
-     */
     protected function setUp()
     {
         $this->manager = new AssetManager();
     }
 
-    /**
-     */
     public function testDuplicateFunction()
     {
         $this->manager->add('script.js');
@@ -41,8 +37,6 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $this->manager->getAssets());
     }
 
-    /**
-     */
     public function testInlineFunction()
     {
         $inline = 'html { color: red; }';
@@ -55,8 +49,6 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($inline, $asset->getContent());
     }
 
-    /**
-     */
     public function testExceptionFunction()
     {
         $this->setExpectedException('\InvalidArgumentException');
@@ -64,8 +56,6 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager->add('script.js', false, 'invalid');
     }
 
-    /**
-     */
     public function testPrependFunction()
     {
         $this->manager->add('script2.js');

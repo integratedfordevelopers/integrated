@@ -17,10 +17,10 @@ namespace Integrated\Common\Block;
 interface BlockHandlerInterface
 {
     /**
-     * Execute block logic
+     * Execute block logic.
      *
      * @param BlockInterface $block
-     * @param array $options
+     * @param array          $options
      *
      * @return string|null
      */

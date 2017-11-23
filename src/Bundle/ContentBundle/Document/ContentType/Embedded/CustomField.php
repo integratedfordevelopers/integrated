@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
- * Embedded document CustomField
+ * Embedded document CustomField.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -22,6 +22,7 @@ class CustomField extends Field
 {
     /**
      * {@inheritdoc}
+     *
      * @Slug(fields={"getLabel"})
      */
     protected $name;
@@ -40,14 +41,16 @@ class CustomField extends Field
     }
 
     /**
-     * Set the type of the field
+     * Set the type of the field.
      *
      * @param string $type The type of the form field
+     *
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 }

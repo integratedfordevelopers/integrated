@@ -14,7 +14,7 @@ namespace Integrated\Bundle\SolrBundle\Tests\Solr\Type;
 use Integrated\Bundle\SolrBundle\Solr\Type\FieldAppendMapperType;
 
 /**
- * @covers Integrated\Bundle\SolrBundle\Solr\Type\FieldAppendMapperType
+ * @covers \Integrated\Bundle\SolrBundle\Solr\Type\FieldAppendMapperType
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -39,9 +39,6 @@ class FieldAppendMapperTypeTest extends FieldMapperTypeTest
         return $data;
     }
 
-    /**
-     *
-     */
     public function testGetName()
     {
         self::assertEquals('integrated.fields.append', $this->getInstance()->getName());

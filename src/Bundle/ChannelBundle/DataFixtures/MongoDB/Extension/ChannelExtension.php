@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\ChannelBundle\DataFixtures\MongoDB\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
 /**
@@ -29,7 +27,9 @@ trait ChannelExtension
 
     /**
      * @param string $id
+     *
      * @return Channel
+     *
      * @throws DocumentNotFoundException
      */
     public function channel($id)

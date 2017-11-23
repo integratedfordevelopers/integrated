@@ -17,7 +17,7 @@ namespace Integrated\Common\Bulk\Exception;
 class UnexpectedTypeException extends InvalidArgumentException
 {
     /**
-     * @param string $value the value with the incorrect type
+     * @param string $value        the value with the incorrect type
      * @param string $expectedType string of type(s) that are accepted
      */
     public function __construct($value, $expectedType)

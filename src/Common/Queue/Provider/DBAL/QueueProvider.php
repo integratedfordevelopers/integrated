@@ -13,7 +13,6 @@ namespace Integrated\Common\Queue\Provider\DBAL;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-
 use Integrated\Common\Queue\Provider\QueueProviderInterface;
 
 /**
@@ -38,7 +37,7 @@ class QueueProvider implements QueueProviderInterface
 
     /**
      * @param Connection $connection
-     * @param array $options
+     * @param array      $options
      */
     public function __construct(Connection $connection, array $options)
     {
@@ -59,10 +58,10 @@ class QueueProvider implements QueueProviderInterface
         $priority = min(max((int) $priority, -10), 10);
 
         $this->connection->insert($this->options['queue_table_name'], [
-            'channel'      => $channel,
-            'payload'      => $payload,
-            'priority'     => $priority,
-            'attempts'     => 0,
+            'channel' => $channel,
+            'payload' => $payload,
+            'priority' => $priority,
+            'attempts' => 0,
             'time_created' => $timestamp,
             'time_updated' => $timestamp,
             'time_execute' => $timestamp + $delay,
@@ -96,7 +95,7 @@ class QueueProvider implements QueueProviderInterface
             $where
         );
 
-        $results = array();
+        $results = [];
 
         foreach ($this->connection->fetchAll($query, [$channel, time()]) as $row) {
             $delete = function () use ($row) {
@@ -134,7 +133,7 @@ class QueueProvider implements QueueProviderInterface
             $this->platform->quoteIdentifier($this->options['queue_table_name'])
         );
 
-        $where = array();
+        $where = [];
         if (isset($this->options['where'])) {
             $where[] = $this->options['where'];
         }
@@ -151,10 +150,10 @@ class QueueProvider implements QueueProviderInterface
     }
 
     /**
-     * Set a option for the current queue channel
+     * Set a option for the current queue channel.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function setOption($name, $value)
     {
@@ -166,7 +165,7 @@ class QueueProvider implements QueueProviderInterface
     }
 
     /**
-     * Delete the message from the queue
+     * Delete the message from the queue.
      *
      * @param string $id
      */

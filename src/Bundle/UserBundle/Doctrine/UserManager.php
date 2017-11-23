@@ -13,11 +13,9 @@ namespace Integrated\Bundle\UserBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\UserBundle\Model\ScopeInterface;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-
 use InvalidArgumentException;
 
 /**
@@ -71,6 +69,7 @@ class UserManager implements UserManagerInterface
     public function create()
     {
         $class = $this->getClassName();
+
         return new $class();
     }
 
@@ -178,7 +177,7 @@ class UserManager implements UserManagerInterface
             ->andWhere('(Scope.admin = true OR User.scope = :scope)')
             ->setParameters([
                 'username' => $username,
-                'scope' => (int) $scope->getId()
+                'scope' => (int) $scope->getId(),
             ])
             ->getQuery()
             ->getOneOrNullResult();

@@ -12,16 +12,12 @@
 namespace Integrated\Bundle\UserBundle\Command;
 
 use Exception;
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
@@ -115,6 +111,7 @@ The <info>%command.name%</info> command creates a new user
 
         if (count($errors) > 0) {
             $output->writeln(sprintf('Aborting: user model not valid: %s', (string) $errors));
+
             return 1;
         }
 
@@ -131,7 +128,7 @@ The <info>%command.name%</info> command creates a new user
                     $roleManager->persist($objectRole);
                     $user->addRole($objectRole);
                 } else {
-                    $output->writeln(sprintf("The role %s not found ", $role));
+                    $output->writeln(sprintf('The role %s not found ', $role));
                 }
             }
         }
@@ -149,6 +146,7 @@ The <info>%command.name%</info> command creates a new user
 
     /**
      * @param object $user
+     *
      * @return PasswordEncoderInterface
      */
     protected function getEncoder($user)

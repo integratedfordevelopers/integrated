@@ -20,6 +20,7 @@ class DOMDocument extends \DOMDocument
 {
     /**
      * {@inheritdoc}
+     *
      * @throws \Integrated\Bundle\ContentBundle\Std\Exception\InvalidHTMLException
      */
     public function loadHTML($source, $options = 0)
@@ -32,7 +33,7 @@ class DOMDocument extends \DOMDocument
 
         // Walk over the errors we've got during the loadHTML method
         foreach (libxml_get_errors() as $error) {
-            if (!preg_match('/^Tag \w+ invalid\n$/', $error->message)){
+            if (!preg_match('/^Tag \w+ invalid\n$/', $error->message)) {
                 throw InvalidHTMLException::unresolvedLibXmlError($error->message);
             }
         }

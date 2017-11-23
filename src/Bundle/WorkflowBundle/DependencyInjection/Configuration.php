@@ -15,14 +15,14 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Configuration class for ContentBundle
+ * Configuration class for ContentBundle.
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {

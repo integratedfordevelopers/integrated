@@ -13,7 +13,6 @@ namespace Integrated\Bundle\SolrBundle\DependencyInjection;
 
 use Solarium\Client;
 use Solarium\Core\Client\Endpoint;
-
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -22,21 +21,21 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * IntegratedContentExtension for loading configuration
+ * IntegratedContentExtension for loading configuration.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
 class IntegratedSolrExtension extends Extension
 {
     /**
-     * Load the configuration
+     * Load the configuration.
      *
-     * @param array $configs
+     * @param array            $configs
      * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('converter.xml');
         $loader->load('event.xml');
@@ -61,11 +60,11 @@ class IntegratedSolrExtension extends Extension
         foreach ($config['endpoints'] as $name => $options) {
             $options['key'] = $name;
             $container->setDefinition(
-                'solarium.client.endpoint.' . $name,
+                'solarium.client.endpoint.'.$name,
                 new Definition(Endpoint::class, [$options])
             );
 
-            $endpoints[] = new Reference('solarium.client.endpoint.' . $name);
+            $endpoints[] = new Reference('solarium.client.endpoint.'.$name);
         }
 
         $container->setDefinition(
@@ -74,7 +73,7 @@ class IntegratedSolrExtension extends Extension
                 Client::class,
                 [
                     ['endpoint' => $endpoints],
-                    new Reference('integrated_solr.event.dispatcher')
+                    new Reference('integrated_solr.event.dispatcher'),
                 ]
             )
         );

@@ -32,7 +32,7 @@ class WebsiteAdapter implements AdapterInterface, ConfigurableInterface
     private $configuration;
 
     /**
-     * @param ManifestInterface $manifest
+     * @param ManifestInterface      $manifest
      * @param ConfigurationInterface $configuration
      */
     public function __construct(ManifestInterface $manifest, ConfigurationInterface $configuration)

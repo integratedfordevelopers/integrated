@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass;
 
 use Integrated\Common\Converter\Config\Provider\XmlProvider;
-
 use ReflectionClass;
-
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -57,12 +55,10 @@ class RegisterConfigFileProviderPass implements CompilerPassInterface
      * @param ContainerBuilder $container
      * @param string           $dir
      * @param string           $bundle
-     *
-     * @return null | Reference
      */
     protected function addProvider(ContainerBuilder $container, $dir, $bundle)
     {
-        if ($container->hasDefinition('integrated_solr.converter.config.provider.file.' . $bundle)) {
+        if ($container->hasDefinition('integrated_solr.converter.config.provider.file.'.$bundle)) {
             return null;
         }
 
@@ -70,17 +66,17 @@ class RegisterConfigFileProviderPass implements CompilerPassInterface
         // however still does not mean that the bundle actually got any solr config files but that is
         // not really a problem.
 
-        if (!is_dir($dir . '/Resources/config/solr')) {
+        if (!is_dir($dir.'/Resources/config/solr')) {
             return null;
         }
 
         $definition = new Definition(XmlProvider::class);
         $definition->setPublic(false);
-        $definition->setArguments([$this->addFinder($container, $dir . '/Resources/config/solr', $bundle)]);
+        $definition->setArguments([$this->addFinder($container, $dir.'/Resources/config/solr', $bundle)]);
 
-        $container->setDefinition('integrated_solr.converter.config.provider.file.' . $bundle, $definition);
+        $container->setDefinition('integrated_solr.converter.config.provider.file.'.$bundle, $definition);
 
-        return new Reference('integrated_solr.converter.config.provider.file.' . $bundle);
+        return new Reference('integrated_solr.converter.config.provider.file.'.$bundle);
     }
 
     /**
@@ -97,9 +93,9 @@ class RegisterConfigFileProviderPass implements CompilerPassInterface
      */
     protected function addFinder(ContainerBuilder $container, $dir, $bundle)
     {
-        $ref = new Reference('integrated_solr.converter.config.provider.file.' . $bundle . '.finder');
+        $ref = new Reference('integrated_solr.converter.config.provider.file.'.$bundle.'.finder');
 
-        if ($container->hasDefinition('integrated_solr.converter.config.provider.file.' . $bundle . '.finder')) {
+        if ($container->hasDefinition('integrated_solr.converter.config.provider.file.'.$bundle.'.finder')) {
             return $ref;
         }
 
@@ -109,7 +105,7 @@ class RegisterConfigFileProviderPass implements CompilerPassInterface
         $definition->setPublic(false);
         $definition->addMethodCall('in', [$dir]);
 
-        $container->setDefinition('integrated_solr.converter.config.provider.file.' . $bundle . '.finder', $definition);
+        $container->setDefinition('integrated_solr.converter.config.provider.file.'.$bundle.'.finder', $definition);
 
         return $ref;
     }

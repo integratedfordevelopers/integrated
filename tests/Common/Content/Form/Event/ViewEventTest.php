@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Content\Form\Event;
 
 use Integrated\Common\Content\Form\Event\ViewEvent;
-
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 

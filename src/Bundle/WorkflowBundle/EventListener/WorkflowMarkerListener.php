@@ -3,10 +3,8 @@
 namespace Integrated\Bundle\WorkflowBundle\EventListener;
 
 use Integrated\Bundle\UserBundle\Model\User;
-
 use Solarium\Core\Event;
 use Solarium\QueryType\Select\Query\Query;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -34,7 +32,7 @@ class WorkflowMarkerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Event\Events::PRE_EXECUTE => 'preExecute'
+            Event\Events::PRE_EXECUTE => 'preExecute',
         ];
     }
 
@@ -77,17 +75,17 @@ class WorkflowMarkerListener implements EventSubscriberInterface
         // allow content with group access
         if ($filterWorkflow) {
             $fq->setQuery(
-                $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
+                $fq->getQuery().' OR security_workflow_read: ((%1%))',
                 [implode(') OR (', $filterWorkflow)]
             );
         }
 
         // always allow access to assinged content
-        $fq->setQuery($fq->getQuery() . ' OR facet_workflow_assigned_id: %1%', [$user->getId()]);
+        $fq->setQuery($fq->getQuery().' OR facet_workflow_assigned_id: %1%', [$user->getId()]);
 
         if ($user instanceof User) {
             if ($person = $user->getRelation()) {
-                $fq->setQuery($fq->getQuery() . ' OR author: %1%*', [$person->getId()]);
+                $fq->setQuery($fq->getQuery().' OR author: %1%*', [$person->getId()]);
             }
         }
     }

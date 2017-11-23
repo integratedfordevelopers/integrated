@@ -31,7 +31,7 @@ class UrlExtension extends \Twig_Extension
     protected $solrUrlExtractor;
 
     /**
-     * @param UrlResolver $urlResolver
+     * @param UrlResolver      $urlResolver
      * @param SolrUrlExtractor $solrUrlExtractor
      */
     public function __construct(UrlResolver $urlResolver, SolrUrlExtractor $solrUrlExtractor)
@@ -52,6 +52,7 @@ class UrlExtension extends \Twig_Extension
 
     /**
      * @param mixed $document
+     *
      * @return null|string
      */
     public function getUrl($document)

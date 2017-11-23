@@ -16,7 +16,6 @@ use Integrated\Common\Normalizer\ContainerFactoryInterface;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessor;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessorFactory;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessorFactoryInterface;
-
 use ReflectionProperty;
 
 /**

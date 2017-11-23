@@ -12,16 +12,12 @@
 namespace Integrated\Bundle\WorkflowBundle\Form\EventListener;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Form\Model;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
@@ -36,7 +32,7 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
     private $accessor;
 
     /**
-     * Creates a new transition from collection extractor listener
+     * Creates a new transition from collection extractor listener.
      *
      * @param PropertyAccessorInterface $accessor
      */
@@ -55,12 +51,12 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
             FormEvents::PRE_SUBMIT => 'onPrepare',
 
             FormEvents::POST_SET_DATA => 'onSetData',
-            FormEvents::POST_SUBMIT => 'onGetData'
+            FormEvents::POST_SUBMIT => 'onGetData',
         ];
     }
 
     /**
-     * Add the transitions field to children of the collection
+     * Add the transitions field to children of the collection.
      *
      * @param FormEvent $event
      */
@@ -231,7 +227,6 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
     {
         $choices = [];
 
-
         // The data could be a array of objects if its converted from the pre_set_data and
         // a array of scalars when its converted from the pre_submit. Also the name value
         // is not guaranteed to be present so a property accessor is used to be on the
@@ -248,10 +243,10 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
     }
 
     /**
-     * Build a choice list based on the given choice but filter out the current state
+     * Build a choice list based on the given choice but filter out the current state.
      *
      * @param array $choices
-     * @param int $current
+     * @param int   $current
      *
      * @return Model\State[]
      */

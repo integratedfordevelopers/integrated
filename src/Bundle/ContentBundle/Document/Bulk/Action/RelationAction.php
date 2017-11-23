@@ -54,11 +54,13 @@ class RelationAction implements BulkActionInterface
 
     /**
      * @param string $handler
+     *
      * @return $this
      */
     public function setHandler($handler)
     {
         $this->handler = $handler;
+
         return $this;
     }
 
@@ -72,11 +74,13 @@ class RelationAction implements BulkActionInterface
 
     /**
      * @param Relation $relation
+     *
      * @return $this
      */
     public function setRelation(Relation $relation)
     {
         $this->relation = $relation;
+
         return $this;
     }
 
@@ -90,6 +94,7 @@ class RelationAction implements BulkActionInterface
 
     /**
      * @param ContentInterface[] $references
+     *
      * @return $this
      */
     public function setReferences($references)
@@ -100,11 +105,13 @@ class RelationAction implements BulkActionInterface
                 $this->addReference($reference);
             }
         }
+
         return $this;
     }
 
     /**
      * @param ContentInterface $reference
+     *
      * @return $this
      */
     public function addReference(ContentInterface $reference)
@@ -112,16 +119,19 @@ class RelationAction implements BulkActionInterface
         if (!$this->references->contains($reference)) {
             $this->references->add($reference);
         }
+
         return $this;
     }
 
     /**
      * @param ContentInterface $reference
+     *
      * @return $this
      */
     public function removeReference(ContentInterface $reference)
     {
         $this->references->removeElement($reference);
+
         return $this;
     }
 
@@ -132,7 +142,7 @@ class RelationAction implements BulkActionInterface
     {
         return [
             'relation' => $this->getRelation(),
-            'references' => $this->getReferences()
+            'references' => $this->getReferences(),
         ];
     }
 }

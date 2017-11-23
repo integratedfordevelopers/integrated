@@ -15,7 +15,6 @@ use Integrated\Bundle\ContentBundle\Extension\LocatableStorageInterfaceTrait;
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\ResolverInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

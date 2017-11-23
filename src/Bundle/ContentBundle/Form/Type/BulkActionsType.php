@@ -57,7 +57,7 @@ class BulkActionsType extends AbstractType
 
             $mapping[$config->getHandler()][] = [
                 'matcher' => $config->getMatcher(),
-                'name' => $name
+                'name' => $name,
             ];
         }
 
@@ -65,7 +65,7 @@ class BulkActionsType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {

@@ -12,13 +12,10 @@
 namespace Integrated\Bundle\LockingBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Doctrine\DBAL\Connection;
-
 use Integrated\Common\Locks\Provider\DBAL\Schema;
 
 /**
@@ -86,7 +83,7 @@ EOT
         $force = true === $input->getOption('force');
 
         if ($dump) {
-            $output->writeln(implode(';' . PHP_EOL, $diff) . ';');
+            $output->writeln(implode(';'.PHP_EOL, $diff).';');
         }
 
         if ($force) {

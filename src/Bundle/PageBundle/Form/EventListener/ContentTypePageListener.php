@@ -13,7 +13,6 @@ namespace Integrated\Bundle\PageBundle\Form\EventListener;
 
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -42,7 +41,7 @@ class ContentTypePageListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA => 'preSetData'
+            FormEvents::PRE_SET_DATA => 'preSetData',
         ];
     }
 
@@ -68,7 +67,7 @@ class ContentTypePageListener implements EventSubscriberInterface
 
         if (count($controller['controller_actions']) > 1) {
             $event->getForm()->add('controller_action', 'choice', [
-                'choices' => array_combine($controller['controller_actions'], $controller['controller_actions'])
+                'choices' => array_combine($controller['controller_actions'], $controller['controller_actions']),
             ]);
         } else {
             $contentTypePage->setControllerAction($controller['controller_actions'][0]);

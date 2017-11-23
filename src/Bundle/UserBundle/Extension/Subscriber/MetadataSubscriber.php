@@ -22,49 +22,49 @@ use Integrated\Common\Content\Extension\ExtensionInterface;
  */
 class MetadataSubscriber implements MetadataSubscriberInterface
 {
-	const RELATION_CLASS = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Relation';
+    const RELATION_CLASS = 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Relation';
 
-	/**
-	 * @var ExtensionInterface
-	 */
-	private $extension;
+    /**
+     * @var ExtensionInterface
+     */
+    private $extension;
 
-	/**
-	 * @param ExtensionInterface $extension
-	 */
-	public function __construct(ExtensionInterface $extension)
-	{
-		$this->extension = $extension;
-	}
+    /**
+     * @param ExtensionInterface $extension
+     */
+    public function __construct(ExtensionInterface $extension)
+    {
+        $this->extension = $extension;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public static function getSubscribedEvents()
-	{
-		return [
-			Events::METADATA => 'process',
-		];
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            Events::METADATA => 'process',
+        ];
+    }
 
-	public function getExtension()
-	{
-		return $this->extension;
-	}
+    public function getExtension()
+    {
+        return $this->extension;
+    }
 
-	public function process(MetadataEvent $event)
-	{
-		$metadata = $event->getMetadata();
+    public function process(MetadataEvent $event)
+    {
+        $metadata = $event->getMetadata();
 
-		if ($metadata->getClass() === self::RELATION_CLASS || is_subclass_of($metadata->getClass(), self::RELATION_CLASS)) {
-			$field = $metadata->newField('User');
+        if ($metadata->getClass() === self::RELATION_CLASS || is_subclass_of($metadata->getClass(), self::RELATION_CLASS)) {
+            $field = $metadata->newField('User');
 
-			$field->setType(ProfileFormType::class);
+            $field->setType(ProfileFormType::class);
 
-			$field->setOption('mapped', false);
-			$field->setOption('optional', true);
+            $field->setOption('mapped', false);
+            $field->setOption('optional', true);
 
-			$metadata->addField($field);
-		}
-	}
+            $metadata->addField($field);
+        }
+    }
 }

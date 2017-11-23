@@ -14,9 +14,7 @@ namespace Integrated\Bundle\MenuBundle\Document;
 use Knp\Menu\MenuItem as KnpMenuItem;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\FactoryInterface;
-
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
 
 /**
@@ -30,7 +28,7 @@ class MenuItem extends KnpMenuItem
     protected $id;
 
     /**
-     * @param string $name
+     * @param string              $name
      * @param DatabaseMenuFactory $factory
      */
     public function __construct($name, DatabaseMenuFactory $factory)
@@ -49,16 +47,19 @@ class MenuItem extends KnpMenuItem
 
     /**
      * @param string $id
+     *
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
      * @param FactoryInterface $factory
+     *
      * @return $this
      */
     public function setFactory(FactoryInterface $factory)
@@ -70,6 +71,7 @@ class MenuItem extends KnpMenuItem
         }
 
         $this->factory = $factory;
+
         return $this;
     }
 
@@ -80,14 +82,13 @@ class MenuItem extends KnpMenuItem
     {
         if ($child instanceof Menu) {
             throw new \InvalidArgumentException(
-                'Cannot add an instance of "Integrated\Bundle\MenuBundle\Document\Menu" as child, ' .
+                'Cannot add an instance of "Integrated\Bundle\MenuBundle\Document\Menu" as child, '.
                 'use "Integrated\Bundle\MenuBundle\Document\MenuItem" instead.'
             );
         }
 
         if (!$child instanceof ItemInterface) {
             $child = $this->factory->createChild($child, $options);
-
         } elseif (null !== $child->getParent()) {
             throw new \InvalidArgumentException(
                 'Cannot add menu item as child, it already belongs to another menu (e.g. has a parent).'
@@ -147,6 +148,7 @@ class MenuItem extends KnpMenuItem
 
     /**
      * @param bool $nested
+     *
      * @return array
      */
     public function toArray($nested = true)

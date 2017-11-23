@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ChannelBundle\Model;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
-
 use DateTime;
 
 /**
@@ -84,6 +83,7 @@ class Config implements ConfigInterface
     public function setName($name)
     {
         $this->name = (string) $name;
+
         return $this;
     }
 
@@ -103,6 +103,7 @@ class Config implements ConfigInterface
     public function setAdapter($adapter)
     {
         $this->adapter = (string) $adapter;
+
         return $this;
     }
 
@@ -210,6 +211,7 @@ class Config implements ConfigInterface
         }
 
         $this->options = $options;
+
         return $this;
     }
 
@@ -229,6 +231,7 @@ class Config implements ConfigInterface
     public function setCreated(DateTime $created)
     {
         $this->created = $created;
+
         return $this;
     }
 
@@ -248,6 +251,7 @@ class Config implements ConfigInterface
     public function setUpdated(DateTime $updated)
     {
         $this->updated = $updated;
+
         return $this;
     }
 }

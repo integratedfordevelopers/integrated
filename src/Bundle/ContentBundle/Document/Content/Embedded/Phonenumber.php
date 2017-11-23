@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 /**
- * Embedded document Phonenumber
+ * Embedded document Phonenumber.
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -30,11 +30,13 @@ class Phonenumber
 
     /**
      * @param string $number
+     *
      * @return $this
      */
     public function setNumber($number)
     {
         $this->number = $number === null ? null : (string) $number;
+
         return $this;
     }
 
@@ -48,11 +50,13 @@ class Phonenumber
 
     /**
      * @param string $type
+     *
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type === null ? null : (string) $type;
+
         return $this;
     }
 

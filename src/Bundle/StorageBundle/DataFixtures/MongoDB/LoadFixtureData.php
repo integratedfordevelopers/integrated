@@ -13,16 +13,12 @@ namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
-
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
-
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ContentTypeExtension;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\FileExtensionTrait;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\ImageExtensionTrait;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\VideoExtensionTrait;
-
 use Nelmio\Alice\Fixtures;
-
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -42,16 +38,16 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
     use ContentTypeExtension;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
         $finder = Finder::create()
-            ->in(__DIR__ . DIRECTORY_SEPARATOR . 'alice')
+            ->in(__DIR__.DIRECTORY_SEPARATOR.'alice')
             ->name('*.yml')
             ->sort(
                 function (SplFileInfo $a, SplFileInfo $b) {
-                    return (intval($a->getFilename()) < intval($b->getFilename()) ? -1 : 1);
+                    return (int) ($a->getFilename()) < (int) ($b->getFilename()) ? -1 : 1;
                 }
             );
 

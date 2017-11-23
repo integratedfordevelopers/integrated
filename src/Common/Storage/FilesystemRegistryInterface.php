@@ -9,6 +9,7 @@ interface FilesystemRegistryInterface
 {
     /**
      * @param string $filesystem
+     *
      * @return mixed
      */
     public function get($filesystem);
@@ -20,6 +21,7 @@ interface FilesystemRegistryInterface
 
     /**
      * @param $key
+     *
      * @return bool
      */
     public function exists($key);

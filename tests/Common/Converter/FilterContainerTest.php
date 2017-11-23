@@ -49,6 +49,7 @@ class FilterContainerTest extends ContainerTest
 
     /**
      * @dataProvider controlCharacterProvider
+     *
      * @param $character
      */
     public function testSetAddAndGetControlCharacters($character)
@@ -66,12 +67,12 @@ class FilterContainerTest extends ContainerTest
     {
         return [
             'null' => ["\x00"],
-            "tab" => ["\x09"],
-            "vertical tab" => ["\x0B"],
-            "form feed" => ["\x0C"],
+            'tab' => ["\x09"],
+            'vertical tab' => ["\x0B"],
+            'form feed' => ["\x0C"],
             'shift out' => ["\x0E"],
             'unit separator' => ["\x1F"],
-            'delete' => ["\x7F"]
+            'delete' => ["\x7F"],
         ];
     }
 

@@ -46,7 +46,7 @@ class CollectionSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSubscribedEvents()
     {
-        $this->assertEquals(array(Events::loadClassMetadata), $this->subscriber->getSubscribedEvents());
+        $this->assertEquals([Events::loadClassMetadata], $this->subscriber->getSubscribedEvents());
     }
 
     public function testloadClassMetadata()

@@ -14,7 +14,6 @@ namespace Integrated\Bundle\SolrBundle\Tests\Solr\Type;
 use Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
-
 use Integrated\Bundle\SolrBundle\Tests\Fixtures\TestObject;
 
 /**
@@ -96,13 +95,13 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
             'combining fields advanced 1' => [
                 [['name' => 'field', ['@field1', 'arrayObject' => ['@field1', '@field2', '@field3'], 'static text']]],
                 ['field' => [
-                    'field1 array1.1 array1.2 array1.3 static text', 'field1 array2.1 array2.2 array2.3 static text']
+                    'field1 array1.1 array1.2 array1.3 static text', 'field1 array2.1 array2.2 array2.3 static text', ],
                 ],
             ],
             'combining fields advanced 2' => [
                 [['name' => 'field', ['@field1', 'arrayObject[array1]' => [], 'static text']]],
                 ['field' => [
-                    'field1 array1.1 static text', 'field1 array1.2 static text', 'field1 array1.3 static text']
+                    'field1 array1.1 static text', 'field1 array1.2 static text', 'field1 array1.3 static text', ],
                 ],
             ],
             'combining fields with separator advanced 1' => [
@@ -110,11 +109,11 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
                     'separator' => '#',
                     '@field1',
                     'arrayObject' => ['separator' => '', '@field1', '@field2', '@field3'],
-                    'static text'
+                    'static text',
                 ]]],
                 ['field' => [
                     'field1#array1.1array1.2array1.3#static text',
-                    'field1#array2.1array2.2array2.3#static text'
+                    'field1#array2.1array2.2array2.3#static text',
                 ]],
             ],
             'combining fields with separator advanced 2' => [
@@ -122,7 +121,7 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
                 ['field' => [
                     'field1#array1.1#static text',
                     'field1#array1.2#static text',
-                    'field1#array1.3#static text'
+                    'field1#array1.3#static text',
                 ]],
             ],
         ];
@@ -232,7 +231,7 @@ class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
             'whitespace' => [
                 [['name' => 'field', '  static  text  with  extra  whitespace  ']],
                 ['field' => ['static text with extra whitespace']],
-            ]
+            ],
         ];
     }
 

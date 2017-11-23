@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
@@ -29,7 +28,7 @@ class ContentItemsBlock extends Block
     protected $items;
 
     /**
-     * General object init
+     * General object init.
      */
     public function __construct()
     {
@@ -50,11 +49,13 @@ class ContentItemsBlock extends Block
 
     /**
      * @param array $items
+     *
      * @return $this
      */
     public function setItems(array $items)
     {
         $this->items = new ArrayCollection($items);
+
         return $this;
     }
 

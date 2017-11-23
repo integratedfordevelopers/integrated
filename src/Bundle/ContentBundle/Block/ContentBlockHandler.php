@@ -14,14 +14,13 @@ namespace Integrated\Bundle\ContentBundle\Block;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 use Integrated\Bundle\ContentBundle\Provider\SolariumProvider;
 
 /**
- * Content block handler
+ * Content block handler.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -39,7 +38,7 @@ class ContentBlockHandler extends BlockHandler
 
     /**
      * @param SolariumProvider $provider
-     * @param RequestStack $requestStack
+     * @param RequestStack     $requestStack
      */
     public function __construct(SolariumProvider $provider, RequestStack $requestStack)
     {
@@ -69,16 +68,17 @@ class ContentBlockHandler extends BlockHandler
         }
 
         return $this->render([
-            'block'      => $block,
+            'block' => $block,
             'pagination' => $pagination,
-            'document'   => $this->getDocument(),
+            'document' => $this->getDocument(),
         ]);
     }
 
     /**
      * @param ContentBlock $block
-     * @param Request $request
-     * @param array $options
+     * @param Request      $request
+     * @param array        $options
+     *
      * @return \Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination
      */
     public function getPagination(ContentBlock $block, Request $request, array $options = [])

@@ -12,28 +12,21 @@
 namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\Group;
-
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Extension\Event\ContentEvent;
 use Integrated\Common\Content\Extension\Event\Subscriber\ContentSubscriberInterface;
 use Integrated\Common\Content\Extension\Events;
 use Integrated\Common\Content\Extension\ExtensionInterface;
 use Integrated\Common\Content\MetadataInterface;
-
 use Integrated\Common\ContentType\ResolverInterface;
-
 use Integrated\Common\Workflow\Events as WorkflowEvents;
 use Integrated\Common\Workflow\Event\WorkflowStateChangedEvent;
 
@@ -80,12 +73,12 @@ class ContentSubscriber implements ContentSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::POST_READ   => 'read',
-            Events::PRE_CREATE  => 'preUpdate',
+            Events::POST_READ => 'read',
+            Events::PRE_CREATE => 'preUpdate',
             Events::POST_CREATE => 'postUpdate',
-            Events::PRE_UPDATE  => 'preUpdate',
+            Events::PRE_UPDATE => 'preUpdate',
             Events::POST_UPDATE => 'postUpdate',
-            Events::POST_DELETE => 'delete'
+            Events::POST_DELETE => 'delete',
         ];
     }
 
@@ -107,8 +100,8 @@ class ContentSubscriber implements ContentSubscriberInterface
 
         if ($state = $this->getState($content)) {
             $data = [
-                'comment'  => '',
-                'state'    => $state->getState(),
+                'comment' => '',
+                'state' => $state->getState(),
                 'assigned' => $state->getAssignedType() == 'user' ? $state->getAssignedId() : null,
                 'deadline' => $state->getDeadline(),
             ];
@@ -130,8 +123,8 @@ class ContentSubscriber implements ContentSubscriberInterface
 
         $data = is_array($data = $event->getData()) ? array_filter($data) : []; // filter out empty fields
         $data = $data + [
-            'comment'  => '',
-            'state'    => ($state = $this->getState($content)) ? $state->getState() : null,
+            'comment' => '',
+            'state' => ($state = $this->getState($content)) ? $state->getState() : null,
             'assigned' => null,
             'deadline' => null,
         ];
@@ -146,14 +139,14 @@ class ContentSubscriber implements ContentSubscriberInterface
             $data['assigned'] = $this->container->get('integrated_user.user.manager')->find($data['assigned']);
         }
 
-        if ($data['assigned'] && !$this->hasAssignedAccess($data['assigned'], $data['state'], $data['state'] == $workflow->getDefault()) ) {
+        if ($data['assigned'] && !$this->hasAssignedAccess($data['assigned'], $data['state'], $data['state'] == $workflow->getDefault())) {
             $data['assigned'] = null;
         }
 
         $event->setData($data);
 
         /**
-         * @var Definition\State $state
+         * @var Definition\State
          */
         $state = $data['state'];
 
@@ -211,7 +204,6 @@ class ContentSubscriber implements ContentSubscriberInterface
         if ($data['assigned'] !== $state->getAssigned()) {
             $state->setAssigned($data['assigned']);
 
-
             //sent mail when user changed
 
             if ($data['assigned'] instanceof User) {
@@ -220,21 +212,21 @@ class ContentSubscriber implements ContentSubscriberInterface
 
                     if ($person->getEmail()) {
                         $title = 'unknown';
-                        if (method_exists($content, "getTitle")) {
+                        if (method_exists($content, 'getTitle')) {
                             $title = $content->getTitle();
-                        } elseif (method_exists($content, "getName")) {
+                        } elseif (method_exists($content, 'getName')) {
                             $title = $content->getName();
                         }
 
                         $message = \Swift_Message::newInstance()
-                            ->setSubject('[Integrated] "' . $title . '" has been assigned to you')
+                            ->setSubject('[Integrated] "'.$title.'" has been assigned to you')
                             ->setFrom('mailer@integratedforpublishers.com')
                             ->setTo($person->getEmail())
                             ->setBody(
                                 'An item has been assigned to you:
 
-Name: ' . $title . '
-E-mail: ' . $person->getEmail() . '',
+Name: '.$title.'
+E-mail: '.$person->getEmail().'',
                                 'text/plain'
                             );
                         $this->getContainer()->get('mailer')->send($message);
@@ -284,6 +276,7 @@ E-mail: ' . $person->getEmail() . '',
 
     /**
      * @param ContentInterface $content
+     *
      * @return State | null
      */
     protected function getState(ContentInterface $content)
@@ -321,6 +314,7 @@ E-mail: ' . $person->getEmail() . '',
 
     /**
      * @param object $object
+     *
      * @return Definition | null
      */
     protected function getWorkflow($object)
@@ -391,9 +385,10 @@ E-mail: ' . $person->getEmail() . '',
     }
 
     /**
-     * @param User $assigned
+     * @param User             $assigned
      * @param Definition\State $state
-     * @param bool|true $isDefault
+     * @param bool|true        $isDefault
+     *
      * @return bool
      */
     protected function hasAssignedAccess(User $assigned, Definition\State $state, $isDefault = true)

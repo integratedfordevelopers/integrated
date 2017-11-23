@@ -12,10 +12,8 @@
 namespace Integrated\Bundle\SocialBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -28,13 +26,13 @@ class IntegratedSocialExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('form.xml');
 
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         foreach (array_keys($config) as $connector) {
-            $loader->load($connector . '.xml');
+            $loader->load($connector.'.xml');
         }
 
         if (isset($config['twitter'])) {
@@ -48,7 +46,7 @@ class IntegratedSocialExtension extends Extension
             $defintion = $container->getDefinition('integrated_social.facebook');
             $defintion->replaceArgument(0, [
                 'app_id' => $config['facebook']['app_id'],
-                'app_secret' => $config['facebook']['app_secret']
+                'app_secret' => $config['facebook']['app_secret'],
             ]);
         }
     }

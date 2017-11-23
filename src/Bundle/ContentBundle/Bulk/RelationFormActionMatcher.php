@@ -41,7 +41,7 @@ class RelationFormActionMatcher implements ActionMatcherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function match(BulkActionInterface $action)
     {

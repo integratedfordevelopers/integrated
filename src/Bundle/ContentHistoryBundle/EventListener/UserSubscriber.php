@@ -15,7 +15,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\ContentHistoryBundle\Event\ContentHistoryEvent;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User;

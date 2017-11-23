@@ -12,15 +12,13 @@
 namespace Integrated\MongoDB\ContentType;
 
 use Doctrine\Common\EventSubscriber;
-
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
-
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 
 /**
- * @deprecated will be removed asap.
+ * @deprecated will be removed asap
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -39,24 +37,22 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
     /**
      * @var ClassMetadataInfo[]
      */
-    private $parents = array();
+    private $parents = [];
 
     /**
      * @var ClassMetadataInfo[][]
      */
-    private $children = array();
+    private $children = [];
 
     /**
      * @var ClassMetadataInfo[]
      */
-    private $changes = array();
+    private $changes = [];
 
     public function __construct(ClassMetadataFactory $factory)
     {
         $this->factory = $factory;
     }
-
-    //
 
     public function hasClass($class)
     {
@@ -98,7 +94,7 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
 
     public function clearClasses()
     {
-        $this->classes = array();
+        $this->classes = [];
     }
 
     /**
@@ -117,29 +113,22 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
         return $this->changes;
     }
 
-    /**
-     *
-     */
     public function clearChanges()
     {
-        $this->changes = array();
+        $this->changes = [];
     }
-
-    //
 
     /**
      * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
-        return array(
-            Events::loadClassMetadata
-        );
+        return [
+            Events::loadClassMetadata,
+        ];
     }
 
     /**
-     *
-     *
      * @param LoadClassMetadataEventArgs $event
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $event)
@@ -172,20 +161,20 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
     private function setParent(ClassMetadataInfo $class)
     {
         $this->parents[$class->name] = $class;
-        $this->children[$class->name] = array();
+        $this->children[$class->name] = [];
 
         // Reset discriminator and subclasses config as this will be build
         // automatically.
         // NOTE: doctrine doc comments claim these properties are read only
 
-        $class->discriminatorMap = array();
+        $class->discriminatorMap = [];
         $class->discriminatorValue = null;
 
-        $class->subClasses = array();
+        $class->subClasses = [];
     }
 
     /**
-     * Get the parent class
+     * Get the parent class.
      *
      * When not parent class is set load it from the factory and then
      * also load all its subclasses.
@@ -203,10 +192,10 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
         // The metadata should already be cashed but in case its not we first
         // set the parent so that no infinite is possible.
 
-        /** @var ClassMetadataInfo $parent */
+        /* @var ClassMetadataInfo $parent */
 
         $this->parents[$class->rootDocumentName] = $parent = $this->factory->getMetadataFor($class->rootDocumentName);
-        $this->children[$class->rootDocumentName] = array();
+        $this->children[$class->rootDocumentName] = [];
 
         foreach ($parent->subClasses as $class) {
             $this->addChild($this->factory->getMetadataFor($class));
@@ -216,8 +205,7 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
         // there are mapped super classes which are not in the sub classes list.
 
         /** @var ClassMetadataInfo $child */
-
-        $parents = array();
+        $parents = [];
 
         foreach ($this->children[$parent->name] as $child) {
             foreach ($child->parentClasses as $class) {
@@ -263,10 +251,9 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
         // Every time a child is added the map need to be distribute to all
         // the children
 
-        $parent->setDiscriminatorMap(array($class->getName() => $class->getName())); // it's called set but is implemented as a add.
+        $parent->setDiscriminatorMap([$class->getName() => $class->getName()]); // it's called set but is implemented as a add.
 
         /** @var ClassMetadataInfo $child */
-
         foreach ($this->children[$parent->name] as $child) {
             $child->setDiscriminatorMap($parent->discriminatorMap);
         }
@@ -275,7 +262,7 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
         $this->changes[$parent->name] = $parent;
     }
 
-//		$this->addDiscriminator($child);
+    //		$this->addDiscriminator($child);
 //
 //		// every time a child is added the map need to be distribute to all the children
 //

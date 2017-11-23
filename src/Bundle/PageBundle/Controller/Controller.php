@@ -13,7 +13,6 @@ namespace Integrated\Bundle\PageBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Request;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
 /**
@@ -58,7 +57,7 @@ class Controller extends BaseController
 
         if (!$channel instanceof Channel) {
             $channels = $this->getChannels();
-            $channel  = reset($channels);
+            $channel = reset($channels);
         }
 
         if (!$channel instanceof Channel) {

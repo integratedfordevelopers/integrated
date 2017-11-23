@@ -18,12 +18,14 @@ interface AttributeEditorInterface extends AttributeInterface
 {
     /**
      * @param string $type
+     *
      * @return self
      */
     public function setType($type);
 
     /**
      * @param array $options
+     *
      * @return self
      */
     public function setOptions(array $options);
@@ -31,6 +33,7 @@ interface AttributeEditorInterface extends AttributeInterface
     /**
      * @param string $name
      * @param mixed  $value
+     *
      * @return self
      */
     public function setOption($name, $value);

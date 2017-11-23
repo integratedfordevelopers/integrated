@@ -16,7 +16,6 @@ use Integrated\Common\Normalizer\NormalizerInterface;
 use Integrated\Common\Normalizer\Processor\Context;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessorInterface;
 use Integrated\Common\Normalizer\Processor\ResolverInterface;
-
 use stdClass as Object;
 
 /**
@@ -44,7 +43,7 @@ class NormalizerTest extends \PHPUnit_Framework_TestCase
         $object = new Object();
         $options = [
             'key1' => 'value1',
-            'key2' => 'value2'
+            'key2' => 'value2',
         ];
 
         $mock = $this->createMock(ResolvedProcessorInterface::class);

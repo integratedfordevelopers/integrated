@@ -22,17 +22,17 @@ interface OptionsInterface extends \ArrayAccess, \Countable, \IteratorAggregate
     public function toArray();
 
     /**
-     * Set the value for the given key
+     * Set the value for the given key.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return self
      */
     public function set($key, $value);
 
     /**
-     * Get the value from the given key
+     * Get the value from the given key.
      *
      * @param $key
      *
@@ -41,7 +41,7 @@ interface OptionsInterface extends \ArrayAccess, \Countable, \IteratorAggregate
     public function get($key);
 
     /**
-     * Remove the value for the given key
+     * Remove the value for the given key.
      *
      * @param $key
      *
@@ -59,7 +59,7 @@ interface OptionsInterface extends \ArrayAccess, \Countable, \IteratorAggregate
     public function has($key);
 
     /**
-     * Clear all the options data
+     * Clear all the options data.
      *
      * @return self
      */

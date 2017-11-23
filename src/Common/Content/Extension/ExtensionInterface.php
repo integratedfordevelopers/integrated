@@ -23,17 +23,17 @@ interface ExtensionInterface
      */
     public function getSubscribers();
 
-//	/**
-//	 * @return Dependency
-//	 */
-//	public function getDependencies();
+    //	/**
+    //	 * @return Dependency
+    //	 */
+    //	public function getDependencies();
 
     /**
      * @return string
      */
     public function getName();
 
-//	/**
+    //	/**
 //	 * @return string
 //	 */
 //	public function getDescription();

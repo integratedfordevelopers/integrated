@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ChannelBundle\Form\DataTransformer;
 
 use Integrated\Common\Channel\Connector\Config\Options;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
-
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**

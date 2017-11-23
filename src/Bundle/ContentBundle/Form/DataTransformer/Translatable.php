@@ -21,6 +21,7 @@ class Translatable implements DataTransformerInterface
 {
     /**
      * @param mixed $relation
+     *
      * @return array|mixed
      */
     public function transform($relation)
@@ -29,20 +30,20 @@ class Translatable implements DataTransformerInterface
             return $relation->getTranslations();
         }
 
-        return array();
-
+        return [];
     }
 
     /**
      * @param mixed $value
+     *
      * @return Embedded\Translatable|null
      */
     public function reverseTransform($value)
     {
         if (is_array($value)) {
-
             $translatable = new Embedded\Translatable();
             $translatable->setTranslations($value);
+
             return $translatable;
         }
 

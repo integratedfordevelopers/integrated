@@ -22,6 +22,7 @@ interface RegistryBuilderInterface
      * The extension name needs to be unique or an exception will be thrown
      *
      * @param ExtensionInterface $extension
+     *
      * @return self
      */
     public function addExtension(ExtensionInterface $extension);

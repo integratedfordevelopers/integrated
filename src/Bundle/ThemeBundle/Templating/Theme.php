@@ -53,11 +53,13 @@ class Theme
 
     /**
      * @param string $id
+     *
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -71,16 +73,19 @@ class Theme
 
     /**
      * @param array $paths
+     *
      * @return $this
      */
     public function setPaths(array $paths)
     {
         $this->paths = $paths;
+
         return $this;
     }
 
     /**
      * @param string $path
+     *
      * @return $this
      */
     public function addPath($path)
@@ -102,11 +107,13 @@ class Theme
 
     /**
      * @param array $fallback
+     *
      * @return $this
      */
     public function setFallback(array $fallback)
     {
         $this->fallback = $fallback;
+
         return $this;
     }
 }

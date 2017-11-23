@@ -4,9 +4,7 @@ namespace Integrated\Bundle\ContentBundle\Doctrine\ODM\Migration;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
-
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 
@@ -20,9 +18,10 @@ trait ContentTypeHelper
      * @param string $id
      * @param string $name
      * @param string $class
-     * @param array $requiredFields
-     * @param array $optionalFields
-     * @param array $options
+     * @param array  $requiredFields
+     * @param array  $optionalFields
+     * @param array  $options
+     *
      * @return ContentType
      */
     protected function addContentType(
@@ -58,8 +57,9 @@ trait ContentTypeHelper
 
     /**
      * @param ContentType $contentType
-     * @param array $requiredFields
-     * @param array $optionalFields
+     * @param array       $requiredFields
+     * @param array       $optionalFields
+     *
      * @return ContentType
      */
     protected function setContentTypeFields(
@@ -74,8 +74,9 @@ trait ContentTypeHelper
 
     /**
      * @param string $contentTypeId
-     * @param array $requiredFields
-     * @param array $optionalFields
+     * @param array  $requiredFields
+     * @param array  $optionalFields
+     *
      * @return ContentType
      */
     public function addContentTypeFields($contentTypeId, array $requiredFields = [], array $optionalFields = [])
@@ -88,22 +89,22 @@ trait ContentTypeHelper
             throw new NoSuchMetadataException(
                 sprintf('No class metadata defined for class "%s"', $contentType->getClass())
             );
-        } else {
-            $requiredFields = array_map('strtolower', $requiredFields);
-            $optionalFields = array_map('strtolower', $optionalFields);
+        }
+        $requiredFields = array_map('strtolower', $requiredFields);
+        $optionalFields = array_map('strtolower', $optionalFields);
 
-            $fields = $contentType->getFields();
+        $fields = $contentType->getFields();
 
-            if ($fields instanceof Collection) {
-                $fields = $fields->toArray();
+        if ($fields instanceof Collection) {
+            $fields = $fields->toArray();
+        }
+
+        foreach ($metadata->getFields() as $field) {
+            if (!in_array(strtolower($field->getName()), array_merge($optionalFields, $requiredFields))) {
+                continue;
             }
 
-            foreach ($metadata->getFields() as $field) {
-                if (!in_array(strtolower($field->getName()), array_merge($optionalFields, $requiredFields))) {
-                    continue;
-                }
-
-                $fields[$field->getName()] = (new Field())
+            $fields[$field->getName()] = (new Field())
                     ->setName($field->getName())
                     ->setOptions(
                         array_merge(
@@ -111,10 +112,9 @@ trait ContentTypeHelper
                             ['required' => in_array(strtolower($field->getName()), $requiredFields)]
                         )
                     );
-            }
-
-            $contentType->setFields($fields);
         }
+
+        $contentType->setFields($fields);
 
         $this->getDocumentManager()->flush($contentType);
 
@@ -123,7 +123,9 @@ trait ContentTypeHelper
 
     /**
      * @param string $contentTypeId
+     *
      * @return ContentType
+     *
      * @throws DocumentNotFoundException
      */
     public function updateContentTypeFields($contentTypeId)
@@ -148,7 +150,8 @@ trait ContentTypeHelper
 
     /**
      * @param string $contentTypeId
-     * @param array $removeFields
+     * @param array  $removeFields
+     *
      * @return ContentType
      */
     public function removeContentTypeFields($contentTypeId, array $removeFields)
@@ -176,8 +179,10 @@ trait ContentTypeHelper
 
     /**
      * @param string $id
-     * @param bool $throwNotFoundException
+     * @param bool   $throwNotFoundException
+     *
      * @return ContentType|null
+     *
      * @throws DocumentNotFoundException
      */
     public function getContentType($id, $throwNotFoundException = true)

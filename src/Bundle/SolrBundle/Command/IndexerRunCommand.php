@@ -12,14 +12,11 @@
 namespace Integrated\Bundle\SolrBundle\Command;
 
 use Exception;
-
 use Integrated\Bundle\SolrBundle\EventListener\DoctrineClearEventSubscriber;
 use Integrated\Bundle\SolrBundle\Process\ArgumentProcess;
 use Integrated\Bundle\SolrBundle\Process\ProcessPoolGenerator;
-
 use Integrated\Common\Queue\Provider\DBAL\QueueProvider;
 use Integrated\Common\Solr\Indexer\Indexer;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -60,11 +57,11 @@ class IndexerRunCommand extends Command
     protected $kernel;
 
     /**
-     * @param Indexer $indexer
-     * @param QueueProvider $queueProvider
-     * @param KernelInterface $kernel
+     * @param Indexer                      $indexer
+     * @param QueueProvider                $queueProvider
+     * @param KernelInterface              $kernel
      * @param DoctrineClearEventSubscriber $clearEventSubscriber
-     * @param string $workingDirectory
+     * @param string                       $workingDirectory
      */
     public function __construct(Indexer $indexer, QueueProvider $queueProvider, DoctrineClearEventSubscriber $clearEventSubscriber, KernelInterface $kernel, $workingDirectory)
     {
@@ -116,19 +113,19 @@ The <info>%command.name%</info> command starts a indexer run.
 
 <info>php %command.full_name%</info>
 ');
-
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($argument = $input->getArgument('processes')) {
             return $this->runProcess(new ArgumentProcess($argument), $input, $output);
-        } else if ($input->getOption('full') || $input->getOption('daemon')) {
+        } elseif ($input->getOption('full') || $input->getOption('daemon')) {
             return $this->runExternal($input, $output);
         }
 
@@ -136,8 +133,9 @@ The <info>%command.name%</info> command starts a indexer run.
     }
 
     /**
-     * @param string $lock
+     * @param string          $lock
      * @param OutputInterface $output
+     *
      * @return int
      */
     private function runInternal($lock, OutputInterface $output)
@@ -159,7 +157,7 @@ The <info>%command.name%</info> command starts a indexer run.
 
             $this->indexer->execute();
         } catch (Exception $e) {
-            $output->writeln("Aborting: " . $e->getMessage());
+            $output->writeln('Aborting: '.$e->getMessage());
 
             return 1;
         }
@@ -168,8 +166,9 @@ The <info>%command.name%</info> command starts a indexer run.
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
      */
     private function runExternal(InputInterface $input, OutputInterface $output)
@@ -207,8 +206,9 @@ The <info>%command.name%</info> command starts a indexer run.
 
     /**
      * @param ArgumentProcess $argument
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @return int
      */
     private function runProcess(ArgumentProcess $argument, InputInterface $input, OutputInterface $output)
@@ -224,7 +224,7 @@ The <info>%command.name%</info> command starts a indexer run.
                 $process->start();
 
                 // Tell somebody
-                $output->writeln(sprintf('Started process %d with pid %d to run the queue', ($i+1), $process->getPid()));
+                $output->writeln(sprintf('Started process %d with pid %d to run the queue', ($i + 1), $process->getPid()));
             }
 
             if ($input->getOption('blocking')) {
@@ -244,7 +244,7 @@ The <info>%command.name%</info> command starts a indexer run.
 
                         if (!$process->isRunning()) {
                             // Tell the user
-                            $output->writeln(sprintf('Process %d finished', ($i+1)));
+                            $output->writeln(sprintf('Process %d finished', ($i + 1)));
 
                             // This one is important
                             $pool->removeElement($process);

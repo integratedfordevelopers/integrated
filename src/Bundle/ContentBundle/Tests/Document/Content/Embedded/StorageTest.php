@@ -9,11 +9,9 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Embedded;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
-
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -22,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class StorageTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test the post write method used to create an object
+     * Test the post write method used to create an object.
      */
     public function testPostWriteMethod()
     {
@@ -31,7 +29,6 @@ class StorageTest extends \PHPUnit_Framework_TestCase
         $resolver->expects($this->once())
             ->method('resolve')
             ->willReturn($path = md5(time()));
-
 
         $object = Storage::postWrite(
             $identifier = md5(time()),

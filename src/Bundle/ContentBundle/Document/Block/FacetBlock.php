@@ -12,12 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
 /**
- * Facet block document
+ * Facet block document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
@@ -54,9 +53,6 @@ class FacetBlock extends Block
      */
     protected $fields;
 
-    /**
-     *
-     */
     public function __construct()
     {
         parent::__construct();
@@ -73,11 +69,13 @@ class FacetBlock extends Block
 
     /**
      * @param ContentBlock $block
+     *
      * @return $this
      */
     public function setBlock(ContentBlock $block)
     {
         $this->block = $block;
+
         return $this;
     }
 
@@ -91,11 +89,13 @@ class FacetBlock extends Block
 
     /**
      * @param array $fields
+     *
      * @return $this
      */
     public function setFields(array $fields)
     {
         $this->fields = new ArrayCollection($fields);
+
         return $this;
     }
 

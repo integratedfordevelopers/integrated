@@ -15,7 +15,6 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType;
-
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -32,7 +31,7 @@ class CustomFieldsTypeTest extends TypeTestCase
     protected $type;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     public function setup()
     {
@@ -42,7 +41,9 @@ class CustomFieldsTypeTest extends TypeTestCase
 
     /**
      * @dataProvider getValidData
+     *
      * @see http://symfony.com/doc/current/cookbook/form/unit_testing.html
+     *
      * @param array $data
      */
     public function testSubmitValidData(array $data)
@@ -72,9 +73,9 @@ class CustomFieldsTypeTest extends TypeTestCase
                 ],
                 'data' => [
                     'customField1' => null,
-                    'customField2' => 'Data for customField2'
-                ]
-            ]
+                    'customField2' => 'Data for customField2',
+                ],
+            ],
         ];
     }
 

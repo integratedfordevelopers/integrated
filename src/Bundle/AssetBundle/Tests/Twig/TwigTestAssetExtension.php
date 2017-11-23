@@ -25,6 +25,7 @@ class TwigTestAssetExtension extends \Twig_Extension
 
     /**
      * @param string $path
+     *
      * @return string
      */
     public function asset($path)

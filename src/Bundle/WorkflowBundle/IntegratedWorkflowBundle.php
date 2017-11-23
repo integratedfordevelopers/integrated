@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WorkflowBundle;
 
 use Integrated\Bundle\WorkflowBundle\DependencyInjection\IntegratedWorkflowExtension;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -37,7 +36,7 @@ class IntegratedWorkflowBundle extends Bundle
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getContainerExtension()
     {

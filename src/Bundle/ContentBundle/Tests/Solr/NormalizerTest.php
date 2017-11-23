@@ -33,23 +33,23 @@ class NormalizerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'strtolower' => [
-                'test', 'Test'
+                'test', 'Test',
             ],
             'trim' => [
-                'test', '  test  '
+                'test', '  test  ',
             ],
             'diacritics' => [
-                'eeaaooii', 'éëáäóöíï'
+                'eeaaooii', 'éëáäóöíï',
             ],
             'new lines and tabs' => [
-                'test test', "\ntest\n\ttest\t"
+                'test test', "\ntest\n\ttest\t",
             ],
             'reduce spaces' => [
-                'test test', "test  test"
+                'test test', 'test  test',
             ],
             'mixed' => [
-                'test eaoi test', "\n Test\n\t éäóï \t\n TEST"
-            ]
+                'test eaoi test', "\n Test\n\t éäóï \t\n TEST",
+            ],
         ];
     }
 }

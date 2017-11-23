@@ -13,7 +13,6 @@ namespace Integrated\Common\Converter\Config\Util;
 
 use Integrated\Common\Converter\Config\ConfigInterface;
 use Integrated\Common\Converter\Config\TypeConfigInterface;
-
 use Iterator;
 
 /**
@@ -71,8 +70,6 @@ class ParentAwareConfigIterator implements Iterator
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     public function next()
     {
@@ -80,7 +77,7 @@ class ParentAwareConfigIterator implements Iterator
             return;
         }
 
-        $this->counter++;
+        ++$this->counter;
         $this->current->next();
 
         $this->validate();
@@ -108,8 +105,6 @@ class ParentAwareConfigIterator implements Iterator
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     public function rewind()
     {

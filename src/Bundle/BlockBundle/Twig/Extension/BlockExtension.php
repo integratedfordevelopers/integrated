@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
@@ -49,8 +48,8 @@ class BlockExtension extends \Twig_Extension
     protected $pages = [];
 
     /**
-     * @param ContainerInterface $container
-     * @param BlockUsageProvider $blockUsageProvider
+     * @param ContainerInterface       $container
+     * @param BlockUsageProvider       $blockUsageProvider
      * @param MetadataFactoryInterface $metadataFactory
      */
     public function __construct(
@@ -92,9 +91,9 @@ class BlockExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Twig_Environment $environment
+     * @param \Twig_Environment                              $environment
      * @param \Integrated\Common\Block\BlockInterface|string $block
-     * @param array $options
+     * @param array                                          $options
      *
      * @return null|string
      *
@@ -124,9 +123,8 @@ class BlockExtension extends \Twig_Extension
         } catch (\Exception $e) {
             if ('prod' !== $this->container->getParameter('kernel.environment')) {
                 throw $e;
-            } else {
-                $this->container->get('logger')->error(sprintf('Block "%s" contains an error', $id));
             }
+            $this->container->get('logger')->error(sprintf('Block "%s" contains an error', $id));
 
             return $environment->render($this->locateTemplate('blocks/error.html.twig'), [
                 'id' => $id,
@@ -184,6 +182,7 @@ class BlockExtension extends \Twig_Extension
 
     /**
      * @param BlockInterface $block
+     *
      * @return string
      */
     public function getBlockTypeName(BlockInterface $block)

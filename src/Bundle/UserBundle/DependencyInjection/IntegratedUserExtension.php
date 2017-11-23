@@ -12,23 +12,21 @@
 namespace Integrated\Bundle\UserBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Extension for loading configuration
+ * Extension for loading configuration.
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class IntegratedUserExtension extends Extension
 {
     /**
-     * Load the configuration
+     * Load the configuration.
      *
-     * @param array $configs
+     * @param array            $configs
      * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container)

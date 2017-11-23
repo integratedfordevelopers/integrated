@@ -45,6 +45,7 @@ class Scope implements ScopeInterface
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -70,6 +71,7 @@ class Scope implements ScopeInterface
     public function setAdmin($admin)
     {
         $this->admin = $admin;
+
         return $this;
     }
 }

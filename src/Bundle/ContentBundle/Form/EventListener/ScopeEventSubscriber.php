@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Form\EventListener;
 
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManager;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\UserBundle\Model\Scope;
 

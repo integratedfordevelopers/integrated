@@ -36,11 +36,13 @@ class Request
 
     /**
      * @param string $ipAddress
+     *
      * @return $this
      */
     public function setIpAddress($ipAddress)
     {
         $this->ipAddress = $ipAddress;
+
         return $this;
     }
 
@@ -56,11 +58,13 @@ class Request
 
     /**
      * @param string $endpoint
+     *
      * @return $this
      */
     public function setEndpoint($endpoint)
     {
         $this->endpoint = $endpoint;
+
         return $this;
     }
 }

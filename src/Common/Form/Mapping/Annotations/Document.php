@@ -12,7 +12,7 @@
 namespace Integrated\Common\Form\Mapping\Annotations;
 
 /**
- * Annotation for defining metadata for a document
+ * Annotation for defining metadata for a document.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @Annotation
@@ -25,9 +25,10 @@ class Document
     protected $name;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $data
+     *
      * @throws \BadMethodCallException
      */
     public function __construct(array $data)
@@ -47,7 +48,7 @@ class Document
     }
 
     /**
-     * Get the name of the document
+     * Get the name of the document.
      *
      * @return string
      */
@@ -57,14 +58,16 @@ class Document
     }
 
     /**
-     * Set the name of the document
+     * Set the name of the document.
      *
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 }

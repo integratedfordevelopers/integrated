@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\LockingBundle\Command;
 
 use Integrated\Common\Locks\ManagerInterface;
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

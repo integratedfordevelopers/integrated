@@ -27,23 +27,23 @@ class ActionsType extends BaseActionsType
         parent::__construct([
             'create' => [
                 'type' => SubmitType::class,
-                'options' => ['label' => 'form.actions.create', 'translation_domain' => 'IntegratedChannelBundle']
+                'options' => ['label' => 'form.actions.create', 'translation_domain' => 'IntegratedChannelBundle'],
             ],
-            'save'   => [
+            'save' => [
                 'type' => SubmitType::class,
-                'options' => ['label' => 'form.actions.save', 'translation_domain' => 'IntegratedChannelBundle']
+                'options' => ['label' => 'form.actions.save', 'translation_domain' => 'IntegratedChannelBundle'],
             ],
             'delete' => [
                 'type' => SubmitType::class,
-                'options' => ['label' => 'form.actions.delete', 'translation_domain' => 'IntegratedChannelBundle']
+                'options' => ['label' => 'form.actions.delete', 'translation_domain' => 'IntegratedChannelBundle'],
             ],
             'cancel' => [
                 'type' => SubmitType::class,
                 'options' => [
                     'label' => 'form.actions.cancel',
                     'translation_domain' => 'IntegratedChannelBundle',
-                    'button_class' => 'default'
-                ]
+                    'button_class' => 'default',
+                ],
             ],
         ]);
     }

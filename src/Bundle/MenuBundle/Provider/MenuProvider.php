@@ -14,9 +14,7 @@ namespace Integrated\Bundle\MenuBundle\Provider;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
-
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -40,7 +38,7 @@ class MenuProvider implements MenuProviderInterface
     protected $menus = [];
 
     /**
-     * @param FactoryInterface $factory
+     * @param FactoryInterface         $factory
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(FactoryInterface $factory, EventDispatcherInterface $eventDispatcher)
@@ -75,6 +73,6 @@ class MenuProvider implements MenuProviderInterface
      */
     public function has($name, array $options = [])
     {
-        return (strpos($name, 'integrated_') === 0);
+        return strpos($name, 'integrated_') === 0;
     }
 }

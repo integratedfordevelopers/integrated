@@ -12,13 +12,10 @@
 namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\ContentHistoryBundle\Event\ContentHistoryEvent;
 use Integrated\Bundle\ContentHistoryBundle\Diff\ArrayComparer;
 use Integrated\Bundle\ContentHistoryBundle\Doctrine\ODM\MongoDB\Persister\PersistenceBuilder;
-use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

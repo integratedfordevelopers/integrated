@@ -14,9 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -85,7 +83,7 @@ class SearchSelectionController extends Controller
      *
      * @Template
      *
-     * @param Request $request
+     * @param Request         $request
      * @param SearchSelection $searchSelection
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -119,7 +117,7 @@ class SearchSelectionController extends Controller
      *
      * @Template
      *
-     * @param Request $request
+     * @param Request         $request
      * @param SearchSelection $searchSelection
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -179,6 +177,7 @@ class SearchSelectionController extends Controller
      * Creates a form to create a SearchSelection document.
      *
      * @param SearchSelection $searchSelection
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createCreateForm(SearchSelection $searchSelection)
@@ -208,6 +207,7 @@ class SearchSelectionController extends Controller
      * Creates a form to edit a SearchSelection document.
      *
      * @param SearchSelection $searchSelection
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createEditForm(SearchSelection $searchSelection)
@@ -215,10 +215,10 @@ class SearchSelectionController extends Controller
         $form = $this->createForm(
             SearchSelectionType::class,
             $searchSelection,
-            array(
+            [
                 'action' => $this->generateUrl('integrated_content_search_selection_edit', ['id' => $searchSelection->getId()]),
                 'method' => 'PUT',
-            )
+            ]
         );
 
         $form->add('actions', SaveCancelType::class, ['cancel_route' => 'integrated_content_search_selection_index']);
@@ -231,6 +231,7 @@ class SearchSelectionController extends Controller
      *
      * @param $id
      * @param bool|false $notDelete
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createDeleteForm($id, $notDelete = false)

@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 use Integrated\Common\Content\Registry;
 
 /**
- * Embedded document Metadata
+ * Embedded document Metadata.
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */

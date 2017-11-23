@@ -13,7 +13,6 @@ namespace Integrated\Common\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 /**
@@ -35,7 +34,7 @@ class MetadataType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

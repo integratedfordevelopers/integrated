@@ -13,7 +13,6 @@ namespace Integrated\Bundle\StorageBundle\Storage\Filesystem;
 
 use Gaufrette\File;
 use Gaufrette\Filesystem;
-
 use Integrated\Common\Storage\Reader\ReaderInterface;
 
 /**
@@ -35,9 +34,11 @@ class WriteFilesystem
     }
 
     /**
-     * @param string $identifier
+     * @param string          $identifier
      * @param ReaderInterface $reader
+     *
      * @throws \LogicException
+     *
      * @return mixed
      */
     public function write($identifier, ReaderInterface $reader)

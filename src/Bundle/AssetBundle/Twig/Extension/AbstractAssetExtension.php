@@ -13,7 +13,6 @@ namespace Integrated\Bundle\AssetBundle\Twig\Extension;
 
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\AssetBundle\Twig\TokenParser\AssetTokenParser;
-
 use Doctrine\Common\Inflector\Inflector;
 
 /**
@@ -60,6 +59,7 @@ abstract class AbstractAssetExtension extends \Twig_Extension
 
     /**
      * @param \Twig_Environment $environment
+     *
      * @return string
      */
     public function render(\Twig_Environment $environment)
@@ -70,10 +70,10 @@ abstract class AbstractAssetExtension extends \Twig_Extension
         $html = [];
 
         foreach ($this->manager->getAssets() as $asset) {
-            $block = Inflector::singularize($this->getTag()) . ($asset->isInline() ? '_inline' : '');
+            $block = Inflector::singularize($this->getTag()).($asset->isInline() ? '_inline' : '');
 
             $html[] = $template->renderBlock($block, [
-                $asset->isInline() ? 'asset_content' : 'asset_url' => $asset->getContent()
+                $asset->isInline() ? 'asset_content' : 'asset_url' => $asset->getContent(),
             ]);
         }
 
@@ -93,7 +93,7 @@ abstract class AbstractAssetExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return $this->getTag() . '_extension';
+        return $this->getTag().'_extension';
     }
 
     /**

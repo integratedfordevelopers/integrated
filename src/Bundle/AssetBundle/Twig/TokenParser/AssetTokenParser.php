@@ -13,7 +13,6 @@ namespace Integrated\Bundle\AssetBundle\Twig\TokenParser;
 
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\AssetBundle\Twig\Node\AssetNode;
-
 use Twig_Token;
 
 /**
@@ -71,11 +70,12 @@ class AssetTokenParser extends \Twig_TokenParser
 
     /**
      * @param Twig_Token $token
+     *
      * @return bool
      */
     public function testEndTag(\Twig_Token $token)
     {
-        return $token->test(['end' . $this->getTag()]);
+        return $token->test(['end'.$this->getTag()]);
     }
 
     /**

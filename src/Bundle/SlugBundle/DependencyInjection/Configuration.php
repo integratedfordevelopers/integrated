@@ -15,7 +15,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Configuration definition for Integrated slug bundle
+ * Configuration definition for Integrated slug bundle.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

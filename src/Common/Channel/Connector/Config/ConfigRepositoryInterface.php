@@ -62,7 +62,7 @@ interface ConfigRepositoryInterface
     public function findByChannel($criteria);
 
     /**
-     * Returns the class name of the object
+     * Returns the class name of the object.
      *
      * @return string
      */

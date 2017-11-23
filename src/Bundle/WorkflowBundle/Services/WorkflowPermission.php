@@ -21,7 +21,7 @@ use Integrated\Common\ContentType\ContentTypeFilterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
 /**
- * Class WorkflowPermission
+ * Class WorkflowPermission.
  */
 class WorkflowPermission implements ContentTypeFilterInterface
 {
@@ -47,6 +47,7 @@ class WorkflowPermission implements ContentTypeFilterInterface
 
     /**
      * @param ContentType $contentType
+     *
      * @return bool
      */
     public function hasAccess(ContentType $contentType)

@@ -76,7 +76,8 @@ class GridItemSubscriber implements EventSubscriber
 
     /**
      * @param DocumentManager $dm
-     * @param Page $page
+     * @param Page            $page
+     *
      * @return array|InlineTextBlock[]
      */
     protected function findInlineBlocks(DocumentManager $dm, Page $page)
@@ -86,6 +87,7 @@ class GridItemSubscriber implements EventSubscriber
 
     /**
      * @param Page $page
+     *
      * @return array
      */
     protected function getGridInlineBlocks(Page $page)
@@ -103,7 +105,8 @@ class GridItemSubscriber implements EventSubscriber
 
     /**
      * @param ItemsInterface $grid
-     * @param Page $page
+     * @param Page           $page
+     *
      * @return array
      */
     protected function getGridItemsInlineBlocks(ItemsInterface $grid, Page $page)

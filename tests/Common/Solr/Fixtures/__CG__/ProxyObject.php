@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Solr\Fixtures\__CG__;
 
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Embedded\RelationInterface;
 

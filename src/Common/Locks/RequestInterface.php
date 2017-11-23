@@ -17,14 +17,14 @@ namespace Integrated\Common\Locks;
 interface RequestInterface
 {
     /**
-     * Get the resource that needs to be locked
+     * Get the resource that needs to be locked.
      *
      * @return ResourceInterface
      */
     public function getResource();
 
     /**
-     * Get the owner of the request or null if none is supplied
+     * Get the owner of the request or null if none is supplied.
      *
      * @return ResourceInterface | null
      */

@@ -4,13 +4,11 @@ namespace Integrated\Bundle\StorageBundle\Storage\Util;
 
 use Doctrine\MongoDB\ArrayIterator;
 use Doctrine\MongoDB\Iterator;
-
-use Doctrine\ODM\MongoDB\Cursor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Create a new iterator with map and run over the data with walk
+ * Create a new iterator with map and run over the data with walk.
  *
  * @author Johnny Borg <johnny@e-active.nl>
  */
@@ -32,7 +30,7 @@ class ProgressIteratorUtil
     private $output;
 
     /**
-     * @param Iterator $iterator
+     * @param Iterator        $iterator
      * @param OutputInterface $output
      */
     public function __construct(Iterator $iterator, OutputInterface $output)
@@ -43,6 +41,7 @@ class ProgressIteratorUtil
 
     /**
      * @param \Closure $closure
+     *
      * @return $this
      */
     public function map(\Closure $closure)
@@ -70,6 +69,7 @@ class ProgressIteratorUtil
 
     /**
      * @param \Closure $closure
+     *
      * @return $this
      */
     public function walk(\Closure $closure)

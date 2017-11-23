@@ -19,28 +19,28 @@ use Integrated\Common\Content\ContentInterface;
 interface ContentTypeInterface
 {
     /**
-     * Get the id of the content type
+     * Get the id of the content type.
      *
      * @return string
      */
     public function getId();
 
     /**
-     * Get the class of the content type
+     * Get the class of the content type.
      *
      * @return string
      */
     public function getClass();
 
     /**
-     * Get the name of the content type
+     * Get the name of the content type.
      *
      * @return string
      */
     public function getName();
 
     /**
-     * Get a new instance of this content type
+     * Get a new instance of this content type.
      *
      * @return ContentInterface
      */
@@ -54,17 +54,19 @@ interface ContentTypeInterface
     public function getFields();
 
     /**
-     * Get the information of the specified field
+     * Get the information of the specified field.
      *
      * @param string $name The field name
+     *
      * @return ContentTypeFieldInterface
      */
     public function getField($name);
 
     /**
-     * Check if a field exist in the content type
+     * Check if a field exist in the content type.
      *
      * @param $name
+     *
      * @return bool
      */
     public function hasField($name);
@@ -80,6 +82,7 @@ interface ContentTypeInterface
      * Get the value of the specified key.
      *
      * @param string $name
+     *
      * @return mixed
      */
     public function getOption($name);
@@ -88,6 +91,7 @@ interface ContentTypeInterface
      * Check if the option exist in the content type.
      *
      * @param string $name
+     *
      * @return bool
      */
     public function hasOption($name);

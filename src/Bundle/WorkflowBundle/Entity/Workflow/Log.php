@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use DateTime;
-
 use Symfony\Component\Security\Acl\Util\ClassUtils;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 
@@ -91,6 +89,7 @@ class Log
 
     /**
      * @param State $state
+     *
      * @return $this
      */
     public function setOwner(State $state = null)
@@ -108,8 +107,6 @@ class Log
         return $this;
     }
 
-
-
     /**
      * @return DateTime
      */
@@ -120,11 +117,13 @@ class Log
 
     /**
      * @param DateTime $timestamp
+     *
      * @return $this
      */
     public function setTimestamp(DateTime $timestamp = null)
     {
         $this->timestamp = $timestamp;
+
         return $this;
     }
 
@@ -138,6 +137,7 @@ class Log
 
     /**
      * @param UserInterface $user
+     *
      * @return $this
      */
     public function setUser($user)
@@ -197,11 +197,13 @@ class Log
 
     /**
      * @param string $comment
+     *
      * @return $this
      */
     public function setComment($comment)
     {
         $this->comment = $comment;
+
         return $this;
     }
 
@@ -215,11 +217,13 @@ class Log
 
     /**
      * @param DateTime $deadline
+     *
      * @return $this
      */
     public function setDeadline(DateTime $deadline = null)
     {
         $this->deadline = $deadline;
+
         return $this;
     }
 }

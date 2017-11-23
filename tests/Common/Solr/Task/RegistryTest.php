@@ -26,7 +26,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
             'class2' => function () {
             },
             'class3' => function () {
-            }
+            },
         ];
 
         $registry = $this->getInstance($handlers);
@@ -45,7 +45,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
             'class2' => function () {
             },
             'class3' => function () {
-            }
+            },
         ];
 
         $registry = $this->getInstance($handlers);
@@ -72,7 +72,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
             'class2' => function () {
             },
             'class3' => function () {
-            }
+            },
         ];
 
         self::assertSame($handlers, $this->getInstance($handlers)->getHandlers());
@@ -80,6 +80,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param callable[] $handlers
+     *
      * @return Registry
      */
     protected function getInstance(array $handlers = [])

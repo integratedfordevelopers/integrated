@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WorkflowBundle\Form\EventListener;
 
 use Integrated\Bundle\UserBundle\Model\UserInterface;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -37,12 +36,12 @@ class WorkflowDefaultDataListener implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA => 'onPreData'
+            FormEvents::PRE_SET_DATA => 'onPreData',
         ];
     }
 
@@ -56,8 +55,8 @@ class WorkflowDefaultDataListener implements EventSubscriberInterface
         }
 
         $event->setData([
-            'comment'  => '',
-            'state'    => null,
+            'comment' => '',
+            'state' => null,
             'assigned' => $this->getUser(),
             'deadline' => null,
         ]);

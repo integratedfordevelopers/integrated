@@ -40,7 +40,7 @@ class StorageTranslation
             'identifier' => $this->storage->getIdentifier(),
             'pathname' => $this->storage->getPathname(),
             'metadata' => (new MetadataTranslation($this->storage->getMetadata()))->toArray(),
-            'filesystems' => $this->storage->getFilesystems()->toArray()
+            'filesystems' => $this->storage->getFilesystems()->toArray(),
         ];
     }
 }

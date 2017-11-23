@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Solr\Type\PropertyType;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
@@ -23,8 +22,6 @@ use Integrated\Common\Converter\ContainerInterface;
  */
 class PropertyTypeTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     */
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
@@ -34,8 +31,8 @@ class PropertyTypeTest extends \PHPUnit_Framework_TestCase
      * @dataProvider buildProvider
      *
      * @param ContentInterface $content
-     * @param array $options
-     * @param array $expected
+     * @param array            $options
+     * @param array            $expected
      */
     public function testBuild(ContentInterface $content, array $options, array $expected)
     {
@@ -52,9 +49,9 @@ class PropertyTypeTest extends \PHPUnit_Framework_TestCase
     public function buildProvider()
     {
         return [
-            [$this->getStub(), [['field' => 'contentType', 'fieldValue'    => 'type1', 'label' => 'Test 1']], ['facet_properties' => ['Test 1']]],
+            [$this->getStub(), [['field' => 'contentType', 'fieldValue' => 'type1', 'label' => 'Test 1']], ['facet_properties' => ['Test 1']]],
             [$this->getStub(), [['field' => 'contentType', 'fieldValueNot' => 'type2', 'label' => 'Test 2']], ['facet_properties' => ['Test 2']]],
-            [$this->getStub(), [['field' => 'contentType', 'fieldValue'    => 'type2', 'label' => 'Test 2']], []],
+            [$this->getStub(), [['field' => 'contentType', 'fieldValue' => 'type2', 'label' => 'Test 2']], []],
         ];
     }
 

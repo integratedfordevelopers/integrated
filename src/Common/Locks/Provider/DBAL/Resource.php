@@ -20,13 +20,14 @@ use Integrated\Common\Locks\ResourceInterface;
 class Resource extends BaseResource
 {
     /**
-     * Convert a resource object to a string
+     * Convert a resource object to a string.
      *
      * Serialize a resource object to a json encode string. The order of the
      * array keys are type first and then the identity which is called id to
      * save some space.
      *
      * @param ResourceInterface $resource
+     *
      * @return string
      */
     public static function serialize(ResourceInterface $resource = null)
@@ -45,13 +46,14 @@ class Resource extends BaseResource
     }
 
     /**
-     * Convert a strong to a resource object
+     * Convert a strong to a resource object.
      *
      * The string is expected to be a resource object encoded by the serialize
      * method. So the json decode should have a array with a type and optionaly
      * a id key.
      *
      * @param string $serialized
+     *
      * @return self
      */
     public static function unserialize($serialized)

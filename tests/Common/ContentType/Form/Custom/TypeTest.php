@@ -24,7 +24,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
     protected $type;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test interface of type
+     * Test interface of type.
      */
     public function testInterface()
     {
@@ -40,7 +40,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get and setType function
+     * Test get and setType function.
      */
     public function testGetAndSetTypeFunction()
     {
@@ -50,7 +50,7 @@ class TypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get and setName function
+     * Test get and setName function.
      */
     public function testGetAndSetNameFunction()
     {

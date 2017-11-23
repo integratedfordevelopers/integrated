@@ -54,7 +54,8 @@ class DatabaseMenuFactory implements FactoryInterface
 
     /**
      * @param string $name
-     * @param array $options
+     * @param array  $options
+     *
      * @return \Integrated\Bundle\MenuBundle\Document\Menu
      */
     public function createItem($name, array $options = [])
@@ -64,7 +65,8 @@ class DatabaseMenuFactory implements FactoryInterface
 
     /**
      * @param string $name
-     * @param array $options
+     * @param array  $options
+     *
      * @return \Integrated\Bundle\MenuBundle\Document\MenuItem
      */
     public function createChild($name, array $options = [])
@@ -74,6 +76,7 @@ class DatabaseMenuFactory implements FactoryInterface
 
     /**
      * @param array $array
+     *
      * @return \Integrated\Bundle\MenuBundle\Document\Menu|null
      */
     public function fromArray(array $array = [])
@@ -95,6 +98,7 @@ class DatabaseMenuFactory implements FactoryInterface
 
     /**
      * @param array $array
+     *
      * @return array
      */
     protected function parseChildren(array $array = [])
@@ -125,6 +129,7 @@ class DatabaseMenuFactory implements FactoryInterface
      * @param $class
      * @param $name
      * @param array $options
+     *
      * @return \Integrated\Bundle\MenuBundle\Document\MenuItem
      */
     protected function getItem($class, $name, array $options = [])
@@ -147,10 +152,10 @@ class DatabaseMenuFactory implements FactoryInterface
     }
 
     /**
-     * Adds a factory extension
+     * Adds a factory extension.
      *
      * @param ExtensionInterface $extension
-     * @param integer            $priority
+     * @param int                $priority
      */
     public function addExtension(ExtensionInterface $extension, $priority = 0)
     {

@@ -13,11 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Events;
-
 use Integrated\Common\Security\Permissions;
 
 /**
@@ -39,12 +37,12 @@ class FormFieldSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            Events::BUILD_FIELD => 'buildField'
+            Events::BUILD_FIELD => 'buildField',
         ];
     }
 

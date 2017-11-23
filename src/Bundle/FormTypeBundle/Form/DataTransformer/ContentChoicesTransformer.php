@@ -13,9 +13,7 @@ namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Common\Content\ContentInterface;
 
 /**
@@ -38,7 +36,9 @@ class ContentChoicesTransformer implements DataTransformerInterface
 
     /**
      * @param mixed $value
+     *
      * @return array|null
+     *
      * @throws TransformationFailedException
      */
     public function transform($value)
@@ -55,6 +55,7 @@ class ContentChoicesTransformer implements DataTransformerInterface
                 }
                 $values[] = $content->getId();
             }
+
             return $values;
         }
 
@@ -63,7 +64,9 @@ class ContentChoicesTransformer implements DataTransformerInterface
 
     /**
      * @param mixed $value
+     *
      * @return array
+     *
      * @throws TransformationFailedException
      */
     public function reverseTransform($value)

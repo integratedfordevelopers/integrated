@@ -14,7 +14,6 @@ namespace Integrated\Bundle\WebsiteBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -26,6 +25,7 @@ class MenuController extends Controller
      * @Template
      *
      * @param Request $request
+     *
      * @return array
      */
     public function renderAction(Request $request)
@@ -38,13 +38,14 @@ class MenuController extends Controller
         }
 
         return [
-            'menu'    => $menu,
+            'menu' => $menu,
             'options' => isset($data['options']) ? $data['options'] : [],
         ];
     }
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function saveAction(Request $request)

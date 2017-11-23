@@ -98,10 +98,9 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Check if the value is one of the allowed types or throw a exception
+     * Check if the value is one of the allowed types or throw a exception.
      *
      * @param mixed $value
-     * @return null | string | float | int | bool | array
      *
      * @trows UnexpectedTypeException if $value is not a scalar or array type
      */

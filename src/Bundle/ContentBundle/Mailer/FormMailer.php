@@ -13,8 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Mailer;
 
 use Symfony\Bridge\Twig\TwigEngine;
 
-use Integrated\Common\Content\ContentInterface;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -47,9 +45,9 @@ class FormMailer
 
     /**
      * @param \Swift_Mailer $mailer
-     * @param TwigEngine $twigEngine
-     * @param string $from
-     * @param string $name
+     * @param TwigEngine    $twigEngine
+     * @param string        $from
+     * @param string        $name
      */
     public function __construct(\Swift_Mailer $mailer, TwigEngine $twigEngine, $from, $name)
     {

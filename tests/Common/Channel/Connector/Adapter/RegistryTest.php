@@ -28,7 +28,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     {
         $registry = $this->getInstance([
             'test1' => $this->getAdapter(),
-            'test2' => $this->getAdapter()
+            'test2' => $this->getAdapter(),
         ]);
 
         self::assertTrue($registry->hasAdapter('test1'));
@@ -72,7 +72,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     {
         $adaptors = [
             'test1' => $this->getAdapter(),
-            'test2' => $this->getAdapter()
+            'test2' => $this->getAdapter(),
         ];
 
         self::assertSame($adaptors, $this->getInstance($adaptors)->getAdapters());
@@ -80,6 +80,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param AdapterInterface[] $adaptors
+     *
      * @return Registry
      */
     protected function getInstance(array $adaptors = [])

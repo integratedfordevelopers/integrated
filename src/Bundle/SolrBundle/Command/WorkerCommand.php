@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\SolrBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -56,7 +55,7 @@ The <info>%command.name%</info> command starts a solr worker run.
             $worker = $this->getContainer()->get('integrated_solr.worker');
 
             if (null !== ($tasks = $input->getOption('tasks'))) {
-                $worker->setOption('tasks', intval($tasks));
+                $worker->setOption('tasks', (int) $tasks);
             }
 
             $worker->execute();

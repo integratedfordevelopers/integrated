@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 /**
- * Embedded document Location
+ * Embedded document Location.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -29,7 +29,7 @@ class Location
     protected $longitude;
 
     /**
-     * Get the latitude of the document
+     * Get the latitude of the document.
      *
      * @return float
      */
@@ -39,19 +39,21 @@ class Location
     }
 
     /**
-     * Set the latitude of the document
+     * Set the latitude of the document.
      *
      * @param float $latitude
+     *
      * @return $this
      */
     public function setLatitude($latitude)
     {
         $this->latitude = $latitude;
+
         return $this;
     }
 
     /**
-     * Get the longitude of the document
+     * Get the longitude of the document.
      *
      * @return float
      */
@@ -61,14 +63,16 @@ class Location
     }
 
     /**
-     * Set the longitude of the document
+     * Set the longitude of the document.
      *
      * @param float $longitude
+     *
      * @return $this
      */
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
+
         return $this;
     }
 }

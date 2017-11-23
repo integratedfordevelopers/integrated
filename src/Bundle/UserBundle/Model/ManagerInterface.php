@@ -18,68 +18,68 @@ use Countable;
  */
 interface ManagerInterface /* extends Countable */
 {
-//	/**
-//	 * Create a user object
-//	 *
-//	 * @return object
-//	 */
-//	public function create();
+    //	/**
+    //	 * Create a user object
+    //	 *
+    //	 * @return object
+    //	 */
+    //	public function create();
 //
-//	/**
-//	 * Change or add the object to the manager
-//	 *
-//	 * @param object $object
-//	 */
-//	public function persist($object);
+    //	/**
+    //	 * Change or add the object to the manager
+    //	 *
+    //	 * @param object $object
+    //	 */
+    //	public function persist($object);
 //
-//	/**
-//	 * Remove the object from the manager
-//	 *
-//	 * @param object $object
-//	 */
-//	public function remove($object);
+    //	/**
+    //	 * Remove the object from the manager
+    //	 *
+    //	 * @param object $object
+    //	 */
+    //	public function remove($object);
 
-	/**
-	 * Delete all the managed objects.
-	 */
-	public function clear();
+    /**
+     * Delete all the managed objects.
+     */
+    public function clear();
 
-//	/**
-//	 * Returns total number of managed objects
-//	 *
-//	 * @return int
-//	 */
-//	public function count();
+    //	/**
+    //	 * Returns total number of managed objects
+    //	 *
+    //	 * @return int
+    //	 */
+    //	public function count();
 
-	/**
-	 * Finds the object by its identifier.
-	 *
-	 * @param mixed $id
-	 *
-	 * @return object
-	 */
-	public function find($id);
+    /**
+     * Finds the object by its identifier.
+     *
+     * @param mixed $id
+     *
+     * @return object
+     */
+    public function find($id);
 
-	/**
-	 * Finds all the managed users.
-	 *
-	 * @return object[]
-	 */
-	public function findAll();
+    /**
+     * Finds all the managed users.
+     *
+     * @return object[]
+     */
+    public function findAll();
 
-	/**
-	 * Finds the objects by a set of criteria.
-	 *
-	 * @param array $criteria
-	 *
-	 * @return object[]
-	 */
-	public function findBy(array $criteria);
+    /**
+     * Finds the objects by a set of criteria.
+     *
+     * @param array $criteria
+     *
+     * @return object[]
+     */
+    public function findBy(array $criteria);
 
-	/**
-	 * Returns the class name of the managed object
-	 *
-	 * @return string
-	 */
-	public function getClassName();
+    /**
+     * Returns the class name of the managed object.
+     *
+     * @return string
+     */
+    public function getClassName();
 }

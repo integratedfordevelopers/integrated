@@ -13,10 +13,8 @@ namespace Integrated\Common\Content\Extension\Adaptor\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Proxy;
-
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
-
 use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
 use Integrated\Common\Content\Extension\Events;
 
@@ -26,11 +24,11 @@ use Integrated\Common\Content\Extension\Events;
 class DoctrineMongodbAdaptor extends AbstractAdaptor implements EventSubscriber
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'preRemove',
             'postRemove',
             'prePersist',
@@ -38,7 +36,7 @@ class DoctrineMongodbAdaptor extends AbstractAdaptor implements EventSubscriber
             'preFlush', // calculate our of preUpdate
             'postUpdate', // probably should to postUpdate along the lines of the preUpdate
             'postLoad',
-        );
+        ];
     }
 
     public function preRemove(LifecycleEventArgs $args)

@@ -44,7 +44,7 @@ class BlockSizeType extends AbstractType
         $builder->add('size_sm', IntegerType::class, [
             'label' => 'Small devices',
             'attr' => [
-                'help_text' => 'Any screen bigger (or equal) than 768px wide (most likely tablets).'
+                'help_text' => 'Any screen bigger (or equal) than 768px wide (most likely tablets).',
             ],
             'required' => false,
             'constraints' => new Range([

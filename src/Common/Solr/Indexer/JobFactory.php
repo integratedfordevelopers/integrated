@@ -13,7 +13,6 @@ namespace Integrated\Common\Solr\Indexer;
 
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Solr\Exception\OutOfBoundsException;
-
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
@@ -24,7 +23,7 @@ class JobFactory implements JobFactoryInterface
 {
     const ADD = 'ADD';
     const DELETE = 'DELETE';
-    
+
     /**
      * @var SerializerInterface
      */

@@ -18,7 +18,7 @@ final class ContentType
 {
     const MAPPED_NONE = 0;
 
-    const MAPPED_ONE  = 1;
+    const MAPPED_ONE = 1;
 
     const MAPPED_MANY = 2;
 }

@@ -19,6 +19,7 @@ class ArrayComparer
     /**
      * @param array $old
      * @param array $new
+     *
      * @return array
      */
     public static function diff(array $old = [], array $new = [])

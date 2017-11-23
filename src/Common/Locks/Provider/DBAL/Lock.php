@@ -12,7 +12,6 @@
 namespace Integrated\Common\Locks\Provider\DBAL;
 
 use DateTime;
-
 use Integrated\Common\Locks\LockInterface;
 use Integrated\Common\Locks\RequestInterface;
 
@@ -42,10 +41,10 @@ class Lock implements LockInterface
     private $expires;
 
     /**
-     * @param string $id
+     * @param string           $id
      * @param RequestInterface $request
-     * @param DateTime $created
-     * @param DateTime $expires
+     * @param DateTime         $created
+     * @param DateTime         $expires
      */
     public function __construct($id, RequestInterface $request, DateTime $created, DateTime $expires = null)
     {
@@ -57,6 +56,7 @@ class Lock implements LockInterface
 
     /**
      * @param array $data
+     *
      * @return self
      */
     public static function factory(array $data)
@@ -77,7 +77,7 @@ class Lock implements LockInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -85,7 +85,7 @@ class Lock implements LockInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRequest()
     {
@@ -93,7 +93,7 @@ class Lock implements LockInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getCreated()
     {
@@ -101,7 +101,7 @@ class Lock implements LockInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getExpires()
     {

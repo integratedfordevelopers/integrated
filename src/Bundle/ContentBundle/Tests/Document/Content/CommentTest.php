@@ -24,7 +24,7 @@ class CommentTest extends ContentTest
     private $comment;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class CommentTest extends ContentTest
     }
 
     /**
-     * Test get- and setTitle function
+     * Test get- and setTitle function.
      */
     public function testGetAndSetTitleFunction()
     {
@@ -41,7 +41,7 @@ class CommentTest extends ContentTest
     }
 
     /**
-     * Test get- and setName function
+     * Test get- and setName function.
      */
     public function testGetAndSetNameFunction()
     {
@@ -50,7 +50,7 @@ class CommentTest extends ContentTest
     }
 
     /**
-     * Test get- and setEmail function
+     * Test get- and setEmail function.
      */
     public function testGetAndSetEmailFunction()
     {
@@ -59,7 +59,7 @@ class CommentTest extends ContentTest
     }
 
     /**
-     * Test get- and setEmail function
+     * Test get- and setEmail function.
      */
     public function testGetAndSetCommentFunction()
     {
@@ -68,7 +68,7 @@ class CommentTest extends ContentTest
     }
 
     /**
-     * Test toString function
+     * Test toString function.
      */
     public function testToStringFunction()
     {

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ThemeBundle\Templating;
 
 use Symfony\Component\HttpKernel\Kernel;
-
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
 
 /**
@@ -50,9 +49,11 @@ class ThemeManager
 
     /**
      * @param string $id
-     * @param array $paths
-     * @param array $fallback
+     * @param array  $paths
+     * @param array  $fallback
+     *
      * @return $this
+     *
      * @throws \InvalidArgumentException
      */
     public function registerTheme($id, array $paths, array $fallback = [])
@@ -62,12 +63,14 @@ class ThemeManager
         }
 
         $this->themes[$id] = new Theme($id, $paths, $fallback);
+
         return $this;
     }
 
     /**
      * @param string $theme
      * @param string $path
+     *
      * @return $this
      */
     public function registerPath($theme, $path)
@@ -83,6 +86,7 @@ class ThemeManager
 
     /**
      * @param string $id
+     *
      * @return bool
      */
     public function hasTheme($id)
@@ -92,7 +96,9 @@ class ThemeManager
 
     /**
      * @param string $id
+     *
      * @return Theme
+     *
      * @throws \InvalidArgumentException
      */
     public function getTheme($id)
@@ -122,7 +128,9 @@ class ThemeManager
 
     /**
      * @param string $id
+     *
      * @return $this
+     *
      * @throws \InvalidArgumentException
      */
     public function setActiveTheme($id)
@@ -132,13 +140,16 @@ class ThemeManager
         }
 
         $this->activeTheme = $id;
+
         return $this;
     }
 
     /**
      * @param string $template
      * @param string $theme
+     *
      * @return string
+     *
      * @throws CircularFallbackException
      */
     public function locateTemplate($template, $theme = null)
@@ -153,10 +164,10 @@ class ThemeManager
         $this->fallbackStack[$theme->getId()] = 1;
 
         foreach ($theme->getPaths() as $path) {
-            if (file_exists($this->locateResource($path) . '/' . $template)) {
+            if (file_exists($this->locateResource($path).'/'.$template)) {
                 $this->fallbackStack = []; // reset
 
-                return $path . '/' . $template;
+                return $path.'/'.$template;
             }
         }
 
@@ -177,7 +188,8 @@ class ThemeManager
     /**
      * @param string $name
      * @param string $dir
-     * @param bool $first
+     * @param bool   $first
+     *
      * @return string|array
      */
     public function locateResource($name, $dir = null, $first = true)

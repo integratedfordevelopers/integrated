@@ -12,12 +12,10 @@
 namespace Integrated\Common\Solr\Indexer;
 
 use Exception;
-
 use Integrated\Common\Queue\Queue;
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Queue\QueueMessageInterface;
 use Integrated\Common\Queue\Provider\Memory\QueueProvider;
-
 use Integrated\Common\Solr\Configurable;
 use Integrated\Common\Solr\Indexer\Event\BatchEvent;
 use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
@@ -25,16 +23,12 @@ use Integrated\Common\Solr\Indexer\Event\IndexerEvent;
 use Integrated\Common\Solr\Indexer\Event\MessageEvent;
 use Integrated\Common\Solr\Indexer\Event\ResultEvent;
 use Integrated\Common\Solr\Indexer\Event\SendEvent;
-
 use Integrated\Common\Solr\Exception\ClientException;
 use Integrated\Common\Solr\Exception\InvalidArgumentException;
 use Integrated\Common\Solr\Exception\RuntimeException;
-
 use Solarium\Core\Client\Client;
-
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -71,7 +65,7 @@ class Indexer extends Configurable implements IndexerInterface
      * Indexer constructor.
      *
      * @param CommandFactoryInterface $factory
-     * @param Batch                  $batch
+     * @param Batch                   $batch
      */
     public function __construct(CommandFactoryInterface $factory, Batch $batch = null)
     {
@@ -98,7 +92,7 @@ class Indexer extends Configurable implements IndexerInterface
     }
 
     /**
-     * Set the event dispatcher
+     * Set the event dispatcher.
      *
      * @param EventDispatcherInterface $dispatcher
      */
@@ -156,7 +150,7 @@ class Indexer extends Configurable implements IndexerInterface
     }
 
     /**
-     * Get the solarium client
+     * Get the solarium client.
      *
      * @return Client|null
      */
@@ -166,7 +160,7 @@ class Indexer extends Configurable implements IndexerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function execute(Client $client = null)
     {

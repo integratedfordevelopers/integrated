@@ -24,7 +24,7 @@ class FileTest extends ContentTest
     private $file;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class FileTest extends ContentTest
     }
 
     /**
-     * Test get- and setTitle function
+     * Test get- and setTitle function.
      */
     public function testGetAndSetTitleFunction()
     {
@@ -41,7 +41,7 @@ class FileTest extends ContentTest
     }
 
     /**
-     * Test get- and setFile function
+     * Test get- and setFile function.
      */
     public function testGetAndSetFileFunction()
     {
@@ -52,7 +52,7 @@ class FileTest extends ContentTest
     }
 
     /**
-     * Test get- and setDescription function
+     * Test get- and setDescription function.
      */
     public function testGetAndSetDescriptionFunction()
     {
@@ -61,7 +61,7 @@ class FileTest extends ContentTest
     }
 
     /**
-     * Test toString function
+     * Test toString function.
      */
     public function testToStringFunction()
     {

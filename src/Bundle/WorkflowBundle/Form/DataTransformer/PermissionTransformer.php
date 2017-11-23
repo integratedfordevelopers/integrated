@@ -11,13 +11,9 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\DataTransformer;
 
-use ArrayObject;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
-
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -32,8 +28,8 @@ class PermissionTransformer implements DataTransformerInterface
     public function transform($value)
     {
         $data = [
-            'read'  => [],
-            'write' => []
+            'read' => [],
+            'write' => [],
         ];
 
         if ($value === null || $value === '') {

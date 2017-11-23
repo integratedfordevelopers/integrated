@@ -20,6 +20,7 @@ class BlockSize
 {
     /**
      * @deprecated
+     *
      * @var Block
      */
     protected $block;
@@ -59,16 +60,19 @@ class BlockSize
 
     /**
      * @param Block $block
+     *
      * @return $this
      */
     public function setBlock(Block $block)
     {
         $this->block = $block;
+
         return $this;
     }
 
     /**
      * @return int
+     *
      * @deprecated use sizeXs, sizeMd etc instead
      */
     public function getSize()
@@ -78,12 +82,15 @@ class BlockSize
 
     /**
      * @param int $size
+     *
      * @deprecated use sizeXs, sizeMd etc instead
+     *
      * @return $this
      */
     public function setSize($size)
     {
         $this->size = (int) $size;
+
         return $this;
     }
 
@@ -97,11 +104,13 @@ class BlockSize
 
     /**
      * @param int $sizeXs
+     *
      * @return $this
      */
     public function setSizeXs($sizeXs)
     {
         $this->sizeXs = $sizeXs;
+
         return $this;
     }
 
@@ -115,11 +124,13 @@ class BlockSize
 
     /**
      * @param int $sizeSm
+     *
      * @return $this
      */
     public function setSizeSm($sizeSm)
     {
         $this->sizeSm = $sizeSm;
+
         return $this;
     }
 
@@ -133,11 +144,13 @@ class BlockSize
 
     /**
      * @param int $sizeMd
+     *
      * @return $this
      */
     public function setSizeMd($sizeMd)
     {
         $this->sizeMd = $sizeMd;
+
         return $this;
     }
 
@@ -151,11 +164,13 @@ class BlockSize
 
     /**
      * @param int $sizeLg
+     *
      * @return $this
      */
     public function setSizeLg($sizeLg)
     {
         $this->sizeLg = $sizeLg;
+
         return $this;
     }
 

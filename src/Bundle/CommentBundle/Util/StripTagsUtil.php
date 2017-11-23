@@ -21,9 +21,11 @@ class StripTagsUtil
     const ONLY_CONTENT_REPLACEMENT = '$3';
 
     /**
-     * Searches for integrated comment span tag and replaces it with $replacement
+     * Searches for integrated comment span tag and replaces it with $replacement.
+     *
      * @param $content
      * @param $replacement $2 commentId, $3 content
+     *
      * @return string
      */
     public static function replaceSpanWith($content, $replacement)
@@ -34,15 +36,17 @@ class StripTagsUtil
     }
 
     /**
-     * Searches for comment tag and replaces it with $replacement
+     * Searches for comment tag and replaces it with $replacement.
+     *
      * @param $content
      * @param $replacement $2 commentId, $3 content
+     *
      * @return string
      */
     public static function replaceCommentWith($content, $replacement)
     {
         $pattern = '/(\<\!\-\-integrated\-comment\=([\s\S]+?)\-\-\>)'
-            . '([\s\S]+?)(\<\!\-\-end\-integrated\-comment\-\-\>)/';
+            .'([\s\S]+?)(\<\!\-\-end\-integrated\-comment\-\-\>)/';
 
         return preg_replace($pattern, $replacement, $content);
     }

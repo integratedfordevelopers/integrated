@@ -15,11 +15,10 @@ use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Form block document
+ * Form block document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
@@ -91,7 +90,6 @@ class FormBlock extends Block
      */
     protected $recaptcha = false;
 
-
     /**
      * @var Relation
      * @Type\Field(
@@ -117,11 +115,13 @@ class FormBlock extends Block
 
     /**
      * @param ContentType $contentType
+     *
      * @return $this
      */
     public function setContentType(ContentType $contentType)
     {
         $this->contentType = $contentType;
+
         return $this;
     }
 
@@ -135,11 +135,13 @@ class FormBlock extends Block
 
     /**
      * @param string $returnUrl
+     *
      * @return $this
      */
     public function setReturnUrl($returnUrl)
     {
         $this->returnUrl = $returnUrl;
+
         return $this;
     }
 
@@ -153,11 +155,13 @@ class FormBlock extends Block
 
     /**
      * @param string $textAfterSubmit
+     *
      * @return $this
      */
     public function setTextAfterSubmit($textAfterSubmit)
     {
         $this->textAfterSubmit = $textAfterSubmit;
+
         return $this;
     }
 
@@ -171,16 +175,18 @@ class FormBlock extends Block
 
     /**
      * @param array $emailAddresses
+     *
      * @return $this
      */
     public function setEmailAddresses(array $emailAddresses = [])
     {
         $this->emailAddresses = $emailAddresses;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isRecaptcha()
     {
@@ -188,12 +194,14 @@ class FormBlock extends Block
     }
 
     /**
-     * @param boolean $recaptcha
+     * @param bool $recaptcha
+     *
      * @return $this
      */
     public function setRecaptcha($recaptcha)
     {
         $this->recaptcha = $recaptcha;
+
         return $this;
     }
 
@@ -207,11 +215,13 @@ class FormBlock extends Block
 
     /**
      * @param Relation $linkRelation
+     *
      * @return $this
      */
     public function setLinkRelation($linkRelation)
     {
         $this->linkRelation = $linkRelation;
+
         return $this;
     }
 

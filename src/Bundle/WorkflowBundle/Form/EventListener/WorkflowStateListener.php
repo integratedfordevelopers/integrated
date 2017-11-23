@@ -13,9 +13,7 @@ namespace Integrated\Bundle\WorkflowBundle\Form\EventListener;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormEvent;
@@ -45,14 +43,14 @@ class WorkflowStateListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA  => [['onPrepareData', 10], ['onPrepareForm']],
+            FormEvents::PRE_SET_DATA => [['onPrepareData', 10], ['onPrepareForm']],
             FormEvents::POST_SET_DATA => 'onPostData',
-            FormEvents::SUBMIT        => 'onSubmit'
+            FormEvents::SUBMIT => 'onSubmit',
         ];
     }
 
     /**
-     * Validate the state
+     * Validate the state.
      *
      * @param FormEvent $event
      */
@@ -62,7 +60,7 @@ class WorkflowStateListener implements EventSubscriberInterface
     }
 
     /**
-     * Add extra field based on the state
+     * Add extra field based on the state.
      *
      * @param FormEvent $event
      */
@@ -107,12 +105,12 @@ class WorkflowStateListener implements EventSubscriberInterface
             'expanded' => true,
             'mapped' => false,
             'required' => false,
-            'attr' => ['class' => 'next-status-choice']
+            'attr' => ['class' => 'next-status-choice'],
         ]);
     }
 
     /**
-     * Force the placeholder to be selected
+     * Force the placeholder to be selected.
      *
      * @param FormEvent $event
      */
@@ -134,7 +132,7 @@ class WorkflowStateListener implements EventSubscriberInterface
     }
 
     /**
-     * Set the state
+     * Set the state.
      *
      * @param FormEvent $event
      */
@@ -146,10 +144,9 @@ class WorkflowStateListener implements EventSubscriberInterface
     }
 
     /**
-     * Get the current state from the data
+     * Get the current state from the data.
      *
      * @param FormEvent $event
-     * @return null | State
      */
     protected function getState(FormEvent $event)
     {
@@ -166,10 +163,9 @@ class WorkflowStateListener implements EventSubscriberInterface
     }
 
     /**
-     * Get the next state from the form
+     * Get the next state from the form.
      *
      * @param FormEvent $event
-     * @return null | State
      */
     protected function getData(FormEvent $event)
     {
@@ -192,6 +188,7 @@ class WorkflowStateListener implements EventSubscriberInterface
      * Get a array of the transitions for the given state.
      *
      * @param State $state
+     *
      * @return array
      */
     protected function getChoices(State $state)

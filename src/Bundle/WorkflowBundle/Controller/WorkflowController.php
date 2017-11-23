@@ -12,18 +12,15 @@
 namespace Integrated\Bundle\WorkflowBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-
 use Integrated\Bundle\UserBundle\Model\Group;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionFormType;
 use Integrated\Bundle\WorkflowBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -37,9 +34,10 @@ use Symfony\Component\Form\FormBuilder;
 class WorkflowController extends Controller
 {
     /**
-     * Generate a list of workflow definitions
+     * Generate a list of workflow definitions.
      *
      * @param Request $request
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -59,9 +57,10 @@ class WorkflowController extends Controller
     }
 
     /**
-     * Create a new workflow definition
+     * Create a new workflow definition.
      *
      * @param Request $request
+     *
      * @return array | Response
      */
     public function newAction(Request $request)
@@ -102,9 +101,10 @@ class WorkflowController extends Controller
     }
 
     /**
-     * Edit a workflow definition
+     * Edit a workflow definition.
      *
      * @param Request $request
+     *
      * @return array | Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -154,14 +154,15 @@ class WorkflowController extends Controller
 
         return $this->render('IntegratedWorkflowBundle:Workflow:edit.html.twig', [
             'workflow' => $workflow,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-     * Delete a workflow definition
+     * Delete a workflow definition.
      *
      * @param Request $request
+     *
      * @return array | Response
      */
     public function deleteAction(Request $request)
@@ -210,12 +211,13 @@ class WorkflowController extends Controller
 
         return $this->render('IntegratedWorkflowBundle:Workflow:delete.html.twig', [
             'workflow' => $workflow,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function changeStateAction(Request $request)
@@ -301,7 +303,7 @@ class WorkflowController extends Controller
 
         if ($buttons) {
             $form->add('actions', FormActionsType::class, [
-                'buttons' => $buttons
+                'buttons' => $buttons,
             ]);
         }
 

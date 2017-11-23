@@ -18,6 +18,7 @@ class InvalidHTMLException extends \ErrorException
 {
     /**
      * @param string $message
+     *
      * @return InvalidHTMLException
      */
     public static function unresolvedLibXmlError($message)

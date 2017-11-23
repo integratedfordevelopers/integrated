@@ -13,9 +13,7 @@ namespace Integrated\Bundle\PageBundle\EventListener;
 
 use Integrated\Bundle\PageBundle\Services\RouteCache;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Common\ContentType\Event\ContentTypeEvent;
 use Integrated\Common\ContentType\Events;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
@@ -31,20 +29,20 @@ class ContentTypeChangedListener implements EventSubscriberInterface
      */
     protected $dm;
 
-   /**
+    /**
      * @var ContentTypePageService
      */
     protected $contentTypePageService;
 
-   /**
+    /**
      * @var RouteCache
      */
     protected $routeCache;
 
     /**
-     * @param DocumentManager $dm
+     * @param DocumentManager        $dm
      * @param ContentTypePageService $contentTypePageService
-     * @param RouteCache $routeCache
+     * @param RouteCache             $routeCache
      */
     public function __construct(
         DocumentManager $dm,
@@ -57,7 +55,7 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -83,7 +81,7 @@ class ContentTypeChangedListener implements EventSubscriberInterface
             foreach ($channels as $channel) {
                 if (!$this->getPageRepository()->findOneBy([
                     'channel.$id' => $channel->getId(),
-                    'contentType.$id' => $contentType->getId()
+                    'contentType.$id' => $contentType->getId(),
                 ])) {
                     $newContentTypePage = true;
                     $this->contentTypePageService->addContentType($contentType, $channel);

@@ -13,7 +13,7 @@ namespace Integrated\Bundle\MenuBundle\Tests\Event;
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
 
 /**
- * Test for ConfigureMenuEvent
+ * Test for ConfigureMenuEvent.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -30,12 +30,12 @@ class ConfigureMenuEventTest extends \PHPUnit_Framework_TestCase
     protected $factory;
 
     /**
-     * @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $event
+     * @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $menu;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setup()
     {
@@ -45,7 +45,7 @@ class ConfigureMenuEventTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instanceOf
+     * Test instanceOf.
      */
     public function testInstanceOf()
     {
@@ -53,7 +53,7 @@ class ConfigureMenuEventTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getFactory function
+     * Test getFactory function.
      */
     public function testGetFactoryFunction()
     {
@@ -61,7 +61,7 @@ class ConfigureMenuEventTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getMenu function
+     * Test getMenu function.
      */
     public function testGetMenuFunction()
     {

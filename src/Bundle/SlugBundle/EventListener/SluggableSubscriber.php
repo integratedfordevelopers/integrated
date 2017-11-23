@@ -13,27 +13,22 @@ namespace Integrated\Bundle\SlugBundle\EventListener;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-
 use Metadata\MetadataFactoryInterface;
-
 use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
 
 /**
- * Doctrine ORM and ODM subscriber for slug generation
+ * Doctrine ORM and ODM subscriber for slug generation.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -204,8 +199,9 @@ class SluggableSubscriber implements EventSubscriber
 
     /**
      * @param object $object
-     * @param mixed $value
-     * @param array $fields
+     * @param mixed  $value
+     * @param array  $fields
+     *
      * @return bool
      */
     protected function checkIfFieldValue($object, $value, $fields)
@@ -243,7 +239,7 @@ class SluggableSubscriber implements EventSubscriber
         }
 
         // slug with counter pattern
-        $pattern = '/(.+)' . preg_quote($separator, '/') . '(\d+)$/i';
+        $pattern = '/(.+)'.preg_quote($separator, '/').'(\d+)$/i';
 
         if (preg_match($pattern, $slug, $match)) {
             // Check if integer at the end of the slug matches any slug fields, if not, remove the int
@@ -267,8 +263,8 @@ class SluggableSubscriber implements EventSubscriber
             }
 
             if (!empty($slugs)) {
-                for ($i = 1; $i <= (max(array_keys($slugs)) + 2); $i++) {
-                    $slug2 = $slug . ($i > 1 ? $separator . $i : '');
+                for ($i = 1; $i <= (max(array_keys($slugs)) + 2); ++$i) {
+                    $slug2 = $slug.($i > 1 ? $separator.$i : '');
 
                     if (!in_array($slug2, $slugs)) {
                         return $slug2;
@@ -314,7 +310,7 @@ class SluggableSubscriber implements EventSubscriber
 
             $query = $builder->count()->getQuery();
 
-            return ($query->execute() === 0);
+            return $query->execute() === 0;
         } elseif ($uow instanceof ORMUnitOfWork) {
             throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)
         }
@@ -337,8 +333,8 @@ class SluggableSubscriber implements EventSubscriber
         if ($uow instanceof ODMUnitOfWork) {
             return array_merge($objects, $this->getRepository($om, $class)->findBy([
                 $field => new \MongoRegex(
-                    '/^' . preg_quote($slug, '/') . '(' . preg_quote($separator, '/') . '\d+)?$/'
-                ) // counter is optional
+                    '/^'.preg_quote($slug, '/').'('.preg_quote($separator, '/').'\d+)?$/'
+                ), // counter is optional
             ]));
         } elseif ($uow instanceof ORMUnitOfWork) {
             throw new \RuntimeException('Not implemented yet'); // @todo (INTEGRATED-294)

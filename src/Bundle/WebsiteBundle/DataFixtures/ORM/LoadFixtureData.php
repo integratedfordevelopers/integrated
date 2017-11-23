@@ -12,10 +12,8 @@
 namespace Integrated\Bundle\WebsiteBundle\DataFixtures\ORM;
 
 use Symfony\Component\Finder\Finder;
-
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Nelmio\Alice\Fixtures;
 
 /**
@@ -34,7 +32,7 @@ class LoadFixtureData implements FixtureInterface
     protected $locale = 'en_US';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function load(ObjectManager $manager)
     {
@@ -42,7 +40,7 @@ class LoadFixtureData implements FixtureInterface
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach (Finder::create()->in(
-            $this->path . DIRECTORY_SEPARATOR  . 'alice'
+            $this->path.DIRECTORY_SEPARATOR.'alice'
         )->name('*.yml')->sortByName() as $file) {
             $files[] = $file->getRealpath();
         }

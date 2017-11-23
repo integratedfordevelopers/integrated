@@ -17,7 +17,7 @@ namespace Integrated\Common\Content;
 interface ExtensibleInterface
 {
     /**
-     * Get list of all the extensions names
+     * Get list of all the extensions names.
      *
      * @return RegistryInterface
      */

@@ -13,12 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Symfony\Component\Form\DataTransformerInterface;
-
-use Integrated\Common\ContentType\Mapping\Metadata;
 use Integrated\Common\Content\Relation\RelationInterface;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
 
 /**
@@ -43,7 +39,7 @@ class Relations implements DataTransformerInterface
 
     /**
      * @param RelationInterface[] $relations
-     * @param ObjectManager $om
+     * @param ObjectManager       $om
      */
     public function __construct($relations, ObjectManager $om)
     {
@@ -52,21 +48,18 @@ class Relations implements DataTransformerInterface
     }
 
     /**
-     * Transform an array with EmbeddedRelation to an array with relations containing comma separated references
+     * Transform an array with EmbeddedRelation to an array with relations containing comma separated references.
      *
      * {@inheritdoc}
      */
     public function transform($value)
     {
-        $return = array();
+        $return = [];
         if (is_array($value) || $value instanceof \Traversable) {
-
             foreach ($value as $embeddedRelation) {
-
                 if ($embeddedRelation instanceof EmbeddedRelation) {
-
                     if ($relation = $this->getRelation($embeddedRelation->getRelationId())) {
-                        $references = array();
+                        $references = [];
                         foreach ($embeddedRelation->getReferences() as $content) {
                             $references[] = $content->getId();
                         }
@@ -82,7 +75,7 @@ class Relations implements DataTransformerInterface
 
     /**
      * Transform an array with relations containing comma separated references to an ArrayCollection with
-     * EmbeddedRelation
+     * EmbeddedRelation.
      *
      * {@inheritdoc}
      */
@@ -91,20 +84,15 @@ class Relations implements DataTransformerInterface
         $relations = new ArrayCollection();
 
         if (is_array($value)) {
-
             foreach ($value as $relationId => $references) {
-
                 if ($relation = $this->getRelation($relationId)) {
-
                     $embeddedRelation = new EmbeddedRelation();
                     $embeddedRelation->setRelationId($relation->getId());
                     $embeddedRelation->setRelationType($relation->getType());
 
                     if (null !== $references) {
-
                         $references = array_filter(explode(',', $references));
                         foreach ($references as $reference) {
-
                             if ($content = $this->om->getRepository(self::REPOSITORY)->find($reference)) {
                                 $embeddedRelation->addReference($content);
                             }
@@ -121,6 +109,7 @@ class Relations implements DataTransformerInterface
 
     /**
      * @param string $relationId
+     *
      * @return bool|RelationInterface
      */
     protected function getRelation($relationId)

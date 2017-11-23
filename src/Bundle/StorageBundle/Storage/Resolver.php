@@ -18,7 +18,6 @@ use Integrated\Common\Storage\Identifier\IdentifierInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
 use Integrated\Common\Storage\ResolverInterface;
 use Integrated\Common\Storage\FileResolver\FileResolverInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -42,8 +41,8 @@ class Resolver implements ResolverInterface
     protected $registry;
 
     /**
-     * @param array $resolverMap
-     * @param IdentifierInterface $identifier
+     * @param array                       $resolverMap
+     * @param IdentifierInterface         $identifier
      * @param FilesystemRegistryInterface $registry
      */
     public function __construct(array $resolverMap, IdentifierInterface $identifier, FilesystemRegistryInterface $registry)

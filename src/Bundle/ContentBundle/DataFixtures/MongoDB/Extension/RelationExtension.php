@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Relation;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -27,6 +26,7 @@ trait RelationExtension
 
     /**
      * @param string $id
+     *
      * @return null|Relation
      */
     public function relation($id)

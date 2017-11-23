@@ -12,7 +12,6 @@
 namespace Integrated\Common\Channel\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
 /**

@@ -33,6 +33,7 @@ class ContentTypeQueueTaskTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $id
+     *
      * @return ContentTypeQueueTask
      */
     protected function getInstance($id)

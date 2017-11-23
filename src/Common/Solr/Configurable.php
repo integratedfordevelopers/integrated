@@ -42,7 +42,7 @@ class Configurable
     }
 
     /**
-     * Replace the options with a new set op options
+     * Replace the options with a new set op options.
      *
      * @param array $options
      */
@@ -52,7 +52,7 @@ class Configurable
     }
 
     /**
-     * Get all the options
+     * Get all the options.
      *
      * @return array
      */
@@ -62,7 +62,7 @@ class Configurable
     }
 
     /**
-     * Set the value for the given key
+     * Set the value for the given key.
      *
      * @param $key
      * @param $value
@@ -77,6 +77,7 @@ class Configurable
 
     /**
      * @param string $key
+     *
      * @return bool
      */
     public function hasOption($key)
@@ -85,9 +86,10 @@ class Configurable
     }
 
     /**
-     * Get the option or return the default if none is set
+     * Get the option or return the default if none is set.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function getOption($key)
@@ -96,7 +98,7 @@ class Configurable
     }
 
     /**
-     * Configures the option resolver
+     * Configures the option resolver.
      *
      * @param OptionsResolver $resolver
      *

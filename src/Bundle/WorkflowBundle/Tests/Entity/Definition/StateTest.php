@@ -19,7 +19,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 class StateTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test isDefault function
+     * Test isDefault function.
      */
     public function testIsDefault()
     {

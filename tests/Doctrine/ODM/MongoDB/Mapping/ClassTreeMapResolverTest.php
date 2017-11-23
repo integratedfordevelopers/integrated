@@ -41,7 +41,7 @@ class ClassTreeMapResolverTest extends \PHPUnit_Framework_TestCase
                 Fixtures\TestChild1::class,
                 Fixtures\TestRoot2::class.
                 Fixtures\TestRoot1::class,
-                Fixtures\TestBase::class
+                Fixtures\TestBase::class,
             ]);
     }
 
@@ -50,7 +50,7 @@ class ClassTreeMapResolverTest extends \PHPUnit_Framework_TestCase
         $this->setUpLocator();
 
         $expected = [
-            Fixtures\TestChild1::class => Fixtures\TestChild1::class
+            Fixtures\TestChild1::class => Fixtures\TestChild1::class,
         ];
 
         self::assertEquals($expected, $this->getInstance()->resolve(Fixtures\TestRoot1::class));

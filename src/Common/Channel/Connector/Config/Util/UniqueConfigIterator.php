@@ -61,7 +61,7 @@ class UniqueConfigIterator extends IteratorIterator
     }
 
     /**
-     * Check whether the current element of the iterator is acceptable
+     * Check whether the current element of the iterator is acceptable.
      *
      * @return bool
      */

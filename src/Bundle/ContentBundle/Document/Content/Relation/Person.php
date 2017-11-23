@@ -13,14 +13,13 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 
 /**
- * Document type Relation\Person
+ * Document type Relation\Person.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
@@ -81,7 +80,7 @@ class Person extends Relation
     protected $picture;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -90,7 +89,7 @@ class Person extends Relation
     }
 
     /**
-     * Get the gender of the document
+     * Get the gender of the document.
      *
      * @return string
      */
@@ -100,19 +99,21 @@ class Person extends Relation
     }
 
     /**
-     * Set the gender of the document
+     * Set the gender of the document.
      *
      * @param string $gender
+     *
      * @return $this
      */
     public function setGender($gender)
     {
         $this->gender = $gender;
+
         return $this;
     }
 
     /**
-     * Get the prefix of the document
+     * Get the prefix of the document.
      *
      * @return string
      */
@@ -122,19 +123,21 @@ class Person extends Relation
     }
 
     /**
-     * Set the prefix of the document
+     * Set the prefix of the document.
      *
      * @param string $prefix
+     *
      * @return $this
      */
     public function setPrefix($prefix)
     {
         $this->prefix = $prefix;
+
         return $this;
     }
 
     /**
-     * Get the nickname of the document
+     * Get the nickname of the document.
      *
      * @return string
      */
@@ -144,19 +147,21 @@ class Person extends Relation
     }
 
     /**
-     * Set the nickname of the document
+     * Set the nickname of the document.
      *
      * @param string $nickname
+     *
      * @return $this
      */
     public function setNickname($nickname)
     {
         $this->nickname = $nickname;
+
         return $this;
     }
 
     /**
-     * Get the firstname of the document
+     * Get the firstname of the document.
      *
      * @return string
      */
@@ -166,19 +171,21 @@ class Person extends Relation
     }
 
     /**
-     * Set the firstname of the document
+     * Set the firstname of the document.
      *
      * @param string $firstName
+     *
      * @return $this
      */
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+
         return $this;
     }
 
     /**
-     * Get the lastName of the document
+     * Get the lastName of the document.
      *
      * @return string
      */
@@ -188,19 +195,21 @@ class Person extends Relation
     }
 
     /**
-     * Set the lastName of the document
+     * Set the lastName of the document.
      *
      * @param string $lastName
+     *
      * @return $this
      */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+
         return $this;
     }
 
     /**
-     * Get the slug of the document
+     * Get the slug of the document.
      *
      * @return string
      */
@@ -210,19 +219,21 @@ class Person extends Relation
     }
 
     /**
-     * Set the slug of the document
+     * Set the slug of the document.
      *
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 
     /**
-     * Get the jobs of the document
+     * Get the jobs of the document.
      *
      * @return Job[]
      */
@@ -232,21 +243,24 @@ class Person extends Relation
     }
 
     /**
-     * Set the jobs of the document
+     * Set the jobs of the document.
      *
      * @param Collection $jobs
+     *
      * @return $this
      */
     public function setJobs(Collection $jobs)
     {
         $this->jobs = $jobs;
+
         return $this;
     }
 
     /**
-     * Add job to the jobs collection
+     * Add job to the jobs collection.
      *
      * @param mixed $job
+     *
      * @return $this
      */
     public function addJob($job)
@@ -256,14 +270,16 @@ class Person extends Relation
                 $this->jobs->add($job);
             }
         }
+
         return $this;
     }
 
     /**
-     * Remove job from jobs collection
+     * Remove job from jobs collection.
      *
      * @param mixed $job
-     * @return bool true if this collection contained the specified element, false otherwise.
+     *
+     * @return bool true if this collection contained the specified element, false otherwise
      */
     public function removeJob($job)
     {
@@ -271,7 +287,7 @@ class Person extends Relation
     }
 
     /**
-     * Get the picture of the document
+     * Get the picture of the document.
      *
      * @return StorageInterface|null
      */
@@ -281,19 +297,21 @@ class Person extends Relation
     }
 
     /**
-     * Set the picture of the document
+     * Set the picture of the document.
      *
      * @param StorageInterface|null $picture
+     *
      * @return $this
      */
     public function setPicture(StorageInterface $picture = null)
     {
         $this->picture = $picture;
+
         return $this;
     }
 
     /**
-     * Get the relative cover image URL for person (picture)
+     * Get the relative cover image URL for person (picture).
      *
      * @return string|null
      */
@@ -311,6 +329,6 @@ class Person extends Relation
      */
     public function __toString()
     {
-        return trim($this->firstName . ' ' . $this->lastName);
+        return trim($this->firstName.' '.$this->lastName);
     }
 }

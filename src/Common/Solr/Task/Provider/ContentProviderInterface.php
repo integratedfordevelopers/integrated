@@ -23,6 +23,7 @@ interface ContentProviderInterface
      * Get a all the referenced content for the given id.
      *
      * @param string $id
+     *
      * @return Iterator | ContentInterface[]
      */
     public function getReferenced($id);

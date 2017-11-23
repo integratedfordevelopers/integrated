@@ -14,11 +14,9 @@ namespace Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\EventListene
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
 
@@ -57,7 +55,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
 
     /**
      * @param DocumentManager $dm
-     * @param array $options
+     * @param array           $options
      */
     public function __construct(DocumentManager $dm, array $options)
     {
@@ -77,6 +75,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
 
     /**
      * @param FormEvent $event
+     *
      * @throws \Exception
      */
     protected function ensureRelations(FormEvent $event)
@@ -115,7 +114,9 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     /**
      * @param string $relationId
      * @param object $formData
+     *
      * @return Relation|object
+     *
      * @throws \Exception
      */
     protected function findRelation($relationId, $formData)
@@ -187,6 +188,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
 
     /**
      * @param $id
+     *
      * @return Relation $relation
      */
     public function getRelation($id)

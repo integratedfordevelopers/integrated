@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\SolrBundle\Solr\Type;
 
 use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
-
 use Integrated\Common\Converter\ContainerInterface;
-
 use Traversable;
 
 /**
@@ -51,7 +49,7 @@ class JsonType extends FieldMapperType
         $extracted = [];
 
         foreach ($paths as $index => $path) {
-            $index = (string)$index;
+            $index = (string) $index;
 
             if (is_array($path)) {
                 try {

@@ -13,7 +13,6 @@ namespace Integrated\Tests\Common\Normalizer;
 
 use Integrated\Common\Normalizer\Container;
 use Integrated\Common\Normalizer\ContainerInterface;
-
 use stdClass as Object;
 
 /**

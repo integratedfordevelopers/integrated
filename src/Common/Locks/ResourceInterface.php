@@ -18,9 +18,10 @@ interface ResourceInterface
 {
     /**
      * @param ResourceInterface $resource
+     *
      * @return bool
      */
-    public function equals(ResourceInterface $resource);
+    public function equals(self $resource);
 
     /**
      * @return string

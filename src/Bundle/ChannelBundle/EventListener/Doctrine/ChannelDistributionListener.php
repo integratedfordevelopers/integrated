@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ChannelBundle\EventListener\Doctrine;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\Common\EventSubscriber;
-
 use Integrated\Common\Channel\Exporter\Queue\Request;
 use Integrated\Common\Channel\Exporter\Queue\RequestSerializerInterface;
 use Integrated\Common\Content\ChannelableInterface;

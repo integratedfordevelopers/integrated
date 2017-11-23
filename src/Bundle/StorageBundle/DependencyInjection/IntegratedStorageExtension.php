@@ -57,7 +57,7 @@ class IntegratedStorageExtension extends Extension implements PrependExtensionIn
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function prepend(ContainerBuilder $container)
     {

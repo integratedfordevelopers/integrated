@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\SlugBundle\Slugger;
 
 /**
- * Utility to generate a slug
+ * Utility to generate a slug.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

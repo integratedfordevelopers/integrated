@@ -20,7 +20,7 @@ use Symfony\Component\Form\AbstractType;
 class CollectionType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {

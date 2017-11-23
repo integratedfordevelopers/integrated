@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 
@@ -22,8 +21,8 @@ use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 class FilterQueryProvider
 {
     /**
-    * @var ManagerRegistry
-    */
+     * @var ManagerRegistry
+     */
     protected $mr;
 
     /**
@@ -37,9 +36,9 @@ class FilterQueryProvider
     private $pageBundleInstalled;
 
     /**
-     * @param ManagerRegistry $mr
+     * @param ManagerRegistry    $mr
      * @param BlockUsageProvider $blockUsageProvider
-     * @param array $bundles
+     * @param array              $bundles
      */
     public function __construct(ManagerRegistry $mr, BlockUsageProvider $blockUsageProvider, array $bundles)
     {
@@ -50,6 +49,7 @@ class FilterQueryProvider
 
     /**
      * @param array|null $data
+     *
      * @return \Doctrine\MongoDB\Query\Builder
      */
     public function getBlocksByChannelQueryBuilder($data)
@@ -64,7 +64,7 @@ class FilterQueryProvider
         }
 
         if (isset($data['q'])) {
-            $qb->field('title')->equals(new \MongoRegex('/' . $data['q'] . '/i'));
+            $qb->field('title')->equals(new \MongoRegex('/'.$data['q'].'/i'));
         }
 
         $channels = isset($data['channels']) ? array_filter($data['channels']) : null;
@@ -83,6 +83,7 @@ class FilterQueryProvider
 
     /**
      * @param array|null $data
+     *
      * @return array
      */
     public function getBlockIds($data)

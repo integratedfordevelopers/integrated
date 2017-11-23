@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ImageBundle\Converter\Adapter;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ImageBundle\Converter\AdapterInterface;
-use Integrated\Bundle\ImageBundle\Exception\FormatException;
 use Integrated\Bundle\ImageBundle\Exception\RunTimeFormatException;
 use Integrated\Bundle\StorageBundle\Storage\Cache\AppCache;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -64,23 +63,21 @@ class ImageMagickAdapter implements AdapterInterface
         // Check if've got a
         if ($cache->isFile()) {
             return $cache;
-        } else {
-            // Attempt conversion
-            $imagick->setImageFormat($outputFormat);
-            $imagick->writeImage($cache->getPathname());
-
-            // Remove any /tmp files created during conversion
-            $imagick->clear();
-
-            // Make sure we'll end up with something
-            if ($cache->isFile()) {
-                // Return the freshly converted file
-                return $cache;
-            } else {
-                // The last resort, this is the last outcome of any the above statements
-                throw RunTimeFormatException::conversionFileCreateFail(self::NAME, $image->getPathname(), $outputFormat);
-            }
         }
+        // Attempt conversion
+        $imagick->setImageFormat($outputFormat);
+        $imagick->writeImage($cache->getPathname());
+
+        // Remove any /tmp files created during conversion
+        $imagick->clear();
+
+        // Make sure we'll end up with something
+        if ($cache->isFile()) {
+            // Return the freshly converted file
+            return $cache;
+        }
+        // The last resort, this is the last outcome of any the above statements
+        throw RunTimeFormatException::conversionFileCreateFail(self::NAME, $image->getPathname(), $outputFormat);
     }
 
     /**

@@ -15,12 +15,10 @@ use Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\Select2Type;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\WorkflowDefaultDataListener;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -42,7 +40,7 @@ class WorkflowFormType extends AbstractType
     /**
      * WorkflowFormType constructor.
      *
-     * @param UserManager $userManager
+     * @param UserManager  $userManager
      * @param TokenStorage $tokenStorage
      */
     public function __construct(UserManager $userManager, TokenStorage $tokenStorage)

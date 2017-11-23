@@ -12,14 +12,12 @@
 namespace Integrated\Tests\Common\Normalizer\Processor;
 
 use Exception;
-
 use Integrated\Common\Normalizer\ContainerFactoryInterface;
 use Integrated\Common\Normalizer\ContainerInterface;
 use Integrated\Common\Normalizer\Processor\Context;
 use Integrated\Common\Normalizer\Processor\ProcessorInterface;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessor;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessorInterface;
-
 use stdClass as Object;
 
 /**
@@ -83,7 +81,7 @@ class ResolvedProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      * @expectedExceptionMessage The test succeeded
      */
     public function testProcessOrder()

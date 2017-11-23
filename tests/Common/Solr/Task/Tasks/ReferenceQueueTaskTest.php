@@ -33,6 +33,7 @@ class ReferenceQueueTaskTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $id
+     *
      * @return ReferenceQueueTask
      */
     protected function getInstance($id)

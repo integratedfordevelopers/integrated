@@ -26,9 +26,9 @@ class QueueMessageTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->data = [
-            'id'       => 'ThisIsTheID',
-            'payload'  => self::PAYLOAD,
-            'attempts' => '42'
+            'id' => 'ThisIsTheID',
+            'payload' => self::PAYLOAD,
+            'attempts' => '42',
         ];
     }
 

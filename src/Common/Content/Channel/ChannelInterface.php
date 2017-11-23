@@ -14,7 +14,7 @@ namespace Integrated\Common\Content\Channel;
 use Integrated\Common\Channel\ChannelInterface as BaseChannelInterface;
 
 /**
- * Interface for Channel documents
+ * Interface for Channel documents.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */

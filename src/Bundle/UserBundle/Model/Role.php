@@ -16,130 +16,130 @@ namespace Integrated\Bundle\UserBundle\Model;
  */
 class Role implements RoleInterface
 {
-	/**
-	 * @var string
-	 */
-	protected $id = null;
+    /**
+     * @var string
+     */
+    protected $id = null;
 
-	/**
-	 * @var string
-	 */
-	protected $role;
+    /**
+     * @var string
+     */
+    protected $role;
 
-	/**
-	 * @var string
-	 */
-	protected $label = null;
+    /**
+     * @var string
+     */
+    protected $label = null;
 
-	/**
-	 * @var string
-	 */
-	protected $description = null;
+    /**
+     * @var string
+     */
+    protected $description = null;
 
-	/**
-	 * @var bool
-	 */
-	protected $hidden = false;
+    /**
+     * @var bool
+     */
+    protected $hidden = false;
 
-//	/**
-//	 * @var array | Role[]
-//	 */
-//	protected $inherited = [];
+    //	/**
+    //	 * @var array | Role[]
+    //	 */
+    //	protected $inherited = [];
 
-	/**
-	 * Create a new role
-	 *
-	 * @param string $role
-	 * @param string $label
-	 * @param string $description
-	 */
-	public function __construct($role, $label = null, $description = null)
-	{
-		$this->role = strtoupper($role);
+    /**
+     * Create a new role.
+     *
+     * @param string $role
+     * @param string $label
+     * @param string $description
+     */
+    public function __construct($role, $label = null, $description = null)
+    {
+        $this->role = strtoupper($role);
 
-		$this->setLabel($label);
-		$this->setDescription($description);
-	}
+        $this->setLabel($label);
+        $this->setDescription($description);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getRole()
-	{
-		return $this->role;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setLabel($label)
-	{
-		$this->label = $label !== null ? (string) $label : null;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function setLabel($label)
+    {
+        $this->label = $label !== null ? (string) $label : null;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getLabel()
-	{
-		return $this->label;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function setDescription($description)
-	{
-		$this->description = $description !== null ? (string) $description : null;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description !== null ? (string) $description : null;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getDescription()
-	{
-		return $this->description;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	/**
-	 * @param bool $hidden
-	 */
-	public function setHidden($hidden = true)
-	{
-		$this->hidden = (bool) $hidden;
-	}
+    /**
+     * @param bool $hidden
+     */
+    public function setHidden($hidden = true)
+    {
+        $this->hidden = (bool) $hidden;
+    }
 
-	/**
-	 * @return bool
-	 */
-	public function isHidden()
-	{
-		return $this->hidden;
-	}
+    /**
+     * @return bool
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
 
-	/**
-	 * Get the string representation of the role object.
-	 *
-	 * This can be use full for debugging
-	 *
-	 * @return string
-	 */
-	public function __toString()
-	{
-		return sprintf("ID: %s\nRole: %s\nHidden: %s\nLabel: %s\nDescription: %s",
-			$this->getId(),
-			$this->getRole(),
-			$this->isHidden() ? 'TRUE' : 'FALSE',
-			$this->getLabel(),
-			$this->getDescription()
-		);
-	}
+    /**
+     * Get the string representation of the role object.
+     *
+     * This can be use full for debugging
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf("ID: %s\nRole: %s\nHidden: %s\nLabel: %s\nDescription: %s",
+            $this->getId(),
+            $this->getRole(),
+            $this->isHidden() ? 'TRUE' : 'FALSE',
+            $this->getLabel(),
+            $this->getDescription()
+        );
+    }
 }

@@ -12,15 +12,13 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type
 {
     use Integrated\Bundle\ContentBundle\Solr\Type\ContentType;
-
     use Integrated\Common\Content\ContentInterface;
     use Integrated\Common\Converter\Container;
     use Integrated\Common\Converter\ContainerInterface;
-
     use stdClass;
 
     /**
-     * @covers Integrated\Bundle\ContentBundle\Solr\Type\ContentType
+     * @covers \Integrated\Bundle\ContentBundle\Solr\Type\ContentType
      *
      * @author Jan Sanne Mulder <jansanne@e-active.nl>
      */
@@ -49,16 +47,16 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type
             return [
                 [
                     new Fixtures\Object1(),
-                    ['id' => ['type1-id1'], 'type_name' => ['type1'], 'type_class' => ['Integrated\\Bundle\\ContentBundle\\Tests\\Solr\\Type\\Fixtures\\Object1'], 'type_id' => ['id1']]
+                    ['id' => ['type1-id1'], 'type_name' => ['type1'], 'type_class' => ['Integrated\\Bundle\\ContentBundle\\Tests\\Solr\\Type\\Fixtures\\Object1'], 'type_id' => ['id1']],
                 ],
                 [
                     new Fixtures\Object2(),
-                    ['id' => ['type2-id2'], 'type_name' => ['type2'], 'type_class' => ['Integrated\\Bundle\\ContentBundle\\Tests\\Solr\\Type\\Fixtures\\Object2'], 'type_id' => ['id2']]
+                    ['id' => ['type2-id2'], 'type_name' => ['type2'], 'type_class' => ['Integrated\\Bundle\\ContentBundle\\Tests\\Solr\\Type\\Fixtures\\Object2'], 'type_id' => ['id2']],
                 ],
                 [
                     new Fixtures\__CG__\ProxyObject(),
-                    ['id' => ['proxy-type-proxy-id'], 'type_name' => ['proxy-type'], 'type_class' => ['ProxyObject'], 'type_id' => ['proxy-id']]
-                ]
+                    ['id' => ['proxy-type-proxy-id'], 'type_name' => ['proxy-type'], 'type_class' => ['ProxyObject'], 'type_id' => ['proxy-id']],
+                ],
             ];
         }
 
@@ -68,7 +66,7 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type
             $container->expects($this->never())
                 ->method($this->anything());
 
-            /** @var ContainerInterface $container */
+            /* @var ContainerInterface $container */
 
             $this->getInstance()->build($container, new stdClass());
         }
@@ -101,7 +99,6 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type
 
 namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type\Fixtures
 {
-
     use Doctrine\Common\Collections\Collection;
     use Integrated\Common\Content\ContentInterface;
     use Doctrine\Common\Collections\ArrayCollection;
@@ -109,34 +106,103 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type\Fixtures
 
     class Object1 implements ContentInterface
     {
-        public function getId()                                         { return 'id1'; }
-        public function getContentType()                                { return 'type1'; }
-        public function setContentType($contentType)                    { throw new \Exception(); }
-        public function getRelationsByRelationType()                    { return new ArrayCollection(); }
-        public function getRelations()                                  { throw new \Exception(); }
-        public function getRelation($relationId)                        { throw new \Exception(); }
-        public function setRelations(Collection $relations)             { throw new \Exception(); }
-        public function addRelation(RelationInterface $relation)        { throw new \Exception(); }
-        public function removeRelation(RelationInterface $relation)     { throw new \Exception(); }
+        public function getId()
+        {
+            return 'id1';
+        }
+
+        public function getContentType()
+        {
+            return 'type1';
+        }
+
+        public function setContentType($contentType)
+        {
+            throw new \Exception();
+        }
+
+        public function getRelationsByRelationType()
+        {
+            return new ArrayCollection();
+        }
+
+        public function getRelations()
+        {
+            throw new \Exception();
+        }
+
+        public function getRelation($relationId)
+        {
+            throw new \Exception();
+        }
+
+        public function setRelations(Collection $relations)
+        {
+            throw new \Exception();
+        }
+
+        public function addRelation(RelationInterface $relation)
+        {
+            throw new \Exception();
+        }
+
+        public function removeRelation(RelationInterface $relation)
+        {
+            throw new \Exception();
+        }
     }
 
     class Object2 implements ContentInterface
     {
-        public function getId()                                         { return 'id2'; }
-        public function getContentType()                                { return 'type2'; }
-        public function setContentType($contentType)                    { throw new \Exception(); }
-        public function getRelationsByRelationType()                    { return new ArrayCollection(); }
-        public function getRelations()                                  { throw new \Exception(); }
-        public function getRelation($relationId)                        { throw new \Exception(); }
-        public function setRelations(Collection $relations)             { throw new \Exception(); }
-        public function addRelation(RelationInterface $relation)        { throw new \Exception(); }
-        public function removeRelation(RelationInterface $relation)     { throw new \Exception(); }
+        public function getId()
+        {
+            return 'id2';
+        }
+
+        public function getContentType()
+        {
+            return 'type2';
+        }
+
+        public function setContentType($contentType)
+        {
+            throw new \Exception();
+        }
+
+        public function getRelationsByRelationType()
+        {
+            return new ArrayCollection();
+        }
+
+        public function getRelations()
+        {
+            throw new \Exception();
+        }
+
+        public function getRelation($relationId)
+        {
+            throw new \Exception();
+        }
+
+        public function setRelations(Collection $relations)
+        {
+            throw new \Exception();
+        }
+
+        public function addRelation(RelationInterface $relation)
+        {
+            throw new \Exception();
+        }
+
+        public function removeRelation(RelationInterface $relation)
+        {
+            throw new \Exception();
+        }
     }
 }
 
 namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type\Fixtures\__CG__
 {
-
     use Doctrine\Common\Collections\Collection;
     use Integrated\Common\Content\ContentInterface;
     use Doctrine\Common\Collections\ArrayCollection;
@@ -144,14 +210,49 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type\Fixtures\__CG__
 
     class ProxyObject implements ContentInterface
     {
-        public function getId()                                         { return 'proxy-id'; }
-        public function getContentType()                                { return 'proxy-type'; }
-        public function setContentType($contentType)                    { throw new \Exception(); }
-        public function getRelationsByRelationType()                    { return new ArrayCollection(); }
-        public function getRelations()                                  { throw new \Exception(); }
-        public function getRelation($relationId)                        { throw new \Exception(); }
-        public function setRelations(Collection $relations)             { throw new \Exception(); }
-        public function addRelation(RelationInterface $relation)        { throw new \Exception(); }
-        public function removeRelation(RelationInterface $relation)     { throw new \Exception(); }
+        public function getId()
+        {
+            return 'proxy-id';
+        }
+
+        public function getContentType()
+        {
+            return 'proxy-type';
+        }
+
+        public function setContentType($contentType)
+        {
+            throw new \Exception();
+        }
+
+        public function getRelationsByRelationType()
+        {
+            return new ArrayCollection();
+        }
+
+        public function getRelations()
+        {
+            throw new \Exception();
+        }
+
+        public function getRelation($relationId)
+        {
+            throw new \Exception();
+        }
+
+        public function setRelations(Collection $relations)
+        {
+            throw new \Exception();
+        }
+
+        public function addRelation(RelationInterface $relation)
+        {
+            throw new \Exception();
+        }
+
+        public function removeRelation(RelationInterface $relation)
+        {
+            throw new \Exception();
+        }
     }
 }

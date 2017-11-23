@@ -24,7 +24,7 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
     private $channel;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -37,7 +37,7 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setId function
+     * Test get- and setId function.
      */
     public function testGetAndSetIdFunction()
     {
@@ -46,7 +46,7 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setName function
+     * Test get- and setName function.
      */
     public function testGetAndSetNameFunction()
     {
@@ -55,20 +55,20 @@ class ChannelTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setDomains function
+     * Test get- and setDomains function.
      */
     public function testGetAndSetDomainsFunction()
     {
-        $domains = array(
+        $domains = [
             'domain1',
-            'domain2'
-        );
+            'domain2',
+        ];
 
         $this->assertSame($domains, $this->channel->setDomains($domains)->getDomains());
     }
 
     /**
-     * Test get- and setCreatedAt function
+     * Test get- and setCreatedAt function.
      */
     public function testGetAndSetCreatedAtFunction()
     {

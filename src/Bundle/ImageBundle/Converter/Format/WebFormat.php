@@ -35,6 +35,7 @@ class WebFormat
 
     /**
      * @param StorageInterface $storage
+     *
      * @return bool
      */
     public function isWebFormat(StorageInterface $storage)

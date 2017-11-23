@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\EventListener;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 
 /**
@@ -55,6 +54,7 @@ class ShortCodeListener
 
     /**
      * @param array $matches
+     *
      * @return null|string
      */
     public function replaceWithBlock(array $matches)

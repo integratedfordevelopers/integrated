@@ -4,7 +4,6 @@ namespace Integrated\Bundle\ContentBundle\Doctrine\ODM\Migration;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\MongoDB\Collection;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
@@ -14,14 +13,16 @@ use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 trait RelationHelper
 {
     /**
-     * @param string $name
-     * @param string $id
+     * @param string           $name
+     * @param string           $id
      * @param array|Collection $sources
      * @param array|Collection $targets
-     * @param bool $multiple
-     * @param bool $required
-     * @param null $type if null $id is used as type
+     * @param bool             $multiple
+     * @param bool             $required
+     * @param null             $type     if null $id is used as type
+     *
      * @return Relation
+     *
      * @throws \Exception
      */
     public function addRelation($name, $id, $sources, $targets, $multiple = true, $required = false, $type = null)
@@ -78,7 +79,7 @@ trait RelationHelper
 
     /**
      * @param string $type
-     * @param bool $removeReferences
+     * @param bool   $removeReferences
      */
     protected function removeRelationByType($type, $removeReferences = false)
     {

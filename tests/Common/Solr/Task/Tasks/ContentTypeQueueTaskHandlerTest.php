@@ -67,15 +67,15 @@ class ContentTypeQueueTaskHandlerTest extends \PHPUnit_Framework_TestCase
             ->withConsecutive(
                 [
                     $this->equalTo(JobFactory::ADD),
-                    $this->identicalTo($content1)
+                    $this->identicalTo($content1),
                 ],
                 [
                     $this->equalTo(JobFactory::ADD),
-                    $this->identicalTo($content2)
+                    $this->identicalTo($content2),
                 ],
                 [
                     $this->equalTo(JobFactory::ADD),
-                    $this->identicalTo($content4)
+                    $this->identicalTo($content4),
                 ]
             )
             ->willReturnOnConsecutiveCalls($job1, $job2, $job3);
@@ -115,6 +115,7 @@ class ContentTypeQueueTaskHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $id
+     *
      * @return ContentTypeQueueTask | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getTask($id)

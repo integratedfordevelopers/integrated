@@ -12,14 +12,11 @@
 namespace Integrated\Tests\Common\Channel\Exporter\Queue;
 
 use Exception;
-
 use Integrated\Common\Channel\ChannelManagerInterface;
 use Integrated\Common\Channel\Exporter\Queue\Request;
 use Integrated\Common\Channel\Exporter\Queue\RequestSerializer;
-
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-
 use stdClass;
 
 /**
@@ -157,6 +154,7 @@ class RequestSerializerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $id
+     *
      * @return ChannelInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getChannel($id)
@@ -171,6 +169,7 @@ class RequestSerializerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $overwrite
+     *
      * @return string
      */
     public function getSerialized(array $overwrite = [])
@@ -178,7 +177,7 @@ class RequestSerializerTest extends \PHPUnit_Framework_TestCase
         $data = [
             'content' => [
                 'data' => 'serialized-data',
-                'type' => 'stdClass'
+                'type' => 'stdClass',
             ],
             'state' => self::TEST_STATE,
             'channel' => 'channel',

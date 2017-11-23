@@ -12,8 +12,6 @@
 namespace Integrated\Bundle\StorageBundle\Storage\Registry;
 
 use Integrated\Common\Storage\FilesystemRegistryInterface;
-
-use Gaufrette\Filesystem;
 use Knp\Bundle\GaufretteBundle\FilesystemMap;
 
 /**

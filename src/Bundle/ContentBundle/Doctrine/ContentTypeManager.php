@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
 
@@ -39,6 +38,7 @@ class ContentTypeManager
 
     /**
      * ContentTypeManager constructor.
+     *
      * @param ObjectManager $om
      * @param $class
      */
@@ -70,6 +70,7 @@ class ContentTypeManager
 
     /**
      * @param $className
+     *
      * @return ContentType[]
      */
     public function filterInstanceOf($className)

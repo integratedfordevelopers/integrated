@@ -17,9 +17,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\CollectionToDocumentTransformer;
 
 /**
@@ -58,7 +56,7 @@ class RelationReferencesType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation',
-            'options' => []
+            'options' => [],
         ]);
 
         $optionsNormalizer = function (Options $options, $value) {
@@ -97,7 +95,7 @@ class RelationReferencesType extends AbstractType
                             ->field('publishTime.startDate')->lte(new \DateTime())
                             ->field('publishTime.endDate')->gte(new \DateTime())
                             ->sort('title');
-                    }
+                    },
                 ];
             }
 

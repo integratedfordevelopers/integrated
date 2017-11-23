@@ -15,18 +15,18 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Configuration class for SolrBundle
+ * Configuration class for SolrBundle.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder;
+        $builder = new TreeBuilder();
         $builder->root('integrated_solr')
             ->children()
             ->arrayNode('endpoints')

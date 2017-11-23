@@ -13,7 +13,6 @@ namespace Integrated\Bundle\StorageBundle\Storage\Handler;
 
 use Integrated\Common\Storage\Command\CommandInterface;
 use Integrated\Common\Storage\Handler\QueuedCommandBusInterface;
-
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 /**
@@ -35,7 +34,8 @@ class QueuedCommandBus implements QueuedCommandBusInterface
     }
 
     /**
-     * This method clears the queue
+     * This method clears the queue.
+     *
      * @throws NotImplementedException
      */
     public function execute()

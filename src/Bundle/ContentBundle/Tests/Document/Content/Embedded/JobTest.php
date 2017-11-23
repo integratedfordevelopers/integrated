@@ -24,7 +24,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     private $job;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setFunction function
+     * Test get- and setFunction function.
      */
     public function testGetAndSetFunctionFunction()
     {
@@ -41,7 +41,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setDepartment function
+     * Test get- and setDepartment function.
      */
     public function testGetAndSetDepartmentFunction()
     {
@@ -50,7 +50,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setCompany function
+     * Test get- and setCompany function.
      */
     public function testGetAndSetCompanyFunction()
     {

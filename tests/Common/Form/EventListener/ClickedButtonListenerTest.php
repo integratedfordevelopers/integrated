@@ -12,9 +12,7 @@
 namespace Integrated\Tests\Common\Form\EventListener;
 
 use ArrayIterator;
-
 use Integrated\Common\Form\EventListener\ClickedButtonListener;
-
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -102,6 +100,7 @@ class ClickedButtonListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param bool $clicked
+     *
      * @return ClickableInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getButton($clicked, $name = null)

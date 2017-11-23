@@ -22,7 +22,7 @@ use Integrated\Common\Channel\Connector\ConfigurationInterface;
 class Manifest implements ManifestInterface, ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -30,7 +30,7 @@ class Manifest implements ManifestInterface, ConfigurationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -38,7 +38,7 @@ class Manifest implements ManifestInterface, ConfigurationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -46,7 +46,7 @@ class Manifest implements ManifestInterface, ConfigurationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getVersion()
     {
@@ -54,7 +54,7 @@ class Manifest implements ManifestInterface, ConfigurationInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getForm()
     {

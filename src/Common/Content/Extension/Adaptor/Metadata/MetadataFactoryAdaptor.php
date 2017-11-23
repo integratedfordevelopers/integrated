@@ -13,10 +13,8 @@ namespace Integrated\Common\Content\Extension\Adaptor\Metadata;
 
 use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
 use Integrated\Common\Content\Extension\Events as ExtensionEvents;
-
 use Integrated\Common\Form\Mapping\Event\MetadataEvent;
 use Integrated\Common\Form\Mapping\Events as MetadataEvents;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -25,12 +23,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class MetadataFactoryAdaptor extends AbstractAdaptor implements EventSubscriberInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            MetadataEvents::METADATA => 'dispatch'
+            MetadataEvents::METADATA => 'dispatch',
         ];
     }
 

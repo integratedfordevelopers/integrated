@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -42,7 +40,7 @@ class ContentTypeChannelCollectionType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -52,7 +50,7 @@ class ContentTypeChannelCollectionType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {

@@ -13,7 +13,6 @@ namespace Integrated\Bundle\PageBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-
 use Integrated\Bundle\PageBundle\DependencyInjection\Compiler\ContentTypeControllersPass;
 
 /**

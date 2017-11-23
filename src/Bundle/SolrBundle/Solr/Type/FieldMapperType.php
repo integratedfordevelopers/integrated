@@ -13,17 +13,13 @@ namespace Integrated\Bundle\SolrBundle\Solr\Type;
 
 use AppendIterator;
 use ArrayIterator;
-
 use DateTime;
 use DateTimeZone;
-
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
-
 use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-
 use Traversable;
 
 /**
@@ -76,6 +72,7 @@ class FieldMapperType implements TypeInterface
 
     /**
      * @param array $options
+     *
      * @return array
      */
     protected function groupFields(array $options = [])
@@ -89,7 +86,7 @@ class FieldMapperType implements TypeInterface
                 $field = $value[$index = isset($value['name']) ? 'name' : key($value)];
                 unset($value[$index]);
             } else {
-                $value = ['@' . $value]; // convert simple config to advance config
+                $value = ['@'.$value]; // convert simple config to advance config
             }
 
             foreach ($value as $config) {
@@ -102,7 +99,7 @@ class FieldMapperType implements TypeInterface
 
     /**
      * @param ContainerInterface $container
-     * @param string $field
+     * @param string             $field
      */
     protected function remove(ContainerInterface $container, $field)
     {
@@ -111,8 +108,8 @@ class FieldMapperType implements TypeInterface
 
     /**
      * @param ContainerInterface $container
-     * @param string $field
-     * @param string $value
+     * @param string             $field
+     * @param string             $value
      */
     protected function append(ContainerInterface $container, $field, $value)
     {
@@ -128,7 +125,7 @@ class FieldMapperType implements TypeInterface
 
     /**
      * @param object $data
-     * @param array $paths
+     * @param array  $paths
      *
      * @return Traversable
      */
@@ -148,8 +145,8 @@ class FieldMapperType implements TypeInterface
     }
 
     /**
-     * @param mixed $data
-     * @param array $paths
+     * @param mixed  $data
+     * @param array  $paths
      * @param string $separator
      *
      * @return string[]
@@ -162,7 +159,7 @@ class FieldMapperType implements TypeInterface
         // from the path config.
 
         if (array_key_exists('separator', $paths) && !is_array($paths['separator'])) {
-            $separator = (string)$paths['separator'];
+            $separator = (string) $paths['separator'];
             unset($paths['separator']);
         }
 
@@ -173,7 +170,7 @@ class FieldMapperType implements TypeInterface
                 // a array to simulate that the result is a array.
 
                 try {
-                    $array = $this->accessor->getValue($data, (string)$index);
+                    $array = $this->accessor->getValue($data, (string) $index);
 
                     if (!is_array($array) && !$array instanceof Traversable) {
                         $array = [$array];
@@ -206,14 +203,12 @@ class FieldMapperType implements TypeInterface
     }
 
     /**
-     * @param mixed $data
+     * @param mixed  $data
      * @param string $path
-     *
-     * @return null | string
      */
     protected function readString($data, $path)
     {
-        $path = (string)$path;
+        $path = (string) $path;
 
         if (!$path) {
             return null;
@@ -229,7 +224,7 @@ class FieldMapperType implements TypeInterface
         // data then don't return a error but just null.
 
         try {
-            return $this->convert($this->accessor->getValue($data, (string)$path));
+            return $this->convert($this->accessor->getValue($data, (string) $path));
         } catch (ExceptionInterface $e) {
             return null;
         }
@@ -241,8 +236,6 @@ class FieldMapperType implements TypeInterface
      * If the value can not be converted to a string then return null.
      *
      * @param mixed $data
-     *
-     * @return null | string
      */
     protected function convert($data)
     {
@@ -263,7 +256,7 @@ class FieldMapperType implements TypeInterface
             return $data ? '1' : '0'; // would otherwise be empty if converted to a string
         }
 
-        return $data !== null ? (string)$data : null;
+        return $data !== null ? (string) $data : null;
     }
 
     /**
@@ -272,7 +265,7 @@ class FieldMapperType implements TypeInterface
      * For every array in the data all strings will be multiplied by the number of items in that
      * array to cover every possible string combination.
      *
-     * @param array $data
+     * @param array  $data
      * @param string $separator
      *
      * @return string[]
@@ -288,14 +281,14 @@ class FieldMapperType implements TypeInterface
 
                 foreach ($value as $array_value) {
                     foreach ($results as $result_value) {
-                        $replacement[] = $result_value . $separator . $array_value;
+                        $replacement[] = $result_value.$separator.$array_value;
                     }
                 }
 
                 $results = $replacement;
             } else {
                 foreach ($results as $key => $result_value) {
-                    $results[$key] = $result_value . $separator . $value;
+                    $results[$key] = $result_value.$separator.$value;
                 }
             }
         }

@@ -17,17 +17,19 @@ namespace Integrated\Common\Normalizer\Processor;
 interface RegistryInterface
 {
     /**
-     * Check if there is a processors for the $class in the registry
+     * Check if there is a processors for the $class in the registry.
      *
      * @param string $class
+     *
      * @return bool
      */
     public function hasProcessors($class);
 
     /**
-     * Get the processors for the $class from the registry
+     * Get the processors for the $class from the registry.
      *
      * @param string $class
+     *
      * @return ProcessorInterface[]
      *
      * @trows InvalidArgumentException if the processors can not be found

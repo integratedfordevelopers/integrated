@@ -50,9 +50,6 @@ class ReferenceQueueTaskHandler
         $this->factory = $factory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(ReferenceQueueTask $task)
     {
         foreach ($this->provider->getReferenced($task->getId()) as $reference) {

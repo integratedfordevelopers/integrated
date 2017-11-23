@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WorkflowBundle\Tests\Form\EventListener;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractDefaultStateFromCollectionListener;
-
 use Symfony\Component\Form\FormEvents;
 
 /**
@@ -37,7 +36,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     private $definition;
 
     /**
-     * Set up the test
+     * Set up the test.
      */
     public function setUp()
     {
@@ -53,7 +52,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test instance of
+     * Test instance of.
      */
     public function testInstanceOf()
     {
@@ -62,23 +61,23 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test getSubscribedEvents function
+     * Test getSubscribedEvents function.
      */
     public function testGetSubscribedEvents()
     {
         $instance = $this->getInstance();
 
-        $events = array(
+        $events = [
             FormEvents::PRE_SUBMIT => 'onPreSubmit',
             FormEvents::POST_SET_DATA => 'onPostSetData',
-            FormEvents::SUBMIT => 'onSubmit'
-        );
+            FormEvents::SUBMIT => 'onSubmit',
+        ];
 
         $this->assertSame($events, $instance::getSubscribedEvents());
     }
 
     /**
-     * Test onPreSubmit event
+     * Test onPreSubmit event.
      */
     public function testOnPreSubmit()
     {
@@ -103,7 +102,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onPreSubmit with inValid Definition
+     * Test onPreSubmit with inValid Definition.
      */
     public function testOnPreSubmitWithInvalidDefinition()
     {
@@ -127,7 +126,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onPostSetData function with no states
+     * Test onPostSetData function with no states.
      */
     public function testOnPostSetDataWithNoStates()
     {
@@ -152,7 +151,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onPostSetData function with invalid state
+     * Test onPostSetData function with invalid state.
      */
     public function testOnPostSetDataWithInvalidState()
     {
@@ -187,7 +186,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onPostSetData function with no default state
+     * Test onPostSetData function with no default state.
      */
     public function testOnPostSetDataWithNoDefaultState()
     {
@@ -225,7 +224,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onPostSetData with default state
+     * Test onPostSetData with default state.
      */
     public function testOnPostSetDataWithDefaultState()
     {
@@ -263,7 +262,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onSubmit function
+     * Test onSubmit function.
      */
     public function testOnSubmitWithNoDefinition()
     {
@@ -287,7 +286,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onSubmit function with no states
+     * Test onSubmit function with no states.
      */
     public function testOnSubmitWithNoStates()
     {
@@ -319,7 +318,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * Test onSubmit function with states
+     * Test onSubmit function with states.
      */
     public function testOnSubmitWithStates()
     {
@@ -384,9 +383,10 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     }
 
     /**
-     * @param State $state
-     * @param null $withDefaultState
+     * @param State  $state
+     * @param null   $withDefaultState
      * @param string $getOrSet
+     *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getFormChild(State $state = null, $withDefaultState = null, $getOrSet = 'get')
@@ -402,17 +402,13 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
         ;
 
         if (null === $state) {
-
             // Stub has, must never be called when state is null
             $child
                 ->expects($this->never())
                 ->method('has')
             ;
-
         } else {
-
             if (null === $withDefaultState) {
-
                 // Stub has, returns false
                 $child
                     ->expects($this->once())
@@ -426,9 +422,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
                     ->expects($this->never())
                     ->method('get')
                 ;
-
             } else {
-
                 // Stub has, returns true
                 $child
                     ->expects($this->once())
@@ -461,7 +455,6 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
                         ->method('setData')
                         ->with(true)
                     ;
-
                 }
             }
         }
@@ -479,6 +472,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
 
     /**
      * @param mixed $default
+     *
      * @return \PHPUnit_Framework_MockObject_MockObject | \Integrated\Bundle\WorkflowBundle\Entity\Definition\State
      */
     protected function getState($default = null)
@@ -498,6 +492,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
 
     /**
      * @param mixed $data
+     *
      * @return \PHPUnit_Framework_MockObject_MockObject | \Symfony\Component\Form\FormInterface'
      */
     protected function getForm($data = null)
@@ -515,6 +510,7 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
     /**
      * @param mixed $state
      * @param mixed $default
+     *
      * @return \PHPUnit_Framework_MockObject_MockObject | \Integrated\Bundle\WorkflowBundle\Entity\Definition\State
      */
     protected function getChild($state = null, $default = null)
@@ -522,7 +518,6 @@ class ExtractDefaultStateFromCollectionListenerTest extends \PHPUnit_Framework_T
         $mock = $this->getForm($state);
 
         if (null !== $default) {
-
             $child = $this->getForm();
             $child
                 ->expects($this->once())

@@ -33,11 +33,13 @@ class Menu extends MenuItem
 
     /**
      * @param ChannelInterface $channel
+     *
      * @return $this
      */
     public function setChannel(ChannelInterface $channel)
     {
         $this->channel = $channel;
+
         return $this;
     }
 }

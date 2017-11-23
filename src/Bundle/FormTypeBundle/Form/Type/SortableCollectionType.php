@@ -3,7 +3,6 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -22,23 +21,23 @@ class SortableCollectionType extends AbstractType
         $view->vars = array_replace(
             $view->vars,
             [
-                'default_title' => $options['default_title']
+                'default_title' => $options['default_title'],
             ]
         );
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'default_title' => 'Item'
+            'default_title' => 'Item',
         ]);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {

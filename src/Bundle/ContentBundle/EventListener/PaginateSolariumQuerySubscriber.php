@@ -12,14 +12,12 @@
 namespace Integrated\Bundle\ContentBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Knp\Component\Pager\Event\ItemsEvent;
-
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
 
 /**
- * Solarium query pagination (to support max items)
+ * Solarium query pagination (to support max items).
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -31,15 +29,12 @@ class PaginateSolariumQuerySubscriber implements EventSubscriberInterface
     public function items(ItemsEvent $event)
     {
         if (is_array($event->target) && 2 == count($event->target)) {
-
             list($client, $query) = array_values($event->target);
 
             if ($client instanceof Client && $query instanceof Query && isset($event->options['maxItems'])) {
-
                 $maxItems = (int) $event->options['maxItems'];
 
                 if ($maxItems > 0) {
-
                     $offset = $event->getOffset();
                     $limit = $event->getLimit();
 

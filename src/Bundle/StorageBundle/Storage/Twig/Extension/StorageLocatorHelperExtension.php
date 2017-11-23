@@ -10,6 +10,7 @@
  */
 
 namespace Integrated\Bundle\StorageBundle\Twig\Extension;
+
 use Integrated\Bundle\StorageBundle\Locator\StorageLocator;
 use Integrated\Bundle\StorageBundle\Storage\Util\StorageLocatorHelper;
 
@@ -20,7 +21,7 @@ class StorageLocatorHelperExtension extends \Twig_Extension
 {
     /**
      * @param TwigRendererInterface $renderer
-     * @param FormFactory $form
+     * @param FormFactory           $form
      */
     public function __construct(TwigRendererInterface $renderer, FormFactory $form)
     {
@@ -43,7 +44,8 @@ class StorageLocatorHelperExtension extends \Twig_Extension
 
     /**
      * @param string $identifier
-     * @param array $filesystems
+     * @param array  $filesystems
+     *
      * @return StorageLocator
      */
     public function createStorageLocatorhelper(

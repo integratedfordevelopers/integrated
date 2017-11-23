@@ -35,6 +35,7 @@ class ContentTypeField implements DataTransformerInterface
 
     /**
      * @param mixed $field
+     *
      * @return array
      */
     public function transform($field)
@@ -44,7 +45,7 @@ class ContentTypeField implements DataTransformerInterface
 
             return [
                 'enabled' => true,
-                'required' => !empty($options['required'])
+                'required' => !empty($options['required']),
             ];
         }
 
@@ -53,6 +54,7 @@ class ContentTypeField implements DataTransformerInterface
 
     /**
      * @param mixed $value
+     *
      * @return Field|null
      */
     public function reverseTransform($value)

@@ -41,11 +41,13 @@ class PublishTime
 
     /**
      * @param \DateTime $startDate
+     *
      * @return $this
      */
     public function setStartDate(\DateTime $startDate = null)
     {
         $this->startDate = $startDate;
+
         return $this;
     }
 
@@ -59,16 +61,19 @@ class PublishTime
 
     /**
      * @param \DateTime $endDate
+     *
      * @return $this
      */
     public function setEndDate(\DateTime $endDate = null)
     {
         $this->endDate = $endDate;
+
         return $this;
     }
 
     /**
      * @param \DateTime $date
+     *
      * @return bool
      */
     public function isPublished(\DateTime $date = null)
@@ -77,6 +82,6 @@ class PublishTime
             $date = new \DateTime();
         }
 
-        return ($this->startDate <= $date && $this->endDate >= $date);
+        return $this->startDate <= $date && $this->endDate >= $date;
     }
 }

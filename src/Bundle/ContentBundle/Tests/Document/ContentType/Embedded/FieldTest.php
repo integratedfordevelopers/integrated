@@ -24,7 +24,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     private $field;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instance of
+     * Test instance of.
      */
     public function testInstanceOf()
     {
@@ -40,7 +40,7 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test name property
+     * Test name property.
      */
     public function testName()
     {
@@ -49,16 +49,16 @@ class FieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test options property
+     * Test options property.
      */
     public function testOptions()
     {
-        $options = array('label' => 'label', 'required' => false);
+        $options = ['label' => 'label', 'required' => false];
         $this->assertEquals($options, $this->field->setOptions($options)->getOptions());
     }
 
     /**
-     * Test getLabel function
+     * Test getLabel function.
      */
     public function testGetLabelFunction()
     {

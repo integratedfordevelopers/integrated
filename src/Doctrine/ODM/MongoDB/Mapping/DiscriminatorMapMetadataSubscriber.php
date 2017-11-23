@@ -14,7 +14,6 @@ namespace Integrated\Doctrine\ODM\MongoDB\Mapping;
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
-
 use Doctrine\Common\EventSubscriber;
 
 /**
@@ -43,7 +42,7 @@ class DiscriminatorMapMetadataSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::loadClassMetadata
+            Events::loadClassMetadata,
         ];
     }
 

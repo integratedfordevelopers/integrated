@@ -11,7 +11,6 @@
 
 namespace Integrated\Common\Queue\Provider;
 
-use DateInterval;
 use Integrated\Common\Queue\QueueMessageInterface;
 
 /**
@@ -33,7 +32,7 @@ interface QueueProviderInterface
     public function push($channel, $payload, $delay = 0, $priority = 0);
 
     /**
-     * Pull one or more messaged from the queue
+     * Pull one or more messaged from the queue.
      *
      * The message is not removed from the queue until the delete is called
      * on the message.
@@ -46,7 +45,7 @@ interface QueueProviderInterface
     public function pull($channel, $limit = 1);
 
     /**
-     * Clear a queue channel of al the messages
+     * Clear a queue channel of al the messages.
      *
      * @param string $channel The channel to clear
      */
@@ -56,6 +55,7 @@ interface QueueProviderInterface
      * Count the message in the queue.
      *
      * @param string $channel The channel to count the message in
+     *
      * @return int
      */
     public function count($channel);

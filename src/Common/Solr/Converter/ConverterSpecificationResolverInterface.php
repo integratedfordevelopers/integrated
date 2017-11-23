@@ -18,12 +18,14 @@ interface ConverterSpecificationResolverInterface
 {
     /**
      * @param $class
+     *
      * @return bool
      */
     public function hasSpecification($class);
 
     /**
      * @param $class
+     *
      * @return ConverterSpecificationInterface
      */
     public function getSpecification($class);

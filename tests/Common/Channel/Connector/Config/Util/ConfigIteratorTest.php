@@ -13,7 +13,6 @@ namespace Integrated\Tests\Common\Channel\Connector\Config\Util;
 
 use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\Util\ConfigIterator;
-
 use stdClass;
 
 /**

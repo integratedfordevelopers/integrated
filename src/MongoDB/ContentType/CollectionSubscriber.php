@@ -12,7 +12,6 @@
 namespace Integrated\MongoDB\ContentType;
 
 use Integrated\MongoDb\ContentType\Exception\InvalidArgumentException;
-
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\Common\EventSubscriber;
@@ -27,8 +26,6 @@ class CollectionSubscriber implements EventSubscriber
     private $collection;
 
     /**
-     *
-     *
      * @param string $class
      * @param string $collection
      *
@@ -45,7 +42,7 @@ class CollectionSubscriber implements EventSubscriber
     }
 
     /**
-     * return the class;
+     * return the class;.
      *
      * @return string
      */
@@ -55,7 +52,7 @@ class CollectionSubscriber implements EventSubscriber
     }
 
     /**
-     * return the collection
+     * return the collection.
      *
      * @return string
      */
@@ -69,13 +66,13 @@ class CollectionSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
-            Events::loadClassMetadata
-        );
+        return [
+            Events::loadClassMetadata,
+        ];
     }
 
     /**
-     * Set the collection of the content class based on the configuration
+     * Set the collection of the content class based on the configuration.
      *
      * @param LoadClassMetadataEventArgs $event
      */

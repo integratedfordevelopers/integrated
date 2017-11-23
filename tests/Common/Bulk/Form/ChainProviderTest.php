@@ -46,7 +46,7 @@ class ChainProviderTest extends \PHPUnit_Framework_TestCase
     {
         $content = [
             $this->createMock(ContentInterface::class),
-            $this->createMock(ContentInterface::class)
+            $this->createMock(ContentInterface::class),
         ];
 
         $config = [

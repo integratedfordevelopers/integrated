@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WebsiteBundle\DataFixtures\MongoDB;
 
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\LoadFixtureData as FixtureHandler;
-
 use Integrated\Bundle\ChannelBundle\DataFixtures\MongoDB\Extension\ChannelExtension;
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\SearchSelectionExtension;
 

@@ -39,7 +39,7 @@ class ClassTreeMapResolverBuilder
     }
 
     /**
-     * Add a the class as a root class for the resolver
+     * Add a the class as a root class for the resolver.
      *
      * @param string $class
      */

@@ -40,7 +40,7 @@ class QueueMessage implements QueueMessageInterface
     private $release;
 
     /**
-     * @param array $data
+     * @param array    $data
      * @param callable $delete
      * @param callable $release
      */
@@ -127,7 +127,7 @@ class QueueMessage implements QueueMessageInterface
     }
 
     /**
-     * Get all the message data
+     * Get all the message data.
      *
      * @return array
      */

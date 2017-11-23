@@ -12,11 +12,8 @@
 namespace Integrated\Bundle\ImageBundle\Converter;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\ImageBundle\Converter\Helper\ExtensionHelper;
 use Integrated\Bundle\ImageBundle\Exception\FormatException;
-
-use Integrated\Bundle\StorageBundle\Storage\Cache\AppCache;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
@@ -30,7 +27,7 @@ class Container
     private $adapters;
 
     /**
-     * Initialize class properties
+     * Initialize class properties.
      */
     public function __construct()
     {
@@ -46,9 +43,11 @@ class Container
     }
 
     /**
-     * @param string $outputFormat
+     * @param string           $outputFormat
      * @param StorageInterface $image
+     *
      * @return AdapterInterface
+     *
      * @throws FormatException
      */
     public function find($outputFormat, StorageInterface $image)

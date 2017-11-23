@@ -13,7 +13,6 @@ namespace Integrated\Tests\Common\Converter\Config\Provider;
 
 use Integrated\Common\Converter\Config\Provider\XmlProvider;
 use Integrated\Common\Converter\Config\TypeConfigInterface;
-
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -103,7 +102,7 @@ class XmlProviderTest extends \PHPUnit_Framework_TestCase
     {
         $provider = $this->getInstance($this->getFinder(['mapping.options.xml']));
 
-        self::assertSame([[null],['string'],[1, 1.1],[false]], $provider->getTypes('Test\\Options\\Array')[0]->getOptions());
+        self::assertSame([[null], ['string'], [1, 1.1], [false]], $provider->getTypes('Test\\Options\\Array')[0]->getOptions());
         self::assertSame(['string 1', 'string 2', 'string 3'], $provider->getTypes('Test\\Options\\String')[0]->getOptions());
         self::assertSame([1, 2, 3], $provider->getTypes('Test\\Options\\Int')[0]->getOptions());
         self::assertSame([1.1, 2.2, 3.3], $provider->getTypes('Test\\Options\\Float')[0]->getOptions());
@@ -117,21 +116,21 @@ class XmlProviderTest extends \PHPUnit_Framework_TestCase
         $provider = $this->getInstance($this->getFinder(['mapping.keys.xml']));
 
         self::assertSame([
-            'null'     => [null],
-            'string'   => ['string'],
-            'number'   => [1, 1.1],
-            'bool'     => [false]
+            'null' => [null],
+            'string' => ['string'],
+            'number' => [1, 1.1],
+            'bool' => [false],
         ], $provider->getTypes('Test\\Keys\\Array')[0]->getOptions());
 
         self::assertSame([
             'string 1' => 'string 1',
-            0          => '0',
-            'string 3' => 'string 3'
+            0 => '0',
+            'string 3' => 'string 3',
         ], $provider->getTypes('Test\\Keys\\Mixed')[0]->getOptions());
 
         self::assertSame([
             'string 2' => 'string 2',
-            'string 3' => 'string 3'
+            'string 3' => 'string 3',
         ], $provider->getTypes('Test\\Keys\\Duplicate')[0]->getOptions());
 
         self::assertSame([1 => '1', 2 => '2', 3 => '3'], $provider->getTypes('Test\\Keys\\Numeric')[0]->getOptions());
@@ -139,6 +138,7 @@ class XmlProviderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param Finder $finder
+     *
      * @return XmlProvider
      */
     protected function getInstance(Finder $finder)
@@ -150,12 +150,13 @@ class XmlProviderTest extends \PHPUnit_Framework_TestCase
      * Return a Finder which will return a predefined iterator.
      *
      * @param array $files
+     *
      * @return Finder | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getFinder(array $files = [])
     {
         foreach ($files as $index => $value) {
-            $files[$index] = new SplFileInfo(__DIR__ . '/../../Fixtures/' . $value, '', '');
+            $files[$index] = new SplFileInfo(__DIR__.'/../../Fixtures/'.$value, '', '');
         }
 
         $mock = $this->getMockBuilder('Symfony\Component\Finder\Finder')->setMethods(['getIterator'])->getMock();
@@ -167,7 +168,7 @@ class XmlProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Asserts that the two variables are equal
+     * Asserts that the two variables are equal.
      *
      * @param mixed $expected
      * @param mixed $actual

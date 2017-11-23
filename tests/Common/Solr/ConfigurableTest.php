@@ -14,7 +14,7 @@ namespace Integrated\Tests\Common\Solr;
 use Integrated\Tests\Common\Solr\Fixtures\Configurable;
 
 /**
- * @covers Integrated\Common\Solr\Configurable
+ * @covers \Integrated\Common\Solr\Configurable
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */

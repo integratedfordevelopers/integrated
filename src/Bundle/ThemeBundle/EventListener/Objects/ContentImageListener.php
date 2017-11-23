@@ -12,12 +12,10 @@
 namespace Integrated\Bundle\ThemeBundle\EventListener\Objects;
 
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Event\ContentEvent;
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
@@ -51,11 +49,11 @@ class ContentImageListener
     protected $env;
 
     /**
-     * @param ThemeManager $themeManager
-     * @param ObjectManager $objectManager
-     * @param EngineInterface $templating
+     * @param ThemeManager     $themeManager
+     * @param ObjectManager    $objectManager
+     * @param EngineInterface  $templating
      * @param SluggerInterface $slugger
-     * @param string $env
+     * @param string           $env
      */
     public function __construct(
         ThemeManager $themeManager,
@@ -73,6 +71,7 @@ class ContentImageListener
 
     /**
      * @param ContentEvent $contentEvent
+     *
      * @throws \Exception
      */
     public function replaceImages(ContentEvent $contentEvent)
@@ -96,6 +95,7 @@ class ContentImageListener
 
     /**
      * @param array $matches
+     *
      * @return null|string
      */
     protected function findImages($matches)
@@ -105,14 +105,17 @@ class ContentImageListener
             if (preg_match('/class="(.*?)"/', $matches[0], $imgClass)) {
                 $class = $imgClass[1];
             }
+
             return $this->getTemplate($file, $class);
         }
+
         return $matches[0];
     }
 
     /**
      * @param Content $file
-     * @param string $class
+     * @param string  $class
+     *
      * @return null|string
      */
     protected function getTemplate(Content $file, $class = '')
@@ -129,6 +132,7 @@ class ContentImageListener
 
     /**
      * @param string $class
+     *
      * @return string
      */
     protected function getViewFromClass($class = '')
@@ -136,7 +140,7 @@ class ContentImageListener
         if (preg_match('/template-image-(.*?)(\s|$)/', $class, $views)) {
             $view = $this->slugger->slugify($views[1], '_');
 
-            if ($template = $this->themeManager->locateTemplate('objects/image/' . $view . '.html.twig')) {
+            if ($template = $this->themeManager->locateTemplate('objects/image/'.$view.'.html.twig')) {
                 return $template;
             }
         }

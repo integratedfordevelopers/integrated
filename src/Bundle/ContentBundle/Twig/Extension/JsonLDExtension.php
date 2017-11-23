@@ -43,6 +43,7 @@ class JsonLDExtension extends \Twig_Extension
 
     /**
      * @param mixed $value
+     *
      * @return string
      */
     public function encode($value)

@@ -26,7 +26,7 @@ class IntegratedMenuExtension extends Extension
      */
     public function load(array $config, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('doctrine.xml');
         $loader->load('matcher.xml');

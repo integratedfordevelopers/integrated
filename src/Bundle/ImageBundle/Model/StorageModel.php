@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ImageBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\ContentBundle\Extension\LocatableStorageInterfaceTrait;
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -45,9 +44,9 @@ class StorageModel implements StorageInterface, \ArrayAccess
     private $metadata;
 
     /**
-     * @param string $identifier
-     * @param string $pathname
-     * @param ArrayCollection $filesystems
+     * @param string            $identifier
+     * @param string            $pathname
+     * @param ArrayCollection   $filesystems
      * @param MetadataInterface $metadata
      */
     public function __construct($identifier, $pathname, ArrayCollection $filesystems, MetadataInterface $metadata)

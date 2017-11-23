@@ -19,38 +19,38 @@ namespace Integrated\Bundle\UserBundle\Model;
  */
 interface GroupInterface /* extends Serializable */
 {
-	/**
-	 * Returns the identity of the group
-	 *
-	 * @return string
-	 */
-	public function getId();
+    /**
+     * Returns the identity of the group.
+     *
+     * @return string
+     */
+    public function getId();
 
-	/**
-	 * Set the name of the group
-	 *
-	 * @param string $name
-	 */
-	public function setName($name);
+    /**
+     * Set the name of the group.
+     *
+     * @param string $name
+     */
+    public function setName($name);
 
-	/**
-	 * Returns the name of the group
-	 *
-	 * @return string
-	 */
-	public function getName();
+    /**
+     * Returns the name of the group.
+     *
+     * @return string
+     */
+    public function getName();
 
-	/**
-	 * Returns the roles granted to the group.
-	 *
-	 * <code>
-	 * public function getRoles()
-	 * {
-	 *     return array('ROLE_USER');
-	 * }
-	 * </code>
-	 *
-	 * @return \Symfony\Component\Security\Core\Role\Role[] The user roles
-	 */
-	public function getRoles();
-} 
+    /**
+     * Returns the roles granted to the group.
+     *
+     * <code>
+     * public function getRoles()
+     * {
+     *     return array('ROLE_USER');
+     * }
+     * </code>
+     *
+     * @return \Symfony\Component\Security\Core\Role\Role[] The user roles
+     */
+    public function getRoles();
+}

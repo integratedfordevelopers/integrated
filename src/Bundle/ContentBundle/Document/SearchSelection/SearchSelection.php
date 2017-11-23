@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Document\SearchSelection;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
@@ -77,11 +76,13 @@ class SearchSelection
 
     /**
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -95,11 +96,13 @@ class SearchSelection
 
     /**
      * @param array $filters
+     *
      * @return SearchSelection
      */
     public function setFilters(array $filters = [])
     {
         $this->filters = $filters;
+
         return $this;
     }
 
@@ -113,16 +116,19 @@ class SearchSelection
 
     /**
      * @param array $internalParams
+     *
      * @return SearchSelection
      */
     public function setInternalParams(array $internalParams = [])
     {
         $this->internalParams = $internalParams;
+
         return $this;
     }
 
     /**
      * @param string $key
+     *
      * @return array
      */
     public function getFilter($key)
@@ -133,16 +139,18 @@ class SearchSelection
     /**
      * @param string $key
      * @param string $value
+     *
      * @return SearchSelection
      */
     public function setFilter($key, $value)
     {
         $this->filters[$key] = $value;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isLocked()
     {
@@ -150,17 +158,19 @@ class SearchSelection
     }
 
     /**
-     * @param boolean $locked
+     * @param bool $locked
+     *
      * @return SearchSelection
      */
     public function setLocked($locked)
     {
         $this->locked = $locked;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPublic()
     {
@@ -168,12 +178,14 @@ class SearchSelection
     }
 
     /**
-     * @param boolean $public
+     * @param bool $public
+     *
      * @return SearchSelection
      */
     public function setPublic($public)
     {
         $this->public = $public;
+
         return $this;
     }
 
@@ -187,11 +199,13 @@ class SearchSelection
 
     /**
      * @param int $userId
+     *
      * @return SearchSelection
      */
     public function setUserId($userId)
     {
         $this->userId = (int) $userId;
+
         return $this;
     }
 }

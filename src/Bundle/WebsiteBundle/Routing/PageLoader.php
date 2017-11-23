@@ -15,7 +15,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -62,7 +61,7 @@ class PageLoader implements LoaderInterface
             $condition = '';
 
             if ($channel = $page->getChannel()) {
-                $condition = 'request.attributes.get("_channel") == "' . $channel->getId() . '"';
+                $condition = 'request.attributes.get("_channel") == "'.$channel->getId().'"';
             }
 
             $route = new Route(
@@ -79,7 +78,7 @@ class PageLoader implements LoaderInterface
                 $condition
             );
 
-            $routes->add(self::ROUTE_PREFIX . $page->getId(), $route);
+            $routes->add(self::ROUTE_PREFIX.$page->getId(), $route);
         }
 
         return $routes;

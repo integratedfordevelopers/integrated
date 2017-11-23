@@ -30,7 +30,7 @@ class ContainerAwareDocumentNormalizer extends DocumentNormalizer
 
     /**
      * @param ContainerInterface $container
-     * @param string $service the name of the document manager service to use
+     * @param string             $service   the name of the document manager service to use
      */
     public function __construct(ContainerInterface $container, $service)
     {
@@ -39,7 +39,7 @@ class ContainerAwareDocumentNormalizer extends DocumentNormalizer
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function getDocumentManager()
     {

@@ -72,15 +72,15 @@ class FieldEvent extends FormEvent
     }
 
     /**
-     * @param boolean $ignore
+     * @param bool $ignore
      */
     public function setIgnore($ignore)
     {
-        $this->ignore = (bool)$ignore;
+        $this->ignore = (bool) $ignore;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isIgnored()
     {
@@ -97,6 +97,7 @@ class FieldEvent extends FormEvent
 
     /**
      * @param mixed $data
+     *
      * @return $this
      */
     public function setData($data)

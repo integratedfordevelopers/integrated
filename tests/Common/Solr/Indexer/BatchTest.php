@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Solr\Indexer;
 
 use Countable;
-
 use Integrated\Common\Solr\Indexer\Batch;
 use Integrated\Common\Solr\Indexer\BatchOperation;
 
@@ -25,7 +24,7 @@ class BatchTest extends \PHPUnit_Framework_TestCase
     {
         $operation = [
             $this->getOperation(),
-            $this->getOperation()
+            $this->getOperation(),
         ];
 
         $instance = $this->getInstance();
@@ -41,7 +40,7 @@ class BatchTest extends \PHPUnit_Framework_TestCase
         $operation = [
             $this->getOperation(),
             $this->getOperation(),
-            $this->getOperation()
+            $this->getOperation(),
         ];
 
         $instance = $this->getInstance();

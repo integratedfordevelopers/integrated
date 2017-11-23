@@ -23,12 +23,14 @@ interface RegistryInterface
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function hasExtension($name);
 
     /**
      * @param string $name
+     *
      * @return ExtensionInterface | null
      */
     public function getExtension($name);

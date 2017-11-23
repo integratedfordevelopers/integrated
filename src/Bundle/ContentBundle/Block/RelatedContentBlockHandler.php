@@ -16,16 +16,13 @@ use Integrated\Common\Block\BlockInterface;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
-
 use Knp\Component\Pager\Paginator;
-
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
- * Related content block handler
+ * Related content block handler.
  *
  * @author Vasil Pascal <developer.optimum@gmail.com>
  */
@@ -47,8 +44,8 @@ class RelatedContentBlockHandler extends BlockHandler
     private $dm;
 
     /**
-     * @param Paginator $paginator
-     * @param RequestStack $requestStack
+     * @param Paginator       $paginator
+     * @param RequestStack    $requestStack
      * @param DocumentManager $dm
      */
     public function __construct(Paginator $paginator, RequestStack $requestStack, DocumentManager $dm)
@@ -75,20 +72,21 @@ class RelatedContentBlockHandler extends BlockHandler
 
         $pagination = $this->getPagination($block, $request);
 
-        if (null ===  $pagination || !count($pagination)) {
+        if (null === $pagination || !count($pagination)) {
             return null;
         }
 
         return $this->render([
-            'block'      => $block,
+            'block' => $block,
             'pagination' => $pagination,
-            'document' => $this->getDocument()
+            'document' => $this->getDocument(),
         ]);
     }
 
     /**
      * @param RelatedContentBlock $block
-     * @param Request $request
+     * @param Request             $request
+     *
      * @return \Knp\Component\Pager\Pagination\PaginationInterface|null
      */
     public function getPagination(RelatedContentBlock $block, Request $request)
@@ -99,7 +97,7 @@ class RelatedContentBlockHandler extends BlockHandler
             return null;
         }
 
-        $pageParam = $block->getId() . '-page';
+        $pageParam = $block->getId().'-page';
 
         return $this->paginator->paginate(
             $target,
@@ -114,6 +112,7 @@ class RelatedContentBlockHandler extends BlockHandler
 
     /**
      * @param RelatedContentBlock $block
+     *
      * @return \Doctrine\MongoDB\Query\Builder|\Doctrine\Common\Collections\ArrayCollection|null
      */
     protected function getQuery(RelatedContentBlock $block)
@@ -156,8 +155,9 @@ class RelatedContentBlockHandler extends BlockHandler
     }
 
     /**
-     * @param Content $document
+     * @param Content             $document
      * @param RelatedContentBlock $block
+     *
      * @return \Doctrine\MongoDB\Query\Builder
      */
     protected function getLinkedByQuery(Content $document, RelatedContentBlock $block)
@@ -172,5 +172,4 @@ class RelatedContentBlockHandler extends BlockHandler
             ->createQueryBuilder()
             ->field('_id')->in($ids);
     }
-
 }

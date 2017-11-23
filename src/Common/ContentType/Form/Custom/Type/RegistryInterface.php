@@ -20,12 +20,14 @@ interface RegistryInterface
 {
     /**
      * @param TypeInterface $type
+     *
      * @return $this
      */
     public function add(TypeInterface $type);
 
     /**
      * @param TypeInterface $type
+     *
      * @return bool
      */
     public function has(TypeInterface $type);

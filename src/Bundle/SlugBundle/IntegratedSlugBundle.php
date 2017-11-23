@@ -14,7 +14,7 @@ namespace Integrated\Bundle\SlugBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Integrated slug bundle
+ * Integrated slug bundle.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

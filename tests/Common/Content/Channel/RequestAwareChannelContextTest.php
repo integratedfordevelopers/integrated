@@ -13,7 +13,6 @@ namespace Integrated\Tests\Common\Content\Channel;
 
 use Integrated\Common\Content\Channel\ChannelManagerInterface;
 use Integrated\Common\Content\Channel\RequestAwareChannelContext;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -188,6 +187,7 @@ class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $attribute
+     *
      * @return RequestAwareChannelContext
      */
     protected function getInstance($attribute = null)

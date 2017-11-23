@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
-
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
@@ -39,7 +38,7 @@ class ArticleController
     protected $blockManager;
 
     /**
-     * @param TwigEngine $templating
+     * @param TwigEngine   $templating
      * @param ThemeManager $themeManager
      * @param BlockManager $blockManager
      */
@@ -52,7 +51,8 @@ class ArticleController
 
     /**
      * @param ContentTypePage $page
-     * @param Article $article
+     * @param Article         $article
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(ContentTypePage $page, Article $article)
@@ -60,7 +60,7 @@ class ArticleController
         $this->blockManager->setDocument($article);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Article/show/' . $page->getLayout()),
+            $this->themeManager->locateTemplate('content/Article/show/'.$page->getLayout()),
             [
                 'article' => $article,
                 'page' => $page,

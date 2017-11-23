@@ -14,7 +14,7 @@ namespace Integrated\Bundle\SlugBundle\Mapping\Driver;
 use Metadata\Driver\DriverInterface;
 
 /**
- * XML driver
+ * XML driver.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

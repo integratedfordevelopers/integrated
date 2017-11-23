@@ -12,13 +12,8 @@
 namespace Integrated\Bundle\FormTypeBundle\DependencyInjection\Compiler;
 
 use ReflectionClass;
-
-use Symfony\Component\Config\Resource\FileResource;
-
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
@@ -27,9 +22,9 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
  */
 class RegisterContentStyleParametersPass implements CompilerPassInterface
 {
-    const STYLE_FORMAT = "style_formats";
-    const CONTENT_CSS = "content_css";
-    const PARAMETER_NAME = "integrated_content_styles";
+    const STYLE_FORMAT = 'style_formats';
+    const CONTENT_CSS = 'content_css';
+    const PARAMETER_NAME = 'integrated_content_styles';
 
     /** @var array */
     private $parameters;
@@ -48,10 +43,9 @@ class RegisterContentStyleParametersPass implements CompilerPassInterface
         $container->getParameterBag()->add([self::PARAMETER_NAME => $this->parameters]);
     }
 
-
     /**
      * @param $dir
-     * @return null
+     *
      * @throws FileException
      */
     private function addParameters($dir)
@@ -86,8 +80,7 @@ class RegisterContentStyleParametersPass implements CompilerPassInterface
                 }
 
                 $this->parameters[$type][] = $formatParams;
-            }
-            else {
+            } else {
                 $this->parameters[$type][] = $option->nodeValue;
             }
         }

@@ -13,12 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Form\Type\ContentType\FieldsType;
 use Integrated\Common\Form\Mapping\MetadataInterface;
-
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -41,8 +38,8 @@ class ContentTypeFormType extends AbstractType
         ;
 
         foreach ($metadata->getOptions() as $option) {
-            $ype = $builder->create('options_' . $option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
-                ->setPropertyPath('options[' . $option->getName() . ']');
+            $ype = $builder->create('options_'.$option->getName(), $option->getType(), ['label' => ucfirst($option->getName())] + $option->getOptions())
+                ->setPropertyPath('options['.$option->getName().']');
 
             $builder->add($ype);
         }

@@ -33,18 +33,18 @@ class PhonenumberType extends AbstractType
                 'choices' => [
                     'Mobile' => 'mobile',
                     'Work' => 'work',
-                    'Home' => 'home'
+                    'Home' => 'home',
                 ],
-                'choices_as_values' => true
+                'choices_as_values' => true,
             ]);
         }
 
         if (in_array('number', $options['fields'])) {
             $builder->add('number', TextType::class, [
-                'label'       => 'Phone number',
+                'label' => 'Phone number',
                 'constraints' => [
                     new NotBlank(),
-                ]
+                ],
             ]);
         }
     }
@@ -56,7 +56,7 @@ class PhonenumberType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Embedded\\Phonenumber',
-            'fields'     => ['type', 'number'], // @todo validate options (INTEGRATED-627)
+            'fields' => ['type', 'number'], // @todo validate options (INTEGRATED-627)
         ]);
     }
 

@@ -12,14 +12,11 @@
 namespace Integrated\Common\Converter\Config\Provider;
 
 use Exception;
-
 use Integrated\Common\Converter\Config\TypeConfig;
 use Integrated\Common\Converter\Config\TypeConfigInterface;
 use Integrated\Common\Converter\Exception\RuntimeException;
-
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-
 use SimpleXMLElement;
 
 /**
@@ -134,8 +131,6 @@ class XmlProvider extends AbstractFileProvider
      * tags is unlimited.
      *
      * @param SimpleXMLElement $element
-     *
-     * @return null | array | string | int | float | bool
      */
     protected function parsePrimitive(SimpleXMLElement $element)
     {
@@ -147,10 +142,10 @@ class XmlProvider extends AbstractFileProvider
                 return (string) $element;
 
             case 'int':
-                return (int)(string) $element;
+                return (int) (string) $element;
 
             case 'float':
-                return (float)(string) $element;
+                return (float) (string) $element;
 
             case 'bool':
                 $result = (string) $element;

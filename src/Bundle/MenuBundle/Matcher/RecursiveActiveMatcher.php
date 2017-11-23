@@ -12,10 +12,8 @@
 namespace Integrated\Bundle\MenuBundle\Matcher;
 
 use Integrated\Bundle\MenuBundle\Document\MenuItem;
-
 use Knp\Menu\Matcher\Matcher;
 use Knp\Menu\Matcher\Voter\UriVoter;
-
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -72,5 +70,4 @@ class RecursiveActiveMatcher
             }
         }
     }
-
 }

@@ -43,6 +43,7 @@ class MediaProvider
 
     /**
      * @param null|string $filter
+     *
      * @return \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType[]
      */
     public function getContentTypes($filter = null)

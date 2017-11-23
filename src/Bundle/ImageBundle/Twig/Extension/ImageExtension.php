@@ -13,10 +13,8 @@ namespace Integrated\Bundle\ImageBundle\Twig\Extension;
 
 use Gregwar\ImageBundle\Extensions\ImageTwig;
 use Gregwar\ImageBundle\Services\ImageHandling;
-
 use Integrated\Bundle\ImageBundle\Converter\WebFormatConverter;
 use Integrated\Bundle\ImageBundle\Factory\StorageModelFactory;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
@@ -40,8 +38,8 @@ class ImageExtension extends \Twig_Extension
     private $imageTwig;
 
     /**
-     * @param ImageHandling $imageHandling
-     * @param ImageTwig $imageTwig
+     * @param ImageHandling      $imageHandling
+     * @param ImageTwig          $imageTwig
      * @param WebFormatConverter $webFormatConverter
      */
     public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter)
@@ -60,12 +58,13 @@ class ImageExtension extends \Twig_Extension
             new \Twig_SimpleFunction('integrated_image', [$this, 'image'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('image_json', [$this, 'imageJson'], ['is_safe' => ['html']]),
             new \Twig_SimpleFunction('web_image', [$this, 'webImage'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('image', [$this, 'image'], ['is_safe' => ['html']])
+            new \Twig_SimpleFunction('image', [$this, 'image'], ['is_safe' => ['html']]),
         ];
     }
 
     /**
      * @param $image
+     *
      * @return \Gregwar\ImageBundle\ImageHandler
      */
     public function imageJson($image)
@@ -85,6 +84,7 @@ class ImageExtension extends \Twig_Extension
 
     /**
      * @param $image
+     *
      * @return \Gregwar\ImageBundle\ImageHandler
      */
     public function webImage($image)
@@ -104,6 +104,7 @@ class ImageExtension extends \Twig_Extension
 
     /**
      * @param $image
+     *
      * @return \Gregwar\ImageBundle\ImageHandler
      */
     public function image($image)

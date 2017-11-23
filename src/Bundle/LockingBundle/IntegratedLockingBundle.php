@@ -13,9 +13,7 @@ namespace Integrated\Bundle\LockingBundle;
 
 use Integrated\Bundle\LockingBundle\DependencyInjection\Compiler\RouterResourcePass;
 use Integrated\Bundle\LockingBundle\DependencyInjection\IntegratedLockingExtension;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -24,7 +22,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class IntegratedLockingBundle extends Bundle
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
@@ -34,7 +32,7 @@ class IntegratedLockingBundle extends Bundle
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getContainerExtension()
     {

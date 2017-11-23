@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Bulk;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Doctrine\MongoDB\Query\Builder;
-
 use Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationType;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Common\Bulk\Form\Config;
@@ -38,7 +37,7 @@ class RelationFormProvider implements ConfigProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfig(array $content)
     {
@@ -62,7 +61,7 @@ class RelationFormProvider implements ConfigProviderInterface
                 [
                     'relation' => $relation,
                     'relation_handler' => RelationAddHandler::class,
-                    'label' => sprintf('Add %s', $relation->getName())
+                    'label' => sprintf('Add %s', $relation->getName()),
                 ],
                 new RelationFormActionMatcher(RelationAddHandler::class, $relation->getId())
             );
@@ -74,7 +73,7 @@ class RelationFormProvider implements ConfigProviderInterface
                 [
                     'relation' => $relation,
                     'relation_handler' => RelationRemoveHandler::class,
-                    'label' => sprintf('Remove %s', $relation->getName())
+                    'label' => sprintf('Remove %s', $relation->getName()),
                 ],
                 new RelationFormActionMatcher(RelationRemoveHandler::class, $relation->getId())
             );

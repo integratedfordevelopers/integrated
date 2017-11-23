@@ -20,6 +20,7 @@ interface IdentifierInterface
 {
     /**
      * @param ReaderInterface $reader
+     *
      * @return string
      */
     public function getIdentifier(ReaderInterface $reader);

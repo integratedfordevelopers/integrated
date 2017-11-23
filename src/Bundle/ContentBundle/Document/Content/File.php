@@ -17,7 +17,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
- * Document type File
+ * Document type File.
  *
  * @author Johnny Borg <johnny@e-active.nl>
  *
@@ -31,7 +31,7 @@ class File extends Content implements FileInterface
      * @Type\Field
      */
     protected $slug;
-    
+
     /**
      * @var StorageInterface
      * @Type\Field(type="Integrated\Bundle\StorageBundle\Form\Type\FileDropzoneType")
@@ -60,11 +60,13 @@ class File extends Content implements FileInterface
 
     /**
      * {@inheritdoc}
+     *
      * @return $this
      */
     public function setFile(StorageInterface $file = null)
     {
         $this->file = $file;
+
         return $this;
     }
 
@@ -78,11 +80,13 @@ class File extends Content implements FileInterface
 
     /**
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -96,11 +100,13 @@ class File extends Content implements FileInterface
 
     /**
      * @param string $description
+     *
      * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 

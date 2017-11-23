@@ -14,14 +14,11 @@ namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromDataListener;
 use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -38,11 +35,11 @@ class StateType extends AbstractType
         $builder->add('name', Type\TextType::class, [
             'constraints' => [
                 new NotBlank(),
-                new Length(['min' => 3])
+                new Length(['min' => 3]),
             ],
             'attr' => [
-                'class' => 'state_name_input_field'
-            ]
+                'class' => 'state_name_input_field',
+            ],
         ]);
 
         $builder->add(
@@ -52,8 +49,8 @@ class StateType extends AbstractType
                 'label' => 'Publish',
                 'required' => false,
                 'attr' => [
-                    'align_with_widget' => true
-                ]
+                    'align_with_widget' => true,
+                ],
             ]
         );
 
@@ -65,33 +62,33 @@ class StateType extends AbstractType
                 'mapped' => false,
                 'attr' => [
                     'class' => 'state_default_input_field',
-                    'align_with_widget' => true
-                ]
+                    'align_with_widget' => true,
+                ],
             ]
         );
 
         $choiceFlags = [
             'Optional' => StateVisibleConfig::OPTIONAL,
             'Required' => StateVisibleConfig::REQUIRED,
-            'Disabled' => StateVisibleConfig::DISABLED
+            'Disabled' => StateVisibleConfig::DISABLED,
         ];
 
         $builder->add('comment', Type\ChoiceType::class, [
             'expanded' => true,
             'choices' => $choiceFlags,
-            'choices_as_values' => true
+            'choices_as_values' => true,
         ]);
 
         $builder->add('assignee', Type\ChoiceType::class, [
             'expanded' => true,
             'choices' => $choiceFlags,
-            'choices_as_values' => true
+            'choices_as_values' => true,
         ]);
 
         $builder->add('deadline', Type\ChoiceType::class, [
             'expanded' => true,
             'choices' => $choiceFlags,
-            'choices_as_values' => true
+            'choices_as_values' => true,
         ]);
 
         $builder->add('permissions', PermissionsType::class, ['required' => false]);
@@ -103,9 +100,9 @@ class StateType extends AbstractType
         if ($options['transitions'] == 'empty') {
             $builder->add('transitions', Type\ChoiceType::class, [
                 'required' => false,
-                'mapped'   => false,
+                'mapped' => false,
 
-                'choices'  => [],
+                'choices' => [],
                 'choices_as_values' => true,
 
                 'multiple' => true,

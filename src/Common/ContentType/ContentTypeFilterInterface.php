@@ -14,12 +14,13 @@ namespace Integrated\Common\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 
 /**
- * Interface ContentTypeFilterInterface
+ * Interface ContentTypeFilterInterface.
  */
 interface ContentTypeFilterInterface
 {
     /**
      * @param ContentType $contentType
+     *
      * @return bool
      */
     public function hasAccess(ContentType $contentType);

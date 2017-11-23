@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * IntegratedContentExtension for loading configuration
+ * IntegratedContentExtension for loading configuration.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -30,14 +30,14 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
     protected $formTemplate = 'IntegratedContentBundle:Form:form_div_layout.html.twig';
 
     /**
-     * Load the configuration
+     * Load the configuration.
      *
-     * @param array $configs
+     * @param array            $configs
      * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('controller.xml');
 
@@ -80,7 +80,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function prepend(ContainerBuilder $container)
     {
@@ -89,8 +89,6 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 
     /**
      * @param ContainerBuilder $container The service container
-     *
-     * @return void
      */
     protected function configureTwigBundle(ContainerBuilder $container)
     {
@@ -99,7 +97,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
                 case 'twig':
                     $container->prependExtensionConfig(
                         $name,
-                        array('form'  => array('resources' => array($this->formTemplate)))
+                        ['form' => ['resources' => [$this->formTemplate]]]
                     );
                     break;
             }

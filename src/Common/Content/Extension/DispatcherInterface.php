@@ -23,6 +23,7 @@ interface DispatcherInterface
      *
      * @param string $event
      * @param object $object
+     *
      * @return Event
      */
     public function dispatch($event, $object);

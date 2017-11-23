@@ -12,12 +12,11 @@
 namespace Integrated\Bundle\ChannelBundle\EventListener;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Event subscriber for adding menu items to integrated_menu
+ * Event subscriber for adding menu items to integrated_menu.
  *
  * @author Marijn Otte
  */

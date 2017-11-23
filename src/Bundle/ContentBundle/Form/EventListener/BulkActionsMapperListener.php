@@ -48,7 +48,7 @@ class BulkActionsMapperListener implements EventSubscriberInterface
     {
         return [
             FormEvents::POST_SET_DATA => 'distribute',
-            FormEvents::SUBMIT => 'collect'
+            FormEvents::SUBMIT => 'collect',
         ];
     }
 

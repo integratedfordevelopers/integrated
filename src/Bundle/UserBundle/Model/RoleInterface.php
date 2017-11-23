@@ -18,40 +18,40 @@ use Symfony\Component\Security\Core\Role\RoleInterface as BaseRoleInterface;
  */
 interface RoleInterface extends BaseRoleInterface
 {
-	public function __construct($role);
+    public function __construct($role);
 
-	/**
-	 * Returns the identity of the role
-	 *
-	 * @return string
-	 */
-	public function getId();
+    /**
+     * Returns the identity of the role.
+     *
+     * @return string
+     */
+    public function getId();
 
-	/**
-	 * Set the label
-	 *
-	 * @param string $label
-	 */
-	public function setLabel($label);
+    /**
+     * Set the label.
+     *
+     * @param string $label
+     */
+    public function setLabel($label);
 
-	/**
-	 * Returns the label of the role
-	 *
-	 * @return string
-	 */
-	public function getLabel();
+    /**
+     * Returns the label of the role.
+     *
+     * @return string
+     */
+    public function getLabel();
 
-	/**
-	 * Set the description
-	 *
-	 * @param string $description
-	 */
-	public function setDescription($description);
+    /**
+     * Set the description.
+     *
+     * @param string $description
+     */
+    public function setDescription($description);
 
-	/**
-	 * Returns a description of the role
-	 *
-	 * @return string
-	 */
-	public function getDescription();
+    /**
+     * Returns a description of the role.
+     *
+     * @return string
+     */
+    public function getDescription();
 }

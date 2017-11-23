@@ -12,11 +12,9 @@
 namespace Integrated\Bundle\WebsiteBundle\Routing;
 
 use Integrated\Bundle\PageBundle\Services\UrlResolver;
-
 use Symfony\Component\Config\Loader\Loader;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -43,7 +41,7 @@ class ContentTypePageLoader extends Loader
 
     /**
      * @param DocumentManager $dm
-     * @param UrlResolver $urlResolver
+     * @param UrlResolver     $urlResolver
      */
     public function __construct(DocumentManager $dm, UrlResolver $urlResolver)
     {
@@ -78,7 +76,7 @@ class ContentTypePageLoader extends Loader
                 '',
                 [],
                 [],
-                'request.attributes.get("_channel") == "' . $page->getChannel()->getId() . '"'
+                'request.attributes.get("_channel") == "'.$page->getChannel()->getId().'"'
             );
 
             $routes->add($this->urlResolver->getRouteName($page), $route);

@@ -36,6 +36,7 @@ class HandlerFactoryRegistry
 
     /**
      * @param string $class
+     *
      * @return bool
      */
     public function hasFactory($class)
@@ -53,6 +54,7 @@ class HandlerFactoryRegistry
 
     /**
      * @param string $class
+     *
      * @return HandlerFactoryInterface
      */
     public function getFactory($class)

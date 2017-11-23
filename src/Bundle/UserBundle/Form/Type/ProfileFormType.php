@@ -12,29 +12,22 @@
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-
 use Integrated\Bundle\UserBundle\Form\DataMapper\UserMapper;
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileExtensionListener;
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileOptionalListener;
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfilePasswordListener;
-
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-
 use ReflectionClass;
 
 /**
@@ -56,7 +49,7 @@ class ProfileFormType extends AbstractType
     /**
      * Constructor.
      *
-     * @param UserManagerInterface $manager
+     * @param UserManagerInterface    $manager
      * @param EncoderFactoryInterface $encoder
      */
     public function __construct(UserManagerInterface $manager, EncoderFactoryInterface $encoder)
@@ -80,7 +73,7 @@ class ProfileFormType extends AbstractType
                     'label' => 'Enable login',
                     'attr' => [
                         'class' => 'login-visible-control',
-                        'align_with_widget' => true
+                        'align_with_widget' => true,
                     ],
                 ]
             );
@@ -94,17 +87,17 @@ class ProfileFormType extends AbstractType
         $builder->add('username', Type\TextType::class, [
             'constraints' => [
                 new NotBlank(),
-                new Length(['min' => 3])
+                new Length(['min' => 3]),
             ],
-            'attr' => ['autocomplete' => 'off']
+            'attr' => ['autocomplete' => 'off'],
         ]);
 
         $builder->add('password', Type\PasswordType::class, [
             'mapped' => false,
             'constraints' => [
-                new Length(['min' => 6])
+                new Length(['min' => 6]),
             ],
-            'attr' => ['autocomplete' => 'off']
+            'attr' => ['autocomplete' => 'off'],
         ]);
 
         if (!$options['optional']) {
@@ -115,15 +108,15 @@ class ProfileFormType extends AbstractType
                     'required' => false,
                     'label' => 'Enable login',
                     'attr' => [
-                        'align_with_widget' => true
-                    ]
+                        'align_with_widget' => true,
+                    ],
                 ]
             );
         }
 
         $builder->add('groups', GroupType::class, [
             'multiple' => true,
-            'expanded' => true
+            'expanded' => true,
         ]);
 
         $builder->add('scope', EntityType::class, [
@@ -134,7 +127,7 @@ class ProfileFormType extends AbstractType
                     ->addSelect('CASE WHEN Scope.name = :name THEN 1 ELSE 0 END AS HIDDEN sortCondition')
                     ->setParameter('name', 'Integrated')
                     ->orderBy('sortCondition', 'DESC');
-            }
+            },
         ]);
 
         $builder->addEventSubscriber(new UserProfilePasswordListener($this->encoderFactory));
@@ -203,7 +196,7 @@ class ProfileFormType extends AbstractType
         // everything can be left empty if enabled is not checked
 
         $resolver->setDefault('optional', false);
-        $resolver->setDefault('attr', array('class' => 'integrated-user-form'));
+        $resolver->setDefault('attr', ['class' => 'integrated-user-form']);
         $resolver->setAllowedTypes('optional', ['bool']);
     }
 

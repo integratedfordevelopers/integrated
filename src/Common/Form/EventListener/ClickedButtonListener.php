@@ -12,7 +12,6 @@
 namespace Integrated\Common\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -23,12 +22,12 @@ use Symfony\Component\Form\FormEvents;
 class ClickedButtonListener implements EventSubscriberInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::SUBMIT => 'onSubmit'
+            FormEvents::SUBMIT => 'onSubmit',
         ];
     }
 

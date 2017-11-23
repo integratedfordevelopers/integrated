@@ -151,6 +151,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name
+     *
      * @return TypeInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getType($name)
@@ -165,6 +166,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name
+     *
      * @return TypeExtensionInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getTypeExtension($name)

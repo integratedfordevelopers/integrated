@@ -19,21 +19,21 @@ use Integrated\Common\Content\Channel\ChannelInterface as ContentChannelInterfac
 interface ChannelManagerInterface
 {
     /**
-     * Create a channel object
+     * Create a channel object.
      *
      * @return ChannelInterface
      */
     public function create();
 
     /**
-     * Change or add the channel to the manager
+     * Change or add the channel to the manager.
      *
      * @param ChannelInterface $channel
      */
     public function persist(ContentChannelInterface $channel);
 
     /**
-     * Remove the channel from the manager
+     * Remove the channel from the manager.
      *
      * @param ChannelInterface $channel
      */
@@ -70,7 +70,7 @@ interface ChannelManagerInterface
     public function findByDomain($criteria);
 
     /**
-     * Finds the channel by its name
+     * Finds the channel by its name.
      *
      * @param string $criteria
      *
@@ -88,7 +88,7 @@ interface ChannelManagerInterface
     public function findBy(array $criteria);
 
     /**
-     * Returns the class name of the channel object
+     * Returns the class name of the channel object.
      *
      * @return string
      */

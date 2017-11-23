@@ -14,11 +14,9 @@ namespace Integrated\Tests\Common\Converter;
 use Integrated\Common\Converter\Config\ConfigInterface;
 use Integrated\Common\Converter\Config\ConfigResolverInterface;
 use Integrated\Common\Converter\Config\TypeConfigInterface;
-
 use Integrated\Common\Converter\ContainerFactoryInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Converter;
-
 use Integrated\Common\Converter\Type\RegistryInterface;
 
 /**
@@ -45,7 +43,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
     {
         $this->registry = $this->createMock('Integrated\\Common\\Converter\\Type\\RegistryInterface');
         $this->resolver = $this->createMock('Integrated\\Common\\Converter\\Config\\ConfigResolverInterface');
-        $this->factory  = $this->createMock('Integrated\\Common\\Converter\\ContainerFactoryInterface');
+        $this->factory = $this->createMock('Integrated\\Common\\Converter\\ContainerFactoryInterface');
     }
 
     public function testInterface()
@@ -82,7 +80,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
             ->method('getType')
             ->willReturnMap([
                 ['type-1', $type1],
-                ['type-2', $type2]
+                ['type-2', $type2],
             ]);
 
         self::assertSame($container, $this->getInstance()->convert($data));
@@ -173,6 +171,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param TypeConfigInterface[] $types
+     *
      * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig(array $types)
@@ -196,7 +195,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name
-     * @param array $options
+     * @param array  $options
      *
      * @return TypeConfigInterface | \PHPUnit_Framework_MockObject_MockObject
      */

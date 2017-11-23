@@ -14,10 +14,8 @@ namespace Integrated\Bundle\PageBundle\Controller;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
-
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -92,7 +90,7 @@ class PageController extends Controller
      * @Template
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -123,7 +121,7 @@ class PageController extends Controller
      * @Template
      *
      * @param Request $request
-     * @param Page $page
+     * @param Page    $page
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -172,7 +170,7 @@ class PageController extends Controller
             [
                 'action' => $this->generateUrl('integrated_page_page_new', ['channel' => $channel->getId()]),
                 'method' => 'POST',
-                'theme'  => $this->getTheme($channel),
+                'theme' => $this->getTheme($channel),
             ]
         );
 
@@ -204,7 +202,7 @@ class PageController extends Controller
                     ['id' => $page->getId(), 'channel' => $channel->getId()]
                 ),
                 'method' => 'PUT',
-                'theme'  => $this->getTheme($channel),
+                'theme' => $this->getTheme($channel),
             ]
         );
 

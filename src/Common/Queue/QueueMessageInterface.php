@@ -11,8 +11,6 @@
 
 namespace Integrated\Common\Queue;
 
-use Serializable;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -45,7 +43,7 @@ interface QueueMessageInterface
     public function getPayload();
 
     /**
-     * Get the message priority
+     * Get the message priority.
      *
      * @return int
      */

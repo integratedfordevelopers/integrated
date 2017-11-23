@@ -16,5 +16,4 @@ namespace Integrated\Bundle\WorkflowBundle\Entity;
  */
 class Workflow
 {
-
 }

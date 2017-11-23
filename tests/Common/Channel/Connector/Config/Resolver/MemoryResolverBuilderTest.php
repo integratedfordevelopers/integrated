@@ -89,40 +89,40 @@ class MemoryResolverBuilderTest extends \PHPUnit_Framework_TestCase
         return [
             'with channel string id' => [
                 [
-                    [[$config1, $config2, $config3], 'channel']
+                    [[$config1, $config2, $config3], 'channel'],
                 ],
-                ['channels' => ['channel' => [$config1, $config2, $config3]], 'defaults' => []]
+                ['channels' => ['channel' => [$config1, $config2, $config3]], 'defaults' => []],
             ],
             'with channel object' => [
                 [
                     [[$config1, $config2, $config3], $this->getChannel('channel')],
                 ],
-                ['channels' => ['channel' => [$config1, $config2, $config3]], 'defaults' => []]
+                ['channels' => ['channel' => [$config1, $config2, $config3]], 'defaults' => []],
             ],
             'with mixed channels' => [
                 [
-                    [[$config1], 'channel1'], [[$config2], 'channel2'], [[$config3], $this->getChannel('channel2')]
+                    [[$config1], 'channel1'], [[$config2], 'channel2'], [[$config3], $this->getChannel('channel2')],
                 ],
-                ['channels' => ['channel1' => [$config1], 'channel2' => [$config2, $config3]], 'defaults' => []]
+                ['channels' => ['channel1' => [$config1], 'channel2' => [$config2, $config3]], 'defaults' => []],
             ],
             'multiple channels' => [
                 [
-                    [[$config1], 'channel1'], [[$config1, $config2, $config3], 'channel2'], [[$config3], 'channel3']
+                    [[$config1], 'channel1'], [[$config1, $config2, $config3], 'channel2'], [[$config3], 'channel3'],
                 ],
-                ['channels' => ['channel1' => [$config1], 'channel2' => [$config1, $config2, $config3], 'channel3' => [$config3]], 'defaults' => []]
+                ['channels' => ['channel1' => [$config1], 'channel2' => [$config1, $config2, $config3], 'channel3' => [$config3]], 'defaults' => []],
             ],
             'defaults' => [
                 [
-                    [[$config1, $config2, $config3], null]
+                    [[$config1, $config2, $config3], null],
                 ],
-                ['channels' => [], 'defaults' => [$config1, $config2, $config3]]
+                ['channels' => [], 'defaults' => [$config1, $config2, $config3]],
             ],
             'defaults override channel' => [
                 [
-                    [[$config1, $config2, $config3], 'channel1'], [[$config1], null], [[$config1, $config2, $config3], 'channel2']
+                    [[$config1, $config2, $config3], 'channel1'], [[$config1], null], [[$config1, $config2, $config3], 'channel2'],
                 ],
-                ['channels' => ['channel1' => [$config2, $config3], 'channel2' => [$config2, $config3]], 'defaults' => [$config1]]
-            ]
+                ['channels' => ['channel1' => [$config2, $config3], 'channel2' => [$config2, $config3]], 'defaults' => [$config1]],
+            ],
         ];
     }
 
@@ -135,7 +135,6 @@ class MemoryResolverBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->addConfig($this->getConfig('name'), 42);
     }
 
-
     /**
      * @return MemoryResolverBuilder
      */
@@ -146,6 +145,7 @@ class MemoryResolverBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $name
+     *
      * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig($name)
@@ -160,6 +160,7 @@ class MemoryResolverBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $id
+     *
      * @return ChannelInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getChannel($id)

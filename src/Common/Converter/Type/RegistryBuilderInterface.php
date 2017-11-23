@@ -17,7 +17,7 @@ namespace Integrated\Common\Converter\Type;
 interface RegistryBuilderInterface
 {
     /**
-     * Set the resolved type factory
+     * Set the resolved type factory.
      *
      * @param ResolvedTypeFactoryInterface $factory
      *
@@ -26,7 +26,7 @@ interface RegistryBuilderInterface
     public function setResolvedTypeFactory(ResolvedTypeFactoryInterface $factory);
 
     /**
-     * Add the type to the builder
+     * Add the type to the builder.
      *
      * @param TypeInterface $type
      *
@@ -35,7 +35,7 @@ interface RegistryBuilderInterface
     public function addType(TypeInterface $type);
 
     /**
-     * Add the types to the builder
+     * Add the types to the builder.
      *
      * @param TypeInterface[] $types
      *
@@ -44,7 +44,7 @@ interface RegistryBuilderInterface
     public function addTypes(array $types);
 
     /**
-     * Add the type extension to the builder
+     * Add the type extension to the builder.
      *
      * @param TypeExtensionInterface $extension
      *
@@ -53,7 +53,7 @@ interface RegistryBuilderInterface
     public function addTypeExtension(TypeExtensionInterface $extension);
 
     /**
-     * Add the type extensions to the builder
+     * Add the type extensions to the builder.
      *
      * @param TypeExtensionInterface[] $extensions
      *

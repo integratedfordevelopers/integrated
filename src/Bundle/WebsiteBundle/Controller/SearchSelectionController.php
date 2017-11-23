@@ -13,9 +13,7 @@ namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 
@@ -27,7 +25,7 @@ class SearchSelectionController extends Controller
     /**
      * @Template
      *
-     * @param Request $request
+     * @param Request         $request
      * @param SearchSelection $selection
      *
      * @return array

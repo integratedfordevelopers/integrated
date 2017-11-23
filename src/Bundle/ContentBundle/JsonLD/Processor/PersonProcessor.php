@@ -22,7 +22,7 @@ use Integrated\Common\Normalizer\Processor\ProcessorInterface;
 class PersonProcessor implements ProcessorInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerInterface $data, $object, Context $context)
     {
@@ -40,7 +40,7 @@ class PersonProcessor implements ProcessorInterface
             $data->add('contactPoint', [
                 '@type' => 'ContactPoint',
                 'contactType' => $number->getType(),
-                'telephone' => $number->getNumber()
+                'telephone' => $number->getNumber(),
             ]);
         }
 

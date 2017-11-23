@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Relation;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
-
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -26,7 +25,7 @@ class CompanyTest extends RelationTest
     private $company;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -34,7 +33,7 @@ class CompanyTest extends RelationTest
     }
 
     /**
-     * Test get- and setEmail function
+     * Test get- and setEmail function.
      */
     public function testGetAndSetEmailFunction()
     {
@@ -43,7 +42,7 @@ class CompanyTest extends RelationTest
     }
 
     /**
-     * Test get- and setWebsite function
+     * Test get- and setWebsite function.
      */
     public function testGetAndSetWebsiteFunction()
     {
@@ -52,18 +51,18 @@ class CompanyTest extends RelationTest
     }
 
     /**
-     * Test get- and setAddresses function
+     * Test get- and setAddresses function.
      */
     public function testGetAndSetAddressesFunction()
     {
         $addresses = new ArrayCollection([
-            $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address')
+            $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address'),
         ]);
         $this->assertSame($addresses, $this->company->setAddresses($addresses)->getAddresses());
     }
 
     /**
-     * Test get- and setName function
+     * Test get- and setName function.
      */
     public function testGetAndSetNameFunction()
     {
@@ -72,7 +71,7 @@ class CompanyTest extends RelationTest
     }
 
     /**
-     * Test get- and setLogo function
+     * Test get- and setLogo function.
      */
     public function testGetAndSetLogoFunction()
     {
@@ -82,7 +81,7 @@ class CompanyTest extends RelationTest
     }
 
     /**
-     * Test toString function
+     * Test toString function.
      */
     public function testToStringFunction()
     {

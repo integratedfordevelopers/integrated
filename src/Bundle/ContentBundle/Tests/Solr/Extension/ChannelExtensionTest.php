@@ -12,16 +12,14 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Solr\Extension;
 
 use Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension;
-
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
-
 use stdClass;
 
 /**
- * @covers Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension
+ * @covers \Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -50,19 +48,19 @@ class ChannelExtensionTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 $this->getContent([]),
-                []
+                [],
             ],
             [
                 $this->getContent([$this->getChannel('id1'), $this->getChannel('id2')]),
-                ['facet_channels' => ['id1', 'id2']]
+                ['facet_channels' => ['id1', 'id2']],
             ],
             [
-                $this->getContent([$this->getChannel('id1'), new stdClass, $this->getChannel('id2')]),
-                ['facet_channels' => ['id1', 'id2']]
+                $this->getContent([$this->getChannel('id1'), new stdClass(), $this->getChannel('id2')]),
+                ['facet_channels' => ['id1', 'id2']],
             ],
             [
-                $this->getContent([new stdClass, new stdClass]),
-                []
+                $this->getContent([new stdClass(), new stdClass()]),
+                [],
             ],
         ];
     }
@@ -73,7 +71,7 @@ class ChannelExtensionTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->never())
             ->method($this->anything());
 
-        /** @var ContainerInterface $container */
+        /* @var ContainerInterface $container */
 
         $this->getInstance()->build($container, new stdClass());
     }

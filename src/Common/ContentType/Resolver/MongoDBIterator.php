@@ -25,7 +25,7 @@ class MongoDBIterator implements IteratorInterface
      */
     public function __construct(array $types)
     {
-        $this->types  = $types;
+        $this->types = $types;
     }
 
     /**

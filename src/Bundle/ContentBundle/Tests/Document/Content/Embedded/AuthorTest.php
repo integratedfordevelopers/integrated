@@ -24,7 +24,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
     private $author;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setType function
+     * Test get- and setType function.
      */
     public function testGetAndSetTypeFunction()
     {
@@ -41,7 +41,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setPerson function
+     * Test get- and setPerson function.
      */
     public function testGetAndSetPersonFunction()
     {

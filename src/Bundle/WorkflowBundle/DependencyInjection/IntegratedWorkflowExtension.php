@@ -12,29 +12,27 @@
 namespace Integrated\Bundle\WorkflowBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Extension for loading configuration
+ * Extension for loading configuration.
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class IntegratedWorkflowExtension extends Extension implements PrependExtensionInterface
 {
     /**
-     * Load the configuration
+     * Load the configuration.
      *
-     * @param array $configs
+     * @param array            $configs
      * @param ContainerBuilder $container
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         $loader->load('doctrine.xml');
         $loader->load('extension.xml');
@@ -53,7 +51,7 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function prepend(ContainerBuilder $container)
     {
@@ -62,7 +60,6 @@ class IntegratedWorkflowExtension extends Extension implements PrependExtensionI
 
     /**
      * @param ContainerBuilder $container The service container
-     * @return void
      */
     protected function configureTwigBundle(ContainerBuilder $container)
     {

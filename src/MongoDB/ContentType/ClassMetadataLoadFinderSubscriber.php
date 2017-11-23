@@ -13,11 +13,10 @@ namespace Integrated\MongoDB\ContentType;
 
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-
 use Doctrine\Common\EventSubscriber;
 
 /**
- * @deprecated will be removed asap.
+ * @deprecated will be removed asap
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -26,12 +25,12 @@ class ClassMetadataLoadFinderSubscriber implements EventSubscriber
     /**
      * @var array
      */
-    private $classes = array();
+    private $classes = [];
 
     /**
      * @var array
      */
-    private $matches = array();
+    private $matches = [];
 
     public function hasMatch($class)
     {
@@ -73,7 +72,7 @@ class ClassMetadataLoadFinderSubscriber implements EventSubscriber
 
     public function clearMatches()
     {
-        $this->matches = array();
+        $this->matches = [];
     }
 
     public function hasClass($class)
@@ -116,7 +115,7 @@ class ClassMetadataLoadFinderSubscriber implements EventSubscriber
 
     public function clearClasses()
     {
-        $this->classes = array();
+        $this->classes = [];
     }
 
     /**
@@ -124,9 +123,9 @@ class ClassMetadataLoadFinderSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
-            Events::loadClassMetadata
-        );
+        return [
+            Events::loadClassMetadata,
+        ];
     }
 
     /**

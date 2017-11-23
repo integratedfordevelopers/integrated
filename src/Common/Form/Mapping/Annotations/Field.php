@@ -14,7 +14,7 @@ namespace Integrated\Common\Form\Mapping\Annotations;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
- * Annotation for defining field options for properties of a document
+ * Annotation for defining field options for properties of a document.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @Annotation
@@ -29,12 +29,13 @@ class Field
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $data
+     *
      * @throws \BadMethodCallException
      */
     public function __construct(array $data)
@@ -49,7 +50,7 @@ class Field
     }
 
     /**
-     * Get the type of the field
+     * Get the type of the field.
      *
      * @return string
      */
@@ -59,19 +60,21 @@ class Field
     }
 
     /**
-     * Set the type of the field
+     * Set the type of the field.
      *
      * @param string $type
+     *
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
-     * Get the options of the field
+     * Get the options of the field.
      *
      * @return array
      */
@@ -81,14 +84,16 @@ class Field
     }
 
     /**
-     * Set the label of the field
+     * Set the label of the field.
      *
      * @param array $options
+     *
      * @return $this
      */
     public function setOptions(array $options)
     {
         $this->options = $options;
+
         return $this;
     }
 }

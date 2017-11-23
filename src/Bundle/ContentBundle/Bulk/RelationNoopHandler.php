@@ -20,7 +20,7 @@ use Integrated\Common\Content\ContentInterface;
 class RelationNoopHandler implements HandlerInterface
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function execute(ContentInterface $content)
     {

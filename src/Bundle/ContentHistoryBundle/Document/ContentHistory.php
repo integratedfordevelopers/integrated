@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ContentHistoryBundle\Document;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Request;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User;
-
 use DateTime;
 
 /**
@@ -69,7 +68,7 @@ class ContentHistory
 
     /**
      * @param ContentInterface $content
-     * @param string $action
+     * @param string           $action
      */
     public function __construct(ContentInterface $content, $action)
     {
@@ -138,11 +137,13 @@ class ContentHistory
 
     /**
      * @param array $changeSet
+     *
      * @return $this
      */
     public function setChangeSet(array $changeSet = [])
     {
         $this->changeSet = $changeSet;
+
         return $this;
     }
 
@@ -156,11 +157,13 @@ class ContentHistory
 
     /**
      * @param Request | null $request
+     *
      * @return $this
      */
     public function setRequest(Request $request = null)
     {
         $this->request = $request;
+
         return $this;
     }
 
@@ -174,11 +177,13 @@ class ContentHistory
 
     /**
      * @param User | null $user
+     *
      * @return $this
      */
     public function setUser(User $user = null)
     {
         $this->user = $user;
+
         return $this;
     }
 }

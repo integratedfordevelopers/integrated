@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Channel\Exporter\Queue;
 
 use Integrated\Common\Channel\Exporter\Queue\ContainerAwareRequestSerializer;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -34,7 +33,7 @@ class ContainerAwareRequestSerializerTest extends RequestSerializerTest
             ->method('get')
             ->willReturnMap([
                 ['serializer', 1, $this->serializer],
-                ['manager', 1, $this->manager]
+                ['manager', 1, $this->manager],
             ]);
     }
 

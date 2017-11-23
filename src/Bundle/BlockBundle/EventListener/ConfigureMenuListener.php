@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\EventListener;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -45,7 +44,7 @@ class ConfigureMenuListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure'
+            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure',
         ];
     }
 

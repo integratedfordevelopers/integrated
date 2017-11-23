@@ -13,7 +13,6 @@ namespace Integrated\Common\Converter\Config\Provider;
 
 use Integrated\Common\Converter\Config\TypeConfigInterface;
 use Integrated\Common\Converter\Config\TypeProviderInterface;
-
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -39,13 +38,13 @@ abstract class AbstractFileProvider implements TypeProviderInterface
      * this provider. This way its clear which files are picked up and which not with in the configured
      * directories.
      *
-     * @param Finder $finder    the finder is cloned so the original is not modified.
-     * @param string $extension the file extension that the finder wil iterator over.
+     * @param Finder $finder    the finder is cloned so the original is not modified
+     * @param string $extension the file extension that the finder wil iterator over
      */
     protected function __construct(Finder $finder, $extension)
     {
         $finder = clone $finder;
-        $finder->files()->name('*.' . $extension);
+        $finder->files()->name('*.'.$extension);
 
         $this->finder = $finder;
     }

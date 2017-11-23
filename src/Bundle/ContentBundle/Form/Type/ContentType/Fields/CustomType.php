@@ -17,10 +17,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Integrated\Common\ContentType\Form\Custom\TypeInterface;
 use Integrated\Common\ContentType\Form\Custom\Type\RegistryInterface;
-
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\CustomTransformer;
 
 /**
@@ -35,6 +33,7 @@ class CustomType extends AbstractType
 
     /**
      * CustomType constructor.
+     *
      * @param RegistryInterface $registry
      */
     public function __construct(RegistryInterface $registry)
@@ -52,7 +51,6 @@ class CustomType extends AbstractType
         $builder->add('label', TextType::class, [
             'required' => true,
         ]);
-
 
         $return = [];
 
@@ -72,8 +70,8 @@ class CustomType extends AbstractType
             [
                 'required' => false,
                 'attr' => [
-                    'align_with_widget' => true
-                ]
+                    'align_with_widget' => true,
+                ],
             ]
         );
 

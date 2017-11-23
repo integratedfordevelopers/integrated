@@ -18,10 +18,9 @@ final class Events
 {
     private function __construct()
     {
-    } // don't allow creation
+    }
 
-    /**
-     *
-     */
+    // don't allow creation
+
     const METADATA = 'metadata';
 }

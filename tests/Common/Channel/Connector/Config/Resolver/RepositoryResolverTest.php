@@ -105,6 +105,7 @@ class RepositoryResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name
+     *
      * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig($name)

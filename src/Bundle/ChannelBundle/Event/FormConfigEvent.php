@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ChannelBundle\Event;
 
 use Integrated\Bundle\ChannelBundle\Model\Config;
-
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

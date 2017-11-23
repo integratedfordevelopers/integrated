@@ -33,7 +33,7 @@ class ProcessorRegistry implements RegistryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function hasProcessors($class)
     {
@@ -49,7 +49,7 @@ class ProcessorRegistry implements RegistryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getProcessors($class)
     {

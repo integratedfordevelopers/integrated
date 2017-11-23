@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
 use Integrated\Bundle\WebsiteBundle\Service\EditableChecker;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -35,7 +34,7 @@ class WebsiteToolbarListener implements EventSubscriberInterface
 
     /**
      * @param \Twig_Environment $twig
-     * @param EditableChecker $websiteEditableChecker
+     * @param EditableChecker   $websiteEditableChecker
      */
     public function __construct(\Twig_Environment $twig, EditableChecker $websiteEditableChecker)
     {
@@ -44,7 +43,7 @@ class WebsiteToolbarListener implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
@@ -77,7 +76,7 @@ class WebsiteToolbarListener implements EventSubscriberInterface
             $toolbar = $this->twig->render('IntegratedWebsiteBundle::toolbar.html.twig');
 
             $end = stripos($content, '>', $pos) + 1;
-            $content = substr_replace($content, "\n" . $toolbar, $end, 0);
+            $content = substr_replace($content, "\n".$toolbar, $end, 0);
 
             $response->setContent($content);
         }

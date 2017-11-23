@@ -17,10 +17,8 @@ use Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Type\MetadataType;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -42,7 +40,7 @@ class BlockController extends Controller
         $queryProvider = $this->get('integrated_block.provider.filter_query');
 
         $facetFilter = $this->createForm(BlockFilterType::class, null, [
-            'blockIds' => $queryProvider->getBlockIds($data)
+            'blockIds' => $queryProvider->getBlockIds($data),
         ]);
         $facetFilter->handleRequest($request);
 
@@ -54,10 +52,10 @@ class BlockController extends Controller
         );
 
         return [
-            'blocks'  => $pagination,
+            'blocks' => $pagination,
             'factory' => $this->getFactory(),
             'pageBundleInstalled' => $pageBundleInstalled,
-            'facetFilter' => $facetFilter->createView()
+            'facetFilter' => $facetFilter->createView(),
         ];
     }
 
@@ -88,7 +86,7 @@ class BlockController extends Controller
     {
         $class = $request->get('class');
 
-        $block = class_exists($class) ? new $class : null;
+        $block = class_exists($class) ? new $class() : null;
 
         if (!$block instanceof BlockInterface) {
             throw $this->createNotFoundException(sprintf('Invalid block "%s"', $class));
@@ -121,7 +119,7 @@ class BlockController extends Controller
      * @Template
      *
      * @param Request $request
-     * @param Block $block
+     * @param Block   $block
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -151,7 +149,7 @@ class BlockController extends Controller
      * @Template
      *
      * @param Request $request
-     * @param Block $block
+     * @param Block   $block
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -183,7 +181,7 @@ class BlockController extends Controller
 
         return [
             'block' => $block,
-            'form'  => $form->createView(),
+            'form' => $form->createView(),
         ];
     }
 

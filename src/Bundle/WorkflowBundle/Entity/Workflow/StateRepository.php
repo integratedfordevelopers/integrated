@@ -12,12 +12,9 @@
 namespace Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use Doctrine\ORM\EntityRepository;
-
 use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
-
 use Integrated\Common\Content\ContentInterface;
-
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
@@ -26,7 +23,7 @@ use Symfony\Component\Security\Acl\Util\ClassUtils;
 class StateRepository extends EntityRepository
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
@@ -34,7 +31,7 @@ class StateRepository extends EntityRepository
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function findOneBy(array $criteria, array $orderBy = null)
     {

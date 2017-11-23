@@ -9,20 +9,16 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Integrated\Common\Validator\Constraints;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
-
 use Traversable;
 
 /**
@@ -41,12 +37,12 @@ class UniqueEntryValidator extends ConstraintValidator
     private $accessor = null;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function validate($entries, Constraint $constraint)
     {
         if (!$constraint instanceof UniqueEntry) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\\UniqueEntry');
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\\UniqueEntry');
         }
 
         if (!is_array($entries) && !$entries instanceof Traversable) {
@@ -98,7 +94,7 @@ class UniqueEntryValidator extends ConstraintValidator
 
                 self::fixViolationPath($builder);
 
-                $builder->atPath('children[' . $index . '].children[' . $name . '].data')
+                $builder->atPath('children['.$index.'].children['.$name.'].data')
                     ->setInvalidValue($value)
                     ->addViolation();
             }

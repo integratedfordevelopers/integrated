@@ -36,7 +36,7 @@ class ImageProcessor implements ProcessorInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerInterface $data, $object, Context $context)
     {

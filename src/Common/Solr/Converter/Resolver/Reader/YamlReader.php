@@ -14,7 +14,6 @@ namespace Integrated\Common\Solr\Converter\Resolver\Reader;
 use Integrated\Common\Solr\Converter\ConverterSpecification;
 use Integrated\Common\Solr\Converter\ConverterSpecificationInterface;
 use Integrated\Common\Solr\Converter\Resolver\FileResolverReaderInterface;
-
 use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
@@ -25,6 +24,7 @@ class YamlReader implements FileResolverReaderInterface
 {
     /**
      * @param SplFileInfo $file
+     *
      * @return ConverterSpecificationInterface[]
      */
     public function read(SplFileInfo $file)
@@ -56,6 +56,7 @@ class YamlReader implements FileResolverReaderInterface
 
     /**
      * @param array $data
+     *
      * @return array
      */
     protected function getClasses(array $data)
@@ -75,6 +76,7 @@ class YamlReader implements FileResolverReaderInterface
 
     /**
      * @param array $data
+     *
      * @return array
      */
     protected function getFields(array $data)
@@ -88,6 +90,7 @@ class YamlReader implements FileResolverReaderInterface
 
     /**
      * @param array $data
+     *
      * @return string | null
      */
     protected function getId(array $data)

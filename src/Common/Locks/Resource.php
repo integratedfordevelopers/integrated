@@ -13,7 +13,6 @@ namespace Integrated\Common\Locks;
 
 use Integrated\Common\Locks\Exception\InvalidArgumentException;
 use Integrated\Common\Locks\Exception\InvalidObjectException;
-
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,7 +33,7 @@ class Resource implements ResourceInterface
     protected $identifier = null;
 
     /**
-     * @param string $type
+     * @param string        $type
      * @param string | null $identifier
      */
     public function __construct($type, $identifier = null)
@@ -48,9 +47,10 @@ class Resource implements ResourceInterface
     }
 
     /**
-     * Construct a Resource for the given domain object
+     * Construct a Resource for the given domain object.
      *
      * @param object $object
+     *
      * @return ResourceInterface
      *
      * @throws InvalidObjectException
@@ -91,7 +91,7 @@ class Resource implements ResourceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -99,7 +99,7 @@ class Resource implements ResourceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getIdentifier()
     {
@@ -107,7 +107,7 @@ class Resource implements ResourceInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function equals(ResourceInterface $resource)
     {
@@ -122,7 +122,7 @@ class Resource implements ResourceInterface
     public function __toString()
     {
         return sprintf(
-            "Resource(%s, %s)",
+            'Resource(%s, %s)',
             $this->type,
             $this->identifier === null ? 'NULL' : $this->identifier
         );

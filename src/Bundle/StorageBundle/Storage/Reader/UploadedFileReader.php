@@ -14,7 +14,6 @@ namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
 use Integrated\Common\Storage\Identifier\IdentifierInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Mapping\MetadataInterface;
@@ -40,7 +39,7 @@ class UploadedFileReader implements ReaderInterface
     private $data;
 
     /**
-     * @param UploadedFile $uploadedFile
+     * @param UploadedFile        $uploadedFile
      * @param IdentifierInterface $identifier
      */
     public function __construct(UploadedFile $uploadedFile, IdentifierInterface $identifier = null)

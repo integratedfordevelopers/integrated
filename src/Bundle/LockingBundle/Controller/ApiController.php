@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\LockingBundle\Controller;
 
 use Integrated\Common\Locks;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -25,6 +23,7 @@ class ApiController extends Controller
 {
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function refreshAction(Request $request)
@@ -32,7 +31,7 @@ class ApiController extends Controller
         if (!$this->has('integrated_locking.dbal.manager')) {
             $response = [
                 'code' => 403,
-                'message' => 'Locking is not enabled'
+                'message' => 'Locking is not enabled',
             ];
 
             return new JsonResponse($response, $response['code']);
@@ -41,7 +40,7 @@ class ApiController extends Controller
         if (!$owner = $this->getUser()) {
             $response = [
                 'code' => 401,
-                'message' => 'Valid user is required'
+                'message' => 'Valid user is required',
             ];
 
             return new JsonResponse($response, $response['code']);
@@ -54,7 +53,7 @@ class ApiController extends Controller
         if (!$lock = $request->query->get('lock')) {
             $response = [
                 'code' => 400,
-                'message' => 'Missing lock identifier'
+                'message' => 'Missing lock identifier',
             ];
 
             return new JsonResponse($response, $response['code']);
@@ -66,7 +65,7 @@ class ApiController extends Controller
         if (!$lock = $service->find($lock)) {
             $response = [
                 'code' => 404,
-                'message' => 'The lock could not be found'
+                'message' => 'The lock could not be found',
             ];
 
             return new JsonResponse($response, $response['code']);
@@ -75,7 +74,7 @@ class ApiController extends Controller
         $response = [
             'code' => 200,
             'message' => 'The lock could not be extended',
-            'lock' => null
+            'lock' => null,
         ];
 
         if ($owner->equals($lock->getRequest()->getOwner())) {

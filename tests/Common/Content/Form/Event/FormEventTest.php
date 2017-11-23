@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Content\Form\Event;
 
 use Integrated\Common\Content\Form\Event\FormEvent;
-
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 

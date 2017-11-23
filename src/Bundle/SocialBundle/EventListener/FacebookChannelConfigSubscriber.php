@@ -12,14 +12,11 @@
 namespace Integrated\Bundle\SocialBundle\EventListener;
 
 use Facebook\Facebook;
-
 use Integrated\Bundle\ChannelBundle\Event\FormConfigEvent;
 use Integrated\Bundle\ChannelBundle\Event\GetResponseConfigEvent;
 use Integrated\Bundle\ChannelBundle\IntegratedChannelEvents;
 use Integrated\Bundle\SocialBundle\Connector\FacebookAdapter;
-
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -59,14 +56,14 @@ class FacebookChannelConfigSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
             IntegratedChannelEvents::CONFIG_CREATE_SUBMITTED => 'onSubmit',
             IntegratedChannelEvents::CONFIG_EDIT_REQUEST => 'onRequest',
-            IntegratedChannelEvents::CONFIG_EDIT_SUBMITTED => 'onSubmit'
+            IntegratedChannelEvents::CONFIG_EDIT_SUBMITTED => 'onSubmit',
         ];
     }
 

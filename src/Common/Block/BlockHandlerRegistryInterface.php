@@ -17,19 +17,21 @@ namespace Integrated\Common\Block;
 interface BlockHandlerRegistryInterface
 {
     /**
-     * @param string $type
+     * @param string                $type
      * @param BlockHandlerInterface $block
      */
     public function registerHandler($type, BlockHandlerInterface $block);
 
     /**
      * @param string $type
+     *
      * @return bool
      */
     public function hasHandler($type);
 
     /**
      * @param string $type
+     *
      * @return BlockHandlerInterface
      */
     public function getHandler($type);

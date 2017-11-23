@@ -53,7 +53,7 @@ class ObjectWrapper implements WrapperInterface
         // check if its a array else nothing changes..
 
         if ($this->isArray()) {
-            $values = array();
+            $values = [];
 
             foreach ($this->value as $value) {
                 $values[] = new self($value);
@@ -94,7 +94,7 @@ class ObjectWrapper implements WrapperInterface
         // start collection all the values
         // $pieces that start with a @ are considered variable names.
 
-        $values = array();
+        $values = [];
 
         foreach ($pieces as $value) {
             if ($value[0] == '@') {
@@ -139,9 +139,9 @@ class ObjectWrapper implements WrapperInterface
 
         // combine all the variables in to a concated array
 
-        $values = array(
-            $this->value()
-        );
+        $values = [
+            $this->value(),
+        ];
 
         while ($piece = array_shift($pieces)) {
             $left = $values;
@@ -153,14 +153,14 @@ class ObjectWrapper implements WrapperInterface
             }
 
             if (!is_array($right)) {
-                $right = array($right);
+                $right = [$right];
             }
 
-            $values = array();
+            $values = [];
 
             foreach ($left as $left_value) {
                 foreach ($right as $right_value) {
-                    $values[] = $left_value . $glue . $right_value;
+                    $values[] = $left_value.$glue.$right_value;
                 }
             }
         }
@@ -173,7 +173,7 @@ class ObjectWrapper implements WrapperInterface
 
         // put all of it together
 
-        $result = array();
+        $result = [];
 
         foreach ($values as $value) {
             $result[] = new self($value);
@@ -265,7 +265,7 @@ class ObjectWrapper implements WrapperInterface
                 return $prop->getValue($value) !== null;
             }
 
-            $method = 'get' . ucfirst($name);
+            $method = 'get'.ucfirst($name);
 
             if ($reflection->hasMethod($method) && ($method = $reflection->getMethod($method)) && $method->isPublic() && $method->getNumberOfRequiredParameters() == 0) {
                 return $method->invoke($value) !== null;
@@ -303,7 +303,7 @@ class ObjectWrapper implements WrapperInterface
                 return new self($prop->getValue($value));
             }
 
-            $method = 'get' . ucfirst($name);
+            $method = 'get'.ucfirst($name);
 
             if ($reflection->hasMethod($method) && ($method = $reflection->getMethod($method)) && $method->isPublic() && $method->getNumberOfRequiredParameters() == 0) {
                 return new self($method->invoke($value));

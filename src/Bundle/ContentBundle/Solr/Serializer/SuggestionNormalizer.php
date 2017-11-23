@@ -13,10 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Solr\Serializer;
 
 use Integrated\Bundle\ContentBundle\Solr\Query\SuggestionQuery;
 use Integrated\Common\ContentType\ResolverInterface;
-
 use Solarium\QueryType\Select\Result\DocumentInterface;
 use Solarium\QueryType\Select\Result\Result;
-
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -76,7 +74,7 @@ class SuggestionNormalizer implements NormalizerInterface
 
         $data = [
             'suggestions' => [],
-            'results' => []
+            'results' => [],
         ];
 
         foreach ($object->getFacetSet()->getFacet('suggest') as $term => $count) {
@@ -90,7 +88,7 @@ class SuggestionNormalizer implements NormalizerInterface
                 'title' => (string) $document['title'],
                 'url' => $this->getUrl($document),
                 'published' => $this->getDate($document, 'pub_time'),
-                'updated' => $this->getDate($document, 'pub_edited')
+                'updated' => $this->getDate($document, 'pub_edited'),
             ];
         }
 
@@ -107,6 +105,7 @@ class SuggestionNormalizer implements NormalizerInterface
 
     /**
      * @param DocumentInterface $document
+     *
      * @return string
      */
     protected function getType(DocumentInterface $document)
@@ -120,6 +119,7 @@ class SuggestionNormalizer implements NormalizerInterface
 
     /**
      * @param DocumentInterface $document
+     *
      * @return string
      */
     protected function getUrl(DocumentInterface $document)

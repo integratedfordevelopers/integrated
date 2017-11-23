@@ -27,7 +27,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     private $contentType;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -35,7 +35,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter and setter of class
+     * Test getter and setter of class.
      */
     public function testClass()
     {
@@ -43,7 +43,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getters and setter of type
+     * Test getters and setter of type.
      */
     public function testType()
     {
@@ -52,7 +52,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter and setter of fields
+     * Test getter and setter of fields.
      */
     public function testFields()
     {
@@ -70,7 +70,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
 
         // Set fields
         $fields = [
-            'field1' => $field1
+            'field1' => $field1,
         ];
 
         $this->contentType->addField($field1);

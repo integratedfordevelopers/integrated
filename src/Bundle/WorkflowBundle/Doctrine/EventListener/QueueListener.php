@@ -14,10 +14,8 @@ namespace Integrated\Bundle\WorkflowBundle\Doctrine\EventListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
-
 use Integrated\Common\Queue\QueueAwareInterface;
 use Integrated\Common\Queue\QueueInterface;
 
@@ -88,7 +86,7 @@ class QueueListener implements EventSubscriber, QueueAwareInterface
     }
 
     /**
-     * Queue a workflow index
+     * Queue a workflow index.
      *
      * @param LifecycleEventArgs $event
      */
@@ -101,7 +99,7 @@ class QueueListener implements EventSubscriber, QueueAwareInterface
 
             $this->getQueue()->push([
                 'command' => 'index',
-                'args' => [$id]
+                'args' => [$id],
             ]);
 
             $this->identities[$id] = true;
@@ -109,10 +107,9 @@ class QueueListener implements EventSubscriber, QueueAwareInterface
     }
 
     /**
-     * Try to extract a Definition id from the $data
+     * Try to extract a Definition id from the $data.
      *
      * @param mixed $data
-     * @return null | string
      */
     protected function getId($data)
     {

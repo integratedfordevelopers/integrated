@@ -15,7 +15,6 @@ use Integrated\Bundle\PageBundle\Form\EventListener\ContentTypePageListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 
@@ -31,6 +30,7 @@ class ContentTypePageType extends AbstractType
 
     /**
      * ContentTypePageType constructor.
+     *
      * @param ContentTypeControllerManager $controllerManager
      */
     public function __construct(ContentTypeControllerManager $controllerManager)
@@ -47,7 +47,7 @@ class ContentTypePageType extends AbstractType
         $contentTypePage = $builder->getData();
 
         $builder->add('path', 'text', [
-            'label' => 'URL'
+            'label' => 'URL',
         ]);
 
         if (!preg_match('/Content\\\(.+)Controller$/', get_class($options['controller']), $matchController)) {
@@ -62,7 +62,7 @@ class ContentTypePageType extends AbstractType
 
         $builder->add('layout', LayoutChoiceType::class, [
             'theme' => $options['theme'],
-            'directory' => sprintf('/content/%s/%s', $matchController[1], $matchAction[1])
+            'directory' => sprintf('/content/%s/%s', $matchController[1], $matchAction[1]),
         ]);
 
         $builder->addEventSubscriber(new ContentTypePageListener($this->controllerManager));

@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\PageBundle\Services;
 
 use Symfony\Component\Routing\Router;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
@@ -53,9 +51,9 @@ class UrlResolver
 
     /**
      * @param ContentTypeControllerManager $controllerManager
-     * @param ChannelContextInterface $channelContext
-     * @param Router $router
-     * @param DocumentManager $dm
+     * @param ChannelContextInterface      $channelContext
+     * @param Router                       $router
+     * @param DocumentManager              $dm
      */
     public function __construct(
         ContentTypeControllerManager $controllerManager,
@@ -70,8 +68,10 @@ class UrlResolver
     }
 
     /**
-     * Returns the correct path for symfony routing module (replace "#[string]#" with "{[string}")
+     * Returns the correct path for symfony routing module (replace "#[string]#" with "{[string}").
+     *
      * @param ContentTypePage $page
+     *
      * @return string
      */
     public function getRoutePath(ContentTypePage $page)
@@ -87,6 +87,7 @@ class UrlResolver
 
     /**
      * @param ContentTypePage $page
+     *
      * @return string
      */
     public function getRouteName(ContentTypePage $page)
@@ -96,7 +97,8 @@ class UrlResolver
 
     /**
      * @param ContentInterface $document
-     * @param null $channelId
+     * @param null             $channelId
+     *
      * @return string
      */
     public function generateUrl(ContentInterface $document, $channelId = null)
@@ -117,11 +119,12 @@ class UrlResolver
         );
     }
 
-
     /**
-     * todo INTEGRATED-440 add Slug and getReferenceByRelationIdto ContentInterface
-     * @param ContentTypePage $page
+     * todo INTEGRATED-440 add Slug and getReferenceByRelationIdto ContentInterface.
+     *
+     * @param ContentTypePage  $page
      * @param ContentInterface $document
+     *
      * @return string
      */
     public function getContentTypePageUrl(ContentTypePage $page, ContentInterface $document)
@@ -134,6 +137,7 @@ class UrlResolver
 
     /**
      * @param ContentTypePage $page
+     *
      * @return array
      */
     protected function getRoutingParamaters(ContentTypePage $page, ContentInterface $content)
@@ -159,6 +163,7 @@ class UrlResolver
 
     /**
      * @param ContentTypePage $page
+     *
      * @return array
      */
     protected function getRelationIds(ContentTypePage $page)
@@ -177,6 +182,7 @@ class UrlResolver
     /**
      * @param $channelId
      * @param $contentTypeId
+     *
      * @return ContentTypePage
      */
     protected function getContentTypePageById($contentTypeId, $channelId = null)
@@ -196,7 +202,7 @@ class UrlResolver
         return $this->dm->getRepository('IntegratedPageBundle:Page\ContentTypePage')
             ->findOneBy([
                 'channel.$id' => $channelId,
-                'contentType.$id' => $contentTypeId
+                'contentType.$id' => $contentTypeId,
             ]);
     }
 }

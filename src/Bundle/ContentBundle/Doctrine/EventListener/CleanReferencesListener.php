@@ -12,14 +12,12 @@
 namespace Integrated\Bundle\ContentBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 /**
- * Clean up references after removal of a document
+ * Clean up references after removal of a document.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -31,7 +29,7 @@ class CleanReferencesListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-			Events::preRemove,
+            Events::preRemove,
         ];
     }
 

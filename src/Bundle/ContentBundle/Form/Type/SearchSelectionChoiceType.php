@@ -17,9 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\SearchSelectionChoiceTransformer;
 
 /**
@@ -63,19 +61,18 @@ class SearchSelectionChoiceType extends AbstractType
         $choices = [];
         if ($user = $this->getUser()) {
             foreach ($this->repository->findPublicByUserId($user->getId()) as $selection) {
-                /** @var \Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection $selection */
+                /* @var \Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection $selection */
                 $choices[$selection->getId()] = $selection->getTitle();
             }
         }
 
-
         $resolver->setDefaults([
             'choices' => $choices,
             'choices_as_value' => true,
-            'choice_label' => function($value) use ($choices) {
+            'choice_label' => function ($value) use ($choices) {
                 return !empty($choices[$value]) ? $choices[$value] : '';
             },
-            'placeholder' => ''
+            'placeholder' => '',
         ]);
     }
 

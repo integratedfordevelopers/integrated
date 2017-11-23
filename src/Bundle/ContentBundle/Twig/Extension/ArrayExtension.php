@@ -11,11 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Twig\Extension;
 
-use Integrated\Common\Block\BlockHandlerRegistryInterface;
-use Integrated\Common\Block\BlockInterface;
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
-use Integrated\Bundle\BlockBundle\Block\BlockHandler;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -32,8 +27,9 @@ class ArrayExtension extends \Twig_Extension
     }
 
     /**
-     * @param array $array
+     * @param array  $array
      * @param string $value
+     *
      * @return array
      */
     public function unsetValue($array, $value)

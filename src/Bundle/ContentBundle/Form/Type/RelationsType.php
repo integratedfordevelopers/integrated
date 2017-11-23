@@ -12,16 +12,13 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Validator\Constraints\RelationNotNull;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\Relations as RelationsTransformer;
-
 use Integrated\Common\ContentType\ContentTypeInterface;
 
 /**
@@ -56,7 +53,7 @@ class RelationsType extends AbstractType
         $type = $options['content_type'];
 
         /** @var Relation[] $relations */
-        $relations = $this->manager->getRepository(self::REPOSITORY)->findBy(array('sources.$id' => $type->getId()), array('name' => 'ASC'));
+        $relations = $this->manager->getRepository(self::REPOSITORY)->findBy(['sources.$id' => $type->getId()], ['name' => 'ASC']);
 
         foreach ($relations as $relation) {
             $contentTypes = [];
@@ -71,26 +68,25 @@ class RelationsType extends AbstractType
             $constraints = [];
             if ($relation->isRequired()) {
                 $constraints[] = new RelationNotNull([
-                    'relation' => $relation->getName()
+                    'relation' => $relation->getName(),
                 ]);
             }
 
             $builder->add($relation->getId(), HiddenType::class, ['attr' => [
-                'data-title'    => $relation->getName(),
+                'data-title' => $relation->getName(),
                 'data-relation' => $relation->getId(),
                 'data-multiple' => $relation->isMultiple(),
-                'data-types'    => json_encode($contentTypes),
+                'data-types' => json_encode($contentTypes),
                 ],
                 'constraints' => $constraints,
             ]);
-
         }
 
         $builder->addModelTransformer(new RelationsTransformer($relations, $this->manager->getManager()));
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc.
      */
     public function configureOptions(OptionsResolver $resolver)
     {

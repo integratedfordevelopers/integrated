@@ -19,43 +19,42 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $container;
+    /**
+     * @var ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $container;
 
-	protected function setUp()
-	{
-		$this->container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
-	}
+    protected function setUp()
+    {
+        $this->container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
+    }
 
-	public function testInterface()
-	{
-		$instance = $this->getInstance();
+    public function testInterface()
+    {
+        $instance = $this->getInstance();
 
-		$this->assertInstanceOf('Symfony\\Component\\DependencyInjection\\ContainerAwareInterface', $instance);
-		$this->assertInstanceOf('Integrated\\Common\\Content\\Extension\\ExtensionInterface', $instance);
-	}
+        $this->assertInstanceOf('Symfony\\Component\\DependencyInjection\\ContainerAwareInterface', $instance);
+        $this->assertInstanceOf('Integrated\\Common\\Content\\Extension\\ExtensionInterface', $instance);
+    }
 
-	public function testGetName()
-	{
-		$this->assertEquals('integrated.extension.workflow', $this->getInstance()->getName());
-	}
+    public function testGetName()
+    {
+        $this->assertEquals('integrated.extension.workflow', $this->getInstance()->getName());
+    }
 
-	public function testGetSubscribers()
-	{
-		$subscribers = $this->getInstance()->getSubscribers();
+    public function testGetSubscribers()
+    {
+        $subscribers = $this->getInstance()->getSubscribers();
 
-		$this->assertCount(2, $subscribers);
-		$this->assertContainsOnlyInstancesOf('Integrated\\Common\\Content\\Extension\\EventSubscriberInterface', $subscribers);
-	}
+        $this->assertCount(2, $subscribers);
+        $this->assertContainsOnlyInstancesOf('Integrated\\Common\\Content\\Extension\\EventSubscriberInterface', $subscribers);
+    }
 
-	protected function getInstance()
-	{
-		$instance = new WorkflowExtension();
-		$instance->setContainer($this->container);
+    protected function getInstance()
+    {
+        $instance = new WorkflowExtension();
+        $instance->setContainer($this->container);
 
-		return $instance;
-	}
+        return $instance;
+    }
 }
- 

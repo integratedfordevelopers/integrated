@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\SocialBundle\Connector\Twitter;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
-
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Exporter\ExporterInterface;
 
@@ -37,7 +35,7 @@ class Exporter implements ExporterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function export($content, $state, ChannelInterface $channel)
     {
@@ -53,8 +51,8 @@ class Exporter implements ExporterInterface
                 'status' => sprintf(
                     '%s %s',
                     $content->getTitle(),
-                    'http://' . $channel->getPrimaryDomain() . '/content/article/' . $content->getSlug()
-                )
+                    'http://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug()
+                ),
             ]
         );
     }

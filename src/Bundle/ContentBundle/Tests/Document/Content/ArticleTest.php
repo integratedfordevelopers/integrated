@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location;
@@ -28,7 +27,7 @@ class ArticleTest extends ContentTest
     private $article;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -36,7 +35,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test get- and setTitle function
+     * Test get- and setTitle function.
      */
     public function testGetAndSetTitleFunction()
     {
@@ -45,7 +44,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test get- and setSubtitle function
+     * Test get- and setSubtitle function.
      */
     public function testGetAndSetSubtitleFunction()
     {
@@ -54,16 +53,16 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test get- and setAuthors function
+     * Test get- and setAuthors function.
      */
     public function testGetAndSetAuthorsFunction()
     {
-        $authors = new ArrayCollection(array('key' => 'value'));
+        $authors = new ArrayCollection(['key' => 'value']);
         $this->assertSame($authors, $this->article->setAuthors($authors)->getAuthors());
     }
 
     /**
-     * Test addAuthor function
+     * Test addAuthor function.
      */
     public function testAddAuthorFunction()
     {
@@ -76,7 +75,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test addAuthor function with duplicate author
+     * Test addAuthor function with duplicate author.
      */
     public function testAddAuthorFunctionWithSameAuthor()
     {
@@ -91,7 +90,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test removeAuthor function
+     * Test removeAuthor function.
      */
     public function testRemoveAuthorFunction()
     {
@@ -106,7 +105,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test removeAuthor function with unknown author
+     * Test removeAuthor function with unknown author.
      */
     public function testRemoveAuthorFunctionWithUnknownAuthor()
     {
@@ -118,7 +117,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test get- and setSource function
+     * Test get- and setSource function.
      */
     public function testGetAndSetSourceFunction()
     {
@@ -127,7 +126,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test get- and setLocale function
+     * Test get- and setLocale function.
      */
     public function testGetAndSetLocaleFunction()
     {
@@ -136,7 +135,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test get- and setIntro function
+     * Test get- and setIntro function.
      */
     public function testGetAndSetIntroFunction()
     {
@@ -145,7 +144,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test get- and setContent function
+     * Test get- and setContent function.
      */
     public function testGetAndSetContentFunction()
     {
@@ -154,7 +153,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test address get- and setLocation function
+     * Test address get- and setLocation function.
      */
     public function testGetAndSetAddressLocationFunction()
     {
@@ -165,7 +164,7 @@ class ArticleTest extends ContentTest
     }
 
     /**
-     * Test toString function
+     * Test toString function.
      */
     public function testToStringFunction()
     {

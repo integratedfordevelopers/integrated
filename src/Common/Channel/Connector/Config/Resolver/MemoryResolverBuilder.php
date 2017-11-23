@@ -26,7 +26,7 @@ class MemoryResolverBuilder
     private $configs = [];
 
     /**
-     * If the channel is null then it will match very channel
+     * If the channel is null then it will match very channel.
      *
      * @var string[][] | null
      */
@@ -71,7 +71,7 @@ class MemoryResolverBuilder
     }
 
     /**
-     * Add the configs to the memory resolver
+     * Add the configs to the memory resolver.
      *
      * if $channel is left empty then every channel supplied will match.
      *

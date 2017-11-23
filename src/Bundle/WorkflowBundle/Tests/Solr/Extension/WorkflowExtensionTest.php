@@ -12,21 +12,18 @@
 namespace Integrated\Bundle\WorkflowBundle\Tests\Solr\Extension;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
 use Integrated\Bundle\WorkflowBundle\Solr\Extension\WorkflowExtension;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
-
 use stdClass;
 
 /**
- * @covers Integrated\Bundle\WorkflowBundle\Solr\Extension\WorkflowExtension
+ * @covers \Integrated\Bundle\WorkflowBundle\Solr\Extension\WorkflowExtension
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -53,7 +50,6 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
         $this->workflow = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
         $this->definition = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
     }
-
 
     public function testInterface()
     {
@@ -95,31 +91,31 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 $this->getState([]),
-                []
+                [],
             ],
             [
                 $this->getState([$this->getPermission('group1', false, false), $this->getPermission('group2', false, false)]),
-                []
+                [],
             ],
             [
                 $this->getState([$this->getPermission('group1', true, false), $this->getPermission('group2', false, true)]),
-                ['security_workflow_read' => ['group1'], 'security_workflow_write' => ['group2']]
+                ['security_workflow_read' => ['group1'], 'security_workflow_write' => ['group2']],
             ],
             [
                 $this->getState([$this->getPermission('group1', false, false), $this->getPermission('group2', true, true)]),
-                ['security_workflow_read' => ['group2'], 'security_workflow_write' => ['group2']]
+                ['security_workflow_read' => ['group2'], 'security_workflow_write' => ['group2']],
             ],
             [
                 $this->getState([$this->getPermission('group1', true, true), $this->getPermission('group2', true, true)]),
-                ['security_workflow_read' => ['group1', 'group2'], 'security_workflow_write' => ['group1', 'group2']]
+                ['security_workflow_read' => ['group1', 'group2'], 'security_workflow_write' => ['group1', 'group2']],
             ],
             [
                 $this->getState([$this->getPermission('group1', true, false), $this->getPermission('group2', false, false)]),
-                ['security_workflow_read' => ['group1']]
+                ['security_workflow_read' => ['group1']],
             ],
             [
                 $this->getState([$this->getPermission('group1', false, false), $this->getPermission('group2', false, true)]),
-                ['security_workflow_write' => ['group2']]
+                ['security_workflow_write' => ['group2']],
             ],
         ];
     }
@@ -130,7 +126,7 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
         $container->expects($this->never())
             ->method($this->anything());
 
-        /** @var ContainerInterface $container */
+        /* @var ContainerInterface $container */
 
         $this->getInstance()->build($container, new stdClass());
     }

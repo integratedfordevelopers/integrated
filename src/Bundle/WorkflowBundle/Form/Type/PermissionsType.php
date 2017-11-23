@@ -12,14 +12,11 @@
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\UserBundle\Form\Type\GroupType;
 use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
-
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
@@ -39,7 +38,7 @@ class CompanyController
     protected $blockManager;
 
     /**
-     * @param TwigEngine $templating
+     * @param TwigEngine   $templating
      * @param ThemeManager $themeManager
      * @param BlockManager $blockManager
      */
@@ -52,7 +51,8 @@ class CompanyController
 
     /**
      * @param ContentTypePage $page
-     * @param Company $company
+     * @param Company         $company
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(ContentTypePage $page, Company $company)
@@ -60,7 +60,7 @@ class CompanyController
         $this->blockManager->setDocument($company);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Company/show/' . $page->getLayout()),
+            $this->themeManager->locateTemplate('content/Company/show/'.$page->getLayout()),
             [
                 'company' => $company,
                 'page' => $page,

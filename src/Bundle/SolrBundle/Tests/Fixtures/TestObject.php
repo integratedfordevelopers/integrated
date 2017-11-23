@@ -35,7 +35,7 @@ class TestObject
     /**
      * @var int
      */
-    public $int   = 42;
+    public $int = 42;
     /**
      * @var float
      */
@@ -78,14 +78,14 @@ class TestObject
             'array1' => new ArrayObject([
                 'field1' => 'array1.1',
                 'field2' => 'array1.2',
-                'field3' => 'array1.3'
+                'field3' => 'array1.3',
             ], ArrayObject::ARRAY_AS_PROPS),
 
             'array2' => new ArrayObject([
                 'field1' => 'array2.1',
                 'field2' => 'array2.2',
-                'field3' => 'array2.3'
-            ], ArrayObject::ARRAY_AS_PROPS)
+                'field3' => 'array2.3',
+            ], ArrayObject::ARRAY_AS_PROPS),
         ], ArrayObject::ARRAY_AS_PROPS);
     }
 

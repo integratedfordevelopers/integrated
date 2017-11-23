@@ -12,16 +12,12 @@
 namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
 use Integrated\Bundle\UserBundle\Model\UserInterface;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -47,10 +43,10 @@ class UserProfilePasswordListener implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::POST_SET_DATA => 'onPostSetData',
-            FormEvents::POST_SUBMIT => 'onPostSubmit'
-        );
+            FormEvents::POST_SUBMIT => 'onPostSubmit',
+        ];
     }
 
     /**
@@ -68,7 +64,7 @@ class UserProfilePasswordListener implements EventSubscriberInterface
             $inheritedPasswordOptions['attr']['help_text'] = 'Password will only be changed if a new password is entered';
             $inheritedPasswordOptions['required'] = false;
         }
-        
+
         $event->getForm()->add('password', PasswordType::class, $inheritedPasswordOptions);
     }
 
@@ -97,6 +93,7 @@ class UserProfilePasswordListener implements EventSubscriberInterface
 
     /**
      * @param object $user
+     *
      * @return PasswordEncoderInterface
      */
     protected function getEncoder($user)

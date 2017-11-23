@@ -9,7 +9,8 @@ use Doctrine\ODM\MongoDB\Types\Type as MongoType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 
 /**
- * Class SearchContentReferenced
+ * Class SearchContentReferenced.
+ *
  * @author Vasil Pascal <developer.optimum@gmail.com>
  */
 class SearchContentReferenced
@@ -21,6 +22,7 @@ class SearchContentReferenced
 
     /**
      * SearchContentReferenced constructor.
+     *
      * @param DocumentManager $dm
      */
     public function __construct(DocumentManager $dm)
@@ -30,7 +32,9 @@ class SearchContentReferenced
 
     /**
      * @param mixed $document
+     *
      * @return array
+     *
      * @throws \Exception
      */
     public function getReferenced($document)
@@ -41,7 +45,7 @@ class SearchContentReferenced
 
         $referenced = [];
 
-        /** @var ClassMetaData  $classMetadata */
+        /** @var ClassMetaData $classMetadata */
         foreach ($allMetadata as $classMetadata) {
             if ($classMetadata->isMappedSuperclass || $classMetadata->isEmbeddedDocument) {
                 continue;
@@ -97,16 +101,18 @@ class SearchContentReferenced
     /**
      * @param mixed                $document
      * @param ClassMetadataFactory $metadataFactory
+     *
      * @return array
+     *
      * @throws \Doctrine\Common\Persistence\Mapping\MappingException
      * @throws \Exception
      */
     public function getDeletedInfo($document, ClassMetadataFactory $metadataFactory)
     {
-        $deleted = array(
+        $deleted = [
             'className' => get_class($document),
-            'metadata'  => $metadataFactory->getMetadataFor(get_class($document)),
-        );
+            'metadata' => $metadataFactory->getMetadataFor(get_class($document)),
+        ];
 
         $deleted['idField'] = current($deleted['metadata']->getIdentifier());
         $deleted['idValue'] = $deleted['metadata']->getFieldValue($document, $deleted['idField']);
@@ -123,6 +129,7 @@ class SearchContentReferenced
 
     /**
      * @param $referenced
+     *
      * @return array
      */
     private function prepareReferenced($referenced)

@@ -32,21 +32,21 @@ class AuthorTransformer implements DataTransformerInterface
     public function transform($arrayCollection)
     {
         if ($arrayCollection == null) {
-            return array();
+            return [];
         }
 
-        $collection = array();
+        $collection = [];
 
         foreach ($arrayCollection as $author) {
             if (!($author instanceof Author) || !$author->getPerson()) {
                 continue;
             }
 
-            $collection[] = array(
-                'id'   => $author->getPerson()->getId(),
+            $collection[] = [
+                'id' => $author->getPerson()->getId(),
                 'text' => (string) $author->getPerson(),
-                'type' => $author->getType()
-            );
+                'type' => $author->getType(),
+            ];
         }
 
         return $collection;
@@ -57,8 +57,8 @@ class AuthorTransformer implements DataTransformerInterface
      */
     public function reverseTransform($array)
     {
-        $mr         = $this->mr->getManager();
-        $collection = array();
+        $mr = $this->mr->getManager();
+        $collection = [];
 
         if (is_array($array) && isset($array['persons'], $array['types']) && is_array($array['types'])) {
             foreach ($array['persons'] as $person) {

@@ -12,16 +12,12 @@
 namespace Integrated\Bundle\StorageBundle\Command;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
-
 use Integrated\Bundle\StorageBundle\Storage\Database\Translation\StorageTranslation;
 use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
-
 use Integrated\Common\Storage\Database\DatabaseInterface;
 use Integrated\Common\Storage\ManagerInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -36,7 +32,6 @@ use Symfony\Component\Finder\SplFileInfo;
  */
 class MigrateCommand extends Command
 {
-
     /**
      * @var DatabaseInterface
      */
@@ -98,7 +93,7 @@ class MigrateCommand extends Command
                     'f',
                     InputOption::VALUE_NONE,
                     'Attempt to find a file if the property is empty'
-                )
+                ),
             ]);
     }
 
@@ -190,7 +185,8 @@ class MigrateCommand extends Command
      * @param string $path
      * @param string $fileId
      * @param string $documentId
-     * @param bool $allowDuplicate
+     * @param bool   $allowDuplicate
+     *
      * @return bool|SplFileInfo
      */
     protected function getFile($path, $fileId, $documentId, $allowDuplicate = false)
@@ -223,10 +219,11 @@ class MigrateCommand extends Command
                 // Configure the iterator for the first entry
                 $iterator = $finder->getIterator();
                 $iterator->rewind();
+
                 return $iterator->current();
-            } else {
-                // This can not be done
-                throw new \LogicException(
+            }
+            // This can not be done
+            throw new \LogicException(
                     sprintf(
                         'The file %s (for document: %s) has been found %d times on the given path.',
                         $fileId,
@@ -234,7 +231,6 @@ class MigrateCommand extends Command
                         $finder->count()
                     )
                 );
-            }
         }
 
         return false;

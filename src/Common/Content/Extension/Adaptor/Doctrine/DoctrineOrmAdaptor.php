@@ -13,10 +13,8 @@ namespace Integrated\Common\Content\Extension\Adaptor\Doctrine;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Proxy;
-
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreFlushEventArgs;
-
 use Integrated\Common\Content\Extension\Adaptor\AbstractAdaptor;
 use Integrated\Common\Content\Extension\Events;
 
@@ -26,11 +24,11 @@ use Integrated\Common\Content\Extension\Events;
 class DoctrineOrmAdaptor extends AbstractAdaptor implements EventSubscriber
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getSubscribedEvents()
     {
-        return array(
+        return [
             'preRemove',
             'postRemove',
             'prePersist',
@@ -38,7 +36,7 @@ class DoctrineOrmAdaptor extends AbstractAdaptor implements EventSubscriber
             'preFlush', // calculate our of preUpdate
             'postUpdate',
             'postLoad',
-        );
+        ];
     }
 
     public function preRemove(LifecycleEventArgs $args)

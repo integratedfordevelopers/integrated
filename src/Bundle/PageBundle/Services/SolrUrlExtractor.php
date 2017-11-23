@@ -32,7 +32,7 @@ class SolrUrlExtractor
 
     /**
      * @param ChannelContextInterface $channelContext
-     * @param Router $router
+     * @param Router                  $router
      */
     public function __construct(ChannelContextInterface $channelContext, Router $router)
     {
@@ -42,7 +42,8 @@ class SolrUrlExtractor
 
     /**
      * @param Document|array $document
-     * @param string|null $channelId
+     * @param string|null    $channelId
+     *
      * @return string|null
      */
     public function getUrl($document, $channelId = null)
@@ -57,7 +58,7 @@ class SolrUrlExtractor
             $url = $document[$arrayKey];
 
             //add app_*.php if not in production
-            return $this->router->getContext()->getBaseUrl() . $url;
+            return $this->router->getContext()->getBaseUrl().$url;
         }
 
         //fallback

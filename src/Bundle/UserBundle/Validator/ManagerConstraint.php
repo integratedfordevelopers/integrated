@@ -18,32 +18,32 @@ use Symfony\Component\Validator\Constraint;
  */
 abstract class ManagerConstraint extends Constraint
 {
-	public $message = null;
-	public $manger  = null;
-	public $method  = 'findBy';
-	public $fields  = [];
+    public $message = null;
+    public $manger = null;
+    public $method = 'findBy';
+    public $fields = [];
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getRequiredOptions()
-	{
-		return ['manger'];
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequiredOptions()
+    {
+        return ['manger'];
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function getDefaultOption()
-	{
-		return 'manger';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultOption()
+    {
+        return 'manger';
+    }
 
-	/**
-	 * @inheritDoc
-	 */
-	public function getTargets()
-	{
-		return Constraint::CLASS_CONSTRAINT;
-	}
-} 
+    /**
+     * {@inheritdoc}
+     */
+    public function getTargets()
+    {
+        return Constraint::CLASS_CONSTRAINT;
+    }
+}

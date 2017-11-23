@@ -13,7 +13,6 @@ namespace Integrated\Tests\Common\Solr\Indexer\Event;
 
 use Integrated\Common\Solr\Indexer\Event\IndexerEvent;
 use Integrated\Common\Solr\Indexer\IndexerInterface;
-
 use Symfony\Component\EventDispatcher\Event;
 
 /**

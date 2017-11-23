@@ -13,13 +13,11 @@ namespace Integrated\Bundle\BlockBundle\Form\Type;
 
 use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -28,7 +26,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 class BlockFilterType extends AbstractType
 {
     /**
-     * @var MetadataFactoryInterface $factory
+     * @var MetadataFactoryInterface
      */
     private $factory;
 
@@ -84,7 +82,7 @@ class BlockFilterType extends AbstractType
             [
                 'choices' => $this->getTypeChoices($options['blockIds']),
                 'expanded' => true,
-                'multiple' => true
+                'multiple' => true,
             ]
         );
 
@@ -96,7 +94,7 @@ class BlockFilterType extends AbstractType
                 [
                     'choices' => $this->getChannelChoices($options['blockIds']),
                     'expanded' => true,
-                    'multiple' => true
+                    'multiple' => true,
                 ]
             );
         }
@@ -111,7 +109,6 @@ class BlockFilterType extends AbstractType
         $resolver->setAllowedTypes('blockIds', 'array');
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -122,6 +119,7 @@ class BlockFilterType extends AbstractType
 
     /**
      * @param array $blockIds
+     *
      * @return mixed
      */
     private function getTypeChoices(array $blockIds)
@@ -134,6 +132,7 @@ class BlockFilterType extends AbstractType
 
     /**
      * @param array $blockIds
+     *
      * @return array
      */
     private function getChannelChoices(array $blockIds)
@@ -144,7 +143,7 @@ class BlockFilterType extends AbstractType
         foreach ($channels as $channelId => $blocks) {
             $count = count(array_intersect($blocks, $blockIds));
             if ($count) {
-                $channelChoices[$channelId] = $this->blockUsageProvider->getChannel($channelId)->getName() . ' ' . $count;
+                $channelChoices[$channelId] = $this->blockUsageProvider->getChannel($channelId)->getName().' '.$count;
             }
         }
 

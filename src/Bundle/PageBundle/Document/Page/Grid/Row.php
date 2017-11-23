@@ -14,7 +14,7 @@ namespace Integrated\Bundle\PageBundle\Document\Page\Grid;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Row document
+ * Row document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -25,8 +25,6 @@ class Row
      */
     protected $columns;
 
-    /**
-     */
     public function __construct()
     {
         $this->columns = new ArrayCollection();
@@ -42,31 +40,37 @@ class Row
 
     /**
      * @param array $columns
+     *
      * @return $this
      */
     public function setColumns(array $columns)
     {
         $this->columns = new ArrayCollection($columns);
+
         return $this;
     }
 
     /**
      * @param Column $column
+     *
      * @return $this
      */
     public function addColumn(Column $column)
     {
         $this->columns->add($column);
+
         return $this;
     }
 
     /**
      * @param Column $column
+     *
      * @return $this
      */
     public function removeColumn(Column $column)
     {
         $this->columns->removeElement($column);
+
         return $this;
     }
 

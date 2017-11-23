@@ -19,6 +19,7 @@ class State
 
     /**
      * State constructor.
+     *
      * @param string $value
      * @param string $label
      */
@@ -35,6 +36,7 @@ class State
     {
         return $this->value;
     }
+
     /**
      * @return string
      */

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
 use Integrated\Common\Form\Mapping\MetadataFactory;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 

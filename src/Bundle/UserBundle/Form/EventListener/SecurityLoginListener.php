@@ -12,17 +12,12 @@
 namespace Integrated\Bundle\UserBundle\Form\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Security;
-
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -72,7 +67,7 @@ class SecurityLoginListener implements EventSubscriberInterface
 
         if ($request->attributes->has(Security::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(Security::AUTHENTICATION_ERROR);
-        } else if ($session && $session->has(Security::AUTHENTICATION_ERROR)) {
+        } elseif ($session && $session->has(Security::AUTHENTICATION_ERROR)) {
             $error = $session->remove(Security::AUTHENTICATION_ERROR);
         }
 
@@ -97,9 +92,6 @@ class SecurityLoginListener implements EventSubscriberInterface
         return $this->request;
     }
 
-    /**
-     * @return null | SessionInterface
-     */
     protected function getSession()
     {
         return $this->request->getSession();
@@ -113,9 +105,6 @@ class SecurityLoginListener implements EventSubscriberInterface
         return $this->translator;
     }
 
-    /**
-     * @return null | string
-     */
     protected function getTranslationDomain()
     {
         return $this->translationDomain;
@@ -127,7 +116,7 @@ class SecurityLoginListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA => 'preSetData'
+            FormEvents::PRE_SET_DATA => 'preSetData',
         ];
     }
 }

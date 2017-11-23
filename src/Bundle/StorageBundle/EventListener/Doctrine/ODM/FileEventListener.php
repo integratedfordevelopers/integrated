@@ -17,7 +17,6 @@ use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-
 use Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove;
 use Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer;
 use Integrated\Bundle\StorageBundle\Storage\Command\DeleteCommand;
@@ -47,8 +46,8 @@ class FileEventListener implements EventSubscriber
     private $intentTransformer;
 
     /**
-     * @param ManagerInterface $manager
-     * @param FilesystemRemove $filesystemRemove
+     * @param ManagerInterface         $manager
+     * @param FilesystemRemove         $filesystemRemove
      * @param StorageIntentTransformer $intentTransformer
      */
     public function __construct(ManagerInterface $manager, FilesystemRemove $filesystemRemove, StorageIntentTransformer $intentTransformer)
@@ -72,7 +71,7 @@ class FileEventListener implements EventSubscriber
     }
 
     /**
-     * This event will be called on a document persist
+     * This event will be called on a document persist.
      *
      * @param LifecycleEventArgs $args
      */
@@ -82,7 +81,7 @@ class FileEventListener implements EventSubscriber
     }
 
     /**
-     * This event will be called when a entity is deleted
+     * This event will be called when a entity is deleted.
      *
      * @param LifecycleEventArgs $args
      */
@@ -105,7 +104,7 @@ class FileEventListener implements EventSubscriber
     }
 
     /**
-     * This event will be called on any flush in doctrine
+     * This event will be called on any flush in doctrine.
      *
      * @param PreFlushEventArgs $args
      */
@@ -134,7 +133,7 @@ class FileEventListener implements EventSubscriber
     }
 
     /**
-     * This event will be called on any flush to doctrine
+     * This event will be called on any flush to doctrine.
      *
      * @param OnFlushEventArgs $args
      */

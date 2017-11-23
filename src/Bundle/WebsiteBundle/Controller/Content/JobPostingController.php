@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
-
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\JobPosting;
@@ -39,7 +38,7 @@ class JobPostingController
     protected $blockManager;
 
     /**
-     * @param TwigEngine $templating
+     * @param TwigEngine   $templating
      * @param ThemeManager $themeManager
      * @param BlockManager $blockManager
      */
@@ -52,7 +51,8 @@ class JobPostingController
 
     /**
      * @param ContentTypePage $page
-     * @param JobPosting $jobPosting
+     * @param JobPosting      $jobPosting
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(ContentTypePage $page, JobPosting $jobPosting)
@@ -60,7 +60,7 @@ class JobPostingController
         $this->blockManager->setDocument($jobPosting);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/JobPosting/show/' . $page->getLayout()),
+            $this->themeManager->locateTemplate('content/JobPosting/show/'.$page->getLayout()),
             [
                 'jobPosting' => $jobPosting,
                 'page' => $page,

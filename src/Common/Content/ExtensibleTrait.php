@@ -19,7 +19,7 @@ trait ExtensibleTrait
     protected $extensions = null;
 
     /**
-     * Get list of all the extensions names
+     * Get list of all the extensions names.
      *
      * @return string[]
      */

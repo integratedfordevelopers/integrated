@@ -32,8 +32,6 @@ interface ConfigInterface
 
     /**
      * Get the parent of the config.
-     *
-     * @return null | ConfigInterface
      */
     public function getParent();
 }

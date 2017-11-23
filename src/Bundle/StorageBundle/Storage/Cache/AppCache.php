@@ -13,7 +13,6 @@ namespace Integrated\Bundle\StorageBundle\Storage\Cache;
 
 use Integrated\Bundle\StorageBundle\Exception\NoFilesystemAvailableException;
 use Integrated\Bundle\StorageBundle\Storage\Util\DirectoryUtil;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Cache\CacheInterface;
 use Integrated\Common\Storage\ManagerInterface;
@@ -39,7 +38,7 @@ class AppCache implements CacheInterface
     protected $directory;
 
     /**
-     * @param string $directory
+     * @param string           $directory
      * @param ManagerInterface $managerInterface
      */
     public function __construct($directory, ManagerInterface $managerInterface)
@@ -50,6 +49,7 @@ class AppCache implements CacheInterface
 
     /**
      * {@inheritdoc}
+     *
      * @throws \LogicException
      */
     public function path(StorageInterface $storage)

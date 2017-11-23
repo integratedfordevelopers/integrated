@@ -19,30 +19,30 @@ use Integrated\Common\Form\Mapping\Annotations\Document;
 class DocumentTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test the constructor with valid data
+     * Test the constructor with valid data.
      */
     public function testConstructorWithValidData()
     {
-        $document = new Document(array('name' => 'Henk de Vries'));
+        $document = new Document(['name' => 'Henk de Vries']);
         $this->assertEquals('Henk de Vries', $document->getName());
     }
 
     /**
-     * Test the constructor with invalid data
+     * Test the constructor with invalid data.
      *
      * @expectedException \BadMethodCallException
      */
     public function testConstructorWithInvalidData()
     {
-        new Document(array('henk' => 'de vries'));
+        new Document(['henk' => 'de vries']);
     }
 
     /**
-     * Test the constructor with a value in data
+     * Test the constructor with a value in data.
      */
     public function testConstructorWithValueToName()
     {
-        $document = new Document(array('value' => 'Henk de Vries'));
+        $document = new Document(['value' => 'Henk de Vries']);
         $this->assertEquals('Henk de Vries', $document->getName());
     }
 }

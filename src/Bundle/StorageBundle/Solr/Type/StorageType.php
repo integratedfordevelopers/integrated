@@ -12,12 +12,10 @@
 namespace Integrated\Bundle\StorageBundle\Solr\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Exception\UnexpectedTypeException;
 use Integrated\Common\Converter\Type\TypeInterface;
-
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -31,8 +29,6 @@ class StorageType implements TypeInterface
      */
     private $reader;
 
-    /**
-     */
     public function __construct()
     {
         $this->reader = PropertyAccess::createPropertyAccessor();

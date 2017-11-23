@@ -22,10 +22,10 @@ class ChainResolver implements ConverterSpecificationResolverInterface
     /**
      * @var ConverterSpecificationResolverInterface[]
      */
-    private $resolvers = array();
+    private $resolvers = [];
 
     /**
-     * Add a resolver to the list
+     * Add a resolver to the list.
      *
      * @param ConverterSpecificationResolverInterface $resolver
      */
@@ -37,9 +37,10 @@ class ChainResolver implements ConverterSpecificationResolverInterface
     }
 
     /**
-     * Check is a resolver is added to the list
+     * Check is a resolver is added to the list.
      *
      * @param ConverterSpecificationResolverInterface $resolver The resolver to check
+     *
      * @return bool
      */
     public function hasResolver(ConverterSpecificationResolverInterface $resolver)
@@ -52,7 +53,7 @@ class ChainResolver implements ConverterSpecificationResolverInterface
     }
 
     /**
-     * Remove a resolver from the priority list
+     * Remove a resolver from the priority list.
      *
      * @param ConverterSpecificationResolverInterface $resolver The resolver to remove
      */
@@ -64,7 +65,7 @@ class ChainResolver implements ConverterSpecificationResolverInterface
     }
 
     /**
-     * Get all the registered resolvers
+     * Get all the registered resolvers.
      *
      * @return ConverterSpecificationResolverInterface[]
      */
@@ -74,15 +75,16 @@ class ChainResolver implements ConverterSpecificationResolverInterface
     }
 
     /**
-     * Clear all the resolvers
+     * Clear all the resolvers.
      */
     public function clearResolvers()
     {
-        $this->resolvers = array();
+        $this->resolvers = [];
     }
 
     /**
      * @param $class
+     *
      * @return bool
      */
     public function hasSpecification($class)
@@ -98,6 +100,7 @@ class ChainResolver implements ConverterSpecificationResolverInterface
 
     /**
      * @param $class
+     *
      * @return ConverterSpecificationInterface
      */
     public function getSpecification($class)

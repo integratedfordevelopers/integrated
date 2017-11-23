@@ -14,7 +14,7 @@ namespace Integrated\Bundle\SlugBundle\Mapping\Metadata;
 use Metadata\PropertyMetadata as BasePropertyMetadata;
 
 /**
- * Property metadata with slug properties
+ * Property metadata with slug properties.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

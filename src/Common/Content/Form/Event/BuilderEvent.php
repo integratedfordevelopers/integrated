@@ -13,7 +13,6 @@ namespace Integrated\Common\Content\Form\Event;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
-
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -50,7 +49,7 @@ class BuilderEvent extends FormEvent
 
         $this->builder = $builder;
         $this->options = $options;
-        $this->field = $field !== null ? (string)$field : null;
+        $this->field = $field !== null ? (string) $field : null;
     }
 
     /**
@@ -77,9 +76,6 @@ class BuilderEvent extends FormEvent
         return $this->options;
     }
 
-    /**
-     * @return null | string
-     */
     public function getField()
     {
         return $this->field;

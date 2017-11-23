@@ -14,10 +14,8 @@ namespace Integrated\Bundle\BlockBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Bundle\BlockBundle\Form\DataTransformer\BlockTransformer;
 
 /**

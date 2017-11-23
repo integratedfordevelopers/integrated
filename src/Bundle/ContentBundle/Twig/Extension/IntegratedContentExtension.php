@@ -39,12 +39,13 @@ class IntegratedContentExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('integrated_content', [$this, 'integratedContent'], ['is_safe' => ['html']])
+            new \Twig_SimpleFilter('integrated_content', [$this, 'integratedContent'], ['is_safe' => ['html']]),
         ];
     }
 
     /**
      * @param string $content
+     *
      * @return string
      */
     public function integratedContent($content)

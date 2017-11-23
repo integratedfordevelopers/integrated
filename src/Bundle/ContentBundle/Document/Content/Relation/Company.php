@@ -16,7 +16,7 @@ use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
- * Document type Relation\Company
+ * Document type Relation\Company.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
@@ -50,7 +50,7 @@ class Company extends Relation
     protected $website;
 
     /**
-     * Get the name of the document
+     * Get the name of the document.
      *
      * @return string
      */
@@ -60,19 +60,21 @@ class Company extends Relation
     }
 
     /**
-     * Set the name of the document
+     * Set the name of the document.
      *
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
-     * Get the slug of the document
+     * Get the slug of the document.
      *
      * @return string
      */
@@ -82,19 +84,21 @@ class Company extends Relation
     }
 
     /**
-     * Set the slug of the document
+     * Set the slug of the document.
      *
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 
     /**
-     * Get the file of the document
+     * Get the file of the document.
      *
      * @return StorageInterface
      */
@@ -104,19 +108,21 @@ class Company extends Relation
     }
 
     /**
-     * Set the logo of the document
+     * Set the logo of the document.
      *
      * @param StorageInterface|null $logo
+     *
      * @return $this
      */
     public function setLogo(StorageInterface $logo = null)
     {
         $this->logo = $logo;
+
         return $this;
     }
 
     /**
-     * Get the website of the document
+     * Get the website of the document.
      *
      * @return string
      */
@@ -126,14 +132,16 @@ class Company extends Relation
     }
 
     /**
-     * Set the website of the document
+     * Set the website of the document.
      *
      * @param string $website
+     *
      * @return $this
      */
     public function setWebsite($website)
     {
         $this->website = $website;
+
         return $this;
     }
 

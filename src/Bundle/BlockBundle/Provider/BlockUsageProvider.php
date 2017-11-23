@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\Provider;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 
@@ -22,8 +21,8 @@ use Integrated\Bundle\PageBundle\Document\Page\Page;
 class BlockUsageProvider
 {
     /**
-    * @var ManagerRegistry
-    */
+     * @var ManagerRegistry
+     */
     protected $mr;
 
     /**
@@ -61,6 +60,7 @@ class BlockUsageProvider
 
     /**
      * @param string|null $blockId
+     *
      * @return array|null
      */
     public function getPagesPerBlock($blockId = null)
@@ -84,6 +84,7 @@ class BlockUsageProvider
 
     /**
      * @param string|null $channelId
+     *
      * @return array
      */
     public function getBlocksPerChannel($channelId = null)
@@ -107,6 +108,7 @@ class BlockUsageProvider
 
     /**
      * @param string $id
+     *
      * @return Channel|null
      */
     public function getChannel($id)
@@ -119,7 +121,7 @@ class BlockUsageProvider
     }
 
     /**
-     * iterate pages to filter blocks
+     * iterate pages to filter blocks.
      */
     protected function convertPages()
     {
@@ -150,7 +152,8 @@ class BlockUsageProvider
     }
 
     /**
-     * Recursive iteration items to register blocks per page and per channel
+     * Recursive iteration items to register blocks per page and per channel.
+     *
      * @param array $items
      */
     protected function filterItems($items)

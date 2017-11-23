@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;

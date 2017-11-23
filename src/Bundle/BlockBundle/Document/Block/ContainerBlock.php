@@ -12,11 +12,10 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
- * ContainerBlock document
+ * ContainerBlock document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
@@ -38,8 +37,6 @@ class ContainerBlock extends Block
      */
     protected $items;
 
-    /**
-     */
     public function __construct()
     {
         parent::__construct();
@@ -56,11 +53,13 @@ class ContainerBlock extends Block
 
     /**
      * @param array $items
+     *
      * @return $this
      */
     public function setItems(array $items)
     {
         $this->items = new ArrayCollection($items);
+
         return $this;
     }
 

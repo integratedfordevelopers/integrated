@@ -1,23 +1,25 @@
 <?php
+
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 
 /**
- * Class ContentRepository
+ * Class ContentRepository.
  *
  * @author Vasil Pascal <developer.optimum@gmail.com>
  */
 class ContentRepository extends DocumentRepository
 {
     /**
-     * Get items which have the current document linked
+     * Get items which have the current document linked.
      *
      * @param Content       $content
      * @param Relation|null $relation
      * @param Content|null  $excludeContent
-     * @param bool $filterPublished
+     * @param bool          $filterPublished
+     *
      * @return \Doctrine\MongoDB\Query\Builder
      */
     public function getUsedBy(Content $content, Relation $relation = null, Content $excludeContent = null, $filterPublished = true)
@@ -43,7 +45,7 @@ class ContentRepository extends DocumentRepository
     }
 
     /**
-     * Deletes all references to a content item
+     * Deletes all references to a content item.
      *
      * @param $id
      */

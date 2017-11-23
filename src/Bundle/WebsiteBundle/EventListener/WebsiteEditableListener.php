@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\WebsiteBundle\Service\EditableChecker;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -35,7 +34,7 @@ class WebsiteEditableListener implements EventSubscriberInterface
 
     /**
      * @param EditableChecker $websiteEditableChecker
-     * @param AssetManager $javascripts
+     * @param AssetManager    $javascripts
      */
     public function __construct(EditableChecker $websiteEditableChecker, AssetManager $javascripts)
     {
@@ -44,12 +43,12 @@ class WebsiteEditableListener implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::CONTROLLER => ['onController']
+            KernelEvents::CONTROLLER => ['onController'],
         ];
     }
 

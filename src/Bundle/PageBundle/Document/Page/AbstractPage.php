@@ -12,16 +12,15 @@
 namespace Integrated\Bundle\PageBundle\Document\Page;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Page document
+ * Page document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
+ *
  * @todo find a way to fix unique validation (INTEGRATED-481)
  */
 abstract class AbstractPage
@@ -63,8 +62,6 @@ abstract class AbstractPage
      */
     protected $channel;
 
-    /**
-     */
     public function __construct()
     {
         $this->grids = new ArrayCollection();
@@ -90,11 +87,13 @@ abstract class AbstractPage
 
     /**
      * @param string $path
+     *
      * @return $this
      */
     public function setPath($path)
     {
         $this->path = $path;
+
         return $this;
     }
 
@@ -108,11 +107,13 @@ abstract class AbstractPage
 
     /**
      * @param string $layout
+     *
      * @return $this
      */
     public function setLayout($layout)
     {
         $this->layout = $layout;
+
         return $this;
     }
 
@@ -126,36 +127,43 @@ abstract class AbstractPage
 
     /**
      * @param array $grids
+     *
      * @return $this
      */
     public function setGrids(array $grids)
     {
         $this->grids = new ArrayCollection($grids);
+
         return $this;
     }
 
     /**
      * @param Grid $grid
+     *
      * @return $this
      */
     public function addGrid(Grid $grid)
     {
         $this->grids->add($grid);
+
         return $this;
     }
 
     /**
      * @param Grid $grid
+     *
      * @return $this
      */
     public function removeGrid(Grid $grid)
     {
         $this->grids->removeElement($grid);
+
         return $this;
     }
 
     /**
      * @param Grid $grid
+     *
      * @return int
      */
     public function indexOf(Grid $grid)
@@ -165,6 +173,7 @@ abstract class AbstractPage
 
     /**
      * @param string $id
+     *
      * @return Grid|null
      */
     public function getGrid($id)
@@ -188,11 +197,13 @@ abstract class AbstractPage
 
     /**
      * @param \DateTime $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -206,11 +217,13 @@ abstract class AbstractPage
 
     /**
      * @param \DateTime $updatedAt
+     *
      * @return $this
      */
     public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -224,11 +237,13 @@ abstract class AbstractPage
 
     /**
      * @param Channel $channel
+     *
      * @return $this
      */
     public function setChannel(Channel $channel)
     {
         $this->channel = $channel;
+
         return $this;
     }
 }

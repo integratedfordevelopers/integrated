@@ -95,11 +95,13 @@ class FeaturedItemsItem
 
     /**
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -113,11 +115,13 @@ class FeaturedItemsItem
 
     /**
      * @param StorageInterface $image
+     *
      * @return $this
      */
     public function setImage(StorageInterface $image = null)
     {
         $this->image = $image;
+
         return $this;
     }
 
@@ -131,11 +135,13 @@ class FeaturedItemsItem
 
     /**
      * @param string $link
+     *
      * @return $this
      */
     public function setLink($link)
     {
         $this->link = $link;
+
         return $this;
     }
 
@@ -149,11 +155,13 @@ class FeaturedItemsItem
 
     /**
      * @param string $linkText
+     *
      * @return $this
      */
     public function setLinkText($linkText)
     {
         $this->linkText = $linkText;
+
         return $this;
     }
 
@@ -167,16 +175,18 @@ class FeaturedItemsItem
 
     /**
      * @param string $target
+     *
      * @return $this
      */
     public function setTarget($target)
     {
         $this->target = $target;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDisabled()
     {
@@ -184,12 +194,14 @@ class FeaturedItemsItem
     }
 
     /**
-     * @param boolean $disabled
+     * @param bool $disabled
+     *
      * @return $this
      */
     public function setDisabled($disabled)
     {
         $this->disabled = $disabled;
+
         return $this;
     }
 
@@ -203,11 +215,13 @@ class FeaturedItemsItem
 
     /**
      * @param int $order
+     *
      * @return $this
      */
     public function setOrder($order)
     {
         $this->order = (int) $order;
+
         return $this;
     }
 
@@ -221,11 +235,13 @@ class FeaturedItemsItem
 
     /**
      * @param string $text
+     *
      * @return $this
      */
     public function setText($text)
     {
         $this->text = $text;
+
         return $this;
     }
 }

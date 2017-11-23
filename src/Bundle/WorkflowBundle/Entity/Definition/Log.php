@@ -18,87 +18,93 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition;
  */
 class Log
 {
-	/**
-	 * @var int
-	 */
-	protected $id = null;
+    /**
+     * @var int
+     */
+    protected $id = null;
 
-	/**
-	 * @var Definition
-	 */
-	protected $workflow;
+    /**
+     * @var Definition
+     */
+    protected $workflow;
 
-	/**
-	 * @var \DateTime
-	 */
-	protected $time;
+    /**
+     * @var \DateTime
+     */
+    protected $time;
 
-	protected $user;
+    protected $user;
 
-	/**
-	 * @var string
-	 */
-	protected $message;
+    /**
+     * @var string
+     */
+    protected $message;
 
-	/**
-	 * @return int
-	 */
-	public function getId()
-	{
-		return $this->id;
-	}
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @return Definition
-	 */
-	public function getWorkflow()
-	{
-		return $this->workflow;
-	}
+    /**
+     * @return Definition
+     */
+    public function getWorkflow()
+    {
+        return $this->workflow;
+    }
 
-	/**
-	 * @param Definition $workflow
-	 * @return $this;
-	 */
-	public function setWorkflow(Definition $workflow)
-	{
-		$this->workflow = $workflow;
-		return $this;
-	}
+    /**
+     * @param Definition $workflow
+     *
+     * @return $this;
+     */
+    public function setWorkflow(Definition $workflow)
+    {
+        $this->workflow = $workflow;
 
-	/**
-	 * @return \DateTime
-	 */
-	public function getTime()
-	{
-		return $this->time;
-	}
+        return $this;
+    }
 
-	/**
-	 * @param \DateTime $time
-	 * @return $this
-	 */
-	public function setTime($time)
-	{
-		$this->time = $time;
-		return $this;
-	}
+    /**
+     * @return \DateTime
+     */
+    public function getTime()
+    {
+        return $this->time;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getMessage()
-	{
-		return $this->message;
-	}
+    /**
+     * @param \DateTime $time
+     *
+     * @return $this
+     */
+    public function setTime($time)
+    {
+        $this->time = $time;
 
-	/**
-	 * @param string $message
-	 * @return $this
-	 */
-	public function setMessage($message)
-	{
-		$this->message = $message;
-		return $this;
-	}
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string $message
+     *
+     * @return $this
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
 }

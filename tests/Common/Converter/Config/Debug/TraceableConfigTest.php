@@ -13,7 +13,6 @@ namespace Integrated\Tests\Common\Converter\Config\Debug;
 
 use Integrated\Common\Converter\Config\ConfigInterface;
 use Integrated\Common\Converter\Config\Debug\TraceableConfig;
-
 use Integrated\Tests\Common\Converter\Config\ConfigTest;
 
 /**
@@ -38,6 +37,7 @@ class TraceableConfigTest extends ConfigTest
 
     /**
      * @param ConfigInterface $parent
+     *
      * @return TraceableConfig
      */
     protected function getInstance(ConfigInterface $parent = null)

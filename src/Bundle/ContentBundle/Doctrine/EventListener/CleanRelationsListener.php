@@ -12,14 +12,12 @@
 namespace Integrated\Bundle\ContentBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-
 use Integrated\Common\ContentType\ContentTypeInterface;
 
 /**
- * Clean up relations after removal of a content type
+ * Clean up relations after removal of a content type.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */

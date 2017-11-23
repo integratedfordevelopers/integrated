@@ -25,15 +25,13 @@ class ReferenceTest extends \PHPUnit_Framework_TestCase
      */
     private $taxonomy;
 
-    /**
-     */
     protected function setUp()
     {
         $this->taxonomy = new Taxonomy();
     }
 
     /**
-     * Test published ReferenceByRelationId
+     * Test published ReferenceByRelationId.
      */
     public function testPublishedReferenceByRelationId()
     {

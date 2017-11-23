@@ -14,18 +14,16 @@ namespace Integrated\Bundle\ContentBundle\Block;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Common\Block\BlockHandlerRegistryInterface;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Bundle\ContentBundle\Document\Block\FacetBlock;
 use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 use Integrated\Bundle\ContentBundle\Provider\SolariumProvider;
-
 use Solarium\QueryType\Select\Result\Result;
 
 /**
- * Facet block handler
+ * Facet block handler.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -43,7 +41,7 @@ class FacetBlockHandler extends BlockHandler
 
     /**
      * @param BlockHandlerRegistryInterface $blockRegistry
-     * @param RequestStack $requestStack
+     * @param RequestStack                  $requestStack
      */
     public function __construct(BlockHandlerRegistryInterface $blockRegistry, RequestStack $requestStack)
     {
@@ -97,7 +95,7 @@ class FacetBlockHandler extends BlockHandler
         $facets = [];
         foreach ($block->getFields() as $field) {
             $facets[$field->getField()] = [
-                'name'   => $field->getName(),
+                'name' => $field->getName(),
                 'values' => $facetSet->getFacet($field->getField()),
             ];
         }
@@ -107,7 +105,7 @@ class FacetBlockHandler extends BlockHandler
         }
 
         return $this->render([
-            'block'  => $block,
+            'block' => $block,
             'facets' => $facets,
         ]);
     }

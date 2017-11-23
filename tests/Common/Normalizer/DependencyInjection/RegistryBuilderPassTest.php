@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Normalizer\DependencyInjection;
 
 use Integrated\Common\Normalizer\DependencyInjection\RegistryBuilderPass;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
@@ -51,7 +50,7 @@ class RegistryBuilderPassTest extends \PHPUnit_Framework_TestCase
             ->with('tag')
             ->willReturn([
                 'tagged.service.1' => [['class' => 'class1'], ['class' => 'class2']],
-                'tagged.service.2' => [['class' => 'class1']]
+                'tagged.service.2' => [['class' => 'class1']],
             ]);
 
         $this->getInstance()->process($container);

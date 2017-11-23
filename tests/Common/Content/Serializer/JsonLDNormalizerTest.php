@@ -14,9 +14,7 @@ namespace Integrated\Tests\Common\Content\Serializer;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Serializer\JsonLDNormalizer;
 use Integrated\Common\Normalizer\NormalizerInterface;
-
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface as SymfonyNormalizerInterface;
-
 use stdClass as Object;
 
 /**
@@ -25,7 +23,7 @@ use stdClass as Object;
 class JsonLDNormalizerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var NormalizerInterface  | \PHPUnit_Framework_MockObject_MockObject
+     * @var NormalizerInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     private $normalizer;
 
@@ -59,25 +57,25 @@ class JsonLDNormalizerTest extends \PHPUnit_Framework_TestCase
                 $this->createMock(ContentInterface::class),
                 [],
                 ['array1'],
-                ['@context' => 'http://schema.org', 'array1']
+                ['@context' => 'http://schema.org', 'array1'],
             ],
             [
                 $this->createMock(ContentInterface::class),
                 ['key' => 'value'],
                 ['array2'],
-                ['@context' => 'http://schema.org', 'array2']
+                ['@context' => 'http://schema.org', 'array2'],
             ],
             [
                 $this->createMock(ContentInterface::class),
                 [],
                 ['array3', '@context' => 'http://example.org'],
-                ['@context' => 'http://example.org', 'array3']
+                ['@context' => 'http://example.org', 'array3'],
             ],
             [
                 $this->createMock(ContentInterface::class),
                 ['key' => 'value'],
                 [],
-                null
+                null,
             ],
         ];
     }

@@ -21,6 +21,7 @@ class HtmlRelation
 {
     /**
      * @param $html
+     *
      * @return Content[]
      */
     public function read($html)

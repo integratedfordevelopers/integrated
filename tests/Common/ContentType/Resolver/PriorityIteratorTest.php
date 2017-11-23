@@ -17,7 +17,7 @@ use Integrated\Common\ContentType\Resolver\PriorityIterator;
 use Integrated\Common\ContentType\ResolverInterface;
 
 /**
- * @covers Integrated\Common\ContentType\Resolver\PriorityIterator
+ * @covers \Integrated\Common\ContentType\Resolver\PriorityIterator
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -39,7 +39,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
         $iterator = $this->getInstance([
             $this->getResolver(['type 1' => $types[0], 'type 2' => $types[1]]),
             $this->getResolver(),
-            $this->getResolver(['type 3' => $types[2], 'type 1' => $types[1]])
+            $this->getResolver(['type 3' => $types[2], 'type 1' => $types[1]]),
         ]);
 
         self::assertSame($types[0], $iterator->current());
@@ -71,7 +71,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
     public function testKey()
     {
         $iterator = $this->getInstance([
-            $this->getResolver(['type 1' => $this->getType('type 1'), 'type 2' => $this->getType('type 2')])
+            $this->getResolver(['type 1' => $this->getType('type 1'), 'type 2' => $this->getType('type 2')]),
         ]);
 
         self::assertEquals('type 1', $iterator->key());
@@ -84,7 +84,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
     public function testValid()
     {
         $iterator = $this->getInstance([
-            $this->getResolver(['type 1' => $this->getType('type 1'), 'type 2' => $this->getType('type 2')])
+            $this->getResolver(['type 1' => $this->getType('type 1'), 'type 2' => $this->getType('type 2')]),
         ]);
 
         self::assertTrue($iterator->valid());
@@ -109,7 +109,7 @@ class PriorityIteratorTest extends \PHPUnit_Framework_TestCase
         $iterator = $this->getInstance([
             $this->getResolver(['type 1' => $types[0]]),
             $this->getResolver(),
-            $this->getResolver(['type 2' => $types[1]])
+            $this->getResolver(['type 2' => $types[1]]),
         ]);
 
         $iterator->next();

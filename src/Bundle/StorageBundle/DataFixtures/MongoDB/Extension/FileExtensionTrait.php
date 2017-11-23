@@ -13,7 +13,6 @@ namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension;
 
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util\CreateUtil;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -29,6 +28,7 @@ trait FileExtensionTrait
     /**
      * @param string $path
      * @param string $name
+     *
      * @return File
      */
     public function createFile($path, $name = '')

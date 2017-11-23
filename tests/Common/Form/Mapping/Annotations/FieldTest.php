@@ -20,42 +20,41 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class FieldTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test the constructor with valid data
+     * Test the constructor with valid data.
      */
     public function testConstructorWithValidData()
     {
         // Create options array
-        $options = array('label' => 'de Vries', 'required' => true);
+        $options = ['label' => 'de Vries', 'required' => true];
 
         // Create field
-        $field = new Field(array('type' => 'Henk', 'options' => $options));
+        $field = new Field(['type' => 'Henk', 'options' => $options]);
 
         // Asserts
         $this->assertEquals('Henk', $field->getType());
         $this->assertSame($options, $field->getOptions());
     }
 
-
     /**
-     * Test the constructor with invalid data
+     * Test the constructor with invalid data.
      *
      * @expectedException \BadMethodCallException
      */
     public function testConstructorWithInvalidData()
     {
-        new Field(array('Henk' => 'type'));
+        new Field(['Henk' => 'type']);
     }
 
     /**
-     * Test the constructor with default values
+     * Test the constructor with default values.
      */
     public function testConstructorWithDefaultValues()
     {
         // Create field
-        $field = new Field(array());
+        $field = new Field([]);
 
         // Asserts
         $this->assertEquals(TextType::class, $field->getType());
-        $this->assertSame(array(), $field->getOptions());
+        $this->assertSame([], $field->getOptions());
     }
 }

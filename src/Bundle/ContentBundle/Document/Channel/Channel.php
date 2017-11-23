@@ -12,17 +12,14 @@
 namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
-
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Channel document
+ * Channel document.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
@@ -83,7 +80,7 @@ class Channel implements ChannelInterface
     protected $scope = null;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -92,11 +89,13 @@ class Channel implements ChannelInterface
 
     /**
      * @param string $id
+     *
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -110,11 +109,13 @@ class Channel implements ChannelInterface
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -136,11 +137,13 @@ class Channel implements ChannelInterface
 
     /**
      * @param StorageInterface $logo
+     *
      * @return $this
      */
     public function setLogo(StorageInterface $logo = null)
     {
         $this->logo = $logo;
+
         return $this;
     }
 
@@ -154,21 +157,25 @@ class Channel implements ChannelInterface
 
     /**
      * @param string $color
+     *
      * @return $this
      */
     public function setColor($color)
     {
         $this->color = $color;
+
         return $this;
     }
 
     /**
      * @param array $domains
+     *
      * @return $this
      */
     public function setDomains(array $domains)
     {
         $this->domains = $domains;
+
         return $this;
     }
 
@@ -189,9 +196,10 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * Overrider all the option with a new set of values for this content type
+     * Overrider all the option with a new set of values for this content type.
      *
      * @param string[] $options
+     *
      * @return $this
      */
     public function setOptions(array $options)
@@ -207,6 +215,7 @@ class Channel implements ChannelInterface
 
     /**
      * @param $name
+     *
      * @return mixed|null
      */
     public function getOption($name)
@@ -221,8 +230,9 @@ class Channel implements ChannelInterface
     /**
      * Set the value of the specified key.
      *
-     * @param string $name
+     * @param string       $name
      * @param null | mixed $value
+     *
      * @return $this
      */
     public function setOption($name, $value = null)
@@ -237,7 +247,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasOption($name)
     {
@@ -245,7 +255,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * Get the createdAt of the channel
+     * Get the createdAt of the channel.
      *
      * @return \DateTime
      */
@@ -255,14 +265,16 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * Set the createdAt of the channel
+     * Set the createdAt of the channel.
      *
      * @param \DateTime $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -282,9 +294,6 @@ class Channel implements ChannelInterface
         $this->primaryDomain = $primaryDomain;
     }
 
-    /**
-     *
-     */
     public function defaultPrimaryDomain()
     {
         if (!$this->primaryDomain) {
@@ -302,12 +311,14 @@ class Channel implements ChannelInterface
 
     /**
      * @param Scope|null $scope
+     *
      * @return $this
      */
     public function setScope(Scope $scope = null)
     {
         $this->scopeInstance = $scope;
         $this->scope = $scope ? $scope->getId() : null;
+
         return $this;
     }
 }

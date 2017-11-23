@@ -17,21 +17,21 @@ namespace Integrated\Bundle\UserBundle\Model;
 interface ScopeManagerInterface extends ManagerInterface
 {
     /**
-     * Create a group object
+     * Create a group object.
      *
      * @return ScopeInterface
      */
     public function create();
 
     /**
-     * Change or add the group to the manager
+     * Change or add the group to the manager.
      *
      * @param ScopeInterface $scope
      */
     public function persist(ScopeInterface $scope);
 
     /**
-     * Remove the group from the manager
+     * Remove the group from the manager.
      *
      * @param ScopeInterface $scope
      */
@@ -68,7 +68,7 @@ interface ScopeManagerInterface extends ManagerInterface
     public function findBy(array $criteria);
 
     /**
-     * Returns the class name of the group object
+     * Returns the class name of the group object.
      *
      * @return string
      */

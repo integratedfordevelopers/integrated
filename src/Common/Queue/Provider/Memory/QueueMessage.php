@@ -40,9 +40,9 @@ class QueueMessage implements QueueMessageInterface
     private $release = null;
 
     /**
-     * @param mixed $payload
-     * @param int $attempts
-     * @param int $priority
+     * @param mixed    $payload
+     * @param int      $attempts
+     * @param int      $priority
      * @param callable $release
      */
     public function __construct($payload, $attempts, $priority, Closure $release)

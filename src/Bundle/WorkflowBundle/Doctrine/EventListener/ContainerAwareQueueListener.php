@@ -30,7 +30,7 @@ class ContainerAwareQueueListener extends QueueListener
 
     /**
      * @param ContainerInterface $container
-     * @param string             $service the name of the queue service to use
+     * @param string             $service   the name of the queue service to use
      */
     public function __construct(ContainerInterface $container, $service)
     {

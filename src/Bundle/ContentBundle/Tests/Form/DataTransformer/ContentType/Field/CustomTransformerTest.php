@@ -24,7 +24,7 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
     protected $customTransformer;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instanceOf
+     * Test instanceOf.
      */
     public function testInstanceOf()
     {
@@ -40,7 +40,8 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test transform function
+     * Test transform function.
+     *
      * @param mixed $input
      * @param array $output
      * @dataProvider getTransformData
@@ -51,7 +52,8 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test reverseTransform function with invalid data
+     * Test reverseTransform function with invalid data.
+     *
      * @param mixed $input
      * @dataProvider getInvalidReverseTransformData
      */
@@ -61,7 +63,8 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test reverseTransform function with valid data
+     * Test reverseTransform function with valid data.
+     *
      * @param array $input
      * @dataProvider getValidReverseTransformData
      */
@@ -93,7 +96,7 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
             'name' => 'name',
             'type' => 'type',
             'label' => null,
-            'required' => false
+            'required' => false,
         ];
 
         /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField | \PHPUnit_Framework_MockObject_MockObject $field */
@@ -129,12 +132,12 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
             ],
             'invalidData' => [
                 'input' => 'string',
-                'output' => []
+                'output' => [],
             ],
             'validData' => [
                 'input' => $field,
-                'output' => $output
-            ]
+                'output' => $output,
+            ],
         ];
     }
 
@@ -153,15 +156,15 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
             'incompleteDataNoLabel' => [
                 'input' => [
                     'type' => 'text',
-                    'required' => true
+                    'required' => true,
                 ],
             ],
             'incompleteDataNoType' => [
                 'input' => [
                     'label' => 'label',
-                    'required' => true
-                ]
-            ]
+                    'required' => true,
+                ],
+            ],
         ];
     }
 
@@ -175,16 +178,16 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
                 [
                     'label' => 'label',
                     'type' => 'type',
-                    'required' => true
+                    'required' => true,
                 ],
             ],
             'fieldWithName' => [
                 [
                     'label' => 'label',
                     'type' => 'type',
-                    'name' => 'name'
-                ]
-            ]
+                    'name' => 'name',
+                ],
+            ],
         ];
     }
 }

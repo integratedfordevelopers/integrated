@@ -12,22 +12,17 @@
 namespace Integrated\Bundle\SolrBundle\Tests\Solr\Type;
 
 use Integrated\Bundle\SolrBundle\Solr\Type\CopyType;
-
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
-
 use stdClass;
 
 /**
- * @covers Integrated\Bundle\SolrBundle\Solr\Type\CopyType
+ * @covers \Integrated\Bundle\SolrBundle\Solr\Type\CopyType
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class CopyTypeTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     *
-     */
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
@@ -62,7 +57,7 @@ class CopyTypeTest extends \PHPUnit_Framework_TestCase
                     'field1' => ['value1'],
                     'field2' => ['value2', 'value3'],
                     'field3' => ['value1'],
-                    'field4' => ['value2', 'value3']
+                    'field4' => ['value2', 'value3'],
                 ],
             ],
             'advanced' => [
@@ -125,9 +120,6 @@ class CopyTypeTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /**
-     *
-     */
     public function testGetName()
     {
         self::assertEquals('integrated.copy', $this->getInstance()->getName());

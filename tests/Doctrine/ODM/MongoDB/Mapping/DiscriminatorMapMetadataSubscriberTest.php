@@ -13,7 +13,6 @@ namespace Integrated\Tests\Doctrine\ODM\MongoDB\Mapping;
 
 use Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapMetadataSubscriber;
 use Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapResolverInterface;
-
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;

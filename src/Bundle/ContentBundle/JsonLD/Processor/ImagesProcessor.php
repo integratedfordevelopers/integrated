@@ -24,7 +24,7 @@ use Integrated\Common\Normalizer\Processor\ProcessorInterface;
 class ImagesProcessor implements ProcessorInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerInterface $data, $object, Context $context)
     {

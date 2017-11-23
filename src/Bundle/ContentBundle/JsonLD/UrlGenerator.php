@@ -22,12 +22,13 @@ class UrlGenerator
 {
     /**
      * @param object $content
+     *
      * @return string
      */
     public function generateUrl($content)
     {
         if ($content instanceof StorageInterface) {
-            return '/storage/' . $content->getIdentifier();
+            return '/storage/'.$content->getIdentifier();
         }
 
         if ($content instanceof Image) {
@@ -45,6 +46,7 @@ class UrlGenerator
 
     /**
      * @param Image $content
+     *
      * @return string
      */
     protected function generateImageUrl(Image $content)
@@ -71,11 +73,12 @@ class UrlGenerator
             );
         }
 
-        return '/storage/' . $content->getFile()->getIdentifier();
+        return '/storage/'.$content->getFile()->getIdentifier();
     }
 
     /**
      * @param Content $content
+     *
      * @return string
      */
     protected function generateContentUrl(Content $content)

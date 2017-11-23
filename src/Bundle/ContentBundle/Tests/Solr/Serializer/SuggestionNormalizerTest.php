@@ -15,15 +15,11 @@ use Integrated\Bundle\ContentBundle\Solr\Query\SuggestionQuery;
 use Integrated\Bundle\ContentBundle\Solr\Serializer\SuggestionNormalizer;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
-
 use Solarium\QueryType\Select\Query\Component\FacetSet;
 use Solarium\QueryType\Select\Result\Document;
 use Solarium\QueryType\Select\Result\Result;
-
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Exception\InvalidArgumentException;
-
 use stdClass;
 
 /**
@@ -57,7 +53,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
                 ['news', true],
                 ['blog', true],
                 ['invalid', false],
-                [null, false]
+                [null, false],
             ]);
 
         $this->resolver->expects($this->atLeastOnce())
@@ -104,7 +100,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testNormalizeWithInvalidObject()
     {
@@ -112,7 +108,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testNormalizeWithOutQuery()
     {
@@ -120,7 +116,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testNormalizeWithInvalidQuery()
     {
@@ -134,7 +130,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
         $suggestions = [
             'suggestion' => 5,
             'suggest' => 0,
-            'suggestions' => 4
+            'suggestions' => 4,
         ];
 
         $result
@@ -152,7 +148,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
         $expected = [
             'query' => 'this-is-the-query',
             'suggestions' => array_keys($suggestions),
-            'results' => $this->getDocumentsExpected()
+            'results' => $this->getDocumentsExpected(),
         ];
 
         self::assertSame($expected, $this->getInstance()->normalize($result));
@@ -195,7 +191,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $expected = [
             'query' => 'this-is-the-query',
-            'results' => $this->getDocumentsExpected()
+            'results' => $this->getDocumentsExpected(),
         ];
 
         self::assertSame($expected, $this->getInstance()->normalize($result));
@@ -208,7 +204,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
         $suggestions = [
             'suggestion' => 5,
             'suggest' => 0,
-            'suggestions' => 4
+            'suggestions' => 4,
         ];
 
         $result
@@ -225,7 +221,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $expected = [
             'query' => 'this-is-the-query',
-            'suggestions' => array_keys($suggestions)
+            'suggestions' => array_keys($suggestions),
         ];
 
         self::assertSame($expected, $this->getInstance()->normalize($result));
@@ -270,6 +266,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param object | null $query
+     *
      * @return Result | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getQueryResult($query = null)
@@ -285,6 +282,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string | null $query
+     *
      * @return SuggestionQuery | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getQuery($query = null)
@@ -301,6 +299,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $facets
+     *
      * @return FacetSet | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getFacetSet($facets = [])
@@ -317,6 +316,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name
+     *
      * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContentType($name)
@@ -341,7 +341,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
                 'type_name' => 'news',
                 'title' => 'title_0',
                 'pub_time' => 'invalid',
-                'pub_edited' => 'invalid'
+                'pub_edited' => 'invalid',
             ]),
             new Document([
                 'type_id' => 'id_1',
@@ -359,7 +359,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
                 'type_name' => 'blog',
                 'title' => 'title_3',
                 'pub_time' => '2012-12-12T12:12:12Z',
-                'pub_edited' => 'invalid'
+                'pub_edited' => 'invalid',
             ]),
             new Document([]),
         ];
@@ -377,7 +377,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
                 'title' => 'title_0',
                 'url' => 'url_0',
                 'published' => null,
-                'updated' => null
+                'updated' => null,
             ],
             [
                 'id' => 'id_1',
@@ -385,7 +385,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
                 'title' => '',
                 'url' => 'url_1',
                 'published' => '2012-12-12T12:12:12Z',
-                'updated' => null
+                'updated' => null,
             ],
             [
                 'id' => 'id_2',
@@ -393,7 +393,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
                 'title' => 'title_2',
                 'url' => 'url_2',
                 'published' => null,
-                'updated' => '2012-12-12T12:12:12Z'
+                'updated' => '2012-12-12T12:12:12Z',
             ],
             [
                 'id' => 'id_3',
@@ -401,7 +401,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
                 'title' => 'title_3',
                 'url' => 'url_3',
                 'published' => '2012-12-12T12:12:12Z',
-                'updated' => null
+                'updated' => null,
             ],
             [
                 'id' => '',
@@ -409,7 +409,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
                 'title' => '',
                 'url' => '',
                 'published' => null,
-                'updated' => null
+                'updated' => null,
             ],
         ];
     }

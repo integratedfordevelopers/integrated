@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

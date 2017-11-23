@@ -24,7 +24,7 @@ class LocationTest extends \PHPUnit_Framework_TestCase
     private $location;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class LocationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setLatitude function
+     * Test get- and setLatitude function.
      */
     public function testGetAndSetLatitudeFunction()
     {
@@ -41,7 +41,7 @@ class LocationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setLongitude function
+     * Test get- and setLongitude function.
      */
     public function testGetAndSetLongitudeFunction()
     {

@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -31,6 +29,7 @@ class PrimaryChannelType extends AbstractType
 
     /**
      * PrimaryChannelType constructor.
+     *
      * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
@@ -50,7 +49,7 @@ class PrimaryChannelType extends AbstractType
             'attr' => [
                 'class' => 'primary-channel',
                 'data-make-primary-text' => $this->translator->trans('make primary'),
-            ]
+            ],
         ]);
     }
 

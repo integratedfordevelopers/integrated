@@ -14,9 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Bulk;
 use Integrated\Common\Bulk\Action\HandlerFactoryInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Relation\RelationInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Traversable;
 
 /**
@@ -60,7 +58,7 @@ class RelationHandlerFactory implements HandlerFactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function createHandler(array $options)
     {

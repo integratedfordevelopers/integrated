@@ -18,17 +18,11 @@ use Integrated\Bundle\SolrBundle\Solr\Type\RemoveType;
  */
 class RemoveTypeTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     *
-     */
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
     }
 
-    /**
-     *
-     */
     public function testBuild()
     {
         $container = $this->getMock('Integrated\\Common\\Converter\\ContainerInterface');
@@ -39,10 +33,6 @@ class RemoveTypeTest extends \PHPUnit_Framework_TestCase
         $this->getInstance()->build($container, new \stdClass(), ['field1', 'field2', 'field3']);
     }
 
-
-    /**
-     *
-     */
     public function testGetName()
     {
         self::assertEquals('integrated.remove', $this->getInstance()->getName());

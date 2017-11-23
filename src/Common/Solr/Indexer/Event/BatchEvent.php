@@ -28,7 +28,7 @@ class BatchEvent extends IndexerEvent
      * Event constructor.
      *
      * @param IndexerInterface $indexer
-     * @param BatchOperation $operation
+     * @param BatchOperation   $operation
      */
     public function __construct(IndexerInterface $indexer, BatchOperation $operation)
     {

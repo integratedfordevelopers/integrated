@@ -29,6 +29,7 @@ class Registry implements RegistryInterface
     public function add(TypeInterface $type)
     {
         $this->types[spl_object_hash($type)] = $type;
+
         return $this;
     }
 

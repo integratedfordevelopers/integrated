@@ -15,12 +15,9 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Integrated\Common\Content\ContentInterface;
-
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
-
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
@@ -50,7 +47,7 @@ class ContentType implements TypeInterface
             return; // only process content
         }
 
-        $container->set('id', $data->getContentType() . '-' . $data->getId());
+        $container->set('id', $data->getContentType().'-'.$data->getId());
 
         $container->set('type_name', $data->getContentType());
         $container->set('type_class', ClassUtils::getRealClass($data)); // could be a doctrine proxy object but we need the actual class name.
@@ -74,8 +71,8 @@ class ContentType implements TypeInterface
         foreach ($items as $relation) {
             foreach ($relation->getReferences()->toArray() as $content) {
                 if ($content instanceof Taxonomy || $content instanceof Article) {
-                    $container->add('facet_' . $relation->getRelationId(), $content->getTitle());
-                    $container->add('taxonomy_' . $relation->getRelationId() . '_string', $content->getTitle());
+                    $container->add('facet_'.$relation->getRelationId(), $content->getTitle());
+                    $container->add('taxonomy_'.$relation->getRelationId().'_string', $content->getTitle());
                 }
             }
         }

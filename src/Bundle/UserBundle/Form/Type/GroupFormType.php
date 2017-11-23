@@ -15,7 +15,6 @@ use Integrated\Bundle\UserBundle\Form\DataTransformer\RoleToEntityTransformer;
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
 use Integrated\Bundle\UserBundle\Validator\Constraints\UniqueGroup;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,7 +52,7 @@ class GroupFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class, [
-            'required' => false
+            'required' => false,
         ]);
 
         $builder->add('roles', RoleType::class);

@@ -19,19 +19,19 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class FormFactoryEventDispatcherPass implements CompilerPassInterface
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function process(ContainerBuilder $container)
-	{
-		if (!$container->hasDefinition('integrated_content.form.factory.event_dispatcher')) {
-			return;
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('integrated_content.form.factory.event_dispatcher')) {
+            return;
+        }
 
-		$dispatcher = $container->getDefinition('integrated_content.form.factory.event_dispatcher');
+        $dispatcher = $container->getDefinition('integrated_content.form.factory.event_dispatcher');
 
-		foreach ($container->findTaggedServiceIds('integrated_content.form.event_subscriber') as $service => $tags) {
-			$dispatcher->addMethodCall('addSubscriber', [$container->getDefinition($service)]);
-		}
-	}
+        foreach ($container->findTaggedServiceIds('integrated_content.form.event_subscriber') as $service => $tags) {
+            $dispatcher->addMethodCall('addSubscriber', [$container->getDefinition($service)]);
+        }
+    }
 }

@@ -11,8 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\ContentType;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -25,7 +24,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     private $contentType;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -33,7 +32,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * ContentType should implement ContentTypeInterface
+     * ContentType should implement ContentTypeInterface.
      */
     public function testInstanceOfContentTypeInterface()
     {
@@ -41,7 +40,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the create functions
+     * Test the create functions.
      */
     public function testCreate()
     {
@@ -57,7 +56,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setId function
+     * Test get- and setId function.
      */
     public function testGetAndSetIdFunction()
     {
@@ -66,7 +65,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setClass function
+     * Test get- and setClass function.
      */
     public function testGetAndSetClassFunction()
     {
@@ -75,7 +74,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setName function
+     * Test get- and setName function.
      */
     public function testGetAndSetNameFunction()
     {
@@ -89,7 +88,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setFields function
+     * Test get- and setFields function.
      */
     public function testGetAndSetFieldsFunction()
     {
@@ -97,17 +96,17 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $field1 = $this->getMockClass('Integrated\Common\ContentType\ContentTypeFieldInterface');
         $field2 = $this->getMockClass('Integrated\Common\ContentType\ContentTypeFieldInterface');
 
-        $fields = array(
+        $fields = [
             $field1,
-            $field2
-        );
+            $field2,
+        ];
 
         // Assert
         $this->assertSame($fields, $this->contentType->setFields($fields)->getFields());
     }
 
     /**
-     * Test getField function
+     * Test getField function.
      */
     public function testGetFieldFunction()
     {
@@ -117,7 +116,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('henk'));
 
-        $this->contentType->setFields(array($field));
+        $this->contentType->setFields([$field]);
 
         // Asserts
         $this->assertSame($field, $this->contentType->getField('henk'));
@@ -125,7 +124,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test hasField function
+     * Test hasField function.
      */
     public function testHasFieldFunction()
     {
@@ -135,7 +134,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('henk'));
 
-        $this->contentType->setFields(array($field));
+        $this->contentType->setFields([$field]);
 
         // Asserts
         $this->assertTrue($this->contentType->hasField('henk'));
@@ -143,7 +142,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setCreatedAt function
+     * Test get- and setCreatedAt function.
      */
     public function testGetAndSetCreatedAtFunction()
     {

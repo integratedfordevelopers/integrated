@@ -13,7 +13,6 @@ namespace Integrated\Bundle\FormTypeBundle;
 
 use Integrated\Bundle\FormTypeBundle\DependencyInjection\Compiler\RegisterContentStyleParametersPass;
 use Integrated\Bundle\FormTypeBundle\DependencyInjection\IntegratedFormTypeExtension;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

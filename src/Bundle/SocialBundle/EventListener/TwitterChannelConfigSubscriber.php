@@ -16,9 +16,7 @@ use Integrated\Bundle\ChannelBundle\Event\GetResponseConfigEvent;
 use Integrated\Bundle\ChannelBundle\IntegratedChannelEvents;
 use Integrated\Bundle\SocialBundle\Connector\TwitterAdapter;
 use Integrated\Bundle\SocialBundle\Factory\TwitterFactory;
-
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -58,14 +56,14 @@ class TwitterChannelConfigSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
             IntegratedChannelEvents::CONFIG_CREATE_SUBMITTED => 'onSubmit',
             IntegratedChannelEvents::CONFIG_EDIT_REQUEST => 'onRequest',
-            IntegratedChannelEvents::CONFIG_EDIT_SUBMITTED => 'onSubmit'
+            IntegratedChannelEvents::CONFIG_EDIT_SUBMITTED => 'onSubmit',
         ];
     }
 
@@ -97,7 +95,7 @@ class TwitterChannelConfigSubscriber implements EventSubscriberInterface
                     'integrated_channel_config_edit',
                     ['id' => $config->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
-                )
+                ),
             ]
         );
 

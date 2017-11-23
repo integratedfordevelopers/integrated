@@ -12,11 +12,9 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -25,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ContentTypeChannelType extends AbstractType
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -34,7 +32,7 @@ class ContentTypeChannelType extends AbstractType
 
         $builder->add('selected', CheckboxType::class, [
             'required' => false,
-            'label'    => $channel->getName()
+            'label' => $channel->getName(),
         ]);
 
         $builder->add('enforce', CheckboxType::class, [
@@ -43,7 +41,7 @@ class ContentTypeChannelType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -52,7 +50,7 @@ class ContentTypeChannelType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {

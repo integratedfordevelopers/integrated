@@ -49,11 +49,13 @@ class Page extends AbstractPage
 
     /**
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -67,11 +69,13 @@ class Page extends AbstractPage
 
     /**
      * @param string $description
+     *
      * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -85,11 +89,13 @@ class Page extends AbstractPage
 
     /**
      * @param bool $disabled
+     *
      * @return $this
      */
     public function setDisabled($disabled)
     {
         $this->disabled = (bool) $disabled;
+
         return $this;
     }
 
@@ -103,11 +109,13 @@ class Page extends AbstractPage
 
     /**
      * @param bool $locked
+     *
      * @return $this
      */
     public function setLocked($locked)
     {
         $this->locked = (bool) $locked;
+
         return $this;
     }
 }

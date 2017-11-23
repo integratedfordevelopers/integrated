@@ -18,8 +18,6 @@ use Integrated\Bundle\ContentHistoryBundle\Diff\ArrayComparer;
  */
 class ArrayComparerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     */
     public function testAddField()
     {
         $this->assertDiff(
@@ -29,8 +27,6 @@ class ArrayComparerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     */
     public function testRemoveField()
     {
         $this->assertDiff(
@@ -40,8 +36,6 @@ class ArrayComparerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     */
     public function testUpdateValue()
     {
         $this->assertDiff(
@@ -51,8 +45,6 @@ class ArrayComparerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     */
     public function testEmptyValue()
     {
         $this->assertDiff(

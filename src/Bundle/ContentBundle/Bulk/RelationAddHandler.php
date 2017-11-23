@@ -54,7 +54,7 @@ class RelationAddHandler implements HandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute(ContentInterface $content)
     {

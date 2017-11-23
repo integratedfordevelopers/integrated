@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields;
 
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentTypeField as ContentTypeFieldTransformer;
 use Integrated\Common\Form\Mapping\AttributeInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,7 +33,7 @@ class DefaultType extends AbstractType
 
         $builder->add('enabled', CheckboxType::class, [
             'required' => false,
-            'label'    => $field->getOption('label') ?: ucfirst($field->getName()),
+            'label' => $field->getOption('label') ?: ucfirst($field->getName()),
         ]);
 
         $builder->add('required', CheckboxType::class, ['required' => false]);

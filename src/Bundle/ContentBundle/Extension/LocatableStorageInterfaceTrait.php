@@ -23,7 +23,7 @@ trait LocatableStorageInterfaceTrait
     /**
      * @return string
      */
-    abstract function getPathname();
+    abstract public function getPathname();
 
     /**
      * {@inheritdoc}
@@ -38,7 +38,7 @@ trait LocatableStorageInterfaceTrait
      */
     public function offsetExists($offset)
     {
-        return strlen($this->getPathname()) > ($offset+1);
+        return strlen($this->getPathname()) > ($offset + 1);
     }
 
     /**
@@ -50,11 +50,12 @@ trait LocatableStorageInterfaceTrait
             return '@';
         }
 
-        return substr($this->getPathname(), ($offset+1), 1);
+        return substr($this->getPathname(), ($offset + 1), 1);
     }
 
     /**
      * {@inheritdoc}
+     *
      * @throws \Exception
      */
     public function offsetSet($offset, $value)
@@ -64,6 +65,7 @@ trait LocatableStorageInterfaceTrait
 
     /**
      * {@inheritdoc}
+     *
      * @throws \Exception
      */
     public function offsetUnset($offset)

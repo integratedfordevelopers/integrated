@@ -12,10 +12,8 @@
 namespace Integrated\Bundle\SolrBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
-
 use Integrated\Common\Solr\Task\Event\ErrorEvent;
 use Integrated\Common\Solr\Task\Events;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -34,7 +32,7 @@ class WorkerErrorLogger implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::ERROR => 'onError'
+            Events::ERROR => 'onError',
         ];
     }
 
@@ -48,7 +46,7 @@ class WorkerErrorLogger implements EventSubscriberInterface
         }
 
         $this->logger->error($event->getException()->getMessage(), [
-            'payload' => serialize($event->getMessage()->getPayload())
+            'payload' => serialize($event->getMessage()->getPayload()),
         ]);
     }
 

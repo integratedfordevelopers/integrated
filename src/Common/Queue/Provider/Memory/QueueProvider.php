@@ -18,7 +18,7 @@ use Integrated\Common\Queue\Provider\QueueProviderInterface;
  */
 class QueueProvider implements QueueProviderInterface
 {
-    private $queue = array();
+    private $queue = [];
 
     /**
      * {@inheritdoc}
@@ -55,7 +55,7 @@ class QueueProvider implements QueueProviderInterface
 
         foreach (array_splice($this->queue[$channel], 0, $limit) as $row) {
             $release = function () use ($channel, $row) {
-                $row['attempts']++;
+                ++$row['attempts'];
                 array_unshift($this->queue[$channel], $row);
             };
 

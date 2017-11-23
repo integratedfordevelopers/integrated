@@ -15,8 +15,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 
-use Integrated\Bundle\ContentHistoryBundle\DependencyInjection\Compiler\WorkflowSubscriberPass;
-
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

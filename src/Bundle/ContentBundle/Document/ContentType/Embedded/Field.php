@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 
 /**
- * Embedded document Field
+ * Embedded document Field.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -28,7 +28,7 @@ class Field implements ContentTypeFieldInterface
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * {@inheritdoc}
@@ -39,14 +39,16 @@ class Field implements ContentTypeFieldInterface
     }
 
     /**
-     * Set the name of the field
+     * Set the name of the field.
      *
      * @param string $name The name of the property of the content type
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -59,19 +61,21 @@ class Field implements ContentTypeFieldInterface
     }
 
     /**
-     * Set the options of the field
+     * Set the options of the field.
      *
      * @param array $options The options of the form field
+     *
      * @return $this
      */
     public function setOptions(array $options)
     {
         $this->options = $options;
+
         return $this;
     }
 
     /**
-     * Added shortcut to getLabel of field
+     * Added shortcut to getLabel of field.
      *
      * @return string
      *
@@ -80,7 +84,7 @@ class Field implements ContentTypeFieldInterface
      */
     public function getLabel()
     {
-        @trigger_error('The ' . __METHOD__ . ' method is deprecated since version 0.7.', E_USER_DEPRECATED);
+        @trigger_error('The '.__METHOD__.' method is deprecated since version 0.7.', E_USER_DEPRECATED);
 
         return isset($this->options['label']) ? $this->options['label'] : ucfirst($this->getName());
     }

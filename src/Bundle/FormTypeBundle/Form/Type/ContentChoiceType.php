@@ -16,9 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\ContentChoicesTransformer;
 use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\ContentChoiceTransformer;
 
@@ -49,9 +47,9 @@ class ContentChoiceType extends AbstractType
 
     /**
      * @param DocumentManager $dm
-     * @param string $repositoryClass
-     * @param string $route
-     * @param array|null $params
+     * @param string          $repositoryClass
+     * @param string          $route
+     * @param array|null      $params
      */
     public function __construct(DocumentManager $dm, $repositoryClass, $route, array $params = null)
     {

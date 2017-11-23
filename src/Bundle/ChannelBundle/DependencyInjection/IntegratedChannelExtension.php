@@ -12,13 +12,11 @@
 namespace Integrated\Bundle\ChannelBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -61,7 +59,7 @@ class IntegratedChannelExtension extends Extension implements PrependExtensionIn
     /**
      * Process the adaptor config configuration.
      *
-     * @param array $config
+     * @param array            $config
      * @param ContainerBuilder $container
      */
     protected function loadConfigs(array $config, ContainerBuilder $container)
@@ -71,7 +69,7 @@ class IntegratedChannelExtension extends Extension implements PrependExtensionIn
                 continue;
             }
 
-            $id = 'integrated_channel.config.memory.' . $name;
+            $id = 'integrated_channel.config.memory.'.$name;
 
             if ($container->hasDefinition($id)) {
                 continue;
@@ -80,7 +78,7 @@ class IntegratedChannelExtension extends Extension implements PrependExtensionIn
             // first create the options and for that we need a unique service id
 
             do {
-                $id_options = $id . '.options.' . uniqid();
+                $id_options = $id.'.options.'.uniqid();
             } while ($container->hasDefinition($id_options));
 
             $definition = new Definition('%integrated_channel.config.options.class%');
@@ -95,7 +93,7 @@ class IntegratedChannelExtension extends Extension implements PrependExtensionIn
             $definition->setArguments([
                 $name,
                 $arguments['adaptor'],
-                new Reference($id_options)
+                new Reference($id_options),
             ]);
 
             if ($arguments['channel']) {
@@ -111,7 +109,7 @@ class IntegratedChannelExtension extends Extension implements PrependExtensionIn
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function prepend(ContainerBuilder $container)
     {

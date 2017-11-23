@@ -19,19 +19,19 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class ExtensionRegistryBuilderPass implements CompilerPassInterface
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function process(ContainerBuilder $container)
-	{
-		if (!$container->hasDefinition('integrated_content.extension.registry.builder')) {
-			return;
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function process(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('integrated_content.extension.registry.builder')) {
+            return;
+        }
 
-		$builder = $container->getDefinition('integrated_content.extension.registry.builder');
+        $builder = $container->getDefinition('integrated_content.extension.registry.builder');
 
-		foreach ($container->findTaggedServiceIds('integrated_content.extension') as $service => $tags) {
-			$builder->addMethodCall('addExtension', [$container->getDefinition($service)]);
-		}
-	}
+        foreach ($container->findTaggedServiceIds('integrated_content.extension') as $service => $tags) {
+            $builder->addMethodCall('addExtension', [$container->getDefinition($service)]);
+        }
+    }
 }

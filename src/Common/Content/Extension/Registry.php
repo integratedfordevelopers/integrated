@@ -29,7 +29,7 @@ class Registry implements RegistryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasExtension($name)
     {
@@ -37,7 +37,7 @@ class Registry implements RegistryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getExtension($name)
     {
@@ -45,7 +45,7 @@ class Registry implements RegistryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getExtensions()
     {

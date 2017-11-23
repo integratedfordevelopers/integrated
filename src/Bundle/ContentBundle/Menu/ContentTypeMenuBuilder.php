@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Menu;
 
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Common\ContentType\ContentTypeFilterInterface;
-
 use Knp\Menu\FactoryInterface;
 
 /**
@@ -85,6 +84,7 @@ class ContentTypeMenuBuilder
 
     /**
      * @param array $result
+     *
      * @return array
      */
     protected function group(array $result)
@@ -113,6 +113,7 @@ class ContentTypeMenuBuilder
 
     /**
      * @param \ReflectionClass $reflectionClass
+     *
      * @return bool|\ReflectionClass
      */
     protected function getParentClass(\ReflectionClass $reflectionClass)

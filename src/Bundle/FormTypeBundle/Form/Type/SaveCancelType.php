@@ -41,7 +41,7 @@ class SaveCancelType extends SubmitType
         $resolver->setDefaults([
             'cancel_route_parameters' => [],
             'label' => 'Save',
-            'button_class' => 'orange'
+            'button_class' => 'orange',
         ]);
 
         $resolver->setRequired('cancel_route');

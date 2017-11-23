@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\CommentBundle\Form\DataTransformer;
 
 use Integrated\Bundle\CommentBundle\Util\StripTagsUtil;
-
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -22,10 +21,12 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class CommentTagTransformer implements DataTransformerInterface
 {
     /**
-     * Transforms html comments to span elements
+     * Transforms html comments to span elements.
      *
-     * @param  string|null $content
+     * @param string|null $content
+     *
      * @return string|null
+     *
      * @throws TransformationFailedException
      */
     public function transform($content)
@@ -48,10 +49,12 @@ class CommentTagTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transforms span elements to html comments
+     * Transforms span elements to html comments.
      *
-     * @param  string|null $content
+     * @param string|null $content
+     *
      * @return string|null
+     *
      * @throws TransformationFailedException
      */
     public function reverseTransform($content)

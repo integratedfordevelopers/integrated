@@ -14,56 +14,56 @@ namespace Integrated\Common\Content\Relation;
 use Integrated\Common\ContentType\ContentTypeInterface;
 
 /**
- * Interface for Relation documents
+ * Interface for Relation documents.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
 interface RelationInterface
 {
     /**
-     * Returns the id of the Relation
+     * Returns the id of the Relation.
      *
      * @return string
      */
     public function getId();
 
     /**
-     * Returns the type of the Relation
+     * Returns the type of the Relation.
      *
      * @return string
      */
     public function getType();
 
     /**
-     * Returns the name of the Relation
+     * Returns the name of the Relation.
      *
      * @return string
      */
     public function getName();
 
     /**
-     * Returns a collection with ContentTypes
+     * Returns a collection with ContentTypes.
      *
      * @return ContentTypeInterface[]
      */
     public function getSources();
 
     /**
-     * Returns a collection with ContentTypes
+     * Returns a collection with ContentTypes.
      *
      * @return ContentTypeInterface[]
      */
     public function getTargets();
 
     /**
-     * Returns true if the Relation can have multiple references
+     * Returns true if the Relation can have multiple references.
      *
      * @return bool
      */
     public function isMultiple();
 
     /**
-     * Returns true if the Relation is required
+     * Returns true if the Relation is required.
      *
      * @return bool
      */

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\ContentBundle\Tests\Document\Content\ContentTest;
 
 /**
@@ -21,7 +20,7 @@ use Integrated\Bundle\ContentBundle\Tests\Document\Content\ContentTest;
 abstract class RelationTest extends ContentTest
 {
     /**
-     * Relation should extend Relation
+     * Relation should extend Relation.
      */
     public function testInstanceOfRelation()
     {
@@ -29,7 +28,7 @@ abstract class RelationTest extends ContentTest
     }
 
     /**
-     * Test get- and setAccountnumber function
+     * Test get- and setAccountnumber function.
      */
     public function testGetAndSetAccountnumberFunction()
     {
@@ -38,7 +37,7 @@ abstract class RelationTest extends ContentTest
     }
 
     /**
-     * Test get- and setDescription function
+     * Test get- and setDescription function.
      */
     public function testGetAndSetDescriptionFunction()
     {
@@ -47,7 +46,7 @@ abstract class RelationTest extends ContentTest
     }
 
     /**
-     * Test get- and setPhonenumbers function
+     * Test get- and setPhonenumbers function.
      */
     public function testGetAndSetPhonenumbersFunction()
     {
@@ -56,7 +55,7 @@ abstract class RelationTest extends ContentTest
     }
 
     /**
-     * Test addPhonenumber function
+     * Test addPhonenumber function.
      */
     public function testAddPhonenumberFunction()
     {
@@ -66,7 +65,7 @@ abstract class RelationTest extends ContentTest
     }
 
     /**
-     * Test addPhonenumber function with duplicate phonenumber
+     * Test addPhonenumber function with duplicate phonenumber.
      */
     public function testAddPhonenumberFunctionWithDuplicatePhonenumber()
     {
@@ -79,7 +78,7 @@ abstract class RelationTest extends ContentTest
     }
 
     /**
-     * Test removePhonenumber function
+     * Test removePhonenumber function.
      */
     public function testRemovePhonenumberFunction()
     {
@@ -91,7 +90,7 @@ abstract class RelationTest extends ContentTest
     }
 
     /**
-     * Test removePhonenumber function with unknown phonenumber
+     * Test removePhonenumber function with unknown phonenumber.
      */
     public function testRemovePhonenumberFunctionWithUnknownPhonenumber()
     {

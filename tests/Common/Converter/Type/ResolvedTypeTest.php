@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Converter\Type;
 
 use Integrated\Common\Converter\Type\ResolvedType;
-
 use Integrated\Common\Converter\Type\TypeInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
 
@@ -54,7 +53,7 @@ class ResolvedTypeTest extends \PHPUnit_Framework_TestCase
     {
         $extensions = [
             $this->getTypeExtension(),
-            $this->getTypeExtension()
+            $this->getTypeExtension(),
         ];
 
         self::assertSame($extensions, $this->getInstance($extensions)->getTypeExtensions());
@@ -82,7 +81,7 @@ class ResolvedTypeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      * @expectedExceptionMessage Type was called first
      */
     public function testBuildOrder()
@@ -103,6 +102,7 @@ class ResolvedTypeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param TypeExtensionInterface[] $extensions
+     *
      * @return ResolvedType
      */
     protected function getInstance(array $extensions = [])

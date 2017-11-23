@@ -12,7 +12,6 @@ namespace Integrated\Bundle\ContentBundle\Tests\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Form\Type\Channel;
 use Integrated\Bundle\ContentBundle\Form\Type\CsvArray;
-
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Form\PreloadedExtension;
 
@@ -24,13 +23,15 @@ class ChannelTest extends TypeTestCase
     protected function getExtensions()
     {
         $childType = new CsvArray();
-        return array(new PreloadedExtension(array(
+
+        return [new PreloadedExtension([
             $childType->getName() => $childType,
-        ), array()));
+        ], [])];
     }
 
     /**
      * @dataProvider getValidTestData
+     *
      * @see http://symfony.com/doc/current/cookbook/form/unit_testing.html
      */
     public function testSubmitValidData($data)
@@ -57,19 +58,18 @@ class ChannelTest extends TypeTestCase
      */
     public function getValidTestData()
     {
-        return array(
-            array(
-                'data' => array(
+        return [
+            [
+                'data' => [
                     'name' => 'Channel name',
-                    'domains' => 'domain1, domain2'
-                )
-            ),
-            array(
-                'data' => array(
+                    'domains' => 'domain1, domain2',
+                ],
+            ],
+            [
+                'data' => [
                     'name' => 'Channel without domains',
-                )
-            )
-
-        );
+                ],
+            ],
+        ];
     }
 }

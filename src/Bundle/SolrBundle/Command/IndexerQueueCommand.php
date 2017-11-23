@@ -13,15 +13,11 @@ namespace Integrated\Bundle\SolrBundle\Command;
 
 use DateTime;
 use DateTimeZone;
-
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Solr\Indexer\Job;
 use Integrated\Common\Queue\QueueInterface;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -30,10 +26,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Serializer\SerializerInterface;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Cursor;
-
 use InvalidArgumentException;
 
 /**
@@ -68,7 +62,6 @@ The <info>%command.name%</info> command starts a index of the site.
 
 <info>php %command.full_name%</info>
 ');
-
     }
 
     /**
@@ -102,9 +95,9 @@ The <info>%command.name%</info> command starts a index of the site.
     }
 
     /**
-     * validate the ids in de input
+     * validate the ids in de input.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int
@@ -151,9 +144,9 @@ The <info>%command.name%</info> command starts a index of the site.
     }
 
     /**
-     * queue a delete on the solr index
+     * queue a delete on the solr index.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int
@@ -167,9 +160,9 @@ The <info>%command.name%</info> command starts a index of the site.
     }
 
     /**
-     * queue the indexing of content in to solr
+     * queue the indexing of content in to solr.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int
@@ -226,9 +219,9 @@ The <info>%command.name%</info> command starts a index of the site.
     }
 
     /**
-     * Add all the documents in the cursor to the solr queue
+     * Add all the documents in the cursor to the solr queue.
      *
-     * @param Cursor $cursor
+     * @param Cursor         $cursor
      * @param ProgressHelper $progress
      */
     protected function doIndex(Cursor $cursor, ProgressHelper $progress)
@@ -248,7 +241,7 @@ The <info>%command.name%</info> command starts a index of the site.
 
             $contentType = isset($document['contentType']) ? $document['contentType'] : '';
 
-            $job->setOption('document.id', $contentType . '-' . $document['_id']);
+            $job->setOption('document.id', $contentType.'-'.$document['_id']);
 
             $job->setOption('document.data', json_encode(['id' => $document['_id']]));
             $job->setOption('document.class', $document['class']);
@@ -263,9 +256,9 @@ The <info>%command.name%</info> command starts a index of the site.
     }
 
     /**
-     * delete all the types or everything if none is given
+     * delete all the types or everything if none is given.
      *
-     * @param array $types
+     * @param array    $types
      * @param DateTime $date
      */
     protected function doIndexCleanup(array $types, DateTime $date = null)
@@ -273,7 +266,7 @@ The <info>%command.name%</info> command starts a index of the site.
         $query = [];
 
         if ($types) {
-            $query[] = 'type_name:("' . implode('" OR "', $types) . '")';
+            $query[] = 'type_name:("'.implode('" OR "', $types).'")';
         } else {
             $query[] = '*:*';
         }
@@ -282,7 +275,7 @@ The <info>%command.name%</info> command starts a index of the site.
             $date = clone $date;
             $date->setTimezone(new DateTimeZone('UTC'));
 
-            $query[] = '-_time_:[' . $date->format('Y-m-d\TG:i:s\Z') . ' TO *]';
+            $query[] = '-_time_:['.$date->format('Y-m-d\TG:i:s\Z').' TO *]';
         }
 
         // Delete everything else that did not got a update or does not exist anymore in the
@@ -295,7 +288,7 @@ The <info>%command.name%</info> command starts a index of the site.
     }
 
     /**
-     * close up with a commit
+     * close up with a commit.
      */
     protected function doIndexCommit()
     {

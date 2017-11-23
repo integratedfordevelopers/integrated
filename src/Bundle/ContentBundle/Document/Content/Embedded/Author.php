@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 
 /**
- * Embedded document Author
+ * Embedded document Author.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -31,7 +31,7 @@ class Author
     protected $person;
 
     /**
-     * Get the type of the document
+     * Get the type of the document.
      *
      * @return string
      */
@@ -41,19 +41,21 @@ class Author
     }
 
     /**
-     * Set the type of the document
+     * Set the type of the document.
      *
      * @param string $type
+     *
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
-     * Get the person of the document
+     * Get the person of the document.
      *
      * @return Person
      */
@@ -63,14 +65,16 @@ class Author
     }
 
     /**
-     * Set the person of the document
+     * Set the person of the document.
      *
      * @param Person $person
+     *
      * @return $this
      */
     public function setPerson(Person $person)
     {
         $this->person = $person;
+
         return $this;
     }
 }

@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WebsiteBundle\Service;
 
 use Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader;
 use Integrated\Bundle\WebsiteBundle\Routing\PageLoader;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -41,8 +40,8 @@ class EditableChecker
 
     /**
      * @param AuthorizationChecker $authorizationChecker
-     * @param TokenStorage $tokenStorage
-     * @param RequestStack $requestStack
+     * @param TokenStorage         $tokenStorage
+     * @param RequestStack         $requestStack
      */
     public function __construct(
         AuthorizationChecker $authorizationChecker,

@@ -24,7 +24,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     private $address;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setType function
+     * Test get- and setType function.
      */
     public function testGetAndSetTypeFunction()
     {
@@ -41,7 +41,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setAddress1 function
+     * Test get- and setAddress1 function.
      */
     public function testGetAndSetAddress1Function()
     {
@@ -50,7 +50,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setAddress2 function
+     * Test get- and setAddress2 function.
      */
     public function testGetAndSetAddress2Function()
     {
@@ -59,7 +59,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setZipcode function
+     * Test get- and setZipcode function.
      */
     public function testGetAndSetZipcodeFunction()
     {
@@ -68,7 +68,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setCity function
+     * Test get- and setCity function.
      */
     public function testGetAndSetCityFunction()
     {
@@ -77,7 +77,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setState function
+     * Test get- and setState function.
      */
     public function testGetAndSetStateFunction()
     {
@@ -86,7 +86,7 @@ class AddressTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setCountry function
+     * Test get- and setCountry function.
      */
     public function testGetAndSetCountryFunction()
     {

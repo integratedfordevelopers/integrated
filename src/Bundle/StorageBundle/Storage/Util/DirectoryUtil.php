@@ -19,9 +19,10 @@ use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 class DirectoryUtil
 {
     /**
-     * @param string $directory
+     * @param string           $directory
      * @param StorageInterface $storage
-     * @param string|null $overwriteExtension
+     * @param string|null      $overwriteExtension
+     *
      * @return \SplFileInfo
      */
     public static function cachePathFile($directory, StorageInterface $storage, $overwriteExtension = null)
@@ -38,13 +39,14 @@ class DirectoryUtil
         );
 
         // Create a directory
-        DirectoryUtil::createDirectory($file->getPath());
+        self::createDirectory($file->getPath());
 
         return $file;
     }
 
     /**
      * @param string $directory
+     *
      * @throws \LogicException
      */
     public static function createDirectory($directory)
@@ -55,7 +57,7 @@ class DirectoryUtil
             $directories = explode('/', $directory);
 
             $max = count($directories);
-            for ($i = 2; $i <= $max; $i++) {
+            for ($i = 2; $i <= $max; ++$i) {
                 $dir = implode('/', array_slice($directories, 0, $i));
 
                 // You might wanna read is as check as follows: if it exists, make it, check if it did

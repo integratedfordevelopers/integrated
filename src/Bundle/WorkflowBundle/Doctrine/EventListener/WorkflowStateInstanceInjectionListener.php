@@ -13,10 +13,8 @@ namespace Integrated\Bundle\WorkflowBundle\Doctrine\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ManagerRegistry;
-
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
 
 /**
@@ -52,7 +50,7 @@ class WorkflowStateInstanceInjectionListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::postLoad
+            Events::postLoad,
         ];
     }
 

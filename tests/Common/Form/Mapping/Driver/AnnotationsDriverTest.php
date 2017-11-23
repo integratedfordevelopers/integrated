@@ -32,7 +32,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
     private $driver;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -44,7 +44,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the AnnotationsDriver LoadMetadataForClass function
+     * Test the AnnotationsDriver LoadMetadataForClass function.
      */
     public function testLoadMetadataForClassFunction()
     {
@@ -56,7 +56,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
 
         // TODO: mock document class
         // Create annotations Document
-        $document = new Document(array('name' => 'Henk de Vries'));
+        $document = new Document(['name' => 'Henk de Vries']);
 
         // Stub getClassAnnotation function
         $this->reader->expects($this->once())
@@ -65,7 +65,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
 
         // TODO: mock field class
         // Create annotations Field
-        $field = new Field(array('options' => array('label' => 'Do you love Henk?')));
+        $field = new Field(['options' => ['label' => 'Do you love Henk?']]);
 
         // Stub getPropertyAnnotation function
         $this->reader->expects($this->exactly(2))
@@ -77,7 +77,7 @@ class AnnotationsDriverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the AnnotationsDriver LoadMetadataForClass function to return null
+     * Test the AnnotationsDriver LoadMetadataForClass function to return null.
      */
     public function testLoadMetadataForClassFunctionReturnNull()
     {

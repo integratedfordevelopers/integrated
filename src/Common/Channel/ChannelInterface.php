@@ -12,21 +12,21 @@
 namespace Integrated\Common\Channel;
 
 /**
- * Interface for Channel documents
+ * Interface for Channel documents.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
 interface ChannelInterface
 {
     /**
-     * Return the id of the Channel
+     * Return the id of the Channel.
      *
      * @return string
      */
     public function getId();
 
     /**
-     * Return the name of the Channel
+     * Return the name of the Channel.
      *
      * @return string
      */

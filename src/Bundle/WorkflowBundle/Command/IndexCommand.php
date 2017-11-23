@@ -12,21 +12,16 @@
 namespace Integrated\Bundle\WorkflowBundle\Command;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
-
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\LockHandler;
-
 use RuntimeException;
 use InvalidArgumentException;
 use Exception;
@@ -63,7 +58,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lock = new LockHandler(IndexCommand::class);
+        $lock = new LockHandler(self::class);
         $attempts = 0;
 
         while (!$lock->lock()) {
@@ -138,6 +133,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
 
     /**
      * @param string[] $ids
+     *
      * @return Definition[]
      */
     protected function findDefinition(array $ids = null)
@@ -151,6 +147,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
 
     /**
      * @param string[] $ids
+     *
      * @return ContentTypeInterface[]
      */
     protected function findTypes(array $ids)

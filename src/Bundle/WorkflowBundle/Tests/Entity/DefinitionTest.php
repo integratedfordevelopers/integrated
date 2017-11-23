@@ -24,7 +24,7 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
     private $state;
 
     /**
-     * Set up the test
+     * Set up the test.
      */
     public function setup()
     {
@@ -32,7 +32,8 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test setDefault function
+     * Test setDefault function.
+     *
      * @return Definition
      */
     public function testSetDefault()
@@ -45,8 +46,10 @@ class DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getDefault function
+     * Test getDefault function.
+     *
      * @depends testSetDefault
+     *
      * @param Definition $instance
      */
     public function testGetDefault(Definition $instance)

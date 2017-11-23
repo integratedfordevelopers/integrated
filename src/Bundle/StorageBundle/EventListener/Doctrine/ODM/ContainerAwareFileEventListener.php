@@ -14,7 +14,6 @@ namespace Integrated\Bundle\StorageBundle\EventListener\Doctrine\ODM;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -28,10 +27,10 @@ class ContainerAwareFileEventListener extends FileEventListener
     private $initializer;
 
     /**
-     * @param ContainerInterface       $container
-     * @param string                   $manager
-     * @param string                   $filesystemRemove
-     * @param string                   $intentTransformer
+     * @param ContainerInterface $container
+     * @param string             $manager
+     * @param string             $filesystemRemove
+     * @param string             $intentTransformer
      */
     public function __construct(ContainerInterface $container, $manager, $filesystemRemove, $intentTransformer)
     {
@@ -47,7 +46,7 @@ class ContainerAwareFileEventListener extends FileEventListener
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function prePersist(LifecycleEventArgs $args)
     {
@@ -57,7 +56,7 @@ class ContainerAwareFileEventListener extends FileEventListener
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function preRemove(LifecycleEventArgs $args)
     {
@@ -67,7 +66,7 @@ class ContainerAwareFileEventListener extends FileEventListener
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function preFlush(PreFlushEventArgs $args)
     {
@@ -77,7 +76,7 @@ class ContainerAwareFileEventListener extends FileEventListener
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function onFlush(OnFlushEventArgs $args)
     {

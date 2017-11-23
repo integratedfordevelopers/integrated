@@ -13,15 +13,15 @@ namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
-
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 
 /**
- * Document ContentType
+ * Document ContentType.
  *
  * @MongoDBUnique(fields="id")
+ *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
 class ContentType implements ContentTypeInterface
@@ -60,7 +60,7 @@ class ContentType implements ContentTypeInterface
     protected $createdAt;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -79,7 +79,7 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * Get the id of the content type
+     * Get the id of the content type.
      *
      * @return string
      */
@@ -89,14 +89,16 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * Set the id of the content type
+     * Set the id of the content type.
      *
      * @param string $id
+     *
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -109,14 +111,16 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * Set the class of the content type
+     * Set the class of the content type.
      *
      * @param string $class The class of the content type
+     *
      * @return $this
      */
     public function setClass($class)
     {
         $this->class = $class;
+
         return $this;
     }
 
@@ -129,14 +133,16 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * Set the name of content type
+     * Set the name of content type.
      *
      * @param $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -185,14 +191,16 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * Set the fields of the content type
+     * Set the fields of the content type.
      *
      * @param ContentTypeFieldInterface[] $fields
+     *
      * @return $this
      */
     public function setFields(array $fields)
     {
         $this->fields = $fields;
+
         return $this;
     }
 
@@ -205,9 +213,10 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * Overrider all the option with a new set of values for this content type
+     * Overrider all the option with a new set of values for this content type.
      *
      * @param string[] $options
+     *
      * @return $this
      */
     public function setOptions(array $options)
@@ -222,7 +231,7 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOption($name)
     {
@@ -236,8 +245,9 @@ class ContentType implements ContentTypeInterface
     /**
      * Set the value of the specified key.
      *
-     * @param string $name
+     * @param string       $name
      * @param null | mixed $value
+     *
      * @return $this
      */
     public function setOption($name, $value = null)
@@ -252,7 +262,7 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasOption($name)
     {
@@ -260,7 +270,7 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * Get the createdAt of the content type
+     * Get the createdAt of the content type.
      *
      * @return \DateTime
      */
@@ -270,14 +280,16 @@ class ContentType implements ContentTypeInterface
     }
 
     /**
-     * Set the createdAt of the content type
+     * Set the createdAt of the content type.
      *
      * @param \DateTime $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 

@@ -15,7 +15,6 @@ use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 use Integrated\Bundle\FormTypeBundle\Form\Type\ContentChoiceType;
-
 use Symfony\Component\Form\Extension\Core\Type\BaseType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -41,7 +40,7 @@ class CompanyJobType extends BaseType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -55,7 +54,8 @@ class CompanyJobType extends BaseType
     }
 
     /**
-     * Find all contentTypes (ids) that are instance of Company
+     * Find all contentTypes (ids) that are instance of Company.
+     *
      * @return array
      */
     protected function getContentTypes()

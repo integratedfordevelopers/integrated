@@ -20,7 +20,7 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class ColorTransformer implements DataTransformerInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transform($value)
     {
@@ -31,14 +31,14 @@ class ColorTransformer implements DataTransformerInterface
         }
 
         if (strlen($value) == 6 && ctype_xdigit($value)) {
-            return '#' . $value;
+            return '#'.$value;
         }
 
         return '';
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function reverseTransform($value)
     {

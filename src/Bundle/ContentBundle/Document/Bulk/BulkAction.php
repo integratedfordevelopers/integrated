@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Document\Bulk;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Common\Bulk\BulkActionInterface;
 use Integrated\Common\Content\ContentInterface;
 
@@ -79,11 +78,13 @@ class BulkAction
 
     /**
      * @param \DateTime $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -97,11 +98,13 @@ class BulkAction
 
     /**
      * @param \DateTime $executedAt
+     *
      * @return $this
      */
     public function setExecutedAt(\DateTime $executedAt)
     {
         $this->executedAt = $executedAt;
+
         return $this;
     }
 
@@ -131,6 +134,7 @@ class BulkAction
 
     /**
      * @param ContentInterface[] $contents
+     *
      * @return $this
      */
     public function setSelection($contents)
@@ -141,11 +145,13 @@ class BulkAction
                 $this->addSelection($content);
             }
         }
+
         return $this;
     }
 
     /**
      * @param ContentInterface $content
+     *
      * @return $this
      */
     public function addSelection(ContentInterface $content)
@@ -159,11 +165,13 @@ class BulkAction
 
     /**
      * @param ContentInterface $content
+     *
      * @return $this
      */
     public function removeSelection(ContentInterface $content)
     {
         $this->selection->removeElement($content);
+
         return $this;
     }
 
@@ -177,6 +185,7 @@ class BulkAction
 
     /**
      * @param BulkActionInterface[] $actions
+     *
      * @return $this
      */
     public function setActions($actions)
@@ -187,11 +196,13 @@ class BulkAction
                 $this->addAction($action);
             }
         }
+
         return $this;
     }
 
     /**
      * @param BulkActionInterface $action
+     *
      * @return $this
      */
     public function addAction(BulkActionInterface $action)
@@ -199,16 +210,19 @@ class BulkAction
         if (!$this->actions->contains($action)) {
             $this->actions->add($action);
         }
+
         return $this;
     }
 
     /**
      * @param BulkActionInterface $action
+     *
      * @return $this
      */
     public function removeAction(BulkActionInterface $action)
     {
         $this->actions->removeElement($action);
+
         return $this;
     }
 }

@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\SlugBundle\Slugger;
 
 /**
- * Slugger interface
+ * Slugger interface.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

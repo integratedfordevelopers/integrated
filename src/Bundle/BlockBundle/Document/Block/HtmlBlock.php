@@ -12,10 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
-
-use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
 /**
  * @Type\Document("HTML block")
@@ -51,11 +48,13 @@ class HtmlBlock extends Block
 
     /**
      * @param string $content
+     *
      * @return $this
      */
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 

@@ -13,11 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
-
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\Content\Embedded\RelationInterface;
@@ -27,11 +25,10 @@ use Integrated\Common\Content\MetadataInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\RegistryInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
- * Abstract base class for document types
+ * Abstract base class for document types.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -112,7 +109,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     protected $customFields;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -124,7 +121,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Get the id of the document
+     * Get the id of the document.
      *
      * @return string
      */
@@ -134,19 +131,21 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Set the id of the document
+     * Set the id of the document.
      *
      * @param string $id
+     *
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
     /**
-     * Get the slug of the document
+     * Get the slug of the document.
      *
      * @return string
      */
@@ -156,14 +155,16 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Set the slug of the document
+     * Set the slug of the document.
      *
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 
@@ -181,6 +182,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     public function setContentType($contentType)
     {
         $this->contentType = $contentType;
+
         return $this;
     }
 
@@ -231,6 +233,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     public function removeRelation(RelationInterface $relation)
     {
         $this->getRelations()->removeElement($relation);
+
         return $this;
     }
 
@@ -252,6 +255,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @param $relationType
+     *
      * @return ArrayCollection|false
      */
     public function getRelationsByRelationType($relationType)
@@ -269,12 +273,13 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @param $relationType
+     *
      * @return array|bool
      */
     public function getReferencesByRelationType($relationType)
     {
         if ($relations = $this->getRelationsByRelationType($relationType)) {
-            $references = array();
+            $references = [];
 
             /** @var RelationInterface $relation */
             foreach ($relations as $relation) {
@@ -289,6 +294,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @param $relationType
+     *
      * @return Content|null
      */
     public function getReferenceByRelationType($relationType)
@@ -304,7 +310,8 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @param string $relationId
-     * @param bool $published
+     * @param bool   $published
+     *
      * @return ArrayCollection
      */
     public function getReferencesByRelationId($relationId, $published = true)
@@ -330,7 +337,8 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @param string $relationId
-     * @param bool $published
+     * @param bool   $published
+     *
      * @return Content|null
      */
     public function getReferenceByRelationId($relationId, $published = true)
@@ -341,7 +349,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Get the createdAt of the document
+     * Get the createdAt of the document.
      *
      * @return \DateTime
      */
@@ -351,19 +359,21 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Set the createdAt of the document
+     * Set the createdAt of the document.
      *
      * @param \DateTime $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
     /**
-     * Get the updatedAt of the document
+     * Get the updatedAt of the document.
      *
      * @return \DateTime
      */
@@ -373,19 +383,21 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Set the updatedAt of the document
+     * Set the updatedAt of the document.
      *
      * @param \DateTime $updatedAt
+     *
      * @return $this
      */
     public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
     /**
-     * Get the publish time of the document
+     * Get the publish time of the document.
      *
      * @return PublishTime
      */
@@ -395,21 +407,24 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Set the publish time of the document
+     * Set the publish time of the document.
      *
      * @param PublishTime $publishTime
+     *
      * @return $this
      */
     public function setPublishTime(PublishTime $publishTime)
     {
         $this->publishTime = $publishTime;
+
         return $this;
     }
 
     /**
-     * Get the published of the document
+     * Get the published of the document.
      *
      * @deprecated
+     *
      * @return bool
      */
     public function getPublished()
@@ -418,9 +433,10 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Get the published of the document
+     * Get the published of the document.
      *
      * @param bool $checkPublishTime
+     *
      * @return bool
      */
     public function isPublished($checkPublishTime = true)
@@ -431,23 +447,25 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
             $published = $this->publishTime->isPublished();
         }
 
-        return ($published && !$this->disabled);
+        return $published && !$this->disabled;
     }
 
     /**
-     * Set the published of the document
+     * Set the published of the document.
      *
      * @param bool $published
+     *
      * @return $this
      */
     public function setPublished($published)
     {
         $this->published = $published;
+
         return $this;
     }
 
     /**
-     * Get the disabled of the document
+     * Get the disabled of the document.
      *
      * @return bool
      */
@@ -457,14 +475,16 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Set the disabled of the document
+     * Set the disabled of the document.
      *
      * @param bool $disabled
+     *
      * @return $this
      */
     public function setDisabled($disabled)
     {
         $this->disabled = $disabled;
+
         return $this;
     }
 
@@ -490,6 +510,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
         }
 
         $this->metadata = $metadata;
+
         return $this;
     }
 
@@ -542,6 +563,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     public function removeChannel(ChannelInterface $channel)
     {
         $this->channels->removeElement($channel);
+
         return $this;
     }
 
@@ -559,11 +581,13 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @param Channel|null $primaryChannel
+     *
      * @return $this
      */
     public function setPrimaryChannel(Channel $primaryChannel = null)
     {
         $this->primaryChannel = $primaryChannel;
+
         return $this;
     }
 
@@ -581,6 +605,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
     /**
      * @param RegistryInterface|null $customFields
+     *
      * @return $this
      */
     public function setCustomFields(RegistryInterface $customFields = null)
@@ -590,11 +615,12 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
         }
 
         $this->customFields = $customFields;
+
         return $this;
     }
 
     /**
-     * updateUpdatedAtOnPreUpdate
+     * updateUpdatedAtOnPreUpdate.
      */
     public function updateUpdatedAtOnPreUpdate()
     {
@@ -602,7 +628,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * updatePublishTimeOnPreUpdate
+     * updatePublishTimeOnPreUpdate.
      */
     public function updatePublishTimeOnPreUpdate()
     {

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
-
 use Integrated\Bundle\ContentBundle\Document\Content\News;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
@@ -39,7 +38,7 @@ class NewsController
     protected $blockManager;
 
     /**
-     * @param TwigEngine $templating
+     * @param TwigEngine   $templating
      * @param ThemeManager $themeManager
      * @param BlockManager $blockManager
      */
@@ -52,7 +51,8 @@ class NewsController
 
     /**
      * @param ContentTypePage $page
-     * @param News $news
+     * @param News            $news
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(ContentTypePage $page, News $news)
@@ -60,7 +60,7 @@ class NewsController
         $this->blockManager->setDocument($news);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/News/show/' . $page->getLayout()),
+            $this->themeManager->locateTemplate('content/News/show/'.$page->getLayout()),
             [
                 'news' => $news,
                 'page' => $page,

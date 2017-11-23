@@ -13,21 +13,15 @@ namespace Integrated\Bundle\WorkflowBundle\Tests\Security;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
-
 use Integrated\Bundle\WorkflowBundle\Security\WorkflowVoter;
-
 use Integrated\Common\Form\Mapping\MetadataInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\ContentType\ResolverInterface;
-
 use Integrated\Common\Security\Permissions;
-
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -203,9 +197,9 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     public function testSupportsAttributeRenamed()
     {
         $voter = $this->getInstance([
-            'view'   => 'SUPPORTED',
+            'view' => 'SUPPORTED',
             'create' => 'SUPPORTED',
-            'edit'   => 'SUPPORTED',
+            'edit' => 'SUPPORTED',
             'delete' => 'SUPPORTED',
         ]);
 
@@ -227,7 +221,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($voter->supportsClass($class));
         $this->assertTrue($voter->supportsClass($object));
         $this->assertFalse($voter->supportsClass('stdClass'));
-        $this->assertFalse($voter->supportsClass(new \stdClass));
+        $this->assertFalse($voter->supportsClass(new \stdClass()));
     }
 
     public function testVoteNoContent()
@@ -403,13 +397,13 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'class' => [
-                $this->getToken('this_is_not_supported'), [], VoterInterface::ACCESS_ABSTAIN
+                $this->getToken('this_is_not_supported'), [], VoterInterface::ACCESS_ABSTAIN,
             ],
             'class but valid attribute' => [
-                $this->getToken('this_is_not_supported'), [Permissions::VIEW, Permissions::EDIT], VoterInterface::ACCESS_DENIED
+                $this->getToken('this_is_not_supported'), [Permissions::VIEW, Permissions::EDIT], VoterInterface::ACCESS_DENIED,
             ],
             'attribute' => [
-                $this->getToken(), ['NOTSUPPORTED'], VoterInterface::ACCESS_ABSTAIN
+                $this->getToken(), ['NOTSUPPORTED'], VoterInterface::ACCESS_ABSTAIN,
             ],
         ];
     }
@@ -441,37 +435,37 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'view' => [
-                ['read' => true, 'write' => false], [Permissions::VIEW], VoterInterface::ACCESS_GRANTED
+                ['read' => true, 'write' => false], [Permissions::VIEW], VoterInterface::ACCESS_GRANTED,
             ],
             'view denied' => [
-                ['read' => false, 'write' => true], [Permissions::VIEW], VoterInterface::ACCESS_DENIED
+                ['read' => false, 'write' => true], [Permissions::VIEW], VoterInterface::ACCESS_DENIED,
             ],
             'create' => [
-                ['read' => false, 'write' => true], [Permissions::CREATE], VoterInterface::ACCESS_GRANTED
+                ['read' => false, 'write' => true], [Permissions::CREATE], VoterInterface::ACCESS_GRANTED,
             ],
             'create denied' => [
-                ['read' => true, 'write' => false], [Permissions::CREATE], VoterInterface::ACCESS_DENIED
+                ['read' => true, 'write' => false], [Permissions::CREATE], VoterInterface::ACCESS_DENIED,
             ],
             'edit' => [
-                ['read' => true, 'write' => true], [Permissions::EDIT], VoterInterface::ACCESS_GRANTED
+                ['read' => true, 'write' => true], [Permissions::EDIT], VoterInterface::ACCESS_GRANTED,
             ],
             'edit denied' => [
-                ['read' => false, 'write' => true], [Permissions::EDIT], VoterInterface::ACCESS_DENIED
+                ['read' => false, 'write' => true], [Permissions::EDIT], VoterInterface::ACCESS_DENIED,
             ],
             'delete' => [
-                ['read' => true, 'write' => true], [Permissions::DELETE], VoterInterface::ACCESS_GRANTED
+                ['read' => true, 'write' => true], [Permissions::DELETE], VoterInterface::ACCESS_GRANTED,
             ],
             'delete denied' => [
-                ['read' => false, 'write' => true], [Permissions::DELETE], VoterInterface::ACCESS_DENIED
+                ['read' => false, 'write' => true], [Permissions::DELETE], VoterInterface::ACCESS_DENIED,
             ],
             'mixed' => [
-                ['read' => true, 'write' => true], [Permissions::VIEW, Permissions::DELETE], VoterInterface::ACCESS_GRANTED
+                ['read' => true, 'write' => true], [Permissions::VIEW, Permissions::DELETE], VoterInterface::ACCESS_GRANTED,
             ],
             'mixed denied' => [
-                ['read' => true, 'write' => false], [Permissions::VIEW, Permissions::EDIT], VoterInterface::ACCESS_DENIED
+                ['read' => true, 'write' => false], [Permissions::VIEW, Permissions::EDIT], VoterInterface::ACCESS_DENIED,
             ],
             'mixed not supports attribute' => [
-                ['read' => true, 'write' => false], [Permissions::VIEW, 'NOT_SUPPORTED'], VoterInterface::ACCESS_GRANTED
+                ['read' => true, 'write' => false], [Permissions::VIEW, 'NOT_SUPPORTED'], VoterInterface::ACCESS_GRANTED,
             ],
         ];
     }
@@ -481,7 +475,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $user = $this->getUser(['group']);
         $state = $this->getState([
             $this->getPermission('group', true, false),
-            $this->getPermission('group-no-match', false, true)
+            $this->getPermission('group-no-match', false, true),
         ]);
 
         $this->assertEquals(['read' => true, 'write' => false], $this->getInstance()->getPermissions($user, $state));
@@ -492,7 +486,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $user = $this->getUser(['group']);
         $state = $this->getState([
             $this->getPermission('group', false, true),
-            $this->getPermission('group-no-match', true, false)
+            $this->getPermission('group-no-match', true, false),
         ]);
 
         $this->assertEquals(['read' => false, 'write' => true], $this->getInstance()->getPermissions($user, $state));
@@ -503,7 +497,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $user = $this->getUser(['group']);
         $state = $this->getState([
             $this->getPermission('group', false, false),
-            $this->getPermission('group-no-match', true, true)
+            $this->getPermission('group-no-match', true, true),
         ]);
 
         $this->assertEquals(['read' => false, 'write' => false], $this->getInstance()->getPermissions($user, $state));
@@ -516,7 +510,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
             $this->getPermission('group-1', false, false),
             $this->getPermission('group-2', true, false),
             $this->getPermission('group-3', false, true),
-            $this->getPermission('group-4', true, true)
+            $this->getPermission('group-4', true, true),
         ]);
 
         $this->assertEquals(['read' => true, 'write' => false], $this->getInstance()->getPermissions($user, $state));
@@ -529,7 +523,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
             $this->getPermission('group-1', false, false),
             $this->getPermission('group-2', true, false),
             $this->getPermission('group-3', false, true),
-            $this->getPermission('group-4', true, true)
+            $this->getPermission('group-4', true, true),
         ]);
 
         $this->assertEquals(['read' => false, 'write' => true], $this->getInstance()->getPermissions($user, $state));
@@ -542,7 +536,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
             $this->getPermission('group-1', false, false),
             $this->getPermission('group-2', true, false),
             $this->getPermission('group-3', false, true),
-            $this->getPermission('group-4', true, true)
+            $this->getPermission('group-4', true, true),
         ]);
 
         $this->assertEquals(['read' => true, 'write' => true], $this->getInstance()->getPermissions($user, $state));
@@ -655,8 +649,8 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $group
-     * @param bool $read
-     * @param bool $write
+     * @param bool   $read
+     * @param bool   $write
      *
      * @return Permission | \PHPUnit_Framework_MockObject_MockObject
      */
@@ -703,8 +697,8 @@ class WorkflowVoterMock extends WorkflowVoter
 
         if ($this->permissions === null) {
             return parent::getPermissions($user, $state);
-        } else {
-            return $this->permissions;
         }
+
+        return $this->permissions;
     }
 }

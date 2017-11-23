@@ -32,7 +32,7 @@ class ContentProviderDetachDecorator implements ContentProviderInterface
 
     /**
      * @param ContentProviderInterface $provider
-     * @param ObjectManager $manager
+     * @param ObjectManager            $manager
      */
     public function __construct(ContentProviderInterface $provider, ObjectManager $manager)
     {

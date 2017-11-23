@@ -15,7 +15,6 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -31,7 +30,7 @@ class CustomFieldListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::POST_BUILD => 'onPostBuild'
+            Events::POST_BUILD => 'onPostBuild',
         ];
     }
 
@@ -45,7 +44,7 @@ class CustomFieldListener implements EventSubscriberInterface
         foreach ($type->getFields() as $field) {
             if ($field instanceof CustomField) {
                 $event->getBuilder()->add(self::FORM_NAME, CustomFieldsType::class, [
-                    'contentType' => $type
+                    'contentType' => $type,
                 ]);
 
                 return;

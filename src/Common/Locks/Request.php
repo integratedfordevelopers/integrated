@@ -39,16 +39,16 @@ class Request implements RequestInterface
         $this->resource = $resource;
     }
 
-//	/**
-//	 * @param mixed $resource
-//	 */
-//	public function setResource($resource)
-//	{
-//		$this->resource = $resource;
-//	}
+    //	/**
+    //	 * @param mixed $resource
+    //	 */
+    //	public function setResource($resource)
+    //	{
+    //		$this->resource = $resource;
+    //	}
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getResource()
     {
@@ -64,7 +64,7 @@ class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOwner()
     {
@@ -80,7 +80,7 @@ class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getTimeout()
     {

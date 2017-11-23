@@ -24,7 +24,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     protected $registry;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test interface of typeRegistry
+     * Test interface of typeRegistry.
      */
     public function testInterface()
     {
@@ -40,7 +40,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getIterator function
+     * Test getIterator function.
      */
     public function testGetIterator()
     {
@@ -48,7 +48,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test add function
+     * Test add function.
      */
     public function testAddFunction()
     {
@@ -68,7 +68,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test has function
+     * Test has function.
      */
     public function testHasFunction()
     {

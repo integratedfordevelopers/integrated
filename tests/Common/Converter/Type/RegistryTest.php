@@ -28,7 +28,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
     {
         $registry = $this->getInstance([
             'test1' => $this->getType(),
-            'test2' => $this->getType()
+            'test2' => $this->getType(),
         ]);
 
         self::assertTrue($registry->hasType('test1'));
@@ -70,6 +70,7 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param ResolvedTypeInterface[] $types
+     *
      * @return Registry
      */
     protected function getInstance(array $types = [])

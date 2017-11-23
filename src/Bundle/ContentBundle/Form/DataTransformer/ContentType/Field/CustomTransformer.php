@@ -12,9 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field;
 
 use Symfony\Component\Form\DataTransformerInterface;
-
-use Integrated\Common\Form\Mapping\Metadata;
-
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
 
 /**
@@ -24,6 +21,7 @@ class CustomTransformer implements DataTransformerInterface
 {
     /**
      * @param mixed $field
+     *
      * @return array
      */
     public function transform($field)
@@ -35,7 +33,7 @@ class CustomTransformer implements DataTransformerInterface
                 'name' => $field->getName(),
                 'type' => $field->getType(),
                 'label' => $field->getLabel(),
-                'required' => !empty($options['required'])
+                'required' => !empty($options['required']),
             ];
         }
 
@@ -44,6 +42,7 @@ class CustomTransformer implements DataTransformerInterface
 
     /**
      * @param mixed $value
+     *
      * @return CustomField|null
      */
     public function reverseTransform($value)
@@ -61,7 +60,7 @@ class CustomTransformer implements DataTransformerInterface
 
             $options = [
                 'label' => $value['label'],
-                'required' => !empty($value['required'])
+                'required' => !empty($value['required']),
             ];
 
             if (isset($value['name'])) {

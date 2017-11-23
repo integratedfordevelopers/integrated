@@ -23,6 +23,7 @@ interface ScopeInterface
 
     /**
      * @param $name
+     *
      * @return string
      */
     public function setName($name);
@@ -33,12 +34,13 @@ interface ScopeInterface
     public function getName();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isAdmin();
 
     /**
-     * @param boolean $admin
+     * @param bool $admin
+     *
      * @return $this
      */
     public function setAdmin($admin);

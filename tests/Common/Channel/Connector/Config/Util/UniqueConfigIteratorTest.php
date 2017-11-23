@@ -12,10 +12,8 @@
 namespace Integrated\Tests\Common\Channel\Connector\Config\Util;
 
 use ArrayIterator;
-
 use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\Util\UniqueConfigIterator;
-
 use stdClass;
 
 /**

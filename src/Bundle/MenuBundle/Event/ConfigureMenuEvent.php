@@ -13,7 +13,6 @@ namespace Integrated\Bundle\MenuBundle\Event;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-
 use Symfony\Component\EventDispatcher\Event;
 
 /**
@@ -38,7 +37,7 @@ class ConfigureMenuEvent extends Event
 
     /**
      * @param FactoryInterface $factory
-     * @param ItemInterface $menu
+     * @param ItemInterface    $menu
      */
     public function __construct(FactoryInterface $factory, ItemInterface $menu)
     {

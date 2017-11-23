@@ -37,7 +37,7 @@ class Request implements RequestInterface
     /**
      * @param ResourceInterface $resource
      * @param ResourceInterface $owner
-     * @param null $timeout
+     * @param null              $timeout
      */
     public function __construct(ResourceInterface $resource, ResourceInterface $owner = null, $timeout = null)
     {
@@ -47,7 +47,7 @@ class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getResource()
     {
@@ -55,7 +55,7 @@ class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOwner()
     {
@@ -63,7 +63,7 @@ class Request implements RequestInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getTimeout()
     {

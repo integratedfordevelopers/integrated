@@ -13,7 +13,6 @@ namespace Integrated\Bundle\StorageBundle\Locator;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Cache\CacheInterface;
-
 use Symfony\Component\HttpKernel\Config\FileLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -29,9 +28,9 @@ class StorageLocator extends FileLocator
 
     /**
      * @param KernelInterface $kernel
-     * @param null|string $path
-     * @param array $paths
-     * @param CacheInterface $cache
+     * @param null|string     $path
+     * @param array           $paths
+     * @param CacheInterface  $cache
      */
     public function __construct(KernelInterface $kernel, $path, array $paths, CacheInterface $cache)
     {
@@ -46,6 +45,7 @@ class StorageLocator extends FileLocator
     public function __sleep()
     {
         $this->cache = null;
+
         return [];
     }
 

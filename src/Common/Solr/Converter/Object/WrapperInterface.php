@@ -17,10 +17,10 @@ use ArrayAccess;
  */
 interface WrapperInterface extends ArrayAccess
 {
-//	/**
-//	 * @param mixed $value
-//	 */
-//	public function __construct($value);
+    //	/**
+    //	 * @param mixed $value
+    //	 */
+    //	public function __construct($value);
 
     /**
      * return the scalar value of the object.
@@ -41,7 +41,7 @@ interface WrapperInterface extends ArrayAccess
     /**
      * The value is assumed to be array and all the actions
      * after this will be done on the whole array. The value
-     * method wil return a array with all the none null values
+     * method wil return a array with all the none null values.
      *
      * @return WrapperInterface
      */
@@ -51,6 +51,7 @@ interface WrapperInterface extends ArrayAccess
      * @param $glue
      * @param $pieces
      * @param bool $keepempty
+     *
      * @return mixed
      */
     public function concat($glue, $pieces = null, $keepempty = false);
@@ -59,42 +60,43 @@ interface WrapperInterface extends ArrayAccess
      * @param $glue
      * @param null $pieces
      * @param bool $keepempty
+     *
      * @return mixed
      */
     public function combine($glue, $pieces = null, $keepempty = false);
 
-//	public function flatten();
+    //	public function flatten();
 
     /**
-     * check if the value is empty
+     * check if the value is empty.
      *
      * @return bool
      */
     public function isEmpty();
 
     /**
-     * check if the value is a scalar
+     * check if the value is a scalar.
      *
      * @return bool
      */
     public function isValue();
 
     /**
-     * check if the value is a array
+     * check if the value is a array.
      *
      * @return bool
      */
     public function isArray();
 
     /**
-     * check if the value is a scalar
+     * check if the value is a scalar.
      *
      * @return bool
      */
     public function isScalar();
 
     /**
-     * check if the value is a object
+     * check if the value is a object.
      *
      * @return bool
      */

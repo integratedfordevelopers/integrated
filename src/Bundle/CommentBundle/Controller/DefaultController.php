@@ -12,12 +12,10 @@
 namespace Integrated\Bundle\CommentBundle\Controller;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\CommentBundle\Document\Comment;
 use Integrated\Bundle\CommentBundle\Document\Embedded\Reply;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\UserBundle\Model\User;
-
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,8 +24,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Class DefaultController
- * @package Integrated\Bundle\CommentBundle\Controller
+ * Class DefaultController.
  */
 class DefaultController
 {
@@ -52,9 +49,9 @@ class DefaultController
     protected $tokenStorage;
 
     /**
-     * @param TwigEngine $templating
-     * @param DocumentManager $dm
-     * @param FormFactory $formFactory
+     * @param TwigEngine            $templating
+     * @param DocumentManager       $dm
+     * @param FormFactory           $formFactory
      * @param TokenStorageInterface $tokenStorage
      */
     public function __construct(
@@ -73,6 +70,7 @@ class DefaultController
      * @param Content $content
      * @param string  $field
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
     public function newAction(Request $request, Content $content, $field)
@@ -87,7 +85,7 @@ class DefaultController
         }
 
         $form = $this->formFactory->create('integrated_comment', $comment, [
-            'action' => $request->getUri()
+            'action' => $request->getUri(),
         ]);
 
         $form->handleRequest($request);
@@ -107,6 +105,7 @@ class DefaultController
     /**
      * @param Request $request
      * @param Comment $comment
+     *
      * @return JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function getAction(Request $request, Comment $comment)
@@ -120,7 +119,7 @@ class DefaultController
         }
 
         $form = $this->formFactory->create('integrated_comment', $reply, [
-            'action' => $request->getUri()
+            'action' => $request->getUri(),
         ]);
 
         $form->handleRequest($request);
@@ -140,6 +139,7 @@ class DefaultController
 
     /**
      * @param Comment $comment
+     *
      * @return JsonResponse
      */
     public function deleteAction(Comment $comment)
@@ -149,13 +149,14 @@ class DefaultController
 
         return new JsonResponse([
             'deleted' => true,
-            'id' => $comment->getId()
+            'id' => $comment->getId(),
         ]);
     }
 
     /**
      * @param Comment $comment
      * @param $replyId
+     *
      * @return JsonResponse
      */
     public function deleteReply(Comment $comment, $replyId)
@@ -166,7 +167,7 @@ class DefaultController
 
         return new JsonResponse([
             'deleted' => $result,
-            'id' => $replyId
+            'id' => $replyId,
         ]);
     }
 

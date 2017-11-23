@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ImageBundle\Factory;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
 use Integrated\Bundle\ImageBundle\Model\StorageModel;
 
@@ -23,6 +22,7 @@ class StorageModelFactory
 {
     /**
      * @param \stdClass $json
+     *
      * @return StorageModel
      */
     public static function json(\stdClass $json)

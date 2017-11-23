@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\PageBundle\Grid;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Row;
@@ -38,6 +37,7 @@ class GridFactory
 
     /**
      * @param array $array
+     *
      * @return \Integrated\Bundle\PageBundle\Document\Page\Grid\Grid|null
      */
     public function fromArray(array $array = [])
@@ -55,6 +55,7 @@ class GridFactory
 
     /**
      * @param array $array
+     *
      * @return array
      */
     protected function parseItems(array $array = [])

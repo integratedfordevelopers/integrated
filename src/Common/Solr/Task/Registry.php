@@ -35,6 +35,7 @@ class Registry
 
     /**
      * @param string $task
+     *
      * @return bool
      */
     public function hasHandler($task)
@@ -44,6 +45,7 @@ class Registry
 
     /**
      * @param string $task
+     *
      * @return callable
      */
     public function getHandler($task)
@@ -65,6 +67,7 @@ class Registry
 
     /**
      * @param string $task
+     *
      * @return callable
      */
     protected function findHandler($task)

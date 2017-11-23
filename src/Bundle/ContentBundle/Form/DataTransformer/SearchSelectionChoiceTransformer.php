@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 
 /**

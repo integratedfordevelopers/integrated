@@ -24,7 +24,7 @@ class TaxonomyTest extends ContentTest
     private $taxonomy;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class TaxonomyTest extends ContentTest
     }
 
     /**
-     * Test get- and setTitle function
+     * Test get- and setTitle function.
      */
     public function testGetAndSetTitleFunction()
     {
@@ -41,7 +41,7 @@ class TaxonomyTest extends ContentTest
     }
 
     /**
-     * Test get- and setDescription function
+     * Test get- and setDescription function.
      */
     public function testGetAndSetDescriptionFunction()
     {
@@ -50,7 +50,7 @@ class TaxonomyTest extends ContentTest
     }
 
     /**
-     * Test toString function
+     * Test toString function.
      */
     public function testToStringFunction()
     {

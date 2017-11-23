@@ -33,6 +33,6 @@ class TwitterType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return "integrated_social_twitter";
+        return 'integrated_social_twitter';
     }
 }

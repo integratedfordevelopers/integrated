@@ -12,12 +12,9 @@
 namespace Integrated\Bundle\StorageBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-
 use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -42,6 +39,7 @@ class FileController
 
     /**
      * @param Content $document
+     *
      * @return RedirectResponse
      */
     public function fileAction(Content $document)
@@ -58,14 +56,13 @@ class FileController
                         $storage->getPathname(),
                         Response::HTTP_MOVED_PERMANENTLY
                     );
-                } else {
-                    // This may never happen, reflection gave an invalid result
-                    throw new \LogicException(
+                }
+                // This may never happen, reflection gave an invalid result
+                throw new \LogicException(
                         'Invalid instance %s provided trough reflection while %s was expected.',
                         is_object($storage) ? get_class($storage) : gettype($storage),
                         StorageInterface::class
                     );
-                }
             }
         }
 

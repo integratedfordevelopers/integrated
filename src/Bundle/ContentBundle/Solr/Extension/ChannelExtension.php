@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Solr\Extension;
 
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
-
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
 

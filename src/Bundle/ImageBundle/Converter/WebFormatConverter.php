@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ImageBundle\Converter;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ImageBundle\Converter\Format\WebFormat;
 use Integrated\Bundle\StorageBundle\Storage\Cache\AppCache;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -44,8 +43,8 @@ class WebFormatConverter
     /**
      * @param Container $container
      * @param WebFormat $webFormat
-     * @param AppCache $appCache
-     * @param string $format
+     * @param AppCache  $appCache
+     * @param string    $format
      */
     public function __construct(Container $container, WebFormat $webFormat, AppCache $appCache, $format)
     {
@@ -57,6 +56,7 @@ class WebFormatConverter
 
     /**
      * @param StorageInterface $image
+     *
      * @return \SplFileInfo
      */
     public function convert(StorageInterface $image)

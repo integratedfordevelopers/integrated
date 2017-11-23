@@ -13,7 +13,6 @@ namespace Integrated\Common\Form\Mapping;
 
 use Integrated\Common\Form\Mapping\Event\MetadataEvent;
 use Integrated\Common\Form\Mapping\Metadata\Document;
-
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -40,7 +39,7 @@ class MetadataFactory implements MetadataFactoryInterface
     /**
      * @var MetadataInterface[]
      */
-    protected $data = array();
+    protected $data = [];
 
     public function __construct(DriverInterface $driver, $type = null)
     {
@@ -77,7 +76,7 @@ class MetadataFactory implements MetadataFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getAllMetadata()
     {
@@ -95,7 +94,7 @@ class MetadataFactory implements MetadataFactoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getMetadata($class)
     {
@@ -108,6 +107,7 @@ class MetadataFactory implements MetadataFactoryInterface
 
     /**
      * @param string $class
+     *
      * @return MetadataEditorInterface
      */
     public function newMetadata($class)
@@ -117,6 +117,7 @@ class MetadataFactory implements MetadataFactoryInterface
 
     /**
      * @param string $class
+     *
      * @return MetadataEditorInterface
      */
     protected function loadMetadata($class)

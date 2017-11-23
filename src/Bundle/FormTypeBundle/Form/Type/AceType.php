@@ -15,8 +15,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * Class AceType
- * @package Integrated\Bundle\FormTypeBundle\Form\Type
+ * Class AceType.
  */
 class AceType extends AbstractType
 {

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WorkflowBundle\Tests\Doctrine\EventListener;
 
 use Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\ContainerAwareQueueListener;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -23,20 +22,20 @@ class ContainerAwareQueueListenerTest extends QueueListenerTest
     const SERVICE_NAME = 'the.queue.service.name';
 
     /**
-   	 * @var ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
-   	 */
-   	protected $container;
+     * @var ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $container;
 
     protected function setUp()
-   	{
+    {
         parent::setUp();
 
-   		$this->container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
+        $this->container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
         $this->container->expects($this->any())
             ->method('get')
             ->with($this->equalTo(self::SERVICE_NAME))
             ->willReturn($this->queue);
-   	}
+    }
 
     public function testSetGetQueue()
     {
@@ -55,10 +54,10 @@ class ContainerAwareQueueListenerTest extends QueueListenerTest
     }
 
     /**
-   	 * @return ContainerAwareQueueListener
-   	 */
-   	protected function getInstance()
-   	{
-   		return new ContainerAwareQueueListener($this->container, self::SERVICE_NAME);
-   	}
+     * @return ContainerAwareQueueListener
+     */
+    protected function getInstance()
+    {
+        return new ContainerAwareQueueListener($this->container, self::SERVICE_NAME);
+    }
 }

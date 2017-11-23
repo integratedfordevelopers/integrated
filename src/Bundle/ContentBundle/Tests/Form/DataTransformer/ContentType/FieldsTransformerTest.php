@@ -23,7 +23,7 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
     protected $fieldTransformer;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -31,7 +31,7 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instanceOf
+     * Test instanceOf.
      */
     public function testInstanceOf()
     {
@@ -39,7 +39,8 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test transform function with empty data
+     * Test transform function with empty data.
+     *
      * @param mixed $input
      * @dataProvider getInvalidTransformData
      */
@@ -50,7 +51,8 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test transform function with data
+     * Test transform function with data.
+     *
      * @param array $input
      * @param array $output
      * @dataProvider getValidTransformData
@@ -61,7 +63,8 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test reverseTransform function with invalid data
+     * Test reverseTransform function with invalid data.
+     *
      * @param mixed $input
      * @dataProvider getInvalidReverseTransformData
      */
@@ -71,7 +74,8 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test reverseTransform function with valid data
+     * Test reverseTransform function with valid data.
+     *
      * @param array $input
      * @dataProvider getValidReverseTransformData
      */
@@ -96,11 +100,11 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
                 'string',
             ],
             'invalidDataStdClass' => [
-                $this->getMock('stdClass')
+                $this->getMock('stdClass'),
             ],
             'invalidDataArray' => [
-                []
-            ]
+                [],
+            ],
         ];
     }
 
@@ -146,19 +150,19 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
                     $default2,
                     $duplicateDefault,
                     $custom1,
-                    $custom2
+                    $custom2,
                 ],
                 'output' => [
                     'default' => [
                         'name' => $duplicateDefault,
-                        'name2' => $default2
+                        'name2' => $default2,
                     ],
                     'custom' => [
                         $custom1,
-                        $custom2
-                    ]
+                        $custom2,
+                    ],
                 ],
-            ]
+            ],
         ];
     }
 
@@ -169,36 +173,36 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'emptyData' => [
-                null
+                null,
             ],
             'inValidKeys' => [
                 [
                     'inValidKey1' => 'string',
-                    'inValidKey2' => []
-                ]
+                    'inValidKey2' => [],
+                ],
             ],
             'emptyValues' => [
                 [
                     'default' => null,
-                    'custom' => null
+                    'custom' => null,
                 ],
             ],
             'inValidValues' => [
                 [
                     'default' => 1,
-                    'custom' => 'string'
-                ]
+                    'custom' => 'string',
+                ],
             ],
             'inValidValuesInArray' => [
                 [
                     'default' => [
-                        'string'
+                        'string',
                     ],
                     'custom' => [
-                        []
-                    ]
-                ]
-            ]
+                        [],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -212,30 +216,30 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
                 [
                     'default' => [
                         $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface')
+                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
                     ],
-                    'custom' => []
-                ]
+                    'custom' => [],
+                ],
             ],
             'onlyCustomValues' => [
                 [
                     'default' => [],
                     'custom' => [
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface')
-                    ]
-                ]
+                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
+                    ],
+                ],
             ],
             'defaultAndCustomValues' => [
                 [
                     'default' => [
                         $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface')
+                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
                     ],
                     'custom' => [
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface')
-                    ]
-                ]
-            ]
+                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
+                    ],
+                ],
+            ],
         ];
     }
 }

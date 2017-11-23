@@ -12,7 +12,6 @@ namespace Integrated\Bundle\ContentBundle\Tests\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
-
 use Symfony\Component\Form\Test\TypeTestCase;
 
 /**
@@ -22,7 +21,9 @@ class RelationTypeTest extends TypeTestCase
 {
     /**
      * @dataProvider getValidTestData
+     *
      * @see http://symfony.com/doc/current/cookbook/form/unit_testing.html
+     *
      * @param array $data
      */
     public function testSubmitValidData(array $data)
@@ -55,7 +56,7 @@ class RelationTypeTest extends TypeTestCase
                     'sources' => [],
                     'targets' => [],
                     'multiple' => false,
-                    'required' => true
+                    'required' => true,
                 ],
                 'data' => [
                     'name' => 'Relation with  sources and targets',
@@ -68,7 +69,6 @@ class RelationTypeTest extends TypeTestCase
                     ],
                 ],
             ],
-
         ];
     }
 

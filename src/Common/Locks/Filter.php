@@ -24,5 +24,5 @@ class Filter
     /**
      * @var ResourceInterface | ResourceInterface[]
      */
-    public $owners   = [];
+    public $owners = [];
 }

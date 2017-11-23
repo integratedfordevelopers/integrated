@@ -15,14 +15,11 @@ use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\ProfileFormType;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormBuilder;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -34,6 +31,7 @@ class ProfileController extends Controller
      * @Template
      *
      * @param Request $request
+     *
      * @return array
      */
     public function indexAction(Request $request)
@@ -46,15 +44,16 @@ class ProfileController extends Controller
             15
         );
 
-        return array(
+        return [
             'users' => $paginator,
-        );
+        ];
     }
 
     /**
      * @Template
      *
      * @param Request $request
+     *
      * @return array | Response
      */
     public function newAction(Request $request)
@@ -90,16 +89,18 @@ class ProfileController extends Controller
             }
         }
 
-        return array(
-            'form' => $form->createView()
-        );
+        return [
+            'form' => $form->createView(),
+        ];
     }
 
     /**
      * @Template
      *
      * @param Request $request
+     *
      * @return array | Response
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function editAction(Request $request)
@@ -139,16 +140,17 @@ class ProfileController extends Controller
             }
         }
 
-        return array(
+        return [
             'user' => $user,
-            'form' => $form->createView()
-        );
+            'form' => $form->createView(),
+        ];
     }
 
     /**
      * @Template
      *
      * @param Request $request
+     *
      * @return array | Response
      */
     public function deleteAction(Request $request)
@@ -188,14 +190,14 @@ class ProfileController extends Controller
             }
         }
 
-        return array(
+        return [
             'user' => $user,
-            'form' => $form->createView()
-        );
+            'form' => $form->createView(),
+        ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function createForm($type, $data = null, array $options = [], array $buttons = [])
     {
@@ -204,7 +206,7 @@ class ProfileController extends Controller
 
         if ($buttons) {
             $form->add('actions', FormActionsType::class, [
-                'buttons' => $buttons
+                'buttons' => $buttons,
             ]);
         }
 
@@ -213,6 +215,7 @@ class ProfileController extends Controller
 
     /**
      * @return UserManagerInterface
+     *
      * @throws \LogicException
      */
     protected function getManager()

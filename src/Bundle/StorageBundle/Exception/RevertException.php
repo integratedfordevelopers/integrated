@@ -19,6 +19,7 @@ class RevertException extends \ErrorException
     /**
      * @param string $filesystem
      * @param string $identifier
+     *
      * @return static
      */
     public static function writeFailed($filesystem, $identifier)

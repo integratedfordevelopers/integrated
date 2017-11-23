@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WorkflowBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
 
@@ -52,7 +51,6 @@ class PermissionTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('group-1', $result['read']);
         $this->assertContains('group-2', $result['read']);
 
-
         $this->assertContains('group-1', $result['write']);
         $this->assertContains('group-3', $result['write']);
     }
@@ -76,8 +74,8 @@ class PermissionTransformerTest extends \PHPUnit_Framework_TestCase
     public function testTransformEmpty()
     {
         $expected = [
-            'read'  => [],
-            'write' => []
+            'read' => [],
+            'write' => [],
         ];
 
         $this->assertEquals($expected, $this->getInstance()->transform(''));
@@ -103,8 +101,7 @@ class PermissionTransformerTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\Permission', $object);
 
             /** @var Permission $object */
-
-            switch($object->getGroup()) {
+            switch ($object->getGroup()) {
                 case 'group-1':
                     $this->assertTrue($object->hasMask(Permission::READ));
                     $this->assertTrue($object->hasMask(Permission::WRITE));
@@ -160,4 +157,3 @@ class PermissionTransformerTest extends \PHPUnit_Framework_TestCase
         return new PermissionTransformer();
     }
 }
- 

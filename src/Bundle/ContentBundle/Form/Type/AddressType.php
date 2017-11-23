@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CountryType;
@@ -47,11 +46,11 @@ class AddressType extends AbstractType
                     $type = ChoiceType::class;
                     $default = [
                         'placeholder' => '',
-                        'required'    => false,
-                        'choices'     => [
-                            'postal'   => 'Postal address',
+                        'required' => false,
+                        'choices' => [
+                            'postal' => 'Postal address',
                             'visiting' => 'Visiting address',
-                            'mailing'  => 'Mailing address',
+                            'mailing' => 'Mailing address',
                         ],
                     ];
                     break;
@@ -75,7 +74,7 @@ class AddressType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Address::class,
             'options' => [],
-            'fields'     => self::PROPERTIES, // @todo validate options (INTEGRATED-627)
+            'fields' => self::PROPERTIES, // @todo validate options (INTEGRATED-627)
         ]);
     }
 

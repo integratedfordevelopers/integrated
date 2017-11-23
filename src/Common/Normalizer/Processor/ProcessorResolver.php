@@ -13,7 +13,6 @@ namespace Integrated\Common\Normalizer\Processor;
 
 use Exception;
 use ReflectionClass;
-
 use Integrated\Common\Normalizer\Exception\UnexpectedTypeException;
 
 /**
@@ -32,7 +31,7 @@ class ProcessorResolver implements ResolverInterface
     private $factory;
 
     /**
-     * resolved processor cache
+     * resolved processor cache.
      *
      * @var ResolvedProcessorInterface[]
      */
@@ -79,6 +78,7 @@ class ProcessorResolver implements ResolverInterface
 
     /**
      * @param ReflectionClass $reflection
+     *
      * @return array
      */
     protected function resolve(ReflectionClass $reflection)
@@ -115,6 +115,7 @@ class ProcessorResolver implements ResolverInterface
      * Check if the class is already resolved.
      *
      * @param string $class
+     *
      * @return bool
      */
     protected function hasInstance($class)
@@ -126,7 +127,6 @@ class ProcessorResolver implements ResolverInterface
      * Get the resolved processor form the cache.
      *
      * @param string $class
-     * @return null | ResolvedProcessorInterface
      */
     protected function getInstance($class)
     {

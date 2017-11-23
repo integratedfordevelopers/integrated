@@ -13,7 +13,6 @@ namespace Integrated\Bundle\BlockBundle\Controller;
 
 use Integrated\Bundle\BlockBundle\Document\Block\InlineTextBlock;
 use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
-
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -22,8 +21,9 @@ use Symfony\Component\HttpFoundation\Request;
 class InlineTextBlockController extends BlockController
 {
     /**
-     * @param Request $request
+     * @param Request      $request
      * @param AbstractPage $page
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request, AbstractPage $page)

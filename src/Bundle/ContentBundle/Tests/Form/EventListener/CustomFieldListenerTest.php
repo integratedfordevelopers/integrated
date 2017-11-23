@@ -17,7 +17,6 @@ use Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
 use Integrated\Common\ContentType\ContentTypeInterface;
-
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -31,7 +30,7 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
     protected $listener;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -39,7 +38,7 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instanceOf
+     * Test instanceOf.
      */
     public function testInstanceOf()
     {
@@ -47,7 +46,7 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getSubscribedEvents function
+     * Test getSubscribedEvents function.
      */
     public function testGetSubscribedEventsFunction()
     {
@@ -55,7 +54,7 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test onPostBuild event with custom fields
+     * Test onPostBuild event with custom fields.
      */
     public function testOnPostBuildFunctionWithCustomFields()
     {
@@ -103,7 +102,7 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
                 CustomFieldListener::FORM_NAME,
                 CustomFieldsType::class,
                 [
-                    'contentType' => $contentType
+                    'contentType' => $contentType,
                 ]
             )
         ;
@@ -112,7 +111,7 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test onPostBuild event with no custom fields
+     * Test onPostBuild event with no custom fields.
      */
     public function testOnPostBuildFunctionWithNoCustomFields()
     {

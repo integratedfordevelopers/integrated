@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ChannelBundle\Controller;
 
 use Exception;
-
 use Integrated\Bundle\ChannelBundle\Event\FilterResponseConfigEvent;
 use Integrated\Bundle\ChannelBundle\Event\FormConfigEvent;
 use Integrated\Bundle\ChannelBundle\Event\GetResponseConfigEvent;
@@ -21,13 +20,10 @@ use Integrated\Bundle\ChannelBundle\Form\Type\ConfigFormType;
 use Integrated\Bundle\ChannelBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\ChannelBundle\IntegratedChannelEvents;
 use Integrated\Bundle\ChannelBundle\Model\Config;
-
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,7 +50,7 @@ class ConfigController extends Controller
     protected $dispatcher;
 
     /**
-     * Constructor/
+     * Constructor/.
      *
      * @param ConfigManagerInterface $manager
      * @param RegistryInterface      $registry
@@ -83,7 +79,7 @@ class ConfigController extends Controller
         if ($pager = $this->getPaginator()) {
             return $this->render('IntegratedChannelBundle:Config:index.html.twig', [
                 'adapters' => $this->registry->getAdapters(),
-                'pager' => $pager->paginate($this->manager->findAll(), $request->query->get('page', 1))
+                'pager' => $pager->paginate($this->manager->findAll(), $request->query->get('page', 1)),
             ]);
         }
 
@@ -146,8 +142,8 @@ class ConfigController extends Controller
 
         return $this->render('IntegratedChannelBundle:Config:new.html.twig', [
             'adapter' => $adapter,
-            'data'    => $data,
-            'form'    => $form->createView()
+            'data' => $data,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -211,8 +207,8 @@ class ConfigController extends Controller
 
         return $this->render('IntegratedChannelBundle:Config:edit.html.twig', [
             'adapter' => $adapter,
-            'data'    => $data,
-            'form'    => $form->createView()
+            'data' => $data,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -267,8 +263,8 @@ class ConfigController extends Controller
 
         return $this->render('IntegratedChannelBundle:Config:delete.html.twig', [
             'adapter' => $this->registry->hasAdapter($data->getAdapter()) ? $this->registry->getAdapter($data->getAdapter()) : null,
-            'data'    => $data,
-            'form'    => $form->createView()
+            'data' => $data,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -282,11 +278,11 @@ class ConfigController extends Controller
     {
         $form = $this->createForm(ConfigFormType::class, $data, [
             'adapter' => $adapter,
-            'action'  => $this->generateUrl(
+            'action' => $this->generateUrl(
                 'integrated_channel_config_new',
                 ['adapter' => $adapter->getManifest()->getName()]
             ),
-            'method'  => 'POST',
+            'method' => 'POST',
         ]);
 
         $form->add('actions', ActionsType::class, ['buttons' => ['create', 'cancel']]);
@@ -304,8 +300,8 @@ class ConfigController extends Controller
     {
         $form = $this->createForm(ConfigFormType::class, $data, [
             'adapter' => $adapter,
-            'action'  => $this->generateUrl('integrated_channel_config_edit', ['id' => $data->getName()]),
-            'method'  => 'PUT',
+            'action' => $this->generateUrl('integrated_channel_config_edit', ['id' => $data->getName()]),
+            'method' => 'PUT',
         ]);
 
         $form->add('actions', ActionsType::class, ['buttons' => ['save', 'cancel']]);
@@ -321,8 +317,8 @@ class ConfigController extends Controller
     protected function createDeleteForm(Config $data)
     {
         $form = $this->createForm(DeleteFormType::class, $data, [
-            'action'  => $this->generateUrl('integrated_channel_config_delete', ['id' => $data->getName()]),
-            'method'  => 'DELETE',
+            'action' => $this->generateUrl('integrated_channel_config_delete', ['id' => $data->getName()]),
+            'method' => 'DELETE',
         ]);
 
         $form->add('actions', ActionsType::class, ['buttons' => ['delete', 'cancel']]);

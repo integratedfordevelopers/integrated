@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\PageBundle\Document\Page;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
@@ -50,9 +49,9 @@ class ContentTypePage extends AbstractPage
 
     /**
      * @param ContentType $contentType
-     * @param Channel $channel
-     * @param string $layout
-     * @param null $path
+     * @param Channel     $channel
+     * @param string      $layout
+     * @param null        $path
      */
     public function __construct(ContentType $contentType, Channel $channel, $layout = 'default.html.twig', $path = null)
     {
@@ -78,11 +77,13 @@ class ContentTypePage extends AbstractPage
 
     /**
      * @param ContentType $contentType
+     *
      * @return $this
      */
     public function setContentType(ContentType $contentType)
     {
         $this->contentType = $contentType;
+
         return $this;
     }
 

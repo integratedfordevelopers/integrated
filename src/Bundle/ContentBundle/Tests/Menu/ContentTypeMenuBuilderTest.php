@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ContentBundle\Tests\Menu;
 use Integrated\Bundle\ContentBundle\Menu\ContentTypeMenuBuilder;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Common\ContentType\ContentTypeFilterInterface;
-
 use Knp\Menu\FactoryInterface;
 
 /**
@@ -38,7 +37,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
     protected $contentTypeFilterInterface;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setup()
     {
@@ -48,7 +47,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test createMenu function with invalid content types
+     * Test createMenu function with invalid content types.
      */
     public function testCreateMenuFunctionWithInvalidContentType()
     {
@@ -74,7 +73,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test createMenu function with item without parent
+     * Test createMenu function with item without parent.
      */
     public function testCreateMenuFunctionWithItemWithoutParent()
     {
@@ -115,7 +114,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test createMenu function with items
+     * Test createMenu function with items.
      */
     public function testCreateMenuFunctionWithItems()
     {
@@ -157,8 +156,8 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly(2))
             ->method('addChild')
             ->withConsecutive(
-                array('ParentWithMultipleLevels'),
-                array('ParentWithOneLevel')
+                ['ParentWithMultipleLevels'],
+                ['ParentWithOneLevel']
             )
             ->willReturnOnConsecutiveCalls($child1, $child2)
         ;
@@ -167,7 +166,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test createMenu function with access check
+     * Test createMenu function with access check.
      */
     public function testCreateMenuFunctionWithItemsWithAccessCheck()
     {
@@ -221,15 +220,14 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly(2))
             ->method('addChild')
             ->withConsecutive(
-                array('ParentWithMultipleLevels'),
-                array('ParentWithOneLevel')
+                ['ParentWithMultipleLevels'],
+                ['ParentWithOneLevel']
             )
             ->willReturnOnConsecutiveCalls($child1, $child2)
         ;
 
         $this->assertSame($menu, $builder->createMenu());
     }
-
 
     protected function getItemWithoutParent()
     {
@@ -271,6 +269,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param bool $withFilter
+     *
      * @return ContentTypeMenuBuilder
      */
     protected function getInstance($withFilter = false)

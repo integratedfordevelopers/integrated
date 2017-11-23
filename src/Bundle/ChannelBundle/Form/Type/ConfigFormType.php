@@ -12,19 +12,15 @@
 namespace Integrated\Bundle\ChannelBundle\Form\Type;
 
 use Exception;
-
 use Integrated\Bundle\ChannelBundle\Form\DataTransformer\OptionsTransformer;
-
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\ConfigurableInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -59,7 +55,7 @@ class ConfigFormType extends AbstractType
 
         $builder->add('name', TextType::class, [
             'label' => 'form.config.name',
-            'translation_domain' => 'IntegratedChannelBundle'
+            'translation_domain' => 'IntegratedChannelBundle',
         ]);
 
         $builder->add('channels', ChannelChoiceType::class, [
@@ -69,7 +65,7 @@ class ConfigFormType extends AbstractType
             'choice_data' => 'scalar',
 
             'multiple' => true,
-            'expanded' => true
+            'expanded' => true,
         ]);
 
         if ($adapter instanceof ConfigurableInterface) {

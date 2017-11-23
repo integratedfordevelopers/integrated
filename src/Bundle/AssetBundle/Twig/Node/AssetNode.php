@@ -18,11 +18,11 @@ class AssetNode extends \Twig_Node
 {
     /**
      * @param \Twig_Node $body
-     * @param array $assets
-     * @param bool $inline
-     * @param string $mode
-     * @param int $lineno
-     * @param string $tag
+     * @param array      $assets
+     * @param bool       $inline
+     * @param string     $mode
+     * @param int        $lineno
+     * @param string     $tag
      */
     public function __construct(
         \Twig_Node $body,
@@ -54,7 +54,7 @@ class AssetNode extends \Twig_Node
         $compiler
             ->addDebugInfo($this)
             ->write('$this->env->getExtension(')
-                ->string($this->tag . '_extension')
+                ->string($this->tag.'_extension')
             ->write(')->getManager()->add(')
                 ->repr($this->getAttribute('assets'))
                 ->write(', ')

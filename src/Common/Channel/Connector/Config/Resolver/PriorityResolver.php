@@ -12,7 +12,6 @@
 namespace Integrated\Common\Channel\Connector\Config\Resolver;
 
 use AppendIterator;
-
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Config\ResolverInterface;
 use Integrated\Common\Channel\Connector\Config\Util\UniqueConfigIterator;

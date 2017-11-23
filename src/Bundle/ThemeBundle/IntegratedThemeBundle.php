@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ThemeBundle;
 
 use Integrated\Bundle\ThemeBundle\DependencyInjection\Compiler\ThemeManagerPass;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

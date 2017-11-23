@@ -12,11 +12,9 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
-
 use Integrated\Bundle\FormTypeBundle\Form\Type\ColorType;
 use Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneType;
 use Integrated\Bundle\UserBundle\Model\Scope;
-
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -42,14 +40,14 @@ class ChannelType extends AbstractType
         $builder->add('color', ColorType::class);
 
         $builder->add('domains', BootstrapCollectionType::class, [
-            'label' => "Domains (example.com)",
+            'label' => 'Domains (example.com)',
             'allow_add' => true,
             'allow_delete' => true,
             'add_button_text' => 'Add domain',
             'delete_button_text' => 'Delete domain',
             'sub_widget_col' => 5,
             'button_col' => 3,
-            'attr' => ['class' => 'channel-domains']
+            'attr' => ['class' => 'channel-domains'],
         ]);
 
         $builder->add('primaryDomain', HiddenType::class, ['attr' => ['class' => 'primary-domain-input']]);
@@ -89,7 +87,7 @@ class ChannelType extends AbstractType
                 'class' => Scope::class,
                 'placeholder' => 'No user login allowed',
                 'label' => 'User scope',
-                'choice_label' => 'name'
+                'choice_label' => 'name',
             ]
         );
     }

@@ -13,8 +13,6 @@ namespace Integrated\Bundle\StorageBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use Integrated\Bundle\ImageBundle\Converter\Container;
 use Integrated\Bundle\ImageBundle\Validator\Constraints\OnTheFlyFormatConverterConstraint;
 
 /**
@@ -28,7 +26,7 @@ class ImageType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([
-            'constraints' => [new OnTheFlyFormatConverterConstraint()]
+            'constraints' => [new OnTheFlyFormatConverterConstraint()],
         ]);
     }
 

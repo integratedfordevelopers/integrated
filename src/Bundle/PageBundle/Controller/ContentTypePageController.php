@@ -13,7 +13,6 @@ namespace Integrated\Bundle\PageBundle\Controller;
 
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -48,11 +47,10 @@ class ContentTypePageController extends Controller
         ];
     }
 
-
     /**
      * @Template
      *
-     * @param Request $request
+     * @param Request         $request
      * @param ContentTypePage $page
      *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
@@ -80,7 +78,6 @@ class ContentTypePageController extends Controller
         ];
     }
 
-
     /**
      * @param ContentTypePage $page
      *
@@ -95,7 +92,7 @@ class ContentTypePageController extends Controller
             $page,
             [
                 'method' => 'PUT',
-                'theme'  => $this->getTheme($channel),
+                'theme' => $this->getTheme($channel),
                 'controller' => $this->get($page->getControllerService()),
             ]
         );

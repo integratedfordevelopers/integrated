@@ -12,11 +12,9 @@
 namespace Integrated\Common\Channel\Connector\Config\Resolver;
 
 use Integrated\Common\Channel\ChannelInterface;
-
 use Integrated\Common\Channel\Connector\Config\ConfigRepositoryInterface;
 use Integrated\Common\Channel\Connector\Config\ResolverInterface;
 use Integrated\Common\Channel\Connector\Config\Util\ConfigIterator;
-
 use Integrated\Common\Channel\Exception\InvalidArgumentException;
 
 /**

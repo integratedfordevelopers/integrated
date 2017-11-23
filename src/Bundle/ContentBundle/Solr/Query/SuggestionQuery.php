@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Solr\Query;
 
 use Integrated\Bundle\ContentBundle\Solr\Normalizer;
 use Integrated\Bundle\WorkflowBundle\EventListener\WorkflowMarkerInterface;
-
 use Solarium\QueryType\Select\Query\Query;
 use Solarium\QueryType\Select\Query\Component\Facet\Field;
 use Solarium\Exception\InvalidArgumentException;
@@ -31,7 +30,7 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
     /**
      * {@inheritdoc}
      *
-     * @param  string | array $options
+     * @param string | array $options
      */
     public function __construct($options = null)
     {
@@ -46,9 +45,10 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
     }
 
     /**
-     * Normalize the query string
+     * Normalize the query string.
      *
      * @param string $query
+     *
      * @return string
      */
     protected function normalize($query)
@@ -73,7 +73,7 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
             'field' => 'suggestions',
             'limit' => 5,
             'prefix' => $helper->escapeTerm($this->query),
-            'method' => 'enum'
+            'method' => 'enum',
         ];
 
         $facet = new Field($facet);
@@ -87,7 +87,7 @@ class SuggestionQuery extends Query implements WorkflowMarkerInterface
         return parent::setQuery(sprintf(
             'title:((%1$s)^50 OR (%1$s~2)^20 OR(%2$s)^10 OR (%2$s*) OR (%2$s~))',
             $helper->escapePhrase($this->query),
-            '+' . str_replace(' ', ' +', $helper->escapeTerm($this->query))
+            '+'.str_replace(' ', ' +', $helper->escapeTerm($this->query))
         ));
     }
 

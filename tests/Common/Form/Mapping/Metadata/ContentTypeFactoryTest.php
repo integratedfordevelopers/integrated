@@ -30,7 +30,7 @@ class ContentTypeFactoryTest extends \PHPUnit_Framework_TestCase
     private $factory;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -42,7 +42,7 @@ class ContentTypeFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the build function
+     * Test the build function.
      */
     public function testBuildFunction()
     {

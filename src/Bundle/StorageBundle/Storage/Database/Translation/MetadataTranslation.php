@@ -40,7 +40,7 @@ class MetadataTranslation
             'extension' => $this->metadata->getExtension(),
             'mimeType' => $this->metadata->getMimeType(),
             'headers' => $this->metadata->getHeaders()->toArray(),
-            'metadata' => $this->metadata->getMetadata()->toArray()
+            'metadata' => $this->metadata->getMetadata()->toArray(),
         ];
     }
 }

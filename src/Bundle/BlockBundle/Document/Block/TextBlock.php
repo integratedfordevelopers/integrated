@@ -12,11 +12,10 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
- * TextBlock document
+ * TextBlock document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
@@ -53,11 +52,13 @@ class TextBlock extends Block
 
     /**
      * @param string $content
+     *
      * @return $this
      */
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 

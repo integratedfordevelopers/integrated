@@ -12,13 +12,10 @@
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
-
 use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
 use Integrated\Common\Form\DataTransformer\ValueToChoiceTransformer;
-
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;

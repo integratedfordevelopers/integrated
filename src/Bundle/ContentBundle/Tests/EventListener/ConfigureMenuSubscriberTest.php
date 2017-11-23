@@ -14,7 +14,7 @@ use Integrated\Bundle\ContentBundle\EventListener\ConfigureMenuSubscriber;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Test for ConfigureMenuSubscriber
+ * Test for ConfigureMenuSubscriber.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -31,12 +31,12 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
     protected $authorizationChecker;
 
     /**
-     * @var \Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent | \PHPUnit_Framework_MockObject_MockObject $event
+     * @var \Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $event;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setup()
     {
@@ -46,7 +46,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getSubscribedEvents
+     * Test getSubscribedEvents.
      */
     public function testGetSubscribedEventsFunction()
     {
@@ -54,7 +54,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test onMenuConfigure function with invalid menu
+     * Test onMenuConfigure function with invalid menu.
      */
     public function testOnMenuConfigureFunctionWithInvalidMenu()
     {
@@ -82,7 +82,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test onMenuConfigure function with valid menu and content menu
+     * Test onMenuConfigure function with valid menu and content menu.
      */
     public function testOnMenuConfigureFunctionWithValidMenuAndContentMenu()
     {
@@ -107,7 +107,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test onMenuConfigure function with valid menu and no content menu
+     * Test onMenuConfigure function with valid menu and no content menu.
      */
     public function testOnMenuConfigureFunctionWithValidMenuAndNoContentMenu()
     {
@@ -139,7 +139,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test onMenuConfigure function with valid menu and with content menu and with manage menu
+     * Test onMenuConfigure function with valid menu and with content menu and with manage menu.
      */
     public function testOnMenuConfigureFunctionWithValidMenuAndWithContentMenuAndWithManageMenu()
     {
@@ -155,8 +155,8 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly(2))
             ->method('getChild')
             ->withConsecutive(
-                array(ConfigureMenuSubscriber::MENU_CONTENT),
-                array(ConfigureMenuSubscriber::MENU_MANAGE)
+                [ConfigureMenuSubscriber::MENU_CONTENT],
+                [ConfigureMenuSubscriber::MENU_MANAGE]
             )
             ->willReturnOnConsecutiveCalls(
                 $menuContent,
@@ -190,7 +190,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test onMenuConfigure function with valid menu and with no content menu and with no manage menu
+     * Test onMenuConfigure function with valid menu and with no content menu and with no manage menu.
      */
     public function testOnMenuConfigureFunctionWithValidMenuAndWithNoContentMenuAndWithNoManageMenu()
     {
@@ -206,8 +206,8 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly(2))
             ->method('getChild')
             ->withConsecutive(
-                array(ConfigureMenuSubscriber::MENU_CONTENT),
-                array(ConfigureMenuSubscriber::MENU_MANAGE)
+                [ConfigureMenuSubscriber::MENU_CONTENT],
+                [ConfigureMenuSubscriber::MENU_MANAGE]
             )
             ->willReturn(null)
         ;
@@ -216,8 +216,8 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
             ->expects($this->exactly(2))
             ->method('addChild')
             ->withConsecutive(
-                array(ConfigureMenuSubscriber::MENU_CONTENT),
-                array(ConfigureMenuSubscriber::MENU_MANAGE)
+                [ConfigureMenuSubscriber::MENU_CONTENT],
+                [ConfigureMenuSubscriber::MENU_MANAGE]
             )
             ->willReturnOnConsecutiveCalls(
                 $menuContent,
@@ -248,6 +248,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param \Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent | \PHPUnit_Framework_MockObject_MockObject $event
+     *
      * @return \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getValidMenu($event = null)

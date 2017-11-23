@@ -15,7 +15,7 @@ use Integrated\Bundle\UserBundle\Form\Type\LoginFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
- * The login controller
+ * The login controller.
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */

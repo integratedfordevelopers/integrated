@@ -14,7 +14,6 @@ namespace Integrated\Common\Locks\Provider\DBAL;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-
 use Integrated\Common\Locks\Exception\InvalidArgumentException;
 use Integrated\Common\Locks\Exception\UnexpectedTypeException;
 use Integrated\Common\Locks\Filter;
@@ -45,7 +44,7 @@ class Manager implements ManagerInterface
 
     /**
      * @param Connection $connection
-     * @param array $options
+     * @param array      $options
      */
     public function __construct(Connection $connection, array $options)
     {
@@ -55,7 +54,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function acquire(RequestInterface $request, $timeout = 0)
     {
@@ -79,14 +78,14 @@ class Manager implements ManagerInterface
         try {
             // have the server created a uuid for this lock
 
-            $data = $this->connection->fetchColumn('SELECT ' . $this->platform->getGuidExpression());
+            $data = $this->connection->fetchColumn('SELECT '.$this->platform->getGuidExpression());
             $data = [
                 'id' => $data,
                 'resource' => Resource::serialize($request->getResource()),
                 'resource_owner' => Resource::serialize($owner),
                 'created' => $created,
                 'expires' => $expires,
-                'timeout' => $timeout
+                'timeout' => $timeout,
             ];
 
             $this->connection->insert($this->options['lock_table_name'], $data);
@@ -98,7 +97,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function release($lock)
     {
@@ -118,7 +117,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function refresh($lock)
     {
@@ -135,9 +134,9 @@ class Manager implements ManagerInterface
             $builder
                 ->select('l.*')
                 ->from($this->options['lock_table_name'], 'l')
-                ->where('l.id = ' . $builder->createPositionalParameter($lock));
+                ->where('l.id = '.$builder->createPositionalParameter($lock));
 
-            if ($data = $this->connection->fetchAssoc($builder->getSQL() . ' ' . $this->platform->getForUpdateSQL(), array_values($builder->getParameters()))) {
+            if ($data = $this->connection->fetchAssoc($builder->getSQL().' '.$this->platform->getForUpdateSQL(), array_values($builder->getParameters()))) {
                 if ($data['timeout'] !== null) {
                     $data['expires'] = time() + $data['timeout'];
 
@@ -160,7 +159,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function find($lock)
     {
@@ -175,7 +174,7 @@ class Manager implements ManagerInterface
             $builder
                 ->select('l.*')
                 ->from($this->options['lock_table_name'], 'l')
-                ->where('l.id = ' . $builder->createPositionalParameter($lock));
+                ->where('l.id = '.$builder->createPositionalParameter($lock));
 
             if ($data = $this->connection->fetchAssoc($builder->getSQL(), array_values($builder->getParameters()))) {
                 return Lock::factory($data);
@@ -188,7 +187,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function findAll()
     {
@@ -196,7 +195,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function findByResource(ResourceInterface $resource)
     {
@@ -207,7 +206,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function findByOwner(ResourceInterface $resource)
     {
@@ -218,7 +217,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function findBy($filters)
     {
@@ -281,9 +280,8 @@ class Manager implements ManagerInterface
         return $results;
     }
 
-
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function clear()
     {
@@ -299,7 +297,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * Remove all the expired lock set by this provider
+     * Remove all the expired lock set by this provider.
      */
     public function clean()
     {
@@ -307,7 +305,7 @@ class Manager implements ManagerInterface
             $builder = $this->connection->createQueryBuilder();
             $builder
                 ->delete($this->options['lock_table_name'])
-                ->where('expires IS NOT NULL AND expires < ' . $builder->createPositionalParameter(time()));
+                ->where('expires IS NOT NULL AND expires < '.$builder->createPositionalParameter(time()));
 
             $builder->execute();
         } catch (DBALException $e) {

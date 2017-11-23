@@ -38,7 +38,7 @@ class FileResolver implements ConverterSpecificationResolverInterface
     /**
      * @var ConverterSpecificationInterface[]
      */
-    protected $specs = array();
+    protected $specs = [];
 
     public function __construct(FileResolverReaderInterface $reader, Finder $finder)
     {
@@ -66,6 +66,7 @@ class FileResolver implements ConverterSpecificationResolverInterface
 
     /**
      * @param $class
+     *
      * @return bool
      */
     public function hasSpecification($class)
@@ -83,6 +84,7 @@ class FileResolver implements ConverterSpecificationResolverInterface
 
     /**
      * @param $class
+     *
      * @return ConverterSpecificationInterface
      */
     public function getSpecification($class)

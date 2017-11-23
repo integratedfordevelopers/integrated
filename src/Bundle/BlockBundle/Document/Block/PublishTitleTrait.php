@@ -1,4 +1,5 @@
 <?php
+
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 trait PublishTitleTrait
@@ -42,7 +43,7 @@ trait PublishTitleTrait
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getUseTitle()
     {
@@ -50,7 +51,7 @@ trait PublishTitleTrait
     }
 
     /**
-     * @param boolean $useTitle
+     * @param bool $useTitle
      */
     public function setUseTitle($useTitle)
     {

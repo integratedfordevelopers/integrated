@@ -12,12 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\EventListener;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Event subscriber for adding menu items to integrated_menu
+ * Event subscriber for adding menu items to integrated_menu.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -46,9 +45,9 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure'
-        );
+        return [
+            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure',
+        ];
     }
 
     /**
@@ -65,17 +64,17 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
             $menuContent = $menu->addChild(self::MENU_CONTENT);
         }
 
-        $menuContent->addChild('Content navigator', array('route' => 'integrated_content_content_index'));
-        $menuContent->addChild('Search selections', array('route' => 'integrated_content_search_selection_index'));
+        $menuContent->addChild('Content navigator', ['route' => 'integrated_content_content_index']);
+        $menuContent->addChild('Search selections', ['route' => 'integrated_content_search_selection_index']);
 
         if ($this->authorizationChecker->isGranted(self::ROLE_ADMIN)) {
             if (!$menuManage = $menu->getChild(self::MENU_MANAGE)) {
                 $menuManage = $menu->addChild(self::MENU_MANAGE);
             }
 
-            $menuManage->addChild('Content types', array('route' => 'integrated_content_content_type_index'));
-            $menuManage->addChild('Channels', array('route' => 'integrated_content_channel_index'));
-            $menuManage->addChild('Relations', array('route' => 'integrated_content_relation_index'));
+            $menuManage->addChild('Content types', ['route' => 'integrated_content_content_type_index']);
+            $menuManage->addChild('Channels', ['route' => 'integrated_content_channel_index']);
+            $menuManage->addChild('Relations', ['route' => 'integrated_content_relation_index']);
         }
     }
 }

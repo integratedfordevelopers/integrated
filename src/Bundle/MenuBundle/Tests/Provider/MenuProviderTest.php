@@ -13,7 +13,7 @@ namespace Integrated\Bundle\MenuBundle\Tests\Provider;
 use Integrated\Bundle\MenuBundle\Provider\MenuProvider;
 
 /**
- * Test for Provider
+ * Test for Provider.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -28,7 +28,7 @@ class MenuProviderTest extends \PHPUnit_Framework_TestCase
     protected $provider;
 
     /**
-     * @var \Knp\Menu\FactoryInterface | \PHPUnit_Framework_MockObject_MockObject $event
+     * @var \Knp\Menu\FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected $factory;
 
@@ -38,7 +38,7 @@ class MenuProviderTest extends \PHPUnit_Framework_TestCase
     protected $eventDispatcher;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setup()
     {
@@ -48,7 +48,7 @@ class MenuProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instanceOf
+     * Test instanceOf.
      */
     public function testInstanceOf()
     {
@@ -56,7 +56,7 @@ class MenuProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test has function with invalid menu
+     * Test has function with invalid menu.
      */
     public function testHasFunctionWithInvalidMenu()
     {
@@ -64,7 +64,7 @@ class MenuProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test has function with valid menu
+     * Test has function with valid menu.
      */
     public function testHasFunctionWithValidMenu()
     {
@@ -72,7 +72,8 @@ class MenuProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get function with invalid menu
+     * Test get function with invalid menu.
+     *
      * @expectedException \InvalidArgumentException
      */
     public function testGetFunctionWithInvalidMenu()
@@ -81,7 +82,7 @@ class MenuProviderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get function twice with valid menu
+     * Test get function twice with valid menu.
      */
     public function testGetFunctionTwiceWithValidMenu()
     {

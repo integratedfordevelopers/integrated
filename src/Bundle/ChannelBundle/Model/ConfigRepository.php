@@ -12,11 +12,9 @@
 namespace Integrated\Bundle\ChannelBundle\Model;
 
 use Doctrine\ORM\EntityRepository;
-
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
-
 use InvalidArgumentException;
 
 /**
@@ -74,7 +72,7 @@ class ConfigRepository extends EntityRepository implements ConfigManagerInterfac
     public function findByAdaptor($criteria)
     {
         return $this->findBy([
-            'adaptor' => $criteria
+            'adaptor' => $criteria,
         ]);
     }
 
@@ -90,7 +88,7 @@ class ConfigRepository extends EntityRepository implements ConfigManagerInterfac
         $expr = $this->_em->getExpressionBuilder();
 
         return $this->createQueryBuilder('r')
-            ->where($expr->like('r.channels', $expr->literal('%' . json_encode($criteria) . '%')))
+            ->where($expr->like('r.channels', $expr->literal('%'.json_encode($criteria).'%')))
             ->getQuery()
             ->getResult();
     }

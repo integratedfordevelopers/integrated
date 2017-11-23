@@ -12,11 +12,9 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -30,10 +28,12 @@ class RelationController extends Controller
     protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
 
     /**
-     * Lists all the Relation documents
+     * Lists all the Relation documents.
      *
      * @Template()
+     *
      * @param Request $request
+     *
      * @return array
      */
     public function indexAction(Request $request)
@@ -52,10 +52,12 @@ class RelationController extends Controller
     }
 
     /**
-     * Finds and displays a Relation document
+     * Finds and displays a Relation document.
      *
      * @Template()
+     *
      * @param Relation $relation
+     *
      * @return array
      */
     public function showAction(Relation $relation)
@@ -64,14 +66,15 @@ class RelationController extends Controller
 
         return [
             'form' => $form->createView(),
-            'relation' => $relation
+            'relation' => $relation,
         ];
     }
 
     /**
-     * Displays a form to create a new Relation document
+     * Displays a form to create a new Relation document.
      *
      * @Template()
+     *
      * @return array
      */
     public function newAction()
@@ -84,10 +87,12 @@ class RelationController extends Controller
     }
 
     /**
-     * Creates a new Relation document
+     * Creates a new Relation document.
      *
      * @Template("IntegratedContentBundle:Relation:new.html.twig")
+     *
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
     public function createAction(Request $request)
@@ -114,10 +119,12 @@ class RelationController extends Controller
     }
 
     /**
-     * Display a form to edit an existing Relation document
+     * Display a form to edit an existing Relation document.
      *
      * @Template()
+     *
      * @param Relation $relation
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Relation $relation)
@@ -130,11 +137,13 @@ class RelationController extends Controller
     }
 
     /**
-     * Edits an existing Relation document
+     * Edits an existing Relation document.
      *
      * @Template("IntegratedContentBundle:Relation:edit.html.twig")
-     * @param Request $request
+     *
+     * @param Request  $request
      * @param Relation $relation
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
      */
     public function updateAction(Request $request, Relation $relation)
@@ -158,10 +167,11 @@ class RelationController extends Controller
     }
 
     /**
-     * Deletes a Relation document
+     * Deletes a Relation document.
      *
-     * @param Request $request
+     * @param Request  $request
      * @param Relation $relation
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, Relation $relation)
@@ -182,9 +192,10 @@ class RelationController extends Controller
     }
 
     /**
-     * Creates a form to create a Relation document
+     * Creates a form to create a Relation document.
      *
      * @param Relation $relation
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createNewForm(Relation $relation)
@@ -193,8 +204,8 @@ class RelationController extends Controller
             RelationType::class,
             $relation,
             [
-                'action'   => $this->generateUrl('integrated_content_relation_create'),
-                'method'   => 'POST',
+                'action' => $this->generateUrl('integrated_content_relation_create'),
+                'method' => 'POST',
             ]
         );
 
@@ -207,6 +218,7 @@ class RelationController extends Controller
      * Creates a form to edit a ContentType document.
      *
      * @param Relation $relation
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createEditForm(Relation $relation)
@@ -215,8 +227,8 @@ class RelationController extends Controller
             RelationType::class,
             $relation,
             [
-                'action'   => $this->generateUrl('integrated_content_relation_update', ['id' => $relation->getId()]),
-                'method'   => 'PUT'
+                'action' => $this->generateUrl('integrated_content_relation_update', ['id' => $relation->getId()]),
+                'method' => 'PUT',
             ]
         );
 
@@ -229,6 +241,7 @@ class RelationController extends Controller
      * Creates a form to delete a Relation document.
      *
      * @param Relation $relation
+     *
      * @return \Symfony\Component\Form\Form The form
      */
     protected function createDeleteForm(Relation $relation)

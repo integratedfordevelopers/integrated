@@ -12,7 +12,6 @@
 namespace Integrated\Common\Solr\Indexer;
 
 use Integrated\Common\Queue\QueueMessageInterface;
-
 use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 
 /**
@@ -34,7 +33,7 @@ class BatchOperation
      * Create a batch operation.
      *
      * @param QueueMessageInterface $message
-     * @param AbstractCommand $command
+     * @param AbstractCommand       $command
      */
     public function __construct(QueueMessageInterface $message, AbstractCommand $command = null)
     {

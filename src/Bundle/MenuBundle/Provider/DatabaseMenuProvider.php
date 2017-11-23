@@ -13,9 +13,7 @@ namespace Integrated\Bundle\MenuBundle\Provider;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
 
@@ -41,7 +39,7 @@ class DatabaseMenuProvider implements MenuProviderInterface
 
     /**
      * @param ChannelContextInterface $channelContext
-     * @param DocumentRepository $repository
+     * @param DocumentRepository      $repository
      */
     public function __construct(ChannelContextInterface $channelContext, DocumentRepository $repository)
     {

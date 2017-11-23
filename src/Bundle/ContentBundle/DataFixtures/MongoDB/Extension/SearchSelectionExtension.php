@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 
 /**
@@ -29,7 +27,9 @@ trait SearchSelectionExtension
 
     /**
      * @param string $id
+     *
      * @return SearchSelection
+     *
      * @throws DocumentNotFoundException
      */
     public function searchSelection($id)

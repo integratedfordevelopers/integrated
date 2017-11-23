@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\StorageBundle;
 
 use Integrated\Bundle\StorageBundle\DependencyInjection\CompilerPass\FileLocatorOverwritePass;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

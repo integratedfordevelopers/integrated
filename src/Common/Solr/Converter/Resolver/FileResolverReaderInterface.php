@@ -21,6 +21,7 @@ interface FileResolverReaderInterface
 {
     /**
      * @param SplFileInfo $file
+     *
      * @return ConverterSpecificationInterface[]
      */
     public function read(SplFileInfo $file);

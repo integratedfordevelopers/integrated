@@ -17,7 +17,7 @@ namespace Integrated\Common\Locks;
 interface ManagerInterface
 {
     /**
-     * Try to get a lock on the requested resource
+     * Try to get a lock on the requested resource.
      *
      * Timeout set to null is wait forever else the timeout time supplied will
      * be used so 0 is no wait and will immediately fail if not lock can be
@@ -31,16 +31,17 @@ interface ManagerInterface
     public function acquire(RequestInterface $request, $timeout = 0);
 
     /**
-     * Release the lock on the resource
+     * Release the lock on the resource.
      *
      * @param LockInterface | string $lock lock object or a string with the lock id
      */
     public function release($lock);
 
     /**
-     * Refresh the timeout of the lock
+     * Refresh the timeout of the lock.
      *
      * @param LockInterface | string $lock lock object or a string with the lock id
+     *
      * @return LockInterface
      */
     public function refresh($lock);
@@ -49,6 +50,7 @@ interface ManagerInterface
      * Finds a lock by its identifier.
      *
      * @param LockInterface | string $lock lock object or a string with the lock id
+     *
      * @return LockInterface
      */
     public function find($lock);
@@ -67,6 +69,7 @@ interface ManagerInterface
      * resource more then once, but its returned as a array for constancy reasons.
      *
      * @param ResourceInterface $resource
+     *
      * @return LockInterface[]
      */
     public function findByResource(ResourceInterface $resource);
@@ -75,6 +78,7 @@ interface ManagerInterface
      * Finds all the locks by its owner.
      *
      * @param ResourceInterface $resource
+     *
      * @return LockInterface[]
      */
     public function findByOwner(ResourceInterface $resource);
@@ -83,6 +87,7 @@ interface ManagerInterface
      * Finds the locks based on the given set of filters.
      *
      * @param Filter | Filter[] $filters
+     *
      * @return LockInterface[]
      */
     public function findBy($filters);

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -52,8 +51,8 @@ class ContentTypeChoice extends AbstractType
                 'choices' => $choices,
                 'choices_as_values' => true,
                 'attr' => [
-                    'class' => 'basic-multiple'
-                ]
+                    'class' => 'basic-multiple',
+                ],
             ])
         ;
     }

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -29,6 +28,7 @@ class RoleType extends AbstractType
 
     /**
      * RoleType constructor.
+     *
      * @param RoleManagerInterface $manager
      */
     public function __construct(RoleManagerInterface $manager)
@@ -46,7 +46,7 @@ class RoleType extends AbstractType
 
         $resolver->setDefaults([
             'choices' => array_flip($this->manager->getRolesFromSources()),
-            'choices_as_values' => true
+            'choices_as_values' => true,
         ]);
     }
 

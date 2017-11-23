@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\Locator;
 
 use Symfony\Component\Finder\Finder;
-
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 
 /**
@@ -40,6 +39,7 @@ class LayoutLocator
 
     /**
      * @param string $type
+     *
      * @return array
      */
     public function getLayouts($type)
@@ -49,7 +49,7 @@ class LayoutLocator
 
             foreach ($this->themeManager->getThemes() as $id => $theme) {
                 foreach ($theme->getPaths() as $path) {
-                    $path = $this->themeManager->locateResource($path) . '/blocks/' . $type;
+                    $path = $this->themeManager->locateResource($path).'/blocks/'.$type;
 
                     if (is_dir($path)) {
                         $finder = new Finder();

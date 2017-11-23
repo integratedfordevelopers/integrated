@@ -14,7 +14,7 @@ namespace Integrated\Common\Form\Mapping\Metadata;
 use Integrated\Common\Form\Mapping\AttributeEditorInterface;
 
 /**
- * Class for storing metadata properties of a field
+ * Class for storing metadata properties of a field.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -44,7 +44,7 @@ class Field implements AttributeEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -52,7 +52,7 @@ class Field implements AttributeEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -60,16 +60,17 @@ class Field implements AttributeEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOptions()
     {
@@ -77,16 +78,17 @@ class Field implements AttributeEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setOptions(array $options)
     {
         $this->options = $options;
+
         return $this;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOption($name)
     {
@@ -94,7 +96,7 @@ class Field implements AttributeEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasOption($name)
     {
@@ -102,11 +104,12 @@ class Field implements AttributeEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setOption($name, $value)
     {
         $this->options[$name] = $value;
+
         return $this;
     }
 }

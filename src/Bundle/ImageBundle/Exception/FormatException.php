@@ -19,6 +19,7 @@ class FormatException extends \ErrorException
     /**
      * @param string $inputFormat
      * @param string $outputFormat
+     *
      * @return static
      */
     public static function noSupportingConverter($inputFormat, $outputFormat)

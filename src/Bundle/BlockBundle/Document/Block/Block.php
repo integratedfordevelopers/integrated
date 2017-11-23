@@ -12,13 +12,12 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
- * Block document
+ * Block document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl
  */
@@ -86,8 +85,6 @@ abstract class Block implements BlockInterface
      */
     protected $locked = false;
 
-    /**
-     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -113,11 +110,13 @@ abstract class Block implements BlockInterface
 
     /**
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -131,11 +130,13 @@ abstract class Block implements BlockInterface
 
     /**
      * @param string $layout
+     *
      * @return $this
      */
     public function setLayout($layout)
     {
         $this->layout = $layout;
+
         return $this;
     }
 
@@ -149,11 +150,13 @@ abstract class Block implements BlockInterface
 
     /**
      * @param \DateTime $createdAt
+     *
      * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
@@ -167,11 +170,13 @@ abstract class Block implements BlockInterface
 
     /**
      * @param \DateTime $updatedAt
+     *
      * @return $this
      */
     public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -185,11 +190,13 @@ abstract class Block implements BlockInterface
 
     /**
      * @param \DateTime $publishedAt
+     *
      * @return $this
      */
     public function setPublishedAt(\DateTime $publishedAt = null)
     {
         $this->publishedAt = $publishedAt;
+
         return $this;
     }
 
@@ -203,16 +210,19 @@ abstract class Block implements BlockInterface
 
     /**
      * @param \DateTime $publishedUntil
+     *
      * @return Block
      */
     public function setPublishedUntil(\DateTime $publishedUntil = null)
     {
         $this->publishedUntil = $publishedUntil;
+
         return $this;
     }
 
     /**
      * @param \DateTime $date
+     *
      * @return bool
      */
     public function isPublished(\DateTime $date = null)
@@ -244,11 +254,13 @@ abstract class Block implements BlockInterface
 
     /**
      * @param bool $disabled
+     *
      * @return $this
      */
     public function setDisabled($disabled)
     {
         $this->disabled = (bool) $disabled;
+
         return $this;
     }
 
@@ -262,11 +274,13 @@ abstract class Block implements BlockInterface
 
     /**
      * @param bool $locked
+     *
      * @return Block
      */
     public function setLocked($locked)
     {
         $this->locked = (bool) $locked;
+
         return $this;
     }
 

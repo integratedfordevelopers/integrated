@@ -13,7 +13,6 @@ namespace Integrated\Common\Channel\Connector\Config;
 
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Exception\InvalidArgumentException;
-
 use Iterator;
 
 /**
@@ -22,7 +21,7 @@ use Iterator;
 interface ResolverInterface
 {
     /**
-     * Check if there is a config with the $name in any of the resolvers
+     * Check if there is a config with the $name in any of the resolvers.
      *
      * @param string $name
      *
@@ -31,7 +30,7 @@ interface ResolverInterface
     public function hasConfig($name);
 
     /**
-     * Get the config with the given $name from the first matching resolver
+     * Get the config with the given $name from the first matching resolver.
      *
      * @param string $name
      *
@@ -42,7 +41,7 @@ interface ResolverInterface
     public function getConfig($name);
 
     /**
-     * Get all the configs that match the given channel
+     * Get all the configs that match the given channel.
      *
      * @param ChannelInterface $channel
      *

@@ -24,7 +24,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     private $field;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,7 +32,7 @@ class CustomFieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test instanceof
+     * Test instanceof.
      */
     public function testInstanceOf()
     {

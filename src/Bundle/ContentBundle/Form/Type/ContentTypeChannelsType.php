@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 class ContentTypeChannelsType extends AbstractType
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -30,7 +30,7 @@ class ContentTypeChannelsType extends AbstractType
             'choices' => [
                 'Enable channel field' => '',
                 'Enable but hide channel field' => 'hidden',
-                'Disable channel field' => 'disabled'
+                'Disable channel field' => 'disabled',
             ],
             'choices_as_values' => true,
             'required' => false,
@@ -46,7 +46,7 @@ class ContentTypeChannelsType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {

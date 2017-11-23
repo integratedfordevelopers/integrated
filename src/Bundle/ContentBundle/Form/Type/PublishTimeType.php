@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\MaxDateTimeTransformer;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 use Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -45,10 +44,10 @@ class PublishTimeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class'  => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime',
+            'data_class' => 'Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime',
             'constraints' => new Callback(function (PublishTime $publishTime, ExecutionContextInterface $context) {
                 $startDate = $publishTime->getStartDate();
-                $endDate   = $publishTime->getEndDate();
+                $endDate = $publishTime->getEndDate();
 
                 if ($startDate instanceof \DateTime && $endDate instanceof \DateTime) {
                     if ($endDate < $startDate) {

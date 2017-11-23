@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Overwrite the default file_locator service with our own
+ * Overwrite the default file_locator service with our own.
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */

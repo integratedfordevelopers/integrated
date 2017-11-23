@@ -43,11 +43,13 @@ class ContentEvent extends Event
 
     /**
      * @param string $content
+     *
      * @return $this
      */
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 }

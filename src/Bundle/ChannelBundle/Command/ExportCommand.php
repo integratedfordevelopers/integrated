@@ -12,15 +12,11 @@
 namespace Integrated\Bundle\ChannelBundle\Command;
 
 use Exception;
-
 use Integrated\Common\Channel\Exporter\QueueExporter;
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\Process\Process;
 
 /**
@@ -94,7 +90,7 @@ class ExportCommand extends ContainerAwareCommand
         try {
             $this->exporter->execute();
         } catch (Exception $e) {
-            $output->writeln("Aborting: " . $e->getMessage());
+            $output->writeln('Aborting: '.$e->getMessage());
 
             return 1;
         }
@@ -113,11 +109,11 @@ class ExportCommand extends ContainerAwareCommand
         $wait = (int) $input->getOption('wait');
         $wait = $wait * 1000; // convert from milli to micro
 
-        $cwd = realpath($this->getContainer()->get('kernel')->getRootDir() . '/..');
+        $cwd = realpath($this->getContainer()->get('kernel')->getRootDir().'/..');
 
         while (true) {
             $process = new Process(
-                'php app/console channel:export -e ' . $input->getOption('env'),
+                'php app/console channel:export -e '.$input->getOption('env'),
                 $cwd,
                 null,
                 null,

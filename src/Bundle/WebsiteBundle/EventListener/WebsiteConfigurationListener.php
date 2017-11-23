@@ -14,7 +14,6 @@ namespace Integrated\Bundle\WebsiteBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-
 use Integrated\Bundle\PageBundle\Resolver\ThemeResolver;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
@@ -42,8 +41,8 @@ class WebsiteConfigurationListener implements EventSubscriberInterface
 
     /**
      * @param ChannelContextInterface $context
-     * @param ThemeManager $themeManager
-     * @param ThemeResolver $resolver
+     * @param ThemeManager            $themeManager
+     * @param ThemeResolver           $resolver
      */
     public function __construct(
         ChannelContextInterface $context,
@@ -56,12 +55,12 @@ class WebsiteConfigurationListener implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => ['onKernelRequest', 32]
+            KernelEvents::REQUEST => ['onKernelRequest', 32],
         ];
     }
 

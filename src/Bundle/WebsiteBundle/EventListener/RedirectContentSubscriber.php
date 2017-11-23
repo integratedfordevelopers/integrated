@@ -15,11 +15,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\PageBundle\Services\UrlResolver;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Router;
@@ -46,8 +44,8 @@ class RedirectContentSubscriber implements EventSubscriberInterface
 
     /**
      * @param DocumentManager $documentManager
-     * @param UrlResolver $urlResolver
-     * @param Router $router
+     * @param UrlResolver     $urlResolver
+     * @param Router          $router
      */
     public function __construct(DocumentManager $documentManager, UrlResolver $urlResolver, Router $router)
     {
@@ -57,7 +55,7 @@ class RedirectContentSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

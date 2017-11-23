@@ -13,7 +13,6 @@ namespace Integrated\Bundle\StorageBundle\Storage;
 
 use Integrated\Common\Storage\FilesystemRegistryInterface;
 use Integrated\Common\Storage\DecisionInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 
@@ -34,7 +33,7 @@ class Decision implements DecisionInterface
 
     /**
      * @param FilesystemRegistryInterface $registry
-     * @param array $decisionMap
+     * @param array                       $decisionMap
      */
     public function __construct(FilesystemRegistryInterface $registry, array $decisionMap)
     {

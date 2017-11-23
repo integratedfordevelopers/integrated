@@ -12,22 +12,18 @@
 namespace Integrated\Bundle\UserBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\ScopeFormType;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
-
 use Integrated\Bundle\UserBundle\Model\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormBuilder;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
@@ -39,6 +35,7 @@ class ScopeController extends Controller
      * @Template
      *
      * @param Request $request
+     *
      * @return array
      */
     public function indexAction(Request $request)
@@ -51,15 +48,16 @@ class ScopeController extends Controller
             15
         );
 
-        return array(
+        return [
             'scopes' => $paginator,
-        );
+        ];
     }
 
     /**
      * @Template
      *
      * @param Request $request
+     *
      * @return array | Response
      */
     public function newAction(Request $request)
@@ -96,16 +94,18 @@ class ScopeController extends Controller
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     /**
      * @Template
      *
-     * @param Scope $scope
+     * @param Scope   $scope
      * @param Request $request
+     *
      * @return array | Response
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function editAction(Scope $scope, Request $request)
@@ -143,17 +143,18 @@ class ScopeController extends Controller
             }
         }
 
-        return array(
+        return [
             'scope' => $scope,
-            'form' => $form->createView()
-        );
+            'form' => $form->createView(),
+        ];
     }
 
     /**
      * @Template
      *
-     * @param Scope $scope
+     * @param Scope   $scope
      * @param Request $request
+     *
      * @return array | Response
      */
     public function deleteAction(Scope $scope, Request $request)
@@ -213,7 +214,7 @@ class ScopeController extends Controller
 
         return [
             'scope' => $scope,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
@@ -227,7 +228,7 @@ class ScopeController extends Controller
 
         if ($buttons) {
             $form->add('actions', FormActionsType::class, [
-                'buttons' => $buttons
+                'buttons' => $buttons,
             ]);
         }
 

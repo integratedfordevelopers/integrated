@@ -22,12 +22,11 @@ use Integrated\Bundle\ContentBundle\DependencyInjection\IntegratedContentExtensi
 use Integrated\Common\Bulk\DependencyInjection\ConfigProviderBuilderPass;
 use Integrated\Common\Bulk\DependencyInjection\FactoryRegistryBuilderPass;
 use Integrated\Common\Normalizer\DependencyInjection\RegistryBuilderPass;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class IntegratedContentBundle
+ * Class IntegratedContentBundle.
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

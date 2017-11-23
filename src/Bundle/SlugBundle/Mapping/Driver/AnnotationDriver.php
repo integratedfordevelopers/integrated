@@ -12,14 +12,12 @@
 namespace Integrated\Bundle\SlugBundle\Mapping\Driver;
 
 use Doctrine\Common\Annotations\Reader;
-
 use Metadata\Driver\DriverInterface;
 use Metadata\MergeableClassMetadata;
-
 use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
 
 /**
- * Annotation driver
+ * Annotation driver.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

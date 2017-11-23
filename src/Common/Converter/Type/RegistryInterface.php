@@ -11,15 +11,13 @@
 
 namespace Integrated\Common\Converter\Type;
 
-use Integrated\Common\Converter\Exception\RuntimeException;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 interface RegistryInterface
 {
     /**
-     * Check if there is a type with the $name in the registry
+     * Check if there is a type with the $name in the registry.
      *
      * @param string $name
      *
@@ -28,7 +26,7 @@ interface RegistryInterface
     public function hasType($name);
 
     /**
-     * Get the type with the $name from the registry
+     * Get the type with the $name from the registry.
      *
      * @param string $name
      *

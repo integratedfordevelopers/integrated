@@ -13,7 +13,6 @@ namespace Integrated\Common\Content\Extension\Event\Listener;
 
 use Integrated\Common\Content\Extension\Event;
 use Integrated\Common\Content\Extension\ExtensionInterface;
-
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

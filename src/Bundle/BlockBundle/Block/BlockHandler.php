@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\Block;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\ContentInterface;
@@ -39,11 +38,13 @@ class BlockHandler implements BlockHandlerInterface
 
     /**
      * @param \Twig_Environment $twig
+     *
      * @return $this
      */
     public function setTwig(\Twig_Environment $twig)
     {
         $this->twig = $twig;
+
         return $this;
     }
 
@@ -57,11 +58,13 @@ class BlockHandler implements BlockHandlerInterface
 
     /**
      * @param string $template
+     *
      * @return $this
      */
     public function setTemplate($template)
     {
         $this->template = $template;
+
         return $this;
     }
 
@@ -77,16 +80,19 @@ class BlockHandler implements BlockHandlerInterface
 
     /**
      * @param ContentInterface $document
+     *
      * @return $this
      */
     public function setDocument(ContentInterface $document)
     {
         $this->document = $document;
+
         return $this;
     }
 
     /**
      * @param array $parameters
+     *
      * @return string|null
      */
     public function render(array $parameters = [])
@@ -102,7 +108,7 @@ class BlockHandler implements BlockHandlerInterface
     public function execute(BlockInterface $block, array $options)
     {
         return $this->render([
-            'block'    => $block,
+            'block' => $block,
             'document' => $this->getDocument(),
         ]);
     }

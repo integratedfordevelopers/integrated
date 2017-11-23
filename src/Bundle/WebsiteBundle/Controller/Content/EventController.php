@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
-
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Event;
@@ -39,7 +38,7 @@ class EventController
     protected $blockManager;
 
     /**
-     * @param TwigEngine $templating
+     * @param TwigEngine   $templating
      * @param ThemeManager $themeManager
      * @param BlockManager $blockManager
      */
@@ -52,7 +51,8 @@ class EventController
 
     /**
      * @param ContentTypePage $page
-     * @param Event $event
+     * @param Event           $event
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(ContentTypePage $page, Event $event)
@@ -60,7 +60,7 @@ class EventController
         $this->blockManager->setDocument($event);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Event/show/' . $page->getLayout()),
+            $this->themeManager->locateTemplate('content/Event/show/'.$page->getLayout()),
             [
                 'event' => $event,
                 'page' => $page,

@@ -35,7 +35,6 @@ class ValuesToChoicesTransformer implements DataTransformerInterface
         $this->choiceList = $choiceList;
     }
 
-
     /**
      * {@inheritdoc}
      */

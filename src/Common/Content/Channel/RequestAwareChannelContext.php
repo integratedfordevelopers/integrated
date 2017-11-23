@@ -43,8 +43,8 @@ class RequestAwareChannelContext implements ChannelContextInterface
 
     /**
      * @param ChannelManagerInterface $manager
-     * @param RequestStack $stack
-     * @param string $attribute
+     * @param RequestStack            $stack
+     * @param string                  $attribute
      */
     public function __construct(ChannelManagerInterface $manager, RequestStack $stack, $attribute = '_channel')
     {
@@ -54,7 +54,7 @@ class RequestAwareChannelContext implements ChannelContextInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getChannel()
     {
@@ -72,7 +72,7 @@ class RequestAwareChannelContext implements ChannelContextInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setChannel(ChannelInterface $channel = null)
     {
@@ -90,9 +90,7 @@ class RequestAwareChannelContext implements ChannelContextInterface
     }
 
     /**
-     * Get the current request object
-     *
-     * @return null | Request
+     * Get the current request object.
      */
     protected function getRequest()
     {

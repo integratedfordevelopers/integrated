@@ -12,11 +12,9 @@
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
-
 use Integrated\Bundle\ImageBundle\Converter\Container;
 use Integrated\Bundle\ImageBundle\Converter\Format\WebFormat;
 use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
-
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -37,12 +35,12 @@ class ImageDropzoneType extends AbstractDropzoneType
     protected $converterContainer;
 
     /**
-     * @param AssetManager $stylesheets
-     * @param AssetManager $javascripts
+     * @param AssetManager        $stylesheets
+     * @param AssetManager        $javascripts
      * @param TranslatorInterface $translator
-     * @param ImageExtension $imageExtension
-     * @param WebFormat $webFormat
-     * @param Container $converterContainer
+     * @param ImageExtension      $imageExtension
+     * @param WebFormat           $webFormat
+     * @param Container           $converterContainer
      */
     public function __construct(
         AssetManager $stylesheets,
@@ -59,9 +57,9 @@ class ImageDropzoneType extends AbstractDropzoneType
     }
 
     /**
-     * @param FormView $view
+     * @param FormView      $view
      * @param FormInterface $form
-     * @param array $options
+     * @param array         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {

@@ -19,7 +19,7 @@ use Symfony\Component\Form\AbstractType;
 class DeleteFormType extends AbstractType
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getBlockPrefix()
     {

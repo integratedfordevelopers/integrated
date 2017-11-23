@@ -13,14 +13,13 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber;
 
 /**
- * Class for Relations
+ * Class for Relations.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -72,7 +71,7 @@ abstract class Relation extends Content
     protected $addresses;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -83,7 +82,7 @@ abstract class Relation extends Content
     }
 
     /**
-     * Get the accountnumber of the document
+     * Get the accountnumber of the document.
      *
      * @return string
      */
@@ -93,19 +92,21 @@ abstract class Relation extends Content
     }
 
     /**
-     * Set the accountnumber of the document
+     * Set the accountnumber of the document.
      *
      * @param string $accountnumber
+     *
      * @return $this
      */
     public function setAccountnumber($accountnumber)
     {
         $this->accountnumber = $accountnumber;
+
         return $this;
     }
 
     /**
-     * Get the description of the document
+     * Get the description of the document.
      *
      * @return string
      */
@@ -115,26 +116,28 @@ abstract class Relation extends Content
     }
 
     /**
-     * Set the description of the document
+     * Set the description of the document.
      *
      * @param string $description
+     *
      * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
-     * Get the phonenumbers of the document
+     * Get the phonenumbers of the document.
      *
      * @return Phonenumber[]
      */
     public function getPhonenumbers($type = null)
     {
         if ($type !== null) {
-            $result = array();
+            $result = [];
 
             foreach ($this->phonenumbers as $obj) {
                 if (strcasecmp($type, $obj->getType()) === 0) {
@@ -149,22 +152,24 @@ abstract class Relation extends Content
     }
 
     /**
-     * Set the phonenumbers of the document
+     * Set the phonenumbers of the document.
      *
      * @param Phonenumber[] $phonenumbers
+     *
      * @return $this
      */
     public function setPhonenumbers(Collection $phonenumbers)
     {
         $this->phonenumbers = $phonenumbers;
+
         return $this;
     }
 
     /**
-     * Add phonenumber to phonenumbers collection
+     * Add phonenumber to phonenumbers collection.
      *
      * @param string|Phonenumber $phonenumber
-     * @param string $type
+     * @param string             $type
      *
      * @return $this
      */
@@ -183,15 +188,16 @@ abstract class Relation extends Content
         }
 
         $this->phonenumbers->add($obj);
+
         return $this;
     }
 
     /**
-     * Remove phonenumber from phonenumbers collection
+     * Remove phonenumber from phonenumbers collection.
      *
      * @param string|Phonenumber $phonenumber
      *
-     * @return bool The removed element or null if the collection did not contain the element.
+     * @return bool the removed element or null if the collection did not contain the element
      */
     public function removePhonenumber($phonenumber)
     {
@@ -212,7 +218,7 @@ abstract class Relation extends Content
     }
 
     /**
-     * Get the email of the document
+     * Get the email of the document.
      *
      * @return string
      */
@@ -222,19 +228,21 @@ abstract class Relation extends Content
     }
 
     /**
-     * Set the email of the document
+     * Set the email of the document.
      *
      * @param string $email
+     *
      * @return $this
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
         return $this;
     }
 
     /**
-     * Get the addresses of the document
+     * Get the addresses of the document.
      *
      * @return Address[]
      */
@@ -244,19 +252,21 @@ abstract class Relation extends Content
     }
 
     /**
-     * Set the addresses of the document
+     * Set the addresses of the document.
      *
      * @param Collection $addresses
+     *
      * @return $this
      */
     public function setAddresses(Collection $addresses)
     {
         $this->addresses = $addresses;
+
         return $this;
     }
 
     /**
-     * Add address to addresses collection
+     * Add address to addresses collection.
      *
      * @param Address $address
      *
@@ -273,6 +283,7 @@ abstract class Relation extends Content
 
     /**
      * @param Address $address
+     *
      * @return bool
      */
     public function removeAddress(Address $address)

@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
-
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 
 /**
@@ -35,7 +34,7 @@ class ChannelExceptionSubscriber implements EventSubscriberInterface
     private $channelContext;
 
     /**
-     * @param Router $router
+     * @param Router                  $router
      * @param ChannelContextInterface $channelContext
      */
     public function __construct(Router $router, ChannelContextInterface $channelContext)
@@ -45,7 +44,7 @@ class ChannelExceptionSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {

@@ -24,8 +24,9 @@ class BlockHandlerRegistry implements BlockHandlerRegistryInterface
     private $registry = [];
 
     /**
-     * @param string $type
+     * @param string                $type
      * @param BlockHandlerInterface $block
+     *
      * @throws InvalidArgumentException
      */
     public function registerHandler($type, BlockHandlerInterface $block)

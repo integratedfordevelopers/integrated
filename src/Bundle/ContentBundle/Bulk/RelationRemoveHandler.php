@@ -44,7 +44,7 @@ class RelationRemoveHandler implements HandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function execute(ContentInterface $content)
     {

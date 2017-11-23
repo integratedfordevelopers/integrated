@@ -12,12 +12,9 @@
 namespace Integrated\Bundle\ChannelBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\ChannelBundle\Form\ChoiceList\ChannelChoiceLoader;
-
 use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
 use Integrated\Common\Form\DataTransformer\ValueToChoiceTransformer;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\Factory\CachingFactoryDecorator;
 use Symfony\Component\Form\ChoiceList\Factory\ChoiceListFactoryInterface;
@@ -25,10 +22,8 @@ use Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory;
 use Symfony\Component\Form\ChoiceList\Factory\PropertyAccessDecorator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
@@ -110,7 +105,7 @@ class ChannelChoiceType extends AbstractType
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getParent()
     {

@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 use Integrated\Common\Content\Registry;
 
 /**
- * Embedded document CustomField
+ * Embedded document CustomField.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */

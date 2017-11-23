@@ -12,13 +12,11 @@
 namespace Integrated\Common\Solr\Task;
 
 use Exception;
-
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Queue\QueueMessageInterface;
 use Integrated\Common\Solr\Configurable;
 use Integrated\Common\Solr\Task\Event\ErrorEvent;
 use Integrated\Common\Solr\Task\Event\WorkerEvent;
-
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -70,7 +68,7 @@ class Worker extends Configurable
     }
 
     /**
-     * Set the event dispatcher
+     * Set the event dispatcher.
      *
      * @param EventDispatcherInterface $dispatcher
      */
@@ -129,6 +127,7 @@ class Worker extends Configurable
 
     /**
      * @param object $task
+     *
      * @return callable
      */
     protected function getCallable($task)

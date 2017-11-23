@@ -18,12 +18,12 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueEntry extends Constraint
 {
-    public $message         = 'This value is already used.';
-    public $fields          = [];
+    public $message = 'This value is already used.';
+    public $fields = [];
     public $caseInsensitive = false;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRequiredOptions()
     {
@@ -31,7 +31,7 @@ class UniqueEntry extends Constraint
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getDefaultOption()
     {
@@ -39,7 +39,7 @@ class UniqueEntry extends Constraint
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getTargets()
     {

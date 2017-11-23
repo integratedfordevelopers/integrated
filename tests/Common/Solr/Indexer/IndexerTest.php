@@ -12,10 +12,8 @@
 namespace Integrated\Tests\Common\Solr\Indexer;
 
 use Exception;
-
 use Integrated\Common\Solr\Exception\ClientException;
 use Integrated\Common\Solr\Exception\RuntimeException;
-
 use Integrated\Common\Solr\Indexer\Batch;
 use Integrated\Common\Solr\Indexer\CommandFactoryInterface;
 use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
@@ -28,12 +26,9 @@ use Integrated\Common\Solr\Indexer\Indexer;
 use Integrated\Common\Solr\Indexer\Events;
 use Integrated\Common\Solr\Indexer\IndexerInterface;
 use Integrated\Common\Solr\Indexer\JobInterface;
-
 use Integrated\Common\Queue\QueueMessageInterface;
 use Integrated\Common\Queue\QueueInterface;
-
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Solarium\Core\Client\Client;
 use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 use Solarium\QueryType\Update\Query\Query;
@@ -42,7 +37,7 @@ use Solarium\Core\Query\Result\ResultInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  *
- * @covers Integrated\Common\Solr\Indexer\Indexer
+ * @covers \Integrated\Common\Solr\Indexer\Indexer
  */
 class IndexerTest extends \PHPUnit_Framework_TestCase
 {
@@ -403,7 +398,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
                 self::assertSame($instance, $event->getIndexer());
 
                 return true;
-            }
+            },
         ];
 
         $this->dispatcher->expects($this->exactly(2))

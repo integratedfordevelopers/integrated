@@ -14,8 +14,8 @@ namespace Integrated\Bundle\UserBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
-* @author Vasil Pascal <developer.optimum@gmail.com>
-*/
+ * @author Vasil Pascal <developer.optimum@gmail.com>
+ */
 class ConfigureRolesEvent extends Event
 {
     /**
@@ -30,6 +30,7 @@ class ConfigureRolesEvent extends Event
 
     /**
      * ConfigureRoleEvent constructor.
+     *
      * @param array $roles
      */
     public function __construct($roles)

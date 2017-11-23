@@ -32,13 +32,13 @@ interface ResolverInterface
     public function getType($type);
 
     /**
-     * check if the content type exists
+     * check if the content type exists.
      *
      * @param string $type The content type name
      *
      * @return bool
      *
-     * @throws UnexpectedTypeException  if the passed arguments are not strings
+     * @throws UnexpectedTypeException if the passed arguments are not strings
      */
     public function hasType($type);
 

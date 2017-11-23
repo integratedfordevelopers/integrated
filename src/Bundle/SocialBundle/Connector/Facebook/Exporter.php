@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\SocialBundle\Connector\Facebook;
 
 use Facebook\Facebook;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
-
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Exporter\ExporterInterface;
 
@@ -44,7 +42,7 @@ class Exporter implements ExporterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function export($content, $state, ChannelInterface $channel)
     {
@@ -57,8 +55,8 @@ class Exporter implements ExporterInterface
         $this->facebook->post(
             '/me/feed',
             [
-                'link' => 'http://' . $channel->getPrimaryDomain() . '/content/article/' . $content->getSlug(),
-                'message' => $content->getTitle()
+                'link' => 'http://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug(),
+                'message' => $content->getTitle(),
             ],
             $this->token
         );

@@ -27,7 +27,9 @@ final class IntegratedHttpRequestHandlerEvents
     const POST_HANDLE = 'post.handle';
 
     /**
-     * Instantiation prohibited
+     * Instantiation prohibited.
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 }

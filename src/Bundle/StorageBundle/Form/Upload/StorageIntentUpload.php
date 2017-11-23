@@ -12,10 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\Form\Upload;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -38,7 +36,7 @@ class StorageIntentUpload extends File implements StorageInterface
 
     /**
      * @param StorageInterface|null $original
-     * @param UploadedFile $uploadedFile
+     * @param UploadedFile          $uploadedFile
      */
     public function __construct(StorageInterface $original = null, UploadedFile $uploadedFile)
     {

@@ -13,7 +13,6 @@ namespace Integrated\Tests\Doctrine\ODM\MongoDB\Mapping;
 
 use Integrated\Doctrine\ODM\MongoDB\Mapping\ClassTreeMapResolverBuilder;
 use Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\ClassLocatorInterface;
-
 use ReflectionClass;
 
 /**

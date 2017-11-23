@@ -14,7 +14,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * DataTransformer which handles comma separated values and return an array
+ * DataTransformer which handles comma separated values and return an array.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -22,12 +22,13 @@ class CsvArray implements DataTransformerInterface
 {
     /**
      * @param mixed $value
+     *
      * @return mixed
      */
     public function transform($value)
     {
         if (empty($value)) {
-            $value = array();
+            $value = [];
         }
 
         return implode(', ', $value);
@@ -35,6 +36,7 @@ class CsvArray implements DataTransformerInterface
 
     /**
      * @param mixed $value
+     *
      * @return array
      */
     public function reverseTransform($value)

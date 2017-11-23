@@ -25,7 +25,7 @@ interface RegistryInterface
      *
      * @return AdapterInterface
      *
-     * @throws UnexpectedTypeException if $name is not a string
+     * @throws UnexpectedTypeException  if $name is not a string
      * @throws InvalidArgumentException if the adaptor could not be found
      */
     public function getAdapter($name);

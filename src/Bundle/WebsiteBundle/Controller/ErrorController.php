@@ -13,9 +13,7 @@ namespace Integrated\Bundle\WebsiteBundle\Controller;
 
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController;
 use Symfony\Component\HttpFoundation\Request;
-
 use Twig\Environment;
-
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 
@@ -30,8 +28,8 @@ class ErrorController extends ExceptionController
     protected $themeManager;
 
     /**
-     * @param Environment $twig
-     * @param string $debug
+     * @param Environment  $twig
+     * @param string       $debug
      * @param ThemeManager $themeManager
      */
     public function __construct(Environment $twig, $debug, ThemeManager $themeManager)

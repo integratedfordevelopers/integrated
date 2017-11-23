@@ -12,11 +12,9 @@
 namespace Integrated\Bundle\SolrBundle\EventListener;
 
 use Psr\Log\LoggerInterface;
-
 use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 use Integrated\Common\Solr\Indexer\Events;
 use Integrated\Common\Solr\Indexer\Job;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -35,7 +33,7 @@ class IndexerErrorLogger implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::ERROR => 'onError'
+            Events::ERROR => 'onError',
         ];
     }
 
@@ -53,7 +51,7 @@ class IndexerErrorLogger implements EventSubscriberInterface
         if ($payload instanceof Job) {
             $this->logger->error($event->getException()->getMessage(), [
                 'action' => $payload->getAction(),
-                'options' => $payload->getOptions()
+                'options' => $payload->getOptions(),
             ]);
         }
     }

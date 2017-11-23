@@ -38,7 +38,7 @@ interface ManifestInterface
     public function getDescription();
 
     /**
-     * Returns the adaptor version
+     * Returns the adaptor version.
      *
      * @return string
      */

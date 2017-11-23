@@ -12,12 +12,10 @@
 namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;
-
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\ContentHistoryBundle\Event\ContentHistoryEvent;
 use Integrated\Common\Content\ContentInterface;
 
@@ -38,7 +36,7 @@ class ContentHistorySubscriber implements EventSubscriber
 
     /**
      * @param EventDispatcher $eventDispatcher
-     * @param string $className
+     * @param string          $className
      */
     public function __construct(EventDispatcher $eventDispatcher, $className)
     {
@@ -71,8 +69,8 @@ class ContentHistorySubscriber implements EventSubscriber
 
     /**
      * @param DocumentManager $dm
-     * @param array $documents
-     * @param string $action
+     * @param array           $documents
+     * @param string          $action
      */
     protected function dispatch(DocumentManager $dm, array $documents, $action)
     {
@@ -94,9 +92,10 @@ class ContentHistorySubscriber implements EventSubscriber
     }
 
     /**
-     * @param DocumentManager $dm
+     * @param DocumentManager  $dm
      * @param ContentInterface $document
-     * @param string $action
+     * @param string           $action
+     *
      * @return array
      */
     protected function getOriginalData(DocumentManager $dm, ContentInterface $document, $action)

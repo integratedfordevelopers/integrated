@@ -12,15 +12,12 @@
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
 use Doctrine\ODM\MongoDB\Id\UuidGenerator;
-
 use Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider;
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
 use Integrated\Bundle\MenuBundle\Document\Menu;
 use Integrated\Bundle\MenuBundle\Document\MenuItem;
 use Integrated\Bundle\MenuBundle\Matcher\RecursiveActiveMatcher;
-
 use Knp\Menu\Twig\Helper;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -71,12 +68,12 @@ class MenuExtension extends \Twig_Extension
     protected $request;
 
     /**
-     * @param DatabaseMenuProvider $provider
-     * @param DatabaseMenuFactory $factory
-     * @param Helper $helper
+     * @param DatabaseMenuProvider   $provider
+     * @param DatabaseMenuFactory    $factory
+     * @param Helper                 $helper
      * @param RecursiveActiveMatcher $matcher
-     * @param RequestStack $requestStack
-     * @param string $template
+     * @param RequestStack           $requestStack
+     * @param string                 $template
      */
     public function __construct(
         DatabaseMenuProvider $provider,
@@ -118,9 +115,9 @@ class MenuExtension extends \Twig_Extension
     }
 
     /**
-     * @param array $context
+     * @param array  $context
      * @param string $name
-     * @param array $options
+     * @param array  $options
      *
      * @return string
      */
@@ -140,9 +137,9 @@ class MenuExtension extends \Twig_Extension
                 $menu = $this->factory->createItem($name);
             }
 
-            $html .= '<script type="text/json">' . json_encode(
+            $html .= '<script type="text/json">'.json_encode(
                 ['data' => $menu->toArray(), 'options' => $options]
-            ) . '</script>';
+            ).'</script>';
         }
 
         if ($menu) {
@@ -159,8 +156,9 @@ class MenuExtension extends \Twig_Extension
     }
 
     /**
-     * @param Menu $menu
+     * @param Menu  $menu
      * @param array $options
+     *
      * @return string
      */
     public function prepareMenu(Menu $menu = null, array $options = [])
@@ -178,8 +176,8 @@ class MenuExtension extends \Twig_Extension
 
     /**
      * @param MenuItem $menu
-     * @param array $options
-     * @param int $depth
+     * @param array    $options
+     * @param int      $depth
      */
     protected function prepareItems(MenuItem $menu, array $options = [], $depth = 1)
     {
@@ -192,9 +190,9 @@ class MenuExtension extends \Twig_Extension
         /** @var MenuItem $child */
         foreach ($menu->getChildren() as $child) {
             $child->setAttributes([
-                'class'       => 'integrated-website-menu-item',
+                'class' => 'integrated-website-menu-item',
                 'data-action' => 'integrated-website-menu-item-edit',
-                'data-json'   => json_encode($child->toArray(false)),
+                'data-json' => json_encode($child->toArray(false)),
             ]);
 
             $this->prepareItems($child, $options, $depth + 1); // recursion
@@ -204,9 +202,9 @@ class MenuExtension extends \Twig_Extension
             $uuid = $this->generator->generateV5($this->generator->generateV4(), uniqid(rand(), true));
 
             $child = $menu->addChild('+', [
-                'uri'        => '#',
+                'uri' => '#',
                 'attributes' => [
-                    'class'       => 'integrated-website-menu-item',
+                    'class' => 'integrated-website-menu-item',
                     'data-action' => 'integrated-website-menu-item-add',
                 ],
             ]);

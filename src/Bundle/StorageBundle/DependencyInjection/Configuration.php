@@ -36,7 +36,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Adds the default identifier_class to the root node
+     * Adds the default identifier_class to the root node.
      *
      * @param ArrayNodeDefinition $node
      */
@@ -50,7 +50,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Adds the required resolvers key to the root node
+     * Adds the required resolvers key to the root node.
      *
      * @param ArrayNodeDefinition $node
      */
@@ -76,7 +76,7 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Adds the optional decision map to to the root node
+     * Adds the optional decision map to to the root node.
      *
      * @param ArrayNodeDefinition $node
      */

@@ -23,7 +23,7 @@ final class Events
      *
      * @var string
      */
-    const PRE_EXECUTE  = 'integrated.solr.preExecute';
+    const PRE_EXECUTE = 'integrated.solr.preExecute';
 
     /**
      * This event is fired just before the indexing run is finished.
@@ -45,7 +45,7 @@ final class Events
      *
      * @var string
      */
-    const BATCHING     = 'integrated.solr.batching';
+    const BATCHING = 'integrated.solr.batching';
 
     /**
      * This event is fired just before the query is send to the solr
@@ -55,7 +55,7 @@ final class Events
      *
      * @var string
      */
-    const SENDING      = 'integrated.solr.sending';
+    const SENDING = 'integrated.solr.sending';
 
     /**
      * This event is fired after the query is send to the the solr
@@ -65,7 +65,7 @@ final class Events
      *
      * @var string
      */
-    const RESULTS      = 'integrated.solr.results';
+    const RESULTS = 'integrated.solr.results';
 
     /**
      * This event is fired after a job has been successfully handled
@@ -75,7 +75,7 @@ final class Events
      *
      * @var string
      */
-    const PROCESSED    = 'integrated.solr.processed';
+    const PROCESSED = 'integrated.solr.processed';
 
     /**
      * This event is fired after a error occurred with converting a job to
@@ -86,5 +86,5 @@ final class Events
      *
      * @var string
      */
-    const ERROR        = 'integrated.solr.error';
+    const ERROR = 'integrated.solr.error';
 }

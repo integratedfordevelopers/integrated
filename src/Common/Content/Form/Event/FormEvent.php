@@ -13,7 +13,6 @@ namespace Integrated\Common\Content\Form\Event;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
-
 use Symfony\Component\EventDispatcher\Event;
 
 /**

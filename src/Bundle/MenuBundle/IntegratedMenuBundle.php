@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\MenuBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-
 use Integrated\Bundle\MenuBundle\DependencyInjection\IntegratedMenuExtension;
 
 /**

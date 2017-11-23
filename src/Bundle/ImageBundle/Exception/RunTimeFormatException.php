@@ -18,6 +18,7 @@ class RunTimeFormatException extends \ErrorException
 {
     /**
      * @param $outputFormat
+     *
      * @return static
      */
     public static function conversionFileCreateFail($converter, $outputFormat, $file)

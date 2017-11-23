@@ -13,10 +13,8 @@ namespace Integrated\Common\Form\Mapping\Driver;
 
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
-
 use Integrated\Common\Form\Mapping\Annotations\Document;
 use Integrated\Common\Form\Mapping\Annotations\Field;
-
 use Integrated\Common\Form\Mapping\DriverInterface;
 use Integrated\Common\Form\Mapping\MetadataEditorInterface;
 
@@ -27,7 +25,7 @@ class AnnotationDriver implements DriverInterface
 {
     const DOCUMENT_CLASS = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Document';
 
-    const FIELD_CLASS    = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Field';
+    const FIELD_CLASS = 'Integrated\\Common\\Form\\Mapping\\Annotations\\Field';
 
     /**
      * @var MappingDriver
@@ -46,7 +44,7 @@ class AnnotationDriver implements DriverInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getAllClassNames()
     {
@@ -54,7 +52,7 @@ class AnnotationDriver implements DriverInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function loadMetadataForClass($class, MetadataEditorInterface $metadata)
     {

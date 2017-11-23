@@ -26,7 +26,7 @@ class QueueFactory implements QueueFactoryInterface
     /**
      * @var QueueInterface[]
      */
-    private $registry = array();
+    private $registry = [];
 
     /**
      * @param $provider

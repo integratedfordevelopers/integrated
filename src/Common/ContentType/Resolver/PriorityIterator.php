@@ -13,7 +13,6 @@ namespace Integrated\Common\ContentType\Resolver;
 
 use Integrated\Common\ContentType\IteratorInterface;
 use Integrated\Common\ContentType\ResolverInterface;
-
 use AppendIterator;
 
 /**

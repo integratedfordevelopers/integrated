@@ -12,10 +12,8 @@
 namespace Integrated\Common\Channel\Exporter;
 
 use Exception;
-
 use Integrated\Common\Channel\Exporter\Queue\RequestSerializerInterface;
 use Integrated\Common\Channel\ChannelInterface;
-
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Queue\QueueMessageInterface;
 
@@ -78,7 +76,7 @@ class QueueExporter implements ExporterInterface
     }
 
     /**
-     * Execute a queued exporter run
+     * Execute a queued exporter run.
      */
     public function execute()
     {

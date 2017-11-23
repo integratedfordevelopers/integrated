@@ -14,7 +14,6 @@ namespace Integrated\Bundle\StorageBundle\Storage\Collection\Walk;
 use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\ManagerInterface;
 

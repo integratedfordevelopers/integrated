@@ -20,6 +20,7 @@ interface ConfigProviderInterface
 {
     /**
      * @param ContentInterface[] $content
+     *
      * @return ConfigInterface[]
      */
     public function getConfig(array $content);

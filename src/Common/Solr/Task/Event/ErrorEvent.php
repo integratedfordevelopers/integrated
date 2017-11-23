@@ -12,7 +12,6 @@
 namespace Integrated\Common\Solr\Task\Event;
 
 use Exception;
-
 use Integrated\Common\Solr\Task\Worker;
 use Integrated\Common\Queue\QueueMessageInterface;
 

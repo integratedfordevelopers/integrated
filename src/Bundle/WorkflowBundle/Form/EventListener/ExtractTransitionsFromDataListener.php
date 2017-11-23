@@ -11,11 +11,8 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\EventListener;
 
-use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -31,12 +28,12 @@ class ExtractTransitionsFromDataListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::PRE_SET_DATA => 'onPreSetData'
+            FormEvents::PRE_SET_DATA => 'onPreSetData',
         ];
     }
 
     /**
-     * Add the transitions field to the form type
+     * Add the transitions field to the form type.
      *
      * @param FormEvent $event
      */

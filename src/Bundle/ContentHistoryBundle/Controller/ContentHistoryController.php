@@ -13,12 +13,9 @@ namespace Integrated\Bundle\ContentHistoryBundle\Controller;
 
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpFoundation\Request;
-
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
-
 use Knp\Component\Pager\Paginator;
 
 /**
@@ -42,9 +39,9 @@ class ContentHistoryController
     protected $paginator;
 
     /**
-     * @param TwigEngine $templating
+     * @param TwigEngine         $templating
      * @param DocumentRepository $repository
-     * @param Paginator $paginator
+     * @param Paginator          $paginator
      */
     public function __construct(TwigEngine $templating, DocumentRepository $repository, Paginator $paginator)
     {
@@ -56,6 +53,7 @@ class ContentHistoryController
     /**
      * @param Content $content
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Content $content, Request $request)
@@ -78,6 +76,7 @@ class ContentHistoryController
 
     /**
      * @param ContentHistory $contentHistory
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(ContentHistory $contentHistory)
@@ -89,13 +88,14 @@ class ContentHistoryController
 
     /**
      * @param Content $content
-     * @param int $limit
+     * @param int     $limit
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function historyAction(Content $content, $limit = 3)
     {
         return $this->templating->renderResponse('IntegratedContentHistoryBundle:ContentHistory:history.html.twig', [
-            'content'   => $content,
+            'content' => $content,
             'documents' => $this->repository->findBy(
                 ['contentId' => $content->getId()],
                 ['date' => 'desc'],

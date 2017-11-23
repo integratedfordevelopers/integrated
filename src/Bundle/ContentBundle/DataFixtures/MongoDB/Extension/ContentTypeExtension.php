@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -27,6 +26,7 @@ trait ContentTypeExtension
 
     /**
      * @param string $id
+     *
      * @return null|ContentType
      */
     public function contentType($id)

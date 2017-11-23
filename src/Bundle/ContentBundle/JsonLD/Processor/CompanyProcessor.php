@@ -36,7 +36,7 @@ class CompanyProcessor implements ProcessorInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerInterface $data, $object, Context $context)
     {
@@ -56,7 +56,7 @@ class CompanyProcessor implements ProcessorInterface
                 $data->add('contactPoint', [
                     '@type' => 'ContactPoint',
                     'contactType' => $number->getType(),
-                    'telephone' => $number->getNumber()
+                    'telephone' => $number->getNumber(),
                 ]);
             }
         }

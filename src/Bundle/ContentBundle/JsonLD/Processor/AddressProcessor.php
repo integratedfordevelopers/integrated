@@ -22,7 +22,7 @@ use Integrated\Common\Normalizer\Processor\ProcessorInterface;
 class AddressProcessor implements ProcessorInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerInterface $data, $object, Context $context)
     {
@@ -38,7 +38,7 @@ class AddressProcessor implements ProcessorInterface
             'postalCode' => $object->getZipcode(),
             'streetAddress' => $object->getAddress1(),
             'addressRegion' => $object->getState(),
-            'addressCountry' => $object->getCountry()
+            'addressCountry' => $object->getCountry(),
         ]);
 
         if ($geo = $context->normalize($object->getLocation())) {

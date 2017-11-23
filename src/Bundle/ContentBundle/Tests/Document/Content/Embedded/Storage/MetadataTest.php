@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Embedded\Storage;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
-
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -21,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class MetadataTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Tests the getters (through the constructor) of the object
+     * Tests the getters (through the constructor) of the object.
      */
     public function testGetters()
     {
@@ -39,7 +38,7 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the StorageData method
+     * Test the StorageData method.
      */
     public function testGetStorageDataMethod()
     {

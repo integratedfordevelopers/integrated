@@ -12,18 +12,14 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Exception;
-
 use Integrated\Bundle\ContentBundle\Form\Type\BulkActionConfirmType;
 use Integrated\Bundle\ContentBundle\Form\Type\BulkConfigureType;
 use Integrated\Bundle\ContentBundle\Form\Type\BulkSelectionType;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Integrated\Bundle\ContentBundle\Provider\ContentProvider;
 use Integrated\Common\Bulk\BulkHandlerInterface;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -50,10 +46,10 @@ class BulkController extends Controller
     protected $bulkHandler;
 
     /**
-     * @param DocumentManager $dm
-     * @param ContentProvider $contentProvider
+     * @param DocumentManager      $dm
+     * @param ContentProvider      $contentProvider
      * @param BulkHandlerInterface $bulkHandler
-     * @param ContainerInterface $container
+     * @param ContainerInterface   $container
      */
     public function __construct(
         DocumentManager $dm,
@@ -172,7 +168,7 @@ class BulkController extends Controller
             } catch (Exception $e) {
                 $this->addFlash(
                     'danger',
-                    'Whoops! It seems something went wrong during the execution of this bulk action! The following error has given: "' . $e->getMessage() . '"'
+                    'Whoops! It seems something went wrong during the execution of this bulk action! The following error has given: "'.$e->getMessage().'"'
                 );
             }
         }

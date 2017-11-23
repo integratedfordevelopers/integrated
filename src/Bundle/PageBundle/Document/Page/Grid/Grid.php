@@ -14,7 +14,7 @@ namespace Integrated\Bundle\PageBundle\Document\Page\Grid;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Grid document
+ * Grid document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -49,11 +49,13 @@ class Grid implements ItemsInterface
 
     /**
      * @param string $id
+     *
      * @return Grid
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -67,31 +69,37 @@ class Grid implements ItemsInterface
 
     /**
      * @param array $items
+     *
      * @return $this
      */
     public function setItems(array $items = [])
     {
         $this->items = new ArrayCollection($items);
+
         return $this;
     }
 
     /**
      * @param Item $item
+     *
      * @return $this
      */
     public function addItem(Item $item)
     {
         $this->items->add($item);
+
         return $this;
     }
 
     /**
      * @param Item $item
+     *
      * @return $this
      */
     public function removeItem(Item $item)
     {
         $this->items->removeElement($item);
+
         return $this;
     }
 

@@ -12,15 +12,12 @@
 namespace Integrated\Bundle\ContentBundle\EventListener;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelDefaultDataListener;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelEnforcerListener;
 use Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType;
-
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -43,12 +40,12 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            Events::POST_BUILD => ['buildForm', -60]
+            Events::POST_BUILD => ['buildForm', -60],
         ];
     }
 
@@ -117,7 +114,7 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
 
                     'multiple' => true,
                     'expanded' => true,
-                    'attr' => ['class' => 'channel-options']
+                    'attr' => ['class' => 'channel-options'],
                 ]);
 
                 $builder->add('primaryChannel', PrimaryChannelType::class);
@@ -142,12 +139,13 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
 
         return [
             'disabled' => 0,
-            'defaults' => []
+            'defaults' => [],
         ];
     }
 
     /**
      * @param array $ids
+     *
      * @return Channel[]
      */
     protected function getChannels(array $ids = null)

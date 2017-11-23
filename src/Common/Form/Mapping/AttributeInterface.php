@@ -33,12 +33,14 @@ interface AttributeInterface
 
     /**
      * @param string $name
+     *
      * @return mixed
      */
     public function getOption($name);
 
     /**
      * @param string $name
+     *
      * @return bool
      */
     public function hasOption($name);

@@ -13,7 +13,6 @@ namespace Integrated\Tests\Common\Converter\Config\Util;
 
 use Integrated\Common\Converter\Config\ConfigInterface;
 use Integrated\Common\Converter\Config\TypeConfigInterface;
-
 use Integrated\Common\Converter\Config\Util\ConfigIterator;
 
 /**
@@ -106,6 +105,7 @@ class ConfigIteratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param TypeConfigInterface[] $types
+     *
      * @return ConfigIterator
      */
     protected function getInstance(array $types = [])

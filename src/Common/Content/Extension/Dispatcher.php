@@ -12,17 +12,14 @@
 namespace Integrated\Common\Content\Extension;
 
 use Integrated\Common\Content\ContentInterface;
-
 use Integrated\Common\Content\Extension\Event\ContentEvent;
 use Integrated\Common\Content\Extension\Event\ContentTypeEvent;
 use Integrated\Common\Content\Extension\Event\MetadataEvent;
 use Integrated\Common\Content\Extension\Event\Subscriber\ContentSubscriberInterface;
 use Integrated\Common\Content\Extension\Event\Subscriber\ContentTypeSubscriberInterface;
 use Integrated\Common\Content\Extension\Event\Subscriber\MetadataSubscriberInterface;
-
 use Integrated\Common\Form\Mapping\MetadataEditorInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
-
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\ImmutableEventDispatcher;
@@ -41,9 +38,9 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
      * @var EventDispatcherInterface[]
      */
     private $dispatcher = [
-        'content'  => null,
-        'type'     => null,
-        'metadata' => null
+        'content' => null,
+        'type' => null,
+        'metadata' => null,
     ];
 
     /**
@@ -51,12 +48,12 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
      */
     public function __construct(RegistryInterface $registry)
     {
-        $this->registry   = $registry;
+        $this->registry = $registry;
 
         $this->dispatcher = [
-            'content'  => new EventDispatcher(),
-            'type'     => new EventDispatcher(),
-            'metadata' => new EventDispatcher()
+            'content' => new EventDispatcher(),
+            'type' => new EventDispatcher(),
+            'metadata' => new EventDispatcher(),
         ];
 
         foreach ($this->registry->getExtensions() as $extension) {
@@ -76,14 +73,14 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
         }
 
         $this->dispatcher = [
-            'content'  => new ImmutableEventDispatcher($this->dispatcher['content']),
-            'type'     => new ImmutableEventDispatcher($this->dispatcher['type']),
-            'metadata' => new ImmutableEventDispatcher($this->dispatcher['metadata'])
+            'content' => new ImmutableEventDispatcher($this->dispatcher['content']),
+            'type' => new ImmutableEventDispatcher($this->dispatcher['type']),
+            'metadata' => new ImmutableEventDispatcher($this->dispatcher['metadata']),
         ];
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getExtensions()
     {
@@ -91,7 +88,7 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasExtension($name)
     {
@@ -99,7 +96,7 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getExtension($name)
     {
@@ -107,7 +104,7 @@ class Dispatcher implements DispatcherInterface, RegistryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function dispatch($eventName, $object)
     {

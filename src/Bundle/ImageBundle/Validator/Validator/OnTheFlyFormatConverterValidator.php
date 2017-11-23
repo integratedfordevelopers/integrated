@@ -16,10 +16,8 @@ use Integrated\Bundle\SolrBundle\Process\Exception\LogicException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-
 use Integrated\Bundle\ImageBundle\Converter\Container;
 use Integrated\Bundle\ImageBundle\Exception\FormatException;
-
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
 
 /**
@@ -44,8 +42,8 @@ class OnTheFlyFormatConverterValidator extends ConstraintValidator
 
     /**
      * @param Container $container
-     * @param string $convert
-     * @param array $webFormats
+     * @param string    $convert
+     * @param array     $webFormats
      */
     public function __construct(Container $container, $convert, $webFormats)
     {

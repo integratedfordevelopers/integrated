@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Solr\Fixtures;
 
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Embedded\RelationInterface;
 

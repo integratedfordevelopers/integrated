@@ -12,18 +12,14 @@
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Form\EventListener\SecurityLoginListener;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Translation\IdentityTranslator;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -53,9 +49,9 @@ class LoginFormType extends AbstractType
      * The container is used to retrieve the request so that the errors
      * and last username can be extracted from it.
      *
-     * @param RequestStack $request
+     * @param RequestStack        $request
      * @param TranslatorInterface $translator
-     * @param null $translationDomain
+     * @param null                $translationDomain
      */
     public function __construct(RequestStack $request, TranslatorInterface $translator = null, $translationDomain = null)
     {
@@ -80,8 +76,8 @@ class LoginFormType extends AbstractType
                 [
                     'required' => false,
                     'attr' => [
-                        'align_with_widget' => true
-                    ]
+                        'align_with_widget' => true,
+                    ],
                 ]
             );
         }
@@ -153,7 +149,6 @@ class LoginFormType extends AbstractType
      * object will be disabled
      *
      * @param array $options
-     * @return null | Request
      */
     protected function getRequest(array $options = [])
     {
@@ -172,6 +167,7 @@ class LoginFormType extends AbstractType
      * then a dummy will be returned.
      *
      * @param array $options
+     *
      * @return TranslatorInterface
      */
     protected function getTranslator(array $options = [])
@@ -194,7 +190,6 @@ class LoginFormType extends AbstractType
      * options and if not uses the injected on.
      *
      * @param array $options
-     * @return null | string
      */
     protected function getTranslationDomain(array $options = [])
     {

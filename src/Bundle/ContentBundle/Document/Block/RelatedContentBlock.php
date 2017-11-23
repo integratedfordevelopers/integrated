@@ -14,11 +14,10 @@ namespace Integrated\Bundle\ContentBundle\Document\Block;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Related content block document
+ * Related content block document.
  *
  * @author Vasil Pascal <developer.optimum@gmail.com>
  *
@@ -27,17 +26,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RelatedContentBlock extends Block
 {
     /**
-     * Show items which have the current document linked
+     * Show items which have the current document linked.
      */
     const SHOW_USED_BY = 1;
 
     /**
-     * Show items which share linked items with the current document
+     * Show items which share linked items with the current document.
      */
     const SHOW_LINKED = 2;
 
     /**
-     * Show items linked by the current document
+     * Show items linked by the current document.
      */
     const SHOW_LINKED_BY = 3;
 
@@ -141,7 +140,7 @@ class RelatedContentBlock extends Block
     protected $contentTypes;
 
     /**
-     * Get the block type
+     * Get the block type.
      *
      * @return string
      */
@@ -224,11 +223,13 @@ class RelatedContentBlock extends Block
 
     /**
      * @param string $sortDirection
+     *
      * @return $this
      */
     public function setSortDirection($sortDirection)
     {
         $this->sortDirection = $sortDirection;
+
         return $this;
     }
 

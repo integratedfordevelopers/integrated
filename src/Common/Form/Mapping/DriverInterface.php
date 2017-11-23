@@ -17,14 +17,14 @@ namespace Integrated\Common\Form\Mapping;
 interface DriverInterface
 {
     /**
-     * Get all the classnames of possible content classes
+     * Get all the classnames of possible content classes.
      *
      * @return string[]
      */
     public function getAllClassNames();
 
     /**
-     * Load the metadata for the given class and store them in the metadata class
+     * Load the metadata for the given class and store them in the metadata class.
      *
      * @param $class
      * @param MetadataEditorInterface $metadata

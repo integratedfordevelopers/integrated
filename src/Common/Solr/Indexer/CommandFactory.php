@@ -12,20 +12,16 @@
 namespace Integrated\Common\Solr\Indexer;
 
 use Exception;
-
 use Integrated\Common\Converter\ConverterInterface;
-
 use Integrated\Common\Solr\Exception\ConverterException;
 use Integrated\Common\Solr\Exception\OutOfBoundsException;
 use Integrated\Common\Solr\Exception\SerializerException;
-
 use Solarium\QueryType\Update\Query\Command\Add;
 use Solarium\QueryType\Update\Query\Command\Commit;
 use Solarium\QueryType\Update\Query\Command\Delete;
 use Solarium\QueryType\Update\Query\Command\Optimize;
 use Solarium\QueryType\Update\Query\Command\Rollback;
 use Solarium\QueryType\Update\Query\Document\Document;
-
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -105,6 +101,7 @@ class CommandFactory implements CommandFactoryInterface
      * Create a solarium add command.
      *
      * @param JobInterface $job
+     *
      * @return Add
      */
     protected function createAdd(JobInterface $job)
@@ -112,7 +109,7 @@ class CommandFactory implements CommandFactoryInterface
         $required = [
             'document.data',
             'document.class',
-            'document.format'
+            'document.format',
         ];
 
         foreach ($required as $option) {
@@ -158,6 +155,7 @@ class CommandFactory implements CommandFactoryInterface
      * Create a solarium delete command.
      *
      * @param JobInterface $job
+     *
      * @return Delete
      */
     protected function createDelete(JobInterface $job)
@@ -187,6 +185,7 @@ class CommandFactory implements CommandFactoryInterface
      * Create a solarium optimize command.
      *
      * @param JobInterface $job
+     *
      * @return Optimize
      */
     protected function createOptimize(JobInterface $job)
@@ -212,6 +211,7 @@ class CommandFactory implements CommandFactoryInterface
      * Create a solarium commit command.
      *
      * @param JobInterface $job
+     *
      * @return Commit
      */
     protected function createCommit(JobInterface $job)
@@ -237,6 +237,7 @@ class CommandFactory implements CommandFactoryInterface
      * Create a solarium rollback command.
      *
      * @param JobInterface $job
+     *
      * @return Rollback
      */
     protected function createRollback(JobInterface $job)

@@ -13,12 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
@@ -51,7 +48,7 @@ class ReferencesToArrayTransformer implements DataTransformerInterface
 
         foreach ($value as $reference) {
             if ($reference instanceof Content) {
-                $array[$reference->getId()] = (string)$reference;
+                $array[$reference->getId()] = (string) $reference;
             }
         }
 
@@ -82,7 +79,7 @@ class ReferencesToArrayTransformer implements DataTransformerInterface
         }
 
         if (count($references) != count($value)) {
-            throw new TransformationFailedException("Not all Contents could be fetched.");
+            throw new TransformationFailedException('Not all Contents could be fetched.');
         }
 
         return new ArrayCollection($references);

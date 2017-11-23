@@ -36,8 +36,8 @@ class RelationType extends AbstractType
                 [
                     'required' => false,
                     'attr' => [
-                        'align_with_widget' => true
-                    ]
+                        'align_with_widget' => true,
+                    ],
                 ]
             )
             ->add(
@@ -46,8 +46,8 @@ class RelationType extends AbstractType
                 [
                     'required' => false,
                     'attr' => [
-                        'align_with_widget' => true
-                    ]
+                        'align_with_widget' => true,
+                    ],
                 ]
             )
         ;
@@ -58,9 +58,9 @@ class RelationType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation'
-        ));
+        $resolver->setDefaults([
+            'data_class' => 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation',
+        ]);
     }
 
     /**

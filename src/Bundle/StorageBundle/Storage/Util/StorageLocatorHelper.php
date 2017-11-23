@@ -11,10 +11,7 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Util;
 
-use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-use Integrated\Common\Storage\ResolverInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -45,9 +42,8 @@ class StorageLocatorHelper implements StorageInterface
     protected $filesystems;
 
     /**
-     *
      * @param string $identifier
-     * @param array $filesystems
+     * @param array  $filesystems
      */
     public function __construct($identifier, $filesystems)
     {

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
-
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -59,11 +58,10 @@ class Metadata implements MetadataInterface
         return new ArrayCollection(
             array_merge_recursive(
                 $this->metadata,
-                ['headers' =>
-                    array_replace(
+                ['headers' => array_replace(
                         $this->headers,
                         ['Content-Type' => $this->mimeType]
-                    )
+                    ),
                 ]
             )
         );

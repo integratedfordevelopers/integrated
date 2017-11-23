@@ -14,9 +14,7 @@ namespace Integrated\Bundle\StorageBundle\Form\EventListener;
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
 use Integrated\Bundle\StorageBundle\Form\Upload\StorageOriginal;
 use Integrated\Bundle\StorageBundle\Storage\Cache\AppCache;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -47,7 +45,7 @@ class FileEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            FormEvents::SUBMIT => 'submit'
+            FormEvents::SUBMIT => 'submit',
         ];
     }
 

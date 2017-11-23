@@ -12,19 +12,15 @@
 namespace Integrated\Bundle\UserBundle\Command;
 
 use Exception;
-
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
 /**
@@ -108,6 +104,7 @@ The <info>%command.name%</info> command replaces the password of the user
 
     /**
      * @param object $user
+     *
      * @return PasswordEncoderInterface
      */
     protected function getEncoder($user)
@@ -133,8 +130,10 @@ The <info>%command.name%</info> command replaces the password of the user
 
     /**
      * @param string $username
-     * @param Scope $scope
+     * @param Scope  $scope
+     *
      * @return UserInterface|null
+     *
      * @throws Exception
      */
     protected function findUserByScope($username, Scope $scope)
@@ -151,7 +150,7 @@ The <info>%command.name%</info> command replaces the password of the user
             ->andWhere('User.scope = :scope')
             ->setParameters([
                 'username' => $username,
-                'scope' => (int) $scope->getId()
+                'scope' => (int) $scope->getId(),
             ])
             ->getQuery()
             ->getOneOrNullResult()

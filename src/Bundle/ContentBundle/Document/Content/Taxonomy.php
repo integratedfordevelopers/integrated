@@ -15,7 +15,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
- * Document type Taxonomy
+ * Document type Taxonomy.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
@@ -43,7 +43,7 @@ class Taxonomy extends Content
     protected $description;
 
     /**
-     * Get the title of the document
+     * Get the title of the document.
      *
      * @return string
      */
@@ -53,19 +53,21 @@ class Taxonomy extends Content
     }
 
     /**
-     * Set the title of the document
+     * Set the title of the document.
      *
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
     /**
-     * Get the slug of the document
+     * Get the slug of the document.
      *
      * @return string
      */
@@ -75,19 +77,21 @@ class Taxonomy extends Content
     }
 
     /**
-     * Set the slug of the document
+     * Set the slug of the document.
      *
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 
     /**
-     * Get the description of the document
+     * Get the description of the document.
      *
      * @return string
      */
@@ -97,14 +101,16 @@ class Taxonomy extends Content
     }
 
     /**
-     * Set the description of the document
+     * Set the description of the document.
      *
      * @param string $description
+     *
      * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 

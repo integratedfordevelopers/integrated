@@ -12,12 +12,11 @@
 namespace Integrated\Bundle\WorkflowBundle\EventListener;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Event subscriber for adding menu items to integrated_menu
+ * Event subscriber for adding menu items to integrated_menu.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -45,9 +44,9 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure'
-        );
+        return [
+            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure',
+        ];
     }
 
     /**
@@ -65,7 +64,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
                 $menuManage = $menu->addChild(self::MENU_MANAGE);
             }
 
-            $menuManage->addChild('Workflow', array('route' => 'integrated_workflow_index'));
+            $menuManage->addChild('Workflow', ['route' => 'integrated_workflow_index']);
         }
     }
 }

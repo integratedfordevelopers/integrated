@@ -13,7 +13,6 @@ namespace Integrated\Common\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Common\Content\Embedded\RelationInterface;
 
 /**
@@ -24,45 +23,46 @@ use Integrated\Common\Content\Embedded\RelationInterface;
 interface ContentInterface
 {
     /**
-     * Return the id of the content
+     * Return the id of the content.
      *
      * @return string
      */
     public function getId();
 
-
     /**
-     * Return the Slug of the content
+     * Return the Slug of the content.
      *
      * @return string
      */
     public function getSlug();
-    
+
     /**
-     * Set the slug of the Content
+     * Set the slug of the Content.
      *
      * @param string $slug
+     *
      * @return ContentInterface
      */
     public function setSlug($slug);
 
     /**
-     * Return the contentType of the Content
+     * Return the contentType of the Content.
      *
      * @return string
      */
     public function getContentType();
 
     /**
-     * Set the contentType of the Content
+     * Set the contentType of the Content.
      *
      * @param string $contentType
+     *
      * @return ContentInterface
      */
     public function setContentType($contentType);
 
     /**
-     * Get the relations of the document
+     * Get the relations of the document.
      *
      * @return ArrayCollection
      */
@@ -70,30 +70,34 @@ interface ContentInterface
 
     /**
      * @param $relationId
+     *
      * @return RelationInterface|bool
      */
     public function getRelation($relationId);
 
     /**
-     * Set the relations of the document
+     * Set the relations of the document.
      *
      * @param Collection $relations
+     *
      * @return ContentInterface
      */
     public function setRelations(Collection $relations);
 
     /**
-     * Add relation to relations collection
+     * Add relation to relations collection.
      *
      * @param RelationInterface $relation
+     *
      * @return ContentInterface
      */
     public function addRelation(RelationInterface $relation);
 
     /**
-     * Remove relation from relations collection
+     * Remove relation from relations collection.
      *
      * @param RelationInterface $relation
+     *
      * @return ContentInterface
      */
     public function removeRelation(RelationInterface $relation);

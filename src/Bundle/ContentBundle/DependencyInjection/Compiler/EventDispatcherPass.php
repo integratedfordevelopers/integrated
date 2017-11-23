@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -23,7 +22,7 @@ class EventDispatcherPass implements CompilerPassInterface
     const TAG = 'integrated_content.event';
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

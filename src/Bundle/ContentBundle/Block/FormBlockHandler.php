@@ -12,10 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Block;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\FormBlock;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
@@ -24,18 +22,16 @@ use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Form\ContentFormType;
-
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-
 use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType;
 use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue;
 
 /**
- * Form block handler
+ * Form block handler.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -67,11 +63,10 @@ class FormBlockHandler extends BlockHandler
     protected $channelContext;
 
     /**
-     *
-     * @param FormFactory $formFactory
-     * @param DocumentManager $documentManager
-     * @param RequestStack $requestStack
-     * @param FormMailer $formMailer
+     * @param FormFactory             $formFactory
+     * @param DocumentManager         $documentManager
+     * @param RequestStack            $requestStack
+     * @param FormMailer              $formMailer
      * @param ChannelContextInterface $channelContext
      */
     public function __construct(
@@ -120,7 +115,7 @@ class FormBlockHandler extends BlockHandler
 
                 $this->documentManager->persist($content);
                 $this->documentManager->flush();
-                
+
                 $data = $request->request->get($form->getName());
 
                 // remove irrelevant fields
@@ -137,14 +132,15 @@ class FormBlockHandler extends BlockHandler
 
         return $this->render([
             'block' => $block,
-            'form'  => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @param mixed $data
-     * @param array $options
+     * @param mixed     $data
+     * @param array     $options
      * @param FormBlock $block
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createForm($data = null, array $options = [], FormBlock $block = null)
@@ -163,8 +159,8 @@ class FormBlockHandler extends BlockHandler
 
         if (null !== $block && $block->isRecaptcha()) {
             $form->add('recaptcha', VihuvacRecaptchaType::class, [
-                'mapped'      => false,
-                'label'       => ' ',
+                'mapped' => false,
+                'label' => ' ',
                 'constraints' => [
                     new IsTrue(),
                 ],
@@ -174,16 +170,17 @@ class FormBlockHandler extends BlockHandler
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'submit' => ['type' => SubmitType::class],
-            ]
+            ],
         ]);
 
         return $form->getForm();
     }
 
     /**
-     * Link active document to content item as integrated relation
+     * Link active document to content item as integrated relation.
+     *
      * @param FormBlock $block
-     * @param Content $content
+     * @param Content   $content
      */
     public function linkActiveDocument(FormBlock $block, Content $content)
     {

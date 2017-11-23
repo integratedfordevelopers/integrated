@@ -49,10 +49,11 @@ class ContentProvider
 
     /**
      * ContentProvider constructor.
-     * @param Client $client
-     * @param DocumentManager $dm
+     *
+     * @param Client                $client
+     * @param DocumentManager       $dm
      * @param TokenStorageInterface $tokenStorage
-     * @param bool $workflowExtension
+     * @param bool                  $workflowExtension
      */
     public function __construct(
         Client $client,
@@ -69,6 +70,7 @@ class ContentProvider
     /**
      * @param Request $request
      * @param $limit
+     *
      * @return array
      */
     public function getContentFromSolr(Request $request, $limit)
@@ -108,7 +110,7 @@ class ContentProvider
 
         /** @var Relation $relation */
         foreach ($this->dm->getRepository(Relation::class)->findAll() as $relation) {
-            $name = preg_replace("/[^a-zA-Z]/", "", $relation->getName());
+            $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
 
@@ -116,7 +118,7 @@ class ContentProvider
                 $query
                     ->createFilterQuery($name)
                     ->addTag($name)
-                    ->setQuery('facet_' . $relation->getId() . ': ((%1%))', [implode(') OR (', array_map($filter, $relationfilter))]);
+                    ->setQuery('facet_'.$relation->getId().': ((%1%))', [implode(') OR (', array_map($filter, $relationfilter))]);
             }
         }
 
@@ -183,11 +185,11 @@ class ContentProvider
             'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
             'time' => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
             'title' => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc'],
-            'random' => ['name' => 'random', 'field' => 'random_' . mt_rand(), 'label' => 'random', 'order' => 'desc'],
+            'random' => ['name' => 'random', 'field' => 'random_'.mt_rand(), 'label' => 'random', 'order' => 'desc'],
         ];
         $order_options = [
             'asc' => 'asc',
-            'desc' => 'desc'
+            'desc' => 'desc',
         ];
 
         if ($q = $request->get('q')) {
@@ -226,6 +228,7 @@ class ContentProvider
 
     /**
      * @param Query $query
+     *
      * @return \Solarium\QueryType\Select\Query\FilterQuery
      */
     protected function addWorkflowFilter(Query $query)
@@ -248,15 +251,15 @@ class ContentProvider
 
         // allow content with group access
         if ($filterWorkflow) {
-            $fq->setQuery($fq->getQuery() . ' OR (security_workflow_read: ((%1%)) AND security_workflow_write: ((%1%)))', [implode(') OR (', $filterWorkflow)]);
+            $fq->setQuery($fq->getQuery().' OR (security_workflow_read: ((%1%)) AND security_workflow_write: ((%1%)))', [implode(') OR (', $filterWorkflow)]);
         }
 
         // always allow access to assinged content
-        $fq->setQuery($fq->getQuery() . ' OR facet_workflow_assigned_id: %1%', [$user->getId()]);
+        $fq->setQuery($fq->getQuery().' OR facet_workflow_assigned_id: %1%', [$user->getId()]);
 
         /* @var Person $person*/
         if ($person = $user->getRelation()) {
-            $fq->setQuery($fq->getQuery() . ' OR author: %1%*', [$person->getId()]);
+            $fq->setQuery($fq->getQuery().' OR author: %1%*', [$person->getId()]);
         }
 
         return $fq;

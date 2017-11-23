@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * Extension for loading Integrated slug bundle configuration
+ * Extension for loading Integrated slug bundle configuration.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */

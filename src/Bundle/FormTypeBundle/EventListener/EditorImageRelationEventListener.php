@@ -12,16 +12,13 @@
 namespace Integrated\Bundle\FormTypeBundle\EventListener;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Event\HandleRequestEvent;
 use Integrated\Bundle\ContentBundle\Events\IntegratedHttpRequestHandlerEvents;
-
 use Integrated\Bundle\ContentBundle\Relation\HtmlRelation;
 use Integrated\Bundle\FormTypeBundle\Form\Type\EditorType;
 use Integrated\Common\Content\ContentInterface;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -54,7 +51,7 @@ class EditorImageRelationEventListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            IntegratedHttpRequestHandlerEvents::POST_HANDLE => 'postHandleRequest'
+            IntegratedHttpRequestHandlerEvents::POST_HANDLE => 'postHandleRequest',
         ];
     }
 

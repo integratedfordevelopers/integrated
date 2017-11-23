@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Symfony\Component\Form\DataTransformerInterface;
-
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**

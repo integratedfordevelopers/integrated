@@ -14,18 +14,16 @@ namespace Integrated\Tests\Common\Solr\Task\Tasks\Doctrine\EventListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Solr\Task\Tasks\Doctrine\EventListener\MongoDBContentTypeListener;
 use Integrated\Common\Solr\Task\Tasks\ContentTypeQueueTask;
-
 use stdClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class MongoDBContentTypeListenerTest extends \PHPUnit_Framework_TestCase
+class MongoDBContenTypeListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -70,7 +68,6 @@ class MongoDBContentTypeListenerTest extends \PHPUnit_Framework_TestCase
         $this->getInstance()->postUpdate($this->getEvent(new stdClass()));
     }
 
-
     /**
      * @return MongoDBContentTypeListener
      */
@@ -81,6 +78,7 @@ class MongoDBContentTypeListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $id
+     *
      * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContentType($id)
@@ -95,6 +93,7 @@ class MongoDBContentTypeListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param object $document
+     *
      * @return LifecycleEventArgs | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getEvent($document)

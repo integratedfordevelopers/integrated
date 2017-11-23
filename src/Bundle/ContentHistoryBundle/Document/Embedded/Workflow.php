@@ -46,11 +46,13 @@ class Workflow
 
     /**
      * @param string $state
+     *
      * @return $this
      */
     public function setState($state)
     {
         $this->state = $state;
+
         return $this;
     }
 
@@ -64,11 +66,13 @@ class Workflow
 
     /**
      * @param string $assigned
+     *
      * @return $this
      */
     public function setAssigned($assigned)
     {
         $this->assigned = $assigned;
+
         return $this;
     }
 
@@ -82,11 +86,13 @@ class Workflow
 
     /**
      * @param string $deadline
+     *
      * @return $this
      */
     public function setDeadline($deadline)
     {
         $this->deadline = $deadline;
+
         return $this;
     }
 
@@ -100,11 +106,13 @@ class Workflow
 
     /**
      * @param string $comment
+     *
      * @return $this
      */
     public function setComment($comment)
     {
         $this->comment = $comment;
+
         return $this;
     }
 }

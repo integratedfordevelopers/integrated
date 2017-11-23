@@ -38,11 +38,11 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     public function testIntegration($file, $message, $condition, $templates, $exception, $outputs)
     {
         $templates['@IntegratedAssetBundle/Resources/views/Asset/javascripts.html.twig'] = file_get_contents(
-            dirname(__FILE__).'/../../Resources/views/Asset/javascripts.html.twig'
+            __DIR__.'/../../Resources/views/Asset/javascripts.html.twig'
         );
 
         $templates['@IntegratedAssetBundle/Resources/views/Asset/stylesheets.html.twig'] = file_get_contents(
-            dirname(__FILE__).'/../../Resources/views/Asset/stylesheets.html.twig'
+            __DIR__.'/../../Resources/views/Asset/stylesheets.html.twig'
         );
 
         $this->doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs);
@@ -53,6 +53,6 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
      */
     protected function getFixturesDir()
     {
-        return dirname(__FILE__).'/Fixtures/';
+        return __DIR__.'/Fixtures/';
     }
 }

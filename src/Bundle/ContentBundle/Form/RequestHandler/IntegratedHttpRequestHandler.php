@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Form\RequestHandler;
 
 use Integrated\Bundle\ContentBundle\Event\HandleRequestEvent;
 use Integrated\Bundle\ContentBundle\Events\IntegratedHttpRequestHandlerEvents;
-
 use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler;
 use Symfony\Component\Form\FormInterface;
@@ -30,7 +29,7 @@ class IntegratedHttpRequestHandler extends HttpFoundationRequestHandler
     private $dispatcher;
 
     /**
-     * @param ServerParams $serverParams
+     * @param ServerParams                  $serverParams
      * @param ContainerAwareEventDispatcher $dispatcher
      */
     public function __construct(ServerParams $serverParams, ContainerAwareEventDispatcher $dispatcher)
@@ -42,7 +41,7 @@ class IntegratedHttpRequestHandler extends HttpFoundationRequestHandler
 
     /**
      * @param FormInterface $form
-     * @param null $request
+     * @param null          $request
      */
     public function handleRequest(FormInterface $form, $request = null)
     {

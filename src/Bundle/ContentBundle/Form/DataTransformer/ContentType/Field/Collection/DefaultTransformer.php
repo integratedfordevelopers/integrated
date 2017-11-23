@@ -21,11 +21,12 @@ class DefaultTransformer implements DataTransformerInterface
 {
     /**
      * @param mixed $fields
+     *
      * @return array $return
      */
     public function transform($fields)
     {
-        $return = array();
+        $return = [];
         if (is_array($fields) || $fields instanceof \Traversable) {
             foreach ($fields as $field) {
                 if ($field instanceof Embedded\Field) {
@@ -39,6 +40,7 @@ class DefaultTransformer implements DataTransformerInterface
 
     /**
      * @param mixed $values
+     *
      * @return mixed|null
      */
     public function reverseTransform($values)
@@ -53,6 +55,7 @@ class DefaultTransformer implements DataTransformerInterface
                     unset($values[$key]);
                 }
             }
+
             return $values;
         }
 

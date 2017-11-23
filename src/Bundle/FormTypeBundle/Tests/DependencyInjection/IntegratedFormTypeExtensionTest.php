@@ -24,7 +24,7 @@ class IntegratedFormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     protected $extension;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -32,12 +32,12 @@ class IntegratedFormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test load function
+     * Test load function.
      */
     public function testLoadFunction()
     {
         // Create config
-        $config = array();
+        $config = [];
 
         /* @var $parameterBag \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface | \PHPUnit_Framework_MockObject_MockObject */
         $parameterBag = $this->getMock('Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface');

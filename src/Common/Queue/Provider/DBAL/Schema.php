@@ -27,7 +27,7 @@ final class Schema extends BaseSchema
     private $options;
 
     /**
-     * @param array $options
+     * @param array      $options
      * @param Connection $connection
      */
     public function __construct(array $options, Connection $connection = null)
@@ -45,6 +45,7 @@ final class Schema extends BaseSchema
      * Return a schema diff.
      *
      * @param BaseSchema $schema
+     *
      * @return SchemaDiff
      */
     public function compare(BaseSchema $schema)

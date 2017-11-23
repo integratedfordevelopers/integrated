@@ -12,11 +12,11 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
+ *
  * @deprecated
  */
 class TinyMCEType extends AbstractType

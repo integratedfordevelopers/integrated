@@ -20,7 +20,7 @@ use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 class RelationTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Relation must implement RelationInterface
+     * Relation must implement RelationInterface.
      */
     public function testInterface()
     {
@@ -28,7 +28,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if all the default values are set
+     * Test if all the default values are set.
      */
     public function testDefaultValues()
     {
@@ -39,7 +39,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the get- and setId function
+     * Test the get- and setId function.
      */
     public function testGetAndSetIdFunction()
     {
@@ -52,7 +52,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setName function
+     * Test get- and setName function.
      */
     public function testGetAndSetNameFunction()
     {
@@ -65,7 +65,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setType function
+     * Test get- and setType function.
      */
     public function testGetAndSetTypeFunction()
     {
@@ -78,7 +78,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setSources function with valid collection
+     * Test get- and setSources function with valid collection.
      *
      * @param ArrayCollection $collection
      * @dataProvider validCollectionProvider
@@ -92,7 +92,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setSources function with invalid collection
+     * Test get- and setSources function with invalid collection.
      *
      * @param ArrayCollection $collection
      * @dataProvider invalidCollectionProvider
@@ -105,7 +105,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addSource function with duplicate source
+     * Test addSource function with duplicate source.
      */
     public function testAddSourceFunctionWithDuplicateSource()
     {
@@ -122,7 +122,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeSource function with existing source
+     * Test removeSource function with existing source.
      */
     public function testRemoveSourceFunctionWithExistingSource()
     {
@@ -137,7 +137,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeSource function with non existing source
+     * Test removeSource function with non existing source.
      */
     public function testRemoveSourceFunctionWithNonExistingSource()
     {
@@ -150,7 +150,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setTargets function with valid collection
+     * Test get- and setTargets function with valid collection.
      *
      * @param ArrayCollection $collection
      * @dataProvider validCollectionProvider
@@ -164,7 +164,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setTargets function with invalid collection
+     * Test get- and setTargets function with invalid collection.
      *
      * @param ArrayCollection $collection
      * @dataProvider invalidCollectionProvider
@@ -177,7 +177,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addTarget function with duplicate target
+     * Test addTarget function with duplicate target.
      */
     public function testAddTargetFunctionWithDuplicateTarget()
     {
@@ -194,7 +194,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeTarget function with existing target
+     * Test removeTarget function with existing target.
      */
     public function testRemoveTargetFunctionWithExistingTarget()
     {
@@ -209,7 +209,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeTarget function with non existing source
+     * Test removeTarget function with non existing source.
      */
     public function testRemoveTargetFunctionWithNonExistingSource()
     {
@@ -222,7 +222,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test is- and setMultiple function
+     * Test is- and setMultiple function.
      */
     public function testIsAndSetMultipleFunction()
     {
@@ -235,7 +235,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test is- and setRequired function
+     * Test is- and setRequired function.
      */
     public function testIsAndSetRequiredFunction()
     {
@@ -248,7 +248,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setCreatedAt function
+     * Test get- and setCreatedAt function.
      */
     public function testGetAndSetCreatedAtFunction()
     {
@@ -269,14 +269,14 @@ class RelationTest extends \PHPUnit_Framework_TestCase
             [
                 new ArrayCollection([
                     $this->getMock('Integrated\Common\ContentType\ContentTypeInterface'),
-                    $this->getMock('Integrated\Common\ContentType\ContentTypeInterface')
+                    $this->getMock('Integrated\Common\ContentType\ContentTypeInterface'),
                 ]),
             ],
             [
                 new ArrayCollection([
-                    $this->getMock('Integrated\Common\ContentType\ContentTypeInterface')
-                ])
-            ]
+                    $this->getMock('Integrated\Common\ContentType\ContentTypeInterface'),
+                ]),
+            ],
         ];
     }
 
@@ -287,8 +287,8 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [
-                new ArrayCollection(['Invalid', true, ['types']])
-            ]
+                new ArrayCollection(['Invalid', true, ['types']]),
+            ],
         ];
     }
 

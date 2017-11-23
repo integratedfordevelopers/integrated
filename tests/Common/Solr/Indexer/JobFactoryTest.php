@@ -14,7 +14,6 @@ namespace Integrated\Tests\Common\Solr\Indexer;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Solr\Indexer\JobFactory;
 use Integrated\Common\Solr\Indexer\JobFactoryInterface;
-
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -75,29 +74,29 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
                 new \Integrated\Tests\Common\Solr\Fixtures\Object1(),
                 'type1-id1',
                 'Integrated\\Tests\\Common\\Solr\\Fixtures\\Object1',
-                'json'
+                'json',
             ],
             'upper case' => [
                 'ADD',
                 new \Integrated\Tests\Common\Solr\Fixtures\Object1(),
                 'type1-id1',
                 'Integrated\\Tests\\Common\\Solr\\Fixtures\\Object1',
-                'json'
+                'json',
             ],
             'doctrine proxy' => [
                 'add',
                 new \Integrated\Tests\Common\Solr\Fixtures\__CG__\ProxyObject(),
                 'proxy-type-proxy-id',
                 'ProxyObject', // everything before and including __GC__ should be stripped
-                'json'
+                'json',
             ],
             'format' => [
                 'ADD',
                 new \Integrated\Tests\Common\Solr\Fixtures\Object2(),
                 'type2-id2',
                 'Integrated\\Tests\\Common\\Solr\\Fixtures\\Object2',
-                'xml'
-            ]
+                'xml',
+            ],
         ];
     }
 
@@ -121,13 +120,13 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
             'lower case' => [
                 'delete',
                 new \Integrated\Tests\Common\Solr\Fixtures\Object1(),
-                'type1-id1'
+                'type1-id1',
             ],
             'upper case' => [
                 'DELETE',
                 new \Integrated\Tests\Common\Solr\Fixtures\Object2(),
-                'type2-id2'
-            ]
+                'type2-id2',
+            ],
         ];
     }
 

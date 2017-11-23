@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 
 /**
@@ -26,7 +25,7 @@ class PersonTest extends RelationTest
     private $person;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -34,7 +33,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test get- and setGender function
+     * Test get- and setGender function.
      */
     public function testGetAndSetGenderFunction()
     {
@@ -43,7 +42,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test get- and setNickname function
+     * Test get- and setNickname function.
      */
     public function testGetAndSetNicknameFunction()
     {
@@ -52,7 +51,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test get- and setPrefix function
+     * Test get- and setPrefix function.
      */
     public function testGetAndSetPrefixFunction()
     {
@@ -61,7 +60,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test get- and setFirstname function
+     * Test get- and setFirstname function.
      */
     public function testGetAndSetFirstnameFunction()
     {
@@ -70,7 +69,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test get- and setLastname function
+     * Test get- and setLastname function.
      */
     public function testGetAndSetLastNameFunction()
     {
@@ -79,20 +78,20 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test get- and setJobs function
+     * Test get- and setJobs function.
      */
     public function testGetAndSetJobsFunction()
     {
         $jobs = new ArrayCollection(
-            array(
-                $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job')
-            )
+            [
+                $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job'),
+            ]
         );
         $this->assertSame($jobs, $this->person->setJobs($jobs)->getJobs());
     }
 
     /**
-     * Test addJob function
+     * Test addJob function.
      */
     public function testAddJobFunction()
     {
@@ -105,7 +104,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test addJob function with duplicate job
+     * Test addJob function with duplicate job.
      */
     public function testAddJobFunctionWithDuplicateJob()
     {
@@ -120,7 +119,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test removeJob function
+     * Test removeJob function.
      */
     public function testRemoveJobFunction()
     {
@@ -135,7 +134,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test removeJob function with unknown job
+     * Test removeJob function with unknown job.
      */
     public function testRemoveAuthorFunctionWithUnknownAuthor()
     {
@@ -147,7 +146,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test get- and setPicture function
+     * Test get- and setPicture function.
      */
     public function testGetAndSetPictureFunction()
     {
@@ -157,7 +156,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test toString function with first and last name
+     * Test toString function with first and last name.
      */
     public function testToStringFunctionWithFirstAndLastName()
     {
@@ -166,11 +165,11 @@ class PersonTest extends RelationTest
 
         $this->person->setFirstName($firstName)->setLastName($lastName);
 
-        $this->assertEquals($firstName . ' ' . $lastName, (string) $this->person);
+        $this->assertEquals($firstName.' '.$lastName, (string) $this->person);
     }
 
     /**
-     * Test toString function with first name only
+     * Test toString function with first name only.
      */
     public function testToStringWithFirstNameOnly()
     {
@@ -179,7 +178,7 @@ class PersonTest extends RelationTest
     }
 
     /**
-     * Test toString function with last name only
+     * Test toString function with last name only.
      */
     public function testToStringWithLastNameOnly()
     {

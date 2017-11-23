@@ -1,19 +1,19 @@
 <?php
+
 namespace Integrated\Bundle\ContentBundle\DependencyInjection;
 
-use Symfony\Component\Config\Definition\Builder\TreeBuilder,
-    Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 /**
- * Configuration class for ContentBundle
+ * Configuration class for ContentBundle.
  *
- * @package Integrated\Bundle\ContentBundle\DependencyInjection
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {

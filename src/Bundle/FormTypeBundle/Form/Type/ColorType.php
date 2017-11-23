@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\Type;
 
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
-
 use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\ColorTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\StorageBundle\Storage\Accessor;
 
 use Doctrine\Common\Util\ClassUtils;
-use Integrated\Common\Locks\Exception\LogicException;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -80,6 +79,7 @@ class DoctrineDocument
 
     /**
      * @param string $propertyName
+     *
      * @return mixed
      */
     public function get($propertyName)
@@ -102,6 +102,7 @@ class DoctrineDocument
     /**
      * @param string $propertyName
      * @param object $propertyValue
+     *
      * @return mixed
      */
     public function set($propertyName, $propertyValue)
@@ -109,7 +110,7 @@ class DoctrineDocument
         $method = sprintf(self::SET_SIGNATURE, ucfirst($propertyName));
         if (method_exists($this->document, $method)) {
             // This keeps track of the times something updated, not changed
-            $this->updates++;
+            ++$this->updates;
 
             return call_user_func([$this->document, $method], $propertyValue);
         }

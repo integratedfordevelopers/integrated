@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType;
 
 use Symfony\Component\Form\DataTransformerInterface;
-
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
-
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
 
 /**
@@ -24,13 +22,14 @@ class FieldsTransformer implements DataTransformerInterface
 {
     /**
      * @param mixed $fields
+     *
      * @return array $return
      */
     public function transform($fields)
     {
-        $return =[
+        $return = [
             'default' => [],
-            'custom' => []
+            'custom' => [],
         ];
 
         if (is_array($fields) || $fields instanceof \Traversable) {
@@ -48,6 +47,7 @@ class FieldsTransformer implements DataTransformerInterface
 
     /**
      * @param mixed $values
+     *
      * @return array
      */
     public function reverseTransform($values)

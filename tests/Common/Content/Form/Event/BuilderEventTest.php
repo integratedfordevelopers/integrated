@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Content\Form\Event;
 
 use Integrated\Common\Content\Form\Event\BuilderEvent;
-
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**

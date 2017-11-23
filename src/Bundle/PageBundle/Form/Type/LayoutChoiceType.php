@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
 use Integrated\Bundle\PageBundle\Locator\LayoutLocator;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -49,7 +48,7 @@ class LayoutChoiceType extends AbstractType
                 $layout = $this->locator->getLayouts($options['theme'], $options['directory']);
 
                 return array_combine($layout, $layout);
-            }
+            },
         ]);
     }
 

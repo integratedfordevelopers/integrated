@@ -41,6 +41,7 @@ final class Schema extends BaseSchema
      * Return a schema diff.
      *
      * @param BaseSchema $schema
+     *
      * @return SchemaDiff
      */
     public function compare(BaseSchema $schema)

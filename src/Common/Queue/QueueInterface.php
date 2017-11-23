@@ -24,14 +24,14 @@ interface QueueInterface extends Countable
      *
      * message marked with this priority will be handled last
      */
-    const PRIORITY_LOW         = -10;
+    const PRIORITY_LOW = -10;
 
     /**
      * Medium-low priority in the queue.
      *
      * This is a priority in between low and medium.
      */
-    const PRIORITY_MEDIUM_LOW  = -5;
+    const PRIORITY_MEDIUM_LOW = -5;
 
     /**
      * Medium priority in the queue.
@@ -41,7 +41,7 @@ interface QueueInterface extends Countable
      *
      * This is the default priority if none is given.
      */
-    const PRIORITY_MEDIUM      = 0;
+    const PRIORITY_MEDIUM = 0;
 
     /**
      * Medium-high priority in the queue.
@@ -55,23 +55,24 @@ interface QueueInterface extends Countable
      *
      * Messages marked with this priority will be handled first.
      */
-    const PRIORITY_HIGH        = 10;
+    const PRIORITY_HIGH = 10;
 
     /**
-     * Push the payload to the queue
+     * Push the payload to the queue.
      *
      * @param string|Serializable $payload
-     * @param int $delay
-     * @param int $priority a priority number from -10 to and including 10
+     * @param int                 $delay
+     * @param int                 $priority a priority number from -10 to and including 10
      *
      * @return mixed
      */
     public function push($payload, $delay = 0, $priority = self::PRIORITY_MEDIUM);
 
     /**
-     * Pull one or more messages from the queue
+     * Pull one or more messages from the queue.
      *
      * @param int $limit
+     *
      * @return QueueMessageInterface[]
      */
     public function pull($limit = 1);
@@ -82,7 +83,7 @@ interface QueueInterface extends Countable
     public function count();
 
     /**
-     * Clear all the message from the queue
+     * Clear all the message from the queue.
      */
     public function clear();
 }

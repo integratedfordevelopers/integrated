@@ -13,9 +13,7 @@ namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Common\Content\ContentInterface;
 
 /**
@@ -38,7 +36,9 @@ class ContentChoiceTransformer implements DataTransformerInterface
 
     /**
      * @param ContentInterface|null $value
+     *
      * @return string|null
+     *
      * @throws TransformationFailedException
      */
     public function transform($value)
@@ -54,7 +54,9 @@ class ContentChoiceTransformer implements DataTransformerInterface
 
     /**
      * @param string|null $value
+     *
      * @return null|ContentInterface
+     *
      * @throws TransformationFailedException
      */
     public function reverseTransform($value)
@@ -69,7 +71,6 @@ class ContentChoiceTransformer implements DataTransformerInterface
             }
 
             throw new TransformationFailedException(sprintf('Document with id "%s" not found', $value));
-
         }
 
         throw new TransformationFailedException(sprintf('Expected string, "%s" given', gettype($value)));

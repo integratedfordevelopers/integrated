@@ -12,21 +12,16 @@
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractDefaultStateFromCollectionListener;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\ExtractTransitionsFromCollectionListener;
-
 use Integrated\Common\Validator\Constraints\UniqueEntry;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -44,20 +39,20 @@ class DefinitionFormType extends AbstractType
         $builder->add('name', TextType::class, [
             'constraints' => [
                 new NotBlank(),
-                new Length(['min' => 3])
-            ]
+                new Length(['min' => 3]),
+            ],
         ]);
 
         $builder->add('states', BootstrapCollectionType::class, [
-            'label'        => 'Statuses',
-            'entry_type'   => StateType::class,
-            'allow_add'    => true,
+            'label' => 'Statuses',
+            'entry_type' => StateType::class,
+            'allow_add' => true,
             'allow_delete' => true,
-            'entry_options'      => ['transitions' => 'empty'],
-            'constraints'  => [
+            'entry_options' => ['transitions' => 'empty'],
+            'constraints' => [
                 new Count(['min' => 1]),
-                new UniqueEntry(['fields' => ['name'], 'caseInsensitive' => true])
-            ]
+                new UniqueEntry(['fields' => ['name'], 'caseInsensitive' => true]),
+            ],
         ]);
 
         // Transitions are actually part of the "workflow_definition_state" but they are based

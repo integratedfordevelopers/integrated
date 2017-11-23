@@ -12,10 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
 use Integrated\Common\Content\ContentInterface;
-
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
 
 /**
@@ -48,7 +46,6 @@ class HasImageType implements TypeInterface
         } else {
             $container->add('facet_properties', 'Doesn\'t have images');
         }
-
     }
 
     /**

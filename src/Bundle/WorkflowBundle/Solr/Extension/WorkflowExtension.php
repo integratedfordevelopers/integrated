@@ -12,11 +12,9 @@
 namespace Integrated\Bundle\WorkflowBundle\Solr\Extension;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\ContainerInterface;
@@ -45,9 +43,9 @@ class WorkflowExtension implements TypeExtensionInterface
     /**
      * Constructor.
      *
-     * @param ResolverInterface            $resolver
-     * @param ObjectRepository             $workflow
-     * @param ObjectRepository             $definition
+     * @param ResolverInterface $resolver
+     * @param ObjectRepository  $workflow
+     * @param ObjectRepository  $definition
      */
     public function __construct(ResolverInterface $resolver, ObjectRepository $workflow, ObjectRepository $definition)
     {
@@ -89,15 +87,14 @@ class WorkflowExtension implements TypeExtensionInterface
             if ($assignee instanceof User) {
                 if ($relation = $assignee->getRelation()) {
                     if ($relation instanceof Person) {
-                        $container->add('workflow_assigned', $relation->getFirstname() . ' ' . $relation->getLastname());
-                        $container->add('facet_workflow_assigned', $relation->getFirstname() . ' ' . $relation->getLastname());
+                        $container->add('workflow_assigned', $relation->getFirstname().' '.$relation->getLastname());
+                        $container->add('facet_workflow_assigned', $relation->getFirstname().' '.$relation->getLastname());
                     }
                 }
                 $container->add('workflow_assigned_id', $assignee->getId());
                 $container->add('facet_workflow_assigned_id', $assignee->getId());
             }
         }
-
     }
 
     /**
@@ -115,8 +112,6 @@ class WorkflowExtension implements TypeExtensionInterface
      * be returned.
      *
      * @param ContentInterface $content
-     *
-     * @return null | State
      */
     protected function getState(ContentInterface $content)
     {
@@ -152,13 +147,10 @@ class WorkflowExtension implements TypeExtensionInterface
         return null;
     }
 
-
     /**
      * Get the workflow assignee for the content.
      *
      * @param ContentInterface $content
-     *
-     * @return null | State
      */
     protected function getAssigned(ContentInterface $content)
     {
@@ -175,7 +167,6 @@ class WorkflowExtension implements TypeExtensionInterface
         if (!$type->getOption('workflow')) {
             return null;
         }
-
 
         // return the assigned instance
 

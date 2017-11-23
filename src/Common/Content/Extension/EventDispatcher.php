@@ -14,7 +14,6 @@ namespace Integrated\Common\Content\Extension;
 use Integrated\Common\Content\Extension\Event\Listener\CommonListener;
 use Integrated\Common\Content\Extension\Event\Listener\ContentListener;
 use Integrated\Common\Content\Extension\Event\Subscriber\ContentSubscriberInterface;
-
 use Symfony\Component\EventDispatcher\EventDispatcher as BaseEventDispatcher;
 
 /**

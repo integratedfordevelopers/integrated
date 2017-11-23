@@ -13,10 +13,8 @@ namespace Integrated\Bundle\SolrBundle\EventListener;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
-
 use Integrated\Common\Solr\Indexer\Event\MessageEvent;
 use Integrated\Common\Solr\Indexer\Events;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -36,7 +34,7 @@ class DoctrineClearEventSubscriber implements EventSubscriberInterface
 
     /**
      * @param DocumentManager $documentManager
-     * @param EntityManager $entityManager
+     * @param EntityManager   $entityManager
      */
     public function __construct(DocumentManager $documentManager, EntityManager $entityManager)
     {
@@ -50,7 +48,7 @@ class DoctrineClearEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::PROCESSED => 'processedEvent'
+            Events::PROCESSED => 'processedEvent',
         ];
     }
 

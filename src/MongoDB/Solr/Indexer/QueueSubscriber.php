@@ -14,12 +14,10 @@ namespace Integrated\MongoDB\Solr\Indexer;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\Common\EventSubscriber;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Queue\QueueAwareInterface;
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Solr\Indexer\Job;
-
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -50,9 +48,9 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
     private $priority = 0;
 
     /**
-     * @param QueueInterface $queue
+     * @param QueueInterface      $queue
      * @param SerializerInterface $serializer
-     * @param int $priority
+     * @param int                 $priority
      */
     public function __construct(QueueInterface $queue, SerializerInterface $serializer, $priority = 0)
     {
@@ -62,7 +60,7 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setQueue(QueueInterface $queue)
     {
@@ -78,7 +76,7 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setSerializer(SerializerInterface $serializer)
     {
@@ -171,7 +169,7 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
         switch ($job->getAction()) {
             case 'ADD':
                 // probably should make a solr document id generator service or something like that
-                $job->setOption('document.id', $document->getContentType() . '-' . $document->getId());
+                $job->setOption('document.id', $document->getContentType().'-'.$document->getId());
 
                 $job->setOption('document.data', $this->getSerializer()->serialize($document, $this->getSerializerFormat()));
                 $job->setOption('document.class', ClassUtils::getRealClass($document));
@@ -181,7 +179,7 @@ class QueueSubscriber implements EventSubscriber, QueueAwareInterface, Serialize
 
             case 'DELETE':
                 // probably should make a solr document id generator service or something like that
-                $job->setOption('id', $document->getContentType() . '-' . $document->getId());
+                $job->setOption('id', $document->getContentType().'-'.$document->getId());
                 break;
         }
 

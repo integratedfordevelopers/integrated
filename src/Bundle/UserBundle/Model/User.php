@@ -52,7 +52,7 @@ class User implements UserInterface
     /**
      * @var Collection | RoleInterface[]
      */
-    protected $roles = array();
+    protected $roles = [];
 
     /**
      * @var bool
@@ -86,7 +86,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function serialize()
     {
@@ -99,7 +99,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {
@@ -109,12 +109,11 @@ class User implements UserInterface
             $this->id,
             $this->username,
             $this->password,
-            $this->salt,
-        ) = $data;
+            $this->salt) = $data;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -122,7 +121,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setUsername($username)
     {
@@ -130,7 +129,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getUsername()
     {
@@ -138,7 +137,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setPassword($password)
     {
@@ -146,7 +145,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPassword()
     {
@@ -154,7 +153,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setSalt($salt)
     {
@@ -162,7 +161,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getSalt()
     {
@@ -170,7 +169,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setEmail($email)
     {
@@ -178,7 +177,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getEmail()
     {
@@ -205,6 +204,7 @@ class User implements UserInterface
 
     /**
      * @param GroupInterface $group
+     *
      * @return bool
      */
     public function hasGroup(GroupInterface $group)
@@ -213,7 +213,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getGroups()
     {
@@ -252,6 +252,7 @@ class User implements UserInterface
 
     /**
      * @param RoleInterface $role
+     *
      * @return bool
      */
     public function hasRole(RoleInterface $role)
@@ -260,7 +261,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRoles()
     {
@@ -318,16 +319,18 @@ class User implements UserInterface
 
     /**
      * @param ScopeInterface $scope
+     *
      * @return $this
      */
     public function setScope(ScopeInterface $scope)
     {
         $this->scope = $scope;
+
         return $this;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isAccountNonExpired()
     {
@@ -335,7 +338,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isAccountNonLocked()
     {
@@ -343,7 +346,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isCredentialsNonExpired()
     {
@@ -351,7 +354,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isEnabled()
     {
@@ -359,7 +362,7 @@ class User implements UserInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function eraseCredentials()
     {

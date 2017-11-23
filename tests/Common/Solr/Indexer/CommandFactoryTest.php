@@ -13,18 +13,15 @@ namespace Integrated\Tests\Common\Solr\Indexer;
 
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\ConverterInterface;
-
 use Integrated\Common\Solr\Indexer\CommandFactory;
 use Integrated\Common\Solr\Indexer\CommandFactoryInterface;
 use Integrated\Common\Solr\Indexer\JobInterface;
-
 use Solarium\QueryType\Update\Query\Command\Add;
 use Solarium\QueryType\Update\Query\Command\Commit;
 use Solarium\QueryType\Update\Query\Command\Delete;
 use Solarium\QueryType\Update\Query\Command\Optimize;
 use Solarium\QueryType\Update\Query\Command\Rollback;
 use Solarium\QueryType\Update\Query\Document\Document;
-
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -88,11 +85,10 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
 
         /** @var Add $result */
         /** @var Document $document */
-
         $result = $this->getInstance()->create($this->getJob('ADD', [
             'document.data' => 'data',
             'document.class' => 'class',
-            'document.format' => 'format'
+            'document.format' => 'format',
         ] + $options));
 
         self::assertInstanceOf(Add::class, $result);
@@ -113,7 +109,7 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         return [
             'no options' => [
                 [],
-                []
+                [],
             ],
             'options' => [
                 ['overwrite' => true, 'commitwithin' => true],
@@ -121,20 +117,20 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
             ],
             'only overwrite' => [
                 ['overwrite' => true],
-                ['overwrite' => true]
+                ['overwrite' => true],
             ],
             'only commitwithin' => [
                 ['commitwithin' => true],
-                ['commitwithin' => true]
+                ['commitwithin' => true],
             ],
             'none bool' => [
                 ['overwrite' => 1, 'commitwithin' => 0],
-                ['overwrite' => true, 'commitwithin' => false]
+                ['overwrite' => true, 'commitwithin' => false],
             ],
             'invalid' => [
                 ['invalid-option' => 'invalid-value'],
-                []
-            ]
+                [],
+            ],
         ];
     }
 
@@ -163,18 +159,17 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         $result = $this->getInstance()->create($this->getJob('ADD', [
             'document.data' => 'data',
             'document.class' => 'class',
-            'document.format' => 'format'
+            'document.format' => 'format',
         ]));
 
         self::assertNull($result);
 
         /** @var Delete $result */
-
         $result = $this->getInstance()->create($this->getJob('ADD', [
             'document.data' => 'data',
             'document.class' => 'class',
             'document.format' => 'format',
-            'document.id' => 'id'
+            'document.id' => 'id',
         ]));
 
         self::assertInstanceOf(Delete::class, $result);
@@ -182,7 +177,7 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertEmpty($result->getQueries());
 
         $result = $this->getInstance()->create($this->getJob('ADD', [
-            'document.id' => 'id'
+            'document.id' => 'id',
         ]));
 
         self::assertInstanceOf(Delete::class, $result);
@@ -202,7 +197,7 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         $this->getInstance()->create($this->getJob('ADD', [
             'document.data' => 'data',
             'document.class' => 'class',
-            'document.format' => 'format'
+            'document.format' => 'format',
         ]));
     }
 
@@ -222,7 +217,7 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         $this->getInstance()->create($this->getJob('ADD', [
             'document.data' => 'data',
             'document.class' => 'class',
-            'document.format' => 'format'
+            'document.format' => 'format',
         ]));
     }
 
@@ -247,23 +242,23 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
             'id' => [
                 ['id' => 'id'],
                 ['id'],
-                []
+                [],
             ],
             'query' => [
                 ['query' => 'query'],
                 [],
-                ['query']
+                ['query'],
             ],
-            'both' =>  [
+            'both' => [
                 ['id' => 'id', 'query' => 'query'],
                 ['id'],
-                ['query']
+                ['query'],
             ],
             'extra invalid' => [
                 ['id' => 'id', 'query' => 'query', 'invalid-option' => 'invalid-value'],
                 ['id'],
-                ['query']
-            ]
+                ['query'],
+            ],
         ];
     }
 
@@ -294,7 +289,7 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         return [
             'no options' => [
                 [],
-                []
+                [],
             ],
             'options' => [
                 ['maxsegments' => true, 'waitsearcher' => true, 'softcommit' => true],
@@ -302,24 +297,24 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
             ],
             'only maxsegments' => [
                 ['maxsegments' => true],
-                ['maxsegments' => true]
+                ['maxsegments' => true],
             ],
             'only waitsearcher' => [
                 ['waitsearcher' => true],
-                ['waitsearcher' => true]
+                ['waitsearcher' => true],
             ],
             'only softcommit' => [
                 ['softcommit' => true],
-                ['softcommit' => true]
+                ['softcommit' => true],
             ],
             'none bool' => [
                 ['maxsegments' => 1, 'waitsearcher' => 0, 'softcommit' => 0],
-                ['maxsegments' => true, 'waitsearcher' => false, 'softcommit' => false]
+                ['maxsegments' => true, 'waitsearcher' => false, 'softcommit' => false],
             ],
             'invalid' => [
                 ['invalid-option' => 'invalid-value'],
-                []
-            ]
+                [],
+            ],
         ];
     }
 
@@ -342,7 +337,7 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         return [
             'no options' => [
                 [],
-                []
+                [],
             ],
             'options' => [
                 ['waitsearcher' => true, 'softcommit' => true, 'expungedeletes' => true],
@@ -350,24 +345,24 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
             ],
             'only waitsearcher' => [
                 ['waitsearcher' => true],
-                ['waitsearcher' => true]
+                ['waitsearcher' => true],
             ],
             'only softcommit' => [
                 ['softcommit' => true],
-                ['softcommit' => true]
+                ['softcommit' => true],
             ],
             'only expungedeletes' => [
                 ['expungedeletes' => true],
-                ['expungedeletes' => true]
+                ['expungedeletes' => true],
             ],
             'none bool' => [
                 ['waitsearcher' => 1, 'softcommit' => 0, 'expungedeletes' => 0],
-                ['waitsearcher' => true, 'softcommit' => false, 'expungedeletes' => false]
+                ['waitsearcher' => true, 'softcommit' => false, 'expungedeletes' => false],
             ],
             'invalid' => [
                 ['invalid-option' => 'invalid-value'],
-                []
-            ]
+                [],
+            ],
         ];
     }
 
@@ -430,6 +425,7 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $data
+     *
      * @return ContainerInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContainer(array $data = [])

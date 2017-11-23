@@ -53,6 +53,7 @@ class Options implements OptionsInterface
         }
 
         $this->data[$key] = $value;
+
         return $this;
     }
 
@@ -70,6 +71,7 @@ class Options implements OptionsInterface
     public function remove($key)
     {
         unset($this->data[$key]);
+
         return $this;
     }
 
@@ -87,6 +89,7 @@ class Options implements OptionsInterface
     public function clear()
     {
         $this->data = [];
+
         return $this;
     }
 

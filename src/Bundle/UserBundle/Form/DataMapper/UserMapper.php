@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\UserBundle\Form\DataMapper;
 
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
 use Symfony\Component\Form\FormInterface;
 

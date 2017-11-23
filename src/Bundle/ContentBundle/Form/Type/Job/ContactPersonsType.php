@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Form\Type\Job;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 
 /**
@@ -31,7 +30,7 @@ class ContactPersonsType extends AbstractType
             'allow_add' => true,
             'allow_delete' => true,
             'label' => 'Jobs',
-            'delete_button_text' => 'x'
+            'delete_button_text' => 'x',
         ]);
     }
 

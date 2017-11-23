@@ -44,7 +44,7 @@ class ContainerAwareRequestSerializer extends RequestSerializer
         $this->container = $container;
         $this->services = [
             'serializer' => $serializer,
-            'manager' => $manager
+            'manager' => $manager,
         ];
     }
 

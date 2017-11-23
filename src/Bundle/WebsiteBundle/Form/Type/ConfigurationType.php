@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WebsiteBundle\Form\Type;
 
 use Integrated\Bundle\ThemeBundle\Form\Type\ThemeChoiceType;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 

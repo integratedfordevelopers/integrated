@@ -13,7 +13,6 @@ namespace Integrated\Bundle\BlockBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Integrated\Bundle\BlockBundle\DependencyInjection\Compiler\BlockHandlerRegistryPass;
 use Integrated\Bundle\BlockBundle\DependencyInjection\Compiler\ThemeManagerPass;
 

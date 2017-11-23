@@ -14,11 +14,10 @@ namespace Integrated\Bundle\ContentBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\CsvArray as Transformer;
 
 /**
- * Form type which can handle comma separated values and returns an array
+ * Form type which can handle comma separated values and returns an array.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -26,7 +25,7 @@ class CsvArray extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

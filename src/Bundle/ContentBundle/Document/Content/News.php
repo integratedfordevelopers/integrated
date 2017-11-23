@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
- * Document type News
+ * Document type News.
  *
  * @author Koen Prins <koen@e-active.nl>
  *
@@ -22,5 +22,4 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  */
 class News extends Article
 {
-
 }

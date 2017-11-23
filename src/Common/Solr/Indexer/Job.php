@@ -27,9 +27,9 @@ class Job implements JobInterface
     private $options = [];
 
     /**
-     * The constructor
+     * The constructor.
      *
-     * @param string|null $action the action or null of not specified
+     * @param string|null $action  the action or null of not specified
      * @param string[]    $options array of options
      */
     public function __construct($action = null, array $options = [])
@@ -42,15 +42,15 @@ class Job implements JobInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function serialize()
     {
-        return serialize(array('action' => $this->action, 'options' => $this->options));
+        return serialize(['action' => $this->action, 'options' => $this->options]);
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {
@@ -64,16 +64,18 @@ class Job implements JobInterface
      * If $action is null then the action will be unset.
      *
      * @param string|null $action
+     *
      * @return $this
      */
     public function setAction($action)
     {
         $this->action = $action === null ? $action : (string) $action;
+
         return $this;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getAction()
     {
@@ -81,7 +83,7 @@ class Job implements JobInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasAction()
     {
@@ -91,7 +93,7 @@ class Job implements JobInterface
     /**
      * Set the option.
      *
-     * @param string $name the option name
+     * @param string $name  the option name
      * @param string $value
      *
      * @return $this
@@ -99,11 +101,12 @@ class Job implements JobInterface
     public function setOption($name, $value)
     {
         $this->options[$name] = (string) $value;
+
         return $this;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOption($name)
     {
@@ -111,7 +114,7 @@ class Job implements JobInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasOption($name)
     {
@@ -119,19 +122,21 @@ class Job implements JobInterface
     }
 
     /**
-     * Remove the option
+     * Remove the option.
      *
-     * @param string $name the name of the option to remove.
+     * @param string $name the name of the option to remove
+     *
      * @return $this
      */
     public function removeOption($name)
     {
         unset($this->options[$name]);
+
         return $this;
     }
 
     /**
-     * Get all the options
+     * Get all the options.
      *
      * @return string[]
      */
@@ -141,13 +146,14 @@ class Job implements JobInterface
     }
 
     /**
-     * Remove all the options
+     * Remove all the options.
      *
      * @return $this
      */
     public function clearOptions()
     {
         $this->options = [];
+
         return $this;
     }
 }

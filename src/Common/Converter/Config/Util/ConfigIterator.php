@@ -13,7 +13,6 @@ namespace Integrated\Common\Converter\Config\Util;
 
 use Integrated\Common\Converter\Config\ConfigInterface;
 use Integrated\Common\Converter\Config\TypeConfigInterface;
-
 use Iterator;
 
 /**
@@ -50,8 +49,6 @@ class ConfigIterator implements Iterator
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     public function next()
     {
@@ -80,8 +77,6 @@ class ConfigIterator implements Iterator
 
     /**
      * {@inheritdoc}
-     *
-     * @return void
      */
     public function rewind()
     {

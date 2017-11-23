@@ -12,10 +12,7 @@
 namespace Integrated\Tests\Common\Queue\Provider\DBAL;
 
 use stdClass;
-
-use Integrated\Common\Queue\Provider\DBAL\QueueMessage;
 use Integrated\Common\Queue\Provider\DBAL\QueueProvider;
-
 use Doctrine\DBAL\Connection;
 
 /**
@@ -37,11 +34,11 @@ class QueueProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $options = array(
-            'queue_table_name' => 'queue'
-        );
+        $options = [
+            'queue_table_name' => 'queue',
+        ];
 
-        $this->connection = $this->createMock('Doctrine\DBAL\Connection', array(), array(), '', false);
+        $this->connection = $this->createMock('Doctrine\DBAL\Connection', [], [], '', false);
         $this->provider = new QueueProvider($this->connection, $options);
     }
 
@@ -61,7 +58,7 @@ class QueueProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testPull()
     {
-//		$this->assert
+        //		$this->assert
 //
 //		$this->assertEquals()
     }

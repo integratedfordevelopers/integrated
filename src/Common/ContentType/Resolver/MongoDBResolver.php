@@ -12,11 +12,9 @@
 namespace Integrated\Common\ContentType\Resolver;
 
 use Integrated\Common\ContentType\ResolverInterface;
-
 use Integrated\Common\ContentType\Exception\ExceptionInterface;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
 use Integrated\Common\ContentType\Exception\UnexpectedTypeException;
-
 use Doctrine\ODM\MongoDB\DocumentRepository;
 
 /**
@@ -32,14 +30,14 @@ class MongoDBResolver implements ResolverInterface
     protected $repository;
 
     /**
-     * Content type caching array
+     * Content type caching array.
      *
      * @var array
      */
-    protected $types = array();
+    protected $types = [];
 
     /**
-     * Create a ContentTypeResolver based on a MongoDB DocumentRepository
+     * Create a ContentTypeResolver based on a MongoDB DocumentRepository.
      *
      * The DocumentRepository should be of a class that implements ContentTypeInterface
      * or else the ContentTypeResolver will throw a exception.

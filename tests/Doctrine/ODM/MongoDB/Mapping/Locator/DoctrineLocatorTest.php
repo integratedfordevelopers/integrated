@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Doctrine\ODM\MongoDB\Mapping\Locator;
 
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
-
 use Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\DoctrineLocator;
 
 /**

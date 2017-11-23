@@ -21,7 +21,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomFields;
 abstract class ContentTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Content should implement ContentInterface
+     * Content should implement ContentInterface.
      */
     public function testInstanceOfContentInterface()
     {
@@ -29,7 +29,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Content should extend content
+     * Content should extend content.
      */
     public function testInstanceOfContent()
     {
@@ -37,7 +37,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setId function
+     * Test get- and setId function.
      */
     public function testGetAndSetIdFunction()
     {
@@ -46,7 +46,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setContentType function
+     * Test get- and setContentType function.
      */
     public function testGetAndSetContentTypeFunction()
     {
@@ -55,7 +55,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setRelations function
+     * Test get- and setRelations function.
      */
     public function testGetAndSetRelationsFunction()
     {
@@ -68,7 +68,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(new ArrayCollection()));
 
         // Create relations collection
-        $relations = new ArrayCollection(array($relation));
+        $relations = new ArrayCollection([$relation]);
 
         // Asserts
         $this->assertSame($this->getContent(), $this->getContent()->setRelations($relations));
@@ -76,7 +76,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeReference function
+     * Test removeReference function.
      */
     public function testRemoveRelationFunction()
     {
@@ -93,7 +93,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setCreatedAt function
+     * Test get- and setCreatedAt function.
      */
     public function testGetAndSetCreatedAtFunction()
     {
@@ -102,7 +102,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setUpdated function
+     * Test get- and setUpdated function.
      */
     public function testGetAndSetUpdatedAtFunction()
     {
@@ -111,7 +111,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test publish time get- and setStartDate function
+     * Test publish time get- and setStartDate function.
      */
     public function testGetAndSetPublishTimeStartDateFunction()
     {
@@ -120,7 +120,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test publish time get- and setEndDate function
+     * Test publish time get- and setEndDate function.
      */
     public function testGetAndSetPublishTimeEndDateFunction()
     {
@@ -129,7 +129,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setDisabled function
+     * Test get- and setDisabled function.
      */
     public function testGetAndSetDisabledFunction()
     {
@@ -138,7 +138,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setMetadata function
+     * Test get- and setMetadata function.
      */
     public function testGetAndSetMetadataFunction()
     {
@@ -148,8 +148,10 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setChannels function
+     * Test get- and setChannels function.
+     *
      * @dataProvider getChannels
+     *
      * @param ArrayCollection $channels
      */
     public function testGetAndSetChannelsFunction(ArrayCollection $channels)
@@ -158,8 +160,10 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addChannel function
+     * Test addChannel function.
+     *
      * @dataProvider getChannels
+     *
      * @param ArrayCollection $channels
      */
     public function testAddChannelFunction(ArrayCollection $channels)
@@ -171,7 +175,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeChannel function
+     * Test removeChannel function.
      */
     public function testRemoveChannelFunction()
     {
@@ -189,7 +193,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getCustomFields functions
+     * Test getCustomFields functions.
      */
     public function testCustomFieldsFunction()
     {
@@ -207,15 +211,15 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
         return [
             'single' => [
                 new ArrayCollection([
-                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface')
-                ])
+                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface'),
+                ]),
             ],
             'multiple' => [
                 new ArrayCollection([
                     $this->getMock('Integrated\Common\Content\Channel\ChannelInterface'),
-                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface')
-                ])
-            ]
+                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface'),
+                ]),
+            ],
         ];
     }
 

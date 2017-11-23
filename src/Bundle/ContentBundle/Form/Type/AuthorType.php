@@ -12,12 +12,10 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Form\DataTransformer\AuthorTransformer;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,7 +38,7 @@ class AuthorType extends AbstractType
     private $contentTypeManager;
 
     /**
-     * @param ManagerRegistry $mr
+     * @param ManagerRegistry    $mr
      * @param ContentTypeManager $contentTypeManager
      */
     public function __construct(ManagerRegistry $mr, ContentTypeManager $contentTypeManager)
@@ -58,7 +56,6 @@ class AuthorType extends AbstractType
 
         $builder->addModelTransformer($transformer);
     }
-
 
     public function buildView(FormView $view, FormInterface $form, array $options)
     {

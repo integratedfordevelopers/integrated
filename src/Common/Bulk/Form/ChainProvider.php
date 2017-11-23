@@ -30,7 +30,7 @@ class ChainProvider implements ConfigProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfig(array $content)
     {

@@ -14,7 +14,6 @@ namespace Integrated\Bundle\WorkflowBundle\EventListener;
 use Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowFormType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -28,7 +27,7 @@ class ContentWorkflowIntegrationListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::POST_BUILD => ['buildForm', -90]
+            Events::POST_BUILD => ['buildForm', -90],
         ];
     }
 
@@ -44,7 +43,7 @@ class ContentWorkflowIntegrationListener implements EventSubscriberInterface
 
             $builder->add('extension_workflow', WorkflowFormType::class, [
                 'property_path' => 'extensions[integrated.extension.workflow]',
-                'workflow' => $event->getContentType()->getOption('workflow')
+                'workflow' => $event->getContentType()->getOption('workflow'),
             ]);
 
             if ($builder->has('disabled')) {

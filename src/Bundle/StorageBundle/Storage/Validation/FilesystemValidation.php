@@ -33,10 +33,12 @@ class FilesystemValidation
     }
 
     /**
-     * Returns a valid list of filesystems
+     * Returns a valid list of filesystems.
      *
      * @param ArrayCollection $filesystems
+     *
      * @return ArrayCollection $filesystems
+     *
      * @throws \InvalidArgumentException
      */
     public function getValidFilesystems(ArrayCollection $filesystems = null)

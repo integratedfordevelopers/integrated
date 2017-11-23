@@ -14,14 +14,13 @@ namespace Integrated\Bundle\SolrBundle\DataCollector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use Solarium\Core\Plugin\Plugin;
 use Solarium\Core\Event\Events;
 use Solarium\Core\Event\PreExecuteRequest;
 use Solarium\Core\Event\PostExecuteRequest;
 
 /**
- * Based on NelmioSolariumBundle (https://github.com/nelmio/NelmioSolariumBundle)
+ * Based on NelmioSolariumBundle (https://github.com/nelmio/NelmioSolariumBundle).
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -75,7 +74,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     public function postExecuteRequest(PostExecuteRequest $event)
     {
         $this->data['queries'][] = [
-            'request'  => $event->getRequest(),
+            'request' => $event->getRequest(),
             'response' => $event->getResponse(),
             'duration' => microtime(true) - $this->startTime,
             'base_uri' => $event->getEndpoint()->getBaseUri(),
@@ -107,7 +106,7 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getName()
     {

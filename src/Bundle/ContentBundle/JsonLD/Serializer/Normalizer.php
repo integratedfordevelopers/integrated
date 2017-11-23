@@ -13,11 +13,9 @@ namespace Integrated\Bundle\ContentBundle\JsonLD\Serializer;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Event;
-use Integrated\Bundle\ContentBundle\Document\Content\JobPosting;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
-
 use Integrated\Common\Content\Serializer\JsonLDNormalizer;
 
 /**
@@ -26,7 +24,7 @@ use Integrated\Common\Content\Serializer\JsonLDNormalizer;
 class Normalizer extends JsonLDNormalizer
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {

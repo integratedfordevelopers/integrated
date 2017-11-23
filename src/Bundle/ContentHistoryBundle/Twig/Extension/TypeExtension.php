@@ -29,6 +29,7 @@ class TypeExtension extends \Twig_Extension
 
     /**
      * @param mixed $value
+     *
      * @return string
      */
     public function getType($value)
@@ -38,6 +39,7 @@ class TypeExtension extends \Twig_Extension
 
     /**
      * @param mixed $value
+     *
      * @return string
      */
     public function getClass($value)

@@ -25,7 +25,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     private $relation;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -33,7 +33,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test constructor
+     * Test constructor.
      */
     public function testConstructor()
     {
@@ -41,24 +41,24 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get- and setReferences functions
+     * Test get- and setReferences functions.
      */
     public function testGetAndSetReferencesFunction()
     {
-        $references = new ArrayCollection(array('ref1'));
+        $references = new ArrayCollection(['ref1']);
         $this->assertEquals($references, $this->relation->setReferences($references)->getReferences());
     }
 
     /**
-     * Test addReferences function
+     * Test addReferences function.
      */
     public function testAddReferencesFunction()
     {
         // Create references and add them
         $references = new ArrayCollection(
-            array(
-                $this->getMock('\Integrated\Common\Content\ContentInterface')
-            )
+            [
+                $this->getMock('\Integrated\Common\Content\ContentInterface'),
+            ]
         );
 
         $this->relation->addReferences($references);
@@ -68,7 +68,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addReference functions
+     * Test addReference functions.
      */
     public function testAddReferenceFunction()
     {
@@ -81,7 +81,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test addReference function with duplicate reference
+     * Test addReference function with duplicate reference.
      */
     public function testAddReferenceFunctionWithDuplicateReference()
     {
@@ -96,7 +96,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeReference function
+     * Test removeReference function.
      */
     public function testRemoveReferenceFunction()
     {
@@ -111,7 +111,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test removeReference function with invalid content
+     * Test removeReference function with invalid content.
      */
     public function testRemoveReferenceFunctionWithInvalidContent()
     {

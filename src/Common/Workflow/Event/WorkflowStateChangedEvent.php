@@ -12,7 +12,6 @@
 namespace Integrated\Common\Workflow\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
 use Integrated\Common\Content\ContentInterface;
 
@@ -32,7 +31,7 @@ class WorkflowStateChangedEvent extends Event
     protected $content;
 
     /**
-     * @param State $state
+     * @param State            $state
      * @param ContentInterface $content
      */
     public function __construct(State $state, ContentInterface $content)

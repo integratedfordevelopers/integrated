@@ -12,15 +12,11 @@
 namespace Integrated\Bundle\WorkflowBundle\Command;
 
 use Exception;
-
 use Integrated\Common\Queue\QueueInterface;
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\Process\Process;
 
 /**
@@ -75,7 +71,7 @@ The <info>%command.name%</info> .
                             break;
 
                         default:
-                            $output->writeln("Unknow command: " . $data['command']);
+                            $output->writeln('Unknow command: '.$data['command']);
                             break;
                     }
                 } // ignore empty commands
@@ -83,7 +79,7 @@ The <info>%command.name%</info> .
                 $message->delete();
             }
         } catch (Exception $e) {
-            $output->writeln("Aborting: " . $e->getMessage());
+            $output->writeln('Aborting: '.$e->getMessage());
 
             return 1;
         }
@@ -92,17 +88,17 @@ The <info>%command.name%</info> .
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param string $command
-     * @param string[] $arguments
+     * @param string          $command
+     * @param string[]        $arguments
      *
      * @throws Exception
      */
     protected function executeCommand(InputInterface $input, OutputInterface $output, $command, array $arguments = [])
     {
         // run in a different process for isolation like memory issues.
-        $process = new Process('php app/console ' . $command . ' -e ' . $input->getOption('env') . ' '  . implode(' ', $arguments), getcwd(), null, null, null);
+        $process = new Process('php app/console '.$command.' -e '.$input->getOption('env').' '.implode(' ', $arguments), getcwd(), null, null, null);
         $process->run();
 
         $process->run(function ($type, $buffer) use ($output) {

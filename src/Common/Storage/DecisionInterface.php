@@ -11,6 +11,7 @@ interface DecisionInterface
 {
     /**
      * @param object $object
+     *
      * @return ArrayCollection
      */
     public function getFilesystems($object);

@@ -21,13 +21,14 @@ class BlockRepository extends DocumentRepository
 {
     /**
      * @param MetadataFactoryInterface $factory
-     * @param array|null $ids
+     * @param array|null               $ids
+     *
      * @return array
      */
     public function getTypeChoices(MetadataFactoryInterface $factory, array $ids = null)
     {
-        $qb =$this->createQueryBuilder()
-            ->group(array('class' => 1), array('total' => 0))
+        $qb = $this->createQueryBuilder()
+            ->group(['class' => 1], ['total' => 0])
             ->reduce('function (curr, result ) { result.total += 1;}');
 
         if (null !== $ids) {
@@ -47,7 +48,7 @@ class BlockRepository extends DocumentRepository
             $class = $metaData->getClass();
 
             if (array_key_exists($class, $typeCount) && $typeCount[$class]) {
-                $typeChoices[$class] = $metaData->getType() . ' ' . $typeCount[$class];
+                $typeChoices[$class] = $metaData->getType().' '.$typeCount[$class];
             }
         }
 
@@ -56,7 +57,9 @@ class BlockRepository extends DocumentRepository
 
     /**
      * @param Block $block
+     *
      * @return \Doctrine\MongoDB\Query\Query
+     *
      * @internal heavy query, multiple calls make page slow
      */
     public function pagesByBlockQb(Block $block)
@@ -65,7 +68,7 @@ class BlockRepository extends DocumentRepository
             ->getRepository('IntegratedPageBundle:Page\Page')
             ->createQueryBuilder()
             ->where('function() {
-                var block_id = "' . $block->getId() . '";
+                var block_id = "'.$block->getId().'";
 
                 var checkItem = function(item) {
                         if ("block" in item && item.block.$id == block_id) {
@@ -108,12 +111,13 @@ class BlockRepository extends DocumentRepository
             ->getQuery();
     }
 
-
     /**
-     * Check if given block is used on some page
+     * Check if given block is used on some page.
      *
      * @param Block $block
+     *
      * @return bool
+     *
      * @internal heavy query, multiple calls make page slow
      */
     public function isUsed(Block $block)

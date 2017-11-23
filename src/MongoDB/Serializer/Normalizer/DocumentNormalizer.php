@@ -12,11 +12,9 @@
 namespace Integrated\MongoDB\Serializer\Normalizer;
 
 use Exception;
-
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -46,9 +44,9 @@ class DocumentNormalizer extends SerializerAwareNormalizer implements Normalizer
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
         try {
             $document = $this->getDocumentManager()->getRepository($class)->find($data);
@@ -60,9 +58,9 @@ class DocumentNormalizer extends SerializerAwareNormalizer implements Normalizer
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $meta = $this->getDocumentManager()->getClassMetadata(get_class($object));
 
@@ -70,7 +68,7 @@ class DocumentNormalizer extends SerializerAwareNormalizer implements Normalizer
             return null;
         }
 
-        $keys = array();
+        $keys = [];
 
         foreach ($meta->getIdentifierFieldNames() as $field) {
             $keys[$field] = $meta->getFieldValue($object, $field);
@@ -80,7 +78,7 @@ class DocumentNormalizer extends SerializerAwareNormalizer implements Normalizer
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
@@ -92,7 +90,7 @@ class DocumentNormalizer extends SerializerAwareNormalizer implements Normalizer
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
@@ -104,6 +102,7 @@ class DocumentNormalizer extends SerializerAwareNormalizer implements Normalizer
      * registered document manager.
      *
      * @param $class
+     *
      * @return bool
      */
     protected function supports($class)

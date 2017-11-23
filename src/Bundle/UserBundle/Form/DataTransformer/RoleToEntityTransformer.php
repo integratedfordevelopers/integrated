@@ -13,7 +13,6 @@ namespace Integrated\Bundle\UserBundle\Form\DataTransformer;
 
 use Integrated\Bundle\UserBundle\Model\Role;
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
-
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -36,6 +35,7 @@ class RoleToEntityTransformer implements DataTransformerInterface
 
     /**
      * @param array $roles
+     *
      * @return array
      */
     public function reverseTransform($roles = [])
@@ -62,6 +62,7 @@ class RoleToEntityTransformer implements DataTransformerInterface
 
     /**
      * @param array $roles
+     *
      * @return array
      */
     public function transform($roles = [])

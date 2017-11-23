@@ -12,15 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\Provider;
 
 use Symfony\Component\HttpFoundation\Request;
-
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
-
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 use Doctrine\ODM\MongoDB\DocumentManager;
-
 use Knp\Component\Pager\Paginator;
-
 use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 
 /**
@@ -51,9 +47,9 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
     private $registry = [];
 
     /**
-     * @param Client $client
+     * @param Client          $client
      * @param DocumentManager $dm
-     * @param Paginator $paginator
+     * @param Paginator       $paginator
      */
     public function __construct(Client $client, DocumentManager $dm, Paginator $paginator)
     {
@@ -64,14 +60,14 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
     /**
      * @param ContentBlock $block
-     * @param Request $request
-     * @param array $options
+     * @param Request      $request
+     * @param array        $options
      *
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
     public function execute(ContentBlock $block, Request $request, array $options = [])
     {
-        $pageParam = (null !== $block->getId() ? $block->getId() . '-' : '') . 'page';
+        $pageParam = (null !== $block->getId() ? $block->getId().'-' : '').'page';
         $page = (int) $request->query->get($pageParam);
         $exclude = isset($options['exclude']) ? (bool) $options['exclude'] : true;
 
@@ -107,8 +103,8 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
     /**
      * @param ContentBlock $block
-     * @param Request $request
-     * @param array $options
+     * @param Request      $request
+     * @param array        $options
      *
      * @return Query
      */
@@ -126,7 +122,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             ->createFilterQuery('pub')
             ->setQuery('pub_active: 1 AND pub_time:[* TO NOW] AND pub_end:[NOW TO *] AND facet_channels: ("%1%")', [$channel]);
 
-        if ($search = $request->query->get($block->getId() . '-search')) {
+        if ($search = $request->query->get($block->getId().'-search')) {
             $edismax = $query->getEDisMax();
             $edismax->setQueryFields('title^200 content subtitle intro');
             $edismax->setMinimumMatch('75%');
@@ -170,7 +166,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
             if (0 === $count) {
                 // only exclude without facet filtering
-                $query->setQuery($query->getQuery() . ' AND -type_id: (%1%)', [implode(' OR ', array_map($filter, array_keys($this->registry)))]);
+                $query->setQuery($query->getQuery().' AND -type_id: (%1%)', [implode(' OR ', array_map($filter, array_keys($this->registry)))]);
             }
         }
 
@@ -178,10 +174,10 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
     }
 
     /**
-     * @param Query $query
+     * @param Query        $query
      * @param ContentBlock $block
-     * @param array $request
-     * @param array $options
+     * @param array        $request
+     * @param array        $options
      *
      * @return int
      */
@@ -199,7 +195,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             $request['type_name'] = $contentTypes; // @hack
         }
 
-        $properties  = isset($request['properties']) ? $request['properties'] : [];
+        $properties = isset($request['properties']) ? $request['properties'] : [];
 
         if (count($properties) && !in_array('facet_properties', $facetFields)) {
             $facetFields[] = 'facet_properties';
@@ -207,15 +203,15 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
         }
 
         foreach ($this->dm->getRepository('IntegratedContentBundle:Relation\Relation')->findAll() as $relation) {
-            $name = preg_replace("/[^a-zA-Z]/", '', $relation->getName());
+            $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
             $filters = isset($request[$name]) ? $request[$name] : [];
 
             if (count($filters)) {
-                if (!in_array('facet_' . $relation->getId(), $facetFields)) {
-                    $facetFields[] = 'facet_' . $relation->getId();
+                if (!in_array('facet_'.$relation->getId(), $facetFields)) {
+                    $facetFields[] = 'facet_'.$relation->getId();
                 }
 
-                $request['facet_' . $relation->getId()] = $filters; // @hack
+                $request['facet_'.$relation->getId()] = $filters; // @hack
             }
         }
 
@@ -229,7 +225,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
             foreach ($facetFields as $field) {
                 $facet = $facetSet
-                    ->createFacetField($field . $suffix)
+                    ->createFacetField($field.$suffix)
                     ->setMinCount(1)
                     ->setField($field);
 
@@ -240,12 +236,12 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
                 $param = isset($request[$field]) ? $request[$field] : null;
 
                 if ($param) {
-                    $count++; // facet fields count
+                    ++$count; // facet fields count
 
                     $query
-                        ->createFilterQuery($field . $suffix)
-                        ->setQuery($field . ': (%1%)', [implode(' OR ', array_map($filter, $param))])
-                        ->addTag($field . $suffix);
+                        ->createFilterQuery($field.$suffix)
+                        ->setQuery($field.': (%1%)', [implode(' OR ', array_map($filter, $param))])
+                        ->addTag($field.$suffix);
                 }
             }
         }
@@ -253,29 +249,28 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
         if (isset($options['filters'])) {
             foreach ((array) $options['filters'] as $field => $value) {
                 $query
-                    ->createFilterQuery('filter_' . $field . $suffix)
-                    ->setQuery($field . ': (%1%)', array_map($filter, [$value]))
-                    ->addTag('filter_' . $field . $suffix);
+                    ->createFilterQuery('filter_'.$field.$suffix)
+                    ->setQuery($field.': (%1%)', array_map($filter, [$value]))
+                    ->addTag('filter_'.$field.$suffix);
             }
         }
 
         $sort = isset($request['sort']) ? $request['sort'] : null;
 
-        if (null !== $suffix  || null !== $sort) {
+        if (null !== $suffix || null !== $sort) {
             // always add default sorting with search selections
             $sortDefault = 'changed';
             $sortOptions = $this->getSortOptions();
 
             $order = isset($request['order']) ? $request['order'] : null;
             $orderOptions = [
-                'asc'  => 'asc',
-                'desc' => 'desc'
+                'asc' => 'asc',
+                'desc' => 'desc',
             ];
 
             if (strpos($sort, 'custom:') === 0) {
                 // support for custom query in database, while waiting for a better solution
                 $query->addParam('sort', substr($sort, 7));
-
             } else {
                 $sort = trim(strtolower($sort));
                 $sort = array_key_exists($sort, $sortOptions) ? $sort : $sortDefault;
@@ -293,12 +288,12 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
     protected function getSortOptions()
     {
         return [
-            'rel'     => ['name' => 'rel', 'field' => 'score', 'label' => 'relevance', 'order' => 'desc'],
+            'rel' => ['name' => 'rel', 'field' => 'score', 'label' => 'relevance', 'order' => 'desc'],
             'changed' => ['name' => 'changed', 'field' => 'pub_edited', 'label' => 'date modified', 'order' => 'desc'],
             'created' => ['name' => 'created', 'field' => 'pub_created', 'label' => 'date created', 'order' => 'desc'],
-            'time'    => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
-            'title'   => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc'],
-            'random'  => ['name' => 'random', 'field' => 'random_' . mt_rand(), 'label' => 'random', 'order' => 'desc'],
+            'time' => ['name' => 'time', 'field' => 'pub_time', 'label' => 'publication date', 'order' => 'desc'],
+            'title' => ['name' => 'title', 'field' => 'title_sort', 'label' => 'title', 'order' => 'asc'],
+            'random' => ['name' => 'random', 'field' => 'random_'.mt_rand(), 'label' => 'random', 'order' => 'desc'],
         ];
     }
 }

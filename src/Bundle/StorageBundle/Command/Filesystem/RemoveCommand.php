@@ -18,10 +18,8 @@ use Integrated\Bundle\StorageBundle\Storage\Collection\Walk\FilesystemWalk;
 use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Bundle\StorageBundle\Storage\Util\ProgressIteratorUtil;
-
 use Integrated\Common\Storage\Database\DatabaseInterface;
 use Integrated\Common\Storage\ManagerInterface;
-
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -85,9 +83,8 @@ class RemoveCommand extends Command
                     'filesystem',
                     InputArgument::REQUIRED,
                     ''
-                )
+                ),
             ])
-        ;
         ;
     }
 

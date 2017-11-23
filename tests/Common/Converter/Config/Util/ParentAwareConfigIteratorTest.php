@@ -13,7 +13,6 @@ namespace Integrated\Tests\Common\Converter\Config\Util;
 
 use Integrated\Common\Converter\Config\ConfigInterface;
 use Integrated\Common\Converter\Config\TypeConfigInterface;
-
 use Integrated\Common\Converter\Config\Util\ParentAwareConfigIterator;
 
 /**
@@ -146,6 +145,7 @@ class ParentAwareConfigIteratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param ConfigInterface $config
+     *
      * @return ParentAwareConfigIterator
      */
     protected function getInstance(ConfigInterface $config = null)
@@ -167,7 +167,7 @@ class ParentAwareConfigIteratorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param TypeConfigInterface[] $types
-     * @param ConfigInterface $parent
+     * @param ConfigInterface       $parent
      *
      * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
      */

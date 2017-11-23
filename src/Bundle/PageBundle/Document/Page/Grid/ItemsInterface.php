@@ -23,18 +23,21 @@ interface ItemsInterface
 
     /**
      * @param array $items
+     *
      * @return $this
      */
     public function setItems(array $items = []);
 
     /**
      * @param Item $item
+     *
      * @return $this
      */
     public function addItem(Item $item);
 
     /**
      * @param Item $item
+     *
      * @return $this
      */
     public function removeItem(Item $item);

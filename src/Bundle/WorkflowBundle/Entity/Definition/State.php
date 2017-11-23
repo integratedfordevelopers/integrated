@@ -13,10 +13,8 @@ namespace Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\PersistentCollection;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
 
@@ -139,11 +137,13 @@ class State
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = (string) $name;
+
         return $this;
     }
 
@@ -157,6 +157,7 @@ class State
 
     /**
      * @param Definition|null $workflow
+     *
      * @return $this
      */
     public function setWorkflow(Definition $workflow = null)
@@ -184,11 +185,13 @@ class State
 
     /**
      * @param int $order
+     *
      * @return $this
      */
     public function setOrder($order)
     {
         $this->order = (int) $order;
+
         return $this;
     }
 
@@ -201,17 +204,19 @@ class State
     }
 
     /**
-     * @param boolean $publish
+     * @param bool $publish
+     *
      * @return $this
      */
     public function setPublishable($publishable)
     {
         $this->publishable = (bool) $publishable;
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isPublishable()
     {
@@ -220,6 +225,7 @@ class State
 
     /**
      * @param Permission[] $permissions
+     *
      * @return $this
      */
     public function setPermissions(Collection $permissions)
@@ -245,6 +251,7 @@ class State
 
     /**
      * @param Permission $permission
+     *
      * @return $this
      */
     public function addPermission(Permission $permission)
@@ -263,6 +270,7 @@ class State
 
     /**
      * @param Permission $permission
+     *
      * @return $this
      */
     public function removePermission(Permission $permission)
@@ -276,6 +284,7 @@ class State
 
     /**
      * @param Collection $transitions
+     *
      * @return $this
      */
     public function setTransitions(Collection $transitions)
@@ -300,9 +309,10 @@ class State
 
     /**
      * @param State $state
+     *
      * @return $this
      */
-    public function addTransition(State $state)
+    public function addTransition(self $state)
     {
         if (!$this->transitions->contains($state)) {
             $this->transitions->add($state);
@@ -313,21 +323,23 @@ class State
 
     /**
      * @param State $state
+     *
      * @return $this
      */
-    public function removeTransition(State $state)
+    public function removeTransition(self $state)
     {
         $this->transitions->removeElement($state);
+
         return $this;
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isDefault()
     {
         if (isset($this->workflow)) {
-            return ($this === $this->workflow->getDefault());
+            return $this === $this->workflow->getDefault();
         }
 
         return false;
@@ -352,10 +364,9 @@ class State
         $uow = $em->getUnitOfWork();
 
         /** @var Permission $permission */
-        /** @var Permission $found */
+        /* @var Permission $found */
 
         foreach ($this->permissions as $permission) {
-
             // see if there is already a entity in de identity map with this primary key. If so
             // then use that one and removed the one in the collection from the identity map. But
             // only when the state is null or a entity matching $this else the permission is

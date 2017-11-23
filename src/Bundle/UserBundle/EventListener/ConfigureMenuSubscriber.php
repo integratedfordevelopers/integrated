@@ -12,12 +12,11 @@
 namespace Integrated\Bundle\UserBundle\EventListener;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Event subscriber for adding menu items to integrated_menu
+ * Event subscriber for adding menu items to integrated_menu.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -46,9 +45,9 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure'
-        );
+        return [
+            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure',
+        ];
     }
 
     /**
@@ -67,9 +66,9 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
                 $menuManage = $menu->addChild(self::MENU_MANAGE);
             }
 
-            $menuManage->addChild('Users', array('route' => 'integrated_user_profile_index'));
-            $menuManage->addChild('Groups', array('route' => 'integrated_user_group_index'));
-            $menuManage->addChild('User scopes', array('route' => 'integrated_user_scope_index'));
+            $menuManage->addChild('Users', ['route' => 'integrated_user_profile_index']);
+            $menuManage->addChild('Groups', ['route' => 'integrated_user_group_index']);
+            $menuManage->addChild('User scopes', ['route' => 'integrated_user_scope_index']);
         }
     }
 }

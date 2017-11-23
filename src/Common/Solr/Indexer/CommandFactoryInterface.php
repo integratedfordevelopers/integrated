@@ -19,9 +19,10 @@ use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 interface CommandFactoryInterface
 {
     /**
-     * Create a solarium update command from a job
+     * Create a solarium update command from a job.
      *
      * @param JobInterface $job
+     *
      * @return AbstractCommand
      */
     public function create(JobInterface $job);

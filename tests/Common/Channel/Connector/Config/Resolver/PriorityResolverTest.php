@@ -12,7 +12,6 @@
 namespace Integrated\Tests\Common\Channel\Connector\Config\Resolver;
 
 use ArrayIterator;
-
 use Integrated\Common\Channel\Connector\Config\Resolver\PriorityResolver;
 use Integrated\Common\Channel\Connector\Config\ResolverInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
@@ -137,6 +136,7 @@ class PriorityResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name
+     *
      * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getConfig($name)

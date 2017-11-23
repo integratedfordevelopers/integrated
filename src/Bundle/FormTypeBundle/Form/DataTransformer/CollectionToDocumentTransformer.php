@@ -13,7 +13,6 @@ namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -24,7 +23,9 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
 {
     /**
      * @param Collection|null $value
+     *
      * @return object|null
+     *
      * @throws TransformationFailedException
      */
     public function transform($value)
@@ -44,6 +45,7 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
 
                 return $document;
             }
+
             return null;
         }
         throw new TransformationFailedException(sprintf('Expected a Collection, "%s" given', gettype($value)));
@@ -51,6 +53,7 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
 
     /**
      * @param object|null $value
+     *
      * @return ArrayCollection
      */
     public function reverseTransform($value)

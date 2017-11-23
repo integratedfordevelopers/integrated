@@ -37,40 +37,41 @@ class JsonPaginationExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('json_pagination', array($this, 'paginate', array('is_safe' => 'json')))
-        );
+        return [
+            new \Twig_SimpleFilter('json_pagination', [$this, 'paginate', ['is_safe' => 'json']]),
+        ];
     }
 
     /**
      * @param SlidingPagination $pagination
+     *
      * @return array
      */
     public function paginate(SlidingPagination $pagination)
     {
         $paginationData = $pagination->getPaginationData();
 
-        $return = array(
+        $return = [
             'page' => $pagination->getCurrentPageNumber(),
             'pageCount' => $paginationData['pageCount'],
             'numFound' => $pagination->getTotalItemCount(),
             'numItemsPerPage' => $pagination->getItemNumberPerPage(),
             'next' => null,
             'previous' => null,
-            'pages' => array()
-        );
+            'pages' => [],
+        ];
 
-        $params = $pagination->getQuery(array('_format' => 'json'));
+        $params = $pagination->getQuery(['_format' => 'json']);
 
         if (isset($paginationData['previous'])) {
             $href = $this->generator->generate(
                 $pagination->getRoute(),
                 array_merge(
                     $params,
-                    array($pagination->getPaginatorOption('pageParameterName') => $paginationData['previous'])
+                    [$pagination->getPaginatorOption('pageParameterName') => $paginationData['previous']]
                 )
             );
-            $return['previous'] = array('href' => $href);
+            $return['previous'] = ['href' => $href];
         }
 
         if (isset($paginationData['next'])) {
@@ -78,11 +79,11 @@ class JsonPaginationExtension extends \Twig_Extension
                 $pagination->getRoute(),
                 array_merge(
                     $params,
-                    array($pagination->getPaginatorOption('pageParameterName') => $paginationData['next'])
+                    [$pagination->getPaginatorOption('pageParameterName') => $paginationData['next']]
                 )
             );
 
-            $return['next'] = array('href' => $href);
+            $return['next'] = ['href' => $href];
         }
 
         if ($paginationData['pageCount'] > 0) {
@@ -91,14 +92,13 @@ class JsonPaginationExtension extends \Twig_Extension
                     $pagination->getRoute(),
                     array_merge(
                         $params,
-                        array($pagination->getPaginatorOption('pageParameterName') => $page)
+                        [$pagination->getPaginatorOption('pageParameterName') => $page]
                     )
                 );
 
-                $return['pages'][$page] = array('href' => $href);
+                $return['pages'][$page] = ['href' => $href];
             }
         }
-
 
         return $return;
     }

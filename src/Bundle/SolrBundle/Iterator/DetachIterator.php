@@ -30,7 +30,7 @@ class DetachIterator implements Iterator
     private $iterator;
 
     /**
-     * @param Iterator $iterator
+     * @param Iterator      $iterator
      * @param ObjectManager $manager
      */
     public function __construct(Iterator $iterator, ObjectManager $manager)
@@ -45,6 +45,7 @@ class DetachIterator implements Iterator
     public function current()
     {
         $this->manager->detach($current = $this->iterator->current());
+
         return $current;
     }
 

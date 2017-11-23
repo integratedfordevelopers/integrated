@@ -20,6 +20,7 @@ class NoFilesystemAvailableException extends \ErrorException
 {
     /**
      * @param StorageInterface $storage
+     *
      * @return NoFilesystemAvailableException
      */
     public static function readOperation(StorageInterface $storage)

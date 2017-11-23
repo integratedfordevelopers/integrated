@@ -49,7 +49,7 @@ class ConfigProviderBuilderPassTest extends \PHPUnit_Framework_TestCase
             ->with('tag')
             ->willReturn([
                 'tagged.service.1' => [],
-                'tagged.service.2' => []
+                'tagged.service.2' => [],
             ]);
 
         $this->getInstance()->process($container);

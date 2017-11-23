@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
 use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -31,6 +30,7 @@ class ScopeFormType extends AbstractType
 
     /**
      * ScopeFormType constructor.
+     *
      * @param ScopeManagerInterface $manager
      */
     public function __construct(ScopeManagerInterface $manager)
@@ -44,7 +44,7 @@ class ScopeFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class, [
-            'required' => false
+            'required' => false,
         ]);
     }
 

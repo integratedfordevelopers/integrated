@@ -23,7 +23,7 @@ class Batch implements Countable, IteratorAggregate
     /**
      * @var BatchOperation[]
      */
-    private $batch = array();
+    private $batch = [];
 
     /**
      * Add the given batch operation to the batch.
@@ -36,7 +36,7 @@ class Batch implements Countable, IteratorAggregate
     }
 
     /**
-     * Remove the given batch operation from the batch
+     * Remove the given batch operation from the batch.
      *
      * @param BatchOperation $operation
      */
@@ -56,7 +56,7 @@ class Batch implements Countable, IteratorAggregate
      */
     public function clear()
     {
-        $this->batch = array();
+        $this->batch = [];
     }
 
     /**

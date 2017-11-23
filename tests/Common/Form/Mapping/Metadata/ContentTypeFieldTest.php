@@ -26,7 +26,7 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
     private $contentTypeField;
 
     /**
-     * Setup the test
+     * Setup the test.
      */
     protected function setUp()
     {
@@ -34,7 +34,7 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter and setter of name
+     * Test getter and setter of name.
      */
     public function testName()
     {
@@ -42,7 +42,7 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getters and setter of type
+     * Test getters and setter of type.
      */
     public function testType()
     {
@@ -52,11 +52,11 @@ class ContentTypeFieldTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getters and setter of options
+     * Test getters and setter of options.
      */
     public function testOptions()
     {
-        $options = array('label' => 'Label', 'required' => false);
+        $options = ['label' => 'Label', 'required' => false];
         $this->contentTypeField->setOptions($options);
         $this->assertEquals($options, $this->contentTypeField->getOptions());
     }

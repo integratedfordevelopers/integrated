@@ -13,11 +13,10 @@ namespace Integrated\Common\Form\Mapping\Metadata;
 
 use Integrated\Common\Form\Mapping\AttributeInterface;
 use Integrated\Common\Form\Mapping\MetadataEditorInterface;
-
 use ReflectionClass;
 
 /**
- * Class for storing metadata properties of a Document
+ * Class for storing metadata properties of a Document.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -57,7 +56,7 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isTypeOf($class)
     {
@@ -70,14 +69,14 @@ class Document implements MetadataEditorInterface
         return (
                 (interface_exists($class) && $reflection->implementsInterface($class)) ||
                 $reflection->isSubclassOf($class) ||
-                (class_exists($class) && $reflection->isInstance(new $class))
+                (class_exists($class) && $reflection->isInstance(new $class()))
             )
             &&
             $reflection->isInstantiable();
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getReflection()
     {
@@ -89,7 +88,7 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * Get the class of the Document
+     * Get the class of the Document.
      *
      * @return string
      */
@@ -99,7 +98,7 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -107,16 +106,17 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFields()
     {
@@ -124,7 +124,7 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getField($name)
     {
@@ -132,7 +132,7 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasField($name)
     {
@@ -140,7 +140,7 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function newField($name)
     {
@@ -148,16 +148,17 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addField(AttributeInterface $field)
     {
         $this->fields[$field->getName()] = $field;
+
         return $this;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOptions()
     {
@@ -165,7 +166,7 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getOption($name)
     {
@@ -173,7 +174,7 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function hasOption($name)
     {
@@ -181,7 +182,7 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function newOption($name)
     {
@@ -189,11 +190,12 @@ class Document implements MetadataEditorInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function addOption(AttributeInterface $option)
     {
         $this->options[$option->getName()] = $option;
+
         return $this;
     }
 }

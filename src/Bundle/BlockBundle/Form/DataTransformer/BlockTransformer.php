@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\BlockBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Common\Block\BlockInterface;
 
 /**

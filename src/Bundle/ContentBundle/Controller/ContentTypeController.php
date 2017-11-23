@@ -11,7 +11,6 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
@@ -19,9 +18,7 @@ use Integrated\Common\ContentType\Event\ContentTypeEvent;
 use Integrated\Common\ContentType\Events;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +39,7 @@ class ContentTypeController extends Controller
     protected $metadata;
 
     /**
-     * Lists all the ContentType documents
+     * Lists all the ContentType documents.
      *
      * @Template
      *
@@ -58,12 +55,12 @@ class ContentTypeController extends Controller
 
         return [
             'documents' => $documents,
-            'documentTypes' => $documentTypes
+            'documentTypes' => $documentTypes,
         ];
     }
 
     /**
-     * Display a list of Content documents
+     * Display a list of Content documents.
      *
      * @Template
      *
@@ -74,16 +71,17 @@ class ContentTypeController extends Controller
         $documentTypes = $this->getMetadata()->getAllMetadata();
 
         return [
-            'documentTypes' => $documentTypes
+            'documentTypes' => $documentTypes,
         ];
     }
 
     /**
-     * Finds and displays a ContentType document
+     * Finds and displays a ContentType document.
      *
      * @Template
      *
      * @param ContentType $contentType
+     *
      * @return array
      */
     public function showAction(ContentType $contentType)
@@ -92,16 +90,17 @@ class ContentTypeController extends Controller
 
         return [
             'form' => $form->createView(),
-            'contentType' => $contentType
+            'contentType' => $contentType,
         ];
     }
 
     /**
-     * Creates a new ContentType document
+     * Creates a new ContentType document.
      *
      * @Template
      *
      * @param Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function newAction(Request $request)
@@ -133,12 +132,12 @@ class ContentTypeController extends Controller
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     /**
-     * Edits an existing ContentType document
+     * Edits an existing ContentType document.
      *
      * @Template
      *
@@ -169,12 +168,12 @@ class ContentTypeController extends Controller
 
         return [
             'form' => $form->createView(),
-            'contentType' => $contentType
+            'contentType' => $contentType,
         ];
     }
 
     /**
-     * Deletes a ContentType document
+     * Deletes a ContentType document.
      *
      * @param Request     $request
      * @param ContentType $contentType
@@ -198,23 +197,22 @@ class ContentTypeController extends Controller
                 $this->get('braincrafted_bootstrap.flash')->error('Unable te delete, ContentType is not empty');
 
                 return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
-            } else {
-                $dm->remove($contentType);
-                $dm->flush();
-
-                $dispatcher = $this->get('integrated_content.event_dispatcher');
-                $dispatcher->dispatch(Events::CONTENT_TYPE_DELETED, new ContentTypeEvent($contentType));
-
-                // Set flash message
-                $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
             }
+            $dm->remove($contentType);
+            $dm->flush();
+
+            $dispatcher = $this->get('integrated_content.event_dispatcher');
+            $dispatcher->dispatch(Events::CONTENT_TYPE_DELETED, new ContentTypeEvent($contentType));
+
+            // Set flash message
+            $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
         }
 
         return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
     }
 
     /**
-     * Get the metadata factory form the service container
+     * Get the metadata factory form the service container.
      *
      * @return MetadataFactoryInterface
      */
@@ -228,7 +226,7 @@ class ContentTypeController extends Controller
     }
 
     /**
-     * Creates a form to create a ContentType document
+     * Creates a form to create a ContentType document.
      *
      * @param ContentType       $type
      * @param MetadataInterface $metadata
@@ -243,7 +241,7 @@ class ContentTypeController extends Controller
             [
                 'action' => $this->generateUrl('integrated_content_content_type_new', ['class' => $type->getClass()]),
                 'method' => 'POST',
-                'metadata' => $metadata
+                'metadata' => $metadata,
             ],
             [
                 'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
@@ -269,7 +267,7 @@ class ContentTypeController extends Controller
             [
                 'action' => $this->generateUrl('integrated_content_content_type_edit', ['id' => $type->getId()]),
                 'method' => 'PUT',
-                'metadata' => $metadata
+                'metadata' => $metadata,
             ],
             [
                 'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
@@ -283,6 +281,7 @@ class ContentTypeController extends Controller
      * Creates a form to delete a ContentType document.
      *
      * @param ContentType $type
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createDeleteForm(ContentType $type)
@@ -312,7 +311,7 @@ class ContentTypeController extends Controller
 
         if ($buttons) {
             $form->add('actions', FormActionsType::class, [
-                'buttons' => $buttons
+                'buttons' => $buttons,
             ]);
         }
 

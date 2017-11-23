@@ -30,12 +30,12 @@ class Queue implements QueueInterface
 
     /**
      * @param QueueProviderInterface $provider
-     * @param string $channel
+     * @param string                 $channel
      */
     public function __construct(QueueProviderInterface $provider, $channel)
     {
         $this->provider = $provider;
-        $this->channel  = $channel;
+        $this->channel = $channel;
     }
 
     /**

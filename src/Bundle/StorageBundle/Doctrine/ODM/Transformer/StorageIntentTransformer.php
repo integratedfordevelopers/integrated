@@ -16,7 +16,6 @@ use Integrated\Bundle\StorageBundle\Form\Upload\StorageOriginal;
 use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Reader\UploadedFileReader;
 use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
-
 use Integrated\Common\Storage\DecisionInterface;
 use Integrated\Common\Storage\ManagerInterface;
 
@@ -93,7 +92,7 @@ class StorageIntentTransformer
                         );
 
                         // Thus we've got changes
-                        $changes++;
+                        ++$changes;
                     }
                 }
 

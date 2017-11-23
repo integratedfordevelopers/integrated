@@ -12,16 +12,13 @@
 namespace Integrated\Bundle\BlockBundle\Templating;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 use Doctrine\ODM\MongoDB\DocumentRepository;
-
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockHandlerRegistryInterface;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\ContentInterface;
-
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
@@ -58,9 +55,9 @@ class BlockManager
 
     /**
      * @param BlockHandlerRegistryInterface $blockRegistry
-     * @param ThemeManager $themeManager
-     * @param DocumentManager $dm
-     * @param \Twig_Environment $twig
+     * @param ThemeManager                  $themeManager
+     * @param DocumentManager               $dm
+     * @param \Twig_Environment             $twig
      */
     public function __construct(BlockHandlerRegistryInterface $blockRegistry, ThemeManager $themeManager, DocumentManager $dm, \Twig_Environment $twig)
     {
@@ -72,7 +69,7 @@ class BlockManager
 
     /**
      * @param BlockInterface|string $block
-     * @param array $options
+     * @param array                 $options
      *
      * @return null|string
      */
@@ -104,7 +101,7 @@ class BlockManager
                     $handler->configureOptions($resolver = new OptionsResolver());
                     $options = $resolver->resolve($options);
 
-                    if ($template = $this->themeManager->locateTemplate('blocks/' . $block->getType() . '/' . $block->getLayout())) {
+                    if ($template = $this->themeManager->locateTemplate('blocks/'.$block->getType().'/'.$block->getLayout())) {
                         $handler->setTemplate($template);
                     }
                 }
@@ -116,6 +113,7 @@ class BlockManager
 
     /**
      * @param string $id
+     *
      * @return Block|null
      */
     public function getBlock($id)
@@ -125,11 +123,13 @@ class BlockManager
 
     /**
      * @param ContentInterface $document
+     *
      * @return $this
      */
     public function setDocument(ContentInterface $document)
     {
         $this->document = $document;
+
         return $this;
     }
 }

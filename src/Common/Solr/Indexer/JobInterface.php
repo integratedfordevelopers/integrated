@@ -35,7 +35,8 @@ interface JobInterface extends Serializable
     /**
      * Get the option value.
      *
-     * @param string $name the name of the option to retrieve.
+     * @param string $name the name of the option to retrieve
+     *
      * @return string|null
      */
     public function getOption($name);
@@ -44,6 +45,7 @@ interface JobInterface extends Serializable
      * Check if the option exists.
      *
      * @param string $name
+     *
      * @return bool
      */
     public function hasOption($name);

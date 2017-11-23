@@ -13,10 +13,8 @@ namespace Integrated\Bundle\UserBundle\Validator;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 
@@ -40,7 +38,6 @@ abstract class ManagerValidator extends ConstraintValidator
     public function validate($object, Constraint $constraint)
     {
         /** @var $constraint ManagerConstraint */
-
         if (!is_array($constraint->fields) && !is_string($constraint->fields)) {
             throw new UnexpectedTypeException($constraint->fields, 'array');
         }

@@ -23,6 +23,7 @@ interface MetadataInterface
 
     /**
      * @param RegistryInterface $metadata
+     *
      * @return self
      */
     public function setMetadata(RegistryInterface $metadata);

@@ -12,17 +12,12 @@
 namespace Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use DateTime;
-
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
-
 use Integrated\Common\Content\ContentInterface;
-
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
@@ -108,11 +103,13 @@ class State
 
     /**
      * @param Definition\State $state
+     *
      * @return $this
      */
     public function setState(Definition\State $state)
     {
         $this->state = $state;
+
         return $this;
     }
 
@@ -126,6 +123,7 @@ class State
 
     /**
      * @param ContentInterface $content
+     *
      * @return $this
      */
     public function setContent($content)
@@ -169,6 +167,7 @@ class State
 
     /**
      * @param GroupInterface | UserInterface $assigned
+     *
      * @return $this
      */
     public function setAssigned($assigned)
@@ -222,11 +221,13 @@ class State
 
     /**
      * @param DateTime $deadline
+     *
      * @return $this
      */
     public function setDeadline(DateTime $deadline = null)
     {
         $this->deadline = $deadline;
+
         return $this;
     }
 
@@ -240,6 +241,7 @@ class State
 
     /**
      * @param log[] $logs
+     *
      * @return $this
      */
     public function setLogs(Collection $logs)
@@ -259,6 +261,7 @@ class State
 
     /**
      * @param Log $log
+     *
      * @return $this
      */
     public function addLog(Log $log)
@@ -277,6 +280,7 @@ class State
 
     /**
      * @param Log $log
+     *
      * @return $this
      */
     public function removeLog(Log $log)

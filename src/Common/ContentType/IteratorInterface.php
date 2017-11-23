@@ -19,47 +19,43 @@ use Iterator as BaseIteratorInterface;
 interface IteratorInterface extends BaseIteratorInterface
 {
     /**
-     * Return the current content type
+     * Return the current content type.
      *
-     * @link http://php.net/manual/en/iterator.current.php
+     * @see http://php.net/manual/en/iterator.current.php
      *
-     * @return ContentTypeInterface.
+     * @return contentTypeInterface
      */
     public function current();
 
     /**
-     * Move forward to next content type
+     * Move forward to next content type.
      *
-     * @link http://php.net/manual/en/iterator.next.php
-     *
-     * @return void
+     * @see http://php.net/manual/en/iterator.next.php
      */
     public function next();
 
     /**
-     * Return the key of the current content type
+     * Return the key of the current content type.
      *
-     * @link http://php.net/manual/en/iterator.key.php
+     * @see http://php.net/manual/en/iterator.key.php
      *
-     * @return mixed scalar on success, or null on failure.
+     * @return mixed scalar on success, or null on failure
      */
     public function key();
 
     /**
-     * Checks if current position is valid
+     * Checks if current position is valid.
      *
-     * @link http://php.net/manual/en/iterator.valid.php
+     * @see http://php.net/manual/en/iterator.valid.php
      *
-     * @return boolean
+     * @return bool
      */
     public function valid();
 
     /**
-     * Rewind the Iterator to the first content type
+     * Rewind the Iterator to the first content type.
      *
-     * @link http://php.net/manual/en/iterator.rewind.php
-     *
-     * @return void
+     * @see http://php.net/manual/en/iterator.rewind.php
      */
     public function rewind();
 }

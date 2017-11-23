@@ -15,7 +15,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
 
 /**
- * Search block document
+ * Search block document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *
@@ -57,11 +57,13 @@ class SearchBlock extends Block
 
     /**
      * @param ContentBlock $block
+     *
      * @return $this
      */
     public function setBlock(ContentBlock $block)
     {
         $this->block = $block;
+
         return $this;
     }
 

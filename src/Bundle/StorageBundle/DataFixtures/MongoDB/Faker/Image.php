@@ -17,19 +17,20 @@ namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Faker;
 class Image extends \Faker\Provider\Image
 {
     /**
-     * We don't need the faker generator from the base class
+     * We don't need the faker generator from the base class.
      */
     public function __construct()
     {
     }
 
     /**
-     * @param int $width
-     * @param int $height
+     * @param int         $width
+     * @param int         $height
      * @param null|string $category
-     * @param bool $randomize
+     * @param bool        $randomize
      * @param null|string $word
-     * @param bool $gray
+     * @param bool        $gray
+     *
      * @return string
      */
     public static function imageUrl($width = 640, $height = 480, $category = null, $randomize = true, $word = null, $gray = false)
@@ -39,7 +40,7 @@ class Image extends \Faker\Provider\Image
         if ($category) {
             $url .= "{$category}/";
         }
-        
+
         return $url;
     }
 }

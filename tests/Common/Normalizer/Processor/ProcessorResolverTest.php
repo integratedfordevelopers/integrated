@@ -56,7 +56,7 @@ class ProcessorResolverTest extends \PHPUnit_Framework_TestCase
             $this->getProcessor(),
             $this->getProcessor(),
             $this->getProcessor(),
-            $this->getProcessor()
+            $this->getProcessor(),
         ];
 
         $this->registry->expects($this->exactly(2))
@@ -84,7 +84,7 @@ class ProcessorResolverTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'string' => [TestChild::class],
-            'object' => [new TestChild()]
+            'object' => [new TestChild()],
         ];
     }
 

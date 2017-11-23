@@ -12,10 +12,8 @@
 namespace Integrated\Bundle\SocialBundle\Connector\Twitter;
 
 use Integrated\Bundle\SocialBundle\Factory\TwitterFactory;
-
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 use Integrated\Common\Channel\Exporter\ExportableInterface;
-
 use RuntimeException;
 
 /**
@@ -37,7 +35,7 @@ class ExporterFactory implements ExportableInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExporter(OptionsInterface $options)
     {

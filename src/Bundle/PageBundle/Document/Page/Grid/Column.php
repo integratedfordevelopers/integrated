@@ -14,7 +14,7 @@ namespace Integrated\Bundle\PageBundle\Document\Page\Grid;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Column document
+ * Column document.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
@@ -30,8 +30,6 @@ class Column implements ItemsInterface
      */
     protected $items;
 
-    /**
-     */
     public function __construct()
     {
         $this->items = new ArrayCollection();
@@ -47,11 +45,13 @@ class Column implements ItemsInterface
 
     /**
      * @param int $size
+     *
      * @return $this
      */
     public function setSize($size)
     {
         $this->size = (int) $size;
+
         return $this;
     }
 
@@ -65,31 +65,37 @@ class Column implements ItemsInterface
 
     /**
      * @param array $items
+     *
      * @return $this
      */
     public function setItems(array $items = [])
     {
         $this->items = new ArrayCollection($items);
+
         return $this;
     }
 
     /**
      * @param Item $item
+     *
      * @return $this
      */
     public function addItem(Item $item)
     {
         $this->items->add($item);
+
         return $this;
     }
 
     /**
      * @param Item $item
+     *
      * @return $this
      */
     public function removeItem(Item $item)
     {
         $this->items->removeElement($item);
+
         return $this;
     }
 

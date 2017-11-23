@@ -12,10 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Faker\Image;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util\CreateUtil;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -29,10 +27,11 @@ trait ImageExtensionTrait
     abstract public function getContainer();
 
     /**
-     * @param int $width
-     * @param int $height
-     * @param null $category
+     * @param int    $width
+     * @param int    $height
+     * @param null   $category
      * @param string $dir
+     *
      * @return StorageInterface
      */
     public function createImage($width = 640, $height = 480, $category = null, $dir = '/tmp')

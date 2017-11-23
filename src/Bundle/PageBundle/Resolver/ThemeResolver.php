@@ -32,7 +32,7 @@ class ThemeResolver
 
     /**
      * @param ResolverInterface $resolver
-     * @param ThemeManager $themeManager
+     * @param ThemeManager      $themeManager
      */
     public function __construct(ResolverInterface $resolver, ThemeManager $themeManager)
     {

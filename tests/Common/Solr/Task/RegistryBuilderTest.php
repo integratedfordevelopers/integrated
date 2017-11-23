@@ -22,7 +22,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $expected = [
             'class1' => [$this, 'testAddHandler'],
-            'class2' => [RegistryBuilderTest::class, 'assertTrue'],
+            'class2' => [self::class, 'assertTrue'],
             'class3' => 'is_object',
             'class4' => function () {
             },
@@ -47,7 +47,7 @@ class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $expected = [
             'class1' => [$this, 'testAddHandler'],
-            'class2' => [RegistryBuilderTest::class, 'assertTrue'],
+            'class2' => [self::class, 'assertTrue'],
             'class3' => 'is_object',
             'class4' => function () {
             },

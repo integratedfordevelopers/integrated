@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WorkflowBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 
 /**
@@ -64,11 +63,13 @@ class Definition
 
     /**
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = (string) $name;
+
         return $this;
     }
 
@@ -82,6 +83,7 @@ class Definition
 
     /**
      * @param State[] $states
+     *
      * @return $this
      */
     public function setStates(Collection $states)
@@ -101,6 +103,7 @@ class Definition
 
     /**
      * @param State $state
+     *
      * @return $this
      */
     public function addState(State $state)
@@ -119,6 +122,7 @@ class Definition
 
     /**
      * @param State $state
+     *
      * @return bool
      */
     public function hasState(State $state)
@@ -128,6 +132,7 @@ class Definition
 
     /**
      * @param State $state
+     *
      * @return $this
      */
     public function removeState(State $state)
@@ -149,11 +154,13 @@ class Definition
 
     /**
      * @param State $default
+     *
      * @return $this
      */
     public function setDefault(State $default = null)
     {
         $this->default = $default;
+
         return $this;
     }
 }

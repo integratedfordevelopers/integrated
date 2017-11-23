@@ -23,6 +23,7 @@ interface ContentTypeProviderInterface
      * Get a all the content for the given content type id.
      *
      * @param string $id
+     *
      * @return Iterator | ContentInterface[]
      */
     public function getContent($id);

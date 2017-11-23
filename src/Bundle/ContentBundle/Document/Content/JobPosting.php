@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Integrated\Common\Form\Mapping\Annotations as Type;
-use Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -59,11 +58,13 @@ class JobPosting extends Article
 
     /**
      * @param string $jobTitle
+     *
      * @return $this
      */
     public function setJobTitle($jobTitle)
     {
         $this->jobTitle = $jobTitle;
+
         return $this;
     }
 
@@ -77,11 +78,13 @@ class JobPosting extends Article
 
     /**
      * @param string $salary
+     *
      * @return $this
      */
     public function setSalary($salary)
     {
         $this->salary = $salary;
+
         return $this;
     }
 
@@ -95,11 +98,13 @@ class JobPosting extends Article
 
     /**
      * @param string $applyUrl
+     *
      * @return $this
      */
     public function setApplyUrl($applyUrl)
     {
         $this->applyUrl = $applyUrl;
+
         return $this;
     }
 
@@ -113,11 +118,13 @@ class JobPosting extends Article
 
     /**
      * @param Relation\Company $company
+     *
      * @return $this
      */
     public function setCompany(Relation\Company $company = null)
     {
         $this->company = $company;
+
         return $this;
     }
 
@@ -131,11 +138,13 @@ class JobPosting extends Article
 
     /**
      * @param Relation\Person $contact
+     *
      * @return $this
      */
     public function setContact(Relation\Person $contact = null)
     {
         $this->contact = $contact;
+
         return $this;
     }
 }

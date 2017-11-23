@@ -81,8 +81,6 @@ class ClassTreeMapResolver implements DiscriminatorMapResolverInterface
      * Find the first map root for the given class.
      *
      * @param string $class
-     *
-     * @return null | string
      */
     protected function resolveRoot($class)
     {

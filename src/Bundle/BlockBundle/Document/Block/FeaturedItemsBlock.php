@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
@@ -24,7 +23,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
 class FeaturedItemsBlock extends Block
 {
     use PublishTitleTrait;
-    
+
     /**
      * @var ArrayCollection
      * @Type\Field(
@@ -42,7 +41,7 @@ class FeaturedItemsBlock extends Block
     protected $items;
 
     /**
-     * General object init
+     * General object init.
      */
     public function __construct()
     {
@@ -67,29 +66,37 @@ class FeaturedItemsBlock extends Block
 
     /**
      * @param array $items
+     *
      * @return $this
      */
     public function setItems(array $items = [])
     {
         $this->items = new ArrayCollection($items);
+
         return $this;
     }
 
     /**
      * @param FeaturedItemsItem $item
+     *
      * @return $this
      */
-    public function addItem(FeaturedItemsItem $item) {
+    public function addItem(FeaturedItemsItem $item)
+    {
         $this->items->add($item);
+
         return $this;
     }
 
     /**
      * @param FeaturedItemsItem $item
+     *
      * @return $this
      */
-    public function removeItem(FeaturedItemsItem $item) {
+    public function removeItem(FeaturedItemsItem $item)
+    {
         $this->items->removeElement($item);
+
         return $this;
     }
 

@@ -16,7 +16,6 @@ use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Event\ViewEvent;
 use Integrated\Common\Content\Form\Events;
-
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
@@ -24,7 +23,6 @@ use Integrated\Common\Form\Mapping\AttributeEditorInterface;
 use Integrated\Common\Form\Mapping\AttributeInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
-
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -32,8 +30,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
-use stdClass;
 
 /**
  * @covers \Integrated\Common\Content\Form\ContentFormType
@@ -102,7 +98,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
             ->willReturn([
                 $this->getAttribute('field1', 'type1', ['options1', 'options' => '1']),
                 $this->getAttribute('field2', 'type2', ['options2', 'options' => '2']),
-                $this->getAttribute('field3', 'type3', ['options3', 'options' => '3'])
+                $this->getAttribute('field3', 'type3', ['options3', 'options' => '3']),
             ]);
 
         $this->type->expects($this->exactly(3))
@@ -209,7 +205,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
             ->method('getFields')
             ->willReturn([
                 $this->getAttribute('field', 'type', ['key' => 'value']),
-                $this->getAttribute('field', 'type', ['key' => 'value'])
+                $this->getAttribute('field', 'type', ['key' => 'value']),
             ]);
 
         $this->type->expects($this->exactly(2))
@@ -287,6 +283,7 @@ class ContentFormTypeTest extends \PHPUnit_Framework_TestCase
     {
         $callback = function (FieldEvent $argument) {
             $argument->setIgnore(true);
+
             return true;
         };
 

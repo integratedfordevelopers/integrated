@@ -33,8 +33,9 @@ class AssetManager
 
     /**
      * @param string | array $asset
-     * @param bool $inline
-     * @param string $mode
+     * @param bool           $inline
+     * @param string         $mode
+     *
      * @throws \InvalidArgumentException
      */
     public function add($asset, $inline = false, $mode = self::MODE_APPEND)

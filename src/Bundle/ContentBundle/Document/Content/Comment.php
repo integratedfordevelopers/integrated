@@ -11,13 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
-
 use Integrated\Common\Form\Mapping\Annotations as Type;
-use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
- * Document type Comment
+ * Document type Comment.
  *
  * @author Koen Prins <koen@e-active.nl>
  *
@@ -50,7 +47,7 @@ class Comment extends Content
     protected $comment;
 
     /**
-     * Get the title of the document
+     * Get the title of the document.
      *
      * @return string
      */
@@ -60,14 +57,16 @@ class Comment extends Content
     }
 
     /**
-     * Set the title of the document
+     * Set the title of the document.
      *
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -129,7 +128,7 @@ class Comment extends Content
         }
 
         if (strlen($this->comment) > 60) {
-            return substr($this->comment, 0, 60) . '...';
+            return substr($this->comment, 0, 60).'...';
         }
 
         return $this->comment;

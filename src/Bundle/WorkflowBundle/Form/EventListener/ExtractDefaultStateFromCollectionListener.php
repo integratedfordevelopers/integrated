@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WorkflowBundle\Form\EventListener;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
-
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -31,12 +30,12 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
         return [
             FormEvents::PRE_SUBMIT => 'onPreSubmit',
             FormEvents::POST_SET_DATA => 'onPostSetData',
-            FormEvents::SUBMIT => 'onSubmit'
+            FormEvents::SUBMIT => 'onSubmit',
         ];
     }
 
     /**
-     * Remove the default value of the Definition
+     * Remove the default value of the Definition.
      *
      * @param FormEvent $event
      */
@@ -50,7 +49,7 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
     }
 
     /**
-     * Mark the default State as default
+     * Mark the default State as default.
      *
      * @param FormEvent $event
      */
@@ -76,7 +75,7 @@ class ExtractDefaultStateFromCollectionListener implements EventSubscriberInterf
     }
 
     /**
-     * Set the default State of a Definition
+     * Set the default State of a Definition.
      *
      * @param FormEvent $event
      */

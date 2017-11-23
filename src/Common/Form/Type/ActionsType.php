@@ -12,10 +12,8 @@
 namespace Integrated\Common\Form\Type;
 
 use Integrated\Common\Form\EventListener\ClickedButtonListener;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,7 +31,7 @@ class ActionsType extends AbstractType
     /**
      * Constructor.
      *
-     * @param array  $buttons
+     * @param array $buttons
      */
     public function __construct(array $buttons)
     {

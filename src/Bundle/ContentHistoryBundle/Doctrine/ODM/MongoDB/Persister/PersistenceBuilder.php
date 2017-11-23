@@ -36,6 +36,7 @@ class PersistenceBuilder
 
     /**
      * @param object $document
+     *
      * @return array
      *
      * @throws \RuntimeException

@@ -13,14 +13,12 @@ namespace Integrated\MongoDB\ContentType\Mapping;
 
 use Integrated\MongoDB\ContentType\DiscriminatorMapBuilderSubscriber;
 use Integrated\MongoDB\ContentType\ClassMetadataLoadFinderSubscriber;
-
 use Doctrine\Common\EventManager;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory as BaseClassMetadataFactory;
 
 /**
- * @deprecated will be removed asap.
+ * @deprecated will be removed asap
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -61,7 +59,7 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
      *
      * @var array
      */
-    private $registery = array();
+    private $registery = [];
 
     public function __construct()
     {
@@ -131,7 +129,7 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function newClassMetadataInstance($className)
     {
@@ -148,7 +146,7 @@ class ClassMetadataFactory extends BaseClassMetadataFactory
             $cache = $this->getCacheDriver();
 
             foreach ($this->builder->getChanges() as $meta) {
-                $cache->save($meta->name . $this->cacheSalt, $meta, null);
+                $cache->save($meta->name.$this->cacheSalt, $meta, null);
             }
         }
 

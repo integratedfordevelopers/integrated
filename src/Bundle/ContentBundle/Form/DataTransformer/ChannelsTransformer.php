@@ -19,13 +19,13 @@ use Symfony\Component\Form\DataTransformerInterface;
 class ChannelsTransformer implements DataTransformerInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function transform($value)
     {
         $result = [
-            'options'  => null,
-            'defaults' => []
+            'options' => null,
+            'defaults' => [],
         ];
 
         if ($value === null || $value === '') {
@@ -35,7 +35,7 @@ class ChannelsTransformer implements DataTransformerInterface
         if (isset($value['disabled'])) {
             $result['options'] = 'disabled';
 
-            switch ((int) $value['disabled']){
+            switch ((int) $value['disabled']) {
                 case 0:
                     $result['options'] = '';
                     break;
@@ -63,13 +63,13 @@ class ChannelsTransformer implements DataTransformerInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function reverseTransform($value)
     {
         $result = [
             'disabled' => 0,
-            'defaults' => []
+            'defaults' => [],
         ];
 
         if ($value === null || $value === '') {
@@ -90,7 +90,7 @@ class ChannelsTransformer implements DataTransformerInterface
             if ($options['selected']) {
                 $result['defaults'][$id] = [
                     'id' => $id,
-                    'enforce' => $options['enforce'] ? true : false
+                    'enforce' => $options['enforce'] ? true : false,
                 ];
             }
         }

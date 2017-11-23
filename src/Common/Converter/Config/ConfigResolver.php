@@ -13,7 +13,6 @@ namespace Integrated\Common\Converter\Config;
 
 use Exception;
 use ReflectionClass;
-
 use Integrated\Common\Converter\Exception\UnexpectedTypeException;
 
 /**
@@ -27,7 +26,7 @@ class ConfigResolver implements ConfigResolverInterface
     private $provider;
 
     /**
-     * config instances cache
+     * config instances cache.
      *
      * @var ConfigInterface[]
      */
@@ -83,8 +82,6 @@ class ConfigResolver implements ConfigResolverInterface
      * associated type configs then null is returned.
      *
      * @param ReflectionClass $reflection
-     *
-     * @return null | ConfigInterface
      */
     protected function resolve(ReflectionClass $reflection)
     {
@@ -110,10 +107,8 @@ class ConfigResolver implements ConfigResolverInterface
     /**
      * Add a new config to the to the resolved instances cache.
      *
-     * @param string $class
+     * @param string          $class
      * @param ConfigInterface $config
-     *
-     * @return null | ConfigInterface
      */
     protected function setInstance($class, ConfigInterface $config = null)
     {
@@ -123,9 +118,9 @@ class ConfigResolver implements ConfigResolverInterface
     /**
      * Create a new config instance and added it to the other resolved instances cache.
      *
-     * @param string $class
+     * @param string                $class
      * @param TypeConfigInterface[] $types
-     * @param ConfigInterface $parent
+     * @param ConfigInterface       $parent
      *
      * @return ConfigInterface
      */
@@ -157,8 +152,6 @@ class ConfigResolver implements ConfigResolverInterface
      * already resolved or not.
      *
      * @param string $class
-     *
-     * @return null | ConfigInterface
      */
     protected function getInstance($class)
     {

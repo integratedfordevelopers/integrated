@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Templating;
 
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
-
 use Symfony\Bundle\FrameworkBundle\Templating\GlobalVariables as BaseGlobalVariables;
 
 /**
@@ -21,23 +20,23 @@ use Symfony\Bundle\FrameworkBundle\Templating\GlobalVariables as BaseGlobalVaria
  */
 class GlobalVariables extends BaseGlobalVariables
 {
-	/**
-	 * Returns the current channel
-	 *
-	 * @return ChannelInterface | null
-	 */
-	public function getChannel()
-	{
-		if (!$this->container->has('channel.context')) {
-			return null;
-		}
+    /**
+     * Returns the current channel.
+     *
+     * @return ChannelInterface | null
+     */
+    public function getChannel()
+    {
+        if (!$this->container->has('channel.context')) {
+            return null;
+        }
 
-		$context = $this->container->get('channel.context');
+        $context = $this->container->get('channel.context');
 
-		if (!$context instanceof ChannelContextInterface) {
-			return null;
-		}
+        if (!$context instanceof ChannelContextInterface) {
+            return null;
+        }
 
-		return $context->getChannel();
-	}
-} 
+        return $context->getChannel();
+    }
+}

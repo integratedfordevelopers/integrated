@@ -36,7 +36,7 @@ class ContentProcessor implements ProcessorInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerInterface $data, $object, Context $context)
     {
@@ -61,7 +61,7 @@ class ContentProcessor implements ProcessorInterface
 
         $data->set('mainEntityOfPage', [
             '@type' => 'WebPage',
-            '@id' => $this->generator->generateUrl($object)
+            '@id' => $this->generator->generateUrl($object),
         ]);
     }
 }

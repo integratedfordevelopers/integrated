@@ -13,7 +13,6 @@ namespace Integrated\Bundle\UserBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Integrated\Bundle\UserBundle\Model\ScopeInterface;
 use Integrated\Bundle\UserBundle\Model\ScopeManagerInterface;
 use InvalidArgumentException;
@@ -35,7 +34,7 @@ class ScopeManager implements ScopeManagerInterface
 
     /**
      * @param ObjectManager $om
-     * @param string $class
+     * @param string        $class
      */
     public function __construct(ObjectManager $om, $class)
     {
@@ -69,6 +68,7 @@ class ScopeManager implements ScopeManagerInterface
     public function create()
     {
         $class = $this->getClassName();
+
         return new $class();
     }
 
@@ -122,6 +122,7 @@ class ScopeManager implements ScopeManagerInterface
 
     /**
      * @param $name
+     *
      * @return null|ScopeInterface
      */
     public function findByName($name)

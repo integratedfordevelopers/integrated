@@ -13,7 +13,6 @@ namespace Integrated\Bundle\SolrBundle\Solr\Type;
 
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
-
 use RecursiveIteratorIterator;
 use RecursiveArrayIterator;
 

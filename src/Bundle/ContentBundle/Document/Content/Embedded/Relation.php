@@ -13,12 +13,11 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Embedded\RelationInterface;
 
 /**
- * Embedded document Reference
+ * Embedded document Reference.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -40,7 +39,7 @@ class Relation implements RelationInterface
     protected $references;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -49,11 +48,13 @@ class Relation implements RelationInterface
 
     /**
      * @param string $relationId
+     *
      * @return $this
      */
     public function setRelationId($relationId)
     {
         $this->relationId = $relationId;
+
         return $this;
     }
 
@@ -67,11 +68,13 @@ class Relation implements RelationInterface
 
     /**
      * @param string $relationType
+     *
      * @return $this
      */
     public function setRelationType($relationType)
     {
         $this->relationType = $relationType;
+
         return $this;
     }
 
@@ -84,14 +87,16 @@ class Relation implements RelationInterface
     }
 
     /**
-     * Set references of Relations
+     * Set references of Relations.
      *
      * @param Collection $references
+     *
      * @return $this
      */
     public function setReferences(Collection $references)
     {
         $this->references = $references;
+
         return $this;
     }
 
@@ -104,9 +109,10 @@ class Relation implements RelationInterface
     }
 
     /**
-     * Add references to references collection
+     * Add references to references collection.
      *
      * @param Collection $references
+     *
      * @return $this
      */
     public function addReferences(Collection $references)
@@ -119,9 +125,10 @@ class Relation implements RelationInterface
     }
 
     /**
-     * Add reference to references collection
+     * Add reference to references collection.
      *
      * @param ContentInterface $reference
+     *
      * @return $this
      */
     public function addReference(ContentInterface $reference)
@@ -134,10 +141,11 @@ class Relation implements RelationInterface
     }
 
     /**
-     * Remove reference from references collection
+     * Remove reference from references collection.
      *
      * @param ContentInterface $reference
-     * @return bool true if this collection contained the specified element, false otherwise.
+     *
+     * @return bool true if this collection contained the specified element, false otherwise
      */
     public function removeReference(ContentInterface $reference)
     {

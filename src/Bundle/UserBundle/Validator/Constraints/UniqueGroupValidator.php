@@ -13,9 +13,7 @@ namespace Integrated\Bundle\UserBundle\Validator\Constraints;
 
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
 use Integrated\Bundle\UserBundle\Validator\ManagerValidator;
-
 use Symfony\Component\Validator\Constraint;
-
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
@@ -23,19 +21,19 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class UniqueGroupValidator extends ManagerValidator
 {
-	/**
-	 * @inheritdoc
-	 */
-	public function validate($object, Constraint $constraint)
-	{
-		if (!$constraint instanceof UniqueGroup) {
-			throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\\UniqueGroup');
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function validate($object, Constraint $constraint)
+    {
+        if (!$constraint instanceof UniqueGroup) {
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\\UniqueGroup');
+        }
 
-		if (!$constraint->manger instanceof GroupManagerInterface) {
-			throw new UnexpectedTypeException($constraint->manger, 'Integrated\\Bundle\\UserBundle\\Model\\GroupManagerInterface');
-		}
+        if (!$constraint->manger instanceof GroupManagerInterface) {
+            throw new UnexpectedTypeException($constraint->manger, 'Integrated\\Bundle\\UserBundle\\Model\\GroupManagerInterface');
+        }
 
-		parent::validate($object, $constraint);
-	}
-} 
+        parent::validate($object, $constraint);
+    }
+}

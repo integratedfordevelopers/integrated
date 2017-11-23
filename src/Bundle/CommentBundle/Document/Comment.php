@@ -12,13 +12,12 @@
 namespace Integrated\Bundle\CommentBundle\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Integrated\Bundle\CommentBundle\Document\Embedded\Reply;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 
 /**
- * Class Comment
+ * Class Comment.
  */
 class Comment
 {
@@ -158,6 +157,7 @@ class Comment
 
     /**
      * @param $replyId
+     *
      * @return Reply|null
      */
     public function getReplyById($replyId)
@@ -171,6 +171,7 @@ class Comment
 
     /**
      * @param $replyId
+     *
      * @return bool
      */
     public function removeReplyById($replyId)

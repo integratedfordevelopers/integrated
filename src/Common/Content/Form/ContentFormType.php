@@ -14,20 +14,16 @@ namespace Integrated\Common\Content\Form;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Event\ViewEvent;
-
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Form\Mapping\Metadata\Field;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -54,7 +50,7 @@ class ContentFormType extends AbstractType
 
     /**
      * @param MetadataFactoryInterface $metadataFactory
-     * @param ResolverInterface $resolver
+     * @param ResolverInterface        $resolver
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(

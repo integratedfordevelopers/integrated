@@ -18,7 +18,6 @@ use Integrated\Common\Solr\Task\Event\ErrorEvent;
 use Integrated\Common\Solr\Task\Event\WorkerEvent;
 use Integrated\Common\Solr\Task\Events;
 use Integrated\Common\Solr\Task\Registry;
-
 use Integrated\Common\Solr\Task\Worker;
 use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -94,7 +93,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
             },
             function ($argument) use ($task2) {
                 self::assertSame($task2, $argument);
-            }
+            },
         ];
 
         $this->registry->expects($this->exactly(2))
@@ -180,7 +179,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
                 self::assertSame($exception, $event->getException());
 
                 return true;
-            }
+            },
         ];
 
         $this->dispatcher->expects($this->exactly(3))
@@ -241,6 +240,7 @@ class WorkerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param mixed $task
+     *
      * @return QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getMessage($task)

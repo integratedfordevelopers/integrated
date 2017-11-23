@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 /**
- * Embedded document Address
+ * Embedded document Address.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -64,7 +64,7 @@ class Address
     protected $location;
 
     /**
-     * Get the type of the document
+     * Get the type of the document.
      *
      * @return string
      */
@@ -74,19 +74,21 @@ class Address
     }
 
     /**
-     * Set the type of the document
+     * Set the type of the document.
      *
      * @param string $type
+     *
      * @return $this
      */
     public function setType($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
-     * Get the name of the document
+     * Get the name of the document.
      *
      * @return string
      */
@@ -96,29 +98,31 @@ class Address
     }
 
     /**
-     * Set the name of the document
+     * Set the name of the document.
      *
      * @param string $name
+     *
      * @return $this
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
-     * Get the title
+     * Get the title.
      *
      * @return string
      */
     public function getTitle()
     {
-        return $this->address1 . ', ' . $this->getCity();
+        return $this->address1.', '.$this->getCity();
     }
 
     /**
-     * Get the address1 of the document
+     * Get the address1 of the document.
      *
      * @return string
      */
@@ -128,19 +132,21 @@ class Address
     }
 
     /**
-     * Set the address1 of the document
+     * Set the address1 of the document.
      *
      * @param string $address1
+     *
      * @return $this
      */
     public function setAddress1($address1)
     {
         $this->address1 = $address1;
+
         return $this;
     }
 
     /**
-     * Get the address2 of the document
+     * Get the address2 of the document.
      *
      * @return string
      */
@@ -150,19 +156,21 @@ class Address
     }
 
     /**
-     * Set the address2 of the document
+     * Set the address2 of the document.
      *
      * @param string $address2
+     *
      * @return $this
      */
     public function setAddress2($address2)
     {
         $this->address2 = $address2;
+
         return $this;
     }
 
     /**
-     * Get the zipcode of the document
+     * Get the zipcode of the document.
      *
      * @return string
      */
@@ -172,19 +180,21 @@ class Address
     }
 
     /**
-     * Set the zipcode of the document
+     * Set the zipcode of the document.
      *
      * @param string $zipcode
+     *
      * @return $this
      */
     public function setZipcode($zipcode)
     {
         $this->zipcode = $zipcode;
+
         return $this;
     }
 
     /**
-     * Get the city of the document
+     * Get the city of the document.
      *
      * @return string
      */
@@ -194,19 +204,21 @@ class Address
     }
 
     /**
-     * Set the city of the document
+     * Set the city of the document.
      *
      * @param string $city
+     *
      * @return $this
      */
     public function setCity($city)
     {
         $this->city = $city;
+
         return $this;
     }
 
     /**
-     * Get the state of the document
+     * Get the state of the document.
      *
      * @return string
      */
@@ -216,19 +228,21 @@ class Address
     }
 
     /**
-     * Set the state of the document
+     * Set the state of the document.
      *
      * @param string $state
+     *
      * @return $this
      */
     public function setState($state)
     {
         $this->state = $state;
+
         return $this;
     }
 
     /**
-     * Get the country of the document
+     * Get the country of the document.
      *
      * @return string
      */
@@ -238,19 +252,21 @@ class Address
     }
 
     /**
-     * Set the country of the document
+     * Set the country of the document.
      *
      * @param string $country
+     *
      * @return $this
      */
     public function setCountry($country)
     {
         $this->country = $country;
+
         return $this;
     }
 
     /**
-     * Get the location of the document
+     * Get the location of the document.
      *
      * @return Location
      */
@@ -260,14 +276,16 @@ class Address
     }
 
     /**
-     * Set the location of the document
+     * Set the location of the document.
      *
      * @param Location $location
+     *
      * @return $this
      */
     public function setLocation(Location $location = null)
     {
         $this->location = $location;
+
         return $this;
     }
 }

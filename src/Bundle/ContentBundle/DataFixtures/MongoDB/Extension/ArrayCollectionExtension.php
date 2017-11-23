@@ -20,6 +20,7 @@ trait ArrayCollectionExtension
 {
     /**
      * @param array $elements
+     *
      * @return ArrayCollection
      */
     public function arrayCollection(array $elements)

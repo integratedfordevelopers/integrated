@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove;
 
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -26,8 +25,9 @@ class FilesystemRemove
     const REPOSITORY = 'Integrated\Bundle\ContentBundle\Document\Content\Content';
 
     /**
-     * @param DocumentManager $documentManager
+     * @param DocumentManager  $documentManager
      * @param StorageInterface $storageInterface
+     *
      * @return bool
      */
     public function allow(DocumentManager $documentManager, StorageInterface $storageInterface)

@@ -13,14 +13,13 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
- * Document type Article
+ * Document type Article.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  *
@@ -89,7 +88,7 @@ class Article extends Content
     protected $address;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -99,7 +98,7 @@ class Article extends Content
     }
 
     /**
-     * Get the title of the document
+     * Get the title of the document.
      *
      * @return string
      */
@@ -109,19 +108,21 @@ class Article extends Content
     }
 
     /**
-     * Set the title of the document
+     * Set the title of the document.
      *
      * @param string $title
+     *
      * @return $this
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
     /**
-     * Get the slug of the document
+     * Get the slug of the document.
      *
      * @return string
      */
@@ -131,19 +132,21 @@ class Article extends Content
     }
 
     /**
-     * Set the slug of the document
+     * Set the slug of the document.
      *
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 
     /**
-     * Get the subtitle of the document
+     * Get the subtitle of the document.
      *
      * @return string
      */
@@ -153,19 +156,21 @@ class Article extends Content
     }
 
     /**
-     * Set the subtitle of the document
+     * Set the subtitle of the document.
      *
      * @param string $subtitle
+     *
      * @return $this
      */
     public function setSubtitle($subtitle)
     {
         $this->subtitle = $subtitle;
+
         return $this;
     }
 
     /**
-     * Get the authors of the document
+     * Get the authors of the document.
      *
      * @return Collection
      */
@@ -175,21 +180,24 @@ class Article extends Content
     }
 
     /**
-     * Set the authors of the document
+     * Set the authors of the document.
      *
      * @param Collection $authors
+     *
      * @return $this
      */
     public function setAuthors(Collection $authors)
     {
         $this->authors = $authors;
+
         return $this;
     }
 
     /**
-     * Add author to authors collection
+     * Add author to authors collection.
      *
      * @param Embedded\Author $author
+     *
      * @return $this
      */
     public function addAuthor(Embedded\Author $author)
@@ -203,7 +211,8 @@ class Article extends Content
 
     /**
      * @param Embedded\Author $author
-     * @return boolean true if this collection contained the specified element, false otherwise.
+     *
+     * @return bool true if this collection contained the specified element, false otherwise
      */
     public function removeAuthor(Embedded\Author $author)
     {
@@ -211,7 +220,7 @@ class Article extends Content
     }
 
     /**
-     * Get the source of the document
+     * Get the source of the document.
      *
      * @return string
      */
@@ -221,19 +230,21 @@ class Article extends Content
     }
 
     /**
-     * Set the source of the document
+     * Set the source of the document.
      *
      * @param string $source
+     *
      * @return $this
      */
     public function setSource($source)
     {
         $this->source = $source;
+
         return $this;
     }
 
     /**
-     * Get the locale of the document
+     * Get the locale of the document.
      *
      * @return string
      */
@@ -243,19 +254,21 @@ class Article extends Content
     }
 
     /**
-     * Set the locale of the document
+     * Set the locale of the document.
      *
      * @param string $locale
+     *
      * @return $this
      */
     public function setLocale($locale)
     {
         $this->locale = $locale;
+
         return $this;
     }
 
     /**
-     * Get the intro of the document
+     * Get the intro of the document.
      *
      * @return string
      */
@@ -265,14 +278,16 @@ class Article extends Content
     }
 
     /**
-     * Set the intro of the document
+     * Set the intro of the document.
      *
      * @param string $intro
+     *
      * @return $this
      */
     public function setIntro($intro)
     {
         $this->intro = $intro;
+
         return $this;
     }
 
@@ -286,16 +301,18 @@ class Article extends Content
 
     /**
      * @param string $description
+     *
      * @return $this
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
-     * Get the content of the document
+     * Get the content of the document.
      *
      * @return string
      */
@@ -305,19 +322,21 @@ class Article extends Content
     }
 
     /**
-     * Set the content of the document
+     * Set the content of the document.
      *
      * @param string $content
+     *
      * @return $this
      */
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 
     /**
-     * Get the address of the document
+     * Get the address of the document.
      *
      * @return Embedded\Address
      */
@@ -327,19 +346,21 @@ class Article extends Content
     }
 
     /**
-     * Set the address of the document
+     * Set the address of the document.
      *
      * @param Embedded\Address $address
+     *
      * @return $this
      */
     public function setAddress(Embedded\Address $address = null)
     {
         $this->address = $address;
+
         return $this;
     }
 
     /**
-     * Get the relative cover image URL for article
+     * Get the relative cover image URL for article.
      *
      * @return StorageInterface
      */
@@ -355,6 +376,7 @@ class Article extends Content
                 }
             }
         }
+
         return null;
     }
 

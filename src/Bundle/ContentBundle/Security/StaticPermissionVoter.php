@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Security;
 
 use Integrated\Common\Security\Permissions;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -23,69 +21,69 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
  */
 class StaticPermissionVoter implements VoterInterface
 {
-	/**
-	 * @var array
-	 */
-	private $permissions;
+    /**
+     * @var array
+     */
+    private $permissions;
 
-	/**
-	 * @var int
-	 */
-	private $decision;
+    /**
+     * @var int
+     */
+    private $decision;
 
-	/**
-	 * @param int $decision
-	 * @param array $permissions
-	 */
-	public function __construct($decision = VoterInterface::ACCESS_GRANTED, array $permissions = [])
-	{
-		$this->permissions = $this->getOptionsResolver()->resolve($permissions);
-		$this->decision = $decision;
-	}
+    /**
+     * @param int   $decision
+     * @param array $permissions
+     */
+    public function __construct($decision = VoterInterface::ACCESS_GRANTED, array $permissions = [])
+    {
+        $this->permissions = $this->getOptionsResolver()->resolve($permissions);
+        $this->decision = $decision;
+    }
 
-	/**
-	 * @return OptionsResolver
-	 */
-	protected function getOptionsResolver()
-	{
-		$resolver = new OptionsResolver();
-		$resolver->setDefaults([
-			'view'   => Permissions::VIEW,
-			'create' => Permissions::CREATE,
-			'edit'   => Permissions::EDIT,
-			'delete' => Permissions::DELETE,
-		]);
+    /**
+     * @return OptionsResolver
+     */
+    protected function getOptionsResolver()
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults([
+            'view' => Permissions::VIEW,
+            'create' => Permissions::CREATE,
+            'edit' => Permissions::EDIT,
+            'delete' => Permissions::DELETE,
+        ]);
 
-		return $resolver;
-	}
+        return $resolver;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function supportsAttribute($attribute)
-	{
-		return in_array($attribute, $this->permissions);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute($attribute)
+    {
+        return in_array($attribute, $this->permissions);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function supportsClass($class)
-	{
-		return true;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsClass($class)
+    {
+        return true;
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function vote(TokenInterface $token, $object, array $attributes)
-	{
-		foreach ($attributes as $attribute) {
-			if ($this->supportsAttribute($attribute)) {
-				return $this->decision;
-			}
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function vote(TokenInterface $token, $object, array $attributes)
+    {
+        foreach ($attributes as $attribute) {
+            if ($this->supportsAttribute($attribute)) {
+                return $this->decision;
+            }
+        }
 
-		return VoterInterface::ACCESS_ABSTAIN;
-	}
+        return VoterInterface::ACCESS_ABSTAIN;
+    }
 }

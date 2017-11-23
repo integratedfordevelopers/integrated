@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
 use Integrated\Bundle\PageBundle\Document\Page\AbstractPage;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
-
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -32,8 +31,6 @@ class GridExtension extends \Twig_Extension
      */
     protected $request;
 
-    /**
-     */
     public function __construct(RequestStack $requestStack)
     {
         $this->request = $requestStack->getMasterRequest();
@@ -60,9 +57,9 @@ class GridExtension extends \Twig_Extension
 
     /**
      * @param \Twig_Environment $environment
-     * @param array $context
-     * @param string $id
-     * @param array $options
+     * @param array             $context
+     * @param string            $id
+     * @param array             $options
      *
      * @return string
      */

@@ -14,7 +14,7 @@ namespace Integrated\Bundle\SlugBundle\Mapping\Annotations;
 use Doctrine\Common\Annotations\Annotation;
 
 /**
- * Slug annotation
+ * Slug annotation.
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  *

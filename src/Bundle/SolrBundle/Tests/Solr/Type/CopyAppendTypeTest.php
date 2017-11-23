@@ -14,7 +14,7 @@ namespace Integrated\Bundle\SolrBundle\Tests\Solr\Type;
 use Integrated\Bundle\SolrBundle\Solr\Type\CopyAppendType;
 
 /**
- * @covers Integrated\Bundle\SolrBundle\Solr\Type\CopyAppendType
+ * @covers \Integrated\Bundle\SolrBundle\Solr\Type\CopyAppendType
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -41,9 +41,6 @@ class CopyAppendTypeTest extends CopyTypeTest
         return $data;
     }
 
-    /**
-     *
-     */
     public function testGetName()
     {
         self::assertEquals('integrated.copy.append', $this->getInstance()->getName());

@@ -17,9 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Translation\TranslatorInterface;
-
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension;
 
@@ -54,11 +52,11 @@ abstract class AbstractDropzoneType extends AbstractType
     private $type;
 
     /**
-     * @param AssetManager $stylesheets
-     * @param AssetManager $javascripts
+     * @param AssetManager        $stylesheets
+     * @param AssetManager        $javascripts
      * @param TranslatorInterface $translator
-     * @param ImageExtension $imageExtension
-     * @param string $type
+     * @param ImageExtension      $imageExtension
+     * @param string              $type
      */
     protected function __construct(
         AssetManager $stylesheets,
@@ -84,8 +82,8 @@ abstract class AbstractDropzoneType extends AbstractType
             'mapped' => false,
             'required' => false,
             'attr' => [
-                'class' => 'remove-file'
-            ]
+                'class' => 'remove-file',
+            ],
         ]);
     }
 
@@ -106,9 +104,9 @@ abstract class AbstractDropzoneType extends AbstractType
         $dropzone['captions'] = [
                 'removeConfirmation' => $this->translator->trans(sprintf('Are you sure you want to remove this %s?', $this->type)),
                 'errors' => [
-                    'filesLimit' => $this->translator->trans('You can only upload one ' . $this->type),
+                    'filesLimit' => $this->translator->trans('You can only upload one '.$this->type),
                     'filesType' => $this->translator->trans('Only Images are allowed to be uploaded.'),
-                ]
+                ],
         ];
 
         if (isset($view->vars['preview']) && $view->vars['preview'] instanceof StorageInterface) {
@@ -118,7 +116,7 @@ abstract class AbstractDropzoneType extends AbstractType
             $dropzone['files'] = [[
                 'name' => $preview->getPathname(),
                 'type' => $preview->getMetadata()->getMimeType(),
-                'file' => $this->imageExtension->image($preview)->cropResize(300, 150)->jpeg()
+                'file' => $this->imageExtension->image($preview)->cropResize(300, 150)->jpeg(),
             ]];
         }
 

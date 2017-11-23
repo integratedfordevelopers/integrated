@@ -13,16 +13,14 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\Type as Form;
 use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Common\Channel\Events;
 
 /**
- * Controller for CRUD actions Channel document
+ * Controller for CRUD actions Channel document.
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -39,25 +37,28 @@ class ChannelController extends Controller
     protected $dm;
 
     /**
-     * Lists all the Channel documents
+     * Lists all the Channel documents.
      *
      * @Template()
+     *
      * @return array
      */
     public function indexAction()
     {
         $documents = $this->getDocumentManager()->getRepository($this->channelClass)->findAll();
 
-        return array(
-            'documents' => $documents
-        );
+        return [
+            'documents' => $documents,
+        ];
     }
 
     /**
-     * Finds and displays a Channel document
+     * Finds and displays a Channel document.
      *
      * @Template()
+     *
      * @param Channel $channel
+     *
      * @return array
      */
     public function showAction(Channel $channel)
@@ -65,16 +66,17 @@ class ChannelController extends Controller
         // Create form
         $form = $this->createDeleteForm($channel->getId());
 
-        return array(
+        return [
             'form' => $form->createView(),
-            'channel' => $channel
-        );
+            'channel' => $channel,
+        ];
     }
 
     /**
-     * Displays a form to create a new Channel document
+     * Displays a form to create a new Channel document.
      *
      * @Template()
+     *
      * @return array
      */
     public function newAction()
@@ -85,16 +87,18 @@ class ChannelController extends Controller
         // Create form
         $form = $this->createCreateForm($channel);
 
-        return array(
-            'form' => $form->createView()
-        );
+        return [
+            'form' => $form->createView(),
+        ];
     }
 
     /**
-     * Creates a new Channel document
+     * Creates a new Channel document.
      *
      * @Template("IntegratedContentBundle:Channel:new.html.twig")
+     *
      * @param Request $request
+     *
      * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function createAction(Request $request)
@@ -122,15 +126,17 @@ class ChannelController extends Controller
         }
 
         return [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
     }
 
     /**
-     * Display a form to edit an existing ContentType document
+     * Display a form to edit an existing ContentType document.
      *
      * @Template
+     *
      * @param Channel $channel
+     *
      * @return array
      */
     public function editAction(Channel $channel)
@@ -138,18 +144,20 @@ class ChannelController extends Controller
         // Create form
         $form = $this->createEditForm($channel);
 
-        return array(
+        return [
             'form' => $form->createView(),
-            'channel' => $channel
-        );
+            'channel' => $channel,
+        ];
     }
 
     /**
-     * Edits an existing Channel document
+     * Edits an existing Channel document.
      *
      * @Template("IntegratedContentBundle:Channel:edit.html.twig")
+     *
      * @param Request $request
      * @param Channel $channel
+     *
      * @return array|\Symfony\Component\HttpFoundation\Response
      */
     public function updateAction(Request $request, Channel $channel)
@@ -168,20 +176,21 @@ class ChannelController extends Controller
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(Events::CHANNEL_UPDATED, new ChannelEvent($channel));
 
-            return $this->redirect($this->generateUrl('integrated_content_channel_show', array('id' => $channel->getId())));
+            return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
         }
 
-        return array(
+        return [
             'form' => $form->createView(),
-            'contentType' => $channel
-        );
+            'contentType' => $channel,
+        ];
     }
 
     /**
-     * Deletes a Channel document
+     * Deletes a Channel document.
      *
      * @param Request $request
      * @param Channel $channel
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, Channel $channel)
@@ -205,9 +214,10 @@ class ChannelController extends Controller
     }
 
     /**
-     * Creates a form to create a ContentType document
+     * Creates a form to create a ContentType document.
      *
      * @param Channel $channel
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createCreateForm(Channel $channel)
@@ -215,13 +225,13 @@ class ChannelController extends Controller
         $form = $this->createForm(
             Form\ChannelType::class,
             $channel,
-            array(
+            [
                 'action' => $this->generateUrl('integrated_content_channel_create'),
                 'method' => 'POST',
-            )
+            ]
         );
 
-        $form->add('submit', SubmitType::class, array('label' => 'Save'));
+        $form->add('submit', SubmitType::class, ['label' => 'Save']);
 
         return $form;
     }
@@ -230,16 +240,17 @@ class ChannelController extends Controller
      * Creates a form to edit a ContentType document.
      *
      * @param Channel $channel
+     *
      * @return \Symfony\Component\Form\Form
      */
     protected function createEditForm(Channel $channel)
     {
         $form = $this->createForm(Form\ChannelType::class, $channel, [
-            'action' => $this->generateUrl('integrated_content_channel_update', array('id' => $channel->getId())),
+            'action' => $this->generateUrl('integrated_content_channel_update', ['id' => $channel->getId()]),
             'method' => 'PUT',
         ]);
 
-        $form->add('submit', SubmitType::class, array('label' => 'Save'));
+        $form->add('submit', SubmitType::class, ['label' => 'Save']);
 
         return $form;
     }
@@ -254,9 +265,9 @@ class ChannelController extends Controller
     protected function createDeleteForm($id)
     {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('integrated_content_channel_delete', array('id' => $id)))
+            ->setAction($this->generateUrl('integrated_content_channel_delete', ['id' => $id]))
             ->setMethod('DELETE')
-            ->add('submit', SubmitType::class, array('label' => 'Delete', 'attr'=> array('class' => 'btn-danger')))
+            ->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']])
             ->getForm();
     }
 

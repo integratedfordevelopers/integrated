@@ -1,0 +1,21 @@
+<?php
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@PSR2' => true,
+        '@Symfony' => true,
+        '@Symfony:risky' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'no_short_echo_tag' => true,
+        'no_useless_else' => true,
+        'no_useless_return' => true,
+        'protected_to_private' => false,
+        'yoda_style' => null,
+    ])
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(__DIR__)
+            ->append([__FILE__])
+            ->exclude('vendor')
+    )
+;

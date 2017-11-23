@@ -12,12 +12,11 @@
 namespace Integrated\Bundle\PageBundle\EventListener;
 
 use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Event subscriber for adding menu items to integrated_menu
+ * Event subscriber for adding menu items to integrated_menu.
  *
  * @author Marijn Otte
  */
@@ -46,9 +45,9 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure'
-        );
+        return [
+            ConfigureMenuEvent::CONFIGURE => 'onMenuConfigure',
+        ];
     }
 
     /**
@@ -67,7 +66,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
                 $menuWebsite = $menu->addChild(self::MENU_WEBSITE);
             }
 
-            $menuWebsite->addChild('Pages', array('route' => 'integrated_page_page_index'));
+            $menuWebsite->addChild('Pages', ['route' => 'integrated_page_page_index']);
         }
     }
 }

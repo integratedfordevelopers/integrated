@@ -13,14 +13,10 @@ namespace Integrated\Bundle\WorkflowBundle\Tests\Doctrine\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-
 use Integrated\Bundle\WorkflowBundle\Doctrine\EventListener\QueueListener;
-
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
-
 use Integrated\Common\Queue\QueueInterface;
-
 use stdClass;
 
 /**
@@ -28,28 +24,28 @@ use stdClass;
  */
 class QueueListenerTest extends \PHPUnit_Framework_TestCase
 {
-	/**
-	 * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
-	 */
-	protected $queue;
+    /**
+     * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $queue;
 
-	protected function setUp()
-	{
-		$this->queue = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
-	}
+    protected function setUp()
+    {
+        $this->queue = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
+    }
 
-	public function testInterface()
-	{
-		$this->assertInstanceOf('Doctrine\\Common\\EventSubscriber', $this->getInstance());
-	}
+    public function testInterface()
+    {
+        $this->assertInstanceOf('Doctrine\\Common\\EventSubscriber', $this->getInstance());
+    }
 
-	public function testGetSubscribedEvents()
-	{
-		$this->assertEquals([
+    public function testGetSubscribedEvents()
+    {
+        $this->assertEquals([
             Events::postPersist,
-            Events::postUpdate
+            Events::postUpdate,
         ], $this->getInstance()->getSubscribedEvents());
-	}
+    }
 
     public function testSetGetQueue()
     {
@@ -163,6 +159,7 @@ class QueueListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $object
+     *
      * @return LifecycleEventArgs | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getEvent($object)
@@ -177,6 +174,7 @@ class QueueListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $id
+     *
      * @return State | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getState($id)
@@ -191,6 +189,7 @@ class QueueListenerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param $id
+     *
      * @return Definition | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getDefinition($id)
@@ -203,11 +202,11 @@ class QueueListenerTest extends \PHPUnit_Framework_TestCase
         return $instance;
     }
 
-	/**
-	 * @return QueueListener
-	 */
-	protected function getInstance()
-	{
-		return new QueueListener($this->queue);
-	}
+    /**
+     * @return QueueListener
+     */
+    protected function getInstance()
+    {
+        return new QueueListener($this->queue);
+    }
 }

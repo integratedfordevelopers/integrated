@@ -13,19 +13,15 @@ namespace Integrated\Tests\Common\Channel\Exporter;
 
 use ArrayIterator;
 use Exception;
-
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
-
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 use Integrated\Common\Channel\Connector\Config\ResolverInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigInterface;
-
 use Integrated\Common\Channel\Exporter\ExportableInterface;
 use Integrated\Common\Channel\Exporter\Exporter;
 use Integrated\Common\Channel\Exporter\ExporterInterface;
-
 use stdClass;
 
 /**
@@ -84,7 +80,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
             ->willReturn(new ArrayIterator([
                 $this->getConfig('adapter1', $option1),
                 $this->getConfig('adapter2'),
-                $this->getConfig('adapter3', $option2)
+                $this->getConfig('adapter3', $option2),
             ]));
 
         $this->registry->expects($this->exactly(3))
@@ -109,7 +105,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
             ->willReturn(new ArrayIterator([
                 $this->getConfig('adapter1'),
                 $this->getConfig('adapter2'),
-                $this->getConfig('adapter3')
+                $this->getConfig('adapter3'),
             ]));
 
         $this->registry->expects($this->exactly(3))
@@ -134,7 +130,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
             ->willReturn(new ArrayIterator([
                 $this->getConfig('adapter1'),
                 $this->getConfig('adapter2'),
-                $this->getConfig('adapter3')
+                $this->getConfig('adapter3'),
             ]));
 
         $this->registry->expects($this->exactly(3))
@@ -177,6 +173,7 @@ class ExporterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $id
+     *
      * @return ChannelInterface | \PHPUnit_Framework_MockObject_MockObject
      */
     protected function getChannel($id)
