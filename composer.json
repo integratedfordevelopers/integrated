@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Integrated PHP framework",
     "keywords": [
-        "Integrated",
+        "integrated",
         "content store",
         "publishing"
     ],
@@ -18,24 +18,63 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=5.6",
+        "php": ">=7.1",
+        "ext-intl": "*",
         "symfony/symfony": "~2.8 || ~3.0",
         "symfony/security-acl": "~2.8 || ~3.0",
+        "symfony/polyfill-iconv": "~1.6",
+        "alcaeus/mongo-php-adapter": "~1.1",
         "doctrine/orm": "~2.5",
-        "doctrine/mongodb": "~1.3",
-        "doctrine/mongodb-odm": "~1.1",
-        "solarium/solarium": "~3.7",
-        "psr/log": "~1.0"
+        "doctrine/doctrine-bundle": "~1.8",
+        "doctrine/doctrine-fixtures-bundle": "~2.4",
+        "doctrine/mongodb-odm-bundle": "~3.4",
+        "abraham/twitteroauth": "^0.7.4",
+        "braincrafted/bootstrap-bundle": "~2.2",
+        "facebook/graph-sdk": "~5.0",
+        "friendsofsymfony/jsrouting-bundle": "~2.0",
+        "gregwar/image-bundle": "~2.1",
+        "jms/metadata": "~1.6",
+        "knplabs/knp-gaufrette-bundle": "~0.4",
+        "knplabs/knp-menu-bundle": "~2.1",
+        "knplabs/knp-paginator-bundle": "~2.6",
+        "nelmio/alice": "~3.1",
+        "sensio/framework-extra-bundle": "~5.0",
+        "solarium/solarium": "~3.8",
+        "twbs/bootstrap": "~3.3",
+        "vihuvac/recaptcha-bundle": "~2.1"
     },
     "replace": {
-        "integrated/library": "self.version"
+        "integrated/asset-bundle": "self.version",
+        "integrated/block-bundle": "self.version",
+        "integrated/channel-bundle": "self.version",
+        "integrated/comment-bundle": "self.version",
+        "integrated/content-bundle": "self.version",
+        "integrated/content-history-bundle": "self.version",
+        "integrated/formtype-bundle": "self.version",
+        "integrated/image-bundle": "self.version",
+        "integrated/library": "self.version",
+        "integrated/locking-bundle": "self.version",
+        "integrated/menu-bundle": "self.version",
+        "integrated/page-bundle": "self.version",
+        "integrated/slug-bundle": "self.version",
+        "integrated/social-bundle": "self.version",
+        "integrated/solr-bundle": "self.version",
+        "integrated/storage-bundle": "self.version",
+        "integrated/theme-bundle": "self.version",
+        "integrated/user-bundle": "self.version",
+        "integrated/website-bundle": "self.version",
+        "integrated/workflow-bundle": "self.version"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^2.8",
         "phpunit/phpunit": "^5.7"
     },
+    "provide": {
+        "ext-mongo": "*"
+    },
     "autoload": {
         "psr-4": {
+            "Integrated\\Bundle\\": "src/Bundle",
             "Integrated\\MongoDB\\": "src/MongoDB",
             "Integrated\\Doctrine\\": "src/Doctrine",
             "Integrated\\Common\\": "src/Common"
@@ -46,6 +85,11 @@
             "Integrated\\Tests\\MongoDB\\": "tests/MongoDB",
             "Integrated\\Tests\\Doctrine\\": "tests/Doctrine",
             "Integrated\\Tests\\Common\\": "tests/Common"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
         }
     }
 }

@@ -2,38 +2,40 @@
     "name": "integrated/comment-bundle",
     "type": "symfony-bundle",
     "description": "Integrated Comment Bundle",
-    "keywords": ["Integrated", "Comment"],
-    "homepage": "http://www.e-active.nl",
+    "keywords": [
+        "integrated",
+        "comment"
+    ],
+    "homepage": "https://www.integratedfordevelopers.com",
     "license": "MIT",
     "authors": [
         {
             "name": "e-Active",
-            "homepage": "http://www.e-active.nl"
+            "homepage": "https://www.e-active.nl"
         }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=5.4",
+        "php": ">=7.1",
         "symfony/symfony": "~2.8 || ~3.0",
-        "symfony/framework-bundle": "~2.2",
-        "integrated/asset-bundle": "~0.7",
-        "integrated/library": "~0.7",
-        "integrated/content-bundle": "~0.7",
-        "integrated/user-bundle": "~0.7"
+        "integrated/asset-bundle": "~0.8",
+        "integrated/library": "~0.8",
+        "integrated/content-bundle": "~0.8",
+        "integrated/user-bundle": "~0.8"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^2.8",
         "phpunit/phpunit": "^5.7"
     },
-    "autoload":{
-        "psr-4":{
+    "autoload": {
+        "psr-4": {
             "Integrated\\Bundle\\CommentBundle\\": ""
         }
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.9.x-dev"
+            "dev-master": "0.8-dev"
         }
     }
 }

@@ -2,39 +2,42 @@
     "name": "integrated/workflow-bundle",
     "type": "symfony-bundle",
     "description": "Integrated Workflow Bundle",
-    "keywords": ["Integrated", "Workflow"],
-    "homepage": "http://www.e-active.nl",
+    "keywords": [
+        "integrated",
+        "workflow"
+    ],
+    "homepage": "https://www.integratedfordevelopers.com",
     "license": "MIT",
     "authors": [
         {
             "name": "e-Active",
-            "homepage": "http://www.e-active.nl"
+            "homepage": "https://www.e-active.nl"
         }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=5.4",
-        "symfony/symfony": "~2.8",
-        "doctrine/doctrine-fixtures-bundle": "~2.3",
-        "integrated/library": "~0.6",
-        "integrated/content-bundle": "~0.6",
-        "integrated/user-bundle": "~0.5",
-        "integrated/menu-bundle": "~0.4",
-        "knplabs/knp-paginator-bundle": "~2.5"
+        "php": ">=7.1",
+        "symfony/symfony": "~2.8 || ~3.0",
+        "doctrine/doctrine-fixtures-bundle": "~2.4",
+        "integrated/library": "~0.8",
+        "integrated/content-bundle": "~0.8",
+        "integrated/user-bundle": "~0.8",
+        "integrated/menu-bundle": "~0.8",
+        "knplabs/knp-paginator-bundle": "~2.6"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^2.8",
         "phpunit/phpunit": "^5.7"
     },
-    "autoload":{
-        "psr-4":{
+    "autoload": {
+        "psr-4": {
             "Integrated\\Bundle\\WorkflowBundle\\": ""
         }
     },
     "extra": {
         "branch-alias": {
-            "dev-develop": "0.9.x-dev"
+            "dev-master": "0.8-dev"
         }
     }
 }
