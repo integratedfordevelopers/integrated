@@ -80,13 +80,6 @@
             "Integrated\\Common\\": "src/Common"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Integrated\\Tests\\MongoDB\\": "tests/MongoDB",
-            "Integrated\\Tests\\Doctrine\\": "tests/Doctrine",
-            "Integrated\\Tests\\Common\\": "tests/Common"
-        }
-    },
     "extra": {
         "branch-alias": {
             "dev-master": "0.8-dev"
