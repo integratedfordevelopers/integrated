@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\MongoDB\ContentType\Document\Embedded;
+namespace Integrated\Bundle\ContentBundle\Tests\Document\ContentType\Embedded;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 
