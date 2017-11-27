@@ -59,10 +59,10 @@ class FileController
                 }
                 // This may never happen, reflection gave an invalid result
                 throw new \LogicException(
-                        'Invalid instance %s provided trough reflection while %s was expected.',
-                        is_object($storage) ? get_class($storage) : gettype($storage),
-                        StorageInterface::class
-                    );
+                    'Invalid instance %s provided trough reflection while %s was expected.',
+                    is_object($storage) ? get_class($storage) : gettype($storage),
+                    StorageInterface::class
+                );
             }
         }
 

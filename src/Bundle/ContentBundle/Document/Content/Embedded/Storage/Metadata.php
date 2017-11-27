@@ -58,10 +58,8 @@ class Metadata implements MetadataInterface
         return new ArrayCollection(
             array_merge_recursive(
                 $this->metadata,
-                ['headers' => array_replace(
-                        $this->headers,
-                        ['Content-Type' => $this->mimeType]
-                    ),
+                [
+                    'headers' => array_replace($this->headers, ['Content-Type' => $this->mimeType]),
                 ]
             )
         );

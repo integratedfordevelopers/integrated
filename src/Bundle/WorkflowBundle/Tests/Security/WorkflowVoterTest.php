@@ -17,7 +17,6 @@ use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
-use Integrated\Bundle\WorkflowBundle\Security\WorkflowVoter;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\ContentType\ResolverInterface;
@@ -562,11 +561,11 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string[] $permissions
      *
-     * @return WorkflowVoterMock
+     * @return Mock\WorkflowVoter
      */
     protected function getInstance(array $permissions = [])
     {
-        return new WorkflowVoterMock($this->manager, $this->resolver, $this->metadata, $permissions);
+        return new Mock\WorkflowVoter($this->manager, $this->resolver, $this->metadata, $permissions);
     }
 
     /**
@@ -669,35 +668,5 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             ->willReturn($mask);
 
         return $mock;
-    }
-}
-
-class WorkflowVoterMock extends WorkflowVoter
-{
-    /*
-     * Store the last used state
-     */
-    public $state = null;
-
-    /*
-     * the permissions that will be returned
-     */
-    public $permissions = null;
-
-    /*
-     * Allows this function to be tested separably but also to override the result
-     * it need to give to make testing on the permissions easier
-     */
-    public function getPermissions(GroupableInterface $user, State $state)
-    {
-        $this->state = $state;
-
-        // permissions will be short circuited if set
-
-        if ($this->permissions === null) {
-            return parent::getPermissions($user, $state);
-        }
-
-        return $this->permissions;
     }
 }

@@ -41,11 +41,6 @@ class Role implements RoleInterface
      */
     protected $hidden = false;
 
-    //	/**
-    //	 * @var array | Role[]
-    //	 */
-    //	protected $inherited = [];
-
     /**
      * Create a new role.
      *
@@ -134,7 +129,8 @@ class Role implements RoleInterface
      */
     public function __toString()
     {
-        return sprintf("ID: %s\nRole: %s\nHidden: %s\nLabel: %s\nDescription: %s",
+        return sprintf(
+            "ID: %s\nRole: %s\nHidden: %s\nLabel: %s\nDescription: %s",
             $this->getId(),
             $this->getRole(),
             $this->isHidden() ? 'TRUE' : 'FALSE',

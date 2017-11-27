@@ -67,7 +67,7 @@ class FileEventSubscriber implements EventSubscriberInterface
         } elseif ($upload instanceof UploadedFile) {
             // Make sure the entity ends up a StorageInterface
             $event->setData(
-                 new StorageIntentUpload($event->getForm()->getData(), $upload)
+                new StorageIntentUpload($event->getForm()->getData(), $upload)
             );
         } elseif ($original instanceof StorageInterface) {
             // Set the file again for the validator
