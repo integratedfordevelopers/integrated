@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class CustomFieldTest extends \PHPUnit_Framework_TestCase
+class CustomFieldTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CustomField

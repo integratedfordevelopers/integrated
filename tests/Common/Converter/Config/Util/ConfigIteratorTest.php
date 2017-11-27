@@ -18,7 +18,7 @@ use Integrated\Common\Converter\Config\Util\ConfigIterator;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConfigIteratorTest extends \PHPUnit_Framework_TestCase
+class ConfigIteratorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ConfigInterface | \PHPUnit_Framework_MockObject_MockObject

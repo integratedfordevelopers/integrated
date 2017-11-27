@@ -20,7 +20,7 @@ use stdClass as Object;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class JsonLDNormalizerTest extends \PHPUnit_Framework_TestCase
+class JsonLDNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var NormalizerInterface | \PHPUnit_Framework_MockObject_MockObject

@@ -18,7 +18,7 @@ use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class BatchOperationTest extends \PHPUnit_Framework_TestCase
+class BatchOperationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var QueueMessageInterface | \PHPUnit_Framework_MockObject_MockObject

@@ -17,7 +17,7 @@ use Integrated\Common\Form\Mapping\Metadata\Field;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeTest extends \PHPUnit_Framework_TestCase
+class ContentTypeTest extends \PHPUnit\Framework\TestCase
 {
     const CONTENT_TYPE_CLASS = 'class';
 

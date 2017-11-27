@@ -17,7 +17,7 @@ use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConfigTest extends \PHPUnit_Framework_TestCase
+class ConfigTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var OptionsInterface | \PHPUnit_Framework_MockObject_MockObject

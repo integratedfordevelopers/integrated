@@ -27,7 +27,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class CommandFactoryTest extends \PHPUnit_Framework_TestCase
+class CommandFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ConverterInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -50,19 +50,17 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(CommandFactoryInterface::class, $this->getInstance());
     }
 
-    /**
-     * @expectedException \Integrated\Common\Solr\Exception\OutOfBoundsException
-     */
     public function testCreateNoAction()
     {
+        $this->expectException(\Integrated\Common\Solr\Exception\OutOfBoundsException::class);
+
         $this->getInstance()->create($this->getJob());
     }
 
-    /**
-     * @expectedException \Integrated\Common\Solr\Exception\OutOfBoundsException
-     */
     public function testCreateInvalidAction()
     {
+        $this->expectException(\Integrated\Common\Solr\Exception\OutOfBoundsException::class);
+
         $this->getInstance()->create($this->getJob('does-not-compute'));
     }
 
@@ -185,11 +183,10 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         self::assertEmpty($result->getQueries());
     }
 
-    /**
-     * @expectedException \Integrated\Common\Solr\Exception\SerializerException
-     */
     public function testCreateAddDeserializeError()
     {
+        $this->expectException(\Integrated\Common\Solr\Exception\SerializerException::class);
+
         $this->serializer->expects($this->once())
             ->method('deserialize')
             ->willThrowException(new \Exception());
@@ -201,11 +198,10 @@ class CommandFactoryTest extends \PHPUnit_Framework_TestCase
         ]));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Solr\Exception\ConverterException
-     */
     public function testCreateAddConverterError()
     {
+        $this->expectException(\Integrated\Common\Solr\Exception\ConverterException::class);
+
         $this->serializer->expects($this->once())
             ->method('deserialize')
             ->willReturn(null);

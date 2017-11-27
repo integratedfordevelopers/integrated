@@ -26,9 +26,20 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     public function getExtensions()
     {
         return [
-            new TwigTestAssetExtension(),
-            new StylesheetExtension(new AssetManager(), 'integrated_stylesheets', 'stylesheets.html.twig'),
-            new JavascriptExtension(new AssetManager(), 'integrated_javascripts', 'javascripts.html.twig'),
+            new StylesheetExtension(new AssetManager()),
+            new JavascriptExtension(new AssetManager()),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTwigFunctions()
+    {
+        return [
+            new \Twig_SimpleFunction('asset', function ($path) {
+                return '/'.$path;
+            }, ['is_safe' => ['html']]),
         ];
     }
 
@@ -37,13 +48,14 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
      */
     public function testIntegration($file, $message, $condition, $templates, $exception, $outputs)
     {
-        $templates['@IntegratedAssetBundle/Resources/views/Asset/javascripts.html.twig'] = file_get_contents(
-            __DIR__.'/../../Resources/views/Asset/javascripts.html.twig'
-        );
-
-        $templates['@IntegratedAssetBundle/Resources/views/Asset/stylesheets.html.twig'] = file_get_contents(
-            __DIR__.'/../../Resources/views/Asset/stylesheets.html.twig'
-        );
+        $templates = $templates + [
+            '@IntegratedAssetBundle/Resources/views/Asset/javascripts.html.twig' => file_get_contents(
+                __DIR__.'/../../Resources/views/Asset/javascripts.html.twig'
+            ),
+            '@IntegratedAssetBundle/Resources/views/Asset/stylesheets.html.twig' => file_get_contents(
+                __DIR__.'/../../Resources/views/Asset/stylesheets.html.twig'
+            ),
+        ];
 
         $this->doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs);
     }

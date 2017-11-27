@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class FieldTest extends \PHPUnit_Framework_TestCase
+class FieldTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test the constructor with valid data.
@@ -37,11 +37,11 @@ class FieldTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the constructor with invalid data.
-     *
-     * @expectedException \BadMethodCallException
      */
     public function testConstructorWithInvalidData()
     {
+        $this->expectException(\BadMethodCallException::class);
+
         new Field(['Henk' => 'type']);
     }
 

@@ -17,7 +17,7 @@ use Integrated\MongoDB\Serializer\Normalizer\DocumentNormalizer;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DocumentNormalizerTest extends \PHPUnit_Framework_TestCase
+class DocumentNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var DocumentManager | \PHPUnit_Framework_MockObject_MockObject

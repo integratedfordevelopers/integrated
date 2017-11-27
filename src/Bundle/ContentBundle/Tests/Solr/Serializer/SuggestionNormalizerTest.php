@@ -25,7 +25,7 @@ use stdClass;
 /**
  * @author Michael Jongman <michael@e-active.nl>
  */
-class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
+class SuggestionNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     const ROUTE = 'this-is-the-route';
 
@@ -41,8 +41,8 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->generator = $this->getMock(UrlGeneratorInterface::class);
-        $this->resolver = $this->getMock(ResolverInterface::class);
+        $this->generator = $this->createMock(UrlGeneratorInterface::class);
+        $this->resolver = $this->createMock(ResolverInterface::class);
     }
 
     protected function setUpNormalize()
@@ -99,27 +99,24 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf(NormalizerInterface::class, $this->getInstance());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNormalizeWithInvalidObject()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->getInstance()->normalize('invalid');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNormalizeWithOutQuery()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->getInstance()->normalize($this->getQueryResult());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testNormalizeWithInvalidQuery()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->getInstance()->normalize($this->getQueryResult(new stdClass()));
     }
 
@@ -321,7 +318,7 @@ class SuggestionNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContentType($name)
     {
-        $mock = $this->getMock(ContentTypeInterface::class);
+        $mock = $this->createMock(ContentTypeInterface::class);
         $mock
             ->expects($this->atLeastOnce())
             ->method('getName')

@@ -18,7 +18,7 @@ use Doctrine\DBAL\Connection;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class QueueProviderTest extends \PHPUnit_Framework_TestCase
+class QueueProviderTest extends \PHPUnit\Framework\TestCase
 {
     const PAYLOAD = 'O:8:"stdClass":0:{}'; // serialized stdClass;
 
@@ -54,16 +54,5 @@ class QueueProviderTest extends \PHPUnit_Framework_TestCase
             ->with($this->identicalTo('queue'));
 
         $this->provider->push('channel', new stdClass());
-    }
-
-    public function testPull()
-    {
-        //		$this->assert
-//
-//		$this->assertEquals()
-    }
-
-    public function testCount()
-    {
     }
 }

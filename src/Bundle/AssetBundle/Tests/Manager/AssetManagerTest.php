@@ -16,7 +16,7 @@ use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class AssetManagerTest extends \PHPUnit_Framework_TestCase
+class AssetManagerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var AssetManager
@@ -51,7 +51,7 @@ class AssetManagerTest extends \PHPUnit_Framework_TestCase
 
     public function testExceptionFunction()
     {
-        $this->setExpectedException('\InvalidArgumentException');
+        $this->expectException('\InvalidArgumentException');
 
         $this->manager->add('script.js', false, 'invalid');
     }

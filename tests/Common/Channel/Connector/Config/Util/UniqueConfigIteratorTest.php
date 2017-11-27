@@ -22,7 +22,7 @@ use stdClass;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class UniqueConfigIteratorTest extends \PHPUnit_Framework_TestCase
+class UniqueConfigIteratorTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -71,6 +71,8 @@ class UniqueConfigIteratorTest extends \PHPUnit_Framework_TestCase
         $iterator->next();
         $iterator->next();
         $iterator->next();
+
+        self::assertNull($iterator->current());
     }
 
     public function testKey()

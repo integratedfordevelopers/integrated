@@ -16,7 +16,7 @@ use Integrated\Common\ContentType\Form\Custom\Type;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class TypeTest extends \PHPUnit_Framework_TestCase
+class TypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Type | \PHPUnit_Framework_MockObject_MockObject

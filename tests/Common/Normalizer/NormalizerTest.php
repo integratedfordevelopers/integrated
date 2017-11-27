@@ -21,7 +21,7 @@ use stdClass as Object;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class NormalizerTest extends \PHPUnit_Framework_TestCase
+class NormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject

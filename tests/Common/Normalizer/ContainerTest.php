@@ -18,7 +18,7 @@ use stdClass as Object;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class ContainerTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -53,11 +53,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         self::assertEquals([true, false], $container->get('key5'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Normalizer\Exception\ExceptionInterface
-     */
     public function testAddInvalid()
     {
+        $this->expectException(\Integrated\Common\Normalizer\Exception\ExceptionInterface::class);
+
         $container = $this->getInstance();
         $container->add('key', new Object());
     }
@@ -80,11 +79,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         self::assertTrue($container->has('key2'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Normalizer\Exception\ExceptionInterface
-     */
     public function testSetInvalid()
     {
+        $this->expectException(\Integrated\Common\Normalizer\Exception\ExceptionInterface::class);
+
         $container = $this->getInstance();
         $container->set('key', new Object());
     }

@@ -17,7 +17,7 @@ use Integrated\Common\Queue\Provider\QueueProviderInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class QueueFactoryTest extends \PHPUnit_Framework_TestCase
+class QueueFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var QueueFactory

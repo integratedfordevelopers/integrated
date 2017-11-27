@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class JsonLDEncoderTest extends \PHPUnit_Framework_TestCase
+class JsonLDEncoderTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

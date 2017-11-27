@@ -17,7 +17,7 @@ use Integrated\Common\ContentType\Resolver\MemoryResolverBuilder;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class MemoryResolverBuilderTest extends \PHPUnit_Framework_TestCase
+class MemoryResolverBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddContentType()
     {

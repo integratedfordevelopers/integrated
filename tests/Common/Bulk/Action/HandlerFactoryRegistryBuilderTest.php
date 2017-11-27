@@ -18,7 +18,7 @@ use Integrated\Common\Bulk\Action\HandlerFactoryRegistryBuilder;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class HandlerFactoryRegistryBuilderTest extends \PHPUnit_Framework_TestCase
+class HandlerFactoryRegistryBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddFactory()
     {

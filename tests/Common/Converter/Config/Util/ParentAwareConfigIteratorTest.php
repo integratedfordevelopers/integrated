@@ -25,7 +25,7 @@ use Integrated\Common\Converter\Config\Util\ParentAwareConfigIterator;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ParentAwareConfigIteratorTest extends \PHPUnit_Framework_TestCase
+class ParentAwareConfigIteratorTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

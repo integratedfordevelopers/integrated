@@ -24,7 +24,7 @@ use stdClass;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class QueueExporterTest extends \PHPUnit_Framework_TestCase
+class QueueExporterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var string

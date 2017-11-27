@@ -17,7 +17,7 @@ use Integrated\Common\Queue\Provider\DBAL\QueueMessage;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class QueueMessageTest extends \PHPUnit_Framework_TestCase
+class QueueMessageTest extends \PHPUnit\Framework\TestCase
 {
     const PAYLOAD = 'O:8:"stdClass":0:{}'; // serialized stdClass;
 

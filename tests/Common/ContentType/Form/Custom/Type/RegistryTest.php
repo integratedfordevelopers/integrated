@@ -16,7 +16,7 @@ use Integrated\Common\ContentType\Form\Custom\Type\Registry;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class RegistryTest extends \PHPUnit_Framework_TestCase
+class RegistryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Registry

@@ -16,7 +16,7 @@ use Integrated\Bundle\SolrBundle\Solr\Type\ClearType;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ClearTypeTest extends \PHPUnit_Framework_TestCase
+class ClearTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -25,7 +25,7 @@ class ClearTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testBuild()
     {
-        $container = $this->getMock('Integrated\\Common\\Converter\\ContainerInterface');
+        $container = $this->createMock('Integrated\\Common\\Converter\\ContainerInterface');
         $container->expects($this->once())
             ->method('clear');
 

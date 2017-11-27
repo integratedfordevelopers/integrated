@@ -18,7 +18,7 @@ use Integrated\Common\Converter\Type\TypeExtensionInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ResolvedTypeTest extends \PHPUnit_Framework_TestCase
+class ResolvedTypeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var TypeInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -80,12 +80,11 @@ class ResolvedTypeTest extends \PHPUnit_Framework_TestCase
         $this->getInstance([$extension1, $extension2])->build($container, 'this-is-the-data', ['key' => 'value']);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Type was called first
-     */
     public function testBuildOrder()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Type was called first');
+
         $container = $this->createMock('Integrated\\Common\\Converter\\ContainerInterface');
 
         $this->type->expects($this->any())

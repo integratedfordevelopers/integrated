@@ -16,7 +16,7 @@ use Integrated\Common\Solr\Task\Tasks\ReferenceQueueTask;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ReferenceQueueTaskTest extends \PHPUnit_Framework_TestCase
+class ReferenceQueueTaskTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetId()
     {

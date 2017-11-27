@@ -16,7 +16,7 @@ use Integrated\Bundle\SolrBundle\Solr\Type\RemoveType;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RemoveTypeTest extends \PHPUnit_Framework_TestCase
+class RemoveTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -25,7 +25,7 @@ class RemoveTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testBuild()
     {
-        $container = $this->getMock('Integrated\\Common\\Converter\\ContainerInterface');
+        $container = $this->createMock('Integrated\\Common\\Converter\\ContainerInterface');
         $container->expects($this->exactly(3))
             ->method('remove')
             ->withConsecutive([$this->equalTo('field1')], [$this->equalTo('field2')], [$this->equalTo('field3')]);

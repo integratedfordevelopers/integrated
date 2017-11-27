@@ -16,7 +16,7 @@ use Integrated\Common\Channel\Connector\Config\Options;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class OptionsTest extends \PHPUnit_Framework_TestCase
+class OptionsTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

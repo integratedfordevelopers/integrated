@@ -17,7 +17,7 @@ use Integrated\Common\Queue\Provider\Memory\QueueMessage;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class QueueMessageTest extends \PHPUnit_Framework_TestCase
+class QueueMessageTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

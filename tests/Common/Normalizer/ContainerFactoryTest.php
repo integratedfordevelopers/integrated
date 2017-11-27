@@ -18,7 +18,7 @@ use Integrated\Common\Normalizer\ContainerFactoryInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContainerFactoryTest extends \PHPUnit_Framework_TestCase
+class ContainerFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

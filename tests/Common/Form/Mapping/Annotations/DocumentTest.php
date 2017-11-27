@@ -16,7 +16,7 @@ use Integrated\Common\Form\Mapping\Annotations\Document;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class DocumentTest extends \PHPUnit_Framework_TestCase
+class DocumentTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test the constructor with valid data.
@@ -29,11 +29,11 @@ class DocumentTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the constructor with invalid data.
-     *
-     * @expectedException \BadMethodCallException
      */
     public function testConstructorWithInvalidData()
     {
+        $this->expectException(\BadMethodCallException::class);
+
         new Document(['henk' => 'de vries']);
     }
 

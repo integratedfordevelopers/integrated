@@ -18,7 +18,7 @@ use Integrated\Common\Channel\Connector\Config\Resolver\MemoryResolverBuilder;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class MemoryResolverBuilderTest extends \PHPUnit_Framework_TestCase
+class MemoryResolverBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider addConfigProvider
@@ -126,11 +126,10 @@ class MemoryResolverBuilderTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /**
-     * @expectedException \Integrated\Common\Channel\Exception\ExceptionInterface
-     */
     public function testAddConfigInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Channel\Exception\ExceptionInterface::class);
+
         $builder = $this->getInstance();
         $builder->addConfig($this->getConfig('name'), 42);
     }

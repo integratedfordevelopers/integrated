@@ -20,7 +20,7 @@ use Integrated\Common\Converter\Config\ConfigInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class PriorityResolverTest extends \PHPUnit_Framework_TestCase
+class PriorityResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ResolverInterface[] | \PHPUnit_Framework_MockObject_MockObject[]
@@ -81,12 +81,11 @@ class PriorityResolverTest extends \PHPUnit_Framework_TestCase
         self::assertSame($config, $this->getInstance()->getConfig('config'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Channel\Exception\ExceptionInterface
-     * @expectedExceptionMessage this-is-a-config-that-does-not-exist
-     */
     public function testGetConfigNotFound()
     {
+        $this->expectException(\Integrated\Common\Channel\Exception\ExceptionInterface::class);
+        $this->expectExceptionMessage('this-is-a-config-that-does-not-exist');
+
         $this->getInstance()->getConfig('this-is-a-config-that-does-not-exist');
     }
 

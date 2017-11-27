@@ -18,19 +18,18 @@ use Integrated\Common\Channel\Connector\Config\Resolver\MemoryResolver;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class MemoryResolverTest extends \PHPUnit_Framework_TestCase
+class MemoryResolverTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
         self::assertInstanceOf('Integrated\\Common\\Channel\\Connector\\Config\\ResolverInterface', $this->getInstance());
     }
 
-    /**
-     * @expectedException \Integrated\Common\Channel\Exception\ExceptionInterface
-     * @expectedExceptionMessage this-is-a-config-that-does-not-exist
-     */
     public function testConstructorWithInvalidChannels()
     {
+        $this->expectException(\Integrated\Common\Channel\Exception\ExceptionInterface::class);
+        $this->expectExceptionMessage('this-is-a-config-that-does-not-exist');
+
         $this->getInstance([], ['this-is-a-config-that-does-not-exist' => null]);
     }
 
@@ -49,12 +48,11 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
         self::assertSame($config, $this->getInstance(['config' => $config])->getConfig('config'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Channel\Exception\ExceptionInterface
-     * @expectedExceptionMessage this-is-a-config-that-does-not-exist
-     */
     public function testGetConfigNotFound()
     {
+        $this->expectException(\Integrated\Common\Channel\Exception\ExceptionInterface::class);
+        $this->expectExceptionMessage('this-is-a-config-that-does-not-exist');
+
         $this->getInstance()->getConfig('this-is-a-config-that-does-not-exist');
     }
 

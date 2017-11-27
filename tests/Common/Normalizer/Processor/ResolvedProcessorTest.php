@@ -23,7 +23,7 @@ use stdClass as Object;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ResolvedProcessorTest extends \PHPUnit_Framework_TestCase
+class ResolvedProcessorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContainerFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -80,12 +80,11 @@ class ResolvedProcessorTest extends \PHPUnit_Framework_TestCase
         $this->getInstance()->process(new Object(), $this->getContext());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage The test succeeded
-     */
     public function testProcessOrder()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The test succeeded');
+
         $this->factory->expects($this->once())
             ->method('createContainer')
             ->willReturn($this->getContainer());

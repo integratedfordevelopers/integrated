@@ -68,6 +68,10 @@ class PermissionTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        if (!is_array($value)) {
+            return new ArrayCollection();
+        }
+
         /** @var Permission[] $permissions */
         $permissions = [];
 

@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Solr\Normalizer;
 /**
  * @author Michael Jongman <michael@e-active.nl>
  */
-class NormalizerTest extends \PHPUnit_Framework_TestCase
+class NormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider normalizeProvider

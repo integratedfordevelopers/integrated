@@ -17,7 +17,7 @@ use Integrated\Common\ContentType\Resolver\MemoryResolver;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class MemoryResolverTest extends \PHPUnit_Framework_TestCase
+class MemoryResolverTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -31,20 +31,18 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
         self::assertSame($type, $this->getInstance(['found' => $type])->getType('found'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\ContentType\Exception\ExceptionInterface
-     */
     public function testGetTypeNoString()
     {
+        $this->expectException(\Integrated\Common\ContentType\Exception\ExceptionInterface::class);
+
         $this->getInstance()->getType(['not a string']);
     }
 
-    /**
-     * @expectedException \Integrated\Common\ContentType\Exception\ExceptionInterface
-     * @expectedExceptionMessage "not found"
-     */
     public function testGetTypeNotFound()
     {
+        $this->expectException(\Integrated\Common\ContentType\Exception\ExceptionInterface::class);
+        $this->expectExceptionMessage('"not found"');
+
         $this->getInstance()->getType('not found');
     }
 
@@ -56,11 +54,10 @@ class MemoryResolverTest extends \PHPUnit_Framework_TestCase
         self::assertFalse($instance->hasType('not found'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\ContentType\Exception\ExceptionInterface
-     */
     public function testHasTypeNoString()
     {
+        $this->expectException(\Integrated\Common\ContentType\Exception\ExceptionInterface::class);
+
         $this->getInstance()->hasType(['not a string']);
     }
 

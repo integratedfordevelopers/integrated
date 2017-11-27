@@ -17,7 +17,7 @@ use Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\ClassLocatorInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ClassTreeMapResolverTest extends \PHPUnit_Framework_TestCase
+class ClassTreeMapResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ClassLocatorInterface | \PHPUnit_Framework_MockObject_MockObject

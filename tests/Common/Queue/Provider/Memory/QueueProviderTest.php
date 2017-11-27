@@ -17,7 +17,7 @@ use Integrated\Common\Queue\Provider\Memory\QueueProvider;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class QueueProviderTest extends \PHPUnit_Framework_TestCase
+class QueueProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var QueueProvider

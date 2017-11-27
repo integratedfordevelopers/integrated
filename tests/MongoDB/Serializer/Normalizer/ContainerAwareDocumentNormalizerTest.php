@@ -17,7 +17,7 @@ use Integrated\MongoDB\Serializer\Normalizer\ContainerAwareDocumentNormalizer;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContainerAwareDocumentNormalizerTest extends \PHPUnit_Framework_TestCase
+class ContainerAwareDocumentNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContainerInterface | \PHPUnit_Framework_MockObject_MockObject

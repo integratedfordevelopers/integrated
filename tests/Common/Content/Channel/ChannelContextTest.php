@@ -16,7 +16,7 @@ use Integrated\Common\Content\Channel\ChannelContext;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ChannelContextTest extends \PHPUnit_Framework_TestCase
+class ChannelContextTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

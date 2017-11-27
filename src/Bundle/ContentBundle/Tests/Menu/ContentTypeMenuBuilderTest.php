@@ -19,7 +19,7 @@ use Knp\Menu\FactoryInterface;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
+class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var FactoryInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -41,9 +41,9 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function setup()
     {
-        $this->factory = $this->getMock(FactoryInterface::class);
-        $this->contentTypeManager = $this->getMock(ContentTypeManager::class, [], [], '', false);
-        $this->contentTypeFilterInterface = $this->getMock(ContentTypeFilterInterface::class);
+        $this->factory = $this->createMock(FactoryInterface::class);
+        $this->contentTypeManager = $this->getMockBuilder(ContentTypeManager::class)->disableOriginalConstructor()->getMock();
+        $this->contentTypeFilterInterface = $this->createMock(ContentTypeFilterInterface::class);
     }
 
     /**
@@ -54,7 +54,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getInstance();
 
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
-        $menu = $this->getMock('Knp\Menu\ItemInterface');
+        $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->factory
             ->expects($this->once())
@@ -66,7 +66,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         $this->contentTypeManager
             ->expects($this->once())
             ->method('getAll')
-            ->willReturn([$this->getMock('\stdClass')])
+            ->willReturn([$this->createMock('\stdClass')])
         ;
 
         $this->assertSame($menu, $builder->createMenu());
@@ -80,7 +80,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getInstance();
 
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
-        $menu = $this->getMock('Knp\Menu\ItemInterface');
+        $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->factory
             ->expects($this->once())
@@ -96,7 +96,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         ;
 
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child */
-        $child = $this->getMock('Knp\Menu\ItemInterface');
+        $child = $this->createMock('Knp\Menu\ItemInterface');
 
         $child
             ->expects($this->once())
@@ -121,7 +121,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = $this->getInstance();
 
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
-        $menu = $this->getMock('Knp\Menu\ItemInterface');
+        $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->factory
             ->expects($this->once())
@@ -137,7 +137,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         ;
 
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child1 */
-        $child1 = $this->getMock('Knp\Menu\ItemInterface');
+        $child1 = $this->createMock('Knp\Menu\ItemInterface');
 
         $child1
             ->expects($this->exactly(2))
@@ -145,7 +145,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         ;
 
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child2 */
-        $child2 = $this->getMock('Knp\Menu\ItemInterface');
+        $child2 = $this->createMock('Knp\Menu\ItemInterface');
 
         $child2
             ->expects($this->once())
@@ -175,7 +175,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         $items = $this->getItems();
 
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menu */
-        $menu = $this->getMock('Knp\Menu\ItemInterface');
+        $menu = $this->createMock('Knp\Menu\ItemInterface');
 
         $this->factory
             ->expects($this->once())
@@ -201,7 +201,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         ;
 
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child1 */
-        $child1 = $this->getMock('Knp\Menu\ItemInterface');
+        $child1 = $this->createMock('Knp\Menu\ItemInterface');
 
         $child1
             ->expects($this->once())
@@ -209,7 +209,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
         ;
 
         /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $child2 */
-        $child2 = $this->getMock('Knp\Menu\ItemInterface');
+        $child2 = $this->createMock('Knp\Menu\ItemInterface');
 
         $child2
             ->expects($this->never())
@@ -231,7 +231,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function getItemWithoutParent()
     {
-        $contentType = $this->getMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
+        $contentType = $this->createMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
         $contentType
             ->expects($this->once())
             ->method('getClass')
@@ -243,21 +243,21 @@ class ContentTypeMenuBuilderTest extends \PHPUnit_Framework_TestCase
 
     protected function getItems()
     {
-        $contentType1 = $this->getMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
+        $contentType1 = $this->createMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
         $contentType1
             ->expects($this->once())
             ->method('getClass')
             ->willReturn('Integrated\Bundle\ContentBundle\Tests\Menu\FakeContent\ParentWithOneLevel\Item')
         ;
 
-        $contentType2 = $this->getMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
+        $contentType2 = $this->createMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
         $contentType2
             ->expects($this->once())
             ->method('getClass')
             ->willReturn('Integrated\Bundle\ContentBundle\Tests\Menu\FakeContent\ParentWithMultipleLevels\AbstractItemA\ItemA')
         ;
 
-        $contentType3 = $this->getMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
+        $contentType3 = $this->createMock('\Integrated\Bundle\ContentBundle\Document\ContentType\ContentType');
         $contentType3
             ->expects($this->once())
             ->method('getClass')

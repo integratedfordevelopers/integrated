@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\Event;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-abstract class AbstractEventTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractEventTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var IndexerInterface | \PHPUnit_Framework_MockObject_MockObject

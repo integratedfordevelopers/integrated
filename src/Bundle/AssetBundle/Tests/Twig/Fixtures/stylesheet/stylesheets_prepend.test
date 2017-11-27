@@ -12,5 +12,6 @@
 {{ integrated_stylesheets() }}
 --DATA--
 return array()
---EXPECT--<link rel="stylesheet" type="text/css" href="/style.css" />
+--EXPECT--
+<link rel="stylesheet" type="text/css" href="/style.css" />
 <link rel="stylesheet" type="text/css" href="/style2.css" />

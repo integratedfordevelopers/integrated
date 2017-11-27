@@ -18,7 +18,7 @@ use Integrated\Common\Form\Mapping\MetadataInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class FormEventTest extends \PHPUnit_Framework_TestCase
+class FormEventTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject

@@ -18,7 +18,7 @@ use Integrated\Common\Bulk\Form\ConfigProviderInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ChainProviderBuilderTest extends \PHPUnit_Framework_TestCase
+class ChainProviderBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddProvider()
     {

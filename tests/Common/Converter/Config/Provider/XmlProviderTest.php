@@ -19,7 +19,7 @@ use Symfony\Component\Finder\SplFileInfo;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class XmlProviderTest extends \PHPUnit_Framework_TestCase
+class XmlProviderTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -63,30 +63,27 @@ class XmlProviderTest extends \PHPUnit_Framework_TestCase
         $provider->getTypes('class');
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testGetTypesNoXml()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         $this->getInstance($this->getFinder(['mapping.noxml.xml']))->getTypes('class');
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testGetTypesNonExistingFile()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         // This should probably not happen since it would be weird for the finder to return a not
         // existing file. But it is in theory possible so test for it anyways.
 
         $this->getInstance($this->getFinder(['mapping.does-not-exist.xml']))->getTypes('class');
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testGetTypesInvalidXml()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         // $this->getInstance($this->getFinder(['mapping.invalid.xml']))->getTypes('class');
         $this->markTestSkipped('xsd does not exist yet');
     }

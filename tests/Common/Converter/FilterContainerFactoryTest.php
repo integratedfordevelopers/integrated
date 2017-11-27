@@ -16,7 +16,7 @@ use Integrated\Common\Converter\FilterContainerFactory;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class FilterContainerFactoryTest extends \PHPUnit_Framework_TestCase
+class FilterContainerFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

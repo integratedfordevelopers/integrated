@@ -20,7 +20,7 @@ use Integrated\Common\ContentType\Iterator;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class IteratorTest extends \PHPUnit_Framework_TestCase
+class IteratorTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

@@ -16,7 +16,7 @@ use Integrated\Common\Converter\Config\TypeConfig;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class TypeConfigTest extends \PHPUnit_Framework_TestCase
+class TypeConfigTest extends \PHPUnit\Framework\TestCase
 {
     private $name = 'name';
 

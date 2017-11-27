@@ -19,7 +19,7 @@ use stdClass as Object;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ChainProviderTest extends \PHPUnit_Framework_TestCase
+class ChainProviderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ConfigProviderInterface | \PHPUnit_Framework_MockObject_MockObject

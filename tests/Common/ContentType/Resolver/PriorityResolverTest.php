@@ -19,7 +19,7 @@ use Integrated\Common\ContentType\ResolverInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class PriorityResolverTest extends \PHPUnit_Framework_TestCase
+class PriorityResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContentTypeInterface[] | \PHPUnit_Framework_MockObject_MockObject[]
@@ -71,12 +71,11 @@ class PriorityResolverTest extends \PHPUnit_Framework_TestCase
         self::assertSame($this->types[0], $resolver->getType('type 1'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\ContentType\Exception\ExceptionInterface
-     * @expectedExceptionMessage "type 3"
-     */
     public function testGetTypeNotFound()
     {
+        $this->expectException(\Integrated\Common\ContentType\Exception\ExceptionInterface::class);
+        $this->expectExceptionMessage('"type 3"');
+
         $this->getInstance()->getType('type 3');
     }
 

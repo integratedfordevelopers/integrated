@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class LocationTest extends \PHPUnit_Framework_TestCase
+class LocationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Location

@@ -17,7 +17,7 @@ use Doctrine\ODM\MongoDB\Events;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class CollectionSubscriberTest extends \PHPUnit_Framework_TestCase
+class CollectionSubscriberTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CollectionSubscriber

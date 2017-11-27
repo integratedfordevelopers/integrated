@@ -18,7 +18,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ReferenceTest extends \PHPUnit_Framework_TestCase
+class ReferenceTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Taxonomy

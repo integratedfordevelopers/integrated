@@ -22,7 +22,7 @@ use stdClass;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ReferenceQueueTaskHandlerTest extends \PHPUnit_Framework_TestCase
+class ReferenceQueueTaskHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContentProviderInterface | \PHPUnit_Framework_MockObject_MockObject

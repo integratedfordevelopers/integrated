@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Integrated package.
  *
@@ -28,15 +29,13 @@ class RelationTypeTest extends TypeTestCase
      */
     public function testSubmitValidData(array $data)
     {
-        $type = $this->getInstance();
-        $form = $this->factory->create($type, new Relation());
-
+        $form = $this->factory->create(RelationType::class, new Relation());
         $form->submit($data);
+
         $this->assertTrue($form->isSynchronized());
         $this->assertInstanceOf('\Integrated\Bundle\ContentBundle\Document\Relation\Relation', $form->getData());
 
-        $view = $form->createView();
-        $children = $view->children;
+        $children = $form->createView()->children;
 
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
@@ -50,7 +49,7 @@ class RelationTypeTest extends TypeTestCase
     {
         return [
             [
-                'data' => [
+                'data1' => [
                     'name' => 'Relation with no sources and targets',
                     'type' => 'type',
                     'sources' => [],
@@ -58,25 +57,17 @@ class RelationTypeTest extends TypeTestCase
                     'multiple' => false,
                     'required' => true,
                 ],
-                'data' => [
+                'data2' => [
                     'name' => 'Relation with  sources and targets',
                     'type' => 'type',
                     'sources' => [
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeInterface'),
+                        $this->createMock('Integrated\Common\ContentType\ContentTypeInterface'),
                     ],
                     'targets' => [
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeInterface'),
+                        $this->createMock('Integrated\Common\ContentType\ContentTypeInterface'),
                     ],
                 ],
             ],
         ];
-    }
-
-    /**
-     * @return RelationType
-     */
-    protected function getInstance()
-    {
-        return new RelationType();
     }
 }

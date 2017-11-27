@@ -20,7 +20,7 @@ use Integrated\Common\Converter\ContainerInterface;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class PropertyTypeTest extends \PHPUnit_Framework_TestCase
+class PropertyTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -76,7 +76,7 @@ class PropertyTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getStub()
     {
-        $stub = $this->getMock(Content::class);
+        $stub = $this->createMock(Content::class);
         $stub->method('getContentType')->willReturn('type1');
 
         return $stub;

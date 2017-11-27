@@ -17,7 +17,7 @@ use Integrated\Common\Channel\Connector\AdapterInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RegistryTest extends \PHPUnit_Framework_TestCase
+class RegistryTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -36,11 +36,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         self::assertFalse($registry->hasAdapter('test3'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Channel\Exception\ExceptionInterface
-     */
     public function testHasAdaptorInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Channel\Exception\ExceptionInterface::class);
+
         $this->getInstance()->hasAdapter(42);
     }
 
@@ -51,20 +50,18 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         self::assertSame($adaptor, $this->getInstance(['test' => $adaptor])->getAdapter('test'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Channel\Exception\ExceptionInterface
-     */
     public function testGetAdaptorInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Channel\Exception\ExceptionInterface::class);
+
         $this->getInstance()->getAdapter(42);
     }
 
-    /**
-     * @expectedException \Integrated\Common\Channel\Exception\ExceptionInterface
-     * @expectedExceptionMessage this-is-a-adaptor-that-does-not-exist
-     */
     public function testGetAdaptorNotFound()
     {
+        $this->expectException(\Integrated\Common\Channel\Exception\ExceptionInterface::class);
+        $this->expectExceptionMessage('this-is-a-adaptor-that-does-not-exist');
+
         $this->getInstance()->getAdapter('this-is-a-adaptor-that-does-not-exist');
     }
 

@@ -17,7 +17,7 @@ use Integrated\Common\Solr\Indexer\JobInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class JobTest extends \PHPUnit_Framework_TestCase
+class JobTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

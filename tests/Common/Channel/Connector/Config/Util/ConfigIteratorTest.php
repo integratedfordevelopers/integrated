@@ -21,7 +21,7 @@ use stdClass;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConfigIteratorTest extends \PHPUnit_Framework_TestCase
+class ConfigIteratorTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -69,6 +69,8 @@ class ConfigIteratorTest extends \PHPUnit_Framework_TestCase
         $iterator->next();
         $iterator->next();
         $iterator->next();
+
+        self::assertNull($iterator->current());
     }
 
     public function testKey()

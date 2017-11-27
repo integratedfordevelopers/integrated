@@ -17,28 +17,47 @@ namespace Integrated\Bundle\AssetBundle\Twig\Node;
 class AssetNode extends \Twig_Node
 {
     /**
-     * @param \Twig_Node $body
-     * @param array      $assets
-     * @param bool       $inline
-     * @param string     $mode
-     * @param int        $lineno
-     * @param string     $tag
+     * @var string
      */
-    public function __construct(
-        \Twig_Node $body,
-        array $assets = [],
-        $inline = false,
-        $mode = null,
-        $lineno = 0,
-        $tag = null
-    ) {
-        parent::__construct(
-            ['body' => $body],
-            ['assets' => $assets, 'inline' => $inline, 'mode' => $mode],
-            $lineno,
-            $tag
-        );
+    private $extension;
+
+    /**
+     * @param array  $nodes
+     * @param array  $attributes
+     * @param int    $lineno
+     * @param string $tag
+     * @param string $extension
+     */
+    public function __construct(array $nodes, array $attributes, $lineno, $tag, $extension)
+    {
+        $this->extension = $extension;
+
+        parent::__construct($nodes, $attributes, $lineno, $tag);
     }
+
+//    /**
+//     * @param \Twig_Node $body
+//     * @param array      $assets
+//     * @param bool       $inline
+//     * @param string     $mode
+//     * @param int        $lineno
+//     * @param string     $tag
+//     */
+//    public function __construct(
+//        \Twig_Node $body,
+//        array $assets = [],
+//        $inline = false,
+//        $mode = null,
+//        $lineno = 0,
+//        $tag = null
+//    ) {
+//        parent::__construct(
+//            ['body' => $body],
+//            ['assets' => $assets, 'inline' => $inline, 'mode' => $mode],
+//            $lineno,
+//            $tag
+//        );
+//    }
 
     /**
      * {@inheritdoc}
@@ -54,7 +73,7 @@ class AssetNode extends \Twig_Node
         $compiler
             ->addDebugInfo($this)
             ->write('$this->env->getExtension(')
-                ->string($this->tag.'_extension')
+                ->string($this->extension)
             ->write(')->getManager()->add(')
                 ->repr($this->getAttribute('assets'))
                 ->write(', ')

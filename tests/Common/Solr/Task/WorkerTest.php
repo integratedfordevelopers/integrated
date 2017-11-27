@@ -25,7 +25,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkerTest extends \PHPUnit_Framework_TestCase
+class WorkerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Registry | \PHPUnit_Framework_MockObject_MockObject

@@ -21,7 +21,7 @@ use Integrated\Bundle\SolrBundle\Tests\Fixtures\TestObject;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class FieldMapperTypeTest extends \PHPUnit_Framework_TestCase
+class FieldMapperTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

@@ -21,7 +21,7 @@ use stdClass;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class CopyTypeTest extends \PHPUnit_Framework_TestCase
+class CopyTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

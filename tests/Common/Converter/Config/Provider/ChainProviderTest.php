@@ -17,7 +17,7 @@ use Integrated\Common\Converter\Config\TypeProviderInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ChainProviderTest extends \PHPUnit_Framework_TestCase
+class ChainProviderTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

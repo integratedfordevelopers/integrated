@@ -17,7 +17,7 @@ use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ValuesToChoicesTransformerTest extends \PHPUnit_Framework_TestCase
+class ValuesToChoicesTransformerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ChoiceListInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -52,11 +52,10 @@ class ValuesToChoicesTransformerTest extends \PHPUnit_Framework_TestCase
         self::assertEquals([], $this->getInstance()->transform(null));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testTransformInvalidType()
     {
+        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
+
         $this->getInstance()->transform('this-is-not-a-array');
     }
 
@@ -78,19 +77,17 @@ class ValuesToChoicesTransformerTest extends \PHPUnit_Framework_TestCase
         self::assertEquals([], $this->getInstance()->reverseTransform(null));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testReverseTransformInvalidType()
     {
+        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
+
         $this->getInstance()->reverseTransform('this-is-not-a-array');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testReverseTransformInvalidConversion()
     {
+        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
+
         $this->choiceList->expects($this->once())
             ->method('getValuesForChoices')
             ->willReturn([]);

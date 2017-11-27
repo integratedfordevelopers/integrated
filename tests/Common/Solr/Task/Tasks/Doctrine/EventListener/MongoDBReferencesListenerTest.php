@@ -23,7 +23,7 @@ use stdClass;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class MongoDBReferencesListenerTest extends \PHPUnit_Framework_TestCase
+class MongoDBReferencesListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject

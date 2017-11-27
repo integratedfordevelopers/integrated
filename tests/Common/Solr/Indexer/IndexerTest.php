@@ -39,7 +39,7 @@ use Solarium\Core\Query\Result\ResultInterface;
  *
  * @covers \Integrated\Common\Solr\Indexer\Indexer
  */
-class IndexerTest extends \PHPUnit_Framework_TestCase
+class IndexerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CommandFactoryInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -374,11 +374,10 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         self::assertSame($client, $instance->getClient());
     }
 
-    /**
-     * @expectedException \Integrated\Common\Solr\Exception\InvalidArgumentException
-     */
     public function testExecuteNoClient()
     {
+        $this->expectException(\Integrated\Common\Solr\Exception\InvalidArgumentException::class);
+
         $this->client = null;
 
         $this->getInstance()->execute();

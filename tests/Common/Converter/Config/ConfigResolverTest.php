@@ -18,7 +18,7 @@ use Integrated\Common\Converter\Config\TypeProviderInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConfigResolverTest extends \PHPUnit_Framework_TestCase
+class ConfigResolverTest extends \PHPUnit\Framework\TestCase
 {
     protected $CONFIG_INTERFACE = 'Integrated\\Common\\Converter\\Config\\ConfigInterface';
 
@@ -121,11 +121,10 @@ class ConfigResolverTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testGetConfigInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         $this->getInstance()->getConfig(42);
     }
 

@@ -18,7 +18,7 @@ use ReflectionClass;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ClassTreeMapResolverBuilderTest extends \PHPUnit_Framework_TestCase
+class ClassTreeMapResolverBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ClassLocatorInterface | \PHPUnit_Framework_MockObject_MockObject

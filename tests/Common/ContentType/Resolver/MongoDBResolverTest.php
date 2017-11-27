@@ -18,7 +18,7 @@ use Integrated\Common\ContentType\Resolver\MongoDBResolver;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class MongoDBResolverTest extends \PHPUnit_Framework_TestCase
+class MongoDBResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var DocumentRepository | \PHPUnit_Framework_MockObject_MockObject
@@ -40,11 +40,10 @@ class MongoDBResolverTest extends \PHPUnit_Framework_TestCase
         self::assertInstanceOf('Integrated\\Common\\ContentType\\ResolverInterface', $this->getInstance());
     }
 
-    /**
-     * @expectedException \Integrated\Common\ContentType\Exception\ExceptionInterface
-     */
     public function testInvalidRepository()
     {
+        $this->expectException(\Integrated\Common\ContentType\Exception\ExceptionInterface::class);
+
         $this->repository = $this->getMockBuilder('Doctrine\\ODM\\MongoDB\\DocumentRepository')->disableOriginalConstructor()->getMock();
         $this->repository->expects($this->any())
             ->method('getClassName')
@@ -67,20 +66,18 @@ class MongoDBResolverTest extends \PHPUnit_Framework_TestCase
         self::assertSame($type, $resolver->getType('found')); // second call should return cached version
     }
 
-    /**
-     * @expectedException \Integrated\Common\ContentType\Exception\UnexpectedTypeException
-     */
     public function testGetTypeNoString()
     {
+        $this->expectException(\Integrated\Common\ContentType\Exception\UnexpectedTypeException::class);
+
         $this->getInstance()->getType(['not a string']);
     }
 
-    /**
-     * @expectedException \Integrated\Common\ContentType\Exception\ExceptionInterface
-     * @expectedExceptionMessage "not found"
-     */
     public function testGetTypeNotFound()
     {
+        $this->expectException(\Integrated\Common\ContentType\Exception\ExceptionInterface::class);
+        $this->expectExceptionMessage('"not found"');
+
         $this->repository->expects($this->once())
             ->method('findOneBy')
             ->willReturn(null);
@@ -105,11 +102,10 @@ class MongoDBResolverTest extends \PHPUnit_Framework_TestCase
         self::assertFalse($resolver->hasType('not found'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\ContentType\Exception\UnexpectedTypeException
-     */
     public function testHasTypeNoString()
     {
+        $this->expectException(\Integrated\Common\ContentType\Exception\UnexpectedTypeException::class);
+
         $this->getInstance()->hasType(['not a string']);
     }
 

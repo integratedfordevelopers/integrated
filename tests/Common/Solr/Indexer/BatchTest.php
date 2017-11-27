@@ -18,7 +18,7 @@ use Integrated\Common\Solr\Indexer\BatchOperation;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class BatchTest extends \PHPUnit_Framework_TestCase
+class BatchTest extends \PHPUnit\Framework\TestCase
 {
     public function testAdd()
     {

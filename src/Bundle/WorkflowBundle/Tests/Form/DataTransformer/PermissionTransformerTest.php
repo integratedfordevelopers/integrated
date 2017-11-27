@@ -18,7 +18,7 @@ use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class PermissionTransformerTest extends \PHPUnit_Framework_TestCase
+class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -55,19 +55,17 @@ class PermissionTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertContains('group-3', $result['write']);
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testTransformInvalidType()
     {
+        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
+
         $this->getInstance()->transform('invalid');
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testTransformInvalidArrayContentType()
     {
+        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
+
         $this->getInstance()->transform(['invalid', 'invalid']);
     }
 

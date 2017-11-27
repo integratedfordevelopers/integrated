@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\Custo
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class CustomTransformerTest extends \PHPUnit_Framework_TestCase
+class CustomTransformerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CustomTransformer
@@ -100,7 +100,7 @@ class CustomTransformerTest extends \PHPUnit_Framework_TestCase
         ];
 
         /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField | \PHPUnit_Framework_MockObject_MockObject $field */
-        $field = $this->getMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField');
+        $field = $this->createMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField');
         $field
             ->expects($this->once())
             ->method('getName')

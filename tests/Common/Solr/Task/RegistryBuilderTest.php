@@ -16,7 +16,7 @@ use Integrated\Common\Solr\Task\RegistryBuilder;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
+class RegistryBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddHandler()
     {

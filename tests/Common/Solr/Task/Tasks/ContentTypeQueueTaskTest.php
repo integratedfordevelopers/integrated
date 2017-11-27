@@ -16,7 +16,7 @@ use Integrated\Common\Solr\Task\Tasks\ContentTypeQueueTask;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContentTypeQueueTaskTest extends \PHPUnit_Framework_TestCase
+class ContentTypeQueueTaskTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetId()
     {

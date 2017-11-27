@@ -12,5 +12,6 @@
 {{ integrated_javascripts() }}
 --DATA--
 return array()
---EXPECT--<script type="text/javascript" src="/script.js"></script>
+--EXPECT--
+<script type="text/javascript" src="/script.js"></script>
 <script type="text/javascript" src="/script2.js"></script>

@@ -19,7 +19,7 @@ use Integrated\Common\Converter\Config\ConfigInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RepositoryResolverTest extends \PHPUnit_Framework_TestCase
+class RepositoryResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ConfigRepositoryInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -61,12 +61,11 @@ class RepositoryResolverTest extends \PHPUnit_Framework_TestCase
         self::assertSame($config, $this->getInstance()->getConfig('config'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Channel\Exception\ExceptionInterface
-     * @expectedExceptionMessage this-is-a-config-that-does-not-exist
-     */
     public function testGetConfigNotFound()
     {
+        $this->expectException(\Integrated\Common\Channel\Exception\ExceptionInterface::class);
+        $this->expectExceptionMessage('this-is-a-config-that-does-not-exist');
+
         $this->repository->expects($this->once())
             ->method('find')
             ->willReturn(null);

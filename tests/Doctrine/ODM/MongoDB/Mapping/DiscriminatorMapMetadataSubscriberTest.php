@@ -20,7 +20,7 @@ use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DiscriminatorMapMetadataSubscriberTest extends \PHPUnit_Framework_TestCase
+class DiscriminatorMapMetadataSubscriberTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var DiscriminatorMapResolverInterface | \PHPUnit_Framework_MockObject_MockObject

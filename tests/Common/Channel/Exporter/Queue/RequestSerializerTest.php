@@ -22,7 +22,7 @@ use stdClass;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RequestSerializerTest extends \PHPUnit_Framework_TestCase
+class RequestSerializerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var string

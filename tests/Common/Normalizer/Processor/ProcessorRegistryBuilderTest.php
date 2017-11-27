@@ -18,7 +18,7 @@ use Integrated\Common\Normalizer\Processor\ProcessorRegistryBuilder;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ProcessorRegistryBuilderTest extends \PHPUnit_Framework_TestCase
+class ProcessorRegistryBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddProcessor()
     {

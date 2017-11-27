@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class AuthorTest extends \PHPUnit_Framework_TestCase
+class AuthorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Author
@@ -46,7 +46,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetPersonFunction()
     {
         /* @var $person \Integrated\Bundle\ContentBundle\Document\Content\Relation\Person | \\PHPUnit_Framework_MockObject_MockObject */
-        $person = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Relation\Person');
+        $person = $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Relation\Person');
         $this->assertSame($person, $this->author->setPerson($person)->getPerson());
     }
 }

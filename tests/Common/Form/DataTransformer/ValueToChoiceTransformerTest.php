@@ -17,7 +17,7 @@ use Integrated\Common\Form\DataTransformer\ValueToChoiceTransformer;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ValueToChoiceTransformerTest extends \PHPUnit_Framework_TestCase
+class ValueToChoiceTransformerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ChoiceListInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -59,11 +59,10 @@ class ValueToChoiceTransformerTest extends \PHPUnit_Framework_TestCase
         self::assertNull($this->getInstance()->reverseTransform(null));
     }
 
-    /**
-     * @expectedException \Symfony\Component\Form\Exception\TransformationFailedException
-     */
     public function testReverseTransformInvalidConversion()
     {
+        $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
+
         $this->choiceList->expects($this->once())
             ->method('getValuesForChoices')
             ->willReturn([]);

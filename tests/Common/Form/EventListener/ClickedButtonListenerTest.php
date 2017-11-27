@@ -21,7 +21,7 @@ use Symfony\Component\Form\FormInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ClickedButtonListenerTest extends \PHPUnit_Framework_TestCase
+class ClickedButtonListenerTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

@@ -27,7 +27,7 @@ use stdClass;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ExporterTest extends \PHPUnit_Framework_TestCase
+class ExporterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var string

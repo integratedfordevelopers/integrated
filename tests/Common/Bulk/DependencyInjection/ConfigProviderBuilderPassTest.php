@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Definition;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConfigProviderBuilderPassTest extends \PHPUnit_Framework_TestCase
+class ConfigProviderBuilderPassTest extends \PHPUnit\Framework\TestCase
 {
     public function testProcess()
     {

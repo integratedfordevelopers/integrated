@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
+class RequestAwareChannelContextTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ChannelManagerInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -83,7 +83,7 @@ class RequestAwareChannelContextTest extends \PHPUnit_Framework_TestCase
 
     public function testSetChannelNoRequest()
     {
-        $this->stack->expects($this->any())
+        $this->stack->expects($this->once())
             ->method('getCurrentRequest')
             ->willReturn(null);
 

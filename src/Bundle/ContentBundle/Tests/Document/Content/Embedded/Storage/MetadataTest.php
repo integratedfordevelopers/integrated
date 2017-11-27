@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class MetadataTest extends \PHPUnit_Framework_TestCase
+class MetadataTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Tests the getters (through the constructor) of the object.

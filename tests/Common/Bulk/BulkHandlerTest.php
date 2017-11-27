@@ -24,7 +24,7 @@ use stdClass as Object;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class BulkHandlerTest extends \PHPUnit_Framework_TestCase
+class BulkHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var HandlerFactoryRegistry | \PHPUnit_Framework_MockObject_MockObject
@@ -87,43 +87,38 @@ class BulkHandlerTest extends \PHPUnit_Framework_TestCase
         $this->getInstance()->execute([$content1, $content2], [$action1, $action2, $action3]);
     }
 
-    /**
-     * @expectedException \Integrated\Common\Bulk\Exception\UnexpectedTypeException
-     */
     public function testExecuteInvalidContent()
     {
+        $this->expectException(\Integrated\Common\Bulk\Exception\UnexpectedTypeException::class);
+
         $this->getInstance()->execute('not a array or iterator', []);
     }
 
-    /**
-     * @expectedException \Integrated\Common\Bulk\Exception\UnexpectedTypeException
-     */
     public function testExecuteInvalidContentClass()
     {
+        $this->expectException(\Integrated\Common\Bulk\Exception\UnexpectedTypeException::class);
+
         $this->getInstance()->execute([new Object()], []);
     }
 
-    /**
-     * @expectedException \Integrated\Common\Bulk\Exception\UnexpectedTypeException
-     */
     public function testExecuteInvalidActions()
     {
+        $this->expectException(\Integrated\Common\Bulk\Exception\UnexpectedTypeException::class);
+
         $this->getInstance()->execute([], 'not a array or iterator');
     }
 
-    /**
-     * @expectedException \Integrated\Common\Bulk\Exception\UnexpectedTypeException
-     */
     public function testExecuteInvalidActionClass()
     {
+        $this->expectException(\Integrated\Common\Bulk\Exception\UnexpectedTypeException::class);
+
         $this->getInstance()->execute([], [new Object()]);
     }
 
-    /**
-     * @expectedException \Integrated\Common\Bulk\Exception\ExceptionInterface
-     */
     public function testExecuteActionNotFound()
     {
+        $this->expectException(\Integrated\Common\Bulk\Exception\ExceptionInterface::class);
+
         $this->registry->expects($this->once())
             ->method('getFactory')
             ->with('this-does-not-exist')

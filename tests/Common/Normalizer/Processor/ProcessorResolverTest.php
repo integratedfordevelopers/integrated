@@ -24,7 +24,7 @@ use Integrated\Tests\Common\Normalizer\Fixtures\TestParent;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ProcessorResolverTest extends \PHPUnit_Framework_TestCase
+class ProcessorResolverTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var RegistryInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -106,11 +106,10 @@ class ProcessorResolverTest extends \PHPUnit_Framework_TestCase
         self::assertSame($processor, $this->getInstance()->getProcessor(TestClass::class));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Normalizer\Exception\ExceptionInterface
-     */
     public function testGetProcessorInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Normalizer\Exception\ExceptionInterface::class);
+
         $this->getInstance()->getProcessor(42);
     }
 

@@ -17,7 +17,7 @@ use Integrated\Common\Bulk\Action\HandlerFactoryRegistry;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class HandlerFactoryRegistryTest extends \PHPUnit_Framework_TestCase
+class HandlerFactoryRegistryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var HandlerFactoryInterface[] | \PHPUnit_Framework_MockObject_MockObject[]
@@ -39,11 +39,10 @@ class HandlerFactoryRegistryTest extends \PHPUnit_Framework_TestCase
         self::assertFalse($registry->hasFactory('class3'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Bulk\Exception\UnexpectedTypeException
-     */
     public function testHasFactoryInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Bulk\Exception\UnexpectedTypeException::class);
+
         $this->getInstance()->hasFactory(42);
     }
 
@@ -55,20 +54,18 @@ class HandlerFactoryRegistryTest extends \PHPUnit_Framework_TestCase
         self::assertSame($this->factories['class2'], $registry->getFactory('class2'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Bulk\Exception\UnexpectedTypeException
-     */
     public function testGetFactoryInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Bulk\Exception\UnexpectedTypeException::class);
+
         $this->getInstance()->getFactory(42);
     }
 
-    /**
-     * @expectedException \Integrated\Common\Bulk\Exception\InvalidArgumentException
-     * @expectedExceptionMessage there-are-no-factories-for-this-class
-     */
     public function testGetFactoryNotFound()
     {
+        $this->expectException(\Integrated\Common\Bulk\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('there-are-no-factories-for-this-class');
+
         $this->getInstance()->getFactory('there-are-no-factories-for-this-class');
     }
 

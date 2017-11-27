@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class JobFactoryTest extends \PHPUnit_Framework_TestCase
+class JobFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var SerializerInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -130,11 +130,10 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    /**
-     * @expectedException \Integrated\Common\Solr\Exception\OutOfBoundsException
-     */
     public function testCreateInvalidAction()
     {
+        $this->expectException(\Integrated\Common\Solr\Exception\OutOfBoundsException::class);
+
         $this->getInstance()->create('none-existing-action', $this->getContent());
     }
 

@@ -56,7 +56,7 @@ class CompanyTest extends RelationTest
     public function testGetAndSetAddressesFunction()
     {
         $addresses = new ArrayCollection([
-            $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address'),
+            $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address'),
         ]);
         $this->assertSame($addresses, $this->company->setAddresses($addresses)->getAddresses());
     }
@@ -76,7 +76,7 @@ class CompanyTest extends RelationTest
     public function testGetAndSetLogoFunction()
     {
         /* @var $logo \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $logo = $this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface');
+        $logo = $this->createMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface');
         $this->assertSame($logo, $this->company->setLogo($logo)->getLogo());
     }
 

@@ -16,7 +16,7 @@ use Integrated\Common\Converter\Type\ResolvedTypeFactory;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ResolvedTypeFactoryTest extends \PHPUnit_Framework_TestCase
+class ResolvedTypeFactoryTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

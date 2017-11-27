@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class QueueSubscriberTest extends \PHPUnit_Framework_TestCase
+class QueueSubscriberTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject

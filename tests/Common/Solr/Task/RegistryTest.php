@@ -16,7 +16,7 @@ use Integrated\Common\Solr\Task\Registry;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RegistryTest extends \PHPUnit_Framework_TestCase
+class RegistryTest extends \PHPUnit\Framework\TestCase
 {
     public function testHasHandler()
     {
@@ -55,12 +55,11 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         self::assertSame($handlers['class3'], $registry->getHandler('class3'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Solr\Exception\InvalidArgumentException
-     * @expectedExceptionMessage this-is-a-task-that-does-not-have-a-handler
-     */
     public function testGetHandlerNotFound()
     {
+        $this->expectException(\Integrated\Common\Solr\Exception\InvalidArgumentException::class);
+        $this->expectExceptionMessage('this-is-a-task-that-does-not-have-a-handler');
+
         $this->getInstance()->getHandler('this-is-a-task-that-does-not-have-a-handler');
     }
 

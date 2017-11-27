@@ -18,7 +18,7 @@ use stdClass as Object;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class JsonLBNullNormalizerTest extends \PHPUnit_Framework_TestCase
+class JsonLBNullNormalizerTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {

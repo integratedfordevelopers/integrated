@@ -22,7 +22,7 @@ use Integrated\Common\Converter\Type\RegistryInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConverterTest extends \PHPUnit_Framework_TestCase
+class ConverterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var RegistryInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -105,11 +105,10 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
         self::assertSame($container, $this->getInstance()->convert(new \stdClass()));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testConvertTypeNotFound()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         $this->factory->expects($this->once())
             ->method('createContainer')
             ->willReturn($this->getContainer());
@@ -127,11 +126,10 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
         $this->getInstance()->convert(new \stdClass());
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testConvertInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         $this->factory->expects($this->never())
             ->method('createContainer');
 

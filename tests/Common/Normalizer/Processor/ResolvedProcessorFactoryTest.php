@@ -21,7 +21,7 @@ use ReflectionProperty;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ResolvedProcessorFactoryTest extends \PHPUnit_Framework_TestCase
+class ResolvedProcessorFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ContainerFactoryInterface | \PHPUnit_Framework_MockObject_MockObject

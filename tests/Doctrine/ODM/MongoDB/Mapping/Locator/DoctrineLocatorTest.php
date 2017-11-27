@@ -17,7 +17,7 @@ use Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\DoctrineLocator;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DoctrineLocatorTest extends \PHPUnit_Framework_TestCase
+class DoctrineLocatorTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var MappingDriver | \PHPUnit_Framework_MockObject_MockObject

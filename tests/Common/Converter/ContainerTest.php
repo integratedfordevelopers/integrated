@@ -16,7 +16,7 @@ use Integrated\Common\Converter\Container;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class ContainerTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -42,11 +42,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         self::assertEquals([5.1, 5.2], $container->get('key3'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testAddInvalid()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         $container = $this->getInstance();
         $container->add('key', []);
     }
@@ -69,11 +68,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         self::assertFalse($container->has('key2'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testSetInvalid()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         $container = $this->getInstance();
         $container->set('key', []);
     }

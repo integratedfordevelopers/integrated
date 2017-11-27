@@ -17,7 +17,7 @@ use Integrated\Common\Converter\Type\ResolvedTypeInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RegistryTest extends \PHPUnit_Framework_TestCase
+class RegistryTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -36,11 +36,10 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         self::assertFalse($registry->hasType('test3'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testHasTypeInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         $this->getInstance()->hasType(42);
     }
 
@@ -51,20 +50,18 @@ class RegistryTest extends \PHPUnit_Framework_TestCase
         self::assertSame($type, $this->getInstance(['test' => $type])->getType('test'));
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     */
     public function testGetTypeInvalidArgument()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+
         $this->getInstance()->getType(42);
     }
 
-    /**
-     * @expectedException \Integrated\Common\Converter\Exception\ExceptionInterface
-     * @expectedExceptionMessage this-is-a-type-that-does-not-exist
-     */
     public function testGetTypeNotFound()
     {
+        $this->expectException(\Integrated\Common\Converter\Exception\ExceptionInterface::class);
+        $this->expectExceptionMessage('this-is-a-type-that-does-not-exist');
+
         $this->getInstance()->getType('this-is-a-type-that-does-not-exist');
     }
 

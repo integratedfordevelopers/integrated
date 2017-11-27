@@ -17,7 +17,7 @@ use Integrated\Common\ContentType\ResolverInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class PriorityResolverBuilderTest extends \PHPUnit_Framework_TestCase
+class PriorityResolverBuilderTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddResolver()
     {

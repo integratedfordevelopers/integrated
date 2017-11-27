@@ -19,7 +19,7 @@ use Integrated\Common\Converter\Type\TypeInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RegistryBuilderTest extends \PHPUnit_Framework_TestCase
+class RegistryBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ResolvedTypeFactoryInterface | \PHPUnit_Framework_MockObject_MockObject

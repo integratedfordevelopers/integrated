@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @author Johnny Borg <johnny@e-active.nl>
  */
-class StorageTest extends \PHPUnit_Framework_TestCase
+class StorageTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test the post write method used to create an object.
@@ -25,7 +25,7 @@ class StorageTest extends \PHPUnit_Framework_TestCase
     public function testPostWriteMethod()
     {
         /** @var \PHPUnit_Framework_MockObject_MockObject|\Integrated\Common\Storage\ResolverInterface $resolver */
-        $resolver = $this->getMock('Integrated\Common\Storage\ResolverInterface');
+        $resolver = $this->createMock('Integrated\Common\Storage\ResolverInterface');
         $resolver->expects($this->once())
             ->method('resolve')
             ->willReturn($path = md5(time()));

@@ -18,7 +18,7 @@ use Integrated\Tests\Common\Solr\Fixtures\Configurable;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ConfigurableTest extends \PHPUnit_Framework_TestCase
+class ConfigurableTest extends \PHPUnit\Framework\TestCase
 {
     public function testConstructor()
     {
