@@ -30,7 +30,7 @@ class ContainerAwareQueueListenerTest extends QueueListenerTest
     {
         parent::setUp();
 
-        $this->container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
+        $this->container = $this->createMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
         $this->container->expects($this->any())
             ->method('get')
             ->with($this->equalTo(self::SERVICE_NAME))
@@ -39,14 +39,14 @@ class ContainerAwareQueueListenerTest extends QueueListenerTest
 
     public function testSetGetQueue()
     {
-        $this->container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
+        $this->container = $this->createMock('Symfony\\Component\\DependencyInjection\\ContainerInterface');
         $this->container->expects($this->atLeastOnce())
             ->method('get')
             ->with($this->equalTo(self::SERVICE_NAME))
             ->willReturn($this->queue);
 
         $listener = $this->getInstance();
-        $mock = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
+        $mock = $this->createMock('Integrated\\Common\\Queue\\QueueInterface');
 
         $this->assertSame($this->queue, $listener->getQueue());
         $listener->setQueue($mock);

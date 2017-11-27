@@ -11,11 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Form\Type;
 
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType;
 use Integrated\Common\ContentType\ContentTypeInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -26,20 +27,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class CustomFieldsTypeTest extends TypeTestCase
 {
     /**
-     * @var CustomFieldsType
-     */
-    protected $type;
-
-    /**
-     * Setup the test.
-     */
-    public function setup()
-    {
-        $this->type = new CustomFieldsType();
-        parent::setUp();
-    }
-
-    /**
      * @dataProvider getValidData
      *
      * @see http://symfony.com/doc/current/cookbook/form/unit_testing.html
@@ -48,13 +35,13 @@ class CustomFieldsTypeTest extends TypeTestCase
      */
     public function testSubmitValidData(array $data)
     {
-        $form = $this->factory->create($this->type, [], ['contentType' => $this->getContentType()]);
-
+        $form = $this->factory->create(CustomFieldsType::class, [], ['contentType' => $this->getContentType()]);
         $form->submit($data);
+
         $this->assertTrue($form->isSynchronized());
 
-        $view = $form->createView();
-        $children = $view->children;
+        $children = $form->createView()->children;
+
         foreach (array_keys($data) as $key) {
             $this->assertArrayHasKey($key, $children);
         }
@@ -67,11 +54,11 @@ class CustomFieldsTypeTest extends TypeTestCase
     {
         return [
             [
-                'data' => [
+                'data1' => [
                     'customField1' => 'Data for customField1',
                     'customField2' => 'Data for customField2',
                 ],
-                'data' => [
+                'data2' => [
                     'customField1' => null,
                     'customField2' => 'Data for customField2',
                 ],
@@ -85,16 +72,16 @@ class CustomFieldsTypeTest extends TypeTestCase
     protected function getContentType()
     {
         /** @var ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject $contentType */
-        $contentType = $this->getMock(ContentTypeInterface::class);
+        $contentType = $this->createMock(ContentTypeInterface::class);
 
         /** @var Field|\PHPUnit_Framework_MockObject_MockObject $defaultField */
-        $defaultField = $this->getMock(Field::class);
+        $defaultField = $this->createMock(Field::class);
 
         /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField1 */
-        $customField1 = $this->getMock(CustomField::class);
+        $customField1 = $this->createMock(CustomField::class);
 
         /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField2 */
-        $customField2 = $this->getMock(CustomField::class);
+        $customField2 = $this->createMock(CustomField::class);
 
         // Stub the customField getters so we can check the outcome
         $customField1
@@ -106,7 +93,7 @@ class CustomFieldsTypeTest extends TypeTestCase
         $customField1
             ->expects($this->once())
             ->method('getType')
-            ->willReturn('text')
+            ->willReturn(TextType::class)
         ;
 
         $customField1
@@ -124,7 +111,7 @@ class CustomFieldsTypeTest extends TypeTestCase
         $customField2
             ->expects($this->once())
             ->method('getType')
-            ->willReturn('textarea')
+            ->willReturn(TextareaType::class)
         ;
 
         $customField2
@@ -133,11 +120,10 @@ class CustomFieldsTypeTest extends TypeTestCase
             ->willReturn(['required' => true])
         ;
 
-        $fields = [$defaultField, $customField1, $customField2];
         $contentType
             ->expects($this->once())
             ->method('getFields')
-            ->willReturn($fields)
+            ->willReturn([$defaultField, $customField1, $customField2])
         ;
 
         return $contentType;
@@ -148,9 +134,9 @@ class CustomFieldsTypeTest extends TypeTestCase
      */
     protected function getExtensions()
     {
-        $validator = $this->getMock('\Symfony\Component\Validator\Validator\ValidatorInterface');
+        $validator = $this->createMock('\Symfony\Component\Validator\Validator\ValidatorInterface');
         $validator->method('validate')->will($this->returnValue(new ConstraintViolationList()));
-        $validator->method('getMetadataFor')->willReturn($this->getMock('\Symfony\Component\Validator\Mapping\ClassMetadata', [], [], '', false));
+        $validator->method('getMetadataFor')->willReturn($this->getMockBuilder('\Symfony\Component\Validator\Mapping\ClassMetadata')->disableOriginalConstructor()->getMock());
 
         return [new ValidatorExtension($validator)];
     }

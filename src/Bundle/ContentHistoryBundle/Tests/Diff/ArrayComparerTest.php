@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentHistoryBundle\Diff\ArrayComparer;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ArrayComparerTest extends \PHPUnit_Framework_TestCase
+class ArrayComparerTest extends \PHPUnit\Framework\TestCase
 {
     public function testAddField()
     {

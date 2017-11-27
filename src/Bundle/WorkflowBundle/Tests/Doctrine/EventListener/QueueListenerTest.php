@@ -22,7 +22,7 @@ use stdClass;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class QueueListenerTest extends \PHPUnit_Framework_TestCase
+class QueueListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var QueueInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -31,7 +31,7 @@ class QueueListenerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->queue = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
+        $this->queue = $this->createMock('Integrated\\Common\\Queue\\QueueInterface');
     }
 
     public function testInterface()
@@ -50,7 +50,7 @@ class QueueListenerTest extends \PHPUnit_Framework_TestCase
     public function testSetGetQueue()
     {
         $listener = $this->getInstance();
-        $mock = $this->getMock('Integrated\\Common\\Queue\\QueueInterface');
+        $mock = $this->createMock('Integrated\\Common\\Queue\\QueueInterface');
 
         $this->assertSame($this->queue, $listener->getQueue());
         $listener->setQueue($mock);
@@ -179,7 +179,7 @@ class QueueListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getState($id)
     {
-        $instance = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State');
+        $instance = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State');
         $instance->expects($this->any())
             ->method('getWorkflow')
             ->willReturn($this->getDefinition($id));
@@ -194,7 +194,7 @@ class QueueListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getDefinition($id)
     {
-        $instance = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
+        $instance = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
         $instance->expects($this->any())
             ->method('getId')
             ->willReturn($id);

@@ -16,7 +16,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class StateTest extends \PHPUnit_Framework_TestCase
+class StateTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Test isDefault function.
@@ -28,7 +28,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $state2 = $this->getInstance();
 
         /** @var \Integrated\Bundle\WorkflowBundle\Entity\Definition | \PHPUnit_Framework_MockObject_MockObject $definition */
-        $definition = $this->getMock('Integrated\Bundle\WorkflowBundle\Entity\Definition');
+        $definition = $this->createMock('Integrated\Bundle\WorkflowBundle\Entity\Definition');
 
         // Set workflow Mock for the two states
         $state1->setWorkflow($definition);

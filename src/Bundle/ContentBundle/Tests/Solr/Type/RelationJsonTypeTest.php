@@ -19,7 +19,7 @@ use Integrated\Common\Converter\ContainerInterface;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class RelationJsonTypeTest extends \PHPUnit_Framework_TestCase
+class RelationJsonTypeTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -87,11 +87,11 @@ class RelationJsonTypeTest extends \PHPUnit_Framework_TestCase
      */
     protected function getStub()
     {
-        $relationStub = $this->getMock(Content::class);
+        $relationStub = $this->createMock(Content::class);
         $relationStub->method('getId')->willReturn('value');
         $relationStub->method('getContentType')->willReturn('content');
 
-        $stub = $this->getMock(Content::class);
+        $stub = $this->createMock(Content::class);
         $stub->method('getReferencesByRelationId')->willReturn([$relationStub]);
 
         return $stub;

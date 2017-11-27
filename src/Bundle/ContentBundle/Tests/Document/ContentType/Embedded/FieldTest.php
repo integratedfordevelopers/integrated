@@ -9,14 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Tests\MongoDB\ContentType\Document\Embedded;
+namespace Integrated\Bundle\ContentBundle\Tests\Document\ContentType\Embedded;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class FieldTest extends \PHPUnit_Framework_TestCase
+class FieldTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Field

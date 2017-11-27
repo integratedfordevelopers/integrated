@@ -17,7 +17,7 @@ use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ConfigureMenuEventTest extends \PHPUnit_Framework_TestCase
+class ConfigureMenuEventTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ConfigureMenuEvent
@@ -39,8 +39,8 @@ class ConfigureMenuEventTest extends \PHPUnit_Framework_TestCase
      */
     protected function setup()
     {
-        $this->factory = $this->getMock('Knp\Menu\FactoryInterface');
-        $this->menu = $this->getMock('Knp\Menu\ItemInterface');
+        $this->factory = $this->createMock('Knp\Menu\FactoryInterface');
+        $this->menu = $this->createMock('Knp\Menu\ItemInterface');
         $this->event = new ConfigureMenuEvent($this->factory, $this->menu);
     }
 

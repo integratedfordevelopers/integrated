@@ -15,7 +15,7 @@ use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\FieldsTrans
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
+class FieldsTransformerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var FieldsTransformer
@@ -100,7 +100,7 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
                 'string',
             ],
             'invalidDataStdClass' => [
-                $this->getMock('stdClass'),
+                $this->createMock('stdClass'),
             ],
             'invalidDataArray' => [
                 [],
@@ -114,7 +114,7 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
     public function getValidTransformData()
     {
         /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field | \PHPUnit_Framework_MockObject_MockObject $default1 */
-        $default1 = $this->getMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field');
+        $default1 = $this->createMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field');
         $default1
             ->expects($this->once())
             ->method('getName')
@@ -122,7 +122,7 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
         ;
 
         /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field | \PHPUnit_Framework_MockObject_MockObject $default2 */
-        $default2 = $this->getMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field');
+        $default2 = $this->createMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field');
         $default2
             ->expects($this->once())
             ->method('getName')
@@ -130,7 +130,7 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
         ;
 
         /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field | \PHPUnit_Framework_MockObject_MockObject $duplicateDefault */
-        $duplicateDefault = $this->getMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field');
+        $duplicateDefault = $this->createMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field');
         $duplicateDefault
             ->expects($this->once())
             ->method('getName')
@@ -138,10 +138,10 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
         ;
 
         /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField | \PHPUnit_Framework_MockObject_MockObject $custom1 */
-        $custom1 = $this->getMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField');
+        $custom1 = $this->createMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField');
 
         /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField | \PHPUnit_Framework_MockObject_MockObject $custom2 */
-        $custom2 = $this->getMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField');
+        $custom2 = $this->createMock('Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField');
 
         return [
             'validData' => [
@@ -215,8 +215,8 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
             'onlyDefaultValues' => [
                 [
                     'default' => [
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
+                        $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
+                        $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
                     ],
                     'custom' => [],
                 ],
@@ -225,18 +225,18 @@ class FieldsTransformerTest extends \PHPUnit_Framework_TestCase
                 [
                     'default' => [],
                     'custom' => [
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
+                        $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
                     ],
                 ],
             ],
             'defaultAndCustomValues' => [
                 [
                     'default' => [
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
+                        $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
+                        $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
                     ],
                     'custom' => [
-                        $this->getMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
+                        $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface'),
                     ],
                 ],
             ],

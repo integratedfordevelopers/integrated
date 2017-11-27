@@ -84,7 +84,7 @@ class PersonTest extends RelationTest
     {
         $jobs = new ArrayCollection(
             [
-                $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job'),
+                $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job'),
             ]
         );
         $this->assertSame($jobs, $this->person->setJobs($jobs)->getJobs());
@@ -96,7 +96,7 @@ class PersonTest extends RelationTest
     public function testAddJobFunction()
     {
         /* @var $job \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job | \PHPUnit_Framework_MockObject_MockObject */
-        $job = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
+        $job = $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
 
         // Asserts
         $this->assertSame($this->person, $this->person->addJob($job));
@@ -109,7 +109,7 @@ class PersonTest extends RelationTest
     public function testAddJobFunctionWithDuplicateJob()
     {
         /* @var $job \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job | \PHPUnit_Framework_MockObject_MockObject */
-        $job = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
+        $job = $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
 
         // Add job two times
         $this->person->addJob($job)->addJob($job);
@@ -124,7 +124,7 @@ class PersonTest extends RelationTest
     public function testRemoveJobFunction()
     {
         /* @var $job \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job | \PHPUnit_Framework_MockObject_MockObject */
-        $job = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
+        $job = $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
 
         // Add author
         $this->person->addJob($job);
@@ -139,7 +139,7 @@ class PersonTest extends RelationTest
     public function testRemoveAuthorFunctionWithUnknownAuthor()
     {
         /* @var $job \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author | \PHPUnit_Framework_MockObject_MockObject */
-        $job = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
+        $job = $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job');
 
         // Assert
         $this->assertFalse($this->person->removeJob($job));
@@ -151,7 +151,7 @@ class PersonTest extends RelationTest
     public function testGetAndSetPictureFunction()
     {
         /* @var $picture \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $picture = $this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface');
+        $picture = $this->createMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface');
         $this->assertSame($picture, $this->person->setPicture($picture)->getPicture());
     }
 

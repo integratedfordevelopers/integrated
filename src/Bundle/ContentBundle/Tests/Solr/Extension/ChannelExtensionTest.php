@@ -23,7 +23,7 @@ use stdClass;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ChannelExtensionTest extends \PHPUnit_Framework_TestCase
+class ChannelExtensionTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
@@ -67,7 +67,7 @@ class ChannelExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildNotChannelable()
     {
-        $container = $this->getMock('Integrated\\Common\\Converter\\ContainerInterface');
+        $container = $this->createMock('Integrated\\Common\\Converter\\ContainerInterface');
         $container->expects($this->never())
             ->method($this->anything());
 
@@ -96,7 +96,7 @@ class ChannelExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContent(array $channels)
     {
-        $mock = $this->getMock('Integrated\\Common\\Content\\ChannelableInterface');
+        $mock = $this->createMock('Integrated\\Common\\Content\\ChannelableInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getChannels')
             ->willReturn($channels);
@@ -111,7 +111,7 @@ class ChannelExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private function getChannel($id)
     {
-        $mock = $this->getMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
+        $mock = $this->createMock('Integrated\\Common\\Content\\Channel\\ChannelInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getId')
             ->willReturn($id);

@@ -18,7 +18,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\CustomFields;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-abstract class ContentTest extends \PHPUnit_Framework_TestCase
+abstract class ContentTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Content should implement ContentInterface.
@@ -60,7 +60,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetRelationsFunction()
     {
         /* @var $relation \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation | \PHPUnit_Framework_MockObject_MockObject */
-        $relation = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation');
+        $relation = $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation');
 
         // Stub getReferences
         $relation->expects($this->once())
@@ -84,7 +84,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
         $relations = $this->getContent()->getRelations();
 
         /* @var $relation \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation | \PHPUnit_Framework_MockObject_MockObject */
-        $relation = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation');
+        $relation = $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation');
 
         // Asserts
         $this->assertSame($this->getContent(), $this->getContent()->addRelation($relation));
@@ -143,7 +143,7 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetMetadataFunction()
     {
         /* @var $metadata \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata | \PHPUnit_Framework_MockObject_MockObject */
-        $metadata = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata');
+        $metadata = $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata');
         $this->assertSame($metadata, $this->getContent()->setMetadata($metadata)->getMetadata());
     }
 
@@ -180,10 +180,10 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
     public function testRemoveChannelFunction()
     {
         /* @var $channel1 \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $channel1 = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
+        $channel1 = $this->createMock('Integrated\Common\Content\Channel\ChannelInterface');
 
         /* @var $channel2 \Integrated\Common\Content\Channel\ChannelInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $channel2 = $this->getMock('Integrated\Common\Content\Channel\ChannelInterface');
+        $channel2 = $this->createMock('Integrated\Common\Content\Channel\ChannelInterface');
 
         $this->getContent()->addChannel($channel1)->addChannel($channel2);
         $this->getContent()->removeChannel($channel2);
@@ -211,13 +211,13 @@ abstract class ContentTest extends \PHPUnit_Framework_TestCase
         return [
             'single' => [
                 new ArrayCollection([
-                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface'),
+                    $this->createMock('Integrated\Common\Content\Channel\ChannelInterface'),
                 ]),
             ],
             'multiple' => [
                 new ArrayCollection([
-                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface'),
-                    $this->getMock('Integrated\Common\Content\Channel\ChannelInterface'),
+                    $this->createMock('Integrated\Common\Content\Channel\ChannelInterface'),
+                    $this->createMock('Integrated\Common\Content\Channel\ChannelInterface'),
                 ]),
             ],
         ];

@@ -46,7 +46,7 @@ class FileTest extends ContentTest
     public function testGetAndSetFileFunction()
     {
         $this->assertEquals(
-            $file = $this->getMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface'),
+            $file = $this->createMock('Integrated\Common\Content\Document\Storage\Embedded\StorageInterface'),
             $this->file->setFile($file)->getFile()
         );
     }

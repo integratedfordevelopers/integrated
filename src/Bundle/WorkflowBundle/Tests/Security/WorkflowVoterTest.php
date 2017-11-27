@@ -17,7 +17,6 @@ use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
-use Integrated\Bundle\WorkflowBundle\Security\WorkflowVoter;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\ContentType\ResolverInterface;
@@ -28,7 +27,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
+class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ManagerRegistry | \PHPUnit_Framework_MockObject_MockObject
@@ -65,14 +64,14 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->manager = $this->getMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
-        $this->resolver = $this->getMock('Integrated\\Common\\ContentType\\ResolverInterface');
-        $this->metadata = $this->getMock(MetadataFactoryInterface::class);
+        $this->manager = $this->createMock('Doctrine\\Common\\Persistence\\ManagerRegistry');
+        $this->resolver = $this->createMock('Integrated\\Common\\ContentType\\ResolverInterface');
+        $this->metadata = $this->createMock(MetadataFactoryInterface::class);
     }
 
     protected function setUpMetadata($class, $exists = true)
     {
-        $metadata = $this->getMock(MetadataInterface::class);
+        $metadata = $this->createMock(MetadataInterface::class);
         $metadata->expects($this->atLeastOnce())
             ->method('hasOption')
             ->with('workflow')
@@ -86,7 +85,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     protected function setUpResolver($exists = true)
     {
-        $type = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        $type = $this->createMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $type->expects($this->atLeastOnce())
             ->method('hasOption')
             ->with('workflow')
@@ -133,7 +132,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     {
         $object = ($exists) ? $this->getWorkflow() : null;
 
-        $repository = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $repository = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
         $repository->expects($this->once())
             ->method($this->anything())
             ->willReturn($object);
@@ -155,13 +154,13 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
                 ->method('getWorkflow')
                 ->willReturn($this->getWorkflow());
 
-            $container = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
+            $container = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
             $container->expects($this->atLeastOnce())
                 ->method('getState')
                 ->willReturn($object);
         }
 
-        $repository = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $repository = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
         $repository->expects($this->once())
             ->method($this->anything())
             ->willReturn($container);
@@ -174,11 +173,10 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\\Component\\Security\\Core\\Authorization\\Voter\\VoterInterface', $this->getInstance());
     }
 
-    /**
-     * @expectedException \Symfony\Component\OptionsResolver\Exception\ExceptionInterface
-     */
     public function testConstructorPermissionsError()
     {
+        $this->expectException(\Symfony\Component\OptionsResolver\Exception\ExceptionInterface::class);
+
         $this->getInstance(['does_not_exist' => 'gives_a_error']);
     }
 
@@ -216,7 +214,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
         $voter = $this->getInstance();
 
         $class = $this->getMockClass('Integrated\\Bundle\\UserBundle\\Model\\GroupableInterface');
-        $object = $this->getMock('Integrated\\Bundle\\UserBundle\\Model\\GroupableInterface');
+        $object = $this->createMock('Integrated\\Bundle\\UserBundle\\Model\\GroupableInterface');
 
         $this->assertTrue($voter->supportsClass($class));
         $this->assertTrue($voter->supportsClass($object));
@@ -235,7 +233,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testVoteNoWorkflowMetadata()
     {
-        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $class = get_class($content);
 
         $this->setUpMetadata($class, false);
@@ -245,7 +243,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testVoteNoWorkflowContentType()
     {
-        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $content->expects($this->atLeastOnce())
             ->method('getContentType')
             ->willReturn('type');
@@ -260,7 +258,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testVoteNoContentType()
     {
-        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $content->expects($this->atLeastOnce())
             ->method('getContentType')
             ->willReturn('type');
@@ -282,7 +280,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testVoteNoWorkflow()
     {
-        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $content->expects($this->atLeastOnce())
             ->method('getContentType')
             ->willReturn('type');
@@ -299,7 +297,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testVoteNoState()
     {
-        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $content->expects($this->atLeastOnce())
             ->method('getContentType')
             ->willReturn('type');
@@ -324,7 +322,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testVoteNoStateWorkflowEmpty()
     {
-        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $content->expects($this->atLeastOnce())
             ->method('getContentType')
             ->willReturn('type');
@@ -349,7 +347,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
 
     public function testVoteStateWorkflowNotMatch()
     {
-        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $content->expects($this->atLeastOnce())
             ->method('getContentType')
             ->willReturn('type');
@@ -379,7 +377,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
      */
     public function testVoteNotSupported(TokenInterface $token, array $attributes, $expected)
     {
-        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $content->expects($this->atLeastOnce())
             ->method('getContentType')
             ->willReturn('type');
@@ -413,7 +411,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
      */
     public function testVote(array $permissions, array $attributes, $expected)
     {
-        $content = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $content = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $content->expects($this->atLeastOnce())
             ->method('getContentType')
             ->willReturn('type');
@@ -563,11 +561,11 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string[] $permissions
      *
-     * @return WorkflowVoterMock
+     * @return Mock\WorkflowVoter
      */
     protected function getInstance(array $permissions = [])
     {
-        return new WorkflowVoterMock($this->manager, $this->resolver, $this->metadata, $permissions);
+        return new Mock\WorkflowVoter($this->manager, $this->resolver, $this->metadata, $permissions);
     }
 
     /**
@@ -577,11 +575,11 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getUser(array $groups = [])
     {
-        $mock = $this->getMock('Integrated\Bundle\UserBundle\Model\User');
+        $mock = $this->createMock('Integrated\Bundle\UserBundle\Model\User');
 
         if ($groups) {
             foreach ($groups as $index => $name) {
-                $group = $this->getMock('Integrated\\Bundle\\UserBundle\\Model\\GroupInterface');
+                $group = $this->createMock('Integrated\\Bundle\\UserBundle\\Model\\GroupInterface');
                 $group->expects($this->atLeastOnce())
                     ->method('getId')
                     ->willReturn($name);
@@ -604,7 +602,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getToken($object = null)
     {
-        $mock = $this->getMock('Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface');
+        $mock = $this->createMock('Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface');
 
         if ($object === null) {
             $object = $this->getUser();
@@ -623,7 +621,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     protected function getWorkflow()
     {
         if ($this->workflow === null) {
-            $this->workflow = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
+            $this->workflow = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
         }
 
         return $this->workflow;
@@ -637,7 +635,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
     protected function getState(array $permissions = [], $never = false)
     {
         if ($this->state === null) {
-            $this->state = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State');
+            $this->state = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State');
 
             $this->state->expects($never ? $this->never() : ($permissions ? $this->atLeastOnce() : $this->any()))
                 ->method('getPermissions')
@@ -656,7 +654,7 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getPermission($group, $read, $write)
     {
-        $mock = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\Permission');
+        $mock = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\Permission');
         $mock->expects($this->any())
             ->method('getGroup')
             ->willReturn($group);
@@ -670,35 +668,5 @@ class WorkflowVoterTest extends \PHPUnit_Framework_TestCase
             ->willReturn($mask);
 
         return $mock;
-    }
-}
-
-class WorkflowVoterMock extends WorkflowVoter
-{
-    /*
-     * Store the last used state
-     */
-    public $state = null;
-
-    /*
-     * the permissions that will be returned
-     */
-    public $permissions = null;
-
-    /*
-     * Allows this function to be tested separably but also to override the result
-     * it need to give to make testing on the permissions easier
-     */
-    public function getPermissions(GroupableInterface $user, State $state)
-    {
-        $this->state = $state;
-
-        // permissions will be short circuited if set
-
-        if ($this->permissions === null) {
-            return parent::getPermissions($user, $state);
-        }
-
-        return $this->permissions;
     }
 }

@@ -124,7 +124,8 @@ class Group implements GroupInterface
      */
     public function __toString()
     {
-        return sprintf("ID: %s\nGroup: %s",
+        return sprintf(
+            "ID: %s\nGroup: %s",
             $this->getId(),
             $this->getName()
         );

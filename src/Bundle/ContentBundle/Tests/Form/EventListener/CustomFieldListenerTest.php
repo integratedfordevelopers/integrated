@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
+class CustomFieldListenerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var CustomFieldListener
@@ -59,22 +59,22 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
     public function testOnPostBuildFunctionWithCustomFields()
     {
         /** @var BuilderEvent|\PHPUnit_Framework_MockObject_MockObject $event */
-        $event = $this->getMock(BuilderEvent::class, [], [], '', false);
+        $event = $this->getMockBuilder(BuilderEvent::class)->disableOriginalConstructor()->getMock();
 
         /** @var ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject $contentType */
-        $contentType = $this->getMock(ContentTypeInterface::class);
+        $contentType = $this->createMock(ContentTypeInterface::class);
 
         /** @var FormBuilderInterface|\PHPUnit_Framework_MockObject_MockObject $builder */
-        $builder = $this->getMock(FormBuilderInterface::class);
+        $builder = $this->createMock(FormBuilderInterface::class);
 
         /** @var Field|\PHPUnit_Framework_MockObject_MockObject $field */
-        $field = $this->getMock(Field::class);
+        $field = $this->createMock(Field::class);
 
         /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField */
-        $customField = $this->getMock(CustomField::class);
+        $customField = $this->createMock(CustomField::class);
 
         /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField2 */
-        $customField2 = $this->getMock(CustomField::class);
+        $customField2 = $this->createMock(CustomField::class);
 
         $event
             ->expects($this->once())
@@ -116,16 +116,16 @@ class CustomFieldListenerTest extends \PHPUnit_Framework_TestCase
     public function testOnPostBuildFunctionWithNoCustomFields()
     {
         /** @var BuilderEvent|\PHPUnit_Framework_MockObject_MockObject $event */
-        $event = $this->getMock(BuilderEvent::class, [], [], '', false);
+        $event = $this->getMockBuilder(BuilderEvent::class)->disableOriginalConstructor()->getMock();
 
         /** @var ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject $contentType */
-        $contentType = $this->getMock(ContentTypeInterface::class);
+        $contentType = $this->createMock(ContentTypeInterface::class);
 
         /** @var FormBuilderInterface|\PHPUnit_Framework_MockObject_MockObject $builder */
-        $builder = $this->getMock(FormBuilderInterface::class);
+        $builder = $this->createMock(FormBuilderInterface::class);
 
         /** @var Field|\PHPUnit_Framework_MockObject_MockObject $field */
-        $field = $this->getMock(Field::class);
+        $field = $this->createMock(Field::class);
 
         $event
             ->expects($this->once())

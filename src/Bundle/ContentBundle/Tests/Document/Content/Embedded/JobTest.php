@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class JobTest extends \PHPUnit_Framework_TestCase
+class JobTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Job
@@ -55,7 +55,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
     public function testGetAndSetCompanyFunction()
     {
         /* @var $company \Integrated\Bundle\ContentBundle\Document\Content\Relation\Company | \PHPUnit_Framework_MockObject_MockObject */
-        $company = $this->getMock('Integrated\Bundle\ContentBundle\Document\Content\Relation\Company');
+        $company = $this->createMock('Integrated\Bundle\ContentBundle\Document\Content\Relation\Company');
         $this->assertSame($company, $this->job->setCompany($company)->getCompany());
     }
 }

@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class AddressTest extends \PHPUnit_Framework_TestCase
+class AddressTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Address

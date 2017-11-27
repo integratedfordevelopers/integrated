@@ -211,7 +211,9 @@ class MigrateCommand extends Command
 
             // Return
             return $file;
-        } elseif (1 < $finder->count()) {
+        }
+
+        if (1 < $finder->count()) {
             if ($allowDuplicate) {
                 // Sort
                 $finder->sortByModifiedTime();
@@ -222,15 +224,14 @@ class MigrateCommand extends Command
 
                 return $iterator->current();
             }
+
             // This can not be done
-            throw new \LogicException(
-                    sprintf(
-                        'The file %s (for document: %s) has been found %d times on the given path.',
-                        $fileId,
-                        $documentId,
-                        $finder->count()
-                    )
-                );
+            throw new \LogicException(sprintf(
+                'The file %s (for document: %s) has been found %d times on the given path.',
+                $fileId,
+                $documentId,
+                $finder->count()
+            ));
         }
 
         return false;

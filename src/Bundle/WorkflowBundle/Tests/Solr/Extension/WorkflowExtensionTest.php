@@ -27,7 +27,7 @@ use stdClass;
  *
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
+class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ResolverInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -46,9 +46,9 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->resolver = $this->getMock(ResolverInterface::class);
-        $this->workflow = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
-        $this->definition = $this->getMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $this->resolver = $this->createMock(ResolverInterface::class);
+        $this->workflow = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
+        $this->definition = $this->createMock('Doctrine\\Common\\Persistence\\ObjectRepository');
     }
 
     public function testInterface()
@@ -122,7 +122,7 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testBuildNoContent()
     {
-        $container = $this->getMock('Integrated\\Common\\Converter\\ContainerInterface');
+        $container = $this->createMock('Integrated\\Common\\Converter\\ContainerInterface');
         $container->expects($this->never())
             ->method($this->anything());
 
@@ -330,7 +330,7 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContent()
     {
-        $mock = $this->getMock('Integrated\\Common\\Content\\ContentInterface');
+        $mock = $this->createMock('Integrated\\Common\\Content\\ContentInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getContentType')
             ->willReturn('this-is-the-content-type');
@@ -345,7 +345,7 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getContentType($workflow = null)
     {
-        $mock = $this->getMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
+        $mock = $this->createMock('Integrated\\Common\\ContentType\\ContentTypeInterface');
         $mock->expects($this->atLeastOnce())
             ->method('getOption')
             ->with($this->equalTo('workflow'))
@@ -361,7 +361,7 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getWorkflow(Definition\State $state = null)
     {
-        $mock = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
+        $mock = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
         $mock->expects($this->atLeastOnce())
             ->method('getState')
             ->willReturn($state);
@@ -376,7 +376,7 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getDefinition(Definition\State $state = null)
     {
-        $mock = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
+        $mock = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition');
         $mock->expects($this->atLeastOnce())
             ->method('getDefault')
             ->willReturn($state);
@@ -391,7 +391,7 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getState(array $permissions)
     {
-        $mock = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State');
+        $mock = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\State');
         $mock->expects($this->atLeastOnce())
             ->method('getPermissions')
             ->willReturn($permissions);
@@ -408,7 +408,7 @@ class WorkflowExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getPermission($group, $read, $write)
     {
-        $mock = $this->getMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\Permission');
+        $mock = $this->createMock('Integrated\\Bundle\\WorkflowBundle\\Entity\\Definition\\Permission');
         $mock->expects($this->atLeastOnce())
             ->method('getGroup')
             ->willReturn($group);

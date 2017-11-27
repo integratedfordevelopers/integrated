@@ -39,7 +39,7 @@ abstract class AbstractAssetExtension extends \Twig_Extension
     public function getTokenParsers()
     {
         return [
-            new AssetTokenParser($this->getTag()),
+            new AssetTokenParser($this->getTag(), static::class),
         ];
     }
 
@@ -77,7 +77,7 @@ abstract class AbstractAssetExtension extends \Twig_Extension
             ]);
         }
 
-        return implode(PHP_EOL, $html);
+        return implode("\n", $html);
     }
 
     /**
@@ -86,14 +86,6 @@ abstract class AbstractAssetExtension extends \Twig_Extension
     public function getManager()
     {
         return $this->manager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getTag().'_extension';
     }
 
     /**

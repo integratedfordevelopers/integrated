@@ -39,8 +39,7 @@ class WorkerCommand extends ContainerAwareCommand
 The <info>%command.name%</info> .
 
 <info>php %command.full_name%</info>
-'
-            );
+');
     }
 
     /**

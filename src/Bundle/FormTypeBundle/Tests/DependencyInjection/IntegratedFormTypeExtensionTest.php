@@ -16,7 +16,7 @@ use Integrated\Bundle\FormTypeBundle\DependencyInjection\IntegratedFormTypeExten
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class IntegratedFormTypeExtensionTest extends \PHPUnit_Framework_TestCase
+class IntegratedFormTypeExtensionTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var IntegratedFormTypeExtension
@@ -40,10 +40,10 @@ class IntegratedFormTypeExtensionTest extends \PHPUnit_Framework_TestCase
         $config = [];
 
         /* @var $parameterBag \Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface | \PHPUnit_Framework_MockObject_MockObject */
-        $parameterBag = $this->getMock('Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface');
+        $parameterBag = $this->createMock('Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface');
 
         /* @var $container \Symfony\Component\DependencyInjection\ContainerBuilder | \PHPUnit_Framework_MockObject_MockObject */
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
+        $container = $this->createMock('Symfony\Component\DependencyInjection\ContainerBuilder');
 
         // Stub getParameterBag function
         $container->expects($this->once())

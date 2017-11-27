@@ -49,8 +49,7 @@ class IndexCommand extends ContainerAwareCommand
 The <info>%command.name%</info> command starts a index of all the content from the given workflow.
 
 <info>php %command.full_name%</info>
-'
-            );
+');
     }
 
     /**

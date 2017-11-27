@@ -17,7 +17,7 @@ use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class RelationTest extends \PHPUnit_Framework_TestCase
+class RelationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Relation must implement RelationInterface.
@@ -96,10 +96,11 @@ class RelationTest extends \PHPUnit_Framework_TestCase
      *
      * @param ArrayCollection $collection
      * @dataProvider invalidCollectionProvider
-     * @expectedException \PHPUnit_Framework_Error
      */
     public function testGetAndSetSourcesFunctionWithInvalidCollection(ArrayCollection $collection)
     {
+        $this->expectException(\TypeError::class);
+
         $instance = $this->getInstance();
         $instance->setSources($collection);
     }
@@ -112,7 +113,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         $instance = $this->getInstance();
 
         /** @var \Integrated\Common\ContentType\ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject $source */
-        $source = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
+        $source = $this->createMock('Integrated\Common\ContentType\ContentTypeInterface');
 
         $instance->addSource($source);
         $collection = $instance->getSources();
@@ -129,7 +130,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         $instance = $this->getInstance();
 
         /** @var \Integrated\Common\ContentType\ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject $source */
-        $source = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
+        $source = $this->createMock('Integrated\Common\ContentType\ContentTypeInterface');
 
         $instance->addSource($source);
 
@@ -144,7 +145,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         $instance = $this->getInstance();
 
         /** @var \Integrated\Common\ContentType\ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject $source */
-        $source = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
+        $source = $this->createMock('Integrated\Common\ContentType\ContentTypeInterface');
 
         $this->assertFalse($instance->removeSource($source));
     }
@@ -168,10 +169,11 @@ class RelationTest extends \PHPUnit_Framework_TestCase
      *
      * @param ArrayCollection $collection
      * @dataProvider invalidCollectionProvider
-     * @expectedException \PHPUnit_Framework_Error
      */
     public function testGetAndSetTargetsFunctionWithInvalidCollection(ArrayCollection $collection)
     {
+        $this->expectException(\TypeError::class);
+
         $instance = $this->getInstance();
         $instance->setTargets($collection);
     }
@@ -184,7 +186,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         $instance = $this->getInstance();
 
         /** @var \Integrated\Common\ContentType\ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject $target */
-        $target = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
+        $target = $this->createMock('Integrated\Common\ContentType\ContentTypeInterface');
 
         $instance->addTarget($target);
         $collection = $instance->getTargets();
@@ -201,7 +203,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         $instance = $this->getInstance();
 
         /** @var \Integrated\Common\ContentType\ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject $target */
-        $target = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
+        $target = $this->createMock('Integrated\Common\ContentType\ContentTypeInterface');
 
         $instance->addTarget($target);
 
@@ -216,7 +218,7 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         $instance = $this->getInstance();
 
         /** @var \Integrated\Common\ContentType\ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject $source */
-        $source = $this->getMock('Integrated\Common\ContentType\ContentTypeInterface');
+        $source = $this->createMock('Integrated\Common\ContentType\ContentTypeInterface');
 
         $this->assertFalse($instance->removeTarget($source));
     }
@@ -268,13 +270,13 @@ class RelationTest extends \PHPUnit_Framework_TestCase
         return [
             [
                 new ArrayCollection([
-                    $this->getMock('Integrated\Common\ContentType\ContentTypeInterface'),
-                    $this->getMock('Integrated\Common\ContentType\ContentTypeInterface'),
+                    $this->createMock('Integrated\Common\ContentType\ContentTypeInterface'),
+                    $this->createMock('Integrated\Common\ContentType\ContentTypeInterface'),
                 ]),
             ],
             [
                 new ArrayCollection([
-                    $this->getMock('Integrated\Common\ContentType\ContentTypeInterface'),
+                    $this->createMock('Integrated\Common\ContentType\ContentTypeInterface'),
                 ]),
             ],
         ];

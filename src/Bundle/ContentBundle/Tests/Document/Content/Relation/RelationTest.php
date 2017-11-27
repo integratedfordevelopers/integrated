@@ -82,6 +82,8 @@ abstract class RelationTest extends ContentTest
      */
     public function testRemovePhonenumberFunction()
     {
+        $this->markTestSkipped('todo INTEGRATED-452');
+
         // Add phonenumber
         $this->getContent()->addPhonenumber('work', '0123456789');
 

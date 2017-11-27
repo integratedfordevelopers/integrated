@@ -16,7 +16,7 @@ use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class ChannelTest extends \PHPUnit_Framework_TestCase
+class ChannelTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var Channel

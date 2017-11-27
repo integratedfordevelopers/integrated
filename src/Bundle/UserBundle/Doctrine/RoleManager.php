@@ -14,7 +14,7 @@ namespace Integrated\Bundle\UserBundle\Doctrine;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Event\ConfigureRolesEvent;
-use Integrated\Bundle\UserBundle\Model\roleInterface;
+use Integrated\Bundle\UserBundle\Model\RoleInterface;
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use InvalidArgumentException;
@@ -22,7 +22,7 @@ use InvalidArgumentException;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class RoleManager implements roleManagerInterface
+class RoleManager implements RoleManagerInterface
 {
     /**
      * @var ObjectManager
@@ -59,8 +59,11 @@ class RoleManager implements roleManagerInterface
         $this->repository = $this->om->getRepository($class);
         $this->roles = $roles;
 
-        if (!is_subclass_of($this->repository->getClassName(), 'Integrated\\Bundle\\UserBundle\\Model\\RoleInterface')) {
-            throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\RoleInterface', $this->repository->getClassName()));
+        if (!is_subclass_of($this->repository->getClassName(), RoleInterface::class)) {
+            throw new InvalidArgumentException(sprintf(
+                'The class "%s" is not subclass of Integrated\\Bundle\\UserBundle\\Model\\RoleInterface',
+                $this->repository->getClassName()
+            ));
         }
     }
 
@@ -169,12 +172,10 @@ class RoleManager implements roleManagerInterface
      */
     public function getRolesFromSources()
     {
-        $roleEvent = new ConfigureRolesEvent($this->roles);
-        $this->eventDispatcher->dispatch(
-                ConfigureRolesEvent::CONFIGURE,
-                $roleEvent
-        );
-        $this->roles = $roleEvent->getRoles();
+        $this->roles = $this->eventDispatcher->dispatch(
+            ConfigureRolesEvent::CONFIGURE,
+            new ConfigureRolesEvent($this->roles)
+        )->getRoles();
 
         $roles = $this->findAll();
 

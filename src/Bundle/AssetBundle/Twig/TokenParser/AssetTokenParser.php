@@ -23,14 +23,21 @@ class AssetTokenParser extends \Twig_TokenParser
     /**
      * @var string
      */
-    protected $tag;
+    private $tag;
+
+    /**
+     * @var string
+     */
+    private $extension;
 
     /**
      * @param string $tag
+     * @param string $extension
      */
-    public function __construct($tag)
+    public function __construct($tag, $extension)
     {
         $this->tag = $tag;
+        $this->extension = $extension;
     }
 
     /**
@@ -39,8 +46,8 @@ class AssetTokenParser extends \Twig_TokenParser
     public function parse(Twig_Token $token)
     {
         $assets = [];
-        $mode = AssetManager::MODE_APPEND;
         $inline = false;
+        $mode = AssetManager::MODE_APPEND;
 
         $stream = $this->parser->getStream();
 
@@ -62,10 +69,18 @@ class AssetTokenParser extends \Twig_TokenParser
         }
 
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
+
         $body = $this->parser->subparse([$this, 'testEndTag'], true);
+
         $stream->expect(\Twig_Token::BLOCK_END_TYPE);
 
-        return new AssetNode($body, $assets, $inline, $mode, $token->getLine(), $this->getTag());
+        return new AssetNode(
+            ['body' => $body],
+            ['assets' => $assets, 'inline' => $inline, 'mode' => $mode],
+            $token->getLine(),
+            $this->tag,
+            $this->extension
+        );
     }
 
     /**
