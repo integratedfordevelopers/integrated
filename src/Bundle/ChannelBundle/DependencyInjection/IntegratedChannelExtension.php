@@ -118,7 +118,7 @@ class IntegratedChannelExtension extends Extension implements PrependExtensionIn
                 case 'twig':
                     $container->prependExtensionConfig(
                         $name,
-                        ['form' => ['resources' => ['IntegratedChannelBundle:Form:options.html.twig']]]
+                        ['form_themes' => ['IntegratedChannelBundle:Form:options.html.twig']]
                     );
                     break;
             }
