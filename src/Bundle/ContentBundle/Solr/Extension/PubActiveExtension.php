@@ -9,17 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Solr\Type;
+namespace Integrated\Bundle\ContentBundle\Solr\Extension;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-
 use Integrated\Common\Converter\ContainerInterface;
-use Integrated\Common\Converter\Type\TypeInterface;
+use Integrated\Common\Converter\Type\TypeExtensionInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class PubActiveType implements TypeInterface
+class PubActiveExtension implements TypeExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -38,6 +37,6 @@ class PubActiveType implements TypeInterface
      */
     public function getName()
     {
-        return 'integrated.pub_active';
+        return 'integrated.content';
     }
 }

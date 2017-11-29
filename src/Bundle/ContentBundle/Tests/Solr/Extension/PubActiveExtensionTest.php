@@ -9,27 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Tests\Solr\Type;
+namespace Integrated\Bundle\ContentBundle\Tests\Solr\Extension;
 
-use Integrated\Bundle\ContentBundle\Solr\Type\PubActiveType;
-use Integrated\Bundle\ContentBundle\Tests\Fixtures\ActiveObject;
-use Integrated\Bundle\ContentBundle\Tests\Fixtures\InactiveObject;
-use Integrated\Bundle\ContentBundle\Tests\Fixtures\Object1;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Solr\Extension\PubActiveExtension;
 
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
+use Integrated\Common\Converter\Type\TypeExtensionInterface;
+
+use stdClass;
 
 /**
- * @covers \Integrated\Bundle\ContentBundle\Solr\Type\PubActiveType
+ * @covers \Integrated\Bundle\ContentBundle\Solr\Extension\PubActiveExtension
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class PubActiveTypeTest extends \PHPUnit\Framework\TestCase
+class PubActiveExtensionTest extends \PHPUnit\Framework\TestCase
 {
     public function testInterface()
     {
-        self::assertInstanceOf('Integrated\\Common\\Converter\\Type\\TypeInterface', $this->getInstance());
+        self::assertInstanceOf(TypeExtensionInterface::class, $this->getInstance());
     }
 
     /**
@@ -49,16 +50,12 @@ class PubActiveTypeTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                new ActiveObject(),
-                [
-                    'pub_active' => [true],
-                ],
+                $this->getContent(false),
+                ['pub_active' => [false]],
             ],
             [
-                new InactiveObject(),
-                [
-                    'pub_active' => [false]
-                ],
+                $this->getContent(true),
+                ['pub_active' => [true]],
             ]
         ];
     }
@@ -70,20 +67,20 @@ class PubActiveTypeTest extends \PHPUnit\Framework\TestCase
         $container->expects($this->never())
             ->method($this->anything());
 
-        $this->getInstance()->build($container, new Object1());
+        $this->getInstance()->build($container, new stdClass());
     }
 
     public function testGetName()
     {
-        self::assertEquals('integrated.pub_active', $this->getInstance()->getName());
+        self::assertEquals('integrated.content', $this->getInstance()->getName());
     }
 
     /**
-     * @return PubActiveType
+     * @return PubActiveExtension
      */
     protected function getInstance()
     {
-        return new PubActiveType();
+        return new PubActiveExtension();
     }
 
     /**
@@ -95,5 +92,20 @@ class PubActiveTypeTest extends \PHPUnit\Framework\TestCase
         // the code coverage for the container class is ignored for these tests.
 
         return new Container();
+    }
+
+    /**
+     * @param bool $published
+     *
+     * @return Content | \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getContent(bool $published)
+    {
+        $mock = $this->createMock(Content::class);
+        $mock->expects($this->atLeastOnce())
+            ->method('isPublished')
+            ->willReturn($published);
+
+        return $mock;
     }
 }
