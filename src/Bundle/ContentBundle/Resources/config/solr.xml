@@ -23,6 +23,10 @@
             <tag name="integrated_solr.type" />
         </service>
 
+        <service id="integrated_content.solr.pub_active.type" class="Integrated\Bundle\ContentBundle\Solr\Type\PubActiveType" public="false">
+            <tag name="integrated_solr.type" />
+        </service>
+
         <service id="integrated_content.solr.channel.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension" public="false">
             <tag name="integrated_solr.type_extension" />
         </service>
