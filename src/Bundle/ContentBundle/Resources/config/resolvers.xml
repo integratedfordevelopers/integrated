@@ -4,20 +4,11 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_content.resolver.priority.builder.class">Integrated\Common\ContentType\Resolver\PriorityResolverBuilder</parameter>
-        <parameter key="integrated_content.resolver.priority.class">Integrated\Common\ContentType\Resolver\PriorityResolver</parameter>
-
-        <parameter key="integrated_content.resolver.mongodb.class">Integrated\Common\ContentType\Resolver\MongoDBResolver</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_content.resolver.priority.builder" class="%integrated_content.resolver.priority.builder.class%" />
+        <service id="integrated_content.resolver.priority.builder" class="Integrated\Common\ContentType\Resolver\PriorityResolverBuilder" />
 
-        <service id="integrated_content.resolver.priority" class="%integrated_content.resolver.priority.class%">
+        <service id="integrated_content.resolver.priority" class="Integrated\Common\ContentType\Resolver\PriorityResolver">
             <factory service="integrated_content.resolver.priority.builder" method="getResolver" />
         </service>
 
@@ -26,7 +17,7 @@
             <argument type="string">Integrated\Bundle\ContentBundle\Document\ContentType\ContentType</argument>
         </service>
 
-        <service id="integrated_content.resolver.mongodb" class="%integrated_content.resolver.mongodb.class%">
+        <service id="integrated_content.resolver.mongodb" class="Integrated\Common\ContentType\Resolver\MongoDBResolver">
             <argument type="service" id="integrated_content.resolver.mongodb.repository"/>
 
             <tag name="integrated_content.resolver" />
