@@ -97,7 +97,7 @@ class PubActiveExtensionTest extends \PHPUnit\Framework\TestCase
     /**
      * @param bool $published
      *
-     * @return Content | \PHPUnit_Framework_MockObject_MockObject
+     * @return Content|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContent(bool $published)
     {

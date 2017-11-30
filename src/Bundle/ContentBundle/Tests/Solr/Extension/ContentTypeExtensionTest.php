@@ -23,7 +23,7 @@ use Integrated\Common\Converter\Type\TypeExtensionInterface;
 use stdClass;
 
 /**
- * @covers \Integrated\Bundle\ContentBundle\Solr\Extension\PubActiveExtension
+ * @covers \Integrated\Bundle\ContentBundle\Solr\Extension\ContentTypeExtension
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
@@ -123,7 +123,7 @@ class ContentTypeExtensionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param string $name
-     * @return ContentTypeInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContentType(string $name)
     {
