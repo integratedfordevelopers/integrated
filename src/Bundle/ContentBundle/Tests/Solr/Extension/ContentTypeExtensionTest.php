@@ -13,13 +13,11 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Extension;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Solr\Extension\ContentTypeExtension;
-
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
-
 use stdClass;
 
 /**
@@ -37,14 +35,13 @@ class ContentTypeExtensionTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $type
      * @param string $name
-     * @param array $expected
+     * @param array  $expected
      *
      * @dataProvider buildProvider
      */
     public function testBuild(string $type, string $name, array $expected)
     {
         $container = $this->getContainer();
-
 
         $this->getInstance($this->getResolver($type, $this->getContentType($name)))->build($container, $this->getContent($type));
         $this->getInstance($this->getResolver($type, $this->getContentType($name)))->build($container, $this->getContent($type)); // should clear previous build
@@ -59,15 +56,15 @@ class ContentTypeExtensionTest extends \PHPUnit\Framework\TestCase
                 'news',
                 'News',
                 [
-                    'facet_contenttype' => ['News']
-                ]
+                    'facet_contenttype' => ['News'],
+                ],
             ],
             [
                 'article',
                 'Blog',
                 [
-                    'facet_contenttype' => ['Blog']
-                ]
+                    'facet_contenttype' => ['Blog'],
+                ],
             ],
         ];
     }
@@ -89,6 +86,7 @@ class ContentTypeExtensionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param ResolverInterface $resolver
+     *
      * @return ContentTypeExtension
      */
     protected function getInstance(ResolverInterface $resolver)
@@ -109,6 +107,7 @@ class ContentTypeExtensionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param string $type
+     *
      * @return Content|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContent(string $type)
@@ -123,6 +122,7 @@ class ContentTypeExtensionTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param string $name
+     *
      * @return ContentTypeInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getContentType(string $name)
@@ -136,8 +136,9 @@ class ContentTypeExtensionTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string|null $type
+     * @param string|null               $type
      * @param ContentTypeInterface|null $contentType
+     *
      * @return ResolverInterface|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function getResolver(string $type = null, ContentTypeInterface $contentType = null)

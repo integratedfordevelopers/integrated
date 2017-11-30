@@ -13,12 +13,10 @@ namespace Integrated\Bundle\ContentBundle\Tests\Solr\Extension;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Solr\Extension\PubActiveExtension;
-
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
-
 use stdClass;
 
 /**
@@ -56,7 +54,7 @@ class PubActiveExtensionTest extends \PHPUnit\Framework\TestCase
             [
                 $this->getContent(true),
                 ['pub_active' => [true]],
-            ]
+            ],
         ];
     }
 

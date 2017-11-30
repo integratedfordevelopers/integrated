@@ -12,7 +12,6 @@
 namespace Integrated\Bundle\WebsiteBundle\Solr\Extension;
 
 use Integrated\Bundle\PageBundle\Services\UrlResolver;
-
 use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\ContainerInterface;

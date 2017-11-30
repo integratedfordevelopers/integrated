@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ContentBundle\Solr\Type;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
-
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
