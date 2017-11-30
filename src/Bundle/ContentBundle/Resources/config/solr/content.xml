@@ -104,8 +104,6 @@
             </options>
         </type>
 
-        <type name="integrated.has_image" />
-
     </class>
 
     <class name="Integrated\Bundle\ContentBundle\Document\Content\File">

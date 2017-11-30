@@ -11,13 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Bundle\ContentBundle\Document\Content\Article;
-use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
@@ -25,19 +21,6 @@ use Symfony\Component\Security\Acl\Util\ClassUtils;
  */
 class ContentType implements TypeInterface
 {
-    /**
-     * @var ObjectRepository
-     */
-    protected $contentTypeRepo;
-
-    /**
-     * @param ObjectRepository $contentTypeRepo
-     */
-    public function __construct(ObjectRepository $contentTypeRepo)
-    {
-        $this->contentTypeRepo = $contentTypeRepo;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -52,30 +35,6 @@ class ContentType implements TypeInterface
         $container->set('type_name', $data->getContentType());
         $container->set('type_class', ClassUtils::getRealClass($data)); // could be a doctrine proxy object but we need the actual class name.
         $container->set('type_id', $data->getId());
-
-        if ($data instanceof Content) {
-            $container->set('pub_active', $data->isPublished(false));
-        }
-
-        if ($contentType = $this->contentTypeRepo->find($data->getContentType())) {
-            $container->set('facet_contenttype', $contentType->getName());
-        }
-
-        // Relation field and facet field for taxonomy, commercial and edition relations
-        $items = array_merge(
-            $data->getRelationsByRelationType('taxonomy')->toArray(),
-            $data->getRelationsByRelationType('commercial')->toArray(),
-            $data->getRelationsByRelationType('edition')->toArray()
-        );
-
-        foreach ($items as $relation) {
-            foreach ($relation->getReferences()->toArray() as $content) {
-                if ($content instanceof Taxonomy || $content instanceof Article) {
-                    $container->add('facet_'.$relation->getRelationId(), $content->getTitle());
-                    $container->add('taxonomy_'.$relation->getRelationId().'_string', $content->getTitle());
-                }
-            }
-        }
     }
 
     /**

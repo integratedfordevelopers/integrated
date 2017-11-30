@@ -7,23 +7,19 @@
     <services>
 
         <service id="integrated_content.solr.content.type" class="Integrated\Bundle\ContentBundle\Solr\Type\ContentType" public="false">
-            <argument type="service" id="integrated_content.content_type_repository" />
-            <tag name="integrated_solr.type" />
-        </service>
-
-        <service id="integrated_content.solr.has_image.type" class="Integrated\Bundle\ContentBundle\Solr\Type\HasImageType" public="false">
-            <tag name="integrated_solr.type" />
-        </service>
-
-        <service id="integrated_content.solr.relation_json.type" class="Integrated\Bundle\ContentBundle\Solr\Type\RelationJsonType" public="false">
-            <tag name="integrated_solr.type" />
-        </service>
-
-        <service id="integrated_content.solr.property.type" class="Integrated\Bundle\ContentBundle\Solr\Type\PropertyType" public="false">
             <tag name="integrated_solr.type" />
         </service>
 
         <service id="integrated_content.solr.channel.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\ChannelExtension" public="false">
+            <tag name="integrated_solr.type_extension" />
+        </service>
+
+        <service id="integrated_content.solr.content_type.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\ContentTypeExtension" public="false">
+            <argument type="service" id="integrated_content.resolver" />
+            <tag name="integrated_solr.type_extension" />
+        </service>
+
+        <service id="integrated_content.solr.pub_active.extension" class="Integrated\Bundle\ContentBundle\Solr\Extension\PubActiveExtension" public="false">
             <tag name="integrated_solr.type_extension" />
         </service>
 

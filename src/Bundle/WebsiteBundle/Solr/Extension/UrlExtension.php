@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\WebsiteBundle\Solr\Extension;
 
 use Integrated\Bundle\PageBundle\Services\UrlResolver;
+use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
@@ -39,7 +40,7 @@ class UrlExtension implements TypeExtensionInterface
      */
     public function build(ContainerInterface $container, $data, array $options = [])
     {
-        if (!($data instanceof ContentInterface)) {
+        if (!$data instanceof ChannelableInterface || !$data instanceof ContentInterface) {
             return;
         }
 
