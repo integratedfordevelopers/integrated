@@ -10,10 +10,6 @@
             <tag name="integrated_solr.type" />
         </service>
 
-        <service id="integrated_content.solr.has_image.type" class="Integrated\Bundle\ContentBundle\Solr\Type\HasImageType" public="false">
-            <tag name="integrated_solr.type" />
-        </service>
-
         <service id="integrated_content.solr.relation_json.type" class="Integrated\Bundle\ContentBundle\Solr\Type\RelationJsonType" public="false">
             <tag name="integrated_solr.type" />
         </service>
