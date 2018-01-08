@@ -31,21 +31,22 @@ class RecursiveActiveMatcher
      */
     public function __construct(RequestStack $requestStack)
     {
-        // Create a knp menu voter
-        $this->matcher = new Matcher();
+        // Store voters in array
+        $voters = [];
 
         // Add the URI matcher whenever we've got a request
         if ($request = $requestStack->getMasterRequest()) {
-            $this->matcher->addVoter(
-                new UriVoter(
-                    str_replace(
-                        $request->getScriptName(), // contains; app.php or app_dev.php
-                        '',                                                 // info not needed for voting
-                        $request->getRequestUri()  // request uri
-                    )
+            $voters[] = new UriVoter(
+                str_replace(
+                    $request->getScriptName(), // contains; app.php or app_dev.php
+                    '',                                                 // info not needed for voting
+                    $request->getRequestUri()  // request uri
                 )
             );
         }
+
+        // Create a knp menu voter
+        $this->matcher = new Matcher($voters);
     }
 
     /**
