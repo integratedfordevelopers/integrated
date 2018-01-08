@@ -14,7 +14,7 @@ namespace Integrated\Bundle\SolrBundle\DataCollector;
 use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Solarium\Core\Plugin\Plugin;
+use Solarium\Core\Plugin\AbstractPlugin;
 use Solarium\Core\Event\Events;
 use Solarium\Core\Event\PreExecuteRequest;
 use Solarium\Core\Event\PostExecuteRequest;
@@ -24,7 +24,7 @@ use Solarium\Core\Event\PostExecuteRequest;
  *
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class SolariumDataCollector extends Plugin implements DataCollectorInterface, \Serializable
+class SolariumDataCollector extends AbstractPlugin implements DataCollectorInterface, \Serializable
 {
     /**
      * @var array
