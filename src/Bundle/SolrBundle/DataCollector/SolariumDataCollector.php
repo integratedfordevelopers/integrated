@@ -116,6 +116,14 @@ class SolariumDataCollector extends Plugin implements DataCollectorInterface, \S
     /**
      * {@inheritdoc}
      */
+    public function reset()
+    {
+        $this->data = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function serialize()
     {
         return serialize($this->data);
