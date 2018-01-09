@@ -11,10 +11,12 @@
 
 namespace Integrated\Bundle\UserBundle\Model;
 
+use Symfony\Component\Security\Core\Role\RoleInterface as BaseRoleInterface;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface RoleInterface
+interface RoleInterface extends BaseRoleInterface
 {
     public function __construct($role);
 
