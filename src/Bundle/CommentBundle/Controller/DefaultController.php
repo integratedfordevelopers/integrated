@@ -14,6 +14,7 @@ namespace Integrated\Bundle\CommentBundle\Controller;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\CommentBundle\Document\Comment;
 use Integrated\Bundle\CommentBundle\Document\Embedded\Reply;
+use Integrated\Bundle\CommentBundle\Form\Type\CommentType;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\UserBundle\Model\User;
 use Symfony\Bundle\TwigBundle\TwigEngine;
@@ -84,13 +85,13 @@ class DefaultController
             $comment->setAuthor($relation);
         }
 
-        $form = $this->formFactory->create('integrated_comment', $comment, [
+        $form = $this->formFactory->create(CommentType::class, $comment, [
             'action' => $request->getUri(),
         ]);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->dm->persist($comment);
             $this->dm->flush();
 
@@ -124,7 +125,7 @@ class DefaultController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $comment->addReply($reply);
             $this->dm->flush();
 
