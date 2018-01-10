@@ -14,17 +14,17 @@ namespace Integrated\Bundle\WorkflowBundle\Command;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Common\ContentType\ContentTypeInterface;
-use Integrated\Common\ContentType\Resolver\ContentTypeResolverInterface;
+use Integrated\Common\ContentType\ResolverInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\LockHandler;
 use RuntimeException;
 use InvalidArgumentException;
 use Exception;
+use Symfony\Component\Lock\Lock;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -57,76 +57,78 @@ The <info>%command.name%</info> command starts a index of all the content from t
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lock = new LockHandler(self::class);
-        $attempts = 0;
-
-        while (!$lock->lock()) {
-            // retry for almost a minute, otherwise don't throw an error (after all another indexer is running)
-            if ($attempts++ >= 10) {
-                return 0;
-            }
-            sleep(5);
-        }
-
         if (!$input->getArgument('id') && !$input->getOption('full')) {
             throw new InvalidArgumentException('You need to give one or more workflow ids or choose the --full option');
         }
 
-        // get a list of the workflow ids of which the content needs to be (re)indexed
+        $lock = $this->getLock();
+        $lock->acquire(true);
 
-        $workflow = [];
+        try {
+            // get a list of the workflow ids of which the content needs to be (re)indexed
 
-        if ($input->getOption('full')) {
-            foreach ($this->findDefinition() as $row) {
-                $workflow[$row->getId()] = $row->getId();
-            }
-        } else {
-            foreach ($this->findDefinition($input->getArgument('id')) as $row) {
-                $workflow[$row->getId()] = $row->getId();
-            }
+            $workflow = [];
 
-            //  validate the ids unless validation is ignored
+            if ($input->getOption('full')) {
+                foreach ($this->findDefinition() as $row) {
+                    $workflow[$row->getId()] = $row->getId();
+                }
+            } else {
+                foreach ($this->findDefinition($input->getArgument('id')) as $row) {
+                    $workflow[$row->getId()] = $row->getId();
+                }
 
-            if (!$input->getOption('ignore')) {
-                $invalid = [];
+                //  validate the ids unless validation is ignored
 
-                foreach ($input->getArgument('id') as $id) {
-                    if (!isset($workflow[$id])) {
-                        $invalid[] = $id;
+                if (!$input->getOption('ignore')) {
+                    $invalid = [];
+
+                    foreach ($input->getArgument('id') as $id) {
+                        if (!isset($workflow[$id])) {
+                            $invalid[] = $id;
+                        }
+                    }
+
+                    if ($invalid) {
+                        throw new InvalidArgumentException(sprintf(
+                            'The workflow ids "%s" do not exists',
+                            implode(', ', $invalid)
+                        ));
                     }
                 }
-
-                if ($invalid) {
-                    throw new InvalidArgumentException(sprintf('The workflow ids "%s" do not exists', implode(', ', $invalid)));
-                }
             }
-        }
 
-        // Get the content types that belong to the selected workflow ids and issue a index
-        // for those types.
+            // Get the content types that belong to the selected workflow ids and issue a index
+            // for those types.
 
-        $types = [];
+            $types = [];
 
-        foreach ($this->findTypes($workflow) as $row) {
-            $types[] = $row->getType();
-        }
+            foreach ($this->findTypes($workflow) as $row) {
+                $types[] = $row->getType();
+            }
 
-        if (!$types) {
-            return 0; // no content type connected to the selected workflow ids.
-        }
+            if (!$types) {
+                return 0; // no content type connected to the selected workflow ids.
+            }
 
-        $command = null;
+            $command = null;
 
-        try {
-            $command = $this->getApplication()->find('solr:indexer:queue');
-        } catch (Exception $e) {
-            throw new RuntimeException(sprintf('Could not find the command "%s"', 'solr:indexer:queue'));
-        }
+            try {
+                $command = $this->getApplication()->find('solr:indexer:queue');
+            } catch (Exception $e) {
+                throw new RuntimeException(sprintf('Could not find the command "%s"', 'solr:indexer:queue'));
+            }
 
-        try {
-            return $command->run(new ArrayInput(['--ignore' => true, 'id' => $types]), $output);
-        } catch (Exception $e) {
-            throw new RuntimeException(sprintf('An error occurred when executing the command "%s"', 'solr:indexer:queue'), 0, $e);
+            try {
+                return $command->run(new ArrayInput(['--ignore' => true, 'id' => $types]), $output);
+            } catch (Exception $e) {
+                throw new RuntimeException(sprintf(
+                    'An error occurred when executing the command "%s"',
+                    'solr:indexer:queue'
+                ), 0, $e);
+            }
+        } finally {
+            $lock->release();
         }
     }
 
@@ -163,7 +165,7 @@ The <info>%command.name%</info> command starts a index of all the content from t
     }
 
     /**
-     * @return ContentTypeResolverInterface
+     * @return ResolverInterface
      */
     protected function getResolver()
     {
@@ -176,5 +178,13 @@ The <info>%command.name%</info> command starts a index of all the content from t
     protected function getRepository()
     {
         return $this->getContainer()->get('integrated_workflow.repository.definition');
+    }
+
+    /**
+     * @return Lock
+     */
+    protected function getLock()
+    {
+        return $this->getContainer()->get('integrated_workflow.lock.factory')->createLock(self::class);
     }
 }

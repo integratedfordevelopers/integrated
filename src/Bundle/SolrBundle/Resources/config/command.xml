@@ -9,9 +9,17 @@
         <service id="integrated_solr.command.indexer_run" class="Integrated\Bundle\SolrBundle\Command\IndexerRunCommand">
             <argument type="service" id="integrated_solr.indexer" />
             <argument type="service" id="integrated_queue.dbal.provider" />
+            <argument type="service" id="integrated_solr.lock.factory" />
             <argument type="service" id="integrated_solr.event_listeners.doctrine.clear" />
             <argument type="service" id="kernel" />
             <argument>%kernel.root_dir%/..</argument>
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_solr.command.worker" class="Integrated\Bundle\SolrBundle\Command\WorkerCommand">
+            <argument type="service" id="integrated_solr.worker" />
+            <argument type="service" id="integrated_solr.lock.factory" />
 
             <tag name="console.command" />
         </service>
