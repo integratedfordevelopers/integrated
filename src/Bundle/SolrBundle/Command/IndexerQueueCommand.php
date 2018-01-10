@@ -18,7 +18,7 @@ use Integrated\Common\Solr\Indexer\Job;
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Component\Console\Helper\ProgressHelper;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -187,10 +187,10 @@ The <info>%command.name%</info> command starts a index of the site.
         }
 
         if ($count = $result->count()) {
-            $progress = $this->getProgress();
+            $progress = new ProgressBar($output, $count);
 
             $progress->setRedrawFrequency(min(max(floor($count / 250), 1), 100));
-            $progress->setFormat(ProgressHelper::FORMAT_VERBOSE);
+            $progress->setFormat('verbose');
 
             $progress->start($output, $count);
 
@@ -222,9 +222,9 @@ The <info>%command.name%</info> command starts a index of the site.
      * Add all the documents in the cursor to the solr queue.
      *
      * @param Cursor         $cursor
-     * @param ProgressHelper $progress
+     * @param ProgressBar $progress
      */
-    protected function doIndex(Cursor $cursor, ProgressHelper $progress)
+    protected function doIndex(Cursor $cursor, ProgressBar $progress)
     {
         $queue = $this->getQueue();
 
@@ -303,14 +303,6 @@ The <info>%command.name%</info> command starts a index of the site.
     protected function getQuestion()
     {
         return $this->getHelper('question');
-    }
-
-    /**
-     * @return ProgressHelper
-     */
-    protected function getProgress()
-    {
-        return $this->getHelperSet()->get('progress');
     }
 
     /**

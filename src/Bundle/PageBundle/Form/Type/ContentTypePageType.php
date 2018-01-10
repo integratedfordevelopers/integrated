@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Integrated\Bundle\PageBundle\Form\EventListener\ContentTypePageListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -46,7 +47,7 @@ class ContentTypePageType extends AbstractType
         /** @var ContentTypePage $contentTypePage */
         $contentTypePage = $builder->getData();
 
-        $builder->add('path', 'text', [
+        $builder->add('path', TextType::class, [
             'label' => 'URL',
         ]);
 
@@ -86,7 +87,7 @@ class ContentTypePageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'integrated_page_content_type_page';
     }
