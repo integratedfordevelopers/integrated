@@ -35,7 +35,8 @@ trait SearchSelectionExtension
     public function searchSelection($id)
     {
         $searchSelection = $this->getContainer()
-            ->get('doctrine.odm.mongodb.document_manager')
+            ->get('doctrine_mongodb')
+            ->getManager()
             ->getRepository(SearchSelection::class)->find($id);
 
         if (!$searchSelection) {

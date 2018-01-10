@@ -7,11 +7,7 @@
     <services>
 
         <service id="integrated_storage.database" class="Integrated\Bundle\StorageBundle\Storage\Database\DoctrineODMDatabase">
-            <!--
-                Container put in intentionally, a developer can override the class parameter and make its own implementation.
-                The class its self is responsible for error checking its dependencies.
-             -->
-            <argument type="service" id="service_container" />
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
     </services>
