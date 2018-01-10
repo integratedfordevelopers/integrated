@@ -96,7 +96,7 @@ class BlockController extends Controller
         $form = $this->createCreateForm($block);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $dm = $this->getDocumentManager();
 
             $dm->persist($block);
@@ -129,7 +129,7 @@ class BlockController extends Controller
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDocumentManager()->flush();
 
             if ('iframe.html' === $request->getRequestFormat()) {
@@ -171,7 +171,7 @@ class BlockController extends Controller
         $form = $this->createDeleteForm($block->getId());
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $dm->remove($block);
             $dm->flush();
 

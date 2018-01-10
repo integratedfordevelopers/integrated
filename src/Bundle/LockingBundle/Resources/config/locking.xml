@@ -22,7 +22,7 @@
 			<argument type="service" id="integrated_locking.dbal.connection" />
 		</service>
 
-		<service id="integrated_locking.dbal.manager" class="%integrated_locking.dbal.manager.class%">
+		<service id="integrated_locking.dbal.manager" class="%integrated_locking.dbal.manager.class%" public="true">
 			<argument type="service" id="integrated_locking.dbal.connection" />
 			<argument type="collection">
 				<argument key="lock_table_name">locks</argument> <!-- config option -->

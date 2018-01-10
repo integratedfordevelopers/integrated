@@ -16,7 +16,7 @@
             <tag name="form.type" />
         </service>
 
-        <service id="integrated.form.resolver" alias="integrated_content.resolver.priority" />
+        <service id="integrated.form.resolver" alias="integrated_content.resolver.priority" public="true" />
 
         <service id="integrated_content.form.channel.repository" class="Doctrine\Common\Persistence\ObjectRepository">
             <factory service="doctrine_mongodb" method="getRepository" />

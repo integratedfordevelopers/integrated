@@ -29,7 +29,7 @@
 			<tag name="form.type" />
 		</service>
 
-		<service id="integrated_workflow.form.workflow.state.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowStateType">
+		<service id="integrated_workflow.form.workflow.state.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\WorkflowStateType" public="true">
 			<argument type="service" id="integrated_workflow.repository.definition" />
 			<tag name="form.type" />
 		</service>

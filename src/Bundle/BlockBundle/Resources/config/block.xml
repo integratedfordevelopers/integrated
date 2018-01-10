@@ -18,7 +18,7 @@
 
     <services>
 
-        <service id="integrated_block.templating.block_manager" class="%integrated_block.templating.block_manager.class%">
+        <service id="integrated_block.templating.block_manager" class="%integrated_block.templating.block_manager.class%" public="true">
             <argument type="service" id="integrated_block.registry.block_handler" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />

@@ -12,7 +12,7 @@
 
     <services>
 
-        <service id="integrated_storage.manager" class="Integrated\Bundle\StorageBundle\Storage\Manager">
+        <service id="integrated_storage.manager" class="Integrated\Bundle\StorageBundle\Storage\Manager" public="true">
             <argument type="service" id="integrated_storage.registry" />
             <argument type="service" id="integrated_storage.resolver" />
             <argument type="service" id="logger" on-invalid="ignore"/>
@@ -47,14 +47,14 @@
             <argument type="string">%integrated_storage.metadata_target%</argument>
         </service>
 
-        <service id="integrated_storage.filesystem_delete" class="Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove" />
+        <service id="integrated_storage.filesystem_delete" class="Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove\FilesystemRemove" public="true" />
 
         <service id="integrated_storage.cache_app" class="Integrated\Bundle\StorageBundle\Storage\Cache\AppCache">
             <argument>%kernel.cache_dir%</argument>
             <argument type="service" id="integrated_storage.manager" />
         </service>
 
-        <service id="integrated_storage.intent_writer" class="Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer">
+        <service id="integrated_storage.intent_writer" class="Integrated\Bundle\StorageBundle\Doctrine\ODM\Transformer\StorageIntentTransformer" public="true">
             <argument type="service" id="integrated_storage.manager" />
             <argument type="service" id="integrated_storage.decision" />
             <argument type="service" id="integrated_storage.metadata" />

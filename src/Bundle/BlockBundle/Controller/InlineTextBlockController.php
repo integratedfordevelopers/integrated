@@ -36,7 +36,7 @@ class InlineTextBlockController extends BlockController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDocumentManager()->persist($block);
             $this->getDocumentManager()->flush();
 

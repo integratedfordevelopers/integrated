@@ -108,7 +108,6 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
                     'required' => false,
 
                     'choices' => $choices,
-                    'choices_as_values' => true,
                     'choice_value' => 'id',
                     'choice_label' => 'name',
 

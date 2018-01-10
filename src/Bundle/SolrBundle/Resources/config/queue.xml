@@ -15,7 +15,7 @@
 			<argument type="service" id="integrated_queue.dbal.connection" />
 		</service>
 
-		<service id="integrated_queue.dbal.provider" class="Integrated\Common\Queue\Provider\DBAL\QueueProvider">
+		<service id="integrated_queue.dbal.provider" class="Integrated\Common\Queue\Provider\DBAL\QueueProvider" public="true">
 			<argument type="service" id="integrated_queue.dbal.connection" />
 			<argument type="collection">
 				<argument key="queue_table_name">queue</argument> <!-- config option -->

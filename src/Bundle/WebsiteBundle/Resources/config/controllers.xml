@@ -28,7 +28,7 @@
 
     <services>
 
-        <service id="integrated_website.controller.error" class="%integrated_website.controller.error.class%">
+        <service id="integrated_website.controller.error" class="%integrated_website.controller.error.class%" public="true">
             <argument type="service" id="twig" />
             <argument>%kernel.debug%</argument>
             <argument type="service" id="integrated_theme.templating.theme_manager" />

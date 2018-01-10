@@ -49,7 +49,6 @@ class ContentTypeChoice extends AbstractType
             ->setDefaults([
                 'multiple' => true,
                 'choices' => $choices,
-                'choices_as_values' => true,
                 'attr' => [
                     'class' => 'basic-multiple',
                 ],

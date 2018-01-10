@@ -64,7 +64,7 @@ class SearchSelectionController extends Controller
         $form = $this->createCreateForm($searchSelection);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDocumentManager()->persist($searchSelection);
             $this->getDocumentManager()->flush();
 
@@ -99,7 +99,7 @@ class SearchSelectionController extends Controller
         $form = $this->createEditForm($searchSelection);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDocumentManager()->flush();
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
@@ -136,7 +136,7 @@ class SearchSelectionController extends Controller
         $form = $this->createDeleteForm($searchSelection->getId(), count($referenced) > 0);
         $form->handleRequest($request);
 
-        if ($form->has('submit') && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDocumentManager()->remove($searchSelection);
             $this->getDocumentManager()->flush();
 
