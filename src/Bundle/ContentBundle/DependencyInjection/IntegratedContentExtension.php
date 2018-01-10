@@ -97,7 +97,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
                 case 'twig':
                     $container->prependExtensionConfig(
                         $name,
-                        ['form' => ['resources' => [$this->formTemplate]]]
+                        ['form_themes' => [$this->formTemplate]]
                     );
                     break;
             }
