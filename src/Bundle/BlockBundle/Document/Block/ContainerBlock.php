@@ -40,6 +40,7 @@ class ContainerBlock extends Block
     public function __construct()
     {
         parent::__construct();
+
         $this->items = new ArrayCollection();
     }
 

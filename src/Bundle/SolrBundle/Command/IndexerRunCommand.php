@@ -63,6 +63,7 @@ class IndexerRunCommand extends Command
 
     /**
      * IndexerRunCommand constructor.
+     *
      * @param Indexer                      $indexer
      * @param QueueProvider                $queueProvider
      * @param Factory                      $lockFactory

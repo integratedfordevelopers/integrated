@@ -168,6 +168,8 @@ class Item
         if ($this->hasAttribute($key)) {
             return $this->attributes[$key];
         }
+
+        return null;
     }
 
     /**

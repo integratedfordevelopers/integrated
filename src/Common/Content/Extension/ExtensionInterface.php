@@ -23,46 +23,8 @@ interface ExtensionInterface
      */
     public function getSubscribers();
 
-    //	/**
-    //	 * @return Dependency
-    //	 */
-    //	public function getDependencies();
-
     /**
      * @return string
      */
     public function getName();
-
-    //	/**
-//	 * @return string
-//	 */
-//	public function getDescription();
-//
-//	/**
-//	 * @return string
-//	 */
-//	public function getVersion();
 }
-
-//interface EventSubscriberInterface extends BaseEventSubscriberInterface
-//{
-//	public function
-//
-//	public function isSupported($class);
-//
-//	public function isDisabled($class);
-//}
-//
-//interface Dependency
-//{
-//	public function required();
-//
-//	public function optional();
-//}
-//
-//interface Specification
-//{
-//	public function required();
-//
-//	public function optional();
-//}

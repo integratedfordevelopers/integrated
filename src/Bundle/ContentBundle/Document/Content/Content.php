@@ -346,6 +346,8 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
         if ($references = $this->getReferencesByRelationId($relationId, $published)) {
             return $references->first();
         }
+
+        return null;
     }
 
     /**

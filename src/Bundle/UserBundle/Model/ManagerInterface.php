@@ -18,38 +18,10 @@ use Countable;
  */
 interface ManagerInterface /* extends Countable */
 {
-    //	/**
-    //	 * Create a user object
-    //	 *
-    //	 * @return object
-    //	 */
-    //	public function create();
-//
-    //	/**
-    //	 * Change or add the object to the manager
-    //	 *
-    //	 * @param object $object
-    //	 */
-    //	public function persist($object);
-//
-    //	/**
-    //	 * Remove the object from the manager
-    //	 *
-    //	 * @param object $object
-    //	 */
-    //	public function remove($object);
-
     /**
      * Delete all the managed objects.
      */
     public function clear();
-
-    //	/**
-    //	 * Returns total number of managed objects
-    //	 *
-    //	 * @return int
-    //	 */
-    //	public function count();
 
     /**
      * Finds the object by its identifier.

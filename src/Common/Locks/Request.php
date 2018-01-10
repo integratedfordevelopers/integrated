@@ -39,14 +39,6 @@ class Request implements RequestInterface
         $this->resource = $resource;
     }
 
-    //	/**
-    //	 * @param mixed $resource
-    //	 */
-    //	public function setResource($resource)
-    //	{
-    //		$this->resource = $resource;
-    //	}
-
     /**
      * {@inheritdoc}
      */
