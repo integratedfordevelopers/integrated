@@ -42,7 +42,7 @@ class FormBlock extends Block
     /**
      * @var string
      * @Type\Field(
-     *     type="text",
+     *     type="Symfony\Component\Form\Extension\Core\Type\TextType",
      *     options={
      *          "required"=false,
      *     }
@@ -53,7 +53,7 @@ class FormBlock extends Block
     /**
      * @var string
      * @Type\Field(
-     *     type="textarea",
+     *     type="Symfony\Component\Form\Extension\Core\Type\TextareaType",
      *     options={
      *          "required"=false,
      *     }
@@ -82,7 +82,7 @@ class FormBlock extends Block
     /**
      * @var bool
      * @Type\Field(
-     *      type="checkbox",
+     *      type="Symfony\Component\Form\Extension\Core\Type\CheckboxType",
      *      options={
      *          "required"=false
      *      }
