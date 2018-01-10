@@ -16,6 +16,7 @@
     <route id="integrated_block_block_show" path="/{id}" methods="GET">
         <default key="_controller">IntegratedBlockBundle:Block:show</default>
         <option key="expose">true</option>
+        <default key="_format">json</default>
     </route>
 
     <route id="integrated_block_block_edit" path="/{id}/edit" methods="GET|PUT">
