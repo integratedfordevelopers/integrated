@@ -132,7 +132,7 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
 
         $field = $event->getBuilder()->get($event->getField());
 
-        if ('integrated_editor' == $field->getType()->getName()) {
+        if ('integrated_editor' == $field->getType()->getBlockPrefix()) {
             $field->addViewTransformer(new CommentTagTransformer());
         }
     }
