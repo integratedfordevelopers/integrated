@@ -18,6 +18,7 @@ use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Type\MetadataType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -240,7 +241,7 @@ class BlockController extends Controller
 
         $builder->setAction($this->generateUrl('integrated_block_block_delete', ['id' => $id]));
         $builder->setMethod('DELETE');
-        $builder->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
+        $builder->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 
         return $builder->getForm();
     }
