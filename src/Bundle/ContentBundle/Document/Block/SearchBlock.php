@@ -29,7 +29,7 @@ class SearchBlock extends Block
      *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:Block\ContentBlock",
-     *          "property"="title",
+     *          "choice_label"="title",
      *          "placeholder"=""
      *      }
      * )

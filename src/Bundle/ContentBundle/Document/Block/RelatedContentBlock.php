@@ -69,7 +69,7 @@ class RelatedContentBlock extends Block
      *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:Relation\Relation",
-     *          "property"="name",
+     *          "choice_label"="name",
      *          "placeholder"=""
      *      }
      * )

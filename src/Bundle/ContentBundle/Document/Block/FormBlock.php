@@ -32,7 +32,7 @@ class FormBlock extends Block
      *      type="Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType",
      *      options={
      *          "class"="IntegratedContentBundle:ContentType\ContentType",
-     *          "property"="name",
+     *          "choice_label"="name",
      *          "placeholder"=""
      *      }
      * )
@@ -97,7 +97,7 @@ class FormBlock extends Block
      *      options={
      *          "label"="Link to content item",
      *          "class"="IntegratedContentBundle:Relation\Relation",
-     *          "property"="name",
+     *          "choice_label"="name",
      *          "placeholder"="Do not link",
      *          "required"=false,
      *      }
