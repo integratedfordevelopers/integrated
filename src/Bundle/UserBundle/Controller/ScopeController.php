@@ -62,18 +62,7 @@ class ScopeController extends Controller
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm(
-            ScopeFormType::class,
-            null,
-            [
-                'action' => $this->generateUrl('integrated_user_scope_new'),
-                'method' => 'POST',
-            ],
-            [
-                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -114,18 +103,7 @@ class ScopeController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(
-            ScopeFormType::class,
-            $scope,
-            [
-                'action' => $this->generateUrl('integrated_user_scope_edit', ['id' => $scope->getId()]),
-                'method' => 'PUT',
-            ],
-            [
-                'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createEditForm($scope);
 
         if ($request->isMethod('put')) {
             $form->handleRequest($request);
@@ -163,18 +141,7 @@ class ScopeController extends Controller
             return $this->redirect($this->generateUrl('integrated_user_scope_index'));
         }
 
-        $form = $this->createForm(
-            DeleteFormType::class,
-            $scope,
-            [
-                'action' => $this->generateUrl('integrated_user_scope_delete', ['id' => $scope->getId()]),
-                'method' => 'DELETE',
-            ],
-            [
-                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createDeleteForm($scope);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
@@ -219,20 +186,77 @@ class ScopeController extends Controller
     }
 
     /**
-     * {@inheritdoc}
+     * @return \Symfony\Component\Form\FormInterface
      */
-    public function createForm($type, $data = null, array $options = [], array $buttons = [])
+    protected function createNewForm()
     {
-        /** @var FormBuilder $form */
-        $form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+        $form = $this->createForm(
+            ScopeFormType::class,
+            null,
+            [
+                'action' => $this->generateUrl('integrated_user_scope_new'),
+                'method' => 'POST',
+            ]
+        );
 
-        if ($buttons) {
-            $form->add('actions', FormActionsType::class, [
-                'buttons' => $buttons,
-            ]);
-        }
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
 
-        return $form->getForm();
+        return $form;
+    }
+
+    /**
+     * @param Scope $scope
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    protected function createEditForm(Scope $scope)
+    {
+        $form = $this->createForm(
+            ScopeFormType::class,
+            $scope,
+            [
+                'action' => $this->generateUrl('integrated_user_scope_edit', ['id' => $scope->getId()]),
+                'method' => 'PUT',
+            ]
+        );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
+
+        return $form;
+    }
+
+    /**
+     * @param Scope $scope
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    protected function createDeleteForm(Scope $scope)
+    {
+        $form = $this->createForm(
+            DeleteFormType::class,
+            $scope,
+            [
+                'action' => $this->generateUrl('integrated_user_scope_delete', ['id' => $scope->getId()]),
+                'method' => 'DELETE',
+            ]
+        );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
+
+        return $form;
     }
 
     /**

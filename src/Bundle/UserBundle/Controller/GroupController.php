@@ -14,6 +14,7 @@ namespace Integrated\Bundle\UserBundle\Controller;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\GroupFormType;
+use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Bundle\UserBundle\Model\GroupManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -58,18 +59,7 @@ class GroupController extends Controller
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm(
-            GroupFormType::class,
-            null,
-            [
-                'action' => $this->generateUrl('integrated_user_group_new'),
-                'method' => 'POST',
-            ],
-            [
-                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -111,18 +101,7 @@ class GroupController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(
-            GroupFormType::class,
-            $group,
-            [
-                'action' => $this->generateUrl('integrated_user_group_edit', ['id' => $group->getId()]),
-                'method' => 'PUT',
-            ],
-            [
-                'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createEditForm($group);
 
         if ($request->isMethod('put')) {
             $form->handleRequest($request);
@@ -161,18 +140,7 @@ class GroupController extends Controller
             return $this->redirect($this->generateUrl('integrated_user_group_index')); // group is already gone
         }
 
-        $form = $this->createForm(
-            DeleteFormType::class,
-            $group,
-            [
-                'action' => $this->generateUrl('integrated_user_group_delete', ['id' => $group->getId()]),
-                'method' => 'DELETE',
-            ],
-            [
-                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createDeleteForm($group);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
@@ -197,20 +165,77 @@ class GroupController extends Controller
     }
 
     /**
-     * {@inheritdoc}
+     * @return \Symfony\Component\Form\FormInterface
      */
-    public function createForm($type, $data = null, array $options = [], array $buttons = [])
+    protected function createNewForm()
     {
-        /** @var FormBuilder $form */
-        $form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+        $form = $this->createForm(
+            GroupFormType::class,
+            null,
+            [
+                'action' => $this->generateUrl('integrated_user_group_new'),
+                'method' => 'POST',
+            ]
+        );
 
-        if ($buttons) {
-            $form->add('actions', FormActionsType::class, [
-                'buttons' => $buttons,
-            ]);
-        }
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
 
-        return $form->getForm();
+        return $form;
+    }
+
+    /**
+     * @param GroupInterface $group
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    protected function createEditForm(GroupInterface $group)
+    {
+        $form = $this->createForm(
+            GroupFormType::class,
+            $group,
+            [
+                'action' => $this->generateUrl('integrated_user_group_new'),
+                'method' => 'POST',
+            ]
+        );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
+
+        return $form;
+    }
+
+    /**
+     * @param GroupInterface $group
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    protected function createDeleteForm(GroupInterface $group)
+    {
+        $form = $this->createForm(
+            DeleteFormType::class,
+            $group,
+            [
+                'action' => $this->generateUrl('integrated_user_group_delete', ['id' => $group->getId()]),
+                'method' => 'DELETE',
+            ]
+        );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
+
+        return $form;
     }
 
     /**
