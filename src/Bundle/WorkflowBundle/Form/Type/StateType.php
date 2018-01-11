@@ -76,19 +76,16 @@ class StateType extends AbstractType
         $builder->add('comment', Type\ChoiceType::class, [
             'expanded' => true,
             'choices' => $choiceFlags,
-            'choices_as_values' => true,
         ]);
 
         $builder->add('assignee', Type\ChoiceType::class, [
             'expanded' => true,
             'choices' => $choiceFlags,
-            'choices_as_values' => true,
         ]);
 
         $builder->add('deadline', Type\ChoiceType::class, [
             'expanded' => true,
             'choices' => $choiceFlags,
-            'choices_as_values' => true,
         ]);
 
         $builder->add('permissions', PermissionsType::class, ['required' => false]);
@@ -103,7 +100,6 @@ class StateType extends AbstractType
                 'mapped' => false,
 
                 'choices' => [],
-                'choices_as_values' => true,
 
                 'multiple' => true,
                 'expanded' => false,

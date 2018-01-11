@@ -96,7 +96,6 @@ class WorkflowStateListener implements EventSubscriberInterface
             'label' => 'Next status',
 
             'choices' => $choices,
-            'choices_as_values' => true,
             'choice_value' => 'id',
             'choice_label' => 'name',
 

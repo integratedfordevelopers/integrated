@@ -35,7 +35,6 @@ class PhonenumberType extends AbstractType
                     'Work' => 'work',
                     'Home' => 'home',
                 ],
-                'choices_as_values' => true,
             ]);
         }
 
