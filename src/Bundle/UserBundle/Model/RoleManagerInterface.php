@@ -44,13 +44,6 @@ interface RoleManagerInterface extends ManagerInterface
      */
     public function clear();
 
-    //	/**
-    //	 * Return the total number of roles
-    //	 *
-    //	 * @return int
-    //	 */
-    //	public function count();
-
     /**
      * Finds the role by its identifier.
      *

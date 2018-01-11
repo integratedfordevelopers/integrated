@@ -42,13 +42,6 @@ interface GroupManagerInterface extends ManagerInterface
      */
     public function clear();
 
-    //	/**
-    //	 * Return the total number of users
-    //	 *
-    //	 * @return int
-    //	 */
-    //	public function count();
-
     /**
      * Finds the group by its identifier.
      *

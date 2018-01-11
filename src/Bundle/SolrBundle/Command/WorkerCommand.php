@@ -11,17 +11,40 @@
 
 namespace Integrated\Bundle\SolrBundle\Command;
 
+use Integrated\Common\Solr\Task\Worker;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\LockHandler;
+use Symfony\Component\Lock\Factory;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class WorkerCommand extends ContainerAwareCommand
 {
+    /**
+     * @var Factory
+     */
+    private $factory;
+
+    /**
+     * @var Worker
+     */
+    private $worker;
+
+    /**
+     * @param Worker  $worker
+     * @param Factory $factory
+     */
+    public function __construct(Worker $worker, Factory $factory)
+    {
+        parent::__construct();
+
+        $this->worker = $worker;
+        $this->factory = $factory;
+    }
+
     /**
      * @see Command
      */
@@ -45,20 +68,18 @@ The <info>%command.name%</info> command starts a solr worker run.
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lock = new LockHandler(self::class);
+        $lock = $this->factory->createLock(self::class);
 
-        if (!$lock->lock()) {
+        if (!$lock->acquire()) {
             return;
         }
 
         try {
-            $worker = $this->getContainer()->get('integrated_solr.worker');
-
             if (null !== ($tasks = $input->getOption('tasks'))) {
-                $worker->setOption('tasks', (int) $tasks);
+                $this->worker->setOption('tasks', (int) $tasks);
             }
 
-            $worker->execute();
+            $this->worker->execute();
         } finally {
             $lock->release();
         }

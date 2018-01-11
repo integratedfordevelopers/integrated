@@ -110,9 +110,6 @@ class ContentSubscriber implements ContentSubscriberInterface
             $user->setRelation($content);
 
             $this->getManager()->persist($user);
-
-            //			$content->getMetadata()->set('user_id', $user->getId());
-//			$content->getMetadata()->set('user.id', $user->getId());
         }
     }
 

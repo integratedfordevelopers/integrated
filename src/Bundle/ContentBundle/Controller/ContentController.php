@@ -25,7 +25,6 @@ use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Filesystem\LockHandler;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -423,14 +422,16 @@ class ContentController extends Controller
                 $dm->flush();
 
                 if ($this->has('integrated_solr.indexer')) {
-                    $solrLock = new LockHandler('content:edited:solr');
-                    $solrLock->lock(true);
+                    $lock = $this->get('integrated_solr.lock.factory')->createLock(self::class);
+                    $lock->acquire(true);
 
-                    $indexer = $this->get('integrated_solr.indexer');
-                    $indexer->setOption('queue.size', 2);
-                    $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-
-                    $solrLock->release();
+                    try {
+                        $indexer = $this->get('integrated_solr.indexer');
+                        $indexer->setOption('queue.size', 2);
+                        $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+                    } finally {
+                        $lock->release();
+                    }
                 }
 
                 if ($request->getRequestFormat() == 'iframe.html') {
@@ -546,14 +547,16 @@ class ContentController extends Controller
                     );
 
                     if ($this->has('integrated_solr.indexer')) {
-                        $solrLock = new LockHandler('content:edited:solr');
-                        $solrLock->lock(true);
+                        $lock = $this->get('integrated_solr.lock.factory')->createLock(self::class);
+                        $lock->acquire(true);
 
-                        $indexer = $this->get('integrated_solr.indexer');
-                        $indexer->setOption('queue.size', 2);
-                        $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
-
-                        $solrLock->release();
+                        try {
+                            $indexer = $this->get('integrated_solr.indexer');
+                            $indexer->setOption('queue.size', 2);
+                            $indexer->execute(); // lets hope that the gods of random is in our favor as there is no way to guarantee that this will do what we want
+                        } finally {
+                            $lock->release();
+                        }
                     }
 
                     if (!$locking['locked']) {

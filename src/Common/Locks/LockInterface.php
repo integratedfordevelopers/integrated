@@ -18,16 +18,6 @@ use Datetime;
  */
 interface LockInterface
 {
-    //	/**
-    //	 * Release this lock
-    //	 */
-    //	public function release();
-//
-    //	/**
-    //	 * Refresh this lock
-    //	 */
-    //	public function refresh();
-
     /**
      * Get the lock identifier.
      *
