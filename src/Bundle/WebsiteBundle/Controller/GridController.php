@@ -37,7 +37,7 @@ class GridController extends Controller
             return new JsonResponse(['error' => 'No page specified']);
         }
 
-        $dm = $this->get('doctrine_mongodb.odm.document_manager');
+        $dm = $this->get('doctrine_mongodb')->getManager();
 
         /** @var AbstractPage $page */
         if (!$page = $dm->getRepository(AbstractPage::class)->find($data['page'])) {
