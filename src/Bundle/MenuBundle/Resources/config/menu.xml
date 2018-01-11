@@ -12,7 +12,7 @@
 
     <services>
 
-        <service id="integrated_menu.menu.database_menu_factory" class="%integrated_menu.menu.database_menu_factory.class%">
+        <service id="integrated_menu.menu.database_menu_factory" class="%integrated_menu.menu.database_menu_factory.class%" public="true">
             <argument>%integrated_menu.document.menu.class%</argument>
             <argument>%integrated_menu.document.menu_item.class%</argument>
         </service>

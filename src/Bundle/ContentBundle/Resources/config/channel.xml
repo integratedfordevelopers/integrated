@@ -25,7 +25,7 @@
 			<tag name="kernel.event_subscriber" />
 		</service>
 
-		<service id="channel.context" alias="integrated_content.channel.context" />
+		<service id="channel.context" alias="integrated_content.channel.context" public="true" />
 		
 	</services>
 

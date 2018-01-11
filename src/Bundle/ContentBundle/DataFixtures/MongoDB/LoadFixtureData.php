@@ -15,6 +15,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ArrayCollectionExtension;
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Nelmio\Alice\Fixtures;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;

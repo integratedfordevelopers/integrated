@@ -6,7 +6,7 @@
 
     <services>
 
-        <service id="integrated_page.form.type.page" class="Integrated\Bundle\PageBundle\Form\Type\PageType">
+        <service id="integrated_page.form.type.page" class="Integrated\Bundle\PageBundle\Form\Type\PageType" public="true">
             <tag name="form.type" />
         </service>
 

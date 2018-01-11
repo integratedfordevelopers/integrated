@@ -30,7 +30,7 @@
 
         <service id="integrated_block.metadata.factory.event_dispatcher" class="%integrated_block.metadata.factory.event_dispatcher.class%" public="false" />
 
-        <service id="integrated_block.metadata.factory" class="%integrated_block.metadata.factory.class%">
+        <service id="integrated_block.metadata.factory" class="%integrated_block.metadata.factory.class%" public="true">
             <argument type="service" id="integrated_block.metadata.driver" />
             <argument>%integrated_block.metadata.factory.type.class%</argument>
 

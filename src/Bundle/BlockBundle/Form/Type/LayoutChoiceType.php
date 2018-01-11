@@ -41,7 +41,6 @@ class LayoutChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices_as_values' => true,
             'choice_label' => function ($value) {
                 return $value;
             },

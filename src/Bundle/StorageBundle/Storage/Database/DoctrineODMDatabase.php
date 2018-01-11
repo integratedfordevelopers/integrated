@@ -11,10 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Database;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Storage\Database\DatabaseInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -22,16 +21,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DoctrineODMDatabase implements DatabaseInterface
 {
     /**
-     * @var ContainerInterface
+     * @var DocumentManager
      */
-    protected $container;
+    protected $dm;
 
     /**
-     * {@inheritdoc}
+     * @param DocumentManager $dm
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(DocumentManager $dm)
     {
-        $this->container = $container;
+        $this->dm = $dm;
     }
 
     /**
@@ -39,10 +38,10 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function getRows()
     {
-        return $this->container->get('doctrine_mongodb.odm.default_document_manager')
+        return $this->dm
             ->getConnection()
             ->selectCollection(
-                $this->container->get('doctrine_mongodb.odm.default_configuration')->getDefaultDB(),
+                $this->dm->getConfiguration()->getDefaultDB(),
                 'content'
             )
             ->find()
@@ -57,21 +56,21 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function saveRow(array $row)
     {
-        return $this->container->get('doctrine_mongodb.odm.default_connection')
+        return $this->dm->getConnection()
             // Use parameters for the database
             ->selectCollection(
-                $this->container->get('doctrine_mongodb.odm.default_configuration')->getDefaultDB(),
+                $this->dm->getConfiguration()->getDefaultDB(),
                 'content'
             )
             ->update(['_id' => $row['_id']], $row);
     }
 
     /**
-     * @return ContentInterface[]
+     * @{@inheritdoc}
      */
     public function getObjects()
     {
-        return $this->container->get('doctrine.odm.mongodb.document_manager')
+        return $this->dm
             ->getUnitOfWork()
             ->getDocumentPersister(Content::class)
             ->loadAll()
@@ -85,8 +84,7 @@ class DoctrineODMDatabase implements DatabaseInterface
      */
     public function saveObject($object)
     {
-        $dm = $this->container->get('doctrine.odm.mongodb.document_manager');
-        $dm->persist($object);
-        $dm->flush($object);
+        $this->dm->persist($object);
+        $this->dm->flush($object);
     }
 }

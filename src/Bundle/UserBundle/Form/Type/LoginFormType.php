@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Integrated\Bundle\UserBundle\Form\EventListener\SecurityLoginListener;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -90,7 +91,7 @@ class LoginFormType extends AbstractType
                 $config['mapped'] = false;
             }
 
-            $builder->add('_target_path', 'hidden', $config);
+            $builder->add('_target_path', HiddenType::class, $config);
         }
 
         $builder->add('login', Type\SubmitType::class);

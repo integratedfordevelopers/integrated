@@ -15,21 +15,19 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * @author Johnny Borg <johnny@e-active.nl>
+ * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-class EventDispatcherPass implements CompilerPassInterface
+class BraincraftedFlashMessagePass implements CompilerPassInterface
 {
-    const TAG = 'integrated_content.event';
-
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $dispatcher = $container->getDefinition('integrated_content.event_dispatcher');
-
-        foreach ($container->findTaggedServiceIds(self::TAG) as $service => $tags) {
-            $dispatcher->addMethodCall('addSubscriber', [$container->getDefinition($service)]);
+        if (!$container->hasDefinition('braincrafted_bootstrap.flash')) {
+            return;
         }
+
+        $container->getDefinition('braincrafted_bootstrap.flash')->setPublic(true);
     }
 }

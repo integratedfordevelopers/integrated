@@ -43,7 +43,7 @@
             <factory service="integrated_channel.config.resolver.priority_builder" method="getResolver" />
         </service>
 
-        <service id="integrated_channel.config.resolver" alias="integrated_channel.config.resolver.priority" />
+        <service id="integrated_channel.config.resolver" alias="integrated_channel.config.resolver.priority" public="true"/>
 
         <service id="integrated_channel.config.manager" alias="integrated_channel.manager.config" />
 

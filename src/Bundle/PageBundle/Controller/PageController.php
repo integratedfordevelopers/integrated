@@ -64,7 +64,7 @@ class PageController extends Controller
         $form = $this->createCreateForm($page);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $channel = $this->getSelectedChannel();
 
             $page->setChannel($channel);
@@ -99,7 +99,7 @@ class PageController extends Controller
         $form = $this->createEditForm($page);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $channel = $this->getSelectedChannel();
 
             $this->getDocumentManager()->flush();
@@ -134,7 +134,7 @@ class PageController extends Controller
         $form = $this->createDeleteForm($page->getId());
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $channel = $this->getSelectedChannel();
 
             $dm = $this->getDocumentManager();

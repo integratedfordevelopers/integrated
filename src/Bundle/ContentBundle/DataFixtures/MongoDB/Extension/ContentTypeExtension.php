@@ -32,7 +32,8 @@ trait ContentTypeExtension
     public function contentType($id)
     {
         return $this->getContainer()
-            ->get('doctrine.odm.mongodb.document_manager')
+            ->get('doctrine_mongodb')
+            ->getManager()
             ->getRepository(ContentType::class)->find($id)
         ;
     }

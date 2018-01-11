@@ -13,7 +13,7 @@
 
     <services>
 
-        <service id="integrated_channel.controller.config" class="%integrated_channel.controller.config.class%">
+        <service id="integrated_channel.controller.config" class="%integrated_channel.controller.config.class%" public="true">
             <argument type="service" id="integrated_channel.config.manager" />
             <argument type="service" id="integrated_channel.adapter.registry" />
             <argument type="service" id="event_dispatcher" />

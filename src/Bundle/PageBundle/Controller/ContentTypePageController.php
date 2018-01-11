@@ -12,6 +12,8 @@
 namespace Integrated\Bundle\PageBundle\Controller;
 
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
+use Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -88,7 +90,7 @@ class ContentTypePageController extends Controller
         $channel = $page->getChannel();
 
         $form = $this->createForm(
-            'integrated_page_content_type_page',
+            ContentTypePageType::class,
             $page,
             [
                 'method' => 'PUT',
@@ -97,7 +99,7 @@ class ContentTypePageController extends Controller
             ]
         );
 
-        $form->add('submit', 'submit', ['label' => 'Save']);
+        $form->add('submit', SubmitType::class, ['label' => 'Save']);
 
         return $form;
     }

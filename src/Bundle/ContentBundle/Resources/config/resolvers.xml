@@ -23,7 +23,7 @@
             <tag name="integrated_content.resolver" />
         </service>
 
-        <service id="integrated_content.resolver" alias="integrated_content.resolver.priority" />
+        <service id="integrated_content.resolver" alias="integrated_content.resolver.priority" public="true" />
 
     </services>
 

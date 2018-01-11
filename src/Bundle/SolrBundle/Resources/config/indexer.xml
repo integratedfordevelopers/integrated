@@ -15,14 +15,14 @@
             <tag name="integrated_solr.event_subscriber" />
         </service>
 
-		<service id="integrated_solr.indexer.mongodb.subscriber" class="Integrated\MongoDB\Solr\Indexer\QueueSubscriber">
+		<service id="integrated_solr.indexer.mongodb.subscriber" class="Integrated\MongoDB\Solr\Indexer\QueueSubscriber" public="true">
 			<argument type="service" id="integrated_solr.queue.indexer" /> <!-- should be a config option -->
 			<argument type="service" id="integrated_solr.indexer.serializer" />
 
 			<tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
 		</service>
 
-		<service id="integrated_solr.indexer.serializer" class="Symfony\Component\Serializer\Serializer">
+		<service id="integrated_solr.indexer.serializer" class="Symfony\Component\Serializer\Serializer" public="true">
 			<argument type="collection">
 				<argument type="service" id="integrated_solr.indexer.serializer.normalizer.mongodb" /> <!-- normalizers should be taggable -->
 			</argument>
@@ -50,7 +50,7 @@
 
 		<service id="integrated_solr.indexer.client" alias="integrated_solr.solarium.client.indexer" />
 
-		<service id="integrated_solr.indexer" class="Integrated\Common\Solr\Indexer\Indexer">
+		<service id="integrated_solr.indexer" class="Integrated\Common\Solr\Indexer\Indexer" public="true">
             <argument type="service" id="integrated_solr.indexer.command_factory" />
 
 			<call method="setQueue">

@@ -18,6 +18,7 @@ use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Type\MetadataType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -95,7 +96,7 @@ class BlockController extends Controller
         $form = $this->createCreateForm($block);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $dm = $this->getDocumentManager();
 
             $dm->persist($block);
@@ -128,7 +129,7 @@ class BlockController extends Controller
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDocumentManager()->flush();
 
             if ('iframe.html' === $request->getRequestFormat()) {
@@ -170,7 +171,7 @@ class BlockController extends Controller
         $form = $this->createDeleteForm($block->getId());
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $dm->remove($block);
             $dm->flush();
 
@@ -240,7 +241,7 @@ class BlockController extends Controller
 
         $builder->setAction($this->generateUrl('integrated_block_block_delete', ['id' => $id]));
         $builder->setMethod('DELETE');
-        $builder->add('submit', 'submit', ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
+        $builder->add('submit', SubmitType::class, ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]);
 
         return $builder->getForm();
     }

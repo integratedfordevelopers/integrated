@@ -46,7 +46,7 @@
      */
     var refreshBlock = function($block) {
         $.ajax({
-            url: Routing.generate('integrated_block_block_show', { 'id': $block.data('id'), '_format': 'json' }),
+            url: Routing.generate('integrated_block_block_show', { 'id': $block.data('id') }),
             dataType: 'json',
             success: function(data) {
                 $block.html(data.html);

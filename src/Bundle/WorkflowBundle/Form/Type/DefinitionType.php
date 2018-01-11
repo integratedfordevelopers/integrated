@@ -88,7 +88,6 @@ class DefinitionType extends AbstractType
         $resolver->setDefault('choice_data', 'object');
         $resolver->setDefault('choice_value', 'id');
         $resolver->setDefault('choice_label', 'name');
-        $resolver->setDefault('choices_as_values', true);
         $resolver->addAllowedValues('choice_data', ['object', 'scalar']);
 
         $resolver->setDefault('placeholder', 'None');

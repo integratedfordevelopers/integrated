@@ -14,14 +14,16 @@ namespace Integrated\MongoDB\Serializer\Normalizer;
 use Exception;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DocumentNormalizer extends SerializerAwareNormalizer implements NormalizerInterface, DenormalizerInterface
+class DocumentNormalizer implements NormalizerInterface, DenormalizerInterface
 {
+    use SerializerAwareTrait;
+
     /**
      * @var DocumentManager
      */

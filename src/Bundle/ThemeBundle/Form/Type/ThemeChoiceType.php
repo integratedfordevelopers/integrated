@@ -40,8 +40,7 @@ class ThemeChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => $this->getChoices(),
-            'choices_as_values' => true,
+            'choices' => $this->getChoices()
         ]);
     }
 

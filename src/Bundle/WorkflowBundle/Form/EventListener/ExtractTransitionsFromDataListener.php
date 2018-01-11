@@ -49,7 +49,6 @@ class ExtractTransitionsFromDataListener implements EventSubscriberInterface
             'required' => false,
 
             'choices' => $this->getChoices($event->getData()),
-            'choices_as_values' => true,
             'choice_value' => 'id',
             'choice_label' => 'name',
 

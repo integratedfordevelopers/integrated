@@ -32,7 +32,8 @@ trait RelationExtension
     public function relation($id)
     {
         return $this->getContainer()
-            ->get('doctrine.odm.mongodb.document_manager')
+            ->get('doctrine_mongodb')
+            ->getManager()
             ->getRepository(Relation::class)->find($id)
         ;
     }

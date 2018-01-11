@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle;
 
+use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\BraincraftedFlashMessagePass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ContentProviderPass;
-use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\EventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegistryBuilderPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\FormFactoryEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\MetadataEventDispatcherPass;
@@ -23,6 +23,7 @@ use Integrated\Common\Bulk\DependencyInjection\ConfigProviderBuilderPass;
 use Integrated\Common\Bulk\DependencyInjection\FactoryRegistryBuilderPass;
 use Integrated\Common\Normalizer\DependencyInjection\RegistryBuilderPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -45,11 +46,17 @@ class IntegratedContentBundle extends Bundle
         $container->addCompilerPass(new MetadataEventDispatcherPass());
         $container->addCompilerPass(new PriorityResolverBuilderPass());
         $container->addCompilerPass(new ThemeManagerPass());
-        $container->addCompilerPass(new EventDispatcherPass());
         $container->addCompilerPass(new RegistryBuilderPass('integrated_content.json_ld.registry_builder', 'integrated_content.json_ld.processor'));
         $container->addCompilerPass(new FactoryRegistryBuilderPass('integrated_content.bulk.handler_registry_builder', 'integrated_content.bulk.handler'));
         $container->addCompilerPass(new ConfigProviderBuilderPass('integrated_content.bulk.form.chain_provider_builder', 'integrated_content.bulk.form.provider'));
         $container->addCompilerPass(new ContentProviderPass());
+        $container->addCompilerPass(new BraincraftedFlashMessagePass());
+
+        $container->addCompilerPass(new RegisterListenersPass(
+            'integrated_content.event_dispatcher',
+            'integrated_content.event_listener',
+            'integrated_content.event_subscriber'
+        ));
     }
 
     /**

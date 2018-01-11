@@ -31,7 +31,6 @@ class BulkSelectionType extends AbstractType
         $builder->add('selection', ChoiceType::class, [
             'label' => false,
             'choices' => $options['content'],
-            'choices_as_values' => true,
             'error_bubbling' => true,
             'multiple' => true,
             'expanded' => true,

@@ -10,7 +10,7 @@
 
     <services>
 
-        <service id="integrated_comment.controller.default" class="%integrated_comment.controller.default.class%">
+        <service id="integrated_comment.controller.default" class="%integrated_comment.controller.default.class%" public="true">
             <argument type="service" id="templating" />
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="form.factory" />

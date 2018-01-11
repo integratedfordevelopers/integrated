@@ -45,8 +45,7 @@ class RoleType extends AbstractType
         $resolver->setDefault('expanded', true);
 
         $resolver->setDefaults([
-            'choices' => array_flip($this->manager->getRolesFromSources()),
-            'choices_as_values' => true,
+            'choices' => array_flip($this->manager->getRolesFromSources())
         ]);
     }
 

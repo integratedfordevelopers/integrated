@@ -86,7 +86,6 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
                 'mapped' => false,
 
                 'choices' => $this->getChoicesFiltered($data, $child->getName()),
-                'choices_as_values' => true,
                 'choice_label' => 'label',
                 'choice_value' => 'value',
 

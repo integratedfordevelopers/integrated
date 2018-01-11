@@ -32,7 +32,6 @@ class ContentTypeChannelsType extends AbstractType
                 'Enable but hide channel field' => 'hidden',
                 'Disable channel field' => 'disabled',
             ],
-            'choices_as_values' => true,
             'required' => false,
         ]);
 

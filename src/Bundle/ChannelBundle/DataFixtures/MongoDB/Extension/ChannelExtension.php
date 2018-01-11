@@ -35,7 +35,8 @@ trait ChannelExtension
     public function channel($id)
     {
         $channel = $this->getContainer()
-            ->get('doctrine.odm.mongodb.document_manager')
+            ->get('doctrine_mongodb')
+            ->getManager()
             ->getRepository(Channel::class)->find($id);
 
         if (!$channel) {

@@ -70,13 +70,13 @@ class IntegratedSolrExtension extends Extension
 
         $container->setDefinition(
             'solarium.client',
-            new Definition(
+            (new Definition(
                 Client::class,
                 [
                     ['endpoint' => $endpoints],
                     new Reference('integrated_solr.event.dispatcher'),
                 ]
-            )
+            ))->setPublic(true)
         );
 
         if ($container->getParameter('kernel.debug')) {

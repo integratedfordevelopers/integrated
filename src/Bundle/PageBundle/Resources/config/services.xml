@@ -10,12 +10,12 @@
             <argument type="service" id="integrated_theme.templating.theme_manager" />
         </service>
 
-        <service id="integrated_page.theme_resolver" class="Integrated\Bundle\PageBundle\Resolver\ThemeResolver">
+        <service id="integrated_page.theme_resolver" class="Integrated\Bundle\PageBundle\Resolver\ThemeResolver" public="true">
             <argument type="service" id="integrated_channel.config.resolver" />
             <argument type="service" id="integrated_theme.templating.theme_manager" />
         </service>
 
-        <service id="integrated_page.grid.factory" class="Integrated\Bundle\PageBundle\Grid\GridFactory">
+        <service id="integrated_page.grid.factory" class="Integrated\Bundle\PageBundle\Grid\GridFactory" public="true">
             <argument type="service" id="integrated_block.block_repository" />
         </service>
 
@@ -26,7 +26,7 @@
             <argument type="service" id="doctrine_mongodb.odm.document_manager" />
         </service>
 
-        <service id="integrated_page.services.route_cache" class="Integrated\Bundle\PageBundle\Services\RouteCache">
+        <service id="integrated_page.services.route_cache" class="Integrated\Bundle\PageBundle\Services\RouteCache" public="true">
             <argument type="string">%kernel.cache_dir%</argument>
         </service>
 
