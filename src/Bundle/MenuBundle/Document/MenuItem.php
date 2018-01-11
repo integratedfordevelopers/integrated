@@ -112,6 +112,8 @@ class MenuItem extends KnpMenuItem
                 return $child;
             }
         }
+
+        return null;
     }
 
     /**

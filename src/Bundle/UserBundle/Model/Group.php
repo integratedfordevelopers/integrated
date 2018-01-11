@@ -99,22 +99,6 @@ class Group implements GroupInterface
         return $this->roles->toArray();
     }
 
-    //	/**
-    //	 * @inheritdoc
-    //	 */
-    //	public function serialize()
-    //	{
-    //		// TODO: Implement serialize() method.
-    //	}
-//
-    //	/**
-    //	 * @inheritdoc
-    //	 */
-    //	public function unserialize($serialized)
-    //	{
-    //		// TODO: Implement unserialize() method.
-    //	}
-
     /**
      * Get the string representation of the group object.
      *

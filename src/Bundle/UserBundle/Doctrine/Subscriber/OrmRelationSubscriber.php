@@ -61,7 +61,6 @@ class OrmRelationSubscriber implements EventSubscriber
 
         $prop = $metadata->getReflectionClass()->getProperty('relation_instance');
         $prop->setAccessible(true);
-        //		$prop->setValue($object, $this->dm->getReference('Integrated\\Bundle\\ContentBundle\\Document\\Content\\Content', $id));
         $prop->setValue($object, $this->dm->getManager()->getRepository('Integrated\\Bundle\\ContentBundle\\Document\\Content\\Content')->find($id));
     }
 }

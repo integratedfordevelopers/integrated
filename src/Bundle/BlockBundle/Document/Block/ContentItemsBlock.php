@@ -42,9 +42,7 @@ class ContentItemsBlock extends Block
      */
     public function getItems()
     {
-        $items = $this->items->toArray();
-
-        return $items;
+        return $this->items->toArray();
     }
 
     /**

@@ -23,8 +23,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Lock\Factory;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Filesystem\LockHandler;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -42,6 +42,11 @@ class IndexerRunCommand extends Command
     protected $queueProvider;
 
     /**
+     * @var Factory
+     */
+    protected $lockFactory;
+
+    /**
      * @var string
      */
     protected $workingDirectory;
@@ -57,18 +62,28 @@ class IndexerRunCommand extends Command
     protected $kernel;
 
     /**
+     * IndexerRunCommand constructor.
+     *
      * @param Indexer                      $indexer
      * @param QueueProvider                $queueProvider
-     * @param KernelInterface              $kernel
+     * @param Factory                      $lockFactory
      * @param DoctrineClearEventSubscriber $clearEventSubscriber
+     * @param KernelInterface              $kernel
      * @param string                       $workingDirectory
      */
-    public function __construct(Indexer $indexer, QueueProvider $queueProvider, DoctrineClearEventSubscriber $clearEventSubscriber, KernelInterface $kernel, $workingDirectory)
-    {
+    public function __construct(
+        Indexer $indexer,
+        QueueProvider $queueProvider,
+        Factory $lockFactory,
+        DoctrineClearEventSubscriber $clearEventSubscriber,
+        KernelInterface $kernel,
+        $workingDirectory
+    ) {
         parent::__construct();
 
         $this->indexer = $indexer;
         $this->queueProvider = $queueProvider;
+        $this->lockFactory = $lockFactory;
         $this->workingDirectory = $workingDirectory;
         $this->clearEventSubscriber = $clearEventSubscriber;
         $this->kernel = $kernel;
@@ -141,21 +156,18 @@ The <info>%command.name%</info> command starts a indexer run.
     private function runInternal($lock, OutputInterface $output)
     {
         try {
-            $lock = new LockHandler($lock);
-            $attempts = 0;
-            while (!$lock->lock()) {
-                // Retry for almost a minute, otherwise don't throw an error (after all another indexer is running)
-                if ($attempts++ >= 10) {
-                    return 0;
+            $lock = $this->lockFactory->createLock(self::class);
+            $lock->acquire(true);
+
+            try {
+                if ($output->isDebug() && method_exists($this->indexer, 'setDebug')) {
+                    $this->indexer->setDebug();
                 }
-                sleep(5);
-            }
 
-            if ($output->isDebug() && method_exists($this->indexer, 'setDebug')) {
-                $this->indexer->setDebug();
+                $this->indexer->execute();
+            } finally {
+                $lock->release();
             }
-
-            $this->indexer->execute();
         } catch (Exception $e) {
             $output->writeln('Aborting: '.$e->getMessage());
 
