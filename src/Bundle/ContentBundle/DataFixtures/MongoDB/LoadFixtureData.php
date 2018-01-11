@@ -46,15 +46,6 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
      */
     public function load(ObjectManager $manager)
     {
-        $channel = new Channel();
-        $channel->setDomains(['localhost']);
-        $channel->setName('Localhost');
-
-        $manager->persist($channel);
-        $manager->flush();
-        return;
-
-
         $files = [];
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
