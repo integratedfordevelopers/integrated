@@ -243,11 +243,14 @@ class ContentTypeController extends Controller
                 'action' => $this->generateUrl('integrated_content_content_type_new', ['class' => $type->getClass()]),
                 'method' => 'POST',
                 'metadata' => $metadata,
-            ],
-            [
-                'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
             ]
         );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
+            ]
+        ]);
 
         return $form;
     }
@@ -269,11 +272,14 @@ class ContentTypeController extends Controller
                 'action' => $this->generateUrl('integrated_content_content_type_edit', ['id' => $type->getId()]),
                 'method' => 'PUT',
                 'metadata' => $metadata,
-            ],
-            [
-                'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
             ]
         );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
+            ]
+        ]);
 
         return $form;
     }
@@ -293,29 +299,15 @@ class ContentTypeController extends Controller
             [
                 'action' => $this->generateUrl('integrated_content_content_type_delete', ['id' => $type->getId()]),
                 'method' => 'DELETE',
-            ],
-            [
-                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]],
             ]
         );
 
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]],
+            ]
+        ]);
+
         return $form;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createForm($type, $data = null, array $options = [], array $buttons = [])
-    {
-        /** @var FormBuilder $form */
-        $form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
-
-        if ($buttons) {
-            $form->add('actions', FormActionsType::class, [
-                'buttons' => $buttons,
-            ]);
-        }
-
-        return $form->getForm();
     }
 }

@@ -65,18 +65,7 @@ class WorkflowController extends Controller
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm(
-            DefinitionFormType::class,
-            null,
-            [
-                'action' => $this->generateUrl('integrated_workflow_new'),
-                'method' => 'POST',
-            ],
-            [
-                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -121,18 +110,7 @@ class WorkflowController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(
-            DefinitionFormType::class,
-            $workflow,
-            [
-                'action' => $this->generateUrl('integrated_workflow_edit', ['id' => $workflow->getId()]),
-                'method' => 'PUT',
-            ],
-            [
-                'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createEditForm($workflow);
 
         if ($request->isMethod('put')) {
             $form->handleRequest($request);
@@ -177,18 +155,7 @@ class WorkflowController extends Controller
             return $this->redirect($this->generateUrl('integrated_workflow_index')); // workflow is already gone
         }
 
-        $form = $this->createForm(
-            DeleteFormType::class,
-            $workflow,
-            [
-                'action' => $this->generateUrl('integrated_workflow_delete', ['id' => $workflow->getId()]),
-                'method' => 'DELETE',
-            ],
-            [
-                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createDeleteForm($workflow);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
@@ -294,19 +261,76 @@ class WorkflowController extends Controller
     }
 
     /**
-     * {@inheritdoc}
+     * @return \Symfony\Component\Form\FormInterface
      */
-    public function createForm($type, $data = null, array $options = [], array $buttons = [])
+    protected function createNewForm()
     {
-        /** @var FormBuilder $form */
-        $form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+        $form = $this->createForm(
+            DefinitionFormType::class,
+            null,
+            [
+                'action' => $this->generateUrl('integrated_workflow_new'),
+                'method' => 'POST',
+            ]
+        );
 
-        if ($buttons) {
-            $form->add('actions', FormActionsType::class, [
-                'buttons' => $buttons,
-            ]);
-        }
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
 
-        return $form->getForm();
+        return $form;
+    }
+
+    /**
+     * @param Definition $workflow
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    protected function createEditForm(Definition $workflow)
+    {
+        $form = $this->createForm(
+            DefinitionFormType::class,
+            $workflow,
+            [
+                'action' => $this->generateUrl('integrated_workflow_edit', ['id' => $workflow->getId()]),
+                'method' => 'PUT',
+            ]
+        );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
+
+        return $form;
+    }
+
+    /**
+     * @param Definition $workflow
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    protected function createDeleteForm(Definition $workflow)
+    {
+        $form = $this->createForm(
+            DeleteFormType::class,
+            $workflow,
+            [
+                'action' => $this->generateUrl('integrated_workflow_delete', ['id' => $workflow->getId()]),
+                'method' => 'DELETE',
+            ]
+        );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
+
+        return $form;
     }
 }

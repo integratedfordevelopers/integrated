@@ -14,6 +14,7 @@ namespace Integrated\Bundle\UserBundle\Controller;
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Form\Type\ProfileFormType;
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -58,18 +59,7 @@ class ProfileController extends Controller
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm(
-            ProfileFormType::class,
-            null,
-            [
-                'action' => $this->generateUrl('integrated_user_profile_new'),
-                'method' => 'POST',
-            ],
-            [
-                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
@@ -111,18 +101,7 @@ class ProfileController extends Controller
             throw $this->createNotFoundException();
         }
 
-        $form = $this->createForm(
-            ProfileFormType::class,
-            $user,
-            [
-                'action' => $this->generateUrl('integrated_user_profile_edit', ['id' => $user->getId()]),
-                'method' => 'PUT',
-            ],
-            [
-                'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createEditForm($user);
 
         if ($request->isMethod('put')) {
             $form->handleRequest($request);
@@ -161,18 +140,7 @@ class ProfileController extends Controller
             return $this->redirect($this->generateUrl('integrated_user_profile_index')); // user is already gone
         }
 
-        $form = $this->createForm(
-            DeleteFormType::class,
-            $user,
-            [
-                'action' => $this->generateUrl('integrated_user_profile_delete', ['id' => $user->getId()]),
-                'method' => 'DELETE',
-            ],
-            [
-                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
-        );
+        $form = $this->createDeleteForm($user);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
@@ -197,20 +165,77 @@ class ProfileController extends Controller
     }
 
     /**
-     * {@inheritdoc}
+     * @return \Symfony\Component\Form\FormInterface
      */
-    public function createForm($type, $data = null, array $options = [], array $buttons = [])
+    protected function createNewForm()
     {
-        /** @var FormBuilder $form */
-        $form = $this->container->get('form.factory')->createBuilder($type, $data, $options);
+        $form = $this->createForm(
+            ProfileFormType::class,
+            null,
+            [
+                'action' => $this->generateUrl('integrated_user_profile_new'),
+                'method' => 'POST',
+            ]
+        );
 
-        if ($buttons) {
-            $form->add('actions', FormActionsType::class, [
-                'buttons' => $buttons,
-            ]);
-        }
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
 
-        return $form->getForm();
+        return $form;
+    }
+
+    /**
+     * @param UserInterface $user
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    protected function createEditForm(UserInterface $user)
+    {
+        $form = $this->createForm(
+            ProfileFormType::class,
+            $user,
+            [
+                'action' => $this->generateUrl('integrated_user_profile_edit', ['id' => $user->getId()]),
+                'method' => 'PUT',
+            ]
+        );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
+
+        return $form;
+    }
+
+    /**
+     * @param UserInterface $user
+     * @return \Symfony\Component\Form\FormInterface
+     */
+    protected function createDeleteForm(UserInterface $user)
+    {
+        $form = $this->createForm(
+            DeleteFormType::class,
+            $user,
+            [
+                'action' => $this->generateUrl('integrated_user_profile_delete', ['id' => $user->getId()]),
+                'method' => 'DELETE',
+            ]
+        );
+
+        $form->add('actions', FormActionsType::class, [
+            'buttons' => [
+                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+            ]
+        ]);
+
+        return $form;
     }
 
     /**
