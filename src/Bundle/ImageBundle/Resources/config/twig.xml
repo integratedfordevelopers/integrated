@@ -12,7 +12,7 @@
 
     <services>
 
-        <service id="integrated_image.twig_extension" class="%integrated_image.twig_extension%">
+        <service id="integrated_image.twig_extension" class="%integrated_image.twig_extension%" public="true">
 
             <argument type="service" id="image.handling" />
             <argument type="service" id="twig.extension.image" />

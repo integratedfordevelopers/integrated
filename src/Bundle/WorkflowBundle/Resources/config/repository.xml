@@ -6,7 +6,7 @@
 
 	<services>
 
-        <service id="integrated_workflow.repository.definition" class="Doctrine\Common\Persistence\ObjectRepository">
+        <service id="integrated_workflow.repository.definition" class="Doctrine\Common\Persistence\ObjectRepository" public="true">
             <factory service="doctrine.orm.entity_manager" method="getRepository" />
 
             <argument type="string">Integrated\Bundle\WorkflowBundle\Entity\Definition</argument>

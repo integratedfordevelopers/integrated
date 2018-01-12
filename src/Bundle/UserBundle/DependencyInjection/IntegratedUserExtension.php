@@ -43,6 +43,8 @@ class IntegratedUserExtension extends Extension
 
         $loader->load('event_listeners.xml');
 
+        $loader->load('command.xml');
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
