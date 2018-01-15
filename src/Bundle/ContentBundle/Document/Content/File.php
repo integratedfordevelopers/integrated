@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 
 /**
  * Document type File.

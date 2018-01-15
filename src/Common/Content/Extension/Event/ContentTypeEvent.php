@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Content\Extension\Event;
 
-use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Content\Extension\Event;
+use Integrated\Common\ContentType\ContentTypeInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

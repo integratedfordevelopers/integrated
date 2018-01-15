@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\MenuBundle\Provider;
 
+use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-use Integrated\Bundle\MenuBundle\Event\ConfigureMenuEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

@@ -12,13 +12,13 @@
 namespace Integrated\Bundle\ImageBundle\Validator\Validator;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Bundle\ImageBundle\Converter\Container;
+use Integrated\Bundle\ImageBundle\Exception\FormatException;
 use Integrated\Bundle\SolrBundle\Process\Exception\LogicException;
+use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Integrated\Bundle\ImageBundle\Converter\Container;
-use Integrated\Bundle\ImageBundle\Exception\FormatException;
-use Integrated\Bundle\StorageBundle\Form\Upload\StorageIntentUpload;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

@@ -16,8 +16,8 @@ use Integrated\Common\Channel\ChannelManagerInterface;
 use Integrated\Common\Channel\Exporter\Queue\Request;
 use Integrated\Common\Channel\Exporter\Queue\RequestSerializer;
 use Integrated\Common\Content\Channel\ChannelInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use stdClass;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\PageBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Request;
-use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

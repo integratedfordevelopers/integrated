@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\SolrBundle\DataCollector;
 
-use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
+use Solarium\Core\Event\Events;
+use Solarium\Core\Event\PostExecuteRequest;
+use Solarium\Core\Event\PreExecuteRequest;
+use Solarium\Core\Plugin\AbstractPlugin;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Solarium\Core\Plugin\AbstractPlugin;
-use Solarium\Core\Event\Events;
-use Solarium\Core\Event\PreExecuteRequest;
-use Solarium\Core\Event\PostExecuteRequest;
+use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
 
 /**
  * Based on NelmioSolariumBundle (https://github.com/nelmio/NelmioSolariumBundle).

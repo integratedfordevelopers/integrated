@@ -18,9 +18,9 @@ use Integrated\Common\ContentType\ResolverInterface;
 use Solarium\QueryType\Select\Query\Component\FacetSet;
 use Solarium\QueryType\Select\Result\Document;
 use Solarium\QueryType\Select\Result\Result;
+use stdClass;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use stdClass;
 
 /**
  * @author Michael Jongman <michael@e-active.nl>

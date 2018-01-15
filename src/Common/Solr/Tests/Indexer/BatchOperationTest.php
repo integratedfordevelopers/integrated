@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Solr\Tests\Indexer;
 
-use Integrated\Common\Solr\Indexer\BatchOperation;
 use Integrated\Common\Queue\QueueMessageInterface;
+use Integrated\Common\Solr\Indexer\BatchOperation;
 use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 
 /**

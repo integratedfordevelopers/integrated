@@ -13,9 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Solr\Query;
 
 use Integrated\Bundle\ContentBundle\Solr\Normalizer;
 use Integrated\Bundle\WorkflowBundle\EventListener\WorkflowMarkerInterface;
-use Solarium\QueryType\Select\Query\Query;
-use Solarium\QueryType\Select\Query\Component\Facet\Field;
 use Solarium\Exception\InvalidArgumentException;
+use Solarium\QueryType\Select\Query\Component\Facet\Field;
+use Solarium\QueryType\Select\Query\Query;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

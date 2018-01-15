@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Solr\Indexer\Event;
 
-use Integrated\Common\Solr\Indexer\IndexerInterface;
 use Integrated\Common\Queue\QueueMessageInterface;
+use Integrated\Common\Solr\Indexer\IndexerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

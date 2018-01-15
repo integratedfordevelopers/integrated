@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Twig;
 
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

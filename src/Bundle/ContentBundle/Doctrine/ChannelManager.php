@@ -13,8 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Integrated\Common\Content\Channel\ChannelManagerInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
+use Integrated\Common\Content\Channel\ChannelManagerInterface;
 use InvalidArgumentException;
 
 /**

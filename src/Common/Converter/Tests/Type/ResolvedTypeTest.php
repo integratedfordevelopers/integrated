@@ -12,8 +12,8 @@
 namespace Integrated\Common\Converter\Tests\Type;
 
 use Integrated\Common\Converter\Type\ResolvedType;
-use Integrated\Common\Converter\Type\TypeInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
+use Integrated\Common\Converter\Type\TypeInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

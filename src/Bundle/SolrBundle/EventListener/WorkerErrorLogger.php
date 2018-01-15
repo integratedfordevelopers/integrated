@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\SolrBundle\EventListener;
 
-use Psr\Log\LoggerInterface;
 use Integrated\Common\Solr\Task\Event\ErrorEvent;
 use Integrated\Common\Solr\Task\Events;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

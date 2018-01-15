@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Util;
 
-use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
  * This objects helps to create a storage object, to help finding the file object.

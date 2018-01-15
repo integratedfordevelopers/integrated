@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\BlockBundle\Document\Block;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Block document.

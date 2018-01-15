@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\MenuBundle\Document;
 
-use Knp\Menu\MenuItem as KnpMenuItem;
-use Knp\Menu\ItemInterface;
-use Knp\Menu\FactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
+use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
+use Knp\Menu\MenuItem as KnpMenuItem;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

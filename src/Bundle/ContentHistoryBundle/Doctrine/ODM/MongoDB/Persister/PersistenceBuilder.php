@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Doctrine\ODM\MongoDB\Persister;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Types\Type;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

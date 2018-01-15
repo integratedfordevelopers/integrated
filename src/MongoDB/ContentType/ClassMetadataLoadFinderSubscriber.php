@@ -11,9 +11,9 @@
 
 namespace Integrated\MongoDB\ContentType;
 
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-use Doctrine\Common\EventSubscriber;
 
 /**
  * @deprecated will be removed asap

@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\Collection;
 
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\Collection\DefaultTransformer;
+use Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\DefaultType as FieldType;
+use Integrated\Common\Form\Mapping\MetadataInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Integrated\Common\Form\Mapping\MetadataInterface;
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\Collection\DefaultTransformer;
-use Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields\DefaultType as FieldType;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

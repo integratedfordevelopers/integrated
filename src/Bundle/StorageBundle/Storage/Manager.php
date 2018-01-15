@@ -11,6 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Gaufrette\Exception\FileNotFound;
+use Gaufrette\Filesystem;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Exception\NoFilesystemAvailableException;
 use Integrated\Bundle\StorageBundle\Exception\RevertException;
@@ -24,9 +27,6 @@ use Integrated\Common\Storage\Handler\QueuedCommandBusInterface;
 use Integrated\Common\Storage\ManagerInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
 use Integrated\Common\Storage\ResolverInterface;
-use Doctrine\Common\Collections\ArrayCollection;
-use Gaufrette\Exception\FileNotFound;
-use Gaufrette\Filesystem;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 

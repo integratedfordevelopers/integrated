@@ -11,15 +11,15 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Common\Block\BlockInterface;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Common\Block\BlockInterface;
 use Knp\Component\Pager\Paginator;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Related content block handler.

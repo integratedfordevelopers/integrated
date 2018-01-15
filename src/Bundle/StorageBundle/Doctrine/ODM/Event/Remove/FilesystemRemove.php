@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Doctrine\ODM\Event\Remove;
 
-use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

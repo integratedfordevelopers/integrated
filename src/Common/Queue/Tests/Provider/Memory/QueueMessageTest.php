@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Queue\Tests\Provider\Memory;
 
-use stdClass;
 use Integrated\Common\Queue\Provider\Memory\QueueMessage;
+use stdClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

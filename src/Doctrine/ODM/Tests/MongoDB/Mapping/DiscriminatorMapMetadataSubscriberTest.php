@@ -11,11 +11,11 @@
 
 namespace Integrated\Doctrine\ODM\Tests\MongoDB\Mapping;
 
-use Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapMetadataSubscriber;
-use Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapResolverInterface;
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
+use Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapMetadataSubscriber;
+use Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapResolverInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

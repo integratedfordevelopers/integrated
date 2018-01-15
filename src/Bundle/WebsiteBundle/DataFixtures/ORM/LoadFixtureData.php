@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\WebsiteBundle\DataFixtures\ORM;
 
-use Symfony\Component\Finder\Finder;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Nelmio\Alice\Fixtures;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

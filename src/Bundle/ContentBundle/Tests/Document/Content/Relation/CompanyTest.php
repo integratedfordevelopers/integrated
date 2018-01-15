@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Relation;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * Document type Taxonomy.

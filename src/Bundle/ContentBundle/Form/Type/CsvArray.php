@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\CsvArray as Transformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\CsvArray as Transformer;
 
 /**
  * Form type which can handle comma separated values and returns an array.

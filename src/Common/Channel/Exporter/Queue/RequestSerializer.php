@@ -14,8 +14,8 @@ namespace Integrated\Common\Channel\Exporter\Queue;
 use Exception;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\ChannelManagerInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

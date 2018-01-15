@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

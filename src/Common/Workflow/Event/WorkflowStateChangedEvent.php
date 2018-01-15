@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\Workflow\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
 use Integrated\Common\Content\ContentInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ThemeBundle\Templating;
 
-use Symfony\Component\HttpKernel\Kernel;
 use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
+use Symfony\Component\HttpKernel\Kernel;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

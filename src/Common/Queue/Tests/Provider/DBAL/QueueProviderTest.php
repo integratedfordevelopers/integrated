@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\Queue\Tests\Provider\DBAL;
 
-use stdClass;
-use Integrated\Common\Queue\Provider\DBAL\QueueProvider;
 use Doctrine\DBAL\Connection;
+use Integrated\Common\Queue\Provider\DBAL\QueueProvider;
+use stdClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

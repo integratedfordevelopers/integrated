@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\Controller;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
+use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;

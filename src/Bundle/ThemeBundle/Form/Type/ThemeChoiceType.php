@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\ThemeBundle\Form\Type;
 
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

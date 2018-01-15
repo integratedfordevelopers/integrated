@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\PageBundle\Document\Page;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

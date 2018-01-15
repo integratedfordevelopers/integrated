@@ -12,10 +12,10 @@
 namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Integrated\Common\Storage\ManagerInterface;
-use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Storage\ManagerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**

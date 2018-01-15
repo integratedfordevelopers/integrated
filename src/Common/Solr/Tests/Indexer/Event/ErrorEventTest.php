@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Solr\Tests\Indexer\Event;
 
-use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 use Integrated\Common\Solr\Exception\ExceptionInterface;
+use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

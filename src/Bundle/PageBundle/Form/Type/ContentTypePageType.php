@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\PageBundle\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\EventListener\ContentTypePageListener;
+use Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Integrated\Bundle\PageBundle\Services\ContentTypeControllerManager;
-use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

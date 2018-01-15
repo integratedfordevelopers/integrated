@@ -12,10 +12,10 @@
 namespace Integrated\Bundle\PageBundle\Grid;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Integrated\Bundle\PageBundle\Document\Page\Grid\Column;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Grid;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Item;
 use Integrated\Bundle\PageBundle\Document\Page\Grid\Row;
-use Integrated\Bundle\PageBundle\Document\Page\Grid\Column;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

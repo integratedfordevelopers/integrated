@@ -12,11 +12,11 @@
 namespace Integrated\Bundle\WebsiteBundle\Twig\Extension;
 
 use Doctrine\ODM\MongoDB\Id\UuidGenerator;
-use Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider;
-use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
 use Integrated\Bundle\MenuBundle\Document\Menu;
 use Integrated\Bundle\MenuBundle\Document\MenuItem;
 use Integrated\Bundle\MenuBundle\Matcher\RecursiveActiveMatcher;
+use Integrated\Bundle\MenuBundle\Menu\DatabaseMenuFactory;
+use Integrated\Bundle\MenuBundle\Provider\DatabaseMenuProvider;
 use Knp\Menu\Twig\Helper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

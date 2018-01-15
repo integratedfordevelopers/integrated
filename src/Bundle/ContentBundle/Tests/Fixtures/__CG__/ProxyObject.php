@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Fixtures\__CG__;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Integrated\Common\Content\ContentInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Common\Content\Embedded\RelationInterface;
 
 /**

@@ -11,8 +11,8 @@
 
 namespace Integrated\MongoDB\ContentType\Tests;
 
-use Integrated\MongoDB\ContentType\CollectionSubscriber;
 use Doctrine\ODM\MongoDB\Events;
+use Integrated\MongoDB\ContentType\CollectionSubscriber;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

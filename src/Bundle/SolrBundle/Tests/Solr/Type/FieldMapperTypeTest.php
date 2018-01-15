@@ -12,9 +12,9 @@
 namespace Integrated\Bundle\SolrBundle\Tests\Solr\Type;
 
 use Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType;
+use Integrated\Bundle\SolrBundle\Tests\Fixtures\TestObject;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
-use Integrated\Bundle\SolrBundle\Tests\Fixtures\TestObject;
 
 /**
  * @covers \Integrated\Bundle\SolrBundle\Solr\Type\FieldMapperType

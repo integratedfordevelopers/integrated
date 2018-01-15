@@ -13,8 +13,8 @@ namespace Integrated\Bundle\PageBundle\Services;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
-use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

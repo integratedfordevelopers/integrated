@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Form\Tests\DataTransformer;
 
-use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Integrated\Common\Form\DataTransformer\ValuesToChoicesTransformer;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

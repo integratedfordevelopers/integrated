@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType;
 
-use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\Common\ContentType\ContentTypeFieldInterface;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
+use Integrated\Common\ContentType\ContentTypeFieldInterface;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

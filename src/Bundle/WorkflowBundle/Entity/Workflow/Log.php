@@ -12,9 +12,9 @@
 namespace Integrated\Bundle\WorkflowBundle\Entity\Workflow;
 
 use DateTime;
-use Symfony\Component\Security\Acl\Util\ClassUtils;
-use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
+use Integrated\Bundle\WorkflowBundle\Entity\Definition;
+use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type\Job;
 
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
-use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Bundle\FormTypeBundle\Form\Type\ContentChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\BaseType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

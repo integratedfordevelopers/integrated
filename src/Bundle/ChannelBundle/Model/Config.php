@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\ChannelBundle\Model;
 
+use DateTime;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
-use DateTime;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

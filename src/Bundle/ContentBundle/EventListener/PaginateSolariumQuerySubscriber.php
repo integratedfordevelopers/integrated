@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Knp\Component\Pager\Event\ItemsEvent;
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Solarium query pagination (to support max items).

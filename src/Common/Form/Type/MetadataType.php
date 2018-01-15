@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\Form\Type;
 
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

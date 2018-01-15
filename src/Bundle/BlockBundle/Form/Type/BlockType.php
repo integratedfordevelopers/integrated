@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\BlockBundle\Form\DataTransformer\BlockTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\DocumentRepository;
-use Integrated\Bundle\BlockBundle\Form\DataTransformer\BlockTransformer;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

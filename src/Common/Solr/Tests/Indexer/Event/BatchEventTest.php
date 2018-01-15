@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Solr\Tests\Indexer\Event;
 
-use Integrated\Common\Solr\Indexer\Event\BatchEvent;
 use Integrated\Common\Solr\Indexer\BatchOperation;
+use Integrated\Common\Solr\Indexer\Event\BatchEvent;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

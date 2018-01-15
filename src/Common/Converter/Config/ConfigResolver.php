@@ -12,8 +12,8 @@
 namespace Integrated\Common\Converter\Config;
 
 use Exception;
-use ReflectionClass;
 use Integrated\Common\Converter\Exception\UnexpectedTypeException;
+use ReflectionClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

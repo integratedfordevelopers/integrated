@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Form\EventListener\WorkflowStateListener;
 use Symfony\Component\Form\AbstractType;
@@ -20,7 +21,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

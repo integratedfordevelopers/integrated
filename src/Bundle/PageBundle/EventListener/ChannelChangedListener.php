@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\PageBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Common\Channel\Events;
-use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\PageBundle\Services\ContentTypePageService;
+use Integrated\Common\Channel\Event\ChannelEvent;
+use Integrated\Common\Channel\Events;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

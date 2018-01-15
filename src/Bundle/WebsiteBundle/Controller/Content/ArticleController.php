@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
-use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

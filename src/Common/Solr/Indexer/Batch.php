@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\Solr\Indexer;
 
+use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use ArrayIterator;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Collection\Map;
 
-use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Bundle\StorageBundle\Storage\Accessor\DoctrineDocument;
+use Integrated\Bundle\StorageBundle\Storage\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 

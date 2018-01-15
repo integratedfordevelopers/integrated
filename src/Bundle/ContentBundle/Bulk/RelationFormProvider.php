@@ -13,8 +13,8 @@ namespace Integrated\Bundle\ContentBundle\Bulk;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Doctrine\MongoDB\Query\Builder;
-use Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationType;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Bundle\ContentBundle\Form\Type\BulkActionRelationType;
 use Integrated\Common\Bulk\Form\Config;
 use Integrated\Common\Bulk\Form\ConfigProviderInterface;
 

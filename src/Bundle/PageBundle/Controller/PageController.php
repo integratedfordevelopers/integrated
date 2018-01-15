@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\PageBundle\Controller;
 
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
-use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
+use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

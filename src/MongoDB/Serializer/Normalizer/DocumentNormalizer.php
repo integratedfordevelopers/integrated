@@ -11,10 +11,10 @@
 
 namespace Integrated\MongoDB\Serializer\Normalizer;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**

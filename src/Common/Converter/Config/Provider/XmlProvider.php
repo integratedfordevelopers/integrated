@@ -15,9 +15,9 @@ use Exception;
 use Integrated\Common\Converter\Config\TypeConfig;
 use Integrated\Common\Converter\Config\TypeConfigInterface;
 use Integrated\Common\Converter\Exception\RuntimeException;
+use SimpleXMLElement;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
-use SimpleXMLElement;
 
 /**
  * This provider contains all the logic required to parse the xml config files.

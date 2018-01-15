@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\WebsiteBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Integrated\Bundle\WebsiteBundle\DependencyInjection\Compiler\ThemeManagerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage\Reader;
 
+use Gaufrette\Adapter;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Identifier\IdentifierInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
-use Gaufrette\Adapter;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

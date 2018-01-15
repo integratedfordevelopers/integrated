@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\Content\Extension\Event\Listener;
 
+use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\Extension\Event\ContentEvent;
 use Integrated\Common\Content\Extension\ExtensionInterface;
-use Integrated\Common\Content\ExtensibleInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

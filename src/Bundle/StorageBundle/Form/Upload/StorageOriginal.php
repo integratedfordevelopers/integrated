@@ -12,9 +12,9 @@
 namespace Integrated\Bundle\StorageBundle\Form\Upload;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\HttpFoundation\File\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

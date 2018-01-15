@@ -11,15 +11,14 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Extension\EventListener;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\Group;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
+use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\Log;
 use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
-use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Extension\Event\ContentEvent;
 use Integrated\Common\Content\Extension\Event\Subscriber\ContentSubscriberInterface;
@@ -27,8 +26,9 @@ use Integrated\Common\Content\Extension\Events;
 use Integrated\Common\Content\Extension\ExtensionInterface;
 use Integrated\Common\Content\MetadataInterface;
 use Integrated\Common\ContentType\ResolverInterface;
-use Integrated\Common\Workflow\Events as WorkflowEvents;
 use Integrated\Common\Workflow\Event\WorkflowStateChangedEvent;
+use Integrated\Common\Workflow\Events as WorkflowEvents;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

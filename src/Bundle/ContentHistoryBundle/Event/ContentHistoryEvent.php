@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
-use Integrated\Common\Content\ContentInterface;
 use Integrated\Bundle\ContentHistoryBundle\Document\ContentHistory;
+use Integrated\Common\Content\ContentInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
