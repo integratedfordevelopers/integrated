@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
+use Integrated\Bundle\BlockBundle\Document\Block\Embedded\BlockSize;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -84,7 +85,7 @@ class BlockSizeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Integrated\Bundle\BlockBundle\Document\Block\Embedded\BlockSize',
+            'data_class' => BlockSize::class,
         ]);
     }
 

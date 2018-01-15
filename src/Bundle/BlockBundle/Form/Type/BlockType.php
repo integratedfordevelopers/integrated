@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -33,7 +34,7 @@ class BlockType extends AbstractType
      */
     public function __construct(DocumentManager $dm)
     {
-        $this->repository = $dm->getRepository('IntegratedBlockBundle:Block\Block');
+        $this->repository = $dm->getRepository(Block::class);
     }
 
     /**

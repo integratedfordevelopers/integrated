@@ -53,8 +53,7 @@ class IntegratedSolrExtension extends Extension
             $loader->load('collector.xml');
         }
 
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration(new Configuration(), $configs);
 
         $endpoints = [];
 

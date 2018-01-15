@@ -183,6 +183,8 @@ class ThemeManager
                 return $resource;
             }
         }
+
+        return null;
     }
 
     /**

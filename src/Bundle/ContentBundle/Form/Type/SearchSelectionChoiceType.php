@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,7 +40,7 @@ class SearchSelectionChoiceType extends AbstractType
      */
     public function __construct(DocumentManager $manager, TokenStorageInterface $tokenStorage)
     {
-        $this->repository = $manager->getRepository('IntegratedContentBundle:SearchSelection\SearchSelection');
+        $this->repository = $manager->getRepository(SearchSelection::class);
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -73,6 +74,8 @@ class SearchSelectionChoiceType extends AbstractType
                 return $user;
             }
         }
+
+        return null;
     }
 
     /**

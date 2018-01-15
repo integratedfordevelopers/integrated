@@ -46,7 +46,7 @@ class CleanReferencesListener implements EventSubscriber
 
         // Document must be instanceof Content
         if ($document instanceof Content) {
-            $dm->createQueryBuilder('Integrated\Bundle\ContentBundle\Document\Content\Content')
+            $dm->createQueryBuilder(Content::class)
                 ->update()
                 ->multiple(true)
                 ->field('relations.references.$id')->equals($document->getId())

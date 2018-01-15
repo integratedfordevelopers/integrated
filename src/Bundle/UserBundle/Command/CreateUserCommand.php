@@ -54,10 +54,10 @@ class CreateUserCommand extends Command
     private $encoderFactory;
 
     /**
-     * @param ScopeManager $scopeManager
-     * @param RoleManager $roleManager
-     * @param UserManagerInterface $userManager
-     * @param ValidatorInterface $validator
+     * @param ScopeManager            $scopeManager
+     * @param RoleManager             $roleManager
+     * @param UserManagerInterface    $userManager
+     * @param ValidatorInterface      $validator
      * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(

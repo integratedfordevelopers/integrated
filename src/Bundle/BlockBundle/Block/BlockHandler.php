@@ -100,6 +100,8 @@ class BlockHandler implements BlockHandlerInterface
         if ($this->getTemplate()) {
             return $this->twig->render($this->getTemplate(), $parameters);
         }
+
+        return null;
     }
 
     /**

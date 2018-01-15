@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Provider;
 
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Symfony\Component\HttpFoundation\Request;
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
@@ -202,7 +203,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             $request['facet_properties'] = $properties; // @hack
         }
 
-        foreach ($this->dm->getRepository('IntegratedContentBundle:Relation\Relation')->findAll() as $relation) {
+        foreach ($this->dm->getRepository(Relation::class)->findAll() as $relation) {
             $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
             $filters = isset($request[$name]) ? $request[$name] : [];
 

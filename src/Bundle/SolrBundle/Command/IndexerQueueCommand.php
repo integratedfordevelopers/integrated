@@ -221,7 +221,7 @@ The <info>%command.name%</info> command starts a index of the site.
     /**
      * Add all the documents in the cursor to the solr queue.
      *
-     * @param Cursor         $cursor
+     * @param Cursor      $cursor
      * @param ProgressBar $progress
      */
     protected function doIndex(Cursor $cursor, ProgressBar $progress)

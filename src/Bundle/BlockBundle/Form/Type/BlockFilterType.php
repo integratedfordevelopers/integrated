@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Symfony\Component\Form\AbstractType;
@@ -124,7 +125,7 @@ class BlockFilterType extends AbstractType
      */
     private function getTypeChoices(array $blockIds)
     {
-        return $this->dm->getRepository('IntegratedBlockBundle:Block\Block')->getTypeChoices(
+        return $this->dm->getRepository(Block::class)->getTypeChoices(
             $this->factory,
             $blockIds
         );

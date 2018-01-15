@@ -218,7 +218,7 @@ class ContentSubscriber implements ContentSubscriberInterface
                             $title = $content->getName();
                         }
 
-                        $message = \Swift_Message::newInstance()
+                        $message = (new \Swift_Message())
                             ->setSubject('[Integrated] "'.$title.'" has been assigned to you')
                             ->setFrom('mailer@integratedforpublishers.com')
                             ->setTo($person->getEmail())

@@ -29,7 +29,7 @@ class IntegratedHttpRequestHandler extends HttpFoundationRequestHandler
     private $dispatcher;
 
     /**
-     * @param ServerParams                  $serverParams
+     * @param ServerParams             $serverParams
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(ServerParams $serverParams, EventDispatcherInterface $dispatcher)

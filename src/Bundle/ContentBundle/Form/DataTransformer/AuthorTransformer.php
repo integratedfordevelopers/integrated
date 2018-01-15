@@ -13,8 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\Form\DataTransformerInterface;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * @author Jurre de Jongh <jurre@e-active.nl>
@@ -62,10 +63,10 @@ class AuthorTransformer implements DataTransformerInterface
 
         if (is_array($array) && isset($array['persons'], $array['types']) && is_array($array['types'])) {
             foreach ($array['persons'] as $person) {
-                $result = $mr->getRepository('IntegratedContentBundle:Content\Relation\Person')->find($person);
+                $result = $mr->getRepository(Person::class)->find($person);
 
                 if ($result && isset($array['types'][$person])) {
-                    $author = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author();
+                    $author = new Author();
                     $author->setType($array['types'][$person]);
                     $author->setPerson($result);
 

@@ -25,7 +25,7 @@ class MaxDateTimeTransformer implements DataTransformerInterface
     public function transform($dateTime)
     {
         if ($dateTime == new \DateTime(PublishTime::DATE_MAX)) {
-            return; // hide max date
+            return null; // hide max date
         }
 
         return $dateTime;

@@ -49,7 +49,7 @@ class SearchSelectionType extends AbstractType
                 'choices' => [
                     'Everyone' => 1,
                     'Me only' => 0,
-                ]
+                ],
             ]);
         }
     }
