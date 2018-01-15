@@ -49,11 +49,11 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     public function testIntegration($file, $message, $condition, $templates, $exception, $outputs)
     {
         $templates = $templates + [
-            '@IntegratedAssetBundle/Resources/views/Asset/javascripts.html.twig' => file_get_contents(
-                __DIR__.'/../../Resources/views/Asset/javascripts.html.twig'
+            '@IntegratedAssetBundle/Resources/views/asset/javascripts.html.twig' => file_get_contents(
+                __DIR__.'/../../Resources/views/asset/javascripts.html.twig'
             ),
-            '@IntegratedAssetBundle/Resources/views/Asset/stylesheets.html.twig' => file_get_contents(
-                __DIR__.'/../../Resources/views/Asset/stylesheets.html.twig'
+            '@IntegratedAssetBundle/Resources/views/asset/stylesheets.html.twig' => file_get_contents(
+                __DIR__.'/../../Resources/views/asset/stylesheets.html.twig'
             ),
         ];
 
