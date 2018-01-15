@@ -69,7 +69,7 @@ class ContentHistoryController
             $request->query->get('limit', 20)
         );
 
-        return $this->templating->renderResponse('IntegratedContentHistoryBundle:ContentHistory:index.html.twig', [
+        return $this->templating->renderResponse('IntegratedContentHistoryBundle:content_history:index.html.twig', [
             'paginator' => $paginator,
         ]);
     }
@@ -81,7 +81,7 @@ class ContentHistoryController
      */
     public function showAction(ContentHistory $contentHistory)
     {
-        return $this->templating->renderResponse('IntegratedContentHistoryBundle:ContentHistory:show.html.twig', [
+        return $this->templating->renderResponse('IntegratedContentHistoryBundle:content_history:show.html.twig', [
             'contentHistory' => $contentHistory,
         ]);
     }
@@ -94,7 +94,7 @@ class ContentHistoryController
      */
     public function historyAction(Content $content, $limit = 3)
     {
-        return $this->templating->renderResponse('IntegratedContentHistoryBundle:ContentHistory:history.html.twig', [
+        return $this->templating->renderResponse('IntegratedContentHistoryBundle:content_history:history.html.twig', [
             'content' => $content,
             'documents' => $this->repository->findBy(
                 ['contentId' => $content->getId()],

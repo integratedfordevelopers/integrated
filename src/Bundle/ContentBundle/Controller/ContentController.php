@@ -23,13 +23,12 @@ use Integrated\Common\Content\Form\ContentFormType;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Locks;
 use Integrated\Common\Security\Permissions;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Traversable;
 
@@ -44,11 +43,9 @@ class ContentController extends Controller
     protected $relationClass = 'Integrated\\Bundle\\ContentBundle\\Document\\Relation\\Relation';
 
     /**
-     * @Template()
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -347,7 +344,7 @@ class ContentController extends Controller
         $active['workflow_assigned'] = $activeAssigned;
         $active['authors'] = $activeAuthors;
 
-        return [
+        return $this->render('IntegratedContentBundle:content:index.'.$request->getRequestFormat().'.twig', [
             'types' => $types,
             'params' => ['sort' => ['current' => $sort, 'default' => $sort_default, 'options' => $sort_options]],
             'pager' => $paginator,
@@ -358,33 +355,30 @@ class ContentController extends Controller
             'locks' => $this->getLocks($paginator),
             'relations' => $relations,
             'facetTitles' => $facetTitles,
-        ];
+        ]);
     }
 
     /**
      * Show a document.
      *
-     * @Template
-     *
+     * @param Request $request
      * @param Content $content
      *
-     * @return array
+     * @return Response
      */
-    public function showAction(Content $content)
+    public function showAction(Request $request, Content $content)
     {
-        return [
+        return $this->render('IntegratedContentBundle:content:show.'.$request->getRequestFormat().'.twig', [
             'document' => $content,
-        ];
+        ]);
     }
 
     /**
      * Create a new document.
      *
-     * @Template()
-     *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -454,25 +448,23 @@ class ContentController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:content:new.html.twig', [
             'editable' => true,
             'type' => $contentType,
             'form' => $form->createView(),
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
             'hasContentHistoryBundle' => false, // not needed here
             'references' => json_encode($this->getReferences($content)),
-        ];
+        ]);
     }
 
     /**
      * Update a existing document.
      *
-     * @Template()
-     *
      * @param Request $request
      * @param Content $content
      *
-     * @return array | Response
+     * @return Response
      */
     public function editAction(Request $request, Content $content)
     {
@@ -598,7 +590,7 @@ class ContentController extends Controller
             $this->get('braincrafted_bootstrap.flash')->error($text);
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:content:edit.html.twig', [
             'editable' => $this->get('security.authorization_checker')->isGranted(Permissions::EDIT, $content),
             'type' => $contentType,
             'form' => $form->createView(),
@@ -607,18 +599,16 @@ class ContentController extends Controller
             'hasWorkflowBundle' => $this->has('integrated_workflow.form.workflow.state.type'),
             'hasContentHistoryBundle' => $this->has('integrated_content_history.controller.content_history'),
             'references' => json_encode($this->getReferences($content)),
-        ];
+        ]);
     }
 
     /**
      * Delete a document.
      *
-     * @Template()
-     *
      * @param Request $request
      * @param Content $content
      *
-     * @return array | Response
+     * @return Response
      */
     public function deleteAction(Request $request, Content $content)
     {
@@ -733,13 +723,13 @@ class ContentController extends Controller
             $this->get('braincrafted_bootstrap.flash')->error($text);
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:content:delete.html.twig', [
             'type' => $type,
             'form' => $form->createView(),
             'content' => $content,
             'locking' => $locking,
             'referenced' => $referenced,
-        ];
+        ]);
     }
 
     /**
@@ -916,11 +906,9 @@ class ContentController extends Controller
     }
 
     /**
-     * @Template()
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function navdropdownsAction(Request $request)
     {
@@ -961,22 +949,19 @@ class ContentController extends Controller
             $assignedContent = $result->getDocuments();
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:content:navdropdowns.html.twig', [
             'avatarurl' => $avatarurl,
             'queuecount' => $queuecount,
             'queuepercentage' => $queuepercentage,
             'assignedContent' => $assignedContent,
-        ];
+        ]);
     }
 
     /**
      * @param Content $content
      * @param Request $request
      *
-     * @author Jeroen van Leeuwen <jeroen@e-active.nl>
-     *
-     * @return array
-     * @Template()
+     * @return Response
      */
     public function usedByAction(Content $content, Request $request)
     {
@@ -996,10 +981,10 @@ class ContentController extends Controller
             $request->query->get('limit', 15)
         );
 
-        return [
+        return $this->render('IntegratedContentBundle:content:used_by.'.$request->getRequestFormat().'.twig', [
             'content' => $content,
             'pagination' => $pagination,
-        ];
+        ]);
     }
 
     /**
@@ -1028,7 +1013,7 @@ class ContentController extends Controller
      * @param ContentInterface     $content
      * @param Request              $request
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createNewForm(ContentTypeInterface $contentType, ContentInterface $content, Request $request)
     {
@@ -1046,7 +1031,7 @@ class ContentController extends Controller
      * @param ContentInterface     $content
      * @param array                $locking
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createEditForm(ContentTypeInterface $contentType, ContentInterface $content, array $locking)
     {
@@ -1083,9 +1068,9 @@ class ContentController extends Controller
     /**
      * @param ContentInterface $content
      * @param array            $locking
-     * @param bool|true        $notDelete
+     * @param bool             $notDelete
      *
-     * @return FormTypeInterface
+     * @return FormInterface
      */
     protected function createDeleteForm(ContentInterface $content, array $locking, $notDelete = false)
     {

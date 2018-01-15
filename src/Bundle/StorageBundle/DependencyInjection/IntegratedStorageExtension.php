@@ -26,15 +26,14 @@ class IntegratedStorageExtension extends Extension implements PrependExtensionIn
     /**
      * @var string
      */
-    protected $formTemplate = 'IntegratedStorageBundle:Form:form_div_layout.html.twig';
+    protected $formTemplate = 'IntegratedStorageBundle:form:form_div_layout.html.twig';
 
     /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('command.xml');

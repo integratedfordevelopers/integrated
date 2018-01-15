@@ -2,7 +2,7 @@
 
     <li class="dropdown">
         <a href="#" class="dropdown-toggle btn btn-blue" data-toggle="dropdown">{% trans %}Create new{% endtrans %}</a>
-        {{ knp_menu_render('content_type', {'template': 'IntegratedContentBundle:Menu:content_type.html.twig'}) }}
+        {{ knp_menu_render('content_type', {'template': 'IntegratedContentBundle:menu:content_type.html.twig'}) }}
     </li>
 
     {% set divided = false %}
@@ -95,8 +95,6 @@
                                     <i class="integrate-icon-edit"></i>{% trans %}Edit profile{% endtrans %}
                                 </a>
                             </li>
-                            {#<li><a href="#"><i class="integrate-icon-picture"></i>Photo gallery</a></li>#}
-                            {#<li><a href="#"><i class="integrate-icon-cog"></i>Settings</a></li>#}
                             <li class="divider"></li>
                             <li>
                                 <a href="{{ path('integrated_user_logout') }}">

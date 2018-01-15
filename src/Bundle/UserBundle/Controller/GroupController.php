@@ -20,8 +20,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\FormBuilder;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -29,11 +27,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class GroupController extends Controller
 {
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -45,17 +41,15 @@ class GroupController extends Controller
             15
         );
 
-        return [
+        return $this->render('IntegratedUserBundle:group:index.html.twig', [
             'groups' => $paginator,
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -79,17 +73,15 @@ class GroupController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedUserBundle:group:index.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -119,18 +111,16 @@ class GroupController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedUserBundle:group:edit.html.twig', [
             'group' => $group,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      */
     public function deleteAction(Request $request)
     {
@@ -158,10 +148,10 @@ class GroupController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedUserBundle:group:delete.html.twig', [
             'group' => $group,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
@@ -182,7 +172,7 @@ class GroupController extends Controller
             'buttons' => [
                 'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;
@@ -190,6 +180,7 @@ class GroupController extends Controller
 
     /**
      * @param GroupInterface $group
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createEditForm(GroupInterface $group)
@@ -207,7 +198,7 @@ class GroupController extends Controller
             'buttons' => [
                 'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;
@@ -215,6 +206,7 @@ class GroupController extends Controller
 
     /**
      * @param GroupInterface $group
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createDeleteForm(GroupInterface $group)
@@ -232,7 +224,7 @@ class GroupController extends Controller
             'buttons' => [
                 'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;

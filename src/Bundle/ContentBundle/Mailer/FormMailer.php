@@ -21,7 +21,7 @@ class FormMailer
     /**
      * @var string
      */
-    protected $template = 'IntegratedContentBundle:Mailer:form.html.twig';
+    protected $template = 'IntegratedContentBundle:mailer:form.html.twig';
 
     /**
      * @var \Swift_Mailer
@@ -67,10 +67,8 @@ class FormMailer
             return;
         }
 
-        $message = \Swift_Message::newInstance();
-        $message
+        $message = (new \Swift_Message('Form submitted'))
             ->setBcc($emailAddresses)
-            ->setSubject('Form submitted')
             ->setFrom($this->from, $this->name)
             ->setBody($this->twigEngine->render($this->template, ['data' => $data]), 'text/html');
 

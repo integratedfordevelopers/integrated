@@ -27,7 +27,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
     /**
      * @var string
      */
-    protected $formTemplate = 'IntegratedContentBundle:Form:form_div_layout.html.twig';
+    protected $formTemplate = 'IntegratedContentBundle:form:form_div_layout.html.twig';
 
     /**
      * Load the configuration.
@@ -74,9 +74,6 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 
         $loader->load('services.xml');
         $loader->load('mailer.xml');
-
-        $configuration = new Configuration();
-        $this->processConfiguration($configuration, $configs);
     }
 
     /**

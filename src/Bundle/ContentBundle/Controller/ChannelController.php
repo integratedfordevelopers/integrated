@@ -13,12 +13,13 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\Type as Form;
 use Integrated\Common\Channel\Event\ChannelEvent;
 use Integrated\Common\Channel\Events;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller for CRUD actions Channel document.
@@ -40,84 +41,68 @@ class ChannelController extends Controller
     /**
      * Lists all the Channel documents.
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
     public function indexAction()
     {
         $documents = $this->getDocumentManager()->getRepository($this->channelClass)->findAll();
 
-        return [
+        return $this->render('IntegratedContentBundle:channel:index.html.twig', [
             'documents' => $documents,
-        ];
+        ]);
     }
 
     /**
      * Finds and displays a Channel document.
      *
-     * @Template()
-     *
      * @param Channel $channel
      *
-     * @return array
+     * @return Response
      */
     public function showAction(Channel $channel)
     {
-        // Create form
         $form = $this->createDeleteForm($channel->getId());
 
-        return [
+        return $this->render('IntegratedContentBundle:channel:show.html.twig', [
             'form' => $form->createView(),
             'channel' => $channel,
-        ];
+        ]);
     }
 
     /**
      * Displays a form to create a new Channel document.
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
     public function newAction()
     {
-        // Create channel
         $channel = new Channel();
 
-        // Create form
         $form = $this->createCreateForm($channel);
 
-        return [
+        return $this->render('IntegratedContentBundle:channel:new.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * Creates a new Channel document.
      *
-     * @Template("IntegratedContentBundle:Channel:new.html.twig")
-     *
      * @param Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
-        // Create channel
         $channel = new Channel();
 
-        // Create form
         $form = $this->createCreateForm($channel);
-
-        // Validate request
         $form->handleRequest($request);
+
         if ($form->isValid()) {
-            // Save channel
             $this->getDocumentManager()->persist($channel);
             $this->getDocumentManager()->flush();
 
-            // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item created');
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
@@ -126,52 +111,44 @@ class ChannelController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:channel:new.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * Display a form to edit an existing ContentType document.
      *
-     * @Template
-     *
      * @param Channel $channel
      *
-     * @return array
+     * @return Response
      */
     public function editAction(Channel $channel)
     {
-        // Create form
         $form = $this->createEditForm($channel);
 
-        return [
+        return $this->render('IntegratedContentBundle:channel:edit.html.twig', [
             'form' => $form->createView(),
             'channel' => $channel,
-        ];
+        ]);
     }
 
     /**
      * Edits an existing Channel document.
      *
-     * @Template("IntegratedContentBundle:Channel:edit.html.twig")
-     *
      * @param Request $request
      * @param Channel $channel
      *
-     * @return array|\Symfony\Component\HttpFoundation\Response
+     * @return Response|RedirectResponse
      */
     public function updateAction(Request $request, Channel $channel)
     {
-        // Create form
         $form = $this->createEditForm($channel);
-
-        // Validate request
         $form->handleRequest($request);
+
         if ($form->isValid()) {
             $this->getDocumentManager()->flush();
 
-            // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
@@ -180,10 +157,10 @@ class ChannelController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_channel_show', ['id' => $channel->getId()]));
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:channel:edit.html.twig', [
             'form' => $form->createView(),
-            'contentType' => $channel,
-        ];
+            'channel' => $channel,
+        ]);
     }
 
     /**
@@ -192,7 +169,7 @@ class ChannelController extends Controller
      * @param Request $request
      * @param Channel $channel
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Channel $channel)
     {
@@ -200,14 +177,12 @@ class ChannelController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            // Remove channel
             $this->getDocumentManager()->remove($channel);
             $this->getDocumentManager()->flush();
 
             $dispatcher = $this->get('integrated_content.event_dispatcher');
             $dispatcher->dispatch(Events::CHANNEL_DELETED, new ChannelEvent($channel));
 
-            // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
         }
 
@@ -219,7 +194,7 @@ class ChannelController extends Controller
      *
      * @param Channel $channel
      *
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createCreateForm(Channel $channel)
     {
@@ -242,7 +217,7 @@ class ChannelController extends Controller
      *
      * @param Channel $channel
      *
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createEditForm(Channel $channel)
     {
@@ -261,7 +236,7 @@ class ChannelController extends Controller
      *
      * @param mixed $id The document id
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createDeleteForm($id)
     {

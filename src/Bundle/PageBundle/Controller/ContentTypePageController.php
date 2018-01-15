@@ -14,8 +14,10 @@ namespace Integrated\Bundle\PageBundle\Controller;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\PageBundle\Form\Type\ContentTypePageType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -23,11 +25,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class ContentTypePageController extends Controller
 {
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -42,20 +42,18 @@ class ContentTypePageController extends Controller
             20
         );
 
-        return [
+        return $this->render('IntegratedPageBundle:content_type_page:index.html.twig', [
             'pages' => $pagination,
             'channels' => $this->getChannels(),
             'selectedChannel' => $channel,
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request         $request
      * @param ContentTypePage $page
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function editAction(Request $request, ContentTypePage $page)
     {
@@ -74,16 +72,16 @@ class ContentTypePageController extends Controller
             return $this->redirectToRoute('integrated_page_content_type_page_index', ['channel' => $channel->getId()]);
         }
 
-        return [
+        return $this->render('IntegratedPageBundle:content_type_page:edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * @param ContentTypePage $page
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createEditForm(ContentTypePage $page)
     {

@@ -60,7 +60,7 @@ class NewsController
         $this->blockManager->setDocument($news);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/News/show/'.$page->getLayout()),
+            $this->themeManager->locateTemplate('content/news/show/'.$page->getLayout()),
             [
                 'news' => $news,
                 'page' => $page,

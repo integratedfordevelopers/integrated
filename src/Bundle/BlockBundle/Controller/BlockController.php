@@ -20,7 +20,6 @@ use Integrated\Common\Form\Type\MetadataType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -28,11 +27,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class BlockController extends Controller
 {
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
     {
@@ -52,36 +49,33 @@ class BlockController extends Controller
             ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc', 'query_type' => 'block_overview']
         );
 
-        return [
+        return $this->render('IntegratedBlockBundle:block:index.html.twig', [
             'blocks' => $pagination,
             'factory' => $this->getFactory(),
             'pageBundleInstalled' => $pageBundleInstalled,
             'facetFilter' => $facetFilter->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
+     * @param Request $request
+     * @param Block   $block
      *
-     * @param Block $block
-     *
-     * @return array
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request, Block $block)
     {
         $request->attributes->set('integrated_block_edit', true);
 
-        return [
+        return $this->render('IntegratedBlockBundle:block:show.json.twig', [
             'block' => $block,
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function newAction(Request $request)
     {
@@ -103,7 +97,7 @@ class BlockController extends Controller
             $dm->flush();
 
             if ('iframe.html' === $request->getRequestFormat()) {
-                return $this->render('IntegratedBlockBundle:Block:saved.iframe.html.twig', ['id' => $block->getId()]);
+                return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', ['id' => $block->getId()]);
             }
 
             $this->get('braincrafted_bootstrap.flash')->success('Block created');
@@ -111,18 +105,16 @@ class BlockController extends Controller
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }
 
-        return [
+        return $this->render('IntegratedBlockBundle:block:new.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      * @param Block   $block
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, Block $block)
     {
@@ -133,7 +125,9 @@ class BlockController extends Controller
             $this->getDocumentManager()->flush();
 
             if ('iframe.html' === $request->getRequestFormat()) {
-                return $this->render('IntegratedBlockBundle:Block:saved.iframe.html.twig', ['id' => $block->getId()]);
+                return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', [
+                    'id' => $block->getId(),
+                ]);
             }
 
             $this->get('braincrafted_bootstrap.flash')->success('Block updated');
@@ -141,18 +135,16 @@ class BlockController extends Controller
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }
 
-        return [
+        return $this->render('IntegratedBlockBundle:block:edit.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      * @param Block   $block
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction(Request $request, Block $block)
     {
@@ -163,7 +155,7 @@ class BlockController extends Controller
         /* check if current Block not used on some page */
         $dm = $this->getDocumentManager();
         if ($this->container->has('integrated_page.form.type.page')) {
-            if ($dm->getRepository('IntegratedBlockBundle:Block\Block')->isUsed($block)) {
+            if ($dm->getRepository(Block::class)->isUsed($block)) {
                 throw $this->createNotFoundException(sprintf('Block "%s" is used.', $block->getId()));
             }
         }
@@ -180,16 +172,16 @@ class BlockController extends Controller
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }
 
-        return [
+        return $this->render('IntegratedBlockBundle:block:delete.html.twig', [
             'block' => $block,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * @param BlockInterface $block
      *
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createCreateForm(BlockInterface $block)
     {
@@ -208,7 +200,7 @@ class BlockController extends Controller
     /**
      * @param BlockInterface $block
      *
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createEditForm(BlockInterface $block)
     {
@@ -231,9 +223,9 @@ class BlockController extends Controller
     }
 
     /**
-     * @param string $id
+     * @param $id
      *
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createDeleteForm($id)
     {

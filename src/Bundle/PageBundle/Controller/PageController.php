@@ -15,8 +15,10 @@ use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
 use Integrated\Bundle\PageBundle\Form\Type\PageType;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -24,11 +26,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class PageController extends Controller
 {
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -43,19 +43,17 @@ class PageController extends Controller
             20
         );
 
-        return [
+        return $this->render('IntegratedPageBundle:page:index.html.twig', [
             'pages' => $pagination,
             'channels' => $this->getChannels(),
             'selectedChannel' => $channel,
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function newAction(Request $request)
     {
@@ -81,18 +79,16 @@ class PageController extends Controller
             return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
         }
 
-        return [
+        return $this->render('IntegratedPageBundle:page:new.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      * @param Page    $page
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function editAction(Request $request, Page $page)
     {
@@ -111,19 +107,17 @@ class PageController extends Controller
             return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
         }
 
-        return [
+        return $this->render('IntegratedPageBundle:page:edit.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      * @param Page    $page
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function deleteAction(Request $request, Page $page)
     {
@@ -149,16 +143,16 @@ class PageController extends Controller
             return $this->redirect($this->generateUrl('integrated_page_page_index', ['channel' => $channel->getId()]));
         }
 
-        return [
+        return $this->render('IntegratedPageBundle:page:delete.html.twig', [
             'page' => $page,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * @param Page $page
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createCreateForm(Page $page)
     {
@@ -187,7 +181,7 @@ class PageController extends Controller
     /**
      * @param Page $page
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createEditForm(Page $page)
     {
@@ -217,7 +211,7 @@ class PageController extends Controller
     /**
      * @param string $id
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createDeleteForm($id)
     {

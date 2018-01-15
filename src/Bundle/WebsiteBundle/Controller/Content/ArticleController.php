@@ -60,7 +60,7 @@ class ArticleController
         $this->blockManager->setDocument($article);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Article/show/'.$page->getLayout()),
+            $this->themeManager->locateTemplate('content/article/show/'.$page->getLayout()),
             [
                 'article' => $article,
                 'page' => $page,

@@ -40,9 +40,9 @@ class SearchSelectionController extends Controller
             $block->setItemsPerPage($itemsPerPage);
         }
 
-        return [
+        return $this->render('IntegratedWebsiteBundle:search_selection:rss.'.$request->getRequestFormat('xml').'.twig', [
             'selection' => $selection,
             'documents' => $this->get('integrated_content.provider.solarium')->execute($block, $request),
-        ];
+        ]);
     }
 }

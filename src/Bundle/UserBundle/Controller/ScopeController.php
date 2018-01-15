@@ -23,8 +23,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\FormBuilder;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @author Michael Jongman <michael@e-active.nl>
@@ -32,11 +30,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class ScopeController extends Controller
 {
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -48,17 +44,15 @@ class ScopeController extends Controller
             15
         );
 
-        return [
+        return $this->render('IntegratedUserBundle:scope:index.html.twig', [
             'scopes' => $paginator,
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -82,18 +76,16 @@ class ScopeController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedUserBundle:scope:index.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Scope   $scope
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -121,19 +113,17 @@ class ScopeController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedUserBundle:scope:index.html.twig', [
             'scope' => $scope,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Scope   $scope
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      */
     public function deleteAction(Scope $scope, Request $request)
     {
@@ -179,10 +169,10 @@ class ScopeController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedUserBundle:scope:index.html.twig', [
             'scope' => $scope,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
@@ -203,7 +193,7 @@ class ScopeController extends Controller
             'buttons' => [
                 'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;
@@ -211,6 +201,7 @@ class ScopeController extends Controller
 
     /**
      * @param Scope $scope
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createEditForm(Scope $scope)
@@ -228,7 +219,7 @@ class ScopeController extends Controller
             'buttons' => [
                 'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;
@@ -236,6 +227,7 @@ class ScopeController extends Controller
 
     /**
      * @param Scope $scope
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createDeleteForm(Scope $scope)
@@ -253,7 +245,7 @@ class ScopeController extends Controller
             'buttons' => [
                 'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;

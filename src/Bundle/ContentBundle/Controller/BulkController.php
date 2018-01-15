@@ -19,11 +19,11 @@ use Integrated\Bundle\ContentBundle\Form\Type\BulkSelectionType;
 use Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction;
 use Integrated\Bundle\ContentBundle\Provider\ContentProvider;
 use Integrated\Common\Bulk\BulkHandlerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
@@ -64,12 +64,10 @@ class BulkController extends Controller
     }
 
     /**
-     * @Template()
+     * @param Request    $request
+     * @param BulkAction $bulk
      *
-     * @param Request         $request
-     * @param BulkAction|null $bulk
-     *
-     * @return array|RedirectResponse
+     * @return RedirectResponse|Response
      */
     public function selectAction(Request $request, BulkAction $bulk = null)
     {
@@ -101,20 +99,18 @@ class BulkController extends Controller
             return $this->redirectToRoute('integrated_content_bulk_configure', ['id' => $bulk->getId()]);
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:bulk:select.html.twig', [
             'content' => $content,
             'limit' => $limit,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template()
-     *
      * @param Request    $request
      * @param BulkAction $bulk
      *
-     * @return array|RedirectResponse
+     * @return RedirectResponse|Response
      */
     public function configureAction(Request $request, BulkAction $bulk)
     {
@@ -131,20 +127,18 @@ class BulkController extends Controller
             return $this->redirectToRoute('integrated_content_bulk_confirm', ['id' => $bulk->getId()]);
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:bulk:configure.html.twig', [
             'id' => $bulk->getId(),
             'selection' => count($bulk->getSelection()),
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template()
-     *
      * @param Request    $request
      * @param BulkAction $bulk
      *
-     * @return array|RedirectResponse
+     * @return RedirectResponse|Response
      */
     public function confirmAction(Request $request, BulkAction $bulk)
     {
@@ -173,10 +167,10 @@ class BulkController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:bulk:confirm.html.twig', [
             'id' => $bulk->getId(),
             'selection' => count($bulk->getSelection()),
             'form' => $form->createView(),
-        ];
+        ]);
     }
 }

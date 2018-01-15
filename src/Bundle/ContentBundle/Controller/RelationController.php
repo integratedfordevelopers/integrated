@@ -15,8 +15,10 @@ use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -31,11 +33,9 @@ class RelationController extends Controller
     /**
      * Lists all the Relation documents.
      *
-     * @Template()
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -49,60 +49,54 @@ class RelationController extends Controller
 
         $documents = $qb->getQuery()->execute();
 
-        return ['documents' => $documents];
+        return $this->render('IntegratedContentBundle:relation:index.html.twig', ['documents' => $documents]);
     }
 
     /**
      * Finds and displays a Relation document.
      *
-     * @Template()
-     *
      * @param Relation $relation
      *
-     * @return array
+     * @return Response
      */
     public function showAction(Relation $relation)
     {
         $form = $this->createDeleteForm($relation);
 
-        return [
+        return $this->render('IntegratedContentBundle:relation:show.html.twig', [
             'form' => $form->createView(),
             'relation' => $relation,
-        ];
+        ]);
     }
 
     /**
      * Displays a form to create a new Relation document.
      *
-     * @Template()
-     *
-     * @return array
+     * @return Response
      */
     public function newAction()
     {
         $form = $this->createNewForm(new Relation());
 
-        return [
+        return $this->render('IntegratedContentBundle:relation:new.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * Creates a new Relation document.
      *
-     * @Template("IntegratedContentBundle:Relation:new.html.twig")
-     *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
     {
         $relation = new Relation();
 
         $form = $this->createNewForm($relation);
-
         $form->handleRequest($request);
+
         if ($form->isValid()) {
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
@@ -114,44 +108,40 @@ class RelationController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_relation_index'));
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:relation:new.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * Display a form to edit an existing Relation document.
      *
-     * @Template()
-     *
      * @param Relation $relation
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function editAction(Relation $relation)
     {
         $form = $this->createEditForm($relation);
 
-        return [
+        return $this->render('IntegratedContentBundle:relation:edit.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * Edits an existing Relation document.
      *
-     * @Template("IntegratedContentBundle:Relation:edit.html.twig")
-     *
      * @param Request  $request
      * @param Relation $relation
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|array
+     * @return Response|RedirectResponse
      */
     public function updateAction(Request $request, Relation $relation)
     {
         $form = $this->createEditForm($relation);
-
         $form->handleRequest($request);
+
         if ($form->isValid()) {
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
@@ -162,9 +152,9 @@ class RelationController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_relation_index'));
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:relation:edit.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
@@ -173,7 +163,7 @@ class RelationController extends Controller
      * @param Request  $request
      * @param Relation $relation
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, Relation $relation)
     {
@@ -197,7 +187,7 @@ class RelationController extends Controller
      *
      * @param Relation $relation
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createNewForm(Relation $relation)
     {
@@ -220,7 +210,7 @@ class RelationController extends Controller
      *
      * @param Relation $relation
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createEditForm(Relation $relation)
     {
@@ -243,7 +233,7 @@ class RelationController extends Controller
      *
      * @param Relation $relation
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return FormInterface
      */
     protected function createDeleteForm(Relation $relation)
     {

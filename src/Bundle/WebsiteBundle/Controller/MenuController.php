@@ -14,7 +14,7 @@ namespace Integrated\Bundle\WebsiteBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -22,11 +22,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class MenuController extends Controller
 {
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function renderAction(Request $request)
     {
@@ -37,10 +35,10 @@ class MenuController extends Controller
             $menu = $this->getMenuFactory()->fromArray($data['data']);
         }
 
-        return [
+        return $this->render('IntegratedWebsiteBundle:menu:render.'.$request->getRequestFormat('json').'.twig', [
             'menu' => $menu,
             'options' => isset($data['options']) ? $data['options'] : [],
-        ];
+        ]);
     }
 
     /**

@@ -60,7 +60,7 @@ class CompanyController
         $this->blockManager->setDocument($company);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Company/show/'.$page->getLayout()),
+            $this->themeManager->locateTemplate('content/company/show/'.$page->getLayout()),
             [
                 'company' => $company,
                 'page' => $page,

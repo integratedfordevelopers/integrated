@@ -33,17 +33,16 @@ class InlineTextBlockController extends BlockController
         $form = $this->createCreateForm($block);
 
         $form->remove('layout');
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDocumentManager()->persist($block);
             $this->getDocumentManager()->flush();
 
-            return $this->render('IntegratedBlockBundle:Block:saved.iframe.html.twig', ['id' => $block->getId()]);
+            return $this->render('IntegratedBlockBundle:block:saved.iframe.html.twig', ['id' => $block->getId()]);
         }
 
-        return $this->render('IntegratedBlockBundle:Block:new.iframe.html.twig', [
+        return $this->render('IntegratedBlockBundle:block:new.iframe.html.twig', [
             'form' => $form->createView(),
         ]);
     }
