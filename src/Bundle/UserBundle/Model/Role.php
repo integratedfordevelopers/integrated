@@ -11,10 +11,12 @@
 
 namespace Integrated\Bundle\UserBundle\Model;
 
+use Symfony\Component\Security\Core\Role\Role as BaseRole;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class Role implements RoleInterface
+class Role extends BaseRole implements RoleInterface
 {
     /**
      * @var string
@@ -62,14 +64,6 @@ class Role implements RoleInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRole()
-    {
-        return $this->role;
     }
 
     /**
