@@ -6,9 +6,9 @@
 
     <services>
 
-		<service id="integrated_queue.dbal.connection" alias="database_connection" /> <!-- config option -->
+		<service id="integrated_queue.dbal.connection" alias="database_connection" public="true" /> <!-- config option -->
 
-		<service id="integrated_queue.dbal.schema" class="Integrated\Common\Queue\Provider\DBAL\Schema">
+		<service id="integrated_queue.dbal.schema" class="Integrated\Common\Queue\Provider\DBAL\Schema" public="true">
 			<argument type="collection">
 				<argument key="queue_table_name">queue</argument> <!-- config option -->
 			</argument>
@@ -36,7 +36,7 @@
 
 		<!-- the next service should be totally dynamically created -->
 
-		<service id="integrated_queue.solr_indexer" class="Integrated\Common\Queue\Queue">
+		<service id="integrated_queue.solr_indexer" class="Integrated\Common\Queue\Queue" public="true">
             <factory service="integrated_queue.factory" method="getQueue" />
 
             <argument type="string">solr-indexer</argument> <!-- config option -->

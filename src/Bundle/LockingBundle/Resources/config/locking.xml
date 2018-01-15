@@ -13,9 +13,9 @@
 
     <services>
 
-		<service id="integrated_locking.dbal.connection" alias="database_connection" /> <!-- config option -->
+		<service id="integrated_locking.dbal.connection" alias="database_connection" public="true" /> <!-- config option -->
 
-		<service id="integrated_locking.dbal.schema" class="%integrated_locking.dbal.schema.class%">
+		<service id="integrated_locking.dbal.schema" class="%integrated_locking.dbal.schema.class%" public="true">
 			<argument type="collection">
 				<argument key="lock_table_name">locks</argument> <!-- config option -->
 			</argument>

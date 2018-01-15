@@ -12,29 +12,69 @@
 namespace Integrated\Bundle\UserBundle\Command;
 
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Integrated\Bundle\UserBundle\Doctrine\RoleManager;
+use Integrated\Bundle\UserBundle\Doctrine\ScopeManager;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class CreateUserCommand extends ContainerAwareCommand
+class CreateUserCommand extends Command
 {
+    /**
+     * @var ScopeManager
+     */
+    private $scopeManager;
+
+    /**
+     * @var RoleManager
+     */
+    private $roleManager;
+
     /**
      * @var UserManagerInterface
      */
-    private $manager;
+    private $userManager;
+
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
 
     /**
      * @var EncoderFactoryInterface
      */
     private $encoderFactory;
+
+    /**
+     * @param ScopeManager $scopeManager
+     * @param RoleManager $roleManager
+     * @param UserManagerInterface $userManager
+     * @param ValidatorInterface $validator
+     * @param EncoderFactoryInterface $encoderFactory
+     */
+    public function __construct(
+        ScopeManager $scopeManager,
+        RoleManager $roleManager,
+        UserManagerInterface $userManager,
+        ValidatorInterface $validator,
+        EncoderFactoryInterface $encoderFactory
+    ) {
+        $this->scopeManager = $scopeManager;
+        $this->roleManager = $roleManager;
+        $this->userManager = $userManager;
+        $this->validator = $validator;
+        $this->encoderFactory = $encoderFactory;
+
+        parent::__construct();
+    }
 
     /**
      * @see Command
@@ -77,14 +117,12 @@ The <info>%command.name%</info> command creates a new user
             $roles = array_filter(explode(',', $input->getArgument('roles')));
         }
 
-        $manager = $this->getManager();
-
-        $user = $manager->create();
+        $user = $this->userManager->create();
 
         $salt = base64_encode(random_bytes(72));
 
         $user->setUsername($username);
-        $user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
+        $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($password, $salt));
         $user->setSalt($salt);
         $user->setEmail($email);
 
@@ -93,21 +131,19 @@ The <info>%command.name%</info> command creates a new user
             $scopeName = $input->getArgument('scope') ?: $scopeName;
         }
 
-        $scopeManager = $this->getContainer()->get('integrated_user.scope.manager');
-        if (!$scope = $scopeManager->findByName($scopeName)) {
+        if (!$scope = $this->scopeManager->findByName($scopeName)) {
             $scope = new Scope();
             $scope
                 ->setName($scopeName)
                 ->setAdmin($scopeName == 'Integrated')
             ;
 
-            $scopeManager->persist($scope, true);
+            $this->scopeManager->persist($scope, true);
         }
 
         $user->setScope($scope);
 
-        $validator = $this->getContainer()->get('validator');
-        $errors = $validator->validate($user);
+        $errors = $this->validator->validate($user);
 
         if (count($errors) > 0) {
             $output->writeln(sprintf('Aborting: user model not valid: %s', (string) $errors));
@@ -116,16 +152,15 @@ The <info>%command.name%</info> command creates a new user
         }
 
         if ($roles) {
-            $roleManager = $this->getContainer()->get('integrated_user.role.manager');
-            $roleRepository = $roleManager->getRepository();
-            $allRoles = $roleManager->getRolesFromSources();
+            $roleRepository = $this->roleManager->getRepository();
+            $allRoles = $this->roleManager->getRolesFromSources();
 
             foreach ($roles as $role) {
                 if ($objectRole = $roleRepository->findOneBy(['role' => $role])) {
                     $user->addRole($objectRole);
                 } elseif (isset($allRoles[$role])) {
-                    $objectRole = $roleManager->create($role);
-                    $roleManager->persist($objectRole);
+                    $objectRole = $this->roleManager->create($role);
+                    $this->roleManager->persist($objectRole);
                     $user->addRole($objectRole);
                 } else {
                     $output->writeln(sprintf('The role %s not found ', $role));
@@ -134,7 +169,7 @@ The <info>%command.name%</info> command creates a new user
         }
 
         try {
-            $manager->persist($user);
+            $this->userManager->persist($user);
         } catch (Exception $e) {
             $output->writeln(sprintf('Aborting: %s', $e->getMessage()));
 
@@ -142,31 +177,5 @@ The <info>%command.name%</info> command creates a new user
         }
 
         return 0;
-    }
-
-    /**
-     * @param object $user
-     *
-     * @return PasswordEncoderInterface
-     */
-    protected function getEncoder($user)
-    {
-        if ($this->encoderFactory === null) {
-            $this->encoderFactory = $this->getContainer()->get('security.encoder_factory');
-        }
-
-        return $this->encoderFactory->getEncoder($user);
-    }
-
-    /**
-     * @return UserManagerInterface
-     */
-    protected function getManager()
-    {
-        if ($this->manager === null) {
-            $this->manager = $this->getContainer()->get('integrated_user.user.manager');
-        }
-
-        return $this->manager;
     }
 }

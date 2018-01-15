@@ -12,31 +12,53 @@
 namespace Integrated\Bundle\UserBundle\Command;
 
 use Exception;
+use Integrated\Bundle\UserBundle\Doctrine\ScopeManager;
 use Integrated\Bundle\UserBundle\Doctrine\UserManager;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
-use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ChangePasswordCommand extends ContainerAwareCommand
+class ChangePasswordCommand extends Command
 {
     /**
      * @var UserManagerInterface
      */
-    private $manager;
+    private $userManager;
+
+    /**
+     * @var ScopeManager
+     */
+    private $scopeManager;
 
     /**
      * @var EncoderFactoryInterface
      */
     private $encoderFactory;
+
+    /**
+     * @param ScopeManager $scopeManager
+     * @param UserManagerInterface $userManager
+     * @param EncoderFactoryInterface $encoderFactory
+     */
+    public function __construct(
+        ScopeManager $scopeManager,
+        UserManagerInterface $userManager,
+        EncoderFactoryInterface $encoderFactory
+    ) {
+        $this->scopeManager = $scopeManager;
+        $this->userManager = $userManager;
+        $this->encoderFactory = $encoderFactory;
+
+        parent::__construct();
+    }
 
     /**
      * @see Command
@@ -71,8 +93,7 @@ The <info>%command.name%</info> command replaces the password of the user
             $scopeName = $input->getArgument('scope') ?: $scopeName;
         }
 
-        $scopeManager = $this->getContainer()->get('integrated_user.scope.manager');
-        if (!$scope = $scopeManager->findByName($scopeName)) {
+        if (!$scope = $this->scopeManager->findByName($scopeName)) {
             $output->writeln(sprintf('Aborting: scope with name "%s" does not exist', $scopeName));
 
             return 1;
@@ -88,11 +109,11 @@ The <info>%command.name%</info> command replaces the password of the user
 
         $salt = base64_encode(random_bytes(72));
 
-        $user->setPassword($this->getEncoder($user)->encodePassword($password, $salt));
+        $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($password, $salt));
         $user->setSalt($salt);
 
         try {
-            $this->getManager()->persist($user);
+            $this->userManager->persist($user);
         } catch (Exception $e) {
             $output->writeln(sprintf('Aborting: %s', $e->getMessage()));
 
@@ -100,32 +121,6 @@ The <info>%command.name%</info> command replaces the password of the user
         }
 
         return 0;
-    }
-
-    /**
-     * @param object $user
-     *
-     * @return PasswordEncoderInterface
-     */
-    protected function getEncoder($user)
-    {
-        if ($this->encoderFactory === null) {
-            $this->encoderFactory = $this->getContainer()->get('security.encoder_factory');
-        }
-
-        return $this->encoderFactory->getEncoder($user);
-    }
-
-    /**
-     * @return UserManagerInterface
-     */
-    protected function getManager()
-    {
-        if ($this->manager === null) {
-            $this->manager = $this->getContainer()->get('integrated_user.user.manager');
-        }
-
-        return $this->manager;
     }
 
     /**
@@ -138,7 +133,7 @@ The <info>%command.name%</info> command replaces the password of the user
      */
     protected function findUserByScope($username, Scope $scope)
     {
-        $manager = $this->getManager();
+        $manager = $this->userManager;
         if (!$manager instanceof UserManager) {
             throw new \Exception(sprintf('Manager should be instance of %s', UserManager::class));
         }

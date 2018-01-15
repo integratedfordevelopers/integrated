@@ -14,7 +14,7 @@
 
 		<!-- the next service should be totally dynamically created -->
 
-        <service id="integrated_queue.workflow" class="%integrated_queue.queue.class%">
+        <service id="integrated_queue.workflow" class="%integrated_queue.queue.class%" public="true">
             <factory service="integrated_queue.factory" method="getQueue" />
 
             <argument type="string">workflow-worker</argument> <!-- config option -->

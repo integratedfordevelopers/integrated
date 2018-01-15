@@ -310,7 +310,7 @@ The <info>%command.name%</info> command starts a index of the site.
      */
     protected function getDocumentManager()
     {
-        return $this->getContainer()->get('doctrine_mongodb.odm.document_manager');
+        return $this->getContainer()->get('doctrine_mongodb')->getManager();
     }
 
     /**
