@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\SearchSelection;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * SearchSelection document.

@@ -12,11 +12,11 @@
 namespace Integrated\Common\Solr\Tests\Task\Tasks;
 
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Solr\Indexer\JobFactory;
 use Integrated\Common\Solr\Task\Provider\ContentTypeProviderInterface;
 use Integrated\Common\Solr\Task\Tasks\ContentTypeQueueTask;
 use Integrated\Common\Solr\Task\Tasks\ContentTypeQueueTaskHandler;
-use Integrated\Common\Queue\QueueInterface;
 use stdClass;
 
 /**

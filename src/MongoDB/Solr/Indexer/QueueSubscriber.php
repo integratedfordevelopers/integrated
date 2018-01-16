@@ -11,9 +11,9 @@
 
 namespace Integrated\MongoDB\Solr\Indexer;
 
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-use Doctrine\Common\EventSubscriber;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Queue\QueueAwareInterface;
 use Integrated\Common\Queue\QueueInterface;

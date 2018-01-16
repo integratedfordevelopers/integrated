@@ -19,10 +19,11 @@ use Integrated\Common\ContentType\Event\ContentTypeEvent;
 use Integrated\Common\ContentType\Events;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -42,9 +43,7 @@ class ContentTypeController extends Controller
     /**
      * Lists all the ContentType documents.
      *
-     * @Template
-     *
-     * @return array
+     * @return Response
      */
     public function indexAction()
     {
@@ -54,55 +53,49 @@ class ContentTypeController extends Controller
 
         $documentTypes = $this->getMetadata()->getAllMetadata();
 
-        return [
+        return $this->render('IntegratedContentBundle:content_type:index.html.twig', [
             'documents' => $documents,
             'documentTypes' => $documentTypes,
-        ];
+        ]);
     }
 
     /**
      * Display a list of Content documents.
      *
-     * @Template
-     *
-     * @return array
+     * @return Response
      */
     public function selectAction()
     {
         $documentTypes = $this->getMetadata()->getAllMetadata();
 
-        return [
+        return $this->render('IntegratedContentBundle:content_type:select.html.twig', [
             'documentTypes' => $documentTypes,
-        ];
+        ]);
     }
 
     /**
      * Finds and displays a ContentType document.
      *
-     * @Template
-     *
      * @param ContentType $contentType
      *
-     * @return array
+     * @return Response
      */
     public function showAction(ContentType $contentType)
     {
         $form = $this->createDeleteForm($contentType);
 
-        return [
+        return $this->render('IntegratedContentBundle:content_type:show.html.twig', [
             'form' => $form->createView(),
             'contentType' => $contentType,
-        ];
+        ]);
     }
 
     /**
      * Creates a new ContentType document.
      *
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function newAction(Request $request)
     {
@@ -132,20 +125,18 @@ class ContentTypeController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:content_type:new.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * Edits an existing ContentType document.
      *
-     * @Template
-     *
      * @param Request     $request
      * @param ContentType $contentType
      *
-     * @return array|\Symfony\Component\HttpFoundation\Response
+     * @return Response|RedirectResponse
      */
     public function editAction(Request $request, ContentType $contentType)
     {
@@ -167,10 +158,10 @@ class ContentTypeController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:content_type:edit.html.twig', [
             'form' => $form->createView(),
             'contentType' => $contentType,
-        ];
+        ]);
     }
 
     /**
@@ -179,7 +170,7 @@ class ContentTypeController extends Controller
      * @param Request     $request
      * @param ContentType $contentType
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteAction(Request $request, ContentType $contentType)
     {
@@ -249,7 +240,7 @@ class ContentTypeController extends Controller
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
-            ]
+            ],
         ]);
 
         return $form;
@@ -278,7 +269,7 @@ class ContentTypeController extends Controller
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'submit' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
-            ]
+            ],
         ]);
 
         return $form;
@@ -305,7 +296,7 @@ class ContentTypeController extends Controller
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete', 'attr' => ['class' => 'btn-danger']]],
-            ]
+            ],
         ]);
 
         return $form;

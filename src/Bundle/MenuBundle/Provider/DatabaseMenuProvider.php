@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\MenuBundle\Provider;
 
-use Knp\Menu\ItemInterface;
-use Knp\Menu\Provider\MenuProviderInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelInterface;
+use Knp\Menu\ItemInterface;
+use Knp\Menu\Provider\MenuProviderInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

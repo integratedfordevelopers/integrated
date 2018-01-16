@@ -11,14 +11,14 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\EventListener;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

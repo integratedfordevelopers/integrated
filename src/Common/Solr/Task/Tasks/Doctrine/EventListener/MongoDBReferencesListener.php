@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\Solr\Task\Tasks\Doctrine\EventListener;
 
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-use Doctrine\Common\EventSubscriber;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Queue\QueueInterface;
 use Integrated\Common\Solr\Task\Tasks\Doctrine\MongoDBReferenceQueueTask;

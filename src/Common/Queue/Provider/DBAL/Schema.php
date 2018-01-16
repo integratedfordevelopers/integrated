@@ -11,10 +11,10 @@
 
 namespace Integrated\Common\Queue\Provider\DBAL;
 
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Schema as BaseSchema;
 use Doctrine\DBAL\Schema\SchemaDiff;
-use Doctrine\DBAL\Connection;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

@@ -13,8 +13,8 @@ namespace Integrated\Common\Solr\Indexer;
 
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Solr\Exception\OutOfBoundsException;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

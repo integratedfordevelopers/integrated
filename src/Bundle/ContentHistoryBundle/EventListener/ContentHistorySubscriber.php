@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Events;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentHistoryBundle\Event\ContentHistoryEvent;
 use Integrated\Common\Content\ContentInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

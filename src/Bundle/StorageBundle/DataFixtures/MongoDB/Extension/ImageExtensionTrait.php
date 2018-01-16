@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension;
 
-use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Faker\Image;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util\CreateUtil;
+use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

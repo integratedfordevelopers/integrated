@@ -11,14 +11,14 @@
 
 namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\PageBundle\Services\UrlResolver;
+use Integrated\Common\Content\ContentInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Common\Content\ContentInterface;
-use Integrated\Bundle\PageBundle\Services\UrlResolver;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
 use Symfony\Component\Routing\Router;
 

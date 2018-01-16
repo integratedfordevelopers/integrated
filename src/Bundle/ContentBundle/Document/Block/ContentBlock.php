@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
-use Integrated\Bundle\BlockBundle\Document\Block\PublishTitleTrait;
-use Symfony\Component\Validator\Constraints as Assert;
-use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\BlockBundle\Document\Block\PublishTitleTrait;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
+use Integrated\Common\Form\Mapping\Annotations as Type;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Content block document.

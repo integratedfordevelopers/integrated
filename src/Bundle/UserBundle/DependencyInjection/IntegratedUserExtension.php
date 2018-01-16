@@ -45,9 +45,6 @@ class IntegratedUserExtension extends Extension
 
         $loader->load('command.xml');
 
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-
         // @TODO make it a config option to enable the default mapping or not
         $container->setParameter('integrated_user.mapping.enabled', true);
     }

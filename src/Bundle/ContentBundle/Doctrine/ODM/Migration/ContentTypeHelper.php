@@ -13,9 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Doctrine\ODM\Migration;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
+use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 
 /**
  * @author Johan Liefers <johan@-eactive.nl>

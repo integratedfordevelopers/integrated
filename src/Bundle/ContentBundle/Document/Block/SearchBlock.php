@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
-use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * Search block document.

@@ -12,8 +12,8 @@
 namespace Integrated\Common\Content\Tests\Serializer;
 
 use Integrated\Common\Content\Serializer\JsonLBNullNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use stdClass as Object;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

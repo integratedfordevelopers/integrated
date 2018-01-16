@@ -11,17 +11,17 @@
 
 namespace Integrated\Bundle\BlockBundle\Templating;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Integrated\Bundle\BlockBundle\Block\BlockHandler;
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockHandlerRegistryInterface;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\ContentInterface;
-use Integrated\Bundle\BlockBundle\Document\Block\Block;
-use Integrated\Bundle\BlockBundle\Block\BlockHandler;
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

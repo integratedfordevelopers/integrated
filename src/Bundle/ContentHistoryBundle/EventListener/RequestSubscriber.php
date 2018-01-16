@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Request;
-use Integrated\Bundle\ContentHistoryBundle\Event\ContentHistoryEvent;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded;
+use Integrated\Bundle\ContentHistoryBundle\Event\ContentHistoryEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

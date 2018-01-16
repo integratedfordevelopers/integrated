@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\BlockBundle\Block;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Integrated\Common\Block\BlockHandlerInterface;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\ContentInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -100,6 +100,8 @@ class BlockHandler implements BlockHandlerInterface
         if ($this->getTemplate()) {
             return $this->twig->render($this->getTemplate(), $parameters);
         }
+
+        return null;
     }
 
     /**

@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\StorageBundle\Storage\Mapping;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory;
 use Integrated\Bundle\StorageBundle\Storage\Mapping\Property\EmbedOne;
 
 /**

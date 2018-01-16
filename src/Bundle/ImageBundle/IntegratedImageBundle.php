@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ImageBundle;
 
+use Integrated\Bundle\ImageBundle\DependencyInjection\CompilerPass\ImageConverterCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Integrated\Bundle\ImageBundle\DependencyInjection\CompilerPass\ImageConverterCompilerPass;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

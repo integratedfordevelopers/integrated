@@ -16,8 +16,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Event\ConfigureRolesEvent;
 use Integrated\Bundle\UserBundle\Model\RoleInterface;
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use InvalidArgumentException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

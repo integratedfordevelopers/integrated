@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\Collection;
 
-use Symfony\Component\Form\DataTransformerInterface;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

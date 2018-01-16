@@ -13,9 +13,9 @@ namespace Integrated\Bundle\WebsiteBundle\EventListener;
 
 use Integrated\Bundle\WebsiteBundle\Service\EditableChecker;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

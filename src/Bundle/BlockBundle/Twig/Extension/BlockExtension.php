@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
-use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
+use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

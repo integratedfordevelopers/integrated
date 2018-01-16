@@ -20,8 +20,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\FormBuilder;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -29,11 +27,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class ProfileController extends Controller
 {
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -45,17 +41,15 @@ class ProfileController extends Controller
             15
         );
 
-        return [
+        return $this->render('IntegratedUserBundle:profile:index.html.twig', [
             'users' => $paginator,
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -79,17 +73,15 @@ class ProfileController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedUserBundle:profile:new.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -119,18 +111,16 @@ class ProfileController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedUserBundle:profile:edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      */
     public function deleteAction(Request $request)
     {
@@ -158,10 +148,10 @@ class ProfileController extends Controller
             }
         }
 
-        return [
+        return $this->render('IntegratedUserBundle:profile:delete.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
@@ -182,7 +172,7 @@ class ProfileController extends Controller
             'buttons' => [
                 'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;
@@ -190,6 +180,7 @@ class ProfileController extends Controller
 
     /**
      * @param UserInterface $user
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createEditForm(UserInterface $user)
@@ -207,7 +198,7 @@ class ProfileController extends Controller
             'buttons' => [
                 'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;
@@ -215,6 +206,7 @@ class ProfileController extends Controller
 
     /**
      * @param UserInterface $user
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createDeleteForm(UserInterface $user)
@@ -232,7 +224,7 @@ class ProfileController extends Controller
             'buttons' => [
                 'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;

@@ -12,11 +12,11 @@
 namespace Integrated\Common\ContentType\Resolver;
 
 use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Common\ContentType\Exception\ExceptionInterface;
+use Integrated\Common\ContentType\Exception\InvalidArgumentException;
+use Integrated\Common\ContentType\Exception\UnexpectedTypeException;
 use Integrated\Common\ContentType\Iterator;
 use Integrated\Common\ContentType\ResolverInterface;
-use Integrated\Common\ContentType\Exception\ExceptionInterface;
-use Integrated\Common\ContentType\Exception\UnexpectedTypeException;
-use Integrated\Common\ContentType\Exception\InvalidArgumentException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

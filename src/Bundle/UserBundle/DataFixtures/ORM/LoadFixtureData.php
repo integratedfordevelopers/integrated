@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\UserBundle\DataFixtures\ORM;
 
+use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Integrated\Bundle\UserBundle\Model\User;
+use Nelmio\Alice\Fixtures;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Finder\Finder;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\DataFixtures\FixtureInterface;
-use Nelmio\Alice\Fixtures;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

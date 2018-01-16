@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
+use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Symfony\Bundle\TwigBundle\Controller\ExceptionController;
 use Symfony\Component\HttpFoundation\Request;
 use Twig\Environment;
-use Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException;
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

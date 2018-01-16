@@ -44,8 +44,8 @@ class ChangePasswordCommand extends Command
     private $encoderFactory;
 
     /**
-     * @param ScopeManager $scopeManager
-     * @param UserManagerInterface $userManager
+     * @param ScopeManager            $scopeManager
+     * @param UserManagerInterface    $userManager
      * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(

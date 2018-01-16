@@ -12,9 +12,9 @@
 namespace Integrated\Bundle\ChannelBundle;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterAdapterPass;
 use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterConfigPass;
 use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterConfigResolverPass;
-use Integrated\Bundle\ChannelBundle\DependencyInjection\Compiler\RegisterAdapterPass;
 use Integrated\Bundle\ChannelBundle\DependencyInjection\IntegratedChannelExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;

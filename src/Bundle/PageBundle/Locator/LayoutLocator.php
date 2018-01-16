@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\PageBundle\Locator;
 
-use Symfony\Component\Finder\Finder;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
+use Symfony\Component\Finder\Finder;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

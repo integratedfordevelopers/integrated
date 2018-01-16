@@ -11,13 +11,14 @@
 
 namespace Integrated\Bundle\ContentBundle\Provider;
 
-use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\DocumentNotFoundException;
+use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Knp\Component\Pager\Paginator;
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
-use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Knp\Component\Pager\Paginator;
-use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @todo provider system (INTEGRATED-431)
@@ -202,7 +203,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             $request['facet_properties'] = $properties; // @hack
         }
 
-        foreach ($this->dm->getRepository('IntegratedContentBundle:Relation\Relation')->findAll() as $relation) {
+        foreach ($this->dm->getRepository(Relation::class)->findAll() as $relation) {
             $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
             $filters = isset($request[$name]) ? $request[$name] : [];
 

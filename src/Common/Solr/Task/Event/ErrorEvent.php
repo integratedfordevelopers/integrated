@@ -12,8 +12,8 @@
 namespace Integrated\Common\Solr\Task\Event;
 
 use Exception;
-use Integrated\Common\Solr\Task\Worker;
 use Integrated\Common\Queue\QueueMessageInterface;
+use Integrated\Common\Solr\Task\Worker;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

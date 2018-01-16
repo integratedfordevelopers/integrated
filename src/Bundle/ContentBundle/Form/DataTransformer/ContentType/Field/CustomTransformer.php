@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field;
 
-use Symfony\Component\Form\DataTransformerInterface;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

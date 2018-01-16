@@ -26,7 +26,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\FormBuilder;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -53,7 +52,7 @@ class WorkflowController extends Controller
             15
         );
 
-        return $this->render('IntegratedWorkflowBundle:Workflow:index.html.twig', ['pager' => $pager]);
+        return $this->render('IntegratedWorkflowBundle:workflow:index.html.twig', ['pager' => $pager]);
     }
 
     /**
@@ -61,7 +60,7 @@ class WorkflowController extends Controller
      *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      */
     public function newAction(Request $request)
     {
@@ -86,7 +85,7 @@ class WorkflowController extends Controller
             }
         }
 
-        return $this->render('IntegratedWorkflowBundle:Workflow:new.html.twig', ['form' => $form->createView()]);
+        return $this->render('IntegratedWorkflowBundle:workflow:new.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -94,7 +93,7 @@ class WorkflowController extends Controller
      *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
@@ -130,7 +129,7 @@ class WorkflowController extends Controller
             }
         }
 
-        return $this->render('IntegratedWorkflowBundle:Workflow:edit.html.twig', [
+        return $this->render('IntegratedWorkflowBundle:workflow:edit.html.twig', [
             'workflow' => $workflow,
             'form' => $form->createView(),
         ]);
@@ -141,7 +140,7 @@ class WorkflowController extends Controller
      *
      * @param Request $request
      *
-     * @return array | Response
+     * @return Response
      */
     public function deleteAction(Request $request)
     {
@@ -176,7 +175,7 @@ class WorkflowController extends Controller
             }
         }
 
-        return $this->render('IntegratedWorkflowBundle:Workflow:delete.html.twig', [
+        return $this->render('IntegratedWorkflowBundle:workflow:delete.html.twig', [
             'workflow' => $workflow,
             'form' => $form->createView(),
         ]);
@@ -278,7 +277,7 @@ class WorkflowController extends Controller
             'buttons' => [
                 'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;
@@ -286,6 +285,7 @@ class WorkflowController extends Controller
 
     /**
      * @param Definition $workflow
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createEditForm(Definition $workflow)
@@ -303,7 +303,7 @@ class WorkflowController extends Controller
             'buttons' => [
                 'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;
@@ -311,6 +311,7 @@ class WorkflowController extends Controller
 
     /**
      * @param Definition $workflow
+     *
      * @return \Symfony\Component\Form\FormInterface
      */
     protected function createDeleteForm(Definition $workflow)
@@ -328,7 +329,7 @@ class WorkflowController extends Controller
             'buttons' => [
                 'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
                 'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ]
+            ],
         ]);
 
         return $form;

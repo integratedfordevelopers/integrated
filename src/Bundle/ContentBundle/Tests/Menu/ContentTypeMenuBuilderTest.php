@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Menu;
 
-use Integrated\Bundle\ContentBundle\Menu\ContentTypeMenuBuilder;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Bundle\ContentBundle\Menu\ContentTypeMenuBuilder;
 use Integrated\Common\ContentType\ContentTypeFilterInterface;
 use Knp\Menu\FactoryInterface;
 

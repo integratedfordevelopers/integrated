@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\PageBundle;
 
+use Integrated\Bundle\PageBundle\DependencyInjection\Compiler\ContentTypeControllersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Integrated\Bundle\PageBundle\DependencyInjection\Compiler\ContentTypeControllersPass;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

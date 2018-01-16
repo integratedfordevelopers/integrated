@@ -12,27 +12,27 @@
 namespace Integrated\Common\Solr\Tests\Indexer;
 
 use Exception;
+use Integrated\Common\Queue\QueueInterface;
+use Integrated\Common\Queue\QueueMessageInterface;
 use Integrated\Common\Solr\Exception\ClientException;
 use Integrated\Common\Solr\Exception\RuntimeException;
 use Integrated\Common\Solr\Indexer\Batch;
 use Integrated\Common\Solr\Indexer\CommandFactoryInterface;
-use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 use Integrated\Common\Solr\Indexer\Event\BatchEvent;
+use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 use Integrated\Common\Solr\Indexer\Event\IndexerEvent;
 use Integrated\Common\Solr\Indexer\Event\MessageEvent;
 use Integrated\Common\Solr\Indexer\Event\ResultEvent;
 use Integrated\Common\Solr\Indexer\Event\SendEvent;
-use Integrated\Common\Solr\Indexer\Indexer;
 use Integrated\Common\Solr\Indexer\Events;
+use Integrated\Common\Solr\Indexer\Indexer;
 use Integrated\Common\Solr\Indexer\IndexerInterface;
 use Integrated\Common\Solr\Indexer\JobInterface;
-use Integrated\Common\Queue\QueueMessageInterface;
-use Integrated\Common\Queue\QueueInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Solarium\Core\Client\Client;
+use Solarium\Core\Query\Result\ResultInterface;
 use Solarium\QueryType\Update\Query\Command\AbstractCommand;
 use Solarium\QueryType\Update\Query\Query;
-use Solarium\Core\Query\Result\ResultInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

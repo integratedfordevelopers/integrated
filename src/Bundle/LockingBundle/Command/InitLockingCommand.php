@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\LockingBundle\Command;
 
+use Doctrine\DBAL\Connection;
+use Integrated\Common\Locks\Provider\DBAL\Schema;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Doctrine\DBAL\Connection;
-use Integrated\Common\Locks\Provider\DBAL\Schema;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

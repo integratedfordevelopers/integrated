@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\Storage;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

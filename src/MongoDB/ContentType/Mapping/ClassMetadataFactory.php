@@ -11,11 +11,11 @@
 
 namespace Integrated\MongoDB\ContentType\Mapping;
 
-use Integrated\MongoDB\ContentType\DiscriminatorMapBuilderSubscriber;
-use Integrated\MongoDB\ContentType\ClassMetadataLoadFinderSubscriber;
 use Doctrine\Common\EventManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataFactory as BaseClassMetadataFactory;
+use Integrated\MongoDB\ContentType\ClassMetadataLoadFinderSubscriber;
+use Integrated\MongoDB\ContentType\DiscriminatorMapBuilderSubscriber;
 
 /**
  * @deprecated will be removed asap

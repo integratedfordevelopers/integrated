@@ -13,10 +13,13 @@ namespace Integrated\Bundle\SolrBundle\Command;
 
 use DateTime;
 use DateTimeZone;
-use Integrated\Common\ContentType\ResolverInterface;
-use Integrated\Common\Solr\Indexer\Job;
-use Integrated\Common\Queue\QueueInterface;
+use Doctrine\ODM\MongoDB\Cursor;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Common\ContentType\ResolverInterface;
+use Integrated\Common\Queue\QueueInterface;
+use Integrated\Common\Solr\Indexer\Job;
+use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -26,9 +29,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Serializer\SerializerInterface;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ODM\MongoDB\Cursor;
-use InvalidArgumentException;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -221,7 +221,7 @@ The <info>%command.name%</info> command starts a index of the site.
     /**
      * Add all the documents in the cursor to the solr queue.
      *
-     * @param Cursor         $cursor
+     * @param Cursor      $cursor
      * @param ProgressBar $progress
      */
     protected function doIndex(Cursor $cursor, ProgressBar $progress)

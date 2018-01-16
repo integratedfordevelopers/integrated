@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\EventListener;
 
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
-use Integrated\Common\Content\Channel\ChannelContextInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Embedded;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

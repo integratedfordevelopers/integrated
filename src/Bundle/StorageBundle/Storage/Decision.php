@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
-use Integrated\Common\Storage\FilesystemRegistryInterface;
-use Integrated\Common\Storage\DecisionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
+use Integrated\Common\Storage\DecisionInterface;
+use Integrated\Common\Storage\FilesystemRegistryInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

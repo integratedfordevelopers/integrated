@@ -11,9 +11,9 @@
 
 namespace Integrated\Common\ContentType\Resolver;
 
+use AppendIterator;
 use Integrated\Common\ContentType\IteratorInterface;
 use Integrated\Common\ContentType\ResolverInterface;
-use AppendIterator;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

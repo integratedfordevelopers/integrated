@@ -25,7 +25,7 @@
                 {% for column in item.row.columns %}
                     <div class="col-sm-{{ column.size }}{% if edit|default %} integrated-website-col integrated-website-droppable"
                          data-block-type="column" data-size="{{ column.size }}{% endif %}">
-                        {{ include('IntegratedWebsiteBundle:Page:grid.html.twig', { 'grid': column }) }}
+                        {{ include('IntegratedWebsiteBundle:page:grid.html.twig', { 'grid': column }) }}
                     </div>
                 {% endfor %}
             </div>

@@ -12,10 +12,10 @@
 namespace Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\EventListener\AddRelationFieldsSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\EventListener\AddRelationFieldsSubscriber;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

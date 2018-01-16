@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ChannelBundle\DataFixtures\MongoDB\Extension;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

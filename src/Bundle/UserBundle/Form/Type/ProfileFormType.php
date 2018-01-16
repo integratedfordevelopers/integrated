@@ -18,6 +18,7 @@ use Integrated\Bundle\UserBundle\Form\EventListener\UserProfileOptionalListener;
 use Integrated\Bundle\UserBundle\Form\EventListener\UserProfilePasswordListener;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
+use ReflectionClass;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type;
@@ -28,7 +29,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use ReflectionClass;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

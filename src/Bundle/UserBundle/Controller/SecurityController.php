@@ -13,6 +13,7 @@ namespace Integrated\Bundle\UserBundle\Controller;
 
 use Integrated\Bundle\UserBundle\Form\Type\LoginFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * The login controller.
@@ -21,6 +22,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
  */
 class SecurityController extends Controller
 {
+    /**
+     * @return Response
+     */
     public function loginAction()
     {
         $form = $this->createForm(
@@ -29,6 +33,6 @@ class SecurityController extends Controller
             ['action' => $this->generateUrl('integrated_user_check')]
         );
 
-        return $this->render('IntegratedUserBundle:Security:login.html.twig', ['form' => $form->createView()]);
+        return $this->render('IntegratedUserBundle:security:login.html.twig', ['form' => $form->createView()]);
     }
 }

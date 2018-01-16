@@ -12,14 +12,14 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\Relations as RelationsTransformer;
+use Integrated\Bundle\ContentBundle\Validator\Constraints\RelationNotNull;
+use Integrated\Common\ContentType\ContentTypeInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
-use Integrated\Bundle\ContentBundle\Validator\Constraints\RelationNotNull;
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\Relations as RelationsTransformer;
-use Integrated\Common\ContentType\ContentTypeInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

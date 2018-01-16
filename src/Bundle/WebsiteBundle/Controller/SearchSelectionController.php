@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
+use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
+use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
-use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -40,9 +40,9 @@ class SearchSelectionController extends Controller
             $block->setItemsPerPage($itemsPerPage);
         }
 
-        return [
+        return $this->render('IntegratedWebsiteBundle:search_selection:rss.'.$request->getRequestFormat('xml').'.twig', [
             'selection' => $selection,
             'documents' => $this->get('integrated_content.provider.solarium')->execute($block, $request),
-        ];
+        ]);
     }
 }

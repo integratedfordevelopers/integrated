@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\Form\Exception\TransformationFailedException;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Common\Content\ContentInterface;
+use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

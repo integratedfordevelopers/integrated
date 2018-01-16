@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\ContentBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * IntegratedContentExtension for loading configuration.
@@ -27,7 +27,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
     /**
      * @var string
      */
-    protected $formTemplate = 'IntegratedContentBundle:Form:form_div_layout.html.twig';
+    protected $formTemplate = 'IntegratedContentBundle:form:form_div_layout.html.twig';
 
     /**
      * Load the configuration.
@@ -74,9 +74,6 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 
         $loader->load('services.xml');
         $loader->load('mailer.xml');
-
-        $configuration = new Configuration();
-        $this->processConfiguration($configuration, $configs);
     }
 
     /**

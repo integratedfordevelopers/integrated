@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Extension\LocatableStorageInterfaceTrait;
 use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Storage\ResolverInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * This document covers the database existence, it is not allowed to create a new instance manually.

@@ -11,16 +11,16 @@
 
 namespace Integrated\Bundle\ContentBundle\Provider;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\WorkflowBundle\Solr\Extension\WorkflowExtension;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>

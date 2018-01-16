@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Channel\Tests\Connector\Config\Resolver;
 
-use Integrated\Common\Channel\Connector\Config\Resolver\RepositoryResolver;
 use Integrated\Common\Channel\Connector\Config\ConfigRepositoryInterface;
+use Integrated\Common\Channel\Connector\Config\Resolver\RepositoryResolver;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Converter\Config\ConfigInterface;
 

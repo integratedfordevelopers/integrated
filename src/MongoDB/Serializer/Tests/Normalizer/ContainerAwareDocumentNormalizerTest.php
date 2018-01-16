@@ -11,8 +11,8 @@
 
 namespace Integrated\MongoDB\Serializer\Tests\Normalizer;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Integrated\MongoDB\Serializer\Normalizer\ContainerAwareDocumentNormalizer;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

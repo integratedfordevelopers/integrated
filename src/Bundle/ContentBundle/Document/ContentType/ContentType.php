@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
-use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
+use Integrated\Common\ContentType\ContentTypeInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Document ContentType.

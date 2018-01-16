@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ImageTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\ImageTransformer;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

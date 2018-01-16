@@ -13,9 +13,9 @@ namespace Integrated\Bundle\WorkflowBundle\Form\EventListener;
 
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

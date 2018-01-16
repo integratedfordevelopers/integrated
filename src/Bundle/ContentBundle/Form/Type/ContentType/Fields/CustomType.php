@@ -11,15 +11,15 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type\ContentType\Fields;
 
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\CustomTransformer;
+use Integrated\Common\ContentType\Form\Custom\Type\RegistryInterface;
+use Integrated\Common\ContentType\Form\Custom\TypeInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Integrated\Common\ContentType\Form\Custom\TypeInterface;
-use Integrated\Common\ContentType\Form\Custom\Type\RegistryInterface;
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\ContentType\Field\CustomTransformer;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

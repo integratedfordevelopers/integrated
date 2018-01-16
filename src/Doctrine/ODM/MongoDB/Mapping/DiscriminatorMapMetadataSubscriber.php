@@ -11,10 +11,10 @@
 
 namespace Integrated\Doctrine\ODM\MongoDB\Mapping;
 
+use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
-use Doctrine\Common\EventSubscriber;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

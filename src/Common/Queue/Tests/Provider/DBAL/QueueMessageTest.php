@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Queue\Tests\Provider\DBAL;
 
-use stdClass;
 use Integrated\Common\Queue\Provider\DBAL\QueueMessage;
+use stdClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

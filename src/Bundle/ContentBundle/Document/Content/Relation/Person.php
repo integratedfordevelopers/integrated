@@ -13,10 +13,10 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
-use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job;
 
 /**
  * Document type Relation\Person.

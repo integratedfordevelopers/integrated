@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\SolrBundle\EventListener;
 
-use Psr\Log\LoggerInterface;
 use Integrated\Common\Solr\Indexer\Event\ErrorEvent;
 use Integrated\Common\Solr\Indexer\Events;
 use Integrated\Common\Solr\Indexer\Job;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**

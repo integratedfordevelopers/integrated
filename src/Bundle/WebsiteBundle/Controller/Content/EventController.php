@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller\Content;
 
-use Symfony\Bundle\TwigBundle\TwigEngine;
 use Integrated\Bundle\BlockBundle\Templating\BlockManager;
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Event;
 use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
+use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -60,7 +60,7 @@ class EventController
         $this->blockManager->setDocument($event);
 
         return $this->templating->renderResponse(
-            $this->themeManager->locateTemplate('content/Event/show/'.$page->getLayout()),
+            $this->themeManager->locateTemplate('content/event/show/'.$page->getLayout()),
             [
                 'event' => $event,
                 'page' => $page,

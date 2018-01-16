@@ -11,6 +11,8 @@
 
 namespace Integrated\Bundle\BlockBundle\Form\Type;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Symfony\Component\Form\AbstractType;
@@ -18,7 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
  * @author Vasil Pascal <developer.optimum@gmail.com>
@@ -124,7 +125,7 @@ class BlockFilterType extends AbstractType
      */
     private function getTypeChoices(array $blockIds)
     {
-        return $this->dm->getRepository('IntegratedBlockBundle:Block\Block')->getTypeChoices(
+        return $this->dm->getRepository(Block::class)->getTypeChoices(
             $this->factory,
             $blockIds
         );

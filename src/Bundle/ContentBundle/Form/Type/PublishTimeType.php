@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\MaxDateTimeTransformer;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\MaxDateTimeTransformer;
 use Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

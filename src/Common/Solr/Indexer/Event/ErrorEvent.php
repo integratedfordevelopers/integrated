@@ -12,9 +12,9 @@
 namespace Integrated\Common\Solr\Indexer\Event;
 
 use Exception;
+use Integrated\Common\Queue\QueueMessageInterface;
 use Integrated\Common\Solr\Exception\ExceptionInterface;
 use Integrated\Common\Solr\Indexer\IndexerInterface;
-use Integrated\Common\Queue\QueueMessageInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

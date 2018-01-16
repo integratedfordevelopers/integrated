@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type\Job;
 
+use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

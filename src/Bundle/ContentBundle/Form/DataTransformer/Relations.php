@@ -13,9 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Form\DataTransformerInterface;
-use Integrated\Common\Content\Relation\RelationInterface;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
+use Integrated\Common\Content\Relation\RelationInterface;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

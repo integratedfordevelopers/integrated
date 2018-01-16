@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Solr\Tests\Indexer\Event;
 
-use Integrated\Common\Solr\Indexer\Event\MessageEvent;
 use Integrated\Common\Queue\QueueMessageInterface;
+use Integrated\Common\Solr\Indexer\Event\MessageEvent;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

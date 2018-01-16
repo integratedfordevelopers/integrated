@@ -11,8 +11,8 @@
 
 namespace Integrated\Common\Queue\Tests;
 
-use Integrated\Common\Queue\QueueFactory;
 use Integrated\Common\Queue\Provider\QueueProviderInterface;
+use Integrated\Common\Queue\QueueFactory;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

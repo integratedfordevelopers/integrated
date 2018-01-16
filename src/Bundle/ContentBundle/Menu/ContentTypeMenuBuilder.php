@@ -55,7 +55,7 @@ class ContentTypeMenuBuilder
     }
 
     /**
-     * @return \Knp\Menu\ItemInterface|void
+     * @return \Knp\Menu\ItemInterface
      */
     public function createMenu()
     {

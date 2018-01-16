@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\MenuBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Integrated\Bundle\MenuBundle\DependencyInjection\IntegratedMenuExtension;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>

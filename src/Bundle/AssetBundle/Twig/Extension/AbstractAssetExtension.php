@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\AssetBundle\Twig\Extension;
 
+use Doctrine\Common\Inflector\Inflector;
 use Integrated\Bundle\AssetBundle\Manager\AssetManager;
 use Integrated\Bundle\AssetBundle\Twig\TokenParser\AssetTokenParser;
-use Doctrine\Common\Inflector\Inflector;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

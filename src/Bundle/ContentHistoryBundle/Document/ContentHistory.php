@@ -11,10 +11,10 @@
 
 namespace Integrated\Bundle\ContentHistoryBundle\Document;
 
-use Integrated\Common\Content\ContentInterface;
+use DateTime;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\Request;
 use Integrated\Bundle\ContentHistoryBundle\Document\Embedded\User;
-use DateTime;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>

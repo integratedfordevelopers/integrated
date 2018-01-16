@@ -11,12 +11,12 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Events;
 use Integrated\Common\Security\Permissions;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

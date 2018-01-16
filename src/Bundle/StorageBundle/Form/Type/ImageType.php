@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\StorageBundle\Form\Type;
 
+use Integrated\Bundle\ImageBundle\Validator\Constraints\OnTheFlyFormatConverterConstraint;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Integrated\Bundle\ImageBundle\Validator\Constraints\OnTheFlyFormatConverterConstraint;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

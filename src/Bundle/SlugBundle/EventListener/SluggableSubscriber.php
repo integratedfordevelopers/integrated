@@ -11,21 +11,21 @@
 
 namespace Integrated\Bundle\SlugBundle\EventListener;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
+use Doctrine\ODM\MongoDB\UnitOfWork as ODMUnitOfWork;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Metadata\MetadataFactoryInterface;
+use Doctrine\ORM\UnitOfWork as ORMUnitOfWork;
 use Integrated\Bundle\SlugBundle\Mapping\Metadata\PropertyMetadata;
 use Integrated\Bundle\SlugBundle\Slugger\SluggerInterface;
+use Metadata\MetadataFactoryInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * Doctrine ORM and ODM subscriber for slug generation.

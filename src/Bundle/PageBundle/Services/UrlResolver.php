@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\PageBundle\Services;
 
-use Symfony\Component\Routing\Router;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader;
-use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
+use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
+use Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\ContentInterface;
+use Symfony\Component\Routing\Router;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>

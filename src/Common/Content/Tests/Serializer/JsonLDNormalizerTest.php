@@ -14,8 +14,8 @@ namespace Integrated\Common\Content\Tests\Serializer;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Serializer\JsonLDNormalizer;
 use Integrated\Common\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface as SymfonyNormalizerInterface;
 use stdClass as Object;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface as SymfonyNormalizerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Document\Block;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Integrated\Common\Form\Mapping\Annotations as Type;
 use Integrated\Bundle\BlockBundle\Document\Block\Block;
+use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
  * Facet block document.

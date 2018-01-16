@@ -11,14 +11,14 @@
 
 namespace Integrated\Bundle\StorageBundle\Storage;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\StorageBundle\Storage\Registry\FilesystemRegistry;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Storage\FileResolver\FileResolverInterface;
 use Integrated\Common\Storage\FilesystemRegistryInterface;
 use Integrated\Common\Storage\Identifier\IdentifierInterface;
 use Integrated\Common\Storage\Reader\ReaderInterface;
 use Integrated\Common\Storage\ResolverInterface;
-use Integrated\Common\Storage\FileResolver\FileResolverInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

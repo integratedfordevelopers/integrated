@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\BlockBundle\Form\DataTransformer;
 
-use Symfony\Component\Form\DataTransformerInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Common\Block\BlockInterface;
+use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -41,6 +41,8 @@ class BlockTransformer implements DataTransformerInterface
         if ($block instanceof BlockInterface) {
             return $block->getId();
         }
+
+        return null;
     }
 
     /**

@@ -14,13 +14,13 @@ namespace Integrated\Bundle\UserBundle\Command;
 use Exception;
 use Integrated\Bundle\UserBundle\Doctrine\RoleManager;
 use Integrated\Bundle\UserBundle\Doctrine\ScopeManager;
+use Integrated\Bundle\UserBundle\Model\Scope;
+use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Integrated\Bundle\UserBundle\Model\Scope;
-use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -54,10 +54,10 @@ class CreateUserCommand extends Command
     private $encoderFactory;
 
     /**
-     * @param ScopeManager $scopeManager
-     * @param RoleManager $roleManager
-     * @param UserManagerInterface $userManager
-     * @param ValidatorInterface $validator
+     * @param ScopeManager            $scopeManager
+     * @param RoleManager             $roleManager
+     * @param UserManagerInterface    $userManager
+     * @param ValidatorInterface      $validator
      * @param EncoderFactoryInterface $encoderFactory
      */
     public function __construct(

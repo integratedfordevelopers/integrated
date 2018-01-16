@@ -12,8 +12,8 @@
 namespace Integrated\Common\Normalizer\Processor;
 
 use Exception;
-use ReflectionClass;
 use Integrated\Common\Normalizer\Exception\UnexpectedTypeException;
+use ReflectionClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

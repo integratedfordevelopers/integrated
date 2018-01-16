@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Controller;
 
-use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Bundle\PageBundle\Document\Page\Page;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 
 /**

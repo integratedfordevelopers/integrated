@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
 use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ContentTypeExtension;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\FileExtensionTrait;

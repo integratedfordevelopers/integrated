@@ -16,8 +16,8 @@ use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Queue\QueueInterface;
-use Integrated\Common\Solr\Task\Tasks\Doctrine\EventListener\MongoDBContentTypeListener;
 use Integrated\Common\Solr\Task\Tasks\ContentTypeQueueTask;
+use Integrated\Common\Solr\Task\Tasks\Doctrine\EventListener\MongoDBContentTypeListener;
 use stdClass;
 
 /**

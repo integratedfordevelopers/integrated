@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\SolrBundle\Solr\Type;
 
-use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
 use Integrated\Common\Converter\ContainerInterface;
+use Symfony\Component\PropertyAccess\Exception\ExceptionInterface;
 use Traversable;
 
 /**

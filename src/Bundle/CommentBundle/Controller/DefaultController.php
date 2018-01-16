@@ -98,7 +98,7 @@ class DefaultController
             return new JsonResponse(['id' => $comment->getId()]);
         }
 
-        return $this->templating->renderResponse('IntegratedCommentBundle:Comment:new.html.twig', [
+        return $this->templating->renderResponse('IntegratedCommentBundle:comment:new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -132,7 +132,7 @@ class DefaultController
             return new JsonResponse(['id' => $comment->getId()]);
         }
 
-        return $this->templating->renderResponse('IntegratedCommentBundle:Comment:get.html.twig', [
+        return $this->templating->renderResponse('IntegratedCommentBundle:comment:get.html.twig', [
             'comment' => $comment,
             'form' => $form->createView(),
         ]);

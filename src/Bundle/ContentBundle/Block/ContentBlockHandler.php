@@ -11,13 +11,13 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
-use Integrated\Common\Block\BlockInterface;
 use Integrated\Bundle\ContentBundle\Document\Block\ContentBlock;
 use Integrated\Bundle\ContentBundle\Provider\SolariumProvider;
+use Integrated\Common\Block\BlockInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Content block handler.

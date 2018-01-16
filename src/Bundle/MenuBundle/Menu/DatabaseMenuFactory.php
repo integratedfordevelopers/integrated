@@ -11,9 +11,9 @@
 
 namespace Integrated\Bundle\MenuBundle\Menu;
 
-use Knp\Menu\FactoryInterface;
-use Knp\Menu\Factory\ExtensionInterface;
 use Knp\Menu\Factory\CoreExtension;
+use Knp\Menu\Factory\ExtensionInterface;
+use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 
 /**

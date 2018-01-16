@@ -12,9 +12,9 @@
 namespace Integrated\Common\Channel\Exporter;
 
 use Exception;
+use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\Config\ResolverInterface;
-use Integrated\Common\Channel\ChannelInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

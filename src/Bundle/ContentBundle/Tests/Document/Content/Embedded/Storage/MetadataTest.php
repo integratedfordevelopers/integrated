@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\Content\Embedded\Storage;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

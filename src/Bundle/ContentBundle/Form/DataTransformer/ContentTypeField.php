@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
-use Integrated\Common\Form\Mapping\AttributeInterface;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
+use Integrated\Common\Form\Mapping\AttributeInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**

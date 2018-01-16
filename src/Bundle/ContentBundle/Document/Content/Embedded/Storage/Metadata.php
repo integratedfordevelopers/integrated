@@ -11,8 +11,8 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
 
-use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Common\Content\Document\Storage\Embedded\MetadataInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>

@@ -14,10 +14,12 @@ namespace Integrated\Bundle\ContentBundle\Controller;
 use Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection;
 use Integrated\Bundle\ContentBundle\Form\Type\SearchSelectionType;
 use Integrated\Bundle\FormTypeBundle\Form\Type\SaveCancelType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -28,11 +30,9 @@ class SearchSelectionController extends Controller
     /**
      * Lists all the SearchSelection documents.
      *
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -40,19 +40,17 @@ class SearchSelectionController extends Controller
         $paginator = $this->get('knp_paginator');
         $paginator = $paginator->paginate($this->getQueryBuilder(), $request->query->get('page', 1), 15);
 
-        return [
+        return $this->render('IntegratedContentBundle:search_selection:index.html.twig', [
             'searchSelections' => $paginator,
-        ];
+        ]);
     }
 
     /**
      * Creates a new SearchSelection document.
      *
-     * @Template
-     *
      * @param Request $request
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function newAction(Request $request)
     {
@@ -73,20 +71,18 @@ class SearchSelectionController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_search_selection_index'));
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:search_selection:new.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * Edits an existing SearchSelection document.
      *
-     * @Template
-     *
      * @param Request         $request
      * @param SearchSelection $searchSelection
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function editAction(Request $request, SearchSelection $searchSelection)
     {
@@ -107,20 +103,18 @@ class SearchSelectionController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_search_selection_index'));
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:search_selection:edit.html.twig', [
             'form' => $form->createView(),
-        ];
+        ]);
     }
 
     /**
      * Deletes a SearchSelection document.
      *
-     * @Template
-     *
      * @param Request         $request
      * @param SearchSelection $searchSelection
      *
-     * @return array|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Response|RedirectResponse
      */
     public function deleteAction(Request $request, SearchSelection $searchSelection)
     {
@@ -145,17 +139,17 @@ class SearchSelectionController extends Controller
             return $this->redirect($this->generateUrl('integrated_content_search_selection_index'));
         }
 
-        return [
+        return $this->render('IntegratedContentBundle:search_selection:delete.html.twig', [
             'searchSelection' => $searchSelection,
             'form' => $form->createView(),
             'referenced' => $referenced,
-        ];
+        ]);
     }
 
     /**
      * Shows the menu.
      *
-     * @Template
+     * @return Response
      */
     public function menuAction()
     {
@@ -163,14 +157,14 @@ class SearchSelectionController extends Controller
         $request = $this->get('request_stack')->getMasterRequest();
 
         /** @var \Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelectionRepository $repo */
-        $repo = $this->getDocumentManager()->getRepository('IntegratedContentBundle:SearchSelection\SearchSelection');
+        $repo = $this->getDocumentManager()->getRepository(SearchSelection::class);
 
         $user = $this->getUser();
 
-        return [
+        return $this->render('IntegratedContentBundle:search_selection:menu.html.twig', [
             'filters' => $request ? $request->query->all() : [],
             'searchSelections' => $user ? $repo->findPublicByUserId($user->getId()) : [],
-        ];
+        ]);
     }
 
     /**
@@ -178,7 +172,7 @@ class SearchSelectionController extends Controller
      *
      * @param SearchSelection $searchSelection
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createCreateForm(SearchSelection $searchSelection)
     {
@@ -208,7 +202,7 @@ class SearchSelectionController extends Controller
      *
      * @param SearchSelection $searchSelection
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createEditForm(SearchSelection $searchSelection)
     {
@@ -232,7 +226,7 @@ class SearchSelectionController extends Controller
      * @param $id
      * @param bool|false $notDelete
      *
-     * @return \Symfony\Component\Form\Form
+     * @return FormInterface
      */
     protected function createDeleteForm($id, $notDelete = false)
     {
@@ -255,7 +249,7 @@ class SearchSelectionController extends Controller
      */
     protected function getQueryBuilder()
     {
-        $builder = $this->getDocumentManager()->createQueryBuilder('IntegratedContentBundle:SearchSelection\SearchSelection');
+        $builder = $this->getDocumentManager()->createQueryBuilder(SearchSelection::class);
 
         if (false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $builder->field('userId')->equals($this->getUser()->getId());

@@ -15,8 +15,8 @@ use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterConfig
 use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterTaskHandlerPass;
 use Integrated\Bundle\SolrBundle\DependencyInjection\CompilerPass\RegisterTypePass;
 use Integrated\Bundle\SolrBundle\DependencyInjection\IntegratedSolrExtension;
-use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**

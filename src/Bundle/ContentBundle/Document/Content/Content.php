@@ -16,15 +16,15 @@ use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
+use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
+use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Embedded\RelationInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
 use Integrated\Common\Content\MetadataInterface;
-use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\RegistryInterface;
-use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**

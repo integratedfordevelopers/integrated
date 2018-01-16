@@ -11,11 +11,11 @@
 
 namespace Integrated\Bundle\WebsiteBundle\Routing;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
