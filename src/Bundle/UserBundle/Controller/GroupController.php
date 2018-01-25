@@ -73,7 +73,7 @@ class GroupController extends Controller
             }
         }
 
-        return $this->render('IntegratedUserBundle:group:index.html.twig', [
+        return $this->render('IntegratedUserBundle:group:new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
