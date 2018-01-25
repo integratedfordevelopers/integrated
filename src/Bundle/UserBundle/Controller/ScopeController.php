@@ -76,7 +76,7 @@ class ScopeController extends Controller
             }
         }
 
-        return $this->render('IntegratedUserBundle:scope:index.html.twig', [
+        return $this->render('IntegratedUserBundle:scope:new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
