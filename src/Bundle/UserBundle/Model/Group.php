@@ -74,21 +74,40 @@ class Group implements GroupInterface
     }
 
     /**
-     * @param RoleInterface $role
+     * @param RoleInterface | string $role
      */
-    public function removeRole(RoleInterface $role)
+    public function removeRole($role)
     {
-        $this->roles->removeElement($role);
+        if ($role instanceof RoleInterface) {
+            $this->roles->removeElement($role);
+        }
+
+        foreach ($this->roles as $object) {
+            if ($role === $object->getRole()) {
+                $this->roles->removeElement($object);
+                break;
+            }
+        }
     }
 
     /**
-     * @param RoleInterface $role
+     * @param RoleInterface | string $role
      *
      * @return bool
      */
-    public function hasRole(RoleInterface $role)
+    public function hasRole($role)
     {
-        return $this->roles->contains($role);
+        if ($role instanceof RoleInterface) {
+            return $this->roles->contains($role);
+        }
+
+        foreach ($this->roles as $object) {
+            if ($role === $object->getRole()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -96,7 +115,13 @@ class Group implements GroupInterface
      */
     public function getRoles()
     {
-        return $this->roles->toArray();
+        $roles = [];
+
+        foreach ($this->roles as $role) {
+            $roles[] = $role->getRole();
+        }
+
+        return $roles;
     }
 
     /**

@@ -95,7 +95,7 @@ class GroupController extends Controller
 
         $form = $this->createEditForm($group);
 
-        if ($request->isMethod('put')) {
+        if ($request->isMethod('put') || $request->isMethod('post')) {
             $form->handleRequest($request);
 
             // check for cancel click else its a submit
@@ -189,7 +189,7 @@ class GroupController extends Controller
             GroupFormType::class,
             $group,
             [
-                'action' => $this->generateUrl('integrated_user_group_new'),
+                'action' => $this->generateUrl('integrated_user_group_edit', ['id' => $group->getId()]),
                 'method' => 'POST',
             ]
         );

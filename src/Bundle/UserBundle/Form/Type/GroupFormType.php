@@ -56,9 +56,7 @@ class GroupFormType extends AbstractType
         ]);
 
         $builder->add('roles', RoleType::class);
-
-        $transformer = new RoleToEntityTransformer($this->roleManager);
-        $builder->get('roles')->addModelTransformer($transformer);
+        $builder->get('roles')->addModelTransformer(new RoleToEntityTransformer($this->roleManager));
     }
 
     /**

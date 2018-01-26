@@ -11,13 +11,10 @@
 
 namespace Integrated\Bundle\UserBundle\Model;
 
-//use Serializable;
-//use Symfony\Component\Security\Core\Role\Role;
-
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-interface GroupInterface /* extends Serializable */
+interface GroupInterface
 {
     /**
      * Returns the identity of the group.
@@ -46,11 +43,11 @@ interface GroupInterface /* extends Serializable */
      * <code>
      * public function getRoles()
      * {
-     *     return array('ROLE_USER');
+     *     return ['ROLE_USER'];
      * }
      * </code>
      *
-     * @return \Symfony\Component\Security\Core\Role\Role[] The user roles
+     * @return string[]
      */
     public function getRoles();
 }

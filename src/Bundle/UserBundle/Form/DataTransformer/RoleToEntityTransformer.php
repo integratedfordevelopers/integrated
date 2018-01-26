@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\UserBundle\Form\DataTransformer;
 
 use Integrated\Bundle\UserBundle\Model\Role;
+use Integrated\Bundle\UserBundle\Model\RoleInterface;
 use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -34,49 +35,59 @@ class RoleToEntityTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param array $roles
+     * @param string[] $values
      *
-     * @return array
+     * @return RoleInterface[]
      */
-    public function reverseTransform($roles = [])
+    public function reverseTransform($values = [])
     {
-        if ($roles) {
-            $transformRoles = [];
+        if (!is_array($values)) {
+            return [];
+        }
 
-            foreach ($roles as $role) {
-                if ($entity = $this->manager->find($role)) {
-                    $transformRoles[] = $entity;
-                } else {
-                    $roleEntity = new Role($role, $role);
-                    $this->manager->persist($roleEntity);
+        $roles = [];
+        $values = array_combine($values, $values);
 
-                    $transformRoles[] = $roleEntity;
-                }
-            }
+        foreach ($this->manager->findBy(['role' => $values]) as $role) {
+            $roles[] = $role;
 
-            return $transformRoles;
+            unset($values[$role->getRole()]);
+        }
+
+        foreach ($values as $role) {
+            $roles[] = $role = new Role($role, $role);
+
+            // <sarcasm>
+            //     This is of course the best place to do a import of none existing roles
+            // </sarcasm>
+
+            $this->manager->persist($role);
         }
 
         return $roles;
     }
 
     /**
-     * @param array $roles
+     * @param RoleInterface[] $values
      *
-     * @return array
+     * @return string[]
      */
-    public function transform($roles = [])
+    public function transform($values = [])
     {
-        if ($roles) {
-            $transformRoles = [];
-            /** @var Role $role */
-            foreach ($roles as $role) {
-                $transformRoles[] = $role->getId();
-            }
-
-            return $transformRoles;
+        if (!is_array($values)) {
+            return [];
         }
 
-        return $roles;
+        $roles = [];
+
+        foreach ($values as $role) {
+            if ($role instanceof RoleInterface) {
+                $role = $role->getRole();
+            }
+
+            $roles[] = (string) $role;
+        }
+
+        return array_unique($roles);
     }
 }
