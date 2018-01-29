@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Form\Type\GroupType;
 use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -25,13 +26,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PermissionsType extends AbstractType
 {
     /**
+     * @var ObjectRepository
+     */
+    private $repository;
+
+    /**
+     * @param ObjectRepository $repository
+     */
+    public function __construct(ObjectRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new PermissionTransformer());
+        $builder->addViewTransformer(new PermissionTransformer($this->repository));
 
-        $builder->add('read', GroupType::class, ['required' => false, 'multiple' => true, 'choice_data' => 'scalar', 'attr' => ['class' => 'select2']]);
+        $builder->add('read', GroupType::class, ['required' => false, 'multiple' => true, 'attr' => ['class' => 'select2']]);
         $builder->add('write', GroupType::class, ['required' => false, 'multiple' => true, 'choice_data' => 'scalar', 'attr' => ['class' => 'select2']]);
     }
 

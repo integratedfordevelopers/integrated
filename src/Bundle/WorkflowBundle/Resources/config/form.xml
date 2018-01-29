@@ -11,6 +11,7 @@
 		</service>
 
 		<service id="integrated_workflow.form.definition.permissions.type" class="Integrated\Bundle\WorkflowBundle\Form\Type\PermissionsType">
+			<argument type="service" id="doctrine" />
 			<tag name="form.type" />
 		</service>
 
