@@ -45,14 +45,19 @@ class RoleManager implements RoleManagerInterface
     private $roles;
 
     /**
+     * @var bool
+     */
+    private $rolesEventFired = false;
+
+    /**
      * RoleManager constructor.
      *
      * @param ObjectManager            $om
      * @param EventDispatcherInterface $eventDispatcher
-     * @param $class
-     * @param $roles
+     * @param string                   $class
+     * @param string[]                 $roles
      */
-    public function __construct(ObjectManager $om, EventDispatcherInterface $eventDispatcher, $class, $roles)
+    public function __construct(ObjectManager $om, EventDispatcherInterface $eventDispatcher, $class, array $roles = [])
     {
         $this->om = $om;
         $this->eventDispatcher = $eventDispatcher;
@@ -172,22 +177,40 @@ class RoleManager implements RoleManagerInterface
      */
     public function getRolesFromSources()
     {
-        $this->roles = $this->eventDispatcher->dispatch(
-            ConfigureRolesEvent::CONFIGURE,
-            new ConfigureRolesEvent($this->roles)
-        )->getRoles();
+        $this->loadRolesFromSources();
 
-        $roles = $this->findAll();
+        $roles = $this->roles;
 
-        $dbRoles = [];
-        foreach ($roles as $role) {
-            $roleName = $role->getRole();
-            if (isset($this->roles[$roleName])) {
-                unset($this->roles[$roleName]);
-            }
-            $dbRoles[$role->getId()] = $role->getLabel();
+        foreach ($this->findAll() as $role) {
+            $roles[$role->getRole()] = $role->getLabel();
         }
 
-        return $dbRoles + $this->roles;
+        return $roles;
+    }
+
+    /**
+     * Lazy load roles from events.
+     */
+    protected function loadRolesFromSources()
+    {
+        if (!$this->rolesEventFired) {
+            $roles = $this->eventDispatcher->dispatch(
+                ConfigureRolesEvent::CONFIGURE,
+                new ConfigureRolesEvent($this->roles)
+            )->getRoles();
+
+            $this->roles = [];
+
+            foreach ($roles as $name => $label) {
+                if ($label instanceof RoleInterface) {
+                    $name = $label->getRole();
+                    $label = $label->getLabel();
+                }
+
+                $this->roles[$name] = $label;
+            }
+        }
+
+        $this->rolesEventFired = true;
     }
 }

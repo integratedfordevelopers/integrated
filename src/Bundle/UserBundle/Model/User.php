@@ -265,7 +265,11 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        $roles = $this->roles->toArray();
+        $roles = [];
+
+        foreach ($this->roles as $role) {
+            $roles[] = $role->getRole();
+        }
 
         foreach ($this->getGroups() as $group) {
             $roles = array_merge($roles, $group->getRoles());

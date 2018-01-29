@@ -20,7 +20,7 @@
 		<default key="_controller">IntegratedUserBundle:Group:edit</default>
 	</route>
 
-	<route id="integrated_user_group_edit_rest" path="/{id}" methods="PUT">
+	<route id="integrated_user_group_edit_rest" path="/{id}" methods="PUT|POST">
 		<default key="_controller">IntegratedUserBundle:Group:edit</default>
 	</route>
 
