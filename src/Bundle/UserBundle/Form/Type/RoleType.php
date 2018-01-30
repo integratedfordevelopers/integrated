@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Form\Type;
 
-use Integrated\Bundle\UserBundle\Model\RoleManagerInterface;
+use Integrated\Bundle\UserBundle\Doctrine\RoleManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,16 +22,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class RoleType extends AbstractType
 {
     /**
-     * @var RoleManagerInterface
+     * @var RoleManager
      */
     private $manager;
 
     /**
      * RoleType constructor.
      *
-     * @param RoleManagerInterface $manager
+     * @param RoleManager $manager
      */
-    public function __construct(RoleManagerInterface $manager)
+    public function __construct(RoleManager $manager)
     {
         $this->manager = $manager;
     }
