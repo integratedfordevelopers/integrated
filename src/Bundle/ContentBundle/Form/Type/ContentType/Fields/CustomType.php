@@ -61,7 +61,7 @@ class CustomType extends AbstractType
 
         $builder->add('type', ChoiceType::class, [
             'required' => true,
-            'choices' => $return,
+            'choices' => array_flip($return),
         ]);
 
         $builder->add(
