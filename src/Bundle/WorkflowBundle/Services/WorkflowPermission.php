@@ -55,9 +55,8 @@ class WorkflowPermission implements ContentTypeFilterInterface
         /** @var User $user */
         $user = $this->tokenStorage->getToken()->getUser();
 
-        /** @var Role $role */
         foreach ($user->getRoles() as $role) {
-            if ($role->getRole() == 'ROLE_ADMIN') {
+            if ($role == 'ROLE_ADMIN') {
                 return true;
             }
         }
