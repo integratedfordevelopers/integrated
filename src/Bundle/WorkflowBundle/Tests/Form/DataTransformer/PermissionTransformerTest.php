@@ -22,9 +22,19 @@ use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
  */
 class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var ObjectRepository|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $repository;
+
+    public function setup()
+    {
+        $this->repository = $this->getMockBuilder(ObjectRepository::class)->getMock();
+    }
+
     public function testInterface()
     {
-        $this->assertInstanceOf('Symfony\\Component\\Form\\DataTransformerInterface', $this->getInstance($this->getRepository()));
+        $this->assertInstanceOf('Symfony\\Component\\Form\\DataTransformerInterface', $this->getInstance());
     }
 
     public function testTransform()
@@ -49,8 +59,7 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
         $group2 = $this->getGroup('group-2');
         $group3 = $this->getGroup('group-3');
 
-        $repository = $this->getRepository();
-        $repository
+        $this->repository
             ->expects($this->exactly(4))
             ->method('findOneBy')
             ->withConsecutive(
@@ -66,7 +75,7 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
                 null
             );
 
-        $result = $this->getInstance($repository)->transform([$permission1, $permission2, $permission3, $permission4]);
+        $result = $this->getInstance()->transform([$permission1, $permission2, $permission3, $permission4]);
 
         $this->assertCount(2, $result['read']);
         $this->assertCount(2, $result['write']);
@@ -82,14 +91,14 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
 
-        $this->getInstance($this->getRepository())->transform('invalid');
+        $this->getInstance()->transform('invalid');
     }
 
     public function testTransformInvalidArrayContentType()
     {
         $this->expectException(\Symfony\Component\Form\Exception\TransformationFailedException::class);
 
-        $this->getInstance($this->getRepository())->transform(['invalid', 'invalid']);
+        $this->getInstance()->transform(['invalid', 'invalid']);
     }
 
     public function testTransformEmpty()
@@ -99,12 +108,10 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
             'write' => [],
         ];
 
-        $repository = $this->getRepository();
-
-        $this->assertEquals($expected, $this->getInstance($repository)->transform(''));
-        $this->assertEquals($expected, $this->getInstance($repository)->transform(null));
-        $this->assertEquals($expected, $this->getInstance($repository)->transform([]));
-        $this->assertEquals($expected, $this->getInstance($repository)->transform(new ArrayCollection()));
+        $this->assertEquals($expected, $this->getInstance()->transform(''));
+        $this->assertEquals($expected, $this->getInstance()->transform(null));
+        $this->assertEquals($expected, $this->getInstance()->transform([]));
+        $this->assertEquals($expected, $this->getInstance()->transform(new ArrayCollection()));
     }
 
     public function testReverseTransform()
@@ -113,7 +120,7 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
         $group2 = $this->getGroup('group-2');
         $group3 = $this->getGroup('group-3');
 
-        $result = $this->getInstance($this->getRepository())->reverseTransform(['read' => [$group1, $group2], 'write' => [$group1, $group3, $group3]]);
+        $result = $this->getInstance()->reverseTransform(['read' => [$group1, $group2], 'write' => [$group1, $group3, $group3]]);
 
         $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
         $this->assertCount(3, $result);
@@ -151,36 +158,33 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
 
     public function testReverseTransformEmpty()
     {
-        $repository = $this->getRepository();
-
-        $result = $this->getInstance($repository)->reverseTransform('');
+        $result = $this->getInstance()->reverseTransform('');
 
         $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
         $this->assertCount(0, $result);
 
-        $result = $this->getInstance($repository)->reverseTransform(null);
+        $result = $this->getInstance()->reverseTransform(null);
 
         $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
         $this->assertCount(0, $result);
 
-        $result = $this->getInstance($repository)->reverseTransform([]);
+        $result = $this->getInstance()->reverseTransform([]);
 
         $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
         $this->assertCount(0, $result);
 
-        $result = $this->getInstance($repository)->reverseTransform(['read' => [], 'write' => []]);
+        $result = $this->getInstance()->reverseTransform(['read' => [], 'write' => []]);
 
         $this->assertInstanceOf('Doctrine\\Common\\Collections\\Collection', $result);
         $this->assertCount(0, $result);
     }
 
     /**
-     * @param ObjectRepository $repository
      * @return PermissionTransformer
      */
-    protected function getInstance(ObjectRepository $repository)
+    protected function getInstance()
     {
-        return new PermissionTransformer($repository);
+        return new PermissionTransformer($this->repository);
     }
 
     /**
