@@ -11,8 +11,7 @@
 
 namespace Integrated\Bundle\ChannelBundle\Form\DataTransformer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Integrated\Bundle\ContentBundle\Document\Channel\ChannelRepository;
 use Integrated\Common\Channel\ChannelInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -22,14 +21,14 @@ use Symfony\Component\Form\DataTransformerInterface;
 class ChannelTransformer implements DataTransformerInterface
 {
     /**
-     * @var ManagerRegistry
+     * @var ChannelRepository
      */
     private $repository;
 
     /**
-     * @param ObjectRepository $repository
+     * @param ChannelRepository $repository
      */
-    public function __construct(ObjectRepository $repository)
+    public function __construct(ChannelRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -43,12 +42,7 @@ class ChannelTransformer implements DataTransformerInterface
             return [];
         }
 
-        $values = [];
-        foreach ($value as $channel) {
-            $values[] = $this->repository->findOneBy(['id' => $channel]);
-        }
-
-        return $values;
+        return $this->repository->findByIds($value);
     }
 
     /**
