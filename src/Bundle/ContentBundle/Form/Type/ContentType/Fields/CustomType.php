@@ -52,16 +52,16 @@ class CustomType extends AbstractType
             'required' => true,
         ]);
 
-        $return = [];
+        $choices = [];
 
         /** @var TypeInterface $type */
         foreach ($this->registry->getIterator() as $type) {
-            $return[$type->getType()] = $type->getName();
+            $choices[$type->getName()] = $type->getType();
         }
 
         $builder->add('type', ChoiceType::class, [
             'required' => true,
-            'choices' => array_flip($return),
+            'choices' => $choices
         ]);
 
         $builder->add(
