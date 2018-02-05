@@ -61,9 +61,6 @@ class ConfigFormType extends AbstractType
         $builder->add('channels', ChannelChoiceType::class, [
             'label' => 'form.config.channels',
             'translation_domain' => 'IntegratedChannelBundle',
-
-            'choice_data' => 'scalar',
-
             'multiple' => true,
             'expanded' => true,
         ]);

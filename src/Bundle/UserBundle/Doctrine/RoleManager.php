@@ -182,7 +182,7 @@ class RoleManager implements RoleManagerInterface
         $roles = $this->roles;
 
         foreach ($this->findAll() as $role) {
-            $roles[$role->getRole()] = $role->getLabel();
+            $roles[$role->getRole()] = (string) $role->getLabel();
         }
 
         return $roles;

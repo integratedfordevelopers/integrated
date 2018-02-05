@@ -13,6 +13,7 @@ namespace Integrated\Bundle\WorkflowBundle\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -22,6 +23,19 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
  */
 class PermissionTransformer implements DataTransformerInterface
 {
+    /**
+     * @var ObjectRepository
+     */
+    private $repository;
+
+    /**
+     * @param ObjectRepository $repository
+     */
+    public function __construct(ObjectRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,6 +62,9 @@ class PermissionTransformer implements DataTransformerInterface
             }
 
             $group = $permission->getGroup();
+            if (!$group = $this->repository->findOneBy(['id' => $group])) {
+                continue;
+            }
 
             // The object choice list needs a object with a id property.
 
@@ -84,12 +101,12 @@ class PermissionTransformer implements DataTransformerInterface
         }
 
         foreach ($value['read'] as $group) {
-            if (!isset($permissions[$group])) {
-                $permissions[$group] = new Permission();
-                $permissions[$group]->setGroup($group);
+            if (!isset($permissions[$group->getId()])) {
+                $permissions[$group->getId()] = new Permission();
+                $permissions[$group->getId()]->setGroup($group);
             }
 
-            $permissions[$group]->addMask(Permission::READ);
+            $permissions[$group->getId()]->addMask(Permission::READ);
         }
 
         if (!isset($value['write']) || $value['write'] === '' || $value['write'] === null) {
@@ -101,12 +118,12 @@ class PermissionTransformer implements DataTransformerInterface
         }
 
         foreach ($value['write'] as $group) {
-            if (!isset($permissions[$group])) {
-                $permissions[$group] = new Permission();
-                $permissions[$group]->setGroup($group);
+            if (!isset($permissions[$group->getId()])) {
+                $permissions[$group->getId()] = new Permission();
+                $permissions[$group->getId()]->setGroup($group);
             }
 
-            $permissions[$group]->addMask(Permission::WRITE);
+            $permissions[$group->getId()]->addMask(Permission::WRITE);
         }
 
         return new ArrayCollection(array_values($permissions));

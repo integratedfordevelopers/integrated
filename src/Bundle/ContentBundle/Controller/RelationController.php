@@ -49,7 +49,7 @@ class RelationController extends Controller
 
         $documents = $qb->getQuery()->execute();
 
-        return $this->render('IntegratedContentBundle:relation:index.html.twig', ['documents' => $documents]);
+        return $this->render(sprintf('IntegratedContentBundle:relation:index.%s.twig', $request->getRequestFormat()), ['documents' => $documents]);
     }
 
     /**

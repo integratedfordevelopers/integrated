@@ -12,6 +12,8 @@
 namespace Integrated\Bundle\WorkflowBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
 
@@ -20,6 +22,16 @@ use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
  */
 class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var ObjectRepository|\PHPUnit\Framework\MockObject\MockObject
+     */
+    private $repository;
+
+    public function setup()
+    {
+        $this->repository = $this->getMockBuilder(ObjectRepository::class)->getMock();
+    }
+
     public function testInterface()
     {
         $this->assertInstanceOf('Symfony\\Component\\Form\\DataTransformerInterface', $this->getInstance());
@@ -43,16 +55,36 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
         $permission4 = new Permission();
         $permission4->setGroup('group-4');
 
+        $group1 = $this->getGroup('group-1');
+        $group2 = $this->getGroup('group-2');
+        $group3 = $this->getGroup('group-3');
+
+        $this->repository
+            ->expects($this->exactly(4))
+            ->method('findOneBy')
+            ->withConsecutive(
+                [$this->equalTo(['id' => 'group-1'])],
+                [$this->equalTo(['id' => 'group-2'])],
+                [$this->equalTo(['id' => 'group-3'])],
+                [$this->equalTo(['id' => 'group-4'])]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $group1,
+                $group2,
+                $group3,
+                null
+            );
+
         $result = $this->getInstance()->transform([$permission1, $permission2, $permission3, $permission4]);
 
         $this->assertCount(2, $result['read']);
         $this->assertCount(2, $result['write']);
 
-        $this->assertContains('group-1', $result['read']);
-        $this->assertContains('group-2', $result['read']);
+        $this->assertContains($group1, $result['read']);
+        $this->assertContains($group2, $result['read']);
 
-        $this->assertContains('group-1', $result['write']);
-        $this->assertContains('group-3', $result['write']);
+        $this->assertContains($group1, $result['write']);
+        $this->assertContains($group3, $result['write']);
     }
 
     public function testTransformInvalidType()
@@ -84,9 +116,9 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
 
     public function testReverseTransform()
     {
-        $group1 = 'group-1';
-        $group2 = 'group-2';
-        $group3 = 'group-3';
+        $group1 = $this->getGroup('group-1');
+        $group2 = $this->getGroup('group-2');
+        $group3 = $this->getGroup('group-3');
 
         $result = $this->getInstance()->reverseTransform(['read' => [$group1, $group2], 'write' => [$group1, $group3, $group3]]);
 
@@ -152,6 +184,30 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
      */
     protected function getInstance()
     {
-        return new PermissionTransformer();
+        return new PermissionTransformer($this->repository);
+    }
+
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject|ObjectRepository
+     */
+    protected function getRepository()
+    {
+        return $this->getMockBuilder(ObjectRepository::class)->getMock();
+    }
+
+    /**
+     * @param $id
+     * @return \PHPUnit\Framework\MockObject\MockObject|GroupInterface
+     */
+    protected function getGroup($id)
+    {
+        $group = $this->getMockBuilder(GroupInterface::class)->getMock();
+        $group
+            ->expects($this->any())
+            ->method('getId')
+            ->willReturn($id)
+        ;
+
+        return $group;
     }
 }

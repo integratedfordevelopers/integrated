@@ -3,7 +3,10 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <document name="Integrated\Bundle\ContentBundle\Document\Channel\Channel" collection="channel">
+    <document
+        name="Integrated\Bundle\ContentBundle\Document\Channel\Channel"
+        repository-class="Integrated\Bundle\ContentBundle\Document\Channel\ChannelRepository"
+        collection="channel">
 
         <field fieldName="id" id="true" strategy="NONE" />
         <field fieldName="name" type="string" index="true" />
