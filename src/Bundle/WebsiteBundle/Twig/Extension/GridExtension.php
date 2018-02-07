@@ -37,7 +37,7 @@ class GridExtension extends \Twig_Extension
 
         $this->resolver = new OptionsResolver();
         $this->resolver->setDefaults([
-            'template' => 'IntegratedWebsiteBundle:Page:grid.html.twig',
+            'template' => 'IntegratedWebsiteBundle:page:grid.html.twig',
         ]);
     }
 
