@@ -430,7 +430,7 @@ class ContentController extends Controller
 
                 if ($request->getRequestFormat() == 'iframe.html') {
                     return $this->render(
-                        'IntegratedContentBundle:Content:saved.iframe.html.twig',
+                        'IntegratedContentBundle:content:saved.iframe.html.twig',
                         [
                             'id' => $content->getId(),
                             'title' => method_exists($content, 'getTitle') ? $content->getTitle() : $content->getId(),
