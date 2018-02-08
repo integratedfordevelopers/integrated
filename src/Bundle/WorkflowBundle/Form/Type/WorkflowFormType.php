@@ -87,7 +87,7 @@ class WorkflowFormType extends AbstractType
         $users = [];
 
         foreach ($query->getArrayResult() as $item) {
-            $users[$item['id']] = $item['username'];
+            $users[$item['username']] = $item['id'];
         }
 
         return $users;
