@@ -79,7 +79,9 @@ class WorkflowStateListener implements EventSubscriberInterface
         }
 
         $form->add('current', TextType::class, [
-            'read_only' => true,
+            'attr' => [
+                'readonly' => true,
+            ],
             'mapped' => false,
             'data' => $data->getName(),
             'label' => 'Workflow status',

@@ -179,14 +179,13 @@
             $.ajax({
                 url: url,
                 data: {
-                    '_format': 'json',
                     'limit': 5
                 },
                 success: handleUsedBy
             });
         };
 
-        loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id}) }}');
+        loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id, '_format': 'json'}) }}');
 
         window.addEventListener('message', function(event) {
             // also resize modal if relations are changed

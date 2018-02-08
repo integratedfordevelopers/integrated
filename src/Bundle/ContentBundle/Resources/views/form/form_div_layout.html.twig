@@ -233,12 +233,11 @@
                 $("#{{ id }}").select2({
                     multiple: true,
                     ajax: {
-                        url: "{{ path('integrated_content_content_index', { 'contenttypes': contentTypes })|raw }}",
+                        url: "{{ path('integrated_content_content_index', { 'contenttypes': contentTypes, '_format': 'json' })|raw }}",
                         dataType: 'json',
                         data: function (term, page) {
                             return {
                                 q: term.term,
-                                _format: 'json',
                                 page_limit: 10
                             };
                         },
@@ -311,14 +310,13 @@
 
             $('#{{ form.vars.id }}').select2({
                 ajax: {
-                    url: '{{ path('integrated_content_content_index', { 'contenttypes[]': 'image' }) }}',
+                    url: '{{ path('integrated_content_content_index', { 'contenttypes[]': 'image', '_format': 'json' }) }}',
                     dataType: 'json',
                     data: function (term, page) {
                         return {
                             q: term,
                             page: page,
-                            limit: 20,
-                            _format: 'json'
+                            limit: 20
                         };
                     },
                     results: function (data, page) {
@@ -335,7 +333,7 @@
                 },
                 initSelection: function (element, callback) {
                     if (element.val()) {
-                        $.ajax('{{ path('integrated_content_content_index') }}' + element.val() + '/show?_format=json', {
+                        $.ajax('{{ path('integrated_content_content_show', {'id': element.val(), '_format': 'json'}) }}', {
                             dataType: 'json'
                         }).done(function(data) {
                             callback({id: data.id, text: data.title});

@@ -144,7 +144,7 @@ class BlockFilterType extends AbstractType
         foreach ($channels as $channelId => $blocks) {
             $count = count(array_intersect($blocks, $blockIds));
             if ($count) {
-                $channelChoices[$channelId] = $this->blockUsageProvider->getChannel($channelId)->getName().' '.$count;
+                $channelChoices[$this->blockUsageProvider->getChannel($channelId)->getName().' '.$count] = $channelId;
             }
         }
 
