@@ -448,7 +448,7 @@ class ContentController extends Controller
             }
         }
 
-        return $this->render('IntegratedContentBundle:content:new.html.twig', [
+        return $this->render(sprintf('IntegratedContentBundle:content:new.%s.twig', $request->getRequestFormat()), [
             'editable' => true,
             'type' => $contentType,
             'form' => $form->createView(),

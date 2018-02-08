@@ -49,7 +49,7 @@ class BlockController extends Controller
             ['defaultSortFieldName' => 'title', 'defaultSortDirection' => 'asc', 'query_type' => 'block_overview']
         );
 
-        return $this->render('IntegratedBlockBundle:block:index.html.twig', [
+        return $this->render(sprintf('IntegratedBlockBundle:block:index.%s.twig', $request->getRequestFormat()), [
             'blocks' => $pagination,
             'factory' => $this->getFactory(),
             'pageBundleInstalled' => $pageBundleInstalled,
@@ -105,7 +105,7 @@ class BlockController extends Controller
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }
 
-        return $this->render('IntegratedBlockBundle:block:new.html.twig', [
+        return $this->render(sprintf('IntegratedBlockBundle:block:new.%s.twig', $request->getRequestFormat()), [
             'form' => $form->createView(),
         ]);
     }
@@ -135,7 +135,7 @@ class BlockController extends Controller
             return $this->redirect($this->generateUrl('integrated_block_block_index'));
         }
 
-        return $this->render('IntegratedBlockBundle:block:edit.html.twig', [
+        return $this->render(sprintf('IntegratedBlockBundle:block:edit.%s.twig', $request->getRequestFormat()), [
             'form' => $form->createView(),
         ]);
     }

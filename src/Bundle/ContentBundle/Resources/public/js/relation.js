@@ -17,14 +17,13 @@ $(".relation-items").each(function() {
         multiple: multiple,
         ajax: {
             type: 'GET',
-            url: Routing.generate("integrated_content_content_index"),
+            url: Routing.generate("integrated_content_content_index", {'_format': 'json'}),
             dataType: 'json',
             data: function(param) {
                 return {
                     relation: relation_id,
                     limit: 100,
                     sort: 'title',
-                    _format: 'json',
                     q: typeof param.term != 'undefined' ? param.term + '*' : ''
                 };
             },
@@ -84,7 +83,7 @@ $(".relation-items").each(function() {
     $.each($relation.data('types'), function() {
         contentRelation.push({
             'name': this.name,
-            'href': Routing.generate('integrated_content_content_new', {type: this.type, relation: relation_id})
+            'href': Routing.generate('integrated_content_content_new', {type: this.type, relation: relation_id, '_format': 'iframe.html'})
         });
     });
 
@@ -116,7 +115,7 @@ $('.relations').on('click', '[data-modal]', function(e){
 
     modal.find('.modal-title').text($(this).data('title'));
 
-    iFrame.css('display', 'block').attr('src', $(this).data('href') + '&_format=iframe.html').load(function(e){
+    iFrame.css('display', 'block').attr('src', $(this).data('href')).load(function(e){
 
         iFrame.show();
         modal.modal('show');
