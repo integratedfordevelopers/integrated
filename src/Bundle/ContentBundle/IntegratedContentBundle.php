@@ -57,6 +57,12 @@ class IntegratedContentBundle extends Bundle
             'integrated_content.event_listener',
             'integrated_content.event_subscriber'
         ));
+
+        $container->addCompilerPass(new RegisterListenersPass(
+            'integrated_content.form_block.event_dispatcher',
+            'integrated_content.form_block.event_listener',
+            'integrated_content.form_block.event_subscriber'
+        ));
     }
 
     /**
