@@ -12,12 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Event;
 
 use Integrated\Common\Content\ContentInterface;
-
 use Symfony\Component\EventDispatcher\Event;
 
-/**
- * @author Michael Jongman <michael@e-active.nl>
- */
 class FormBlockEvent extends Event
 {
     const PRE_LOAD = 'form_block.pre_load';

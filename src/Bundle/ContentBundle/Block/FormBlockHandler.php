@@ -23,7 +23,6 @@ use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Form\ContentFormType;
-
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactory;
