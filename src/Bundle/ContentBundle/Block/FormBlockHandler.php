@@ -18,10 +18,12 @@ use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\FormBlock;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
+use Integrated\Bundle\ContentBundle\Event\FormBlockEvent;
 use Integrated\Bundle\ContentBundle\Mailer\FormMailer;
 use Integrated\Common\Block\BlockInterface;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Form\ContentFormType;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -63,24 +65,32 @@ class FormBlockHandler extends BlockHandler
     protected $channelContext;
 
     /**
-     * @param FormFactory             $formFactory
-     * @param DocumentManager         $documentManager
-     * @param RequestStack            $requestStack
-     * @param FormMailer              $formMailer
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @param FormFactory $formFactory
+     * @param DocumentManager $documentManager
+     * @param RequestStack $requestStack
+     * @param FormMailer $formMailer
      * @param ChannelContextInterface $channelContext
+     * @param EventDispatcher $eventDispatcher
      */
     public function __construct(
         FormFactory $formFactory,
         DocumentManager $documentManager,
         RequestStack $requestStack,
         FormMailer $formMailer,
-        ChannelContextInterface $channelContext
+        ChannelContextInterface $channelContext,
+        EventDispatcher $eventDispatcher
     ) {
         $this->formFactory = $formFactory;
         $this->documentManager = $documentManager;
         $this->requestStack = $requestStack;
         $this->formMailer = $formMailer;
         $this->channelContext = $channelContext;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -101,6 +111,9 @@ class FormBlockHandler extends BlockHandler
         $contentType = $block->getContentType();
 
         $content = $contentType->create();
+
+        $this->eventDispatcher->dispatch(FormBlockEvent::PRE_LOAD, new FormBlockEvent($content));
+
         $form = $this->createForm($content, ['method' => 'post', 'content_type' => $contentType], $block);
 
         if ($request->isMethod('post')) {
@@ -113,9 +126,13 @@ class FormBlockHandler extends BlockHandler
                     $content->addChannel($channel);
                 }
 
+                $this->eventDispatcher->dispatch(FormBlockEvent::PRE_FLUSH, new FormBlockEvent($content));
+
                 $this->documentManager->persist($content);
                 $this->documentManager->flush();
 
+                $this->eventDispatcher->dispatch(FormBlockEvent::POST_FLUSH, new FormBlockEvent($content));
+                
                 $data = $request->request->get($form->getName());
 
                 // remove irrelevant fields
