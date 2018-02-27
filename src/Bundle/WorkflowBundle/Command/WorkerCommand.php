@@ -97,7 +97,7 @@ The <info>%command.name%</info> .
     protected function executeCommand(InputInterface $input, OutputInterface $output, $command, array $arguments = [])
     {
         // run in a different process for isolation like memory issues.
-        $process = new Process('php app/console '.$command.' -e '.$input->getOption('env').' '.implode(' ', $arguments), getcwd(), null, null, null);
+        $process = new Process('php bin/console '.$command.' -e '.$input->getOption('env').' '.implode(' ', $arguments), getcwd(), null, null, null);
         $process->run();
 
         $process->run(function ($type, $buffer) use ($output) {

@@ -113,7 +113,7 @@ class ExportCommand extends ContainerAwareCommand
 
         while (true) {
             $process = new Process(
-                'php app/console channel:export -e '.$input->getOption('env'),
+                'php bin/console channel:export -e '.$input->getOption('env'),
                 $cwd,
                 null,
                 null,
