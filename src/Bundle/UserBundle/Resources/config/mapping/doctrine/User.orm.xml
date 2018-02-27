@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Integrated\Bundle\UserBundle\Model\User" table="security_users">
+
+		<unique-constraints>
+			<unique-constraint columns="username,scope"></unique-constraint>
+		</unique-constraints>
+
+		<id name="id" column="id" type="integer">
+			<generator strategy="AUTO" />
+		</id>
+
+		<field name="username" />
+		<field name="password" />
+		<field name="salt" column="password_salt" nullable="true" />
+		<field name="email" unique="true" nullable="true" />
+		<field name="locked" type="boolean" />
+		<field name="enabled" type="boolean" />
+		<field name="relation" nullable="true" />
+
+		<many-to-one target-entity="Scope" field="scope">
+			<join-columns>
+				<join-column name="scope" referenced-column-name="id" nullable="true" />
+			</join-columns>
+		</many-to-one>
+
+		<many-to-many field="groups" target-entity="Group">
+			<join-table name="security_user_groups">
+				<join-columns>
+					<join-column name="user_id" referenced-column-name="id" />
+				</join-columns>
+				<inverse-join-columns>
+					<join-column name="group_id" referenced-column-name="id" />
+				</inverse-join-columns>
+			</join-table>
+		</many-to-many>
+
+		<many-to-many field="roles" target-entity="Role">
+			<join-table name="security_user_roles">
+				<join-columns>
+					<join-column name="user_id" referenced-column-name="id" />
+				</join-columns>
+				<inverse-join-columns>
+					<join-column name="role_id" referenced-column-name="id" />
+				</inverse-join-columns>
+			</join-table>
+		</many-to-many>
+
+    </entity>
+
+</doctrine-mapping>

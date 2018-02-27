@@ -1,0 +1,33 @@
+{% spaceless %}
+{% set items = [] %}
+{% for content in pager %}
+    {% set item = {'id': content.type_id, 'type': content.type_name,'title': content.title|default('(no title)'), 'content': null, 'image': null} %}
+    {% if content.content is defined %}
+        {% set item = item|merge({'content': content.content|join('...')|striptags}) %}
+    {% endif %}
+    {% if content.image_string is defined %}
+        {% set item = item|merge({'image': content.image_string|first}) %}
+        {# todo add resized image for preview #}
+    {% endif %}
+    {% if content.extension_string is defined %}
+        {% set item = item|merge({'extension': content.extension_string[0]}) %}
+    {% endif %}
+    {% if content.mimetype_string is defined %}
+        {% set item = item|merge({'mimeType': content.mimetype_string[0]}) %}
+
+        {% if 'video' in content.mimetype_string[0] %}
+            {% set item = item|merge({'poster': image_json(content.file).__toString()}) %}
+        {% endif %}
+    {% endif %}
+    {% if content.alternate_string is defined %}
+        {% set item = item|merge({'alternate': content.alternate_string[0]}) %}
+    {% endif %}
+    {% set items = items|merge([item]) %}
+{% endfor %}
+{% set paging = [] %}
+{% if pager.previous is defined %}
+    {% set paging = paging|merge([{'prev': true}]) %}
+{% endif %}
+{% set data = {'href': 'resource', 'relations': relations, 'pagination': pager|json_pagination , 'items': items} %}
+{% endspaceless %}
+{{ data|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}

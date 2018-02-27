@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_block.twig.block_extension.class">Integrated\Bundle\BlockBundle\Twig\Extension\BlockExtension</parameter>
+
+        <parameter key="integrated_block.layout_locator.class">Integrated\Bundle\BlockBundle\Locator\LayoutLocator</parameter>
+
+        <parameter key="integrated_block.configure_menu.class">Integrated\Bundle\BlockBundle\EventListener\ConfigureMenuListener</parameter>
+
+        <parameter key="integrated_block.provider.block_usage.class">Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider</parameter>
+
+        <parameter key="integrated_block.provider.filter_query.class">Integrated\Bundle\BlockBundle\Provider\FilterQueryProvider</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_block.twig.block_extension" class="%integrated_block.twig.block_extension.class%">
+            <argument type="service" id="service_container" />
+            <argument type="service" id="integrated_block.provider.block_usage" />
+            <argument type="service" id="integrated_block.metadata.factory" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_block.layout_locator" class="%integrated_block.layout_locator.class%">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+        </service>
+
+        <service id="integrated_block.configure_menu" class="%integrated_block.configure_menu.class%">
+            <argument type="service" id="security.authorization_checker" />
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="integrated_block.provider.block_usage" class="%integrated_block.provider.block_usage.class%">
+            <argument type="service" id="doctrine_mongodb" />
+        </service>
+
+        <service id="integrated_block.provider.filter_query" class="%integrated_block.provider.filter_query.class%" public="true">
+            <argument type="service" id="doctrine_mongodb" />
+            <argument type="service" id="integrated_block.provider.block_usage" />
+            <argument>%kernel.bundles%</argument>
+        </service>
+
+        <service id="integrated_block.block_repository" class="Doctrine\Common\Persistence\ObjectRepository">
+            <factory service="doctrine.odm.mongodb.document_manager" method="getRepository" />
+            <argument>Integrated\Bundle\BlockBundle\Document\Block\Block</argument>
+        </service>
+
+    </services>
+</container>

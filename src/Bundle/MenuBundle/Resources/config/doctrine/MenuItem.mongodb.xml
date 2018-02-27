@@ -1,0 +1,15 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <embedded-document name="Integrated\Bundle\MenuBundle\Document\MenuItem" collection="menu">
+
+        <field fieldName="id" id="true" strategy="UUID" />
+        <field fieldName="name" type="string" />
+        <field fieldName="uri" type="string" />
+
+        <embed-many field="children" target-document="Integrated\Bundle\MenuBundle\Document\MenuItem" />
+
+    </embedded-document>
+
+</doctrine-mongo-mapping>

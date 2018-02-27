@@ -1,0 +1,15 @@
+{% extends 'IntegratedBlockBundle:block:new.html.twig' %}
+
+{% block style %}
+    {{ parent() }}
+
+    {% stylesheets "@IntegratedBlockBundle/Resources/public/css/iframe.css" %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block crumbs %}{% endblock %}
+{% block body %}
+    {{ block('form_section') }}
+{% endblock %}

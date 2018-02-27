@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_content.resolver.priority.builder" class="Integrated\Common\ContentType\Resolver\PriorityResolverBuilder" />
+
+        <service id="integrated_content.resolver.priority" class="Integrated\Common\ContentType\Resolver\PriorityResolver">
+            <factory service="integrated_content.resolver.priority.builder" method="getResolver" />
+        </service>
+
+        <service id="integrated_content.resolver.mongodb.repository" class="Doctrine\ODM\MongoDB\DocumentRepository" public="false">
+            <factory service="doctrine.odm.mongodb.document_manager" method="getRepository" />
+            <argument type="string">Integrated\Bundle\ContentBundle\Document\ContentType\ContentType</argument>
+        </service>
+
+        <service id="integrated_content.resolver.mongodb" class="Integrated\Common\ContentType\Resolver\MongoDBResolver">
+            <argument type="service" id="integrated_content.resolver.mongodb.repository"/>
+
+            <tag name="integrated_content.resolver" />
+        </service>
+
+        <service id="integrated_content.resolver" alias="integrated_content.resolver.priority" public="true" />
+
+    </services>
+
+</container>

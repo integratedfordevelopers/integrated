@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+		<parameter key="integrated_queue.queue.class">Integrated\Common\Queue\Queue</parameter>
+
+    </parameters>
+
+    <services>
+
+		<!-- the next service should be totally dynamically created -->
+
+        <service id="integrated_queue.workflow" class="%integrated_queue.queue.class%" public="true">
+            <factory service="integrated_queue.factory" method="getQueue" />
+
+            <argument type="string">workflow-worker</argument> <!-- config option -->
+        </service>
+
+    </services>
+
+</container>

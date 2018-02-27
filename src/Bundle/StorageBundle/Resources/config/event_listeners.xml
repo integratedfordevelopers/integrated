@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_storage.event.listener_file" class="Integrated\Bundle\StorageBundle\EventListener\Doctrine\ODM\ContainerAwareFileEventListener">
+            <argument type="service" id="service_container" />
+            <argument type="string">integrated_storage.manager</argument>
+            <argument type="string">integrated_storage.filesystem_delete</argument>
+            <argument type="string">integrated_storage.intent_writer</argument>
+
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+    </services>
+
+</container>

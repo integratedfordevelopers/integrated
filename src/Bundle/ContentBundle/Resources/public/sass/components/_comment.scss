@@ -1,0 +1,93 @@
+/* COMMENT */
+.comment-holder {
+	max-width: 504px;
+	width: 100%;
+}
+.comment-inner {
+	border-radius: 4px;
+	border: 1px solid $color-silver;
+	position: relative;
+	background: $color-white;
+	&:before, &:after {
+		position: absolute;
+		content: '';
+	}
+	&:before {
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 25px 25px 0 25px;
+		border-color: $color-white transparent transparent transparent;
+		bottom: -25px;
+		left: 50%;
+		margin-left: -25px;
+		z-index: 10;
+	}
+	&:after {
+		width: 0;
+		height: 0;
+		border-style: solid;
+		border-width: 27px 26px 0 26px;
+		border-color: $color-silver transparent transparent transparent;
+		bottom: -27px;
+		left: 50%;
+		margin-left: -26px;
+	}
+	.media {
+		margin-bottom: 20px;
+	}
+
+	&.arrow-up {
+		&:before {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 25px 25px 25px;
+			border-color: transparent transparent $color-white transparent;
+			top: -25px;
+			left: 50%;
+			margin-left: -25px;
+			z-index: 10;
+		}
+		&:after {
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 0 26px 27px 26px;
+			border-color: transparent transparent $color-silver transparent;
+			top: -27px;
+			left: 50%;
+			margin-left: -26px;
+		}
+	}
+
+	&.arrow-left {
+		&:before, &:after {
+			left: 27px;
+		}
+	}
+}	
+.comment-body {
+	padding: 30px;
+}
+.comment-footer {
+	border-top: 1px solid $color-silver;
+	padding: 10px 30px;
+}
+.cancel-comment {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	font-size: 18px;
+	color: $color-dusty-gray;
+}
+.add-comment-button {
+	position: absolute;
+	background: #0199f8;
+	padding: 10px 25px;
+	color: #fff;
+	border-radius: 5px;
+	cursor: pointer;
+	margin: 0 auto;
+	white-space: nowrap;
+}

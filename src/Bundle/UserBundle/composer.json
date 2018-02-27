@@ -1,0 +1,42 @@
+{
+    "name": "integrated/user-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated User Bundle",
+    "keywords": [
+        "integrated",
+        "user"
+    ],
+    "homepage": "https://www.integratedfordevelopers.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "https://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.1",
+        "symfony/symfony": "~2.8 || ~3.0",
+        "doctrine/orm": "~2.5",
+        "doctrine/doctrine-bundle": "~1.8",
+        "integrated/library": "~0.8",
+        "integrated/content-bundle": "~0.8",
+        "integrated/menu-bundle": "~0.8"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Integrated\\Bundle\\UserBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}

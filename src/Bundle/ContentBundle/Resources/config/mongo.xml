@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<parameters>
+
+        <parameter key="integrated_content.odm.mongo.mapping.driver.class">Doctrine\Common\Persistence\Mapping\Driver\MappingDriver</parameter>
+        <parameter key="integrated_content.odm.mongo.mapping.locator.class">Integrated\Doctrine\ODM\MongoDB\Mapping\Locator\DoctrineLocator</parameter>
+
+        <parameter key="integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder.class">Integrated\Doctrine\ODM\MongoDB\Mapping\ClassTreeMapResolverBuilder</parameter>
+        <parameter key="integrated_content.odm.mongo.mapping.discriminator_map.resolver.class">Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapResolverInterface</parameter>
+
+        <parameter key="integrated_content.odm.mongo.mapping.discriminator_map.listener.class">Integrated\Doctrine\ODM\MongoDB\Mapping\DiscriminatorMapMetadataSubscriber</parameter>
+
+        <parameter key="integrated_content.odm.mongo.cleanreferences.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CleanReferencesListener</parameter>
+        <parameter key="integrated_content.odm.mongo.clean_relations.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CleanRelationsListener</parameter>
+
+        <parameter key="integrated_content.odm.mongo.checkreferenced.listener.class">Integrated\Bundle\ContentBundle\Doctrine\EventListener\CheckReferencedListener</parameter>
+
+    </parameters>
+
+	<services>
+
+        <service id="integrated_content.odm.mongo.mapping.driver" class="%integrated_content.odm.mongo.mapping.driver.class%" public="false">
+            <factory service="doctrine_mongodb.odm.default_configuration" method="getMetadataDriverImpl" />
+        </service>
+
+        <service id="integrated_content.odm.mongo.mapping.locator" class="%integrated_content.odm.mongo.mapping.locator.class%">
+            <argument type="service" id="integrated_content.odm.mongo.mapping.driver" />
+        </service>
+
+        <service id="integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder" class="%integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder.class%">
+            <argument type="service" id="integrated_content.odm.mongo.mapping.locator" />
+
+            <call method="addClass">
+                <argument type="string">Integrated\Bundle\ContentBundle\Document\Content\Content</argument>
+            </call>
+
+            <call method="addClass">
+                <argument type="string">Integrated\Bundle\BlockBundle\Document\Block\Block</argument>
+            </call>
+
+        </service>
+
+        <service id="integrated_content.odm.mongo.mapping.discriminator_map.resolver" class="%integrated_content.odm.mongo.mapping.discriminator_map.resolver.class%">
+            <factory service="integrated_content.odm.mongo.mapping.discriminator_map.resolver_builder" method="getResolver" />
+        </service>
+
+        <service id="integrated_content.odm.mongo.mapping.discriminator_map.listener" class="%integrated_content.odm.mongo.mapping.discriminator_map.listener.class%">
+            <argument type="service" id="integrated_content.odm.mongo.mapping.discriminator_map.resolver" />
+
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+
+        <service id="integrated_content.odm.mongo.cleanreferences.listener" class="%integrated_content.odm.mongo.cleanreferences.listener.class%">
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+        <service id="integrated_content.odm.mongo.clean_relations.listener" class="%integrated_content.odm.mongo.clean_relations.listener.class%">
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+        <service id="integrated_content.odm.mongo.checkreferenced.listener" class="%integrated_content.odm.mongo.checkreferenced.listener.class%">
+            <tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+        </service>
+
+	</services>
+
+</container>

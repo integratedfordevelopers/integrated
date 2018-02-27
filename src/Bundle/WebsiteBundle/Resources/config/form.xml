@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_website.form.type.configuration" class="Integrated\Bundle\WebsiteBundle\Form\Type\ConfigurationType">
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_website.form.type.page" class="Integrated\Bundle\WebsiteBundle\Form\Type\PageType">
+            <argument type="service" id="integrated_menu.provider.database_menu_provider" />
+            <tag name="form.type" />
+        </service>
+
+    </services>
+</container>

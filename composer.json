@@ -1,89 +1,89 @@
 {
     "name": "integrated/integrated",
+    "type": "library",
+    "description": "Integrated PHP framework",
+    "keywords": [
+        "integrated",
+        "content store",
+        "publishing"
+    ],
+    "homepage": "https://www.integratedfordevelopers.com",
     "license": "MIT",
-    "type": "project",
-    "description": "Skeleton for a new Integrated based application, which includes the use of all core bundles",
-    "autoload": {
-        "psr-0": { "": "src/" }
-    },
-    "require": {
-        "php": ">=5.3.3",
-        "symfony/symfony": "2.7.*",
-        "doctrine/orm": "~2.4",
-        "doctrine/doctrine-bundle": "~1.3",
-        "twig/extensions": "1.0.*",
-        "symfony/assetic-bundle": "~2.3@stable",
-        "symfony/swiftmailer-bundle": "~2.3@stable",
-        "symfony/monolog-bundle": "~2.3@stable",
-        "sensio/distribution-bundle": "~2.3",
-        "sensio/framework-extra-bundle": "~2.3",
-        "sensio/generator-bundle": "~2.3",
-        "incenteev/composer-parameter-handler": "~2.0",
-        "sp/bower-bundle": "~0.9",
-        "components/jquery": "1.10.*",
-        "leafo/scssphp": "~0.6",
-        "gregwar/image-bundle": "~2.1.0",
-        "integrated/library": "~0.5.0",
-        "integrated/block-bundle": "~0.5.0",
-        "integrated/channel-bundle": "~0.5.0",
-        "integrated/content-bundle": "~0.5.0",
-        "integrated/formtype-bundle": "~0.5.0",
-        "integrated/locking-bundle": "~0.4.0",
-        "integrated/menu-bundle": "~0.5.0",
-        "integrated/page-bundle": "~0.5.0",
-        "integrated/slug-bundle": "~0.5.0",
-        "integrated/solr-bundle": "~0.5.0",
-        "integrated/storage-bundle": "~0.5.0",
-        "integrated/theme-bundle": "~0.4",
-        "integrated/user-bundle": "~0.5.0",
-        "integrated/website-bundle": "~0.5.0",
-        "integrated/workflow-bundle": "~0.5.0",
-        "integrated/puphpet": "~0.5.0"
-    },
-    "require-dev": {
-        "squizlabs/php_codesniffer": "2.*"
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "php app/console assetic:dump web",
-            "php app/console doctrine:mongodb:schema:create",
-            "php app/console doctrine:schema:create",
-            "php app/console init:queue --force",
-            "php app/console init:locking --force",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "php app/console cache:clear --env=prod",
-            "php app/console fos:js-routing:dump --env=prod"
-        ],
-        "post-update-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sp\\BowerBundle\\Composer\\ScriptHandler::bowerInstall",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Braincrafted\\Bundle\\BootstrapBundle\\Composer\\ScriptHandler::install",
-            "php app/console braincrafted:bootstrap:install",
-            "php app/console assetic:dump web",
-            "php app/console doctrine:mongodb:schema:create",
-            "php app/console doctrine:schema:update --force",
-            "php app/console init:queue --force",
-            "php app/console init:locking --force",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "php app/console cache:clear --env=prod",
-            "php app/console fos:js-routing:dump --env=prod"
-        ]
-    },
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "https://www.e-active.nl"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "require": {
+        "php": ">=7.1",
+        "ext-intl": "*",
+        "symfony/symfony": "~2.8 || ~3.0",
+        "symfony/security-acl": "~2.8 || ~3.0",
+        "symfony/polyfill-iconv": "~1.6",
+        "alcaeus/mongo-php-adapter": "~1.1",
+        "doctrine/orm": "~2.5",
+        "doctrine/doctrine-bundle": "~1.8",
+        "doctrine/doctrine-fixtures-bundle": "~2.4",
+        "doctrine/mongodb-odm-bundle": "~3.4",
+        "abraham/twitteroauth": "^0.7.4",
+        "braincrafted/bootstrap-bundle": "~2.2",
+        "facebook/graph-sdk": "~5.0",
+        "friendsofsymfony/jsrouting-bundle": "~2.0",
+        "gregwar/image-bundle": "~2.1",
+        "jms/metadata": "~1.6",
+        "knplabs/knp-gaufrette-bundle": "~0.5",
+        "knplabs/knp-menu-bundle": "~2.2",
+        "knplabs/knp-paginator-bundle": "~2.7",
+        "nelmio/alice": "~3.1",
+        "sensio/framework-extra-bundle": "~5.0",
+        "solarium/solarium": "~3.8",
+        "twbs/bootstrap": "~3.3",
+        "vihuvac/recaptcha-bundle": "~2.1"
+    },
+    "replace": {
+        "integrated/asset-bundle": "self.version",
+        "integrated/block-bundle": "self.version",
+        "integrated/channel-bundle": "self.version",
+        "integrated/comment-bundle": "self.version",
+        "integrated/content-bundle": "self.version",
+        "integrated/content-history-bundle": "self.version",
+        "integrated/formtype-bundle": "self.version",
+        "integrated/image-bundle": "self.version",
+        "integrated/library": "self.version",
+        "integrated/locking-bundle": "self.version",
+        "integrated/menu-bundle": "self.version",
+        "integrated/page-bundle": "self.version",
+        "integrated/slug-bundle": "self.version",
+        "integrated/social-bundle": "self.version",
+        "integrated/solr-bundle": "self.version",
+        "integrated/storage-bundle": "self.version",
+        "integrated/theme-bundle": "self.version",
+        "integrated/user-bundle": "self.version",
+        "integrated/website-bundle": "self.version",
+        "integrated/workflow-bundle": "self.version"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.1",
+        "phpunit/phpunit": "^6.4",
+        "friendsofphp/php-cs-fixer": "^2.8"
+    },
+    "provide": {
+        "ext-mongo": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Integrated\\Bundle\\": "src/Bundle",
+            "Integrated\\MongoDB\\": "src/MongoDB",
+            "Integrated\\Doctrine\\": "src/Doctrine",
+            "Integrated\\Common\\": "src/Common"
+        }
+    },
     "extra": {
-        "symfony-app-dir": "app",
-        "symfony-web-dir": "web",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
+        "branch-alias": {
+            "dev-master": "0.8-dev"
         }
     }
 }

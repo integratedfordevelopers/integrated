@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="integrated_user.command.change_password_command" class="Integrated\Bundle\UserBundle\Command\ChangePasswordCommand">
+            <argument type="service" id="integrated_user.scope.manager" />
+            <argument type="service" id="integrated_user.user.manager" />
+            <argument type="service" id="security.encoder_factory" />
+
+            <tag name="console.command" />
+        </service>
+
+        <service id="integrated_user.command.create_user_command" class="Integrated\Bundle\UserBundle\Command\CreateUserCommand">
+            <argument type="service" id="integrated_user.scope.manager" />
+            <argument type="service" id="integrated_user.role.manager" />
+            <argument type="service" id="integrated_user.user.manager" />
+            <argument type="service" id="validator" />
+            <argument type="service" id="security.encoder_factory" />
+
+            <tag name="console.command" />
+        </service>
+
+    </services>
+</container>

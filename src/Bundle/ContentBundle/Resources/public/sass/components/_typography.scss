@@ -1,0 +1,154 @@
+/* TYPOGRAPHY */
+html, body {
+	font-family: $body-main-font;
+	font-size: $body-font-size;
+	line-height: $body-line-height;
+	color: $main-text-color;
+	background: $body-bg;
+	-webkit-font-smoothing: antialiased;
+	height: 100%;
+	min-height: 100%;
+    @include respond-to(tablets-small) {
+        font-size: 14px;
+    }
+}
+
+* {
+	&:hover, &:focus {
+		outline: none;
+	}
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	font-weight: $font-bold;
+	margin-top: 0;
+	margin-bottom: 10px;
+	&:last-child {
+		margin-bottom: 0;
+	}
+	a {
+		color: inherit;
+	}
+}
+
+h1, .h1 {
+	font-size: 24px;
+	line-height: 37px;
+    margin-bottom: 20px;
+}
+
+h2, .h2 {
+	font-size: 18px;
+	margin-bottom: 15px;
+	line-height: 23px;
+}
+
+h3, .h3 {
+	font-size: 16px;
+	line-height: 21px;
+}
+
+h4, .h4 {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+h5, .h5 {
+	font-size: 12px;
+	line-height: 17px;
+}
+h6, .h6 {
+	font-size: 10px;
+	line-height: 15px;
+}
+
+.bordered-title {
+	border: 1px solid $color-silver;
+	padding: 10px 15px;
+	margin-bottom: 0;
+	&:first-child:not(last-child) {
+		border-bottom: none;
+		border-radius: 4px 4px 0 0;
+	}
+	&:last-of-type {
+		border-bottom: none;
+	}
+}
+
+.main-title {
+	i {
+		margin-left: 4px;
+		font-size: 16px;
+		color: $color-silver-chalive;
+		vertical-align: middle;
+	}
+}
+
+a {
+	color: $color-link;
+	@include transition(150ms);
+	&:hover, &:focus {
+		color: $color-link-hover;
+		text-decoration: none;
+	}
+	&.link-more {
+		&:before {
+			font-family: 'fontello';
+			@extend .integrate-icon-angle-double-down;
+			margin-right: 5px;
+			font-size: 16px;
+			vertical-align: top;
+		}
+		&.active {
+			@extend .integrate-icon-angle-double-up;
+		}
+	}
+}
+button {
+	@include transition(150ms);
+	border: none;
+	background: none;
+}
+p {
+	margin-bottom: 14px;
+	&:last-child {
+		margin-bottom: 0;
+	}
+	a {
+		color: inherit;
+	}
+}
+.uppercase {
+	text-transform: uppercase;
+}
+.break-word {
+  word-wrap: break-word;
+}
+
+
+/* Fonts classes */
+.font-light {
+	font-weight: $font-light;
+}
+.font-regular {
+	font-weight: $font-regular;
+}
+.font-medium {
+	font-weight: $font-medium;
+}
+.font-bold {
+	font-weight: $font-bold;
+}
+
+/* Color classes */
+.color-green {
+	color: $color-green-haze;
+}
+.color-gray-dark {
+	color: $color-dove-gray;
+}
+
+
+
+
+

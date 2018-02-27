@@ -1,0 +1,39 @@
+{
+    "name": "integrated/social-bundle",
+    "type": "symfony-bundle",
+    "description": "Provides connectors for social media",
+    "keywords": [
+        "integrated",
+        "social",
+        "twitter"
+    ],
+    "homepage": "https://www.integratedfordevelopers.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "https://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.1",
+        "abraham/twitteroauth": "^0.7.4",
+        "facebook/graph-sdk": "~5.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "Integrated\\Bundle\\SocialBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}

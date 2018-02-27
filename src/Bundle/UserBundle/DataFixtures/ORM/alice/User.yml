@@ -1,0 +1,40 @@
+Integrated\Bundle\UserBundle\Model\Scope:
+  scope1:
+    name: Public
+    admin: false
+  scope2:
+    name: Admin
+    admin: true
+
+Integrated\Bundle\UserBundle\Model\Role:
+  ROLE_ADMIN:
+    __construct: ['ROLE_ADMIN', 'Administrator']
+  ROLE_USER_MANAGER:
+    __construct: ['ROLE_USER_MANAGER', 'User manager']
+  ROLE_BLOCK_MANAGER:
+    __construct: ['ROLE_BLOCK_MANAGER', 'Block manager']
+  ROLE_PAGE_MANAGER:
+    __construct: ['ROLE_PAGE_MANAGER', 'Page manager']
+  ROLE_WORKFLOW_MANAGER:
+    __construct: ['ROLE_WORKFLOW_MANAGER', 'Workflow manager']
+  ROLE_CHANNEL_MANAGER:
+    __construct: ['ROLE_CHANNEL_MANAGER', 'Channel manager']
+
+Integrated\Bundle\UserBundle\Model\Group:
+  group1:
+    name:     Administrators
+    roles:    [@ROLE_ADMIN]
+
+Integrated\Bundle\UserBundle\Model\User:
+  user1:
+    username: admin
+    salt:     <generateSalt()>
+    password: <generatePassword(@self, 'admin')>
+    groups:   [@group1]
+    scope:    @scope2
+  user2:
+    username: public
+    salt:     <generateSalt()>
+    password: <generatePassword(@self, 'admin')>
+    groups:   [@group1]
+    scope:    @scope1

@@ -1,0 +1,316 @@
+{% use "BraincraftedBootstrapBundle:Form:bootstrap.html.twig" %}
+
+{% block integrated_ace_widget %}
+    <style type="text/css" media="screen">
+        #editor {
+            width: 100%;
+            height: 75px;
+        }
+    </style>
+
+    <pre id="editor"></pre>
+    <textarea id="{{ id }}" name="{{ full_name }}" hidden>{% if value is not empty %}{{ value }}{% endif %}</textarea>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/ace/1.2.6/min/ace.js"></script>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/twilight");
+        editor.getSession().setMode("ace/mode/html");
+
+        var content = $("#{{ id }}");
+
+        editor.getSession().setValue(content.val());
+        editor.getSession().on('change', function(){
+            content.val(editor.getSession().getValue());
+        });
+    </script>
+{% endblock %}
+
+{% block integrated_datetime_widget  %}
+    {% spaceless %}
+        <div class="input-group date form_datetime" data-locale="{{ app.request.locale }}" style="width: 230px;" data-date-format="d-m-Y H:i">
+            <input {{ block('widget_attributes') }} class="form-control" size="16" type="text" {% if value is not empty %}value="{{ value }}" {% endif %} >
+            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_color_row %}
+{% spaceless %}
+    {% integrated_javascripts 'bundles/integratedformtype/components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js' %}{% endintegrated_javascripts %}
+    {% integrated_javascripts inline=true %}
+        $('.colorpicker-component').colorpicker();
+    {% endintegrated_javascripts %}
+
+    {{ block("form_row") }}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_color_widget %}
+{% spaceless %}
+    <div class="input-group colorpicker-component">
+        <input {{ block('widget_attributes') }} class="form-control" type="text" value="{{ value }}">
+        <span class="input-group-addon"><i></i></span>
+    </div>
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_wysihtml5x_widget  %}
+    <textarea {{ block('widget_attributes') }} class="form-control integrated_wysihtml5x">{% if value is not empty %}{{ value }}{% endif %}</textarea>
+{% endblock %}
+
+{% block integrated_tinymce_row %}
+    {{ block("integrated_editor_row") }}
+{% endblock %}
+
+{% block integrated_editor_row  %}
+    {% spaceless %}
+    
+    {# @todo to this include with a Twig extension #}
+    <link href="/bundles/integratedformtype/css/tinymce.editor.css" rel="stylesheet" type="text/css" />
+
+    <div class="form-group">
+      <div class="col-sm-12">
+	    <div id="{{ id }}_container">
+	      <textarea id="{{ id }}" name="{{ full_name }}" class="form-control integrated_tinymce">{% if value is not empty %}{{ value }}{% endif %}</textarea>
+	    </div>
+	  </div>
+	</div>
+    <script type="text/javascript">
+        require(["{{ asset('bundles/integratedformtype/components/tinymce/tinymce.min.js') }}"],
+                function () {
+                    tinymce.init({
+                        selector: "textarea#{{ id }}",
+                        theme: "modern",
+                        plugins: [
+                            ["advlist autolink link lists charmap hr anchor pagebreak"],
+                            ["searchreplace wordcount visualchars fullscreen nonbreaking"],
+                            ["table contextmenu directionality template paste wordcount autoresize code"]
+                        ],
+                        external_plugins: {
+                            "integratedBrowser": "/bundles/integratedformtype/js/tinymce-plugins/integrated-browser/plugin.js",
+                            "integratedColumn": "/bundles/integratedformtype/js/tinymce-plugins/integrated-column/plugin.js"
+                        },
+                        add_unload_trigger: false,
+                        schema: "html5",
+                        menubar: false,
+                        toolbar: "styleselect | bold italic underline | bullist numlist | link integratedImage integratedVideo integratedColumn image media print preview fullpage table | charmap pagebreak | pastetext searchreplace | code fullscreen",
+                        statusbar: true,
+                        statusbar_size: "small",
+                        width: "100%",
+                        height: "0",
+                        autoresize_min_height: 300,
+                        autoresize_max_height: (window.innerHeight-64),
+                        browser_spellcheck : true,
+                        autoresize_bottom_margin: "0px",
+                        convert_urls: false,
+                        content_css: "{{ content_styles.content_css|merge(['/bundles/integratedformtype/css/tinymce.content.css'])|join(',') }}",
+                        style_formats: [
+                            {title: 'Paragraph', format: 'p'},
+                            {title: 'Heading 2', block: 'h2' },
+                            {title: 'Heading 3', block: 'h3' },
+                            {title: 'Heading 4', block: 'h4' },
+                            {title: 'Heading 5', block: 'h5' },
+                            {title: 'Preformatted (fixed font)', block: 'pre' }
+                            {% for style_format in content_styles.style_formats %}
+                                {% if loop.first %},{% endif %}
+                                {{ style_format|json_encode|raw }}
+                                {% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        ]
+                    });
+                }
+        );
+        </script>
+    {% endspaceless %}
+{% endblock %}
+
+{% block checkbox_row %}
+    {% spaceless %}
+        {% set style = style|default(bootstrap_get_style()) %}
+        {% if style == 'horizontal' and (align_widget is defined or attr.align_widget is defined) %}
+            {% set align_with_widget = true %}
+        {% endif %}
+
+        {{ parent() }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block radio_row %}
+    {% spaceless %}
+        {% set style = style|default(bootstrap_get_style()) %}
+        {% if style == 'horizontal' and (align_widget is defined or attr.align_widget is defined) %}
+            {% set align_with_widget = true %}
+        {% endif %}
+
+        {{ parent() }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_sortable_collection_widget %}
+    {% spaceless %}
+        {% if prototype is defined %}
+            {% set prototype_vars = {} %}
+            {% if style is defined %}
+                {% set prototype_vars = prototype_vars|merge({'style': style}) %}
+            {% endif %}
+
+            {% set prototype_html = '<a data-toggle="collapse" href="#__id__">' ~ field.vars.value.title|default(form.vars.default_title|default('Item')) ~ '</a>' %}
+            {% if form.vars.allow_delete %}
+                {% set prototype_html = prototype_html ~ '<a href="javascript:;" class="pull-right" title="' ~ form.vars.delete_button_text|trans({}, translation_domain) ~ '" data-removefield="collection" data-field="__id__"><span class="glyphicon glyphicon-remove"></span></a>' %}
+            {% endif %}
+            {% set prototype_html = '<div class="panel-heading"><h4 class="panel-title">' ~ prototype_html ~ '</h4></div>' %}
+            {% set prototype_html = prototype_html ~ '<div class="panel-collapse collapse in"><div class="panel-body">' ~ form_widget(prototype, prototype_vars) ~ '</div></div>' %}
+            {% set prototype_html = '<div class="panel panel-default">' ~ prototype_html ~ '</div>' %}
+
+            {% set attr = attr|merge({'data-prototype': prototype_html }) %}
+            {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            <ul class="bc-collection panel-group sortable-collection ui-sortable">
+                {% for field in form %}
+
+                    <li class="ui-sortable-handle">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" href="#{{ field.vars.id }}">
+                                        {{ field.vars.value.title|default(form.vars.default_title|default('Item')) }}
+                                    </a>
+
+                                    {% if form.vars.allow_delete %}
+                                        <a href="javascript:;" class="pull-right" title="{{ form.vars.delete_button_text|trans({}, translation_domain) }}" data-removefield="collection" data-field="{{ field.vars.id }}">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a>
+                                    {% endif %}
+                                </h4>
+                            </div>
+                            <div id="{{ field.vars.id }}" class="panel-collapse collapse{% if not field.vars.valid %} in{% endif %}">
+                                <div class="panel-body">
+                                    {{ form_widget(field) }}
+                                    {{ form_errors(field) }}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                {% endfor %}
+            </ul>
+
+            {% if form.vars.allow_add %}
+                <a href="javascript:;" title="{{ form.vars.add_button_text|trans({}, translation_domain) }}" data-addfield="collection" data-collection="{{ form.vars.id }}" data-prototype-name="{{ prototype_name }}">
+                    <span class="glyphicon glyphicon-plus" style="margin-top: 5px;"></span>
+                </a>
+            {% endif %}
+        </div>
+
+        {% integrated_javascripts mode='append'
+            'bundles/integratedformtype/components/jquery-ui/jquery-ui.min.js'
+            'bundles/integratedformtype/js/content_sortable_collection.js' %}
+        {% endintegrated_javascripts %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_collection_widget %}
+    {% spaceless %}
+        {% if prototype is defined %}
+            {% set prototype_vars = {} %}
+            {% if style is defined %}
+                {% set prototype_vars = prototype_vars|merge({'style': style}) %}
+            {% endif %}
+            {% set prototype_html = '<div class="col-xs-' ~ form.vars.sub_widget_col ~ '">' ~ form_widget(prototype, prototype_vars) ~ '</div>' %}
+            {% if form.vars.allow_delete %}
+                {% set prototype_html = prototype_html ~ '<div class="col-xs-' ~ form.vars.button_col ~ '"><a href="#" class="btn btn-danger btn-sm" data-removefield="collection" data-field="__id__" title="' ~ form.vars.delete_button_text|trans({}, translation_domain)|raw ~ '"><span class="glyphicon glyphicon-remove"></span></a></div>' %}
+            {% endif %}
+            {% set prototype_html = '<div class="section-white section-padding section-shadow section-radius"><div class="row">' ~ prototype_html ~ '</div></div>' %}
+
+            {% set attr = attr|merge({'data-prototype': prototype_html }) %}
+            {% set attr = attr|merge({'data-prototype-name': prototype_name }) %}
+        {% endif %}
+        <div {{ block('widget_container_attributes') }}>
+            <ul class="bc-collection list-unstyled">
+                {% for field in form %}
+                    <li>
+                        <div class="section-white section-padding section-shadow section-radius">
+                            <div class="row">
+                                <div class="col-xs-{{ form.vars.sub_widget_col }}">
+                                    {{ form_widget(field) }}
+                                    {{ form_errors(field) }}
+                                </div>
+                                {% if form.vars.allow_delete %}
+                                    <div class="col-xs-{{ form.vars.button_col }}">
+                                        <a href="#" class="btn btn-danger btn-sm" data-removefield="collection" data-field="{{ field.vars.id }}" title="{{ form.vars.delete_button_text|trans({}, translation_domain)|raw }}">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% if form.vars.allow_add %}
+                <a href="#" class="btn btn-primary btn-sm" data-addfield="collection" data-collection="{{ form.vars.id }}" data-prototype-name="{{ prototype_name }}">{{ form.vars.add_button_text|trans({}, translation_domain)|parse_icons|raw }}</a>
+            {% endif %}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_choice_widget %}
+    {% integrated_javascripts mode='prepend'
+    'bundles/integratedformtype/js/content_choice.js' %}
+    {% endintegrated_javascripts %}
+
+    {% set attr = attr|merge({
+        'data-ajax-url' : path(route, params),
+        'data-allow-clear' : (allow_clear ? 'true' : 'false'),
+        'class' : (attr.class|default('') ~ ' form-control integrated_content_choice')|trim
+    }) %}
+    {% spaceless %}
+        <select {{ block('widget_attributes') }}>
+            {% if multiple %}
+                {{ block('integrated_content_choice_multiple') }}
+            {% else %}
+                {{ block('integrated_content_choice_single') }}
+            {% endif %}
+        </select>
+    {% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_choice_single %}
+    {% if data %}
+        {# todo publishable title INTEGRATED-364 #}
+        <option value="{{ data.id }}" selected="selected">{{ data }}</option>
+    {% endif %}
+{% endblock %}
+
+{% block integrated_content_choice_multiple %}
+    {% for document in data %}
+        {# todo publishable title INTEGRATED-364 #}
+        <option value="{{ document.id }}" selected="selected">{{ document }}</option>
+    {% endfor %}
+{% endblock %}
+
+{% block integrated_relations_choice_row %}
+    {{ form_widget(form) }}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block integrated_relation_references_row %}
+    {{ form_row(form.children['references']) }}
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block integrated_save_cancel_row %}
+    {% spaceless %}
+        <section class="section-white prefooter-holder">
+            <div class="container text-center">
+                {{ form_widget(form) }}
+                &nbsp;
+                <a class="btn btn-gray-thin integrated-cancel-button" href="{{ path(cancel_route, cancel_route_parameters) }}">{% trans %}Cancel{% endtrans %}</a>
+            </div><!-- container -->
+        </section>
+    {% endspaceless %}
+{% endblock %}
+

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+		<service id="integrated_solr.solarium.data_collector" class="Integrated\Bundle\SolrBundle\DataCollector\SolariumDataCollector">
+            <tag name="data_collector" id="solr" template="IntegratedSolrBundle:collector:solarium" />
+        </service>
+
+    </services>
+
+</container>

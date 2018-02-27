@@ -1,0 +1,48 @@
+<html>
+<head>
+    <title>Image Browser</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="/bundles/fosjsrouting/js/router.js"></script>
+    <script src="/js/routing.js?callback=fos.Router.setData"></script>
+
+</head>
+<body>
+<div class="container-fluid" style="margin: 10px">
+    <div id="add_image_wrapper" class="row" style="opacity: 0;">
+        <div class="col-sm-5">
+            <div class="btn-group" id="button_wrap">
+            </div>
+        </div>
+        <div class="col-sm-7">
+            <form id="form-search" action="" class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-6">
+                        <div class="input-group">
+                            <input id="txt-search" type="text" class="form-control" placeholder="Search...">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <select class="form-control" id="type-search">
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12" id="thumbnail-container"></div>
+    </div>
+    <div class="row">
+        <div id="pagination-container" class="col-sm-12"></div>
+    </div>
+</div>
+
+<script src="/js/jquery.js"></script>
+<script src="js/jquery.loading-overlay.min.js"></script>
+<script src="js/browser.js"></script>
+<script src="/js/bootstrap.js"></script>
+</body>
+</html>

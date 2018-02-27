@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_social.twitter.factory" class="Integrated\Bundle\SocialBundle\Factory\TwitterFactory" public="false">
+            <argument type="string" />
+            <argument type="string" />
+        </service>
+
+        <service id="integrated_social.twitter.adapter" class="Integrated\Bundle\SocialBundle\Connector\TwitterAdapter" public="false">
+            <argument type="service" id="integrated_social.twitter.adapter.exporter_factory" />
+
+            <tag name="integrated_channel.connector" />
+        </service>
+
+        <service id="integrated_social.twitter.adapter.exporter_factory" class="Integrated\Bundle\SocialBundle\Connector\Twitter\ExporterFactory" public="false">
+            <argument type="service" id="integrated_social.twitter.factory" />
+        </service>
+
+        <service id="integrated_social.twitter.config_listener" class="Integrated\Bundle\SocialBundle\EventListener\TwitterChannelConfigSubscriber">
+            <argument type="service" id="integrated_social.twitter.factory" />
+            <argument type="service" id="integrated_channel.config.manager" />
+            <argument type="service" id="router" />
+
+            <tag name="integrated_channel.event_subscriber" />
+        </service>
+
+    </services>
+
+</container>

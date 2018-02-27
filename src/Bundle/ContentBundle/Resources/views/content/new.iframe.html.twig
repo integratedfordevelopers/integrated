@@ -1,0 +1,43 @@
+{% extends 'IntegratedContentBundle:content:new.html.twig' %}
+
+{% block style %}
+    {{ parent() }}
+
+    <style type="text/css">
+        #wrapper-holder {
+            padding-bottom: 85px;
+        }
+
+        #wrapper-holder > .container {
+            width: auto;
+            background: #fff;
+        }
+
+        #wrapper-holder > .container .section-radius {
+            box-shadow: none;
+        }
+
+        .add-relation {
+            display: none;
+        }
+
+        .prefooter-holder {
+            border-top: 1px solid #e5e5e5;
+            background: #fcfcfc;
+        }
+    </style>
+{% endblock %}
+
+{% block header %}{% endblock %}
+{% block crumbs %}{% endblock %}
+{% block filters %}{% endblock %}
+{% block main_title %}{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $('button[data-dismiss="modal"]').click(function() {
+            parent.$("#relation-add-modal.modal").modal('hide');
+        });
+    </script>
+{% endblock %}

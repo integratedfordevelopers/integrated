@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<converter-mapping>
+
+    <class name="Test\Keys\Array">
+
+        <type name="array">
+            <options>
+
+                <array key="null">
+                    <null />
+                </array>
+                <array key="string">
+                    <string>string</string>
+                </array>
+                <array key="number">
+                    <int>1.1</int>
+                    <float>1.1</float>
+                </array>
+                <array key="bool">
+                    <bool>false</bool>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Keys\Mixed">
+
+        <type name="mixed">
+            <options>
+
+                <string key="string 1">string 1</string>
+                <string>0</string>
+                <string key="string 3">string 3</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Keys\Duplicate">
+
+        <type name="duplicate">
+            <options>
+
+                <string key="string 2">string 1</string>
+                <string key="string 2">string 2</string>
+                <string key="string 3">string 3</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Keys\Numeric">
+
+        <type name="numeric">
+            <options>
+
+                <string key="1">1</string>
+                <string>2</string>
+                <string>3</string>
+
+            </options>
+        </type>
+
+    </class>
+
+</converter-mapping>

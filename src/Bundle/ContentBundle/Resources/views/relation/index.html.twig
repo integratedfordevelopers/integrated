@@ -1,0 +1,17 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <ul class="list-inline">
+                <li>
+                    <a href="{{ path('integrated_content_relation_new') }}">
+                        {% trans %}Create new{% endtrans %}
+                    </a>
+                </li>
+            </ul>
+            <section class="section-white section-padding section-shadow section-radius">
+                {{ include('IntegratedContentBundle:relation:partial/list.html.twig', { 'documents': documents }) }}
+            </section>
+        </div>
+    </div>
+{% endblock %}

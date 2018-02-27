@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<converter-mapping>
+
+    <class name="Test\Class\Duplicate">
+
+        <type name="type 1" />
+        <type name="type 2" />
+        <type name="type 3" />
+
+    </class>
+
+    <class name="Test\Class\Duplicate">
+
+        <type name="type 3" />
+        <type name="type 4" />
+        <type name="type 5" />
+
+    </class>
+
+    <class name="Test\Class\Single">
+
+        <type name="type 1" />
+        <type name="type 2" />
+        <type name="type 3" />
+
+    </class>
+
+</converter-mapping>

@@ -1,0 +1,128 @@
+{% autoescape 'js' %}
+{% verbatim %}
+<script id="options-template" type="text/x-handlebars-template">
+
+    <div class="options-cnt">
+        <h4 class="sub_title">{{this.title}} <small>({{pagination.numFound}})</small></h4>
+        <ul class="custom_list">
+            {{#each items}}
+                {{#if this.image}}
+                    <li class="media">
+                        <a href="#" data-value="{{this.id}}" class="pull-left">
+                            <img src="{{this.image}}" alt="{{this.title}}" width="60" />
+                        </a>
+                        <div class="media-body">
+                            <a href="#" data-value="{{this.id}}">{{ this.title }}</a>
+                        </div>
+                    </li>
+                {{else}}
+                    <li>
+                        {{#if this.disabled}}
+                        <label class="pseudo_checkbox_holder text-disabled">
+                        {{else}}
+                        <label class="pseudo_checkbox_holder">
+                        {{/if}}
+                            {{#checked this.id ../../selected }}
+                            <input type="checkbox" checked="checked" value="{{this.id}}"  />
+                            {{else}}
+                                <input type="checkbox" value="{{this.id}}"  />
+                            {{/checked}}
+                            <i class="pseudo_checkbox"></i>{{this.title}}
+                        </label>
+                    </li>
+                {{/if}}
+            {{else}}
+            <li>
+                No items found
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</script>
+<script id="selected-template" type="text/x-handlebars-template">
+    {{#hasItems pagination.numFound}}
+        <h4 class="sub_title">{{this.title}} <small>({{pagination.numFound}})</small></h4>
+        {{#each items}}
+            <p class="alert-dismissable closable" data-remove="{{ this.id }}">
+                {% endverbatim %}
+                    {% if editable is not defined or editable %}
+                        <button aria-hidden="true" data-dismiss="alert" class="close glyphicon glyphicon-remove" type="button"></button>
+                    {% endif %}
+                {% verbatim %}
+                {{this.title}}
+            </p>
+        {{else}}
+            <p>
+                No items selected
+            </p>
+        {{/each}}
+    {{/hasItems}}
+</script>
+<script id="used-by-template" type="text/x-handlebars-template">
+    {{#hasItems pagination.numFound}}
+    <h3 class="title">{{this.title}} <small>({{pagination.numFound}})</small></h3>
+    <div class="content_column_inner">
+        <ul class="custom_list li_with_margin">
+            {{#each items}}
+            <li>
+                <a href="{{this.href}}" target="_blank">
+                    {{this.title}}
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/hasItems}}
+</script>
+<script id="pagination-template" type="text/xhandlebars-template">
+    {{#hasPages pagination.pageCount}}
+    <ul class="pagination">
+        {{#if pagination.previous}}
+        <li>
+            <a href="{{pagination.previous.href}}">&laquo;</a>
+        </li>
+        {{else}}
+            <li class="disabled">
+            <span>&laquo;</span>
+        </li>
+        {{/if}}
+
+        {{#if pagination.next}}
+        <li>
+            <a href="{{pagination.next.href}}">&raquo;</a>
+        </li>
+            {{else}}
+            <li class="disabled">
+            <span>&raquo;</span>
+        </li>
+            {{/if}}
+    </ul>
+    {{/hasPages}}
+</script>
+<script id="add-template" type="text/xhandlebars-template">
+    {{#if relations}}
+        {{#equals relations.length 1}}
+        <a data-title="Add {{relations.0.name}}" class="btn btn-default add-relation" style="font-size: 13px;" href="{{relations.0.href}}" target="_blank" data-modal="add-modal">
+            Add
+        </a>
+        {{else}}
+        <div class="btn-group add-relation">
+            <button type="button" class="btn btn-default dropdown-toggle" style="font-size: 13px;" data-toggle="dropdown" aria-expanded="false">
+                Add <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                {{#each relations}}
+                <li>
+                    <a data-title="Add {{this.name}}" href="{{this.href}}" target="_blank" data-modal="add-modal">
+                        {{this.name}}
+                    </a>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        {{/equals}}
+    {{/if}}
+</script>
+{% endverbatim %}
+
+{% endautoescape %}

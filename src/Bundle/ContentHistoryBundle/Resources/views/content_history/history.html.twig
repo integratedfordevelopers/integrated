@@ -1,0 +1,32 @@
+{% if documents|length %}
+    <div class="aside-item-holder section-white">
+        <h3 class="font-medium">{% trans %}History{% endtrans %}</h3>
+
+        {% for document in documents|slice(0, limit) %}
+            <div class="media">
+                <a href="{{ path('integrated_content_history_show', { 'id': document.id }) }}">
+                    <div class="media-left">
+                        <img class="media-object img-circle" src="http://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e?s=36" alt="">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                            {{ document.user.name|default('Unknown'|trans) }}
+                        </h4>
+
+                        <p>
+                            <small>
+                                <span class="label label-primary">{{ document.action|trans }}</span>
+                                {{ document.date|localizeddate('medium') }}
+                            </small>
+                        </p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+
+        {% if documents|length > limit %}
+            <br />
+            <a href="{{ path('integrated_content_history_index', { 'id': content.id }) }}">Show full history</a>
+        {% endif %}
+    </div>
+{% endif %}

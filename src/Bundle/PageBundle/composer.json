@@ -1,0 +1,53 @@
+{
+    "name": "integrated/page-bundle",
+    "type": "symfony-bundle",
+    "description": "Provides the possibility for the user to create pages on Integrated websites, and front-end editing when combined with the website-bundle",
+    "keywords": [
+        "integrated",
+        "page"
+    ],
+    "homepage": "https://www.integratedfordevelopers.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "https://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.1",
+        "symfony/symfony": "~2.8 || ~3.0",
+        "alcaeus/mongo-php-adapter": "~1.1",
+        "doctrine/mongodb-odm-bundle": "~3.4",
+        "integrated/content-bundle": "~0.8",
+        "integrated/formtype-bundle": "~0.8",
+        "integrated/block-bundle": "~0.8",
+        "integrated/menu-bundle": "~0.8",
+        "integrated/theme-bundle": "~0.8",
+        "integrated/slug-bundle": "~0.8",
+        "knplabs/knp-paginator-bundle": "~2.6",
+        "sensio/framework-extra-bundle": "~5.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^2.8",
+        "phpunit/phpunit": "^5.7"
+    },
+    "provide": {
+        "ext-mongo": "*"
+    },
+    "suggest": {
+        "integrated/website-bundle": "Frontend block management for Integrated"
+    },
+    "autoload": {
+        "psr-4": {
+            "Integrated\\Bundle\\PageBundle\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.8-dev"
+        }
+    }
+}

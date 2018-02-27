@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+	<parameters>
+
+		<parameter key="integrated_content.extension.registry.builder.class">Integrated\Common\Content\Extension\RegistryBuilder</parameter>
+		<parameter key="integrated_content.extension.registry.class">Integrated\Common\Content\Extension\RegistryInterface</parameter>
+
+		<parameter key="integrated_content.extension.dispatcher.class">Integrated\Common\Content\Extension\Dispatcher</parameter>
+
+		<parameter key="integrated_content.extension.adaptor.mongo.class">Integrated\Common\Content\Extension\Adaptor\Doctrine\DoctrineMongodbAdaptor</parameter>
+		<parameter key="integrated_content.extension.adaptor.metadata.class">Integrated\Common\Content\Extension\Adaptor\Metadata\MetadataFactoryAdaptor</parameter>
+
+	</parameters>
+
+	<services>
+
+		<service id="integrated_content.extension.registry.builder" class="%integrated_content.extension.registry.builder.class%" />
+
+        <service id="integrated_content.extension.registry" class="%integrated_content.extension.registry.class%">
+            <factory service="integrated_content.extension.registry.builder" method="getRegistry" />
+        </service>
+
+		<service id="integrated_content.extension.dispatcher" class="%integrated_content.extension.dispatcher.class%">
+			<argument type="service" id="integrated_content.extension.registry" />
+		</service>
+
+		<service id="integrated_content.extension.adaptor.mongo" class="%integrated_content.extension.adaptor.mongo.class%">
+			<call method="setDispatcher">
+				<argument type="service" id="integrated_content.extension.dispatcher" />
+			</call>
+			<tag name="doctrine_mongodb.odm.event_subscriber" connection="default" />
+		</service>
+
+		<service id="integrated_content.extension.adaptor.metadata" class="%integrated_content.extension.adaptor.metadata.class%">
+			<call method="setDispatcher">
+				<argument type="service" id="integrated_content.extension.dispatcher" />
+			</call>
+			<tag name="integrated_content.metadata.event_subscriber" />
+		</service>
+
+	</services>
+
+</container>

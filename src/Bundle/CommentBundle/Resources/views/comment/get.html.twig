@@ -1,0 +1,35 @@
+<div class="comment-holder">
+
+    <div class="comment-inner arrow-up arrow-left">
+
+        <div class="comment-body">
+
+            <a href="#" class="cancel-comment"><i class="integrate-icon-cancel"></i></a>
+
+            {% include 'IntegratedCommentBundle:comment:partial.comment.html.twig' %}
+
+            <div class="comment-reply">
+                {% for reply in comment.replies %}
+                    <hr>
+                    {% include 'IntegratedCommentBundle:comment:partial.comment.html.twig' with {'comment': reply, 'parent': comment} %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="comment-footer">
+            {{ form_start(form) }}
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-9 push-down">
+                            {{ form_widget(form.text) }}
+                        </div>
+
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-gray-thin">{{ 'Reply'|trans }}</button>
+                        </div>
+                    </div>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

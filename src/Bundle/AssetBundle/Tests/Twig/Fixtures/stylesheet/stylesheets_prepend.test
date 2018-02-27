@@ -1,0 +1,17 @@
+--TEST--
+"integrated_stylesheets" prepend stylesheet
+--TEMPLATE--
+{% integrated_stylesheets mode='append'
+    'style2.css' %}
+{% endintegrated_stylesheets %}
+
+{% integrated_stylesheets mode='prepend'
+   'style.css' %}
+{% endintegrated_stylesheets %}
+
+{{ integrated_stylesheets() }}
+--DATA--
+return array()
+--EXPECT--
+<link rel="stylesheet" type="text/css" href="/style.css" />
+<link rel="stylesheet" type="text/css" href="/style2.css" />

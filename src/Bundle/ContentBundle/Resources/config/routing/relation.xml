@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="integrated_content_relation_index" path="/" methods="GET">
+        <default key="_controller">IntegratedContentBundle:Relation:index</default>
+    </route>
+
+    <route id="integrated_content_relation_new" path="/new" methods="GET">
+        <default key="_controller">IntegratedContentBundle:Relation:new</default>
+    </route>
+
+    <route id="integrated_content_relation_create" path="/" methods="POST">
+        <default key="_controller">IntegratedContentBundle:Relation:create</default>
+    </route>
+
+    <route id="integrated_content_relation_edit" path="/{id}/edit" methods="GET">
+        <default key="_controller">IntegratedContentBundle:Relation:edit</default>
+    </route>
+
+    <route id="integrated_content_relation_update" path="/{id}" methods="PUT">
+        <default key="_controller">IntegratedContentBundle:Relation:update</default>
+    </route>
+
+    <route id="integrated_content_relation_delete" path="/{id}" methods="DELETE">
+        <default key="_controller">IntegratedContentBundle:Relation:delete</default>
+    </route>
+
+    <route id="integrated_content_relation_show" path="/{id}" methods="GET">
+        <default key="_controller">IntegratedContentBundle:Relation:show</default>
+    </route>
+
+</routes>

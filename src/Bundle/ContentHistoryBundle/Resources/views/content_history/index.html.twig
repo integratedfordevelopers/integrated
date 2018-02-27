@@ -1,0 +1,29 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block header %}{% endblock %}
+{% block crumbs %}{% endblock %}
+
+{% block content %}
+<section class="section-white section-padding section-shadow section-radius">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>{% trans %}Date{% endtrans %}</th>
+                <th>{% trans %}Action{% endtrans %}</th>
+                <th>{% trans %}User{% endtrans %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for document in paginator %}
+                <tr>
+                    <td><a href="{{ path('integrated_content_history_show', { 'id': document.id }) }}">{{ document.date|localizeddate }}</a></td>
+                    <td>{{ document.action|trans }}</td>
+                    <td>{{ document.user.name|default('Unknown'|trans) }} {% if document.user.id is defined %}(#{{ document.user.id }}){% endif %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {{ knp_pagination_render(paginator) }}
+</section>
+{% endblock %}

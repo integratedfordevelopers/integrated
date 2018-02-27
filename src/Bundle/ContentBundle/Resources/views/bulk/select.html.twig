@@ -1,0 +1,94 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% form_theme form _self %}
+
+{% block form_errors %}
+    {% spaceless %}
+        {% if errors|length > 0 %}
+            <ul class="alert alert-danger">
+                {% for error in errors %}
+                    <li>{{ error.message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_errors %}
+
+{% block content %}
+
+    {{ form_start(form) }}
+
+    <div class="pull-right">
+        <a class="btn btn-gray-thin" href="{{ path("integrated_content_content_index", app.request.query.all) }}">{% trans %}Cancel{% endtrans %}</a>&nbsp;
+        <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
+    </div>
+
+    <h1>{% trans %}Step 1 of 3: Choose Issues{% endtrans %}</h1>
+
+    {{ form_errors(form) }}
+
+    {% if content|length > limit %}
+        <ul class="alert alert-danger">
+            <li>
+                {% trans %}The bulk action is limited to change %limit% content items at once. Only the first %limit% content items have been included.{% endtrans %}
+            </li>
+        </ul>
+    {% endif %}
+
+    <div class="row">
+        <section class="section-white section-padding section-shadow section-radius section-margin">
+
+            <div class="container">
+                {% trans with {'%count%': min([content|length, limit])} %}Choose for which of the %count% content items you wish to perform a bulk action.{% endtrans %}
+            </div>
+
+            <hr/>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" id="{{ form.vars['full_name'] }}_selection_all"/></th>
+                    <th>{% trans %}Title{% endtrans %}</th>
+                    <th>{% trans %}Type{% endtrans %}</th>
+                    <th>{% trans %}Created{% endtrans %}</th>
+                    <th>{% trans %}Edited{% endtrans %}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in form.selection %}
+                    <tr>
+                        <td>{{ form_widget(item) }}</td>
+                        <td><a href="{{ path('integrated_content_content_edit', {id: content[item.vars.label].id}) }}">{{ content[item.vars.label] }}</a></td>
+                        <td>{{ content[item.vars.label].getContentType()|capitalize }}</td>
+                        <td>{{ content[item.vars.label].getCreatedAt()|localizeddate('medium') }}</td>
+                        <td>{{ content[item.vars.label].getUpdatedAt()|localizeddate('medium') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </section>
+    </div>
+
+    <div class="pull-right">
+        <a class="btn btn-gray-thin" href="{{ path("integrated_content_content_index", app.request.query.all) }}">{% trans %}Cancel{% endtrans %}</a>&nbsp;
+        <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script>
+        $(document).ready(function () {
+            $('#{{ form.vars['full_name'] }}_selection_all').click(function () {
+                $(':checkbox').prop('checked', $(this).prop('checked'));
+            });
+
+            $('#{{ form.vars['full_name'] }}_selection_all').prop('checked', $('form[name="{{ form.vars['full_name'] }}"] tbody :checkbox:checked').length == $('form[name="{{ form.vars['full_name'] }}"] tbody :checkbox').length);
+        });
+    </script>
+
+{% endblock javascript %}

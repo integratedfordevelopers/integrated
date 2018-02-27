@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<converter-mapping>
+
+    <class name="Test\Options\Array">
+
+        <type name="array">
+            <options>
+
+                <array>
+                    <null />
+                </array>
+                <array>
+                    <string>string</string>
+                </array>
+                <array>
+                    <int>1.1</int>
+                    <float>1.1</float>
+                </array>
+                <array>
+                    <bool>false</bool>
+                </array>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Options\String">
+
+        <type name="string">
+            <options>
+
+                <string>string 1</string>
+                <string>string 2</string>
+                <string>string 3</string>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Options\Int">
+
+        <type name="int">
+            <options>
+
+                <int>1.1</int>
+                <int>2.2</int>
+                <int>3.3</int>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Options\Float">
+
+        <type name="float">
+            <options>
+
+                <float>1.1</float>
+                <float>2.2</float>
+                <float>3.3</float>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Options\Bool">
+
+        <type name="bool">
+            <options>
+
+                <bool>1</bool>
+                <bool>0</bool>
+                <bool>TRUE</bool>
+                <bool>FALSE</bool>
+                <bool>true</bool>
+                <bool>false</bool>
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Options\Null">
+
+        <type name="null">
+            <options>
+
+                <null />
+                <null />
+                <null />
+
+            </options>
+        </type>
+
+    </class>
+
+    <class name="Test\Options\Empty">
+
+        <type name="null">
+            <options />
+        </type>
+
+    </class>
+
+</converter-mapping>

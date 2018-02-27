@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="integrated_block.form.metadata.type.block" class="Integrated\Common\Form\Type\MetadataType">
+            <argument type="service" id="integrated_block.metadata.factory" />
+            <argument>integrated_block_block</argument>
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_block.form.type.layout_choice" class="Integrated\Bundle\BlockBundle\Form\Type\LayoutChoiceType">
+            <argument type="service" id="integrated_block.layout_locator" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_block.form.type.block" class="Integrated\Bundle\BlockBundle\Form\Type\BlockType">
+            <argument type="service" id="doctrine_mongodb.odm.document_manager" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_block.form.type.block_size" class="Integrated\Bundle\BlockBundle\Form\Type\BlockSizeType">
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_block.form.type.block_filter" class="Integrated\Bundle\BlockBundle\Form\Type\BlockFilterType">
+            <argument type="service" id="integrated_block.metadata.factory" />
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="integrated_block.provider.block_usage" />
+            <argument>%kernel.bundles%</argument>
+            <tag name="form.type" />
+        </service>
+
+    </services>
+</container>

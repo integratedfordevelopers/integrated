@@ -1,0 +1,236 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_content_index') }}">{% trans %}Content navigator{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('integrated_content_content_index', { 'contenttypes': [ type.id ] }) }}">{{ type.name|trans }}</a>
+                </li>
+                {% block crumbs_items %}
+                    <li class="active">{% trans %}Edit{% endtrans %}</li>
+                {% endblock %}
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    {% block filters %}
+    <div class="filters_row"></div>
+    {% endblock %}
+
+<div class="row">
+
+    <div class="col-md-8 push-sm-down">
+        <section class="section-white section-padding section-shadow section-radius">
+            {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+
+            {% if form.offsetGet('relations').count() %}
+                <input type="hidden" id="default_references" value="{{ references }}">
+                <div class="form-horizontal relations margin-top">
+                    {% for relation in form.relations %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label>
+                            <div class="col-sm-8 relation">
+                                <div class="input-group">
+                                    <select
+                                        multiple
+                                        id="{{ relation.vars.name }}"
+                                        data-multiple="{{ relation.vars.attr['data-multiple'] }}"
+                                        data-types="{{ relation.vars.attr['data-types'] }}"
+                                        class="relation-items form-control"
+                                        style="display: none; width: 100%"
+                                    >
+                                    </select>
+                                    <span class="input-group-addon" data-add="1"></span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </section>
+    </div>
+
+    <div class="col-md-4">
+        <aside>
+
+            <div class="aside-holder section-gray section-shadow section-radius">
+
+                {% if content is defined %}
+                    {% if content.isPublished and content.getChannels|length > 0 %}
+                        <div class="aside-item-holder">
+                            <h2 class="font-medium color-green"><i class="integrate-icon-ok-circled"></i> {% trans %}Published{% endtrans %}</h2>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                <div class="aside-item-holder section-white">
+                    <div class="item_row" id="used-by"></div>
+                </div>
+
+                {% if hasContentHistoryBundle %}
+                    {{ render(controller('integrated_content_history.controller.content_history:historyAction', { 'content': content })) }}
+                {% endif %}
+            </div>
+        </aside>
+    </div>
+
+    {% autoescape 'js' %}
+        {% verbatim %}
+            <script id="add-template" type="text/xhandlebars-template">
+                {{#if relations}}
+                {{#equals relations.length 1}}
+                    <button data-title="Add {{relations.0.name}}" class="add-relation font-size-13" data-href="{{relations.0.href}}" data-modal="add-modal">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        <span class="sr-only">{% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}:</span>
+                    </button>
+                {{else}}
+                <div class="add-relation">
+                    <button type="button" class="dropdown-toggle font-size-13" data-toggle="dropdown" aria-expanded="false">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        <span class="sr-only">{% endverbatim %}{% trans %}Add New{% endtrans %}{% verbatim %}:</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        {{#each relations}}
+                        <li>
+                            <a class="cursor-pointer" data-title="Add {{this.name}}" data-href="{{this.href}}" target="_blank" data-modal="add-modal">
+                                {{this.name}}
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                 </div>
+                {{/equals}}
+                {{/if}}
+                <div class="modal" id="relation-add-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">{% endverbatim %}{% trans %}Close{% endtrans %}{% verbatim %}</span></button>
+                                <h4 class="modal-title">{% endverbatim %}{% trans %}Add{% endtrans %}{% verbatim %}</h4>
+                            </div>
+                            <iframe width="100%" height="400">{% endverbatim %}{% trans %}Loading{% endtrans %}{% verbatim %}</iframe>
+                        </div>
+                    </div>
+                </div>
+            </script>
+        {% endverbatim %}
+    {% endautoescape %}
+
+
+    <div class="modal fade" id="content-edit-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{% trans %}Unsaved changes{% endtrans %}</h4>
+                </div>
+                <div class="modal-body">
+                    <p>{% trans %}You have unsaved changes. When you leave this page your changes will be lost.{% endtrans %}</p>
+                    <p>{% trans %}Are you sure you want to leave this page?{% endtrans %}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary live-page">{% trans %}Leave this page{% endtrans %}</button>
+                    <button type="button" class="btn btn-gray-thin" data-dismiss="modal">{% trans %}Stay on page{% endtrans %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+{% javascripts
+    "@IntegratedContentBundle/Resources/public/components/handlebars/handlebars.min.js"
+    "@IntegratedContentBundle/Resources/public/js/handlebars.helpers.js"
+    "@IntegratedContentBundle/Resources/public/js/relation.js"
+%}
+<script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% if content is defined %}
+<script>
+    $(function() {
+        var cnt = $('#used-by');
+
+        var handleUsedBy = function(data) {
+            var optionsTemplateSource = $('#used-by-template').html(), optionsTemplate = Handlebars.compile(optionsTemplateSource);
+            var paginationTemplateSource = $('#pagination-template').html(), paginationTemplate = Handlebars.compile(paginationTemplateSource);
+
+            data.title = "{% trans %}Used by{% endtrans %}";
+
+            cnt.html(optionsTemplate(data)).find('.content_column_inner').append(paginationTemplate(data));
+            cnt.find('.pagination a').click(function(ev){
+                ev.preventDefault();
+                loadUsedBy($(this).attr('href'));
+            });
+        };
+
+        var loadUsedBy = function(url) {
+            cnt.find('.pagination a').unbind('click').click(function(ev){
+                ev.preventDefault();
+            });
+
+            $.ajax({
+                url: url,
+                data: {
+                    'limit': 5
+                },
+                success: handleUsedBy
+            });
+        };
+
+        loadUsedBy('{{ path('integrated_content_content_used_by', {'id': content.id, '_format': 'json'}) }}');
+
+        window.addEventListener('message', function(event) {
+            // also resize modal if relations are changed
+            var iframe = $('[data-id="' + event.data.resizeModal + '"]');
+            var height = iframe.contents().height();
+            var margin = 120;
+
+            if (height > ($(window).height() - margin)) {
+                height = $(window).height() - margin;
+            }
+
+            iframe.attr('height', height);
+        }, false);
+    });
+</script>
+    {% if editable %}
+        <script>
+            var formInvalid = {{ form.vars.valid ? '0' : '1' }};
+        </script>
+        {% javascripts "@IntegratedContentBundle/Resources/public/js/unlock_article.js" %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endif %}
+{% endif %}
+
+{% javascripts "@IntegratedUserBundle/Resources/public/js/visible_user_form.js" %}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+{% if hasWorkflowBundle %}
+    {% javascripts '@IntegratedWorkflowBundle/Resources/public/js/workflowChangeState.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endif %}
+
+{{ include('IntegratedContentBundle:content:handlebars/templates.html.twig')}}
+{% endblock javascript %}
+
+{% block style %}
+    {{ parent() }}
+    <style>
+        .form-horizontal.margin-top {margin-top: 15px;}
+        .form-horizontal .add-wrapper {margin-top: 5px;}
+        .font-size-13 {font-size: 13px;}
+        .cursor-pointer {cursor: pointer;}
+        .modal iframe {width: 100%; min-height: 10px; border: none;}
+    </style>
+{% endblock %}

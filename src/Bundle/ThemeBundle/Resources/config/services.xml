@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_theme.templating.theme_manager" class="Integrated\Bundle\ThemeBundle\Templating\ThemeManager" public="true">
+            <argument type="service" id="kernel" />
+            <argument type="service" id="templating.name_parser" />
+        </service>
+
+        <service id="integrated_theme.form.type.theme_choice" class="Integrated\Bundle\ThemeBundle\Form\Type\ThemeChoiceType">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_theme.twig.theme_extension" class="Integrated\Bundle\ThemeBundle\Twig\Extension\ThemeExtension" public="false">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_theme.event_listener.content_image_listener" class="Integrated\Bundle\ThemeBundle\EventListener\Objects\ContentImageListener">
+            <argument type="service" id="integrated_theme.templating.theme_manager" />
+            <argument type="service" id="doctrine.odm.mongodb.document_manager" />
+            <argument type="service" id="templating" />
+            <argument type="service" id="integrated_slug.slugger" />
+            <argument>%kernel.environment%</argument>
+            <tag name="kernel.event_listener" event="content.event" method="replaceImages" />
+        </service>
+
+    </services>
+</container>

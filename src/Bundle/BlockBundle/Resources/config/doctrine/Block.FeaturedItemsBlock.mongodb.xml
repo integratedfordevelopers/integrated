@@ -1,0 +1,15 @@
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                    http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Integrated\Bundle\BlockBundle\Document\Block\FeaturedItemsBlock">
+
+        <field name="publishedTitle" type="string" />
+        <field name="useTitle" type="boolean" />
+
+        <embed-many field="items" target-document="Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem" />
+
+    </document>
+
+</doctrine-mongo-mapping>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        parent.document.dispatchEvent(new CustomEvent('block-added', {'detail': '{{ id }}'}));
+        /**
+         * @type object|null
+         */
+        var tinymce = top.tinymce;
+
+        if ('undefined' != typeof(tinymce)) {
+            tinymce.activeEditor.windowManager.close();
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

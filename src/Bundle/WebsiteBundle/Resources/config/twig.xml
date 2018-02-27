@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+
+        <parameter key="integrated_website.twig.grid_extension.class">Integrated\Bundle\WebsiteBundle\Twig\Extension\GridExtension</parameter>
+        <parameter key="integrated_website.twig.menu_extension.class">Integrated\Bundle\WebsiteBundle\Twig\Extension\MenuExtension</parameter>
+        <parameter key="integrated_website.twig.url_extension.class">Integrated\Bundle\WebsiteBundle\Twig\Extension\UrlExtension</parameter>
+        <parameter key="integrated_website.twig.period_extension.class">Integrated\Bundle\WebsiteBundle\Twig\Extension\PeriodExtension</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="integrated_website.twig.grid_extension" class="%integrated_website.twig.grid_extension.class%">
+            <argument type="service" id="request_stack" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_website.twig.menu_extension" class="%integrated_website.twig.menu_extension.class%">
+            <argument type="service" id="integrated_menu.provider.database_menu_provider" />
+            <argument type="service" id="integrated_menu.menu.database_menu_factory" />
+            <argument type="service" id="knp_menu.helper" />
+            <argument type="service" id="integrated_menu.matcher.recursive" />
+            <argument type="service" id="request_stack" />
+            <argument>%knp_menu.renderer.twig.template%</argument>
+
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_website.twig.url_extension" class="%integrated_website.twig.url_extension.class%">
+            <argument type="service" id="integrated_page.services.url_resolver" />
+            <argument type="service" id="integrated_page.services.solr_url_extractor" />
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_website.twig.period_extension" class="%integrated_website.twig.period_extension.class%">
+            <tag name="twig.extension" />
+        </service>
+
+    </services>
+</container>
