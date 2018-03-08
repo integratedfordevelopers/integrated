@@ -12,8 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Solr\Type;
 
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
-use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
@@ -25,12 +25,17 @@ class TaxonomyType implements TypeInterface
      */
     public function build(ContainerInterface $container, $data, array $options = [])
     {
-        if (!$data instanceof ContentInterface) {
+        if (!$data instanceof Content) {
             return; // only process content
         }
 
-        //Relation field and facet field for taxonomy and commercial relations
-        $items = array_merge($data->getRelationsByRelationType('taxonomy')->toArray(), $data->getRelationsByRelationType('commercial')->toArray());
+        // Relation field and facet field for taxonomy, commercial and edition relations
+        $items = array_merge(
+            $data->getRelationsByRelationType('taxonomy')->toArray(),
+            $data->getRelationsByRelationType('commercial')->toArray(),
+            $data->getRelationsByRelationType('edition')->toArray()
+        );
+
         foreach ($items as $relation) {
             foreach ($relation->getReferences()->toArray() as $content) {
                 if ($content instanceof Taxonomy || $content instanceof Article) {
