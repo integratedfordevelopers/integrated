@@ -13,7 +13,9 @@ namespace Integrated\Bundle\WebsiteBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Integrated\Common\Channel\Connector\Config\Options;
 use Nelmio\Alice\Fixtures;
+use Nelmio\Alice\Loader\NativeLoader;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -45,6 +47,17 @@ class LoadFixtureData implements FixtureInterface
             $files[] = $file->getRealpath();
         }
 
-        Fixtures::load($files, $manager, ['providers' => [$this], 'locale' => $this->locale]);
+        $loader = new NativeLoader();
+        $objectSet = $loader->loadFiles($files, ['locale' => $this->locale]);
+
+        foreach ($objectSet->getObjects() as $object) {
+            if ($object instanceof Options) {
+                // can't be persisted
+                continue;
+            }
+            $manager->persist($object);
+        }
+
+        $manager->flush();
     }
 }

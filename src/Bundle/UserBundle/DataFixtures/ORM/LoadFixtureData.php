@@ -15,6 +15,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Integrated\Bundle\UserBundle\Model\User;
 use Nelmio\Alice\Fixtures;
+use Nelmio\Alice\Loader\NativeLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Finder\Finder;
@@ -48,17 +49,20 @@ class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
             $files[] = $file->getRealpath();
         }
 
-        Fixtures::load($files, $manager, ['providers' => [$this], 'locale' => $this->locale]);
-    }
+        $loader = new NativeLoader();
+        $objectSet = $loader->loadFiles($files, ['locale' => $this->locale]);
 
-    /**
-     * @return string
-     */
-    public function generateSalt()
-    {
-        $generator = $this->container->get('security.secure_random');
+        foreach ($objectSet->getObjects() as $object) {
+            if ($object instanceof User) {
+                $salt = base64_encode(random_bytes(72));
 
-        return base64_encode($generator->nextBytes(72));
+                $object->setSalt($salt);
+                $object->setPassword($this->generatePassword($object, $object->getPassword()));
+            }
+            $manager->persist($object);
+        }
+
+        $manager->flush();
     }
 
     /**
