@@ -192,7 +192,7 @@ The <info>%command.name%</info> command starts a index of the site.
             $progress->setRedrawFrequency(min(max(floor($count / 250), 1), 100));
             $progress->setFormat('verbose');
 
-            $progress->start($output, $count);
+            $progress->start($count);
 
             // get the current time as it will be required at the end for the solr clean up.
 

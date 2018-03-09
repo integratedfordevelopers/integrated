@@ -45,10 +45,6 @@ class MongoDBProvider implements ContentProviderInterface, ContentTypeProviderIn
             ->getQuery()
             ->getIterator();
 
-        if (method_exists($iterator, 'timeout')) {
-            $iterator->timeout(-1);
-        }
-
         return $iterator;
     }
 
@@ -61,10 +57,6 @@ class MongoDBProvider implements ContentProviderInterface, ContentTypeProviderIn
             ->field('contentType')->equals($id)
             ->getQuery()
             ->getIterator();
-
-        if (method_exists($iterator, 'timeout')) {
-            $iterator->timeout(-1);
-        }
 
         return $iterator;
     }

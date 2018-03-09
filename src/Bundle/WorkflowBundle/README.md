@@ -16,7 +16,7 @@ else you get errors when adding the entities.
 
 * The bundle got entities so execute the Doctrine commands
 
-	php app/console doctrine:schema:update
+	php bin/console doctrine:schema:update
 
 * There are no config options for now but it is recommend to add this to the security config
 
