@@ -71,10 +71,6 @@ class ChannelExceptionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($exception->getStatusCode() !== 404) {
-            return;
-        }
-
         $event->setResponse(new RedirectResponse($this->router->generate('integrated_content_content_index')));
     }
 }
