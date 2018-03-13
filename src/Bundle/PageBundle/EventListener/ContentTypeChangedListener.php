@@ -98,7 +98,7 @@ class ContentTypeChangedListener implements EventSubscriberInterface
     /**
      * @param ContentTypeEvent $event
      */
-    protected function contentTypeDeleted(ContentTypeEvent $event)
+    public function contentTypeDeleted(ContentTypeEvent $event)
     {
         $this->deletePagesByContentType($event->getContentType());
     }
