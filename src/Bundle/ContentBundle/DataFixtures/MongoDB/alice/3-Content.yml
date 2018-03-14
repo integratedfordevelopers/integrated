@@ -2,12 +2,11 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
   article{1..100}:
     contentType: article
     disabled: <boolean(10)>
-
     title: <sentence()>
     subtitle: 15%? <sentence()>
-    authors: <randomElement([1,1,1,1,1,1,1,2,2,3])>x @author_embed*
     intro: 40%? <paragraph()>
     content: <paragraphs(rand(6, 12), true)>
+    authors: <randomElement([1,1,1,1,1,1,1,2,2,3])>x @embedded_author*
     source: 40%? <sentence()>
     locale: <locale()>
 #    location: 20%? @location_embed*
@@ -18,7 +17,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
     disabled: <boolean(10)>
     title: <sentence()>
     subtitle: 15%? <sentence()>
-    authors: <randomElement([1,1,1,1,1,1,1,2,2,3])>x @author_embed*
+    authors: <randomElement([1,1,1,1,1,1,1,2,2,3])>x @embedded_author*
     intro: 40%? <paragraph()>
     content: <paragraphs(rand(6, 12), true)>
     source: 40%? <sentence()>
@@ -28,10 +27,9 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
   blog{1..50}:
     contentType: blog
     disabled: <boolean(10)>
-
     title: <sentence()>
     subtitle: 5%? <sentence()>
-    authors: [@author_embed*]
+    authors: <randomElement([1,1,1,1,1,1,1,2,2,3])>x @embedded_author*
     intro: 80%? <paragraph()>
     content: <paragraphs(rand(3, 10), true)>
     locale: <locale()>
@@ -41,20 +39,18 @@ Integrated\Bundle\ContentBundle\Document\Content\Article:
 Integrated\Bundle\ContentBundle\Document\Content\Relation\Person:
   author{1..15}:
     contentType: author
-    disabled: <boolean(10)>
-
-    accountnumber (unique): <md5()>
-    description: <paragraphs(rand(2, 4), true)>
-    phonenumbers: <randomElement([1,1,1,1,1,1,1,2])>x @phonenumber_person_embed*
-    email: <email()>
-    addresses: [75%? @address_person_embed*]
-
-    gender: <randomElement(['male', 'female'])>
-    prefix: <title(@self->gender)>
-    nickname: 15%? <username()>
     firstName: <firstname()>
     lastName: <lastname()>
-    jobs: <randomElement([0,0,1,1,1,1,1,2])>x @job_embed*
+    nickname: 15%? <username()>
+    gender: <randomElement(['male', 'female'])>
+    prefix: <title(@self->gender)>
+    disabled: <boolean(10)>
+    accountnumber (unique): <numberBetween(5000, 9000)>
+    description: <paragraphs(rand(2, 4), true)>
+    phonenumbers: <randomElement([1,1,1,1,1,1,1,2])>x @embedded_phonenumber*
+    email: <email()>
+    addresses: [75%? @embedded_address*]
+    jobs: <randomElement([0,0,1,1,1,1,1,2])>x @embedded_job*
     channels: <numberBetween(1, 5)>x @channel*
 #    picture
 
@@ -62,13 +58,11 @@ Integrated\Bundle\ContentBundle\Document\Content\Relation\Company:
   company{1..30}:
     contentType: company
     disabled: <boolean(10)>
-
-    accountnumber (unique): <md5()>
+    accountnumber (unique): <numberBetween(20000, 30000)>
     description: <paragraphs(rand(2, 4), true)>
-    phonenumbers: <randomElement([1,1,1,1,1,1,1,2])>x @phonenumber_company_embed*
+    phonenumbers: <randomElement([1,1,1,1,1,1,1,2])>x @embedded_phonenumber*
     email: <email()>
-    addresses: <randomElement([1,1,1,1,1,1,1,2])>x @address_company_embed*
-
+    addresses: <randomElement([1,1,1,1,1,1,1,2])>x @embedded_address*
     name (unique): <company()>
     channels: <numberBetween(1, 5)>x @channel*
 #    logo:
@@ -81,14 +75,22 @@ Integrated\Bundle\ContentBundle\Document\Content\Comment:
     email: <email()>
     comment: <paragraph()>
 
-
 # -------------------------------------------- #
 # Below here local embedded objects            #
 # -------------------------------------------- #
+Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author:
+  embedded_author{1..15}:
+    person: '@author*'
+    type: 60%? <randomElement(['Main author', 'Sub author'])>
 
-Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address (local):
-  address_person_embed{1..100}:
-    type: 60%? <randomElement(['Home', 'Work'])>
+Integrated\Bundle\ContentBundle\Document\Content\Embedded\PhoneNumber:
+  embedded_phonenumber{1..15}:
+    number: <en_EN:phoneNumber()>
+    type: 60%? <randomElement(['Work', 'Home'])>
+
+Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address:
+  embedded_address{1..15}:
+    type: 60%? <randomElement(['Postal address', 'Visiting address'])>
     address1: <address()>
     address2: ~
     zipcode: <postcode()>
@@ -96,31 +98,18 @@ Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address (local):
     state: <state()>
     country: <country()>
 
-  address_company_embed{1..100}:
-    type: 20%? 'headquarters'
-    address1: <address()>
-    address2: ~
-    zipcode: <postcode()>
-    city: <city()>
-    state: <state()>
-    country: <country()>
-
-Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author (local):
-  author_embed{1..15}:
-    person: @author<current()>
-
-Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job (local):
-  job_embed{1..100}:
+Integrated\Bundle\ContentBundle\Document\Content\Embedded\Job:
+  embedded_job{1..100}:
     function: <randomElement(['Staff', 'Staff', 'Staff', 'Staff', 'Staff', 'Staff', 'Staff', 'Staff', 'Staff', 'Staff', 'Assistant manager', 'Assistant manager', 'Manager', 'Manager', 'Chairman', 'President'])>
     department: <randomElement(['Services',  'Marketing',  'Human Resources',  'Financial',  'Purchasing',  'Sales',  'IT',  'Inventory',  'Quality Asurance',  'Insurance',  'Licenses',  'Operational',  'Customers',  'Staff',  'Customer Service',  'Organizational',  'Research & Development',  'Market Development',  'Business Development',  'Management',  'Engineering'])>
-    company: @company*
+    company: '@company*'
 
-Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location (local):
+Integrated\Bundle\ContentBundle\Document\Content\Embedded\Location:
   location_embed{1..1000}:
     latitude: <latitude()>
     longitude: <longitude()>
 
-Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber (local):
+Integrated\Bundle\ContentBundle\Document\Content\Embedded\Phonenumber:
   phonenumber_person_embed{1..100}:
     type: 60%? <randomElement(['Home', 'Work'])>
     number: <phoneNumber()>

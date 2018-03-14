@@ -13,9 +13,7 @@ namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ArrayCollectionExtension;
-use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
-use Nelmio\Alice\Fixtures;
+use Nelmio\Alice\Loader\NativeLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -26,8 +24,6 @@ use Symfony\Component\Finder\Finder;
  */
 class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
 {
-    use ArrayCollectionExtension;
-    use ClassFieldsExtension;
     use ContainerAwareTrait;
 
     /**
@@ -52,7 +48,14 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
             $files[] = $file->getRealpath();
         }
 
-        Fixtures::load($files, $manager, ['providers' => [$this], 'locale' => $this->locale]);
+        $loader = new NativeLoader();
+        $objectSet = $loader->loadFiles($files, ['locale' => $this->locale]);
+
+        foreach ($objectSet->getObjects() as $object) {
+            $manager->persist($object);
+        }
+
+        $manager->flush();
     }
 
     /**

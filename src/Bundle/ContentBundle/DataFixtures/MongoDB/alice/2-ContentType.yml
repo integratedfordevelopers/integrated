@@ -1,40 +1,122 @@
+Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field:
+  TitleField:
+    name: title
+    options:
+      required: true
+  IntroField:
+    name: intro
+    options:
+      required: false
+  ContentField:
+    name: content
+    options:
+      required: false
+  NameField:
+    name: name
+    options:
+      required: true
+  FirstNameField:
+    name: firstName
+    options:
+      required: false
+  LastNameField:
+    name: lastName
+    options:
+      required: true
+  EmailField:
+    name: email
+    options:
+      required: false
+  NicknameField:
+    name: nickname
+    options:
+      required: false
+  CommentField:
+    name: comment
+    options:
+      required: false
+  DisabledField:
+    name: disabled
+    options:
+      required: false
+  SubtitleField:
+    name: subtitle
+    options:
+      required: false
+  AuthorsField:
+    name: authors
+    options:
+      required: false
+  SourceField:
+    name: source
+    options:
+      required: false
+  AddressesField:
+    name: addresses
+    options:
+      required: false
+  GenderField:
+    name: gender
+    options:
+      required: false
+  AccountnumberField:
+    name: accountnumber
+    options:
+      required: false
+  DescriptionField:
+    name: description
+    options:
+      required: false
+  PhonenumbersField:
+    name: phonenumbers
+    options:
+      required: false
+  EmailField:
+    name: email
+    options:
+      required: false
+  JobsField:
+    name: jobs
+    options:
+      required: false
+
 Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
   Article:
-    class: Integrated\Bundle\ContentBundle\Document\Content\Article
+    class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Article'
     name: Article
-    fields: <classfields($class, ['title', 'Intro', 'content'])>
+    fields: ['@TitleField', '@SubtitleField', '@AuthorsField', '@IntroField', '@ContentField', '@SourceField']
 
   News:
-    class: Integrated\Bundle\ContentBundle\Document\Content\News
+    class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\News'
     name: News
-    fields: <classfields($class, ['title', 'Intro', 'content'])>
+    fields: ['@TitleField', '@SubtitleField', '@AuthorsField', '@IntroField', '@ContentField', '@SourceField']
 
   Blog:
-    class: Integrated\Bundle\ContentBundle\Document\Content\Article
+    class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Article'
     name: Blog
-    fields: <classfields($class, ['title', 'content'])>
+    fields: ['@TitleField', '@ContentField', '@AuthorsField']
 
   Taxonomy:
-    class: Integrated\Bundle\ContentBundle\Document\Content\Taxonomy
+    class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Taxonomy'
     name: Taxonomy
-    fields: <classfields($class, ['title'])>
+    fields: ['@TitleField']
 
   Company:
-    class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Company
+    class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Company'
     name: Company
-    fields: <classfields($class, ['name'])>
+    fields: ['@NameField']
 
   Author:
-    class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
+    class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Person'
     name: Author
-    fields: <classfields($class, ['firstName', 'lastName'])>
+    fields: ['@FirstNameField', '@LastNameField', '@NicknameField', '@AddressesField', '@GenderField', '@DisabledField', '@AccountnumberField', '@DescriptionField', '@PhonenumbersField', '@EmailField', '@AddressesField', '@JobsField']
 
   Employee:
-    class: Integrated\Bundle\ContentBundle\Document\Content\Relation\Person
+    class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Person'
     name: Employee
-    fields: <classfields($class, ['firstName', 'lastName', 'email'], ['nickname'])>
+    fields: ['@FirstNameField', '@LastNameField', '@EmailField', '@NicknameField']
 
   Comment:
-    class: Integrated\Bundle\ContentBundle\Document\Content\Comment
+    class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Comment'
     name: Comment
-    fields: <classfields($class, ['title', 'name', 'email', 'comment'])>
+    fields: ['@TitleField', '@NameField', '@EmailField', '@CommentField']
