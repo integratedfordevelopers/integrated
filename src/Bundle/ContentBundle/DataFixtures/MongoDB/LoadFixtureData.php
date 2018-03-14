@@ -13,18 +13,17 @@ namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Integrated\Bundle\ContentBundle\DataFixtures\Faker\Provider\ChannelProvider;
+use Nelmio\Alice\Faker\Provider\AliceProvider;
 use Nelmio\Alice\Loader\NativeLoader;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Faker\Factory as FakerGeneratorFactory;
 use Symfony\Component\Finder\Finder;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
+class LoadFixtureData implements FixtureInterface
 {
-    use ContainerAwareTrait;
 
     /**
      * @var string
@@ -48,7 +47,13 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
             $files[] = $file->getRealpath();
         }
 
-        $loader = new NativeLoader();
+        $generator = FakerGeneratorFactory::create($this->locale);
+        $generator->addProvider(new AliceProvider());
+
+        // add Integrated custom providers
+        $generator->addProvider(new ChannelProvider($manager));
+
+        $loader = new NativeLoader($generator);
         $objectSet = $loader->loadFiles($files, ['locale' => $this->locale]);
 
         foreach ($objectSet->getObjects() as $object) {
@@ -56,13 +61,5 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
         }
 
         $manager->flush();
-    }
-
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
     }
 }

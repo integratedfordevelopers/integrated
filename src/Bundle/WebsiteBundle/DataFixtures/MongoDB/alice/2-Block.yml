@@ -1,28 +1,30 @@
+Integrated\Bundle\ContentBundle\Document\SearchSelection\SearchSelection:
+  search-selection-search-content:
+    title:  Search content
+    public: true
+
 Integrated\Bundle\ContentBundle\Document\Block\ContentBlock:
   website-block-search-results:
-    id:               search_results
     title:            Search results
-    searchSelection:  <searchSelection('all-content')>
+    searchSelection:  '@search-selection-search-content'
     facetfields:      [facet_keywords]
     layout:           search_results.html.twig
 
 Integrated\Bundle\ContentBundle\Document\Block\SearchBlock:
   website-block-your-search:
-    id:               your_search
     title:            Your search
     url:              /search
-    block:            @website-block-search-results
+    block:            '@website-block-search-results'
     layout:           default.html.twig
 
 Integrated\Bundle\ContentBundle\Document\Block\FacetBlock:
   website-block-search-facet:
-    id:               search_facet
     title:            Facet
-    block:            @website-block-search-results
-    fields:           [@website-block-search-facet-keywords]
+    block:            '@website-block-search-results'
+    fields:           ['@website-block-search-facet-keywords']
     layout:           default.html.twig
 
-Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField (local):
+Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField:
   website-block-search-facet-keywords:
     name:             Keywords
     field:            facet_keywords
