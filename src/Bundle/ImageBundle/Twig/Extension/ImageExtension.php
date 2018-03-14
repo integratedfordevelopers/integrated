@@ -13,6 +13,8 @@ namespace Integrated\Bundle\ImageBundle\Twig\Extension;
 
 use Gregwar\ImageBundle\Extensions\ImageTwig;
 use Gregwar\ImageBundle\Services\ImageHandling;
+
+use Integrated\Bundle\ImageBundle\Image\ImageMimic;
 use Integrated\Bundle\ImageBundle\Converter\WebFormatConverter;
 use Integrated\Bundle\ImageBundle\Factory\StorageModelFactory;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -38,15 +40,22 @@ class ImageExtension extends \Twig_Extension
     private $imageTwig;
 
     /**
+     * @var array
+     */
+    private $mimicFormats;
+
+    /**
      * @param ImageHandling      $imageHandling
      * @param ImageTwig          $imageTwig
      * @param WebFormatConverter $webFormatConverter
+     * @param array              $mimicFormats
      */
-    public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter)
+    public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter, array $mimicFormats)
     {
         $this->imageHandling = $imageHandling;
         $this->webFormatConverter = $webFormatConverter;
         $this->imageTwig = $imageTwig;
+        $this->mimicFormats = $mimicFormats;
     }
 
     /**
@@ -105,12 +114,16 @@ class ImageExtension extends \Twig_Extension
     /**
      * @param $image
      *
-     * @return \Gregwar\ImageBundle\ImageHandler
+     * @return \Gregwar\ImageBundle\ImageHandler | ImageMimic
      */
     public function image($image)
     {
         if ($image instanceof StorageInterface) {
             try {
+                if (in_array($image->getMetadata()->getExtension(), $this->mimicFormats)) {
+                    return new ImageMimic($image->getPathname());
+                }
+
                 // Returns the image in a webformat
                 $image = $this->webFormatConverter->convert($image)->getPathname();
             } catch (\Exception $e) {
