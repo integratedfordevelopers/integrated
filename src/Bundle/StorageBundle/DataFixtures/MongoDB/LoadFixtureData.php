@@ -13,12 +13,12 @@ namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
-use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ContentTypeExtension;
-use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\FileExtensionTrait;
-use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\ImageExtensionTrait;
-use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension\VideoExtensionTrait;
-use Nelmio\Alice\Fixtures;
+use Faker\Factory as FakerGeneratorFactory;
+use Integrated\Bundle\ContentBundle\DataFixtures\Faker\Provider\ContentTypeProvider;
+use Integrated\Bundle\StorageBundle\DataFixtures\Faker\Provider\ImageProvider;
+use Integrated\Bundle\StorageBundle\DataFixtures\Faker\Provider\VideoProvider;
+use Nelmio\Alice\Faker\Provider\AliceProvider;
+use Nelmio\Alice\Loader\NativeLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -31,11 +31,11 @@ use Symfony\Component\Finder\SplFileInfo;
 class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
 {
     use ContainerAwareTrait;
-    use FileExtensionTrait;
-    use ImageExtensionTrait;
-    use VideoExtensionTrait;
-    use ClassFieldsExtension;
-    use ContentTypeExtension;
+
+    /**
+     * @var string
+     */
+    protected $locale = 'en_US';
 
     /**
      * {@inheritdoc}
@@ -58,7 +58,22 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
             $files[] = $file->getRealpath();
         }
 
-        Fixtures::load($files, $manager, ['providers' => [$this]]);
+        $generator = FakerGeneratorFactory::create($this->locale);
+        $generator->addProvider(new AliceProvider());
+
+        // add Integrated custom providers
+        $generator->addProvider(new ImageProvider($this->getContainer()->get('integrated_storage.manager')));
+        $generator->addProvider(new VideoProvider($this->getContainer()->get('integrated_storage.manager')));
+        $generator->addProvider(new ContentTypeProvider($manager));
+
+        $loader = new NativeLoader($generator);
+        $objectSet = $loader->loadFiles($files);
+
+        foreach ($objectSet->getObjects() as $object) {
+            $manager->persist($object);
+        }
+
+        $manager->flush();
     }
 
     /**

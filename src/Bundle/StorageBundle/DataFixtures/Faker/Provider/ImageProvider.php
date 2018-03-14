@@ -9,22 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension;
+namespace Integrated\Bundle\StorageBundle\DataFixtures\Faker\Provider;
 
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Faker\Image;
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util\CreateUtil;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Integrated\Bundle\StorageBundle\Storage\Manager;
 
-/**
- * @author Johnny Borg <johnny@e-active.nl>
- */
-trait ImageExtensionTrait
+class ImageProvider
 {
-    /**
-     * @return ContainerInterface
-     */
-    abstract public function getContainer();
+    private $sm;
+
+    public function __construct(Manager $sm)
+    {
+        $this->sm = $sm;
+    }
 
     /**
      * @param int    $width
@@ -37,7 +36,7 @@ trait ImageExtensionTrait
     public function createImage($width = 640, $height = 480, $category = null, $dir = '/tmp')
     {
         return CreateUtil::path(
-            $this->getContainer()->get('integrated_storage.manager'),
+            $this->sm,
             Image::image($dir, $width, $height, $category)
         );
     }

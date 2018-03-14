@@ -3,42 +3,6 @@ Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field:
     name: title
     options:
       required: true
-  IntroField:
-    name: intro
-    options:
-      required: false
-  ContentField:
-    name: content
-    options:
-      required: false
-  NameField:
-    name: name
-    options:
-      required: true
-  FirstNameField:
-    name: firstName
-    options:
-      required: false
-  LastNameField:
-    name: lastName
-    options:
-      required: true
-  EmailField:
-    name: email
-    options:
-      required: false
-  NicknameField:
-    name: nickname
-    options:
-      required: false
-  CommentField:
-    name: comment
-    options:
-      required: false
-  DisabledField:
-    name: disabled
-    options:
-      required: false
   SubtitleField:
     name: subtitle
     options:
@@ -47,16 +11,46 @@ Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field:
     name: authors
     options:
       required: false
+  IntroField:
+    name: intro
+    options:
+      required: false
+  ContentField:
+    name: content
+    options:
+      required: false
   SourceField:
     name: source
     options:
       required: false
-  AddressesField:
-    name: addresses
+
+  NameField:
+    name: name
+    options:
+      required: true
+
+  FirstNameField:
+    name: firstName
     options:
       required: false
+  LastNameField:
+    name: lastName
+    options:
+      required: true
   GenderField:
     name: gender
+    options:
+      required: false
+  EmailField:
+    name: email
+    options:
+      required: false
+  NicknameField:
+    name: nickname
+    options:
+      required: false
+  AddressesField:
+    name: addresses
     options:
       required: false
   AccountnumberField:
@@ -77,6 +71,11 @@ Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field:
       required: false
   JobsField:
     name: jobs
+    options:
+      required: false
+
+  CommentField:
+    name: comment
     options:
       required: false
 
@@ -109,7 +108,7 @@ Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
   Author:
     class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Person'
     name: Author
-    fields: ['@FirstNameField', '@LastNameField', '@NicknameField', '@AddressesField', '@GenderField', '@DisabledField', '@AccountnumberField', '@DescriptionField', '@PhonenumbersField', '@EmailField', '@AddressesField', '@JobsField']
+    fields: ['@FirstNameField', '@LastNameField', '@NicknameField', '@AddressesField', '@GenderField', '@AccountnumberField', '@DescriptionField', '@PhonenumbersField', '@EmailField', '@AddressesField', '@JobsField']
 
   Employee:
     class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Relation\\Person'

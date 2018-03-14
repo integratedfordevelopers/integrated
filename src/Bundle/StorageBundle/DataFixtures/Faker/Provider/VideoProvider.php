@@ -9,15 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension;
+namespace Integrated\Bundle\StorageBundle\DataFixtures\Faker\Provider;
 
 use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util\CreateUtil;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Integrated\Bundle\StorageBundle\Storage\Manager;
 
-/**
- * @author Johan Liefers <johan@e-active.nl>
- */
-trait VideoExtensionTrait
+class VideoProvider
 {
     protected static $mimeTypes = [
         'application/ogg' => 'ogg',
@@ -61,10 +58,12 @@ trait VideoExtensionTrait
         'video/x-sgi-movie' => 'movie',
     ];
 
-    /**
-     * @return ContainerInterface
-     */
-    abstract public function getContainer();
+    private $sm;
+
+    public function __construct(Manager $sm)
+    {
+        $this->sm = $sm;
+    }
 
     /**
      * @param null|string $type
@@ -74,7 +73,7 @@ trait VideoExtensionTrait
     public function createVideo($type = null)
     {
         return CreateUtil::path(
-            $this->getContainer()->get('integrated_storage.manager'),
+            $this->sm,
             $this->getVideo($type)
         );
     }
