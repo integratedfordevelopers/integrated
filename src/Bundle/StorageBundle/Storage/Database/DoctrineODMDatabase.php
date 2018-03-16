@@ -47,7 +47,6 @@ class DoctrineODMDatabase implements DatabaseInterface
             ->find()
             ->getMongoCursor()
             ->batchSize(100)
-            ->timeout(-1)
         ;
     }
 
@@ -75,7 +74,6 @@ class DoctrineODMDatabase implements DatabaseInterface
             ->getDocumentPersister(Content::class)
             ->loadAll()
             ->batchSize(100)
-            ->timeout(-1)
         ;
     }
 

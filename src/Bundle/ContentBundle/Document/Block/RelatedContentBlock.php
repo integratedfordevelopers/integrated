@@ -54,9 +54,9 @@ class RelatedContentBlock extends Block
      *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
      *     options={
      *         "choices"={
-     *             1="Show items which have the current document linked",
-     *             2="Show items which share linked items with the current document",
-     *             3="Show items linked by the current document",
+     *             "Show items which have the current document linked"="1",
+     *             "Show items which share linked items with the current document"="2",
+     *             "Show items linked by the current document"="3",
      *          },
      *     }
      * )
@@ -83,7 +83,7 @@ class RelatedContentBlock extends Block
      *     type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
      *     options={
      *         "choices"={
-     *             "publishTime.startDate"="Publication date"
+     *             "Publication date"="publishTime.startDate"
      *          },
      *     }
      * )
