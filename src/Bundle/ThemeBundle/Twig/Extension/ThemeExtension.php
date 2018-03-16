@@ -16,7 +16,7 @@ use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class ThemeExtension extends \Twig_Extension implements \Twig_Extension_GlobalsInterface
+class ThemeExtension extends \Twig_Extension
 {
     /**
      * @var ThemeManager
@@ -34,11 +34,21 @@ class ThemeExtension extends \Twig_Extension implements \Twig_Extension_GlobalsI
     /**
      * {@inheritdoc}
      */
-    public function getGlobals()
+    public function getFunctions()
     {
         return [
-            '_theme' => $this->themeManager->getActiveTheme(),
+            new \Twig_SimpleFunction('integrated_active_theme', [$this, 'getActiveTheme']),
         ];
+    }
+
+    /**
+     * @param string $template
+     * @return string
+     * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
+     */
+    public function getActiveTheme($template)
+    {
+        return $this->themeManager->locateTemplate($template);
     }
 
     /**
