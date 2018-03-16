@@ -85,7 +85,7 @@ Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author:
 
 Integrated\Bundle\ContentBundle\Document\Content\Embedded\PhoneNumber:
   embedded_phonenumber{1..15}:
-    number: <en_EN:phoneNumber()>
+    number: <phoneNumber()>
     type: 60%? <randomElement(['Work', 'Home'])>
 
 Integrated\Bundle\ContentBundle\Document\Content\Embedded\Address:

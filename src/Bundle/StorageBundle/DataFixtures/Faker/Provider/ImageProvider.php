@@ -18,8 +18,15 @@ use Integrated\Bundle\StorageBundle\Storage\Manager;
 
 class ImageProvider
 {
+    /**
+     * @var Manager
+     */
     private $sm;
 
+    /**
+     * ImageProvider constructor.
+     * @param Manager $sm
+     */
     public function __construct(Manager $sm)
     {
         $this->sm = $sm;
