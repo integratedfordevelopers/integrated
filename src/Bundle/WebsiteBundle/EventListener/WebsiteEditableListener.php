@@ -69,7 +69,6 @@ class WebsiteEditableListener implements EventSubscriberInterface
         }
 
         $this->javascripts->add('bundles/integratedcontent/js/handlebars.helpers.js');
-        $this->javascripts->add('bundles/integratedwebsite/components/integrated.jquery-sortable/source/js/jquery-sortable-min.js');
         $this->javascripts->add('bundles/integratedwebsite/js/page.js');
         $this->javascripts->add('bundles/integratedwebsite/js/grid.js');
         $this->javascripts->add('bundles/integratedwebsite/js/menu.js');
