@@ -15,12 +15,18 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ContentTypeProvider
 {
+    /**
+     * @var DocumentManager
+     */
     private $dm;
 
+    /**
+     * ContentTypeProvider constructor.
+     * @param DocumentManager $dm
+     */
     public function __construct(DocumentManager $dm)
     {
         $this->dm = $dm;

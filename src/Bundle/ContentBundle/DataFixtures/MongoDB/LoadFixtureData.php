@@ -24,7 +24,6 @@ use Symfony\Component\Finder\Finder;
  */
 class LoadFixtureData implements FixtureInterface
 {
-
     /**
      * @var string
      */
