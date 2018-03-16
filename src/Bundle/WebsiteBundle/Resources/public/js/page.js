@@ -31,8 +31,42 @@
         });
     };
 
+    var getGridItems = function ($element) {
+        var items = [];
+
+        $element.each(function(i, child) {
+            var $child = $(child);
+
+            if ('block' === $child.data('block-type')) {
+                items.push({
+                    'block': $child.data('id')
+                });
+            } else if ('row' === $child.data('block-type')) {
+                items.push({
+                    'row': {
+                        'columns': getGridItems($child.children('.integrated-website-col'))
+                    }
+                });
+            } else if ('column' === $child.data('block-type')) {
+                items.push({
+                    'size': $child.data('size'),
+                    'items': getGridItems($child.children('.integrated-website-sortable'))
+                });
+            }
+        });
+
+        return items;
+    };
+
     var saveGrids = function (pageId) {
-        var grids = $('.integrated-website-grid').integratedSortable('serialize').get();
+        var grids = [];
+
+        $('.integrated-website-grid').each(function() {
+            grids.push({
+                'id': $(this).data('id'),
+                'items': getGridItems($(this).children('.integrated-website-sortable'))
+            });
+        });
 
         $.ajax({
             type: 'POST',
