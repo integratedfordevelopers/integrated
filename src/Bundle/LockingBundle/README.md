@@ -28,11 +28,11 @@ This bundle can be installed following these steps:
 
 ### Initiate the database ###
 
-    $ php app/console init:locking
+    $ php bin/console init:locking
 
 ### Add lock cleaning to crontab ###
 
-    $ php app/console locking:dbal:clean
+    $ php bin/console locking:dbal:clean
 
 ## License ##
 This bundle is under the MIT license. See the complete license in the bundle:
