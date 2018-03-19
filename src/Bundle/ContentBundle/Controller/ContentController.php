@@ -63,7 +63,7 @@ class ContentController extends Controller
         if ($request->query->get('remember') && $session->has('content_index_view')) {
             $request->query->add(unserialize($session->get('content_index_view')));
             $request->query->remove('remember');
-        } elseif (!$request->query->has('_format')) {
+        } elseif (!$request->getRequestFormat() == 'json') {
             $session->set('content_index_view', serialize($request->query->all()));
         }
 
