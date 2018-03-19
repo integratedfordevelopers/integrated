@@ -28,11 +28,11 @@ Integrated\Bundle\UserBundle\Model\Group:
 Integrated\Bundle\UserBundle\Model\User:
   user2:
     username: public
-    password: admin
+    password: <encodePassword(@self, 'admin')>
     groups:   ['@group1']
     scope:    '@scope2'
   user1:
     username: admin
-    password: admin
+    password: <encodePassword(@self, 'admin')>
     groups:   ['@group1']
     scope:    '@scope1'

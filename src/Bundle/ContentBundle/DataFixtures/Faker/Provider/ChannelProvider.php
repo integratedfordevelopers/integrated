@@ -23,7 +23,6 @@ class ChannelProvider
     private $dm;
 
     /**
-     * ChannelProvider constructor.
      * @param DocumentManager $dm
      */
     public function __construct(DocumentManager $dm)
@@ -33,9 +32,7 @@ class ChannelProvider
 
     /**
      * @param string $id
-     *
      * @return Channel
-     *
      * @throws DocumentNotFoundException
      */
     public function channel($id)

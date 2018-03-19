@@ -11,11 +11,14 @@
 
 namespace Integrated\Bundle\StorageBundle\DataFixtures\Faker\Provider;
 
-use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util\CreateUtil;
+use Integrated\Bundle\StorageBundle\DataFixtures\Faker\Util\CreateUtil;
 use Integrated\Bundle\StorageBundle\Storage\Manager;
 
 class VideoProvider
 {
+    /**
+     * @var array
+     */
     protected static $mimeTypes = [
         'application/ogg' => 'ogg',
         'video/3gpp' => '3gp',
@@ -58,8 +61,14 @@ class VideoProvider
         'video/x-sgi-movie' => 'movie',
     ];
 
+    /**
+     * @var Manager
+     */
     private $sm;
 
+    /**
+     * @param Manager $sm
+     */
     public function __construct(Manager $sm)
     {
         $this->sm = $sm;
@@ -67,8 +76,8 @@ class VideoProvider
 
     /**
      * @param null|string $type
-     *
      * @return \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface
+     * @throws \Exception
      */
     public function createVideo($type = null)
     {
@@ -80,9 +89,7 @@ class VideoProvider
 
     /**
      * @param null|string $type
-     *
      * @return bool|string
-     *
      * @throws \Exception
      */
     protected function getVideo($type = null)

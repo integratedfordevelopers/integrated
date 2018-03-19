@@ -13,9 +13,7 @@ namespace Integrated\Bundle\UserBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Integrated\Bundle\UserBundle\Model\User;
-use Nelmio\Alice\Fixtures;
-use Nelmio\Alice\Loader\NativeLoader;
+use Nelmio\Alice\Loader\SimpleFilesLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Finder\Finder;
@@ -45,20 +43,11 @@ class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
         $files = [];
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach (Finder::create()->in($this->path.DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
+        foreach (Finder::create()->in(__DIR__.DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
             $files[] = $file->getRealpath();
         }
 
-        $loader = new NativeLoader();
-        $objectSet = $loader->loadFiles($files, ['locale' => $this->locale]);
-
-        foreach ($objectSet->getObjects() as $object) {
-            if ($object instanceof User) {
-                $salt = base64_encode(random_bytes(72));
-
-                $object->setSalt($salt);
-                $object->setPassword($this->generatePassword($object, $object->getPassword()));
-            }
+        foreach ($this->getLoader()->loadFiles($files)->getObjects() as $object) {
             $manager->persist($object);
         }
 
@@ -66,15 +55,10 @@ class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
     }
 
     /**
-     * @param User $user
-     * @param $password
-     *
-     * @return mixed
+     * @return SimpleFilesLoader
      */
-    public function generatePassword(User $user, $password)
+    private function getLoader()
     {
-        $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
-
-        return $encoder->encodePassword($password, $user->getSalt());
+        return $this->container->get('nelmio_alice.files_loader.simple');
     }
 }

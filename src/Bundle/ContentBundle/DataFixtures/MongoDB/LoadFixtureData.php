@@ -13,26 +13,17 @@ namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Integrated\Bundle\ContentBundle\DataFixtures\Faker\Provider\ChannelProvider;
-use Nelmio\Alice\Faker\Provider\AliceProvider;
-use Nelmio\Alice\Loader\NativeLoader;
-use Faker\Factory as FakerGeneratorFactory;
+use Nelmio\Alice\Loader\SimpleFilesLoader;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Finder\Finder;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class LoadFixtureData implements FixtureInterface
+class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
 {
-    /**
-     * @var string
-     */
-    protected $path = __DIR__;
-
-    /**
-     * @var string
-     */
-    protected $locale = 'en_US';
+    use ContainerAwareTrait;
 
     /**
      * {@inheritdoc}
@@ -42,23 +33,22 @@ class LoadFixtureData implements FixtureInterface
         $files = [];
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach (Finder::create()->in($this->path.DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
+        foreach (Finder::create()->in(__DIR__.DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
             $files[] = $file->getRealpath();
         }
 
-        $generator = FakerGeneratorFactory::create($this->locale);
-        $generator->addProvider(new AliceProvider());
-
-        // add Integrated custom providers
-        $generator->addProvider(new ChannelProvider($manager));
-
-        $loader = new NativeLoader($generator);
-        $objectSet = $loader->loadFiles($files, ['locale' => $this->locale]);
-
-        foreach ($objectSet->getObjects() as $object) {
+        foreach ($this->getLoader()->loadFiles($files)->getObjects() as $object) {
             $manager->persist($object);
         }
 
         $manager->flush();
+    }
+
+    /**
+     * @return SimpleFilesLoader
+     */
+    private function getLoader()
+    {
+        return $this->container->get('nelmio_alice.files_loader.simple');
     }
 }

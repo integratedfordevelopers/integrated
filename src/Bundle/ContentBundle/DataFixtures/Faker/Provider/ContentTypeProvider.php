@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\DataFixtures\Faker\Provider;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\DocumentNotFoundException;
-use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 
 class ContentTypeProvider
@@ -24,7 +23,6 @@ class ContentTypeProvider
     private $dm;
 
     /**
-     * ContentTypeProvider constructor.
      * @param DocumentManager $dm
      */
     public function __construct(DocumentManager $dm)
@@ -34,9 +32,7 @@ class ContentTypeProvider
 
     /**
      * @param string $id
-     *
      * @return ContentType
-     *
      * @throws DocumentNotFoundException
      */
     public function contentType($id)
