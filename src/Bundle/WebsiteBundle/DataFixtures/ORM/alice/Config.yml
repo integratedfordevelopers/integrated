@@ -3,8 +3,9 @@ Integrated\Bundle\ChannelBundle\Model\Config:
     name:     My channel
     adapter:  website
     channels: [my_channel]
-    options:  @website-config-my-channel-options
+    options:  '@website-config-my-channel-options'
 
-Integrated\Bundle\ChannelBundle\Model\Options (local):
+Integrated\Bundle\ChannelBundle\Model\Options:
   website-config-my-channel-options:
-    set: [theme, default]
+    __construct:
+      [theme: 'thompson']

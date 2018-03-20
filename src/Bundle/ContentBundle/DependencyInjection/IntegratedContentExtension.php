@@ -74,6 +74,8 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
 
         $loader->load('services.xml');
         $loader->load('mailer.xml');
+
+        $loader->load('data_fixtures.xml');
     }
 
     /**

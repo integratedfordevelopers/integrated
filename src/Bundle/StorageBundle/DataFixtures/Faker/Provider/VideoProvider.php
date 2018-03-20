@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Extension;
+namespace Integrated\Bundle\StorageBundle\DataFixtures\Faker\Provider;
 
-use Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util\CreateUtil;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Integrated\Bundle\StorageBundle\DataFixtures\Faker\Util\CreateUtil;
+use Integrated\Bundle\StorageBundle\Storage\Manager;
 
-/**
- * @author Johan Liefers <johan@e-active.nl>
- */
-trait VideoExtensionTrait
+class VideoProvider
 {
+    /**
+     * @var array
+     */
     protected static $mimeTypes = [
         'application/ogg' => 'ogg',
         'video/3gpp' => '3gp',
@@ -62,28 +62,34 @@ trait VideoExtensionTrait
     ];
 
     /**
-     * @return ContainerInterface
+     * @var Manager
      */
-    abstract public function getContainer();
+    private $sm;
+
+    /**
+     * @param Manager $sm
+     */
+    public function __construct(Manager $sm)
+    {
+        $this->sm = $sm;
+    }
 
     /**
      * @param null|string $type
-     *
      * @return \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface
+     * @throws \Exception
      */
     public function createVideo($type = null)
     {
         return CreateUtil::path(
-            $this->getContainer()->get('integrated_storage.manager'),
+            $this->sm,
             $this->getVideo($type)
         );
     }
 
     /**
      * @param null|string $type
-     *
      * @return bool|string
-     *
      * @throws \Exception
      */
     protected function getVideo($type = null)

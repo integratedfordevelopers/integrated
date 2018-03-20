@@ -13,32 +13,17 @@ namespace Integrated\Bundle\ContentBundle\DataFixtures\MongoDB;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ArrayCollectionExtension;
-use Integrated\Bundle\ContentBundle\DataFixtures\MongoDB\Extension\ClassFieldsExtension;
-use Nelmio\Alice\Fixtures;
+use Nelmio\Alice\Loader\SimpleFilesLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Finder;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
+class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
 {
-    use ArrayCollectionExtension;
-    use ClassFieldsExtension;
     use ContainerAwareTrait;
-
-    /**
-     * @var string
-     */
-    protected $path = __DIR__;
-
-    /**
-     * @var string
-     */
-    protected $locale = 'en_US';
 
     /**
      * {@inheritdoc}
@@ -48,18 +33,22 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
         $files = [];
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach (Finder::create()->in($this->path.DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
+        foreach (Finder::create()->in(__DIR__.DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
             $files[] = $file->getRealpath();
         }
 
-        Fixtures::load($files, $manager, ['providers' => [$this], 'locale' => $this->locale]);
+        foreach ($this->getLoader()->loadFiles($files)->getObjects() as $object) {
+            $manager->persist($object);
+        }
+
+        $manager->flush();
     }
 
     /**
-     * @return ContainerInterface
+     * @return SimpleFilesLoader
      */
-    public function getContainer()
+    private function getLoader()
     {
-        return $this->container;
+        return $this->container->get('nelmio_alice.files_loader.simple');
     }
 }

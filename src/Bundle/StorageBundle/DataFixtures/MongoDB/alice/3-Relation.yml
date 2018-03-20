@@ -4,4 +4,4 @@ Integrated\Bundle\ContentBundle\Document\Relation\Relation:
     name:     Media
     type:     embedded
     sources:  [<contentType('article')>, <contentType('blog')>]
-    targets:  [@File]
+    targets:  ['@File']

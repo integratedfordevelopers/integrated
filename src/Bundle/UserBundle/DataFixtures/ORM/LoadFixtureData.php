@@ -13,8 +13,7 @@ namespace Integrated\Bundle\UserBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Integrated\Bundle\UserBundle\Model\User;
-use Nelmio\Alice\Fixtures;
+use Nelmio\Alice\Loader\SimpleFilesLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Finder\Finder;
@@ -44,33 +43,22 @@ class LoadFixtureData implements ContainerAwareInterface, FixtureInterface
         $files = [];
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach (Finder::create()->in($this->path.DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
+        foreach (Finder::create()->in(__DIR__.DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
             $files[] = $file->getRealpath();
         }
 
-        Fixtures::load($files, $manager, ['providers' => [$this], 'locale' => $this->locale]);
+        foreach ($this->getLoader()->loadFiles($files)->getObjects() as $object) {
+            $manager->persist($object);
+        }
+
+        $manager->flush();
     }
 
     /**
-     * @return string
+     * @return SimpleFilesLoader
      */
-    public function generateSalt()
+    private function getLoader()
     {
-        $generator = $this->container->get('security.secure_random');
-
-        return base64_encode($generator->nextBytes(72));
-    }
-
-    /**
-     * @param User $user
-     * @param $password
-     *
-     * @return mixed
-     */
-    public function generatePassword(User $user, $password)
-    {
-        $encoder = $this->container->get('security.encoder_factory')->getEncoder($user);
-
-        return $encoder->encodePassword($password, $user->getSalt());
+        return $this->container->get('nelmio_alice.files_loader.simple');
     }
 }
