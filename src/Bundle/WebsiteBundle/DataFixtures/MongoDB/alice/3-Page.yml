@@ -2,41 +2,41 @@ Integrated\Bundle\PageBundle\Document\Page\Page:
   website-page-search:
     title:    Search
     path:     /search
-    layout:   @IntegratedWebsiteBundle/Resources/views/themes/default/base.html.twig
-    grids:    [@website-page-search-grid]
+    layout:   '\@IntegratedWebsiteBundle/Resources/views/themes/default/base.html.twig'
+    grids:    ['@website-page-search-grid']
     channel:  <channel('my_channel')>
 
-Integrated\Bundle\PageBundle\Document\Page\Grid\Grid (local):
+Integrated\Bundle\PageBundle\Document\Page\Grid\Grid:
   website-page-search-grid:
     id:       main
-    items:    [@website-page-search-item]
+    items:    ['@website-page-search-item']
 
-Integrated\Bundle\PageBundle\Document\Page\Grid\Column (local):
+Integrated\Bundle\PageBundle\Document\Page\Grid\Column:
   website-page-search-column1:
     size:     8
-    items:    [@website-page-search-your-search, @website-page-search-search-results]
+    items:    ['@website-page-search-your-search', '@website-page-search-search-results']
 
   website-page-search-column2:
     size:     4
-    items:    [@website-page-search-facet]
+    items:    ['@website-page-search-facet']
 
-Integrated\Bundle\PageBundle\Document\Page\Grid\Row (local):
+Integrated\Bundle\PageBundle\Document\Page\Grid\Row:
   website-page-search-row:
-    columns:  [@website-page-search-column1, @website-page-search-column2]
+    columns:  ['@website-page-search-column1', '@website-page-search-column2']
 
-Integrated\Bundle\PageBundle\Document\Page\Grid\Item (local):
+Integrated\Bundle\PageBundle\Document\Page\Grid\Item:
   website-page-search-item:
     order:    1
-    row:      @website-page-search-row
+    row:      '@website-page-search-row'
 
   website-page-search-your-search:
     order:    1
-    block:    @website-block-your-search
+    block:    '@website-block-your-search'
 
   website-page-search-search-results:
     order:    2
-    block:    @website-block-search-results
+    block:    '@website-block-search-results'
 
   website-page-search-facet:
     order:    1
-    block:    @website-block-search-facet
+    block:    '@website-block-search-facet'
