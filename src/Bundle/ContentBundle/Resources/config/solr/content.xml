@@ -24,6 +24,7 @@
 
             </options>
         </type>
+        <type name="integrated.taxonomy" />
 
     </class>
 
