@@ -26,7 +26,7 @@ class ContactPersonsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'type' => CompanyJobType::class,
+            'entry_type' => CompanyJobType::class,
             'allow_add' => true,
             'allow_delete' => true,
             'label' => 'Jobs',
