@@ -1,7 +1,6 @@
 {
     "name": "integrated-website-bundle",
     "dependencies": {
-        "bootbox": "4.4.*",
-        "integrated.jquery-sortable": "0.9.14"
+        "bootbox": "4.4.*"
     }
 }

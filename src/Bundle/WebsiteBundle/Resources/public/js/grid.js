@@ -72,11 +72,15 @@
      * @param size
      */
     var createColumn = function(size) {
-        return $('<div>')
+        var $element = $('<div>')
             .addClass('integrated-website-col integrated-website-droppable col-sm-' + size)
             .attr('data-block-type', 'column')
             .data('size', size)
             .append(createColumnButtons());
+
+        initSortable($element);
+
+        return $element;
     };
 
     /**
@@ -126,7 +130,6 @@
             url: Routing.generate('integrated_block_block_index', { '_format': 'json', 'limit': 10}),
             dataType: 'json',
             success: function(data) {
-
                 var template = Handlebars.compile($('#integrated_website_template_modal_block_add').html());
 
                 var dialog = bootbox.dialog({
@@ -226,6 +229,30 @@
     };
 
     /**
+     * @param $element
+     */
+    var initSortable = function($element) {
+        $element.sortable({
+            connectWith: '.integrated-website-droppable',
+            placeholder: 'integrated-website-item-placeholder',
+            items: '.integrated-website-sortable',
+            scroll: false,
+            opacity: 0.7,
+            cursor: 'move',
+            cursorAt: { top: 20, left: 20 },
+            tolerance: 'pointer',
+            helper: function(e, helper) {
+                return helper.clone().css({'width': '300px'});
+            },
+            stop: function(e, ui) {
+                var $item = $(ui.item);
+                //buttons should always come behind
+                $item.after($item.prev('.block-buttons'));
+            }
+        });
+    };
+
+    /**
      * Handle block edit in iframe
      */
     document.addEventListener('block-added', function (e) {
@@ -292,7 +319,7 @@
 
                 if (size) {
                     if ($oldColumns[i]) {
-                        $($oldColumns[i]).attr('class', 'col-sm-' + size).data('size', size);
+                        $($oldColumns[i]).attr('class', 'integrated-website-col integrated-website-droppable col-sm-' + size).data('size', size);
                     } else {
                         $row.append(createColumn(size));
                     }
@@ -300,7 +327,10 @@
             }
 
             //if there were more columns, remove the last columns
-            $oldColumns.slice(i).remove();
+            $oldColumns
+                .slice(i)
+                .sortable('destroy')
+                .remove();
 
             $row.append(createRowButtons());
         } else {
@@ -310,44 +340,9 @@
     });
 
     /**
-     * Make grid sortable and make sure serialized data is returned in correct way
+     * Make grid sortable
      */
-    $('.integrated-website-grid').integratedSortable({
-        containerSelector: '.integrated-website-droppable',
-        itemSelector: '.integrated-website-sortable',
-        placeholder: '<div class="integrated-website-item-placeholder" style="height: 50px;"></div>',
-        tolerance: 100,
-        delay: 100,
-        vertical: false,
-        onDrop: function ($item, container, _super, event) {
-            $item.removeClass(container.group.options.draggedClass).removeAttr("style");
-            $("body").removeClass(container.group.options.bodyClass);
-
-            //buttons should always come behind
-            $item.after($item.prev('.block-buttons'));
-        },
-        serialize: function (parent, children) {
-            if (parent.hasClass('integrated-website-grid')) {
-                return {
-                    'id': parent.data('id'),
-                    'items': children
-                }
-            }
-            if ('block' === parent.data('blockType')) {
-                return {'block': parent.data('id')};
-            } else if ('row' === parent.data('blockType')) {
-                return {'row': {'columns': children}};
-            } else if ('column' === parent.data('blockType')) {
-                var data =  {'size': parent.data('size')};
-
-                if (children) {
-                    data.items = children;
-                }
-
-                return data;
-            }
-        }
-    });
+    initSortable($('.integrated-website-droppable'));
 
     /**
      * Modal eventlisteners
