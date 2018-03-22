@@ -14,7 +14,6 @@ namespace Integrated\Bundle\ImageBundle\Twig\Extension;
 use Gregwar\ImageBundle\Extensions\ImageTwig;
 use Gregwar\ImageBundle\Services\ImageHandling;
 
-use Integrated\Bundle\ImageBundle\Image\ImageMimic;
 use Integrated\Bundle\ImageBundle\Converter\WebFormatConverter;
 use Integrated\Bundle\ImageBundle\Factory\StorageModelFactory;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -45,17 +44,23 @@ class ImageExtension extends \Twig_Extension
     private $mimicFormats;
 
     /**
+     * @var ImageHandling
+     */
+    private $imageMimicHandling;
+
+    /**
      * @param ImageHandling      $imageHandling
      * @param ImageTwig          $imageTwig
      * @param WebFormatConverter $webFormatConverter
      * @param array              $mimicFormats
      */
-    public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter, array $mimicFormats)
+    public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter, array $mimicFormats, ImageHandling $imageMimicHandling)
     {
         $this->imageHandling = $imageHandling;
         $this->webFormatConverter = $webFormatConverter;
         $this->imageTwig = $imageTwig;
         $this->mimicFormats = $mimicFormats;
+        $this->imageMimicHandling = $imageMimicHandling;
     }
 
     /**
@@ -114,14 +119,15 @@ class ImageExtension extends \Twig_Extension
     /**
      * @param $image
      *
-     * @return \Gregwar\ImageBundle\ImageHandler | ImageMimic
+     * @return \Gregwar\ImageBundle\ImageHandler
      */
     public function image($image)
     {
         if ($image instanceof StorageInterface) {
             try {
                 if (in_array($image->getMetadata()->getExtension(), $this->mimicFormats)) {
-                    return new ImageMimic($image->getPathname());
+                    $image = $this->webFormatConverter->convert($image)->getPathname();
+                    return $this->imageMimicHandling->open($image);
                 }
 
                 // Returns the image in a webformat

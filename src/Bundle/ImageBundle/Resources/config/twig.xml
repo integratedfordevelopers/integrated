@@ -22,6 +22,7 @@
             <argument type="service" id="twig.extension.image" />
             <argument type="service" id="integrated_image.converter_web_format" />
             <argument>%integrated_image.twig_mimic_formats%</argument>
+            <argument type="service" id="integrated_image.image_mimic_handling" />
 
             <tag name="twig.extension" />
         </service>
