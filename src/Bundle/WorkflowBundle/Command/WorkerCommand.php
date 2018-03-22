@@ -52,7 +52,7 @@ class WorkerCommand extends ContainerAwareCommand
 
             ->setDescription('Process the workflow queue messages')
             ->setHelp('
-loThe <info>%command.name%</info> .
+The <info>%command.name%</info> .
 
 <info>php %command.full_name%</info>
 ');
