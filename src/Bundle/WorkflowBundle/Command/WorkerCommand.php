@@ -18,12 +18,28 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Lock\Factory;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class WorkerCommand extends ContainerAwareCommand
 {
+    /**
+     * @var Factory
+     */
+    private $factory;
+
+    /**
+     * @param Factory $factory
+     */
+    public function __construct(Factory $factory)
+    {
+        parent::__construct();
+
+        $this->factory = $factory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,7 +52,7 @@ class WorkerCommand extends ContainerAwareCommand
 
             ->setDescription('Process the workflow queue messages')
             ->setHelp('
-The <info>%command.name%</info> .
+loThe <info>%command.name%</info> .
 
 <info>php %command.full_name%</info>
 ');
@@ -47,6 +63,12 @@ The <info>%command.name%</info> .
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $lock = $this->factory->createLock(self::class . md5(__DIR__));
+
+        if (!$lock->acquire()) {
+            return;
+        }
+
         try {
             foreach ($this->getQueue()->pull($input->getOption('batch')) as $message) {
                 $data = (array) $message->getPayload();
@@ -81,6 +103,8 @@ The <info>%command.name%</info> .
             $output->writeln('Aborting: '.$e->getMessage());
 
             return 1;
+        } finally {
+            $lock->release();
         }
 
         return 0;
