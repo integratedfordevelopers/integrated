@@ -7,7 +7,6 @@
     <parameters>
 
         <parameter key="integrated_image.format_web">Integrated\Bundle\ImageBundle\Converter\Format\WebFormat</parameter>
-        <parameter key="integrated_image.image.image_handler_mimic">Integrated\Bundle\ImageBundle\Image\ImageHandlerMimic</parameter>
 
         <parameter key="integrated_image.format" type="collection">
             <parameter>jpg</parameter>
@@ -23,21 +22,17 @@
     <services>
 
         <service id="integrated_image.format_web" class="%integrated_image.format_web%">
-
             <argument>%integrated_image.format%</argument>
-
         </service>
 
-        <service id="integrated_image.image_mimic_handling" class="%image.handling.class%">
-
+        <service id="integrated_image.image_mimic_handling" class="Integrated\Bundle\ImageBundle\Image\ImageMimicHandler">
             <argument>%gregwar_image.cache_dir%</argument>
             <argument>%gregwar_image.cache_dir_mode%</argument>
-            <argument>%integrated_image.image.image_handler_mimic%</argument>
+            <argument>%integrated_image.image.image_mimic_handler%</argument>
             <argument type="service" id="service_container" />
             <argument type="service" id="file_locator" />
             <argument>%gregwar_image.throw_exception%</argument>
             <argument>%gregwar_image.fallback_image%</argument>
-
         </service>
 
     </services>

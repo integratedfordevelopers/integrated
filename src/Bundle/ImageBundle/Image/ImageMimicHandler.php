@@ -11,23 +11,20 @@
 
 namespace Integrated\Bundle\ImageBundle\Image;
 
+use Gregwar\Image\Source\File;
 use Gregwar\ImageBundle\ImageHandler;
 
-class ImageHandlerMimic extends ImageHandler
+class ImageMimicHandler extends ImageHandler
 {
     /**
      * {@inheritdoc}
      */
-    public function save($file, $type = 'svg', $quality = 100)
+    public function save($file, $type = 'mimic', $quality = 100)
     {
-        try {
+        if ($this->source instanceof File) {
             copy($this->source->getFile(), $file);
-        } catch (\Exception $e) {
-            if ($this->useFallbackImage) {
-                return null === $file ? file_get_contents($this->fallback) : $this->getCacheFallback();
-            } else {
-                throw $e;
-            }
+        } elseif ($this->useFallbackImage) {
+            return null === $file ? file_get_contents($this->fallback) : $this->getCacheFallback();
         }
 
         return $file;
@@ -44,8 +41,20 @@ class ImageHandlerMimic extends ImageHandler
     /**
      * {@inheritdoc}
      */
+    public function guessType()
+    {
+        if ($this->source instanceof File) {
+            return pathinfo($this->source->getFile(), PATHINFO_EXTENSION);
+        }
+
+        return parent::guessType();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __toString()
     {
-        return $this->cacheFile('svg');
+        return $this->cacheFile($this->guessType());
     }
 }

@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ImageBundle\Twig\Extension;
 
 use Gregwar\ImageBundle\Extensions\ImageTwig;
 use Gregwar\ImageBundle\Services\ImageHandling;
-
 use Integrated\Bundle\ImageBundle\Converter\WebFormatConverter;
 use Integrated\Bundle\ImageBundle\Factory\StorageModelFactory;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
@@ -84,12 +83,18 @@ class ImageExtension extends \Twig_Extension
     public function imageJson($image)
     {
         if ($json = json_decode($image)) {
+            $storageModel = StorageModelFactory::json($json);
+
             // Returns the image in a webformat
             try {
-                $image = $this->webFormatConverter->convert(StorageModelFactory::json($json))->getPathname();
+                $image = $this->webFormatConverter->convert($storageModel)->getPathname();
             } catch (\Exception $e) {
                 // Set the fallback image
                 $image = false;
+            }
+
+            if (in_array($storageModel->getMetadata()->getExtension(), $this->mimicFormats)) {
+                return $this->imageMimicHandling->open($image);
             }
         }
 
@@ -124,17 +129,17 @@ class ImageExtension extends \Twig_Extension
     public function image($image)
     {
         if ($image instanceof StorageInterface) {
-            try {
-                if (in_array($image->getMetadata()->getExtension(), $this->mimicFormats)) {
-                    $image = $this->webFormatConverter->convert($image)->getPathname();
-                    return $this->imageMimicHandling->open($image);
-                }
+            $metadata = $image->getMetadata();
 
-                // Returns the image in a webformat
+            try {
                 $image = $this->webFormatConverter->convert($image)->getPathname();
             } catch (\Exception $e) {
                 // Set the fallback image
                 $image = false;
+            }
+
+            if (in_array($metadata->getExtension(), $this->mimicFormats)) {
+                return $this->imageMimicHandling->open($image);
             }
         }
 
