@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation as EmbeddedRelation;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice\RelationReferencesType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -173,7 +174,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
                 $relationOptions['label'] = $relation->getName();
             }
 
-            $event->getForm()->add($key, 'integrated_relation_references', ['options' => $relationOptions]);
+            $event->getForm()->add($key, RelationReferencesType::class, ['options' => $relationOptions]);
         }
     }
 
