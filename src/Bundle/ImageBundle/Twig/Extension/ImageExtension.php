@@ -52,6 +52,7 @@ class ImageExtension extends \Twig_Extension
      * @param ImageTwig          $imageTwig
      * @param WebFormatConverter $webFormatConverter
      * @param array              $mimicFormats
+     * @param ImageHandling      $imageMimicHandling
      */
     public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter, array $mimicFormats, ImageHandling $imageMimicHandling)
     {
