@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\UserBundle\EventListener;
+namespace Integrated\Bundle\UserBundle\Security\Firewall;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Http\SecurityEvents;
+use Symfony\Component\Security\Http\Firewall\ListenerInterface;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\Role;
 use Integrated\Bundle\UserBundle\Model\Scope;
 
-class SecurityScopeSubscriber implements EventSubscriberInterface
+class ScopeListener implements ListenerInterface
 {
     /**
      * @var TokenStorage
@@ -28,31 +28,28 @@ class SecurityScopeSubscriber implements EventSubscriberInterface
     private $tokenStorage;
 
     /**
-     * @param TokenStorage $tokenStorage
+     * @var string
      */
-    public function __construct(TokenStorage $tokenStorage)
+    private $providerKey;
+
+    /**
+     * @param TokenStorage $tokenStorage
+     * @param string $providerKey
+     */
+    public function __construct(TokenStorage $tokenStorage, $providerKey)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->providerKey = $providerKey;
     }
 
     /**
-     * {@inheritdoc}
+     * @param GetResponseEvent $event
      */
-    public static function getSubscribedEvents() : array
+    public function handle(GetResponseEvent $event)
     {
-        return [
-            SecurityEvents::INTERACTIVE_LOGIN => 'onSecurityInteractiveLogin',
-        ];
-    }
+        $token = $this->tokenStorage->getToken();
 
-    /**
-     * @param InteractiveLoginEvent $event
-     */
-    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
-    {
-        $token = $event->getAuthenticationToken();
-
-        if (!$token instanceof UsernamePasswordToken) {
+        if (!$token instanceof TokenInterface) {
             return;
         }
 
@@ -73,7 +70,7 @@ class SecurityScopeSubscriber implements EventSubscriberInterface
         $newToken = new UsernamePasswordToken(
             $user,
             $token->getCredentials(),
-            $token->getProviderKey(),
+            $this->providerKey,
             $user->getRoles()
         );
 

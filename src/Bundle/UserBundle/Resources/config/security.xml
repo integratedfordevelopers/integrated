@@ -10,6 +10,13 @@
 			<argument type="service" id="integrated_user.user.manager" />
 		</service>
 
+        <service id="Integrated\Bundle\UserBundle\Security\Authentication\Provider\ScopeProvider" public="false" />
+
+		<service id="Integrated\Bundle\UserBundle\Security\Firewall\ScopeListener" public="false">
+			<argument type="service" id="security.token_storage" />
+            <argument />
+		</service>
+
 	</services>
 
 </container>
