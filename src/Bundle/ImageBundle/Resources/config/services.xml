@@ -25,10 +25,10 @@
             <argument>%integrated_image.format%</argument>
         </service>
 
-        <service id="integrated_image.image_mimic_handling" class="Integrated\Bundle\ImageBundle\Image\ImageMimicHandler">
+        <service id="integrated_image.image_mimic_handling" class="Gregwar\ImageBundle\Services\ImageHandling">
             <argument>%gregwar_image.cache_dir%</argument>
             <argument>%gregwar_image.cache_dir_mode%</argument>
-            <argument>%integrated_image.image.image_mimic_handler%</argument>
+            <argument>Integrated\Bundle\ImageBundle\Image\ImageMimicHandler</argument>
             <argument type="service" id="service_container" />
             <argument type="service" id="file_locator" />
             <argument>%gregwar_image.throw_exception%</argument>
