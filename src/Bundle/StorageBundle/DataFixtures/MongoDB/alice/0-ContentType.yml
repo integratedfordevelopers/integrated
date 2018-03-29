@@ -1,18 +1,28 @@
+Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field:
+  TitleField:
+    name: title
+    options:
+      required: true
+  FileField:
+    name: file
+    options:
+      required: true
+
 Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
   Image:
     id:          image
     name:        Image
-    class:       Integrated\Bundle\ContentBundle\Document\Content\Image
-    fields:      <classfields($class, ['title'])>
+    class:       'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Image'
+    fields:      ['@TitleField', '@FileField']
 
   File:
     id:          file
     name:        File
-    class:       Integrated\Bundle\ContentBundle\Document\Content\File
-    fields:      <classfields($class, ['title'])>
+    class:       'Integrated\\Bundle\\ContentBundle\\Document\\Content\\File'
+    fields:      ['@TitleField', '@FileField']
 
   Video:
     id:          video
     name:        Video
-    class:       Integrated\Bundle\ContentBundle\Document\Content\Video
-    fields:      <classfields($class, ['title'])>
+    class:       'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Video'
+    fields:      ['@TitleField', '@FileField']

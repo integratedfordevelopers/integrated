@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\StorageBundle\DataFixtures\MongoDB\Util;
+namespace Integrated\Bundle\StorageBundle\DataFixtures\Faker\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage;
@@ -25,9 +25,9 @@ class CreateUtil
 {
     /**
      * @param ManagerInterface $manager
-     * @param string           $path
-     *
+     * @param string $path
      * @return StorageInterface
+     * @throws \Exception
      */
     public static function path(ManagerInterface $manager, $path)
     {
