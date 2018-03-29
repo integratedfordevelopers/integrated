@@ -37,7 +37,7 @@ class ChannelType extends AbstractType
         $builder->add('name', TextType::class);
 
         $builder->add('logo', ImageDropzoneType::class);
-        $builder->add('color', ColorType::class);
+        $builder->add('color', ColorType::class, ['required' => false]);
 
         $builder->add('domains', BootstrapCollectionType::class, [
             'label' => 'Domains (example.com)',
