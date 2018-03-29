@@ -97,6 +97,10 @@ class ContentTypeMenuBuilder
                 continue;
             }
 
+            if (!class_exists($document->getClass())) {
+                continue;
+            }
+
             $reflectionClass = new \ReflectionClass($document->getClass());
 
             if ($parent = $this->getParentClass($reflectionClass)) {
