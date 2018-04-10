@@ -23,6 +23,11 @@
                 target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage"
         />
 
+        <embed-many
+                field="permissions"
+                target-document="Integrated\Bundle\ContentBundle\Document\Channel\Embedded\Permission"
+        />
+
         <lifecycle-callbacks>
             <lifecycle-callback type="prePersist" method="defaultPrimaryDomain" />
             <lifecycle-callback type="preUpdate" method="defaultPrimaryDomain" />

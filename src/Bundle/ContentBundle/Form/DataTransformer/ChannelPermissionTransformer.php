@@ -9,16 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WorkflowBundle\Form\DataTransformer;
+namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
+use Integrated\Bundle\ContentBundle\Document\Channel\Embedded\Permission;
 use Integrated\Common\Content\Permission as CommonPermission;
-use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
-use Integrated\Common\Form\DataTransformer\PermissionTransformer as CommonPermissionTransformer;
+use Integrated\Common\Form\DataTransformer\PermissionTransformer;
 
-/**
- * @author Jan Sanne Mulder <jansanne@e-active.nl>
- */
-class PermissionTransformer extends CommonPermissionTransformer
+class ChannelPermissionTransformer extends PermissionTransformer
 {
     /**
      * @return string | CommonPermission

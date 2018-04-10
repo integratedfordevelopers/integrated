@@ -12,11 +12,14 @@
 namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
+use Integrated\Bundle\ContentBundle\Document\Channel\Embedded\Permission;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Channel document.
@@ -78,6 +81,12 @@ class Channel implements ChannelInterface
      * @var null
      */
     protected $scope = null;
+
+
+    /**
+     * @var Per
+     */
+    protected $permissions;
 
     /**
      * Constructor.
@@ -320,5 +329,68 @@ class Channel implements ChannelInterface
         $this->scope = $scope ? $scope->getId() : null;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPermissions()
+    {
+        if (!$this->permissions instanceof Collection) {
+            $this->permissions = new ArrayCollection();
+        }
+
+        return $this->permissions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPermission(Collection $permissions)
+    {
+        $this->permissions = $permissions;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addPermission(Permission $permission)
+    {
+        /** @var Permission $exist */
+        if ($exist = $this->getPermission($permission->getGroup())) {
+            $exist->setMask($permission->getMask());
+        } else {
+            $this->getPermissions()->add($permission);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removePermission(Permission $permission)
+    {
+        $this->getPermissions()->removeElement($permission);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPermission($groupId)
+    {
+        return $this->getPermissions()->filter(function ($permission) use ($groupId) {
+            if ($permission instanceof Permission) {
+                if ($permission->getGroup() == $groupId) {
+                    return true;
+                }
+            }
+
+            return false;
+        })->first();
     }
 }

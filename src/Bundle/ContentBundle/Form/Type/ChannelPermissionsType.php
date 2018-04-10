@@ -9,16 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\WorkflowBundle\Form\Type;
+namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
-use Integrated\Common\Form\Type\PermissionsType as CommonPermissionsType;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Integrated\Common\Form\Type\PermissionsType as CommonPermissionsType;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\ChannelPermissionTransformer;
 
-/**
- * @author Jan Sanne Mulder <jansanne@e-active.nl>
- */
-class PermissionsType extends CommonPermissionsType
+class ChannelPermissionsType extends CommonPermissionsType
 {
     /**
      * @param ObjectRepository $repository
@@ -33,14 +30,6 @@ class PermissionsType extends CommonPermissionsType
      */
     protected function getTransformer()
     {
-        return new PermissionTransformer($this->repository);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'integrated_workflow_definition_permissions';
+        return new ChannelPermissionTransformer($this->repository);
     }
 }
