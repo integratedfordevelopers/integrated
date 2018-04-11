@@ -15,6 +15,7 @@ use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
 
@@ -61,6 +62,12 @@ class ChannelExceptionSubscriber implements EventSubscriberInterface
         }
 
         if ($this->channelContext->getChannel()) {
+            return;
+        }
+
+        $exception = $event->getException();
+
+        if (!$exception instanceof NotFoundHttpException) {
             return;
         }
 

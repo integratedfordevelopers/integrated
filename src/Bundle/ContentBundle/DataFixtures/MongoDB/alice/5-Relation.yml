@@ -3,6 +3,6 @@ Integrated\Bundle\ContentBundle\Document\Relation\Relation:
     id:       keywords
     name:     Keywords
     type:     taxonomy
-    sources:  [@Article, @Blog]
-    targets:  [@Taxonomy]
+    sources:  ['@Article', '@Blog']
+    targets:  ['@Taxonomy']
     multiple: true

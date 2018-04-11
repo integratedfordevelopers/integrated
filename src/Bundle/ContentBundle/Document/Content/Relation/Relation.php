@@ -42,7 +42,7 @@ abstract class Relation extends Content
      * @Type\Field(
      *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={
-     *          "type"="Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType",
+     *          "entry_type"="Integrated\Bundle\ContentBundle\Form\Type\PhonenumberType",
      *          "allow_add"=true,
      *          "allow_delete"=true
      *      }
@@ -61,7 +61,7 @@ abstract class Relation extends Content
      * @Type\Field(
      *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={
-     *          "type"="Integrated\Bundle\ContentBundle\Form\Type\AddressType",
+     *          "entry_type"="Integrated\Bundle\ContentBundle\Form\Type\AddressType",
      *          "default_title"="New address",
      *          "allow_add"=true,
      *          "allow_delete"=true

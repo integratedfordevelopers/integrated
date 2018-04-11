@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\FormTypeBundle\Form\Type\RelationChoice;
 
+use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Bundle\FormTypeBundle\Form\DataTransformer\CollectionToDocumentTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -63,7 +64,7 @@ class RelationReferencesType extends AbstractType
             $commonDefaults = [
                 'content_types' => [],
                 'multiple' => false,
-                'form_type' => 'document',
+                'form_type' => DocumentType::class,
             ];
 
             $resolver = new OptionsResolver();
