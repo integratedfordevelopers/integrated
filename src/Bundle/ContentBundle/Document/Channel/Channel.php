@@ -82,9 +82,8 @@ class Channel implements ChannelInterface
      */
     protected $scope = null;
 
-
     /**
-     * @var Per
+     * @var ArrayCollection
      */
     protected $permissions;
 
@@ -332,7 +331,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return ArrayCollection
      */
     public function getPermissions()
     {
@@ -344,7 +343,8 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param Collection $permissions
+     * @return $this
      */
     public function setPermission(Collection $permissions)
     {
@@ -354,7 +354,8 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param Permission $permission
+     * @return $this
      */
     public function addPermission(Permission $permission)
     {
@@ -369,7 +370,8 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param Permission $permission
+     * @return $this
      */
     public function removePermission(Permission $permission)
     {
@@ -379,7 +381,8 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param int $groupId
+     * @return Permission
      */
     public function getPermission($groupId)
     {
