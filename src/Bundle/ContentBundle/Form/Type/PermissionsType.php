@@ -22,12 +22,13 @@ class PermissionsType extends CommonPermissionsType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'required' => false,
-            'read-label' => 'Read access',
-            'write-label' => 'Write access',
-            'placeholder' => 'Everyone',
-        ]);
+        parent::configureOptions($resolver);
+
+        $resolver->setDefault('read-label', 'Read access');
+        $resolver->setDefault('write-label', 'Write access');
+
+        $resolver->setDefault('read-placeholder', 'Everyone');
+        $resolver->setDefault('write-placeholder', 'Everyone');
     }
 
     /**

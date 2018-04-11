@@ -42,8 +42,25 @@ class PermissionsType extends AbstractType
     {
         $builder->addViewTransformer($this->getTransformer());
 
-        $builder->add('read', GroupType::class, ['required' => false, 'multiple' => true, 'label' => $options['read-label'], 'attr' => ['class' => 'select2']]);
-        $builder->add('write', GroupType::class, ['required' => false, 'multiple' => true, 'label' => $options['write-label'], 'attr' => ['class' => 'select2']]);
+        $builder->add('read', GroupType::class, [
+            'required' => false,
+            'multiple' => true,
+            'label' => $options['read-label'],
+            'attr' => [
+                'class' => 'select2',
+                'data-placeholder' => $options['read-placeholder'],
+            ]
+        ]);
+
+        $builder->add('write', GroupType::class, [
+            'required' => false,
+            'multiple' => true,
+            'label' => $options['write-label'],
+            'attr' => [
+                'class' => 'select2',
+                'data-placeholder' => $options['write-placeholder'],
+            ]
+        ]);
     }
 
     /**
@@ -57,8 +74,12 @@ class PermissionsType extends AbstractType
 
         $resolver->setDefault('empty_data', $emptyData);
         $resolver->setDefault('label', false);
+
         $resolver->setDefault('read-label', 'Read');
         $resolver->setDefault('write-label', 'Write');
+
+        $resolver->setDefault('read-placeholder', null);
+        $resolver->setDefault('write-placeholder', null);
     }
 
     /**

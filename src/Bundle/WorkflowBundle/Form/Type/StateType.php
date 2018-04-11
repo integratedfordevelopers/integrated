@@ -88,7 +88,11 @@ class StateType extends AbstractType
             'choices' => $choiceFlags,
         ]);
 
-        $builder->add('permissions', PermissionsType::class, ['required' => false]);
+        $builder->add('permissions', PermissionsType::class, [
+            'required' => false,
+            'read-placeholder' => 'Inherit from content type',
+            'write-placeholder' => 'Inherit from content type'
+        ]);
 
         if ($options['transitions'] == 'data') {
             $builder->addEventSubscriber(new ExtractTransitionsFromDataListener());

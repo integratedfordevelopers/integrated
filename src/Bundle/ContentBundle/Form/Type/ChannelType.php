@@ -91,7 +91,9 @@ class ChannelType extends AbstractType
             ]
         );
 
-        $builder->add('permissions', PermissionsType::class);
+        $builder->add('permissions', PermissionsType::class, [
+            'required' => false,
+        ]);
     }
 
     /**
