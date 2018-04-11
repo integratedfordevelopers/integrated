@@ -12,30 +12,17 @@
 namespace Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
 use Doctrine\ORM\Event\PreFlushEventArgs;
-use Integrated\Bundle\UserBundle\Model\GroupInterface;
+use Integrated\Common\Content\Permission as CommonPermission;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class Permission
+class Permission extends CommonPermission
 {
-    const READ = 1;
-    const WRITE = 2;
-
     /**
      * @var State
      */
     protected $state;
-
-    /**
-     * @var string
-     */
-    protected $group;
-
-    /**
-     * @var int
-     */
-    protected $mask;
 
     /**
      * @param State $state
@@ -63,84 +50,6 @@ class Permission
     public function getState()
     {
         return $this->state;
-    }
-
-    /**
-     * @param string | GroupInterface $group
-     *
-     * @return $this
-     */
-    public function setGroup($group)
-    {
-        if ($group instanceof GroupInterface) {
-            $group = $group->getId();
-        }
-
-        $this->group = (string) $group;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGroup()
-    {
-        return $this->group;
-    }
-
-    /**
-     * @param int $mask
-     *
-     * @return $this
-     */
-    public function setMask($mask)
-    {
-        $this->mask = (int) $mask;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMask()
-    {
-        return $this->mask;
-    }
-
-    /**
-     * @param int $mask
-     *
-     * @return $this
-     */
-    public function addMask($mask)
-    {
-        $this->mask = $this->mask | (int) $mask;
-
-        return $this;
-    }
-
-    /**
-     * @param int $mask
-     *
-     * @return $this
-     */
-    public function removeMask($mask)
-    {
-        $this->mask = $this->mask - ($this->mask & (int) $mask);
-
-        return $this;
-    }
-
-    /**
-     * @param int $mask
-     *
-     * @return bool
-     */
-    public function hasMask($mask)
-    {
-        return (bool) ($this->mask & $mask) == $mask;
     }
 
     /**

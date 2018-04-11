@@ -13,6 +13,8 @@ $(function() {
         }
     });
 
+    $('select.select2').select2();
+
     function refresh_checked_status() {
         /* if a domain input has entered domain name allow to set it as primary */
         $('.primary-domain-radio', $domains_collection).each(function () {
