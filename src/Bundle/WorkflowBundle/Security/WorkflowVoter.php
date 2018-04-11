@@ -130,33 +130,42 @@ class WorkflowVoter implements VoterInterface
 
         $type = $this->getContentType($object->getContentType());
 
-        if (!$type || !$type->hasOption('workflow')) {
+        if (!$type || (!$type->hasOption('workflow') && !count($type->getPermissions()))) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $workflow = $this->getWorkflow($type->getOption('workflow'));
+        $permissionAccess = $type->getPermissions();
 
-        if (!$workflow) {
-            return VoterInterface::ACCESS_ABSTAIN;
-        }
+        if ($type->getOption('workflow')) {
+            $workflow = $this->getWorkflow($type->getOption('workflow'));
 
-        // get the current state and verify that it belongs to the workflow. If
-        // one or move conditions are negative then pick the default workflow
-        // state to work with.
+            if (!$workflow) {
+                return VoterInterface::ACCESS_ABSTAIN;
+            }
 
-        $state = $this->getState($object);
+            // get the current state and verify that it belongs to the workflow. If
+            // one or move conditions are negative then pick the default workflow
+            // state to work with.
 
-        if (!$state || $state->getWorkflow() !== $workflow) {
-            $state = $workflow->getStates();
-            $state = array_shift($state); // there is no default (yet) so pick first one
-        }
+            $state = $this->getState($object);
 
-        if (!$state) {
-            // This should not happen as it should not be possible to create
-            // a workflow without a state. But check for it anyways as it is
-            // technicality possible to have a workflow without a state.
+            if (!$state || $state->getWorkflow() !== $workflow) {
+                $state = $workflow->getStates();
+                $state = array_shift($state); // there is no default (yet) so pick first one
+            }
 
-            return VoterInterface::ACCESS_ABSTAIN;
+            if (!$state) {
+                // This should not happen as it should not be possible to create
+                // a workflow without a state. But check for it anyways as it is
+                // technicality possible to have a workflow without a state.
+
+                return VoterInterface::ACCESS_ABSTAIN;
+            }
+
+            if (count($state->getPermissions())) {
+                // Workflow permissions overrules content type permissions
+                $permissionAccess = $state->getPermissions();
+            }
         }
 
         // security checks are group based so deny every token class that
@@ -174,8 +183,7 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $permissions = $this->getPermissions($token->getUser(), $state);
-
+        $permissions = $this->getPermissions($token->getUser(), $permissionAccess);
         $isAssigned = $this->isAssigned($token->getUser(), $object);
 
         // check the permissions: create requires write permission, view
@@ -274,11 +282,11 @@ class WorkflowVoter implements VoterInterface
 
     /**
      * @param GroupableInterface $user
-     * @param Definition\State   $state
+     * @param \Integrated\Common\Security\Permission[] $permissions
      *
      * @return array
      */
-    protected function getPermissions(GroupableInterface $user, Definition\State $state)
+    protected function getPermissions(GroupableInterface $user, $permissions)
     {
         $groups = [];
 
@@ -289,13 +297,13 @@ class WorkflowVoter implements VoterInterface
         $mask = 0;
 
         if ($groups) {
-            $mask_all = Permission::READ | Permission::WRITE;
+            $maskAll = Permission::READ | Permission::WRITE;
 
-            foreach ($state->getPermissions() as $permission) {
+            foreach ($permissions as $permission) {
                 if (isset($groups[$permission->getGroup()])) {
-                    $mask = $mask | ($mask_all & $permission->getMask());
+                    $mask = $mask | ($maskAll & $permission->getMask());
 
-                    if ($mask == $mask_all) {
+                    if ($mask == $maskAll) {
                         break;
                     }
                 }

@@ -95,4 +95,11 @@ interface ContentTypeInterface
      * @return bool
      */
     public function hasOption($name);
+
+    /**
+     * Get the permissions of the content type.
+     *
+     * @return \Doctrine\Common\Collections\Collection | \Integrated\Common\Security\Permission[]
+     */
+    public function getPermissions();
 }
