@@ -8,6 +8,10 @@
 
         <parameter key="integrated_image.twig_extension">Integrated\Bundle\ImageBundle\Twig\Extension\ImageExtension</parameter>
 
+        <parameter key="integrated_image.twig_mimic_formats" type="collection">
+            <parameter>svg</parameter>
+        </parameter>
+
     </parameters>
 
     <services>
@@ -17,6 +21,8 @@
             <argument type="service" id="image.handling" />
             <argument type="service" id="twig.extension.image" />
             <argument type="service" id="integrated_image.converter_web_format" />
+            <argument>%integrated_image.twig_mimic_formats%</argument>
+            <argument type="service" id="integrated_image.image_mimic_handling" />
 
             <tag name="twig.extension" />
         </service>

@@ -38,15 +38,29 @@ class ImageExtension extends \Twig_Extension
     private $imageTwig;
 
     /**
+     * @var array
+     */
+    private $mimicFormats;
+
+    /**
+     * @var ImageHandling
+     */
+    private $imageMimicHandling;
+
+    /**
      * @param ImageHandling      $imageHandling
      * @param ImageTwig          $imageTwig
      * @param WebFormatConverter $webFormatConverter
+     * @param array              $mimicFormats
+     * @param ImageHandling      $imageMimicHandling
      */
-    public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter)
+    public function __construct(ImageHandling $imageHandling, ImageTwig $imageTwig, WebFormatConverter $webFormatConverter, array $mimicFormats, ImageHandling $imageMimicHandling)
     {
         $this->imageHandling = $imageHandling;
         $this->webFormatConverter = $webFormatConverter;
         $this->imageTwig = $imageTwig;
+        $this->mimicFormats = $mimicFormats;
+        $this->imageMimicHandling = $imageMimicHandling;
     }
 
     /**
@@ -70,12 +84,18 @@ class ImageExtension extends \Twig_Extension
     public function imageJson($image)
     {
         if ($json = json_decode($image)) {
+            $storageModel = StorageModelFactory::json($json);
+
             // Returns the image in a webformat
             try {
-                $image = $this->webFormatConverter->convert(StorageModelFactory::json($json))->getPathname();
+                $image = $this->webFormatConverter->convert($storageModel)->getPathname();
             } catch (\Exception $e) {
                 // Set the fallback image
                 $image = false;
+            }
+
+            if (in_array($storageModel->getMetadata()->getExtension(), $this->mimicFormats)) {
+                return $this->imageMimicHandling->open($image);
             }
         }
 
@@ -110,12 +130,17 @@ class ImageExtension extends \Twig_Extension
     public function image($image)
     {
         if ($image instanceof StorageInterface) {
+            $metadata = $image->getMetadata();
+
             try {
-                // Returns the image in a webformat
                 $image = $this->webFormatConverter->convert($image)->getPathname();
             } catch (\Exception $e) {
                 // Set the fallback image
                 $image = false;
+            }
+
+            if (in_array($metadata->getExtension(), $this->mimicFormats)) {
+                return $this->imageMimicHandling->open($image);
             }
         }
 
