@@ -21,7 +21,7 @@ use Integrated\Common\Form\DataTransformer\PermissionTransformer as CommonPermis
 class PermissionTransformer extends CommonPermissionTransformer
 {
     /**
-     * @return string | CommonPermission
+     * @return string
      */
     protected function getPermissionClass()
     {

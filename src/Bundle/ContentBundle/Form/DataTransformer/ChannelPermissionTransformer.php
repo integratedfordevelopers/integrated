@@ -18,7 +18,7 @@ use Integrated\Common\Form\DataTransformer\PermissionTransformer;
 class ChannelPermissionTransformer extends PermissionTransformer
 {
     /**
-     * @return string | CommonPermission
+     * @return string
      */
     protected function getPermissionClass()
     {

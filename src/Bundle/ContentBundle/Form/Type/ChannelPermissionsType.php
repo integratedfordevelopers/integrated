@@ -18,14 +18,6 @@ use Integrated\Bundle\ContentBundle\Form\DataTransformer\ChannelPermissionTransf
 class ChannelPermissionsType extends CommonPermissionsType
 {
     /**
-     * @param ObjectRepository $repository
-     */
-    public function __construct(ObjectRepository $repository)
-    {
-        parent::__construct($repository);
-    }
-
-    /**
      * @return string
      */
     protected function getTransformer()

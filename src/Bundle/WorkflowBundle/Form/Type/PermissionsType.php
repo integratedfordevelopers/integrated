@@ -21,14 +21,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 class PermissionsType extends CommonPermissionsType
 {
     /**
-     * @param ObjectRepository $repository
-     */
-    public function __construct(ObjectRepository $repository)
-    {
-        parent::__construct($repository);
-    }
-
-    /**
      * @return string
      */
     protected function getTransformer()

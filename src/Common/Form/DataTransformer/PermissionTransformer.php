@@ -32,7 +32,6 @@ class PermissionTransformer implements DataTransformerInterface
 
     /**
      * @param ObjectRepository $repository
-     * @param string $permissionClass
      */
     public function __construct(ObjectRepository $repository)
     {
@@ -96,7 +95,7 @@ class PermissionTransformer implements DataTransformerInterface
 
         $permissionClass = $this->getPermissionClass();
 
-        /** @var Permission[] $permissions */
+        /** @var CommonPermission[] $permissions */
         $permissions = [];
 
         if (!isset($value['read']) || $value['read'] === '' || $value['read'] === null) {
@@ -137,7 +136,7 @@ class PermissionTransformer implements DataTransformerInterface
     }
 
     /**
-     * @return string | CommonPermission
+     * @return string
      */
     protected function getPermissionClass()
     {
