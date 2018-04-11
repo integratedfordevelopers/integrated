@@ -12,14 +12,12 @@
 namespace Integrated\Bundle\ContentBundle\Document\Channel;
 
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
-use Integrated\Bundle\ContentBundle\Document\Channel\Embedded\Permission;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Security\PermissionTrait;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * Channel document.
@@ -30,6 +28,8 @@ use Doctrine\Common\Collections\Collection;
  */
 class Channel implements ChannelInterface
 {
+    use PermissionTrait;
+
     /**
      * @var string
      * @Slug(fields={"name"}, separator="_")
@@ -81,11 +81,6 @@ class Channel implements ChannelInterface
      * @var null
      */
     protected $scope = null;
-
-    /**
-     * @var ArrayCollection
-     */
-    protected $permissions;
 
     /**
      * Constructor.
@@ -238,7 +233,7 @@ class Channel implements ChannelInterface
     /**
      * Set the value of the specified key.
      *
-     * @param string       $name
+     * @param string $name
      * @param null | mixed $value
      *
      * @return $this
@@ -328,72 +323,5 @@ class Channel implements ChannelInterface
         $this->scope = $scope ? $scope->getId() : null;
 
         return $this;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getPermissions()
-    {
-        if (!$this->permissions instanceof Collection) {
-            $this->permissions = new ArrayCollection();
-        }
-
-        return $this->permissions;
-    }
-
-    /**
-     * @param Collection $permissions
-     * @return $this
-     */
-    public function setPermission(Collection $permissions)
-    {
-        $this->permissions = $permissions;
-
-        return $this;
-    }
-
-    /**
-     * @param Permission $permission
-     * @return $this
-     */
-    public function addPermission(Permission $permission)
-    {
-        /** @var Permission $exist */
-        if ($exist = $this->getPermission($permission->getGroup())) {
-            $exist->setMask($permission->getMask());
-        } else {
-            $this->getPermissions()->add($permission);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Permission $permission
-     * @return $this
-     */
-    public function removePermission(Permission $permission)
-    {
-        $this->getPermissions()->removeElement($permission);
-
-        return $this;
-    }
-
-    /**
-     * @param int $groupId
-     * @return Permission
-     */
-    public function getPermission($groupId)
-    {
-        return $this->getPermissions()->filter(function ($permission) use ($groupId) {
-            if ($permission instanceof Permission) {
-                if ($permission->getGroup() == $groupId) {
-                    return true;
-                }
-            }
-
-            return false;
-        })->first();
     }
 }

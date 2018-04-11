@@ -14,7 +14,7 @@ namespace Integrated\Common\Form\DataTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Integrated\Common\Content\Permission as CommonPermission;
+use Integrated\Common\Security\Permission;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -26,7 +26,7 @@ class PermissionTransformer implements DataTransformerInterface
     protected $repository;
 
     /**
-     * @var CommonPermission
+     * @var Permission
      */
     protected $permissionClass;
 
@@ -95,7 +95,7 @@ class PermissionTransformer implements DataTransformerInterface
 
         $permissionClass = $this->getPermissionClass();
 
-        /** @var CommonPermission[] $permissions */
+        /** @var Permission[] $permissions */
         $permissions = [];
 
         if (!isset($value['read']) || $value['read'] === '' || $value['read'] === null) {
@@ -140,6 +140,6 @@ class PermissionTransformer implements DataTransformerInterface
      */
     protected function getPermissionClass()
     {
-        return CommonPermission::class;
+        return Permission::class;
     }
 }

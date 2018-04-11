@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Document\Channel\Embedded;
+namespace Integrated\Bundle\ContentBundle\Document\Permission\Embedded;
 
-use Integrated\Common\Content\Permission as CommonPermission;
+use Integrated\Common\Security\Permission as CommonPermission;
 
 class Permission extends CommonPermission
 {

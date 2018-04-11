@@ -91,11 +91,7 @@ class ChannelType extends AbstractType
             ]
         );
 
-        $builder->add('permissions', ChannelPermissionsType::class, [
-            'required' => false,
-            'read-label' => 'Read access',
-            'write-label' => 'Write access',
-        ]);
+        $builder->add('permissions', PermissionsType::class);
     }
 
     /**

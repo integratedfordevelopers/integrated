@@ -43,6 +43,8 @@ class ContentTypeFormType extends AbstractType
 
             $builder->add($ype);
         }
+
+        $builder->add('permissions', PermissionsType::class);
     }
 
     /**

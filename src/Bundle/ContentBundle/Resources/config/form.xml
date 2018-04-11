@@ -179,7 +179,7 @@
             <tag name="form.type" />
         </service>
 
-        <service id="integrated_content.form.type.channel_permissions" class="Integrated\Bundle\ContentBundle\Form\Type\ChannelPermissionsType">
+        <service id="integrated_content.form.type.channel_permissions" class="Integrated\Bundle\ContentBundle\Form\Type\PermissionsType">
             <argument type="service" id="integrated_user.repository.group" />
             <tag name="form.type" />
         </service>
