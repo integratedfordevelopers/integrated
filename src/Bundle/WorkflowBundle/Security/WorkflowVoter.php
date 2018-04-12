@@ -168,6 +168,11 @@ class WorkflowVoter implements VoterInterface
             }
         }
 
+        if (!count($permissionAccess)) {
+            // No permissions available
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
+
         // security checks are group based so deny every token class that
         // does not support groups.
 
