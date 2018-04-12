@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\WorkflowBundle\Entity\Definition;
 
 use Doctrine\ORM\Event\PreFlushEventArgs;
-use Integrated\Common\Content\Permission as CommonPermission;
+use Integrated\Common\Security\Permission as CommonPermission;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

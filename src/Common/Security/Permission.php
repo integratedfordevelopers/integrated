@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Common\Content;
+namespace Integrated\Common\Security;
 
 use Integrated\Bundle\UserBundle\Model\GroupInterface;
 

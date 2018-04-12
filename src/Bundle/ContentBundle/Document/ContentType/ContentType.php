@@ -15,6 +15,7 @@ use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\ContentType\ContentTypeFieldInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
+use Integrated\Common\Security\PermissionTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,6 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ContentType implements ContentTypeInterface
 {
+    use PermissionTrait;
+
     /**
      * @var string
      * @Slug(fields={"name"}, separator="_")

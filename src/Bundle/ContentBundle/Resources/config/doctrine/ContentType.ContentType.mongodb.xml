@@ -19,6 +19,11 @@
             <default-discriminator-value value="default" />
         </embed-many>
 
+        <embed-many
+                field="permissions"
+                target-document="Integrated\Bundle\ContentBundle\Document\Permission\Embedded\Permission"
+        />
+
     </document>
 
 </doctrine-mongo-mapping>

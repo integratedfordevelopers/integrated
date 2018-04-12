@@ -59,6 +59,12 @@ $(document).ready(function () {
     //Select 2 initial
     $(".basic-multiple").select2();
 
+    $('select.select2').each(function() {
+        $(this).select2({
+            placeholder: $(this).data('placeholder')
+        });
+    });
+
     $('.btn_show_more').on('click', function(e){
         e.preventDefault();
         $(this).closest('.filters_list').find('.to_show').slideToggle(200);

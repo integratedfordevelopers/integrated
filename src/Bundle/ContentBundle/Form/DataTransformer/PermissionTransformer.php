@@ -11,11 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
-use Integrated\Bundle\ContentBundle\Document\Channel\Embedded\Permission;
-use Integrated\Common\Content\Permission as CommonPermission;
-use Integrated\Common\Form\DataTransformer\PermissionTransformer;
+use Integrated\Bundle\ContentBundle\Document\Permission\Embedded\Permission;
+use Integrated\Common\Form\DataTransformer\PermissionTransformer as BasePermissionTransformer;
 
-class ChannelPermissionTransformer extends PermissionTransformer
+class PermissionTransformer extends BasePermissionTransformer
 {
     /**
      * @return string

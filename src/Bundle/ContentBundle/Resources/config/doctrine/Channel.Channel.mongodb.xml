@@ -25,7 +25,7 @@
 
         <embed-many
                 field="permissions"
-                target-document="Integrated\Bundle\ContentBundle\Document\Channel\Embedded\Permission"
+                target-document="Integrated\Bundle\ContentBundle\Document\Permission\Embedded\Permission"
         />
 
         <lifecycle-callbacks>

@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Form\DataTransformer;
 
-use Integrated\Common\Content\Permission as CommonPermission;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 use Integrated\Common\Form\DataTransformer\PermissionTransformer as CommonPermissionTransformer;
 
