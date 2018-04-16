@@ -25,6 +25,7 @@
 
         <service id="integrated_content.form.channel.listener" class="Integrated\Bundle\ContentBundle\EventListener\ContentChannelIntegrationListener">
             <argument type="service" id="integrated_content.form.channel.repository" />
+            <argument type="service" id="security.authorization_checker" />
 
             <tag name="integrated_content.form.event_subscriber" />
         </service>
