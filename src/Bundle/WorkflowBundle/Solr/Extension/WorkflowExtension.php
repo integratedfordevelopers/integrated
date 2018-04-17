@@ -66,11 +66,21 @@ class WorkflowExtension implements TypeExtensionInterface
         $container->remove('security_workflow_read');
         $container->remove('security_workflow_write');
 
-        if (!$state = $this->getState($data)) {
-            return; // got no workflow
+        if (!$contentType = $this->resolver->getType($data->getContentType())) {
+            return; // got no content type
         }
 
-        foreach ($state->getPermissions() as $permission) {
+        $permissions = $contentType->getPermissions();
+        $state = $this->getState($data);
+
+        if ($state) {
+            $container->add('workflow_state', $state->getName());
+            $container->add('facet_workflow_state', $state->getName());
+
+            $permissions = $state->getPermissions();
+        }
+
+        foreach ($permissions as $permission) {
             if ($permission->hasMask($permission::READ)) {
                 $container->add('security_workflow_read', $permission->getGroup());
             }
@@ -80,9 +90,6 @@ class WorkflowExtension implements TypeExtensionInterface
             }
         }
 
-        $container->add('workflow_state', $state->getName());
-        $container->add('facet_workflow_state', $state->getName());
-
         if ($assignee = $this->getAssigned($data)) {
             if ($assignee instanceof User) {
                 if ($relation = $assignee->getRelation()) {
@@ -91,6 +98,7 @@ class WorkflowExtension implements TypeExtensionInterface
                         $container->add('facet_workflow_assigned', $relation->getFirstname().' '.$relation->getLastname());
                     }
                 }
+
                 $container->add('workflow_assigned_id', $assignee->getId());
                 $container->add('facet_workflow_assigned_id', $assignee->getId());
             }

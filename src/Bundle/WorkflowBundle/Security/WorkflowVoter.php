@@ -128,16 +128,16 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $type = $this->getContentType($object->getContentType());
+        $contentType = $this->getContentType($object->getContentType());
 
-        if (!$type || (!$type->hasOption('workflow') && !count($type->getPermissions()))) {
+        if (!$contentType || (!$contentType->hasOption('workflow') && !count($contentType->getPermissions()))) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $permissionAccess = $type->getPermissions();
+        $permissionAccess = $contentType->getPermissions();
 
-        if ($type->getOption('workflow')) {
-            $workflow = $this->getWorkflow($type->getOption('workflow'));
+        if ($contentType->hasOption('workflow')) {
+            $workflow = $this->getWorkflow($contentType->getOption('workflow'));
 
             if (!$workflow) {
                 return VoterInterface::ACCESS_ABSTAIN;
