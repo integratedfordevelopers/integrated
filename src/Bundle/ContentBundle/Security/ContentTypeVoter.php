@@ -11,8 +11,9 @@
 
 namespace Integrated\Bundle\ContentBundle\Security;
 
-use Integrated\Bundle\UserBundle\Model\User;
-use Integrated\Common\Channel\ChannelInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
+use Integrated\Bundle\WorkflowBundle\Entity\Definition;
+use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Security\Permission;
 use Integrated\Common\Security\Resolver\PermissionResolver;
@@ -20,12 +21,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
-class ChannelVoter implements VoterInterface
+class ContentTypeVoter implements VoterInterface
 {
     /**
      * @var ResolverInterface
      */
     private $resolver;
+
+    /**
+     * @var ObjectRepository
+     */
+    private $repository;
 
     /**
      * @var array
@@ -34,11 +40,13 @@ class ChannelVoter implements VoterInterface
 
     /**
      * @param ResolverInterface $resolver
+     * @param ObjectRepository $repository
      * @param array $permissions
      */
-    public function __construct(ResolverInterface $resolver, array $permissions = [])
+    public function __construct(ResolverInterface $resolver, ObjectRepository $repository, array $permissions = [])
     {
         $this->resolver = $resolver;
+        $this->repository = $repository;
         $this->permissions = $this->getOptionsResolver()->resolve($permissions);
     }
 
@@ -67,17 +75,13 @@ class ChannelVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function vote(TokenInterface $token, $channel, array $attributes)
+    public function vote(TokenInterface $token, $contentType, array $attributes)
     {
-        if (!$channel instanceof ChannelInterface) {
+        if (!$contentType instanceof ContentTypeInterface) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        if (!count($channel->getPermissions())) {
-            return VoterInterface::ACCESS_GRANTED;
-        }
-
-        /** @var User $user */
+        /** @var \Integrated\Bundle\UserBundle\Model\User $user */
         $user = $token->getUser();
 
         foreach ($user->getRoles() as $role) {
@@ -86,7 +90,23 @@ class ChannelVoter implements VoterInterface
             }
         }
 
-        $permissions = PermissionResolver::getPermissions($user, $channel->getPermissions());
+        $workflowId = $contentType->getOption('workflow');
+        $permissionGroups = $contentType->getPermissions();
+
+        if ($workflowId) {
+            /** @var Definition $workflow */
+            $workflow = $this->repository->find($workflowId);
+            $state = $workflow->getDefault();
+
+            $permissionGroups = $state->getPermissions();
+        }
+
+        if (!count($permissionGroups)) {
+            // No permissions available
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
+        $permissions = PermissionResolver::getPermissions($user, $permissionGroups);
         $result = VoterInterface::ACCESS_ABSTAIN;
 
         foreach ($attributes as $attribute) {
@@ -97,7 +117,7 @@ class ChannelVoter implements VoterInterface
             $result = VoterInterface::ACCESS_GRANTED;
 
             if ($this->permissions['read'] == $attribute) {
-                if (!$permissions['read'] && !$permissions['write']) {
+                if (!$permissions['read']) {
                     return VoterInterface::ACCESS_DENIED;
                 }
             }

@@ -12,8 +12,9 @@
 namespace Integrated\Bundle\ContentBundle\Menu;
 
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
-use Integrated\Common\ContentType\ContentTypeFilterInterface;
+use Integrated\Common\Security\Permission;
 use Knp\Menu\FactoryInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -35,23 +36,23 @@ class ContentTypeMenuBuilder
     protected $contentTypeManager;
 
     /**
-     * @var ContentTypeFilterInterface
+     * @var AuthorizationCheckerInterface
      */
-    protected $workflowPermission;
+    protected $authorizationChecker;
 
     /**
-     * @param FactoryInterface           $factory
-     * @param ContentTypeManager         $contentTypeManager
-     * @param ContentTypeFilterInterface $workflowPermission
+     * @param FactoryInterface $factory
+     * @param ContentTypeManager $contentTypeManager
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
         FactoryInterface $factory,
         ContentTypeManager $contentTypeManager,
-        ContentTypeFilterInterface $workflowPermission = null
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->factory = $factory;
         $this->contentTypeManager = $contentTypeManager;
-        $this->workflowPermission = $workflowPermission;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -65,10 +66,11 @@ class ContentTypeMenuBuilder
 
         foreach ($this->group($contentTypes) as $key => $documents) {
             $child = $menu->addChild($key);
+            $hasItems = false;
 
             /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType $document */
             foreach ($documents as $document) {
-                if ($this->workflowPermission !== null && !$this->workflowPermission->hasAccess($document)) {
+                if (!$this->authorizationChecker->isGranted(Permission::WRITE, $document)) {
                     continue;
                 }
 
@@ -76,6 +78,12 @@ class ContentTypeMenuBuilder
                     $document->getName(),
                     ['route' => self::ROUTE, 'routeParameters' => ['type' => $document->getId()]]
                 );
+
+                $hasItems = true;
+            }
+
+            if (!$hasItems) {
+                $menu->removeChild($key);
             }
         }
 

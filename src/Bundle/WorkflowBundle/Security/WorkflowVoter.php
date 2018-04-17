@@ -27,6 +27,7 @@ use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 use Integrated\Common\Security\Permissions;
+use Integrated\Common\Security\Resolver\PermissionResolver;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -118,6 +119,15 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
+        /** @var User $user */
+        $user = $token->getUser();
+
+        foreach ($user->getRoles() as $role) {
+            if ($role == 'ROLE_ADMIN') {
+                return VoterInterface::ACCESS_GRANTED;
+            }
+        }
+
         // first check if the object has a workflow connected to it and check
         // if the workflow even exists. If any of those condition are negative
         // then the voter wil abstain from voting.
@@ -134,7 +144,7 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $permissionAccess = $contentType->getPermissions();
+        $permissionGroups = $contentType->getPermissions();
 
         if ($contentType->hasOption('workflow')) {
             $workflow = $this->getWorkflow($contentType->getOption('workflow'));
@@ -164,13 +174,13 @@ class WorkflowVoter implements VoterInterface
 
             if (count($state->getPermissions())) {
                 // Workflow permissions overrules content type permissions
-                $permissionAccess = $state->getPermissions();
+                $permissionGroups = $state->getPermissions();
             }
         }
 
-        if (!count($permissionAccess)) {
+        if (!count($permissionGroups)) {
             // No permissions available
-            return VoterInterface::ACCESS_ABSTAIN;
+            return VoterInterface::ACCESS_GRANTED;
         }
 
         // security checks are group based so deny every token class that
@@ -188,7 +198,7 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $permissions = $this->getPermissions($token->getUser(), $permissionAccess);
+        $permissions = PermissionResolver::getPermissions($token->getUser(), $permissionGroups);
         $isAssigned = $this->isAssigned($token->getUser(), $object);
 
         // check the permissions: create requires write permission, view
@@ -283,42 +293,6 @@ class WorkflowVoter implements VoterInterface
         }
 
         return $result;
-    }
-
-    /**
-     * @param GroupableInterface $user
-     * @param \Integrated\Common\Security\Permission[] $permissions
-     *
-     * @return array
-     */
-    protected function getPermissions(GroupableInterface $user, $permissions)
-    {
-        $groups = [];
-
-        foreach ($user->getGroups() as $group) {
-            $groups[$group->getId()] = $group->getId(); // create lookup table
-        }
-
-        $mask = 0;
-
-        if ($groups) {
-            $maskAll = Permission::READ | Permission::WRITE;
-
-            foreach ($permissions as $permission) {
-                if (isset($groups[$permission->getGroup()])) {
-                    $mask = $mask | ($maskAll & $permission->getMask());
-
-                    if ($mask == $maskAll) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        return [
-            'read' => (bool) ($mask & Permission::READ),
-            'write' => (bool) ($mask & Permission::WRITE),
-        ];
     }
 
     /**

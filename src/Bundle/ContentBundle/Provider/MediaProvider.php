@@ -14,7 +14,8 @@ namespace Integrated\Bundle\ContentBundle\Provider;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Filter\ContentTypeFilter;
-use Integrated\Bundle\WorkflowBundle\Services\WorkflowPermission;
+use Integrated\Common\Security\Permission;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @author Johnny Borg <johnny@e-active.nl>
@@ -27,18 +28,20 @@ class MediaProvider
     private $contentTypeManager;
 
     /**
-     * @var WorkflowPermission
+     * @var AuthorizationCheckerInterface
      */
-    private $permission;
+    private $authorizationChecker;
 
     /**
      * @param ContentTypeManager $contentTypeManager
-     * @param WorkflowPermission $permission
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(ContentTypeManager $contentTypeManager, WorkflowPermission $permission = null)
-    {
+    public function __construct(
+        ContentTypeManager $contentTypeManager,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
         $this->contentTypeManager = $contentTypeManager;
-        $this->permission = $permission;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -52,9 +55,7 @@ class MediaProvider
 
         foreach ($this->contentTypeManager->filterInstanceOf(File::class) as $contentType) {
             if (ContentTypeFilter::match($contentType->getClass(), $filter)) {
-                if (null == $this->permission) {
-                    $contentTypes[] = $contentType;
-                } elseif ($this->permission->hasAccess($contentType)) {
+                if ($this->authorizationChecker->isGranted(Permission::WRITE, $contentType)) {
                     $contentTypes[] = $contentType;
                 }
             }
