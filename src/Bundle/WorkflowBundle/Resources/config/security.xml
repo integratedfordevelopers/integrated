@@ -14,8 +14,8 @@
 
 		<service id="integrated_workflow.security.voter.workflow" class="%integrated_workflow.security.voter.workflow.class%">
 			<argument type="service" id="doctrine" on-invalid="ignore" />
-			<argument type="service" id="integrated_content.resolver.priority"/>
-			<argument type="service" id="integrated_content.metadata.factory"/>
+			<argument type="service" id="integrated_content.resolver.priority" />
+			<argument type="service" id="integrated_content.metadata.factory" />
 
 			<tag name="security.voter" />
 		</service>

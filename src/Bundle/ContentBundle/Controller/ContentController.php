@@ -17,6 +17,7 @@ use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\ActionsType;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
+use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Form\ContentFormType;
@@ -187,31 +188,43 @@ class ContentController extends Controller
                 }
             }
 
-            // allow content without workflow
-            $fq = $query->createFilterQuery('workflow')
-                ->addTag('workflow')
-                ->addTag('security')
-                ->setQuery('(*:* -security_workflow_read:[* TO *])');
+            $isAdmin = false;
 
-            // allow content with group access
-            if ($filterWorkflow) {
-                $fq->setQuery(
-                    $fq->getQuery().' OR security_workflow_read: ((%1%))',
-                    [implode(') OR (', $filterWorkflow)]
-                );
+            if ($user instanceof User) {
+                foreach ($user->getRoles() as $role) {
+                    if ($role == 'ROLE_ADMIN') {
+                        $isAdmin = true;
+                    }
+                }
             }
 
-            // always allow access to assinged content
-            $fq->setQuery(
-                $fq->getQuery().' OR facet_workflow_assigned_id: %1%',
-                [$user->getId()]
-            );
+            if (!$isAdmin) {
+                // allow content without workflow
+                $fq = $query->createFilterQuery('workflow')
+                    ->addTag('workflow')
+                    ->addTag('security')
+                    ->setQuery('(*:* -security_workflow_read:[* TO *])');
 
-            if ($person = $user->getRelation()) {
+                // allow content with group access
+                if ($filterWorkflow) {
+                    $fq->setQuery(
+                        $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
+                        [implode(') OR (', $filterWorkflow)]
+                    );
+                }
+
+                // always allow access to assigned content
                 $fq->setQuery(
-                    $fq->getQuery().' OR author: %1%*',
-                    [$person->getId()]
+                    $fq->getQuery() . ' OR facet_workflow_assigned_id: %1%',
+                    [$user->getId()]
                 );
+
+                if ($person = $user->getRelation()) {
+                    $fq->setQuery(
+                        $fq->getQuery() . ' OR author: %1%*',
+                        [$person->getId()]
+                    );
+                }
             }
         }
 

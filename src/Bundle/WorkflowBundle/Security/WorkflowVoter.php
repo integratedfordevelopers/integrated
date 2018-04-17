@@ -18,7 +18,6 @@ use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\User;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
-use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\Registry;

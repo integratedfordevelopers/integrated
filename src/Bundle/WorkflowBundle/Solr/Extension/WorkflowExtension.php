@@ -77,7 +77,10 @@ class WorkflowExtension implements TypeExtensionInterface
             $container->add('workflow_state', $state->getName());
             $container->add('facet_workflow_state', $state->getName());
 
-            $permissions = $state->getPermissions();
+            if (count($state->getPermissions())) {
+                // Workflow permissions overrules content type permissions
+                $permissions = $state->getPermissions();
+            }
         }
 
         foreach ($permissions as $permission) {
