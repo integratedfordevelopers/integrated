@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<content_types>
+
+    <content_type>
+        <id>article</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Article</class>
+        <name>Article</name>
+    </content_type>
+
+    <content_type>
+        <id>blog</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Article</class>
+        <name>Blog</name>
+    </content_type>
+
+    <content_type>
+        <id>comment</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Comment</class>
+        <name>Comment</name>
+    </content_type>
+
+    <content_type>
+        <id>event</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Event</class>
+        <name>Event</name>
+    </content_type>
+
+    <content_type>
+        <id>file</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\File</class>
+        <name>File</name>
+    </content_type>
+
+    <content_type>
+        <id>image</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Image</class>
+        <name>Image</name>
+    </content_type>
+
+    <content_type>
+        <id>news</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\News</class>
+        <name>News</name>
+    </content_type>
+
+    <content_type>
+        <id>taxonomy</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Taxonomy</class>
+        <name>Taxonomy</name>
+    </content_type>
+
+    <content_type>
+        <id>video</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Video</class>
+        <name>Video</name>
+    </content_type>
+
+    <content_type>
+        <id>company</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Relation\Company</class>
+        <name>Company</name>
+    </content_type>
+
+    <content_type>
+        <id>author</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Relation\Author</class>
+        <name>Author</name>
+    </content_type>
+
+    <content_type>
+        <id>employee</id>
+        <class>Integrated\Bundle\ContentBundle\Document\Content\Relation\Employee</class>
+        <name>Employee</name>
+    </content_type>
+
+</content_types>
