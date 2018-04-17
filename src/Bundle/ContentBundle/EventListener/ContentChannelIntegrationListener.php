@@ -15,11 +15,14 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelDefaultDataListener;
 use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelEnforcerListener;
+use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelPermissionListener;
 use Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
+use Integrated\Common\Content\Permission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -32,11 +35,18 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
     private $repository;
 
     /**
-     * @param ObjectRepository $repository
+     * @var AuthorizationCheckerInterface
      */
-    public function __construct(ObjectRepository $repository)
+    private $authorizationChecker;
+
+    /**
+     * @param ObjectRepository $repository
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     */
+    public function __construct(ObjectRepository $repository, AuthorizationCheckerInterface $authorizationChecker)
     {
         $this->repository = $repository;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -85,15 +95,27 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
 
             $enforce = [];
             $default = [];
+            $notPermitted = [];
 
             foreach ($choices as $index => $value) {
+                $authorizedRead = $this->authorizationChecker->isGranted(Permission::READ, $value);
+                $authorizedWrite = $this->authorizationChecker->isGranted(Permission::WRITE, $value);
+
                 if (isset($channels[$value->getId()])) {
                     if ($channels[$value->getId()]) {
                         $enforce[$value->getId()] = $value;
-                        unset($choices[$index]); // filter out the enforced channels
-                    } else {
+                        $default[$value->getId()] = $value;
+                    } elseif ($authorizedWrite) {
                         $default[$value->getId()] = $value;
                     }
+                }
+
+                if (!$authorizedWrite) {
+                    $notPermitted[$value->getId()] = $value;
+                }
+
+                if (!$authorizedRead && !isset($enforce[$value->getId()])) {
+                    unset($choices[$index]);
                 }
             }
 
@@ -114,11 +136,19 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
                     'multiple' => true,
                     'expanded' => true,
                     'attr' => ['class' => 'channel-options'],
+                    'choice_attr' => function ($value) use ($enforce) {
+                        if ($value instanceof Channel && (isset($enforce[$value->getId()]) || !$this->authorizationChecker->isGranted(Permission::WRITE, $value))) {
+                            return ['disabled' => 'disabled'];
+                        }
+
+                        return [];
+                    }
                 ]);
 
                 $builder->add('primaryChannel', PrimaryChannelType::class);
 
                 $builder->addEventSubscriber(new ChannelDefaultDataListener($default));
+                $builder->addEventSubscriber(new ChannelPermissionListener($notPermitted));
             }
 
             $builder->addEventSubscriber(new ChannelEnforcerListener($enforce, $operand));

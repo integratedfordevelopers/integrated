@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-		   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		   xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-	<parameters>
+    <parameters>
 
-		<parameter key="integrated_content.security.voter.permissions.class">Integrated\Bundle\ContentBundle\Security\StaticPermissionVoter</parameter>
+        <parameter key="integrated_content.security.voter.permissions.class">Integrated\Bundle\ContentBundle\Security\StaticPermissionVoter</parameter>
 
-	</parameters>
+    </parameters>
 
-	<services>
+    <services>
 
-		<service id="integrated_content.security.voter.permissions" class="%integrated_content.security.voter.permissions.class%">
-			<tag name="security.voter" />
-		</service>
+        <service id="integrated_content.security.voter.permissions" class="%integrated_content.security.voter.permissions.class%">
+            <tag name="security.voter" />
+        </service>
 
-	</services>
+        <service id="integrated_content.security.voter.channel" class="Integrated\Bundle\ContentBundle\Security\ChannelVoter">
+            <argument type="service" id="integrated_content.resolver.priority"/>
+
+            <tag name="security.voter" />
+        </service>
+
+    </services>
 
 </container>
