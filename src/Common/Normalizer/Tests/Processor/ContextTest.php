@@ -14,7 +14,7 @@ namespace Integrated\Common\Normalizer\Tests\Processor;
 use Integrated\Common\Normalizer\Processor\Context;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessorInterface;
 use Integrated\Common\Normalizer\Processor\ResolverInterface;
-use stdClass as Object;
+use stdClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -61,7 +61,7 @@ class ContextTest extends \PHPUnit\Framework\TestCase
 
     public function testNormalize()
     {
-        $object = new Object();
+        $object = new stdClass();
         $options = [
             'key1' => 'value1',
             'key2' => 'value2',

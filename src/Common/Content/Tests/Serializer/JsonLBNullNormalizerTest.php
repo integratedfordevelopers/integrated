@@ -12,8 +12,8 @@
 namespace Integrated\Common\Content\Tests\Serializer;
 
 use Integrated\Common\Content\Serializer\JsonLBNullNormalizer;
-use stdClass as Object;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use stdClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -27,7 +27,7 @@ class JsonLBNullNormalizerTest extends \PHPUnit\Framework\TestCase
 
     public function testNormalize()
     {
-        self::assertNull($this->getInstance()->normalize(new Object(), 'json-ld'));
+        self::assertNull($this->getInstance()->normalize(new stdClass(), 'json-ld'));
         self::assertNull($this->getInstance()->normalize(null, 'json-ld'));
     }
 
@@ -35,8 +35,8 @@ class JsonLBNullNormalizerTest extends \PHPUnit\Framework\TestCase
     {
         $normalizer = $this->getInstance();
 
-        self::assertTrue($normalizer->supportsNormalization(new Object(), 'json-ld'));
-        self::assertFalse($normalizer->supportsNormalization(new Object(), 'json'));
+        self::assertTrue($normalizer->supportsNormalization(new stdClass(), 'json-ld'));
+        self::assertFalse($normalizer->supportsNormalization(new stdClass(), 'json'));
     }
 
     /**

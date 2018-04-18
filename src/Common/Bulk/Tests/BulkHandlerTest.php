@@ -19,7 +19,7 @@ use Integrated\Common\Bulk\BulkHandler;
 use Integrated\Common\Bulk\BulkHandlerInterface;
 use Integrated\Common\Bulk\Exception\InvalidArgumentException;
 use Integrated\Common\Content\ContentInterface;
-use stdClass as Object;
+use stdClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -98,7 +98,7 @@ class BulkHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Integrated\Common\Bulk\Exception\UnexpectedTypeException::class);
 
-        $this->getInstance()->execute([new Object()], []);
+        $this->getInstance()->execute([new stdClass()], []);
     }
 
     public function testExecuteInvalidActions()
@@ -112,7 +112,7 @@ class BulkHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\Integrated\Common\Bulk\Exception\UnexpectedTypeException::class);
 
-        $this->getInstance()->execute([], [new Object()]);
+        $this->getInstance()->execute([], [new stdClass()]);
     }
 
     public function testExecuteActionNotFound()

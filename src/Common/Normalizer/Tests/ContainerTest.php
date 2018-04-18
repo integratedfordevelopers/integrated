@@ -13,7 +13,7 @@ namespace Integrated\Common\Normalizer\Tests;
 
 use Integrated\Common\Normalizer\Container;
 use Integrated\Common\Normalizer\ContainerInterface;
-use stdClass as Object;
+use stdClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -58,7 +58,7 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Integrated\Common\Normalizer\Exception\ExceptionInterface::class);
 
         $container = $this->getInstance();
-        $container->add('key', new Object());
+        $container->add('key', new stdClass());
     }
 
     public function testSetAndGet()
@@ -84,7 +84,7 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
         $this->expectException(\Integrated\Common\Normalizer\Exception\ExceptionInterface::class);
 
         $container = $this->getInstance();
-        $container->set('key', new Object());
+        $container->set('key', new stdClass());
     }
 
     public function testAddAndSetOverwrite()
