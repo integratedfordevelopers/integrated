@@ -192,7 +192,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
 
         $this->authorizationChecker
             ->expects($this->exactly(3))
-            ->method('hasAccess')
+            ->method('isGranted')
             ->willReturnOnConsecutiveCalls(
                 true,
                 false,
@@ -274,10 +274,19 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
      */
     protected function getInstance($withFilter = false)
     {
-        return new ContentTypeMenuBuilder(
+        $builder = new ContentTypeMenuBuilder(
             $this->factory,
             $this->contentTypeManager,
-            $withFilter ? $this->authorizationChecker : null
+            $this->authorizationChecker
         );
+
+        if (!$withFilter) {
+            $this->authorizationChecker
+                ->method('isGranted')
+                ->willReturn(true)
+            ;
+        }
+
+        return $builder;
     }
 }
