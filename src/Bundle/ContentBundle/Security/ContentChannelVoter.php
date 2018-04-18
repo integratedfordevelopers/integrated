@@ -94,12 +94,27 @@ class ContentChannelVoter implements VoterInterface
             }
 
             $result = VoterInterface::ACCESS_GRANTED;
-            $permission = $this->permissions['view'] == $attribute ? Permission::READ : Permission::WRITE;
 
-            foreach ($content->getChannels() as $channel) {
-                if (!$this->decisionManager->decide($token, [$permission], $channel)) {
-                    return VoterInterface::ACCESS_DENIED;
-                }
+            switch ($attribute) {
+                case $this->permissions['view']:
+                    foreach ($content->getChannels() as $channel) {
+                        if ($this->decisionManager->decide($token, [Permission::READ], $channel)) {
+                            // Being in one of the group is enough to read
+                            return VoterInterface::ACCESS_GRANTED;
+                        }
+                    }
+                    break;
+
+                case $this->permissions['create']:
+                case $this->permissions['edit']:
+                case $this->permissions['delete']:
+                    foreach ($content->getChannels() as $channel) {
+                        if (!$this->decisionManager->decide($token, [Permission::WRITE], $channel)) {
+                            // Need all channels to write
+                            return VoterInterface::ACCESS_DENIED;
+                        }
+                    }
+                    break;
             }
         }
 

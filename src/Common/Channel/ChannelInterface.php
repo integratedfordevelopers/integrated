@@ -35,7 +35,7 @@ interface ChannelInterface
     public function getName();
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection | \Integrated\Common\Security\Permission[]
      */
     public function getPermissions();
 }
