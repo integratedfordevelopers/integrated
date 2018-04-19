@@ -91,6 +91,10 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             ->with('workflow')
             ->willReturn($exists);
 
+        $type->expects($this->any())
+            ->method('getPermissions')
+            ->willReturn([]);
+
         if ($exists) {
             $type->expects($this->atLeastOnce())
                 ->method('getOption')
@@ -545,7 +549,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
         $user = $this->getUser();
         $state = $this->getState([
             $this->getPermission('group', true, true),
-        ], true);
+        ]);
 
         $this->assertEquals(['read' => false, 'write' => false], $this->getInstance()->getPermissions($user, $state));
     }
@@ -591,6 +595,10 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
         $mock->expects($groups ? $this->atLeastOnce() : $this->any())
             ->method('getGroups')
             ->willReturn($groups);
+
+        $mock->expects($this->any())
+            ->method('getRoles')
+            ->willReturn([]);
 
         return $mock;
     }

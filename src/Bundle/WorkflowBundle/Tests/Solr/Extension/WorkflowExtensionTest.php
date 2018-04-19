@@ -135,7 +135,7 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
     {
         $container = $this->getContainer();
 
-        $this->resolver->expects($this->atLeastOnce())
+        $this->resolver->expects($this->never())
             ->method('hasType')
             ->willReturn(false);
 
@@ -158,7 +158,7 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
             ->method('hasType')
             ->willReturn(true);
 
-        $this->resolver->expects($this->once())
+        $this->resolver->expects($this->atLeastOnce())
             ->method('getType')
             ->with($this->equalTo('this-is-the-content-type'))
             ->willReturn($this->getContentType());
@@ -252,7 +252,7 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
             ->with($this->equalTo('this-is-the-content-type'))
             ->willReturn($this->getContentType('this-is-the-workflow-id'));
 
-        $this->workflow->expects($this->once())
+        $this->workflow->expects($this->atLeastOnce())
             ->method('findOneBy')
             ->with($this->identicalTo(['content' => $content]))
             ->willReturn(null);
@@ -276,12 +276,12 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
             ->method('hasType')
             ->willReturn(true);
 
-        $this->resolver->expects($this->once())
+        $this->resolver->expects($this->atLeastOnce())
             ->method('getType')
             ->with($this->equalTo('this-is-the-content-type'))
             ->willReturn($this->getContentType('this-is-the-workflow-id'));
 
-        $this->workflow->expects($this->once())
+        $this->workflow->expects($this->atLeastOnce())
             ->method('findOneBy')
             ->with($this->identicalTo(['content' => $content]))
             ->willReturn(null);
@@ -303,7 +303,7 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
         $container->set('security_workflow_read', 'this-should-be-removed');
         $container->set('security_workflow_write', 'this-should-be-removed');
 
-        $this->resolver->expects($this->atLeastOnce())
+        $this->resolver->expects($this->never())
             ->method('hasType')
             ->willReturn(false);
 
@@ -350,6 +350,10 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
             ->method('getOption')
             ->with($this->equalTo('workflow'))
             ->willReturn($workflow);
+
+        $mock->expects($this->any())
+            ->method('getPermissions')
+            ->willReturn([]);
 
         return $mock;
     }

@@ -14,6 +14,7 @@ namespace Integrated\Bundle\WorkflowBundle\Tests\Security\Mock;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Security\WorkflowVoter as BaseWorkflowVoter;
+use Integrated\Common\Security\Resolver\PermissionResolver;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -41,7 +42,7 @@ class WorkflowVoter extends BaseWorkflowVoter
         // permissions will be short circuited if set
 
         if ($this->permissions === null) {
-            return parent::getPermissions($user, $state);
+            return PermissionResolver::getPermissions($user, $state->getPermissions());
         }
 
         return $this->permissions;
