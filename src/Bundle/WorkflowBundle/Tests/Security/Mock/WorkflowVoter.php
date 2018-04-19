@@ -12,9 +12,10 @@
 namespace Integrated\Bundle\WorkflowBundle\Tests\Security\Mock;
 
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
+use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Bundle\WorkflowBundle\Security\WorkflowVoter as BaseWorkflowVoter;
-use Integrated\Common\Security\Resolver\PermissionResolver;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -31,18 +32,26 @@ class WorkflowVoter extends BaseWorkflowVoter
      */
     public $permissions = null;
 
+    /**
+     * @param ContentInterface $content
+     * @param Definition $workflow
+     * @return State
+     */
+    public function getState(ContentInterface $content, Definition $workflow)
+    {
+        return $this->state = parent::getState($content, $workflow);
+    }
+
     /*
      * Allows this function to be tested separably but also to override the result
      * it need to give to make testing on the permissions easier
      */
-    public function getPermissions(GroupableInterface $user, State $state)
+    public function getPermissions(GroupableInterface $user, $permissionGroups)
     {
-        $this->state = $state;
-
         // permissions will be short circuited if set
 
         if ($this->permissions === null) {
-            return PermissionResolver::getPermissions($user, $state->getPermissions());
+            return parent::getPermissions($user, $permissionGroups);
         }
 
         return $this->permissions;

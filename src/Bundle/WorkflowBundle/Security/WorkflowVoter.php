@@ -25,6 +25,7 @@ use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
+use Integrated\Common\Security\Permission;
 use Integrated\Common\Security\Permissions;
 use Integrated\Common\Security\Resolver\PermissionResolver;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -156,12 +157,7 @@ class WorkflowVoter implements VoterInterface
             // one or move conditions are negative then pick the default workflow
             // state to work with.
 
-            $state = $this->getState($object);
-
-            if (!$state || $state->getWorkflow() !== $workflow) {
-                $state = $workflow->getStates();
-                $state = array_shift($state); // there is no default (yet) so pick first one
-            }
+            $state = $this->getState($object, $workflow);
 
             if (!$state) {
                 // This should not happen as it should not be possible to create
@@ -197,7 +193,7 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $permissions = PermissionResolver::getPermissions($token->getUser(), $permissionGroups);
+        $permissions = $this->getPermissions($token->getUser(), $permissionGroups);
         $isAssigned = $this->isAssigned($token->getUser(), $object);
 
         // check the permissions: create requires write permission, view
@@ -280,10 +276,11 @@ class WorkflowVoter implements VoterInterface
 
     /**
      * @param ContentInterface $content
+     * @param Definition $workflow
      *
      * @return Definition\State
      */
-    protected function getState(ContentInterface $content)
+    protected function getState(ContentInterface $content, Definition $workflow)
     {
         $repository = $this->manager->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
 
@@ -291,7 +288,22 @@ class WorkflowVoter implements VoterInterface
             $result = $result->getState();
         }
 
+        if (!$result || $result->getWorkflow() !== $workflow) {
+            $result = $workflow->getStates();
+            $result = array_shift($result); // there is no default (yet) so pick first one
+        }
+
         return $result;
+    }
+
+    /**
+     * @param GroupableInterface $user
+     * @param Permission[] $permissionGroups
+     * @return array
+     */
+    protected function getPermissions(GroupableInterface $user, $permissionGroups)
+    {
+        return PermissionResolver::getPermissions($user, $permissionGroups);
     }
 
     /**
