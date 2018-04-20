@@ -47,10 +47,7 @@ class ContentTypeController extends Controller
      */
     public function indexAction()
     {
-        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $documents = $dm->getRepository($this->contentTypeClass)->findAll();
-
+        $documents = $this->get('integrated_content.content_type.manager')->getAll();
         $documentTypes = $this->getMetadata()->getAllMetadata();
 
         return $this->render('IntegratedContentBundle:content_type:index.html.twig', [

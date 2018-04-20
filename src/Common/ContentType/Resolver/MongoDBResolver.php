@@ -98,6 +98,6 @@ class MongoDBResolver implements ResolverInterface
      */
     public function getTypes()
     {
-        return new MongoDBIterator($this->repository->findAll());
+        return new MongoDBIterator($this->repository->findBy([], ['name' => 'ASC']));
     }
 }

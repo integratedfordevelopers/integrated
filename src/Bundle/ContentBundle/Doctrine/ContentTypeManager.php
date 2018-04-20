@@ -13,14 +13,20 @@ namespace Integrated\Bundle\ContentBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
+use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
+use Integrated\Common\ContentType\ResolverInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
  */
 class ContentTypeManager
 {
+    /**
+     * @var ResolverInterface
+     */
+    private $resolver;
+
     /**
      * @var ObjectManager
      */
@@ -32,23 +38,23 @@ class ContentTypeManager
     private $repository;
 
     /**
-     * @var ContentType[]|null
+     * @var ContentTypeInterface[]|null
      */
     protected $contentTypes = null;
 
     /**
-     * ContentTypeManager constructor.
-     *
+     * @param ResolverInterface $resolver
      * @param ObjectManager $om
      * @param $class
      */
-    public function __construct(ObjectManager $om, $class)
+    public function __construct(ResolverInterface $resolver, ObjectManager $om, $class)
     {
+        $this->resolver = $resolver;
         $this->om = $om;
         $this->repository = $this->om->getRepository($class);
 
-        if (!is_subclass_of($this->repository->getClassName(), 'Integrated\\Common\\ContentType\\ContentTypeInterface')) {
-            throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of Integrated\\Common\\ContentType\\ContentTypeInterface', $this->repository->getClassName()));
+        if (!is_subclass_of($this->repository->getClassName(), ContentTypeInterface::class)) {
+            throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of %s', $this->repository->getClassName(), ContentTypeInterface::class));
         }
     }
 
@@ -69,9 +75,8 @@ class ContentTypeManager
     }
 
     /**
-     * @param $className
-     *
-     * @return ContentType[]
+     * @param string $className
+     * @return ContentTypeInterface[]
      */
     public function filterInstanceOf($className)
     {
@@ -87,14 +92,28 @@ class ContentTypeManager
     }
 
     /**
-     * @return ContentType[]
+     * @return \Integrated\Common\ContentType\IteratorInterface|ContentTypeInterface[]
      */
     public function getAll()
     {
-        if (null === $this->contentTypes) {
-            $this->contentTypes = $this->repository->findBy([], ['name' => 'ASC']);
-        }
+        return $this->resolver->getTypes();
+    }
 
-        return $this->contentTypes;
+    /**
+     * @param string $type
+     * @return ContentTypeInterface
+     */
+    public function getType($type)
+    {
+        return $this->resolver->getType($type);
+    }
+
+    /**
+     * @param string $type
+     * @return bool
+     */
+    public function hasType($type)
+    {
+        return $this->resolver->hasType($type);
     }
 }

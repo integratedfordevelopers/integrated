@@ -87,7 +87,7 @@ class ContentTypeMenuBuilder
      *
      * @return array
      */
-    protected function group(array $result)
+    protected function group($result)
     {
         $menu = [];
 
