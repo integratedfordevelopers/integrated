@@ -1,77 +1,53 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<content_types>
+<content-types>
 
-    <content_type>
-        <id>article</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Article</class>
+    <content-type id="article" class="Integrated\Bundle\ContentBundle\Document\Content\Article">
         <name>Article</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>blog</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Article</class>
+    <content-type id="blog" class="Integrated\Bundle\ContentBundle\Document\Content\Article">
         <name>Blog</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>comment</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Comment</class>
+    <content-type id="comment" class="Integrated\Bundle\ContentBundle\Document\Content\Comment">
         <name>Comment</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>event</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Event</class>
+    <content-type id="event" class="Integrated\Bundle\ContentBundle\Document\Content\Event">
         <name>Event</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>file</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\File</class>
+    <content-type id="file" class="Integrated\Bundle\ContentBundle\Document\Content\File">
         <name>File</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>image</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Image</class>
+    <content-type id="image" class="Integrated\Bundle\ContentBundle\Document\Content\Image">
         <name>Image</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>news</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\News</class>
+    <content-type id="news" class="Integrated\Bundle\ContentBundle\Document\Content\News">
         <name>News</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>taxonomy</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Taxonomy</class>
+    <content-type id="taxonomy" class="Integrated\Bundle\ContentBundle\Document\Content\Taxonomy">
         <name>Taxonomy</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>video</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Video</class>
+    <content-type id="video" class="Integrated\Bundle\ContentBundle\Document\Content\Video">
         <name>Video</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>company</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Relation\Company</class>
+    <content-type id="company" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Company">
         <name>Company</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>author</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Relation\Author</class>
+    <content-type id="author" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Author">
         <name>Author</name>
-    </content_type>
+    </content-type>
 
-    <content_type>
-        <id>employee</id>
-        <class>Integrated\Bundle\ContentBundle\Document\Content\Relation\Employee</class>
+    <content-type id="employee" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Employee">
         <name>Employee</name>
-    </content_type>
+    </content-type>
 
-</content_types>
+</content-types>
