@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Security;
 
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
-use Integrated\Bundle\UserBundle\Model\User;
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Content\Permission;
 use Integrated\Common\ContentType\ResolverInterface;
@@ -39,7 +39,6 @@ class ChannelVoter implements VoterInterface
     public function __construct(ResolverInterface $resolver, array $permissions = [])
     {
         $this->resolver = $resolver;
-
         $this->permissions = $this->getOptionsResolver()->resolve($permissions);
     }
 
@@ -78,8 +77,10 @@ class ChannelVoter implements VoterInterface
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        /** @var User $user */
         $user = $token->getUser();
+        if (!$user instanceof UserInterface) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        };
 
         foreach ($user->getRoles() as $role) {
             if ($role == 'ROLE_ADMIN') {
@@ -120,7 +121,7 @@ class ChannelVoter implements VoterInterface
      *
      * @return array
      */
-    protected function getPermissions(GroupableInterface $user, ChannelInterface $channel)
+    private function getPermissions(GroupableInterface $user, ChannelInterface $channel)
     {
         $groups = [];
 
@@ -131,22 +132,16 @@ class ChannelVoter implements VoterInterface
         $mask = 0;
 
         if ($groups) {
-            $maskAll = Permission::READ | Permission::WRITE;
-
             foreach ($channel->getPermissions() as $permission) {
                 if (isset($groups[$permission->getGroup()])) {
-                    $mask = $mask | ($maskAll & $permission->getMask());
-
-                    if ($mask == $maskAll) {
-                        break;
-                    }
+                    $mask |= $permission->getMask();
                 }
             }
         }
 
         return [
-            'read' => (bool) ($mask & Permission::READ),
-            'write' => (bool) ($mask & Permission::WRITE),
+            'read' => (($mask & Permission::READ) === Permission::READ),
+            'write' => (($mask & Permission::WRITE) === Permission::WRITE),
         ];
     }
 }

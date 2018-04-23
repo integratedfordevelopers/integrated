@@ -21,14 +21,14 @@ class ChannelPermissionListener implements EventSubscriberInterface
     /**
      * @var Channel[]
      */
-    private $channels;
+    private $notPermittedChannels;
 
     /**
-     * @param Channel[] $channels
+     * @param Channel[] $notPermittedChannels
      */
-    public function __construct(array $channels)
+    public function __construct(array $notPermittedChannels)
     {
-        $this->channels = $channels;
+        $this->notPermittedChannels = $notPermittedChannels;
     }
 
     /**
@@ -46,7 +46,7 @@ class ChannelPermissionListener implements EventSubscriberInterface
      */
     public function onPreSubmit(FormEvent $event)
     {
-        if (!count($this->channels)) {
+        if (!count($this->notPermittedChannels)) {
             return;
         }
 
@@ -54,7 +54,7 @@ class ChannelPermissionListener implements EventSubscriberInterface
 
         if (isset($data['channels']) && is_array($data['channels'])) {
             foreach ($data['channels'] as $key => $value) {
-                if (isset($this->channels[$value])) {
+                if (isset($this->notPermittedChannels[$value])) {
                     unset($data['channels'][$key]);
                 }
             }

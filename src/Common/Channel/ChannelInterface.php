@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Channel;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Common\Content\PermissionInterface;
 
 /**
  * Interface for Channel documents.
@@ -35,7 +35,7 @@ interface ChannelInterface
     public function getName();
 
     /**
-     * @return ArrayCollection
+     * @return PermissionInterface[]
      */
     public function getPermissions();
 }
