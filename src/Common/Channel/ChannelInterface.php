@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Channel;
 
-use Integrated\Common\Content\PermissionInterface;
+use Integrated\Common\Security\PermissionInterface;
 
 /**
  * Interface for Channel documents.

@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Security;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Common\Channel\ChannelInterface;
-use Integrated\Common\Content\Permission;
+use Integrated\Common\Security\Permission;
 use Integrated\Common\ContentType\ResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
