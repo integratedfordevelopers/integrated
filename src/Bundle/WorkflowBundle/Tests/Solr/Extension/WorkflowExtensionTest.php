@@ -20,6 +20,7 @@ use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\Container;
 use Integrated\Common\Converter\ContainerInterface;
+use Integrated\Common\Security\PermissionInterface;
 use stdClass;
 
 /**
@@ -420,8 +421,8 @@ class WorkflowExtensionTest extends \PHPUnit\Framework\TestCase
         $mock->expects($this->exactly(2))
             ->method('hasMask')
             ->willReturnMap([
-                [Definition\Permission::READ, $read],
-                [Definition\Permission::WRITE, $write],
+                [PermissionInterface::READ, $read],
+                [PermissionInterface::WRITE, $write],
             ]);
 
         return $mock;

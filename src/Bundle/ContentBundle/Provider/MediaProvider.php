@@ -14,7 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Provider;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Filter\ContentTypeFilter;
-use Integrated\Common\Security\Permission;
+use Integrated\Common\Security\PermissionInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
@@ -55,7 +55,7 @@ class MediaProvider
 
         foreach ($this->contentTypeManager->filterInstanceOf(File::class) as $contentType) {
             if (ContentTypeFilter::match($contentType->getClass(), $filter)) {
-                if ($this->authorizationChecker->isGranted(Permission::WRITE, $contentType)) {
+                if ($this->authorizationChecker->isGranted(PermissionInterface::WRITE, $contentType)) {
                     $contentTypes[] = $contentType;
                 }
             }

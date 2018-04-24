@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Menu;
 
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
-use Integrated\Common\Security\Permission;
+use Integrated\Common\Security\PermissionInterface;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -70,7 +70,7 @@ class ContentTypeMenuBuilder
 
             /** @var \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType $document */
             foreach ($documents as $document) {
-                if (!$this->authorizationChecker->isGranted(Permission::WRITE, $document)) {
+                if (!$this->authorizationChecker->isGranted(PermissionInterface::WRITE, $document)) {
                     continue;
                 }
 

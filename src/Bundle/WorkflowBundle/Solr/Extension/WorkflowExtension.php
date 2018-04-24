@@ -14,12 +14,12 @@ namespace Integrated\Bundle\WorkflowBundle\Solr\Extension;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\User;
-use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
+use Integrated\Common\Security\PermissionInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -97,11 +97,11 @@ class WorkflowExtension implements TypeExtensionInterface
 
         foreach ($permissions as $permission) {
             if (!count($groups) || isset($groups[$permission->getGroup()])) {
-                if ($permission->hasMask($permission::READ)) {
+                if ($permission->hasMask(PermissionInterface::READ)) {
                     $container->add('security_workflow_read', $permission->getGroup());
                 }
 
-                if ($permission->hasMask($permission::WRITE)) {
+                if ($permission->hasMask(PermissionInterface::WRITE)) {
                     $container->add('security_workflow_write', $permission->getGroup());
                 }
             }

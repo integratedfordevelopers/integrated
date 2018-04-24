@@ -20,6 +20,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
+use Integrated\Common\Security\PermissionInterface;
 use Integrated\Common\Security\Permissions;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -668,8 +669,8 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             ->willReturn($group);
 
         $mask = 0;
-        $mask |= $read ? Permission::READ : 0;
-        $mask |= $write ? Permission::WRITE : 0;
+        $mask |= $read ? PermissionInterface::READ : 0;
+        $mask |= $write ? PermissionInterface::WRITE : 0;
 
         $mock->expects($this->any())
             ->method('getMask')

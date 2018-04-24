@@ -25,4 +25,11 @@ interface PermissionInterface
      * @return int
      */
     public function getMask();
+
+    /**
+     * @param int $mask
+     *
+     * @return bool
+     */
+    public function hasMask($mask);
 }
