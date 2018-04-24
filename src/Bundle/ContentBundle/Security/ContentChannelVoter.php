@@ -13,7 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Security;
 
 use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\ContentType\ResolverInterface;
-use Integrated\Common\Security\Permission;
+use Integrated\Common\Security\PermissionInterface;
 use Integrated\Common\Security\Permissions;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -98,7 +98,7 @@ class ContentChannelVoter implements VoterInterface
             switch ($attribute) {
                 case $this->permissions['view']:
                     foreach ($content->getChannels() as $channel) {
-                        if ($this->decisionManager->decide($token, [Permission::READ], $channel)) {
+                        if ($this->decisionManager->decide($token, [PermissionInterface::READ], $channel)) {
                             // Being in one of the group is enough to read
                             return VoterInterface::ACCESS_GRANTED;
                         }
@@ -109,7 +109,7 @@ class ContentChannelVoter implements VoterInterface
                 case $this->permissions['edit']:
                 case $this->permissions['delete']:
                     foreach ($content->getChannels() as $channel) {
-                        if (!$this->decisionManager->decide($token, [Permission::WRITE], $channel)) {
+                        if (!$this->decisionManager->decide($token, [PermissionInterface::WRITE], $channel)) {
                             // Need all channels to write
                             return VoterInterface::ACCESS_DENIED;
                         }

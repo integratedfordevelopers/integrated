@@ -12,6 +12,7 @@
 namespace Integrated\Common\ContentType;
 
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Security\PermissionInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -99,7 +100,7 @@ interface ContentTypeInterface
     /**
      * Get the permissions of the content type.
      *
-     * @return \Doctrine\Common\Collections\Collection | \Integrated\Common\Security\Permission[]
+     * @return PermissionInterface[]
      */
     public function getPermissions();
 }

@@ -12,13 +12,13 @@
 namespace Integrated\Common\Security\Resolver;
 
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
-use Integrated\Common\Security\Permission;
+use Integrated\Common\Security\PermissionInterface;
 
 class PermissionResolver
 {
     /**
      * @param GroupableInterface $user
-     * @param Permission[] $permissions
+     * @param PermissionInterface[] $permissions
      * @return array
      */
     public static function getPermissions(GroupableInterface $user, $permissions = []): array
@@ -32,22 +32,16 @@ class PermissionResolver
         $mask = 0;
 
         if ($groups) {
-            $maskAll = Permission::READ | Permission::WRITE;
-
             foreach ($permissions as $permission) {
                 if (isset($groups[$permission->getGroup()])) {
-                    $mask = $mask | ($maskAll & $permission->getMask());
-
-                    if ($mask == $maskAll) {
-                        break;
-                    }
+                    $mask |= $permission->getMask();
                 }
             }
         }
 
         return [
-            'read' => (bool) ($mask & Permission::READ),
-            'write' => (bool) ($mask & Permission::WRITE),
+            'read' => ($mask & PermissionInterface::READ) === PermissionInterface::READ,
+            'write' => ($mask & PermissionInterface::WRITE) === PermissionInterface::WRITE,
         ];
     }
 }

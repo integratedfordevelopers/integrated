@@ -11,12 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Security;
 
-use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Common\Channel\ChannelInterface;
-use Integrated\Common\Security\Permission;
 use Integrated\Common\ContentType\ResolverInterface;
-use Integrated\Common\Security\Permission;
+use Integrated\Common\Security\PermissionInterface;
 use Integrated\Common\Security\Resolver\PermissionResolver;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -51,8 +49,8 @@ class ChannelVoter implements VoterInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'read' => Permission::READ,
-            'write' => Permission::WRITE
+            'read' => PermissionInterface::READ,
+            'write' => PermissionInterface::WRITE
         ]);
 
         return $resolver;
@@ -116,34 +114,5 @@ class ChannelVoter implements VoterInterface
 
         return $result;
     }
-
-    /**
-     * @param GroupableInterface $user
-     * @param ChannelInterface $channel
-     *
-     * @return array
-     */
-    private function getPermissions(GroupableInterface $user, ChannelInterface $channel)
-    {
-        $groups = [];
-
-        foreach ($user->getGroups() as $group) {
-            $groups[$group->getId()] = $group->getId();
-        }
-
-        $mask = 0;
-
-        if ($groups) {
-            foreach ($channel->getPermissions() as $permission) {
-                if (isset($groups[$permission->getGroup()])) {
-                    $mask |= $permission->getMask();
-                }
-            }
-        }
-
-        return [
-            'read' => (($mask & Permission::READ) === Permission::READ),
-            'write' => (($mask & Permission::WRITE) === Permission::WRITE),
-        ];
-    }
 }
+

@@ -17,6 +17,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\User;
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\ExtensibleInterface;
@@ -119,8 +120,11 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        /** @var User $user */
         $user = $token->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
 
         foreach ($user->getRoles() as $role) {
             if ($role == 'ROLE_ADMIN') {

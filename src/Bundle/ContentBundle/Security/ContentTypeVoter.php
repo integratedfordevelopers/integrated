@@ -12,10 +12,11 @@
 namespace Integrated\Bundle\ContentBundle\Security;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
-use Integrated\Common\Security\Permission;
+use Integrated\Common\Security\PermissionInterface;
 use Integrated\Common\Security\Resolver\PermissionResolver;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -57,8 +58,8 @@ class ContentTypeVoter implements VoterInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
-            'read' => Permission::READ,
-            'write' => Permission::WRITE
+            'read' => PermissionInterface::READ,
+            'write' => PermissionInterface::WRITE
         ]);
 
         return $resolver;
@@ -81,8 +82,11 @@ class ContentTypeVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        /** @var \Integrated\Bundle\UserBundle\Model\User $user */
         $user = $token->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
 
         foreach ($user->getRoles() as $role) {
             if ($role == 'ROLE_ADMIN') {

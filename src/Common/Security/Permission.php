@@ -15,9 +15,6 @@ use Integrated\Bundle\UserBundle\Model\GroupInterface;
 
 class Permission implements PermissionInterface
 {
-    const READ = 1;
-    const WRITE = 2;
-
     /**
      * @var string
      */
