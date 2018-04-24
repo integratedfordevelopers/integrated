@@ -19,7 +19,7 @@ use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelPermissionListener
 use Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
-use Integrated\Common\Content\Permission;
+use Integrated\Common\Security\Permission;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
