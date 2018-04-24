@@ -11,6 +11,8 @@
 
 namespace Integrated\Common\Channel;
 
+use Integrated\Common\Content\PermissionInterface;
+
 /**
  * Interface for Channel documents.
  *
@@ -31,4 +33,9 @@ interface ChannelInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * @return PermissionInterface[]
+     */
+    public function getPermissions();
 }

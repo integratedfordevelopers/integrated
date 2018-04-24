@@ -67,10 +67,28 @@ class ChannelEnforcerListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
+            FormEvents::POST_SET_DATA => ['onPostSetData', -1],
             FormEvents::POST_SUBMIT => 'onPostSubmit',
         ];
     }
 
+    /**
+     * @param FormEvent $event
+     */
+    public function onPostSetData(FormEvent $event)
+    {
+        $form = $event->getForm();
+
+        if (!$form->has('channels')) {
+            return;
+        }
+
+        $form->get('channels')->setData(array_merge($form->get('channels')->getData(), $this->channels));
+    }
+
+    /**
+     * @param FormEvent $event
+     */
     public function onPostSubmit(FormEvent $event)
     {
         $data = $event->getData();
