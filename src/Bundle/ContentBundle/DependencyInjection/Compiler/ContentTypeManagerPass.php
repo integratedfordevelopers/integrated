@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ContentTypeManagerPass implements CompilerPassInterface
 {
-    const SERVICE_ID = 'integrated_content.content_type.manager';
+    const SERVICE_ID = 'integrated_content.content_type.manager.doctrine';
 
     /**
      * {@inheritdoc}

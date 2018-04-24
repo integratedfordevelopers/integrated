@@ -58,6 +58,10 @@ class ContentTypeManager
         }
     }
 
+    public function registerResource($path)
+    {
+    }
+
     /**
      * @return ObjectManager
      */
