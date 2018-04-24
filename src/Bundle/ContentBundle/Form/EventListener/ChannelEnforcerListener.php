@@ -83,10 +83,7 @@ class ChannelEnforcerListener implements EventSubscriberInterface
             return;
         }
 
-        $channels = $form->get('channels')->getData();
-        $channels = array_merge($channels, $this->channels);
-
-        $form->get('channels')->setData($channels);
+        $form->get('channels')->setData(array_merge($form->get('channels')->getData(), $this->channels));
     }
 
     /**

@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Security;
 
-use Integrated\Bundle\UserBundle\Model\User;
+use Integrated\Bundle\UserBundle\Model\GroupableInterface;
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Common\Channel\ChannelInterface;
+use Integrated\Common\Security\Permission;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Security\Permission;
 use Integrated\Common\Security\Resolver\PermissionResolver;
@@ -77,8 +79,11 @@ class ChannelVoter implements VoterInterface
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        /** @var User $user */
         $user = $token->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
 
         foreach ($user->getRoles() as $role) {
             if ($role == 'ROLE_ADMIN') {
@@ -110,5 +115,35 @@ class ChannelVoter implements VoterInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param GroupableInterface $user
+     * @param ChannelInterface $channel
+     *
+     * @return array
+     */
+    private function getPermissions(GroupableInterface $user, ChannelInterface $channel)
+    {
+        $groups = [];
+
+        foreach ($user->getGroups() as $group) {
+            $groups[$group->getId()] = $group->getId();
+        }
+
+        $mask = 0;
+
+        if ($groups) {
+            foreach ($channel->getPermissions() as $permission) {
+                if (isset($groups[$permission->getGroup()])) {
+                    $mask |= $permission->getMask();
+                }
+            }
+        }
+
+        return [
+            'read' => (($mask & Permission::READ) === Permission::READ),
+            'write' => (($mask & Permission::WRITE) === Permission::WRITE),
+        ];
     }
 }
