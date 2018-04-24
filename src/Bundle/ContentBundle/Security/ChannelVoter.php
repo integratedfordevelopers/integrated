@@ -115,4 +115,3 @@ class ChannelVoter implements VoterInterface
         return $result;
     }
 }
-
