@@ -127,7 +127,7 @@ class WorkflowVoter implements VoterInterface
         }
 
         foreach ($user->getRoles() as $role) {
-            if ($role == 'ROLE_ADMIN') {
+            if ($role === 'ROLE_ADMIN') {
                 return VoterInterface::ACCESS_GRANTED;
             }
         }

@@ -56,7 +56,7 @@ class ContentChannelVoter implements VoterInterface
     /**
      * @return OptionsResolver
      */
-    protected function getOptionsResolver()
+    private function getOptionsResolver()
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([

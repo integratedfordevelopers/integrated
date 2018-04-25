@@ -54,7 +54,7 @@ class ContentTypeVoter implements VoterInterface
     /**
      * @return OptionsResolver
      */
-    protected function getOptionsResolver()
+    private function getOptionsResolver()
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -89,15 +89,14 @@ class ContentTypeVoter implements VoterInterface
         }
 
         foreach ($user->getRoles() as $role) {
-            if ($role == 'ROLE_ADMIN') {
+            if ($role === 'ROLE_ADMIN') {
                 return VoterInterface::ACCESS_GRANTED;
             }
         }
 
-        $workflowId = $contentType->getOption('workflow');
         $permissionGroups = $contentType->getPermissions();
 
-        if ($workflowId) {
+        if ($workflowId = $contentType->getOption('workflow')) {
             /** @var Definition $workflow */
             $workflow = $this->repository->find($workflowId);
             $state = $workflow->getDefault();
@@ -123,13 +122,13 @@ class ContentTypeVoter implements VoterInterface
 
             $result = VoterInterface::ACCESS_GRANTED;
 
-            if ($this->permissions['read'] == $attribute) {
+            if ($this->permissions['read'] === $attribute) {
                 if (!$permissions['read']) {
                     return VoterInterface::ACCESS_DENIED;
                 }
             }
 
-            if ($this->permissions['write'] == $attribute) {
+            if ($this->permissions['write'] === $attribute) {
                 if (!$permissions['write']) {
                     return VoterInterface::ACCESS_DENIED;
                 }
