@@ -130,13 +130,29 @@ class ChannelVoter implements VoterInterface
         }
 
         $mask = 0;
+        $maskAll = Permission::READ | Permission::WRITE;
 
         if ($groups) {
+            $everyoneRead = Permission::READ;
+            $everyoneWrite = Permission::WRITE;
+
             foreach ($channel->getPermissions() as $permission) {
+                $permissionMask = $permission->getMask();
+
+                if ($permissionMask === Permission::READ || $permissionMask === $maskAll) {
+                    $everyoneRead = 0;
+                }
+
+                if ($permissionMask === Permission::WRITE || $permissionMask === $maskAll) {
+                    $everyoneWrite = 0;
+                }
+
                 if (isset($groups[$permission->getGroup()])) {
-                    $mask |= $permission->getMask();
+                    $mask |= $permissionMask;
                 }
             }
+
+            $mask = ($everyoneWrite + $everyoneRead) | $mask;
         }
 
         return [
