@@ -130,9 +130,19 @@ class ChannelVoter implements VoterInterface
         }
 
         $mask = 0;
+        $hasReadPermissions = false;
+        $hasWritePermissions = false;
 
         if ($groups) {
             foreach ($channel->getPermissions() as $permission) {
+                if (Permission::READ === ($permission->getMask() & Permission::READ)) {
+                    $hasReadPermissions = true;
+                }
+
+                if (Permission::WRITE === ($permission->getMask() & Permission::WRITE)) {
+                    $hasWritePermissions = true;
+                }
+
                 if (isset($groups[$permission->getGroup()])) {
                     $mask |= $permission->getMask();
                 }
@@ -140,8 +150,8 @@ class ChannelVoter implements VoterInterface
         }
 
         return [
-            'read' => (($mask & Permission::READ) === Permission::READ),
-            'write' => (($mask & Permission::WRITE) === Permission::WRITE),
+            'read' => $hasReadPermissions ? (Permission::READ === ($mask & Permission::READ)) : true,
+            'write' => $hasWritePermissions ? (Permission::WRITE === ($mask & Permission::WRITE)) : true,
         ];
     }
 }
