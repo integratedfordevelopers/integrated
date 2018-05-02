@@ -46,7 +46,7 @@
         <name>Author</name>
     </content-type>
 
-    <content-type id="employee" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Employee">
+    <content-type id="employee" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person">
         <name>Employee</name>
     </content-type>
 

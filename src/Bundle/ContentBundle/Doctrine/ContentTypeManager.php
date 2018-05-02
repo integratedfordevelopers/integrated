@@ -15,6 +15,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\Exception\InvalidArgumentException;
+use Integrated\Common\ContentType\Iterator;
+use Integrated\Common\ContentType\Resolver\PriorityResolver;
 use Integrated\Common\ContentType\ResolverInterface;
 
 /**
@@ -38,9 +40,9 @@ class ContentTypeManager
     private $repository;
 
     /**
-     * @var ContentTypeInterface[]|null
+     * @var ContentTypeInterface[]
      */
-    protected $contentTypes = null;
+    private $contentTypes;
 
     /**
      * @param ResolverInterface $resolver
@@ -56,10 +58,6 @@ class ContentTypeManager
         if (!is_subclass_of($this->repository->getClassName(), ContentTypeInterface::class)) {
             throw new InvalidArgumentException(sprintf('The class "%s" is not subclass of %s', $this->repository->getClassName(), ContentTypeInterface::class));
         }
-    }
-
-    public function registerResource($path)
-    {
     }
 
     /**
@@ -100,7 +98,21 @@ class ContentTypeManager
      */
     public function getAll()
     {
-        return $this->resolver->getTypes();
+        if (!$this->resolver instanceof PriorityResolver) {
+            return $this->resolver->getTypes();
+        }
+
+        if (null === $this->contentTypes) {
+            $contentTypes = [];
+
+            foreach ($this->resolver->getResolvers() as $resolver) {
+                $contentTypes = array_merge(iterator_to_array($resolver->getTypes()), $contentTypes);
+            }
+
+            $this->contentTypes = new Iterator($contentTypes);
+        }
+
+        return $this->contentTypes;
     }
 
     /**

@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ContentTypeManagerPass implements CompilerPassInterface
 {
-    const SERVICE_ID = 'integrated_content.content_type.manager.doctrine';
+    const SERVICE_ID = 'integrated_content.resolver.xml_file.builder';
 
     /**
      * {@inheritdoc}
@@ -27,7 +27,9 @@ class ContentTypeManagerPass implements CompilerPassInterface
             return;
         }
 
-        $container->getDefinition(self::SERVICE_ID)
-            ->addMethodCall('registerResource', ['@IntegratedContentBundle/Resources/config/integrated/content_types.xml']);
+        $container->getDefinition(self::SERVICE_ID)->addMethodCall(
+            'registerResource',
+            ['@IntegratedContentBundle/Resources/config/integrated/content_types.xml']
+        );
     }
 }
