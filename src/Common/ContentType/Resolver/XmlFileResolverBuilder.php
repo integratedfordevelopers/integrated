@@ -42,6 +42,8 @@ class XmlFileResolverBuilder extends MemoryResolverBuilder
         foreach ($xpath->query('//content-types/content-type') as $element) {
             $contentType = new ContentType();
 
+            $contentType->setLocked();
+
             $contentType->setId($element->getAttribute('id'));
             $contentType->setClass($element->getAttribute('class'));
 

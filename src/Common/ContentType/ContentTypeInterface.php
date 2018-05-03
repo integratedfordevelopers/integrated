@@ -95,4 +95,11 @@ interface ContentTypeInterface
      * @return bool
      */
     public function hasOption($name);
+
+    /**
+     * Check if the content type is locked.
+     *
+     * @return bool
+     */
+    public function isLocked();
 }
