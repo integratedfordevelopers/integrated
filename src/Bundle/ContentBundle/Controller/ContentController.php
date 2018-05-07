@@ -383,7 +383,7 @@ class ContentController extends Controller
     public function newAction(Request $request)
     {
         /** @var ContentTypeInterface $contentType */
-        $contentType = $this->get('integrated_content.resolver')->getType($request->get('type'));
+        $contentType = $this->get('integrated_content.content_type.manager')->getType($request->get('type'));
 
         $content = $contentType->create();
 
@@ -469,7 +469,7 @@ class ContentController extends Controller
     public function editAction(Request $request, Content $content)
     {
         /** @var ContentTypeInterface $contentType */
-        $contentType = $this->get('integrated_content.resolver')->getType($content->getContentType());
+        $contentType = $this->get('integrated_content.content_type.manager')->getType($content->getContentType());
 
         if (!$this->get('security.authorization_checker')->isGranted(Permissions::VIEW, $content)) {
             throw new AccessDeniedException();

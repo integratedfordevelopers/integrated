@@ -24,6 +24,8 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -47,10 +49,7 @@ class ContentTypeController extends Controller
      */
     public function indexAction()
     {
-        /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
-        $dm = $this->get('doctrine_mongodb')->getManager();
-        $documents = $dm->getRepository($this->contentTypeClass)->findAll();
-
+        $documents = $this->get('integrated_content.content_type.manager')->getAll();
         $documentTypes = $this->getMetadata()->getAllMetadata();
 
         return $this->render('IntegratedContentBundle:content_type:index.html.twig', [
@@ -76,12 +75,12 @@ class ContentTypeController extends Controller
     /**
      * Finds and displays a ContentType document.
      *
-     * @param ContentType $contentType
-     *
+     * @param string $id
      * @return Response
      */
-    public function showAction(ContentType $contentType)
+    public function showAction($id)
     {
+        $contentType = $this->getContentType($id);
         $form = $this->createDeleteForm($contentType);
 
         return $this->render('IntegratedContentBundle:content_type:show.html.twig', [
@@ -133,13 +132,14 @@ class ContentTypeController extends Controller
     /**
      * Edits an existing ContentType document.
      *
-     * @param Request     $request
-     * @param ContentType $contentType
+     * @param Request $request
+     * @param string $id
      *
      * @return Response|RedirectResponse
      */
-    public function editAction(Request $request, ContentType $contentType)
+    public function editAction(Request $request, $id)
     {
+        $contentType = $this->getContentType($id);
         $metadata = $this->getMetadata()->getMetadata($contentType->getClass());
 
         $form = $this->createEditForm($contentType, $metadata);
@@ -148,6 +148,12 @@ class ContentTypeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
             $dm = $this->get('doctrine_mongodb')->getManager();
+
+            if (!$dm->contains($contentType)) {
+                // Needed for content types from XML files
+                $dm->persist($contentType);
+            }
+
             $dm->flush();
 
             $this->get('braincrafted_bootstrap.flash')->success('Item updated');
@@ -167,13 +173,19 @@ class ContentTypeController extends Controller
     /**
      * Deletes a ContentType document.
      *
-     * @param Request     $request
-     * @param ContentType $contentType
+     * @param Request $request
+     * @param string $id
      *
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, ContentType $contentType)
+    public function deleteAction(Request $request, $id)
     {
+        $contentType = $this->getContentType($id);
+
+        if ($contentType->isLocked()) {
+            throw new AccessDeniedHttpException(sprintf('Content type with id "%s" is locked.', $id));
+        }
+
         $form = $this->createDeleteForm($contentType);
         $form->handleRequest($request);
 
@@ -190,6 +202,7 @@ class ContentTypeController extends Controller
 
                 return $this->redirect($this->generateUrl('integrated_content_content_type_show', ['id' => $contentType->getId()]));
             }
+
             $dm->remove($contentType);
             $dm->flush();
 
@@ -215,6 +228,20 @@ class ContentTypeController extends Controller
         }
 
         return $this->metadata;
+    }
+
+    /**
+     * @param string $id
+     * @return \Integrated\Common\ContentType\ContentTypeInterface
+     * @throws  NotFoundHttpException
+     */
+    private function getContentType($id)
+    {
+        try {
+            return $this->get('integrated_content.content_type.manager')->getType($id);
+        } catch (\InvalidArgumentException $e) {
+            throw new NotFoundHttpException(sprintf('Content type with id "%s" not found.', $id));
+        }
     }
 
     /**

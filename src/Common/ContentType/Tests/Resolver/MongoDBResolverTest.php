@@ -117,7 +117,7 @@ class MongoDBResolverTest extends \PHPUnit\Framework\TestCase
         ];
 
         $this->repository->expects($this->once())
-            ->method('findAll')
+            ->method('findBy')
             ->willReturn($types);
 
         $iterator = $this->getInstance()->getTypes();

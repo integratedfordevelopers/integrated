@@ -63,6 +63,11 @@ class ContentType implements ContentTypeInterface
     protected $createdAt;
 
     /**
+     * @var bool
+     */
+    protected $locked = false;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -292,6 +297,25 @@ class ContentType implements ContentTypeInterface
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isLocked()
+    {
+        return $this->locked;
+    }
+
+    /**
+     * @param bool $locked
+     * @return $this
+     */
+    public function setLocked($locked = true)
+    {
+        $this->locked = $locked;
 
         return $this;
     }

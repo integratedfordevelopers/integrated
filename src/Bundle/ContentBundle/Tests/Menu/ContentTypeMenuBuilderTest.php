@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Tests\Menu;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Menu\ContentTypeMenuBuilder;
 use Integrated\Common\ContentType\ContentTypeFilterInterface;
+use Integrated\Common\ContentType\Iterator;
 use Knp\Menu\FactoryInterface;
 
 /**
@@ -66,7 +67,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
         $this->contentTypeManager
             ->expects($this->once())
             ->method('getAll')
-            ->willReturn([$this->createMock('\stdClass')])
+            ->willReturn(new Iterator([$this->createMock('\stdClass')]))
         ;
 
         $this->assertSame($menu, $builder->createMenu());
@@ -238,7 +239,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
             ->willReturn('Integrated\Bundle\ContentBundle\Tests\Menu\FakeContent\ItemWithoutParent')
         ;
 
-        return [$contentType];
+        return new Iterator([$contentType]);
     }
 
     protected function getItems()
@@ -264,7 +265,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
             ->willReturn('Integrated\Bundle\ContentBundle\Tests\Menu\FakeContent\ParentWithMultipleLevels\ItemB')
         ;
 
-        return [$contentType1, $contentType2, $contentType3];
+        return new Iterator([$contentType1, $contentType2, $contentType3]);
     }
 
     /**
