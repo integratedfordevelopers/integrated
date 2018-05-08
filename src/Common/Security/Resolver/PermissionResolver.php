@@ -26,13 +26,23 @@ class PermissionResolver
         $groups = [];
 
         foreach ($user->getGroups() as $group) {
-            $groups[$group->getId()] = $group->getId(); // create lookup table
+            $groups[$group->getId()] = $group->getId();
         }
 
         $mask = 0;
+        $hasReadPermissions = false;
+        $hasWritePermissions = false;
 
         if ($groups) {
             foreach ($permissions as $permission) {
+                if (PermissionInterface::READ === ($permission->getMask() & PermissionInterface::READ)) {
+                    $hasReadPermissions = true;
+                }
+
+                if (PermissionInterface::WRITE === ($permission->getMask() & PermissionInterface::WRITE)) {
+                    $hasWritePermissions = true;
+                }
+
                 if (isset($groups[$permission->getGroup()])) {
                     $mask |= $permission->getMask();
                 }
@@ -40,8 +50,8 @@ class PermissionResolver
         }
 
         return [
-            'read' => ($mask & PermissionInterface::READ) === PermissionInterface::READ,
-            'write' => ($mask & PermissionInterface::WRITE) === PermissionInterface::WRITE,
+            'read' => $hasReadPermissions ? (PermissionInterface::READ === ($mask & PermissionInterface::READ)) : true,
+            'write' => $hasWritePermissions ? (PermissionInterface::WRITE === ($mask & PermissionInterface::WRITE)) : true,
         ];
     }
 }
