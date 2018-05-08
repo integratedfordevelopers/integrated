@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Menu;
 
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Common\Security\PermissionInterface;
+use Integrated\Common\ContentType\IteratorInterface;
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -91,11 +92,10 @@ class ContentTypeMenuBuilder
     }
 
     /**
-     * @param array $result
-     *
+     * @param IteratorInterface $result
      * @return array
      */
-    protected function group(array $result)
+    protected function group(IteratorInterface $result)
     {
         $menu = [];
 

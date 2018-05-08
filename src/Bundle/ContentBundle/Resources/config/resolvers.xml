@@ -8,6 +8,10 @@
 
         <service id="integrated_content.resolver.priority.builder" class="Integrated\Common\ContentType\Resolver\PriorityResolverBuilder" />
 
+        <service id="integrated_content.resolver.xml_file.builder" class="Integrated\Common\ContentType\Resolver\XmlFileResolverBuilder">
+            <argument type="service" id="file_locator" />
+        </service>
+
         <service id="integrated_content.resolver.priority" class="Integrated\Common\ContentType\Resolver\PriorityResolver">
             <factory service="integrated_content.resolver.priority.builder" method="getResolver" />
         </service>
@@ -18,9 +22,15 @@
         </service>
 
         <service id="integrated_content.resolver.mongodb" class="Integrated\Common\ContentType\Resolver\MongoDBResolver">
-            <argument type="service" id="integrated_content.resolver.mongodb.repository"/>
+            <argument type="service" id="integrated_content.resolver.mongodb.repository" />
 
-            <tag name="integrated_content.resolver" />
+            <tag name="integrated_content.resolver" priority="10" />
+        </service>
+
+        <service id="integrated_content.resolver.xml_file" class="Integrated\Common\ContentType\Resolver\MemoryResolver">
+            <factory service="integrated_content.resolver.xml_file.builder" method="getResolver" />
+
+            <tag name="integrated_content.resolver" priority="0" />
         </service>
 
         <service id="integrated_content.resolver" alias="integrated_content.resolver.priority" public="true" />

@@ -103,4 +103,11 @@ interface ContentTypeInterface
      * @return PermissionInterface[]
      */
     public function getPermissions();
+
+    /**
+     * Check if the content type is locked.
+     *
+     * @return bool
+     */
+    public function isLocked();
 }
