@@ -42,7 +42,7 @@
         <name>Company</name>
     </content-type>
 
-    <content-type id="author" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Author">
+    <content-type id="author" class="Integrated\Bundle\ContentBundle\Document\Content\Relation\Person">
         <name>Author</name>
     </content-type>
 
