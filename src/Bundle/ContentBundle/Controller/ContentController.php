@@ -188,17 +188,7 @@ class ContentController extends Controller
                 }
             }
 
-            $isAdmin = false;
-
-            if ($user instanceof User) {
-                foreach ($user->getRoles() as $role) {
-                    if ($role == 'ROLE_ADMIN') {
-                        $isAdmin = true;
-                    }
-                }
-            }
-
-            if (!$isAdmin) {
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
                 // allow content without workflow
                 $fq = $query->createFilterQuery('workflow')
                     ->addTag('workflow')

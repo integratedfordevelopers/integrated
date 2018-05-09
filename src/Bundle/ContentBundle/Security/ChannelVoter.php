@@ -83,10 +83,8 @@ class ChannelVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        foreach ($user->getRoles() as $role) {
-            if ($role == 'ROLE_ADMIN') {
-                return VoterInterface::ACCESS_GRANTED;
-            }
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return VoterInterface::ACCESS_GRANTED;
         }
 
         $permissions = PermissionResolver::getPermissions($user, $channel->getPermissions());

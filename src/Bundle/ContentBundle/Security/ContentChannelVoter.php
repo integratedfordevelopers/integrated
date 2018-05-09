@@ -49,7 +49,6 @@ class ContentChannelVoter implements VoterInterface
     ) {
         $this->resolver = $resolver;
         $this->decisionManager = $decisionManager;
-
         $this->permissions = $this->getOptionsResolver()->resolve($permissions);
     }
 
