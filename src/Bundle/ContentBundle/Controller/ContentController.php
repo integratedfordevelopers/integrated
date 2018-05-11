@@ -187,31 +187,33 @@ class ContentController extends Controller
                 }
             }
 
-            // allow content without workflow
-            $fq = $query->createFilterQuery('workflow')
-                ->addTag('workflow')
-                ->addTag('security')
-                ->setQuery('(*:* -security_workflow_read:[* TO *])');
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+                // allow content without workflow
+                $fq = $query->createFilterQuery('workflow')
+                    ->addTag('workflow')
+                    ->addTag('security')
+                    ->setQuery('(*:* -security_workflow_read:[* TO *])');
 
-            // allow content with group access
-            if ($filterWorkflow) {
+                // allow content with group access
+                if ($filterWorkflow) {
+                    $fq->setQuery(
+                        $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
+                        [implode(') OR (', $filterWorkflow)]
+                    );
+                }
+
+                // always allow access to assigned content
                 $fq->setQuery(
-                    $fq->getQuery().' OR security_workflow_read: ((%1%))',
-                    [implode(') OR (', $filterWorkflow)]
+                    $fq->getQuery() . ' OR facet_workflow_assigned_id: %1%',
+                    [$user->getId()]
                 );
-            }
 
-            // always allow access to assinged content
-            $fq->setQuery(
-                $fq->getQuery().' OR facet_workflow_assigned_id: %1%',
-                [$user->getId()]
-            );
-
-            if ($person = $user->getRelation()) {
-                $fq->setQuery(
-                    $fq->getQuery().' OR author: %1%*',
-                    [$person->getId()]
-                );
+                if ($person = $user->getRelation()) {
+                    $fq->setQuery(
+                        $fq->getQuery() . ' OR author: %1%*',
+                        [$person->getId()]
+                    );
+                }
             }
         }
 

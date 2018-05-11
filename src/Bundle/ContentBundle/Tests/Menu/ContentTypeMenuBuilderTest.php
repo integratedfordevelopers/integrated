@@ -13,9 +13,9 @@ namespace Integrated\Bundle\ContentBundle\Tests\Menu;
 
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Menu\ContentTypeMenuBuilder;
-use Integrated\Common\ContentType\ContentTypeFilterInterface;
 use Integrated\Common\ContentType\Iterator;
 use Knp\Menu\FactoryInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -33,9 +33,9 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
     protected $contentTypeManager;
 
     /**
-     * @var ContentTypeFilterInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @var AuthorizationCheckerInterface | \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $contentTypeFilterInterface;
+    protected $authorizationChecker;
 
     /**
      * Setup the test.
@@ -44,7 +44,7 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
     {
         $this->factory = $this->createMock(FactoryInterface::class);
         $this->contentTypeManager = $this->getMockBuilder(ContentTypeManager::class)->disableOriginalConstructor()->getMock();
-        $this->contentTypeFilterInterface = $this->createMock(ContentTypeFilterInterface::class);
+        $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
     }
 
     /**
@@ -191,9 +191,9 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
             ->willReturn($items)
         ;
 
-        $this->contentTypeFilterInterface
+        $this->authorizationChecker
             ->expects($this->exactly(3))
-            ->method('hasAccess')
+            ->method('isGranted')
             ->willReturnOnConsecutiveCalls(
                 true,
                 false,
@@ -275,10 +275,19 @@ class ContentTypeMenuBuilderTest extends \PHPUnit\Framework\TestCase
      */
     protected function getInstance($withFilter = false)
     {
-        return new ContentTypeMenuBuilder(
+        $builder = new ContentTypeMenuBuilder(
             $this->factory,
             $this->contentTypeManager,
-            $withFilter ? $this->contentTypeFilterInterface : null
+            $this->authorizationChecker
         );
+
+        if (!$withFilter) {
+            $this->authorizationChecker
+                ->method('isGranted')
+                ->willReturn(true)
+            ;
+        }
+
+        return $builder;
     }
 }

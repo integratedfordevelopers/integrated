@@ -14,11 +14,12 @@ namespace Integrated\Bundle\WorkflowBundle\Solr\Extension;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\User;
-use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
+use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeExtensionInterface;
+use Integrated\Common\Security\PermissionInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -66,22 +67,45 @@ class WorkflowExtension implements TypeExtensionInterface
         $container->remove('security_workflow_read');
         $container->remove('security_workflow_write');
 
-        if (!$state = $this->getState($data)) {
-            return; // got no workflow
+        if (!$contentType = $this->resolver->getType($data->getContentType())) {
+            return; // got no content type
         }
 
-        foreach ($state->getPermissions() as $permission) {
-            if ($permission->hasMask($permission::READ)) {
-                $container->add('security_workflow_read', $permission->getGroup());
-            }
+        $permissions = $contentType->getPermissions();
+        $state = $this->getState($data);
 
-            if ($permission->hasMask($permission::WRITE)) {
-                $container->add('security_workflow_write', $permission->getGroup());
+        if ($state) {
+            $container->add('workflow_state', $state->getName());
+            $container->add('facet_workflow_state', $state->getName());
+
+            if (count($state->getPermissions())) {
+                // Workflow permissions overrules content type permissions
+                $permissions = $state->getPermissions();
             }
         }
 
-        $container->add('workflow_state', $state->getName());
-        $container->add('facet_workflow_state', $state->getName());
+        $groups = [];
+
+        if ($data instanceof ChannelableInterface) {
+            foreach ($data->getChannels() as $channel) {
+                foreach ($channel->getPermissions() as $permission) {
+                    // Need channel permission
+                    $groups[$permission->getGroup()] = $permission->getGroup();
+                }
+            }
+        }
+
+        foreach ($permissions as $permission) {
+            if (!count($groups) || isset($groups[$permission->getGroup()])) {
+                if ($permission->hasMask(PermissionInterface::READ)) {
+                    $container->add('security_workflow_read', $permission->getGroup());
+                }
+
+                if ($permission->hasMask(PermissionInterface::WRITE)) {
+                    $container->add('security_workflow_write', $permission->getGroup());
+                }
+            }
+        }
 
         if ($assignee = $this->getAssigned($data)) {
             if ($assignee instanceof User) {
@@ -91,6 +115,7 @@ class WorkflowExtension implements TypeExtensionInterface
                         $container->add('facet_workflow_assigned', $relation->getFirstname().' '.$relation->getLastname());
                     }
                 }
+
                 $container->add('workflow_assigned_id', $assignee->getId());
                 $container->add('facet_workflow_assigned_id', $assignee->getId());
             }

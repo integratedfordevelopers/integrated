@@ -19,7 +19,7 @@ use Integrated\Bundle\ContentBundle\Form\EventListener\ChannelPermissionListener
 use Integrated\Bundle\ContentBundle\Form\Type\PrimaryChannelType;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Events;
-use Integrated\Common\Security\Permission;
+use Integrated\Common\Security\PermissionInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -98,8 +98,8 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
             $notPermitted = [];
 
             foreach ($choices as $index => $value) {
-                $authorizedRead = $this->authorizationChecker->isGranted(Permission::READ, $value);
-                $authorizedWrite = $this->authorizationChecker->isGranted(Permission::WRITE, $value);
+                $authorizedRead = $this->authorizationChecker->isGranted(PermissionInterface::READ, $value);
+                $authorizedWrite = $this->authorizationChecker->isGranted(PermissionInterface::WRITE, $value);
 
                 if (isset($channels[$value->getId()])) {
                     if ($channels[$value->getId()]) {
@@ -137,7 +137,7 @@ class ContentChannelIntegrationListener implements EventSubscriberInterface
                     'expanded' => true,
                     'attr' => ['class' => 'channel-options'],
                     'choice_attr' => function ($value) use ($enforce) {
-                        if ($value instanceof Channel && (isset($enforce[$value->getId()]) || !$this->authorizationChecker->isGranted(Permission::WRITE, $value))) {
+                        if ($value instanceof Channel && (isset($enforce[$value->getId()]) || !$this->authorizationChecker->isGranted(PermissionInterface::WRITE, $value))) {
                             return ['disabled' => 'disabled'];
                         }
 

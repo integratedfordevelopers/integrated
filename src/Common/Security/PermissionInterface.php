@@ -13,6 +13,9 @@ namespace Integrated\Common\Security;
 
 interface PermissionInterface
 {
+    const READ = 1;
+    const WRITE = 2;
+
     /**
      * @return string
      */
@@ -22,4 +25,11 @@ interface PermissionInterface
      * @return int
      */
     public function getMask();
+
+    /**
+     * @param int $mask
+     *
+     * @return bool
+     */
+    public function hasMask($mask);
 }

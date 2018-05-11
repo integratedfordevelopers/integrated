@@ -20,6 +20,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition\State;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
+use Integrated\Common\Security\PermissionInterface;
 use Integrated\Common\Security\Permissions;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -90,6 +91,10 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             ->method('hasOption')
             ->with('workflow')
             ->willReturn($exists);
+
+        $type->expects($this->any())
+            ->method('getPermissions')
+            ->willReturn([$this->getPermission('group-no-match', false, false)]);
 
         if ($exists) {
             $type->expects($this->atLeastOnce())
@@ -395,12 +400,12 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'class' => [
-                $this->getToken('this_is_not_supported'), [], VoterInterface::ACCESS_ABSTAIN,
+                $this->getToken(), [], VoterInterface::ACCESS_ABSTAIN,
             ],
             'class but valid attribute' => [
-                $this->getToken('this_is_not_supported'), [Permissions::VIEW, Permissions::EDIT], VoterInterface::ACCESS_DENIED,
+                $this->getToken(), [Permissions::VIEW, Permissions::EDIT], VoterInterface::ACCESS_GRANTED,
             ],
-            'attribute' => [
+            'class but invalid attribute' => [
                 $this->getToken(), ['NOTSUPPORTED'], VoterInterface::ACCESS_ABSTAIN,
             ],
         ];
@@ -476,7 +481,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             $this->getPermission('group-no-match', false, true),
         ]);
 
-        $this->assertEquals(['read' => true, 'write' => false], $this->getInstance()->getPermissions($user, $state));
+        $this->assertEquals(['read' => true, 'write' => false], $this->getInstance()->getPermissions($user, $state->getPermissions()));
     }
 
     public function testGetPermissions2()
@@ -487,7 +492,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             $this->getPermission('group-no-match', true, false),
         ]);
 
-        $this->assertEquals(['read' => false, 'write' => true], $this->getInstance()->getPermissions($user, $state));
+        $this->assertEquals(['read' => false, 'write' => true], $this->getInstance()->getPermissions($user, $state->getPermissions()));
     }
 
     public function testGetPermissions3()
@@ -498,7 +503,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             $this->getPermission('group-no-match', true, true),
         ]);
 
-        $this->assertEquals(['read' => false, 'write' => false], $this->getInstance()->getPermissions($user, $state));
+        $this->assertEquals(['read' => false, 'write' => false], $this->getInstance()->getPermissions($user, $state->getPermissions()));
     }
 
     public function testGetPermissionsComplex()
@@ -511,7 +516,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             $this->getPermission('group-4', true, true),
         ]);
 
-        $this->assertEquals(['read' => true, 'write' => false], $this->getInstance()->getPermissions($user, $state));
+        $this->assertEquals(['read' => true, 'write' => false], $this->getInstance()->getPermissions($user, $state->getPermissions()));
     }
 
     public function testGetPermissionsComplex2()
@@ -524,7 +529,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             $this->getPermission('group-4', true, true),
         ]);
 
-        $this->assertEquals(['read' => false, 'write' => true], $this->getInstance()->getPermissions($user, $state));
+        $this->assertEquals(['read' => false, 'write' => true], $this->getInstance()->getPermissions($user, $state->getPermissions()));
     }
 
     public function testGetPermissionsComplex3()
@@ -537,7 +542,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             $this->getPermission('group-4', true, true),
         ]);
 
-        $this->assertEquals(['read' => true, 'write' => true], $this->getInstance()->getPermissions($user, $state));
+        $this->assertEquals(['read' => true, 'write' => true], $this->getInstance()->getPermissions($user, $state->getPermissions()));
     }
 
     public function testGetPermissionsNoGroups()
@@ -545,9 +550,9 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
         $user = $this->getUser();
         $state = $this->getState([
             $this->getPermission('group', true, true),
-        ], true);
+        ]);
 
-        $this->assertEquals(['read' => false, 'write' => false], $this->getInstance()->getPermissions($user, $state));
+        $this->assertEquals(['read' => true, 'write' => true], $this->getInstance()->getPermissions($user, $state->getPermissions()));
     }
 
     public function testGetPermissionsNoPermissions()
@@ -555,7 +560,7 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
         $user = $this->getUser(['group-1', 'group-2']);
         $state = $this->getState([]);
 
-        $this->assertEquals(['read' => false, 'write' => false], $this->getInstance()->getPermissions($user, $state));
+        $this->assertEquals(['read' => true, 'write' => true], $this->getInstance()->getPermissions($user, $state->getPermissions()));
     }
 
     /**
@@ -591,6 +596,10 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
         $mock->expects($groups ? $this->atLeastOnce() : $this->any())
             ->method('getGroups')
             ->willReturn($groups);
+
+        $mock->expects($this->any())
+            ->method('getRoles')
+            ->willReturn([]);
 
         return $mock;
     }
@@ -660,8 +669,8 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
             ->willReturn($group);
 
         $mask = 0;
-        $mask |= $read ? Permission::READ : 0;
-        $mask |= $write ? Permission::WRITE : 0;
+        $mask |= $read ? PermissionInterface::READ : 0;
+        $mask |= $write ? PermissionInterface::WRITE : 0;
 
         $mock->expects($this->any())
             ->method('getMask')

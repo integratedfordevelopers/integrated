@@ -16,6 +16,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\UserBundle\Model\GroupInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
+use Integrated\Common\Security\PermissionInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -41,16 +42,16 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
     {
         $permission1 = new Permission();
         $permission1->setGroup('group-1');
-        $permission1->addMask(Permission::READ);
-        $permission1->addMask(Permission::WRITE);
+        $permission1->addMask(PermissionInterface::READ);
+        $permission1->addMask(PermissionInterface::WRITE);
 
         $permission2 = new Permission();
         $permission2->setGroup('group-2');
-        $permission2->addMask(Permission::READ);
+        $permission2->addMask(PermissionInterface::READ);
 
         $permission3 = new Permission();
         $permission3->setGroup('group-3');
-        $permission3->addMask(Permission::WRITE);
+        $permission3->addMask(PermissionInterface::WRITE);
 
         $permission4 = new Permission();
         $permission4->setGroup('group-4');
@@ -133,18 +134,18 @@ class PermissionTransformerTest extends \PHPUnit\Framework\TestCase
             /** @var Permission $object */
             switch ($object->getGroup()) {
                 case 'group-1':
-                    $this->assertTrue($object->hasMask(Permission::READ));
-                    $this->assertTrue($object->hasMask(Permission::WRITE));
+                    $this->assertTrue($object->hasMask(PermissionInterface::READ));
+                    $this->assertTrue($object->hasMask(PermissionInterface::WRITE));
                     break;
 
                 case 'group-2':
-                    $this->assertTrue($object->hasMask(Permission::READ));
-                    $this->assertFalse($object->hasMask(Permission::WRITE));
+                    $this->assertTrue($object->hasMask(PermissionInterface::READ));
+                    $this->assertFalse($object->hasMask(PermissionInterface::WRITE));
                     break;
 
                 case 'group-3':
-                    $this->assertFalse($object->hasMask(Permission::READ));
-                    $this->assertTrue($object->hasMask(Permission::WRITE));
+                    $this->assertFalse($object->hasMask(PermissionInterface::READ));
+                    $this->assertTrue($object->hasMask(PermissionInterface::WRITE));
                     break;
             }
 

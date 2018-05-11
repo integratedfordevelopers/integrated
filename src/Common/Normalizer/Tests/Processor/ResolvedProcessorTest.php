@@ -18,7 +18,7 @@ use Integrated\Common\Normalizer\Processor\Context;
 use Integrated\Common\Normalizer\Processor\ProcessorInterface;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessor;
 use Integrated\Common\Normalizer\Processor\ResolvedProcessorInterface;
-use stdClass as Object;
+use stdClass;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -48,7 +48,7 @@ class ResolvedProcessorTest extends \PHPUnit\Framework\TestCase
     public function testProcess()
     {
         $container = $this->getContainer();
-        $object = new Object();
+        $object = new stdClass();
         $context = $this->getContext();
 
         $this->factory->expects($this->once())
@@ -77,7 +77,7 @@ class ResolvedProcessorTest extends \PHPUnit\Framework\TestCase
         $this->factory->expects($this->never())
             ->method($this->anything());
 
-        $this->getInstance()->process(new Object(), $this->getContext());
+        $this->getInstance()->process(new stdClass(), $this->getContext());
     }
 
     public function testProcessOrder()
@@ -100,7 +100,7 @@ class ResolvedProcessorTest extends \PHPUnit\Framework\TestCase
             ->method('process')
             ->willThrowException(new Exception('The test failed'));
 
-        $this->getInstance()->process(new Object(), $this->getContext());
+        $this->getInstance()->process(new stdClass(), $this->getContext());
     }
 
     /**

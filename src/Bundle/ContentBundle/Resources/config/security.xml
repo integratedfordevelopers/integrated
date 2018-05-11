@@ -16,8 +16,22 @@
             <tag name="security.voter" />
         </service>
 
+        <service id="integrated_content.security.voter.content_type" class="Integrated\Bundle\ContentBundle\Security\ContentTypeVoter">
+            <argument type="service" id="integrated_content.resolver.priority" />
+            <argument type="service" id="integrated_workflow.repository.definition" />
+
+            <tag name="security.voter" />
+        </service>
+
         <service id="integrated_content.security.voter.channel" class="Integrated\Bundle\ContentBundle\Security\ChannelVoter">
-            <argument type="service" id="integrated_content.resolver.priority"/>
+            <argument type="service" id="integrated_content.resolver.priority" />
+
+            <tag name="security.voter" />
+        </service>
+
+        <service id="integrated_content.security.voter.content_channel" class="Integrated\Bundle\ContentBundle\Security\ContentChannelVoter">
+            <argument type="service" id="integrated_content.resolver.priority" />
+            <argument type="service" id="security.access.decision_manager" />
 
             <tag name="security.voter" />
         </service>

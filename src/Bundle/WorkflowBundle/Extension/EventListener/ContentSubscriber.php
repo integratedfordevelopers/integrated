@@ -26,6 +26,7 @@ use Integrated\Common\Content\Extension\Events;
 use Integrated\Common\Content\Extension\ExtensionInterface;
 use Integrated\Common\Content\MetadataInterface;
 use Integrated\Common\ContentType\ResolverInterface;
+use Integrated\Common\Security\PermissionInterface;
 use Integrated\Common\Workflow\Event\WorkflowStateChangedEvent;
 use Integrated\Common\Workflow\Events as WorkflowEvents;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -401,7 +402,7 @@ E-mail: '.$person->getEmail().'',
 
         $canWrite = false;
         foreach ($state->getPermissions() as $permission) {
-            if (in_array($permission->getGroup(), $groups) && $permission->getMask() >= Definition\Permission::WRITE) {
+            if (in_array($permission->getGroup(), $groups) && $permission->getMask() >= PermissionInterface::WRITE) {
                 $canWrite = true;
             }
         }

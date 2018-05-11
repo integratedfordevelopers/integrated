@@ -17,8 +17,8 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\GroupableInterface;
 use Integrated\Bundle\UserBundle\Model\User;
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\WorkflowBundle\Entity\Definition;
-use Integrated\Bundle\WorkflowBundle\Entity\Definition\Permission;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\Registry;
@@ -26,7 +26,9 @@ use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
 use Integrated\Common\Form\Mapping\MetadataInterface;
+use Integrated\Common\Security\Permission;
 use Integrated\Common\Security\Permissions;
+use Integrated\Common\Security\Resolver\PermissionResolver;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Acl\Util\ClassUtils;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -118,6 +120,16 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
+        $user = $token->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
+
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
         // first check if the object has a workflow connected to it and check
         // if the workflow even exists. If any of those condition are negative
         // then the voter wil abstain from voting.
@@ -128,35 +140,44 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $type = $this->getContentType($object->getContentType());
+        $contentType = $this->getContentType($object->getContentType());
 
-        if (!$type || !$type->hasOption('workflow')) {
+        if (!$contentType || (!$contentType->hasOption('workflow') && !count($contentType->getPermissions()))) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $workflow = $this->getWorkflow($type->getOption('workflow'));
+        $permissionGroups = $contentType->getPermissions();
 
-        if (!$workflow) {
-            return VoterInterface::ACCESS_ABSTAIN;
+        if ($contentType->hasOption('workflow')) {
+            $workflow = $this->getWorkflow($contentType->getOption('workflow'));
+
+            if (!$workflow) {
+                return VoterInterface::ACCESS_ABSTAIN;
+            }
+
+            // get the current state and verify that it belongs to the workflow. If
+            // one or move conditions are negative then pick the default workflow
+            // state to work with.
+
+            $state = $this->getState($object, $workflow);
+
+            if (!$state) {
+                // This should not happen as it should not be possible to create
+                // a workflow without a state. But check for it anyways as it is
+                // technicality possible to have a workflow without a state.
+
+                return VoterInterface::ACCESS_ABSTAIN;
+            }
+
+            if (count($state->getPermissions())) {
+                // Workflow permissions overrules content type permissions
+                $permissionGroups = $state->getPermissions();
+            }
         }
 
-        // get the current state and verify that it belongs to the workflow. If
-        // one or move conditions are negative then pick the default workflow
-        // state to work with.
-
-        $state = $this->getState($object);
-
-        if (!$state || $state->getWorkflow() !== $workflow) {
-            $state = $workflow->getStates();
-            $state = array_shift($state); // there is no default (yet) so pick first one
-        }
-
-        if (!$state) {
-            // This should not happen as it should not be possible to create
-            // a workflow without a state. But check for it anyways as it is
-            // technicality possible to have a workflow without a state.
-
-            return VoterInterface::ACCESS_ABSTAIN;
+        if (!count($permissionGroups)) {
+            // No permissions available
+            return VoterInterface::ACCESS_GRANTED;
         }
 
         // security checks are group based so deny every token class that
@@ -174,8 +195,7 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        $permissions = $this->getPermissions($token->getUser(), $state);
-
+        $permissions = $this->getPermissions($token->getUser(), $permissionGroups);
         $isAssigned = $this->isAssigned($token->getUser(), $object);
 
         // check the permissions: create requires write permission, view
@@ -258,10 +278,11 @@ class WorkflowVoter implements VoterInterface
 
     /**
      * @param ContentInterface $content
+     * @param Definition $workflow
      *
      * @return Definition\State
      */
-    protected function getState(ContentInterface $content)
+    protected function getState(ContentInterface $content, Definition $workflow)
     {
         $repository = $this->manager->getRepository('Integrated\\Bundle\\WorkflowBundle\\Entity\\Workflow\\State');
 
@@ -269,43 +290,22 @@ class WorkflowVoter implements VoterInterface
             $result = $result->getState();
         }
 
+        if (!$result || $result->getWorkflow() !== $workflow) {
+            $result = $workflow->getStates();
+            $result = array_shift($result); // there is no default (yet) so pick first one
+        }
+
         return $result;
     }
 
     /**
      * @param GroupableInterface $user
-     * @param Definition\State   $state
-     *
+     * @param Permission[] $permissionGroups
      * @return array
      */
-    protected function getPermissions(GroupableInterface $user, Definition\State $state)
+    protected function getPermissions(GroupableInterface $user, $permissionGroups)
     {
-        $groups = [];
-
-        foreach ($user->getGroups() as $group) {
-            $groups[$group->getId()] = $group->getId(); // create lookup table
-        }
-
-        $mask = 0;
-
-        if ($groups) {
-            $mask_all = Permission::READ | Permission::WRITE;
-
-            foreach ($state->getPermissions() as $permission) {
-                if (isset($groups[$permission->getGroup()])) {
-                    $mask = $mask | ($mask_all & $permission->getMask());
-
-                    if ($mask == $mask_all) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        return [
-            'read' => (bool) ($mask & Permission::READ),
-            'write' => (bool) ($mask & Permission::WRITE),
-        ];
+        return PermissionResolver::getPermissions($user, $permissionGroups);
     }
 
     /**

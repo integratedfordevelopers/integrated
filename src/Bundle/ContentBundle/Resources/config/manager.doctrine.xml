@@ -24,7 +24,6 @@
 			<argument type="service" id="integrated_content.resolver" />
 			<argument type="service" id="integrated_content.doctrine.object_manager" />
 			<argument>%integrated_content.content_type.class%</argument>
-			<argument type="service" id="integrated_workflow.services.permission" on-invalid="ignore" />
 		</service>
 
 	</services>

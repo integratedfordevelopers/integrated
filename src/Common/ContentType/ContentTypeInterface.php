@@ -12,6 +12,7 @@
 namespace Integrated\Common\ContentType;
 
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Security\PermissionInterface;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -95,6 +96,13 @@ interface ContentTypeInterface
      * @return bool
      */
     public function hasOption($name);
+
+    /**
+     * Get the permissions of the content type.
+     *
+     * @return PermissionInterface[]
+     */
+    public function getPermissions();
 
     /**
      * Check if the content type is locked.

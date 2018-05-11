@@ -21,6 +21,7 @@ use Integrated\Bundle\WorkflowBundle\Entity\Definition;
 use Integrated\Bundle\WorkflowBundle\Form\Type\DefinitionFormType;
 use Integrated\Bundle\WorkflowBundle\Form\Type\DeleteFormType;
 use Integrated\Bundle\WorkflowBundle\Utils\StateVisibleConfig;
+use Integrated\Common\Security\PermissionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -215,7 +216,7 @@ class WorkflowController extends Controller
         $groups = [];
         $currentUserCanWrite = false;
         foreach ($state->getPermissions() as $permission) {
-            if ($permission->getMask() >= Definition\Permission::WRITE) {
+            if ($permission->getMask() >= PermissionInterface::WRITE) {
                 $group = $permission->getGroup();
                 $groups[] = $group;
 
