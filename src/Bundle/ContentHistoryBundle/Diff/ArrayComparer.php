@@ -75,5 +75,4 @@ class ArrayComparer
 
         return $new;
     }
-
 }

@@ -118,6 +118,15 @@ class ArrayComparerTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    public function testNormalize()
+    {
+        $this->normalize(
+            ['title' => 'name', 'address' => 'key3', 'key4' => 'unchanged'], // old
+            ['type' => 'key3'], // new
+            ['type' => 'key3', 'title' => null, 'address' => null, 'key4' => null] // expected
+        );
+    }
+
     /**
      * @param array $old
      * @param array $new
@@ -126,5 +135,15 @@ class ArrayComparerTest extends \PHPUnit\Framework\TestCase
     protected function assertDiff(array $old = [], array $new = [], array $expected = [])
     {
         $this->assertEquals($expected, ArrayComparer::diff($old, $new));
+    }
+
+    /**
+     * @param array $old
+     * @param array $new
+     * @param array $expected
+     */
+    protected function normalize(array $old = [], array $new = [], array $expected = [])
+    {
+        $this->assertEquals($expected, ArrayComparer::normalize($old, $new));
     }
 }
