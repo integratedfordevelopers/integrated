@@ -42,7 +42,7 @@ class ArrayComparer
                 if (count($result)) {
                     $diff[$key] = $result;
                 }
-            } elseif ($old[$key] != $value) {
+            } elseif ($old[$key] !== $value) {
                 // value has changed
                 $diff[$key] = [$old[$key], $value];
             }
