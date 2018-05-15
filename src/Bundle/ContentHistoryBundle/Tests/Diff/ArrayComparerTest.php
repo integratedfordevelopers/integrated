@@ -120,7 +120,7 @@ class ArrayComparerTest extends \PHPUnit\Framework\TestCase
 
     public function testNormalize()
     {
-        $this->normalize(
+        $this->assertNormalize(
             ['title' => 'name', 'address' => 'key3', 'key4' => 'unchanged'], // old
             ['type' => 'key3'], // new
             ['type' => 'key3', 'title' => null, 'address' => null, 'key4' => null] // expected
@@ -142,7 +142,7 @@ class ArrayComparerTest extends \PHPUnit\Framework\TestCase
      * @param array $new
      * @param array $expected
      */
-    protected function normalize(array $old = [], array $new = [], array $expected = [])
+    protected function assertNormalize(array $old = [], array $new = [], array $expected = [])
     {
         $this->assertEquals($expected, ArrayComparer::normalize($old, $new));
     }
