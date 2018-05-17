@@ -79,7 +79,7 @@ class ChannelChangedListener implements EventSubscriberInterface
     /**
      * @param ChannelEvent $event
      */
-    protected function channelDeleted(ChannelEvent $event)
+    public function channelDeleted(ChannelEvent $event)
     {
         $this->deletePagesByChannel($event->getChannel());
     }
