@@ -57,6 +57,10 @@ class ChannelType extends AbstractType
             $form = $event->getForm();
             $data = $event->getData();
 
+            if (empty($data['domains'])) {
+                return;
+            }
+
             $primaryChannelIsIteratedAndEmpty = false;
 
             foreach ($data['domains'] as $domain) {
