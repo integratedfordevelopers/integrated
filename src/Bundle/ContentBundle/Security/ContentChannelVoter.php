@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Security;
 
+use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Common\Content\ChannelableInterface;
 use Integrated\Common\ContentType\ResolverInterface;
 use Integrated\Common\Security\PermissionInterface;
@@ -85,6 +86,21 @@ class ContentChannelVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
+        $user = $token->getUser();
+
+        if (!$user instanceof UserInterface) {
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
+
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            return VoterInterface::ACCESS_GRANTED;
+        }
+
+        if (!count($content->getChannels())) {
+            // Give everyone access if no channels are added
+            return VoterInterface::ACCESS_ABSTAIN;
+        }
+
         $result = VoterInterface::ACCESS_ABSTAIN;
 
         foreach ($attributes as $attribute) {
@@ -92,7 +108,7 @@ class ContentChannelVoter implements VoterInterface
                 continue;
             }
 
-            $result = VoterInterface::ACCESS_GRANTED;
+            $result = $attribute === $this->permissions['view'] ? VoterInterface::ACCESS_DENIED : VoterInterface::ACCESS_GRANTED;
 
             switch ($attribute) {
                 case $this->permissions['view']:
