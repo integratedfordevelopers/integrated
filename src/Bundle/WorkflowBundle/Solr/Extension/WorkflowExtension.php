@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\WorkflowBundle\Solr\Extension;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\UserBundle\Model\User;
@@ -84,19 +85,32 @@ class WorkflowExtension implements TypeExtensionInterface
             }
         }
 
-        $groups = [];
+        if ($permissions instanceof Collection) {
+            $permissions = $permissions->toArray();
+        }
+
+        $channelGroups = [];
 
         if ($data instanceof ChannelableInterface) {
             foreach ($data->getChannels() as $channel) {
-                foreach ($channel->getPermissions() as $permission) {
-                    // Need channel permission
-                    $groups[$permission->getGroup()] = $permission->getGroup();
+                $channelPermissions = $channel->getPermissions();
+
+                if ($channelPermissions instanceof Collection) {
+                    $channelPermissions = $channelPermissions->toArray();
+                }
+
+                // Need all permissions
+                $permissions = array_merge($permissions, $channelPermissions);
+
+                foreach ($channelPermissions as $permission) {
+                    // Need channel permissions
+                    $channelGroups[$permission->getGroup()] = $permission->getGroup();
                 }
             }
         }
 
         foreach ($permissions as $permission) {
-            if (!count($groups) || isset($groups[$permission->getGroup()])) {
+            if (!count($channelGroups) || isset($channelGroups[$permission->getGroup()])) {
                 if ($permission->hasMask(PermissionInterface::READ)) {
                     $container->add('security_workflow_read', $permission->getGroup());
                 }
