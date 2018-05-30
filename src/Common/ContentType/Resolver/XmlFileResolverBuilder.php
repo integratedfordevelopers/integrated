@@ -18,25 +18,11 @@ use Symfony\Component\Config\Util\XmlUtils;
 class XmlFileResolverBuilder extends MemoryResolverBuilder
 {
     /**
-     * @var FileLocatorInterface
+     * @param string $file
      */
-    private $locator;
-
-    /**
-     * @param FileLocatorInterface $locator
-     */
-    public function __construct(FileLocatorInterface $locator)
+    public function registerFile($file)
     {
-        $this->locator = $locator;
-    }
-
-    /**
-     * @param string $resource
-     */
-    public function registerResource($resource)
-    {
-        $path = $this->locator->locate($resource);
-        $xpath = new \DOMXPath(XmlUtils::loadFile($path));
+        $xpath = new \DOMXPath(XmlUtils::loadFile($file));
 
         /** @var \DOMElement $element */
         foreach ($xpath->query('//content-types/content-type') as $element) {
