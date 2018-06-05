@@ -14,10 +14,6 @@
     <p class="form-control-static">{{ value }}</p>
 {% endblock %}
 
-{% block workflow_definition_permissions_row %}
-    {{ block('form_rows') }}
-{% endblock %}
-
 {% block workflow_definition_transitions_row %}
     {{ block('form_row') }}
     {{ form_row(form.override) }}
