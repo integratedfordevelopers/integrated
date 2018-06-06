@@ -7,10 +7,7 @@
     <services>
 
         <service id="integrated_content.resolver.priority.builder" class="Integrated\Common\ContentType\Resolver\PriorityResolverBuilder" />
-
-        <service id="integrated_content.resolver.xml_file.builder" class="Integrated\Common\ContentType\Resolver\XmlFileResolverBuilder">
-            <argument type="service" id="file_locator" />
-        </service>
+        <service id="integrated_content.resolver.xml_file.builder" class="Integrated\Common\ContentType\Resolver\XmlFileResolverBuilder" />
 
         <service id="integrated_content.resolver.priority" class="Integrated\Common\ContentType\Resolver\PriorityResolver">
             <factory service="integrated_content.resolver.priority.builder" method="getResolver" />
