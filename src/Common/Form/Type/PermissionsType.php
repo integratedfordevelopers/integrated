@@ -89,4 +89,12 @@ class PermissionsType extends AbstractType
     {
         return new PermissionTransformer($this->repository);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'integrated_permissions';
+    }
 }

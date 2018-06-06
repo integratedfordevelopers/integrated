@@ -407,13 +407,11 @@
 {% block integrated_content_bulk_action_readonly_row %}
 {% spaceless %}
     <div class="form-group">
-
         {{ form_label(form.active) }}
 
         <div class="col-sm-9">
             {{ form_widget(form.action) }}
         </div>
-
     </div>
 {% endspaceless %}
 {% endblock %}
@@ -421,5 +419,11 @@
 {% block integrated_content_bulk_action_relation_widget %}
 {% spaceless %}
     {{ form_widget(form.references, {'attr': {'data-value': form.references.vars.value|json_encode}}) }}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_permissions_row %}
+{% spaceless %}
+    {{ block('form_rows') }}
 {% endspaceless %}
 {% endblock %}

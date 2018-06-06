@@ -27,12 +27,4 @@ class PermissionsType extends CommonPermissionsType
     {
         return new PermissionTransformer($this->repository);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'integrated_workflow_definition_permissions';
-    }
 }
