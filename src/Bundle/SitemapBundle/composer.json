@@ -1,0 +1,35 @@
+{
+    "name": "integrated/sitemap-bundle",
+    "type": "symfony-bundle",
+    "description": "Integrated Sitemap Bundle",
+    "keywords": [
+        "Integrated",
+        "sitemap"
+    ],
+    "homepage": "http://www.e-active.nl",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "e-Active",
+            "homepage": "http://www.e-active.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.1",
+        "symfony/symfony": "~3.4",
+        "sensio/framework-extra-bundle": "~5.0",
+        "doctrine/mongodb-odm-bundle": "~3.4",
+        "integrated/integrated": "~0.8"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.1",
+        "phpunit/phpunit": "^6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Integrated\\Bundle\\SitemapBundle\\": ""
+        }
+    }
+}

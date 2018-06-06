@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="integrated_sitemap_default_index" path="/sitemap.xml">
+        <default key="_controller">IntegratedSitemapBundle:Default:index</default>
+        <default key="_format">xml</default>
+    </route>
+
+    <route id="integrated_sitemap_default_news" path="/news-sitemap.xml">
+        <default key="_controller">IntegratedSitemapBundle:Default:news</default>
+        <default key="_format">xml</default>
+    </route>
+
+    <route id="integrated_sitemap_default_robots" path="/robots.txt">
+        <default key="_controller">IntegratedSitemapBundle:Default:robots</default>
+        <default key="_format">txt</default>
+    </route>
+</routes>
