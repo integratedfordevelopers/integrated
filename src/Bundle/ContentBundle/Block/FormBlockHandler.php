@@ -70,12 +70,12 @@ class FormBlockHandler extends BlockHandler
     protected $eventDispatcher;
 
     /**
-     * @param FormFactory $formFactory
-     * @param DocumentManager $documentManager
-     * @param RequestStack $requestStack
-     * @param FormMailer $formMailer
+     * @param FormFactory             $formFactory
+     * @param DocumentManager         $documentManager
+     * @param RequestStack            $requestStack
+     * @param FormMailer              $formMailer
      * @param ChannelContextInterface $channelContext
-     * @param EventDispatcher $eventDispatcher
+     * @param EventDispatcher         $eventDispatcher
      */
     public function __construct(
         FormFactory $formFactory,
@@ -132,7 +132,7 @@ class FormBlockHandler extends BlockHandler
                 $this->documentManager->flush();
 
                 $this->eventDispatcher->dispatch(FormBlockEvent::POST_FLUSH, new FormBlockEvent($content));
-                
+
                 $data = $request->request->get($form->getName());
 
                 // remove irrelevant fields

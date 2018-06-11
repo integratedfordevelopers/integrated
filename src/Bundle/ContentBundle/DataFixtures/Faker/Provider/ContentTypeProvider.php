@@ -32,7 +32,9 @@ class ContentTypeProvider
 
     /**
      * @param string $id
+     *
      * @return ContentType
+     *
      * @throws DocumentNotFoundException
      */
     public function contentType($id)

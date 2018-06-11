@@ -20,6 +20,7 @@ class ChannelRepository extends DocumentRepository
 {
     /**
      * @param array $ids
+     *
      * @return Channel[]
      */
     public function findByIds(array $ids)

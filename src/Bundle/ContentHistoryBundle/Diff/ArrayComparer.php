@@ -54,6 +54,7 @@ class ArrayComparer
     /**
      * @param array $old
      * @param array $new
+     *
      * @return array
      */
     public static function normalize(array $old = [], array $new = [])

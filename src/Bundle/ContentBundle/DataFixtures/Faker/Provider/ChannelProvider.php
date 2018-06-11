@@ -32,7 +32,9 @@ class ChannelProvider
 
     /**
      * @param string $id
+     *
      * @return Channel
+     *
      * @throws DocumentNotFoundException
      */
     public function channel($id)

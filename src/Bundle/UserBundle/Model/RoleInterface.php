@@ -26,6 +26,13 @@ interface RoleInterface
     public function getId();
 
     /**
+     * Returns the name of the role.
+     *
+     * @return string
+     */
+    public function getRole();
+
+    /**
      * Set the label.
      *
      * @param string $label

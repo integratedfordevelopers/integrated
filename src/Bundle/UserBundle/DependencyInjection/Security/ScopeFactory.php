@@ -25,8 +25,8 @@ class ScopeFactory implements SecurityFactoryInterface
      */
     public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
     {
-        $providerId = 'integrated_user.security.authentication.provider.scope.' . $id;
-        $listenerId = 'integrated_user.security.authentication.listener.scope.' . $id;
+        $providerId = 'integrated_user.security.authentication.provider.scope.'.$id;
+        $listenerId = 'integrated_user.security.authentication.listener.scope.'.$id;
 
         $container->setDefinition($providerId, new ChildDefinition(ScopeProvider::class));
         $container->setDefinition($listenerId, new ChildDefinition(ScopeListener::class))->replaceArgument(1, $id);

@@ -32,11 +32,13 @@ class ImageProvider
     }
 
     /**
-     * @param int $width
-     * @param int $height
+     * @param int         $width
+     * @param int         $height
      * @param null|string $category
-     * @param string $dir
+     * @param string      $dir
+     *
      * @return StorageInterface
+     *
      * @throws \Exception
      */
     public function createImage($width = 640, $height = 480, $category = null, $dir = '/tmp')

@@ -76,7 +76,9 @@ class VideoProvider
 
     /**
      * @param null|string $type
+     *
      * @return \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface
+     *
      * @throws \Exception
      */
     public function createVideo($type = null)
@@ -89,12 +91,14 @@ class VideoProvider
 
     /**
      * @param null|string $type
+     *
      * @return bool|string
+     *
      * @throws \Exception
      */
     protected function getVideo($type = null)
     {
-        $destination = sys_get_temp_dir().DIRECTORY_SEPARATOR.uniqid('video-');
+        $destination = sys_get_temp_dir().\DIRECTORY_SEPARATOR.uniqid('video-');
         $url = sprintf('https://wosvideo.e-activesites.nl/%s/', $type ?: 'random');
 
         //create new local file

@@ -11,7 +11,6 @@
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
 use Symfony\Component\Form\DataTransformerInterface;
-use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * DataTransformer which handles comma separated values and return an array.

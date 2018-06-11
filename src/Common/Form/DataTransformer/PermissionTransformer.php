@@ -108,7 +108,7 @@ class PermissionTransformer implements DataTransformerInterface
 
         foreach ($value['read'] as $group) {
             if (!isset($permissions[$group->getId()])) {
-                $permissions[$group->getId()] = new $permissionClass;
+                $permissions[$group->getId()] = new $permissionClass();
                 $permissions[$group->getId()]->setGroup($group);
             }
 
@@ -125,7 +125,7 @@ class PermissionTransformer implements DataTransformerInterface
 
         foreach ($value['write'] as $group) {
             if (!isset($permissions[$group->getId()])) {
-                $permissions[$group->getId()] = new $permissionClass;
+                $permissions[$group->getId()] = new $permissionClass();
                 $permissions[$group->getId()]->setGroup($group);
             }
 

@@ -34,7 +34,7 @@ class ChannelVoter implements VoterInterface
 
     /**
      * @param ResolverInterface $resolver
-     * @param array $permissions
+     * @param array             $permissions
      */
     public function __construct(ResolverInterface $resolver, array $permissions = [])
     {
@@ -50,7 +50,7 @@ class ChannelVoter implements VoterInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'read' => PermissionInterface::READ,
-            'write' => PermissionInterface::WRITE
+            'write' => PermissionInterface::WRITE,
         ]);
 
         return $resolver;

@@ -12,9 +12,7 @@
 namespace Integrated\Bundle\SitemapBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\News;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
@@ -39,7 +37,7 @@ class DefaultController extends Controller
         $documents = $qb->getQuery()->execute();
 
         return [
-            'documents' => $documents
+            'documents' => $documents,
         ];
     }
 
@@ -78,6 +76,7 @@ class DefaultController extends Controller
 
     /**
      * @return \Integrated\Common\Content\Channel\ChannelInterface
+     *
      * @throws \RuntimeException
      */
     protected function getChannel()

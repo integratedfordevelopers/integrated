@@ -12,7 +12,6 @@
 namespace Integrated\Common\ContentType\Resolver;
 
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
-use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\Config\Util\XmlUtils;
 
 class XmlFileResolverBuilder extends MemoryResolverBuilder

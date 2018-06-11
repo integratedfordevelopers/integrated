@@ -13,7 +13,6 @@ namespace Integrated\Bundle\WorkflowBundle\Form\Type;
 
 use Integrated\Bundle\WorkflowBundle\Form\DataTransformer\PermissionTransformer;
 use Integrated\Common\Form\Type\PermissionsType as CommonPermissionsType;
-use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>

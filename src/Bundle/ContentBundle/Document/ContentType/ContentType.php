@@ -311,6 +311,7 @@ class ContentType implements ContentTypeInterface
 
     /**
      * @param bool $locked
+     *
      * @return $this
      */
     public function setLocked($locked = true)

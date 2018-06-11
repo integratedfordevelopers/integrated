@@ -21,13 +21,15 @@ class EncodeProvider
     }
 
     /**
-     * @param User $user
+     * @param User   $user
      * @param string $password
+     *
      * @return string
      */
     public function encodePassword(User $user, $password)
     {
         $user->setSalt(base64_encode(random_bytes(72)));
+
         return $this->factory->getEncoder($user)->encodePassword($password, $user->getSalt());
     }
 }

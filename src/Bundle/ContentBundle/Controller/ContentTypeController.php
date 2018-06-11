@@ -76,6 +76,7 @@ class ContentTypeController extends Controller
      * Finds and displays a ContentType document.
      *
      * @param string $id
+     *
      * @return Response
      */
     public function showAction($id)
@@ -133,7 +134,7 @@ class ContentTypeController extends Controller
      * Edits an existing ContentType document.
      *
      * @param Request $request
-     * @param string $id
+     * @param string  $id
      *
      * @return Response|RedirectResponse
      */
@@ -174,7 +175,7 @@ class ContentTypeController extends Controller
      * Deletes a ContentType document.
      *
      * @param Request $request
-     * @param string $id
+     * @param string  $id
      *
      * @return RedirectResponse
      */
@@ -232,8 +233,10 @@ class ContentTypeController extends Controller
 
     /**
      * @param string $id
+     *
      * @return \Integrated\Common\ContentType\ContentTypeInterface
-     * @throws  NotFoundHttpException
+     *
+     * @throws NotFoundHttpException
      */
     private function getContentType($id)
     {
