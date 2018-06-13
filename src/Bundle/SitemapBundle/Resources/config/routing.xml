@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <routes xmlns="http://symfony.com/schema/routing"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-    <route id="integrated_sitemap_default_index" path="/sitemap.xml">
-        <default key="_controller">IntegratedSitemapBundle:Default:index</default>
+    <route id="integrated_sitemap_index" path="/sitemap.xml">
+        <default key="_controller">integrated_sitemap.controller.default:indexAction</default>
         <default key="_format">xml</default>
     </route>
 
-    <route id="integrated_sitemap_default_news" path="/news-sitemap.xml">
-        <default key="_controller">IntegratedSitemapBundle:Default:news</default>
+    <route id="integrated_sitemap_list" path="/sitemap{page}.xml">
+        <default key="_controller">integrated_sitemap.controller.default:listAction</default>
+        <default key="_format">xml</default>
+
+        <requirement key="page">\d+</requirement>
+    </route>
+
+    <route id="integrated_sitemap_news_index" path="/news-sitemap.xml">
+        <default key="_controller">integrated_sitemap.controller.news:indexAction</default>
         <default key="_format">xml</default>
     </route>
 
-    <route id="integrated_sitemap_default_robots" path="/robots.txt">
-        <default key="_controller">IntegratedSitemapBundle:Default:robots</default>
+    <route id="integrated_sitemap_news_list" path="/news-sitemap{page}.xml">
+        <default key="_controller">integrated_sitemap.controller.news:listAction</default>
+        <default key="_format">xml</default>
+
+        <requirement key="page">\d+</requirement>
+    </route>
+
+    <route id="integrated_sitemap_robots" path="/robots.txt">
+        <default key="_controller">integrated_sitemap.controller.robots:indexAction</default>
         <default key="_format">txt</default>
     </route>
+
 </routes>

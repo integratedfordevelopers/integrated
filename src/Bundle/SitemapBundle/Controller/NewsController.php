@@ -11,8 +11,9 @@
 
 namespace Integrated\Bundle\SitemapBundle\Controller;
 
+use DateTime;
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\News;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class DefaultController extends Controller
+class NewsController extends Controller
 {
     /**
      * @var ManagerRegistry
@@ -61,9 +62,10 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('No channel found');
         }
 
-        $count = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class)
+        $count = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class)
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
+            ->field('publishTime.startDate')->gte(new DateTime('-2 days'))
             ->getQuery()
             ->count();
 
@@ -94,17 +96,20 @@ class DefaultController extends Controller
             throw new NotFoundHttpException();
         }
 
-        $documents = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class)
-            ->select('contentType', 'slug', 'createdAt', 'class')
+        $documents = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class)
+            ->select('contentType', 'slug', 'publishTime', 'title', 'relations')
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
-            ->sort('_id')
+            ->field('publishTime.startDate')->gte(new DateTime('-2 days'))
+            ->sort('createdAt', 'desc')
             ->skip(--$page * 1000)
             ->limit(1000)
             ->getQuery()
             ->getIterator();
 
         return [
+            'channel' => $channel,
+            'locale' => $this->getParameter('locale'),
             'documents' => $documents,
         ];
     }
