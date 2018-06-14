@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ChannelBundle\EventListener\Doctrine;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Channel\Exporter\Queue\Request;
 use Integrated\Common\Channel\Exporter\Queue\RequestSerializerInterface;
 use Integrated\Common\Content\ChannelableInterface;
@@ -104,6 +105,10 @@ class ChannelDistributionListener implements EventSubscriber
      */
     protected function process(ChannelableInterface $document, $state)
     {
+        if ($document instanceof Content && !$document->isPublished()) {
+            $state = 'delete';
+        }
+
         $request = new Request();
 
         $request->content = $document;
