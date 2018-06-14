@@ -77,7 +77,10 @@ class DefaultController extends Controller
     }
 
     /**
+     * @param $page
+     *
      * @return array
+     *
      * @Template
      */
     public function listAction($page)
