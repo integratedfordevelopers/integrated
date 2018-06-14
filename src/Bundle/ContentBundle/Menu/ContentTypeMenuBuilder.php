@@ -42,8 +42,8 @@ class ContentTypeMenuBuilder
     protected $authorizationChecker;
 
     /**
-     * @param FactoryInterface $factory
-     * @param ContentTypeManager $contentTypeManager
+     * @param FactoryInterface              $factory
+     * @param ContentTypeManager            $contentTypeManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
@@ -93,6 +93,7 @@ class ContentTypeMenuBuilder
 
     /**
      * @param IteratorInterface $result
+     *
      * @return array
      */
     protected function group(IteratorInterface $result)

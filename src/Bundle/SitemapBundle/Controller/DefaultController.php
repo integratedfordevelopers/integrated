@@ -11,99 +11,104 @@
 
 namespace Integrated\Bundle\SitemapBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
-use Integrated\Bundle\ContentBundle\Document\Content\News;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @author Jan Sanne Mulder <jansanne@e-active.nl>
+ */
 class DefaultController extends Controller
 {
+    /**
+     * @var ManagerRegistry
+     */
+    private $registry;
+
+    /**
+     * @var ChannelContextInterface
+     */
+    private $context;
+
+    /**
+     * @param ManagerRegistry         $registry
+     * @param ChannelContextInterface $context
+     * @param ContainerInterface      $container
+     */
+    public function __construct(
+        ManagerRegistry $registry,
+        ChannelContextInterface $context,
+        ContainerInterface $container
+    ) {
+        $this->registry = $registry;
+        $this->context = $context;
+        $this->container = $container;
+    }
+
     /**
      * @return array
      * @Template
      */
     public function indexAction()
     {
-        $channel = $this->getChannel();
+        $channel = $this->context->getChannel();
 
-        $qb = $this->getDocumentManager()->createQueryBuilder(Content::class)
-            ->hydrate(false)
+        if (!$channel) {
+            throw new NotFoundHttpException('No channel found');
+        }
+
+        $count = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class)
+            ->field('channels.$id')->equals($channel->getId())
+            ->field('disabled')->equals(false)
+            ->getQuery()
+            ->count();
+
+        if (!$count) {
+            throw new NotFoundHttpException();
+        }
+
+        return [
+            'count' => min(ceil($count / 1000), 50000),
+        ];
+    }
+
+    /**
+     * @param $page
+     *
+     * @return array
+     *
+     * @Template
+     */
+    public function listAction($page)
+    {
+        $channel = $this->context->getChannel();
+
+        if (!$channel) {
+            throw new NotFoundHttpException('No channel found');
+        }
+
+        $page = (int) $page;
+
+        if ($page != min(max($page, 1), 50000)) {
+            throw new NotFoundHttpException();
+        }
+
+        $documents = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class)
             ->select('contentType', 'slug', 'createdAt', 'class')
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
-            ->sort('_id');
-
-        $documents = $qb->getQuery()->execute();
-
-        return [
-            'documents' => $documents
-        ];
-    }
-
-    /**
-     * @return array
-     * @Template
-     */
-    public function newsAction()
-    {
-        $channel = $this->getChannel();
-
-        $qb = $this->getDocumentManager()->createQueryBuilder(News::class)
-            ->select('contentType', 'slug', 'publishTime', 'title', 'relations')
-            ->field('channels.$id')->equals($channel->getId())
-            ->field('publishTime.startDate')->gte(new \DateTime('-2 days'))
-            ->sort('createdAt', 'desc');
-
-        $documents = $qb->getQuery()->execute();
+            ->sort('_id')
+            ->skip(--$page * 1000)
+            ->limit(1000)
+            ->getQuery()
+            ->getIterator();
 
         return [
-            'locale' => $this->getParameter('locale'),
-            'channel' => $channel,
             'documents' => $documents,
-            'resolver' => $this->getUrlResolver(),
         ];
-    }
-
-    /**
-     * @return array
-     * @Template
-     */
-    public function robotsAction()
-    {
-        return [];
-    }
-
-    /**
-     * @return \Integrated\Common\Content\Channel\ChannelInterface
-     * @throws \RuntimeException
-     */
-    protected function getChannel()
-    {
-        $context = $this->container->get('channel.context');
-
-        if (!$context instanceof ChannelContextInterface) {
-            throw new \RuntimeException('Unable to resolve the channel.');
-        }
-
-        return $context->getChannel();
-    }
-
-    /**
-     * @return \Doctrine\ODM\MongoDB\DocumentManager
-     */
-    protected function getDocumentManager()
-    {
-        return $this->get('doctrine_mongodb')->getManager();
-    }
-
-    /**
-     * @return \Integrated\Bundle\PageBundle\Services\UrlResolver
-     */
-    protected function getUrlResolver()
-    {
-        return $this->get('integrated_page.services.url_resolver');
     }
 }

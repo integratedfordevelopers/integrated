@@ -197,20 +197,20 @@ class ContentController extends Controller
                 // allow content with group access
                 if ($filterWorkflow) {
                     $fq->setQuery(
-                        $fq->getQuery() . ' OR security_workflow_read: ((%1%))',
+                        $fq->getQuery().' OR security_workflow_read: ((%1%))',
                         [implode(') OR (', $filterWorkflow)]
                     );
                 }
 
                 // always allow access to assigned content
                 $fq->setQuery(
-                    $fq->getQuery() . ' OR facet_workflow_assigned_id: %1%',
+                    $fq->getQuery().' OR facet_workflow_assigned_id: %1%',
                     [$user->getId()]
                 );
 
                 if ($person = $user->getRelation()) {
                     $fq->setQuery(
-                        $fq->getQuery() . ' OR author: %1%*',
+                        $fq->getQuery().' OR author: %1%*',
                         [$person->getId()]
                     );
                 }

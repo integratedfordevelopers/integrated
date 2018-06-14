@@ -41,8 +41,8 @@ class ContentTypeVoter implements VoterInterface
 
     /**
      * @param ResolverInterface $resolver
-     * @param ObjectRepository $repository
-     * @param array $permissions
+     * @param ObjectRepository  $repository
+     * @param array             $permissions
      */
     public function __construct(ResolverInterface $resolver, ObjectRepository $repository, array $permissions = [])
     {
@@ -59,7 +59,7 @@ class ContentTypeVoter implements VoterInterface
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'read' => PermissionInterface::READ,
-            'write' => PermissionInterface::WRITE
+            'write' => PermissionInterface::WRITE,
         ]);
 
         return $resolver;

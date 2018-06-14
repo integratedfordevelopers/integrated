@@ -233,7 +233,7 @@ class Channel implements ChannelInterface
     /**
      * Set the value of the specified key.
      *
-     * @param string $name
+     * @param string       $name
      * @param null | mixed $value
      *
      * @return $this

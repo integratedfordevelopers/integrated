@@ -33,7 +33,7 @@ class MediaProvider
     private $authorizationChecker;
 
     /**
-     * @param ContentTypeManager $contentTypeManager
+     * @param ContentTypeManager            $contentTypeManager
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(

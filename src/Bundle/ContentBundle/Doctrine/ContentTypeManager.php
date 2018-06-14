@@ -46,7 +46,7 @@ class ContentTypeManager
 
     /**
      * @param ResolverInterface $resolver
-     * @param ObjectManager $om
+     * @param ObjectManager     $om
      * @param $class
      */
     public function __construct(ResolverInterface $resolver, ObjectManager $om, $class)
@@ -78,6 +78,7 @@ class ContentTypeManager
 
     /**
      * @param string $className
+     *
      * @return ContentTypeInterface[]
      */
     public function filterInstanceOf($className)
@@ -117,6 +118,7 @@ class ContentTypeManager
 
     /**
      * @param string $type
+     *
      * @return ContentTypeInterface
      */
     public function getType($type)
@@ -126,6 +128,7 @@ class ContentTypeManager
 
     /**
      * @param string $type
+     *
      * @return bool
      */
     public function hasType($type)

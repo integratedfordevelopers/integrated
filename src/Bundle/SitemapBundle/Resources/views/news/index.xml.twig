@@ -1,0 +1,10 @@
+{% spaceless %}
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for page in 0..count-1 %}
+        <sitemap>
+            <loc>{{ path('integrated_sitemap_news_list', {page: loop.index}) }}</loc>
+        </sitemap>
+    {% endfor %}
+</sitemapindex>
+{% endspaceless %}

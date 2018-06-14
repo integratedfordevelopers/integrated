@@ -18,6 +18,7 @@ use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ExtensionRegist
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\FormFactoryEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\MetadataEventDispatcherPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\PriorityResolverBuilderPass;
+use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\SetRouterPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\Compiler\ThemeManagerPass;
 use Integrated\Bundle\ContentBundle\DependencyInjection\IntegratedContentExtension;
 use Integrated\Common\Bulk\DependencyInjection\ConfigProviderBuilderPass;
@@ -42,6 +43,7 @@ class IntegratedContentBundle extends Bundle
     {
         parent::build($container);
 
+        $container->addCompilerPass(new SetRouterPass());
         $container->addCompilerPass(new ExtensionRegistryBuilderPass());
         $container->addCompilerPass(new FormFactoryEventDispatcherPass());
         $container->addCompilerPass(new MetadataEventDispatcherPass());

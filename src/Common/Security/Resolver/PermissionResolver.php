@@ -17,8 +17,9 @@ use Integrated\Common\Security\PermissionInterface;
 class PermissionResolver
 {
     /**
-     * @param GroupableInterface $user
+     * @param GroupableInterface    $user
      * @param PermissionInterface[] $permissions
+     *
      * @return array
      */
     public static function getPermissions(GroupableInterface $user, $permissions = []): array

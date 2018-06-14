@@ -63,7 +63,7 @@ The <info>%command.name%</info> .
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lock = $this->factory->createLock(self::class . md5(__DIR__));
+        $lock = $this->factory->createLock(self::class.md5(__DIR__));
 
         if (!$lock->acquire()) {
             return;

@@ -34,7 +34,8 @@ class WorkflowVoter extends BaseWorkflowVoter
 
     /**
      * @param ContentInterface $content
-     * @param Definition $workflow
+     * @param Definition       $workflow
+     *
      * @return State
      */
     public function getState(ContentInterface $content, Definition $workflow)

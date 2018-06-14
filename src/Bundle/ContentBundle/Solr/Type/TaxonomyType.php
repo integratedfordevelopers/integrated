@@ -16,7 +16,6 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Integrated\Common\Converter\ContainerInterface;
 use Integrated\Common\Converter\Type\TypeInterface;
-use Symfony\Component\Security\Acl\Util\ClassUtils;
 
 class TaxonomyType implements TypeInterface
 {
@@ -39,8 +38,8 @@ class TaxonomyType implements TypeInterface
         foreach ($items as $relation) {
             foreach ($relation->getReferences()->toArray() as $content) {
                 if ($content instanceof Taxonomy || $content instanceof Article) {
-                    $container->add('facet_' . $relation->getRelationId(), $content->getTitle());
-                    $container->add('taxonomy_' . $relation->getRelationId() . '_string', $content->getTitle());
+                    $container->add('facet_'.$relation->getRelationId(), $content->getTitle());
+                    $container->add('taxonomy_'.$relation->getRelationId().'_string', $content->getTitle());
                 }
             }
         }

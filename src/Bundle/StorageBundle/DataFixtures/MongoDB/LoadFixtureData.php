@@ -33,7 +33,7 @@ class LoadFixtureData implements FixtureInterface, ContainerAwareInterface
         $files = [];
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach (Finder::create()->in(__DIR__.DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
+        foreach (Finder::create()->in(__DIR__.\DIRECTORY_SEPARATOR.'alice')->name('*.yml')->sortByName() as $file) {
             $files[] = $file->getRealpath();
         }
 

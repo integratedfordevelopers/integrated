@@ -45,11 +45,13 @@ class FormBlockEvent extends Event
 
     /**
      * @param ContentInterface $content
+     *
      * @return $this
      */
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 }

@@ -185,6 +185,6 @@ The <info>%command.name%</info> command starts a index of all the content from t
      */
     protected function getLock()
     {
-        return $this->getContainer()->get('integrated_workflow.lock.factory')->createLock(self::class . md5(__DIR__));
+        return $this->getContainer()->get('integrated_workflow.lock.factory')->createLock(self::class.md5(__DIR__));
     }
 }

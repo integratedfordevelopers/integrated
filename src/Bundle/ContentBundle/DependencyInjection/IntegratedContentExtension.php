@@ -62,6 +62,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('event_dispatchers.xml');
         $loader->load('repositories.xml');
         $loader->load('menu.xml');
+        $loader->load('routing.services.xml');
 
         $loader->load('security.xml');
 

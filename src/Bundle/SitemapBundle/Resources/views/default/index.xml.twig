@@ -1,10 +1,10 @@
+{% spaceless %}
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    {% for document in documents %}
-        <url>
-            <loc>{{ app.request.schemeAndHttpHost }}/content/{{ document.class|split('\\')|last|lower|default }}/{{ document.slug|default }}</loc>
-            <lastmod>{{ ("@"~document.createdAt.sec)|date("Y-m-d") }}</lastmod>
-            <changefreq>weekly</changefreq>
-        </url>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    {% for page in 0..count-1 %}
+        <sitemap>
+            <loc>{{ path('integrated_sitemap_list', {page: loop.index}) }}</loc>
+        </sitemap>
     {% endfor %}
-</urlset>
+</sitemapindex>
+{% endspaceless %}

@@ -25,8 +25,10 @@ class CreateUtil
 {
     /**
      * @param ManagerInterface $manager
-     * @param string $path
+     * @param string           $path
+     *
      * @return StorageInterface
+     *
      * @throws \Exception
      */
     public static function path(ManagerInterface $manager, $path)

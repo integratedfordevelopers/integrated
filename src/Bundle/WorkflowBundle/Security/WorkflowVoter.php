@@ -278,7 +278,7 @@ class WorkflowVoter implements VoterInterface
 
     /**
      * @param ContentInterface $content
-     * @param Definition $workflow
+     * @param Definition       $workflow
      *
      * @return Definition\State
      */
@@ -300,7 +300,8 @@ class WorkflowVoter implements VoterInterface
 
     /**
      * @param GroupableInterface $user
-     * @param Permission[] $permissionGroups
+     * @param Permission[]       $permissionGroups
+     *
      * @return array
      */
     protected function getPermissions(GroupableInterface $user, $permissionGroups)

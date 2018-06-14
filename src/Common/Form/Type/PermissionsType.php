@@ -49,7 +49,7 @@ class PermissionsType extends AbstractType
             'attr' => [
                 'class' => 'select2',
                 'data-placeholder' => $options['read-placeholder'],
-            ]
+            ],
         ]);
 
         $builder->add('write', GroupType::class, [
@@ -59,7 +59,7 @@ class PermissionsType extends AbstractType
             'attr' => [
                 'class' => 'select2',
                 'data-placeholder' => $options['write-placeholder'],
-            ]
+            ],
         ]);
     }
 

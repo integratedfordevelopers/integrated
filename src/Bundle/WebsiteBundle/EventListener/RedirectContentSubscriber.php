@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Exception\ExceptionInterface;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -38,20 +38,23 @@ class RedirectContentSubscriber implements EventSubscriberInterface
     private $urlResolver;
 
     /**
-     * @var Router
+     * @var UrlMatcherInterface
      */
-    private $router;
+    private $matcher;
 
     /**
-     * @param DocumentManager $documentManager
-     * @param UrlResolver     $urlResolver
-     * @param Router          $router
+     * @param DocumentManager     $documentManager
+     * @param UrlResolver         $urlResolver
+     * @param UrlMatcherInterface $router
      */
-    public function __construct(DocumentManager $documentManager, UrlResolver $urlResolver, Router $router)
-    {
+    public function __construct(
+        DocumentManager $documentManager,
+        UrlResolver $urlResolver,
+        UrlMatcherInterface $matcher
+    ) {
         $this->documentManager = $documentManager;
         $this->urlResolver = $urlResolver;
-        $this->router = $router;
+        $this->matcher = $matcher;
     }
 
     /**
@@ -90,7 +93,7 @@ class RedirectContentSubscriber implements EventSubscriberInterface
         $url = $this->urlResolver->generateUrl($document);
 
         try {
-            $this->router->match($url);
+            $this->matcher->match($url);
         } catch (ExceptionInterface $e) {
             return;
         }

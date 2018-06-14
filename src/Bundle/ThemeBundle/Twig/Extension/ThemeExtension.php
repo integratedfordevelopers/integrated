@@ -43,7 +43,9 @@ class ThemeExtension extends \Twig_Extension
 
     /**
      * @param string $template
+     *
      * @return string
+     *
      * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
      */
     public function getActiveTheme($template)
