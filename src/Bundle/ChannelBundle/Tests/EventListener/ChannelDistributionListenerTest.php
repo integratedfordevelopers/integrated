@@ -34,16 +34,12 @@ class ChannelDistributionListenerTest extends TestCase
      */
     private $listener;
 
-    /**
-     */
     protected function setUp()
     {
         $this->queue = new Queue(new QueueProvider(), 'test');
         $this->listener = new ChannelDistributionListener($this->queue, new Serializer());
     }
 
-    /**
-     */
     public function testQueueState()
     {
         $document = $this->createMock(Content::class);
