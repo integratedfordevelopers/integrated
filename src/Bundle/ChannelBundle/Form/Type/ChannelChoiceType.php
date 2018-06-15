@@ -53,7 +53,6 @@ class ChannelChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefault('class', Channel::class);
-        $resolver->setDefault('choice_value', 'id');
         $resolver->setDefault('choice_label', 'name');
     }
 
