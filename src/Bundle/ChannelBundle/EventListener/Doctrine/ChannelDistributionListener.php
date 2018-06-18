@@ -76,13 +76,7 @@ class ChannelDistributionListener implements EventSubscriber
      */
     public function postPersist(LifecycleEventArgs $event)
     {
-        $document = $event->getDocument();
-
-        if (!$document instanceof ChannelableInterface) {
-            return;
-        }
-
-        $this->process($document, 'add');
+        $this->postUpdate($event);
     }
 
     /**
@@ -96,7 +90,13 @@ class ChannelDistributionListener implements EventSubscriber
             return;
         }
 
-        $this->process($document, 'add');
+        $state = 'add';
+
+        if ($document instanceof Content && !$document->isPublished()) {
+            $state = 'delete';
+        }
+
+        $this->process($document, $state);
     }
 
     /**
@@ -105,10 +105,6 @@ class ChannelDistributionListener implements EventSubscriber
      */
     protected function process(ChannelableInterface $document, $state)
     {
-        if ($document instanceof Content && !$document->isPublished()) {
-            $state = 'delete';
-        }
-
         $request = new Request();
 
         $request->content = $document;
