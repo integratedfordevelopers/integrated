@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ChannelBundle\EventListener\Doctrine;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\Events;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Channel\Exporter\Queue\Request;
 use Integrated\Common\Channel\Exporter\Queue\RequestSerializerInterface;
 use Integrated\Common\Content\ChannelableInterface;
@@ -75,13 +76,7 @@ class ChannelDistributionListener implements EventSubscriber
      */
     public function postPersist(LifecycleEventArgs $event)
     {
-        $document = $event->getDocument();
-
-        if (!$document instanceof ChannelableInterface) {
-            return;
-        }
-
-        $this->process($document, 'add');
+        $this->postUpdate($event);
     }
 
     /**
@@ -95,7 +90,13 @@ class ChannelDistributionListener implements EventSubscriber
             return;
         }
 
-        $this->process($document, 'add');
+        $state = 'add';
+
+        if ($document instanceof Content && !$document->isPublished()) {
+            $state = 'delete';
+        }
+
+        $this->process($document, $state);
     }
 
     /**
