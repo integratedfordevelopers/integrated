@@ -21,6 +21,7 @@
 
         <service id="integrated_content.provider.media" class="%integrated_content.provider.media.class%" public="true">
             <argument type="service" id="integrated_content.content_type.manager" />
+            <argument type="service" id="security.authorization_checker" />
         </service>
 
         <service id="integrated_content.provider.content_provider" class="Integrated\Bundle\ContentBundle\Provider\ContentProvider">
