@@ -48,5 +48,9 @@
             <tag name="form.type"/>
         </service>
 
+        <service id="integrated_user.form.profile.type" class="Integrated\Bundle\UserBundle\Form\Type\ProfileFormType">
+            <tag name="form.type"/>
+        </service>
+
     </services>
 </container>
