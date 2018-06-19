@@ -66,7 +66,7 @@ class ConfigureMenuSubscriber implements EventSubscriberInterface
                 $menuManage = $menu->addChild(self::MENU_MANAGE);
             }
 
-            $menuManage->addChild('Users', ['route' => 'integrated_user_profile_index']);
+            $menuManage->addChild('Users', ['route' => 'integrated_user_user_index']);
             $menuManage->addChild('Groups', ['route' => 'integrated_user_group_index']);
             $menuManage->addChild('User scopes', ['route' => 'integrated_user_scope_index']);
         }

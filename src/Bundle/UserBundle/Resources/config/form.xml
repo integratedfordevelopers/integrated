@@ -12,7 +12,7 @@
             <tag name="form.type"/>
         </service>
 
-        <service id="integrated_user.form.profile.type" class="Integrated\Bundle\UserBundle\Form\Type\ProfileFormType">
+        <service id="integrated_user.form.user.type" class="Integrated\Bundle\UserBundle\Form\Type\UserFormType">
             <argument type="service" id="integrated_user.user.manager"/>
             <argument type="service" id="security.encoder_factory"/>
             <tag name="form.type"/>

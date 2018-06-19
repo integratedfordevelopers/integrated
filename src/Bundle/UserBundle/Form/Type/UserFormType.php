@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ProfileFormType extends AbstractType
+class UserFormType extends AbstractType
 {
     /**
      * @var UserManagerInterface
@@ -205,7 +205,7 @@ class ProfileFormType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'integrated_user_profile_form';
+        return 'integrated_user_user_form';
     }
 
     /**

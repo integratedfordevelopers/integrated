@@ -6,7 +6,7 @@
                 <li class="dropdown">
                     <a href="#" data-toggle="dropdown" role="button" id="drop_1">Options <b class="caret"></b></a>
                     <ul aria-labelledby="drop_1" role="menu" class="dropdown-menu" id="menu_1">
-                        <li role="presentation"><a href="{{ path('integrated_user_profile_new') }}" tabindex="-1" role="menuitem">New</a></li>
+                        <li role="presentation"><a href="{{ path('integrated_user_user_new') }}" tabindex="-1" role="menuitem">New</a></li>
                     </ul>
                 </li>
             </ul>
@@ -42,8 +42,8 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{{ path('integrated_user_profile_edit', {'id': user.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
-                                <a href="{{ path('integrated_user_profile_delete', {'id': user.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
+                                <a href="{{ path('integrated_user_user_edit', {'id': user.id}) }}" title="{% trans %}Edit{% endtrans %}"><span class="glyphicon glyphicon-edit"></span></a>
+                                <a href="{{ path('integrated_user_user_delete', {'id': user.id}) }}" title="{% trans %}Delete{% endtrans %}"><span class="glyphicon glyphicon-remove-circle"></span></a>
                             </td>
                         </tr>
 

@@ -13,7 +13,7 @@ namespace Integrated\Bundle\UserBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
 use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
-use Integrated\Bundle\UserBundle\Form\Type\ProfileFormType;
+use Integrated\Bundle\UserBundle\Form\Type\UserFormType;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
-class ProfileController extends Controller
+class UserController extends Controller
 {
     /**
      * @param Request $request
@@ -41,7 +41,7 @@ class ProfileController extends Controller
             15
         );
 
-        return $this->render('IntegratedUserBundle:profile:index.html.twig', [
+        return $this->render('IntegratedUserBundle:user:index.html.twig', [
             'users' => $paginator,
         ]);
     }
@@ -60,7 +60,7 @@ class ProfileController extends Controller
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
+                return $this->redirect($this->generateUrl('integrated_user_user_index'));
             }
 
             if ($form->isValid()) {
@@ -69,11 +69,11 @@ class ProfileController extends Controller
                 $this->getManager()->persist($user);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The user %s is created', $user->getUsername()));
 
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
+                return $this->redirect($this->generateUrl('integrated_user_user_index'));
             }
         }
 
-        return $this->render('IntegratedUserBundle:profile:new.html.twig', [
+        return $this->render('IntegratedUserBundle:user:new.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -100,18 +100,18 @@ class ProfileController extends Controller
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
+                return $this->redirect($this->generateUrl('integrated_user_user_index'));
             }
 
             if ($form->isValid()) {
                 $this->getManager()->persist($user);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the user %s are saved', $user->getUsername()));
 
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
+                return $this->redirect($this->generateUrl('integrated_user_user_index'));
             }
         }
 
-        return $this->render('IntegratedUserBundle:profile:edit.html.twig', [
+        return $this->render('IntegratedUserBundle:user:edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
@@ -127,7 +127,7 @@ class ProfileController extends Controller
         $user = $this->getManager()->find($request->get('id'));
 
         if (!$user) {
-            return $this->redirect($this->generateUrl('integrated_user_profile_index')); // user is already gone
+            return $this->redirect($this->generateUrl('integrated_user_user_index')); // user is already gone
         }
 
         $form = $this->createDeleteForm($user);
@@ -137,18 +137,18 @@ class ProfileController extends Controller
 
             // check for back click else its a submit
             if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
+                return $this->redirect($this->generateUrl('integrated_user_user_index'));
             }
 
             if ($form->isValid()) {
                 $this->getManager()->remove($user);
                 $this->get('braincrafted_bootstrap.flash')->success(sprintf('The user %s is removed', $user->getUsername()));
 
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
+                return $this->redirect($this->generateUrl('integrated_user_user_index'));
             }
         }
 
-        return $this->render('IntegratedUserBundle:profile:delete.html.twig', [
+        return $this->render('IntegratedUserBundle:user:delete.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
@@ -160,10 +160,10 @@ class ProfileController extends Controller
     protected function createNewForm()
     {
         $form = $this->createForm(
-            ProfileFormType::class,
+            UserFormType::class,
             null,
             [
-                'action' => $this->generateUrl('integrated_user_profile_new'),
+                'action' => $this->generateUrl('integrated_user_user_new'),
                 'method' => 'POST',
             ]
         );
@@ -186,10 +186,10 @@ class ProfileController extends Controller
     protected function createEditForm(UserInterface $user)
     {
         $form = $this->createForm(
-            ProfileFormType::class,
+            UserFormType::class,
             $user,
             [
-                'action' => $this->generateUrl('integrated_user_profile_edit', ['id' => $user->getId()]),
+                'action' => $this->generateUrl('integrated_user_user_edit', ['id' => $user->getId()]),
                 'method' => 'PUT',
             ]
         );
@@ -215,7 +215,7 @@ class ProfileController extends Controller
             DeleteFormType::class,
             $user,
             [
-                'action' => $this->generateUrl('integrated_user_profile_delete', ['id' => $user->getId()]),
+                'action' => $this->generateUrl('integrated_user_user_delete', ['id' => $user->getId()]),
                 'method' => 'DELETE',
             ]
         );
