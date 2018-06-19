@@ -72,7 +72,7 @@ class DefaultController extends Controller
         }
 
         return [
-            'count' => min(ceil($count / 1000), 50000),
+            'count' => min(ceil($count / 50000), 50000),
         ];
     }
 
@@ -102,8 +102,8 @@ class DefaultController extends Controller
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->sort('_id')
-            ->skip(--$page * 1000)
-            ->limit(1000)
+            ->skip(--$page * 50000)
+            ->limit(50000)
             ->getQuery()
             ->getIterator();
 
