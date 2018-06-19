@@ -17,7 +17,7 @@ use Integrated\Bundle\PageBundle\Document\Page\ContentTypePage;
 use Integrated\Bundle\WebsiteBundle\Routing\ContentTypePageLoader;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\ContentInterface;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -40,7 +40,7 @@ class UrlResolver
     protected $contentTypePages = [];
 
     /**
-     * @var Router
+     * @var RouterInterface
      */
     protected $router;
 
@@ -52,13 +52,13 @@ class UrlResolver
     /**
      * @param ContentTypeControllerManager $controllerManager
      * @param ChannelContextInterface      $channelContext
-     * @param Router                       $router
+     * @param RouterInterface              $router
      * @param DocumentManager              $dm
      */
     public function __construct(
         ContentTypeControllerManager $controllerManager,
         ChannelContextInterface $channelContext,
-        Router $router,
+        RouterInterface $router,
         DocumentManager $dm
     ) {
         $this->controllerManager = $controllerManager;

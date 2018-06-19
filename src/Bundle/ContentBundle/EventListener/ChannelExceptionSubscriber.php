@@ -18,7 +18,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Routing\Router;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -26,7 +25,7 @@ use Symfony\Component\Routing\Router;
 class ChannelExceptionSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var Router
+     * @var UrlGeneratorInterface
      */
     private $generator;
 
