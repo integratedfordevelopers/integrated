@@ -20,7 +20,6 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Common\Content\Form\Event\BuilderEvent;
 use Integrated\Common\Content\Form\Event\FieldEvent;
 use Integrated\Common\Content\Form\Events;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -51,11 +50,6 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     private $requestStack;
 
     /**
-     * @var Router
-     */
-    private $router;
-
-    /**
      * @var null|array
      */
     protected $comments = null;
@@ -70,13 +64,11 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
         DocumentManager $documentManager,
         AssetManager $stylesheets,
         AssetManager $javascripts,
-        Router $router,
         RequestStack $requestStack
     ) {
         $this->documentManager = $documentManager;
         $this->stylesheets = $stylesheets;
         $this->javascripts = $javascripts;
-        $this->router = $router;
         $this->requestStack = $requestStack;
     }
 

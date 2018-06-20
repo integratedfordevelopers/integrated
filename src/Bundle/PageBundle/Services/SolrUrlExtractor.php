@@ -13,7 +13,7 @@ namespace Integrated\Bundle\PageBundle\Services;
 
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Solarium\QueryType\Select\Result\Document;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * @author Johan Liefers <johan@e-active.nl>
@@ -26,15 +26,15 @@ class SolrUrlExtractor
     protected $channelContext;
 
     /**
-     * @var Router
+     * @var RouterInterface
      */
     protected $router;
 
     /**
      * @param ChannelContextInterface $channelContext
-     * @param Router                  $router
+     * @param RouterInterface         $router
      */
-    public function __construct(ChannelContextInterface $channelContext, Router $router)
+    public function __construct(ChannelContextInterface $channelContext, RouterInterface $router)
     {
         $this->channelContext = $channelContext;
         $this->router = $router;
