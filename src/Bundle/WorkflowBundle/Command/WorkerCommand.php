@@ -18,27 +18,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Lock\Factory;
+use Symfony\Component\Console\Command\LockableTrait;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class WorkerCommand extends ContainerAwareCommand
 {
-    /**
-     * @var Factory
-     */
-    private $factory;
-
-    /**
-     * @param Factory $factory
-     */
-    public function __construct(Factory $factory)
-    {
-        parent::__construct();
-
-        $this->factory = $factory;
-    }
+    use LockableTrait;
 
     /**
      * {@inheritdoc}
@@ -63,10 +50,10 @@ The <info>%command.name%</info> .
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lock = $this->factory->createLock(self::class.md5(__DIR__));
+        if (!$this->lock(self::class.md5(__DIR__))) {
+            $output->writeln('The command is already running in another process.');
 
-        if (!$lock->acquire()) {
-            return;
+            return 0;
         }
 
         try {
@@ -104,7 +91,7 @@ The <info>%command.name%</info> .
 
             return 1;
         } finally {
-            $lock->release();
+            $this->release();
         }
 
         return 0;
