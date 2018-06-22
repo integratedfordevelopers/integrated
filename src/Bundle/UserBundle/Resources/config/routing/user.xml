@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+	<route id="integrated_user_user_index" path="/" methods="GET">
+		<default key="_controller">IntegratedUserBundle:User:index</default>
+	</route>
+
+	<route id="integrated_user_user_new" path="/new">
+		<default key="_controller">IntegratedUserBundle:User:new</default>
+	</route>
+
+	<route id="integrated_user_user_new_rest" path="/" methods="POST">
+		<default key="_controller">IntegratedUserBundle:User:new</default>
+	</route>
+
+	<route id="integrated_user_user_edit" path="/{id}"  methods="GET">
+		<default key="_controller">IntegratedUserBundle:User:edit</default>
+	</route>
+
+	<route id="integrated_user_user_edit_rest" path="/{id}" methods="PUT">
+		<default key="_controller">IntegratedUserBundle:User:edit</default>
+	</route>
+
+	<route id="integrated_user_user_delete" path="/{id}/delete">
+		<default key="_controller">IntegratedUserBundle:User:delete</default>
+	</route>
+
+	<route id="integrated_user_user_delete_rest" path="/{id}" methods="DELETE">
+		<default key="_controller">IntegratedUserBundle:User:delete</default>
+	</route>
+
+</routes>

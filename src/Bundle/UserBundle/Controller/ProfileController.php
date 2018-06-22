@@ -12,20 +12,52 @@
 namespace Integrated\Bundle\UserBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
-use Integrated\Bundle\UserBundle\Form\Type\DeleteFormType;
+use Braincrafted\Bundle\BootstrapBundle\Session\FlashMessage;
 use Integrated\Bundle\UserBundle\Form\Type\ProfileFormType;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
 use Integrated\Bundle\UserBundle\Model\UserManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 
-/**
- * @author Jan Sanne Mulder <jansanne@e-active.nl>
- */
 class ProfileController extends Controller
 {
+    /**
+     * @var UserManagerInterface
+     */
+    protected $userManager;
+
+    /**
+     * @var EncoderFactoryInterface
+     */
+    protected $encoderFactory;
+
+    /**
+     * @var FlashMessage
+     */
+    protected $flashMessage;
+
+    /**
+     * @param UserManagerInterface    $userManager
+     * @param EncoderFactoryInterface $encoderFactory
+     * @param FlashMessage            $flashMessage
+     * @param ContainerInterface      $container
+     */
+    public function __construct(
+        UserManagerInterface $userManager,
+        EncoderFactoryInterface $encoderFactory,
+        FlashMessage $flashMessage,
+        ContainerInterface $container
+    ) {
+        $this->userManager = $userManager;
+        $this->encoderFactory = $encoderFactory;
+        $this->flashMessage = $flashMessage;
+        $this->container = $container;
+    }
+
     /**
      * @param Request $request
      *
@@ -33,149 +65,33 @@ class ProfileController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var $paginator \Knp\Component\Pager\Paginator */
-        $paginator = $this->get('knp_paginator');
-        $paginator = $paginator->paginate(
-            $this->getManager()->findAll(),
-            $request->query->get('page', 1),
-            15
-        );
+        $user = $this->getUser();
+
+        $form = $this->createProfileForm($user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->get('actions')->get('cancel')->isClicked()) {
+                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+            }
+
+            if ($form->isValid()) {
+                $salt = base64_encode(random_bytes(72));
+
+                $user->setPassword($this->encoderFactory->getEncoder($user)->encodePassword($form->get('password')->getData(), $salt));
+                $user->setSalt($salt);
+
+                $this->userManager->persist($user);
+                $this->flashMessage->success('Your profile have been saved');
+
+                return $this->redirect($this->generateUrl('integrated_content_content_index'));
+            }
+        }
 
         return $this->render('IntegratedUserBundle:profile:index.html.twig', [
-            'users' => $paginator,
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function newAction(Request $request)
-    {
-        $form = $this->createNewForm();
-
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
-            if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
-            }
-
-            if ($form->isValid()) {
-                $user = $form->getData();
-
-                $this->getManager()->persist($user);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The user %s is created', $user->getUsername()));
-
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
-            }
-        }
-
-        return $this->render('IntegratedUserBundle:profile:new.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     */
-    public function editAction(Request $request)
-    {
-        $user = $this->getManager()->find($request->get('id'));
-
-        if (!$user) {
-            throw $this->createNotFoundException();
-        }
-
-        $form = $this->createEditForm($user);
-
-        if ($request->isMethod('put')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
-            if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
-            }
-
-            if ($form->isValid()) {
-                $this->getManager()->persist($user);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The changes to the user %s are saved', $user->getUsername()));
-
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
-            }
-        }
-
-        return $this->render('IntegratedUserBundle:profile:edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function deleteAction(Request $request)
-    {
-        $user = $this->getManager()->find($request->get('id'));
-
-        if (!$user) {
-            return $this->redirect($this->generateUrl('integrated_user_profile_index')); // user is already gone
-        }
-
-        $form = $this->createDeleteForm($user);
-
-        if ($request->isMethod('delete')) {
-            $form->handleRequest($request);
-
-            // check for back click else its a submit
-            if ($form->get('actions')->get('cancel')->isClicked()) {
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
-            }
-
-            if ($form->isValid()) {
-                $this->getManager()->remove($user);
-                $this->get('braincrafted_bootstrap.flash')->success(sprintf('The user %s is removed', $user->getUsername()));
-
-                return $this->redirect($this->generateUrl('integrated_user_profile_index'));
-            }
-        }
-
-        return $this->render('IntegratedUserBundle:profile:delete.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    protected function createNewForm()
-    {
-        $form = $this->createForm(
-            ProfileFormType::class,
-            null,
-            [
-                'action' => $this->generateUrl('integrated_user_profile_new'),
-                'method' => 'POST',
-            ]
-        );
-
-        $form->add('actions', FormActionsType::class, [
-            'buttons' => [
-                'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ],
-        ]);
-
-        return $form;
     }
 
     /**
@@ -183,14 +99,14 @@ class ProfileController extends Controller
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    protected function createEditForm(UserInterface $user)
+    protected function createProfileForm(UserInterface $user)
     {
         $form = $this->createForm(
             ProfileFormType::class,
             $user,
             [
-                'action' => $this->generateUrl('integrated_user_profile_edit', ['id' => $user->getId()]),
-                'method' => 'PUT',
+                'action' => $this->generateUrl('integrated_user_profile_index'),
+                'method' => 'POST',
             ]
         );
 
@@ -202,45 +118,5 @@ class ProfileController extends Controller
         ]);
 
         return $form;
-    }
-
-    /**
-     * @param UserInterface $user
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    protected function createDeleteForm(UserInterface $user)
-    {
-        $form = $this->createForm(
-            DeleteFormType::class,
-            $user,
-            [
-                'action' => $this->generateUrl('integrated_user_profile_delete', ['id' => $user->getId()]),
-                'method' => 'DELETE',
-            ]
-        );
-
-        $form->add('actions', FormActionsType::class, [
-            'buttons' => [
-                'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
-            ],
-        ]);
-
-        return $form;
-    }
-
-    /**
-     * @return UserManagerInterface
-     *
-     * @throws \LogicException
-     */
-    protected function getManager()
-    {
-        if (!$this->container->has('integrated_user.user.manager')) {
-            throw new \LogicException('The UserBundle is not registered in your application.');
-        }
-
-        return $this->container->get('integrated_user.user.manager');
     }
 }

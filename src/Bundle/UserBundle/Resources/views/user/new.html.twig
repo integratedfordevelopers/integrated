@@ -4,9 +4,9 @@
         <div class="container">
             <ol class="breadcrumb">
                 <li>
-                    <a href="{{ path('integrated_user_profile_index') }}">{% trans %}Home{% endtrans %}</a>
+                    <a href="{{ path('integrated_user_user_index') }}">{% trans %}Home{% endtrans %}</a>
                 </li>
-                <li class="active">{% trans %}Edit{% endtrans %}</li>
+                <li class="active">{% trans %}New{% endtrans %}</li>
             </ol>
         </div>
     </div>
@@ -14,7 +14,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12 push-sm-down">
-            <h1 class="main-title font-regular">{% trans %}Edit{% endtrans %} <small>{% trans %}user{% endtrans %}</small></h1>
+            <h1 class="main-title font-regular">{% trans %}New{% endtrans %} <small>{% trans %}user{% endtrans %}</small></h1>
             <section class="section-white section-padding section-shadow section-radius">
                 {{ form(form, { 'style': 'horizontal' }) }}
             </section>

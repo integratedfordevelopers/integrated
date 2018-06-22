@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\UserBundle\Extension\Subscriber;
 
-use Integrated\Bundle\UserBundle\Form\Type\ProfileFormType;
+use Integrated\Bundle\UserBundle\Form\Type\UserFormType;
 use Integrated\Common\Content\Extension\Event\MetadataEvent;
 use Integrated\Common\Content\Extension\Event\Subscriber\MetadataSubscriberInterface;
 use Integrated\Common\Content\Extension\Events;
@@ -59,7 +59,7 @@ class MetadataSubscriber implements MetadataSubscriberInterface
         if ($metadata->getClass() === self::RELATION_CLASS || is_subclass_of($metadata->getClass(), self::RELATION_CLASS)) {
             $field = $metadata->newField('User');
 
-            $field->setType(ProfileFormType::class);
+            $field->setType(UserFormType::class);
 
             $field->setOption('mapped', false);
             $field->setOption('optional', true);

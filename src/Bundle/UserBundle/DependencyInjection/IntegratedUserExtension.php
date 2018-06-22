@@ -49,6 +49,8 @@ class IntegratedUserExtension extends Extension
 
         $loader->load('data_fixtures.xml');
 
+        $loader->load('controller.xml');
+
         // @TODO make it a config option to enable the default mapping or not
         $container->setParameter('integrated_user.mapping.enabled', true);
     }
