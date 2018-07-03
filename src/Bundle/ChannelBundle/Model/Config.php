@@ -22,6 +22,11 @@ use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 class Config implements ConfigInterface
 {
     /**
+     * @var int
+     */
+    protected $externalId;
+
+    /**
      * @var string
      */
     protected $name;
@@ -65,6 +70,24 @@ class Config implements ConfigInterface
     public function getId()
     {
         return $this->name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExternalId()
+    {
+        return $this->externalId;
+    }
+
+    /**
+     * @param int $externalId
+     * @return $this
+     */
+    public function setExternalId($externalId)
+    {
+        $this->externalId = $externalId;
+        return $this;
     }
 
     /**
