@@ -69,7 +69,7 @@ class Config implements ConfigInterface
      */
     public function getId()
     {
-        return $this->name;
+        return $this->externalId;
     }
 
     /**
