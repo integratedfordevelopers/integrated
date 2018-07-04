@@ -42,8 +42,8 @@ class FacetBlock extends Block
      * @Type\Field(
      *      type="Integrated\Bundle\FormTypeBundle\Form\Type\CollectionType",
      *      options={
-     *          "type"="Integrated\Bundle\FormTypeBundle\Form\Type\EmbeddedDocumentType",
-     *          "options"={
+     *          "entry_type"="Integrated\Bundle\FormTypeBundle\Form\Type\EmbeddedDocumentType",
+     *          "entry_options"={
      *              "data_class"="Integrated\Bundle\ContentBundle\Document\Block\Embedded\FacetField"
      *          },
      *          "allow_add"=true,

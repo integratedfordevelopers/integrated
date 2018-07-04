@@ -48,7 +48,7 @@ class FeaturedItemsItem
     /**
      * @var string
      * @Type\Field(
-     *      type="choice",
+     *      type="Symfony\Component\Form\Extension\Core\Type\ChoiceType",
      *      options={
      *          "label"="Link target",
      *          "expanded"=true,
@@ -81,7 +81,10 @@ class FeaturedItemsItem
 
     /**
      * @var int
-     * @Type\Field(type="hidden", options={"attr"={"data-itemorder"="collection"}})
+     * @Type\Field(
+     *     type="Symfony\Component\Form\Extension\Core\Type\HiddenType",
+     *     options={"attr"={"data-itemorder"="collection"}}
+     *  )
      */
     protected $order;
 
