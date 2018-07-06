@@ -65,7 +65,7 @@ class NewsController extends Controller
         $count = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class)
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
-            ->field('publishTime.startDate')->gte(new DateTime('-2 days'))
+            ->field('publishTime.startDate')->gte(new DateTime('-2 days')) // Only the last 2 days for Google
             ->field('publishTime.endDate')->gte(new DateTime())
             ->getQuery()
             ->count();
@@ -104,7 +104,7 @@ class NewsController extends Controller
             ->select('contentType', 'slug', 'publishTime', 'title', 'relations')
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
-            ->field('publishTime.startDate')->gte(new DateTime('-2 days'))
+            ->field('publishTime.startDate')->gte(new DateTime('-2 days')) // Only the last 2 days for Google
             ->field('publishTime.endDate')->gte(new DateTime())
             ->sort('createdAt', 'desc')
             ->skip(--$page * 1000)
