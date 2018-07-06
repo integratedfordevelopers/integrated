@@ -66,6 +66,7 @@ class NewsController extends Controller
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->gte(new DateTime('-2 days'))
+            ->field('publishTime.endDate')->gte(new DateTime())
             ->getQuery()
             ->count();
 
@@ -104,6 +105,7 @@ class NewsController extends Controller
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->gte(new DateTime('-2 days'))
+            ->field('publishTime.endDate')->gte(new DateTime())
             ->sort('createdAt', 'desc')
             ->skip(--$page * 1000)
             ->limit(1000)
