@@ -53,8 +53,8 @@ class FeaturedItemsItem
      *          "label"="Link target",
      *          "expanded"=true,
      *          "choices"={
-     *               "_self"="Current window",
-     *               "_blank"="New window"
+     *               "Current window"="_self",
+     *               "New window"="_blank"
      *          }
      *      }
      *  )
