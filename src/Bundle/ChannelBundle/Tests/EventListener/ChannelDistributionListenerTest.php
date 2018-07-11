@@ -61,7 +61,7 @@ class ChannelDistributionListenerTest extends TestCase
         $document
             ->method('getChannels')
             ->willReturn([
-                $this->createMock(Channel::class)
+                $this->createMock(Channel::class),
             ]);
 
         $this->listener->postPersist($this->getLifecycleEventArgs($document));
@@ -130,7 +130,7 @@ class ChannelDistributionListenerTest extends TestCase
     /**
      * @group time-sensitive
      */
-    public function testDelayedMaxDate()
+    public function testMaxEndDate()
     {
         $startDate = DateTime::createFromFormat('U', time());
         $endDate = new DateTime(PublishTimeInterface::DATE_MAX); // should not be queued
@@ -145,6 +145,7 @@ class ChannelDistributionListenerTest extends TestCase
 
     /**
      * @param MockObject $document
+     *
      * @return LifecycleEventArgs|MockObject
      */
     private function getLifecycleEventArgs(MockObject $document): LifecycleEventArgs
@@ -164,13 +165,13 @@ class ChannelDistributionListenerTest extends TestCase
     {
         $document = $this->getMockBuilder([
             PublishableInterface::class,
-            ChannelableInterface::class
+            ChannelableInterface::class,
         ])->getMock();
 
         $document
             ->method('getChannels')
             ->willReturn([
-                $this->createMock(Channel::class)
+                $this->createMock(Channel::class),
             ]);
 
         return $document;
@@ -179,6 +180,7 @@ class ChannelDistributionListenerTest extends TestCase
     /**
      * @param DateTime|null $startDate
      * @param DateTime|null $endDate
+     *
      * @return MockObject
      */
     private function getDocumentWithPublishTime(DateTime $startDate = null, DateTime $endDate = null): MockObject

@@ -134,6 +134,7 @@ class ChannelDistributionListener implements EventSubscriber
 
     /**
      * @param DateTime|null $date
+     *
      * @return int
      */
     private function getDelay(DateTime $date = null): int
