@@ -70,7 +70,7 @@ class ChannelDistributionListenerTest extends TestCase
         $this->assertSame('add', $this->getPayload()->state);
     }
 
-    public function testNotPublished()
+    public function testQueueNotPublished()
     {
         $document = $this->getDocument();
         $document
@@ -86,7 +86,7 @@ class ChannelDistributionListenerTest extends TestCase
     /**
      * @group time-sensitive
      */
-    public function testDelayedStartDate()
+    public function testQueueDelayedStartDate()
     {
         $startDate = DateTime::createFromFormat('U', time())->modify('+1 day');
 
@@ -105,7 +105,7 @@ class ChannelDistributionListenerTest extends TestCase
     /**
      * @group time-sensitive
      */
-    public function testDelayedEndDate()
+    public function testQueueDelayedEndDate()
     {
         $startDate = DateTime::createFromFormat('U', time());
         $endDate = DateTime::createFromFormat('U', time())->modify('+1 day');
@@ -130,7 +130,7 @@ class ChannelDistributionListenerTest extends TestCase
     /**
      * @group time-sensitive
      */
-    public function testMaxEndDate()
+    public function testQueueMaxEndDate()
     {
         $startDate = DateTime::createFromFormat('U', time());
         $endDate = new DateTime(PublishTimeInterface::DATE_MAX); // should not be queued
