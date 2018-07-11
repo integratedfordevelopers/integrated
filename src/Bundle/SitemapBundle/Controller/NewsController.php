@@ -62,11 +62,14 @@ class NewsController extends Controller
             throw new NotFoundHttpException('No channel found');
         }
 
+        $now = new DateTime();
+
         $count = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class)
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->gte(new DateTime('-2 days')) // Only the last 2 days for Google
-            ->field('publishTime.endDate')->gte(new DateTime())
+            ->field('publishTime.startDate')->lte($now)
+            ->field('publishTime.endDate')->gte($now)
             ->getQuery()
             ->count();
 
@@ -100,12 +103,15 @@ class NewsController extends Controller
             throw new NotFoundHttpException();
         }
 
+        $now = new DateTime();
+
         $documents = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class)
             ->select('contentType', 'slug', 'publishTime', 'title', 'relations')
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->gte(new DateTime('-2 days')) // Only the last 2 days for Google
-            ->field('publishTime.endDate')->gte(new DateTime())
+            ->field('publishTime.startDate')->lte($now)
+            ->field('publishTime.endDate')->gte($now)
             ->sort('createdAt', 'desc')
             ->skip(--$page * 1000)
             ->limit(1000)
