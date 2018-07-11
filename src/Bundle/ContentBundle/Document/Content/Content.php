@@ -34,12 +34,7 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-abstract class Content implements
-    ContentInterface,
-    ExtensibleInterface,
-    MetadataInterface,
-    ChannelableInterface,
-    PublishableInterface
+abstract class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface, PublishableInterface
 {
     use ExtensibleTrait;
 
