@@ -24,6 +24,8 @@ use Integrated\Common\Content\Embedded\RelationInterface;
 use Integrated\Common\Content\ExtensibleInterface;
 use Integrated\Common\Content\ExtensibleTrait;
 use Integrated\Common\Content\MetadataInterface;
+use Integrated\Common\Content\PublishableInterface;
+use Integrated\Common\Content\PublishTimeInterface;
 use Integrated\Common\Content\RegistryInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
@@ -32,7 +34,12 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-abstract class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface
+abstract class Content implements
+    ContentInterface,
+    ExtensibleInterface,
+    MetadataInterface,
+    ChannelableInterface,
+    PublishableInterface
 {
     use ExtensibleTrait;
 
@@ -399,23 +406,17 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Get the publish time of the document.
-     *
-     * @return PublishTime
+     * {@inheritdoc}
      */
-    public function getPublishTime()
+    public function getPublishTime(): PublishTimeInterface
     {
         return $this->publishTime;
     }
 
     /**
-     * Set the publish time of the document.
-     *
-     * @param PublishTime $publishTime
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setPublishTime(PublishTime $publishTime)
+    public function setPublishTime(PublishTimeInterface $publishTime)
     {
         $this->publishTime = $publishTime;
 
@@ -435,13 +436,9 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Get the published of the document.
-     *
-     * @param bool $checkPublishTime
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isPublished($checkPublishTime = true)
+    public function isPublished($checkPublishTime = true): bool
     {
         $published = true;
 
@@ -453,11 +450,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
-     * Set the published of the document.
-     *
-     * @param bool $published
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setPublished($published)
     {
@@ -643,7 +636,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
         }
 
         if (!$this->publishTime->getEndDate() instanceof \DateTime) {
-            $this->publishTime->setEndDate(new \DateTime(PublishTime::DATE_MAX));
+            $this->publishTime->setEndDate(new \DateTime(PublishTimeInterface::DATE_MAX));
         }
     }
 
