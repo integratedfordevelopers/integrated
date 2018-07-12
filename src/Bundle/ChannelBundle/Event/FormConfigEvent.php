@@ -32,9 +32,9 @@ class FormConfigEvent extends ConfigEvent
     private $response = null;
 
     /**
-     * @param Config           $config
-     * @param Request          $request
-     * @param FormInterface    $form
+     * @param Config        $config
+     * @param Request       $request
+     * @param FormInterface $form
      */
     public function __construct(Config $config, Request $request, FormInterface $form)
     {

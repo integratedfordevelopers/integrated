@@ -20,7 +20,7 @@ class ExporterReponse
     protected $externalId;
 
     /**
-     * @param int $configId
+     * @param int    $configId
      * @param string $configAdapter
      */
     public function __construct($configId, $configAdapter)
@@ -55,11 +55,13 @@ class ExporterReponse
 
     /**
      * @param string $externalId
+     *
      * @return $this
      */
     public function setExternalId($externalId)
     {
         $this->externalId = $externalId;
+
         return $this;
     }
 }

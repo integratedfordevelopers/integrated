@@ -34,8 +34,8 @@ class Exporter implements ExporterInterface
     private $config;
 
     /**
-     * @param TwitterOAuth      $twitter
-     * @param ConfigInterface   $config
+     * @param TwitterOAuth    $twitter
+     * @param ConfigInterface $config
      */
     public function __construct(TwitterOAuth $twitter, ConfigInterface $config)
     {

@@ -73,11 +73,13 @@ class Config implements ConfigInterface
 
     /**
      * @param int $id
+     *
      * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
@@ -86,7 +88,7 @@ class Config implements ConfigInterface
      */
     public function getName(): string
     {
-        return (string)$this->name;
+        return (string) $this->name;
     }
 
     /**

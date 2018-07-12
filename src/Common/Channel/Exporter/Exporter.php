@@ -48,7 +48,7 @@ class Exporter implements ExporterInterface
     /**
      * @param RegistryInterface $registry
      * @param ResolverInterface $resolver
-     * @param DocumentManager $dm
+     * @param DocumentManager   $dm
      */
     public function __construct(RegistryInterface $registry, ResolverInterface $resolver, DocumentManager $dm)
     {
@@ -104,8 +104,8 @@ class Exporter implements ExporterInterface
     }
 
     /**
-     * @param ContentInterface  $content
-     * @param ExporterReponse   $exporterReponse
+     * @param ContentInterface $content
+     * @param ExporterReponse  $exporterReponse
      */
     protected function save($content, ExporterReponse $exporterReponse)
     {

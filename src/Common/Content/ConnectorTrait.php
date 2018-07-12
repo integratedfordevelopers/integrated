@@ -35,6 +35,7 @@ trait ConnectorTrait
      * Set the connectors of the document.
      *
      * @param array $connectors
+     *
      * @return $this
      */
     public function setConnectors(array $connectors)
@@ -62,6 +63,7 @@ trait ConnectorTrait
 
     /**
      * @param int $connectorId
+     *
      * @return bool
      */
     public function hasConnector($connectorId)

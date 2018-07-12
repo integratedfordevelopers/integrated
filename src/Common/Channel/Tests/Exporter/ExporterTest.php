@@ -218,7 +218,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param string $adaptor
+     * @param string           $adaptor
      * @param OptionsInterface $options
      *
      * @return ConfigInterface | \PHPUnit_Framework_MockObject_MockObject
@@ -248,7 +248,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param ConfigInterface $config
+     * @param ConfigInterface   $config
      * @param ExporterInterface $exporter
      *
      * @return AdapterInterface | ExportableInterface | \PHPUnit_Framework_MockObject_MockObject

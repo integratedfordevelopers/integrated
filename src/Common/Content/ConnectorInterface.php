@@ -11,10 +11,7 @@
 
 namespace Integrated\Common\Content;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\ChannelBundle\Document\Embedded\Connector;
-use Integrated\Common\Content\Embedded\RelationInterface;
 
 interface ConnectorInterface
 {
@@ -29,6 +26,7 @@ interface ConnectorInterface
      * Set the connectors of the document.
      *
      * @param array $connectors
+     *
      * @return $this
      */
     public function setConnectors(array $connectors);
@@ -44,6 +42,7 @@ interface ConnectorInterface
 
     /**
      * @param int $connectorId
+     *
      * @return bool
      */
     public function hasConnector($connectorId);

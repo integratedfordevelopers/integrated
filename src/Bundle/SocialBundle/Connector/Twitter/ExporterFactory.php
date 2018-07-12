@@ -30,7 +30,7 @@ class ExporterFactory implements ExportableInterface
     private $factory;
 
     /**
-     * @param TwitterFactory    $factory
+     * @param TwitterFactory $factory
      */
     public function __construct(TwitterFactory $factory)
     {

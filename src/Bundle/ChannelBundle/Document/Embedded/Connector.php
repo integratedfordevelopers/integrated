@@ -42,11 +42,13 @@ class Connector
      * Set the connectorId of the document.
      *
      * @param int $connectorId
+     *
      * @return $this
      */
     public function setConnectorId($connectorId)
     {
-        $this->connectorId = (int)$connectorId;
+        $this->connectorId = (int) $connectorId;
+
         return $this;
     }
 
@@ -64,11 +66,13 @@ class Connector
      * Set the connectorAdapter of the document.
      *
      * @param string $connectorAdapter
+     *
      * @return $this
      */
     public function setConnectorAdapter($connectorAdapter)
     {
-        $this->connectorAdapter = (string)$connectorAdapter;
+        $this->connectorAdapter = (string) $connectorAdapter;
+
         return $this;
     }
 
@@ -86,11 +90,13 @@ class Connector
      * Set the externalId of the document.
      *
      * @param string $externalId
+     *
      * @return $this
      */
     public function setExternalId($externalId)
     {
-        $this->externalId = (string)$externalId;
+        $this->externalId = (string) $externalId;
+
         return $this;
     }
 }

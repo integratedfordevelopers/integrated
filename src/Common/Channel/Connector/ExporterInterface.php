@@ -20,6 +20,7 @@ interface ExporterInterface
      * @param object                    $content
      * @param string                    $state
      * @param string | ChannelInterface $channel
+     *
      * @return ExporterReponse
      */
     public function export($content, $state, ChannelInterface $channel);

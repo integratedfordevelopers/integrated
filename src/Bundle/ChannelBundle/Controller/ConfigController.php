@@ -52,10 +52,10 @@ class ConfigController extends Controller
     /**
      * ConfigController constructor.
      *
-     * @param ConfigManagerInterface    $manager
-     * @param RegistryInterface         $registry
-     * @param EventDispatcherInterface  $dispatcher
-     * @param ContainerInterface        $container
+     * @param ConfigManagerInterface   $manager
+     * @param RegistryInterface        $registry
+     * @param EventDispatcherInterface $dispatcher
+     * @param ContainerInterface       $container
      */
     public function __construct(
         ConfigManagerInterface $manager,
