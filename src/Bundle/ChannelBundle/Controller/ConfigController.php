@@ -117,12 +117,14 @@ class ConfigController extends Controller
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // first we need to persist, because we need an ID in the event
+            // this is dispatched down below
+            $this->manager->persist($data);
+
             $event = $this->dispatcher->dispatch(
                 IntegratedChannelEvents::CONFIG_CREATE_SUBMITTED,
                 new FormConfigEvent($data, $request, $form)
             );
-
-            $this->manager->persist($data);
 
             if (!$response = $event->getResponse()) {
                 if ($message = $this->getFlashMessage()) {

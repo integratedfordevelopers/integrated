@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ChannelBundle\Model;
 
 use DateTime;
 use Integrated\Common\Channel\ChannelInterface;
-use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 
 /**
@@ -24,7 +23,7 @@ class Config implements ConfigInterface
     /**
      * @var int
      */
-    protected $externalId;
+    protected $id;
 
     /**
      * @var string
@@ -65,37 +64,29 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
-    public function getId()
+    public function getId(): int
     {
-        return $this->externalId;
+        return $this->id;
     }
 
     /**
-     * @return int
-     */
-    public function getExternalId()
-    {
-        return $this->externalId;
-    }
-
-    /**
-     * @param int $externalId
+     * @param int $id
      * @return $this
      */
-    public function setExternalId($externalId)
+    public function setId($id)
     {
-        $this->externalId = $externalId;
+        $this->id = $id;
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
-        return $this->name;
+        return (string)$this->name;
     }
 
     /**
@@ -113,7 +104,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getAdapter()
+    public function getAdapter(): string
     {
         return $this->adapter;
     }
@@ -213,7 +204,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptions()
+    public function getOptions(): OptionsInterface
     {
         if (null === $this->options) {
             $this->options = new Options();

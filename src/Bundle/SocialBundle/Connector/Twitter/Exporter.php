@@ -13,8 +13,10 @@ namespace Integrated\Bundle\SocialBundle\Connector\Twitter;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ChannelBundle\Model\ConfigInterface;
 use Integrated\Common\Channel\ChannelInterface;
-use Integrated\Common\Channel\Exporter\ExporterInterface;
+use Integrated\Common\Channel\Connector\ExporterInterface;
+use Integrated\Common\Channel\Exporter\ExporterReponse;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -27,11 +29,18 @@ class Exporter implements ExporterInterface
     private $twitter;
 
     /**
-     * @param TwitterOAuth $twitter
+     * @var ConfigInterface
      */
-    public function __construct(TwitterOAuth $twitter)
+    private $config;
+
+    /**
+     * @param TwitterOAuth      $twitter
+     * @param ConfigInterface   $config
+     */
+    public function __construct(TwitterOAuth $twitter, ConfigInterface $config)
     {
         $this->twitter = $twitter;
+        $this->config = $config;
     }
 
     /**
@@ -43,9 +52,12 @@ class Exporter implements ExporterInterface
             return;
         }
 
-        // @todo emove hardcoded URL when INTEGRATED-572 is fixed
+        if ($content->hasConnector($this->config->getId())) {
+            return;
+        }
 
-        $this->twitter->post(
+        // @todo remove hardcoded URL when INTEGRATED-572 is fixed
+        $postResponse = $this->twitter->post(
             'statuses/update',
             [
                 'status' => sprintf(
@@ -55,5 +67,10 @@ class Exporter implements ExporterInterface
                 ),
             ]
         );
+
+        $response = new ExporterReponse($this->config->getId(), $this->config->getAdapter());
+        $response->setExternalId($postResponse->getBody());
+
+        return $response;
     }
 }

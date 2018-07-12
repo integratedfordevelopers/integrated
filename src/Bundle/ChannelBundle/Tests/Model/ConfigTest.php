@@ -37,12 +37,12 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * Test get- and setExternalId function.
+     * Test get- and setId function.
      */
-    public function testGetAndSetExternalIdFunction()
+    public function testGetAndSetIdFunction()
     {
-        $externalId = 'externalId';
-        $this->assertEquals($externalId, $this->config->setExternalId($externalId)->getExternalId());
+        $id = 1;
+        $this->assertEquals($id, $this->config->setId($id)->getId());
     }
 
     /**
