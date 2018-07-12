@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\Tests\Document\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
+use Integrated\Common\Content\PublishTimeInterface;
 
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
@@ -54,7 +55,7 @@ class ReferenceTest extends \PHPUnit\Framework\TestCase
 
         $publishTime = new PublishTime();
         $publishTime->setStartDate(new \DateTime());
-        $publishTime->setEndDate(new \DateTime(PublishTime::DATE_MAX));
+        $publishTime->setEndDate(new \DateTime(PublishTimeInterface::DATE_MAX));
 
         $reference2 = new Taxonomy();
         $reference2->setPublishTime($publishTime);

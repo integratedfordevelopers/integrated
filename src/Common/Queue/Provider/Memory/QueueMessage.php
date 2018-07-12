@@ -12,7 +12,7 @@
 namespace Integrated\Common\Queue\Provider\Memory;
 
 use Closure;
-use Integrated\Common\Queue\QueueMessageInterface;
+use Integrated\Common\Queue\Memory\QueueMessageInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -35,21 +35,43 @@ class QueueMessage implements QueueMessageInterface
     private $priority;
 
     /**
+     * @var int
+     */
+    private $createdAt;
+
+    /**
+     * @var int
+     */
+    private $updatedAt;
+
+    /**
+     * @var int
+     */
+    private $executeAt;
+
+    /**
      * @var Closure | null
      */
     private $release = null;
 
     /**
-     * @param mixed    $payload
-     * @param int      $attempts
-     * @param int      $priority
-     * @param callable $release
+     * @param mixed   $payload
+     * @param int     $attempts
+     * @param int     $priority
+     * @param int     $createdAt
+     * @param int     $updatedAt
+     * @param int     $executeAt
+     * @param Closure $release
      */
-    public function __construct($payload, $attempts, $priority, Closure $release)
+    public function __construct($payload, $attempts, $priority, $createdAt, $updatedAt, $executeAt, Closure $release)
     {
         $this->payload = $payload;
         $this->attempts = $attempts;
         $this->priority = $priority;
+
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
+        $this->executeAt = $executeAt;
 
         $this->release = $release;
     }
@@ -100,5 +122,29 @@ class QueueMessage implements QueueMessageInterface
     public function getPriority()
     {
         return $this->priority;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreatedAt(): int
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUpdatedAt(): int
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExecuteAt(): int
+    {
+        return $this->executeAt;
     }
 }
