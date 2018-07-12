@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\DataTransformer;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
+use Integrated\Common\Content\PublishTimeInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
 /**
@@ -24,7 +24,7 @@ class MaxDateTimeTransformer implements DataTransformerInterface
      */
     public function transform($dateTime)
     {
-        if ($dateTime == new \DateTime(PublishTime::DATE_MAX)) {
+        if ($dateTime == new \DateTime(PublishTimeInterface::DATE_MAX)) {
             return null; // hide max date
         }
 
