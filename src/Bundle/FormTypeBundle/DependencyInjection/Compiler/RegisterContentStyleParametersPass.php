@@ -71,6 +71,10 @@ class RegisterContentStyleParametersPass implements CompilerPassInterface
 
                 $formatParams = [];
                 foreach ($option->childNodes as $formatParam) {
+                    if (!$formatParam instanceof \DOMElement) {
+                        continue;
+                    }
+
                     /** @var $formatParam \DOMElement */
                     if (!in_array($formatParam->tagName, $availableFormatParams)) {
                         throw new FileException("The file $filePath is not valid");
