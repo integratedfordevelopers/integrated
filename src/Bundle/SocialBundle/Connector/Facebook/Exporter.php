@@ -51,7 +51,7 @@ class Exporter implements ExporterInterface
      */
     public function export($content, $state, ChannelInterface $channel)
     {
-        if (!$content instanceof Article || $state != 'add') {
+        if (!$content instanceof Article || $state != self::STATE_ADD) {
             return;
         }
 
@@ -71,17 +71,18 @@ class Exporter implements ExporterInterface
             );
 
             $graphNode = $postResponse->getGraphNode();
-
-            if (!$graphNode instanceof GraphNode) {
-                throw new UnexpectedTypeException($graphNode, GraphNode::class);
-            }
-
-            $response = new ExporterReponse($this->config->getId(), $this->config->getAdapter());
-            $response->setExternalId($graphNode['id']);
-
-            return $response;
         } catch (FacebookResponseException $e) {
             // @todo probably should log this somewhere
+            return;
         }
+
+        if (!$graphNode instanceof GraphNode) {
+            throw new UnexpectedTypeException($graphNode, GraphNode::class);
+        }
+
+        $response = new ExporterReponse($this->config->getId(), $this->config->getAdapter());
+        $response->setExternalId($graphNode['id']);
+
+        return $response;
     }
 }

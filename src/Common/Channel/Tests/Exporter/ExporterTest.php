@@ -14,6 +14,8 @@ namespace Integrated\Common\Channel\Tests\Exporter;
 use ArrayIterator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
+use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
@@ -23,6 +25,9 @@ use Integrated\Common\Channel\Connector\Config\ResolverInterface;
 use Integrated\Common\Channel\Exporter\ExportableInterface;
 use Integrated\Common\Channel\Exporter\Exporter;
 use Integrated\Common\Channel\Exporter\ExporterInterface;
+use Integrated\Common\Channel\Exporter\ExporterReponse;
+use Integrated\Common\Channel\Tests\Exporter\Mock\NonContentDocument;
+use Integrated\Common\Content\ConnectorInterface;
 use stdClass;
 
 /**
@@ -59,7 +64,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
 
     public function testInterface()
     {
-        self::assertInstanceOf('Integrated\\Common\\Channel\\Exporter\\ExporterInterface', $this->getInstance());
+        $this->assertInstanceOf('Integrated\\Common\\Channel\\Exporter\\ExporterInterface', $this->getInstance());
     }
 
     public function testExport()
@@ -107,6 +112,54 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
 
         $exporter->export($content, self::TEST_STATE, $channel);
         $exporter->export($content, self::TEST_STATE, $channel); // check if the exporters are cached
+    }
+
+    public function testExportWithoutContentInterface()
+    {
+        $document = new NonContentDocument();
+        $channel = $this->getChannel('channel');
+
+        $exporter = $this->getPreparedExporter($document, $channel);
+        $exporter->export($document, self::TEST_STATE, $channel);
+
+        $this->assertCount(0, $document->getConnectors());
+    }
+
+    public function testExportWithoutConnectorInterface()
+    {
+        $document = new Company();
+        $channel = $this->getChannel('channel');
+
+        $exporter = $this->getPreparedExporter($document, $channel);
+        $exporter->export($document, self::TEST_STATE, $channel);
+
+        $this->assertNotInstanceOf(ConnectorInterface::class, $document);
+    }
+
+    public function testSaveExport()
+    {
+        $article = new Article();
+        $channel = $this->getChannel('channel');
+
+        $this->assertInstanceOf(ConnectorInterface::class, $article);
+
+        $exporter = $this->getPreparedExporter($article, $channel);
+        $exporter->export($article, self::TEST_STATE, $channel);
+
+        $this->assertCount(1, $article->getConnectors());
+    }
+
+    public function testSaveExportWithInvalidDocument()
+    {
+        $document = new NonContentDocument();
+        $channel = $this->getChannel('channel');
+
+        $exporter = $this->getPreparedExporter($document, $channel);
+        $exporter->export($document, self::TEST_STATE, $channel);
+
+        $this->assertInstanceOf(ConnectorInterface::class, $document);
+
+        $this->assertCount(0, $document->getConnectors());
     }
 
     public function testExportNoExporters()
@@ -186,10 +239,39 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $exporter->export($content, self::TEST_STATE, $channel); // check if the exporters are cached
     }
 
-    /**
-     * @return Exporter
-     */
-    protected function getInstance()
+    protected function getPreparedExporter($document, ChannelInterface $channel): Exporter
+    {
+        $exporterResponse = new ExporterReponse(1, 'test-exporter');
+        $exporterResponse->setExternalId('external-id');
+
+        $exporter1 = $this->getExporter();
+        $exporter1
+            ->method('export')
+            ->with($this->identicalTo($document), $this->equalTo(self::TEST_STATE), $this->identicalTo($channel))
+            ->willReturn($exporterResponse);
+
+        $option1 = $this->getOptions();
+
+        $config1 = $this->getConfig('adapter4', $option1);
+
+        $this->resolver->expects($this->once())
+            ->method('getConfigs')
+            ->with($this->identicalTo($channel))
+            ->willReturn(new ArrayIterator([
+                $config1,
+            ]));
+
+        $this->registry->expects($this->once())
+            ->method('getAdapter')
+            ->with($this->equalTo('adapter4'))
+            ->willReturn(
+                $this->getAdapter($config1, $exporter1)
+            );
+
+        return new Exporter($this->registry, $this->resolver, $this->dm);
+    }
+
+    protected function getInstance(): Exporter
     {
         return new Exporter($this->registry, $this->resolver, $this->dm);
     }

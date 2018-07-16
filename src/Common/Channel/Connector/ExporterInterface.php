@@ -16,6 +16,10 @@ use Integrated\Common\Channel\Exporter\ExporterReponse;
 
 interface ExporterInterface
 {
+    const STATE_ADD = 'add';
+
+    const STATE_DELETE = 'delete';
+
     /**
      * @param object                    $content
      * @param string                    $state

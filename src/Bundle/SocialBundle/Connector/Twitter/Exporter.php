@@ -48,7 +48,7 @@ class Exporter implements ExporterInterface
      */
     public function export($content, $state, ChannelInterface $channel)
     {
-        if (!$content instanceof Article || $state != 'add') {
+        if (!$content instanceof Article || $state != self::STATE_ADD) {
             return;
         }
 
@@ -56,17 +56,22 @@ class Exporter implements ExporterInterface
             return;
         }
 
-        // @todo remove hardcoded URL when INTEGRATED-572 is fixed
-        $postResponse = $this->twitter->post(
-            'statuses/update',
-            [
-                'status' => sprintf(
-                    '%s %s',
-                    $content->getTitle(),
-                    'http://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug()
-                ),
-            ]
-        );
+        try {
+            // @todo remove hardcoded URL when INTEGRATED-572 is fixed
+            $postResponse = $this->twitter->post(
+                'statuses/update',
+                [
+                    'status' => sprintf(
+                        '%s %s',
+                        $content->getTitle(),
+                        'http://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug()
+                    ),
+                ]
+            );
+        } catch (\Exception $e) {
+            // @todo probably should log this somewhere
+            return;
+        }
 
         $response = new ExporterReponse($this->config->getId(), $this->config->getAdapter());
         $response->setExternalId($postResponse->getBody());
