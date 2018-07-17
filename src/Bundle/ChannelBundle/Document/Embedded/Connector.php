@@ -57,7 +57,7 @@ class Connector
      *
      * @return string
      */
-    public function getAdapter()
+    public function getAdapter(): string
     {
         return $this->adapter;
     }
@@ -81,7 +81,7 @@ class Connector
      *
      * @return int
      */
-    public function getExternalId()
+    public function getExternalId(): int
     {
         return $this->externalId;
     }
