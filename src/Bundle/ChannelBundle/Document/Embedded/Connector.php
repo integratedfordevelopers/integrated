@@ -79,9 +79,9 @@ class Connector
     /**
      * Get the externalId of the document.
      *
-     * @return int
+     * @return string
      */
-    public function getExternalId(): int
+    public function getExternalId(): string
     {
         return $this->externalId;
     }
