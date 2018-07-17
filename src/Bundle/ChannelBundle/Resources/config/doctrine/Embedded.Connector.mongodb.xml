@@ -5,8 +5,8 @@
 
     <embedded-document name="Integrated\Bundle\ChannelBundle\Document\Embedded\Connector">
 
-        <field fieldName="connectorId" type="int" />
-        <field fieldName="connectorAdapter" type="string" />
+        <field fieldName="id" type="int" />
+        <field fieldName="adapter" type="string" />
         <field fieldName="externalId" type="string" />
 
     </embedded-document>

@@ -55,11 +55,11 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $channel = $this->getChannel('channel');
 
         $exporter = $this->getInstance();
-        $exporter->export($document, ExporterInterface::STATE_ADD, $channel);
+        $response = $exporter->export($document, ExporterInterface::STATE_ADD, $channel);
 
-        $this->assertNotInstanceOf(Article::class, $document);
+        $this->assertNotInstanceOf(Article::class, $response);
 
-        $this->assertNotInstanceOf(ExporterReponse::class, $document);
+        $this->assertNotInstanceOf(ExporterReponse::class, $response);
     }
 
     public function testExportWithOtherState()
@@ -68,9 +68,9 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $channel = $this->getChannel('channel');
 
         $exporter = $this->getInstance();
-        $exporter->export($document, ExporterInterface::STATE_DELETE, $channel);
+        $response = $exporter->export($document, ExporterInterface::STATE_DELETE, $channel);
 
-        $this->assertNotInstanceOf(ExporterReponse::class, $document);
+        $this->assertNotInstanceOf(ExporterReponse::class, $response);
     }
 
     public function testExportDoublePosting()
@@ -83,9 +83,9 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $channel = $this->getChannel('channel');
 
         $exporter = $this->getInstance();
-        $exporter->export($document, ExporterInterface::STATE_ADD, $channel);
+        $response = $exporter->export($document, ExporterInterface::STATE_ADD, $channel);
 
-        $this->assertNotInstanceOf(ExporterReponse::class, $document);
+        $this->assertNotInstanceOf(ExporterReponse::class, $response);
     }
 
     public function testExportPostResponseInstanceOfFacebookResponseException()
@@ -199,6 +199,9 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($graphNodeArray['id'], $response->getExternalId());
     }
 
+    /**
+     * @return Exporter
+     */
     protected function getInstance(): Exporter
     {
         return new Exporter($this->facebook, $this->config);
@@ -218,18 +221,24 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         return $mock;
     }
 
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
     protected function getArticle()
     {
         return $this->createMock(Article::class);
     }
 
+    /**
+     * @return \PHPUnit\Framework\MockObject\MockObject
+     */
     protected function getFacebookResponse()
     {
         return $this->createMock(FacebookResponse::class);
     }
 
     /**
-     * @return OptionsInterface | \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit\Framework\MockObject\MockObject
      */
     protected function getOptions()
     {

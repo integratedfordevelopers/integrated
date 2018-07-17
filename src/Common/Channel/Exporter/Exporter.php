@@ -119,8 +119,8 @@ class Exporter implements ExporterInterface
 
         $connector = new Connector();
         $connector
-            ->setConnectorId($exporterReponse->getConfigId())
-            ->setConnectorAdapter($exporterReponse->getConfigAdapter())
+            ->setId($exporterReponse->getConfigId())
+            ->setAdapter($exporterReponse->getConfigAdapter())
             ->setExternalId($exporterReponse->getExternalId())
         ;
 

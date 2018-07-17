@@ -41,11 +41,11 @@ interface ConnectorInterface
     public function addConnector(Connector $connector);
 
     /**
-     * @param int $connectorId
+     * @param int $id
      *
      * @return bool
      */
-    public function hasConnector($connectorId);
+    public function hasConnector($id);
 
     /**
      * @param Connector $connector

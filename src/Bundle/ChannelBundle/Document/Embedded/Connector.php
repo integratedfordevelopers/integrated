@@ -16,12 +16,12 @@ class Connector
     /**
      * @var int
      */
-    protected $connectorId;
+    protected $id;
 
     /**
      * @var string
      */
-    protected $connectorAdapter;
+    protected $adapter;
 
     /**
      * @var string
@@ -29,49 +29,49 @@ class Connector
     protected $externalId;
 
     /**
-     * Get the connectorId of the document.
+     * Get the id of the document.
      *
      * @return int
      */
-    public function getConnectorId()
+    public function getId(): int
     {
-        return $this->connectorId;
+        return $this->id;
     }
 
     /**
-     * Set the connectorId of the document.
+     * Set the id of the document.
      *
-     * @param int $connectorId
+     * @param int $id
      *
      * @return $this
      */
-    public function setConnectorId($connectorId)
+    public function setId($id)
     {
-        $this->connectorId = (int) $connectorId;
+        $this->id = (int) $id;
 
         return $this;
     }
 
     /**
-     * Get the connectorAdapter of the document.
+     * Get the adapter of the document.
      *
      * @return string
      */
-    public function getConnectorAdapter()
+    public function getAdapter()
     {
-        return $this->connectorAdapter;
+        return $this->adapter;
     }
 
     /**
-     * Set the connectorAdapter of the document.
+     * Set the adapter of the document.
      *
-     * @param string $connectorAdapter
+     * @param string $adapter
      *
      * @return $this
      */
-    public function setConnectorAdapter($connectorAdapter)
+    public function setAdapter($adapter)
     {
-        $this->connectorAdapter = (string) $connectorAdapter;
+        $this->adapter = (string) $adapter;
 
         return $this;
     }
