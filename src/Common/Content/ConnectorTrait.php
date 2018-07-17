@@ -26,7 +26,7 @@ trait ConnectorTrait
      *
      * @return array
      */
-    public function getConnectors()
+    public function getConnectors(): array
     {
         return $this->connectors->toArray();
     }
@@ -66,7 +66,7 @@ trait ConnectorTrait
      *
      * @return bool
      */
-    public function hasConnector($id)
+    public function hasConnector($id): bool
     {
         return $this->connectors->exists(function ($key, Connector $element) use ($id) {
             return $id === $element->getId();
@@ -78,7 +78,7 @@ trait ConnectorTrait
      *
      * @return bool true if this collection contained the specified element, false otherwise
      */
-    public function removeConnector(Connector $connector)
+    public function removeConnector(Connector $connector): bool
     {
         return $this->connectors->removeElement($connector);
     }

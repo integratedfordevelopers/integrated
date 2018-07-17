@@ -20,7 +20,7 @@ interface ConnectorInterface
      *
      * @return array
      */
-    public function getConnectors();
+    public function getConnectors(): array;
 
     /**
      * Set the connectors of the document.
@@ -45,12 +45,12 @@ interface ConnectorInterface
      *
      * @return bool
      */
-    public function hasConnector($id);
+    public function hasConnector($id): bool;
 
     /**
      * @param Connector $connector
      *
      * @return bool true if this collection contained the specified element, false otherwise
      */
-    public function removeConnector(Connector $connector);
+    public function removeConnector(Connector $connector): bool;
 }
