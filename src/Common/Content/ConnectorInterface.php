@@ -16,22 +16,6 @@ use Integrated\Bundle\ChannelBundle\Document\Embedded\Connector;
 interface ConnectorInterface
 {
     /**
-     * Get the connectors of the document.
-     *
-     * @return array
-     */
-    public function getConnectors(): array;
-
-    /**
-     * Set the connectors of the document.
-     *
-     * @param array $connectors
-     *
-     * @return $this
-     */
-    public function setConnectors(array $connectors);
-
-    /**
      * Add author to Connectors collection.
      *
      * @param Connector $connector
@@ -46,11 +30,4 @@ interface ConnectorInterface
      * @return bool
      */
     public function hasConnector($id): bool;
-
-    /**
-     * @param Connector $connector
-     *
-     * @return bool true if this collection contained the specified element, false otherwise
-     */
-    public function removeConnector(Connector $connector): bool;
 }

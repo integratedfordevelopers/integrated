@@ -25,6 +25,7 @@ use Integrated\Common\Channel\Connector\ExporterInterface;
 use Integrated\Common\Channel\Exception\UnexpectedTypeException;
 use Integrated\Common\Channel\Exporter\ExporterReponse;
 use Integrated\Common\Channel\Tests\Exporter\Mock\NonContentDocument;
+use Integrated\Common\Content\ContentInterface;
 
 class ExporterTest extends \PHPUnit\Framework\TestCase
 {
@@ -57,7 +58,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $exporter = $this->getInstance();
         $response = $exporter->export($document, ExporterInterface::STATE_ADD, $channel);
 
-        $this->assertNotInstanceOf(Article::class, $response);
+        $this->assertNotInstanceOf(ContentInterface::class, $response);
 
         $this->assertNotInstanceOf(ExporterReponse::class, $response);
     }

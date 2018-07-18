@@ -56,10 +56,11 @@ class Config implements ConfigInterface
     protected $updated;
 
     /**
-     * Constructor.
+     * @param int $id
      */
-    public function __construct()
+    public function __construct(?int $id = null)
     {
+        $this->id = $id;
         $this->created = $this->updated = new DateTime();
     }
 
@@ -72,23 +73,11 @@ class Config implements ConfigInterface
     }
 
     /**
-     * @param int $id
-     *
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function getName(): string
+    public function getName(): ? string
     {
-        return (string) $this->name;
+        return $this->name;
     }
 
     /**
@@ -96,9 +85,9 @@ class Config implements ConfigInterface
      *
      * @return $this
      */
-    public function setName($name)
+    public function setName(string $name)
     {
-        $this->name = (string) $name;
+        $this->name = $name;
 
         return $this;
     }
@@ -116,9 +105,9 @@ class Config implements ConfigInterface
      *
      * @return $this
      */
-    public function setAdapter($adapter)
+    public function setAdapter(string $adapter)
     {
-        $this->adapter = (string) $adapter;
+        $this->adapter = $adapter;
 
         return $this;
     }

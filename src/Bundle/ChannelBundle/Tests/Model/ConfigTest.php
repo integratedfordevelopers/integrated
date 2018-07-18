@@ -25,7 +25,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
      */
     protected function setUp()
     {
-        $this->config = new Config();
+        $this->config = new Config(1);
     }
 
     /**
@@ -41,8 +41,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
      */
     public function testGetAndSetIdFunction()
     {
-        $id = 1;
-        $this->assertEquals($id, $this->config->setId($id)->getId());
+        $this->assertEquals(1, $this->config->getId());
     }
 
     /**

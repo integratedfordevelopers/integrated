@@ -12,11 +12,12 @@
 namespace Integrated\Bundle\SocialBundle\Connector\Twitter;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
-use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ChannelBundle\Model\ConfigInterface;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\ExporterInterface;
 use Integrated\Common\Channel\Exporter\ExporterReponse;
+use Integrated\Common\Content\ConnectorInterface;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -48,7 +49,15 @@ class Exporter implements ExporterInterface
      */
     public function export($content, $state, ChannelInterface $channel)
     {
-        if (!$content instanceof Article || $state != self::STATE_ADD) {
+        if (!$content instanceof ContentInterface) {
+            return;
+        }
+
+        if (!$content instanceof ConnectorInterface) {
+            return;
+        }
+
+        if ($state != self::STATE_ADD) {
             return;
         }
 

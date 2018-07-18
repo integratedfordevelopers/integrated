@@ -23,7 +23,7 @@ class ExporterReponse
      * @param int    $configId
      * @param string $configAdapter
      */
-    public function __construct($configId, $configAdapter)
+    public function __construct(int $configId, string $configAdapter)
     {
         $this->configId = $configId;
         $this->configAdapter = $configAdapter;
@@ -58,7 +58,7 @@ class ExporterReponse
      *
      * @return $this
      */
-    public function setExternalId($externalId)
+    public function setExternalId(string $externalId)
     {
         $this->externalId = $externalId;
 
