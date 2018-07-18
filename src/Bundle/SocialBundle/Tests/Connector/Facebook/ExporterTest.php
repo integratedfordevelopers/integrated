@@ -58,7 +58,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $exporter = $this->getInstance();
         $response = $exporter->export($document, ExporterInterface::STATE_ADD, $channel);
 
-        $this->assertNotInstanceOf(ContentInterface::class, $response);
+        $this->assertNotInstanceOf(ContentInterface::class, $document);
 
         $this->assertNotInstanceOf(ExporterReponse::class, $response);
     }
