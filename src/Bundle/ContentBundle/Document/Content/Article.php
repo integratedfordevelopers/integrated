@@ -14,6 +14,8 @@ namespace Integrated\Bundle\ContentBundle\Document\Content;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Integrated\Common\Content\ConnectorInterface;
+use Integrated\Common\Content\ConnectorTrait;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
@@ -25,8 +27,10 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @Type\Document("Article")
  */
-class Article extends Content
+class Article extends Content implements ConnectorInterface
 {
+    use ConnectorTrait;
+
     /**
      * @var string
      * @Type\Field
@@ -95,6 +99,7 @@ class Article extends Content
         parent::__construct();
 
         $this->authors = new ArrayCollection();
+        $this->connectors = new ArrayCollection();
     }
 
     /**

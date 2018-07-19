@@ -12,7 +12,10 @@
 namespace Integrated\Bundle\SocialBundle\Connector\Twitter;
 
 use Integrated\Bundle\SocialBundle\Factory\TwitterFactory;
+use Integrated\Bundle\ChannelBundle\Model\ConfigInterface as ModelConfigInterface;
+use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
+use Integrated\Common\Channel\Exception\UnexpectedTypeException;
 use Integrated\Common\Channel\Exporter\ExportableInterface;
 use RuntimeException;
 
@@ -37,12 +40,25 @@ class ExporterFactory implements ExportableInterface
     /**
      * {@inheritdoc}
      */
-    public function getExporter(OptionsInterface $options)
+    public function getExporter(ConfigInterface $config)
     {
+        if (!$config instanceof ModelConfigInterface) {
+            throw new UnexpectedTypeException($config, ModelConfigInterface::class);
+        }
+
+        $options = $config->getOptions();
+
+        if (!$options instanceof OptionsInterface) {
+            throw new UnexpectedTypeException($options, OptionsInterface::class);
+        }
+
         if (!$options->has('token') || !$options->has('token_secret')) {
             throw new RuntimeException('A access token and secret are required to create a twitter exporter');
         }
 
-        return new Exporter($this->factory->createClient($options->get('token'), $options->get('token_secret')));
+        return new Exporter(
+            $this->factory->createClient($options->get('token'), $options->get('token_secret')),
+            $config
+        );
     }
 }

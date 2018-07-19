@@ -5,7 +5,11 @@
 
     <entity name="Integrated\Bundle\ChannelBundle\Model\Config" repository-class="Integrated\Bundle\ChannelBundle\Model\ConfigRepository" table="channel_connector_config">
 
-        <id name="name" type="string" />
+        <id name="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="name" type="string"  />
 
         <field name="adapter" type="string" />
         <field name="options" type="object" nullable="true" />

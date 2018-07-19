@@ -38,14 +38,15 @@ class QueueExporter implements ExporterInterface
     private $exporter;
 
     /**
-     * Constructor.
-     *
      * @param QueueInterface             $queue
      * @param RequestSerializerInterface $serializer
      * @param ExporterInterface          $exporter
      */
-    public function __construct(QueueInterface $queue, RequestSerializerInterface $serializer, ExporterInterface $exporter)
-    {
+    public function __construct(
+        QueueInterface $queue,
+        RequestSerializerInterface $serializer,
+        ExporterInterface $exporter
+    ) {
         $this->queue = $queue;
         $this->serializer = $serializer;
         $this->exporter = $exporter;

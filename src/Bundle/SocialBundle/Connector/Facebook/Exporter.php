@@ -11,10 +11,16 @@
 
 namespace Integrated\Bundle\SocialBundle\Connector\Facebook;
 
+use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Facebook;
-use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Facebook\GraphNodes\GraphNode;
+use Integrated\Bundle\ChannelBundle\Model\ConfigInterface;
 use Integrated\Common\Channel\ChannelInterface;
-use Integrated\Common\Channel\Exporter\ExporterInterface;
+use Integrated\Common\Channel\Connector\ExporterInterface;
+use Integrated\Common\Channel\Exception\UnexpectedTypeException;
+use Integrated\Common\Channel\Exporter\ExporterReponse;
+use Integrated\Common\Content\ConnectorInterface;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -27,18 +33,18 @@ class Exporter implements ExporterInterface
     private $facebook;
 
     /**
-     * @var string
+     * @var ConfigInterface
      */
-    private $token;
+    private $config;
 
     /**
-     * @param Facebook $facebook
-     * @param string   $token
+     * @param Facebook        $facebook
+     * @param ConfigInterface $config
      */
-    public function __construct(Facebook $facebook, $token)
+    public function __construct(Facebook $facebook, ConfigInterface $config)
     {
         $this->facebook = $facebook;
-        $this->token = $token;
+        $this->config = $config;
     }
 
     /**
@@ -46,19 +52,46 @@ class Exporter implements ExporterInterface
      */
     public function export($content, $state, ChannelInterface $channel)
     {
-        if (!$content instanceof Article || $state != 'add') {
+        if (!$content instanceof ContentInterface) {
             return;
         }
 
-        // @todo emove hardcoded URL when INTEGRATED-572 is fixed
+        if (!$content instanceof ConnectorInterface) {
+            return;
+        }
 
-        $this->facebook->post(
-            '/me/feed',
-            [
-                'link' => 'http://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug(),
-                'message' => $content->getTitle(),
-            ],
-            $this->token
-        );
+        if ($state != self::STATE_ADD) {
+            return;
+        }
+
+        if ($content->hasConnector($this->config->getId())) {
+            return;
+        }
+
+        try {
+            // @todo remove hardcoded URL when INTEGRATED-572 is fixed
+            $postResponse = $this->facebook->post(
+                '/me/feed',
+                [
+                    'link' => 'http://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug(),
+                    'message' => $content->getTitle(),
+                ],
+                $this->config->getOptions()->get('token')
+            );
+
+            $graphNode = $postResponse->getGraphNode();
+        } catch (FacebookResponseException $e) {
+            // @todo probably should log this somewhere
+            return;
+        }
+
+        if (!$graphNode instanceof GraphNode) {
+            throw new UnexpectedTypeException($graphNode, GraphNode::class);
+        }
+
+        $response = new ExporterReponse($this->config->getId(), $this->config->getAdapter());
+        $response->setExternalId($graphNode['id']);
+
+        return $response;
     }
 }

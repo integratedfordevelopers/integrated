@@ -12,7 +12,7 @@
 namespace Integrated\Bundle\ChannelBundle\Event;
 
 use Integrated\Bundle\ChannelBundle\Model\Config;
-use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 class FormConfigEvent extends ConfigEvent
 {
     /**
-     * @var Form
+     * @var FormInterface
      */
     private $form;
 
@@ -32,11 +32,11 @@ class FormConfigEvent extends ConfigEvent
     private $response = null;
 
     /**
-     * @param Config  $config
-     * @param Request $request
-     * @param Form    $form
+     * @param Config        $config
+     * @param Request       $request
+     * @param FormInterface $form
      */
-    public function __construct(Config $config, Request $request, Form $form)
+    public function __construct(Config $config, Request $request, FormInterface $form)
     {
         parent::__construct($config, $request);
 
@@ -44,7 +44,7 @@ class FormConfigEvent extends ConfigEvent
     }
 
     /**
-     * @return Form
+     * @return FormInterface
      */
     public function getForm()
     {
