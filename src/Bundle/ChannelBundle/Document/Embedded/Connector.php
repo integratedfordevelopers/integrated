@@ -16,12 +16,12 @@ class Connector
     /**
      * @var int
      */
-    protected $id;
+    protected $configId;
 
     /**
      * @var string
      */
-    protected $adapter;
+    protected $configAdapter;
 
     /**
      * @var string
@@ -29,49 +29,49 @@ class Connector
     protected $externalId;
 
     /**
-     * Get the id of the document.
+     * Get the configId of the document.
      *
      * @return int
      */
-    public function getId(): int
+    public function getConfigId(): int
     {
-        return $this->id;
+        return $this->configId;
     }
 
     /**
-     * Set the id of the document.
+     * Set the configId of the document.
      *
-     * @param int $id
+     * @param int $configId
      *
      * @return $this
      */
-    public function setId($id)
+    public function setConfigId($configId)
     {
-        $this->id = (int) $id;
+        $this->configId = (int) $configId;
 
         return $this;
     }
 
     /**
-     * Get the adapter of the document.
+     * Get the configAdapter of the document.
      *
      * @return string
      */
-    public function getAdapter(): string
+    public function getConfigAdapter(): string
     {
-        return $this->adapter;
+        return $this->configAdapter;
     }
 
     /**
-     * Set the adapter of the document.
+     * Set the configAdapter of the document.
      *
-     * @param string $adapter
+     * @param string $configAdapter
      *
      * @return $this
      */
-    public function setAdapter($adapter)
+    public function setConfigAdapter(string $configAdapter)
     {
-        $this->adapter = (string) $adapter;
+        $this->configAdapter = $configAdapter;
 
         return $this;
     }
@@ -93,9 +93,9 @@ class Connector
      *
      * @return $this
      */
-    public function setExternalId($externalId)
+    public function setExternalId(string $externalId)
     {
-        $this->externalId = (string) $externalId;
+        $this->externalId = $externalId;
 
         return $this;
     }

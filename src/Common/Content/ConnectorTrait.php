@@ -54,7 +54,7 @@ trait ConnectorTrait
      */
     public function addConnector(Connector $connector)
     {
-        if (!$this->hasConnector($connector->getId())) {
+        if (!$this->hasConnector($connector->getConfigId())) {
             $this->connectors->add($connector);
         }
 
@@ -69,7 +69,7 @@ trait ConnectorTrait
     public function hasConnector($id): bool
     {
         return $this->connectors->exists(function ($key, Connector $element) use ($id) {
-            return $id === $element->getId();
+            return $id === $element->getConfigId();
         });
     }
 
