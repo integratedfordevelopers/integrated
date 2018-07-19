@@ -45,7 +45,7 @@ class Connector
      *
      * @return $this
      */
-    public function setConfigId($configId)
+    public function setConfigId(int $configId)
     {
         $this->configId = (int) $configId;
 
