@@ -31,6 +31,8 @@ class ContentTypePageController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+
         $channel = $this->getSelectedChannel();
 
         $builder = $this->getDocumentManager()->createQueryBuilder(ContentTypePage::class)
@@ -57,6 +59,8 @@ class ContentTypePageController extends Controller
      */
     public function editAction(Request $request, ContentTypePage $page)
     {
+        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createEditForm($page);
         $form->handleRequest($request);
 

@@ -32,6 +32,8 @@ class PageController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+
         $channel = $this->getSelectedChannel();
 
         $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
@@ -57,6 +59,8 @@ class PageController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+
         $page = new Page();
 
         $form = $this->createCreateForm($page);
@@ -92,6 +96,8 @@ class PageController extends Controller
      */
     public function editAction(Request $request, Page $page)
     {
+        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createEditForm($page);
         $form->handleRequest($request);
 
@@ -121,6 +127,8 @@ class PageController extends Controller
      */
     public function deleteAction(Request $request, Page $page)
     {
+        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+
         if ($page->isLocked()) {
             throw $this->createNotFoundException(sprintf('Page "%s" is locked.', $page->getId()));
         }
