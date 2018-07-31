@@ -76,6 +76,8 @@ class ConfigController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         if ($pager = $this->getPaginator()) {
             return $this->render('IntegratedChannelBundle:config:index.html.twig', [
                 'adapters' => $this->registry->getAdapters(),
@@ -94,6 +96,8 @@ class ConfigController extends Controller
      */
     public function newAction(Request $request, $adapter)
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         try {
             $adapter = $this->registry->getAdapter($adapter);
         } catch (Exception $e) {
@@ -157,6 +161,8 @@ class ConfigController extends Controller
      */
     public function editAction(Request $request, $id)
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         /** @var Config $data */
         $data = $this->manager->find($id);
 
@@ -222,6 +228,8 @@ class ConfigController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         /** @var Config $data */
         $data = $this->manager->find($id);
 

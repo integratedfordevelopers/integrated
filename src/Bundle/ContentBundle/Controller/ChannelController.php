@@ -45,6 +45,8 @@ class ChannelController extends Controller
      */
     public function indexAction()
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         $documents = $this->getDocumentManager()->getRepository($this->channelClass)->findAll();
 
         return $this->render('IntegratedContentBundle:channel:index.html.twig', [
@@ -61,6 +63,8 @@ class ChannelController extends Controller
      */
     public function showAction(Channel $channel)
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createDeleteForm($channel->getId());
 
         return $this->render('IntegratedContentBundle:channel:show.html.twig', [
@@ -76,6 +80,8 @@ class ChannelController extends Controller
      */
     public function newAction()
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         $channel = new Channel();
 
         $form = $this->createCreateForm($channel);
@@ -94,6 +100,8 @@ class ChannelController extends Controller
      */
     public function createAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         $channel = new Channel();
 
         $form = $this->createCreateForm($channel);
@@ -125,6 +133,8 @@ class ChannelController extends Controller
      */
     public function editAction(Channel $channel)
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createEditForm($channel);
 
         return $this->render('IntegratedContentBundle:channel:edit.html.twig', [
@@ -143,6 +153,8 @@ class ChannelController extends Controller
      */
     public function updateAction(Request $request, Channel $channel)
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createEditForm($channel);
         $form->handleRequest($request);
 
@@ -173,6 +185,8 @@ class ChannelController extends Controller
      */
     public function deleteAction(Request $request, Channel $channel)
     {
+        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createDeleteForm($channel->getId());
         $form->handleRequest($request);
 

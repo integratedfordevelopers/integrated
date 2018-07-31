@@ -39,6 +39,8 @@ class RelationController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         /* @var $dm \Doctrine\ODM\MongoDB\DocumentManager */
         $dm = $this->get('doctrine_mongodb')->getManager();
         $qb = $dm->createQueryBuilder($this->relationClass);
@@ -61,6 +63,8 @@ class RelationController extends Controller
      */
     public function showAction(Relation $relation)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $form = $this->createDeleteForm($relation);
 
         return $this->render('IntegratedContentBundle:relation:show.html.twig', [
@@ -76,6 +80,8 @@ class RelationController extends Controller
      */
     public function newAction()
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $form = $this->createNewForm(new Relation());
 
         return $this->render('IntegratedContentBundle:relation:new.html.twig', [
@@ -92,6 +98,8 @@ class RelationController extends Controller
      */
     public function createAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $relation = new Relation();
 
         $form = $this->createNewForm($relation);
@@ -122,6 +130,8 @@ class RelationController extends Controller
      */
     public function editAction(Relation $relation)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $form = $this->createEditForm($relation);
 
         return $this->render('IntegratedContentBundle:relation:edit.html.twig', [
@@ -139,6 +149,8 @@ class RelationController extends Controller
      */
     public function updateAction(Request $request, Relation $relation)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $form = $this->createEditForm($relation);
         $form->handleRequest($request);
 
@@ -167,6 +179,8 @@ class RelationController extends Controller
      */
     public function deleteAction(Request $request, Relation $relation)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $form = $this->createDeleteForm($relation);
 
         $form->handleRequest($request);

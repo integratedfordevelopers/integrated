@@ -66,7 +66,7 @@ class EditableChecker
             return false;
         }
 
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+        if (!$this->authorizationChecker->isGranted('ROLE_WEBSITE_MANAGER') && !$this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return false;
         }
 
