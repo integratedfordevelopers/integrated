@@ -15,8 +15,6 @@ Integrated\Bundle\UserBundle\Model\Role:
     __construct: ['ROLE_BLOCK_MANAGER', 'Block manager']
   ROLE_PAGE_MANAGER:
     __construct: ['ROLE_PAGE_MANAGER', 'Page manager']
-  ROLE_WORKFLOW_MANAGER:
-    __construct: ['ROLE_WORKFLOW_MANAGER', 'Workflow manager']
   ROLE_CHANNEL_MANAGER:
     __construct: ['ROLE_CHANNEL_MANAGER', 'Channel manager']
 
