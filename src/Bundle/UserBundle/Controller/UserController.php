@@ -33,6 +33,8 @@ class UserController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         /** @var $paginator \Knp\Component\Pager\Paginator */
         $paginator = $this->get('knp_paginator');
         $paginator = $paginator->paginate(
@@ -53,6 +55,8 @@ class UserController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
@@ -87,6 +91,8 @@ class UserController extends Controller
      */
     public function editAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         $user = $this->getManager()->find($request->get('id'));
 
         if (!$user) {
@@ -124,6 +130,8 @@ class UserController extends Controller
      */
     public function deleteAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         $user = $this->getManager()->find($request->get('id'));
 
         if (!$user) {
@@ -159,6 +167,8 @@ class UserController extends Controller
      */
     protected function createNewForm()
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createForm(
             UserFormType::class,
             null,
@@ -185,6 +195,8 @@ class UserController extends Controller
      */
     protected function createEditForm(UserInterface $user)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createForm(
             UserFormType::class,
             $user,
@@ -211,6 +223,8 @@ class UserController extends Controller
      */
     protected function createDeleteForm(UserInterface $user)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createForm(
             DeleteFormType::class,
             $user,

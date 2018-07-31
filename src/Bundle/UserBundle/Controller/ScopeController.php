@@ -36,6 +36,8 @@ class ScopeController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         /** @var $paginator \Knp\Component\Pager\Paginator */
         $paginator = $this->get('knp_paginator');
         $paginator = $paginator->paginate(
@@ -56,6 +58,8 @@ class ScopeController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
@@ -91,6 +95,8 @@ class ScopeController extends Controller
      */
     public function editAction(Scope $scope, Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         if (!$scope) {
             throw $this->createNotFoundException();
         }
@@ -127,6 +133,8 @@ class ScopeController extends Controller
      */
     public function deleteAction(Scope $scope, Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+
         if (!$scope || $scope->isAdmin()) {
             return $this->redirect($this->generateUrl('integrated_user_scope_index'));
         }
