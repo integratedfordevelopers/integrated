@@ -6,4 +6,10 @@
         <description></description>
         <hidden>0</hidden>
     </role>
+    <role>
+        <name>ROLE_USER_MANAGER</name>
+        <label>User manager</label>
+        <description></description>
+        <hidden>0</hidden>
+    </role>
 </roles>
