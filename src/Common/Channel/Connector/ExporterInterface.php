@@ -12,7 +12,7 @@
 namespace Integrated\Common\Channel\Connector;
 
 use Integrated\Common\Channel\ChannelInterface;
-use Integrated\Common\Channel\Exporter\ExporterReponse;
+use Integrated\Common\Channel\Exporter\ExporterResponse;
 
 interface ExporterInterface
 {
@@ -25,7 +25,7 @@ interface ExporterInterface
      * @param string                    $state
      * @param string | ChannelInterface $channel
      *
-     * @return ExporterReponse
+     * @return ExporterResponse
      */
     public function export($content, $state, ChannelInterface $channel);
 }

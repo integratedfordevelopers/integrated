@@ -18,7 +18,7 @@ use Integrated\Bundle\SocialBundle\Connector\Twitter\Exporter;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 use Integrated\Common\Channel\Connector\ExporterInterface;
-use Integrated\Common\Channel\Exporter\ExporterReponse;
+use Integrated\Common\Channel\Exporter\ExporterResponse;
 use Integrated\Common\Channel\Tests\Exporter\Mock\NonContentDocument;
 use Integrated\Common\Content\ContentInterface;
 
@@ -55,7 +55,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
 
         $this->assertNotInstanceOf(ContentInterface::class, $document);
 
-        $this->assertNotInstanceOf(ExporterReponse::class, $response);
+        $this->assertNotInstanceOf(ExporterResponse::class, $response);
     }
 
     public function testExportWithOtherState()
@@ -66,7 +66,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $exporter = $this->getInstance();
         $response = $exporter->export($document, ExporterInterface::STATE_DELETE, $channel);
 
-        $this->assertNotInstanceOf(ExporterReponse::class, $response);
+        $this->assertNotInstanceOf(ExporterResponse::class, $response);
     }
 
     public function testExportDoublePosting()
@@ -81,7 +81,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $exporter = $this->getInstance();
         $response = $exporter->export($document, ExporterInterface::STATE_ADD, $channel);
 
-        $this->assertNotInstanceOf(ExporterReponse::class, $response);
+        $this->assertNotInstanceOf(ExporterResponse::class, $response);
     }
 
     /**

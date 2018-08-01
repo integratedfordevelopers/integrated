@@ -21,10 +21,6 @@
                 field="authors"
                 target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author" />
 
-        <embed-many
-                field="connectors"
-                target-document="Integrated\Bundle\ChannelBundle\Document\Embedded\Connector" />
-
     </document>
 
 </doctrine-mongo-mapping>

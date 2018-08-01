@@ -13,11 +13,10 @@ namespace Integrated\Bundle\SocialBundle\Connector\Twitter;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Integrated\Bundle\ChannelBundle\Model\ConfigInterface;
+use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\ExporterInterface;
-use Integrated\Common\Channel\Exporter\ExporterReponse;
-use Integrated\Common\Content\ConnectorInterface;
-use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Channel\Exporter\ExporterResponse;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -49,11 +48,7 @@ class Exporter implements ExporterInterface
      */
     public function export($content, $state, ChannelInterface $channel)
     {
-        if (!$content instanceof ContentInterface) {
-            return;
-        }
-
-        if (!$content instanceof ConnectorInterface) {
+        if (!$content instanceof Article) {
             return;
         }
 
@@ -82,7 +77,7 @@ class Exporter implements ExporterInterface
             return;
         }
 
-        $response = new ExporterReponse($this->config->getId(), $this->config->getAdapter());
+        $response = new ExporterResponse($this->config->getId(), $this->config->getAdapter());
         $response->setExternalId($postResponse->getBody());
 
         return $response;
