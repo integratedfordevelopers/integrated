@@ -15,7 +15,6 @@ use ArrayIterator;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
-use Integrated\Bundle\ContentBundle\Document\Content\Relation\Company;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
@@ -25,7 +24,7 @@ use Integrated\Common\Channel\Connector\Config\ResolverInterface;
 use Integrated\Common\Channel\Exporter\ExportableInterface;
 use Integrated\Common\Channel\Exporter\Exporter;
 use Integrated\Common\Channel\Exporter\ExporterInterface;
-use Integrated\Common\Channel\Exporter\ExporterReponse;
+use Integrated\Common\Channel\Exporter\ExporterResponse;
 use Integrated\Common\Channel\Tests\Exporter\Mock\NonContentDocument;
 use Integrated\Common\Content\ConnectorInterface;
 use stdClass;
@@ -123,17 +122,6 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
         $exporter->export($document, self::TEST_STATE, $channel);
 
         $this->assertCount(0, $document->getConnectors());
-    }
-
-    public function testExportWithoutConnectorInterface()
-    {
-        $document = new Company();
-        $channel = $this->getChannel('channel');
-
-        $exporter = $this->getPreparedExporter($document, $channel);
-        $exporter->export($document, self::TEST_STATE, $channel);
-
-        $this->assertNotInstanceOf(ConnectorInterface::class, $document);
     }
 
     public function testSaveExport()
@@ -241,7 +229,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
 
     protected function getPreparedExporter($document, ChannelInterface $channel): Exporter
     {
-        $exporterResponse = new ExporterReponse(1, 'test-exporter');
+        $exporterResponse = new ExporterResponse(1, 'test-exporter');
         $exporterResponse->setExternalId('external-id');
 
         $exporter1 = $this->getExporter();
