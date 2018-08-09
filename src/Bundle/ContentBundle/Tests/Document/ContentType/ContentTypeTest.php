@@ -80,65 +80,6 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
     {
         $name = 'Henk de Vries';
         $this->assertEquals($name, $this->contentType->setName($name)->getName());
-
-        // After name edit, type should stay the same
-        $type = $this->contentType->getId();
-        $this->contentType->setName('Wim');
-        $this->assertEquals($type, $this->contentType->getId());
-    }
-
-    /**
-     * Test get- and setFields function.
-     */
-    public function testGetAndSetFieldsFunction()
-    {
-        // Mock fields
-        $field1 = $this->getMockClass('Integrated\Common\ContentType\ContentTypeFieldInterface');
-        $field2 = $this->getMockClass('Integrated\Common\ContentType\ContentTypeFieldInterface');
-
-        $fields = [
-            $field1,
-            $field2,
-        ];
-
-        // Assert
-        $this->assertSame($fields, $this->contentType->setFields($fields)->getFields());
-    }
-
-    /**
-     * Test getField function.
-     */
-    public function testGetFieldFunction()
-    {
-        // Mock fields
-        $field = $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface');
-        $field->expects($this->exactly(2))
-            ->method('getName')
-            ->will($this->returnValue('henk'));
-
-        $this->contentType->setFields([$field]);
-
-        // Asserts
-        $this->assertSame($field, $this->contentType->getField('henk'));
-        $this->assertNull($this->contentType->getField('henkie'));
-    }
-
-    /**
-     * Test hasField function.
-     */
-    public function testHasFieldFunction()
-    {
-        // Mock fields
-        $field = $this->createMock('Integrated\Common\ContentType\ContentTypeFieldInterface');
-        $field->expects($this->exactly(2))
-            ->method('getName')
-            ->will($this->returnValue('henk'));
-
-        $this->contentType->setFields([$field]);
-
-        // Asserts
-        $this->assertTrue($this->contentType->hasField('henk'));
-        $this->assertFalse($this->contentType->hasField('henkie'));
     }
 
     /**

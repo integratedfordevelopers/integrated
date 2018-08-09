@@ -11,14 +11,6 @@
         <field fieldName="options" type="hash" />
         <field fieldName="createdAt" type="date" />
 
-        <embed-many field="fields">
-            <discriminator-map>
-                <discriminator-mapping value="default" class="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field" />
-                <discriminator-mapping value="custom" class="Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField" />
-            </discriminator-map>
-            <default-discriminator-value value="default" />
-        </embed-many>
-
         <embed-many
                 field="permissions"
                 target-document="Integrated\Bundle\ContentBundle\Document\Permission\Embedded\Permission"

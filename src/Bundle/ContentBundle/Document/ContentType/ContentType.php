@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ContentBundle\Document\ContentType;
 
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
-use Integrated\Common\ContentType\ContentTypeFieldInterface;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\Security\PermissionTrait;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -46,11 +45,6 @@ class ContentType implements ContentTypeInterface
      * @Assert\NotBlank()
      */
     protected $name;
-
-    /**
-     * @var ContentTypeFieldInterface[]
-     */
-    protected $fields = [];
 
     /**
      * @var mixed[]
@@ -160,56 +154,6 @@ class ContentType implements ContentTypeInterface
     public function getType()
     {
         return $this->getId();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getField($name)
-    {
-        foreach ($this->getFields() as $field) {
-            if ($field->getName() == $name) {
-                return $field;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasField($name)
-    {
-        foreach ($this->getFields() as $field) {
-            if ($field->getName() == $name) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Set the fields of the content type.
-     *
-     * @param ContentTypeFieldInterface[] $fields
-     *
-     * @return $this
-     */
-    public function setFields(array $fields)
-    {
-        $this->fields = $fields;
-
-        return $this;
     }
 
     /**
