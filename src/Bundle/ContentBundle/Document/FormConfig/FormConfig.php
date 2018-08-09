@@ -119,7 +119,7 @@ class FormConfig implements FormConfigInterface
      *
      * @return FormConfig
      */
-    public function setFields(array $fields): FormConfig
+    public function setFields(array $fields): self
     {
         $this->fields = $fields;
 
