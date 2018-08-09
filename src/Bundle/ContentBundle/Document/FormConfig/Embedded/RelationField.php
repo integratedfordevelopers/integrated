@@ -46,9 +46,10 @@ class RelationField implements FormConfigFieldInterface
 
     /**
      * @param string $name
+     *
      * @return RelationField
      */
-    public function setName(string $name): RelationField
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -65,9 +66,10 @@ class RelationField implements FormConfigFieldInterface
 
     /**
      * @param string $type
+     *
      * @return RelationField
      */
-    public function setType(string $type): RelationField
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -84,9 +86,10 @@ class RelationField implements FormConfigFieldInterface
 
     /**
      * @param array $options
+     *
      * @return RelationField
      */
-    public function setOptions(array $options): RelationField
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 
@@ -103,9 +106,10 @@ class RelationField implements FormConfigFieldInterface
 
     /**
      * @param RelationInterface $relation
+     *
      * @return RelationField
      */
-    public function setRelation(RelationInterface $relation): RelationField
+    public function setRelation(RelationInterface $relation): self
     {
         $this->relation = $relation;
 

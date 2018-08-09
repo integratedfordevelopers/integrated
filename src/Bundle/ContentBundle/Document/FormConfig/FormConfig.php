@@ -56,9 +56,10 @@ class FormConfig implements FormConfigInterface
 
     /**
      * @param string $id
+     *
      * @return FormConfig
      */
-    public function setId(string $id): FormConfig
+    public function setId(string $id): self
     {
         $this->id = $id;
 
@@ -75,9 +76,10 @@ class FormConfig implements FormConfigInterface
 
     /**
      * @param string $name
+     *
      * @return FormConfig
      */
-    public function setName(string $name): FormConfig
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -94,9 +96,10 @@ class FormConfig implements FormConfigInterface
 
     /**
      * @param string $contentType
+     *
      * @return FormConfig
      */
-    public function setContentType(string $contentType): FormConfig
+    public function setContentType(string $contentType): self
     {
         $this->contentType = $contentType;
 
@@ -113,6 +116,7 @@ class FormConfig implements FormConfigInterface
 
     /**
      * @param FormConfigFieldInterface[] $fields
+     *
      * @return FormConfig
      */
     public function setFields(array $fields): FormConfig
@@ -143,7 +147,7 @@ class FormConfig implements FormConfigInterface
      *
      * @return bool
      */
-    public function hasField($name)
+    public function hasField($name): bool
     {
         foreach ($this->getFields() as $field) {
             if ($field->getName() == $name) {

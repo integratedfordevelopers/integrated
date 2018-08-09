@@ -14,21 +14,21 @@ namespace Integrated\Common\FormConfig;
 interface FormConfigFieldInterface
 {
     /**
-     * Get the name of the document
+     * Get the name of the document.
      *
      * @return string
      */
     public function getName(): string;
 
     /**
-     * Get the type of the document
+     * Get the type of the document.
      *
      * @return string
      */
     public function getType(): string;
 
     /**
-     * Get the options of the document
+     * Get the options of the document.
      *
      * @return array
      */

@@ -40,9 +40,10 @@ class CustomField implements FormConfigFieldInterface
 
     /**
      * @param string $name
+     *
      * @return CustomField
      */
-    public function setName(string $name): CustomField
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -59,9 +60,10 @@ class CustomField implements FormConfigFieldInterface
 
     /**
      * @param string $type
+     *
      * @return CustomField
      */
-    public function setType(string $type): CustomField
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -78,9 +80,10 @@ class CustomField implements FormConfigFieldInterface
 
     /**
      * @param array $options
+     *
      * @return CustomField
      */
-    public function setOptions(array $options): CustomField
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 

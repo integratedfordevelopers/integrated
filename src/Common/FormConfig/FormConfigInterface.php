@@ -11,30 +11,28 @@
 
 namespace Integrated\Common\FormConfig;
 
-use Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\FormConfigFieldInterface;
-
 interface FormConfigInterface
 {
     /**
-     * Get the unique identiefier.
+     * Get the unique identifier.
      *
      * @return string
      */
-    public function getId() : string;
+    public function getId(): string;
 
     /**
      * Set the name of the document.
      *
      * @return string
      */
-    public function getName() : string;
+    public function getName(): string;
 
     /**
      * Get the contentType of the document.
      *
      * @return string
      */
-    public function getContentType() : string;
+    public function getContentType(): string;
 
     /**
      * Get the subtitle of the document.

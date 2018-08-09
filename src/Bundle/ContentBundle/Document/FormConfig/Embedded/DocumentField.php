@@ -40,9 +40,10 @@ class DocumentField implements FormConfigFieldInterface
 
     /**
      * @param string $name
+     *
      * @return DocumentField
      */
-    public function setName(string $name): DocumentField
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -59,9 +60,10 @@ class DocumentField implements FormConfigFieldInterface
 
     /**
      * @param string $type
+     *
      * @return DocumentField
      */
-    public function setType(string $type): DocumentField
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -78,9 +80,10 @@ class DocumentField implements FormConfigFieldInterface
 
     /**
      * @param array $options
+     *
      * @return DocumentField
      */
-    public function setOptions(array $options): DocumentField
+    public function setOptions(array $options): self
     {
         $this->options = $options;
 
