@@ -46,6 +46,30 @@ interface ContentTypeInterface
      * @return ContentInterface
      */
     public function create();
+    /**
+     * Get all the fields of this content type, the field are returned in order.
+     *
+     * @return ContentTypeFieldInterface[]
+     */
+    public function getFields();
+
+    /**
+     * Get the information of the specified field.
+     *
+     * @param string $name The field name
+     *
+     * @return ContentTypeFieldInterface
+     */
+    public function getField($name);
+
+    /**
+     * Check if a field exist in the content type.
+     *
+     * @param $name
+     *
+     * @return bool
+     */
+    public function hasField($name);
 
     /**
      * Get all the options of this content type.
