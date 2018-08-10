@@ -46,6 +46,7 @@ interface ContentTypeInterface
      * @return ContentInterface
      */
     public function create();
+
     /**
      * Get all the fields of this content type, the field are returned in order.
      *
