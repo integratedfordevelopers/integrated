@@ -12,89 +12,13 @@
 namespace Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded;
 
 use Integrated\Common\Content\Relation\RelationInterface;
-use Integrated\Common\FormConfig\FormConfigFieldInterface;
 
-class RelationField implements FormConfigFieldInterface
+class RelationField extends DocumentField
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var array
-     */
-    private $options;
-
     /**
      * @var RelationInterface
      */
     private $relation;
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return RelationField
-     */
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return RelationField
-     */
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getOptions(): array
-    {
-        return $this->options;
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return RelationField
-     */
-    public function setOptions(array $options): self
-    {
-        $this->options = $options;
-
-        return $this;
-    }
 
     /**
      * @return RelationInterface

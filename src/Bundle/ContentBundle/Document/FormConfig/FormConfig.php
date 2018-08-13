@@ -11,15 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\FormConfig;
 
-use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\FormConfig\FormConfigFieldInterface;
 use Integrated\Common\FormConfig\FormConfigInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @MongoDBUnique(fields="id")
- */
 class FormConfig implements FormConfigInterface
 {
     /**
@@ -31,8 +26,6 @@ class FormConfig implements FormConfigInterface
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank()
      */
     private $name;
 
