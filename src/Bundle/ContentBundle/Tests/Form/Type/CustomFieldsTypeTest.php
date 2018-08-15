@@ -93,63 +93,53 @@ class CustomFieldsTypeTest extends TypeTestCase
         $customField1
             ->expects($this->once())
             ->method('getName')
-            ->willReturn('customField1')
-        ;
+            ->willReturn('customField1');
 
         $customField1
             ->expects($this->once())
             ->method('getType')
-            ->willReturn(TextType::class)
-        ;
+            ->willReturn(TextType::class);
 
         $customField1
             ->expects($this->once())
             ->method('getOptions')
-            ->willReturn([])
-        ;
+            ->willReturn([]);
 
         $customField2
             ->expects($this->once())
             ->method('getName')
-            ->willReturn('customField2')
-        ;
+            ->willReturn('customField2');
 
         $customField2
             ->expects($this->once())
             ->method('getType')
-            ->willReturn(TextareaType::class)
-        ;
+            ->willReturn(TextareaType::class);
 
         $customField2
             ->expects($this->once())
             ->method('getOptions')
-            ->willReturn(['required' => true])
-        ;
+            ->willReturn(['required' => true]);
 
 
         $customField3
             ->expects($this->once())
             ->method('getName')
-            ->willReturn('customField3')
-        ;
+            ->willReturn('customField3');
 
         $customField3
             ->expects($this->once())
             ->method('getType')
-            ->willReturn(CheckboxType::class)
-        ;
+            ->willReturn(CheckboxType::class);
 
         $customField3
             ->expects($this->once())
             ->method('getOptions')
-            ->willReturn(['required' => true])
-        ;
+            ->willReturn(['required' => true]);
 
         $contentType
             ->expects($this->once())
             ->method('getFields')
-            ->willReturn([$defaultField, $customField1, $customField2, $customField3])
-        ;
+            ->willReturn([$defaultField, $customField1, $customField2, $customField3]);
 
         return $contentType;
     }
