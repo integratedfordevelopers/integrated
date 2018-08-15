@@ -44,15 +44,16 @@ class RegistryFactory
             ->setName('Textarea')
         ;
 
-        $textarea = new Type();
-        $textarea
+        $checkbox = new Type();
+        $checkbox
             ->setType(CheckboxType::class)
-            ->setName('Textarea')
+            ->setName('Checkbox')
         ;
 
         $registry
             ->add($text)
             ->add($textarea)
+            ->add($checkbox)
         ;
 
         return $registry;
