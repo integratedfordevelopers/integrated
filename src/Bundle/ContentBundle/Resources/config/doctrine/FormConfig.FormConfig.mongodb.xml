@@ -3,7 +3,7 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <document name="Integrated\Bundle\ContentBundle\Document\FormConfig\FormConfig" collection="content_type">
+    <document name="Integrated\Bundle\ContentBundle\Document\FormConfig\FormConfig" collection="form_config">
 
         <field fieldName="id" id="true" strategy="NONE" />
         <field fieldName="name" type="string" />
