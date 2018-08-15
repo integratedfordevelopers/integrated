@@ -120,7 +120,6 @@ class CustomFieldsTypeTest extends TypeTestCase
             ->method('getOptions')
             ->willReturn(['required' => true]);
 
-
         $customField3
             ->expects($this->once())
             ->method('getName')
