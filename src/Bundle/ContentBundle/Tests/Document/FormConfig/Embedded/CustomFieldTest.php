@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\FormConfig\Embedded;
 
 use Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\CustomField;
+use Integrated\Common\FormConfig\FormConfigFieldInterface;
 
 class CustomFieldTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,7 +34,7 @@ class CustomFieldTest extends \PHPUnit\Framework\TestCase
      */
     public function testInstanceOf()
     {
-        $this->assertInstanceOf('Integrated\Common\FormConfig\FormConfigFieldInterface', $this->field);
+        $this->assertInstanceOf(FormConfigFieldInterface::class, $this->field);
     }
 
     /**

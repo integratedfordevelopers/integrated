@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\FormConfig\Embedded;
 
 use Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\DocumentField;
+use Integrated\Common\FormConfig\FormConfigFieldInterface;
 
 class DocumentFieldTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,7 +34,7 @@ class DocumentFieldTest extends \PHPUnit\Framework\TestCase
      */
     public function testInstanceOf()
     {
-        $this->assertInstanceOf('Integrated\Common\FormConfig\FormConfigFieldInterface', $this->field);
+        $this->assertInstanceOf(FormConfigFieldInterface::class, $this->field);
     }
 
     /**

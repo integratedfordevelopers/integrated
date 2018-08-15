@@ -12,6 +12,8 @@
 namespace Integrated\Bundle\ContentBundle\Tests\Document\FormConfig;
 
 use Integrated\Bundle\ContentBundle\Document\FormConfig\FormConfig;
+use Integrated\Common\FormConfig\FormConfigFieldInterface;
+use Integrated\Common\FormConfig\FormConfigInterface;
 
 class FormConfigTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,7 +35,7 @@ class FormConfigTest extends \PHPUnit\Framework\TestCase
      */
     public function testInstanceOfFormConfigInterface()
     {
-        $this->assertInstanceOf('Integrated\Common\FormConfig\FormConfigInterface', $this->formConfig);
+        $this->assertInstanceOf(FormConfigInterface::class, $this->formConfig);
     }
 
     /**
@@ -60,8 +62,8 @@ class FormConfigTest extends \PHPUnit\Framework\TestCase
     public function testGetAndSetFieldsFunction()
     {
         // Mock fields
-        $field1 = $this->getMockClass('Integrated\Common\FormConfig\FormConfigFieldInterface');
-        $field2 = $this->getMockClass('Integrated\Common\FormConfig\FormConfigFieldInterface');
+        $field1 = $this->getMockClass(FormConfigFieldInterface::class);
+        $field2 = $this->getMockClass(FormConfigFieldInterface::class);
 
         $fields = [
             $field1,
@@ -78,7 +80,7 @@ class FormConfigTest extends \PHPUnit\Framework\TestCase
     public function testGetFieldFunction()
     {
         // Mock fields
-        $field = $this->createMock('Integrated\Common\FormConfig\FormConfigFieldInterface');
+        $field = $this->createMock(FormConfigFieldInterface::class);
         $field->expects($this->exactly(2))
             ->method('getName')
             ->will($this->returnValue('henk'));
@@ -96,7 +98,7 @@ class FormConfigTest extends \PHPUnit\Framework\TestCase
     public function testHasFieldFunction()
     {
         // Mock fields
-        $field = $this->createMock('Integrated\Common\FormConfig\FormConfigFieldInterface');
+        $field = $this->createMock(FormConfigFieldInterface::class);
         $field->expects($this->exactly(2))
             ->method('getName')
             ->will($this->returnValue('henk'));
