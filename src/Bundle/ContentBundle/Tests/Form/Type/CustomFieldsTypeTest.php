@@ -15,6 +15,7 @@ use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\CustomField;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Bundle\ContentBundle\Form\Type\CustomFieldsType;
 use Integrated\Common\ContentType\ContentTypeInterface;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
@@ -57,10 +58,12 @@ class CustomFieldsTypeTest extends TypeTestCase
                 'data1' => [
                     'customField1' => 'Data for customField1',
                     'customField2' => 'Data for customField2',
+                    'customField3' => true,
                 ],
                 'data2' => [
                     'customField1' => null,
                     'customField2' => 'Data for customField2',
+                    'customField3' => false,
                 ],
             ],
         ];
@@ -82,6 +85,9 @@ class CustomFieldsTypeTest extends TypeTestCase
 
         /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField2 */
         $customField2 = $this->createMock(CustomField::class);
+
+        /** @var CustomField|\PHPUnit_Framework_MockObject_MockObject $customField3 */
+        $customField3 = $this->createMock(CustomField::class);
 
         // Stub the customField getters so we can check the outcome
         $customField1
@@ -120,10 +126,29 @@ class CustomFieldsTypeTest extends TypeTestCase
             ->willReturn(['required' => true])
         ;
 
+
+        $customField3
+            ->expects($this->once())
+            ->method('getName')
+            ->willReturn('customField3')
+        ;
+
+        $customField3
+            ->expects($this->once())
+            ->method('getType')
+            ->willReturn(CheckboxType::class)
+        ;
+
+        $customField3
+            ->expects($this->once())
+            ->method('getOptions')
+            ->willReturn(['required' => true])
+        ;
+
         $contentType
             ->expects($this->once())
             ->method('getFields')
-            ->willReturn([$defaultField, $customField1, $customField2])
+            ->willReturn([$defaultField, $customField1, $customField2, $customField3])
         ;
 
         return $contentType;
