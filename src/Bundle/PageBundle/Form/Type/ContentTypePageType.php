@@ -63,7 +63,7 @@ class ContentTypePageType extends AbstractType
 
         $builder->add('layout', LayoutChoiceType::class, [
             'theme' => $options['theme'],
-            'directory' => sprintf('/content/%s/%s', $matchController[1], $matchAction[1]),
+            'directory' => strtolower(sprintf('/content/%s/%s', $matchController[1], $matchAction[1])),
         ]);
 
         $builder->addEventSubscriber(new ContentTypePageListener($this->controllerManager));
