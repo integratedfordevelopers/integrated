@@ -49,7 +49,7 @@ class ContentChoiceTransformer implements DataTransformerInterface
             return $value->getId();
         }
 
-        throw new TransformationFailedException(sprintf('Expected integrated content, "%s" given', gettype($value)));
+        throw new TransformationFailedException(sprintf('Expected integrated content, "%s" given', \gettype($value)));
     }
 
     /**
@@ -63,7 +63,7 @@ class ContentChoiceTransformer implements DataTransformerInterface
     {
         if (null === $value) {
             return null;
-        } elseif (is_string($value)) {
+        } elseif (\is_string($value)) {
             $result = $this->repo->find($value);
 
             if ($result instanceof ContentInterface) {
@@ -73,6 +73,6 @@ class ContentChoiceTransformer implements DataTransformerInterface
             throw new TransformationFailedException(sprintf('Document with id "%s" not found', $value));
         }
 
-        throw new TransformationFailedException(sprintf('Expected string, "%s" given', gettype($value)));
+        throw new TransformationFailedException(sprintf('Expected string, "%s" given', \gettype($value)));
     }
 }

@@ -45,7 +45,7 @@ class FileController
     public function fileAction(Content $document)
     {
         // Read properties in the document containing a storage object
-        foreach ($this->metadata->getMetadata(get_class($document))->getProperties() as $property) {
+        foreach ($this->metadata->getMetadata(\get_class($document))->getProperties() as $property) {
             // Read out a property an check if its there is something and not void
             $reader = new DoctrineDocument($document);
             if ($storage = $reader->get($property->getPropertyName())) {
@@ -60,7 +60,7 @@ class FileController
                 // This may never happen, reflection gave an invalid result
                 throw new \LogicException(
                     'Invalid instance %s provided trough reflection while %s was expected.',
-                    is_object($storage) ? get_class($storage) : gettype($storage),
+                    \is_object($storage) ? \get_class($storage) : \gettype($storage),
                     StorageInterface::class
                 );
             }

@@ -375,7 +375,7 @@ class State
             // NOTE: This also means that all the changes to the entity that is removed from
             // the collection wont be recorded by doctrine anymore.
 
-            if ($found = $uow->tryGetById([$permission->getGroup(), $this->getId()], get_class($permission))) {
+            if ($found = $uow->tryGetById([$permission->getGroup(), $this->getId()], \get_class($permission))) {
                 if ($found !== $permission && ($found->getState() === null || $found->getState() === $this)) {
                     $this->permissions->removeElement($permission);
                     $this->permissions->add($found);

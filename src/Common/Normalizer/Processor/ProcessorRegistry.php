@@ -37,7 +37,7 @@ class ProcessorRegistry implements RegistryInterface
      */
     public function hasProcessors($class)
     {
-        if (!is_string($class)) {
+        if (!\is_string($class)) {
             throw new UnexpectedTypeException($class, 'string');
         }
 
@@ -53,7 +53,7 @@ class ProcessorRegistry implements RegistryInterface
      */
     public function getProcessors($class)
     {
-        if (!is_string($class)) {
+        if (!\is_string($class)) {
             throw new UnexpectedTypeException($class, 'string');
         }
 

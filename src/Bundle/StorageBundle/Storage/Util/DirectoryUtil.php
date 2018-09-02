@@ -56,9 +56,9 @@ class DirectoryUtil
             // Create a directory array
             $directories = explode('/', $directory);
 
-            $max = count($directories);
+            $max = \count($directories);
             for ($i = 2; $i <= $max; ++$i) {
-                $dir = implode('/', array_slice($directories, 0, $i));
+                $dir = implode('/', \array_slice($directories, 0, $i));
 
                 // You might wanna read is as check as follows: if it exists, make it, check if it did
                 if (!is_dir($dir) && !@mkdir($dir) && !is_dir($dir)) {

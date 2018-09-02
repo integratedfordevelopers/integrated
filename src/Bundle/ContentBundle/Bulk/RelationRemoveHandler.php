@@ -58,7 +58,7 @@ class RelationRemoveHandler implements HandlerInterface
             $embedded->removeReference($reference);
         }
 
-        if (!count($embedded->getReferences())) {
+        if (!\count($embedded->getReferences())) {
             $content->removeRelation($embedded);
         }
     }

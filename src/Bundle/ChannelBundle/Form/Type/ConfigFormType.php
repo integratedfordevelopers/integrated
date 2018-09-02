@@ -110,7 +110,7 @@ class ConfigFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $adapterNormalizer = function (Options $options, $adapter) {
-            if (is_string($adapter)) {
+            if (\is_string($adapter)) {
                 try {
                     $adapter = $this->registry->getAdapter($adapter);
                 } catch (Exception $e) {

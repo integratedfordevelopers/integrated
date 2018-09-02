@@ -65,13 +65,13 @@ class Converter implements ConverterInterface
             return $this->factory->createContainer();
         }
 
-        if (!is_object($data)) {
+        if (!\is_object($data)) {
             throw new UnexpectedTypeException($data, 'object');
         }
 
         $container = $this->factory->createContainer();
 
-        if ($config = $this->resolver->getConfig(get_class($data))) {
+        if ($config = $this->resolver->getConfig(\get_class($data))) {
             /** @var TypeConfigInterface $type */
             foreach (new ParentAwareConfigIterator($config) as $type) {
                 $this->registry->getType($type->getName())->build($container, $data, $type->getOptions() ?: []);

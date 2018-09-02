@@ -172,7 +172,7 @@ class DatabaseMenuFactory implements FactoryInterface
     {
         if (null === $this->sorted) {
             krsort($this->extensions);
-            $this->sorted = !empty($this->extensions) ? call_user_func_array('array_merge', $this->extensions) : [];
+            $this->sorted = !empty($this->extensions) ? \call_user_func_array('array_merge', $this->extensions) : [];
         }
 
         return $this->sorted;

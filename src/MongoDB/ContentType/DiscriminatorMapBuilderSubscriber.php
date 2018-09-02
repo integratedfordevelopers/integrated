@@ -75,7 +75,7 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
 
     public function hasClasses()
     {
-        return count($this->classes) ? true : false;
+        return \count($this->classes) ? true : false;
     }
 
     public function setClasses(array $classes)
@@ -102,7 +102,7 @@ class DiscriminatorMapBuilderSubscriber implements EventSubscriber
      */
     public function hasChanges()
     {
-        return count($this->changes) ? true : false;
+        return \count($this->changes) ? true : false;
     }
 
     /**

@@ -100,7 +100,7 @@ class FacetBlockHandler extends BlockHandler
             ];
         }
 
-        if (!count($facets)) {
+        if (!\count($facets)) {
             return;
         }
 

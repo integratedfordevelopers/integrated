@@ -43,7 +43,7 @@ class MemoryResolver implements ResolverInterface
      */
     public function getType($type)
     {
-        if (!is_string($type)) {
+        if (!\is_string($type)) {
             throw new UnexpectedTypeException($type, 'string');
         }
 

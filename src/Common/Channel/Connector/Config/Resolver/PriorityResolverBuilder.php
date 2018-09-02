@@ -68,6 +68,6 @@ class PriorityResolverBuilder
     {
         krsort($this->resolvers);
 
-        return new PriorityResolver(call_user_func_array('array_merge', $this->resolvers));
+        return new PriorityResolver(\call_user_func_array('array_merge', $this->resolvers));
     }
 }

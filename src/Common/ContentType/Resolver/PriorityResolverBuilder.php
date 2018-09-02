@@ -58,7 +58,7 @@ class PriorityResolverBuilder
 
         if (!empty($resolvers)) {
             krsort($resolvers);
-            $resolvers = call_user_func_array('array_merge', $resolvers);
+            $resolvers = \call_user_func_array('array_merge', $resolvers);
         }
 
         return new PriorityResolver($resolvers);

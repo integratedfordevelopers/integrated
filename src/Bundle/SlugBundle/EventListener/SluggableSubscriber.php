@@ -107,7 +107,7 @@ class SluggableSubscriber implements EventSubscriber
     {
         $object = $args->getObject();
         $om = $args->getObjectManager();
-        $class = get_class($object);
+        $class = \get_class($object);
 
         $classMetadata = $this->metadataFactory->getMetadataForClass($class);
         $classMetadataInfo = $om->getClassMetadata($class);
@@ -115,8 +115,8 @@ class SluggableSubscriber implements EventSubscriber
         $identifierFields = $classMetadataInfo->getIdentifierFieldNames();
 
         foreach ($classMetadata->propertyMetadata as $propertyMetadata) {
-            if ($propertyMetadata instanceof PropertyMetadata && count($propertyMetadata->slugFields)) {
-                $hasIdentifierFields = count(array_intersect($identifierFields, $propertyMetadata->slugFields)) > 0;
+            if ($propertyMetadata instanceof PropertyMetadata && \count($propertyMetadata->slugFields)) {
+                $hasIdentifierFields = \count(array_intersect($identifierFields, $propertyMetadata->slugFields)) > 0;
 
                 if ($event == 'prePersist' &&
                     $hasIdentifierFields ||
@@ -232,7 +232,7 @@ class SluggableSubscriber implements EventSubscriber
             return null;
         }
 
-        $class = get_class($object);
+        $class = \get_class($object);
 
         if ($this->isUniqueSlug($om, $class, $field, $slug, $id)) {
             return $slug;
@@ -251,7 +251,7 @@ class SluggableSubscriber implements EventSubscriber
 
         $objects = $this->findSimilarSlugs($om, $class, $field, $slug, $separator);
 
-        if (count($objects)) {
+        if (\count($objects)) {
             $oid = spl_object_hash($object);
             $slugs = [];
 
@@ -266,7 +266,7 @@ class SluggableSubscriber implements EventSubscriber
                 for ($i = 1; $i <= (max(array_keys($slugs)) + 2); ++$i) {
                     $slug2 = $slug.($i > 1 ? $separator.$i : '');
 
-                    if (!in_array($slug2, $slugs)) {
+                    if (!\in_array($slug2, $slugs)) {
                         return $slug2;
                     }
                 }
@@ -379,7 +379,7 @@ class SluggableSubscriber implements EventSubscriber
                 $reflection = $parent;
             }
 
-            if (count($parents)) {
+            if (\count($parents)) {
                 $class = end($parents);
             }
 
@@ -396,7 +396,7 @@ class SluggableSubscriber implements EventSubscriber
     protected function recomputeSingleObjectChangeSet(ObjectManager $om, $object)
     {
         if ($om->contains($object)) {
-            $classMetadata = $om->getClassMetadata(get_class($object));
+            $classMetadata = $om->getClassMetadata(\get_class($object));
             $uow = $om->getUnitOfWork();
 
             if ($uow instanceof ODMUnitOfWork) {

@@ -100,7 +100,7 @@ class RelationAction implements BulkActionInterface
     public function setReferences($references)
     {
         $this->references->clear();
-        if (is_array($references) || $references instanceof \Traversable) {
+        if (\is_array($references) || $references instanceof \Traversable) {
             foreach ($references as $reference) {
                 $this->addReference($reference);
             }

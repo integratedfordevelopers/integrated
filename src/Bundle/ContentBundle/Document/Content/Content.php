@@ -307,7 +307,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     {
         $references = $this->getReferencesByRelationType($relationType);
 
-        if (is_array($references) && count($references)) {
+        if (\is_array($references) && \count($references)) {
             return $references[0];
         }
 
@@ -331,7 +331,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
                         }
 
                         return $references->filter(function ($content) {
-                            return $content instanceof Content ? $content->isPublished() : true;
+                            return $content instanceof self ? $content->isPublished() : true;
                         });
                     }
                 }

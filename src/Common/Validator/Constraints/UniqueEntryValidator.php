@@ -45,13 +45,13 @@ class UniqueEntryValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\\UniqueEntry');
         }
 
-        if (!is_array($entries) && !$entries instanceof Traversable) {
+        if (!\is_array($entries) && !$entries instanceof Traversable) {
             throw new UnexpectedTypeException($entries, 'array or Traversable');
         }
 
         $fields = (array) $constraint->fields;
 
-        if (!count($fields)) {
+        if (!\count($fields)) {
             throw new ConstraintDefinitionException('At least one field has to be specified.');
         }
 

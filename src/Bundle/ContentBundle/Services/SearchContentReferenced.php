@@ -119,8 +119,8 @@ class SearchContentReferenced
     public function getDeletedInfo($document, ClassMetadataFactory $metadataFactory)
     {
         $deleted = [
-            'className' => get_class($document),
-            'metadata' => $metadataFactory->getMetadataFor(get_class($document)),
+            'className' => \get_class($document),
+            'metadata' => $metadataFactory->getMetadataFor(\get_class($document)),
         ];
 
         $deleted['idField'] = current($deleted['metadata']->getIdentifier());
@@ -149,12 +149,12 @@ class SearchContentReferenced
                 $output[] = [
                     'action' => 'integrated_content_content_edit',
                     'id' => $item->getId(),
-                    'name' => method_exists($item, 'getTitle') ? $item->getTitle() : get_class($item),
+                    'name' => method_exists($item, 'getTitle') ? $item->getTitle() : \get_class($item),
                 ];
             } else {
                 $output[] = [
                     'id' => $item->getId(),
-                    'name' => get_class($item),
+                    'name' => \get_class($item),
                 ];
             }
         }

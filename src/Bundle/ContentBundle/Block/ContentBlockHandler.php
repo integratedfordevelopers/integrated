@@ -63,7 +63,7 @@ class ContentBlockHandler extends BlockHandler
 
         $pagination = $this->getPagination($block, $request, $options);
 
-        if (!count($pagination)) {
+        if (!\count($pagination)) {
             return;
         }
 

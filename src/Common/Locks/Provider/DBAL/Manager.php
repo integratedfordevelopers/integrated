@@ -103,7 +103,7 @@ class Manager implements ManagerInterface
     {
         if ($lock instanceof LockInterface) {
             $lock = $lock->getId();
-        } elseif (!is_string($lock)) {
+        } elseif (!\is_string($lock)) {
             throw new UnexpectedTypeException($lock, 'string or Integrated\Common\Locks\LockInterface');
         }
 
@@ -123,7 +123,7 @@ class Manager implements ManagerInterface
     {
         if ($lock instanceof LockInterface) {
             $lock = $lock->getId();
-        } elseif (!is_string($lock)) {
+        } elseif (!\is_string($lock)) {
             throw new UnexpectedTypeException($lock, 'string or Integrated\Common\Locks\LockInterface');
         }
 
@@ -165,7 +165,7 @@ class Manager implements ManagerInterface
     {
         if ($lock instanceof LockInterface) {
             $lock = $lock->getId();
-        } elseif (!is_string($lock)) {
+        } elseif (!\is_string($lock)) {
             throw new UnexpectedTypeException($lock, 'string or Integrated\Common\Locks\LockInterface');
         }
 
@@ -221,7 +221,7 @@ class Manager implements ManagerInterface
      */
     public function findBy($filters)
     {
-        if (!is_array($filters)) {
+        if (!\is_array($filters)) {
             $filters = [$filters];
         }
 
@@ -240,7 +240,7 @@ class Manager implements ManagerInterface
                 throw new UnexpectedTypeException($filter, 'Integrated\Common\Locks\Filter');
             }
 
-            $resources = is_array($filter->resources) ? $filter->resources : [$filter->resources];
+            $resources = \is_array($filter->resources) ? $filter->resources : [$filter->resources];
             $resources = array_filter($resources);
 
             if (!empty($resources)) {
@@ -250,7 +250,7 @@ class Manager implements ManagerInterface
                 $where->add($builder->expr()->in('l.resource', $resources));
             }
 
-            $owners = is_array($filter->owners) ? $filter->owners : [$filter->owners];
+            $owners = \is_array($filter->owners) ? $filter->owners : [$filter->owners];
             $owners = array_filter($owners);
 
             if (!empty($owners)) {

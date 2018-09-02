@@ -102,7 +102,7 @@ class VideoProvider
         $url = sprintf('https://wosvideo.e-activesites.nl/%s/', $type ?: 'random');
 
         //create new local file
-        $fp = fopen($destination, 'w');
+        $fp = fopen($destination, 'wb');
 
         //init curl
         $ch = curl_init($url);
@@ -128,7 +128,7 @@ class VideoProvider
             throw new \Exception(sprintf('No video extension found for mimetype "%s"', $mimeType));
         }
 
-        $extension = is_array(self::$mimeTypes[$mimeType]) ? self::$mimeTypes[$mimeType][0] : self::$mimeTypes[$mimeType];
+        $extension = \is_array(self::$mimeTypes[$mimeType]) ? self::$mimeTypes[$mimeType][0] : self::$mimeTypes[$mimeType];
 
         //new filename should include extension (we cannot guess extension beforehand)
         $newDestination = $destination.'.'.$extension;

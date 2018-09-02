@@ -98,6 +98,6 @@ class QueueProvider implements QueueProviderInterface
      */
     public function count($channel)
     {
-        return isset($this->queue[$channel]) ? count($this->queue[$channel]) : 0;
+        return isset($this->queue[$channel]) ? \count($this->queue[$channel]) : 0;
     }
 }

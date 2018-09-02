@@ -108,7 +108,7 @@ class Registry implements RegistryInterface
      */
     public function count()
     {
-        return count($this->data);
+        return \count($this->data);
     }
 
     /**

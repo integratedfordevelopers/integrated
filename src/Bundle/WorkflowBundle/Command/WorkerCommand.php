@@ -79,7 +79,7 @@ The <info>%command.name%</info> .
                 if ($data['command']) {
                     switch ($data['command']) {
                         case 'index':
-                            $data['args'] = is_array($data['args']) ? $data['args'] : [$data['args']];
+                            $data['args'] = \is_array($data['args']) ? $data['args'] : [$data['args']];
                             $data['args'] = array_filter(array_map('trim', $data['args']));
 
                             if ($data['args']) {

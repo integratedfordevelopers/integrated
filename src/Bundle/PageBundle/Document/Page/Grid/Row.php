@@ -87,7 +87,7 @@ class Row
 
         $array = [];
 
-        if (count($columns)) {
+        if (\count($columns)) {
             $array['columns'] = $columns;
         }
 

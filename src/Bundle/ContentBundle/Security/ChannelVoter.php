@@ -61,7 +61,7 @@ class ChannelVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, $this->permissions);
+        return \in_array($attribute, $this->permissions);
     }
 
     /**
@@ -73,7 +73,7 @@ class ChannelVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        if (!count($channel->getPermissions())) {
+        if (!\count($channel->getPermissions())) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
@@ -83,7 +83,7 @@ class ChannelVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (\in_array('ROLE_ADMIN', $user->getRoles())) {
             return VoterInterface::ACCESS_GRANTED;
         }
 

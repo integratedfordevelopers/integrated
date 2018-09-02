@@ -40,6 +40,6 @@ class CommonListener
     {
         $event = clone $event;
 
-        call_user_func($this->listener, $event, $eventName, $dispatcher);
+        \call_user_func($this->listener, $event, $eventName, $dispatcher);
     }
 }

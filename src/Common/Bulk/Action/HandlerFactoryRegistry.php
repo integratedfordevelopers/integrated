@@ -41,7 +41,7 @@ class HandlerFactoryRegistry
      */
     public function hasFactory($class)
     {
-        if (!is_string($class)) {
+        if (!\is_string($class)) {
             throw new UnexpectedTypeException($class, 'string');
         }
 
@@ -59,7 +59,7 @@ class HandlerFactoryRegistry
      */
     public function getFactory($class)
     {
-        if (!is_string($class)) {
+        if (!\is_string($class)) {
             throw new UnexpectedTypeException($class, 'string');
         }
 

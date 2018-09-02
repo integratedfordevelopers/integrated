@@ -58,7 +58,7 @@ class WorkflowLogInstanceInjectionListener implements EventSubscriber
             return;
         }
 
-        $metadata = $args->getEntityManager()->getClassMetadata(get_class($object));
+        $metadata = $args->getEntityManager()->getClassMetadata(\get_class($object));
 
         $prop = $metadata->getReflectionClass()->getProperty('user_class');
         $prop->setAccessible(true);

@@ -220,7 +220,7 @@ class WorkflowController extends Controller
                 $group = $permission->getGroup();
                 $groups[] = $group;
 
-                if (in_array($group, $currentUserGroups)) {
+                if (\in_array($group, $currentUserGroups)) {
                     $currentUserCanWrite = true;
                 }
             }

@@ -43,11 +43,11 @@ class PersistenceBuilder
      */
     public function prepareData($document)
     {
-        if (!is_object($document)) {
+        if (!\is_object($document)) {
             throw new \RuntimeException('The given argument should be an object.');
         }
 
-        $class = $this->dm->getClassMetadata(get_class($document));
+        $class = $this->dm->getClassMetadata(\get_class($document));
         $data = [];
 
         foreach ($class->getFieldNames() as $field) {
@@ -66,10 +66,10 @@ class PersistenceBuilder
             } elseif (isset($mapping['association'])) {
                 if ($mapping['association'] === ClassMetadata::REFERENCE_ONE && $mapping['isOwningSide']) {
                     // @ReferenceOne
-                    $data[$mapping['name']] = is_object($value) ? $this->dm->createDBRef($value, $mapping) : null;
+                    $data[$mapping['name']] = \is_object($value) ? $this->dm->createDBRef($value, $mapping) : null;
                 } elseif ($mapping['association'] === ClassMetadata::EMBED_ONE) {
                     // @EmbedOne
-                    $data[$mapping['name']] = is_object($value) ? $this->prepareData($value) : null;
+                    $data[$mapping['name']] = \is_object($value) ? $this->prepareData($value) : null;
                 } elseif ($mapping['type'] === ClassMetadata::MANY && !$mapping['isInverseSide']) {
                     // @ReferenceMany, @EmbedMany
                     if (!$value instanceof Collection) {
@@ -81,7 +81,7 @@ class PersistenceBuilder
                     }
 
                     foreach ($value as $object) {
-                        if (!is_object($object)) {
+                        if (!\is_object($object)) {
                             continue;
                         }
 

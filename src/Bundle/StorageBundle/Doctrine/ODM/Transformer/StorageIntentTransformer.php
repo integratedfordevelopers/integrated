@@ -76,7 +76,7 @@ class StorageIntentTransformer
             } elseif ($value instanceof StorageOriginal) {
                 // Set back the original value
                 $document->set($property->getPropertyName(), $value->getOriginal());
-            } elseif (is_array($value)) {
+            } elseif (\is_array($value)) {
                 // Only change the property whenever there's an embedded intent upload since changing triggers stuff
                 $changes = 0;
 

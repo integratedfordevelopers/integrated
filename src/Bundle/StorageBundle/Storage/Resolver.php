@@ -117,7 +117,7 @@ class Resolver implements ResolverInterface
         throw new \LogicException(
             sprintf(
                 'Class %s must implement Integrated\Bundle\StorageBundle\Storage\Resolver\ResolverInterface',
-                get_class($resolver)
+                \get_class($resolver)
             )
         );
     }

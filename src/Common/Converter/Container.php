@@ -118,7 +118,7 @@ class Container implements ContainerInterface
      */
     public function count()
     {
-        return count($this->data);
+        return \count($this->data);
     }
 
     /**
