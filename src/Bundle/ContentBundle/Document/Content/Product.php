@@ -78,7 +78,7 @@ class Product extends Content
      *
      * @return string
      */
-    public function getTitle() : ?string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -90,7 +90,7 @@ class Product extends Content
      *
      * @return $this
      */
-    public function setTitle($title) : Product
+    public function setTitle($title): self
     {
         $this->title = $title;
 
@@ -102,7 +102,7 @@ class Product extends Content
      *
      * @return string
      */
-    public function getSlug() : ?string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -114,7 +114,7 @@ class Product extends Content
      *
      * @return $this
      */
-    public function setSlug($slug) : Product
+    public function setSlug($slug): self
     {
         $this->slug = $slug;
 
@@ -122,7 +122,7 @@ class Product extends Content
     }
 
     /**
-     * Get the reference of the document
+     * Get the reference of the document.
      *
      * @return string
      */
@@ -132,13 +132,13 @@ class Product extends Content
     }
 
     /**
-     * Set the reference of the document
+     * Set the reference of the document.
      *
      * @param string $reference
      *
      * @return $this
      */
-    public function setReference(string $reference): Product
+    public function setReference(string $reference): self
     {
         $this->reference = $reference;
 
@@ -160,7 +160,7 @@ class Product extends Content
      *
      * @param string $variant
      */
-    public function setVariant(string $variant): Product
+    public function setVariant(string $variant): self
     {
         $this->variant = $variant;
 
@@ -172,7 +172,7 @@ class Product extends Content
      *
      * @return string
      */
-    public function getLocale() : ?string
+    public function getLocale(): ?string
     {
         return $this->locale;
     }
@@ -184,7 +184,7 @@ class Product extends Content
      *
      * @return $this
      */
-    public function setLocale($locale) : Product
+    public function setLocale($locale): self
     {
         $this->locale = $locale;
 
@@ -194,7 +194,7 @@ class Product extends Content
     /**
      * @return string
      */
-    public function getDescription() : ?string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -204,7 +204,7 @@ class Product extends Content
      *
      * @return $this
      */
-    public function setDescription($description) : Product
+    public function setDescription($description): self
     {
         $this->description = $description;
 
@@ -216,7 +216,7 @@ class Product extends Content
      *
      * @return string
      */
-    public function getContent() : ?string
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -228,7 +228,7 @@ class Product extends Content
      *
      * @return $this
      */
-    public function setContent($content) : Product
+    public function setContent($content): self
     {
         $this->content = $content;
 
@@ -240,7 +240,7 @@ class Product extends Content
      *
      * @return StorageInterface
      */
-    public function getCover() : ?StorageInterface
+    public function getCover(): ?StorageInterface
     {
         $items = $this->getReferencesByRelationType('embedded');
         if ($items) {
@@ -259,7 +259,7 @@ class Product extends Content
     /**
      * @return string
      */
-    public function __toString() : ?string
+    public function __toString(): ?string
     {
         return $this->title;
     }
