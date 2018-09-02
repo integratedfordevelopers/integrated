@@ -23,12 +23,10 @@ Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field:
     name: source
     options:
       required: false
-
   NameField:
     name: name
     options:
       required: true
-
   FirstNameField:
     name: firstName
     options:
@@ -65,17 +63,20 @@ Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field:
     name: phonenumbers
     options:
       required: false
-  EmailField:
-    name: email
-    options:
-      required: false
   JobsField:
     name: jobs
     options:
       required: false
-
   CommentField:
     name: comment
+    options:
+      required: false
+  ReferenceField:
+    name: reference
+    options:
+      required: false
+  VariantField:
+    name: variant
     options:
       required: false
 
@@ -119,3 +120,8 @@ Integrated\Bundle\ContentBundle\Document\ContentType\ContentType:
     class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Comment'
     name: Comment
     fields: ['@TitleField', '@NameField', '@EmailField', '@CommentField']
+
+  Product:
+    class: 'Integrated\\Bundle\\ContentBundle\\Document\\Content\\Product'
+    name: Book
+    fields: ['@TitleField', '@ReferenceField', '@VariantField', '@ContentField']
