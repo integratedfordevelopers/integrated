@@ -10,6 +10,7 @@ use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
+use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
@@ -98,6 +99,7 @@ class ImportController extends Controller
                 'form' => $form->createView()
             ]
         );
+
     }
 
     public function chooseFile(Request $request, ImportDefinition $importDefinition)
@@ -185,7 +187,7 @@ class ImportController extends Controller
         }
 
         return $this->render(
-            'IntegratedImportBundle::choosefile.html.twig',
+            'IntegratedImportBundle::chooseFile.html.twig',
             [
                 'form' => $form->createView()
             ]
@@ -198,21 +200,34 @@ class ImportController extends Controller
         $data = $this->importFile->toArray($importDefinition);
         $data = $data['rss']['channel']['item'];
         $data = array_slice($data, 0, 20);
+        $startRow = [];
         foreach ($data as $index => $row) {
             foreach ($row as $index2 => $value) {
+                if ($index == 0) {
+                    $startRow[] = $index2;
+                }
                 if (is_array($value)) {
                     $valuet = '';
                     foreach ($value as $value2) {
                         if (!is_array($value2)) {
-                            $valuet .=  $value2;
+                            $valuet .= $value2;
+                        } else {
+                            foreach ($value2 as $value3) {
+                                if (!is_array($value3)) {
+                                    if ($valuet != '') {
+                                        $valuet .= ',';
+                                    }
+                                    $valuet .= $value3;
+                                }
+                            }
                         }
                     }
-                    dump($index);
                     $data[$index][$index2] = $valuet;
-                    dump($data);
                 }
             }
         }
+
+        $data = array_merge(array($startRow), $data);
         dump($data);
 
         $contentType = $this->documentManager->find(
@@ -258,9 +273,9 @@ class ImportController extends Controller
             $fields['connector-' . $config->getId()] = ['label' => 'ID for ' . $config->getName(), 'matchCol' => false];
         }
 
-        $relations = $this->entityManager->getRepository(Relation::class)->findAll();
+        $relations = $this->documentManager->getRepository(Relation::class)->findAll();
         foreach ($relations as $relation) {
-            $fields['relation-' . $relation->getId()] = ['label' => 'ID for ' . $relation->getName(), 'matchCol' => false];
+            $fields['relation-' . $relation->getId()] = ['label' => 'Relation ' . $relation->getName(), 'matchCol' => false];
         }
 
         if ($importDefinition->getFields()) {
@@ -346,33 +361,38 @@ class ImportController extends Controller
                             $newObject->addConnector($connector);
                         }
 
+                        dump($mappedField);
                         if (strpos($mappedField, 'relation-') === 0) {
                             $relationId = str_replace('relation-', '', $mappedField);
-                            $relation = $this->entityManager->getRepository(Relation::class)->find($relationId);
+                            $relation = $this->documentManager->getRepository(Relation::class)->find($relationId);
 
                             $targets = $relation->getTargets();
-                            $target = $targets[0];
+                            $targetContentType = $targets[0];
 
-                            $targetContentType = $this->documentManager->find(
+                            /*$targetContentType = $this->documentManager->find(
                                 ContentType::class,
                                 $target
-                            );
+                            );*/
 
-                            $link = $this->entityManager->getRepository(Taxonomy::class)->findBy(['name' => $value]);
-                            if (!$link) {
-                                $link = $targetContentType->create();
-                                $link->setName($value);
+                            foreach (explode(",", $value) as $valueName) {
+                                $link = $this->documentManager->getRepository(Taxonomy::class)->findBy(['name' => $valueName]);
+                                if (!$link) {
+                                    $link = $targetContentType->create();
+                                    $link->setTitle($valueName);
 
-                                $this->documentManager->persist($link);
-                                $this->documentManager->flush();
+                                    $this->documentManager->persist($link);
+                                    $this->documentManager->flush();
+                                }
                             }
 
-                            $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId($relation->getRelationId());
-                            $relation->setRelationType($relation->getRelationType());
-                            $relation->addReference($link);
-                            $newObject->addRelation($relation);
+                            $relation2 = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                            $relation2->setRelationId($relation->getId());
+                            $relation2->setRelationType($relation->getType());
+                            $relation2->addReference($link);
+                            $newObject->addRelation($relation2);
                         }
+
+                        $col++;
                     }
 
                     $this->documentManager->persist($newObject);

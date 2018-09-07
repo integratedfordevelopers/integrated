@@ -9,5 +9,13 @@
                   expose="true"
                   type="string"
         />
+        <property name="slug"
+                  expose="true"
+                  type="string"
+        />
+        <property name="content"
+                  expose="true"
+                  type="string"
+        />
     </class>
 </serializer>
