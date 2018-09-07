@@ -12,6 +12,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ImportBundle\Document\Embedded\ImportField;
 use Integrated\Bundle\ImportBundle\Document\ImportDefinition;
 use Integrated\Bundle\ImportBundle\Form\Type\ImportDefinitionType;
@@ -257,6 +258,11 @@ class ImportController extends Controller
             $fields['connector-' . $config->getId()] = ['label' => 'ID for ' . $config->getName(), 'matchCol' => false];
         }
 
+        $relations = $this->entityManager->getRepository(Relation::class)->findAll();
+        foreach ($relations as $relation) {
+            $fields['relation-' . $relation->getId()] = ['label' => 'ID for ' . $relation->getName(), 'matchCol' => false];
+        }
+
         if ($importDefinition->getFields()) {
             foreach ($importDefinition->getFields() as $field) {
                 if (isset($fields[$field->getMappedField()])) {
@@ -318,6 +324,12 @@ class ImportController extends Controller
 
                     $newObject = $serializer->deserialize(json_encode($newData), $contentType->getClass(), 'json', $context);
 
+                    $content = $newObject->getContent();
+                    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
+                    dump($matches);
+
+                    
+
                     $col = 1;
                     foreach ($row as $value) {
                         $mappedField = $request->request->get('col' . $col, null);
@@ -332,6 +344,34 @@ class ImportController extends Controller
                             $connector->setExternalId($value);
 
                             $newObject->addConnector($connector);
+                        }
+
+                        if (strpos($mappedField, 'relation-') === 0) {
+                            $relationId = str_replace('relation-', '', $mappedField);
+                            $relation = $this->entityManager->getRepository(Relation::class)->find($relationId);
+
+                            $targets = $relation->getTargets();
+                            $target = $targets[0];
+
+                            $targetContentType = $this->documentManager->find(
+                                ContentType::class,
+                                $target
+                            );
+
+                            $link = $this->entityManager->getRepository(Taxonomy::class)->findBy(['name' => $value]);
+                            if (!$link) {
+                                $link = $targetContentType->create();
+                                $link->setName($value);
+
+                                $this->documentManager->persist($link);
+                                $this->documentManager->flush();
+                            }
+
+                            $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                            $relation->setRelationId($relation->getRelationId());
+                            $relation->setRelationType($relation->getRelationType());
+                            $relation->addReference($link);
+                            $newObject->addRelation($relation);
                         }
                     }
 
