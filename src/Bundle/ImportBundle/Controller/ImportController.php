@@ -374,22 +374,27 @@ class ImportController extends Controller
                                 $target
                             );*/
 
-                            foreach (explode(",", $value) as $valueName) {
-                                $link = $this->documentManager->getRepository(Taxonomy::class)->findBy(['name' => $valueName]);
-                                if (!$link) {
-                                    $link = $targetContentType->create();
-                                    $link->setTitle($valueName);
+                            if ($value) {
+                                $relation2 = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                $relation2->setRelationId($relation->getId());
+                                $relation2->setRelationType($relation->getType());
 
-                                    $this->documentManager->persist($link);
-                                    $this->documentManager->flush();
+                                foreach (explode(",", $value) as $valueName) {
+                                    $link = $this->documentManager->getRepository(Taxonomy::class)->findBy(['name' => $valueName]);
+                                    if (!$link) {
+                                        $link = $targetContentType->create();
+                                        $link->setTitle($valueName);
+
+                                        $this->documentManager->persist($link);
+                                        $this->documentManager->flush();
+                                    }
+
+                                    $relation2->addReference($link);
                                 }
+
+                                $newObject->addRelation($relation2);
                             }
 
-                            $relation2 = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation2->setRelationId($relation->getId());
-                            $relation2->setRelationType($relation->getType());
-                            $relation2->addReference($link);
-                            $newObject->addRelation($relation2);
                         }
 
                         $col++;
