@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Content" exclusion-policy="all">
+        <property name="createdAt"
+                  expose="true"
+                  type="datetime"
+        />
+    </class>
+</serializer>

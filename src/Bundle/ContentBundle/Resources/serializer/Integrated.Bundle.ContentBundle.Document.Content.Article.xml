@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\Article" exclusion-policy="all">
+        <property name="title"
+                  expose="true"
+                  type="string"
+        />
+        <property name="intro"
+                  expose="true"
+                  type="string"
+        />
+    </class>
+</serializer>

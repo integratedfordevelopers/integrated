@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="integrated_import_index" path="/import">
+        <default key="_controller">Integrated\Bundle\ImportBundle\Controller\ImportController:index</default>
+    </route>
+
+    <route id="integrated_import_new" path="/import/new/{type}">
+        <default key="_controller">Integrated\Bundle\ImportBundle\Controller\ImportController:new</default>
+    </route>
+
+    <route id="integrated_import_file" path="/import/chooseFile/{importDefinition}">
+        <default key="_controller">Integrated\Bundle\ImportBundle\Controller\ImportController:chooseFile</default>
+    </route>
+
+    <route id="integrated_import_definition" path="/import/composeDefinition/{importDefinition}">
+        <default key="_controller">Integrated\Bundle\ImportBundle\Controller\ImportController:composeDefinition</default>
+    </route>
+
+</routes>
