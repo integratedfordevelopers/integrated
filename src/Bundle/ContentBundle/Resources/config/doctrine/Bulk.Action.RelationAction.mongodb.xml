@@ -7,7 +7,8 @@
         <field name="handler" type="string" />
 
         <reference-one field="relation" target-document="Integrated\Bundle\ContentBundle\Document\Relation\Relation" />
-        <reference-many field="references" target-document="Integrated\Bundle\ContentBundle\Document\Content\Content" />
+
+        <field fieldName="references" type="collection"/>
 
     </embedded-document>
 

@@ -11,7 +11,7 @@
 
         <embed-many field="actions" strategy="set"/>
 
-        <reference-many field="selection" target-document="Integrated\Bundle\ContentBundle\Document\Content\Content"/>
+        <field fieldName="selection" type="collection"/>
 
     </document>
 
