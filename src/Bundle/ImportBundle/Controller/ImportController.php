@@ -10,6 +10,7 @@ use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
+use Integrated\Bundle\ContentBundle\Document\Content\Image;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
@@ -19,6 +20,10 @@ use Integrated\Bundle\ImportBundle\Document\ImportDefinition;
 use Integrated\Bundle\ImportBundle\Form\Type\ImportDefinitionType;
 use Integrated\Bundle\ImportBundle\Import\ImportFile;
 use Integrated\Bundle\ImportBundle\Serializer\InitializedObjectConstructor;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage\Metadata as StorageMetadata;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Metadata;
+use Integrated\Bundle\StorageBundle\Storage\Manager;
+use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Common\Content\Form\ContentFormType;
 use JMS\Serializer\Construction\UnserializeObjectConstructor;
 use JMS\Serializer\DeserializationContext;
@@ -30,6 +35,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Config\FileLocator;
+use Sunra\PhpSimple\HtmlDomParser;
 
 class ImportController extends Controller
 {
@@ -46,17 +52,21 @@ class ImportController extends Controller
 
     protected $importFile;
 
+    protected $storageManager;
+
     public function __construct(
         ContentTypeManager $contentTypeManager,
         DocumentManager $documentManager,
         EntityManager $entityManager,
-        ImportFile $importFile
+        ImportFile $importFile,
+        Manager $storageManager
     )
     {
         $this->contentTypeManager = $contentTypeManager;
         $this->documentManager = $documentManager;
         $this->entityManager = $entityManager;
         $this->importFile = $importFile;
+        $this->storageManager = $storageManager;
     }
 
     public function index()
@@ -104,7 +114,6 @@ class ImportController extends Controller
 
     public function chooseFile(Request $request, ImportDefinition $importDefinition)
     {
-        dump($importDefinition);
         $contentType = $this->documentManager->find(
             ContentType::class,
             $importDefinition->getContentType()
@@ -179,8 +188,6 @@ class ImportController extends Controller
             $importDefinition->setFileId($file->getId());
             $this->documentManager->flush();
 
-            dump($importDefinition);
-
             return $this->redirect(
                 $this->generateUrl('integrated_import_definition', ['importDefinition' => $importDefinition->getId()])
             );
@@ -196,14 +203,15 @@ class ImportController extends Controller
 
 
     public function composeDefinition(Request $request, ImportDefinition $importDefinition) {
+        ini_set('max_execution_time', 3600);
 
         $data = $this->importFile->toArray($importDefinition);
         $data = $data['rss']['channel']['item'];
-        $data = array_slice($data, 0, 20);
         $startRow = [];
+
         foreach ($data as $index => $row) {
             foreach ($row as $index2 => $value) {
-                if ($index == 0) {
+                if (!in_array($index2, $startRow)) {
                     $startRow[] = $index2;
                 }
                 if (is_array($value)) {
@@ -227,8 +235,19 @@ class ImportController extends Controller
             }
         }
 
-        $data = array_merge(array($startRow), $data);
-        dump($data);
+        $newData = array($startRow);
+        foreach ($data as $row) {
+            $newRow = [];
+            foreach ($startRow as $startKey) {
+                if (isset($row[$startKey])) {
+                    $newRow[$startKey] = $row[$startKey];
+                } else {
+                    $newRow[$startKey] = '';
+                }
+            }
+            $newData[] = $newRow;
+        }
+        $data = $newData;
 
         $contentType = $this->documentManager->find(
             ContentType::class,
@@ -293,26 +312,29 @@ class ImportController extends Controller
 
             if (isset($data[0])) {
                 $cols = count($data[0]);
-                $fields = [];
+                $fields2 = [];
                 for ($col = 1; $col <= $cols; $col++) {
                     $mappedField = $request->request->get('col' . $col, null);
                     if ($mappedField) {
                         $field = new ImportField();
                         $field->setColumn($col);
                         $field->setMappedField($mappedField);
-                        $fields[] = $field;
+                        $fields2[] = $field;
                     }
                 }
 
-                $importDefinition->setFields($fields);
+                $importDefinition->setFields($fields2);
                 $this->documentManager->flush();
             }
 
+            $doneRows = 0;
             $rowNumber = -1;
+            $doneTitles = [];
             foreach ($data as $row) {
                 $rowNumber++;
-                if ($rowNumber <= 0) {
+                if ($rowNumber <= 0 || $rowNumber < $request->request->get('startRow', 0)) {
                     //skip heading row
+                    //echo 'skip row ' . $rowNumber . ' (' . print_r($row) . ')<br />';
                     continue;
                 }
 
@@ -331,6 +353,10 @@ class ImportController extends Controller
                     $col++;
                 }
 
+                if (isset($newData['created_at'])) {
+                    $newData['created_at'] = str_replace(' ', 'T', $newData['created_at']) . '+1:00';
+                }
+
                 if (count($newData)) {
                     $context = new DeserializationContext();
                     $target = $contentType->create();
@@ -339,11 +365,191 @@ class ImportController extends Controller
 
                     $newObject = $serializer->deserialize(json_encode($newData), $contentType->getClass(), 'json', $context);
 
+                    $wpPostId = $newObject->getIntro();
+                    $newObject->setMetaData(new Metadata(['wpPostId' => $wpPostId]));
+                    $newObject->setIntro(null);
+                    //todo: channel
+
+                    $newObject->getPublishTime()->setStartDate($newObject->getCreatedAt());
                     $content = $newObject->getContent();
-                    preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
+
+                    $html = HtmlDomParser::str_get_html($content);
+
+                    foreach($html->find('a') as $element) {
+                        $href = $element->href;
+                        $title = false;
+
+                        if (stripos($href, '.png') === false
+                            && stripos($href, '.jpg') === false
+                            && stripos($href, '.jpeg') === false
+                            && stripos($href, '.gif') === false)
+                        {
+                            continue;
+                        }
+
+                        foreach($element->find('img') as $img) {
+                            $title = $img->title;
+                            if (!$title) {
+                                $title = basename($img->src);
+                                $title = str_replace('.png', '', $title);
+                                $title = str_replace('.jpg', '', $title);
+                                $title = str_replace('.jpeg', '', $title);
+                                $title = str_replace('.gif', '', $title);
+                            }
+                        }
+                        if ($title) {
+                            $tmpfile = tempnam("/tmp/", "img");
+                            file_put_contents($tmpfile, @file_get_contents($href));
+                            if (filesize($tmpfile) == 0) {
+                                //echo $file . "\n";
+                                //echo "FILE HAS 0 BYTES\n";
+                                continue;
+                            }
+
+                            $storage = $this->storageManager->write(
+                                new MemoryReader(
+                                    file_get_contents($tmpfile),
+                                    new StorageMetadata(
+                                        pathinfo($tmpfile, PATHINFO_EXTENSION),
+                                        mime_content_type($tmpfile),
+                                        new ArrayCollection(),
+                                        new ArrayCollection()
+                                    )
+                                )
+                            );
+
+                            $file = new Image();
+                            $file->setContentType('meu_afbeelding');
+                            $file->setTitle($title);
+                            $file->setFile($storage);
+                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId]));
+
+                            $this->documentManager->persist($file);
+                            $this->documentManager->flush($file);
+
+                            $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                            $relation->setRelationId('meu_media');
+                            $relation->setRelationType('embedded');
+                            $relation->addReference($file);
+                            $newObject->addRelation($relation);
+
+                            $element->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
+                        }
+                    }
+
+                    $title = false;
+                    foreach($html->find('img') as $img) {
+                        $title = $img->title;
+                        $href = $img->src;
+                        if (!$title) {
+                            $title = basename($img->src);
+                            $title = str_replace('.png', '', $title);
+                            $title = str_replace('.jpg', '', $title);
+                            $title = str_replace('.jpeg', '', $title);
+                            $title = str_replace('.gif', '', $title);
+                        }
+
+                        $tmpfile = tempnam("/tmp/", "img");
+                        file_put_contents($tmpfile, @file_get_contents($href));
+                        if (filesize($tmpfile) == 0) {
+                            //echo $file . "\n";
+                            //echo "FILE HAS 0 BYTES\n";
+                            continue;
+                        }
+
+                        $storage = $this->storageManager->write(
+                            new MemoryReader(
+                                file_get_contents($tmpfile),
+                                new StorageMetadata(
+                                    pathinfo($tmpfile, PATHINFO_EXTENSION),
+                                    mime_content_type($tmpfile),
+                                    new ArrayCollection(),
+                                    new ArrayCollection()
+                                )
+                            )
+                        );
+
+                        $file = new Image();
+                        $file->setContentType('meu_afbeelding');
+                        $file->setTitle($title);
+                        $file->setFile($storage);
+
+                        $this->documentManager->persist($file);
+                        $this->documentManager->flush($file);
+
+                        $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                        $relation->setRelationId('meu_media');
+                        $relation->setRelationType('embedded');
+                        $relation->addReference($file);
+                        $newObject->addRelation($relation);
+
+                        $img->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
+                    }
+
+                    $html = (string) $html;
+                    $newHtml = '';
+                    foreach (explode("\n", $html) as $line) {
+                        if (trim(strip_tags($line)) != "") {
+                            $line = '<p>' . $line . '</p>';
+                        }
+                        $newHtml .= $line . "\n";
+                    }
+
+                    $newObject->setContent($newHtml);
+
+                    /*
+                    preg_match('/<img[^>]*src *= *["\']?([^"\']*)[^>]*>/i', $content, $matches);
                     dump($matches);
 
-                    
+
+
+                    $storage = $this->getContainer()->get('integrated_storage.manager')
+                        ->write(
+                            new MemoryReader(
+                                file_get_contents($file),
+                                new StorageMetadata(
+                                    pathinfo($file, PATHINFO_EXTENSION),
+                                    mime_content_type($file),
+                                    new ArrayCollection(),
+                                    new ArrayCollection()
+                                )
+                            )
+                        );
+
+                    $file = new Image();
+                    $file->setContentType('image');
+                    $file->setTitle($title);
+                    $file->setFile($storage);
+                    $file->setMetadata($meta);
+
+                    $dm->persist($file);
+                    $dm->flush($file);
+
+                    $ctrelation = $dm->getRepository('IntegratedContentBundle:Relation\Relation')
+                        ->findOneBy(
+                            [
+                                'name' => 'Media',
+                                'type' => 'embedded',
+                            ]
+                        );
+                    if (!$ctrelation) {
+                        $ctrelation = new MainRelation();
+                        $ctrelation->setName('Media');
+                        $ctrelation->setType('embedded');
+
+                        $dm->persist($ctrelation);
+                        $dm->flush($ctrelation);
+                    }
+
+                    $relation = new Relation();
+                    $relation->setRelationId($ctrelation->getId());
+                    $relation->setRelationType($ctrelation->getType());
+                    $relation->addReference($file);
+                    $article->addRelation($relation);
+
+
+*/
+
 
                     $col = 1;
                     foreach ($row as $value) {
@@ -361,7 +567,6 @@ class ImportController extends Controller
                             $newObject->addConnector($connector);
                         }
 
-                        dump($mappedField);
                         if (strpos($mappedField, 'relation-') === 0) {
                             $relationId = str_replace('relation-', '', $mappedField);
                             $relation = $this->documentManager->getRepository(Relation::class)->find($relationId);
@@ -380,7 +585,7 @@ class ImportController extends Controller
                                 $relation2->setRelationType($relation->getType());
 
                                 foreach (explode(",", $value) as $valueName) {
-                                    $link = $this->documentManager->getRepository(Taxonomy::class)->findBy(['name' => $valueName]);
+                                    $link = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['title' => $valueName]);
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
@@ -400,8 +605,25 @@ class ImportController extends Controller
                         $col++;
                     }
 
+                    $doneTitles[] = $newObject->getTitle();
+
                     $this->documentManager->persist($newObject);
                     $this->documentManager->flush();
+
+                    //echo 'added ' . $rowNumber . ' (' . print_r($row) . ')<br />';
+                }
+
+                $doneRows++;
+                if ($doneRows >= 3) {
+                    $data = array_slice($data, 0, 20);
+                    return $this->render(
+                        'IntegratedImportBundle::composeDefinition.html.twig',
+                        [
+                            'fields' => $fields,
+                            'data' => $data,
+                            'startRow' => $rowNumber+1,
+                        ]
+                    );
                 }
             }
 
@@ -419,6 +641,7 @@ class ImportController extends Controller
             [
                 'fields' => $fields,
                 'data' => $data,
+                'startRow' => 0,
             ]
         );
     }

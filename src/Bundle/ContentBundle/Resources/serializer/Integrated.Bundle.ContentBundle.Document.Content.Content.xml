@@ -3,7 +3,7 @@
     <class name="Integrated\Bundle\ContentBundle\Document\Content\Content" exclusion-policy="all">
         <property name="createdAt"
                   expose="true"
-                  type="datetime"
+                  type="DateTime"
         />
     </class>
 </serializer>

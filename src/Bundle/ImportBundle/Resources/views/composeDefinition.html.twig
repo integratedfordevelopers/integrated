@@ -12,8 +12,9 @@
     </div>
 {% endblock %}
 {% block content %}
-    <form method="post">
+    <form method="post" id="composeForm">
         <input type="hidden" name="action" value="go" />
+        <input type="hidden" name="startRow" value="{{ startRow }}" />
 
     <div class="pull-right">
         <a class="btn btn-gray-thin" href="{# { path("integrated_import_edit", {'id': id }) }} #}">{% trans %}Back{% endtrans %}</a>&nbsp;
@@ -54,7 +55,6 @@
                     {% for col in row %}
                         {%  set colIndex = loop.index %}
                         <th>
-                            {% dump(fields) %}
                             <select name="col{{ colIndex }}" id="col{{ colIndex }}" class="import-fieldchoice">
                                 {% for fieldKey, field in fields %}
                                     <option value="{{ fieldKey }}" {% if field.matchCol == colIndex %} selected="selected"{% endif %}>{{ field.label }}</option>
@@ -74,6 +74,8 @@
     </div>
 
     </form>
+
+    {{ startRow }}
 {% endblock %}
 {% block javascript %}
 {{ parent() }}
@@ -83,4 +85,9 @@
         $('.import-fieldchoice').select2();
     });
 </script>
+    {% if (startRow > 0) %}
+        <script>
+            $('#composeForm').submit();
+        </script>
+    {% endif %}
 {% endblock %}
