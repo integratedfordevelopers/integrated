@@ -366,7 +366,7 @@ class ImportController extends Controller
                     $newObject = $serializer->deserialize(json_encode($newData), $contentType->getClass(), 'json', $context);
 
                     $wpPostId = $newObject->getIntro();
-                    $newObject->setMetaData(new Metadata(['wpPostId' => $wpPostId]));
+                    $newObject->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180910']));
                     $newObject->setIntro(null);
                     //todo: channel
 
@@ -422,7 +422,7 @@ class ImportController extends Controller
                             $file->setContentType('meu_afbeelding');
                             $file->setTitle($title);
                             $file->setFile($storage);
-                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId]));
+                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180910']));
 
                             $this->documentManager->persist($file);
                             $this->documentManager->flush($file);
@@ -473,6 +473,7 @@ class ImportController extends Controller
                         $file->setContentType('meu_afbeelding');
                         $file->setTitle($title);
                         $file->setFile($storage);
+                        $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180910']));
 
                         $this->documentManager->persist($file);
                         $this->documentManager->flush($file);
@@ -589,6 +590,7 @@ class ImportController extends Controller
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
+                                        $link->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180910']));
 
                                         $this->documentManager->persist($link);
                                         $this->documentManager->flush();
