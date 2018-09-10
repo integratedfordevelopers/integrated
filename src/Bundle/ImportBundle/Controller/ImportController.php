@@ -373,7 +373,15 @@ class ImportController extends Controller
                     $newObject->getPublishTime()->setStartDate($newObject->getCreatedAt());
                     $content = $newObject->getContent();
 
-                    $html = HtmlDomParser::str_get_html($content);
+                    $newHtml = '';
+                    foreach (explode("\n", $content) as $line) {
+                        if (trim(strip_tags($line)) != "") {
+                            $line = '<p>' . $line . '</p>';
+                        }
+                        $newHtml .= $line . "\n";
+                    }
+
+                    $html = HtmlDomParser::str_get_html($newHtml);
 
                     foreach($html->find('a') as $element) {
                         $href = $element->href;
@@ -410,8 +418,8 @@ class ImportController extends Controller
                                 new MemoryReader(
                                     file_get_contents($tmpfile),
                                     new StorageMetadata(
-                                        pathinfo($tmpfile, PATHINFO_EXTENSION),
-                                        mime_content_type($tmpfile),
+                                        pathinfo($href, PATHINFO_EXTENSION),
+                                        mime_content_type($href),
                                         new ArrayCollection(),
                                         new ArrayCollection()
                                     )
@@ -461,8 +469,8 @@ class ImportController extends Controller
                             new MemoryReader(
                                 file_get_contents($tmpfile),
                                 new StorageMetadata(
-                                    pathinfo($tmpfile, PATHINFO_EXTENSION),
-                                    mime_content_type($tmpfile),
+                                    pathinfo($href, PATHINFO_EXTENSION),
+                                    mime_content_type($href),
                                     new ArrayCollection(),
                                     new ArrayCollection()
                                 )
@@ -487,16 +495,7 @@ class ImportController extends Controller
                         $img->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
                     }
 
-                    $html = (string) $html;
-                    $newHtml = '';
-                    foreach (explode("\n", $html) as $line) {
-                        if (trim(strip_tags($line)) != "") {
-                            $line = '<p>' . $line . '</p>';
-                        }
-                        $newHtml .= $line . "\n";
-                    }
-
-                    $newObject->setContent($newHtml);
+                    $newObject->setContent((string) $html);
 
                     /*
                     preg_match('/<img[^>]*src *= *["\']?([^"\']*)[^>]*>/i', $content, $matches);
