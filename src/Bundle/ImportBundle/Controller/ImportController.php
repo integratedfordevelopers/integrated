@@ -6,7 +6,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Integrated\Bundle\ChannelBundle\Model\Config;
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
@@ -366,9 +368,16 @@ class ImportController extends Controller
                     $newObject = $serializer->deserialize(json_encode($newData), $contentType->getClass(), 'json', $context);
 
                     $wpPostId = $newObject->getIntro();
-                    $newObject->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180910']));
+                    $newObject->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180911']));
                     $newObject->setIntro(null);
-                    //todo: channel
+
+                    $doubleArticle = $this->documentManager->getRepository(Article::class)->findOneBy(['title' => $newObject->getTitle()]);
+                    if ($doubleArticle) {
+                        //do not import duplicate articles
+                        if ($newObject->getTitle() != 'Dusk till Dawn') {
+                            continue;
+                        }
+                    }
 
                     $newObject->getPublishTime()->setStartDate($newObject->getCreatedAt());
                     $content = $newObject->getContent();
@@ -406,7 +415,7 @@ class ImportController extends Controller
                             }
                         }
                         if ($title) {
-                            $tmpfile = tempnam("/tmp/", "img");
+                            $tmpfile = tempnam("/tmp/", "img") .  "." . pathinfo($href, PATHINFO_EXTENSION);
                             file_put_contents($tmpfile, @file_get_contents($href));
                             if (filesize($tmpfile) == 0) {
                                 //echo $file . "\n";
@@ -419,7 +428,7 @@ class ImportController extends Controller
                                     file_get_contents($tmpfile),
                                     new StorageMetadata(
                                         pathinfo($href, PATHINFO_EXTENSION),
-                                        mime_content_type($href),
+                                        mime_content_type($tmpfile),
                                         new ArrayCollection(),
                                         new ArrayCollection()
                                     )
@@ -430,7 +439,7 @@ class ImportController extends Controller
                             $file->setContentType('meu_afbeelding');
                             $file->setTitle($title);
                             $file->setFile($storage);
-                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180910']));
+                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180911']));
 
                             $this->documentManager->persist($file);
                             $this->documentManager->flush($file);
@@ -445,6 +454,8 @@ class ImportController extends Controller
                         }
                     }
 
+                    $html = HtmlDomParser::str_get_html((string) $html);
+
                     $title = false;
                     foreach($html->find('img') as $img) {
                         $title = $img->title;
@@ -457,7 +468,7 @@ class ImportController extends Controller
                             $title = str_replace('.gif', '', $title);
                         }
 
-                        $tmpfile = tempnam("/tmp/", "img");
+                        $tmpfile = tempnam("/tmp/", "img") .  "." . pathinfo($href, PATHINFO_EXTENSION);
                         file_put_contents($tmpfile, @file_get_contents($href));
                         if (filesize($tmpfile) == 0) {
                             //echo $file . "\n";
@@ -470,7 +481,7 @@ class ImportController extends Controller
                                 file_get_contents($tmpfile),
                                 new StorageMetadata(
                                     pathinfo($href, PATHINFO_EXTENSION),
-                                    mime_content_type($href),
+                                    mime_content_type($tmpfile),
                                     new ArrayCollection(),
                                     new ArrayCollection()
                                 )
@@ -481,7 +492,7 @@ class ImportController extends Controller
                         $file->setContentType('meu_afbeelding');
                         $file->setTitle($title);
                         $file->setFile($storage);
-                        $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180910']));
+                        $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180911']));
 
                         $this->documentManager->persist($file);
                         $this->documentManager->flush($file);
@@ -494,6 +505,15 @@ class ImportController extends Controller
 
                         $img->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
                     }
+
+                    //dump((string) $html);
+
+                    $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(['name' => 'Meubelplus']);
+                    if (!$channel) {
+                        throw new \Exception('No channel');
+                    }
+
+                    $newObject->addChannel($channel);
 
                     $newObject->setContent((string) $html);
 
@@ -589,7 +609,7 @@ class ImportController extends Controller
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
-                                        $link->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180910']));
+                                        $link->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180911']));
 
                                         $this->documentManager->persist($link);
                                         $this->documentManager->flush();
