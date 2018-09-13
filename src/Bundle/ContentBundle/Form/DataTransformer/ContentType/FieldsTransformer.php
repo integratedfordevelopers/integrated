@@ -32,7 +32,7 @@ class FieldsTransformer implements DataTransformerInterface
             'custom' => [],
         ];
 
-        if (is_array($fields) || $fields instanceof \Traversable) {
+        if (\is_array($fields) || $fields instanceof \Traversable) {
             foreach ($fields as $field) {
                 if ($field instanceof Embedded\CustomField) {
                     $return['custom'][] = $field;
@@ -52,7 +52,7 @@ class FieldsTransformer implements DataTransformerInterface
      */
     public function reverseTransform($values)
     {
-        if (!is_array($values)) {
+        if (!\is_array($values)) {
             return [];
         }
 
@@ -64,11 +64,11 @@ class FieldsTransformer implements DataTransformerInterface
             $values['custom'] = [];
         }
 
-        if (!is_array($values['default'])) {
+        if (!\is_array($values['default'])) {
             $values['default'] = [];
         }
 
-        if (!is_array($values['custom'])) {
+        if (!\is_array($values['custom'])) {
             $values['custom'] = [];
         }
 

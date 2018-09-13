@@ -39,7 +39,7 @@ class OptionsTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             $value = [];
         }
 

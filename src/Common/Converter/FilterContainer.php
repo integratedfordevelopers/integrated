@@ -21,7 +21,7 @@ class FilterContainer extends Container
      */
     public function add($key, $value)
     {
-        if (is_string($value)) {
+        if (\is_string($value)) {
             $value = mb_convert_encoding($value, 'UTF-8', 'UTF-8');
             $value = preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $value);
         }

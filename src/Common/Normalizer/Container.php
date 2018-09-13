@@ -106,7 +106,7 @@ class Container implements ContainerInterface
      */
     protected static function validateAndReturn($value)
     {
-        if ($value === null || is_scalar($value) || is_array($value)) {
+        if ($value === null || is_scalar($value) || \is_array($value)) {
             return $value;
         }
 
@@ -126,7 +126,7 @@ class Container implements ContainerInterface
      */
     public function count()
     {
-        return count($this->data);
+        return \count($this->data);
     }
 
     /**

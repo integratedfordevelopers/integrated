@@ -32,7 +32,7 @@ class CopyAppendTypeTest extends CopyTypeTest
 
         foreach ($data as &$arguments) {
             foreach ($arguments[1] as $name => &$value) {
-                if (in_array($name, ['field3', 'field4'])) {
+                if (\in_array($name, ['field3', 'field4'])) {
                     $value = array_merge($value, $value);
                 }
             }

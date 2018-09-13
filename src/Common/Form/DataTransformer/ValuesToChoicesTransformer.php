@@ -44,7 +44,7 @@ class ValuesToChoicesTransformer implements DataTransformerInterface
             return [];
         }
 
-        if (!is_array($values)) {
+        if (!\is_array($values)) {
             throw new TransformationFailedException('Expected an array.');
         }
 
@@ -60,13 +60,13 @@ class ValuesToChoicesTransformer implements DataTransformerInterface
             return [];
         }
 
-        if (!is_array($values)) {
+        if (!\is_array($values)) {
             throw new TransformationFailedException('Expected an array.');
         }
 
         $results = $this->choiceList->getValuesForChoices($values);
 
-        if (count($results) !== count($values)) {
+        if (\count($results) !== \count($values)) {
             throw new TransformationFailedException('Could not correctly convert all the values');
         }
 

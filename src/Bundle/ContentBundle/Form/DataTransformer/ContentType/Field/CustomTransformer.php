@@ -47,7 +47,7 @@ class CustomTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             if (!isset($value['label'])) {
                 return null;
             }

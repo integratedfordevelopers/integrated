@@ -37,7 +37,7 @@ class Normalizer implements NormalizerInterface
      */
     public function normalize($object, array $options = [])
     {
-        if (is_object($object)) {
+        if (\is_object($object)) {
             return $this->resolver->getProcessor($object)->process($object, new Context($this->resolver, $options));
         }
 

@@ -74,7 +74,7 @@ class ContentHistory
     {
         $this->contentId = $content->getId();
         $this->contentType = $content->getContentType();
-        $this->contentClass = get_class($content);
+        $this->contentClass = \get_class($content);
         $this->action = $action;
         $this->date = new DateTime();
     }

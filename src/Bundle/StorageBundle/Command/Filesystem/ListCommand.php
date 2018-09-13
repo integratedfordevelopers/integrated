@@ -67,7 +67,7 @@ class ListCommand extends Command
                 sprintf(
                     '<info>%s</info>: %s',
                     $key,
-                    get_class($filesystem->getAdapter())
+                    \get_class($filesystem->getAdapter())
                 )
             );
 

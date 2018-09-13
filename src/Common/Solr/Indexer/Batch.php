@@ -66,7 +66,7 @@ class Batch implements Countable, IteratorAggregate
      */
     public function count()
     {
-        return count($this->batch);
+        return \count($this->batch);
     }
 
     /**

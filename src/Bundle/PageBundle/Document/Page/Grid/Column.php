@@ -114,7 +114,7 @@ class Column implements ItemsInterface
             'size' => $this->size,
         ];
 
-        if (count($items)) {
+        if (\count($items)) {
             $array['items'] = $items;
         }
 

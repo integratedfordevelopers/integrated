@@ -63,7 +63,7 @@ class FormMailer
      */
     public function send(array $data, array $emailAddresses = [])
     {
-        if (!count($emailAddresses)) {
+        if (!\count($emailAddresses)) {
             return;
         }
 

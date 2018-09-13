@@ -27,7 +27,7 @@ class DefaultTransformer implements DataTransformerInterface
     public function transform($fields)
     {
         $return = [];
-        if (is_array($fields) || $fields instanceof \Traversable) {
+        if (\is_array($fields) || $fields instanceof \Traversable) {
             foreach ($fields as $field) {
                 if ($field instanceof Embedded\Field) {
                     $return[$field->getName()] = $field;
@@ -45,7 +45,7 @@ class DefaultTransformer implements DataTransformerInterface
      */
     public function reverseTransform($values)
     {
-        if (is_array($values) || $values instanceof \ArrayAccess) {
+        if (\is_array($values) || $values instanceof \ArrayAccess) {
             foreach ($values as $key => $value) {
                 if ($value === null) {
                     unset($values[$key]);

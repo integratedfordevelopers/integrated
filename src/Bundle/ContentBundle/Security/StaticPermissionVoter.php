@@ -62,7 +62,7 @@ class StaticPermissionVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, $this->permissions);
+        return \in_array($attribute, $this->permissions);
     }
 
     /**

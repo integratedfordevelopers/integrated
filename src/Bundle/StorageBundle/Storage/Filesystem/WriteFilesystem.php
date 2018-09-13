@@ -62,7 +62,7 @@ class WriteFilesystem
         throw new \LogicException(
             sprintf(
                 'A instanceof Gaufrette\File was excepted (given: %s).',
-                get_class($storage)
+                \get_class($storage)
             )
         );
     }

@@ -94,7 +94,7 @@ class SolariumDataCollector extends AbstractPlugin implements DataCollectorInter
      */
     public function getQueryCount()
     {
-        return count($this->getQueries());
+        return \count($this->getQueries());
     }
 
     /**

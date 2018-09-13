@@ -94,7 +94,7 @@ class ImageExtension extends \Twig_Extension
                 $image = false;
             }
 
-            if (in_array($storageModel->getMetadata()->getExtension(), $this->mimicFormats)) {
+            if (\in_array($storageModel->getMetadata()->getExtension(), $this->mimicFormats)) {
                 return $this->imageMimicHandling->open($image);
             }
         }
@@ -139,7 +139,7 @@ class ImageExtension extends \Twig_Extension
                 $image = false;
             }
 
-            if (in_array($metadata->getExtension(), $this->mimicFormats)) {
+            if (\in_array($metadata->getExtension(), $this->mimicFormats)) {
                 return $this->imageMimicHandling->open($image);
             }
         }

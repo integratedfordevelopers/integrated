@@ -50,7 +50,7 @@ class MemoryResolverBuilder
             $channel = $channel->getId();
         }
 
-        if ($channel !== null && !is_string($channel)) {
+        if ($channel !== null && !\is_string($channel)) {
             throw new UnexpectedTypeException($channel, 'null, string or Integrated\\Common\\Channel\\ChannelInterface');
         }
 

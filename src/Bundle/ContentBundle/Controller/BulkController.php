@@ -82,7 +82,7 @@ class BulkController extends Controller
             return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
         }
 
-        $form = $this->createForm(BulkSelectionType::class, $bulk, ['content' => array_slice($content, 0, $limit)]);
+        $form = $this->createForm(BulkSelectionType::class, $bulk, ['content' => \array_slice($content, 0, $limit)]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -129,7 +129,7 @@ class BulkController extends Controller
 
         return $this->render('IntegratedContentBundle:bulk:configure.html.twig', [
             'id' => $bulk->getId(),
-            'selection' => count($bulk->getSelection()),
+            'selection' => \count($bulk->getSelection()),
             'form' => $form->createView(),
         ]);
     }
@@ -169,7 +169,7 @@ class BulkController extends Controller
 
         return $this->render('IntegratedContentBundle:bulk:confirm.html.twig', [
             'id' => $bulk->getId(),
-            'selection' => count($bulk->getSelection()),
+            'selection' => \count($bulk->getSelection()),
             'form' => $form->createView(),
         ]);
     }

@@ -118,7 +118,7 @@ class Grid implements ItemsInterface
             'id' => $this->id,
         ];
 
-        if (count($items)) {
+        if (\count($items)) {
             $array['items'] = $items;
         }
 

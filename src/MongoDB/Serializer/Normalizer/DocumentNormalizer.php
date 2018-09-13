@@ -64,7 +64,7 @@ class DocumentNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $meta = $this->getDocumentManager()->getClassMetadata(get_class($object));
+        $meta = $this->getDocumentManager()->getClassMetadata(\get_class($object));
 
         if (!$meta) {
             return null;
@@ -84,7 +84,7 @@ class DocumentNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             return false;
         }
 
@@ -96,7 +96,7 @@ class DocumentNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $this->supports(get_class($data));
+        return $this->supports(\get_class($data));
     }
 
     /**

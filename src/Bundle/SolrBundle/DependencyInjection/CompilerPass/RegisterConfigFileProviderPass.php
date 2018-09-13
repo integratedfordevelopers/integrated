@@ -38,7 +38,7 @@ class RegisterConfigFileProviderPass implements CompilerPassInterface
 
         foreach ($container->getParameter('kernel.bundles') as $name => $class) {
             if (null !== (
-                $ref = $this->addProvider($container, dirname((new ReflectionClass($class))->getFileName()), $name)
+                $ref = $this->addProvider($container, \dirname((new ReflectionClass($class))->getFileName()), $name)
                 )) {
                 $definition->addMethodCall('addProvider', [$ref]);
             }

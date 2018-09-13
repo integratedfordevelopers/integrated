@@ -55,7 +55,7 @@ class Relations implements DataTransformerInterface
     public function transform($value)
     {
         $return = [];
-        if (is_array($value) || $value instanceof \Traversable) {
+        if (\is_array($value) || $value instanceof \Traversable) {
             foreach ($value as $embeddedRelation) {
                 if ($embeddedRelation instanceof EmbeddedRelation) {
                     if ($relation = $this->getRelation($embeddedRelation->getRelationId())) {
@@ -83,7 +83,7 @@ class Relations implements DataTransformerInterface
     {
         $relations = new ArrayCollection();
 
-        if (is_array($value)) {
+        if (\is_array($value)) {
             foreach ($value as $relationId => $references) {
                 if ($relation = $this->getRelation($relationId)) {
                     $embeddedRelation = new EmbeddedRelation();

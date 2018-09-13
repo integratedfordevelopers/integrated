@@ -59,13 +59,13 @@ class ContentTypePageListener implements EventSubscriberInterface
         $className = $contentTypePage->getContentType()->getClass();
         $controller = $this->controllerManager->getController($className);
 
-        if (!is_array($controller)) {
+        if (!\is_array($controller)) {
             throw new \Exception(sprintf('Controller service for class "%s" is not defined', $className));
         }
 
         $contentTypePage->setControllerService($controller['service']);
 
-        if (count($controller['controller_actions']) > 1) {
+        if (\count($controller['controller_actions']) > 1) {
             $event->getForm()->add('controller_action', 'choice', [
                 'choices' => array_combine($controller['controller_actions'], $controller['controller_actions']),
             ]);

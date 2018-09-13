@@ -232,7 +232,7 @@ class ExtractTransitionsFromCollectionListener implements EventSubscriberInterfa
         // safe side.
 
         foreach ($data as $index => $value) {
-            $name = $this->accessor->getValue($value, is_object($value) ? 'name' : '[name]');
+            $name = $this->accessor->getValue($value, \is_object($value) ? 'name' : '[name]');
             $name = trim($name);
 
             $choices[$index] = new Model\State($index, $name);

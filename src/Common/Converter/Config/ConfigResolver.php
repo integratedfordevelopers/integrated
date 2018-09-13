@@ -49,7 +49,7 @@ class ConfigResolver implements ConfigResolverInterface
      */
     public function getConfig($class)
     {
-        if (!is_string($class)) {
+        if (!\is_string($class)) {
             throw new UnexpectedTypeException($class, 'string');
         }
 

@@ -429,7 +429,7 @@ class CommandFactoryTest extends \PHPUnit\Framework\TestCase
         $mock = $this->createMock(ContainerInterface::class);
         $mock->expects($this->any())
             ->method('count')
-            ->willReturn(count($data));
+            ->willReturn(\count($data));
 
         $mock->expects($this->any())
             ->method('toArray')

@@ -66,7 +66,7 @@ class Context implements NormalizerInterface
      */
     public function normalize($object, array $options = [])
     {
-        if (is_object($object)) {
+        if (\is_object($object)) {
             return $this->resolver->getProcessor($object)->process($object, new self($this->resolver, $options, $this));
         }
 
