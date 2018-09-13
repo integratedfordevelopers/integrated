@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <!--
+    <services>
+        <service id="integrated_import.example" class="Integrated\Bundle\ImportBundle\Example">
+            <argument type="service" id="service_id" />
+            <argument>plain_value</argument>
+            <argument>%parameter_name%</argument>
+        </service>
+    </services>
+    -->
+
+    <services>
+        <!-- Default configuration for services in *this* file -->
+        <defaults autowire="true" autoconfigure="true" public="false" />
+
+        <!-- Load services from whatever directories you want (you can update this!) -->
+        <prototype namespace="Integrated\Bundle\ImportBundle\" resource="../../*" />
+
+        <service id="jms_serializer.object_constructor" alias="jms_serializer.initialized_object_constructor" public="false">
+        </service>
+
+        <service id="jms_serializer.initialized_object_constructor" class="Integrated\Bundle\ImportBundle\Serializer\InitializedObjectConstructor" public="false">
+            <argument>@jms_serializer.unserialize_object_constructor</argument>
+        </service>
+    </services>
+
+</container>
