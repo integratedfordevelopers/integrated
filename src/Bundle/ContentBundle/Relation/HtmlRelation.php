@@ -24,13 +24,13 @@ class HtmlRelation
      *
      * @return Content[]
      */
-    public function read($html)
+    public function read($html, $tag = 'img')
     {
         $document = new DOMDocument();
         $document->loadHTML($html);
 
         $xpath = new \DOMXPath($document);
-        foreach ($xpath->query('//img[@data-integrated-id]') as $elm) {
+        foreach ($xpath->query('//' . $tag . '[@data-integrated-id]') as $elm) {
             yield $elm->getAttribute('data-integrated-id');
         }
     }

@@ -52,6 +52,11 @@ class ImageMagickAdapter implements AdapterInterface
             // Open the file on the tenth frame, this saves a us a hell of a lot memory
             // When no frame is specified Imagick will write every frame on /tmp
             $imagick = new \Imagick(sprintf('%s[10]', $file->getPathname()));
+
+            $overlay = new \Imagick('/home/pi-integrated/play_overlay.png');
+            $imagick->compositeImageGravity($overlay, \Imagick::COMPOSITE_COPY, \Imagick::GRAVITY_CENTER);
+
+            //$imagick->compositeImage($overlay, \Imagick::COM, 0, 0);
         } else {
             // Open a we should do with anything that is not video
             $imagick = new \Imagick($file->getPathname());

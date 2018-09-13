@@ -84,6 +84,11 @@ class EditorImageRelationEventListener implements EventSubscriberInterface
                                 $relation->addReference($image);
                             }
                         }
+                        foreach ($this->htmlRelation->read($data, 'video') as $id) {
+                            if ($image = $this->documentManager->find(File::class, $id)) {
+                                $relation->addReference($image);
+                            }
+                        }
                     }
                 }
             }
