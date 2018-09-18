@@ -3,7 +3,7 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <embedded-document name="Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\CustomField">
+    <embedded-document name="Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\Field\CustomField">
 
         <field fieldName="name" type="string" />
         <field fieldName="type" type="string" />

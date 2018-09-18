@@ -1,38 +1,48 @@
 <table class="table">
+
+    <colgroup>
+        <col>
+        <col style="width: 15rem">
+        <col style="width: 15rem">
+        <col style="width: 5rem">
+    </colgroup>
+
     <thead>
-    <tr>
-        <th>{% trans %}Name{% endtrans %}</th>
-        <th>{% trans %}Type{% endtrans %}</th>
-        <th>{% trans %}Created{% endtrans %}</th>
-        <th>{% trans %}Actions{% endtrans %}</th>
-    </tr>
+        <tr>
+            <th>{% trans %}Name{% endtrans %}</th>
+            <th>{% trans %}Type{% endtrans %}</th>
+            <th>{% trans %}Created{% endtrans %}</th>
+            <th>{% trans %}Actions{% endtrans %}</th>
+        </tr>
     </thead>
+
     <tbody>
-    {% for document in documents %}
-        <tr>
-            <td>
-                <a href="{{ path('integrated_content_relation_show', {'id': document.id}) }}">
-                    {{ document.name }}
-                </a>
-            </td>
-            <td>
-                {{ document.type }}
-            </td>
-            <td>
-                {{ document.createdAt|date }}
-            </td>
-            <td>
-                <a href="{{ path('integrated_content_relation_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
-                    {{ icon('pencil') }}
-                </a>
-            </td>
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="4">
-                {% trans %}No relations added{% endtrans %}
-            </td>
-        </tr>
-    {% endfor %}
+        {% for document in documents %}
+            <tr>
+                <td>
+                    <a href="{{ path('integrated_content_relation_show', {'id': document.id}) }}">
+                        {{ document.name }}
+                    </a>
+                </td>
+                <td>
+                    {{ document.type }}
+                </td>
+                <td>
+                    {{ document.createdAt|date }}
+                </td>
+                <td>
+                    <a href="{{ path('integrated_content_relation_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
+                        {{ icon('pencil') }}
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">
+                    {% trans %}No relations added{% endtrans %}
+                </td>
+            </tr>
+        {% endfor %}
     </tbody>
+
 </table>

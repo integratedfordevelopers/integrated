@@ -5,15 +5,14 @@
 
     <document name="Integrated\Bundle\ContentBundle\Document\FormConfig\FormConfig" collection="form_config">
 
-        <field fieldName="id" id="true" strategy="NONE" />
+        <field fieldName="id" type="hash" id="true" strategy="NONE" />
         <field fieldName="name" type="string" />
-        <field fieldName="contentType" type="string" />
 
         <embed-many field="fields">
             <discriminator-map>
-                <discriminator-mapping value="document" class="Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\DocumentField" />
-                <discriminator-mapping value="custom" class="Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\CustomField" />
-                <discriminator-mapping value="relation" class="Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\RelationField" />
+                <discriminator-mapping value="document" class="Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\Field\DocumentField" />
+                <discriminator-mapping value="custom" class="Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\Field\CustomField" />
+                <discriminator-mapping value="relation" class="Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\Field\RelationField" />
             </discriminator-map>
             <default-discriminator-value value="document" />
         </embed-many>

@@ -6,6 +6,7 @@
 
 	<import resource="@IntegratedContentBundle/Resources/config/routing/content.xml" prefix="/content/" />
     <import resource="@IntegratedContentBundle/Resources/config/routing/content_type.xml" prefix="/contenttype/" />
+    <import resource="@IntegratedContentBundle/Resources/config/routing/form_config.xml" prefix="/form/" />
     <import resource="@IntegratedContentBundle/Resources/config/routing/channel.xml" prefix="/channel/" />
     <import resource="@IntegratedContentBundle/Resources/config/routing/relation.xml" prefix="/relation/" />
     <import resource="@IntegratedContentBundle/Resources/config/routing/search_selection.xml" prefix="/search-selection/" />

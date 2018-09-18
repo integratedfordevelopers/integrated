@@ -427,3 +427,218 @@
     {{ block('form_rows') }}
 {% endspaceless %}
 {% endblock %}
+
+{% block integrated_content_form_config_fields_widget %}
+{% spaceless %}
+    {% set uniqueId = random() %}
+
+    <div class="row form-config-fields" data-field-id="{{ uniqueId }}" data-field-custom-url="{{ path('integrated_content_form_config_custom', {'type': type.id}) }}">
+
+        <div class="col-sm-12 form-config-fields-selected">
+
+            <table class="table table-condensed">
+
+                <colgroup>
+                    <col style="width: 2rem">
+                    <col style="width: 45%">
+                    <col>
+                    <col style="width: 5rem">
+                    <col style="width: 14rem">
+                </colgroup>
+
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{% trans %}Label{% endtrans %}</th>
+                        <th>{% trans %}Type{% endtrans %}</th>
+                        <th>{% trans %}Required{% endtrans %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody class="form-config-fields-rows">
+                    {% for child in form %}
+                        {% set config = {
+                            'type': child.vars['data']|form_config_type_name,
+                            'label': child.vars['data']|form_config_label,
+                            'form': form_widget(child)
+                        } %}
+
+                        <tr class="form-config-fields-row" data-field-name="{{ child.vars.value.id|lower }}" data-field-type="{{ child.vars.value.type }}" data-field="{{ config|json_encode }}">
+                            <td scope="row">
+                                <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+                            </td>
+                            <td>{{ config['label'] }}</td>
+                            <td>{{ config['type'] }}</td>
+                            <td>{{ config['form']|raw }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default form-config-fields-up" {% if loop.first %}disabled="disabled"{% endif %}>
+                                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default form-config-fields-down" {% if loop.last %}disabled="disabled"{% endif %}>
+                                        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+
+                                <button type="button" class="btn btn-default form-config-fields-remove">
+                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="col-sm-12 form-config-fields-add-custom">
+            <button type="button" class="btn btn-default form-config-fields-modal">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans %}Add custom field{% endtrans %}
+            </button>
+        </div>
+
+        <div class="col-sm-12 form-config-fields-available">
+
+            <table class="table table-condensed">
+
+                <colgroup>
+                    <col style="width: 2rem">
+                    <col style="width: 45%">
+                    <col>
+                    <col style="width: 14rem">
+                </colgroup>
+
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>{% trans %}Label{% endtrans %}</th>
+                        <th>{% trans %}Type{% endtrans %}</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody class="form-config-fields-rows">
+                    {% for child in form.vars.available %}
+                        {% set config = {
+                            'type': child.vars['data']|form_config_type_name,
+                            'label': child.vars['data']|form_config_label,
+                            'form': form_widget(child)
+                        } %}
+
+                        <tr class="form-config-fields-row" data-field-name="{{ child.vars.value.id|lower }}" data-field-type="{{ child.vars.value.type }}" data-field="{{ config|json_encode }}">
+                            <td scope="row">
+                                <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+                            </td>
+                            <td>{{ config['label'] }}</td>
+                            <td>{{ config['type'] }}</td>
+                            <td>
+                                <button type="button" class="btn btn-default form-config-fields-add">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <script id="form-config-field-selected-row-{{ uniqueId }}" type="text/x-handlebars-template">
+            {% verbatim %}
+                <tr>
+                    <td scope="row">
+                        <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+                    </td>
+                    <td>{{ label }}</td>
+                    <td>{{ type }}</td>
+                    <td>{{{ form }}}</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default form-config-fields-up">
+                                <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                            </button>
+                            <button type="button" class="btn btn-default form-config-fields-down">
+                                <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+                            </button>
+                        </div>
+
+                        <button type="button" class="btn btn-default form-config-fields-remove">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </button>
+                    </td>
+                </tr>
+            {% endverbatim %}
+        </script>
+
+        <script id="form-config-field-available-row-{{ uniqueId }}" type="text/x-handlebars-template">
+            {% verbatim %}
+                <tr>
+                    <td scope="row">
+                        <span class="glyphicon glyphicon-option-vertical" aria-hidden="true"></span>
+                    </td>
+                    <td>{{ label }}</td>
+                    <td>{{ type }}</td>
+                    <td>
+                        <button type="button" class="btn btn-default form-config-fields-add">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </td>
+                </tr>
+            {% endverbatim %}
+        </script>
+
+        <script id="form-config-field-modal-{{ uniqueId }}" type="text/x-handlebars-template">
+            <div class="modal" tabindex="-1" role="dialog" aria-hidden="true" data-field-type="custom" data-field-form="{{ form_widget(form.vars.custom)|escape }}" data-field-form-name="{{ form.vars.custom.vars.name }}">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                <span aria-hidden="true">×</span><span class="sr-only">{% trans %}Close{% endtrans %}</span>
+                            </button>
+
+                            <h4 class="modal-title">{% trans %}Add custom field{% endtrans %}</h4>
+                        </div>
+
+                        <div class="modal-body"></div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-orange form-config-fields-submit">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> {% trans %}Add{% endtrans %}
+                            </button>
+
+                            <button class="btn btn-gray-thin" data-dismiss="modal">{% trans %}Cancel{% endtrans %}</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </script>
+
+    </div>
+
+    {% integrated_javascripts mode='append' 'bundles/integratedcontent/js/form_config.js' %}{% endintegrated_javascripts %}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_form_config_field_widget %}
+{% spaceless %}
+    {{ form_widget(form.id) }}
+    {{ form_widget(form.type) }}
+    {{ form_widget(form.required) }}
+
+    {% if form.options is defined %}
+        {{ form_widget(form.options) }}
+    {% endif %}
+{% endspaceless %}
+{% endblock %}
+
+{% block integrated_content_form_config_field_options_widget %}
+{% spaceless %}
+    {{ form_widget(form.label) }}
+    {{ form_widget(form.type) }}
+{% endspaceless %}
+{% endblock %}

@@ -6,16 +6,23 @@
 
     <services>
 
-        <service id="integrated_content.controller.search_controller" class="Integrated\Bundle\ContentBundle\Controller\SearchController" public="true">
-            <argument type="service" id="integrated_solr.indexer.client" />
-            <argument type="service" id="serializer" />
-            <argument type="service" id="service_container" />
-        </service>
-
         <service id="integrated_content.controller.bulk_controller" class="Integrated\Bundle\ContentBundle\Controller\BulkController" public="true">
             <argument type="service" id="doctrine.odm.mongodb.document_manager" />
             <argument type="service" id="integrated_content.provider.content_provider" />
             <argument type="service" id="integrated_content.bulk.handler" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="integrated_content.controller.form_config_controller" class="Integrated\Bundle\ContentBundle\Controller\FormConfigController" public="true">
+            <argument type="service" id="integrated_content.form_config.manager" />
+            <argument type="service" id="integrated_content.form_config.handler" />
+            <argument type="service" id="serializer" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="integrated_content.controller.search_controller" class="Integrated\Bundle\ContentBundle\Controller\SearchController" public="true">
+            <argument type="service" id="integrated_solr.indexer.client" />
+            <argument type="service" id="serializer" />
             <argument type="service" id="service_container" />
         </service>
 

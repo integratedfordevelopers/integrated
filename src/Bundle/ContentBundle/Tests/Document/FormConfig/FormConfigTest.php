@@ -11,102 +11,85 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Document\FormConfig;
 
+use ArrayIterator;
+use Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\Identifier;
 use Integrated\Bundle\ContentBundle\Document\FormConfig\FormConfig;
+use Integrated\Common\FormConfig\FormConfigEditableInterface;
 use Integrated\Common\FormConfig\FormConfigFieldInterface;
-use Integrated\Common\FormConfig\FormConfigInterface;
+use ReflectionProperty;
 
 class FormConfigTest extends \PHPUnit\Framework\TestCase
 {
     /**
+     * @var Identifier
+     */
+    private $identifier;
+
+    /**
      * @var FormConfig
      */
-    private $formConfig;
+    private $config;
 
-    /**
-     * Setup the test.
-     */
     protected function setUp()
     {
-        $this->formConfig = new FormConfig();
+        $this->identifier = new Identifier('content_type', 'key');
+        $this->config = new FormConfig($this->identifier);
+    }
+
+    public function testInterface()
+    {
+        $this->assertInstanceOf(FormConfigEditableInterface::class, $this->config);
+    }
+
+    public function testGetId()
+    {
+        $this->assertSame($this->identifier, $this->config->getId());
     }
 
     /**
-     * FormConfig should implement FormConfigInterface.
+     * The idInstance property of the modal is not managed and should be created on
+     * the fly by the modal when required.
      */
-    public function testInstanceOfFormConfigInterface()
+    public function testGetIdDoctrineHydration()
     {
-        $this->assertInstanceOf(FormConfigInterface::class, $this->formConfig);
+        $property = new ReflectionProperty($this->config, 'idInstance');
+        $property->setAccessible(true);
+        $property->setValue($this->config, null);
+
+        $this->assertInstanceOf(Identifier::class, $this->config->getId());
     }
 
-    /**
-     * Test get- and setId function.
-     */
-    public function testGetAndSetIdFunction()
+    public function testGetAndSetName()
     {
-        $id = 'abc123';
-        $this->assertEquals($id, $this->formConfig->setId($id)->getId());
+        $this->assertEquals('', $this->config->getName());
+
+        $this->config->setName('name');
+
+        $this->assertEquals('name', $this->config->getName());
     }
 
-    /**
-     * Test get- and setName function.
-     */
-    public function testGetAndSetNameFunction()
+    public function testGetAndSetFields()
     {
-        $name = 'Henk de Vries';
-        $this->assertEquals($name, $this->formConfig->setName($name)->getName());
-    }
-
-    /**
-     * Test get- and setFields function.
-     */
-    public function testGetAndSetFieldsFunction()
-    {
-        // Mock fields
-        $field1 = $this->getMockClass(FormConfigFieldInterface::class);
-        $field2 = $this->getMockClass(FormConfigFieldInterface::class);
+        $this->assertEquals([], $this->config->getFields());
 
         $fields = [
-            $field1,
-            $field2,
+            $this->createMock(FormConfigFieldInterface::class),
+            $this->createMock(FormConfigFieldInterface::class),
+            $this->createMock(FormConfigFieldInterface::class),
         ];
 
-        // Assert
-        $this->assertSame($fields, $this->formConfig->setFields($fields)->getFields());
-    }
+        $this->config->setFields($fields);
 
-    /**
-     * Test getField function.
-     */
-    public function testGetFieldFunction()
-    {
-        // Mock fields
-        $field = $this->createMock(FormConfigFieldInterface::class);
-        $field->expects($this->exactly(2))
-            ->method('getName')
-            ->will($this->returnValue('henk'));
+        $this->assertSame($fields, $this->config->getFields());
 
-        $this->formConfig->setFields([$field]);
+        $fields = [
+            $this->createMock(FormConfigFieldInterface::class),
+            $this->createMock(FormConfigFieldInterface::class),
+            $this->createMock(FormConfigFieldInterface::class),
+        ];
 
-        // Asserts
-        $this->assertSame($field, $this->formConfig->getField('henk'));
-        $this->assertNull($this->formConfig->getField('henkie'));
-    }
+        $this->config->setFields(new ArrayIterator($fields));
 
-    /**
-     * Test hasField function.
-     */
-    public function testHasFieldFunction()
-    {
-        // Mock fields
-        $field = $this->createMock(FormConfigFieldInterface::class);
-        $field->expects($this->exactly(2))
-            ->method('getName')
-            ->will($this->returnValue('henk'));
-
-        $this->formConfig->setFields([$field]);
-
-        // Asserts
-        $this->assertTrue($this->formConfig->hasField('henk'));
-        $this->assertFalse($this->formConfig->hasField('henkie'));
+        $this->assertSame($fields, $this->config->getFields());
     }
 }
