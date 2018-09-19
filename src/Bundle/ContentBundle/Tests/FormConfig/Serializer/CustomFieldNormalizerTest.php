@@ -72,7 +72,7 @@ class CustomFieldNormalizerTest extends \PHPUnit\Framework\TestCase
                 'type' => 'name',
                 'label' => 'label',
                 'form' => ['key1' => 'value1', 'key2' => 'value2'],
-            ]
+            ],
         ], (new CustomFieldNormalizer($this->transformer, $this->extension))->normalize($config));
     }
 

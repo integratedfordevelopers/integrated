@@ -54,7 +54,7 @@ class HandlerTest extends \PHPUnit\Framework\TestCase
                 $this->createMock(FormConfigFieldInterface::class),
                 $this->createMock(FormConfigFieldInterface::class),
                 $this->createMock(FormConfigFieldInterface::class),
-            ]
+            ],
         ];
 
         $this->manager->expects($this->once())
@@ -91,7 +91,7 @@ class HandlerTest extends \PHPUnit\Framework\TestCase
                 $this->createMock(FormConfigFieldInterface::class),
                 $this->createMock(FormConfigFieldInterface::class),
                 $this->createMock(FormConfigFieldInterface::class),
-            ]
+            ],
         ];
 
         $this->generator->expects($this->once())
@@ -133,7 +133,7 @@ class HandlerTest extends \PHPUnit\Framework\TestCase
                 $this->createMock(FormConfigFieldInterface::class),
                 $this->createMock(FormConfigFieldInterface::class),
                 $this->createMock(FormConfigFieldInterface::class),
-            ]
+            ],
         ];
 
         $this->manager->expects($this->once())
@@ -169,7 +169,7 @@ class HandlerTest extends \PHPUnit\Framework\TestCase
                 $this->createMock(FormConfigFieldInterface::class),
                 $this->createMock(FormConfigFieldInterface::class),
                 $this->createMock(FormConfigFieldInterface::class),
-            ]
+            ],
         ];
 
         $this->manager->expects($this->once())

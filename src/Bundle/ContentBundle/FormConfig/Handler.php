@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\FormConfig;
 
-use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\FormConfig\Util\KeyGenerator;
 use Integrated\Common\ContentType\ContentTypeInterface;
 use Integrated\Common\FormConfig\Exception\InvalidArgumentException;

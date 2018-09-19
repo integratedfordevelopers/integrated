@@ -58,7 +58,7 @@ class Identifier implements FormConfigIdentifierInterface
     {
         return [
             'type' => $this->type,
-            'key' => $this->key
+            'key' => $this->key,
         ];
     }
 }

@@ -27,7 +27,7 @@ class ContentProviderTest extends \PHPUnit\Framework\TestCase
     private $metadata;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function setUp()
     {

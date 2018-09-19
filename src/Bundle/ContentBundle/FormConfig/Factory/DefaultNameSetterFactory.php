@@ -38,7 +38,7 @@ class DefaultNameSetterFactory implements FormConfigFactoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function create(ContentTypeInterface $type, string $key): FormConfigEditableInterface
     {

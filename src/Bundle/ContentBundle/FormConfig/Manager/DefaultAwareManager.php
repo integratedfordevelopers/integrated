@@ -41,7 +41,7 @@ class DefaultAwareManager implements FormConfigManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get(ContentTypeInterface $type, string $key): FormConfigInterface
     {
@@ -57,7 +57,7 @@ class DefaultAwareManager implements FormConfigManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function has(ContentTypeInterface $type, string $key): bool
     {
@@ -69,7 +69,7 @@ class DefaultAwareManager implements FormConfigManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function all(ContentTypeInterface $type = null): Iterator
     {
@@ -87,7 +87,7 @@ class DefaultAwareManager implements FormConfigManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function remove(FormConfigInterface $config): void
     {
@@ -100,7 +100,7 @@ class DefaultAwareManager implements FormConfigManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function save(FormConfigInterface $config): void
     {

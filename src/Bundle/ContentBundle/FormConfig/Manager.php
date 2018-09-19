@@ -102,11 +102,11 @@ class Manager implements FormConfigManagerInterface
      *
      * @return FormConfig
      */
-    private function findConfig(string $type, string $key):? FormConfig
+    private function findConfig(string $type, string $key): ? FormConfig
     {
         $config = $this->manager->find(FormConfig::class, [
             'type' => $type,
-            'key' => $key
+            'key' => $key,
         ]);
 
         return $config;

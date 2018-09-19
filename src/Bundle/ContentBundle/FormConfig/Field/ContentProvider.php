@@ -32,7 +32,7 @@ class ContentProvider implements FormConfigFieldProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFields(ContentTypeInterface $type): array
     {

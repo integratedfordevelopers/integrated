@@ -52,7 +52,7 @@ class DefaultAwareIterator implements Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -62,7 +62,7 @@ class DefaultAwareIterator implements Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -70,7 +70,7 @@ class DefaultAwareIterator implements Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -78,7 +78,7 @@ class DefaultAwareIterator implements Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -86,7 +86,7 @@ class DefaultAwareIterator implements Iterator
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function rewind()
     {

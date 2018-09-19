@@ -67,8 +67,8 @@ class FormConfigController extends Controller
      */
     public function indexAction(Request $request, ContentType $type)
     {
-        return $this->render('IntegratedContentBundle:form_config:index.' . $request->getRequestFormat() . '.twig', [
-            'configs' => $this->manager->all($type)
+        return $this->render('IntegratedContentBundle:form_config:index.'.$request->getRequestFormat().'.twig', [
+            'configs' => $this->manager->all($type),
         ]);
     }
 
@@ -92,7 +92,7 @@ class FormConfigController extends Controller
 
             $config = [
                 'name' => $config->getName(),
-                'fields' => $config->getFields()
+                'fields' => $config->getFields(),
             ];
         }
 
@@ -107,11 +107,11 @@ class FormConfigController extends Controller
             }
 
             return $this->redirect($this->generateUrl('integrated_content_content_type_show', [
-                'id' => $type->getId()
+                'id' => $type->getId(),
             ]));
         }
 
-        return $this->render('IntegratedContentBundle:form_config:' . ($config ? 'edit' : 'new') . '.html.twig', [
+        return $this->render('IntegratedContentBundle:form_config:'.($config ? 'edit' : 'new').'.html.twig', [
             'type' => $type,
             'form' => $form->createView(),
         ]);
@@ -134,7 +134,7 @@ class FormConfigController extends Controller
         }
 
         return $this->redirect($this->generateUrl('integrated_content_content_type_show', [
-            'id' => $type->getId()
+            'id' => $type->getId(),
         ]));
     }
 

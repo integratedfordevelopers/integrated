@@ -45,7 +45,7 @@ class IdentifierTest extends \PHPUnit\Framework\TestCase
     {
         $this->assertEquals([
             'type' => 'content_type',
-            'key' => 'key'
+            'key' => 'key',
         ], $this->identifier->toArray());
     }
 }

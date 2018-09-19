@@ -102,6 +102,6 @@ class FormConfigExtensionTest extends \PHPUnit\Framework\TestCase
 
     public function testLabelNoField()
     {
-        $this->assertEquals('', (new FormConfigExtension())->label(new Object));
+        $this->assertEquals('', (new FormConfigExtension())->label(new Object()));
     }
 }

@@ -42,8 +42,8 @@ class CustomFieldNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      *
-     * @param CustomField $object object to normalize
-     * @param string      $format format the normalization result will be encoded as
+     * @param CustomField $object  object to normalize
+     * @param string      $format  format the normalization result will be encoded as
      * @param array       $context Context options for the normalizer
      *
      * @return array

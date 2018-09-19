@@ -18,7 +18,7 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 class FromConfigCustomFieldTransformer implements DataTransformerInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transform($field)
     {
@@ -32,12 +32,12 @@ class FromConfigCustomFieldTransformer implements DataTransformerInterface
 
         return [
             'label' => $field->getOptions()['label'] ?? $field->getName(),
-            'type' => $field->getType()
+            'type' => $field->getType(),
         ];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function reverseTransform($value)
     {

@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class FormConfigCustomFieldType extends AbstractType
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -32,9 +32,9 @@ class FormConfigCustomFieldType extends AbstractType
         $builder->add('type', ChoiceType::class, [
             'choices' => [
                 'Text' => TextType::class,
-                'Textarea' => TextareaType::class
+                'Textarea' => TextareaType::class,
             ],
-            'constraints' => new NotBlank()
+            'constraints' => new NotBlank(),
         ]);
     }
 

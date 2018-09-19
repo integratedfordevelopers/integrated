@@ -28,7 +28,7 @@ class ChainProviderTest extends \PHPUnit\Framework\TestCase
         $this->providers = [
             $this->createMock(FormConfigFieldProviderInterface::class),
             $this->createMock(FormConfigFieldProviderInterface::class),
-            $this->createMock(FormConfigFieldProviderInterface::class)
+            $this->createMock(FormConfigFieldProviderInterface::class),
         ];
     }
 

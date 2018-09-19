@@ -35,7 +35,7 @@ class FormConfigFieldTransformer implements DataTransformerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transform($field)
     {
@@ -56,7 +56,7 @@ class FormConfigFieldTransformer implements DataTransformerInterface
             return [
                 'id' => $field->getName(),
                 'type' => 'document',
-                'required' => $field->getOptions()['required'] ?? false
+                'required' => $field->getOptions()['required'] ?? false,
             ];
         }
 
@@ -64,7 +64,7 @@ class FormConfigFieldTransformer implements DataTransformerInterface
             return [
                 'id' => $field->getName(),
                 'type' => 'relation',
-                'required' => $field->getOptions()['required'] ?? false
+                'required' => $field->getOptions()['required'] ?? false,
             ];
         }
 
@@ -77,12 +77,12 @@ class FormConfigFieldTransformer implements DataTransformerInterface
             'options' => [
                 'label' => $options['label'] ?? '',
                 'type' => $field->getType(),
-            ]
+            ],
         ];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function reverseTransform($value)
     {
@@ -131,7 +131,7 @@ class FormConfigFieldTransformer implements DataTransformerInterface
                     $value['options']['type'],
                     [
                         'label' => $value['options']['label'],
-                        'required' => $value['required']
+                        'required' => $value['required'],
                     ]
                 );
         }
@@ -148,7 +148,7 @@ class FormConfigFieldTransformer implements DataTransformerInterface
      *
      * @return DocumentField | RelationField
      */
-    private function getField(string $name, string $class):? FormConfigFieldInterface
+    private function getField(string $name, string $class): ? FormConfigFieldInterface
     {
         foreach ($this->fields as $field) {
             if ($field instanceof $class && $field->getName() === $name) {

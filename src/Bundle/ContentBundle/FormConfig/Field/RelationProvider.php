@@ -33,7 +33,7 @@ class RelationProvider implements FormConfigFieldProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFields(ContentTypeInterface $type): array
     {

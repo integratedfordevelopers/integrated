@@ -113,7 +113,7 @@ class FormConfigFieldsListener implements EventSubscriberInterface
         }
 
         $options = [
-            'content_type' => $form->getConfig()->getOption('content_type')
+            'content_type' => $form->getConfig()->getOption('content_type'),
         ];
 
         foreach (array_keys($event->getData()) as $index) {
@@ -138,7 +138,7 @@ class FormConfigFieldsListener implements EventSubscriberInterface
         }
 
         $options = [
-            'content_type' => $form->getConfig()->getOption('content_type')
+            'content_type' => $form->getConfig()->getOption('content_type'),
         ];
 
         $counter = 0;
@@ -193,7 +193,7 @@ class FormConfigFieldsListener implements EventSubscriberInterface
         }
 
         $options = [
-            'content_type' => $event->getForm()->getConfig()->getOption('content_type')
+            'content_type' => $event->getForm()->getConfig()->getOption('content_type'),
         ];
 
         foreach (array_keys($available) as $index) {

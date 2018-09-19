@@ -30,7 +30,7 @@ class ChainProvider implements FormConfigFieldProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFields(ContentTypeInterface $type): array
     {

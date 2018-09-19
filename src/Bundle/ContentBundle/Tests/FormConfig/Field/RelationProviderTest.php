@@ -31,7 +31,7 @@ class RelationProviderTest extends \PHPUnit\Framework\TestCase
     private $registry;
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -54,7 +54,7 @@ class RelationProviderTest extends \PHPUnit\Framework\TestCase
             $this->createMock(Relation::class),
             $this->createMock(Relation::class),
             $this->createMock(Relation::class),
-            $this->createMock(Relation::class)
+            $this->createMock(Relation::class),
         ]);
 
         $query = $this->getMockBuilder(Query::class)->disableOriginalConstructor()->getMock();
