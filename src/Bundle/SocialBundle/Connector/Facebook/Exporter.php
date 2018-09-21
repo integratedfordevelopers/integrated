@@ -66,12 +66,14 @@ class Exporter implements ExporterInterface
         try {
             // @todo remove hardcoded URL when INTEGRATED-572 is fixed
             $postResponse = $this->facebook->post(
-                '/me/feed',
+                '/422602431564377/feed',
                 [
                     'link' => 'http://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug(),
                     'message' => $content->getTitle(),
                 ],
-                $this->config->getOptions()->get('token')
+                $this->config->getOptions()->get('token'),
+                null,
+                'v3.1'
             );
 
             $graphNode = $postResponse->getGraphNode();
