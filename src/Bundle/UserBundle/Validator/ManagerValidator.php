@@ -38,13 +38,13 @@ abstract class ManagerValidator extends ConstraintValidator
     public function validate($object, Constraint $constraint)
     {
         /** @var $constraint ManagerConstraint */
-        if (!is_array($constraint->fields) && !is_string($constraint->fields)) {
+        if (!\is_array($constraint->fields) && !\is_string($constraint->fields)) {
             throw new UnexpectedTypeException($constraint->fields, 'array');
         }
 
         $fields = (array) $constraint->fields;
 
-        if (!count($fields)) {
+        if (!\count($fields)) {
             throw new ConstraintDefinitionException('At least one field has to be specified.');
         }
 
@@ -61,7 +61,7 @@ abstract class ManagerValidator extends ConstraintValidator
 
         $result = $constraint->manger->{$constraint->method}($criteria);
 
-        if (!is_array($result) && !$result instanceof \Iterator) {
+        if (!\is_array($result) && !$result instanceof \Iterator) {
             $result = [$result];
         }
 

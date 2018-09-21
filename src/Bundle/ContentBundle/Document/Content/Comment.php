@@ -127,7 +127,7 @@ class Comment extends Content
             return $this->title;
         }
 
-        if (strlen($this->comment) > 60) {
+        if (\strlen($this->comment) > 60) {
             return substr($this->comment, 0, 60).'...';
         }
 

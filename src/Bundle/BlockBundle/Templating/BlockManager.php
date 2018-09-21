@@ -75,7 +75,7 @@ class BlockManager
      */
     public function render($block, array $options = [])
     {
-        if (is_string($block)) {
+        if (\is_string($block)) {
             $block = $this->getBlock($block);
         }
 

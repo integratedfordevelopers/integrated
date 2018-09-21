@@ -81,7 +81,7 @@ class UserProvider implements UserProviderInterface
             throw new UnsupportedUserException(
                 sprintf(
                     'The user class "%s" is not a instance or subclass of %s',
-                    get_class($user),
+                    \get_class($user),
                     $this->manager->getClassName()
                 )
             );
@@ -110,8 +110,8 @@ class UserProvider implements UserProviderInterface
      */
     public function supportsClass($class)
     {
-        if (is_object($class)) {
-            $class = get_class($class);
+        if (\is_object($class)) {
+            $class = \get_class($class);
         }
 
         return $class === $this->manager->getClassName() || is_subclass_of($class, $this->manager->getClassName());

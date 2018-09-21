@@ -35,7 +35,7 @@ class RouterResourcePass implements CompilerPassInterface
 
         $file = $container->getParameter('kernel.cache_dir').'/locking/routing.yml';
 
-        if (!is_dir($dir = dirname($file))) {
+        if (!is_dir($dir = \dirname($file))) {
             mkdir($dir, 0777, true);
         }
 

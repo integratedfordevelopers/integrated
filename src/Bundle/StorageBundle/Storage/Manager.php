@@ -312,7 +312,7 @@ class Manager implements ManagerInterface
         throw new \LogicException(
             sprintf(
                 'A instanceof Gaufrette\Filesystem was expected (given: %s).',
-                is_object($filesystem) ? get_class($filesystem) : gettype($filesystem)
+                \is_object($filesystem) ? \get_class($filesystem) : \gettype($filesystem)
             )
         );
     }
