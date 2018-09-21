@@ -54,9 +54,26 @@ class ImageMagickAdapter implements AdapterInterface
             $imagick = new \Imagick(sprintf('%s[10]', $file->getPathname()));
 
             $overlay = new \Imagick('/home/pi-integrated/play_overlay.png');
-            $imagick->compositeImageGravity($overlay, \Imagick::COMPOSITE_COPY, \Imagick::GRAVITY_CENTER);
 
-            //$imagick->compositeImage($overlay, \Imagick::COM, 0, 0);
+            $imageWidth = $imagick->getImageWidth();
+            $imageHeight = $imagick->getImageHeight();
+            $overlayWidth = $overlay->getImageWidth();
+            $overlayHeight = $overlay->getImageHeight();
+
+            if ($imageHeight < $overlayHeight || $imageWidth < $overlayWidth) {
+                // resize the watermark
+                $overlay->scaleImage($imageWidth, $imageHeight);
+
+                // get new size
+                $overlayWidth = $overlay->getImageWidth();
+                $overlayHeight = $overlay->getImageHeight();
+            }
+
+            // calculate the position
+            $x = ($imageWidth - $overlayWidth) / 2;
+            $y = ($imageHeight - $overlayHeight) / 2;
+
+            $imagick->compositeImage($overlay, imagick::COMPOSITE_OVER, $x, $y);
         } else {
             // Open a we should do with anything that is not video
             $imagick = new \Imagick($file->getPathname());
