@@ -57,7 +57,7 @@ class Resource implements ResourceInterface
      */
     public static function fromObject($object)
     {
-        if (!is_object($object)) {
+        if (!\is_object($object)) {
             throw new InvalidObjectException('$object must be a object');
         }
 
@@ -87,7 +87,7 @@ class Resource implements ResourceInterface
             return self::fromAccount($user);
         }
 
-        return new self(is_object($user) ? ClassUtils::getRealClass($user) : ClassUtils::getRealClass($token), (string) $user);
+        return new self(\is_object($user) ? ClassUtils::getRealClass($user) : ClassUtils::getRealClass($token), (string) $user);
     }
 
     /**

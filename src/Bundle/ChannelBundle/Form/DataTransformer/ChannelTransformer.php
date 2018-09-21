@@ -49,7 +49,7 @@ class ChannelTransformer implements DataTransformerInterface
             return $this->repository->findOneBy(['id' => $value]);
         }
 
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             return [];
         }
 
@@ -69,7 +69,7 @@ class ChannelTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             return [];
         }
 

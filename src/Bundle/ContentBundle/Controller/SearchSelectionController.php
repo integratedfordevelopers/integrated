@@ -127,7 +127,7 @@ class SearchSelectionController extends Controller
         $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
         $referenced = $contentReferenced->getReferenced($searchSelection);
 
-        $form = $this->createDeleteForm($searchSelection->getId(), count($referenced) > 0);
+        $form = $this->createDeleteForm($searchSelection->getId(), \count($referenced) > 0);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
