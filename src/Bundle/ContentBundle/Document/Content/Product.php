@@ -54,6 +54,34 @@ class Product extends Content
     protected $locale;
 
     /**
+     * @var float
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\MoneyType")
+     */
+    protected $price;
+
+    /**
+     * @var integer
+     * @Type\Field(
+     *     type="Symfony\Component\Form\Extension\Core\Type\IntegerType",
+     *     options={
+     *         "label"="Stock quantity"
+     *     }
+     * )
+     */
+    protected $stockQuantity;
+
+    /**
+     * @var bool
+     * @Type\Field(
+     *     type="Symfony\Component\Form\Extension\Core\Type\CheckboxType",
+     *     options={
+     *         "attr"={"align_with_widget"=true}
+     *     }
+     * )
+     */
+    protected $orderable;
+
+    /**
      * @var string
      * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\TextareaType")
      */
@@ -190,8 +218,81 @@ class Product extends Content
 
         return $this;
     }
+    /**
+     * Get price of the product.
+     *
+     * @return float
+     */
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
 
     /**
+     * Set price of the product.
+     *
+     * @param float $price
+     *
+     * @return $this
+     */
+    public function setPrice(float $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get stock quantity.
+     *
+     * @return int
+     */
+    public function getStockQuantity(): ?int
+    {
+        return $this->stockQuantity;
+    }
+
+    /**
+     * Set stock quantity.
+     *
+     * @param int $stockQuantity
+     *
+     * @return $this
+     */
+    public function setStockQuantity(int $stockQuantity): self
+    {
+        $this->stockQuantity = $stockQuantity;
+
+        return $this;
+    }
+
+    /**
+     * Get orderable status of the product.
+     *
+     * @return bool
+     */
+    public function isOrderable(): bool
+    {
+        return (bool)$this->orderable;
+    }
+
+    /**
+     * Set orderable status of the product.
+     *
+     * @param bool $orderable
+     *
+     * @return $this
+     */
+    public function setOrderable(bool $orderable): self
+    {
+        $this->orderable = $orderable;
+
+        return $this;
+    }
+
+    /**
+     * Get description of the product.
+     *
      * @return string
      */
     public function getDescription(): ?string
@@ -200,6 +301,8 @@ class Product extends Content
     }
 
     /**
+     * Set description of the product.
+     *
      * @param string $description
      *
      * @return $this
@@ -235,8 +338,9 @@ class Product extends Content
         return $this;
     }
 
+
     /**
-     * Get the relative cover image URL for article.
+     * Get the cover image for product.
      *
      * @return StorageInterface
      */

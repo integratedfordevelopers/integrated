@@ -65,6 +65,33 @@ class ProductTest extends ContentTest
     }
 
     /**
+     * Test get- and setPrice function.
+     */
+    public function testGetAndSetPriceFunction()
+    {
+        $price = 10.50;
+        $this->assertEquals($price, $this->product->setPrice($price)->getPrice());
+    }
+
+    /**
+     * Test get- and setStockQuantity function.
+     */
+    public function testGetAndSetStockQuantityFunction()
+    {
+        $stock = 15;
+        $this->assertEquals($stock, $this->product->setStockQuantity($stock)->getStockQuantity());
+    }
+
+    /**
+     * Test get- and setOrderable function.
+     */
+    public function testGetAndSetOrderableFunction()
+    {
+        $orderable = true;
+        $this->assertEquals($orderable, $this->product->setOrderable($orderable)->isOrderable());
+    }
+
+    /**
      * Test get- and setContent function.
      */
     public function testGetAndSetContentFunction()
