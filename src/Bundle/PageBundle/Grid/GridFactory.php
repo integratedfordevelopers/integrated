@@ -91,7 +91,7 @@ class GridFactory
                         $row->addColumn($column);
                     }
 
-                    if (count($row->getColumns())) {
+                    if (\count($row->getColumns())) {
                         $item->setRow($row);
                     }
                 }

@@ -59,7 +59,7 @@ class BulkActionsMapperListener implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             return;
         }
 

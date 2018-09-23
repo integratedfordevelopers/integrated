@@ -84,7 +84,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
         $relations = $event->getData();
 
         if (!$relations instanceof Collection) {
-            throw new \Exception(sprintf('Relations should implement Collection, "%s" given', gettype($relations)));
+            throw new \Exception(sprintf('Relations should implement Collection, "%s" given', \gettype($relations)));
         }
 
         //get all relation ids
@@ -97,7 +97,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
             $relation = $this->findRelation($relationId, $event->getForm()->getParent()->getData());
 
             //no need to add if the relation is already in the collection
-            if (in_array($relationId, $relationIds)) {
+            if (\in_array($relationId, $relationIds)) {
                 continue;
             }
 
@@ -134,9 +134,9 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
             $relationSourceClasses[] = $source->getClass();
         }
 
-        $formClass = get_class($formData);
+        $formClass = \get_class($formData);
 
-        if (!in_array($formClass, $relationSourceClasses)) {
+        if (!\in_array($formClass, $relationSourceClasses)) {
             throw new \Exception(sprintf('RelationId "%s" does not have "%s" defined as source, perhaps you have chosen a wrong relation?', $relationId, $formClass));
         }
 
@@ -152,7 +152,7 @@ class AddRelationFieldsSubscriber implements EventSubscriberInterface
     {
         /** @var EmbeddedRelation $embeddedRelation */
         foreach ($this->getEmbeddedRelations() as $key => $embeddedRelation) {
-            if (!in_array($embeddedRelation->getRelationId(), $this->options['relations'])) {
+            if (!\in_array($embeddedRelation->getRelationId(), $this->options['relations'])) {
                 continue;
             }
 

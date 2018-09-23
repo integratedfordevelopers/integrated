@@ -142,7 +142,7 @@ class QueueProvider implements QueueProviderInterface
             $where[] = 'channel = ?';
         }
 
-        if (count($where)) {
+        if (\count($where)) {
             $query = sprintf('%s WHERE %s', $query, implode(' AND ', $where));
         }
 

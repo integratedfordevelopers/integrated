@@ -50,7 +50,7 @@ class ContentTypePageService
         $controller = $this->controllerManager->getController($contentType->getClass());
 
         //don't add if no controller service is defined
-        if (!is_array($controller)) {
+        if (!\is_array($controller)) {
             return;
         }
 
