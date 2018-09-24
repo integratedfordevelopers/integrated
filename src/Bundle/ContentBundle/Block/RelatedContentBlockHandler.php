@@ -72,7 +72,7 @@ class RelatedContentBlockHandler extends BlockHandler
 
         $pagination = $this->getPagination($block, $request);
 
-        if (null === $pagination || !count($pagination)) {
+        if (null === $pagination || !\count($pagination)) {
             return null;
         }
 

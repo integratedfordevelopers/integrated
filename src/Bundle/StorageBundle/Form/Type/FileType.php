@@ -63,7 +63,7 @@ class FileType extends AbstractType
         $resolver->setNormalizer(
             'constraints',
             function (Options $options, $value) use ($constraints) {
-                $constraints->exchangeArray(is_object($value) ? [$value] : (array) $value);
+                $constraints->exchangeArray(\is_object($value) ? [$value] : (array) $value);
 
                 return [];
             }
