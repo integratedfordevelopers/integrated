@@ -44,6 +44,7 @@ class FormConfigController extends Controller
 
     /**
      * @param FormConfigManagerInterface $manager
+     * @param Handler                    $handler
      * @param Serializer                 $serializer
      * @param ContainerInterface         $container
      */

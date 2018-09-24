@@ -15,7 +15,7 @@ use Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\Field\CustomFie
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
-class FromConfigCustomFieldTransformer implements DataTransformerInterface
+class FormConfigCustomFieldTransformer implements DataTransformerInterface
 {
     /**
      * {@inheritdoc}
@@ -45,7 +45,7 @@ class FromConfigCustomFieldTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             throw new UnexpectedTypeException($value, 'array');
         }
 

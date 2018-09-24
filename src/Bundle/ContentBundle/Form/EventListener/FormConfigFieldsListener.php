@@ -156,7 +156,7 @@ class FormConfigFieldsListener implements EventSubscriberInterface
      */
     public function sliceData(FormEvent $event)
     {
-        $event->setData(array_slice($event->getData(), 0, count($event->getForm())));
+        $event->setData(\array_slice($event->getData(), 0, \count($event->getForm())));
     }
 
     /**
@@ -172,7 +172,7 @@ class FormConfigFieldsListener implements EventSubscriberInterface
         ];
 
         foreach ($event->getData() as $field) {
-            $class = get_class($field);
+            $class = \get_class($field);
 
             if (isset($available[$class])) {
                 unset($available[$class][$field->getName()]);

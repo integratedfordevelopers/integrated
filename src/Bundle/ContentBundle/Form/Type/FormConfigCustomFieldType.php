@@ -11,7 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Integrated\Bundle\ContentBundle\Form\DataTransformer\FromConfigCustomFieldTransformer;
+use Integrated\Bundle\ContentBundle\Form\DataTransformer\FormConfigCustomFieldTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -26,7 +26,7 @@ class FormConfigCustomFieldType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addViewTransformer(new FromConfigCustomFieldTransformer());
+        $builder->addViewTransformer(new FormConfigCustomFieldTransformer());
 
         $builder->add('label', TextType::class, ['constraints' => new NotBlank()]);
         $builder->add('type', ChoiceType::class, [

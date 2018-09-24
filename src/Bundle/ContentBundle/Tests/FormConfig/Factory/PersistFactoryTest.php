@@ -58,7 +58,7 @@ class PersistFactoryTest extends \PHPUnit\Framework\TestCase
 
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
-            ->with($this->equalTo(get_class($config)))
+            ->with($this->equalTo(\get_class($config)))
             ->willReturn($manager);
 
         $this->assertSame($config, (new PersistFactory($this->factory, $this->registry))->create($type, 'key'));
@@ -76,7 +76,7 @@ class PersistFactoryTest extends \PHPUnit\Framework\TestCase
 
         $this->registry->expects($this->once())
             ->method('getManagerForClass')
-            ->with($this->equalTo(get_class($config)))
+            ->with($this->equalTo(\get_class($config)))
             ->willReturn(null);
 
         $this->assertSame($config, (new PersistFactory($this->factory, $this->registry))->create($type, 'key'));

@@ -45,7 +45,7 @@ class PersistFactory implements FormConfigFactoryInterface
     {
         $config = $this->factory->create($type, $name);
 
-        if ($manager = $this->registry->getManagerForClass(get_class($config))) {
+        if ($manager = $this->registry->getManagerForClass(\get_class($config))) {
             $manager->persist($config);
         }
 

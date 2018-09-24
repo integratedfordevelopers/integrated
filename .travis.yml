@@ -4,5 +4,5 @@ before_script:
 - php7.1 composer.phar update -n
 script:
 - vendor/bin/phpcs
-- vendor/bin/php-cs-fixer fix --verbose --show-progress=none --allow-risky=yes --dry-run
+- vendor/bin/php-cs-fixer fix --verbose --show-progress=none --dry-run
 - vendor/bin/phpunit -c phpunit.xml.dist

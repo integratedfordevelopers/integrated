@@ -29,6 +29,7 @@ class RelationField implements FormConfigFieldInterface
 
     /**
      * @param RelationInterface $relation
+     * @param array             $options
      */
     public function __construct(RelationInterface $relation, array $options = [])
     {

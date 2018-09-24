@@ -90,7 +90,7 @@ class FormConfigFieldTransformer implements DataTransformerInterface
             return null;
         }
 
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             throw new UnexpectedTypeException($value, 'array');
         }
 
