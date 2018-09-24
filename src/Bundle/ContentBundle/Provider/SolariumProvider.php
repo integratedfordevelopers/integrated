@@ -147,7 +147,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             if ($selection = $block->getSearchSelection()) {
                 $this->addFacetFilters($query, $block, (array) $selection->getFilters(), array_merge($options, ['search_selection' => true]));
 
-                if (is_array($selection->getInternalParams())) {
+                if (\is_array($selection->getInternalParams())) {
                     foreach ($selection->getInternalParams() as $key => $value) {
                         $query->addParam($key, $value);
                     }
@@ -159,7 +159,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
         $count = $this->addFacetFilters($query, $block, (array) $request->query->all(), $options);
 
-        if (count($this->registry) && isset($options['exclude']) && true === $options['exclude']) {
+        if (\count($this->registry) && isset($options['exclude']) && true === $options['exclude']) {
             $helper = $query->getHelper();
             $filter = function ($param) use ($helper) {
                 return $helper->escapePhrase($param);
@@ -191,14 +191,14 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
         $contentTypes = isset($request['contenttypes']) ? $request['contenttypes'] : [];
 
-        if (count($contentTypes) && !in_array('type_name', $facetFields)) {
+        if (\count($contentTypes) && !\in_array('type_name', $facetFields)) {
             $facetFields[] = 'type_name';
             $request['type_name'] = $contentTypes; // @hack
         }
 
         $properties = isset($request['properties']) ? $request['properties'] : [];
 
-        if (count($properties) && !in_array('facet_properties', $facetFields)) {
+        if (\count($properties) && !\in_array('facet_properties', $facetFields)) {
             $facetFields[] = 'facet_properties';
             $request['facet_properties'] = $properties; // @hack
         }
@@ -207,8 +207,8 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             $name = preg_replace('/[^a-zA-Z]/', '', $relation->getName());
             $filters = isset($request[$name]) ? $request[$name] : [];
 
-            if (count($filters)) {
-                if (!in_array('facet_'.$relation->getId(), $facetFields)) {
+            if (\count($filters)) {
+                if (!\in_array('facet_'.$relation->getId(), $facetFields)) {
                     $facetFields[] = 'facet_'.$relation->getId();
                 }
 
@@ -221,7 +221,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
             return $helper->escapePhrase($param);
         };
 
-        if (count($facetFields)) {
+        if (\count($facetFields)) {
             $facetSet = $query->getFacetSet();
 
             foreach ($facetFields as $field) {
@@ -276,7 +276,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
                 $sort = trim(strtolower($sort));
                 $sort = array_key_exists($sort, $sortOptions) ? $sort : $sortDefault;
 
-                $query->addSort($sortOptions[$sort]['field'], in_array($order, $orderOptions) ? $order : $sortOptions[$sort]['order']);
+                $query->addSort($sortOptions[$sort]['field'], \in_array($order, $orderOptions) ? $order : $sortOptions[$sort]['order']);
             }
         }
 

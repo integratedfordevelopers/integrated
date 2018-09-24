@@ -177,7 +177,7 @@ class MenuItem extends KnpMenuItem
                 $children[] = $child->toArray($nested);
             }
 
-            if (count($children)) {
+            if (\count($children)) {
                 $array['children'] = $children;
             }
         }

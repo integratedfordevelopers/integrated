@@ -116,7 +116,7 @@ class QueueSubscriberTest extends \PHPUnit\Framework\TestCase
                 && strtolower($value->getAction()) === 'add'
                 && $value->getOption('document.id') === 'this-is-the-type-this-is-the-id'
                 && $value->getOption('document.data') === 'this-is-the-data'
-                && $value->getOption('document.class') === get_class($document)
+                && $value->getOption('document.class') === \get_class($document)
                 && $value->getOption('document.format') === 'json';
         };
 
@@ -142,7 +142,7 @@ class QueueSubscriberTest extends \PHPUnit\Framework\TestCase
                 && strtolower($value->getAction()) === 'add'
                 && $value->getOption('document.id') === 'this-is-the-type-this-is-the-id'
                 && $value->getOption('document.data') === 'this-is-the-data'
-                && $value->getOption('document.class') === get_class($document)
+                && $value->getOption('document.class') === \get_class($document)
                 && $value->getOption('document.format') === 'json';
         };
 

@@ -106,7 +106,7 @@ class Worker extends Configurable
 
         while (++$handled <= $handledMax && $message = $this->getMessage()) {
             try {
-                call_user_func($this->getCallable($task = $message->getPayload()), $task);
+                \call_user_func($this->getCallable($task = $message->getPayload()), $task);
             } catch (Exception $e) {
                 $dispatcher->dispatch(Events::ERROR, new ErrorEvent($this, $message, $e));
             } finally {
@@ -132,6 +132,6 @@ class Worker extends Configurable
      */
     protected function getCallable($task)
     {
-        return $this->registry->getHandler(get_class($task));
+        return $this->registry->getHandler(\get_class($task));
     }
 }
