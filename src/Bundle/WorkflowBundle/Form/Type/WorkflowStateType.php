@@ -85,7 +85,7 @@ class WorkflowStateType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $workflowNormalizer = function (Options $options, $workflow) {
-            if (is_string($workflow)) {
+            if (\is_string($workflow)) {
                 $workflow = $this->repository->find($workflow);
             }
 

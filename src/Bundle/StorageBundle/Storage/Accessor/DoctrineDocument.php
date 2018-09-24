@@ -43,12 +43,12 @@ class DoctrineDocument
      */
     public function __construct($document)
     {
-        if (is_object($document)) {
+        if (\is_object($document)) {
             $this->document = $document;
         } else {
             // We can call methods, so it seems like we've been given something rather unpleasant
             throw new \InvalidArgumentException(
-                sprintf('Object of type %s is not a object', gettype($document))
+                sprintf('Object of type %s is not a object', \gettype($document))
             );
         }
     }
@@ -66,7 +66,7 @@ class DoctrineDocument
      */
     public function getClassName()
     {
-        return ClassUtils::getRealClass(get_class($this->document));
+        return ClassUtils::getRealClass(\get_class($this->document));
     }
 
     /**
@@ -86,7 +86,7 @@ class DoctrineDocument
     {
         $method = sprintf(self::GET_SIGNATURE, ucfirst($propertyName));
         if (method_exists($this->document, $method)) {
-            return call_user_func([$this->document, $method]);
+            return \call_user_func([$this->document, $method]);
         }
 
         // Well that did not go as planned
@@ -94,7 +94,7 @@ class DoctrineDocument
             sprintf(
                 'Required method %s does not exist on class %s.',
                 $method,
-                get_class($this->document)
+                \get_class($this->document)
             )
         );
     }
@@ -112,7 +112,7 @@ class DoctrineDocument
             // This keeps track of the times something updated, not changed
             ++$this->updates;
 
-            return call_user_func([$this->document, $method], $propertyValue);
+            return \call_user_func([$this->document, $method], $propertyValue);
         }
 
         // We need something to set it, seems like we can't
@@ -120,7 +120,7 @@ class DoctrineDocument
             sprintf(
                 'Required method %s does not exist on class %s.',
                 $method,
-                get_class($this->document)
+                \get_class($this->document)
             )
         );
     }

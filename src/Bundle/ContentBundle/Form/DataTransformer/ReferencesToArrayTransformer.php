@@ -78,7 +78,7 @@ class ReferencesToArrayTransformer implements DataTransformerInterface
             ));
         }
 
-        if (count($references) != count($value)) {
+        if (\count($references) != \count($value)) {
             throw new TransformationFailedException('Not all Contents could be fetched.');
         }
 

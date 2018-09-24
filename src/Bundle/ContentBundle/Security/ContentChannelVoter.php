@@ -74,7 +74,7 @@ class ContentChannelVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, $this->permissions);
+        return \in_array($attribute, $this->permissions);
     }
 
     /**
@@ -92,11 +92,11 @@ class ContentChannelVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (\in_array('ROLE_ADMIN', $user->getRoles())) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
-        if (!count($content->getChannels())) {
+        if (!\count($content->getChannels())) {
             // Give everyone access if no channels are added
             return VoterInterface::ACCESS_ABSTAIN;
         }

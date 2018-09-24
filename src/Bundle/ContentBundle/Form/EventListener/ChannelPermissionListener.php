@@ -46,13 +46,13 @@ class ChannelPermissionListener implements EventSubscriberInterface
      */
     public function onPreSubmit(FormEvent $event)
     {
-        if (!count($this->notPermittedChannels)) {
+        if (!\count($this->notPermittedChannels)) {
             return;
         }
 
         $data = $event->getData();
 
-        if (isset($data['channels']) && is_array($data['channels'])) {
+        if (isset($data['channels']) && \is_array($data['channels'])) {
             foreach ($data['channels'] as $key => $value) {
                 if (isset($this->notPermittedChannels[$value])) {
                     unset($data['channels'][$key]);

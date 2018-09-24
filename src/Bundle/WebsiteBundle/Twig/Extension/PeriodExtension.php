@@ -41,12 +41,12 @@ class PeriodExtension extends \Twig_Extension
     {
         $filter = $twig->getFilter('localizeddate');
 
-        $period = call_user_func($filter->getCallable(), $twig, $startDate, 'long', 'short');
+        $period = \call_user_func($filter->getCallable(), $twig, $startDate, 'long', 'short');
 
         if ($endDate) {
             $period .= ' - ';
             $dateFormat = ($startDate->format('Ymd') == $endDate->format('Ymd') ? 'none' : 'long');
-            $period .= call_user_func($filter->getCallable(), $twig, $endDate, $dateFormat, 'short');
+            $period .= \call_user_func($filter->getCallable(), $twig, $endDate, $dateFormat, 'short');
         }
 
         return $period;
