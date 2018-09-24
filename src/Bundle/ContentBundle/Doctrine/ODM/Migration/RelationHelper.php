@@ -41,13 +41,13 @@ trait RelationHelper
         if (!$relation) {
             $relation = new Relation();
 
-            if (is_array($sources)) {
+            if (\is_array($sources)) {
                 $sources = new ArrayCollection($sources);
             } elseif (!$sources instanceof Collection) {
                 throw new \Exception('sources of relation should be either array or instance of Collection');
             }
 
-            if (is_array($targets)) {
+            if (\is_array($targets)) {
                 $targets = new ArrayCollection($targets);
             } elseif (!$targets instanceof Collection) {
                 throw new \Exception('sources of relation should be either array or instance of Collection');

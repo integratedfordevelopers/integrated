@@ -65,7 +65,7 @@ class RelationHandlerFactory implements HandlerFactoryInterface
         $options = $this->resolver->resolve($options);
         $class = $this->class;
 
-        if (!count($options['references'])) {
+        if (!\count($options['references'])) {
             $class = RelationNoopHandler::class;
         }
 

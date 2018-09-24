@@ -28,7 +28,7 @@ class PhonenumberType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (in_array('type', $options['fields'])) {
+        if (\in_array('type', $options['fields'])) {
             $builder->add('type', ChoiceType::class, [
                 'choices' => [
                     'Mobile' => 'mobile',
@@ -38,7 +38,7 @@ class PhonenumberType extends AbstractType
             ]);
         }
 
-        if (in_array('number', $options['fields'])) {
+        if (\in_array('number', $options['fields'])) {
             $builder->add('number', TextType::class, [
                 'label' => 'Phone number',
                 'constraints' => [

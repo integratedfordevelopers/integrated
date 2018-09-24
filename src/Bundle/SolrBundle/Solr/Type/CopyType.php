@@ -31,7 +31,7 @@ class CopyType implements TypeInterface
         // first group the options by field name
 
         foreach ($options as $to => $from) {
-            if (is_array($from)) {
+            if (\is_array($from)) {
                 $to = $from[$index = isset($from['name']) ? 'name' : key($from)];
                 unset($from[$index]);
             } else {
