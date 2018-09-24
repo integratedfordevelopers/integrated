@@ -79,7 +79,7 @@ class WorkflowExtension implements TypeExtensionInterface
             $container->add('workflow_state', $state->getName());
             $container->add('facet_workflow_state', $state->getName());
 
-            if (count($state->getPermissions())) {
+            if (\count($state->getPermissions())) {
                 // Workflow permissions overrules content type permissions
                 $permissions = $state->getPermissions();
             }
@@ -110,7 +110,7 @@ class WorkflowExtension implements TypeExtensionInterface
         }
 
         foreach ($permissions as $permission) {
-            if (!count($channelGroups) || isset($channelGroups[$permission->getGroup()])) {
+            if (!\count($channelGroups) || isset($channelGroups[$permission->getGroup()])) {
                 if ($permission->hasMask(PermissionInterface::READ)) {
                     $container->add('security_workflow_read', $permission->getGroup());
                 }

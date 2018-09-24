@@ -52,11 +52,11 @@ class ProcessorResolver implements ResolverInterface
      */
     public function getProcessor($object)
     {
-        if (is_object($object)) {
-            $object = get_class($object);
+        if (\is_object($object)) {
+            $object = \get_class($object);
         }
 
-        if (!is_string($object)) {
+        if (!\is_string($object)) {
             throw new UnexpectedTypeException($object, 'string or object');
         }
 

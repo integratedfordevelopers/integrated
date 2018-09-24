@@ -73,7 +73,7 @@ EOT
         $diff = $this->getSchema()->compare($connection->getSchemaManager()->createSchema());
         $diff = $diff->toSaveSql($connection->getDatabasePlatform());
 
-        if (0 === count($diff)) {
+        if (0 === \count($diff)) {
             $output->writeln('Nothing to update - your database is already in sync with the Locking tables schema.');
 
             return 0;
@@ -98,7 +98,7 @@ EOT
             }
 
             $output->writeln(
-                sprintf('Database schema updated successfully! "<info>%s</info>" queries were executed', count($diff))
+                sprintf('Database schema updated successfully! "<info>%s</info>" queries were executed', \count($diff))
             );
         }
 
@@ -114,7 +114,7 @@ EOT
         $output->writeln('');
 
         $output->writeln(
-            sprintf('The Schema-Tool would execute <info>"%s"</info> queries to update the database.', count($diff))
+            sprintf('The Schema-Tool would execute <info>"%s"</info> queries to update the database.', \count($diff))
         );
         $output->writeln('Please run the operation by passing one - or both - of the following options:');
 

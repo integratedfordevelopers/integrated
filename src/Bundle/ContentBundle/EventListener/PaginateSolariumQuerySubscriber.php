@@ -28,7 +28,7 @@ class PaginateSolariumQuerySubscriber implements EventSubscriberInterface
      */
     public function items(ItemsEvent $event)
     {
-        if (is_array($event->target) && 2 == count($event->target)) {
+        if (\is_array($event->target) && 2 == \count($event->target)) {
             list($client, $query) = array_values($event->target);
 
             if ($client instanceof Client && $query instanceof Query && isset($event->options['maxItems'])) {

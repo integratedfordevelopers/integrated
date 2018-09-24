@@ -181,7 +181,7 @@ class DefaultController
             return null;
         }
 
-        if (!is_object($user = $token->getUser())) {
+        if (!\is_object($user = $token->getUser())) {
             return null;
         }
 

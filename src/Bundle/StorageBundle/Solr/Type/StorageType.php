@@ -65,7 +65,7 @@ class StorageType implements TypeInterface
                 } else {
                     // Throw and release
                     throw new UnexpectedTypeException(
-                        is_object($object) ? get_class($object) : gettype($object),
+                        \is_object($object) ? \get_class($object) : \gettype($object),
                         'anything with a StorageInterface'
                     );
                 }
