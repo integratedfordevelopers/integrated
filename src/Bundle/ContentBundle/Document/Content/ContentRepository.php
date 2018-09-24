@@ -27,9 +27,9 @@ class ContentRepository extends DocumentRepository
      * Get items which have the current document linked.
      *
      * @param ArrayCollection $content
-     * @param Relation|null $relation
-     * @param Content|null  $excludeContent
-     * @param bool          $filterPublished
+     * @param Relation|null   $relation
+     * @param Content|null    $excludeContent
+     * @param bool            $filterPublished
      *
      * @return \Doctrine\MongoDB\Query\Builder
      */
