@@ -48,6 +48,7 @@ class IntegratedContentExtension extends Extension implements PrependExtensionIn
         $loader->load('paginator.xml');
 
         $loader->load('form.xml');
+        $loader->load('form.config.xml');
         $loader->load('form.registry.xml');
 
         $loader->load('manager.xml');

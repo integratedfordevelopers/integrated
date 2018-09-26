@@ -14,30 +14,23 @@ namespace Integrated\Common\FormConfig;
 interface FormConfigInterface
 {
     /**
-     * Get the unique identifier.
+     * Get the id of this config.
      *
-     * @return string
+     * @return FormConfigIdentifierInterface
      */
-    public function getId(): string;
+    public function getId(): FormConfigIdentifierInterface;
 
     /**
-     * Set the name of the document.
+     * Get the name of this config.
      *
      * @return string
      */
     public function getName(): string;
 
     /**
-     * Get the contentType of the document.
-     *
-     * @return string
-     */
-    public function getContentType(): string;
-
-    /**
-     * Get the subtitle of the document.
+     * Get the fields of this config.
      *
      * @return FormConfigFieldInterface[]
      */
-    public function getFields();
+    public function getFields(): array;
 }

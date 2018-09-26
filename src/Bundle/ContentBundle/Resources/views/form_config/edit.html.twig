@@ -1,0 +1,53 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+
+{% block sub_title %}{% trans %}Edit{% endtrans %}{% endblock %}
+
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_content_content_type_index') }}">{% trans %}Content types{% endtrans %}</a>
+                </li>
+                <li>
+                    <a href="{{ path('integrated_content_content_type_edit', {'id': type.id}) }}">{{ type.name }}</a>
+                </li>
+                <li class="active">{{ block('sub_title') }}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <style>
+        .form-config-fields tbody tr {
+            cursor: pointer;
+        }
+
+        .form-config-fields tbody tr td {
+            vertical-align: middle;
+        }
+
+        .form-config-fields tbody tr td:last-child {
+            text-align: right;
+        }
+
+        .form-config-fields .btn {
+            color: #999;
+        }
+
+        .form-config-fields .form-config-fields-add-custom {
+            margin-bottom: 20px;
+        }
+
+    </style>
+
+    <div class="row">
+        <div class="col-md-12 push-sm-down">
+            <h1 class="main-title font-regular">{{ block('sub_title') }}</h1>
+            <section class="section-white section-padding section-shadow section-radius">
+                {{ form(form, {'style': 'horizontal'}) }}
+            </section>
+        </div>
+    </div>
+{% endblock %}

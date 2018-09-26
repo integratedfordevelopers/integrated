@@ -11,56 +11,60 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\FormConfig;
 
-use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded\Identifier;
 use Integrated\Common\FormConfig\FormConfigFieldInterface;
-use Integrated\Common\FormConfig\FormConfigInterface;
+use Integrated\Common\FormConfig\FormConfigIdentifierInterface;
+use Integrated\Common\FormConfig\FormConfigEditableInterface;
 
-class FormConfig implements FormConfigInterface
+class FormConfig implements FormConfigEditableInterface
 {
     /**
-     * @var string
-     *
-     * @Slug(fields={"name"}, separator="_")
+     * @var array
      */
     private $id;
 
     /**
-     * @var string
+     * @var Identifier
      */
-    private $name;
+    private $idInstance;
 
     /**
      * @var string
      */
-    private $contentType;
+    private $name = '';
 
     /**
-     * @var FormConfigFieldInterface[]
+     * @var FormConfigFieldInterface[] | Collection
      */
     private $fields;
 
     /**
-     * @return string
+     * @param Identifier $id
      */
-    public function getId(): string
+    public function __construct(Identifier $id)
     {
-        return $this->id;
+        $this->id = $id->toArray();
+        $this->idInstance = $id;
+
+        $this->fields = new ArrayCollection();
     }
 
     /**
-     * @param string $id
-     *
-     * @return FormConfig
+     * {@inheritdoc}
      */
-    public function setId(string $id): self
+    public function getId(): FormConfigIdentifierInterface
     {
-        $this->id = $id;
+        if ($this->idInstance === null) {
+            $this->idInstance = new Identifier($this->id['type'], $this->id['key']);
+        }
 
-        return $this;
+        return $this->idInstance;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName(): string
     {
@@ -68,86 +72,38 @@ class FormConfig implements FormConfigInterface
     }
 
     /**
-     * @param string $name
-     *
-     * @return FormConfig
+     * {@inheritdoc}
      */
-    public function setName(string $name): self
+    public function setName(string $name): void
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
-     * @return string
-     */
-    public function getContentType(): string
-    {
-        return $this->contentType;
-    }
-
-    /**
-     * @param string $contentType
-     *
-     * @return FormConfig
-     */
-    public function setContentType(string $contentType): self
-    {
-        $this->contentType = $contentType;
-
-        return $this;
-    }
-
-    /**
-     * @return FormConfigFieldInterface[]
+     * {@inheritdoc}
      */
     public function getFields(): array
     {
-        return $this->fields;
+        return $this->fields->toArray();
     }
 
     /**
-     * @param FormConfigFieldInterface[] $fields
-     *
-     * @return FormConfig
+     * {@inheritdoc}
      */
-    public function setFields(array $fields): self
+    public function setFields(iterable $fields): void
     {
-        $this->fields = $fields;
+        $this->fields = new ArrayCollection();
 
-        return $this;
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return FormConfigFieldInterface|null
-     */
-    public function getField($name)
-    {
-        foreach ($this->getFields() as $field) {
-            if ($field->getName() == $name) {
-                return $field;
-            }
+        foreach ($fields as $field) {
+            $this->addField($field);
         }
-
-        return null;
     }
 
     /**
-     * @param string $name
-     *
-     * @return bool
+     * @param FormConfigFieldInterface $field
      */
-    public function hasField($name): bool
+    private function addField(FormConfigFieldInterface $field): void
     {
-        foreach ($this->getFields() as $field) {
-            if ($field->getName() == $name) {
-                return true;
-            }
-        }
-
-        return false;
+        $this->fields[] = $field;
     }
 }

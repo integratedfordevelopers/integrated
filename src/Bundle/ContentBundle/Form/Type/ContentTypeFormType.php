@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
-use Integrated\Bundle\ContentBundle\Form\Type\ContentType\FieldsType;
 use Integrated\Common\Form\Mapping\MetadataInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,7 +32,6 @@ class ContentTypeFormType extends AbstractType
 
         $builder
             ->add('name', TextType::class, ['label' => 'Name'])
-            ->add('fields', FieldsType::class, ['metadata' => $metadata])
             ->add('channels', ContentTypeChannelsType::class, ['property_path' => 'options[channels]'])
         ;
 

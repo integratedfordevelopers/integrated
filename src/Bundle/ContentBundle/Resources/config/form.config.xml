@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <service id="integrated_content.form_config.factory.document" class="Integrated\Bundle\ContentBundle\FormConfig\Factory" public="false" />
+
+        <service id="integrated_content.form_config.factory.default_fields_decorator" class="Integrated\Bundle\ContentBundle\FormConfig\Factory\DefaultFieldSetterFactory" public="false">
+            <argument type="service" id="integrated_content.form_config.factory.persist_decorator" />
+            <argument type="service" id="integrated_content.form_config.provider" />
+        </service>
+
+        <service id="integrated_content.form_config.factory.default_name_decorator" class="Integrated\Bundle\ContentBundle\FormConfig\Factory\DefaultNameSetterFactory" public="false">
+            <argument type="service" id="integrated_content.form_config.factory.default_fields_decorator" />
+            <argument type="string">Default configuration</argument>
+        </service>
+
+        <service id="integrated_content.form_config.factory.persist_decorator" class="Integrated\Bundle\ContentBundle\FormConfig\Factory\PersistFactory" public="false">
+            <argument type="service" id="integrated_content.form_config.factory.document" />
+            <argument type="service" id="doctrine_mongodb" />
+        </service>
+
+        <service id="integrated_content.form_config.factory" alias="integrated_content.form_config.factory.persist_decorator" public="false" />
+
+        <service id="integrated_content.form_config.provider.content_provider" class="Integrated\Bundle\ContentBundle\FormConfig\Field\ContentProvider" public="false">
+            <argument type="service" id="integrated_content.metadata.factory" />
+        </service>
+
+        <service id="integrated_content.form_config.provider.relation_provider" class="Integrated\Bundle\ContentBundle\FormConfig\Field\RelationProvider" public="false">
+            <argument type="service" id="doctrine_mongodb" />
+        </service>
+
+        <service id="integrated_content.form_config.provider.chain_provider" class="Integrated\Common\FormConfig\Field\ChainProvider" public="false">
+            <argument type="collection">
+                <argument type="service" id="integrated_content.form_config.provider.content_provider" />
+                <argument type="service" id="integrated_content.form_config.provider.relation_provider" />
+            </argument>
+        </service>
+
+        <service id="integrated_content.form_config.provider.cache_provider" class="Integrated\Common\FormConfig\Field\CacheProvider" public="false">
+            <argument type="service" id="integrated_content.form_config.provider.chain_provider" />
+        </service>
+
+        <service id="integrated_content.form_config.provider" alias="integrated_content.form_config.provider.cache_provider" public="false" />
+
+        <service id="integrated_content.form_config.manager.document" class="Integrated\Bundle\ContentBundle\FormConfig\Manager" public="false">
+            <argument type="service" id="doctrine_mongodb.odm.default_document_manager" />
+        </service>
+
+        <service id="integrated_content.form_config.manager.default_aware_decorator" class="Integrated\Bundle\ContentBundle\FormConfig\Manager\DefaultAwareManager" public="false">
+            <argument type="service" id="integrated_content.form_config.manager.document" />
+            <argument type="service" id="integrated_content.form_config.factory.default_name_decorator" />
+        </service>
+
+        <service id="integrated_content.form_config.manager" alias="integrated_content.form_config.manager.default_aware_decorator" public="false" />
+
+        <service id="integrated_content.form_config.normalizer.custom_field.transformer" class="Integrated\Bundle\ContentBundle\Form\DataTransformer\FormConfigFieldTransformer" public="false" />
+
+        <service id="integrated_content.form_config.normalizer.custom_field" class="Integrated\Bundle\ContentBundle\FormConfig\Serializer\CustomFieldNormalizer" public="false">
+            <argument type="service" id="integrated_content.form_config.normalizer.custom_field.transformer" />
+            <argument type="service" id="integrated_content.twig.form_config_extension" />
+
+            <tag name="serializer.normalizer" priority="32" />
+        </service>
+
+        <service id="integrated_content.form_config.handler" class="Integrated\Bundle\ContentBundle\FormConfig\Handler" public="false">
+            <argument type="service" id="integrated_content.form_config.manager" />
+            <argument type="service" id="integrated_content.form_config.factory" />
+        </service>
+
+    </services>
+
+</container>

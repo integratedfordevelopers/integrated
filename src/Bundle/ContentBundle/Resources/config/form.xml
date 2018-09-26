@@ -104,6 +104,32 @@
 
         <service id="integrated_content.form.delete.type" class="Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType" />
 
+        <service id="integrated_content.form.type.form_config_custom_field" class="Integrated\Bundle\ContentBundle\Form\Type\FormConfigCustomFieldType">
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_content.form.type.form_config_field" class="Integrated\Bundle\ContentBundle\Form\Type\FormConfigFieldType">
+            <argument type="service" id="integrated_content.form_config.provider" />
+
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_content.form.type.form_config_field_options" class="Integrated\Bundle\ContentBundle\Form\Type\FormConfigFieldOptions">
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_content.form.type.form_config_fields" class="Integrated\Bundle\ContentBundle\Form\Type\FormConfigFieldsType">
+            <argument type="service" id="integrated_content.form_config.provider" />
+
+            <tag name="form.type" />
+        </service>
+
+        <service id="integrated_content.form.type.form_config" class="Integrated\Bundle\ContentBundle\Form\Type\FormConfigType">
+            <argument type="service" id="doctrine_mongodb" />
+
+            <tag name="form.type" />
+        </service>
+
         <service id="integrated_content.form.type.relation" class="Integrated\Bundle\ContentBundle\Form\Type\RelationType">
             <tag name="form.type" />
         </service>

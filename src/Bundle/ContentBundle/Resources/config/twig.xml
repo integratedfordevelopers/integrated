@@ -4,41 +4,36 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>
-
-        <parameter key="integrated_content.twig.json_pagination_extension.class">Integrated\Bundle\ContentBundle\Twig\JsonPaginationExtension</parameter>
-
-        <parameter key="integrated_content.twig.array_extension.class">Integrated\Bundle\ContentBundle\Twig\Extension\ArrayExtension</parameter>
-
-        <parameter key="integrated_content.twig.channel_extension.class">Integrated\Bundle\ContentBundle\Twig\Extension\ChannelExtension</parameter>
-
-        <parameter key="integrated_content.twig.integrated_content_extension.class">Integrated\Bundle\ContentBundle\Twig\Extension\IntegratedContentExtension</parameter>
-
-    </parameters>
-
     <services>
 
-        <service id="integrated_content.twig.json_pagination_extension" class="%integrated_content.twig.json_pagination_extension.class%">
-            <argument type="service" id="router" />
+        <service id="integrated_content.twig.array_extension" class="Integrated\Bundle\ContentBundle\Twig\Extension\ArrayExtension">
             <tag name="twig.extension" />
         </service>
 
-        <service id="integrated_content.twig.array_extension" class="%integrated_content.twig.array_extension.class%">
-            <tag name="twig.extension" />
-        </service>
-
-        <service id="integrated_content.twig.channel_extension" class="%integrated_content.twig.channel_extension.class%">
+        <service id="integrated_content.twig.channel_extension" class="Integrated\Bundle\ContentBundle\Twig\Extension\ChannelExtension">
             <argument type="service" id="service_container" />
+
             <tag name="twig.extension" />
         </service>
 
-        <service id="integrated_content.twig.integrated_content_extension" class="%integrated_content.twig.integrated_content_extension.class%">
+        <service id="integrated_content.twig.form_config_extension" class="Integrated\Bundle\ContentBundle\Twig\Extension\FormConfigExtension">
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_content.twig.integrated_content_extension" class="Integrated\Bundle\ContentBundle\Twig\Extension\IntegratedContentExtension">
             <argument type="service" id="event_dispatcher" />
+
             <tag name="twig.extension" />
         </service>
 
         <service id="integrated_content.twig.json_ld_extension" class="Integrated\Bundle\ContentBundle\Twig\Extension\JsonLDExtension">
             <argument type="service" id="serializer" />
+
+            <tag name="twig.extension" />
+        </service>
+
+        <service id="integrated_content.twig.json_pagination_extension" class="Integrated\Bundle\ContentBundle\Twig\JsonPaginationExtension">
+            <argument type="service" id="router" />
 
             <tag name="twig.extension" />
         </service>

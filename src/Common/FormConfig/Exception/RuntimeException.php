@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ContentBundle\Document\FormConfig\Embedded;
+namespace Integrated\Common\FormConfig\Exception;
 
-class CustomField extends DocumentField
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
 }

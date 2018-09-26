@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="integrated_content_form_config_new" path="/{type}/new">
+        <default key="_controller">integrated_content.controller.form_config_controller:editAction</default>
+    </route>
+
+    <route id="integrated_content_form_config_edit" path="/{type}/edit/{key}">
+        <default key="_controller">integrated_content.controller.form_config_controller:editAction</default>
+    </route>
+
+    <route id="integrated_content_form_config_delete" path="/{type}/delete/{key}" methods="GET">
+        <default key="_controller">integrated_content.controller.form_config_controller:deleteAction</default>
+    </route>
+
+    <route id="integrated_content_form_config_custom" path="/{type}/custom">
+        <default key="_controller">integrated_content.controller.form_config_controller:customAction</default>
+    </route>
+
+</routes>

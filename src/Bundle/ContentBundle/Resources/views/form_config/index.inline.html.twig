@@ -1,0 +1,35 @@
+<table class="table">
+
+    <colgroup>
+        <col>
+        <col style="width: 5rem">
+    </colgroup>
+
+    <thead>
+        <tr>
+            <th>{% trans %}Name{% endtrans %}</th>
+            <th>{% trans %}Actions{% endtrans %}</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for config in configs %}
+            <tr>
+                <td>
+                    <a href="{{ path('integrated_content_form_config_edit', {'type': config.id.contentType, 'key': config.id.key}) }}">
+                        {{ config.name }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('integrated_content_form_config_edit', {'type': config.id.contentType, 'key': config.id.key}) }}" title="{% trans %}Edit{% endtrans %}">
+                        {{ icon('pencil') }}
+                    </a>
+                    <a href="{{ path('integrated_content_form_config_delete', {'type': config.id.contentType, 'key': config.id.key}) }}" title="{% trans %}Delete{% endtrans %}">
+                        {{ icon('remove') }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
