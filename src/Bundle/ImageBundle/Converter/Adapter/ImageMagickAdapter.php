@@ -53,7 +53,7 @@ class ImageMagickAdapter implements AdapterInterface
             // When no frame is specified Imagick will write every frame on /tmp
             $imagick = new \Imagick(sprintf('%s[10]', $file->getPathname()));
 
-            $overlay = new \Imagick('/home/pi-integrated/play_overlay.png');
+            $overlay = new \Imagick(__DIR__ . '/../../Resources/images/play-overlay.png');
 
             $imageWidth = $imagick->getImageWidth();
             $imageHeight = $imagick->getImageHeight();
@@ -73,7 +73,7 @@ class ImageMagickAdapter implements AdapterInterface
             $x = ($imageWidth - $overlayWidth) / 2;
             $y = ($imageHeight - $overlayHeight) / 2;
 
-            $imagick->compositeImage($overlay, imagick::COMPOSITE_OVER, $x, $y);
+            $imagick->compositeImage($overlay, \Imagick::COMPOSITE_OVER, $x, $y);
         } else {
             // Open a we should do with anything that is not video
             $imagick = new \Imagick($file->getPathname());
