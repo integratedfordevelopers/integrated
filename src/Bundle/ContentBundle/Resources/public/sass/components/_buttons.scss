@@ -2,15 +2,12 @@
 .btn {
 	box-shadow: none;
 	display: inline-block;
-	color: $color-white;
 	padding: 6px 22px;
 	text-align: center;
 	vertical-align: middle;
 	line-height: 22px;
-	border: none;
 	border-radius: 3px;
 	&:hover, &:focus {
-		color: $color-white;
 		text-decoration: none;
 	}
 	@include respond-to(phones) {
@@ -52,12 +49,11 @@
 		}
 	}
 	&.btn-orange {
+		color: $color-white;
 		background: $color-ecstasy;
 		&:hover, &:focus {
+            color: $color-white;
 			background: darken($color-ecstasy, 10%);
 		}
 	}
 }
-
-
-
