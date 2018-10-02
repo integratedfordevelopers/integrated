@@ -119,6 +119,17 @@
             </options>
         </type>
 
+
+        <type name="integrated.storage">
+
+            <options>
+
+                <string key="cover">cover</string>
+
+            </options>
+
+        </type>
+
     </class>
 
 </converter-mapping>
