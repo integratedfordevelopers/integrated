@@ -23,20 +23,26 @@
 		font-weight: $font-bold;
 	}
 	&.btn-blue {
+        color: $color-white;
 		background: $color-azure-radiance;
 		&:hover, &:focus {
+            color: $color-white;
 			background: $color-dodger-blue;
 		}
 	}
 	&.btn-blue-thin {
+        color: $color-white;
 		background: $color-danube;
 		&:hover, &:focus {
+            color: $color-white;
 			background: $color-boston-blue;
 		}
 	}
 	&.btn-gray {
+        color: $color-white;
 		background: $color-silver-chalive;
 		&:hover, &:focus {
+            color: $color-white;
 			background: darken($color-silver-chalive, 10%);
 		}
 	}
