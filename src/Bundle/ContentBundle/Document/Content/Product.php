@@ -60,7 +60,7 @@ class Product extends Content
     protected $price;
 
     /**
-     * @var integer
+     * @var int
      * @Type\Field(
      *     type="Symfony\Component\Form\Extension\Core\Type\IntegerType",
      *     options={
@@ -187,6 +187,8 @@ class Product extends Content
      * Set the variant of the document.
      *
      * @param string $variant
+     *
+     * @return $this
      */
     public function setVariant(string $variant): self
     {
@@ -218,6 +220,7 @@ class Product extends Content
 
         return $this;
     }
+
     /**
      * Get price of the product.
      *
@@ -273,7 +276,7 @@ class Product extends Content
      */
     public function isOrderable(): bool
     {
-        return (bool)$this->orderable;
+        return (bool) $this->orderable;
     }
 
     /**
@@ -337,7 +340,6 @@ class Product extends Content
 
         return $this;
     }
-
 
     /**
      * Get the cover image for product.
