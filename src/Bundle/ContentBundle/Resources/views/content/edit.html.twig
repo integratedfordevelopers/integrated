@@ -26,53 +26,59 @@
     <div class="row">
         <div class="col-md-8 push-sm-down">
             <section class="section-white section-padding section-shadow section-radius">
-                {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+                {% block content_form %}
+                    {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
+                {% endblock %}
 
-                {% if form.offsetGet('relations').count() %}
-                    <input type="hidden" id="default_references" value="{{ references }}">
-                    <div class="form-horizontal relations margin-top">
-                        {% for relation in form.relations %}
-                            <div class="form-group">
-                                <label class="control-label col-sm-4" for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label>
-                                <div class="col-sm-8 relation">
-                                    <div class="input-group">
-                                        <select
-                                            multiple
-                                            id="{{ relation.vars.name }}"
-                                            data-multiple="{{ relation.vars.attr['data-multiple'] }}"
-                                            data-types="{{ relation.vars.attr['data-types'] }}"
-                                            class="relation-items form-control"
-                                            style="display: none; width: 100%"
-                                        >
-                                        </select>
-                                        <span class="input-group-addon" data-add="1"></span>
+                {% block content_relations %}
+                    {% if form.offsetGet('relations').count() %}
+                        <input type="hidden" id="default_references" value="{{ references }}">
+                        <div class="form-horizontal relations margin-top">
+                            {% for relation in form.relations %}
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4" for="{{ relation.vars.name }}">{{ relation.vars.attr['data-title'] }}</label>
+                                    <div class="col-sm-8 relation">
+                                        <div class="input-group">
+                                            <select
+                                                multiple
+                                                id="{{ relation.vars.name }}"
+                                                data-multiple="{{ relation.vars.attr['data-multiple'] }}"
+                                                data-types="{{ relation.vars.attr['data-types'] }}"
+                                                class="relation-items form-control"
+                                                style="display: none; width: 100%"
+                                            >
+                                            </select>
+                                            <span class="input-group-addon" data-add="1"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endblock %}
             </section>
         </div>
 
         <div class="col-md-4">
             <aside>
                 <div class="aside-holder section-gray section-shadow section-radius">
-                    {% if content is defined %}
-                        {% if content.isPublished and content.getChannels|length > 0 %}
-                            <div class="aside-item-holder">
-                                <h2 class="font-medium color-green"><i class="integrate-icon-ok-circled"></i> {% trans %}Published{% endtrans %}</h2>
-                            </div>
+                    {% block sidebar %}
+                        {% if content is defined %}
+                            {% if content.isPublished and content.getChannels|length > 0 %}
+                                <div class="aside-item-holder">
+                                    <h2 class="font-medium color-green"><i class="integrate-icon-ok-circled"></i> {% trans %}Published{% endtrans %}</h2>
+                                </div>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
 
-                    <div class="aside-item-holder section-white">
-                        <div class="item_row" id="used-by"></div>
-                    </div>
+                        <div class="aside-item-holder section-white">
+                            <div class="item_row" id="used-by"></div>
+                        </div>
 
-                    {% if hasContentHistoryBundle %}
-                        {{ render(controller('integrated_content_history.controller.content_history:historyAction', { 'content': content })) }}
-                    {% endif %}
+                        {% if hasContentHistoryBundle %}
+                            {{ render(controller('integrated_content_history.controller.content_history:historyAction', { 'content': content })) }}
+                        {% endif %}
+                    {% endblock %}
                 </div>
             </aside>
         </div>
