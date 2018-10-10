@@ -3,7 +3,7 @@ $(document).ready(function() {
      * TinyMCE instance from the top level window object
      * @type object
      */
-    var tinymce = top.tinymce;
+    var tinymce = parent.tinymce;
 
     /**
      * Window modal object created by tinymce object
