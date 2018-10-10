@@ -192,6 +192,7 @@ class WorkflowController extends Controller
         $stateId = $request->get('state');
 
         $isDefaultState = false;
+
         if (empty($stateId)) {
             $workflowId = $request->get('workflow');
             $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition');
@@ -202,6 +203,10 @@ class WorkflowController extends Controller
         } else {
             $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition\State');
             $state = $repository->find($stateId);
+        }
+
+        if (!$state) {
+            return new JsonResponse(['users' => [], 'fields' => []]);
         }
 
         /** @var User $currentUser */
