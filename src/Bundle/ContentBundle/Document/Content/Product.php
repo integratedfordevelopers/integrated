@@ -11,21 +11,17 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
 use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
- * Document type Article.
+ * Document type Product.
  *
- * @author Jeroen van Leeuwen <jeroen@e-active.nl>
- *
- * @Type\Document("Article")
+ * @Type\Document("Product")
  */
-class Article extends Content
+class Product extends Content
 {
     /**
      * @var string
@@ -44,19 +40,13 @@ class Article extends Content
      * @var string
      * @Type\Field
      */
-    protected $subtitle;
-
-    /**
-     * @var ArrayCollection Embedded\Author[]
-     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\AuthorType", options={"label" = "Authors"})
-     */
-    protected $authors;
+    protected $reference;
 
     /**
      * @var string
      * @Type\Field
      */
-    protected $source;
+    protected $variant;
 
     /**
      * @var string
@@ -64,10 +54,32 @@ class Article extends Content
     protected $locale;
 
     /**
-     * @var string
-     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\TextareaType")
+     * @var float
+     * @Type\Field(type="Symfony\Component\Form\Extension\Core\Type\MoneyType")
      */
-    protected $intro;
+    protected $price;
+
+    /**
+     * @var int
+     * @Type\Field(
+     *     type="Symfony\Component\Form\Extension\Core\Type\IntegerType",
+     *     options={
+     *         "label"="Stock quantity"
+     *     }
+     * )
+     */
+    protected $stockQuantity;
+
+    /**
+     * @var bool
+     * @Type\Field(
+     *     type="Symfony\Component\Form\Extension\Core\Type\CheckboxType",
+     *     options={
+     *         "attr"={"align_with_widget"=true}
+     *     }
+     * )
+     */
+    protected $orderable;
 
     /**
      * @var string
@@ -82,19 +94,11 @@ class Article extends Content
     protected $content;
 
     /**
-     * @var Embedded\Address
-     * @Type\Field(type="Integrated\Bundle\ContentBundle\Form\Type\AddressType")
-     */
-    protected $address;
-
-    /**
      * Constructor.
      */
     public function __construct()
     {
         parent::__construct();
-
-        $this->authors = new ArrayCollection();
     }
 
     /**
@@ -102,7 +106,7 @@ class Article extends Content
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -114,7 +118,7 @@ class Article extends Content
      *
      * @return $this
      */
-    public function setTitle($title)
+    public function setTitle($title): self
     {
         $this->title = $title;
 
@@ -126,7 +130,7 @@ class Article extends Content
      *
      * @return string
      */
-    public function getSlug()
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -138,7 +142,7 @@ class Article extends Content
      *
      * @return $this
      */
-    public function setSlug($slug)
+    public function setSlug($slug): self
     {
         $this->slug = $slug;
 
@@ -146,99 +150,49 @@ class Article extends Content
     }
 
     /**
-     * Get the subtitle of the document.
+     * Get the reference of the document.
      *
      * @return string
      */
-    public function getSubtitle()
+    public function getReference(): ?string
     {
-        return $this->subtitle;
+        return $this->reference;
     }
 
     /**
-     * Set the subtitle of the document.
+     * Set the reference of the document.
      *
-     * @param string $subtitle
+     * @param string $reference
      *
      * @return $this
      */
-    public function setSubtitle($subtitle)
+    public function setReference(string $reference): self
     {
-        $this->subtitle = $subtitle;
+        $this->reference = $reference;
 
         return $this;
     }
 
     /**
-     * Get the authors of the document.
-     *
-     * @return Collection
-     */
-    public function getAuthors()
-    {
-        return $this->authors;
-    }
-
-    /**
-     * Set the authors of the document.
-     *
-     * @param Collection $authors
-     *
-     * @return $this
-     */
-    public function setAuthors(Collection $authors)
-    {
-        $this->authors = $authors;
-
-        return $this;
-    }
-
-    /**
-     * Add author to authors collection.
-     *
-     * @param Embedded\Author $author
-     *
-     * @return $this
-     */
-    public function addAuthor(Embedded\Author $author)
-    {
-        if (!$this->authors->contains($author)) {
-            $this->authors->add($author);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Embedded\Author $author
-     *
-     * @return bool true if this collection contained the specified element, false otherwise
-     */
-    public function removeAuthor(Embedded\Author $author)
-    {
-        return $this->authors->removeElement($author);
-    }
-
-    /**
-     * Get the source of the document.
+     * Get the variant of the document.
      *
      * @return string
      */
-    public function getSource()
+    public function getVariant(): ?string
     {
-        return $this->source;
+        return $this->variant;
     }
 
     /**
-     * Set the source of the document.
+     * Set the variant of the document.
      *
-     * @param string $source
+     * @param string $variant
      *
      * @return $this
      */
-    public function setSource($source)
+    public function setVariant(string $variant): self
     {
-        $this->source = $source;
+        $this->variant = $variant;
 
         return $this;
     }
@@ -248,7 +202,7 @@ class Article extends Content
      *
      * @return string
      */
-    public function getLocale()
+    public function getLocale(): ?string
     {
         return $this->locale;
     }
@@ -260,7 +214,7 @@ class Article extends Content
      *
      * @return $this
      */
-    public function setLocale($locale)
+    public function setLocale($locale): self
     {
         $this->locale = $locale;
 
@@ -268,43 +222,95 @@ class Article extends Content
     }
 
     /**
-     * Get the intro of the document.
+     * Get price of the product.
      *
-     * @return string
+     * @return float
      */
-    public function getIntro()
+    public function getPrice(): ?float
     {
-        return $this->intro;
+        return $this->price;
     }
 
     /**
-     * Set the intro of the document.
+     * Set price of the product.
      *
-     * @param string $intro
+     * @param float $price
      *
      * @return $this
      */
-    public function setIntro($intro)
+    public function setPrice(float $price): self
     {
-        $this->intro = $intro;
+        $this->price = $price;
 
         return $this;
     }
 
     /**
+     * Get stock quantity.
+     *
+     * @return int
+     */
+    public function getStockQuantity(): ?int
+    {
+        return $this->stockQuantity;
+    }
+
+    /**
+     * Set stock quantity.
+     *
+     * @param int $stockQuantity
+     *
+     * @return $this
+     */
+    public function setStockQuantity(int $stockQuantity): self
+    {
+        $this->stockQuantity = $stockQuantity;
+
+        return $this;
+    }
+
+    /**
+     * Get orderable status of the product.
+     *
+     * @return bool
+     */
+    public function isOrderable(): bool
+    {
+        return (bool) $this->orderable;
+    }
+
+    /**
+     * Set orderable status of the product.
+     *
+     * @param bool $orderable
+     *
+     * @return $this
+     */
+    public function setOrderable(bool $orderable): self
+    {
+        $this->orderable = $orderable;
+
+        return $this;
+    }
+
+    /**
+     * Get description of the product.
+     *
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
+     * Set description of the product.
+     *
      * @param string $description
      *
      * @return $this
      */
-    public function setDescription($description)
+    public function setDescription($description): self
     {
         $this->description = $description;
 
@@ -316,7 +322,7 @@ class Article extends Content
      *
      * @return string
      */
-    public function getContent()
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -328,7 +334,7 @@ class Article extends Content
      *
      * @return $this
      */
-    public function setContent($content)
+    public function setContent($content): self
     {
         $this->content = $content;
 
@@ -336,35 +342,11 @@ class Article extends Content
     }
 
     /**
-     * Get the address of the document.
-     *
-     * @return Embedded\Address
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
-     * Set the address of the document.
-     *
-     * @param Embedded\Address $address
-     *
-     * @return $this
-     */
-    public function setAddress(Embedded\Address $address = null)
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    /**
-     * Get the relative cover image URL for article.
+     * Get the cover image for product.
      *
      * @return StorageInterface
      */
-    public function getCover()
+    public function getCover(): ?StorageInterface
     {
         $items = $this->getReferencesByRelationType('embedded');
         if ($items) {
@@ -383,8 +365,8 @@ class Article extends Content
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): ?string
     {
-        return (string) $this->title;
+        return $this->title;
     }
 }
