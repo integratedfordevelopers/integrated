@@ -1,11 +1,9 @@
 {% extends "IntegratedUserBundle::layout.html.twig" %}
 
 {% block style %}
-
     {{ parent() }}
 
     <style type="text/css">
-
         .modal-backdrop,
         .modal-backdrop.fade,
         .modal-backdrop.in {
@@ -32,20 +30,15 @@
         .modal.auth .modal-footer {
         	margin-top: -10px;
         }
-
     </style>
 
 {% endblock style %}
 
 {% block body %}
-
 <div class="modal auth">
-
     <div class="modal-dialog">
-
         <div class="modal-content ">
-
-            {{ form_start(form, {'attr': {'id': 'login'}, 'style': 'horizontal'}) }}
+            {{ form_start(form, {'attr': {'id': 'login_form'}, 'style': 'horizontal', 'label_col': 3, 'widget_col': 9, 'col_size': 'sm'}) }}
 
                 <div class="modal-header">
                     <h4 class="modal-title">{% trans %}Login{% endtrans %}</h4>
@@ -58,13 +51,9 @@
                 </div>
 
             {{ form_end(form) }}
-
         </div>
-
     </div>
-
 </div>
 
 <div class="modal-backdrop"></div>
-
 {% endblock body %}
