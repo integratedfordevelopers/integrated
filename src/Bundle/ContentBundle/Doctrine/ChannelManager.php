@@ -128,6 +128,7 @@ class ChannelManager implements ChannelManagerInterface
                 ['domains' => (stripos($criteria, 'www.')) ? str_ireplace('www.', '', $criteria) : 'www.'.$criteria]
             );
         }
+
         return $channel;
     }
 
