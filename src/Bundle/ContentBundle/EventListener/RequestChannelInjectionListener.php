@@ -14,6 +14,7 @@ namespace Integrated\Bundle\ContentBundle\EventListener;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Content\Channel\ChannelManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
@@ -57,7 +58,17 @@ class RequestChannelInjectionListener implements EventSubscriberInterface
      */
     public function onRequest(GetResponseEvent $event)
     {
-        $this->getContext()->setChannel($this->getManager()->findByDomain($event->getRequest()->getHost()));
+        $channel = $this->getManager()->findByDomain($event->getRequest()->getHost());
+        $this->getContext()->setChannel($channel);
+
+        if ($channel
+            && $channel->getPrimaryDomain()
+            && strcasecmp($channel->getPrimaryDomain(), $event->getRequest()->getHost()) !== 0
+            && $event->getRequest()->getMethod() == 'GET'
+        ) {
+            $url = $event->getRequest()->getScheme().'://'.$channel->getPrimaryDomain().$event->getRequest()->getRequestUri();
+            $event->setResponse(new RedirectResponse($url, 301));
+        }
     }
 
     /**

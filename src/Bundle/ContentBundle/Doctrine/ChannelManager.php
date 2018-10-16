@@ -121,7 +121,14 @@ class ChannelManager implements ChannelManagerInterface
      */
     public function findByDomain($criteria)
     {
-        return $this->repository->findOneBy(['domains' => $criteria]);
+        $channel = $this->repository->findOneBy(['domains' => $criteria]);
+        if (!$channel) {
+            //find a fallback with/without www.
+            $channel = $this->repository->findOneBy(
+                ['domains' => (stripos($criteria, 'www.')) ? str_ireplace('www.', '', $criteria) : 'www.'.$criteria]
+            );
+        }
+        return $channel;
     }
 
     /**
