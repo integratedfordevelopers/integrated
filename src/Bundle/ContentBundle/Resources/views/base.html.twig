@@ -47,26 +47,27 @@
                     }
                 };
             }
-
         }
     </script>
-
 {% endblock style %}
 
 </head>
 <body>
+{% block form_theme %}
+    {% if form is defined %}
+        {% form_theme form with ['IntegratedContentBundle:form:form_div_layout.html.twig'] %}
+    {% endif %}
+{% endblock %}
+
 {% block header %}
     <nav class="navbar megamenu">
         <div class="container">
-
             {% include 'IntegratedContentBundle:partials:block.navigation.html.twig' %}
-
             {% include 'IntegratedContentBundle:partials:block.logo.html.twig' %}
 
             {{ render(controller('IntegratedContentBundle:Content:navdropdowns')) }}
 
             {% include 'IntegratedContentBundle:partials:block.search.html.twig' %}
-
         </div>
     </nav>
 {% endblock %}
@@ -95,7 +96,6 @@
 </div>
 
 {% block javascript %}
-
     <script src="//code.jquery.com/jquery.js"></script>
     <script src="{{ asset('/js/bootstrap.js') }}"></script>
 
@@ -129,7 +129,6 @@
             {% include 'IntegratedLockingBundle::locking.refresh.html.twig' with { 'lock': locking.lock } %}
         {% endif %}
     {% endblock locking %}
-
 {% endblock javascript %}
 
 </body>

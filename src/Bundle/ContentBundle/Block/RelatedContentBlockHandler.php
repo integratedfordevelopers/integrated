@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Block;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Integrated\Bundle\BlockBundle\Block\BlockHandler;
 use Integrated\Bundle\ContentBundle\Document\Block\RelatedContentBlock;
@@ -130,15 +131,15 @@ class RelatedContentBlockHandler extends BlockHandler
 
                 break;
             case RelatedContentBlock::SHOW_LINKED:
-                if (!$linkedDocument = $document->getReferenceByRelationId($block->getRelation()->getId())) {
+                if (!$linkedDocuments = $document->getReferencesByRelationId($block->getRelation()->getId())) {
                     return null;
                 }
 
-                $query = $this->dm->getRepository(Content::class)->getUsedBy($linkedDocument, $block->getRelation(), $document);
+                $query = $this->dm->getRepository(Content::class)->getUsedBy($linkedDocuments, $block->getRelation(), $document);
 
                 break;
             default:
-                $query = $this->dm->getRepository(Content::class)->getUsedBy($document, $block->getRelation());
+                $query = $this->dm->getRepository(Content::class)->getUsedBy(new ArrayCollection([$document]), $block->getRelation());
 
                 break;
         }

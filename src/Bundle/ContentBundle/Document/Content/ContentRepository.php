@@ -11,8 +11,10 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * Class ContentRepository.
@@ -24,20 +26,28 @@ class ContentRepository extends DocumentRepository
     /**
      * Get items which have the current document linked.
      *
-     * @param Content       $content
-     * @param Relation|null $relation
-     * @param Content|null  $excludeContent
-     * @param bool          $filterPublished
+     * @param ArrayCollection $content
+     * @param Relation|null   $relation
+     * @param Content|null    $excludeContent
+     * @param bool            $filterPublished
      *
      * @return \Doctrine\MongoDB\Query\Builder
      */
-    public function getUsedBy(Content $content, Relation $relation = null, Content $excludeContent = null, $filterPublished = true)
+    public function getUsedBy(ArrayCollection $content, Relation $relation = null, Content $excludeContent = null, $filterPublished = true)
     {
-        if (!$excludeContent) {
-            $excludeContent = $content;
+        $contentIds = [];
+        foreach ($content as $contentItem) {
+            if ($contentItem instanceof ContentInterface) {
+                if (!$excludeContent) {
+                    $excludeContent = $contentItem;
+                }
+
+                $contentIds[] = $contentItem->getId();
+            }
         }
+
         $query = $this->createQueryBuilder()
-            ->field('relations.references.$id')->equals($content->getId())
+            ->field('relations.references.$id')->in($contentIds)
             ->field('id')->notEqual($excludeContent->getId());
 
         if ($filterPublished) {
