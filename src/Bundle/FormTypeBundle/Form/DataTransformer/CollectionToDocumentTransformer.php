@@ -37,9 +37,9 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
             if ($value->count()) {
                 $document = $value->first();
 
-                if (!is_object($document)) {
+                if (!\is_object($document)) {
                     throw new TransformationFailedException(
-                        sprintf('Expected an object in the Collection, "%s" given', gettype($value))
+                        sprintf('Expected an object in the Collection, "%s" given', \gettype($value))
                     );
                 }
 
@@ -48,7 +48,7 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
 
             return null;
         }
-        throw new TransformationFailedException(sprintf('Expected a Collection, "%s" given', gettype($value)));
+        throw new TransformationFailedException(sprintf('Expected a Collection, "%s" given', \gettype($value)));
     }
 
     /**
@@ -59,11 +59,11 @@ class CollectionToDocumentTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         if (null !== $value) {
-            if (is_object($value)) {
+            if (\is_object($value)) {
                 return new ArrayCollection([$value]);
             }
             throw new TransformationFailedException(
-                sprintf('Expected an object, "%s" given', gettype($value))
+                sprintf('Expected an object, "%s" given', \gettype($value))
             );
         }
 

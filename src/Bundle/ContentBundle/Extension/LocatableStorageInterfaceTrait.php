@@ -38,7 +38,7 @@ trait LocatableStorageInterfaceTrait
      */
     public function offsetExists($offset)
     {
-        return strlen($this->getPathname()) > ($offset + 1);
+        return \strlen($this->getPathname()) > ($offset + 1);
     }
 
     /**

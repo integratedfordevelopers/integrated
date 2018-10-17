@@ -23,7 +23,7 @@ class EventDispatcher extends BaseEventDispatcher
 {
     public function addListener($eventName, $listener, $priority = 0)
     {
-        if (is_array($listener) && $listener[0] instanceof EventSubscriberInterface) {
+        if (\is_array($listener) && $listener[0] instanceof EventSubscriberInterface) {
             if ($listener[0] instanceof ContentSubscriberInterface) {
                 $listener = new ContentListener($listener[0]->getExtension(), $listener);
             } else {

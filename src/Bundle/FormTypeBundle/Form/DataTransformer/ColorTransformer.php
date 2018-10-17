@@ -30,7 +30,7 @@ class ColorTransformer implements DataTransformerInterface
             $value = substr($value, 1);
         }
 
-        if (strlen($value) == 6 && ctype_xdigit($value)) {
+        if (\strlen($value) == 6 && ctype_xdigit($value)) {
             return '#'.$value;
         }
 
@@ -46,7 +46,7 @@ class ColorTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (!is_string($value)) {
+        if (!\is_string($value)) {
             throw new TransformationFailedException('Expected a string.');
         }
 
@@ -56,7 +56,7 @@ class ColorTransformer implements DataTransformerInterface
             return '';
         }
 
-        if (strlen($value) == 7 && $value[0] === '#' && ctype_xdigit(substr($value, 1))) {
+        if (\strlen($value) == 7 && $value[0] === '#' && ctype_xdigit(substr($value, 1))) {
             return $value;
         }
 
