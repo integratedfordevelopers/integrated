@@ -25,6 +25,10 @@
 
     <div class="row">
         <div class="col-md-8 push-sm-down">
+            {% block content_title %}
+                <h1 class="main-title font-regular">{% trans %}Edit{% endtrans %} {{ type.name|trans }}</h1>
+            {% endblock %}
+
             <section class="section-white section-padding section-shadow section-radius">
                 {% block content_form %}
                     {{ form(form, { 'style': 'horizontal', 'label_col': 4, 'widget_col': 8, 'col_size': 'sm' }) }}
