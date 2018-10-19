@@ -46,7 +46,7 @@
                                 {{ document.id }}
                             </td>
                             <td>
-                                <a href="{{ path('integrated_content_content_type_show', {'id': document.id}) }}">
+                                <a href="{{ path('integrated_import_definition', {'id': document.id}) }}">
                                     {{ document.name }}
                                 </a>
                             </td>
@@ -69,7 +69,7 @@
                     {% else %}
                         <tr>
                             <td colspan="4">
-                                {% trans %}No content types added{% endtrans %}
+                                {% trans %}No import definitions have been added{% endtrans %}
                             </td>
                         </tr>
                     {% endfor %}

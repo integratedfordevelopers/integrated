@@ -55,6 +55,7 @@ class ImportFile
             case "application/json":
                 $data = json_decode($filePath, true);
                 break;
+            case "text/xml":
             case "application/xml":
                 $xmlNode = simplexml_load_file($filePath, 'SimpleXMLElement', LIBXML_NOCDATA);
                 $alwaysArrayElements = [];
@@ -62,7 +63,6 @@ class ImportFile
                     'alwaysArray' => $alwaysArrayElements,
                     'autoText' => false,
                 ));
-
                 $data = json_encode($data);
                 $data = json_decode($data,true);
                 break;

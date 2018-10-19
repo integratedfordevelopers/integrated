@@ -29,6 +29,7 @@ use Integrated\Bundle\StorageBundle\Storage\Reader\MemoryReader;
 use Integrated\Common\Content\Form\ContentFormType;
 use JMS\Serializer\Construction\UnserializeObjectConstructor;
 use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\Exception\RuntimeException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -75,13 +76,13 @@ class ImportController extends Controller
     {
         $contentTypes = $this->contentTypeManager->getAll();
 
-        //todo: load import definitions
+        $documents = $this->documentManager->getRepository(ImportDefinition::class)->findBy([], ['title' => 'asc']);
 
         return $this->render(
             'IntegratedImportBundle::index.html.twig',
             [
                 'contentTypes' => $contentTypes,
-                'documents' => []
+                'documents' => $documents,
             ]
         );
     }
@@ -120,7 +121,6 @@ class ImportController extends Controller
             ContentType::class,
             $importDefinition->getContentType()
         );
-//        dump($contentType->getClass());
 
         $contentTypeFile = $this->documentManager->find(
             ContentType::class,
@@ -206,6 +206,7 @@ class ImportController extends Controller
 
     public function composeDefinition(Request $request, ImportDefinition $importDefinition) {
         ini_set('max_execution_time', 3600);
+        ini_set('memory_limit', '4G');
 
         $data = $this->importFile->toArray($importDefinition);
         $data = $data['rss']['channel']['item'];
@@ -218,11 +219,24 @@ class ImportController extends Controller
                 }
                 if (is_array($value)) {
                     $valuet = '';
-                    foreach ($value as $value2) {
+                    foreach ($value as $key2 => $value2) {
+                        if ((string) $key2 == '@nicename') {
+                            continue;
+                        }
                         if (!is_array($value2)) {
                             $valuet .= $value2;
                         } else {
-                            foreach ($value2 as $value3) {
+                            foreach ($value2 as $key3 => $value3) {
+                                if ($key3 == 'wp:meta_key' && $value3['$'] == '_thumbnail_id') {
+                                    $data[$index]['_thumbnail_id'] = $value2['wp:meta_value']['$'];
+                                    if (!in_array('_thumbnail_id', $startRow)) {
+                                        $startRow[] = '_thumbnail_id';
+                                    }
+                                }
+
+                                if ((string) $key3 == '@nicename') {
+                                    continue;
+                                }
                                 if (!is_array($value3)) {
                                     if ($valuet != '') {
                                         $valuet .= ',';
@@ -356,7 +370,7 @@ class ImportController extends Controller
                 }
 
                 if (isset($newData['created_at'])) {
-                    $newData['created_at'] = str_replace(' ', 'T', $newData['created_at']) . '+1:00';
+                    $newData['created_at'] = str_replace(' ', 'T', $newData['created_at']) . '+2:00';
                 }
 
                 if (count($newData)) {
@@ -365,47 +379,104 @@ class ImportController extends Controller
 
                     $context->setAttribute('target', $target);
 
-                    $newObject = $serializer->deserialize(json_encode($newData), $contentType->getClass(), 'json', $context);
-
-                    $wpPostId = $newObject->getIntro();
-                    $newObject->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180911']));
-                    $newObject->setIntro(null);
+                    try {
+                        $newObject = $serializer->deserialize(json_encode($newData), $contentType->getClass(), 'json', $context);
+                    }
+                    catch (RuntimeException $e) {
+                        $this->get('braincrafted_bootstrap.flash')->error($e->getMessage());
+                        continue;
+                    }
 
                     $doubleArticle = $this->documentManager->getRepository(Article::class)->findOneBy(['title' => $newObject->getTitle()]);
                     if ($doubleArticle) {
                         //do not import duplicate articles
-                        if ($newObject->getTitle() != 'Dusk till Dawn') {
-                            continue;
-                        }
+                        continue;
                     }
 
                     $newObject->getPublishTime()->setStartDate($newObject->getCreatedAt());
-                    $content = $newObject->getContent();
 
-                    $newHtml = '';
-                    foreach (explode("\n", $content) as $line) {
-                        if (trim(strip_tags($line)) != "") {
-                            $line = '<p>' . $line . '</p>';
+                    $imgIds = [];
+                    if ($newObject instanceof Article) {
+                        $content = $newObject->getContent();
+
+                        $newHtml = '';
+                        foreach (explode("\n", $content) as $line) {
+                            if (trim(strip_tags($line)) != "") {
+                                $line = '<p>' . $line . '</p>';
+                            }
+                            $newHtml .= $line . "\n";
                         }
-                        $newHtml .= $line . "\n";
-                    }
 
-                    $html = HtmlDomParser::str_get_html($newHtml);
+                        $html = HtmlDomParser::str_get_html($newHtml);
 
-                    foreach($html->find('a') as $element) {
-                        $href = $element->href;
+                        foreach($html->find('a') as $element) {
+                            $href = $element->href;
+                            $title = false;
+
+                            if (stripos($href, '.png') === false
+                                && stripos($href, '.jpg') === false
+                                && stripos($href, '.jpeg') === false
+                                && stripos($href, '.gif') === false)
+                            {
+                                continue;
+                            }
+
+                            foreach($element->find('img') as $img) {
+                                $title = $img->title;
+                                if (!$title) {
+                                    $title = basename($img->src);
+                                    $title = str_replace('.png', '', $title);
+                                    $title = str_replace('.jpg', '', $title);
+                                    $title = str_replace('.jpeg', '', $title);
+                                    $title = str_replace('.gif', '', $title);
+                                }
+                            }
+                            if ($title) {
+                                $tmpfile = tempnam("/tmp/", "img") .  "." . pathinfo($href, PATHINFO_EXTENSION);
+                                file_put_contents($tmpfile, @file_get_contents($href));
+                                if (filesize($tmpfile) == 0) {
+                                    //echo $file . "\n";
+                                    //echo "FILE HAS 0 BYTES\n";
+                                    continue;
+                                }
+
+                                $storage = $this->storageManager->write(
+                                    new MemoryReader(
+                                        file_get_contents($tmpfile),
+                                        new StorageMetadata(
+                                            pathinfo($href, PATHINFO_EXTENSION),
+                                            mime_content_type($tmpfile),
+                                            new ArrayCollection(),
+                                            new ArrayCollection()
+                                        )
+                                    )
+                                );
+
+                                $file = new Image();
+                                $file->setContentType('meu_afbeelding');
+                                $file->setTitle($title);
+                                $file->setFile($storage);
+                                $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20181019']));
+
+                                $this->documentManager->persist($file);
+                                $this->documentManager->flush($file);
+
+                                $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                $relation->setRelationId('meu_media');
+                                $relation->setRelationType('embedded');
+                                $relation->addReference($file);
+                                $newObject->addRelation($relation);
+
+                                $element->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
+                            }
+                        }
+
+                        $html = HtmlDomParser::str_get_html((string) $html);
+
                         $title = false;
-
-                        if (stripos($href, '.png') === false
-                            && stripos($href, '.jpg') === false
-                            && stripos($href, '.jpeg') === false
-                            && stripos($href, '.gif') === false)
-                        {
-                            continue;
-                        }
-
-                        foreach($element->find('img') as $img) {
+                        foreach($html->find('img') as $img) {
                             $title = $img->title;
+                            $href = $img->src;
                             if (!$title) {
                                 $title = basename($img->src);
                                 $title = str_replace('.png', '', $title);
@@ -413,8 +484,7 @@ class ImportController extends Controller
                                 $title = str_replace('.jpeg', '', $title);
                                 $title = str_replace('.gif', '', $title);
                             }
-                        }
-                        if ($title) {
+
                             $tmpfile = tempnam("/tmp/", "img") .  "." . pathinfo($href, PATHINFO_EXTENSION);
                             file_put_contents($tmpfile, @file_get_contents($href));
                             if (filesize($tmpfile) == 0) {
@@ -436,86 +506,45 @@ class ImportController extends Controller
                             );
 
                             $file = new Image();
-                            $file->setContentType('meu_afbeelding');
+                            $file->setContentType('vlees_image');
                             $file->setTitle($title);
                             $file->setFile($storage);
-                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180911']));
+                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180919']));
 
                             $this->documentManager->persist($file);
                             $this->documentManager->flush($file);
 
                             $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId('meu_media');
+                            $relation->setRelationId('vlees_media');
                             $relation->setRelationType('embedded');
                             $relation->addReference($file);
                             $newObject->addRelation($relation);
 
-                            $element->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
-                        }
-                    }
-
-                    $html = HtmlDomParser::str_get_html((string) $html);
-
-                    $title = false;
-                    foreach($html->find('img') as $img) {
-                        $title = $img->title;
-                        $href = $img->src;
-                        if (!$title) {
-                            $title = basename($img->src);
-                            $title = str_replace('.png', '', $title);
-                            $title = str_replace('.jpg', '', $title);
-                            $title = str_replace('.jpeg', '', $title);
-                            $title = str_replace('.gif', '', $title);
+                            $img->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
                         }
 
-                        $tmpfile = tempnam("/tmp/", "img") .  "." . pathinfo($href, PATHINFO_EXTENSION);
-                        file_put_contents($tmpfile, @file_get_contents($href));
-                        if (filesize($tmpfile) == 0) {
-                            //echo $file . "\n";
-                            //echo "FILE HAS 0 BYTES\n";
-                            continue;
-                        }
+                        $html = (string) $html;
 
-                        $storage = $this->storageManager->write(
-                            new MemoryReader(
-                                file_get_contents($tmpfile),
-                                new StorageMetadata(
-                                    pathinfo($href, PATHINFO_EXTENSION),
-                                    mime_content_type($tmpfile),
-                                    new ArrayCollection(),
-                                    new ArrayCollection()
-                                )
-                            )
+                        $html = preg_replace_callback(
+                            '/\[gallery ids\="(.+?)".*?\]/',
+                            function ($matches) use (&$imgIds) {
+                                $imgIds = array_merge($imgIds, explode(",", $matches[1]));
+                                return '';
+                            },
+                            $html
                         );
 
-                        $file = new Image();
-                        $file->setContentType('meu_afbeelding');
-                        $file->setTitle($title);
-                        $file->setFile($storage);
-                        $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180911']));
+                        $newObject->setContent($html);
 
-                        $this->documentManager->persist($file);
-                        $this->documentManager->flush($file);
-
-                        $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                        $relation->setRelationId('meu_media');
-                        $relation->setRelationType('embedded');
-                        $relation->addReference($file);
-                        $newObject->addRelation($relation);
-
-                        $img->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
                     }
-
                     //dump((string) $html);
 
-                    $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(['name' => 'Meubelplus']);
+                    $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(['name' => 'Vleesplus']);
                     if (!$channel) {
                         throw new \Exception('No channel');
                     }
 
                     $newObject->addChannel($channel);
-
-                    $newObject->setContent((string) $html);
 
                     /*
                     preg_match('/<img[^>]*src *= *["\']?([^"\']*)[^>]*>/i', $content, $matches);
@@ -627,6 +656,59 @@ class ImportController extends Controller
                     }
 
                     $doneTitles[] = $newObject->getTitle();
+
+                    if (isset($row['wp:attachment_url']) && $newObject instanceof File) {
+                        $tmpfile = tempnam("/tmp/", "img") .  "." . pathinfo($row['wp:attachment_url'], PATHINFO_EXTENSION);
+                        file_put_contents($tmpfile, @file_get_contents($row['wp:attachment_url']));
+                        if (filesize($tmpfile) == 0) {
+                            //echo $file . "\n";
+                            //echo "FILE HAS 0 BYTES\n";
+                            continue;
+                        }
+
+                        $storage = $this->storageManager->write(
+                            new MemoryReader(
+                                file_get_contents($tmpfile),
+                                new StorageMetadata(
+                                    pathinfo($row['wp:attachment_url'], PATHINFO_EXTENSION),
+                                    mime_content_type($tmpfile),
+                                    new ArrayCollection(),
+                                    new ArrayCollection()
+                                )
+                            )
+                        );
+
+                        $newObject->setFile($storage);
+                    }
+
+                    if (isset($row['_thumbnail_id'])) {
+                        $imgIds[] = $row['_thumbnail_id'];
+                    }
+
+                    foreach ($imgIds as $imgId) {
+                        $image = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.wpPostId' => $imgId, 'metadata.data.wpSiteUrl' => 'https://www.vleesplus.nl']);
+                        if ($image) {
+                            $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                            $relation->setRelationId('vlees_media');
+                            $relation->setRelationType('embedded');
+                            $relation->addReference($image);
+                            $newObject->addRelation($relation);
+                        } else {
+                            $this->get('braincrafted_bootstrap.flash')->error('Image with ID ' . $imgId . ' not found');
+                        }
+                    }
+
+                    if (isset($row['wp:post_id'])) {
+                        $newObject->setMetaData(
+                            new Metadata(
+                                [
+                                    'wpPostId' => $row['wp:post_id'],
+                                    'wpSiteUrl' => 'https://www.vleesplus.nl',
+                                    'importDate' => '20181019'
+                                ]
+                            )
+                        );
+                    }
 
                     $this->documentManager->persist($newObject);
                     $this->documentManager->flush();
