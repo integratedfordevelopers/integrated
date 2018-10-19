@@ -1022,6 +1022,10 @@ class ContentController extends Controller
         $form = $this->createForm(ContentFormType::class, $content, [
             'action' => $this->generateUrl('integrated_content_content_new', ['type' => $request->get('type'), '_format' => $request->getRequestFormat(), 'relation' => $request->get('relation')]),
             'method' => 'POST',
+            'attr' => [
+                'class' => 'content-form',
+                'data-content-type' => $contentType->getId(),
+            ],
             'content_type' => $contentType,
         ]);
 
@@ -1049,7 +1053,7 @@ class ContentController extends Controller
             'attr' => [
                 'class' => 'content-form',
                 'data-content-id' => $content->getId(),
-                'data-content-type' => $content->getContentType(),
+                'data-content-type' => $contentType->getId(),
             ],
             // don't display error's when the content is locked as the user can't save in the first place
             'validation_groups' => $locking['locked'] ? false : null,
