@@ -389,8 +389,10 @@ class ImportController extends Controller
 
                     $doubleArticle = $this->documentManager->getRepository(Article::class)->findOneBy(['title' => $newObject->getTitle()]);
                     if ($doubleArticle) {
-                        //do not import duplicate articles
-                        continue;
+                        //do not import duplicate articles, except for files
+                        if (!$newObject instanceof File) {
+                            continue;
+                        }
                     }
 
                     $newObject->getPublishTime()->setStartDate($newObject->getCreatedAt());
@@ -400,11 +402,46 @@ class ImportController extends Controller
                         $content = $newObject->getContent();
 
                         $newHtml = '';
+                        $prevLine = '';
                         foreach (explode("\n", $content) as $line) {
+                            $line = trim($line);
                             if (trim(strip_tags($line)) != "") {
-                                $line = '<p>' . $line . '</p>';
+                                if (substr($line, -3, 3) == 'h1>'
+                                    || substr($line, -3, 3) == 'h2>'
+                                    || substr($line, -3, 3) == 'h3>'
+                                    || substr($line, -3, 3) == 'li>'
+                                ) {
+                                    //niks mee doen
+                                    if ($prevLine == 'li') {
+                                        $newHtml .= '</ul>';
+                                    }
+                                    $prevLine = '';
+                                } elseif (strlen(strip_tags($line)) < 90
+                                    && substr($line, -1, 1) != '.'
+                                    && substr($line, -1, 1) != '?'
+                                    && (substr($line, -1, 1) != '>' || substr($line, -3, 3) == '/a>')
+                                ) {
+                                    if ($prevLine != 'li') {
+                                        $newHtml .= '<ul>';
+                                    }
+                                    if (strpos($line, '- ') === 0) {
+                                        $line = substr($line, 2);
+                                    }
+                                    $line = '<li>' . $line . '</li>';
+                                    $prevLine = 'li';
+                                } else {
+                                    if ($prevLine == 'li') {
+                                        $newHtml .= '</ul>';
+                                    }
+                                    $line = '<p>' . $line . '</p>';
+                                    $prevLine = 'p';
+                                }
                             }
                             $newHtml .= $line . "\n";
+                        }
+
+                        if ($prevLine == 'li') {
+                            $newHtml .= '</ul>';
                         }
 
                         $html = HtmlDomParser::str_get_html($newHtml);
@@ -456,7 +493,7 @@ class ImportController extends Controller
                                 $file->setContentType('meu_afbeelding');
                                 $file->setTitle($title);
                                 $file->setFile($storage);
-                                $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20181019']));
+                                $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'wpSiteUrl' => 'https://www.vleesplus.nl', 'importDate' => '20181019']));
 
                                 $this->documentManager->persist($file);
                                 $this->documentManager->flush($file);
@@ -477,6 +514,18 @@ class ImportController extends Controller
                         foreach($html->find('img') as $img) {
                             $title = $img->title;
                             $href = $img->src;
+
+                            $image = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.wpUrl' => $href, 'metadata.data.wpSiteUrl' => 'https://www.vleesplus.nl']);
+                            if ($image) {
+                                //attach existing images instead of duplication
+                                $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                $relation->setRelationId('vlees_media');
+                                $relation->setRelationType('embedded');
+                                $relation->addReference($image);
+                                $newObject->addRelation($relation);
+                                continue;
+                            }
+
                             if (!$title) {
                                 $title = basename($img->src);
                                 $title = str_replace('.png', '', $title);
@@ -509,7 +558,7 @@ class ImportController extends Controller
                             $file->setContentType('vlees_image');
                             $file->setTitle($title);
                             $file->setFile($storage);
-                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180919']));
+                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'wpUrl' => $href, 'importDate' => '20180919']));
 
                             $this->documentManager->persist($file);
                             $this->documentManager->flush($file);
@@ -704,7 +753,8 @@ class ImportController extends Controller
                                 [
                                     'wpPostId' => $row['wp:post_id'],
                                     'wpSiteUrl' => 'https://www.vleesplus.nl',
-                                    'importDate' => '20181019'
+                                    'wpUrl' => (isset($row['wp:attachment_url'])) ? $row['wp:attachment_url'] : $row['link'],
+                                    'importDate' => '20181019',
                                 ]
                             )
                         );
