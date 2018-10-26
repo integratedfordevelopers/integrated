@@ -93,6 +93,7 @@ The <info>%command.name%</info> command starts a index of the site.
 
         if ($input->getOption('commit')) {
             $this->doIndexCommit();
+
             return 0;
         }
 
