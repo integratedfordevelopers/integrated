@@ -130,23 +130,25 @@
         {% endverbatim %}
     {% endautoescape %}
 
-    <div class="modal fade" id="content-edit-modal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">{% trans %}Unsaved changes{% endtrans %}</h4>
-                </div>
-                <div class="modal-body">
-                    <p>{% trans %}You have unsaved changes. When you leave this page your changes will be lost.{% endtrans %}</p>
-                    <p>{% trans %}Are you sure you want to leave this page?{% endtrans %}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary live-page">{% trans %}Leave this page{% endtrans %}</button>
-                    <button type="button" class="btn btn-gray-thin" data-dismiss="modal">{% trans %}Stay on page{% endtrans %}</button>
+    {% block edit_modal %}
+        <div class="modal fade" id="content-edit-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">{% trans %}Unsaved changes{% endtrans %}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>{% trans %}You have unsaved changes. When you leave this page your changes will be lost.{% endtrans %}</p>
+                        <p>{% trans %}Are you sure you want to leave this page?{% endtrans %}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary live-page">{% trans %}Leave this page{% endtrans %}</button>
+                        <button type="button" class="btn btn-gray-thin" data-dismiss="modal">{% trans %}Stay on page{% endtrans %}</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endblock %}
 {% endblock %}
 
 {% block javascript %}
