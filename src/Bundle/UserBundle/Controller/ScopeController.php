@@ -192,7 +192,7 @@ class ScopeController extends Controller
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default', 'formnovalidate' => true]]],
             ],
         ]);
 
@@ -218,7 +218,7 @@ class ScopeController extends Controller
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default', 'formnovalidate' => true]]],
             ],
         ]);
 
@@ -244,7 +244,7 @@ class ScopeController extends Controller
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default', 'formnovalidate' => true]]],
             ],
         ]);
 
