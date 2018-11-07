@@ -156,7 +156,7 @@ The <info>%command.name%</info> command starts a indexer run.
     private function runInternal($lock, OutputInterface $output)
     {
         try {
-            $lock = $this->lockFactory->createLock(self::class.md5(__DIR__ . $lock));
+            $lock = $this->lockFactory->createLock(self::class.md5(__DIR__.$lock));
             $lock->acquire(true);
 
             try {
