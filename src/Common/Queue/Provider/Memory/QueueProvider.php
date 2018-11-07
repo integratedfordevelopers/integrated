@@ -18,6 +18,9 @@ use Integrated\Common\Queue\Provider\QueueProviderInterface;
  */
 class QueueProvider implements QueueProviderInterface
 {
+    /**
+     * @var array
+     */
     private $queue = [];
 
     /**
@@ -25,16 +28,23 @@ class QueueProvider implements QueueProviderInterface
      */
     public function push($channel, $payload, $delay = 0, $priority = 0)
     {
-        // this is a in memory queue so delay is ignored.
         // TODO: for now also ignore priority
 
         $channel = (string) $channel;
+        $timestamp = time();
 
         if (!isset($this->queue[$channel])) {
             $this->queue[$channel] = [];
         }
 
-        $this->queue[$channel][] = ['payload' => $payload, 'attempts' => 0, 'priority' => min(max((int) $priority, -10), 10)];
+        $this->queue[$channel][] = [
+            'payload' => $payload,
+            'attempts' => 0,
+            'priority' => min(max((int) $priority, -10), 10),
+            'time_created' => $timestamp,
+            'time_updated' => $timestamp,
+            'time_execute' => $timestamp + $delay,
+        ];
     }
 
     /**
@@ -42,6 +52,8 @@ class QueueProvider implements QueueProviderInterface
      */
     public function pull($channel, $limit = 1)
     {
+        // this is a in memory queue so delay is ignored.
+
         $channel = (string) $channel;
 
         if (!isset($this->queue[$channel])) {
@@ -59,7 +71,15 @@ class QueueProvider implements QueueProviderInterface
                 array_unshift($this->queue[$channel], $row);
             };
 
-            $results[] = new QueueMessage($row['payload'], $row['attempts'], $row['priority'], $release);
+            $results[] = new QueueMessage(
+                $row['payload'],
+                $row['attempts'],
+                $row['priority'],
+                $row['time_created'],
+                $row['time_updated'],
+                $row['time_execute'],
+                $release
+            );
         }
 
         return $results;
@@ -78,6 +98,6 @@ class QueueProvider implements QueueProviderInterface
      */
     public function count($channel)
     {
-        return isset($this->queue[$channel]) ? count($this->queue[$channel]) : 0;
+        return isset($this->queue[$channel]) ? \count($this->queue[$channel]) : 0;
     }
 }

@@ -145,7 +145,7 @@ The <info>%command.name%</info> command creates a new user
 
         $errors = $this->validator->validate($user);
 
-        if (count($errors) > 0) {
+        if (\count($errors) > 0) {
             $output->writeln(sprintf('Aborting: user model not valid: %s', (string) $errors));
 
             return 1;

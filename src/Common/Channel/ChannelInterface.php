@@ -38,4 +38,9 @@ interface ChannelInterface
      * @return PermissionInterface[]
      */
     public function getPermissions();
+
+    /**
+     * @return string
+     */
+    public function getPrimaryDomain();
 }

@@ -28,7 +28,7 @@ class ContainerBlock extends Block
      * @Type\Field(
      *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={
-     *          "type"="Integrated\Bundle\BlockBundle\Form\Type\BlockSizeType",
+     *          "entry_type"="Integrated\Bundle\BlockBundle\Form\Type\BlockSizeType",
      *          "default_title"="New block",
      *          "allow_add"=true,
      *          "allow_delete"=true

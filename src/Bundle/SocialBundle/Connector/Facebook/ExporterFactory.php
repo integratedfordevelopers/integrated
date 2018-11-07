@@ -12,7 +12,10 @@
 namespace Integrated\Bundle\SocialBundle\Connector\Facebook;
 
 use Facebook\Facebook;
+use Integrated\Bundle\ChannelBundle\Model\ConfigInterface as ModelConfigInterface;
+use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
+use Integrated\Common\Channel\Exception\UnexpectedTypeException;
 use Integrated\Common\Channel\Exporter\ExportableInterface;
 use RuntimeException;
 
@@ -37,12 +40,23 @@ class ExporterFactory implements ExportableInterface
     /**
      * {@inheritdoc}
      */
-    public function getExporter(OptionsInterface $options)
+    public function getExporter(ConfigInterface $config)
     {
+        if (!$config instanceof ModelConfigInterface) {
+            throw new UnexpectedTypeException($config, ModelConfigInterface::class);
+        }
+
+        $options = $config->getOptions();
+
+        if (!$options instanceof OptionsInterface) {
+            throw new UnexpectedTypeException($options, OptionsInterface::class);
+        }
+
+        // It should contain at least the token.
         if (!$options->has('token')) {
             throw new RuntimeException('A access token is required to create a facebook exporter');
         }
 
-        return new Exporter($this->facebook, $options->get('token'));
+        return new Exporter($this->facebook, $config);
     }
 }

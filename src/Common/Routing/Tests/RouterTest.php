@@ -12,7 +12,7 @@
 namespace Integrated\Routing\Queue\Tests;
 
 use Integrated\Common\Routing\Router;
-use stdClass as Object;
+use stdClass;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
@@ -80,9 +80,9 @@ class RouterTest extends \PHPUnit\Framework\TestCase
             ->with($this->identicalTo($this->context));
 
         $response = [
-            new Object(),
-            new Object(),
-            new Object(),
+            new stdClass(),
+            new stdClass(),
+            new stdClass(),
         ];
 
         $this->router->expects($this->exactly(3))
@@ -112,9 +112,9 @@ class RouterTest extends \PHPUnit\Framework\TestCase
             ->with($this->identicalTo($this->context));
 
         $response = [
-            new Object(),
-            new Object(),
-            new Object(),
+            new stdClass(),
+            new stdClass(),
+            new stdClass(),
         ];
 
         $request = [
@@ -146,9 +146,9 @@ class RouterTest extends \PHPUnit\Framework\TestCase
             ->with($this->identicalTo($this->context));
 
         $response = [
-            new Object(),
-            new Object(),
-            new Object(),
+            new stdClass(),
+            new stdClass(),
+            new stdClass(),
         ];
 
         $request = [
@@ -231,9 +231,9 @@ class RouterTest extends \PHPUnit\Framework\TestCase
     public function testGetRouteCollection()
     {
         $response = [
-            new Object(),
-            new Object(),
-            new Object(),
+            new stdClass(),
+            new stdClass(),
+            new stdClass(),
         ];
 
         $this->router->expects($this->exactly(3))

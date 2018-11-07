@@ -22,7 +22,7 @@
         <parameter key="integrated_website.controller.content_type.company.class">Integrated\Bundle\ContentBundle\Document\Content\Relation\Company</parameter>
         <parameter key="integrated_website.controller.content_type.event.class">Integrated\Bundle\ContentBundle\Document\Content\Event</parameter>
         <parameter key="integrated_website.controller.content_type.job_posting.class">Integrated\Bundle\ContentBundle\Document\Content\JobPosting</parameter>
-        <parameter key="integrated_website.controller.content_type.taxonomy.class">Integrated\Bundle\WebsiteBundle\Controller\Content\TaxonomyController</parameter>
+        <parameter key="integrated_website.controller.content_type.taxonomy.class">Integrated\Bundle\ContentBundle\Document\Content\Taxonomy</parameter>
 
     </parameters>
 

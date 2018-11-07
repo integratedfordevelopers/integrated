@@ -54,7 +54,7 @@ class ChannelEnforcerListener implements EventSubscriberInterface
     {
         $this->channels = $channels;
 
-        if (!in_array($operand, [self::SET, self::ADD])) {
+        if (!\in_array($operand, [self::SET, self::ADD])) {
             throw new InvalidArgumentException(sprintf('Valid options are "%s" and "%s", "%s" given', self::SET, self::ADD, $operand));
         }
 

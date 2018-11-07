@@ -267,6 +267,10 @@ class User implements UserInterface
     {
         $roles = [];
 
+        if ($this->enabled) {
+            $roles[] = 'ROLE_USER'; // Every user must have this role
+        }
+
         foreach ($this->roles as $role) {
             $roles[] = $role->getRole();
         }

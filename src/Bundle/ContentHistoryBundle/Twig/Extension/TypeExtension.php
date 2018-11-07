@@ -34,7 +34,7 @@ class TypeExtension extends \Twig_Extension
      */
     public function getType($value)
     {
-        return gettype($value);
+        return \gettype($value);
     }
 
     /**
@@ -44,7 +44,7 @@ class TypeExtension extends \Twig_Extension
      */
     public function getClass($value)
     {
-        return get_class($value);
+        return \get_class($value);
     }
 
     /**

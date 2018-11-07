@@ -13,7 +13,6 @@ namespace Integrated\Bundle\ChannelBundle\Model;
 
 use DateTime;
 use Integrated\Common\Channel\ChannelInterface;
-use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 
 /**
@@ -21,6 +20,11 @@ use Integrated\Common\Channel\Connector\Config\OptionsInterface;
  */
 class Config implements ConfigInterface
 {
+    /**
+     * @var int
+     */
+    protected $id;
+
     /**
      * @var string
      */
@@ -52,25 +56,26 @@ class Config implements ConfigInterface
     protected $updated;
 
     /**
-     * Constructor.
+     * @param int $id
      */
-    public function __construct()
+    public function __construct(?int $id = null)
     {
+        $this->id = $id;
         $this->created = $this->updated = new DateTime();
-    }
-
-    /**
-     * @return string
-     */
-    public function getId()
-    {
-        return $this->name;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName(): ? string
     {
         return $this->name;
     }
@@ -80,9 +85,9 @@ class Config implements ConfigInterface
      *
      * @return $this
      */
-    public function setName($name)
+    public function setName(string $name)
     {
-        $this->name = (string) $name;
+        $this->name = $name;
 
         return $this;
     }
@@ -90,7 +95,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getAdapter()
+    public function getAdapter(): string
     {
         return $this->adapter;
     }
@@ -100,9 +105,9 @@ class Config implements ConfigInterface
      *
      * @return $this
      */
-    public function setAdapter($adapter)
+    public function setAdapter(string $adapter)
     {
-        $this->adapter = (string) $adapter;
+        $this->adapter = $adapter;
 
         return $this;
     }
@@ -190,7 +195,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptions()
+    public function getOptions(): OptionsInterface
     {
         if (null === $this->options) {
             $this->options = new Options();

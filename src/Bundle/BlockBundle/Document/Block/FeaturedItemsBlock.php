@@ -29,8 +29,8 @@ class FeaturedItemsBlock extends Block
      * @Type\Field(
      *      type="Integrated\Bundle\FormTypeBundle\Form\Type\SortableCollectionType",
      *      options={
-     *          "type"="Integrated\Bundle\FormTypeBundle\Form\Type\EmbeddedDocumentType",
-     *          "options"={
+     *          "entry_type"="Integrated\Bundle\FormTypeBundle\Form\Type\EmbeddedDocumentType",
+     *          "entry_options"={
      *              "data_class"="Integrated\Bundle\BlockBundle\Document\Block\Embedded\FeaturedItemsItem"
      *          },
      *          "allow_add"=true,

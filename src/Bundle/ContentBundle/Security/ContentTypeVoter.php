@@ -70,7 +70,7 @@ class ContentTypeVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, $this->permissions);
+        return \in_array($attribute, $this->permissions);
     }
 
     /**
@@ -88,7 +88,7 @@ class ContentTypeVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (\in_array('ROLE_ADMIN', $user->getRoles())) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
@@ -99,13 +99,13 @@ class ContentTypeVoter implements VoterInterface
             $workflow = $this->repository->find($workflowId);
             $state = $workflow->getDefault();
 
-            if (count($state->getPermissions())) {
+            if (\count($state->getPermissions())) {
                 // Workflow permissions overrules content type permissions
                 $permissionGroups = $state->getPermissions();
             }
         }
 
-        if (!count($permissionGroups)) {
+        if (!\count($permissionGroups)) {
             // No permissions available
             return VoterInterface::ACCESS_GRANTED;
         }

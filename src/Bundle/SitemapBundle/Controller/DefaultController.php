@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\SitemapBundle\Controller;
 
+use DateTime;
 use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Common\Content\Channel\ChannelContextInterface;
@@ -61,9 +62,13 @@ class DefaultController extends Controller
             throw new NotFoundHttpException('No channel found');
         }
 
+        $now = new DateTime();
+
         $count = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class)
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
+            ->field('publishTime.startDate')->lte($now)
+            ->field('publishTime.endDate')->gte($now)
             ->getQuery()
             ->count();
 
@@ -97,10 +102,14 @@ class DefaultController extends Controller
             throw new NotFoundHttpException();
         }
 
+        $now = new DateTime();
+
         $documents = $this->registry->getManagerForClass(Content::class)->createQueryBuilder(Content::class)
             ->select('contentType', 'slug', 'createdAt', 'class')
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
+            ->field('publishTime.startDate')->lte($now)
+            ->field('publishTime.endDate')->gte($now)
             ->sort('_id')
             ->skip(--$page * 50000)
             ->limit(50000)

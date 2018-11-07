@@ -193,7 +193,7 @@ class BlockSize
             $sizes['lg'] = $this->getSizeLg();
         }
 
-        if (!count($sizes)) {
+        if (!\count($sizes)) {
             if ($this->getSize()) {
                 $sizes['sm'] = $this->getSize();
             }

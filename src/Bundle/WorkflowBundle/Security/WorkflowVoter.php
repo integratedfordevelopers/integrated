@@ -96,7 +96,7 @@ class WorkflowVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, $this->permissions);
+        return \in_array($attribute, $this->permissions);
     }
 
     /**
@@ -104,8 +104,8 @@ class WorkflowVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        if (is_object($class)) {
-            $class = get_class($class);
+        if (\is_object($class)) {
+            $class = \get_class($class);
         }
 
         return is_subclass_of($class, 'Integrated\\Bundle\\UserBundle\\Model\\GroupableInterface');
@@ -126,7 +126,7 @@ class WorkflowVoter implements VoterInterface
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
-        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+        if (\in_array('ROLE_ADMIN', $user->getRoles())) {
             return VoterInterface::ACCESS_GRANTED;
         }
 
@@ -142,7 +142,7 @@ class WorkflowVoter implements VoterInterface
 
         $contentType = $this->getContentType($object->getContentType());
 
-        if (!$contentType || (!$contentType->hasOption('workflow') && !count($contentType->getPermissions()))) {
+        if (!$contentType || (!$contentType->hasOption('workflow') && !\count($contentType->getPermissions()))) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
 
@@ -169,13 +169,13 @@ class WorkflowVoter implements VoterInterface
                 return VoterInterface::ACCESS_ABSTAIN;
             }
 
-            if (count($state->getPermissions())) {
+            if (\count($state->getPermissions())) {
                 // Workflow permissions overrules content type permissions
                 $permissionGroups = $state->getPermissions();
             }
         }
 
-        if (!count($permissionGroups)) {
+        if (!\count($permissionGroups)) {
             // No permissions available
             return VoterInterface::ACCESS_GRANTED;
         }

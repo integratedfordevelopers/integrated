@@ -53,7 +53,7 @@ class ClassMetadataLoadFinderSubscriber implements EventSubscriber
 
     public function hasMatches()
     {
-        return count($this->matches) ? true : false;
+        return \count($this->matches) ? true : false;
     }
 
     public function setMatches(array $classes)
@@ -96,7 +96,7 @@ class ClassMetadataLoadFinderSubscriber implements EventSubscriber
 
     public function hasClasses()
     {
-        return count($this->classes) ? true : false;
+        return \count($this->classes) ? true : false;
     }
 
     public function setClasses(array $classes)

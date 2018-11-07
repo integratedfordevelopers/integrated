@@ -41,7 +41,7 @@ class RoleToEntityTransformer implements DataTransformerInterface
      */
     public function reverseTransform($values = [])
     {
-        if (!is_array($values)) {
+        if (!\is_array($values)) {
             return [];
         }
 
@@ -74,7 +74,7 @@ class RoleToEntityTransformer implements DataTransformerInterface
      */
     public function transform($values = [])
     {
-        if (!is_array($values)) {
+        if (!\is_array($values)) {
             return [];
         }
 

@@ -13,7 +13,7 @@ namespace Integrated\Bundle\SocialBundle\Connector;
 
 use Integrated\Bundle\SocialBundle\Connector\Facebook\Manifest;
 use Integrated\Common\Channel\Connector\AdapterInterface;
-use Integrated\Common\Channel\Connector\Config\OptionsInterface;
+use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\ConfigurableInterface;
 use Integrated\Common\Channel\Exporter\ExportableInterface;
 
@@ -64,8 +64,8 @@ class FacebookAdapter implements AdapterInterface, ConfigurableInterface, Export
     /**
      * {@inheritdoc}
      */
-    public function getExporter(OptionsInterface $options)
+    public function getExporter(ConfigInterface $config)
     {
-        return $this->factory->getExporter($options);
+        return $this->factory->getExporter($config);
     }
 }

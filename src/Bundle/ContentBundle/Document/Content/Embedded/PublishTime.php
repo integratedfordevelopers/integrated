@@ -11,16 +11,14 @@
 
 namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
+use DateTime;
+use Integrated\Common\Content\PublishTimeInterface;
+
 /**
  * @author Ger Jan van den Bosch <gerjan@e-active.nl>
  */
-class PublishTime
+class PublishTime implements PublishTimeInterface
 {
-    /**
-     * @var string
-     */
-    const DATE_MAX = '9999-12-31 00:00:00'; // @todo find a better way (INTEGRATED-429)
-
     /**
      * @var \DateTime
      */
@@ -32,19 +30,17 @@ class PublishTime
     protected $endDate;
 
     /**
-     * @return \DateTime
+     * {@inheritdoc}
      */
-    public function getStartDate()
+    public function getStartDate(): ? DateTime
     {
         return $this->startDate;
     }
 
     /**
-     * @param \DateTime $startDate
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setStartDate(\DateTime $startDate = null)
+    public function setStartDate(DateTime $startDate = null)
     {
         $this->startDate = $startDate;
 
@@ -52,19 +48,17 @@ class PublishTime
     }
 
     /**
-     * @return \DateTime
+     * {@inheritdoc}
      */
-    public function getEndDate()
+    public function getEndDate(): ? DateTime
     {
         return $this->endDate;
     }
 
     /**
-     * @param \DateTime $endDate
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setEndDate(\DateTime $endDate = null)
+    public function setEndDate(DateTime $endDate = null)
     {
         $this->endDate = $endDate;
 
@@ -72,11 +66,9 @@ class PublishTime
     }
 
     /**
-     * @param \DateTime $date
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isPublished(\DateTime $date = null)
+    public function isPublished(DateTime $date = null): bool
     {
         if (null === $date) {
             $date = new \DateTime();

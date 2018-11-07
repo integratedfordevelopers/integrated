@@ -50,11 +50,12 @@ class ConfigController extends Controller
     protected $dispatcher;
 
     /**
-     * Constructor/.
+     * ConfigController constructor.
      *
-     * @param ConfigManagerInterface $manager
-     * @param RegistryInterface      $registry
-     * @param ContainerInterface     $container
+     * @param ConfigManagerInterface   $manager
+     * @param RegistryInterface        $registry
+     * @param EventDispatcherInterface $dispatcher
+     * @param ContainerInterface       $container
      */
     public function __construct(
         ConfigManagerInterface $manager,
@@ -65,7 +66,6 @@ class ConfigController extends Controller
         $this->manager = $manager;
         $this->registry = $registry;
         $this->dispatcher = $dispatcher;
-
         $this->container = $container;
     }
 
@@ -117,12 +117,14 @@ class ConfigController extends Controller
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // first we need to persist, because we need an ID in the event
+            // this is dispatched down below
+            $this->manager->persist($data);
+
             $event = $this->dispatcher->dispatch(
                 IntegratedChannelEvents::CONFIG_CREATE_SUBMITTED,
                 new FormConfigEvent($data, $request, $form)
             );
-
-            $this->manager->persist($data);
 
             if (!$response = $event->getResponse()) {
                 if ($message = $this->getFlashMessage()) {
@@ -272,7 +274,7 @@ class ConfigController extends Controller
      * @param Config           $data
      * @param AdapterInterface $adapter
      *
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createNewForm(Config $data, AdapterInterface $adapter)
     {
@@ -294,13 +296,13 @@ class ConfigController extends Controller
      * @param Config           $data
      * @param AdapterInterface $adapter
      *
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createEditForm(Config $data, AdapterInterface $adapter)
     {
         $form = $this->createForm(ConfigFormType::class, $data, [
             'adapter' => $adapter,
-            'action' => $this->generateUrl('integrated_channel_config_edit', ['id' => $data->getName()]),
+            'action' => $this->generateUrl('integrated_channel_config_edit', ['id' => $data->getId()]),
             'method' => 'PUT',
         ]);
 
@@ -312,12 +314,12 @@ class ConfigController extends Controller
     /**
      * @param Config $data
      *
-     * @return \Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\FormInterface
      */
     protected function createDeleteForm(Config $data)
     {
         $form = $this->createForm(DeleteFormType::class, $data, [
-            'action' => $this->generateUrl('integrated_channel_config_delete', ['id' => $data->getName()]),
+            'action' => $this->generateUrl('integrated_channel_config_delete', ['id' => $data->getId()]),
             'method' => 'DELETE',
         ]);
 

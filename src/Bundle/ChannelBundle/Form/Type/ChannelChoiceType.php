@@ -44,7 +44,7 @@ class ChannelChoiceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new ChannelTransformer($this->repository));
+        $builder->addModelTransformer(new ChannelTransformer($this->repository, $options['multiple']));
     }
 
     /**

@@ -26,11 +26,18 @@ class ChannelTransformer implements DataTransformerInterface
     private $repository;
 
     /**
-     * @param ChannelRepository $repository
+     * @var bool
      */
-    public function __construct(ChannelRepository $repository)
+    private $multiple;
+
+    /**
+     * @param ChannelRepository $repository
+     * @param bool              $multiple
+     */
+    public function __construct(ChannelRepository $repository, $multiple = false)
     {
         $this->repository = $repository;
+        $this->multiple = $multiple;
     }
 
     /**
@@ -38,7 +45,11 @@ class ChannelTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        if (!is_array($value)) {
+        if (!$this->multiple) {
+            return $this->repository->findOneBy(['id' => $value]);
+        }
+
+        if (!\is_array($value)) {
             return [];
         }
 
@@ -50,7 +61,15 @@ class ChannelTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (!is_array($value)) {
+        if (!$this->multiple) {
+            if ($value instanceof ChannelInterface) {
+                return $value->getId();
+            }
+
+            return null;
+        }
+
+        if (!\is_array($value)) {
             return [];
         }
 

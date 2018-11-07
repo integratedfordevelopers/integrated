@@ -17,7 +17,6 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Integrated\Bundle\UserBundle\Model\UserInterface;
-use Integrated\Bundle\UserBundle\Model\Role;
 use Integrated\Bundle\UserBundle\Model\Scope;
 
 class ScopeListener implements ListenerInterface
@@ -65,13 +64,15 @@ class ScopeListener implements ListenerInterface
             return;
         }
 
-        $user->addRole(new Role('ROLE_SCOPE_INTEGRATED'));
+        $roles = $user->getRoles();
+
+        array_push($roles, 'ROLE_SCOPE_INTEGRATED');
 
         $newToken = new UsernamePasswordToken(
             $user,
             $token->getCredentials(),
             $this->providerKey,
-            $user->getRoles()
+            $roles
         );
 
         $this->tokenStorage->setToken($newToken);

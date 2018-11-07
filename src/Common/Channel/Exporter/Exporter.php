@@ -11,10 +11,14 @@
 
 namespace Integrated\Common\Channel\Exporter;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\Config\ResolverInterface;
+use Integrated\Common\Content\ConnectorInterface;
+use Integrated\Common\Content\ContentInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -32,6 +36,11 @@ class Exporter implements ExporterInterface
     private $resolver;
 
     /**
+     * @var DocumentManager
+     */
+    private $dm;
+
+    /**
      * @var ExporterInterface[][]
      */
     private $cache = [];
@@ -39,11 +48,13 @@ class Exporter implements ExporterInterface
     /**
      * @param RegistryInterface $registry
      * @param ResolverInterface $resolver
+     * @param DocumentManager   $dm
      */
-    public function __construct(RegistryInterface $registry, ResolverInterface $resolver)
+    public function __construct(RegistryInterface $registry, ResolverInterface $resolver, DocumentManager $dm)
     {
         $this->registry = $registry;
         $this->resolver = $resolver;
+        $this->dm = $dm;
     }
 
     /**
@@ -53,7 +64,11 @@ class Exporter implements ExporterInterface
     {
         foreach ($this->getExporters($channel) as $exporter) {
             try {
-                $exporter->export($content, $state, $channel);
+                $response = $exporter->export($content, $state, $channel);
+
+                if ($response instanceof ExporterResponse) {
+                    $this->save($content, $response);
+                }
             } catch (Exception $e) {
                 // @todo probably should log this somewhere
             }
@@ -75,7 +90,7 @@ class Exporter implements ExporterInterface
                     $adaptor = $this->registry->getAdapter($config->getAdapter());
 
                     if ($adaptor instanceof ExportableInterface) {
-                        $exporters[] = $adaptor->getExporter($config->getOptions());
+                        $exporters[] = $adaptor->getExporter($config);
                     }
                 } catch (Exception $e) {
                     // @todo probably should log this somewhere
@@ -86,5 +101,33 @@ class Exporter implements ExporterInterface
         }
 
         return $this->cache[$channel->getId()];
+    }
+
+    /**
+     * @param object           $content
+     * @param ExporterResponse $response
+     */
+    protected function save($content, ExporterResponse $response)
+    {
+        if (!$content instanceof ContentInterface) {
+            return;
+        }
+
+        if (!$content instanceof ConnectorInterface) {
+            return;
+        }
+
+        if ($content->hasConnector($response->getConfigId())) {
+            $content->getConnector($response->getConfigId())
+                ->setConfigAdapter($response->getConfigAdapter())
+                ->setExternalId($response->getExternalId());
+        } else {
+            $content->addConnector((new Connector())
+                ->setConfigId($response->getConfigId())
+                ->setConfigAdapter($response->getConfigAdapter())
+                ->setExternalId($response->getExternalId()));
+        }
+
+        $this->dm->flush($content);
     }
 }

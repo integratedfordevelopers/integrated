@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Channel\Exporter;
 
-use Integrated\Common\Channel\Connector\Config\OptionsInterface;
+use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -19,9 +19,9 @@ use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 interface ExportableInterface
 {
     /**
-     * @param OptionsInterface $options
+     * @param ConfigInterface $config
      *
-     * @return ExporterInterface
+     * @return ConfigInterface
      */
-    public function getExporter(OptionsInterface $options);
+    public function getExporter(ConfigInterface $config);
 }
