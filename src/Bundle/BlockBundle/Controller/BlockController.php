@@ -229,7 +229,7 @@ class BlockController extends Controller
             $block,
             [
                 'method' => 'PUT',
-                'data_class' => get_class($block),
+                'data_class' => \get_class($block),
             ]
         );
 

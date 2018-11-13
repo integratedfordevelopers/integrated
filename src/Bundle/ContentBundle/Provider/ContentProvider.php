@@ -101,7 +101,7 @@ class ContentProvider
         // If the request query contains a properties parameter we need to fetch all the targets of the relation in order
         // to filter on these targets.
         $propertiesfilter = $request->query->get('properties');
-        if (is_array($propertiesfilter)) {
+        if (\is_array($propertiesfilter)) {
             $query
                 ->createFilterQuery('properties')
                 ->addTag('properties')
@@ -114,7 +114,7 @@ class ContentProvider
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
 
-            if (is_array($relationfilter)) {
+            if (\is_array($relationfilter)) {
                 $query
                     ->createFilterQuery($name)
                     ->addTag($name)
@@ -122,8 +122,8 @@ class ContentProvider
             }
         }
 
-        if (is_array($contentType)) {
-            if (count($contentType)) {
+        if (\is_array($contentType)) {
+            if (\count($contentType)) {
                 $query
                     ->createFilterQuery('contenttypes')
                     ->addTag('contenttypes')
@@ -138,8 +138,8 @@ class ContentProvider
         }
 
         $activeChannels = $request->query->get('channels');
-        if (is_array($activeChannels)) {
-            if (count($activeChannels)) {
+        if (\is_array($activeChannels)) {
+            if (\count($activeChannels)) {
                 $query
                     ->createFilterQuery('channels')
                     ->addTag('channels')
@@ -148,8 +148,8 @@ class ContentProvider
         }
 
         $activeStates = $request->query->get('workflow_state');
-        if (is_array($activeStates)) {
-            if (count($activeStates)) {
+        if (\is_array($activeStates)) {
+            if (\count($activeStates)) {
                 $query
                     ->createFilterQuery('workflow_state')
                     ->addTag('workflow_state')
@@ -158,8 +158,8 @@ class ContentProvider
         }
 
         $activeAssigned = $request->query->get('workflow_assigned');
-        if (is_array($activeAssigned)) {
-            if (count($activeAssigned)) {
+        if (\is_array($activeAssigned)) {
+            if (\count($activeAssigned)) {
                 $query
                     ->createFilterQuery('workflow_assigned')
                     ->addTag('workflow_assigned')
@@ -168,8 +168,8 @@ class ContentProvider
         }
 
         $activeAuthors = $request->query->get('authors');
-        if (is_array($activeAuthors)) {
-            if (count($activeAuthors)) {
+        if (\is_array($activeAuthors)) {
+            if (\count($activeAuthors)) {
                 $query
                     ->createFilterQuery('authors')
                     ->addTag('authors')
@@ -209,7 +209,7 @@ class ContentProvider
         $sort = trim(strtolower($sort));
         $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
+        $query->addSort($sort_options[$sort]['field'], \in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
 
         $query->setRows($limit);
         $iterator = $this->client->select($query)->getIterator();

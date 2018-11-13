@@ -2,7 +2,7 @@
 
 namespace Integrated\Common\Channel\Exporter;
 
-class ExporterReponse
+class ExporterResponse
 {
     /**
      * @var int

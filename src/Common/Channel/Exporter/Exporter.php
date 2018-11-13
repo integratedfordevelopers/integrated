@@ -13,7 +13,7 @@ namespace Integrated\Common\Channel\Exporter;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Exception;
-use Integrated\Bundle\ChannelBundle\Document\Embedded\Connector;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\Config\ResolverInterface;
@@ -66,7 +66,7 @@ class Exporter implements ExporterInterface
             try {
                 $response = $exporter->export($content, $state, $channel);
 
-                if ($response instanceof ExporterReponse) {
+                if ($response instanceof ExporterResponse) {
                     $this->save($content, $response);
                 }
             } catch (Exception $e) {
@@ -104,10 +104,10 @@ class Exporter implements ExporterInterface
     }
 
     /**
-     * @param ContentInterface $content
-     * @param ExporterReponse  $exporterReponse
+     * @param object           $content
+     * @param ExporterResponse $response
      */
-    protected function save($content, ExporterReponse $exporterReponse)
+    protected function save($content, ExporterResponse $response)
     {
         if (!$content instanceof ContentInterface) {
             return;
@@ -117,14 +117,16 @@ class Exporter implements ExporterInterface
             return;
         }
 
-        $connector = new Connector();
-        $connector
-            ->setConfigId($exporterReponse->getConfigId())
-            ->setConfigAdapter($exporterReponse->getConfigAdapter())
-            ->setExternalId($exporterReponse->getExternalId())
-        ;
-
-        $content->addConnector($connector);
+        if ($content->hasConnector($response->getConfigId())) {
+            $content->getConnector($response->getConfigId())
+                ->setConfigAdapter($response->getConfigAdapter())
+                ->setExternalId($response->getExternalId());
+        } else {
+            $content->addConnector((new Connector())
+                ->setConfigId($response->getConfigId())
+                ->setConfigAdapter($response->getConfigAdapter())
+                ->setExternalId($response->getExternalId()));
+        }
 
         $this->dm->flush($content);
     }

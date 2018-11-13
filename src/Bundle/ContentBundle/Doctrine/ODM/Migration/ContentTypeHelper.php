@@ -109,7 +109,7 @@ trait ContentTypeHelper
         }
 
         foreach ($metadata->getFields() as $field) {
-            if (!in_array(strtolower($field->getName()), array_merge($optionalFields, $requiredFields))) {
+            if (!\in_array(strtolower($field->getName()), array_merge($optionalFields, $requiredFields))) {
                 continue;
             }
 
@@ -118,7 +118,7 @@ trait ContentTypeHelper
                     ->setOptions(
                         array_merge(
                             $field->getOptions(),
-                            ['required' => in_array(strtolower($field->getName()), $requiredFields)]
+                            ['required' => \in_array(strtolower($field->getName()), $requiredFields)]
                         )
                     );
         }
@@ -174,7 +174,7 @@ trait ContentTypeHelper
         }
 
         foreach ($fields as $key => $field) {
-            if (in_array($field->getName(), $removeFields)) {
+            if (\in_array($field->getName(), $removeFields)) {
                 unset($fields[$key]);
             }
         }

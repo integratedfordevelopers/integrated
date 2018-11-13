@@ -11,7 +11,7 @@
 
 namespace Integrated\Common\Content;
 
-use Integrated\Bundle\ChannelBundle\Document\Embedded\Connector;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 
 interface ConnectorInterface
 {
@@ -25,9 +25,16 @@ interface ConnectorInterface
     public function addConnector(Connector $connector);
 
     /**
-     * @param int $id
+     * @param int $configId
      *
      * @return bool
      */
-    public function hasConnector($id): bool;
+    public function hasConnector(int $configId): bool;
+
+    /**
+     * @param int $configId
+     *
+     * @return Connector
+     */
+    public function getConnector(int $configId): Connector;
 }

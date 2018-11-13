@@ -41,14 +41,14 @@ class ScopeEventSubscriber
 
         $dm = $eventArgs->getDocumentManager();
 
-        $property = $dm->getClassMetadata(get_class($channel))->reflClass->getProperty('scope');
+        $property = $dm->getClassMetadata(\get_class($channel))->reflClass->getProperty('scope');
         $property->setAccessible(true);
 
         if (!$id = $property->getValue($channel)) {
             return;
         }
 
-        $property = $dm->getClassMetadata(get_class($channel))->reflClass->getProperty('scopeInstance');
+        $property = $dm->getClassMetadata(\get_class($channel))->reflClass->getProperty('scopeInstance');
         $property->setAccessible(true);
         $property->setValue(
             $channel,

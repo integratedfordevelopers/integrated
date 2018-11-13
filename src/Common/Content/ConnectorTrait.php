@@ -12,7 +12,8 @@
 namespace Integrated\Common\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Integrated\Bundle\ChannelBundle\Document\Embedded\Connector;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
+use InvalidArgumentException;
 
 trait ConnectorTrait
 {
@@ -29,6 +30,24 @@ trait ConnectorTrait
     public function getConnectors(): array
     {
         return $this->connectors->toArray();
+    }
+
+    /**
+     * Get a connector based on the configIg.
+     *
+     * @param int $configId
+     *
+     * @return Connector
+     */
+    public function getConnector(int $configId): Connector
+    {
+        foreach ($this->connectors as $connector) {
+            if ($configId === $connector->getConfigId()) {
+                return $connector;
+            }
+        }
+
+        throw new InvalidArgumentException(sprintf('No connector found with configId %d', $configId));
     }
 
     /**
@@ -62,14 +81,14 @@ trait ConnectorTrait
     }
 
     /**
-     * @param int $id
+     * @param int $configId
      *
      * @return bool
      */
-    public function hasConnector($id): bool
+    public function hasConnector(int $configId): bool
     {
-        return $this->connectors->exists(function ($key, Connector $element) use ($id) {
-            return $id === $element->getConfigId();
+        return $this->connectors->exists(function ($key, Connector $element) use ($configId) {
+            return $configId === $element->getConfigId();
         });
     }
 

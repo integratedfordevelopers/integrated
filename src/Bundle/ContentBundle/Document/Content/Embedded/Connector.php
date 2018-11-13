@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Integrated\Bundle\ChannelBundle\Document\Embedded;
+namespace Integrated\Bundle\ContentBundle\Document\Content\Embedded;
 
 class Connector
 {

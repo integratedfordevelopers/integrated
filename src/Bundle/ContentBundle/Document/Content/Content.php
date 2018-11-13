@@ -19,6 +19,8 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Channel\ChannelInterface;
 use Integrated\Common\Content\ChannelableInterface;
+use Integrated\Common\Content\ConnectorInterface;
+use Integrated\Common\Content\ConnectorTrait;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\Embedded\RelationInterface;
 use Integrated\Common\Content\ExtensibleInterface;
@@ -34,8 +36,9 @@ use Integrated\Common\Form\Mapping\Annotations as Type;
  *
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
  */
-abstract class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface, PublishableInterface
+abstract class Content implements ContentInterface, ExtensibleInterface, MetadataInterface, ChannelableInterface, PublishableInterface, ConnectorInterface
 {
+    use ConnectorTrait;
     use ExtensibleTrait;
 
     /**
@@ -120,6 +123,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
         $this->updatedAt = new \DateTime();
         $this->publishTime = new PublishTime();
         $this->channels = new ArrayCollection();
+        $this->connectors = new ArrayCollection();
     }
 
     /**
@@ -303,7 +307,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     {
         $references = $this->getReferencesByRelationType($relationType);
 
-        if (is_array($references) && count($references)) {
+        if (\is_array($references) && \count($references)) {
             return $references[0];
         }
 
@@ -327,7 +331,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
                         }
 
                         return $references->filter(function ($content) {
-                            return $content instanceof Content ? $content->isPublished() : true;
+                            return $content instanceof self ? $content->isPublished() : true;
                         });
                     }
                 }

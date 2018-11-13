@@ -3,7 +3,7 @@
                         xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
                     http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
-    <embedded-document name="Integrated\Bundle\ChannelBundle\Document\Embedded\Connector">
+    <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector">
 
         <field fieldName="configId" type="int" />
         <field fieldName="configAdapter" type="string" />

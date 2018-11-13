@@ -34,6 +34,8 @@
             field="relations"
             target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation" />
 
+        <embed-many field="connectors" target-document="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector" />
+
         <reference-one
             field="primaryChannel"
             target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel"

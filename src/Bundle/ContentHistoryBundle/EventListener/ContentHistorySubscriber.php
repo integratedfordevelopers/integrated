@@ -104,7 +104,7 @@ class ContentHistorySubscriber implements EventSubscriber
             return [];
         }
 
-        return (array) $dm->createQueryBuilder(get_class($document))->hydrate(false)
+        return (array) $dm->createQueryBuilder(\get_class($document))->hydrate(false)
             ->field('id')->equals($document->getId())
             ->getQuery()->getSingleResult();
     }
