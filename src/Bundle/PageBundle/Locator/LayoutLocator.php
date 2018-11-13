@@ -49,7 +49,7 @@ class LayoutLocator
             $this->layouts = [];
             foreach ($this->themeManager->getThemes() as $id => $theme2) {
                 if ($theme === $id
-                    || in_array($id, $this->themeManager->getTheme($theme)->getFallback())
+                    || \in_array($id, $this->themeManager->getTheme($theme)->getFallback())
                     || $id === 'default') {
                     foreach ($theme2->getPaths() as $resource) {
                         $path = $this->themeManager->locateResource($resource).$directory;
