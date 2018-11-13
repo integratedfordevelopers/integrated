@@ -36,7 +36,9 @@ class ScopeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         /** @var $paginator \Knp\Component\Pager\Paginator */
         $paginator = $this->get('knp_paginator');
@@ -58,7 +60,9 @@ class ScopeController extends Controller
      */
     public function newAction(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $form = $this->createNewForm();
 
@@ -95,7 +99,9 @@ class ScopeController extends Controller
      */
     public function editAction(Scope $scope, Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         if (!$scope) {
             throw $this->createNotFoundException();
@@ -133,7 +139,9 @@ class ScopeController extends Controller
      */
     public function deleteAction(Scope $scope, Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_USER_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         if (!$scope || $scope->isAdmin()) {
             return $this->redirect($this->generateUrl('integrated_user_scope_index'));

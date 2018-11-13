@@ -45,7 +45,9 @@ class ChannelController extends Controller
      */
     public function indexAction()
     {
-        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $documents = $this->getDocumentManager()->getRepository($this->channelClass)->findAll();
 
@@ -63,7 +65,9 @@ class ChannelController extends Controller
      */
     public function showAction(Channel $channel)
     {
-        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $form = $this->createDeleteForm($channel->getId());
 
@@ -80,7 +84,9 @@ class ChannelController extends Controller
      */
     public function newAction()
     {
-        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $channel = new Channel();
 
@@ -100,7 +106,9 @@ class ChannelController extends Controller
      */
     public function createAction(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $channel = new Channel();
 
@@ -133,7 +141,9 @@ class ChannelController extends Controller
      */
     public function editAction(Channel $channel)
     {
-        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $form = $this->createEditForm($channel);
 
@@ -153,7 +163,9 @@ class ChannelController extends Controller
      */
     public function updateAction(Request $request, Channel $channel)
     {
-        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $form = $this->createEditForm($channel);
         $form->handleRequest($request);
@@ -185,7 +197,9 @@ class ChannelController extends Controller
      */
     public function deleteAction(Request $request, Channel $channel)
     {
-        $this->denyAccessUnlessGranted(['ROLE_CHANNEL_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $form = $this->createDeleteForm($channel->getId());
         $form->handleRequest($request);

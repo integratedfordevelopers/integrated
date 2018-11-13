@@ -33,7 +33,9 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
         $data = $request->query->get('integrated_block_filter');
@@ -67,7 +69,9 @@ class BlockController extends Controller
      */
     public function showAction(Request $request, Block $block)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $request->attributes->set('integrated_block_edit', true);
 
@@ -83,7 +87,9 @@ class BlockController extends Controller
      */
     public function newAction(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $class = $request->get('class');
 
@@ -124,7 +130,9 @@ class BlockController extends Controller
      */
     public function editAction(Request $request, Block $block)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
@@ -156,7 +164,9 @@ class BlockController extends Controller
      */
     public function deleteAction(Request $request, Block $block)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         if ($block->isLocked()) {
             throw $this->createNotFoundException(sprintf('Block "%s" is locked.', $block->getId()));

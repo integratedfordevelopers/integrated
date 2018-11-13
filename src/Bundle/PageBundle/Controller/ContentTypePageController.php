@@ -31,7 +31,9 @@ class ContentTypePageController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $channel = $this->getSelectedChannel();
 
@@ -59,7 +61,9 @@ class ContentTypePageController extends Controller
      */
     public function editAction(Request $request, ContentTypePage $page)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $form = $this->createEditForm($page);
         $form->handleRequest($request);

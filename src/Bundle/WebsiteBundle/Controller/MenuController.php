@@ -48,7 +48,9 @@ class MenuController extends Controller
      */
     public function saveAction(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $dm = $this->getDocumentManager();
         $data = (array) json_decode($request->getContent(), true);

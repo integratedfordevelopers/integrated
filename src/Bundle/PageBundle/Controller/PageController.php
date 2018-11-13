@@ -32,7 +32,9 @@ class PageController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $channel = $this->getSelectedChannel();
 
@@ -59,7 +61,9 @@ class PageController extends Controller
      */
     public function newAction(Request $request)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $page = new Page();
 
@@ -96,7 +100,9 @@ class PageController extends Controller
      */
     public function editAction(Request $request, Page $page)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $form = $this->createEditForm($page);
         $form->handleRequest($request);
@@ -127,7 +133,9 @@ class PageController extends Controller
      */
     public function deleteAction(Request $request, Page $page)
     {
-        $this->denyAccessUnlessGranted(['ROLE_WEBSITE_MANAGER', 'ROLE_ADMIN']);
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         if ($page->isLocked()) {
             throw $this->createNotFoundException(sprintf('Page "%s" is locked.', $page->getId()));
