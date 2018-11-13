@@ -59,7 +59,7 @@ class LayoutLocator
 
                             /** @var \Symfony\Component\Finder\SplFileInfo $file */
                             foreach ($finder as $file) {
-                                if (!in_array($file->getRelativePathname(), $this->layouts)) {
+                                if (!\in_array($file->getRelativePathname(), $this->layouts)) {
                                     $this->layouts[] = $file->getRelativePathname();
                                 }
                             }
