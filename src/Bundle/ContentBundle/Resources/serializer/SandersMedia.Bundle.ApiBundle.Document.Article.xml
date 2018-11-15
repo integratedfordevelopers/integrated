@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="SandersMedia\Bundle\ApiBundle\Document\Article" exclusion-policy="all">
+        <property name="partnerLinks"
+                  expose="true"
+                  type="string"
+        />
+        <property name="highlight"
+                  expose="true"
+                  type="boolean"
+        />
+        <property name="productImage"
+                  expose="true"
+                  type="boolean"
+        />
+    </class>
+</serializer>
