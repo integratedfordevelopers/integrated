@@ -42,6 +42,8 @@ class WorkflowController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
@@ -65,6 +67,8 @@ class WorkflowController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
@@ -100,6 +104,8 @@ class WorkflowController extends Controller
      */
     public function editAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         /** @var Definition $workflow */
         $workflow = $this->getDoctrine()
             ->getManager()
@@ -145,6 +151,8 @@ class WorkflowController extends Controller
      */
     public function deleteAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         /** @var Definition $workflow */
         $workflow = $this->getDoctrine()
             ->getManager()
