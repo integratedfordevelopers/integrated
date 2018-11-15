@@ -49,11 +49,22 @@ class ImportFile
         }
 
         $mimeType = $file->getFile()->getMetadata()->getMimeType();
+        $extension = $file->getFile()->getMetadata()->getExtension();
         $filePath = $this->storageCache->path($file->getFile())->getPathname();
+
+        //sometimes the mimetype is not detected correctly
+        switch ($extension) {
+            case "json":
+                $mimeType = "application/json";
+                break;
+            case "xml":
+                $mimeType = "application/xml";
+                break;
+        }
 
         switch ($mimeType) {
             case "application/json":
-                $data = json_decode($filePath, true);
+                $data = json_decode(file_get_contents($filePath), true);
                 break;
             case "text/xml":
             case "application/xml":
