@@ -52,6 +52,28 @@ class ImageMagickAdapter implements AdapterInterface
             // Open the file on the tenth frame, this saves a us a hell of a lot memory
             // When no frame is specified Imagick will write every frame on /tmp
             $imagick = new \Imagick(sprintf('%s[10]', $file->getPathname()));
+
+            $overlay = new \Imagick(__DIR__ . '/../../Resources/images/play-overlay.png');
+
+            $imageWidth = $imagick->getImageWidth();
+            $imageHeight = $imagick->getImageHeight();
+            $overlayWidth = $overlay->getImageWidth();
+            $overlayHeight = $overlay->getImageHeight();
+
+            if ($imageHeight < $overlayHeight || $imageWidth < $overlayWidth) {
+                // resize the watermark
+                $overlay->scaleImage($imageWidth, $imageHeight);
+
+                // get new size
+                $overlayWidth = $overlay->getImageWidth();
+                $overlayHeight = $overlay->getImageHeight();
+            }
+
+            // calculate the position
+            $x = ($imageWidth - $overlayWidth) / 2;
+            $y = ($imageHeight - $overlayHeight) / 2;
+
+            $imagick->compositeImage($overlay, \Imagick::COMPOSITE_OVER, $x, $y);
         } else {
             // Open a we should do with anything that is not video
             $imagick = new \Imagick($file->getPathname());
