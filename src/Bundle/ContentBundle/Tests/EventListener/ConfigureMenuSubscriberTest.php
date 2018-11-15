@@ -182,7 +182,7 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
         ;
 
         $this->authorizationChecker
-            ->expects($this->atLeast(2))
+            ->expects($this->exactly(3))
             ->method('isGranted')
             ->with(ConfigureMenuSubscriber::ROLE_ADMIN)
             ->willReturn(true)
