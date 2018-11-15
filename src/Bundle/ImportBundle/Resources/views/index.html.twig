@@ -46,14 +46,14 @@
                                 {{ document.id }}
                             </td>
                             <td>
-                                <a href="{{ path('integrated_import_definition', {'id': document.id}) }}">
+                                <a href="{{ path('integrated_import_definition', {'importDefinition': document.id}) }}">
                                     {{ document.name }}
                                 </a>
                             </td>
                             <td>
-                                {% for type in documentTypes %}
-                                    {% if type.class == document.class %}
-                                        {{ type.type }}
+                                {% for type in contentTypes %}
+                                    {% if type.type == document.contentType %}
+                                        {{ type.name }}
                                     {% endif %}
                                 {% endfor %}
                             </td>

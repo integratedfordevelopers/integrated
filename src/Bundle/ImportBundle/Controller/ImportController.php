@@ -209,7 +209,9 @@ class ImportController extends Controller
         ini_set('memory_limit', '4G');
 
         $data = $this->importFile->toArray($importDefinition);
-        $data = $data['rss']['channel']['item'];
+        if (false) { //wordpress
+            $data = $data['rss']['channel']['item'];
+        }
         $startRow = [];
 
         foreach ($data as $index => $row) {
@@ -369,8 +371,10 @@ class ImportController extends Controller
                     $col++;
                 }
 
-                if (isset($newData['created_at'])) {
-                    $newData['created_at'] = str_replace(' ', 'T', $newData['created_at']) . '+2:00';
+                if (isset($newData['datecreated'])) {
+                    //wordpress
+                    //$newData['created_at'] = str_replace(' ', 'T', $newData['created_at']) . '+2:00';
+                    $newData['datecreated'] = date("Y-m-d\TH:i:s+1:00", $newData['datecreated']);
                 }
 
                 if (count($newData)) {
@@ -395,7 +399,15 @@ class ImportController extends Controller
                         }
                     }
 
-                    $newObject->getPublishTime()->setStartDate($newObject->getCreatedAt());
+                    if (isset($row['publiceren_van']) && $row['publiceren_van'] != '') {
+                        $newObject->getPublishTime()->setStartDate(new \DateTime('@'.$row['publiceren_van']));
+                    } else {
+                        $newObject->getPublishTime()->setStartDate($newObject->getCreatedAt());
+                    }
+
+                    if (isset($row['publiceren_tot']) && $row['publiceren_tot'] != '') {
+                        $newObject->getPublishTime()->setEndDate(new \DateTime('@'.$row['publiceren_tot']));
+                    }
 
                     $imgIds = [];
                     if ($newObject instanceof Article) {
@@ -403,51 +415,62 @@ class ImportController extends Controller
 
                         $newHtml = '';
                         $prevLine = '';
-                        foreach (explode("\n", $content) as $line) {
-                            $line = trim($line);
-                            if (trim(strip_tags($line)) != "") {
-                                if (substr($line, -3, 3) == 'h1>'
-                                    || substr($line, -3, 3) == 'h2>'
-                                    || substr($line, -3, 3) == 'h3>'
-                                    || substr($line, -3, 3) == 'li>'
-                                ) {
-                                    //niks mee doen
-                                    if ($prevLine == 'li') {
-                                        $newHtml .= '</ul>';
+                        if (false) { //wordpress
+                            foreach (explode("\n", $content) as $line) {
+                                $line = trim($line);
+                                if (trim(strip_tags($line)) != "") {
+                                    if (substr($line, -3, 3) == 'h1>'
+                                        || substr($line, -3, 3) == 'h2>'
+                                        || substr($line, -3, 3) == 'h3>'
+                                        || substr($line, -3, 3) == 'li>'
+                                    ) {
+                                        //niks mee doen
+                                        if ($prevLine == 'li') {
+                                            $newHtml .= '</ul>';
+                                        }
+                                        $prevLine = '';
+                                    } elseif (strlen(strip_tags($line)) < 90
+                                        && substr($line, -1, 1) != '.'
+                                        && substr($line, -1, 1) != '?'
+                                        && (substr($line, -1, 1) != '>' || substr($line, -3, 3) == '/a>')
+                                    ) {
+                                        if ($prevLine != 'li') {
+                                            $newHtml .= '<ul>';
+                                        }
+                                        if (strpos($line, '- ') === 0) {
+                                            $line = substr($line, 2);
+                                        }
+                                        $line = '<li>' . $line . '</li>';
+                                        $prevLine = 'li';
+                                    } else {
+                                        if ($prevLine == 'li') {
+                                            $newHtml .= '</ul>';
+                                        }
+                                        $line = '<p>' . $line . '</p>';
+                                        $prevLine = 'p';
                                     }
-                                    $prevLine = '';
-                                } elseif (strlen(strip_tags($line)) < 90
-                                    && substr($line, -1, 1) != '.'
-                                    && substr($line, -1, 1) != '?'
-                                    && (substr($line, -1, 1) != '>' || substr($line, -3, 3) == '/a>')
-                                ) {
-                                    if ($prevLine != 'li') {
-                                        $newHtml .= '<ul>';
-                                    }
-                                    if (strpos($line, '- ') === 0) {
-                                        $line = substr($line, 2);
-                                    }
-                                    $line = '<li>' . $line . '</li>';
-                                    $prevLine = 'li';
-                                } else {
-                                    if ($prevLine == 'li') {
-                                        $newHtml .= '</ul>';
-                                    }
-                                    $line = '<p>' . $line . '</p>';
-                                    $prevLine = 'p';
                                 }
+                                $newHtml .= $line . "\n";
                             }
-                            $newHtml .= $line . "\n";
-                        }
 
-                        if ($prevLine == 'li') {
-                            $newHtml .= '</ul>';
+                            if ($prevLine == 'li') {
+                                $newHtml .= '</ul>';
+                            }
+                        } else { //content as text
+                            foreach (explode("\n", $content) as $line) {
+                                $line = trim($line);
+                                $line = '<p>' . $line . '</p>';
+                                $newHtml .= $line . "\n";
+                            }
                         }
 
                         $html = HtmlDomParser::str_get_html($newHtml);
 
                         foreach($html->find('a') as $element) {
                             $href = $element->href;
+                            if (strpos($href, '/') === 0) {
+                                $href = 'https://www.sandersmedia.nl' . $href;
+                            }
                             $title = false;
 
                             if (stripos($href, '.png') === false
@@ -490,16 +513,16 @@ class ImportController extends Controller
                                 );
 
                                 $file = new Image();
-                                $file->setContentType('meu_afbeelding');
+                                $file->setContentType('afbeeldingen_sanders_media');
                                 $file->setTitle($title);
                                 $file->setFile($storage);
-                                $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'wpSiteUrl' => 'https://www.vleesplus.nl', 'importDate' => '20181019']));
+                                $file->setMetaData(new Metadata(['importDate' => '20181026']));
 
                                 $this->documentManager->persist($file);
                                 $this->documentManager->flush($file);
 
                                 $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId('meu_media');
+                                $relation->setRelationId('afbeeldingen_sanders_media');
                                 $relation->setRelationType('embedded');
                                 $relation->addReference($file);
                                 $newObject->addRelation($relation);
@@ -514,17 +537,23 @@ class ImportController extends Controller
                         foreach($html->find('img') as $img) {
                             $title = $img->title;
                             $href = $img->src;
+                            if (strpos($href, '/') === 0) {
+                                $href = 'https://www.sandersmedia.nl' . $href;
+                            }
 
+                            /*
+                             * Wordpress
                             $image = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.wpUrl' => $href, 'metadata.data.wpSiteUrl' => 'https://www.vleesplus.nl']);
                             if ($image) {
                                 //attach existing images instead of duplication
                                 $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId('vlees_media');
+                                $relation->setRelationId('vle_afbeelding');
                                 $relation->setRelationType('embedded');
                                 $relation->addReference($image);
                                 $newObject->addRelation($relation);
                                 continue;
                             }
+                             */
 
                             if (!$title) {
                                 $title = basename($img->src);
@@ -555,16 +584,16 @@ class ImportController extends Controller
                             );
 
                             $file = new Image();
-                            $file->setContentType('vlees_image');
+                            $file->setContentType('afbeeldingen_sanders_media');
                             $file->setTitle($title);
                             $file->setFile($storage);
-                            $file->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'wpUrl' => $href, 'importDate' => '20180919']));
+                            $file->setMetaData(new Metadata(['importDate' => '20181026']));
 
                             $this->documentManager->persist($file);
                             $this->documentManager->flush($file);
 
                             $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId('vlees_media');
+                            $relation->setRelationId('afbeeldingen_sanders_media');
                             $relation->setRelationType('embedded');
                             $relation->addReference($file);
                             $newObject->addRelation($relation);
@@ -588,13 +617,80 @@ class ImportController extends Controller
                     }
                     //dump((string) $html);
 
-                    $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(['name' => 'Vleesplus']);
-                    if (!$channel) {
-                        throw new \Exception('No channel');
+                    //to implement
+                    if (strpos($row['channels'], '4') !== false) {
+                        $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(
+                            ['name' => 'Interieurbouw']
+                        );
+                        $newObject->addChannel($channel);
                     }
+                    if (strpos($row['channels'], '5') !== false) {
+                        $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(
+                            ['name' => 'Bouw & Renovatie']
+                        );
+                        $newObject->addChannel($channel);
+                    }
+                    if (strpos($row['channels'], '6') !== false) {
+                        $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(
+                            ['name' => 'SGA']
+                        );
+                        $newObject->addChannel($channel);
+                    }
+                    if (strpos($row['channels'], '7') !== false) {
+                        $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(
+                            ['name' => 'TuinVAK']
+                        );
+                        $newObject->addChannel($channel);
+                    }
+                    //if (!$channel) {
+//                        throw new \Exception('No channel');
+//                    }
 
-                    $newObject->addChannel($channel);
 
+                    for ($afbNr = 1; $afbNr <= 10; $afbNr++) {
+                        $href = $row['afbeelding' . $afbNr];
+                        if (strpos($href, '/') === 0) {
+                            $href = 'https://www.sandersmedia.nl' . $href;
+                        }
+
+                        $title = $newObject->getTitle() . ' afbeelding ' . $afbNr;
+
+                        $tmpfile = tempnam("/tmp/", "img") .  "." . pathinfo($href, PATHINFO_EXTENSION);
+                        file_put_contents($tmpfile, @file_get_contents($href));
+                        if (filesize($tmpfile) == 0) {
+                            //echo $file . "\n";
+                            //echo "FILE HAS 0 BYTES\n";
+                            continue;
+                        }
+
+                        $storage = $this->storageManager->write(
+                            new MemoryReader(
+                                file_get_contents($tmpfile),
+                                new StorageMetadata(
+                                    pathinfo($href, PATHINFO_EXTENSION),
+                                    mime_content_type($tmpfile),
+                                    new ArrayCollection(),
+                                    new ArrayCollection()
+                                )
+                            )
+                        );
+
+                        $file = new Image();
+                        $file->setContentType('afbeeldingen_sanders_media');
+                        $file->setTitle($title);
+                        $file->setFile($storage);
+                        $file->setMetaData(new Metadata(['importDate' => '20181026']));
+
+                        $this->documentManager->persist($file);
+                        $this->documentManager->flush($file);
+
+                        $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                        $relation->setRelationId('afbeeldingen_sanders_media');
+                        $relation->setRelationType('embedded');
+                        $relation->addReference($file);
+                        $newObject->addRelation($relation);
+
+                    }
                     /*
                     preg_match('/<img[^>]*src *= *["\']?([^"\']*)[^>]*>/i', $content, $matches);
                     dump($matches);
@@ -687,7 +783,7 @@ class ImportController extends Controller
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
-                                        $link->setMetaData(new Metadata(['wpPostId' => $wpPostId, 'importDate' => '20180911']));
+                                        $link->setMetaData(new Metadata(['importDate' => '20181026']));
 
                                         $this->documentManager->persist($link);
                                         $this->documentManager->flush();
@@ -734,11 +830,12 @@ class ImportController extends Controller
                         $imgIds[] = $row['_thumbnail_id'];
                     }
 
+                    //wordpress
                     foreach ($imgIds as $imgId) {
                         $image = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.wpPostId' => $imgId, 'metadata.data.wpSiteUrl' => 'https://www.vleesplus.nl']);
                         if ($image) {
                             $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId('vlees_media');
+                            $relation->setRelationId('vle_afbeelding');
                             $relation->setRelationType('embedded');
                             $relation->addReference($image);
                             $newObject->addRelation($relation);
