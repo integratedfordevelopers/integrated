@@ -239,10 +239,72 @@ class ConfigureMenuSubscriberTest extends \PHPUnit\Framework\TestCase
 
         // Stub isGranted
         $this->authorizationChecker
-            ->expects($this->atLeast(2))
+            ->expects($this->exactly(3))
             ->method('isGranted')
             ->with(ConfigureMenuSubscriber::ROLE_ADMIN)
             ->willReturn(true)
+        ;
+
+        $this->subscriber->onMenuConfigure($this->event);
+    }
+
+    /**
+     * Test onMenuConfigure function for channel manager with valid menu and with no content menu and with no manage menu.
+     */
+    public function testOnMenuConfigureFunctionChannelManagerWithValidMenuAndWithNoContentMenuAndWithNoManageMenu()
+    {
+        $menu = $this->getValidMenu($this->event);
+
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menuContent */
+        $menuContent = $this->createMock('Knp\Menu\ItemInterface');
+
+        /** @var \Knp\Menu\ItemInterface | \PHPUnit_Framework_MockObject_MockObject $menuContent */
+        $menuManage = $this->createMock('Knp\Menu\ItemInterface');
+
+        $menu
+            ->expects($this->exactly(2))
+            ->method('getChild')
+            ->withConsecutive(
+                [ConfigureMenuSubscriber::MENU_CONTENT],
+                [ConfigureMenuSubscriber::MENU_MANAGE]
+            )
+            ->willReturn(null)
+        ;
+
+        $menu
+            ->expects($this->exactly(2))
+            ->method('addChild')
+            ->withConsecutive(
+                [ConfigureMenuSubscriber::MENU_CONTENT],
+                [ConfigureMenuSubscriber::MENU_MANAGE]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $menuContent,
+                $menuManage
+            )
+        ;
+
+        $menuContent
+            ->expects($this->atLeastOnce())
+            ->method('addChild')
+        ;
+
+        $menuManage
+            ->expects($this->exactly(1))
+            ->method('addChild')
+        ;
+
+        // Stub isGranted
+        $this->authorizationChecker
+            ->expects($this->exactly(4))
+            ->method('isGranted')
+            ->withConsecutive(
+                [ConfigureMenuSubscriber::ROLE_ADMIN],
+                [ConfigureMenuSubscriber::ROLE_CHANNEL_MANAGER],
+                [ConfigureMenuSubscriber::ROLE_ADMIN],
+                [ConfigureMenuSubscriber::ROLE_ADMIN]
+            )
+            ->willReturnOnConsecutiveCalls(false, true, false, false)
         ;
 
         $this->subscriber->onMenuConfigure($this->event);
