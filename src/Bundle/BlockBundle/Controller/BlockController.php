@@ -33,6 +33,10 @@ class BlockController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $pageBundleInstalled = isset($this->getParameter('kernel.bundles')['IntegratedPageBundle']);
         $data = $request->query->get('integrated_block_filter');
         $queryProvider = $this->get('integrated_block.provider.filter_query');
@@ -65,6 +69,10 @@ class BlockController extends Controller
      */
     public function showAction(Request $request, Block $block)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $request->attributes->set('integrated_block_edit', true);
 
         return $this->render('IntegratedBlockBundle:block:show.json.twig', [
@@ -79,6 +87,10 @@ class BlockController extends Controller
      */
     public function newAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $class = $request->get('class');
 
         $block = class_exists($class) ? new $class() : null;
@@ -118,6 +130,10 @@ class BlockController extends Controller
      */
     public function editAction(Request $request, Block $block)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createEditForm($block);
         $form->handleRequest($request);
 
@@ -148,6 +164,10 @@ class BlockController extends Controller
      */
     public function deleteAction(Request $request, Block $block)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         if ($block->isLocked()) {
             throw $this->createNotFoundException(sprintf('Block "%s" is locked.', $block->getId()));
         }

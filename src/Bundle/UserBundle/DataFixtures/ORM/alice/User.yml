@@ -11,12 +11,8 @@ Integrated\Bundle\UserBundle\Model\Role:
     __construct: ['ROLE_ADMIN', 'Administrator']
   ROLE_USER_MANAGER:
     __construct: ['ROLE_USER_MANAGER', 'User manager']
-  ROLE_BLOCK_MANAGER:
-    __construct: ['ROLE_BLOCK_MANAGER', 'Block manager']
-  ROLE_PAGE_MANAGER:
-    __construct: ['ROLE_PAGE_MANAGER', 'Page manager']
-  ROLE_WORKFLOW_MANAGER:
-    __construct: ['ROLE_WORKFLOW_MANAGER', 'Workflow manager']
+  ROLE_WEBSITE_MANAGER:
+    __construct: ['ROLE_WEBSITE_MANAGER', 'Website manager']
   ROLE_CHANNEL_MANAGER:
     __construct: ['ROLE_CHANNEL_MANAGER', 'Channel manager']
 

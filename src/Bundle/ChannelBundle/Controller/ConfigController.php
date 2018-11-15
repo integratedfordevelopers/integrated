@@ -76,6 +76,10 @@ class ConfigController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         if ($pager = $this->getPaginator()) {
             return $this->render('IntegratedChannelBundle:config:index.html.twig', [
                 'adapters' => $this->registry->getAdapters(),
@@ -94,6 +98,10 @@ class ConfigController extends Controller
      */
     public function newAction(Request $request, $adapter)
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         try {
             $adapter = $this->registry->getAdapter($adapter);
         } catch (Exception $e) {
@@ -157,6 +165,10 @@ class ConfigController extends Controller
      */
     public function editAction(Request $request, $id)
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         /** @var Config $data */
         $data = $this->manager->find($id);
 
@@ -222,6 +234,10 @@ class ConfigController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
+        if (!$this->isGranted('ROLE_CHANNEL_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         /** @var Config $data */
         $data = $this->manager->find($id);
 

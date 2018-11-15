@@ -33,6 +33,10 @@ class GroupController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         /** @var $paginator \Knp\Component\Pager\Paginator */
         $paginator = $this->get('knp_paginator');
         $paginator = $paginator->paginate(
@@ -53,6 +57,10 @@ class GroupController extends Controller
      */
     public function newAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
@@ -87,6 +95,10 @@ class GroupController extends Controller
      */
     public function editAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $group = $this->getManager()->find($request->get('id'));
 
         if (!$group) {
@@ -124,6 +136,10 @@ class GroupController extends Controller
      */
     public function deleteAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $group = $this->getManager()->find($request->get('id'));
 
         if (!$group) {
