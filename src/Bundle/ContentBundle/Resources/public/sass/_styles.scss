@@ -62,3 +62,38 @@ label.is-primary-channel {
   bottom: 0;
   left: 0;
 }
+
+.relation .input-group {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  .input-group-addon {
+    display: inline-block;
+    float: left;
+    height: 100%;
+    position: absolute;
+    width: 11%;
+    text-align: inherit;
+
+    button {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+      -moz-transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+    }
+  }
+
+  .select2-container {
+    float: left;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .relation .input-group .select2 .select2-selection {
+    height: auto;
+  }
+}
