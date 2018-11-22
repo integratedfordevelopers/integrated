@@ -21,6 +21,7 @@ use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * @author Patrick Mestebeld <patrick@e-active.nl>
@@ -48,23 +49,31 @@ class ContentProvider
     private $workflowExtension;
 
     /**
+     * @var AuthorizationChecker
+     */
+    private $authorizationChecker;
+
+    /**
      * ContentProvider constructor.
      *
      * @param Client                $client
      * @param DocumentManager       $dm
      * @param TokenStorageInterface $tokenStorage
      * @param bool                  $workflowExtension
+     * @param AuthorizationChecker  $authorizationChecker
      */
     public function __construct(
         Client $client,
         DocumentManager $dm,
         TokenStorageInterface $tokenStorage,
-        $workflowExtension = false
+        $workflowExtension = false,
+        AuthorizationChecker $authorizationChecker
     ) {
         $this->client = $client;
         $this->dm = $dm;
         $this->tokenStorage = $tokenStorage;
         $this->workflowExtension = $workflowExtension;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -234,6 +243,11 @@ class ContentProvider
     protected function addWorkflowFilter(Query $query)
     {
         $filterWorkflow = [];
+
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+            //admin is always allowed to do everything
+            return;
+        }
 
         $user = $this->tokenStorage->getToken()->getUser();
 
