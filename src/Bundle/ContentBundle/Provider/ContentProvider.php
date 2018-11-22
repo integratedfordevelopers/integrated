@@ -59,15 +59,15 @@ class ContentProvider
      * @param Client                $client
      * @param DocumentManager       $dm
      * @param TokenStorageInterface $tokenStorage
-     * @param bool                  $workflowExtension
      * @param AuthorizationChecker  $authorizationChecker
+     * @param bool                  $workflowExtension
      */
     public function __construct(
         Client $client,
         DocumentManager $dm,
         TokenStorageInterface $tokenStorage,
-        $workflowExtension = false,
-        AuthorizationChecker $authorizationChecker
+        AuthorizationChecker $authorizationChecker,
+        $workflowExtension = false
     ) {
         $this->client = $client;
         $this->dm = $dm;
