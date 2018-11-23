@@ -65,7 +65,6 @@ label.is-primary-channel {
 
 .relation .input-group {
   display: inline-block;
-  overflow: hidden;
   position: relative;
   width: 100%;
 
@@ -77,7 +76,12 @@ label.is-primary-channel {
     width: 11%;
     text-align: inherit;
 
+    .add-relation {
+      height: 100%;
+    }
+
     button {
+      position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
