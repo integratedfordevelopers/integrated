@@ -79,9 +79,11 @@
                             <div class="item_row" id="used-by"></div>
                         </div>
 
-                        {% if hasContentHistoryBundle %}
-                            {{ render(controller('integrated_content_history.controller.content_history:historyAction', { 'content': content })) }}
-                        {% endif %}
+                        {% block content_history %}
+                            {% if hasContentHistoryBundle %}
+                                {{ render(controller('integrated_content_history.controller.content_history:historyAction', { 'content': content })) }}
+                            {% endif %}
+                        {% endblock %}
                     {% endblock %}
                 </div>
             </aside>
