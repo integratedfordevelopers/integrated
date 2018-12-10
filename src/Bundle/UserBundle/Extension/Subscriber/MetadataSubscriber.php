@@ -64,7 +64,7 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 
             $field->setOption('mapped', false);
             $field->setOption('optional', true);
-            $field->setOption('constraints', [new Valid([])]);
+            $field->setOption('constraints', [new Valid()]);
 
             $metadata->addField($field);
         }
