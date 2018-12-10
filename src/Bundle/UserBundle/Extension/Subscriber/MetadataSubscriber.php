@@ -16,6 +16,7 @@ use Integrated\Common\Content\Extension\Event\MetadataEvent;
 use Integrated\Common\Content\Extension\Event\Subscriber\MetadataSubscriberInterface;
 use Integrated\Common\Content\Extension\Events;
 use Integrated\Common\Content\Extension\ExtensionInterface;
+use Symfony\Component\Validator\Constraints\Valid;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -63,6 +64,7 @@ class MetadataSubscriber implements MetadataSubscriberInterface
 
             $field->setOption('mapped', false);
             $field->setOption('optional', true);
+            $field->setOption('constraints', [new Valid([])]);
 
             $metadata->addField($field);
         }
