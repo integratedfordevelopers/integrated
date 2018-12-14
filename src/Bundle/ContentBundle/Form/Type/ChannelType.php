@@ -53,7 +53,13 @@ class ChannelType extends AbstractType
 
         $builder->add('primaryDomain', HiddenType::class, ['attr' => ['class' => 'primary-domain-input']]);
 
-        $builder->add('primaryDomainRedirect', CheckboxType::class, ['label' => 'Redirect to primary domain']);
+        $builder->add('primaryDomainRedirect', CheckboxType::class, [
+            'label' => 'Redirect to primary domain',
+            'required' => false,
+            'attr' => [
+                'align_with_widget' => true,
+            ],
+        ]);
 
         //validate domain names
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
