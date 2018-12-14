@@ -64,6 +64,7 @@ class RequestChannelInjectionListener implements EventSubscriberInterface
         if ($channel
             && $channel->getPrimaryDomain()
             && strcasecmp($channel->getPrimaryDomain(), $event->getRequest()->getHost()) !== 0
+            && $channel->getPrimaryDomainRedirect()
             && $event->getRequest()->getMethod() == 'GET'
         ) {
             $url = $event->getRequest()->getScheme().'://'.$channel->getPrimaryDomain().$event->getRequest()->getRequestUri();

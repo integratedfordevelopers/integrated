@@ -63,6 +63,11 @@ class Channel implements ChannelInterface
     protected $primaryDomain;
 
     /**
+     * @var bool
+     */
+    protected $primaryDomainRedirect;
+
+    /**
      * @var mixed[]
      */
     protected $options = [];
@@ -295,6 +300,22 @@ class Channel implements ChannelInterface
     public function setPrimaryDomain($primaryDomain)
     {
         $this->primaryDomain = $primaryDomain;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getPrimaryDomainRedirect()
+    {
+        return $this->primaryDomainRedirect;
+    }
+
+    /**
+     * @param boolean $primaryDomainRedirect
+     */
+    public function setPrimaryDomainRedirect($primaryDomainRedirect)
+    {
+        $this->primaryDomainRedirect = $primaryDomainRedirect;
     }
 
     public function defaultPrimaryDomain()

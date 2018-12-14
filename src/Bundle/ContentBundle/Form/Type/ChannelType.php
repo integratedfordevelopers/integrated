@@ -17,6 +17,7 @@ use Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneType;
 use Integrated\Bundle\UserBundle\Model\Scope;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -51,6 +52,8 @@ class ChannelType extends AbstractType
         ]);
 
         $builder->add('primaryDomain', HiddenType::class, ['attr' => ['class' => 'primary-domain-input']]);
+
+        $builder->add('primaryDomainRedirect', CheckboxType::class, ['label' => 'Redirect to primary domain']);
 
         //validate domain names
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
