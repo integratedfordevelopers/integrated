@@ -303,7 +303,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getPrimaryDomainRedirect()
     {
@@ -311,7 +311,7 @@ class Channel implements ChannelInterface
     }
 
     /**
-     * @param boolean $primaryDomainRedirect
+     * @param bool $primaryDomainRedirect
      */
     public function setPrimaryDomainRedirect($primaryDomainRedirect)
     {
