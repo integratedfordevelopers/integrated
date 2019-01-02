@@ -1,12 +1,17 @@
 <?php
 namespace Integrated\Bundle\InstallerBundle\Command;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Integrated\Bundle\InstallerBundle\Install\Migrations;
+use Solarium\Client;
+use Solarium\QueryType\Select\Query\Query;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
@@ -19,19 +24,34 @@ class IntegratedInstallCommand extends Command
      * @var Migrations
      */
     private $migrations;
+
     /**
      * @var EntityManager
      */
-    private $manager;
+    private $entityManager;
 
     /**
-     * @param EntityManager $manager
+     * @var DocumentManager
+     */
+    private $documentManager;
+
+    /**
+     * @var Client
+     */
+    private $solrClient;
+
+    /**
+     * @param EntityManager $entityManager
+     * @param DocumentManager $documentManager
+     * @param ContentProvider $contentProvider
      * @param Migrations $migrations
      */
-    public function __construct(EntityManager $manager, Migrations $migrations)
+    public function __construct(EntityManager $entityManager, DocumentManager $documentManager, Client $solrClient, Migrations $migrations)
     {
         $this->migrations = $migrations;
-        $this->manager = $manager;
+        $this->entityManager = $entityManager;
+        $this->documentManager = $documentManager;
+        $this->solrClient = $solrClient;
 
         parent::__construct();
     }
@@ -57,27 +77,29 @@ class IntegratedInstallCommand extends Command
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $steps = $input->getOption('step');
+        $io = new SymfonyStyle($input, $output);
 
         if (in_array('tests', $steps) || empty($steps)) {
-            $output->writeln('Test environment');
+            $io->section('Test environment');
 
-            $this->manager->getConnection()->connect();
-            if ($this->manager->getConnection()->isConnected()) {
-                $output->writeln('MySQL connection OK', $output::VERBOSITY_VERBOSE);
-            } else {
-                $output->writeln('MySQL connection not OK');
-                return;
-            }
+            $this->entityManager->getConnection()->connect();
+            $io->success('MySQL connection successful');
+
+            $this->documentManager->getConnection()->connect();
+            $io->success('MongoDB connection successful');
+
+            $this->solrClient->execute(new Query());
+            $io->success('Solr connection successful');
         }
 
         if (in_array('cache', $steps) || empty($steps)) {
-            $output->writeln('Clear cache');
+            $io->section('Clear cache');
 
             $this->executeCommand("cache:clear", $output);
         }
 
         if (in_array('assets', $steps) || empty($steps)) {
-            $output->writeln('Install assets');
+            $io->section('Install assets');
 
             $this->executeCommand("braincrafted:bootstrap:install", $output);
             $this->executeCommand("sp:bower:install", $output);
@@ -87,14 +109,12 @@ class IntegratedInstallCommand extends Command
         }
 
         if (in_array('migrations', $steps) || empty($steps)) {
-            $output->writeln('Execute migrations');
+            $io->section('Execute migrations');
 
             $this->migrations->execute();
         }
 /*
-$ php bin/console assetic:dump web
 $ php bin/console doctrine:mongodb:schema:update
-
 
 migratie maken: php bin/console doctrine:schema:update --force
 $ php bin/console init:queue --force
