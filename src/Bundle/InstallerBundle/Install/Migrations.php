@@ -12,7 +12,7 @@ class Migrations
     const DOCTRINE_MIGRATIONS_DIRECTORY = '/../Migrations/MySQL';
     const DOCTRINE_MIGRATIONS_NAMESPACE = 'Integrated\Bundle\InstallerBundle\Migrations\MySQL';
     const DOCTRINE_MIGRATIONS_NAME = 'Integrated MySQL Migrations';
-    const DOCTRINE_MIGRATIONS_TABLE = 'installer_migration_versions';
+    const DOCTRINE_MIGRATIONS_TABLE = 'integrated_migration_versions';
 
     protected $entityManager;
 
