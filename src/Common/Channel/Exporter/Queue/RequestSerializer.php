@@ -82,7 +82,7 @@ class RequestSerializer implements RequestSerializerInterface
     {
         $data = json_decode($data, true);
 
-        if (!is_array($data) || empty($data['content']) || empty($data['content']['data']) || empty($data['content']['type']) || empty($data['state']) || empty($data['channel'])) {
+        if (!\is_array($data) || empty($data['content']) || empty($data['content']['data']) || empty($data['content']['type']) || empty($data['state']) || empty($data['channel'])) {
             return null;
         }
 

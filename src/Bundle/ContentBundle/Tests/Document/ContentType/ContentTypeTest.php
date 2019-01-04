@@ -48,7 +48,7 @@ class ContentTypeTest extends \PHPUnit\Framework\TestCase
         $content = $this->createMock('Integrated\Common\Content\ContentInterface');
 
         // Set class
-        $class = get_class($content);
+        $class = \get_class($content);
         $this->contentType->setClass($class);
 
         // Assert

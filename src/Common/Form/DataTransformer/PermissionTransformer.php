@@ -54,7 +54,7 @@ class PermissionTransformer implements DataTransformerInterface
             return $data;
         }
 
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             if (!$value instanceof Collection) {
                 throw new TransformationFailedException('Expected a Doctrine\\Common\\Collections\\Collection object.');
             }
@@ -89,7 +89,7 @@ class PermissionTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        if (!is_array($value)) {
+        if (!\is_array($value)) {
             return new ArrayCollection();
         }
 

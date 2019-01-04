@@ -48,7 +48,7 @@ class ContentListener
             $event->setData($content->getExtensions()->get($this->extension->getName()));
         }
 
-        call_user_func($this->listener, $event, $eventName, $dispatcher);
+        \call_user_func($this->listener, $event, $eventName, $dispatcher);
 
         if ($content instanceof ExtensibleInterface) {
             $content->getExtensions()->set($this->extension->getName(), $event->getData());

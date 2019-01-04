@@ -28,7 +28,7 @@ class JsonType extends FieldMapperType
         foreach ($this->groupFields($options) as $field => $config) {
             $this->remove($container, $field);
 
-            if (is_array($config)) {
+            if (\is_array($config)) {
                 foreach ($this->readValues($data, $config) as $values) {
                     foreach ($values as $value) {
                         $this->append($container, $field, json_encode($value));
@@ -51,11 +51,11 @@ class JsonType extends FieldMapperType
         foreach ($paths as $index => $path) {
             $index = (string) $index;
 
-            if (is_array($path)) {
+            if (\is_array($path)) {
                 try {
                     $array = $this->accessor->getValue($data, $index);
 
-                    if (!is_array($array) && !$array instanceof Traversable) {
+                    if (!\is_array($array) && !$array instanceof Traversable) {
                         $array = [$array];
                     }
                 } catch (ExceptionInterface $e) {

@@ -109,9 +109,9 @@ class UrlResolver
             return $this->getContentTypePageUrl($page, $document);
         }
 
-        // fallback /app_*.php/contentType/slug, in production /contentType/slug
+        // fallback /app_*.php/content/contentType/slug, in production /content/contentType/slug
         return sprintf(
-            '%s/%s/%s',
+            '%s/content/%s/%s',
             $this->router->getContext()->getBaseUrl(),
             $document->getContentType(),
             //todo INTEGRATED-440 add Slug to ContentInterface

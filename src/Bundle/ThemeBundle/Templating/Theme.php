@@ -90,7 +90,7 @@ class Theme
      */
     public function addPath($path)
     {
-        if (!in_array($path, $this->paths)) {
+        if (!\in_array($path, $this->paths)) {
             $this->paths[] = $path;
         }
 

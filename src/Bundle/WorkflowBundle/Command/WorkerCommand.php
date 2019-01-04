@@ -14,31 +14,18 @@ namespace Integrated\Bundle\WorkflowBundle\Command;
 use Exception;
 use Integrated\Common\Queue\QueueInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Lock\Factory;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
 class WorkerCommand extends ContainerAwareCommand
 {
-    /**
-     * @var Factory
-     */
-    private $factory;
-
-    /**
-     * @param Factory $factory
-     */
-    public function __construct(Factory $factory)
-    {
-        parent::__construct();
-
-        $this->factory = $factory;
-    }
+    use LockableTrait;
 
     /**
      * {@inheritdoc}
@@ -63,10 +50,10 @@ The <info>%command.name%</info> .
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lock = $this->factory->createLock(self::class.md5(__DIR__));
+        if (!$this->lock(self::class.md5(__DIR__))) {
+            $output->writeln('The command is already running in another process.');
 
-        if (!$lock->acquire()) {
-            return;
+            return 0;
         }
 
         try {
@@ -79,7 +66,7 @@ The <info>%command.name%</info> .
                 if ($data['command']) {
                     switch ($data['command']) {
                         case 'index':
-                            $data['args'] = is_array($data['args']) ? $data['args'] : [$data['args']];
+                            $data['args'] = \is_array($data['args']) ? $data['args'] : [$data['args']];
                             $data['args'] = array_filter(array_map('trim', $data['args']));
 
                             if ($data['args']) {
@@ -104,7 +91,7 @@ The <info>%command.name%</info> .
 
             return 1;
         } finally {
-            $lock->release();
+            $this->release();
         }
 
         return 0;

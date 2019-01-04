@@ -187,7 +187,7 @@ class BlockExtension extends \Twig_Extension
      */
     public function getBlockTypeName(BlockInterface $block)
     {
-        return $this->metadataFactory->getMetadata(get_class($block))->getType();
+        return $this->metadataFactory->getMetadata(\get_class($block))->getType();
     }
 
     /**

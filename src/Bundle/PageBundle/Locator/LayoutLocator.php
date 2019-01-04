@@ -39,6 +39,7 @@ class LayoutLocator
 
     /**
      * @param string $theme
+     * @param string $directory
      *
      * @return array
      */
@@ -48,7 +49,7 @@ class LayoutLocator
             $this->layouts = [];
             foreach ($this->themeManager->getThemes() as $id => $theme2) {
                 if ($theme === $id
-                    || in_array($id, $this->themeManager->getTheme($theme)->getFallback())
+                    || \in_array($id, $this->themeManager->getTheme($theme)->getFallback())
                     || $id === 'default') {
                     foreach ($theme2->getPaths() as $resource) {
                         $path = $this->themeManager->locateResource($resource).$directory;
@@ -58,7 +59,7 @@ class LayoutLocator
 
                             /** @var \Symfony\Component\Finder\SplFileInfo $file */
                             foreach ($finder as $file) {
-                                if (!in_array($file->getRelativePathname(), $this->layouts)) {
+                                if (!\in_array($file->getRelativePathname(), $this->layouts)) {
                                     $this->layouts[] = $file->getRelativePathname();
                                 }
                             }

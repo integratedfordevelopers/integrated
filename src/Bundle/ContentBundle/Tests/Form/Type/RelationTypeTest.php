@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\ContentBundle\Tests\Form\Type;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\RelationType;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -52,20 +53,20 @@ class RelationTypeTest extends TypeTestCase
                 'data1' => [
                     'name' => 'Relation with no sources and targets',
                     'type' => 'type',
-                    'sources' => [],
-                    'targets' => [],
+                    'sources' => new ArrayCollection(),
+                    'targets' => new ArrayCollection(),
                     'multiple' => false,
                     'required' => true,
                 ],
                 'data2' => [
                     'name' => 'Relation with  sources and targets',
                     'type' => 'type',
-                    'sources' => [
+                    'sources' => new ArrayCollection([
                         $this->createMock('Integrated\Common\ContentType\ContentTypeInterface'),
-                    ],
-                    'targets' => [
+                    ]),
+                    'targets' => new ArrayCollection([
                         $this->createMock('Integrated\Common\ContentType\ContentTypeInterface'),
-                    ],
+                    ]),
                 ],
             ],
         ];

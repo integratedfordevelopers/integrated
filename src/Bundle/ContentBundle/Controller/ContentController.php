@@ -136,7 +136,7 @@ class ContentController extends Controller
         // to filter on these targets.
         // TODO this code should be somewhere else
         $propertiesfilter = $request->query->get('properties');
-        if (is_array($propertiesfilter)) {
+        if (\is_array($propertiesfilter)) {
             $query
                 ->createFilterQuery('properties')
                 ->addTag('properties')
@@ -154,7 +154,7 @@ class ContentController extends Controller
             $facetTitles[$name] = $relation->getName();
             $relationfilter = $request->query->get($name);
 
-            if (is_array($relationfilter)) {
+            if (\is_array($relationfilter)) {
                 $query
                     ->createFilterQuery($name)
                     ->addTag($name)
@@ -164,8 +164,8 @@ class ContentController extends Controller
             }
         }
 
-        if (is_array($contentType)) {
-            if (count($contentType)) {
+        if (\is_array($contentType)) {
+            if (\count($contentType)) {
                 $query
                     ->createFilterQuery('contenttypes')
                     ->addTag('contenttypes')
@@ -219,8 +219,8 @@ class ContentController extends Controller
 
         // TODO this should be somewhere else:
         $activeChannels = $request->query->get('channels');
-        if (is_array($activeChannels)) {
-            if (count($activeChannels)) {
+        if (\is_array($activeChannels)) {
+            if (\count($activeChannels)) {
                 $query
                     ->createFilterQuery('channels')
                     ->addTag('channels')
@@ -229,8 +229,8 @@ class ContentController extends Controller
         }
 
         $activeStates = $request->query->get('workflow_state');
-        if (is_array($activeStates)) {
-            if (count($activeStates)) {
+        if (\is_array($activeStates)) {
+            if (\count($activeStates)) {
                 $query
                     ->createFilterQuery('workflow_state')
                     ->addTag('workflow_state')
@@ -239,8 +239,8 @@ class ContentController extends Controller
         }
 
         $activeAssigned = $request->query->get('workflow_assigned');
-        if (is_array($activeAssigned)) {
-            if (count($activeAssigned)) {
+        if (\is_array($activeAssigned)) {
+            if (\count($activeAssigned)) {
                 $query
                     ->createFilterQuery('workflow_assigned')
                     ->addTag('workflow_assigned')
@@ -249,8 +249,8 @@ class ContentController extends Controller
         }
 
         $activeAuthors = $request->query->get('authors');
-        if (is_array($activeAuthors)) {
-            if (count($activeAuthors)) {
+        if (\is_array($activeAuthors)) {
+            if (\count($activeAuthors)) {
                 $query
                     ->createFilterQuery('authors')
                     ->addTag('authors')
@@ -260,12 +260,12 @@ class ContentController extends Controller
 
         if ($request->isMethod('post')) {
             $id = (array) $request->get('id');
-            if (is_array($id)) {
-                if (count($id) == 0) {
+            if (\is_array($id)) {
+                if (\count($id) == 0) {
                     $id[] = '';
                 }
 
-                if (count($id)) {
+                if (\count($id)) {
                     $query
                         ->createFilterQuery('id')
                         ->addTag('id')
@@ -306,12 +306,12 @@ class ContentController extends Controller
         $sort = trim(strtolower($sort));
         $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
-        $query->addSort($sort_options[$sort]['field'], in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
+        $query->addSort($sort_options[$sort]['field'], \in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
 
         // add field filters
         foreach ((array) $request->query->get('filter') as $name => $value) {
             $value = trim($value);
-            if (!is_string($name) || !is_string($value) || !$value) {
+            if (!\is_string($name) || !\is_string($value) || !$value) {
                 continue;
             }
 
@@ -643,7 +643,7 @@ class ContentController extends Controller
         $contentReferenced = $this->get('integrated_content.services.search.content.referenced');
         $referenced = $contentReferenced->getReferenced($content);
 
-        $form = $this->createDeleteForm($content, $locking, count($referenced) > 0);
+        $form = $this->createDeleteForm($content, $locking, \count($referenced) > 0);
 
         if ($request->isMethod('delete')) {
             $form->handleRequest($request);
@@ -1022,6 +1022,10 @@ class ContentController extends Controller
         $form = $this->createForm(ContentFormType::class, $content, [
             'action' => $this->generateUrl('integrated_content_content_new', ['type' => $request->get('type'), '_format' => $request->getRequestFormat(), 'relation' => $request->get('relation')]),
             'method' => 'POST',
+            'attr' => [
+                'class' => 'content-form',
+                'data-content-type' => $contentType->getId(),
+            ],
             'content_type' => $contentType,
         ]);
 
@@ -1037,21 +1041,26 @@ class ContentController extends Controller
      */
     protected function createEditForm(ContentTypeInterface $contentType, ContentInterface $content, array $locking)
     {
-        $form = $this->createForm(ContentFormType::class, $content, [
+        $options = [
             'action' => $this->generateUrl(
                 'integrated_content_content_edit',
-                $locking['lock'] ?
-                ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]
-                :
-                ['id' => $content->getId()]
+                $locking['lock'] ? ['id' => $content->getId(), 'lock' => $locking['lock']->getId()] : ['id' => $content->getId()]
             ),
             'method' => 'PUT',
-            'attr' => ['class' => 'content-form', 'data-content-id' => $content->getId()],
-            // don't display error's when the content is locked as the user can't save in the first place
-            'validation_groups' => $locking['locked'] ? false : null,
+            'attr' => [
+                'class' => 'content-form',
+                'data-content-id' => $content->getId(),
+                'data-content-type' => $contentType->getId(),
+            ],
             'content_type' => $contentType,
-        ]);
+        ];
 
+        if ($locking['locked']) {
+            // don't display error's when the content is locked as the user can't save in the first place
+            $options['validation_groups'] = false;
+        }
+
+        $form = $this->createForm(ContentFormType::class, $content, $options);
         $form->add('returnUrl', HiddenType::class, ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
 
         // load a different set of buttons based on the permissions and locking state

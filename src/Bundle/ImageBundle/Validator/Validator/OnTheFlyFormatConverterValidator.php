@@ -73,7 +73,7 @@ class OnTheFlyFormatConverterValidator extends ConstraintValidator
                     sprintf(
                         'Type of value must be %s but the given is %s',
                         UploadedFile::class,
-                        is_object($value) ? get_class($value) : gettype($value)
+                        \is_object($value) ? \get_class($value) : \gettype($value)
                     )
                 );
             }
