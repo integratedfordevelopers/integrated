@@ -25,16 +25,55 @@ class ImportFile
 
     protected $documentManager;
 
+    /**
+     * ImportFile constructor.
+     * @param AppCache $storageCache
+     * @param DocumentManager $documentManager
+     */
     public function __construct(
         AppCache $storageCache,
         DocumentManager $documentManager
-    )
-    {
+    ) {
         $this->storageCache = $storageCache;
         $this->documentManager = $documentManager;
     }
 
-    public function toArray(ImportDefinition $importDefinition) {
+    /**
+     * @return ContentType
+     */
+    public function getContentType()
+    {
+        $contentTypeFile = $this->documentManager->find(
+            ContentType::class,
+            'import_file'
+        );
+
+        if (!$contentTypeFile) {
+            $file = new Field();
+            $file->setName('file');
+            $file->setOptions(['required' => true]);
+
+            $contentTypeFile = new ContentType();
+            $contentTypeFile->setId('import_file');
+            $contentTypeFile->setName('Import file');
+            $contentTypeFile->setClass(File::class);
+            $contentTypeFile->setOptions(['channels' => ['disabled' => 2]]);
+//            $contentTypeFile->addPermission(); todo: add permissions
+            $contentTypeFile->setFields([$file]);
+            $this->documentManager->persist($contentTypeFile);
+            $this->documentManager->flush();
+        }
+
+        return $contentTypeFile;
+    }
+
+    /**
+     * @param ImportDefinition $importDefinition
+     * @return array|mixed|string
+     * @throws \Exception
+     */
+    public function toArray(ImportDefinition $importDefinition)
+    {
 
         $file = null;
         if ($importDefinition->getFileId()) {
@@ -114,8 +153,9 @@ class ImportFile
         foreach ($namespaces as $prefix => $namespace) {
             foreach ($xml->attributes($namespace) as $attributeName => $attribute) {
                 //replace characters in attribute name
-                if ($options['keySearch']) $attributeName =
-                    str_replace($options['keySearch'], $options['keyReplace'], $attributeName);
+                if ($options['keySearch']) {
+                    $attributeName = str_replace($options['keySearch'], $options['keyReplace'], $attributeName);
+                }
                 $attributeKey = $options['attributePrefix']
                     . ($prefix ? $prefix . $options['namespaceSeparator'] : '')
                     . $attributeName;
@@ -132,10 +172,13 @@ class ImportFile
                 list($childTagName, $childProperties) = each($childArray);
 
                 //replace characters in tag name
-                if ($options['keySearch']) $childTagName =
-                    str_replace($options['keySearch'], $options['keyReplace'], $childTagName);
+                if ($options['keySearch']) {
+                    $childTagName = str_replace($options['keySearch'], $options['keyReplace'], $childTagName);
+                }
                 //add namespace prefix, if any
-                if ($prefix) $childTagName = $prefix . $options['namespaceSeparator'] . $childTagName;
+                if ($prefix) {
+                    $childTagName = $prefix . $options['namespaceSeparator'] . $childTagName;
+                }
 
                 if (!isset($tagsArray[$childTagName])) {
                     //only entry with this key
@@ -143,15 +186,10 @@ class ImportFile
                     $tagsArray[$childTagName] =
                         in_array($childTagName, $options['alwaysArray']) || !$options['autoArray']
                             ? array($childProperties) : $childProperties;
-                }
-                elseif (
-                    is_array($tagsArray[$childTagName]) && array_keys($tagsArray[$childTagName])
-                    === range(0, count($tagsArray[$childTagName]) - 1)
-                ) {
+                } elseif (is_array($tagsArray[$childTagName]) && array_keys($tagsArray[$childTagName]) === range(0, count($tagsArray[$childTagName]) - 1)) {
                     //key already exists and is integer indexed array
                     $tagsArray[$childTagName][] = $childProperties;
-                }
-                else {
+                } else {
                     //key exists so convert to integer indexed array with previous value in position 0
                     $tagsArray[$childTagName] = array($tagsArray[$childTagName], $childProperties);
                 }
@@ -161,7 +199,9 @@ class ImportFile
         //get text content of node
         $textContentArray = array();
         $plainText = trim((string)$xml);
-        if ($plainText !== '') $textContentArray[$options['textContent']] = $plainText;
+        if ($plainText !== '') {
+            $textContentArray[$options['textContent']] = $plainText;
+        }
 
         //stick it all together
         $propertiesArray = !$options['autoText'] || $attributesArray || $tagsArray || ($plainText === '')

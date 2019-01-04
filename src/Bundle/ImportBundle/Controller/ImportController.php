@@ -47,24 +47,41 @@ class ImportController extends Controller
      */
     protected $contentTypeManager;
 
+    /**
+     * @var DocumentManager
+     */
     protected $documentManager;
 
+    /**
+     * @var EntityManager
+     */
     protected $entityManager;
 
-    protected $formFactory;
-
+    /**
+     * @var ImportFile
+     */
     protected $importFile;
 
+    /**
+     * @var Manager
+     */
     protected $storageManager;
 
+    /**
+     * ImportController constructor.
+     * @param ContentTypeManager $contentTypeManager
+     * @param DocumentManager $documentManager
+     * @param EntityManager $entityManager
+     * @param ImportFile $importFile
+     * @param Manager $storageManager
+     */
     public function __construct(
         ContentTypeManager $contentTypeManager,
         DocumentManager $documentManager,
         EntityManager $entityManager,
         ImportFile $importFile,
         Manager $storageManager
-    )
-    {
+    ) {
         $this->contentTypeManager = $contentTypeManager;
         $this->documentManager = $documentManager;
         $this->entityManager = $entityManager;
@@ -72,6 +89,9 @@ class ImportController extends Controller
         $this->storageManager = $storageManager;
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function index()
     {
         $contentTypes = $this->contentTypeManager->getAll();
@@ -87,7 +107,12 @@ class ImportController extends Controller
         );
     }
 
-    public function new(Request $request, ContentType $type)
+    /**
+     * @param Request $request
+     * @param ContentType $type
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function newImport(Request $request, ContentType $type)
     {
         $importDefinition = new ImportDefinition();
         $importDefinition->setContentType($type->getId());
@@ -115,6 +140,11 @@ class ImportController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @param ImportDefinition $importDefinition
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function chooseFile(Request $request, ImportDefinition $importDefinition)
     {
         $contentType = $this->documentManager->find(
@@ -122,40 +152,15 @@ class ImportController extends Controller
             $importDefinition->getContentType()
         );
 
-        $contentTypeFile = $this->documentManager->find(
-            ContentType::class,
-            'import_file'
-        );
-        if (!$contentTypeFile) {
-            $file = new Field();
-            $file->setName('file');
-            $file->setOptions(['required' => true]);
-
-            $contentTypeFile = new ContentType();
-            $contentTypeFile->setId('import_file');
-            $contentTypeFile->setName('Import file');
-            $contentTypeFile->setClass(File::class);
-            $contentTypeFile->setOptions(['channels' => ['disabled' => 2]]);
-//            $contentTypeFile->addPermission(); todo: add permissions
-            $contentTypeFile->setFields([$file]);
-            $this->documentManager->persist($contentTypeFile);
-            $this->documentManager->flush();
-        }
+        $contentTypeFile = $this->importFile->getContentType();
 
         $file = false;
         $method = 'PUT';
-        if ($importDefinition->getFileId()) {
-            $file = $this->documentManager->find(
-                File::class,
-                $importDefinition->getFileId()
-            );
-        }
-
-        if (!$file) {
+        if (!($importDefinition->getFileId() && $file = $this->documentManager->find(File::class, $importDefinition->getFileId()))) {
+            //file not yet uploaded, create a new one
             $file = new File();
             $file->setContentType('import_file');
             $method = 'POST';
-            $attr = [];
         }
 
         if ($method == 'POST') {
@@ -204,14 +209,25 @@ class ImportController extends Controller
     }
 
 
-    public function composeDefinition(Request $request, ImportDefinition $importDefinition) {
+    /**
+     * @param Request $request
+     * @param ImportDefinition $importDefinition
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function composeDefinition(Request $request, ImportDefinition $importDefinition)
+    {
         ini_set('max_execution_time', 3600);
         ini_set('memory_limit', '4G');
 
         $data = $this->importFile->toArray($importDefinition);
-        if (false) { //wordpress
+
+        if (isset($data['rss']['channel']['item'])) {
+            //wordpress
+            //todo: move to WP filter
             $data = $data['rss']['channel']['item'];
         }
+
         $startRow = [];
 
         foreach ($data as $index => $row) {
@@ -221,6 +237,7 @@ class ImportController extends Controller
                 }
                 if (is_array($value)) {
                     $valuet = '';
+                    //todo: move to WP filter
                     foreach ($value as $key2 => $value2) {
                         if ((string) $key2 == '@nicename') {
                             continue;
@@ -327,7 +344,6 @@ class ImportController extends Controller
         }
 
         if ($request->request->get('action') == 'go') {
-
             if (isset($data[0])) {
                 $cols = count($data[0]);
                 $fields2 = [];
@@ -373,6 +389,7 @@ class ImportController extends Controller
 
                 if (isset($newData['datecreated'])) {
                     //wordpress
+                    //todo: move to WP filter
                     //$newData['created_at'] = str_replace(' ', 'T', $newData['created_at']) . '+2:00';
                     $newData['datecreated'] = date("Y-m-d\TH:i:s+1:00", $newData['datecreated']);
                 }
@@ -385,8 +402,7 @@ class ImportController extends Controller
 
                     try {
                         $newObject = $serializer->deserialize(json_encode($newData), $contentType->getClass(), 'json', $context);
-                    }
-                    catch (RuntimeException $e) {
+                    } catch (RuntimeException $e) {
                         $this->get('braincrafted_bootstrap.flash')->error($e->getMessage());
                         continue;
                     }
@@ -416,6 +432,7 @@ class ImportController extends Controller
                         $newHtml = '';
                         $prevLine = '';
                         if (false) { //wordpress
+                            //todo: move to filter
                             foreach (explode("\n", $content) as $line) {
                                 $line = trim($line);
                                 if (trim(strip_tags($line)) != "") {
@@ -466,22 +483,29 @@ class ImportController extends Controller
 
                         $html = HtmlDomParser::str_get_html($newHtml);
 
-                        foreach($html->find('a') as $element) {
+                        foreach ($html->find('a') as $element) {
+                            if (!$importDefinition->getImageContentType() || !$importDefinition->getImageRelation()) {
+                                return;
+                            }
+
                             $href = $element->href;
                             if (strpos($href, '/') === 0) {
-                                $href = 'https://www.sandersmedia.nl' . $href;
+                                //todo: move to filter
+                                if (!$importDefinition->getImageBaseUrl()) {
+                                    continue;
+                                }
+                                $href = rtrim($importDefinition->getImageBaseUrl(), '/') . $href;
                             }
                             $title = false;
 
                             if (stripos($href, '.png') === false
                                 && stripos($href, '.jpg') === false
                                 && stripos($href, '.jpeg') === false
-                                && stripos($href, '.gif') === false)
-                            {
+                                && stripos($href, '.gif') === false) {
                                 continue;
                             }
 
-                            foreach($element->find('img') as $img) {
+                            foreach ($element->find('img') as $img) {
                                 $title = $img->title;
                                 if (!$title) {
                                     $title = basename($img->src);
@@ -513,16 +537,16 @@ class ImportController extends Controller
                                 );
 
                                 $file = new Image();
-                                $file->setContentType('afbeeldingen_sanders_media');
+                                $file->setContentType($importDefinition->getImageContentType());
                                 $file->setTitle($title);
                                 $file->setFile($storage);
-                                $file->setMetaData(new Metadata(['importDate' => '20181026']));
+                                $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
 
                                 $this->documentManager->persist($file);
                                 $this->documentManager->flush($file);
 
                                 $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId('afbeeldingen_sanders_media');
+                                $relation->setRelationId($importDefinition->getImageRelation());
                                 $relation->setRelationType('embedded');
                                 $relation->addReference($file);
                                 $newObject->addRelation($relation);
@@ -534,26 +558,34 @@ class ImportController extends Controller
                         $html = HtmlDomParser::str_get_html((string) $html);
 
                         $title = false;
-                        foreach($html->find('img') as $img) {
+                        foreach ($html->find('img') as $img) {
+                            if (!$importDefinition->getImageContentType() || !$importDefinition->getImageRelation()) {
+                                return;
+                            }
+
                             $title = $img->title;
                             $href = $img->src;
                             if (strpos($href, '/') === 0) {
-                                $href = 'https://www.sandersmedia.nl' . $href;
+                                //todo: move to filter
+                                if (!$importDefinition->getImageBaseUrl()) {
+                                    continue;
+                                }
+                                $href = rtrim($importDefinition->getImageBaseUrl(), '/') . $href;
                             }
 
                             /*
                              * Wordpress
-                            $image = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.wpUrl' => $href, 'metadata.data.wpSiteUrl' => 'https://www.vleesplus.nl']);
+                             */
+                            $image = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.wpUrl' => $href, 'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl()]);
                             if ($image) {
                                 //attach existing images instead of duplication
                                 $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId('vle_afbeelding');
+                                $relation->setRelationId($importDefinition->getImageRelation());
                                 $relation->setRelationType('embedded');
                                 $relation->addReference($image);
                                 $newObject->addRelation($relation);
                                 continue;
                             }
-                             */
 
                             if (!$title) {
                                 $title = basename($img->src);
@@ -584,16 +616,16 @@ class ImportController extends Controller
                             );
 
                             $file = new Image();
-                            $file->setContentType('afbeeldingen_sanders_media');
+                            $file->setContentType($importDefinition->getImageContentType());
                             $file->setTitle($title);
                             $file->setFile($storage);
-                            $file->setMetaData(new Metadata(['importDate' => '20181026']));
+                            $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
 
                             $this->documentManager->persist($file);
                             $this->documentManager->flush($file);
 
                             $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId('afbeeldingen_sanders_media');
+                            $relation->setRelationId($importDefinition->getImageRelation());
                             $relation->setRelationType('embedded');
                             $relation->addReference($file);
                             $newObject->addRelation($relation);
@@ -647,50 +679,6 @@ class ImportController extends Controller
 //                    }
 
 
-                    for ($afbNr = 1; $afbNr <= 10; $afbNr++) {
-                        $href = $row['afbeelding' . $afbNr];
-                        if (strpos($href, '/') === 0) {
-                            $href = 'https://www.sandersmedia.nl' . $href;
-                        }
-
-                        $title = $newObject->getTitle() . ' afbeelding ' . $afbNr;
-
-                        $tmpfile = tempnam("/tmp/", "img") .  "." . pathinfo($href, PATHINFO_EXTENSION);
-                        file_put_contents($tmpfile, @file_get_contents($href));
-                        if (filesize($tmpfile) == 0) {
-                            //echo $file . "\n";
-                            //echo "FILE HAS 0 BYTES\n";
-                            continue;
-                        }
-
-                        $storage = $this->storageManager->write(
-                            new MemoryReader(
-                                file_get_contents($tmpfile),
-                                new StorageMetadata(
-                                    pathinfo($href, PATHINFO_EXTENSION),
-                                    mime_content_type($tmpfile),
-                                    new ArrayCollection(),
-                                    new ArrayCollection()
-                                )
-                            )
-                        );
-
-                        $file = new Image();
-                        $file->setContentType('afbeeldingen_sanders_media');
-                        $file->setTitle($title);
-                        $file->setFile($storage);
-                        $file->setMetaData(new Metadata(['importDate' => '20181026']));
-
-                        $this->documentManager->persist($file);
-                        $this->documentManager->flush($file);
-
-                        $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                        $relation->setRelationId('afbeeldingen_sanders_media');
-                        $relation->setRelationType('embedded');
-                        $relation->addReference($file);
-                        $newObject->addRelation($relation);
-
-                    }
                     /*
                     preg_match('/<img[^>]*src *= *["\']?([^"\']*)[^>]*>/i', $content, $matches);
                     dump($matches);
@@ -783,7 +771,7 @@ class ImportController extends Controller
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
-                                        $link->setMetaData(new Metadata(['importDate' => '20181026']));
+                                        $link->setMetaData(new Metadata(['importDate' => date('Ymd')]));
 
                                         $this->documentManager->persist($link);
                                         $this->documentManager->flush();
@@ -832,10 +820,10 @@ class ImportController extends Controller
 
                     //wordpress
                     foreach ($imgIds as $imgId) {
-                        $image = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.wpPostId' => $imgId, 'metadata.data.wpSiteUrl' => 'https://www.vleesplus.nl']);
+                        $image = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.wpPostId' => $imgId, 'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl()]);
                         if ($image) {
                             $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId('vle_afbeelding');
+                            $relation->setRelationId($importDefinition->getImageRelation());
                             $relation->setRelationType('embedded');
                             $relation->addReference($image);
                             $newObject->addRelation($relation);
@@ -849,9 +837,9 @@ class ImportController extends Controller
                             new Metadata(
                                 [
                                     'wpPostId' => $row['wp:post_id'],
-                                    'wpSiteUrl' => 'https://www.vleesplus.nl',
                                     'wpUrl' => (isset($row['wp:attachment_url'])) ? $row['wp:attachment_url'] : $row['link'],
-                                    'importDate' => '20181019',
+                                    'importDate' => date('Ymd'),
+                                    'importImageBaseUrl' => $importDefinition->getImageBaseUrl(),
                                 ]
                             )
                         );

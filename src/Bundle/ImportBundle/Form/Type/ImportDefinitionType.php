@@ -11,18 +11,13 @@
 
 namespace Integrated\Bundle\ImportBundle\Form\Type;
 
-use Braincrafted\Bundle\BootstrapBundle\Form\Type\BootstrapCollectionType;
-use Integrated\Bundle\FormTypeBundle\Form\Type\ColorType;
-use Integrated\Bundle\StorageBundle\Form\Type\ImageDropzoneType;
-use Integrated\Bundle\UserBundle\Model\Scope;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
+use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 class ImportDefinitionType extends AbstractType
 {
@@ -32,6 +27,9 @@ class ImportDefinitionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class);
+        $builder->add('imageBaseUrl', UrlType::class, ['label' => 'Base URL for images', 'required' => false]);
+        $builder->add('imageContentType', ContentTypeChoice::class, ['label' => 'Content type for images', 'multiple' => false]);
+        $builder->add('imageRelation', DocumentType::class, ['label' => 'Relation type for images', 'multiple' => false, 'class' => Relation::class, 'choice_label' => name]);
     }
 
 }

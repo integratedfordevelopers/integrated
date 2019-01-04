@@ -10,16 +10,11 @@
         <field fieldName="createdAt" type="date"/>
         <field fieldName="executedAt" type="date"/>
         <field fieldName="fileId" type="string"/>
+        <field fieldName="imageBaseUrl" type="string"/>
+        <field fieldName="imageContentType" type="string"/>
+        <field fieldName="imageRelation" type="string"/>
 
         <embed-many field="fields" target-document="Integrated\Bundle\ImportBundle\Document\Embedded\ImportField" />
-
-        <!--
-         repository-class="Integrated\Bundle\ContentBundle\Document\Bulk\BulkActionRepository"
-
-                <embed-many field="actions" strategy="set"/>
-
-                <reference-many field="selection" target-document="Integrated\Bundle\ContentBundle\Document\Content\Content"/>
-        -->
     </document>
 
 </doctrine-mongo-mapping>

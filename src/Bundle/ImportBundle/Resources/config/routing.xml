@@ -9,7 +9,7 @@
     </route>
 
     <route id="integrated_import_new" path="/import/new/{type}">
-        <default key="_controller">Integrated\Bundle\ImportBundle\Controller\ImportController:new</default>
+        <default key="_controller">Integrated\Bundle\ImportBundle\Controller\ImportController:newImport</default>
     </route>
 
     <route id="integrated_import_file" path="/import/chooseFile/{importDefinition}">

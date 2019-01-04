@@ -52,6 +52,21 @@ class ImportDefinition
     private $fields;
 
     /**
+     * @var string
+     */
+    private $imageBaseUrl;
+
+    /**
+     * @var string
+     */
+    private $imageContentType;
+
+    /**
+     * @var string
+     */
+    private $imageRelation;
+
+    /**
      * ImportDefition constructor.
      */
     public function __construct()
@@ -204,6 +219,63 @@ class ImportDefinition
     public function setFields(array $fields)
     {
         $this->fields = $fields;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageBaseUrl(): string
+    {
+        return $this->imageBaseUrl;
+    }
+
+    /**
+     * @param string $imageBaseUrl
+     * @return ImportDefinition
+     */
+    public function setImageBaseUrl(string $imageBaseUrl)
+    {
+        $this->imageBaseUrl = $imageBaseUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageContentType(): string
+    {
+        return $this->imageContentType;
+    }
+
+    /**
+     * @param string $imageContentType
+     * @return ImportDefinition
+     */
+    public function setImageContentType(string $imageContentType)
+    {
+        $this->imageContentType = $imageContentType;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageRelation(): string
+    {
+        return $this->imageRelation;
+    }
+
+    /**
+     * @param string $imageRelation
+     * @return ImportDefinition
+     */
+    public function setImageRelation(string $imageRelation)
+    {
+        $this->imageRelation = $imageRelation;
 
         return $this;
     }
