@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ImportBundle\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ImportBundle\Document\Embedded\ImportField;
 
 class ImportDefinition
@@ -62,7 +63,7 @@ class ImportDefinition
     private $imageContentType;
 
     /**
-     * @var string
+     * @var Relation
      */
     private $imageRelation;
 
@@ -226,7 +227,7 @@ class ImportDefinition
     /**
      * @return string
      */
-    public function getImageBaseUrl(): string
+    public function getImageBaseUrl(): ?string
     {
         return $this->imageBaseUrl;
     }
@@ -245,7 +246,7 @@ class ImportDefinition
     /**
      * @return string
      */
-    public function getImageContentType(): string
+    public function getImageContentType(): ?string
     {
         return $this->imageContentType;
     }
@@ -262,18 +263,18 @@ class ImportDefinition
     }
 
     /**
-     * @return string
+     * @return Relation
      */
-    public function getImageRelation(): string
+    public function getImageRelation()
     {
         return $this->imageRelation;
     }
 
     /**
-     * @param string $imageRelation
+     * @param Relation $imageRelation
      * @return ImportDefinition
      */
-    public function setImageRelation(string $imageRelation)
+    public function setImageRelation($imageRelation)
     {
         $this->imageRelation = $imageRelation;
 

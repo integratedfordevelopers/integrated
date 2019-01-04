@@ -156,7 +156,11 @@ class ImportController extends Controller
 
         $file = false;
         $method = 'PUT';
-        if (!($importDefinition->getFileId() && $file = $this->documentManager->find(File::class, $importDefinition->getFileId()))) {
+        if ($importDefinition->getFileId()) {
+            $file = $this->documentManager->find(File::class, $importDefinition->getFileId());
+        }
+
+        if (!$file) {
             //file not yet uploaded, create a new one
             $file = new File();
             $file->setContentType('import_file');
