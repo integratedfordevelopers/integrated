@@ -250,7 +250,7 @@ class ImportController extends Controller
                             $valuet .= $value2;
                         } else {
                             foreach ($value2 as $key3 => $value3) {
-                                if ($key3 == 'wp:meta_key' && $value3['$'] == '_thumbnail_id') {
+                                if ($key3 == 'wp:meta_key' && isset($value3['$']) && $value3['$'] == '_thumbnail_id') {
                                     $data[$index]['_thumbnail_id'] = $value2['wp:meta_value']['$'];
                                     if (!in_array('_thumbnail_id', $startRow)) {
                                         $startRow[] = '_thumbnail_id';

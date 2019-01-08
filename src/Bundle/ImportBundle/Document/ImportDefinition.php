@@ -271,7 +271,7 @@ class ImportDefinition
     }
 
     /**
-     * @param Relation $imageRelation
+     * @param string $imageRelation
      * @return ImportDefinition
      */
     public function setImageRelation($imageRelation)
