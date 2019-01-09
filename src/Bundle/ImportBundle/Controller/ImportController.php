@@ -9,6 +9,7 @@ use Integrated\Bundle\ChannelBundle\Model\Config;
 use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\PublishTime;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
@@ -234,42 +235,71 @@ class ImportController extends Controller
 
         $startRow = [];
 
+        //place domain attributes in seperate fields
+        //todo: move to WP filter
+        $j = 0;
         foreach ($data as $index => $row) {
-            foreach ($row as $index2 => $value) {
-                if (!in_array($index2, $startRow)) {
-                    $startRow[] = $index2;
-                }
-                if (is_array($value)) {
-                    $valuet = '';
-                    //todo: move to WP filter
-                    foreach ($value as $key2 => $value2) {
-                        if ((string) $key2 == '@nicename') {
-                            continue;
-                        }
-                        if (!is_array($value2)) {
-                            $valuet .= $value2;
-                        } else {
-                            foreach ($value2 as $key3 => $value3) {
-                                if ($key3 == 'wp:meta_key' && isset($value3['$']) && $value3['$'] == '_thumbnail_id') {
-                                    $data[$index]['_thumbnail_id'] = $value2['wp:meta_value']['$'];
-                                    if (!in_array('_thumbnail_id', $startRow)) {
-                                        $startRow[] = '_thumbnail_id';
-                                    }
-                                }
+            foreach ($row as $index2 => $value2) {
+                if (is_array($value2)) {
+                    //move single domain attributes to field
+                    if (isset($value2['@domain']) && isset($value2['$'])) {
+                        $data[$index][$index2.'_'.$value2['@domain']][] = $value2['$'];
+                        unset($data[$index][$index2]);
+                        continue;
+                    }
 
-                                if ((string) $key3 == '@nicename') {
-                                    continue;
-                                }
-                                if (!is_array($value3)) {
-                                    if ($valuet != '') {
-                                        $valuet .= ',';
-                                    }
-                                    $valuet .= $value3;
-                                }
-                            }
+                    //move multi domain attributes to field
+                    $unset = false;
+                    foreach ($value2 as $index3 => $value3) {
+                        if (isset($value3['@domain']) && isset($value3['$'])) {
+                            $data[$index][$index2.'_'.$value3['@domain']][] = $value3['$'];
+                            $unset = true;
                         }
                     }
-                    $data[$index][$index2] = $valuet;
+
+                    //move meta info to field
+                    foreach ($value2 as $index3 => $value3) {
+                        if (isset($value3['wp:meta_key']) && isset($value3['wp:meta_value']) && isset($value3['wp:meta_key']['$']) && isset($value3['wp:meta_value']['$'])) {
+                            $data[$index]['meta'.$value3['wp:meta_key']['$']] = $value3['wp:meta_value']['$'];
+                            $unset = true;
+                        }
+                    }
+
+                    if ($unset) {
+                        unset($data[$index][$index2]);
+                    }
+                }
+            }
+        }
+
+        foreach ($data as $index => $row) {
+            foreach ($row as $index2 => $value2) {
+                if (!in_array($index2, $startRow)) {
+                    //make sure all fields are in the startRow
+                    $startRow[] = $index2;
+                }
+
+                //convert to flat values or array, eliminate attributes
+                if (is_array($value2)) {
+                    if (isset($value2['$'])) {
+                        $data[$index][$index2] = $value2['$'];
+                        continue;
+                    }
+
+                    if (count($value2) == 0) {
+                        $data[$index][$index2] = '';
+                        continue;
+                    }
+
+                    $newValue = false;
+                    foreach ($value2 as $index3 => $value3) {
+                        if (isset($value3['$'])) {
+                            $newValue[] = $value3['$'];
+                        }
+                    }
+                    if ($newValue) {
+                        $data[$index][$index2] = $newValue;
+                    }
                 }
             }
         }
@@ -368,6 +398,7 @@ class ImportController extends Controller
             $doneRows = 0;
             $rowNumber = -1;
             $doneTitles = [];
+
             foreach ($data as $row) {
                 $rowNumber++;
                 if ($rowNumber <= 0 || $rowNumber < $request->request->get('startRow', 0)) {
@@ -391,11 +422,11 @@ class ImportController extends Controller
                     $col++;
                 }
 
-                if (isset($newData['datecreated'])) {
+                if (isset($newData['created_at'])) {
                     //wordpress
                     //todo: move to WP filter
-                    //$newData['created_at'] = str_replace(' ', 'T', $newData['created_at']) . '+2:00';
-                    $newData['datecreated'] = date("Y-m-d\TH:i:s+1:00", $newData['datecreated']);
+                    $newData['created_at'] = str_replace(' ', 'T', $newData['created_at']) . '+2:00';
+                    //$newData['datecreated'] = date("Y-m-d\TH:i:s+1:00", $newData['datecreated']);
                 }
 
                 if (count($newData)) {
@@ -415,9 +446,21 @@ class ImportController extends Controller
                     if ($doubleArticle) {
                         //do not import duplicate articles, except for files
                         if (!$newObject instanceof File) {
+                            $this->get('braincrafted_bootstrap.flash')->alert('Post "'.$newObject->getTitle().'" already imported');
                             continue;
                         }
                     }
+
+                    if (isset($row['wp:post_id']) && $importDefinition->getImageBaseUrl()) {
+                        //todo image base URL to general base URL
+                        $doubleArticle = $this->documentManager->getRepository(Content::class)->findOneBy(['metadata.data.wpPostId' => $row['wp:post_id'], 'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl()]);
+                        if ($doubleArticle) {
+                            $this->get('braincrafted_bootstrap.flash')->alert('Post '.$row['wp:post_id'].' already imported');
+                            continue;
+                        }
+                    }
+
+                    $this->get('braincrafted_bootstrap.flash')->success('Importing '.$row['wp:post_id'].'');
 
                     if (isset($row['publiceren_van']) && $row['publiceren_van'] != '') {
                         $newObject->getPublishTime()->setStartDate(new \DateTime('@'.$row['publiceren_van']));
@@ -489,7 +532,7 @@ class ImportController extends Controller
 
                         foreach ($html->find('a') as $element) {
                             if (!$importDefinition->getImageContentType() || !$importDefinition->getImageRelation()) {
-                                return;
+                                continue;
                             }
 
                             $href = $element->href;
@@ -540,17 +583,20 @@ class ImportController extends Controller
                                     )
                                 );
 
-                                $file = new Image();
-                                $file->setContentType($importDefinition->getImageContentType());
-                                $file->setTitle($title);
-                                $file->setFile($storage);
-                                $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
+                                $file = $this->documentManager->getRepository(Image::class)->findOneBy(['contentType' => $importDefinition->getImageContentType(), 'file.identifier' => $storage->getIdentifier()]);
+                                if (!$file) {
+                                    $file = new Image();
+                                    $file->setContentType($importDefinition->getImageContentType());
+                                    $file->setTitle($title);
+                                    $file->setFile($storage);
+                                    $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
 
-                                $this->documentManager->persist($file);
-                                $this->documentManager->flush($file);
+                                    $this->documentManager->persist($file);
+                                    $this->documentManager->flush($file);
+                                }
 
                                 $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId($importDefinition->getImageRelation());
+                                $relation->setRelationId($importDefinition->getImageRelation()->getId());
                                 $relation->setRelationType('embedded');
                                 $relation->addReference($file);
                                 $newObject->addRelation($relation);
@@ -564,7 +610,7 @@ class ImportController extends Controller
                         $title = false;
                         foreach ($html->find('img') as $img) {
                             if (!$importDefinition->getImageContentType() || !$importDefinition->getImageRelation()) {
-                                return;
+                                continue;
                             }
 
                             $title = $img->title;
@@ -584,7 +630,7 @@ class ImportController extends Controller
                             if ($image) {
                                 //attach existing images instead of duplication
                                 $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId($importDefinition->getImageRelation());
+                                $relation->setRelationId($importDefinition->getImageRelation()->getId());
                                 $relation->setRelationType('embedded');
                                 $relation->addReference($image);
                                 $newObject->addRelation($relation);
@@ -619,17 +665,20 @@ class ImportController extends Controller
                                 )
                             );
 
-                            $file = new Image();
-                            $file->setContentType($importDefinition->getImageContentType());
-                            $file->setTitle($title);
-                            $file->setFile($storage);
-                            $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
+                            $file = $this->documentManager->getRepository(Image::class)->findOneBy(['contentType' => $importDefinition->getImageContentType(), 'file.identifier' => $storage->getIdentifier()]);
+                            if (!$file) {
+                                $file = new Image();
+                                $file->setContentType($importDefinition->getImageContentType());
+                                $file->setTitle($title);
+                                $file->setFile($storage);
+                                $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
 
-                            $this->documentManager->persist($file);
-                            $this->documentManager->flush($file);
+                                $this->documentManager->persist($file);
+                                $this->documentManager->flush($file);
+                            }
 
                             $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId($importDefinition->getImageRelation());
+                            $relation->setRelationId($importDefinition->getImageRelation()->getId());
                             $relation->setRelationType('embedded');
                             $relation->addReference($file);
                             $newObject->addRelation($relation);
@@ -651,91 +700,15 @@ class ImportController extends Controller
                         $newObject->setContent($html);
 
                     }
-                    //dump((string) $html);
 
                     //to implement
-                    if (strpos($row['channels'], '4') !== false) {
-                        $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(
-                            ['name' => 'Interieurbouw']
-                        );
-                        $newObject->addChannel($channel);
+                    $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(
+                        ['name' => 'ijs']
+                    );
+                    $newObject->addChannel($channel);
+                    if (!$channel) {
+                        throw new \Exception('No channel');
                     }
-                    if (strpos($row['channels'], '5') !== false) {
-                        $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(
-                            ['name' => 'Bouw & Renovatie']
-                        );
-                        $newObject->addChannel($channel);
-                    }
-                    if (strpos($row['channels'], '6') !== false) {
-                        $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(
-                            ['name' => 'SGA']
-                        );
-                        $newObject->addChannel($channel);
-                    }
-                    if (strpos($row['channels'], '7') !== false) {
-                        $channel = $this->documentManager->getRepository(Channel::class)->findOneBy(
-                            ['name' => 'TuinVAK']
-                        );
-                        $newObject->addChannel($channel);
-                    }
-                    //if (!$channel) {
-//                        throw new \Exception('No channel');
-//                    }
-
-
-                    /*
-                    preg_match('/<img[^>]*src *= *["\']?([^"\']*)[^>]*>/i', $content, $matches);
-                    dump($matches);
-
-
-
-                    $storage = $this->getContainer()->get('integrated_storage.manager')
-                        ->write(
-                            new MemoryReader(
-                                file_get_contents($file),
-                                new StorageMetadata(
-                                    pathinfo($file, PATHINFO_EXTENSION),
-                                    mime_content_type($file),
-                                    new ArrayCollection(),
-                                    new ArrayCollection()
-                                )
-                            )
-                        );
-
-                    $file = new Image();
-                    $file->setContentType('image');
-                    $file->setTitle($title);
-                    $file->setFile($storage);
-                    $file->setMetadata($meta);
-
-                    $dm->persist($file);
-                    $dm->flush($file);
-
-                    $ctrelation = $dm->getRepository('IntegratedContentBundle:Relation\Relation')
-                        ->findOneBy(
-                            [
-                                'name' => 'Media',
-                                'type' => 'embedded',
-                            ]
-                        );
-                    if (!$ctrelation) {
-                        $ctrelation = new MainRelation();
-                        $ctrelation->setName('Media');
-                        $ctrelation->setType('embedded');
-
-                        $dm->persist($ctrelation);
-                        $dm->flush($ctrelation);
-                    }
-
-                    $relation = new Relation();
-                    $relation->setRelationId($ctrelation->getId());
-                    $relation->setRelationType($ctrelation->getType());
-                    $relation->addReference($file);
-                    $article->addRelation($relation);
-
-
-*/
-
 
                     $col = 1;
                     foreach ($row as $value) {
@@ -770,7 +743,12 @@ class ImportController extends Controller
                                 $relation2->setRelationId($relation->getId());
                                 $relation2->setRelationType($relation->getType());
 
-                                foreach (explode(",", $value) as $valueName) {
+                                if (!is_array($value)) {
+                                    $value = array($value);
+                                }
+
+                                foreach ($value as $valueName) {
+                                    //allow choose and find correct content type
                                     $link = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['title' => $valueName]);
                                     if (!$link) {
                                         $link = $targetContentType->create();
@@ -795,11 +773,15 @@ class ImportController extends Controller
                     $doneTitles[] = $newObject->getTitle();
 
                     if (isset($row['wp:attachment_url']) && $newObject instanceof File) {
-                        $tmpfile = tempnam("/tmp/", "img") .  "." . pathinfo($row['wp:attachment_url'], PATHINFO_EXTENSION);
+                        $tmpBaseFile = tempnam("/tmp/", "img");
+                        $tmpfile = $tmpBaseFile.".".pathinfo($row['wp:attachment_url'], PATHINFO_EXTENSION);
+                        rename($tmpBaseFile, $tmpfile);
                         file_put_contents($tmpfile, @file_get_contents($row['wp:attachment_url']));
                         if (filesize($tmpfile) == 0) {
                             //echo $file . "\n";
                             //echo "FILE HAS 0 BYTES\n";
+                            $this->get('braincrafted_bootstrap.flash')->error('Attachment '.$row['wp:post_id'].' has 0 bytes');
+                            unlink($tmpfile);
                             continue;
                         }
 
@@ -816,18 +798,22 @@ class ImportController extends Controller
                         );
 
                         $newObject->setFile($storage);
+                        unlink($tmpfile);
                     }
 
-                    if (isset($row['_thumbnail_id'])) {
-                        $imgIds[] = $row['_thumbnail_id'];
+                    if (isset($row['meta_thumbnail_id'])) {
+                        $imgIds[] = $row['meta_thumbnail_id'];
                     }
 
                     //wordpress
                     foreach ($imgIds as $imgId) {
+                        if (!$imgId) {
+                            continue;
+                        }
                         $image = $this->documentManager->getRepository(Image::class)->findOneBy(['metadata.data.wpPostId' => $imgId, 'metadata.data.importImageBaseUrl' => $importDefinition->getImageBaseUrl()]);
                         if ($image) {
                             $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId($importDefinition->getImageRelation());
+                            $relation->setRelationId($importDefinition->getImageRelation()->getId());
                             $relation->setRelationType('embedded');
                             $relation->addReference($image);
                             $newObject->addRelation($relation);
@@ -856,8 +842,18 @@ class ImportController extends Controller
                 }
 
                 $doneRows++;
-                if ($doneRows >= 3) {
+                if ($doneRows >= 50) {
                     $data = array_slice($data, 0, 20);
+
+                    //prepare data for display
+                    foreach ($data as $index => $row) {
+                        foreach ($row as $index2 => $value2) {
+                            if (is_array($value2)) {
+                                $data[$index][$index2] = implode(', ', $value2);
+                            }
+                        }
+                    }
+
                     return $this->render(
                         'IntegratedImportBundle::composeDefinition.html.twig',
                         [
@@ -877,6 +873,14 @@ class ImportController extends Controller
         //todo: id for connector
         //todo: relations match
 
+        //prepare data for display
+        foreach ($data as $index => $row) {
+            foreach ($row as $index2 => $value2) {
+                if (is_array($value2)) {
+                    $data[$index][$index2] = implode(', ', $value2);
+                }
+            }
+        }
 
         return $this->render(
             'IntegratedImportBundle::composeDefinition.html.twig',
