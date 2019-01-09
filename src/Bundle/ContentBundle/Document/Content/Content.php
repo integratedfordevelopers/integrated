@@ -299,6 +299,23 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     }
 
     /**
+     * @param array $relationTypes
+     *
+     * @return array|bool
+     */
+    public function getReferencesByRelationTypes(array $relationTypes) {
+        $references = [];
+        foreach ($relationTypes as $relationType) {
+            $references = array_merge($references, $this->getReferencesByRelationType($relationType));
+        }
+
+        if (sizeof($references) > 0) {
+            return $references;
+        }
+        return false;
+    }
+
+    /**
      * @param $relationType
      *
      * @return Content|null
