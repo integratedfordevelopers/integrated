@@ -28,19 +28,6 @@
             <option name="message">This username is already in use in this scope</option>
         </constraint>
 
-        <property name="username">
-            <constraint name="NotBlank" />
-            <constraint name="Length">
-                <option name="min">3</option>
-            </constraint>
-        </property>
-
-        <property name="password">
-            <constraint name="Length">
-                <option name="min">6</option>
-            </constraint>
-        </property>
-
         <property name="scope">
             <constraint name="NotBlank" />
         </property>

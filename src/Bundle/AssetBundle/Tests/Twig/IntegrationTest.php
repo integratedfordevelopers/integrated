@@ -46,7 +46,7 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
     /**
      * @dataProvider getTests
      */
-    public function testIntegration($file, $message, $condition, $templates, $exception, $outputs)
+    public function testIntegration($file, $message, $condition, $templates, $exception, $outputs, $deprecation = '')
     {
         $templates = $templates + [
             '@IntegratedAssetBundle/Resources/views/asset/javascripts.html.twig' => file_get_contents(
@@ -57,7 +57,7 @@ class IntegrationTest extends \Twig_Test_IntegrationTestCase
             ),
         ];
 
-        $this->doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs);
+        $this->doIntegrationTest($file, $message, $condition, $templates, $exception, $outputs, $deprecation);
     }
 
     /**

@@ -49,6 +49,8 @@ class ContentTypeController extends Controller
      */
     public function indexAction()
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $documents = $this->get('integrated_content.content_type.manager')->getAll();
         $documentTypes = $this->getMetadata()->getAllMetadata();
 
@@ -81,6 +83,8 @@ class ContentTypeController extends Controller
      */
     public function showAction($id)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $contentType = $this->getContentType($id);
         $form = $this->createDeleteForm($contentType);
 
@@ -99,6 +103,8 @@ class ContentTypeController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $metadata = $this->getMetadata()->getMetadata($request->get('class'));
 
         if (!$metadata) {
@@ -140,6 +146,8 @@ class ContentTypeController extends Controller
      */
     public function editAction(Request $request, $id)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $contentType = $this->getContentType($id);
         $metadata = $this->getMetadata()->getMetadata($contentType->getClass());
 
@@ -181,6 +189,8 @@ class ContentTypeController extends Controller
      */
     public function deleteAction(Request $request, $id)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $contentType = $this->getContentType($id);
 
         if ($contentType->isLocked()) {
@@ -195,7 +205,7 @@ class ContentTypeController extends Controller
             $dm = $this->get('doctrine_mongodb')->getManager();
 
             // Only delete ContentType when there are no Content items
-            $count = count($dm->getRepository($contentType->getClass())->findBy(['contentType' => $contentType->getId()]));
+            $count = \count($dm->getRepository($contentType->getClass())->findBy(['contentType' => $contentType->getId()]));
 
             if ($count > 0) {
                 // Set flash message and redirect to item page

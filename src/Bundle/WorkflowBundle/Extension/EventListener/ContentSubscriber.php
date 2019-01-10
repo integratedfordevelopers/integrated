@@ -122,7 +122,7 @@ class ContentSubscriber implements ContentSubscriberInterface
             return;
         }
 
-        $data = is_array($data = $event->getData()) ? array_filter($data) : []; // filter out empty fields
+        $data = \is_array($data = $event->getData()) ? array_filter($data) : []; // filter out empty fields
         $data = $data + [
             'comment' => '',
             'state' => ($state = $this->getState($content)) ? $state->getState() : null,
@@ -328,6 +328,10 @@ E-mail: '.$person->getEmail().'',
 
         $type = $object->getContentType();
 
+        if (!$type) {
+            return null;
+        }
+
         if (!$this->getResolver()->hasType($type)) {
             return null;
         }
@@ -402,7 +406,7 @@ E-mail: '.$person->getEmail().'',
 
         $canWrite = false;
         foreach ($state->getPermissions() as $permission) {
-            if (in_array($permission->getGroup(), $groups) && $permission->getMask() >= PermissionInterface::WRITE) {
+            if (\in_array($permission->getGroup(), $groups) && $permission->getMask() >= PermissionInterface::WRITE) {
                 $canWrite = true;
             }
         }

@@ -140,7 +140,7 @@ class BulkAction
     public function setSelection($contents)
     {
         $this->selection->clear();
-        if (is_array($contents) || $contents instanceof \Traversable) {
+        if (\is_array($contents) || $contents instanceof \Traversable) {
             foreach ($contents as $content) {
                 $this->addSelection($content);
             }
@@ -191,7 +191,7 @@ class BulkAction
     public function setActions($actions)
     {
         $this->actions->clear();
-        if (is_array($actions) || $actions instanceof \Traversable) {
+        if (\is_array($actions) || $actions instanceof \Traversable) {
             foreach ($actions as $action) {
                 $this->addAction($action);
             }

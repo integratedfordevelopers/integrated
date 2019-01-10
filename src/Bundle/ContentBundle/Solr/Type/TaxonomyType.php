@@ -37,7 +37,7 @@ class TaxonomyType implements TypeInterface
 
         foreach ($items as $relation) {
             foreach ($relation->getReferences()->toArray() as $content) {
-                if ($content instanceof Taxonomy || $content instanceof Article) {
+                if (($content instanceof Taxonomy || $content instanceof Article) && $content->getTitle()) {
                     $container->add('facet_'.$relation->getRelationId(), $content->getTitle());
                     $container->add('taxonomy_'.$relation->getRelationId().'_string', $content->getTitle());
                 }

@@ -33,6 +33,10 @@ class UserController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         /** @var $paginator \Knp\Component\Pager\Paginator */
         $paginator = $this->get('knp_paginator');
         $paginator = $paginator->paginate(
@@ -53,6 +57,10 @@ class UserController extends Controller
      */
     public function newAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
@@ -87,6 +95,10 @@ class UserController extends Controller
      */
     public function editAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $user = $this->getManager()->find($request->get('id'));
 
         if (!$user) {
@@ -124,6 +136,10 @@ class UserController extends Controller
      */
     public function deleteAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $user = $this->getManager()->find($request->get('id'));
 
         if (!$user) {
@@ -159,6 +175,10 @@ class UserController extends Controller
      */
     protected function createNewForm()
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createForm(
             UserFormType::class,
             null,
@@ -171,7 +191,7 @@ class UserController extends Controller
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'create' => ['type' => SubmitType::class, 'options' => ['label' => 'Create']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default', 'formnovalidate' => true]]],
             ],
         ]);
 
@@ -185,6 +205,10 @@ class UserController extends Controller
      */
     protected function createEditForm(UserInterface $user)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createForm(
             UserFormType::class,
             $user,
@@ -197,7 +221,7 @@ class UserController extends Controller
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'save' => ['type' => SubmitType::class, 'options' => ['label' => 'Save']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default', 'formnovalidate' => true]]],
             ],
         ]);
 
@@ -211,6 +235,10 @@ class UserController extends Controller
      */
     protected function createDeleteForm(UserInterface $user)
     {
+        if (!$this->isGranted('ROLE_USER_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createForm(
             DeleteFormType::class,
             $user,
@@ -223,7 +251,7 @@ class UserController extends Controller
         $form->add('actions', FormActionsType::class, [
             'buttons' => [
                 'delete' => ['type' => SubmitType::class, 'options' => ['label' => 'Delete']],
-                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default']]],
+                'cancel' => ['type' => SubmitType::class, 'options' => ['label' => 'Cancel', 'attr' => ['type' => 'default', 'formnovalidate' => true]]],
             ],
         ]);
 

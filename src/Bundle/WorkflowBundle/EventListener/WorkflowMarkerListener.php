@@ -16,6 +16,7 @@ use Solarium\Core\Event;
 use Solarium\QueryType\Select\Query\Query;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * @author Jeroen van Leeuwen <jeroen@e-active.nl>
@@ -28,11 +29,18 @@ class WorkflowMarkerListener implements EventSubscriberInterface
     private $tokenStorage;
 
     /**
-     * @param TokenStorageInterface $tokenStorage
+     * @var AuthorizationChecker
      */
-    public function __construct(TokenStorageInterface $tokenStorage)
+    private $authorizationChecker;
+
+    /**
+     * @param TokenStorageInterface $tokenStorage
+     * @param AuthorizationChecker  $authorizationChecker
+     */
+    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationChecker $authorizationChecker)
     {
         $this->tokenStorage = $tokenStorage;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -58,6 +66,11 @@ class WorkflowMarkerListener implements EventSubscriberInterface
 
         if (!$query instanceof Query) {
             throw new \InvalidArgumentException(sprintf('$query must be of type %s', Query::class));
+        }
+
+        if ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+            //admin is always allowed to do everything
+            return;
         }
 
         $user = null;
