@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\WebsiteBundle\EventListener\Objects;
 
-use Integrated\Bundle\ContentBundle\Document\Content\Content;
 use Integrated\Bundle\ContentBundle\Event\ContentEvent;
 use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -37,9 +36,9 @@ class ContentYoutubeListener
     protected $env;
 
     /**
-     * @param ThemeManager     $themeManager
-     * @param EngineInterface  $templating
-     * @param string           $env
+     * @param ThemeManager $themeManager
+     * @param EngineInterface $templating
+     * @param string $env
      */
     public function __construct(
         ThemeManager $themeManager,
@@ -77,9 +76,10 @@ class ContentYoutubeListener
     }
 
     /**
-     * @param string  $youtubeId
+     * @param string $youtubeId
      *
      * @return null|string
+     * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
      */
     protected function getTemplate(string $youtubeId)
     {
