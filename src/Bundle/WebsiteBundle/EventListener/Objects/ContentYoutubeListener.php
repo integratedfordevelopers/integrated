@@ -61,7 +61,6 @@ class ContentYoutubeListener
             $content = preg_replace_callback(
                 '/\[object.*?type=\"youtube\".*?id\="(.+?)".*?\]/',
                 function ($matches) {
-                    dump($matches);
                     return $this->getTemplate($matches[1]);
                 },
                 $contentEvent->getContent()
@@ -90,5 +89,4 @@ class ContentYoutubeListener
             ['youtubeId' => $youtubeId]
         )->getContent();
     }
-
 }
