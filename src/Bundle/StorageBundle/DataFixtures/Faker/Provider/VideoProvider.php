@@ -75,7 +75,7 @@ class VideoProvider
     }
 
     /**
-     * @param null|string $type
+     * @param string|null $type
      *
      * @return \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface
      *
@@ -90,7 +90,7 @@ class VideoProvider
     }
 
     /**
-     * @param null|string $type
+     * @param string|null $type
      *
      * @return bool|string
      *
@@ -102,7 +102,7 @@ class VideoProvider
         $url = sprintf('https://wosvideo.e-activesites.nl/%s/', $type ?: 'random');
 
         //create new local file
-        $fp = fopen($destination, 'wb');
+        $fp = fopen($destination, 'w');
 
         //init curl
         $ch = curl_init($url);
