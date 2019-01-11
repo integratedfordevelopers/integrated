@@ -28,8 +28,10 @@ class ShorttagFilterExtension implements TypeExtensionInterface
 
         if ($container->has('content')) {
             $content = $container->get('content');
-            $content = preg_replace('/\[object.*?\]/', '', $content);
-            $container->set('content', $content);
+            if (isset($content[0])) {
+                $content[0] = preg_replace('/\[object.*?\]/', '', $content[0]);
+                $container->set('content', $content[0]);
+            }
         }
     }
 
@@ -38,6 +40,6 @@ class ShorttagFilterExtension implements TypeExtensionInterface
      */
     public function getName()
     {
-        return 'integrated.content';
+        return 'integrated.fields';
     }
 }
