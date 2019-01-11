@@ -28,7 +28,7 @@ class StorageLocator extends FileLocator
 
     /**
      * @param KernelInterface $kernel
-     * @param null|string     $path
+     * @param string|null     $path
      * @param array           $paths
      * @param CacheInterface  $cache
      */

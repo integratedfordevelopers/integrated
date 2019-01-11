@@ -95,7 +95,7 @@ class BlockExtension extends \Twig_Extension
      * @param \Integrated\Common\Block\BlockInterface|string $block
      * @param array                                          $options
      *
-     * @return null|string
+     * @return string|null
      *
      * @throws \Exception
      */
