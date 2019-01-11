@@ -634,6 +634,8 @@ class ImportController extends Controller
                                 $relation->setRelationType('embedded');
                                 $relation->addReference($image);
                                 $newObject->addRelation($relation);
+
+                                $img->outertext = '<img src="/storage/' . $image->getFile()->getIdentifier() . '.jpg" class="img-responsive" title="' . htmlspecialchars($image->getTitle()) . '" alt="' . htmlspecialchars($image->getTitle()) . '" data-integrated-id="' . $image->getFile()->getIdentifier() . '" />';
                                 continue;
                             }
 
@@ -696,6 +698,11 @@ class ImportController extends Controller
                             },
                             $html
                         );
+
+                        $youtubeRexEg = '/https?:\/\/(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?\"\<]*)/';
+                        $html = preg_replace_callback($youtubeRexEg, function ($matches) {
+                            return '[object type="youtube" id="'.trim($matches[2]).'"]';
+                        }, $html);
 
                         $html = preg_replace('/\[caption.*?\]/', '', $html);
                         $html = str_ireplace('[/caption]', '', $html);
