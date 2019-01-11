@@ -478,7 +478,7 @@ class ImportController extends Controller
 
                         $newHtml = '';
                         $prevLine = '';
-                        if (false) { //wordpress
+                        if (true) { //todo: more to wordpress filter, only for Wordpress
                             //todo: move to filter
                             foreach (explode("\n", $content) as $line) {
                                 $line = trim($line);
@@ -601,7 +601,7 @@ class ImportController extends Controller
                                 $relation->addReference($file);
                                 $newObject->addRelation($relation);
 
-                                $element->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
+                                $element->outertext = '<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
                             }
                         }
 
@@ -683,7 +683,7 @@ class ImportController extends Controller
                             $relation->addReference($file);
                             $newObject->addRelation($relation);
 
-                            $img->outertext = ''; //'<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
+                            $img->outertext = '<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
                         }
 
                         $html = (string) $html;
@@ -696,6 +696,9 @@ class ImportController extends Controller
                             },
                             $html
                         );
+
+                        $html = preg_replace('/\[caption.*?\]/', '', $html);
+                        $html = str_ireplace('[/caption]', '', $html);
 
                         $newObject->setContent($html);
 
