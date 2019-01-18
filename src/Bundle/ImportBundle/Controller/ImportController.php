@@ -476,17 +476,40 @@ class ImportController extends Controller
                     if ($newObject instanceof Article) {
                         $content = $newObject->getContent();
 
+                        $content = preg_replace_callback(
+                            '/\[gallery ids\="(.+?)".*?\]/',
+                            function ($matches) use (&$imgIds) {
+                                $imgIds = array_merge($imgIds, explode(",", $matches[1]));
+                                return '';
+                            },
+                            $content
+                        );
+
+                        $youtubeRexEg = '/https?:\/\/(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?\"\<]*)/';
+                        $content = preg_replace_callback($youtubeRexEg, function ($matches) {
+                            return '[object type="youtube" id="'.trim($matches[2]).'"]';
+                        }, $content);
+
+                        $content = preg_replace('/\[caption.*?\]/', '', $content);
+                        $content = str_ireplace('[/caption]', '', $content);
+
+                        $content = str_ireplace('<div class="well">', '<div class="frame-general">', $content);
+
                         $newHtml = '';
                         $prevLine = '';
                         if (true) { //todo: more to wordpress filter, only for Wordpress
                             //todo: move to filter
                             foreach (explode("\n", $content) as $line) {
                                 $line = trim($line);
-                                if (trim(strip_tags($line)) != "") {
+                                if (trim(strip_tags(str_replace('&nbsp;', '', $line))) != "" || $line == '<ul>' || $line == '</ul>') {
                                     if (substr($line, -3, 3) == 'h1>'
                                         || substr($line, -3, 3) == 'h2>'
                                         || substr($line, -3, 3) == 'h3>'
                                         || substr($line, -3, 3) == 'li>'
+                                        || substr($line, -3, 3) == 'ul>'
+                                        || substr($line, 0, 3) == '<li'
+                                        || substr($line, 0, 3) == '<ul'
+                                        || (substr($line, 0, 1) == '[' && substr($line, -1, 1) == ']')
                                     ) {
                                         //niks mee doen
                                         if ($prevLine == 'li') {
@@ -596,12 +619,12 @@ class ImportController extends Controller
                                 }
 
                                 $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId($importDefinition->getImageRelation()->getId());
+                                $relation->setRelationId('__editor_image');
                                 $relation->setRelationType('embedded');
                                 $relation->addReference($file);
                                 $newObject->addRelation($relation);
 
-                                $element->outertext = '<img src="/storage/' . $file->getId() . '.jpg" class="img-responsive" title="' . htmlspecialchars($title) . '" alt="' . htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
+                                $element->outertext = '<img src="/storage/'.$file->getId().'.jpg" class="img-responsive" title="'.htmlspecialchars($title).'" alt="'.htmlspecialchars($title) . '" data-integrated-id="' . $file->getId() . '" />';
                             }
                         }
 
@@ -630,12 +653,12 @@ class ImportController extends Controller
                             if ($image) {
                                 //attach existing images instead of duplication
                                 $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId($importDefinition->getImageRelation()->getId());
+                                $relation->setRelationId('__editor_image');
                                 $relation->setRelationType('embedded');
                                 $relation->addReference($image);
                                 $newObject->addRelation($relation);
 
-                                $img->outertext = '<img src="/storage/' . $image->getFile()->getIdentifier() . '.jpg" class="img-responsive" title="' . htmlspecialchars($image->getTitle()) . '" alt="' . htmlspecialchars($image->getTitle()) . '" data-integrated-id="' . $image->getFile()->getIdentifier() . '" />';
+                                $img->outertext = '<img src="/storage/'.$image->getId().'.jpg" class="img-responsive" title="'.htmlspecialchars($image->getTitle()).'" alt="'.htmlspecialchars($image->getTitle()).'" data-integrated-id="'.$image->getId().'" />';
                                 continue;
                             }
 
@@ -680,7 +703,7 @@ class ImportController extends Controller
                             }
 
                             $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                            $relation->setRelationId($importDefinition->getImageRelation()->getId());
+                            $relation->setRelationId('__editor_image');
                             $relation->setRelationType('embedded');
                             $relation->addReference($file);
                             $newObject->addRelation($relation);
@@ -689,23 +712,6 @@ class ImportController extends Controller
                         }
 
                         $html = (string) $html;
-
-                        $html = preg_replace_callback(
-                            '/\[gallery ids\="(.+?)".*?\]/',
-                            function ($matches) use (&$imgIds) {
-                                $imgIds = array_merge($imgIds, explode(",", $matches[1]));
-                                return '';
-                            },
-                            $html
-                        );
-
-                        $youtubeRexEg = '/https?:\/\/(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?\"\<]*)/';
-                        $html = preg_replace_callback($youtubeRexEg, function ($matches) {
-                            return '[object type="youtube" id="'.trim($matches[2]).'"]';
-                        }, $html);
-
-                        $html = preg_replace('/\[caption.*?\]/', '', $html);
-                        $html = str_ireplace('[/caption]', '', $html);
 
                         $newObject->setContent($html);
 
