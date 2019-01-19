@@ -1022,6 +1022,10 @@ class ContentController extends Controller
         $form = $this->createForm(ContentFormType::class, $content, [
             'action' => $this->generateUrl('integrated_content_content_new', ['type' => $request->get('type'), '_format' => $request->getRequestFormat(), 'relation' => $request->get('relation')]),
             'method' => 'POST',
+            'attr' => [
+                'class' => 'content-form',
+                'data-content-type' => $contentType->getId(),
+            ],
             'content_type' => $contentType,
         ]);
 
@@ -1037,21 +1041,26 @@ class ContentController extends Controller
      */
     protected function createEditForm(ContentTypeInterface $contentType, ContentInterface $content, array $locking)
     {
-        $form = $this->createForm(ContentFormType::class, $content, [
+        $options = [
             'action' => $this->generateUrl(
                 'integrated_content_content_edit',
-                $locking['lock'] ?
-                ['id' => $content->getId(), 'lock' => $locking['lock']->getId()]
-                :
-                ['id' => $content->getId()]
+                $locking['lock'] ? ['id' => $content->getId(), 'lock' => $locking['lock']->getId()] : ['id' => $content->getId()]
             ),
             'method' => 'PUT',
-            'attr' => ['class' => 'content-form', 'data-content-id' => $content->getId()],
-            // don't display error's when the content is locked as the user can't save in the first place
-            'validation_groups' => $locking['locked'] ? false : null,
+            'attr' => [
+                'class' => 'content-form',
+                'data-content-id' => $content->getId(),
+                'data-content-type' => $contentType->getId(),
+            ],
             'content_type' => $contentType,
-        ]);
+        ];
 
+        if ($locking['locked']) {
+            // don't display error's when the content is locked as the user can't save in the first place
+            $options['validation_groups'] = false;
+        }
+
+        $form = $this->createForm(ContentFormType::class, $content, $options);
         $form->add('returnUrl', HiddenType::class, ['required' => false, 'mapped' => false, 'attr' => ['class' => 'return-url']]);
 
         // load a different set of buttons based on the permissions and locking state

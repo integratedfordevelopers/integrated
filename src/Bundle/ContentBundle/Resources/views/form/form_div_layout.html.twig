@@ -6,7 +6,7 @@
 
 {% block integrated_content_type_default_fields_widget %}
 {% spaceless %}
-    <table class="table">
+    <table class="table table-hover">
         <thead>
         <tr>
             <th width="40%">{% trans %}Fields{% endtrans %}</th>
@@ -108,16 +108,7 @@
                 {% endif %}
                 {{ form_widget(form.file) }}
                 {% if preview %}
-                    <div class="checkbox">
-                        <label>
-                            {{ form_widget(form.remove) }}
-                            {%  if (form.remove.vars.label) %}
-                                {{ form.remove.vars.label }}
-                            {% else %}
-                                {% trans %}Remove{% endtrans %}
-                            {%  endif %}
-                        </label>
-                    </div>
+                    {{ form_widget(form.remove) }}
                 {% endif %}
                 {{ form_errors(form.file) }}
             </div>
@@ -136,16 +127,7 @@
                 {% endif %}
                 {{ form_widget(form.file) }}
                 {% if preview %}
-                    <div class="checkbox">
-                        <label>
-                            {{ form_widget(form.remove) }}
-                            {%  if (form.remove.vars.label) %}
-                                {{ form.remove.vars.label }}
-                            {% else %}
-                                {% trans %}Remove{% endtrans %}
-                            {%  endif %}
-                        </label>
-                    </div>
+                    {{ form_widget(form.remove) }}
                 {% endif %}
                 {{ form_errors(form.file) }}
             </div>
@@ -162,7 +144,7 @@
 
 {% block integrated_content_type_channel_collection_widget %}
 {% spaceless %}
-    <table class="table">
+    <table class="table table-hover">
         <colgroup>
             <col style="width:40%" />
             <col />

@@ -13,6 +13,7 @@
         <field fieldName="color" type="string" />
         <field fieldName="domains" type="collection" />
         <field fieldName="primaryDomain" type="string" />
+        <field fieldName="primaryDomainRedirect" type="boolean" />
         <field fieldName="options" type="hash" />
         <field fieldName="createdAt" type="date" />
 

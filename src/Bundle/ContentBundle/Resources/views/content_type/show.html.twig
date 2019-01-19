@@ -30,16 +30,45 @@
                         {{ contentType.id }}
                     </dd>
                     <dt>
+                        {% trans %}Fields{% endtrans %}
+                    </dt>
+                    <dd>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="40%">{% trans %}Field{% endtrans %}</th>
+                                    <th>{% trans %}Required{% endtrans %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for field in contentType.fields %}
+                                <tr>
+                                    <td>
+                                        {{ field.label|trans }}
+                                    </td>
+                                    <td>
+                                        {% if field.options.required is empty %}
+                                            {% trans %}No{% endtrans %}
+                                        {% else %}
+                                            {% trans %}Yes{% endtrans %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td>
+                                        {% trans %}No fields added{% endtrans %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </dd>
+                    <dt>
                         {% trans %}Relations{% endtrans %}
                     </dt>
                     <dd>
                         {{ render(controller("IntegratedContentBundle:Relation:index", {'contentType': contentType.id, '_format': 'inline.html'})) }}
-                    </dd>
-                    <dt>
-                        {% trans %}Form configurations{% endtrans %}
-                    </dt>
-                    <dd>
-                        {{ render(controller('integrated_content.controller.form_config_controller:indexAction', {'type': contentType, '_format': 'inline.html'})) }}
                     </dd>
                 </dl>
 

@@ -42,6 +42,8 @@ class WorkflowController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
 
@@ -65,6 +67,8 @@ class WorkflowController extends Controller
      */
     public function newAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         $form = $this->createNewForm();
 
         if ($request->isMethod('post')) {
@@ -100,6 +104,8 @@ class WorkflowController extends Controller
      */
     public function editAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         /** @var Definition $workflow */
         $workflow = $this->getDoctrine()
             ->getManager()
@@ -145,6 +151,8 @@ class WorkflowController extends Controller
      */
     public function deleteAction(Request $request)
     {
+        $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
+
         /** @var Definition $workflow */
         $workflow = $this->getDoctrine()
             ->getManager()
@@ -192,6 +200,7 @@ class WorkflowController extends Controller
         $stateId = $request->get('state');
 
         $isDefaultState = false;
+
         if (empty($stateId)) {
             $workflowId = $request->get('workflow');
             $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition');
@@ -202,6 +211,10 @@ class WorkflowController extends Controller
         } else {
             $repository = $this->getDoctrine()->getRepository('IntegratedWorkflowBundle:Definition\State');
             $state = $repository->find($stateId);
+        }
+
+        if (!$state) {
+            return new JsonResponse(['users' => [], 'fields' => []]);
         }
 
         /** @var User $currentUser */

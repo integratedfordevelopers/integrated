@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Document\Content\Relation;
 
 use Integrated\Bundle\SlugBundle\Mapping\Annotations\Slug;
 use Integrated\Common\Content\Document\Storage\Embedded\StorageInterface;
+use Integrated\Common\Content\Document\Storage\FileInterface;
 use Integrated\Common\Form\Mapping\Annotations as Type;
 
 /**
@@ -146,10 +147,35 @@ class Company extends Relation
     }
 
     /**
+     * Get the relative cover image URL for person (picture).
+     *
+     * @return string|null
+     */
+    public function getCover()
+    {
+        if ($this->getLogo() instanceof StorageInterface) {
+            return $this->getLogo();
+        }
+
+        $items = $this->getReferencesByRelationTypes(['cover', 'embedded']);
+        if ($items) {
+            foreach ($items as $item) {
+                if ($item instanceof FileInterface) {
+                    if ($item->getFile() instanceof StorageInterface) {
+                        return $item->getFile();
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
     {
-        return $this->name;
+        return (string) $this->name;
     }
 }

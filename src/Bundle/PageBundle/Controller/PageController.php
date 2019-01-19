@@ -32,6 +32,10 @@ class PageController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $channel = $this->getSelectedChannel();
 
         $builder = $this->getDocumentManager()->createQueryBuilder(Page::class)
@@ -57,6 +61,10 @@ class PageController extends Controller
      */
     public function newAction(Request $request)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $page = new Page();
 
         $form = $this->createCreateForm($page);
@@ -92,6 +100,10 @@ class PageController extends Controller
      */
     public function editAction(Request $request, Page $page)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $form = $this->createEditForm($page);
         $form->handleRequest($request);
 
@@ -121,6 +133,10 @@ class PageController extends Controller
      */
     public function deleteAction(Request $request, Page $page)
     {
+        if (!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         if ($page->isLocked()) {
             throw $this->createNotFoundException(sprintf('Page "%s" is locked.', $page->getId()));
         }
