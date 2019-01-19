@@ -93,7 +93,7 @@ class FacebookChannelConfigSubscriber implements EventSubscriberInterface
                     ['id' => $config->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
-                ['publish_actions']
+                ['publish_pages', 'manage_pages']
             )
         ));
     }
