@@ -68,10 +68,12 @@ class Exporter implements ExporterInterface
             $postResponse = $this->facebook->post(
                 '/me/feed',
                 [
-                    'link' => 'http://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug(),
+                    'link' => 'https://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug(),
                     'message' => $content->getTitle(),
                 ],
-                $this->config->getOptions()->get('token')
+                $this->config->getOptions()->get('token'),
+                null,
+                'v3.1'
             );
 
             $graphNode = $postResponse->getGraphNode();

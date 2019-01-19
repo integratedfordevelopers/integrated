@@ -57,6 +57,7 @@ class Exporter implements ExporterInterface
         }
 
         if ($content->hasConnector($this->config->getId())) {
+            //@todo update current post
             return;
         }
 
@@ -68,7 +69,7 @@ class Exporter implements ExporterInterface
                     'status' => sprintf(
                         '%s %s',
                         $content->getTitle(),
-                        'http://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug()
+                        'https://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug()
                     ),
                 ]
             );
@@ -77,8 +78,12 @@ class Exporter implements ExporterInterface
             return;
         }
 
-        $response = new ExporterResponse($this->config->getId(), $this->config->getAdapter());
-        $response->setExternalId($postResponse->getBody());
+        if ($postResponse->id) {
+            $response = new ExporterResponse($this->config->getId(), $this->config->getAdapter());
+            $response->setExternalId($postResponse->id);
+        } else {
+            //todo: handle error
+        }
 
         return $response;
     }
