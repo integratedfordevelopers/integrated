@@ -12,9 +12,12 @@
 namespace Integrated\Bundle\ContentBundle\Form\Type;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
+use Integrated\Common\Security\PermissionInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 /**
  * @author Vasil Pascal <developer.optimum@gmail.com>
@@ -27,11 +30,25 @@ class ContentTypeChoice extends AbstractType
     private $repository;
 
     /**
-     * @param ObjectRepository $repository
+     * @var ContentTypeManager
      */
-    public function __construct(ObjectRepository $repository)
+    private $contentTypeManager;
+
+    /**
+     * @var AuthorizationChecker
+     */
+    private $authorizationChecker;
+
+    /**
+     * @param ObjectRepository $repository
+     * @param ContentTypeManager $contentTypeManager
+     * @param AuthorizationChecker $authorizationChecker
+     */
+    public function __construct(ObjectRepository $repository, ContentTypeManager $contentTypeManager, AuthorizationChecker $authorizationChecker)
     {
         $this->repository = $repository;
+        $this->contentTypeManager = $contentTypeManager;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -40,10 +57,15 @@ class ContentTypeChoice extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $choices = [];
-        $contentTypes = $this->repository->findAll();
-        foreach ($contentTypes as $contentType) {
+        foreach ($this->contentTypeManager->getAll() as $contentType) {
+            if (!$this->authorizationChecker->isGranted(PermissionInterface::WRITE, $contentType)) {
+                continue;
+            }
+
             $choices[$contentType->getName()] = $contentType->getId();
         }
+
+        ksort($choices);
 
         $resolver
             ->setDefaults([
