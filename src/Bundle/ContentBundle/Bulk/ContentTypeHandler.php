@@ -73,7 +73,7 @@ class ContentTypeHandler implements HandlerInterface
             //don't allow update when item is referenced, because class in reference need to be updated
             $referencedItems = $this->searchContentReferenced->getReferenced($content);
             foreach ($referencedItems as $referencedItem) {
-                throw new \Exception('Item '.(string)$content.' is referenced by item '.$referencedItem['id'].' "'.$referencedItem['name'].'" and can\'t be moved to another document type');
+                throw new \Exception('Item '.(string) $content.' is referenced by item '.$referencedItem['id'].' "'.$referencedItem['name'].'" and can\'t be moved to another document type');
             }
 
             $this->documentManager->getDocumentCollection($contentTypeOld->getClass())->getMongoCollection()->update(['_id' => $content->getId()], ['$set' => ['class' => $contentType->getClass()]]);
