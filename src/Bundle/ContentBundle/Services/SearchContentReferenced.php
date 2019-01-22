@@ -61,7 +61,7 @@ class SearchContentReferenced
 
         /** @var ClassMetaData $classMetadata */
         foreach ($allMetadata as $classMetadata) {
-            if (in_array($classMetadata->getName(), $this::IGNORE_CLASSES)) {
+            if (\in_array($classMetadata->getName(), $this::IGNORE_CLASSES)) {
                 continue;
             }
 
