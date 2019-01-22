@@ -40,8 +40,8 @@ class ContentTypeChoice extends AbstractType
     private $authorizationChecker;
 
     /**
-     * @param ObjectRepository $repository
-     * @param ContentTypeManager $contentTypeManager
+     * @param ObjectRepository     $repository
+     * @param ContentTypeManager   $contentTypeManager
      * @param AuthorizationChecker $authorizationChecker
      */
     public function __construct(ObjectRepository $repository, ContentTypeManager $contentTypeManager, AuthorizationChecker $authorizationChecker)

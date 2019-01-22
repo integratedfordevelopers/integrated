@@ -44,10 +44,10 @@ class ContentTypeHandler implements HandlerInterface
     /**
      * Constructor.
      *
-     * @param DocumentManager $documentManager
-     * @param Queue $solrQueue
+     * @param DocumentManager         $documentManager
+     * @param Queue                   $solrQueue
      * @param SearchContentReferenced $searchContentReferenced
-     * @param string $contentType
+     * @param string                  $contentType
      */
     public function __construct(DocumentManager $documentManager, Queue $solrQueue, SearchContentReferenced $searchContentReferenced, string $contentType)
     {
