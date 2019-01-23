@@ -27,6 +27,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
@@ -224,6 +225,22 @@ class ConfigController extends Controller
             'data' => $data,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function externalReturnAction(Request $request)
+    {
+        $session = new Session();
+
+        if (!$id = $session->get('externalReturnId')) {
+            $this->getFlashMessage()->error('Config not found in session');
+            return $this->indexAction($request);
+        }
+
+        return $this->editAction($request, $id);
     }
 
     /**

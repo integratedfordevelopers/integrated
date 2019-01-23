@@ -64,20 +64,22 @@ class Exporter implements ExporterInterface
         }
 
         try {
+            $page = $this->config->getOptions()->get('page');
+
             // @todo remove hardcoded URL when INTEGRATED-572 is fixed
             $postResponse = $this->facebook->post(
-                '/me/feed',
+                '/'.$page.'/feed',
                 [
                     'link' => 'https://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug(),
                     'message' => $content->getTitle(),
                 ],
-                $this->config->getOptions()->get('token'),
+                $this->config->getOptions()->get('page_token'),
                 null,
-                'v3.1'
+                'v3.2'
             );
 
             $graphNode = $postResponse->getGraphNode();
-        } catch (FacebookResponseException $e) {
+        } catch (\Exception $e) {
             // @todo probably should log this somewhere
             return;
         }
