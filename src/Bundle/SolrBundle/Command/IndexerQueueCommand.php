@@ -61,6 +61,12 @@ class IndexerQueueCommand extends ContainerAwareCommand
                 InputOption::VALUE_NONE,
                 'Queue a commit'
             )
+            ->addOption(
+                'quiet',
+                'q',
+                InputOption::VALUE_NONE,
+                'Disables progressbar'
+            )
             ->addOption('ignore', 'i', InputOption::VALUE_NONE, 'Ignore content types that do not exist')
             ->setDescription('Queue all the content of the given content type for solr indexing')
             ->setHelp('
@@ -199,6 +205,9 @@ The <info>%command.name%</info> command starts a index of the site.
         }
 
         if ($count = $result->count()) {
+            if ($input->getOption('quiet')) {
+                $output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
+            }
             $progress = new ProgressBar($output, $count);
 
             $progress->setRedrawFrequency(min(max(floor($count / 250), 1), 100));
