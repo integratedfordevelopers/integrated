@@ -51,7 +51,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
 
     public function testGetPublicationStartDate()
     {
-        self::assertSame(null, $this->getInstance()->getPublicationStartDate());
+        self::assertNull($this->getInstance()->getPublicationStartDate());
     }
 
     protected function getInstance()

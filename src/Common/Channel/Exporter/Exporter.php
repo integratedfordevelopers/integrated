@@ -89,6 +89,7 @@ class Exporter implements ExporterInterface
     /**
      * @param ChannelInterface $channel
      * @param ?DateTime        $publicationDate
+     *
      * @return ExporterInterface[]
      */
     protected function getExporters(ChannelInterface $channel, $publicationDate)
