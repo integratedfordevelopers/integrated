@@ -13,6 +13,7 @@ namespace Integrated\Bundle\SocialBundle\Connector\Facebook;
 
 use Facebook\Facebook;
 use Integrated\Bundle\ChannelBundle\Model\ConfigInterface as ModelConfigInterface;
+use Integrated\Bundle\PageBundle\Services\UrlResolver;
 use Integrated\Common\Channel\Connector\Config\ConfigInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
 use Integrated\Common\Channel\Exception\UnexpectedTypeException;
@@ -30,11 +31,18 @@ class ExporterFactory implements ExportableInterface
     private $facebook;
 
     /**
-     * @param Facebook $facebook
+     * @var UrlResolver
      */
-    public function __construct(Facebook $facebook)
+    private $urlResolver;
+
+    /**
+     * @param Facebook $facebook
+     * @param UrlResolver $urlResolver
+     */
+    public function __construct(Facebook $facebook, UrlResolver $urlResolver)
     {
         $this->facebook = $facebook;
+        $this->urlResolver = $urlResolver;
     }
 
     /**
@@ -57,6 +65,6 @@ class ExporterFactory implements ExportableInterface
             throw new RuntimeException('A access token is required to create a facebook exporter');
         }
 
-        return new Exporter($this->facebook, $config);
+        return new Exporter($this->facebook, $config, $this->urlResolver);
     }
 }

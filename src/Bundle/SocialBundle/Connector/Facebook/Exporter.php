@@ -16,6 +16,7 @@ use Facebook\Facebook;
 use Facebook\GraphNodes\GraphNode;
 use Integrated\Bundle\ChannelBundle\Model\ConfigInterface;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\PageBundle\Services\UrlResolver;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\ExporterInterface;
 use Integrated\Common\Channel\Exception\UnexpectedTypeException;
@@ -37,13 +38,20 @@ class Exporter implements ExporterInterface
     private $config;
 
     /**
-     * @param Facebook        $facebook
-     * @param ConfigInterface $config
+     * @var UrlResolver
      */
-    public function __construct(Facebook $facebook, ConfigInterface $config)
+    private $urlResolver;
+
+    /**
+     * @param Facebook $facebook
+     * @param ConfigInterface $config
+     * @param UrlResolver $urlResolver
+     */
+    public function __construct(Facebook $facebook, ConfigInterface $config, UrlResolver $urlResolver)
     {
         $this->facebook = $facebook;
         $this->config = $config;
+        $this->urlResolver = $urlResolver;
     }
 
     /**
@@ -65,12 +73,10 @@ class Exporter implements ExporterInterface
 
         try {
             $page = $this->config->getOptions()->get('page');
-
-            // @todo remove hardcoded URL when INTEGRATED-572 is fixed
             $postResponse = $this->facebook->post(
                 '/'.$page.'/feed',
                 [
-                    'link' => 'https://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug(),
+                    'link' => 'https://'.$channel->getPrimaryDomain().$this->urlResolver->generateUrl($content, $channel->getId()),
                     'message' => $content->getTitle(),
                 ],
                 $this->config->getOptions()->get('page_token'),
@@ -80,7 +86,7 @@ class Exporter implements ExporterInterface
 
             $graphNode = $postResponse->getGraphNode();
         } catch (\Exception $e) {
-            // @todo probably should log this somewhere
+            // @todo probably should log this somewhere INTEGRATED-995
             return;
         }
 
