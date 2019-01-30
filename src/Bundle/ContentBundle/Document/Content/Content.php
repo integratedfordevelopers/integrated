@@ -289,7 +289,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
 
             /** @var RelationInterface $relation */
             foreach ($relations as $relation) {
-                $references = array_merge($references, $relation->getReferences()->toArray());
+                $references = \array_merge($references, $relation->getReferences()->toArray());
             }
 
             return $references;
@@ -307,10 +307,10 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
     {
         $references = [];
         foreach ($relationTypes as $relationType) {
-            $references = array_merge($references, $this->getReferencesByRelationType($relationType));
+            $references = \array_merge($references, $this->getReferencesByRelationType($relationType));
         }
 
-        if (count($references) > 0) {
+        if (\count($references) > 0) {
             return $references;
         }
 

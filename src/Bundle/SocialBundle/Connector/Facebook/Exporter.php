@@ -11,7 +11,6 @@
 
 namespace Integrated\Bundle\SocialBundle\Connector\Facebook;
 
-use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Facebook;
 use Facebook\GraphNodes\GraphNode;
 use Integrated\Bundle\ChannelBundle\Model\ConfigInterface;
@@ -43,9 +42,9 @@ class Exporter implements ExporterInterface
     private $urlResolver;
 
     /**
-     * @param Facebook $facebook
+     * @param Facebook        $facebook
      * @param ConfigInterface $config
-     * @param UrlResolver $urlResolver
+     * @param UrlResolver     $urlResolver
      */
     public function __construct(Facebook $facebook, ConfigInterface $config, UrlResolver $urlResolver)
     {

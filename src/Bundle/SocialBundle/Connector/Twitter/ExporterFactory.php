@@ -36,7 +36,7 @@ class ExporterFactory implements ExportableInterface
 
     /**
      * @param TwitterFactory $factory
-     * @param UrlResolver $urlResolver
+     * @param UrlResolver    $urlResolver
      */
     public function __construct(TwitterFactory $factory, UrlResolver $urlResolver)
     {

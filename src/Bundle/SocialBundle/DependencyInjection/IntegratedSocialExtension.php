@@ -31,7 +31,7 @@ class IntegratedSocialExtension extends Extension
 
         $config = $this->processConfiguration(new Configuration(), $configs);
 
-        foreach (array_keys($config) as $connector) {
+        foreach (\array_keys($config) as $connector) {
             $loader->load($connector.'.xml');
         }
 

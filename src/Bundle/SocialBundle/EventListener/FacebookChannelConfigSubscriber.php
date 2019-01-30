@@ -106,6 +106,7 @@ class FacebookChannelConfigSubscriber implements EventSubscriberInterface
      * Check if the request got a access token and if to store it in the config.
      *
      * @param GetResponseConfigEvent $event
+     *
      * @throws \Facebook\Exceptions\FacebookSDKException
      */
     public function onRequest(GetResponseConfigEvent $event)

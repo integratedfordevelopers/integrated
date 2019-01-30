@@ -36,7 +36,7 @@ class ExporterFactory implements ExportableInterface
     private $urlResolver;
 
     /**
-     * @param Facebook $facebook
+     * @param Facebook    $facebook
      * @param UrlResolver $urlResolver
      */
     public function __construct(Facebook $facebook, UrlResolver $urlResolver)

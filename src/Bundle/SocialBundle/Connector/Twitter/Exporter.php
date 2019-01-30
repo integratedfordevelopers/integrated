@@ -39,9 +39,9 @@ class Exporter implements ExporterInterface
     private $urlResolver;
 
     /**
-     * @param TwitterOAuth $twitter
+     * @param TwitterOAuth    $twitter
      * @param ConfigInterface $config
-     * @param UrlResolver $urlResolver
+     * @param UrlResolver     $urlResolver
      */
     public function __construct(TwitterOAuth $twitter, ConfigInterface $config, UrlResolver $urlResolver)
     {
@@ -72,7 +72,7 @@ class Exporter implements ExporterInterface
             $postResponse = $this->twitter->post(
                 'statuses/update',
                 [
-                    'status' => sprintf(
+                    'status' => \sprintf(
                         '%s %s',
                         $content->getTitle(),
                         'https://'.$channel->getPrimaryDomain().$this->urlResolver->generateUrl($content, $channel->getId())
@@ -87,9 +87,9 @@ class Exporter implements ExporterInterface
         if ($postResponse->id) {
             $response = new ExporterResponse($this->config->getId(), $this->config->getAdapter());
             $response->setExternalId($postResponse->id);
-        } else {
-            //@todo: handle error INTEGRATED-995, also include $postResponse['errors']
         }
+
+        //@todo: handle error INTEGRATED-995 when id does not exists, also include $postResponse['errors']
 
         return $response;
     }

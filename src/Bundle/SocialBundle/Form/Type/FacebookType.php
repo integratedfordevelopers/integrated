@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormEvents;
 class FacebookType extends AbstractType
 {
     /**
-     * @var Facebook $facebook
+     * @var Facebook
      */
     private $facebook;
 
@@ -63,11 +63,11 @@ class FacebookType extends AbstractType
                         }
                     }
 
-                    ksort($pages);
+                    \ksort($pages);
 
                     $form->add('page', ChoiceType::class, ['choices' => $pages, 'label' => 'Facebook page']);
 
-                    if (count($pages) == 0) {
+                    if (\count($pages) == 0) {
                         $formData['apiStatus'] = 'Your account does not seem to be administrator of a Facebook page';
                     } else {
                         $formData['apiStatus'] = 'OK';
@@ -85,18 +85,18 @@ class FacebookType extends AbstractType
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($facebook) {
             $formData = $event->getData();
-            if ($formData && $formData['token'] && $formData['page'] && is_numeric($formData['page'])) {
+            if ($formData && $formData['token'] && $formData['page'] && \is_numeric($formData['page'])) {
                 $pageToken = null;
                 if ($formData['page_token']) {
                     $response = $this->facebook->get(
-                        '/debug_token?input_token=' . $formData['page_token'],
+                        '/debug_token?input_token='.$formData['page_token'],
                         $formData['page_token'],
                         null,
                         'v3.2'
                     );
 
                     $data = $response->getDecodedBody();
-                    if ($data['data']["profile_id"] == $formData['page']) {
+                    if ($data['data']['profile_id'] == $formData['page']) {
                         $pageToken = $formData['page_token'];
                     }
                 }
