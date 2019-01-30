@@ -54,12 +54,12 @@ class ConfigFormType extends AbstractType
         $adapter = $options['adapter'];
 
         $builder->add('name', TextType::class, [
-            'label' => 'form.config.name',
+            'label' => 'Configuration name',
             'translation_domain' => 'IntegratedChannelBundle',
         ]);
 
         $builder->add('channels', ChannelChoiceType::class, [
-            'label' => 'form.config.channels',
+            'label' => 'Channels',
             'translation_domain' => 'IntegratedChannelBundle',
             'multiple' => true,
             'expanded' => true,
@@ -69,7 +69,7 @@ class ConfigFormType extends AbstractType
             $child = $builder->create(
                 'options',
                 $adapter->getConfiguration()->getForm(),
-                ['label' => 'form.config.options', 'translation_domain' => 'IntegratedChannelBundle']
+                ['label' => 'Options', 'translation_domain' => 'IntegratedChannelBundle']
             );
             $child->addModelTransformer(new OptionsTransformer());
 
