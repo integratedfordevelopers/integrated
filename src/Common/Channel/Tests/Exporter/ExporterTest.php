@@ -127,8 +127,8 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
     public function testSaveExport()
     {
         $article = new Article();
-        $article->getPublishTime()->setStartDate(new \DateTime);
-        $article->getPublishTime()->setEndDate(new \DateTime("now +10 years"));
+        $article->getPublishTime()->setStartDate(new \DateTime());
+        $article->getPublishTime()->setEndDate(new \DateTime('now +10 years'));
 
         $channel = $this->getChannel('channel');
 

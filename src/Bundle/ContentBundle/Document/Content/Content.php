@@ -506,7 +506,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getMetadata()
     {
-        if ($this->metadata === null) {
+        if (null === $this->metadata) {
             $this->metadata = new Metadata();
         }
 
@@ -518,7 +518,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function setMetadata(RegistryInterface $metadata = null)
     {
-        if ($metadata !== null && !$metadata instanceof Metadata) {
+        if (null !== $metadata && !$metadata instanceof Metadata) {
             $metadata = new Metadata($metadata->toArray());
         }
 
@@ -609,7 +609,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function getCustomFields()
     {
-        if ($this->customFields === null) {
+        if (null === $this->customFields) {
             $this->customFields = new Embedded\CustomFields();
         }
 
@@ -623,7 +623,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function setCustomFields(RegistryInterface $customFields = null)
     {
-        if ($customFields !== null && !$customFields instanceof Embedded\CustomFields) {
+        if (null !== $customFields && !$customFields instanceof Embedded\CustomFields) {
             $customFields = new Embedded\CustomFields($customFields->toArray());
         }
 

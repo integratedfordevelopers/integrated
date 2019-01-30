@@ -41,10 +41,10 @@ class Config implements ConfigInterface
     /**
      * Constructor.
      *
-     * @param string $name
-     * @param string $adaptor
+     * @param string           $name
+     * @param string           $adaptor
      * @param OptionsInterface $options
-     * @param ?DateTime $publicationStartDate
+     * @param DateTime | null  $publicationStartDate
      */
     public function __construct($name, $adaptor, OptionsInterface $options, ?DateTime $publicationStartDate)
     {
@@ -81,7 +81,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritdoc}
      */
-    public function getPublicationStartDate() : ?DateTime
+    public function getPublicationStartDate(): ?DateTime
     {
         return $this->publicationStartDate;
     }
