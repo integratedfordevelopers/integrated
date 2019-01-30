@@ -48,6 +48,11 @@ class Config implements ConfigInterface
     /**
      * @var DateTime
      */
+    protected $publicationStartDate;
+
+    /**
+     * @var DateTime
+     */
     protected $created;
 
     /**
@@ -61,7 +66,7 @@ class Config implements ConfigInterface
     public function __construct(?int $id = null)
     {
         $this->id = $id;
-        $this->created = $this->updated = new DateTime();
+        $this->publicationStartDate = $this->created = $this->updated = new DateTime();
     }
 
     /**
@@ -238,6 +243,22 @@ class Config implements ConfigInterface
         $this->created = $created;
 
         return $this;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getPublicationStartDate(): ?DateTime
+    {
+        return $this->publicationStartDate;
+    }
+
+    /**
+     * @param DateTime $publicationStartDate
+     */
+    public function setPublicationStartDate(?DateTime $publicationStartDate): void
+    {
+        $this->publicationStartDate = $publicationStartDate;
     }
 
     /**

@@ -25,6 +25,9 @@ class DateTime implements DataTransformerInterface
     public function transform($datetime)
     {
         if ($datetime instanceof \DateTimeInterface) {
+            if ($datetime->getTimestamp() <= 0) {
+                return null;
+            }
             return $datetime->format('d-m-Y H:i');
         }
 
