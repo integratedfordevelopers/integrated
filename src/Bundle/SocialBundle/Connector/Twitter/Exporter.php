@@ -72,7 +72,7 @@ class Exporter implements ExporterInterface
             $postResponse = $this->twitter->post(
                 'statuses/update',
                 [
-                    'status' => \sprintf(
+                    'status' => sprintf(
                         '%s %s',
                         $content->getTitle(),
                         'https://'.$channel->getPrimaryDomain().$this->urlResolver->generateUrl($content, $channel->getId())

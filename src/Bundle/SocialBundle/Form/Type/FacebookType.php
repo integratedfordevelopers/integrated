@@ -63,7 +63,7 @@ class FacebookType extends AbstractType
                         }
                     }
 
-                    \ksort($pages);
+                    ksort($pages);
 
                     $form->add('page', ChoiceType::class, ['choices' => $pages, 'label' => 'Facebook page']);
 
@@ -85,7 +85,7 @@ class FacebookType extends AbstractType
 
         $builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) use ($facebook) {
             $formData = $event->getData();
-            if ($formData && $formData['token'] && $formData['page'] && \is_numeric($formData['page'])) {
+            if ($formData && $formData['token'] && $formData['page'] && is_numeric($formData['page'])) {
                 $pageToken = null;
                 if ($formData['page_token']) {
                     $response = $this->facebook->get(

@@ -137,7 +137,7 @@ class ConfigController extends Controller
 
             if (!$response = $event->getResponse()) {
                 if ($message = $this->getFlashMessage()) {
-                    $message->success(\sprintf('The config %s is saved', $data->getName()));
+                    $message->success(sprintf('The config %s is saved', $data->getName()));
                 }
 
                 $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
@@ -206,7 +206,7 @@ class ConfigController extends Controller
 
             if (!$response = $event->getResponse()) {
                 if ($message = $this->getFlashMessage()) {
-                    $message->success(\sprintf('The changes to the config %s are saved', $data->getName()));
+                    $message->success(sprintf('The changes to the config %s are saved', $data->getName()));
                 }
 
                 $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
@@ -285,7 +285,7 @@ class ConfigController extends Controller
             $this->manager->remove($data);
 
             if ($message = $this->getFlashMessage()) {
-                $message->success(\sprintf('The config %s is removed', $data->getName()));
+                $message->success(sprintf('The config %s is removed', $data->getName()));
             }
 
             $response = $this->redirect($this->generateUrl('integrated_channel_config_index'));
