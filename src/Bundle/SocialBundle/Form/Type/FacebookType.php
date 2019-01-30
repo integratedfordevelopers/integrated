@@ -67,23 +67,46 @@ class FacebookType extends AbstractType
 
                     $form->add('page', ChoiceType::class, ['choices' => $pages, 'label' => 'Facebook page']);
 
-                    $formData['apiStatus'] = 'OK';
+                    if (count($pages) == 0) {
+                        $formData['apiStatus'] = 'Your account does not seem to be administrator of a Facebook page';
+                    } else {
+                        $formData['apiStatus'] = 'OK';
+                    }
 
                     if (isset($formData['page']) && is_numeric($formData['page'])) {
-                        $response = $this->facebook->get(
-                            '/'.$formData['page'].'?fields=access_token',
-                            $formData['token'],
-                            null,
-                            'v3.2'
-                        );
+                        $pageToken = null;
+                        if ($formData['page_token']) {
+                            $response = $this->facebook->get(
+                                '/debug_token?input_token=' . $formData['page_token'],
+                                $formData['page_token'],
+                                null,
+                                'v3.2'
+                            );
 
-                        $data = $response->getDecodedBody();
-                        $form->add('page_token', TextType::class, ['attr' => ['readonly' => 'true'], 'data' => $data['access_token']]);
+                            $data = $response->getDecodedBody();
+                            if ($data['data']["profile_id"] == $formData['page']) {
+                                $pageToken = $formData['page_token'];
+                            }
+                        }
 
+                        if ($pageToken) {
+                            $form->add('page_token', TextType::class, ['attr' => ['readonly' => 'true']]);
+                        } else {
+                            $response = $this->facebook->get(
+                                '/'.$formData['page'].'?fields=access_token',
+                                $formData['token'],
+                                null,
+                                'v3.2'
+                            );
+
+                            $data = $response->getDecodedBody();
+
+                            $form->add('page_token', TextType::class, ['attr' => ['readonly' => 'true'], 'data' => $data['access_token']]);
+                        }
                     }
                 } catch (\Exception $e) {
                     $formData['token'] = null;
-                    $formData['apiStatus'] = 'Token seems to be invalid. Save the form to get a new one.';
+                    $formData['apiStatus'] = 'Token seems to be invalid. Save the form to get a new one. ('.$e->getMessage().')';
                 }
 
             } else {
