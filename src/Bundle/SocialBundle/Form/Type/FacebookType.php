@@ -74,12 +74,10 @@ class FacebookType extends AbstractType
 
                         $form->add('page_token', TextType::class, ['attr' => ['readonly' => 'true']]);
                     }
-
                 } catch (\Exception $e) {
                     $formData['token'] = null;
                     $formData['apiStatus'] = 'Token seems to be invalid. Save the form to get a new one. ('.$e->getMessage().')';
                 }
-
             } else {
                 $formData['apiStatus'] = 'Save the configuration to connect to Facebook.';
             }
@@ -117,7 +115,6 @@ class FacebookType extends AbstractType
                     $data['page_token'] = $tokenData['access_token'];
                     $event->setData($data);
                 }
-
             }
         });
 
