@@ -14,6 +14,7 @@ namespace Integrated\Bundle\SocialBundle\Connector\Twitter;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Integrated\Bundle\ChannelBundle\Model\ConfigInterface;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\PageBundle\Services\UrlResolver;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\ExporterInterface;
 use Integrated\Common\Channel\Exporter\ExporterResponse;
@@ -32,15 +33,21 @@ class Exporter implements ExporterInterface
      * @var ConfigInterface
      */
     private $config;
+    /**
+     * @var UrlResolver
+     */
+    private $urlResolver;
 
     /**
-     * @param TwitterOAuth    $twitter
+     * @param TwitterOAuth $twitter
      * @param ConfigInterface $config
+     * @param UrlResolver $urlResolver
      */
-    public function __construct(TwitterOAuth $twitter, ConfigInterface $config)
+    public function __construct(TwitterOAuth $twitter, ConfigInterface $config, UrlResolver $urlResolver)
     {
         $this->twitter = $twitter;
         $this->config = $config;
+        $this->urlResolver = $urlResolver;
     }
 
     /**
@@ -57,24 +64,23 @@ class Exporter implements ExporterInterface
         }
 
         if ($content->hasConnector($this->config->getId())) {
-            //@todo update current post
+            //already posted
             return;
         }
 
         try {
-            // @todo remove hardcoded URL when INTEGRATED-572 is fixed
             $postResponse = $this->twitter->post(
                 'statuses/update',
                 [
                     'status' => sprintf(
                         '%s %s',
                         $content->getTitle(),
-                        'https://'.$channel->getPrimaryDomain().'/content/article/'.$content->getSlug()
+                        'https://'.$channel->getPrimaryDomain().$this->urlResolver->generateUrl($content, $channel->getId())
                     ),
                 ]
             );
         } catch (\Exception $e) {
-            // @todo probably should log this somewhere
+            // @todo probably should log this somewhere INTEGRATED-995
             return;
         }
 
@@ -82,7 +88,7 @@ class Exporter implements ExporterInterface
             $response = new ExporterResponse($this->config->getId(), $this->config->getAdapter());
             $response->setExternalId($postResponse->id);
         } else {
-            //todo: handle error
+            //@todo: handle error INTEGRATED-995, also include $postResponse['errors']
         }
 
         return $response;
