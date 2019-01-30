@@ -49,8 +49,13 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         self::assertSame($this->options, $this->getInstance()->getOptions());
     }
 
+    public function testGetPublicationStartDate()
+    {
+        self::assertSame(null, $this->getInstance()->getPublicationStartDate());
+    }
+
     protected function getInstance()
     {
-        return new Config('name', 'adapter', $this->options);
+        return new Config('name', 'adapter', $this->options, null);
     }
 }

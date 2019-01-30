@@ -11,6 +11,8 @@
 
 namespace Integrated\Common\Channel\Connector\Config;
 
+use DateTime;
+
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
  */
@@ -32,17 +34,24 @@ class Config implements ConfigInterface
     private $options;
 
     /**
+     * @var DateTime
+     */
+    private $publicationStartDate;
+
+    /**
      * Constructor.
      *
-     * @param string           $name
-     * @param string           $adaptor
+     * @param string $name
+     * @param string $adaptor
      * @param OptionsInterface $options
+     * @param ?DateTime $publicationStartDate
      */
-    public function __construct($name, $adaptor, OptionsInterface $options)
+    public function __construct($name, $adaptor, OptionsInterface $options, ?DateTime $publicationStartDate)
     {
         $this->name = $name;
         $this->adaptor = $adaptor;
         $this->options = $options;
+        $this->publicationStartDate = $publicationStartDate;
     }
 
     /**
@@ -67,5 +76,13 @@ class Config implements ConfigInterface
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPublicationStartDate() : ?DateTime
+    {
+        return $this->publicationStartDate;
     }
 }
