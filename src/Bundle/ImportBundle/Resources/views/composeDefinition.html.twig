@@ -53,7 +53,7 @@
             {% if loop.first %}
                 <tr>
                     {% for col in row %}
-                        {%  set colIndex = loop.index %}
+                        {%  set colIndex = loop.index0 %}
                         <th>
                             <select name="col{{ colIndex }}" id="col{{ colIndex }}" class="import-fieldchoice">
                                 {% for fieldKey, field in fields %}

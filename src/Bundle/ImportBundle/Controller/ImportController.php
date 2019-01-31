@@ -287,7 +287,7 @@ class ImportController extends Controller
                     }
 
                     if (count($value2) == 0) {
-                        $data[$index][$index2] = '';
+                        unset($data[$index][$index2]);
                         continue;
                     }
 
@@ -369,10 +369,31 @@ class ImportController extends Controller
         if ($importDefinition->getFields()) {
             foreach ($importDefinition->getFields() as $field) {
                 if (isset($fields[$field->getMappedField()])) {
-                    $fields[$field->getMappedField()]['matchCol'] = $field->getColumn();
+                    if ($field->getSourceField()) {
+                        $column = array_search($field->getSourceField(), $startRow);
+                        if ($column === false) {
+                            $this->get('braincrafted_bootstrap.flash')->alert('Warning: field '.$field->getSourceField().' is not available in the import any more will be ignored');
+                            continue;
+                        }
+                        if ($column != $field->getColumn()) {
+                            $this->get('braincrafted_bootstrap.flash')->alert('Warning: column '.$field->getSourceField().' is on another position now');
+                        }
+                    } else {
+                        $column = $field->getColumn();
+                    }
+                    $fields[$field->getMappedField()]['matchCol'] = $column;
                     //todo: check column heading
+                    /*
+                    if ($startRow[$field->getColumn()] != $field->getMappedField()) {
+                        dump($field->getColumn());
+                        dump($startRow[$field->getColumn()]);
+                        dump($field->getMappedField());
+                        $this->get('braincrafted_bootstrap.flash')->error('Warning: field in different column');
+                    }
+                    */
                 } else {
                     //todo: ERROR
+                    $this->get('braincrafted_bootstrap.flash')->alert('Warning: mapped field is not available and will be ignored: '.$field->getMappedField());
                 }
             }
         }
@@ -381,11 +402,12 @@ class ImportController extends Controller
             if (isset($data[0])) {
                 $cols = count($data[0]);
                 $fields2 = [];
-                for ($col = 1; $col <= $cols; $col++) {
+                for ($col = 0; $col < $cols; $col++) {
                     $mappedField = $request->request->get('col' . $col, null);
                     if ($mappedField) {
                         $field = new ImportField();
                         $field->setColumn($col);
+                        $field->setSourceField($data[0][$col]);
                         $field->setMappedField($mappedField);
                         $fields2[] = $field;
                     }
@@ -394,6 +416,7 @@ class ImportController extends Controller
                 $importDefinition->setFields($fields2);
                 $this->documentManager->flush();
             }
+            throw new \Exception();
 
             $doneRows = 0;
             $rowNumber = -1;
@@ -883,7 +906,39 @@ class ImportController extends Controller
 
             return $this->redirectToRoute('integrated_content_content_index');
         } else {
-            $data = array_slice($data, 0, 20);
+            $columnItemCount = [];
+            foreach ($startRow as $columnName) {
+                $columnItemCount[$columnName] = 0;
+            }
+
+            //display at least 2 sample rows for each column and minimum 20 rows, don't display the rest
+            $rowNumber = 0;
+            foreach ($data as $index => $row) {
+                if ($rowNumber >= 1) {
+                    $showThisRow = false;
+                    if ($rowNumber <= 20) {
+                        $showThisRow = true;
+                    }
+                    foreach ($row as $column => $value) {
+                        if ($columnItemCount[$column] >= 2) {
+                            continue;
+                        }
+                        if (is_array($value)) {
+                            if (count($value) > 0) {
+                                $columnItemCount[$column]++;
+                                $showThisRow = true;
+                            }
+                        } elseif ($value != '') {
+                            $columnItemCount[$column]++;
+                            $showThisRow = true;
+                        }
+                    }
+                    if (!$showThisRow) {
+                        unset($data[$index]);
+                    }
+                }
+                $rowNumber++;
+            }
         }
 
         //todo: id for connector
