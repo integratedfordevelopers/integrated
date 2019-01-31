@@ -17,6 +17,7 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\Config\ResolverInterface;
+use Integrated\Common\Channel\Connector\ExporterInterface as ConnectorExporterInterface;
 use Integrated\Common\Content\ConnectorInterface;
 use Integrated\Common\Content\ContentInterface;
 use Integrated\Common\Content\PublishableInterface;
@@ -69,7 +70,7 @@ class Exporter implements ExporterInterface
             if (!$content->isPublished()) {
                 //make sure content is not published when publication date or state
                 //has changed after queueing
-                $state = 'delete';
+                $state = ConnectorExporterInterface::STATE_DELETE;
             }
         }
 
