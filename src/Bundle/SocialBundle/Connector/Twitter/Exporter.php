@@ -84,7 +84,7 @@ class Exporter implements ExporterInterface
             return;
         }
 
-        if ($postResponse->id) {
+        if (isset($postResponse->id) && $postResponse->id) {
             $response = new ExporterResponse($this->config->getId(), $this->config->getAdapter());
             $response->setExternalId($postResponse->id);
         }
