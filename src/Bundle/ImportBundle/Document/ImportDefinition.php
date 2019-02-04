@@ -12,8 +12,10 @@
 namespace Integrated\Bundle\ImportBundle\Document;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ImportBundle\Document\Embedded\ImportField;
+use Integrated\Common\Channel\ChannelInterface;
 
 class ImportDefinition
 {
@@ -41,6 +43,11 @@ class ImportDefinition
      * @var \DateTime
      */
     private $executedAt;
+
+    /**
+     * @var Collection
+     */
+    protected $channels;
 
     /**
      * @var string
@@ -73,6 +80,7 @@ class ImportDefinition
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->channels = new ArrayCollection();
         $this->fields = new ArrayCollection();
     }
 
@@ -158,6 +166,59 @@ class ImportDefinition
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function setChannels(Collection $channels)
+    {
+        $this->channels->clear();
+        $this->channels = new ArrayCollection();
+
+        foreach ($channels as $channel) {
+            $this->addChannel($channel); // type check
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getChannels()
+    {
+        return $this->channels->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addChannel(ChannelInterface $channel)
+    {
+        if (!$this->channels->contains($channel)) {
+            $this->channels->add($channel);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasChannel(ChannelInterface $channel)
+    {
+        return $this->channels->contains($channel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeChannel(ChannelInterface $channel)
+    {
+        $this->channels->removeElement($channel);
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getFileId(): ?string
@@ -166,13 +227,12 @@ class ImportDefinition
     }
 
     /**
-     * @param string $fileId
+     * @param null | string $fileId
      */
-    public function setFileId(string $fileId): void
+    public function setFileId(?string $fileId): void
     {
         $this->fileId = $fileId;
     }
-
 
     /**
      * {@inheritdoc}
@@ -281,4 +341,8 @@ class ImportDefinition
         return $this;
     }
 
+    public function __clone()
+    {
+        $this->id = null;
+    }
 }

@@ -36,7 +36,7 @@
                         <th>{% trans %}Name{% endtrans %}</th>
                         <th>{% trans %}Document type{% endtrans %}</th>
                         <th>{% trans %}Created{% endtrans %}</th>
-                        <th>{% trans %}Actions{% endtrans %}</th>
+                        <th colspan="3">{% trans %}Actions{% endtrans %}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,8 +61,18 @@
                                 {{ document.createdAt|localizeddate("medium", "none") }}
                             </td>
                             <td>
-                                <a href="{{ path('integrated_content_content_type_edit', {'id': document.id}) }}" title="{% trans %}Edit{% endtrans %}">
-                                    {{ icon('pencil') }}
+                                <a href="{{ path('integrated_import_file', {'importDefinition': document.id}) }}" title="{% trans %}Copy{% endtrans %}">
+                                    Start import
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('integrated_import_edit', {'importDefinition': document.id}) }}" title="{% trans %}Copy{% endtrans %}">
+                                    Edit
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('integrated_import_clone', {'importDefinition': document.id}) }}" title="{% trans %}Copy{% endtrans %}">
+                                    Copy
                                 </a>
                             </td>
                         </tr>

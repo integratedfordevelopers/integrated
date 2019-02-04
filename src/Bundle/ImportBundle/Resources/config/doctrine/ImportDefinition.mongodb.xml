@@ -9,6 +9,7 @@
         <field fieldName="contentType" type="string"/>
         <field fieldName="createdAt" type="date"/>
         <field fieldName="executedAt" type="date"/>
+        <field fieldName="channels" type="collection"/>
         <field fieldName="fileId" type="string"/>
         <field fieldName="imageBaseUrl" type="string"/>
         <field fieldName="imageContentType" type="string"/>
@@ -16,6 +17,9 @@
         <embed-many field="fields" target-document="Integrated\Bundle\ImportBundle\Document\Embedded\ImportField" />
 
         <reference-one field="imageRelation" target-document="Integrated\Bundle\ContentBundle\Document\Relation\Relation" />
+
+        <reference-many field="channels" target-document="Integrated\Bundle\ContentBundle\Document\Channel\Channel" />
+
     </document>
 
 </doctrine-mongo-mapping>

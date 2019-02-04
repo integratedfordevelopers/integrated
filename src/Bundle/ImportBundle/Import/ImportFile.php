@@ -122,6 +122,98 @@ class ImportFile
                 $data = $worksheet->toArray();
         }
 
+
+        if (isset($data['rss']['channel']['item'])) {
+            //wordpress
+            //todo: move to WP filter
+            $data = $data['rss']['channel']['item'];
+        }
+
+        $startRow = [];
+
+        //place domain attributes in seperate fields
+        //todo: move to WP filter
+        $j = 0;
+        foreach ($data as $index => $row) {
+            foreach ($row as $index2 => $value2) {
+                if (is_array($value2)) {
+                    //move single domain attributes to field
+                    if (isset($value2['@domain']) && isset($value2['$'])) {
+                        $data[$index][$index2.'_'.$value2['@domain']][] = $value2['$'];
+                        unset($data[$index][$index2]);
+                        continue;
+                    }
+
+                    //move multi domain attributes to field
+                    $unset = false;
+                    foreach ($value2 as $index3 => $value3) {
+                        if (isset($value3['@domain']) && isset($value3['$'])) {
+                            $data[$index][$index2.'_'.$value3['@domain']][] = $value3['$'];
+                            $unset = true;
+                        }
+                    }
+
+                    //move meta info to field
+                    foreach ($value2 as $index3 => $value3) {
+                        if (isset($value3['wp:meta_key']) && isset($value3['wp:meta_value']) && isset($value3['wp:meta_key']['$']) && isset($value3['wp:meta_value']['$'])) {
+                            $data[$index]['meta'.$value3['wp:meta_key']['$']] = $value3['wp:meta_value']['$'];
+                            $unset = true;
+                        }
+                    }
+
+                    if ($unset) {
+                        unset($data[$index][$index2]);
+                    }
+                }
+            }
+        }
+
+        foreach ($data as $index => $row) {
+            foreach ($row as $index2 => $value2) {
+                if (!in_array($index2, $startRow)) {
+                    //make sure all fields are in the startRow
+                    $startRow[] = $index2;
+                }
+
+                //convert to flat values or array, eliminate attributes
+                if (is_array($value2)) {
+                    if (isset($value2['$'])) {
+                        $data[$index][$index2] = $value2['$'];
+                        continue;
+                    }
+
+                    if (count($value2) == 0) {
+                        unset($data[$index][$index2]);
+                        continue;
+                    }
+
+                    $newValue = false;
+                    foreach ($value2 as $index3 => $value3) {
+                        if (isset($value3['$'])) {
+                            $newValue[] = $value3['$'];
+                        }
+                    }
+                    if ($newValue) {
+                        $data[$index][$index2] = $newValue;
+                    }
+                }
+            }
+        }
+
+        $newData = array($startRow);
+        foreach ($data as $row) {
+            $newRow = [];
+            foreach ($startRow as $startKey) {
+                if (isset($row[$startKey])) {
+                    $newRow[$startKey] = $row[$startKey];
+                } else {
+                    $newRow[$startKey] = '';
+                }
+            }
+            $newData[] = $newRow;
+        }
+        $data = $newData;
+
         return $data;
     }
 

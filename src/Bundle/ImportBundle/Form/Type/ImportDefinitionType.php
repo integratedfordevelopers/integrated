@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ImportBundle\Form\Type;
 
 use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
+use Integrated\Bundle\ContentBundle\Document\Channel\Channel;
 use Integrated\Bundle\ContentBundle\Document\Relation\Relation;
 use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice;
 use Symfony\Component\Form\AbstractType;
@@ -27,6 +28,8 @@ class ImportDefinitionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('name', TextType::class);
+        $builder->add('contentType', ContentTypeChoice::class, ['label' => 'Content type', 'multiple' => false]);
+        $builder->add('channels', DocumentType::class, ['label' => 'Channels', 'class' => Channel::class, 'choice_label' => 'name', 'multiple' => true, 'expanded' => true]);
         $builder->add('imageBaseUrl', UrlType::class, ['label' => 'Base URL for images', 'required' => false]);
         $builder->add('imageContentType', ContentTypeChoice::class, ['label' => 'Content type for images', 'multiple' => false]);
         $builder->add('imageRelation', DocumentType::class, ['label' => 'Relation type for images', 'multiple' => false, 'class' => Relation::class, 'choice_label' => 'name', 'choice_value' => 'id']);
