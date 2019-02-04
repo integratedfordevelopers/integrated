@@ -1,0 +1,78 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_import_index') }}">{% trans %}Import{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Choose import file{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <form method="post" id="summaryForm">
+        <input type="hidden" name="action" value="go" />
+
+        <div class="pull-right">
+            <a class="btn btn-gray-thin" href="{{ path("integrated_import_definition", {'importDefinition': importDefinition.id }) }}">{% trans %}Back{% endtrans %}</a>&nbsp;
+            <a class="btn btn-orange" href="{{ path("integrated_import_run", {'importDefinition': importDefinition.id }) }}">{% trans %}Start import{% endtrans %}</a>
+        </div>
+
+        <h1>{% trans %}Step 4 of 5: Summary{% endtrans %}</h1>
+
+        <section class="section-white section-padding section-shadow section-radius section-margin" style="width: fit-content">
+
+            <div class="container">
+                {% trans %}Please review and confirm the import.{% endtrans  %}
+            </div>
+
+            <hr/>
+
+            <div id="import_definition">
+                <div class="row">
+                    <label class="control-label col-lg-2">Number of records</label>
+                    <div class="col-lg-10">{{ records }}</div>
+                </div>
+                <div class="row">
+                    <label class="control-label col-lg-2">Fields</label>
+                    <div class="col-lg-10">
+                        <table class="table table-hover">
+                            <tr>
+                                <th>{% trans %}Source{% endtrans  %}</th>
+                                <th>{% trans %}Target{% endtrans  %}</th>
+                            </tr>
+                            {% for field in importDefinition.fields %}
+                            <tr>
+                                <td>{{ field.sourceField }}</td>
+                                <td>{{ field.mappedField }}</td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="control-label col-lg-2">Ignored fields</label>
+                    <div class="col-lg-10">
+                        <table class="table table-hover">
+                            {% for field in ignoredFields %}
+                                <tr>
+                                    <td>{{ field }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <div class="pull-right">
+            <a class="btn btn-gray-thin" href="{{ path("integrated_import_definition", {'importDefinition': importDefinition.id }) }}">{% trans %}Back{% endtrans %}</a>&nbsp;
+            <a class="btn btn-orange" href="{{ path("integrated_import_run", {'importDefinition': importDefinition.id }) }}">{% trans %}Start import{% endtrans %}</a>
+        </div>
+
+    </form>
+
+{% endblock %}

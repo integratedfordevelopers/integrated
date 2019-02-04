@@ -1,0 +1,106 @@
+{% extends 'IntegratedContentBundle::base.html.twig' %}
+{% block crumbs %}
+    <div class="breadcrumb-holder">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li>
+                    <a href="{{ path('integrated_import_index') }}">{% trans %}Import{% endtrans %}</a>
+                </li>
+                <li class="active">{% trans %}Choose import file{% endtrans %}</li>
+            </ol>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+
+    <div class="container">
+        <h1>{% trans %}Step 5 of 5: Importing...{% endtrans %}</h1>
+
+        <div id="status-pending">
+            <p>{% trans %}Please wait while your content is being imported. Do not close this window.{% endtrans %}</p>
+        </div>
+
+        <div id="status-complete" style="display: none;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="pull-right">
+                        <a class="btn btn-orange" href="{{ path('integrated_import_index') }}">{% trans %}Close import{% endtrans %}</a>
+                    </div>
+
+                    <p>{% trans %}Import complete.{% endtrans %}</p>
+                </div>
+            </div>
+            <br />
+        </div>
+
+        <div class="progress">
+            <div id="import-progress" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" id="status-remaining"></div>
+            <br />
+        </div>
+
+        <h2><a href="#" onclick="$('#error-list').toggle(); return false;">Errors</a> (<span id="error-count">0</span>)</h2>
+        <div id="error-list" style="display: none;">
+        </div>
+
+        <h2><a href="#" onclick="$('#warning-list').toggle(); return false;">Warnings</a> (<span id="warning-count">0</span>)</h2>
+        <div id="warning-list" style="display: none;">
+        </div>
+
+        <h2><a href="#" onclick="$('#success-list').toggle(); return false;">Success</a> (<span id="success-count">0</span>)</h2>
+        <div id="success-list" style="display: none;">
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+
+<script>
+var errorCount = 0;
+var warningCount = 0;
+var successCount = 0;
+function executeImport(startRow) {
+    $.ajax({
+        url: "{{ path('integrated_import_run_execute', {'importDefinition': importDefinition.id} ) }}?startTime={{ startTime }}&start="+startRow
+    }).done(function(data) {
+        $.each(data.errors, function(key, value) {
+            $('#error-list').append('<div class="alert alert-danger">'+value+'</div>');
+            errorCount = errorCount + 1;
+            $('#error-count').html(errorCount);
+        });
+        $.each(data.warnings, function(key, value) {
+            $('#warning-list').append('<div class="alert alert-warning">'+value+'</div>');
+            warningCount = warningCount + 1;
+            $('#warning-count').html(warningCount);
+        });
+        $.each(data.success, function(key, value) {
+            $('#success-list').append('<div class="alert success">'+value+'</div>');
+            successCount = successCount + 1;
+            $('#success-count').html(successCount);
+        });
+        $('#import-progress').css('width', data.percentage+'%').attr('aria-valuenow', data.percentage);
+        $('#status-remaining').html(data.remaining);
+        if (data.done) {
+            $('#status-pending').hide();
+            $('#status-complete').show();
+        } else {
+            executeImport(data.startRow);
+        }
+    }).fail(function() {
+      alert('Failure');
+    });
+}
+
+$(document).ready(function() {
+    executeImport(0);
+});
+</script>
+{% endblock %}
