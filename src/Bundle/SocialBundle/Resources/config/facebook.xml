@@ -17,6 +17,7 @@
 
         <service id="integrated_social.facebook.adapter.exporter_factory" class="Integrated\Bundle\SocialBundle\Connector\Facebook\ExporterFactory" public="false">
             <argument type="service" id="integrated_social.facebook" />
+            <argument type="service" id="integrated_page.services.url_resolver"/>
         </service>
 
         <service id="integrated_social.facebook.config_listener" class="Integrated\Bundle\SocialBundle\EventListener\FacebookChannelConfigSubscriber">

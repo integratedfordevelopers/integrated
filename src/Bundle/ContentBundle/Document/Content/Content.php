@@ -310,7 +310,7 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
             $references = array_merge($references, $this->getReferencesByRelationType($relationType));
         }
 
-        if (count($references) > 0) {
+        if (\count($references) > 0) {
             return $references;
         }
 

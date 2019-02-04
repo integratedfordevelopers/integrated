@@ -18,6 +18,7 @@
 
         <service id="integrated_social.twitter.adapter.exporter_factory" class="Integrated\Bundle\SocialBundle\Connector\Twitter\ExporterFactory" public="false">
             <argument type="service" id="integrated_social.twitter.factory" />
+            <argument type="service" id="integrated_page.services.url_resolver"/>
         </service>
 
         <service id="integrated_social.twitter.config_listener" class="Integrated\Bundle\SocialBundle\EventListener\TwitterChannelConfigSubscriber">
