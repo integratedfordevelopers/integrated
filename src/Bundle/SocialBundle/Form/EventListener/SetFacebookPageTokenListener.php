@@ -34,6 +34,7 @@ class SetFacebookPageTokenListener implements EventSubscriberInterface
 
     /**
      * @param FormEvent $event
+     *
      * @throws \Facebook\Exceptions\FacebookSDKException
      */
     public function onSubmit(FormEvent $event)
