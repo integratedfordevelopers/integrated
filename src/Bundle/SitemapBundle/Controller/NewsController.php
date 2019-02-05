@@ -53,6 +53,8 @@ class NewsController extends Controller
     /**
      * @return array
      * @Template
+     *
+     * @throws \Exception
      */
     public function indexAction()
     {
@@ -64,56 +66,17 @@ class NewsController extends Controller
 
         $now = new DateTime();
 
-        $count = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class)
-            ->field('channels.$id')->equals($channel->getId())
-            ->field('disabled')->equals(false)
-            ->field('publishTime.startDate')->gte(new DateTime('-2 days')) // Only the last 2 days for Google
-            ->field('publishTime.startDate')->lte($now)
-            ->field('publishTime.endDate')->gte($now)
-            ->getQuery()
-            ->count();
-
-        if (!$count) {
-            throw new NotFoundHttpException();
-        }
-
-        return [
-            'count' => min(ceil($count / 1000), 50000),
-        ];
-    }
-
-    /**
-     * @param $page
-     *
-     * @return array
-     *
-     * @Template
-     */
-    public function listAction($page)
-    {
-        $channel = $this->context->getChannel();
-
-        if (!$channel) {
-            throw new NotFoundHttpException('No channel found');
-        }
-
-        $page = (int) $page;
-
-        if ($page != min(max($page, 1), 50000)) {
-            throw new NotFoundHttpException();
-        }
-
-        $now = new DateTime();
-
-        $documents = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class)
+        $queryBuilder = $this->registry->getManagerForClass(News::class)->createQueryBuilder(News::class);
+        $documents = $queryBuilder
             ->select('contentType', 'slug', 'publishTime', 'title', 'relations')
             ->field('channels.$id')->equals($channel->getId())
             ->field('disabled')->equals(false)
             ->field('publishTime.startDate')->gte(new DateTime('-2 days')) // Only the last 2 days for Google
             ->field('publishTime.startDate')->lte($now)
             ->field('publishTime.endDate')->gte($now)
+            ->addOr($queryBuilder->expr()->field('primaryChannel.$id')->equals($channel->getId()))
+            ->addOr($queryBuilder->expr()->field('primaryChannel')->exists(false))
             ->sort('createdAt', 'desc')
-            ->skip(--$page * 1000)
             ->limit(1000)
             ->getQuery()
             ->getIterator();
