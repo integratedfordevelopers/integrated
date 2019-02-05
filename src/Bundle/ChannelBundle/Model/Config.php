@@ -62,13 +62,14 @@ class Config implements ConfigInterface
 
     /**
      * @param int $id
+     * @throws \Exception
      */
     public function __construct(?int $id = null)
     {
         $this->id = $id;
         $this->created = new DateTime();
-        $this->publicationStartDate = $this->created;
-        $this->updated = $this->created;
+        $this->publicationStartDate = new DateTime();
+        $this->updated = new DateTime();
     }
 
     /**
