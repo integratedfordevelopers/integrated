@@ -62,6 +62,7 @@ class Config implements ConfigInterface
 
     /**
      * @param int $id
+     *
      * @throws \Exception
      */
     public function __construct(?int $id = null)
