@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ChannelBundle\Form\Type;
 
 use Exception;
 use Integrated\Bundle\ChannelBundle\Form\DataTransformer\OptionsTransformer;
+use Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\ConfigurableInterface;
@@ -63,6 +64,12 @@ class ConfigFormType extends AbstractType
             'translation_domain' => 'IntegratedChannelBundle',
             'multiple' => true,
             'expanded' => true,
+        ]);
+
+        $builder->add('publicationStartDate', DateTimeType::class, [
+            'label' => 'Publication start date',
+            'translation_domain' => 'IntegratedChannelBundle',
+            'required' => false,
         ]);
 
         if ($adapter instanceof ConfigurableInterface) {
