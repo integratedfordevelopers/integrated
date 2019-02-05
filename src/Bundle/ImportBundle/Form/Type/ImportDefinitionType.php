@@ -34,5 +34,4 @@ class ImportDefinitionType extends AbstractType
         $builder->add('imageContentType', ContentTypeChoice::class, ['label' => 'Content type for images', 'multiple' => false]);
         $builder->add('imageRelation', DocumentType::class, ['label' => 'Relation type for images', 'multiple' => false, 'class' => Relation::class, 'choice_label' => 'name', 'choice_value' => 'id']);
     }
-
 }

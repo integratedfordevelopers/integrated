@@ -8,8 +8,7 @@ use JMS\Serializer\Metadata\ClassMetadata;
 use JMS\Serializer\VisitorInterface;
 
 /**
- * Object constructor that allows deserialization into already constructed
- * objects passed through the deserialization context
+ * Object constructor that allows deserialization into already constructed objects passed through the deserialization context.
  */
 class InitializedObjectConstructor implements ObjectConstructorInterface
 {
@@ -36,5 +35,4 @@ class InitializedObjectConstructor implements ObjectConstructorInterface
 
         return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
     }
-
 }

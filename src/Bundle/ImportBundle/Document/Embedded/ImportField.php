@@ -105,5 +105,4 @@ class ImportField
 
         return $this;
     }
-
 }
