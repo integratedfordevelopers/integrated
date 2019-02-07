@@ -25,6 +25,11 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
 class SearchContentReferenced
 {
     /**
+     * @const IGNORE_CLASSES
+     */
+    const IGNORE_CLASSES = ['Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction'];
+
+    /**
      * @var DocumentManager
      */
     private $dm;
@@ -56,6 +61,10 @@ class SearchContentReferenced
 
         /** @var ClassMetaData $classMetadata */
         foreach ($allMetadata as $classMetadata) {
+            if (\in_array($classMetadata->getName(), $this::IGNORE_CLASSES)) {
+                continue;
+            }
+
             if ($classMetadata->isMappedSuperclass || $classMetadata->isEmbeddedDocument) {
                 continue;
             }

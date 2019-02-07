@@ -53,7 +53,7 @@ class UrlExtension extends \Twig_Extension
     /**
      * @param mixed $document
      *
-     * @return null|string
+     * @return string|null
      */
     public function getUrl($document)
     {

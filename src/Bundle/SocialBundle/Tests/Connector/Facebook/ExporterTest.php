@@ -18,6 +18,7 @@ use Facebook\GraphNodes\GraphNode;
 use Integrated\Bundle\ChannelBundle\Model\ConfigInterface;
 use Integrated\Bundle\ChannelBundle\Model\Options;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\PageBundle\Services\UrlResolver;
 use Integrated\Bundle\SocialBundle\Connector\Facebook\Exporter;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
@@ -39,10 +40,16 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      */
     private $config;
 
+    /**
+     * @var UrlResolver | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $urlResolver;
+
     protected function setUp()
     {
         $this->facebook = $this->createMock(Facebook::class);
         $this->config = $this->createMock(ConfigInterface::class);
+        $this->urlResolver = $this->createMock(UrlResolver::class);
     }
 
     public function testInterface()
@@ -205,7 +212,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      */
     protected function getInstance(): Exporter
     {
-        return new Exporter($this->facebook, $this->config);
+        return new Exporter($this->facebook, $this->config, $this->urlResolver);
     }
 
     /**

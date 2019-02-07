@@ -55,7 +55,7 @@ class ShortCodeListener
     /**
      * @param array $matches
      *
-     * @return null|string
+     * @return string|null
      */
     public function replaceWithBlock(array $matches)
     {

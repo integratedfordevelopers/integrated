@@ -6,6 +6,7 @@ return PhpCsFixer\Config::create()
         '@Symfony' => true,
         '@Symfony:risky' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'line_ending' => false,
         'no_short_echo_tag' => true,
         'no_useless_else' => true,
         'no_useless_return' => true,

@@ -17,8 +17,10 @@ use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\Config\ResolverInterface;
+use Integrated\Common\Channel\Connector\ExporterInterface as ConnectorExporterInterface;
 use Integrated\Common\Content\ConnectorInterface;
 use Integrated\Common\Content\ContentInterface;
+use Integrated\Common\Content\PublishableInterface;
 
 /**
  * @author Jan Sanne Mulder <jansanne@e-active.nl>
@@ -62,7 +64,17 @@ class Exporter implements ExporterInterface
      */
     public function export($content, $state, ChannelInterface $channel)
     {
-        foreach ($this->getExporters($channel) as $exporter) {
+        $publicationDate = null;
+        if ($content instanceof PublishableInterface) {
+            $publicationDate = $content->getPublishTime()->getStartDate();
+            if (!$content->isPublished()) {
+                //make sure content is not published when publication date or state
+                //has changed after queueing
+                $state = ConnectorExporterInterface::STATE_DELETE;
+            }
+        }
+
+        foreach ($this->getExporters($channel, $publicationDate) as $exporter) {
             try {
                 $response = $exporter->export($content, $state, $channel);
 
@@ -77,16 +89,22 @@ class Exporter implements ExporterInterface
 
     /**
      * @param ChannelInterface $channel
+     * @param ?DateTime        $publicationDate
      *
      * @return ExporterInterface[]
      */
-    protected function getExporters(ChannelInterface $channel)
+    protected function getExporters(ChannelInterface $channel, $publicationDate)
     {
         if (!array_key_exists($channel->getId(), $this->cache)) {
             $exporters = [];
 
             foreach ($this->resolver->getConfigs($channel) as $config) {
                 try {
+                    $publicationStartDate = $config->getPublicationStartDate();
+                    if ($publicationStartDate && $publicationDate && $publicationStartDate > $publicationDate) {
+                        continue;
+                    }
+
                     $adaptor = $this->registry->getAdapter($config->getAdapter());
 
                     if ($adaptor instanceof ExportableInterface) {
