@@ -843,6 +843,7 @@ class ImportController extends Controller
                     $col = 0;
                     foreach ($row as $value) {
                         if (!isset($fieldMapping[$data[0][$col]])) {
+                            $col++;
                             continue;
                         }
                         $mappedField = $fieldMapping[$data[0][$col]];
@@ -865,6 +866,7 @@ class ImportController extends Controller
 
                             $targets = $relation->getTargets();
                             $targetContentType = $targets[0];
+                            //TODO: allow choose content type
 
                             /*$targetContentType = $this->documentManager->find(
                                 ContentType::class,
@@ -881,8 +883,7 @@ class ImportController extends Controller
                                 }
 
                                 foreach ($value as $valueName) {
-                                    //allow choose and find correct content type
-                                    $link = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['title' => $valueName]);
+                                    $link = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['title' => $valueName, 'contentType' => $targetContentType->getId()]);
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
