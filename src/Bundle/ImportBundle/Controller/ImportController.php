@@ -36,6 +36,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sunra\PhpSimple\HtmlDomParser;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ImportController extends Controller
 {
@@ -458,6 +459,10 @@ class ImportController extends Controller
         ini_set('max_execution_time', 3600);
         ini_set('memory_limit', '4G');
 
+        //close session to prevent session locking for other connections
+        $session = new Session();
+        $session->save();
+
         $start = $request->get('start', 0);
 
         $result = [];
@@ -600,6 +605,11 @@ class ImportController extends Controller
                             return '[object type="youtube" id="'.trim($matches[2]).'"]';
                         }, $content);
 
+                        $youtubeRexEg = '/https?:\/\/(www\.youtube\.com\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?\"\<]*)/';
+                        $content = preg_replace_callback($youtubeRexEg, function ($matches) {
+                            return '[object type="youtube" id="'.trim($matches[2]).'"]';
+                        }, $content);
+
                         $content = preg_replace('/\[caption.*?\]/', '', $content);
                         $content = str_ireplace('[/caption]', '', $content);
 
@@ -609,10 +619,28 @@ class ImportController extends Controller
                         $prevLine = '';
                         if (true) { //todo: more to wordpress filter, only for Wordpress
                             //todo: move to filter
-                            foreach (explode("\n", $content) as $line) {
+                            $contentLines = [];
+                            foreach (explode("\n", $content) as $contentLine) {
+                                if (trim($contentLine) != '') {
+                                    $contentLines[] = $contentLine;
+                                }
+                            }
+
+                            foreach ($contentLines as $lineKey => $line) {
                                 $line = trim($line);
-                                if (trim(strip_tags(str_replace('&nbsp;', '',
-                                        $line))) != '' || $line == '<ul>' || $line == '</ul>') {
+
+                                $nextCouldBeLi = false;
+                                if (isset($contentLines[$lineKey + 1])) {
+                                    $nextLine = $contentLines[$lineKey + 1];
+                                    $nextLine = trim($nextLine);
+                                    if (substr($nextLine, -1, 1) != '.'
+                                    && substr($nextLine, -1, 1) != '?'
+                                    && (substr($nextLine, -1, 1) != '>' || substr($nextLine, -3, 3) == '/a>')) {
+                                        $nextCouldBeLi = true;
+                                    }
+                                }
+
+                                if (trim(strip_tags(str_replace('&nbsp;', '', $line))) != '' || $line == '<ul>' || $line == '</ul>') {
                                     if (substr($line, -3, 3) == 'h1>'
                                         || substr($line, -3, 3) == 'h2>'
                                         || substr($line, -3, 3) == 'h3>'
@@ -627,10 +655,11 @@ class ImportController extends Controller
                                             $newHtml .= '</ul>';
                                         }
                                         $prevLine = '';
-                                    } elseif (\strlen(strip_tags($line)) < 90
+                                    } elseif ((\strlen(strip_tags($line)) < 90 || $prevLine == 'li')
                                         && substr($line, -1, 1) != '.'
                                         && substr($line, -1, 1) != '?'
                                         && (substr($line, -1, 1) != '>' || substr($line, -3, 3) == '/a>')
+                                        && ($nextCouldBeLi || $prevLine == 'li')
                                     ) {
                                         if ($prevLine != 'li') {
                                             $newHtml .= '<ul>';
@@ -646,6 +675,10 @@ class ImportController extends Controller
                                         }
                                         $line = '<p>'.$line.'</p>';
                                         $prevLine = 'p';
+                                    }
+                                } else {
+                                    if ($prevLine == 'li') {
+                                        $newHtml .= '</ul>';
                                     }
                                 }
                                 $newHtml .= $line."\n";
@@ -682,7 +715,9 @@ class ImportController extends Controller
                             if (stripos($href, '.png') === false
                                 && stripos($href, '.jpg') === false
                                 && stripos($href, '.jpeg') === false
-                                && stripos($href, '.gif') === false) {
+                                && stripos($href, '.gif') === false
+                                && stripos($href, '.pdf') === false
+                            ) {
                                 continue;
                             }
 
@@ -696,6 +731,12 @@ class ImportController extends Controller
                                     $title = str_replace('.gif', '', $title);
                                 }
                             }
+
+                            if (!$title && stripos($href, '.pdf') !== false) {
+                                $title = basename($href);
+                                $title = str_replace('.pdf', '', $title);
+                            }
+
                             if ($title) {
                                 $tmpfile = tempnam('/tmp/', 'img').'.'.pathinfo($href, PATHINFO_EXTENSION);
                                 file_put_contents($tmpfile, @file_get_contents($href));
@@ -717,6 +758,32 @@ class ImportController extends Controller
                                     )
                                 );
 
+                                if (stripos($href, '.pdf') !== false) {
+                                    $contentTT = 'evmi_bestand';
+                                    $file = $this->documentManager->getRepository(File::class)->findOneBy([
+                                        'contentType' => $contentTT,
+                                        'file.identifier' => $storage->getIdentifier(),
+                                    ]);
+
+                                    if (!$file) {
+                                        $file = new File();
+                                        $file->setContentType($contentTT);
+                                        $file->setTitle($title);
+                                        $file->setFile($storage);
+                                        $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
+
+                                        $this->documentManager->persist($file);
+                                        $this->documentManager->flush($file);
+                                    }
+
+                                    $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                    $relation->setRelationId('evmi_bestand');
+                                    $relation->setRelationType('embedded');
+                                    $relation->addReference($file);
+                                    $newObject->addRelation($relation);
+
+                                    $element->href = '/storage/'.$file->getId().'.pdf';
+                                } else {
                                 $file = $this->documentManager->getRepository(Image::class)->findOneBy([
                                     'contentType' => $importDefinition->getImageContentType(),
                                     'file.identifier' => $storage->getIdentifier(),
@@ -738,7 +805,9 @@ class ImportController extends Controller
                                 $relation->addReference($file);
                                 $newObject->addRelation($relation);
 
-                                $element->outertext = '<img src="/storage/'.$file->getId().'.jpg" class="img-responsive" title="'.htmlspecialchars($title).'" alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
+                                    $element->outertext = '<img src="/storage/'.$file->getId().'.pdf" class="img-responsive" title="'.htmlspecialchars($title).'" alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
+                                }
+
                             }
                         }
 
