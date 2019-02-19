@@ -9,9 +9,11 @@ use Integrated\Bundle\ChannelBundle\Model\Config;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
@@ -308,6 +310,8 @@ class ImportController extends Controller
             $fields['field-'.$contentTypeField] = ['label' => $contentTypeField, 'matchCol' => $matchCol];
         }
 
+        $fields['author-author'] = ['label' => 'Author', 'matchCol' => false];
+
         $configs = $this->entityManager->getRepository(Config::class)->findAll();
         foreach ($configs as $config) {
             $fields['connector-'.$config->getId()] = ['label' => 'ID for '.$config->getName(), 'matchCol' => false];
@@ -560,6 +564,8 @@ class ImportController extends Controller
                         if (!$newObject instanceof File) {
                             $result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported';
                             continue;
+                            //$newObject->setContentType('food_artikel');
+                            //$result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported, place as food article';
                         }
                     }
 
@@ -917,6 +923,18 @@ class ImportController extends Controller
                         }
                         $mappedField = $fieldMapping[$data[0][$col]];
 
+                        if (strpos($mappedField, 'author-') === 0) {
+                            if (trim($value) != '') {
+                                foreach (explode(',', $value) as $auteur) {
+                                    if (trim($auteur) != '') {
+                                        $author = new Author();
+                                        $author->setPerson($this->addAuthor($auteur));
+                                        $newObject->addAuthor($author);
+                                    }
+                                }
+                            }
+                        }
+
                         if (strpos($mappedField, 'connector-') === 0) {
                             $connectorId = str_replace('connector-', '', $mappedField);
                             $connectorConfig = $this->entityManager->getRepository(Config::class)->find($connectorId);
@@ -1090,4 +1108,53 @@ class ImportController extends Controller
 
         return $form;
     }
+
+    protected function addAuthor($name)
+    {
+        $dm = $this->documentManager;
+        $type = 'person';
+
+        $name = trim($name);
+        if (stripos($name, 'by ') === 0) {
+            $name = substr($name, 3);
+        }
+
+        while (strpos($name, "  ") !== false) {
+            $name = str_replace("  ", " ", $name);
+        }
+
+        if (strpos($name, " ") !== false) {
+            list($firstname, $lastname) = explode(" ", $name, 2);
+        } else {
+            $firstname = '';
+            $lastname = $name;
+        }
+
+        if (trim($lastname) == '') {
+            $lastname = '(empty)';
+            //throw new Exception('Empty lastname: ' . $name); //@todo: waarom?
+        }
+
+        $person = $dm
+            ->createQueryBuilder(Person::class)
+            ->field('contentType')->equals($type)
+            ->field('firstName')->equals($firstname)
+            ->field('lastName')->equals($lastname)
+            ->getQuery()
+            ->getSingleResult();
+
+        if (!$person) {
+            $person = new Person();
+            $person
+                ->setContentType($type)
+                ->setFirstname($firstname)
+                ->setLastname($lastname);
+
+            $dm->persist($person);
+            $dm->flush($person);
+        }
+
+        return $person;
+    }
+
 }
