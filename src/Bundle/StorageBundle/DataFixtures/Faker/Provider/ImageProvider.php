@@ -34,7 +34,7 @@ class ImageProvider
     /**
      * @param int         $width
      * @param int         $height
-     * @param null|string $category
+     * @param string|null $category
      * @param string      $dir
      *
      * @return StorageInterface

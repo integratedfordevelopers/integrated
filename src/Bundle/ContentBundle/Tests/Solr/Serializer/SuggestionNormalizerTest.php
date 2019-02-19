@@ -77,7 +77,7 @@ class SuggestionNormalizerTest extends \PHPUnit\Framework\TestCase
                     'id_3' => 'url_3',
                 ];
 
-                if (array_key_exists($params['id'], $map)) {
+                if (\array_key_exists($params['id'], $map)) {
                     return $map[$params['id']];
                 }
 

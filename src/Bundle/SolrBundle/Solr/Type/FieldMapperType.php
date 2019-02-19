@@ -158,7 +158,7 @@ class FieldMapperType implements TypeInterface
         // Check if there is a separator in the path config and if so extract it and then remove it
         // from the path config.
 
-        if (array_key_exists('separator', $paths) && !\is_array($paths['separator'])) {
+        if (\array_key_exists('separator', $paths) && !\is_array($paths['separator'])) {
             $separator = (string) $paths['separator'];
             unset($paths['separator']);
         }
