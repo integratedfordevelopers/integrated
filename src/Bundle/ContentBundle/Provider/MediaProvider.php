@@ -45,7 +45,7 @@ class MediaProvider
     }
 
     /**
-     * @param null|string $filter
+     * @param string|null $filter
      *
      * @return \Integrated\Bundle\ContentBundle\Document\ContentType\ContentType[]
      */

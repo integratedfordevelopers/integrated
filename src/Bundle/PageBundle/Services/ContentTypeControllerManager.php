@@ -39,7 +39,7 @@ class ContentTypeControllerManager
      */
     public function addController($serviceId, $attributes)
     {
-        if (!array_key_exists('class', $attributes)) {
+        if (!\array_key_exists('class', $attributes)) {
             throw new \InvalidArgumentException(
                 sprintf('class is a required attribute of the tag in service "%s"', $serviceId)
             );
@@ -53,7 +53,7 @@ class ContentTypeControllerManager
             );
         }
 
-        if (array_key_exists('controller_actions', $attributes)) {
+        if (\array_key_exists('controller_actions', $attributes)) {
             $controllerActions = array_map('trim', explode(',', $attributes['controller_actions']));
         } else {
             $controllerActions = ['showAction'];
