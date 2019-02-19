@@ -96,7 +96,7 @@ class ContentImageListener
     /**
      * @param array $matches
      *
-     * @return null|string
+     * @return string|null
      */
     protected function findImages($matches)
     {
@@ -116,7 +116,7 @@ class ContentImageListener
      * @param Content $file
      * @param string  $class
      *
-     * @return null|string
+     * @return string|null
      */
     protected function getTemplate(Content $file, $class = '')
     {

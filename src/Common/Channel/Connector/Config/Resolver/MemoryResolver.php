@@ -87,7 +87,7 @@ class MemoryResolver implements ResolverInterface
     {
         $configs = $this->defaults;
 
-        if (array_key_exists($channel = $channel->getId(), $this->channels)) {
+        if (\array_key_exists($channel = $channel->getId(), $this->channels)) {
             $configs = array_merge($configs, $this->channels[$channel]);
         }
 
