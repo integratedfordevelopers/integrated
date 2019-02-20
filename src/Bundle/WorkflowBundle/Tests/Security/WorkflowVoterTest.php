@@ -119,11 +119,11 @@ class WorkflowVoterTest extends \PHPUnit\Framework\TestCase
 
     protected function setUpManager()
     {
-        if (!array_key_exists('workflow', $this->repository)) {
+        if (!\array_key_exists('workflow', $this->repository)) {
             $this->setUpRepositoryWorkflow();
         }
 
-        if (!array_key_exists('state', $this->repository)) {
+        if (!\array_key_exists('state', $this->repository)) {
             $this->setUpRepositoryState();
         }
 

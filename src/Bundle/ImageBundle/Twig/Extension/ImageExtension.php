@@ -142,6 +142,8 @@ class ImageExtension extends \Twig_Extension
             if (\in_array($metadata->getExtension(), $this->mimicFormats)) {
                 return $this->imageMimicHandling->open($image);
             }
+        } elseif (filter_var($image, FILTER_VALIDATE_URL)) {
+            return $this->imageMimicHandling->open($image);
         }
 
         //detect json format

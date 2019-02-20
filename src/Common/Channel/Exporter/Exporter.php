@@ -95,7 +95,7 @@ class Exporter implements ExporterInterface
      */
     protected function getExporters(ChannelInterface $channel, $publicationDate)
     {
-        if (!array_key_exists($channel->getId(), $this->cache)) {
+        if (!\array_key_exists($channel->getId(), $this->cache)) {
             $exporters = [];
 
             foreach ($this->resolver->getConfigs($channel) as $config) {
