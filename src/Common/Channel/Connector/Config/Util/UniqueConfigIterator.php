@@ -69,7 +69,7 @@ class UniqueConfigIterator extends IteratorIterator
     {
         $config = $this->current();
 
-        if ($config instanceof ConfigInterface && !array_key_exists($config->getName(), $this->accepted)) {
+        if ($config instanceof ConfigInterface && !\array_key_exists($config->getName(), $this->accepted)) {
             return $this->accepted[$config->getName()] = true;
         }
 

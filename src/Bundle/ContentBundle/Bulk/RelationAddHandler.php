@@ -58,7 +58,7 @@ class RelationAddHandler implements HandlerInterface
      */
     public function execute(ContentInterface $content)
     {
-        if (!array_key_exists($content->getContentType(), $this->relationTypes)) {
+        if (!\array_key_exists($content->getContentType(), $this->relationTypes)) {
             // content does not have a relation of the type this handler should add.
             return;
         }
