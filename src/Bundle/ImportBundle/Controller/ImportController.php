@@ -34,6 +34,7 @@ use JMS\Serializer\Exception\RuntimeException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -557,18 +558,6 @@ class ImportController extends Controller
                 }
 
                 try {
-                    //todo, make optional (or remove)
-                    $doubleArticle = $this->documentManager->getRepository(Article::class)->findOneBy(['title' => $newObject->getTitle()]);
-                    if ($doubleArticle) {
-                        //do not import duplicate articles, except for files
-                        if (!$newObject instanceof File) {
-                            $result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported';
-                            continue;
-                            //$newObject->setContentType('food_artikel');
-                            //$result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported, place as food article';
-                        }
-                    }
-
                     //todo: move to Wordpress filter
                     if (isset($row['wp:post_id']) && $importDefinition->getImageBaseUrl()) {
                         //todo image base URL to general base URL
@@ -582,6 +571,17 @@ class ImportController extends Controller
                         }
                     }
 
+                    //todo, make optional (or remove)
+                    $doubleArticle = $this->documentManager->getRepository(Article::class)->findOneBy(['title' => $newObject->getTitle()]);
+                    if ($doubleArticle) {
+                        //do not import duplicate articles, except for files
+                        if (!$newObject instanceof File) {
+                            //$result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported';
+                            //continue;
+                            $newObject->setContentType('food_artikel');
+                            $result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported, place as food article';
+                        }
+                    }
                     if (isset($row['publiceren_van']) && $row['publiceren_van'] != '') {
                         $newObject->getPublishTime()->setStartDate(new \DateTime('@'.$row['publiceren_van']));
                     } else {
@@ -1062,6 +1062,8 @@ class ImportController extends Controller
                     $result['success'][] = 'Post '.$row['wp:post_id'].' imported';
                 } catch (\Exception $e) {
                     $result['errors'][] = 'Item '.(string) $newObject.' failed: '.$e->getMessage();
+                } catch (\Throwable $e) {
+                    $result['errors'][] = 'Item '.(string) $newObject.' fatal: '.$e->getMessage();
                 }
             }
         }
