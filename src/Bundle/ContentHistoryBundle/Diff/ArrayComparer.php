@@ -25,14 +25,14 @@ class ArrayComparer
     public static function diff(array $old = [], array $new = [])
     {
         foreach (array_keys($old) as $key) {
-            if (!array_key_exists($key, $new)) {
+            if (!\array_key_exists($key, $new)) {
                 // add missing key
                 $new[$key] = null;
             }
         }
 
         foreach (array_keys($new) as $key) {
-            if (!array_key_exists($key, $old)) {
+            if (!\array_key_exists($key, $old)) {
                 // add missing key
                 $old[$key] = null;
             }

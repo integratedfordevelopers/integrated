@@ -157,7 +157,7 @@ class BlockExtension extends \Twig_Extension
             $pages = $this->findPages($block);
 
             foreach ($pages as $page) {
-                if (array_key_exists('channel', $page)) {
+                if (\array_key_exists('channel', $page)) {
                     $channels[$page['channel']['$id']] = $this->blockUsageProvider->getChannel($page['channel']['$id']);
                 }
             }
