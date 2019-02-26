@@ -69,11 +69,14 @@ class ContentTypeHandler implements HandlerInterface
     public function execute(ContentInterface $content)
     {
         $contentType = $this->documentManager->getRepository(ContentType::class)->find($this->contentType);
-        if (!$contentType) {
-            return;
+        if (null === $contentType) {
+            throw new \Exception('Content type '.$this->contentType.' does not exist');
         }
 
         $contentTypeOld = $this->documentManager->getRepository(ContentType::class)->find($content->getContentType());
+        if (null === $contentTypeOld) {
+            throw new \Exception('Content type '.$content->getContentType().' for '.(string) $content.' does not exist');
+        }
 
         if ($contentType->getClass() != $contentTypeOld->getClass()) {
             //don't allow update when item is referenced, because class in reference need to be updated
@@ -82,22 +85,32 @@ class ContentTypeHandler implements HandlerInterface
                 throw new \Exception('Item '.(string) $content.' is referenced by item '.$referencedItem['id'].' "'.$referencedItem['name'].'" and can\'t be moved to another document type');
             }
 
+            //update class of content, directly on the database because the documentManager doesn't support class updates
             $this->documentManager->getDocumentCollection($contentTypeOld->getClass())->getMongoCollection()->update(['_id' => $content->getId()], ['$set' => ['class' => $contentType->getClass()]]);
 
             $content = $this->documentManager->getRepository($contentType->getClass())->find($content->getId());
         }
 
         //remove old document from Solr, to avoid duplicate indexing
+        $this->deleteFromSolr($contentTypeOld, $content);
+
+        $content->setContentType($contentType->getId());
+    }
+
+    /**
+     * @param ContentType      $contentType
+     * @param ContentInterface $contentItem
+     */
+    private function deleteFromSolr(ContentType $contentType, ContentInterface $contentItem)
+    {
         $job = new Job('DELETE');
 
-        $job->setOption('document.id', $contentTypeOld->getId().'-'.$content->getId());
+        $job->setOption('document.id', $contentType->getId().'-'.$contentItem->getId());
 
-        $job->setOption('document.data', json_encode(['id' => $content->getId()]));
-        $job->setOption('document.class', $contentTypeOld->getClass());
+        $job->setOption('document.data', json_encode(['id' => $contentItem->getId()]));
+        $job->setOption('document.class', $contentType->getClass());
         $job->setOption('document.format', 'json');
 
         $this->solrQueue->push($job);
-
-        $content->setContentType($contentType->getId());
     }
 }
