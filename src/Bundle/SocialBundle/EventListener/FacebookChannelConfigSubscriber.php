@@ -19,6 +19,7 @@ use Integrated\Bundle\SocialBundle\Connector\FacebookAdapter;
 use Integrated\Common\Channel\Connector\Config\ConfigManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -86,14 +87,17 @@ class FacebookChannelConfigSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $session = new Session();
+        $session->set('externalReturnId', $config->getId());
+
         $event->setResponse(new RedirectResponse(
             $this->facebook->getRedirectLoginHelper()->getLoginUrl(
                 $this->generator->generate(
-                    'integrated_channel_config_edit',
-                    ['id' => $config->getId()],
+                    'integrated_channel_config_external_return',
+                    [],
                     UrlGeneratorInterface::ABSOLUTE_URL
                 ),
-                ['publish_actions']
+                ['publish_pages', 'manage_pages']
             )
         ));
     }
@@ -102,6 +106,8 @@ class FacebookChannelConfigSubscriber implements EventSubscriberInterface
      * Check if the request got a access token and if to store it in the config.
      *
      * @param GetResponseConfigEvent $event
+     *
+     * @throws \Facebook\Exceptions\FacebookSDKException
      */
     public function onRequest(GetResponseConfigEvent $event)
     {

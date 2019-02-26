@@ -16,6 +16,7 @@
 
         <field name="channels" type="json_array" />
 
+        <field name="publicationStartDate" type="datetime" />
         <field name="created" type="datetime" />
         <field name="updated" type="datetime" />
 

@@ -76,7 +76,7 @@ class BlockUsageProvider
         }
 
         if (null !== $blockId) {
-            return array_key_exists($blockId, $this->blockPages) ? $this->blockPages[$blockId] : null;
+            return \array_key_exists($blockId, $this->blockPages) ? $this->blockPages[$blockId] : null;
         }
 
         return $this->blockPages;
@@ -100,7 +100,7 @@ class BlockUsageProvider
         }
 
         if (null !== $channelId) {
-            return array_key_exists($channelId, $this->channelBlocks) ? $this->channelBlocks[$channelId] : [];
+            return \array_key_exists($channelId, $this->channelBlocks) ? $this->channelBlocks[$channelId] : [];
         }
 
         return $this->channelBlocks;
@@ -113,7 +113,7 @@ class BlockUsageProvider
      */
     public function getChannel($id)
     {
-        if (!array_key_exists($id, $this->channels)) {
+        if (!\array_key_exists($id, $this->channels)) {
             $this->channels[$id] = $this->mr->getManager()->getRepository(Channel::class)->find($id);
         }
 
@@ -134,16 +134,16 @@ class BlockUsageProvider
             ->getIterator();
 
         foreach ($pages as $page) {
-            if (!array_key_exists('grids', $page)) {
+            if (!\array_key_exists('grids', $page)) {
                 continue;
             }
 
             $this->currentPage = array_intersect_key($page, array_flip(['_id', 'title', 'locked', 'channel']));
 
-            $this->currentChannel = array_key_exists('channel', $page) ? $page['channel']['$id'] : null;
+            $this->currentChannel = \array_key_exists('channel', $page) ? $page['channel']['$id'] : null;
 
             foreach ($page['grids'] as $grid) {
-                if (!array_key_exists('items', $grid)) {
+                if (!\array_key_exists('items', $grid)) {
                     continue;
                 }
                 $this->filterItems($grid['items']);
@@ -159,13 +159,13 @@ class BlockUsageProvider
     protected function filterItems($items)
     {
         foreach ($items as $item) {
-            if (array_key_exists('row', $item) && array_key_exists('columns', $item['row'])) {
+            if (\array_key_exists('row', $item) && \array_key_exists('columns', $item['row'])) {
                 foreach ($item['row']['columns'] as $column) {
-                    if (array_key_exists('items', $column)) {
+                    if (\array_key_exists('items', $column)) {
                         $this->filterItems($column['items']);
                     }
                 }
-            } elseif (array_key_exists('block', $item)) {
+            } elseif (\array_key_exists('block', $item)) {
                 $this->blockPages[$item['block']['$id']][$this->currentPage['_id']] = $this->currentPage;
 
                 if ($this->currentChannel) {

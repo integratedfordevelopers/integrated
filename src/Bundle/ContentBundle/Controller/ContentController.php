@@ -79,6 +79,8 @@ class ContentController extends Controller
 
         /** @var $client \Solarium\Client */
         $client = $this->get('solarium.client');
+        $client->getPlugin('postbigrequest');
+
         $query = $client->createSelect();
 
         $facetSet = $query->getFacetSet();
@@ -304,7 +306,7 @@ class ContentController extends Controller
 
         $sort = $request->query->get('sort', $sort_default);
         $sort = trim(strtolower($sort));
-        $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
+        $sort = \array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
         $query->addSort($sort_options[$sort]['field'], \in_array($request->query->get('order'), $order_options) ? $request->query->get('order') : $sort_options[$sort]['order']);
 
