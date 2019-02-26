@@ -98,7 +98,7 @@ class ImportController extends Controller
     {
         $contentTypes = $this->contentTypeManager->getAll();
 
-        $documents = $this->documentManager->getRepository(ImportDefinition::class)->findBy([], ['title' => 'asc']);
+        $documents = $this->documentManager->getRepository(ImportDefinition::class)->findBy([], ['name' => 'asc']);
 
         return $this->render(
             'IntegratedImportBundle::index.html.twig',
@@ -627,6 +627,9 @@ class ImportController extends Controller
                             //todo: move to filter
                             $contentLines = [];
                             foreach (explode("\n", $content) as $contentLine) {
+                                if (str_replace('-', '', $contentLine) == '') {
+                                    $contentLine = '';
+                                }
                                 if (trim($contentLine) != '') {
                                     $contentLines[] = $contentLine;
                                 }
