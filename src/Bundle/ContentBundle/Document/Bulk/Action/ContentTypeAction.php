@@ -27,6 +27,7 @@ class ContentTypeAction implements BulkActionInterface
 
     /**
      * ContentTypeAction constructor.
+     *
      * @param string $handler
      */
     public function __construct(string $handler)

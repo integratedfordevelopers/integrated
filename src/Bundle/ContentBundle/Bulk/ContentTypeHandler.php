@@ -20,7 +20,7 @@ use Integrated\Common\Queue\Queue;
 use Integrated\Common\Solr\Indexer\Job;
 
 /**
- * Handler to change the content type of a content item
+ * Handler to change the content type of a content item.
  */
 class ContentTypeHandler implements HandlerInterface
 {
@@ -47,13 +47,13 @@ class ContentTypeHandler implements HandlerInterface
     /**
      * Constructor.
      *
-     * @param DocumentManager         $documentManager          document manager, manage content items
-     * @param Queue                   $solrQueue                solr queue service - a content type change results in
-     *                                                          a new Solr ID, so a re-queue is required for the old ID
-     * @param SearchContentReferenced $searchContentReferenced  service to find out if a content item is in use
-     *                                                          somewhere - we don't allow a class change when the
-     *                                                          content item is referenced
-     * @param string                  $contentType              the new content type for
+     * @param DocumentManager         $documentManager         document manager, manage content items
+     * @param Queue                   $solrQueue               solr queue service - a content type change results in
+     *                                                         a new Solr ID, so a re-queue is required for the old ID
+     * @param SearchContentReferenced $searchContentReferenced service to find out if a content item is in use
+     *                                                         somewhere - we don't allow a class change when the
+     *                                                         content item is referenced
+     * @param string                  $contentType             the new content type for
      */
     public function __construct(DocumentManager $documentManager, Queue $solrQueue, SearchContentReferenced $searchContentReferenced, string $contentType)
     {
