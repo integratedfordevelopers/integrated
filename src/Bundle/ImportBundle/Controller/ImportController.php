@@ -606,14 +606,13 @@ class ImportController extends Controller
                             $content
                         );
 
-                        $youtubeRexEg = '/https?:\/\/(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?\"\<]*)/';
+                        $youtubeRexEg = '/(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w-_]+)/';
                         $content = preg_replace_callback($youtubeRexEg, function ($matches) {
-                            return '[object type="youtube" id="'.trim($matches[2]).'"]';
-                        }, $content);
-
-                        $youtubeRexEg = '/https?:\/\/(www\.youtube\.com\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?\"\<]*)/';
-                        $content = preg_replace_callback($youtubeRexEg, function ($matches) {
-                            return '[object type="youtube" id="'.trim($matches[2]).'"]';
+                            if (strlen(trim($matches[1])) == 11) {
+                                return '[object type="youtube" id="'.trim($matches[1]).'"]';
+                            } else {
+                                return $matches[0];
+                            }
                         }, $content);
 
                         $content = preg_replace('/\[caption.*?\]/', '', $content);
