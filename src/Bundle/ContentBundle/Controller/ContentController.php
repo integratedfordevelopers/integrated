@@ -79,6 +79,8 @@ class ContentController extends Controller
 
         /** @var $client \Solarium\Client */
         $client = $this->get('solarium.client');
+        $client->getPlugin('postbigrequest');
+
         $query = $client->createSelect();
 
         $facetSet = $query->getFacetSet();
