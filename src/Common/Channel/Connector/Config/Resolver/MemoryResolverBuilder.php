@@ -56,7 +56,7 @@ class MemoryResolverBuilder
 
         $name = $config->getName();
 
-        if (!array_key_exists($name, $this->configs)) {
+        if (!\array_key_exists($name, $this->configs)) {
             $this->configs[$name] = $config;
             $this->config_channels[$name] = [];
         }

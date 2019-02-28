@@ -93,7 +93,7 @@ class QueueListener implements EventSubscriber, QueueAwareInterface
     protected function process(LifecycleEventArgs $event)
     {
         if ($id = $this->getId($event->getObject())) {
-            if (array_key_exists($id, $this->identities)) {
+            if (\array_key_exists($id, $this->identities)) {
                 return; // only add a workflow index ones for the selected id.
             }
 
