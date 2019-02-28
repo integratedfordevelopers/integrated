@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="Integrated\Bundle\ContentBundle\Document\Content\JobPosting" exclusion-policy="all">
+        <property name="jobTitle"
+                  expose="true"
+                  type="string"
+        />
+        <property name="salary"
+                  expose="true"
+                  type="string"
+        />
+        <property name="applyUrl"
+                  expose="true"
+                  type="string"
+        />
+    </class>
+</serializer>
