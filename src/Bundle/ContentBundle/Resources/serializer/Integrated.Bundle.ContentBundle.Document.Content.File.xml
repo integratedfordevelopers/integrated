@@ -9,5 +9,9 @@
                   expose="true"
                   type="string"
         />
+        <property name="description"
+                  expose="true"
+                  type="string"
+        />
     </class>
 </serializer>

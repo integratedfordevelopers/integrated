@@ -9,9 +9,11 @@ use Integrated\Bundle\ChannelBundle\Model\Config;
 use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
 use Integrated\Bundle\ContentBundle\Document\Content\Content;
+use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Author;
 use Integrated\Bundle\ContentBundle\Document\Content\Embedded\Connector;
 use Integrated\Bundle\ContentBundle\Document\Content\File;
 use Integrated\Bundle\ContentBundle\Document\Content\Image;
+use Integrated\Bundle\ContentBundle\Document\Content\Relation\Person;
 use Integrated\Bundle\ContentBundle\Document\Content\Taxonomy;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Document\ContentType\Embedded\Field;
@@ -32,10 +34,12 @@ use JMS\Serializer\Exception\RuntimeException;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sunra\PhpSimple\HtmlDomParser;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class ImportController extends Controller
 {
@@ -94,7 +98,7 @@ class ImportController extends Controller
     {
         $contentTypes = $this->contentTypeManager->getAll();
 
-        $documents = $this->documentManager->getRepository(ImportDefinition::class)->findBy([], ['title' => 'asc']);
+        $documents = $this->documentManager->getRepository(ImportDefinition::class)->findBy([], ['name' => 'asc']);
 
         return $this->render(
             'IntegratedImportBundle::index.html.twig',
@@ -307,6 +311,8 @@ class ImportController extends Controller
             $fields['field-'.$contentTypeField] = ['label' => $contentTypeField, 'matchCol' => $matchCol];
         }
 
+        $fields['author-author'] = ['label' => 'Author', 'matchCol' => false];
+
         $configs = $this->entityManager->getRepository(Config::class)->findAll();
         foreach ($configs as $config) {
             $fields['connector-'.$config->getId()] = ['label' => 'ID for '.$config->getName(), 'matchCol' => false];
@@ -458,6 +464,10 @@ class ImportController extends Controller
         ini_set('max_execution_time', 3600);
         ini_set('memory_limit', '4G');
 
+        //close session to prevent session locking for other connections
+        $session = new Session();
+        $session->save();
+
         $start = $request->get('start', 0);
 
         $result = [];
@@ -548,16 +558,6 @@ class ImportController extends Controller
                 }
 
                 try {
-                    //todo, make optional (or remove)
-                    $doubleArticle = $this->documentManager->getRepository(Article::class)->findOneBy(['title' => $newObject->getTitle()]);
-                    if ($doubleArticle) {
-                        //do not import duplicate articles, except for files
-                        if (!$newObject instanceof File) {
-                            $result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported';
-                            continue;
-                        }
-                    }
-
                     //todo: move to Wordpress filter
                     if (isset($row['wp:post_id']) && $importDefinition->getImageBaseUrl()) {
                         //todo image base URL to general base URL
@@ -571,6 +571,17 @@ class ImportController extends Controller
                         }
                     }
 
+                    //todo, make optional (or remove)
+                    $doubleArticle = $this->documentManager->getRepository(Article::class)->findOneBy(['title' => $newObject->getTitle()]);
+                    if ($doubleArticle) {
+                        //do not import duplicate articles, except for files
+                        if (!$newObject instanceof File) {
+                            //$result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported';
+                            //continue;
+                            $newObject->setContentType('food_artikel');
+                            $result['warnings'][] = 'Item "'.$newObject->getTitle().'" already imported, place as food article';
+                        }
+                    }
                     if (isset($row['publiceren_van']) && $row['publiceren_van'] != '') {
                         $newObject->getPublishTime()->setStartDate(new \DateTime('@'.$row['publiceren_van']));
                     } else {
@@ -595,9 +606,13 @@ class ImportController extends Controller
                             $content
                         );
 
-                        $youtubeRexEg = '/https?:\/\/(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?\"\<]*)/';
+                        $youtubeRexEg = '/(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w-_]+)/';
                         $content = preg_replace_callback($youtubeRexEg, function ($matches) {
-                            return '[object type="youtube" id="'.trim($matches[2]).'"]';
+                            if (strlen(trim($matches[1])) == 11) {
+                                return '[object type="youtube" id="'.trim($matches[1]).'"]';
+                            } else {
+                                return $matches[0];
+                            }
                         }, $content);
 
                         $content = preg_replace('/\[caption.*?\]/', '', $content);
@@ -609,10 +624,31 @@ class ImportController extends Controller
                         $prevLine = '';
                         if (true) { //todo: more to wordpress filter, only for Wordpress
                             //todo: move to filter
-                            foreach (explode("\n", $content) as $line) {
+                            $contentLines = [];
+                            foreach (explode("\n", $content) as $contentLine) {
+                                if (str_replace('-', '', $contentLine) == '') {
+                                    $contentLine = '';
+                                }
+                                if (trim($contentLine) != '') {
+                                    $contentLines[] = $contentLine;
+                                }
+                            }
+
+                            foreach ($contentLines as $lineKey => $line) {
                                 $line = trim($line);
-                                if (trim(strip_tags(str_replace('&nbsp;', '',
-                                        $line))) != '' || $line == '<ul>' || $line == '</ul>') {
+
+                                $nextCouldBeLi = false;
+                                if (isset($contentLines[$lineKey + 1])) {
+                                    $nextLine = $contentLines[$lineKey + 1];
+                                    $nextLine = trim($nextLine);
+                                    if (substr($nextLine, -1, 1) != '.'
+                                    && substr($nextLine, -1, 1) != '?'
+                                    && (substr($nextLine, -1, 1) != '>' || substr($nextLine, -3, 3) == '/a>')) {
+                                        $nextCouldBeLi = true;
+                                    }
+                                }
+
+                                if (trim(strip_tags(str_replace('&nbsp;', '', $line))) != '' || $line == '<ul>' || $line == '</ul>') {
                                     if (substr($line, -3, 3) == 'h1>'
                                         || substr($line, -3, 3) == 'h2>'
                                         || substr($line, -3, 3) == 'h3>'
@@ -627,10 +663,11 @@ class ImportController extends Controller
                                             $newHtml .= '</ul>';
                                         }
                                         $prevLine = '';
-                                    } elseif (\strlen(strip_tags($line)) < 90
+                                    } elseif ((\strlen(strip_tags($line)) < 90 || $prevLine == 'li')
                                         && substr($line, -1, 1) != '.'
                                         && substr($line, -1, 1) != '?'
                                         && (substr($line, -1, 1) != '>' || substr($line, -3, 3) == '/a>')
+                                        && ($nextCouldBeLi || $prevLine == 'li')
                                     ) {
                                         if ($prevLine != 'li') {
                                             $newHtml .= '<ul>';
@@ -646,6 +683,10 @@ class ImportController extends Controller
                                         }
                                         $line = '<p>'.$line.'</p>';
                                         $prevLine = 'p';
+                                    }
+                                } else {
+                                    if ($prevLine == 'li') {
+                                        $newHtml .= '</ul>';
                                     }
                                 }
                                 $newHtml .= $line."\n";
@@ -682,7 +723,9 @@ class ImportController extends Controller
                             if (stripos($href, '.png') === false
                                 && stripos($href, '.jpg') === false
                                 && stripos($href, '.jpeg') === false
-                                && stripos($href, '.gif') === false) {
+                                && stripos($href, '.gif') === false
+                                && stripos($href, '.pdf') === false
+                            ) {
                                 continue;
                             }
 
@@ -696,6 +739,12 @@ class ImportController extends Controller
                                     $title = str_replace('.gif', '', $title);
                                 }
                             }
+
+                            if (!$title && stripos($href, '.pdf') !== false) {
+                                $title = basename($href);
+                                $title = str_replace('.pdf', '', $title);
+                            }
+
                             if ($title) {
                                 $tmpfile = tempnam('/tmp/', 'img').'.'.pathinfo($href, PATHINFO_EXTENSION);
                                 file_put_contents($tmpfile, @file_get_contents($href));
@@ -717,6 +766,32 @@ class ImportController extends Controller
                                     )
                                 );
 
+                                if (stripos($href, '.pdf') !== false) {
+                                    $contentTT = 'evmi_bestand';
+                                    $file = $this->documentManager->getRepository(File::class)->findOneBy([
+                                        'contentType' => $contentTT,
+                                        'file.identifier' => $storage->getIdentifier(),
+                                    ]);
+
+                                    if (!$file) {
+                                        $file = new File();
+                                        $file->setContentType($contentTT);
+                                        $file->setTitle($title);
+                                        $file->setFile($storage);
+                                        $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
+
+                                        $this->documentManager->persist($file);
+                                        $this->documentManager->flush($file);
+                                    }
+
+                                    $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                    $relation->setRelationId('evmi_bestand');
+                                    $relation->setRelationType('embedded');
+                                    $relation->addReference($file);
+                                    $newObject->addRelation($relation);
+
+                                    $element->href = '/storage/'.$file->getId().'.pdf';
+                                } else {
                                 $file = $this->documentManager->getRepository(Image::class)->findOneBy([
                                     'contentType' => $importDefinition->getImageContentType(),
                                     'file.identifier' => $storage->getIdentifier(),
@@ -738,7 +813,9 @@ class ImportController extends Controller
                                 $relation->addReference($file);
                                 $newObject->addRelation($relation);
 
-                                $element->outertext = '<img src="/storage/'.$file->getId().'.jpg" class="img-responsive" title="'.htmlspecialchars($title).'" alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
+                                    $element->outertext = '<img src="/storage/'.$file->getId().'.pdf" class="img-responsive" title="'.htmlspecialchars($title).'" alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
+                                }
+
                             }
                         }
 
@@ -843,9 +920,22 @@ class ImportController extends Controller
                     $col = 0;
                     foreach ($row as $value) {
                         if (!isset($fieldMapping[$data[0][$col]])) {
+                            $col++;
                             continue;
                         }
                         $mappedField = $fieldMapping[$data[0][$col]];
+
+                        if (strpos($mappedField, 'author-') === 0) {
+                            if (trim($value) != '') {
+                                foreach (explode(',', $value) as $auteur) {
+                                    if (trim($auteur) != '') {
+                                        $author = new Author();
+                                        $author->setPerson($this->addAuthor($auteur));
+                                        $newObject->addAuthor($author);
+                                    }
+                                }
+                            }
+                        }
 
                         if (strpos($mappedField, 'connector-') === 0) {
                             $connectorId = str_replace('connector-', '', $mappedField);
@@ -865,6 +955,7 @@ class ImportController extends Controller
 
                             $targets = $relation->getTargets();
                             $targetContentType = $targets[0];
+                            //TODO: allow choose content type
 
                             /*$targetContentType = $this->documentManager->find(
                                 ContentType::class,
@@ -881,8 +972,7 @@ class ImportController extends Controller
                                 }
 
                                 foreach ($value as $valueName) {
-                                    //allow choose and find correct content type
-                                    $link = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['title' => $valueName]);
+                                    $link = $this->documentManager->getRepository(Taxonomy::class)->findOneBy(['title' => $valueName, 'contentType' => $targetContentType->getId()]);
                                     if (!$link) {
                                         $link = $targetContentType->create();
                                         $link->setTitle($valueName);
@@ -974,6 +1064,8 @@ class ImportController extends Controller
                     $result['success'][] = 'Post '.$row['wp:post_id'].' imported';
                 } catch (\Exception $e) {
                     $result['errors'][] = 'Item '.(string) $newObject.' failed: '.$e->getMessage();
+                } catch (\Throwable $e) {
+                    $result['errors'][] = 'Item '.(string) $newObject.' fatal: '.$e->getMessage();
                 }
             }
         }
@@ -1020,4 +1112,53 @@ class ImportController extends Controller
 
         return $form;
     }
+
+    protected function addAuthor($name)
+    {
+        $dm = $this->documentManager;
+        $type = 'person';
+
+        $name = trim($name);
+        if (stripos($name, 'by ') === 0) {
+            $name = substr($name, 3);
+        }
+
+        while (strpos($name, "  ") !== false) {
+            $name = str_replace("  ", " ", $name);
+        }
+
+        if (strpos($name, " ") !== false) {
+            list($firstname, $lastname) = explode(" ", $name, 2);
+        } else {
+            $firstname = '';
+            $lastname = $name;
+        }
+
+        if (trim($lastname) == '') {
+            $lastname = '(empty)';
+            //throw new Exception('Empty lastname: ' . $name); //@todo: waarom?
+        }
+
+        $person = $dm
+            ->createQueryBuilder(Person::class)
+            ->field('contentType')->equals($type)
+            ->field('firstName')->equals($firstname)
+            ->field('lastName')->equals($lastname)
+            ->getQuery()
+            ->getSingleResult();
+
+        if (!$person) {
+            $person = new Person();
+            $person
+                ->setContentType($type)
+                ->setFirstname($firstname)
+                ->setLastname($lastname);
+
+            $dm->persist($person);
+            $dm->flush($person);
+        }
+
+        return $person;
+    }
+
 }
