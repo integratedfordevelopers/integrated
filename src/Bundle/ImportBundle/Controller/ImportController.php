@@ -1000,7 +1000,7 @@ class ImportController extends Controller
                         if (filesize($tmpfile) == 0) {
                             //echo $file . "\n";
                             //echo "FILE HAS 0 BYTES\n";
-                            $result['errors'][] = 'Attachment '.$row['wp:post_id'].' has 0 bytes';
+                            $result['warnings'][] = 'Attachment '.$row['wp:post_id'].' has 0 bytes';
                             unlink($tmpfile);
                             continue;
                         }
@@ -1041,7 +1041,7 @@ class ImportController extends Controller
                             $relation->addReference($image);
                             $newObject->addRelation($relation);
                         } else {
-                            $result['errors'][] = 'Image with ID '.$imgId.' not found';
+                            $result['warnings'][] = 'Image with ID '.$imgId.' not found';
                         }
                     }
 
