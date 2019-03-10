@@ -1002,7 +1002,7 @@ class ImportController extends Controller
                         if (filesize($tmpfile) == 0) {
                             //echo $file . "\n";
                             //echo "FILE HAS 0 BYTES\n";
-                            $result['warnings'][] = 'Attachment '.$row['wp:post_id'].' has 0 bytes';
+                            $result['errors'][] = 'Attachment '.$row['wp:post_id'].' has 0 bytes';
                             unlink($tmpfile);
                             continue;
                         }
