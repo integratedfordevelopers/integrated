@@ -39,6 +39,22 @@ class ImageMimicHandler extends ImageHandler
     }
 
     /**
+     * Set a fixed width, because it is not relevant/supported for mimic files.
+     */
+    public function width()
+    {
+        return 400;
+    }
+
+    /**
+     * Image height, because it is not relevant/supported for mimic files.
+     */
+    public function height()
+    {
+        return 400;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function guessType()
