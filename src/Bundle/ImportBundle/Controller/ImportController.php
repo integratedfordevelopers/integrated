@@ -766,8 +766,10 @@ class ImportController extends Controller
                                     )
                                 );
 
-                                if (stripos($href, '.pdf') !== false) {
-                                    $contentTT = 'evmi_bestand';
+                                if (stripos($href, '.pdf') !== false
+                                && $importDefinition->getFileContentType()
+                                && $importDefinition->getFileRelation()) {
+                                    $contentTT = $importDefinition->getFileContentType();
                                     $file = $this->documentManager->getRepository(File::class)->findOneBy([
                                         'contentType' => $contentTT,
                                         'file.identifier' => $storage->getIdentifier(),
@@ -785,33 +787,33 @@ class ImportController extends Controller
                                     }
 
                                     $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                    $relation->setRelationId('evmi_bestand');
-                                    $relation->setRelationType('embedded');
+                                    $relation->setRelationId($importDefinition->getFileRelation()->getId());
+                                    $relation->setRelationType($importDefinition->getFileRelation()->getType());
                                     $relation->addReference($file);
                                     $newObject->addRelation($relation);
 
                                     $element->href = '/storage/'.$file->getId().'.pdf';
                                 } else {
-                                $file = $this->documentManager->getRepository(Image::class)->findOneBy([
-                                    'contentType' => $importDefinition->getImageContentType(),
-                                    'file.identifier' => $storage->getIdentifier(),
-                                ]);
-                                if (!$file) {
-                                    $file = new Image();
-                                    $file->setContentType($importDefinition->getImageContentType());
-                                    $file->setTitle($title);
-                                    $file->setFile($storage);
-                                    $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
+                                    $file = $this->documentManager->getRepository(Image::class)->findOneBy([
+                                        'contentType' => $importDefinition->getImageContentType(),
+                                        'file.identifier' => $storage->getIdentifier(),
+                                    ]);
+                                    if (!$file) {
+                                        $file = new Image();
+                                        $file->setContentType($importDefinition->getImageContentType());
+                                        $file->setTitle($title);
+                                        $file->setFile($storage);
+                                        $file->setMetaData(new Metadata(['importDate' => date('Ymd')]));
 
-                                    $this->documentManager->persist($file);
-                                    $this->documentManager->flush($file);
-                                }
+                                        $this->documentManager->persist($file);
+                                        $this->documentManager->flush($file);
+                                    }
 
-                                $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
-                                $relation->setRelationId('__editor_image');
-                                $relation->setRelationType('embedded');
-                                $relation->addReference($file);
-                                $newObject->addRelation($relation);
+                                    $relation = new \Integrated\Bundle\ContentBundle\Document\Content\Embedded\Relation();
+                                    $relation->setRelationId('__editor_image');
+                                    $relation->setRelationType('embedded');
+                                    $relation->addReference($file);
+                                    $newObject->addRelation($relation);
 
                                     $element->outertext = '<img src="/storage/'.$file->getId().'.pdf" class="img-responsive" title="'.htmlspecialchars($title).'" alt="'.htmlspecialchars($title).'" data-integrated-id="'.$file->getId().'" />';
                                 }

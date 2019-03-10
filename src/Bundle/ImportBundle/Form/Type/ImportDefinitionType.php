@@ -32,6 +32,8 @@ class ImportDefinitionType extends AbstractType
         $builder->add('channels', DocumentType::class, ['label' => 'Channels', 'class' => Channel::class, 'choice_label' => 'name', 'multiple' => true, 'expanded' => true]);
         $builder->add('imageBaseUrl', UrlType::class, ['label' => 'Base URL for images', 'required' => false]);
         $builder->add('imageContentType', ContentTypeChoice::class, ['label' => 'Content type for images', 'multiple' => false]);
-        $builder->add('imageRelation', DocumentType::class, ['label' => 'Relation type for images', 'multiple' => false, 'class' => Relation::class, 'choice_label' => 'name', 'choice_value' => 'id']);
+        $builder->add('imageRelation', DocumentType::class, ['label' => 'Relation for images', 'multiple' => false, 'class' => Relation::class, 'choice_label' => 'name', 'choice_value' => 'id']);
+        $builder->add('fileContentType', ContentTypeChoice::class, ['label' => 'Content type for files', 'multiple' => false]);
+        $builder->add('fileRelation', DocumentType::class, ['label' => 'Relation for files', 'multiple' => false, 'class' => Relation::class, 'choice_label' => 'name', 'choice_value' => 'id']);
     }
 }

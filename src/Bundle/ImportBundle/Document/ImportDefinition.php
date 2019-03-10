@@ -75,6 +75,16 @@ class ImportDefinition
     private $imageRelation;
 
     /**
+     * @var string
+     */
+    private $fileContentType;
+
+    /**
+     * @var Relation
+     */
+    private $fileRelation;
+
+    /**
      * ImportDefition constructor.
      */
     public function __construct()
@@ -124,7 +134,6 @@ class ImportDefinition
         $this->name = $name;
     }
 
-
     /**
      * @return \DateTime
      */
@@ -135,14 +144,10 @@ class ImportDefinition
 
     /**
      * @param \DateTime $createdAt
-     *
-     * @return $this
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
-
-        return $this;
     }
 
     /**
@@ -155,18 +160,14 @@ class ImportDefinition
 
     /**
      * @param \DateTime $executedAt
-     *
-     * @return $this
      */
     public function setExecutedAt(\DateTime $executedAt)
     {
         $this->executedAt = $executedAt;
-
-        return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @param Collection $channels
      */
     public function setChannels(Collection $channels)
     {
@@ -174,14 +175,12 @@ class ImportDefinition
         $this->channels = new ArrayCollection();
 
         foreach ($channels as $channel) {
-            $this->addChannel($channel); // type check
+            $this->addChannel($channel);
         }
-
-        return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @return ChannelInterface[]
      */
     public function getChannels()
     {
@@ -189,19 +188,18 @@ class ImportDefinition
     }
 
     /**
-     * {@inheritdoc}
+     * @param ChannelInterface $channel
      */
     public function addChannel(ChannelInterface $channel)
     {
         if (!$this->channels->contains($channel)) {
             $this->channels->add($channel);
         }
-
-        return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @param ChannelInterface $channel
+     * @return bool
      */
     public function hasChannel(ChannelInterface $channel)
     {
@@ -209,13 +207,11 @@ class ImportDefinition
     }
 
     /**
-     * {@inheritdoc}
+     * @param ChannelInterface $channel
      */
     public function removeChannel(ChannelInterface $channel)
     {
         $this->channels->removeElement($channel);
-
-        return $this;
     }
 
     /**
@@ -235,7 +231,7 @@ class ImportDefinition
     }
 
     /**
-     * {@inheritdoc}
+     * @return Field[]
      */
     public function getFields()
     {
@@ -243,7 +239,7 @@ class ImportDefinition
     }
 
     /**
-     * {@inheritdoc}
+     * @return Field
      */
     public function getField($name)
     {
@@ -257,7 +253,8 @@ class ImportDefinition
     }
 
     /**
-     * {@inheritdoc}
+     * @param $name
+     * @return bool
      */
     public function hasField($name)
     {
@@ -274,15 +271,12 @@ class ImportDefinition
      * Set the fields of the import definition.
      *
      * @param ImportField[] $fields
-     *
-     * @return $this
      */
     public function setFields(array $fields)
     {
         $this->fields = $fields;
-
-        return $this;
     }
+    
 
     /**
      * @return string
@@ -294,13 +288,10 @@ class ImportDefinition
 
     /**
      * @param string $imageBaseUrl
-     * @return ImportDefinition
      */
     public function setImageBaseUrl(string $imageBaseUrl)
     {
         $this->imageBaseUrl = $imageBaseUrl;
-
-        return $this;
     }
 
     /**
@@ -313,13 +304,10 @@ class ImportDefinition
 
     /**
      * @param string $imageContentType
-     * @return ImportDefinition
      */
-    public function setImageContentType(string $imageContentType)
+    public function setImageContentType(?string $imageContentType)
     {
         $this->imageContentType = $imageContentType;
-
-        return $this;
     }
 
     /**
@@ -331,14 +319,43 @@ class ImportDefinition
     }
 
     /**
-     * @param string $imageRelation
-     * @return ImportDefinition
+     * @param Relation $imageRelation
      */
     public function setImageRelation($imageRelation)
     {
         $this->imageRelation = $imageRelation;
+    }
 
-        return $this;
+    /**
+     * @return string
+     */
+    public function getFileContentType(): string
+    {
+        return $this->fileContentType;
+    }
+
+    /**
+     * @param string $fileContentType
+     */
+    public function setFileContentType(?string $fileContentType): void
+    {
+        $this->fileContentType = $fileContentType;
+    }
+
+    /**
+     * @return null|Relation
+     */
+    public function getFileRelation(): ?Relation
+    {
+        return $this->fileRelation;
+    }
+
+    /**
+     * @param Relation $fileRelation
+     */
+    public function setFileRelation(?Relation $fileRelation): void
+    {
+        $this->fileRelation = $fileRelation;
     }
 
     public function __clone()
