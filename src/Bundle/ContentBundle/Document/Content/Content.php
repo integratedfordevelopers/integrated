@@ -210,6 +210,9 @@ abstract class Content implements ContentInterface, ExtensibleInterface, Metadat
      */
     public function setRelations(Collection $relations)
     {
+        $this->relations->clear();
+        $this->relations = new ArrayCollection();
+
         foreach ($relations as $relation) {
             if ($relation instanceof RelationInterface) {
                 $this->addRelation($relation);
