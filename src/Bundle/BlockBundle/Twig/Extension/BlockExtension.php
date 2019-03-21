@@ -125,7 +125,7 @@ class BlockExtension extends \Twig_Extension
      * @param \Integrated\Common\Block\BlockInterface|string $block
      * @param array                                          $options
      *
-     * @return null|string
+     * @return string|null
      *
      * @throws \Exception
      */
@@ -170,7 +170,7 @@ class BlockExtension extends \Twig_Extension
      * @param string            $class
      * @param array             $options
      *
-     * @return null|string
+     * @return string|null
      *
      * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
      * @throws \Twig_Error_Loader
@@ -208,7 +208,7 @@ class BlockExtension extends \Twig_Extension
         $pages = $this->findPages($block);
 
         foreach ($pages as $page) {
-            if (array_key_exists('channel', $page)) {
+            if (\array_key_exists('channel', $page)) {
                 $channels[$page['channel']['$id']] = $this->blockUsageProvider->getChannel($page['channel']['$id']);
             }
         }

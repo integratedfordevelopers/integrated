@@ -348,7 +348,7 @@ class Product extends Content
      */
     public function getCover(): ?StorageInterface
     {
-        $items = $this->getReferencesByRelationType('embedded');
+        $items = $this->getReferencesByRelationTypes(['cover', 'embedded']);
         if ($items) {
             foreach ($items as $item) {
                 if ($item instanceof FileInterface) {
