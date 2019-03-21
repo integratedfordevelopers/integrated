@@ -170,7 +170,7 @@ class BlockExtension extends \Twig_Extension
      * @param string            $class
      * @param array             $options
      *
-     * @return null|string
+     * @return string|null
      *
      * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
      * @throws \Twig_Error_Loader
