@@ -141,7 +141,7 @@ class ConfigResolver implements ConfigResolverInterface
         // use array_key_exists as a value of null is also a resolved class instance but one
         // the does not have any config.
 
-        return array_key_exists($class, $this->resolved);
+        return \array_key_exists($class, $this->resolved);
     }
 
     /**

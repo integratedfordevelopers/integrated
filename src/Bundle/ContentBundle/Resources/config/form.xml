@@ -141,6 +141,8 @@
 
         <service id="integrated_formtype.form.content_type_choice" class="Integrated\Bundle\ContentBundle\Form\Type\ContentTypeChoice">
             <argument type="service" id="integrated_content.content_type_repository" />
+            <argument type="service" id="integrated_content.content_type.manager" />
+            <argument type="service" id="security.authorization_checker" />
             <tag name="form.type" />
         </service>
 

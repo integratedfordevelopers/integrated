@@ -156,7 +156,7 @@ class BulkController extends Controller
 
                 $this->dm->flush();
 
-                $this->addFlash('success', 'All bulk actions were executed successfully!');
+                $this->addFlash('success', 'All bulk actions were executed successfully. Indexing operations will be executed in the background');
 
                 return $this->redirectToRoute('integrated_content_content_index', $bulk->getFilters());
             } catch (Exception $e) {

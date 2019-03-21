@@ -135,7 +135,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
 
             $sort = $request->query->get('sort', $sort_default);
             $sort = trim(strtolower($sort));
-            $sort = array_key_exists($sort, $sort_options) ? $sort : $sort_default;
+            $sort = \array_key_exists($sort, $sort_options) ? $sort : $sort_default;
 
             $query->addSort($sort_options[$sort]['field'], $sort_options[$sort]['order']);
 
@@ -274,7 +274,7 @@ class SolariumProvider // @todo interface (INTEGRATED-431)
                 $query->addParam('sort', substr($sort, 7));
             } else {
                 $sort = trim(strtolower($sort));
-                $sort = array_key_exists($sort, $sortOptions) ? $sort : $sortDefault;
+                $sort = \array_key_exists($sort, $sortOptions) ? $sort : $sortDefault;
 
                 $query->addSort($sortOptions[$sort]['field'], \in_array($order, $orderOptions) ? $order : $sortOptions[$sort]['order']);
             }

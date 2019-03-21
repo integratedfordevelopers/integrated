@@ -5,7 +5,7 @@
 
     <embedded-document name="Integrated\Bundle\ContentBundle\Document\Content\Embedded\Storage">
 
-        <field fieldName="identifier" type="string" index="true" />
+        <field fieldName="identifier" type="string" />
         <field fieldName="pathname" type="string" />
         <field fieldName="filesystems" type="collection" />
 

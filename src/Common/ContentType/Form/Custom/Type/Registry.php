@@ -38,7 +38,7 @@ class Registry implements RegistryInterface
      */
     public function has(TypeInterface $type)
     {
-        return array_key_exists(spl_object_hash($type), $this->types);
+        return \array_key_exists(spl_object_hash($type), $this->types);
     }
 
     /**

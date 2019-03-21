@@ -50,7 +50,7 @@ class CommentFormFieldsSubscriber implements EventSubscriberInterface
     private $requestStack;
 
     /**
-     * @var null|array
+     * @var array|null
      */
     protected $comments = null;
 

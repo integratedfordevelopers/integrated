@@ -20,6 +20,7 @@
     "require": {
         "php": ">=7.1",
         "ext-intl": "*",
+        "ext-json": "*",
         "symfony/symfony": "~2.8 || ~3.0",
         "symfony/security-acl": "~2.8 || ~3.0",
         "symfony/polyfill-iconv": "~1.6",
@@ -85,7 +86,8 @@
         "branch-alias": {
             "dev-release/0.8": "0.8.x-dev",
             "dev-release/0.9": "0.9.x-dev",
-            "dev-release/0.10": "0.10.x-dev"
+            "dev-release/0.10": "0.10.x-dev",
+            "dev-release/0.11": "0.11.x-dev"
         }
     }
 }
