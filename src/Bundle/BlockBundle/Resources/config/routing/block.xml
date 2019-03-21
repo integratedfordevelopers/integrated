@@ -17,6 +17,11 @@
         <requirement key="_format">html|iframe.html</requirement>
     </route>
 
+    <route id="integrated_block_block_new_channel_block" path="/newChannelBlock" methods="POST">
+        <default key="_controller">IntegratedBlockBundle:Block:newChannelBlock</default>
+        <option key="expose">true</option>
+    </route>
+
     <route id="integrated_block_block_show" path="/{id}" methods="GET">
         <default key="_controller">IntegratedBlockBundle:Block:show</default>
         <option key="expose">true</option>

@@ -11,21 +11,25 @@
 
 namespace Integrated\Bundle\BlockBundle\Twig\Extension;
 
-use Integrated\Bundle\BlockBundle\Document\Block\Block;
 use Integrated\Bundle\BlockBundle\Provider\BlockUsageProvider;
+use Integrated\Bundle\BlockBundle\Templating\BlockManager;
+use Integrated\Bundle\ThemeBundle\Templating\ThemeManager;
 use Integrated\Common\Block\BlockInterface;
+use Integrated\Common\Content\Channel\ChannelContextInterface;
 use Integrated\Common\Form\Mapping\MetadataFactoryInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bridge\Monolog\Logger;
 
-/**
- * @author Ger Jan van den Bosch <gerjan@e-active.nl>
- */
 class BlockExtension extends \Twig_Extension
 {
     /**
-     * @var ContainerInterface
+     * @var BlockManager
      */
-    protected $container;
+    private $blockManager;
+
+    /**
+     * @var ThemeManager
+     */
+    private $themeManager;
 
     /**
      * @var BlockUsageProvider
@@ -38,29 +42,50 @@ class BlockExtension extends \Twig_Extension
     protected $metadataFactory;
 
     /**
-     * @var bool
-     */
-    private $pageBundleInstalled;
-
-    /**
      * @var array
      */
     protected $pages = [];
 
     /**
-     * @param ContainerInterface       $container
+     * @var ChannelContextInterface
+     */
+    private $channelContext;
+
+    /**
+     * @var Logger
+     */
+    private $logger;
+
+    /**
+     * @var string
+     */
+    private $environment;
+
+    /**
+     * @param BlockManager             $blockManager
+     * @param ThemeManager             $themeManager
      * @param BlockUsageProvider       $blockUsageProvider
      * @param MetadataFactoryInterface $metadataFactory
+     * @param ChannelContextInterface  $channelContext
+     * @param Logger                   $logger
+     * @param string                   $environment
      */
     public function __construct(
-        ContainerInterface $container,
+        BlockManager $blockManager,
+        ThemeManager $themeManager,
         BlockUsageProvider $blockUsageProvider,
-        MetadataFactoryInterface $metadataFactory
+        MetadataFactoryInterface $metadataFactory,
+        ChannelContextInterface $channelContext,
+        Logger $logger,
+        string $environment
     ) {
-        $this->container = $container; // @todo remove service container (INTEGRATED-445)
+        $this->blockManager = $blockManager;
+        $this->themeManager = $themeManager;
         $this->blockUsageProvider = $blockUsageProvider;
         $this->metadataFactory = $metadataFactory;
-        $this->pageBundleInstalled = isset($container->getParameter('kernel.bundles')['IntegratedPageBundle']);
+        $this->channelContext = $channelContext;
+        $this->logger = $logger;
+        $this->environment = $environment;
     }
 
     /**
@@ -72,6 +97,11 @@ class BlockExtension extends \Twig_Extension
             new \Twig_SimpleFunction(
                 'integrated_block',
                 [$this, 'renderBlock'],
+                ['is_safe' => ['html'], 'needs_environment' => true]
+            ),
+            new \Twig_SimpleFunction(
+                'integrated_channel_block',
+                [$this, 'renderChannelBlock'],
                 ['is_safe' => ['html'], 'needs_environment' => true]
             ),
             new \Twig_SimpleFunction('integrated_find_channels', [$this, 'findChannels']),
@@ -105,15 +135,15 @@ class BlockExtension extends \Twig_Extension
             $id = $block->getId();
         } else {
             $id = $block;
-            $block = $this->container->get('integrated_block.templating.block_manager')->getBlock($id);
+            $block = $this->blockManager->getBlock($id);
         }
 
         try {
             // fatal errors are not catched
-            $html = $this->container->get('integrated_block.templating.block_manager')->render($block, $options);
+            $html = $this->blockManager->render($block, $options);
 
             if (!$html) {
-                return $environment->render($this->locateTemplate('blocks/empty.html.twig'), [
+                return $environment->render($this->themeManager->locateTemplate('blocks/empty.html.twig'), [
                     'id' => $id,
                     'block' => $block,
                 ]);
@@ -121,12 +151,12 @@ class BlockExtension extends \Twig_Extension
 
             return $html;
         } catch (\Exception $e) {
-            if ('prod' !== $this->container->getParameter('kernel.environment')) {
+            if ('prod' !== $this->environment) {
                 throw $e;
             }
-            $this->container->get('logger')->error(sprintf('Block "%s" contains an error', $id));
+            $this->logger->error(sprintf('Block "%s" contains an error', $id));
 
-            return $environment->render($this->locateTemplate('blocks/error.html.twig'), [
+            return $environment->render($this->themeManager->locateTemplate('blocks/error.html.twig'), [
                 'id' => $id,
                 'block' => $block,
             ]);
@@ -134,13 +164,35 @@ class BlockExtension extends \Twig_Extension
     }
 
     /**
-     * @param string $template
+     * @param \Twig_Environment $environment
+     * @param string            $id
+     * @param string            $name
+     * @param string            $class
+     * @param array             $options
      *
-     * @return string
+     * @return null|string
+     *
+     * @throws \Integrated\Bundle\ThemeBundle\Exception\CircularFallbackException
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
      */
-    protected function locateTemplate($template)
+    public function renderChannelBlock(\Twig_Environment $environment, string $id, string $name, string $class, array $options = [])
     {
-        return $this->container->get('integrated_theme.templating.theme_manager')->locateTemplate($template);
+        //postfix with channel
+        $id = $id.'_'.$this->channelContext->getChannel()->getId();
+        $name = $name.' '.$this->channelContext->getChannel()->getName();
+
+        $block = $this->blockManager->getBlock($id);
+        if (!$block) {
+            return $environment->render($this->themeManager->locateTemplate('blocks/create.html.twig'), [
+                'id' => $id,
+                'name' => $name,
+                'class' => $class,
+            ]);
+        }
+
+        return $this->renderBlock($environment, $block, $options);
     }
 
     /**
@@ -152,14 +204,12 @@ class BlockExtension extends \Twig_Extension
     {
         $channels = [];
 
-        if ($this->pageBundleInstalled) {
-            /* Get all pages which was associated with current Block document */
-            $pages = $this->findPages($block);
+        /* Get all pages which was associated with current Block document */
+        $pages = $this->findPages($block);
 
-            foreach ($pages as $page) {
-                if (array_key_exists('channel', $page)) {
-                    $channels[$page['channel']['$id']] = $this->blockUsageProvider->getChannel($page['channel']['$id']);
-                }
+        foreach ($pages as $page) {
+            if (array_key_exists('channel', $page)) {
+                $channels[$page['channel']['$id']] = $this->blockUsageProvider->getChannel($page['channel']['$id']);
             }
         }
 
@@ -173,11 +223,7 @@ class BlockExtension extends \Twig_Extension
      */
     public function findPages(BlockInterface $block)
     {
-        if ($this->pageBundleInstalled) {
-            return $this->blockUsageProvider->getPagesPerBlock($block->getId());
-        }
-
-        return [];
+        return $this->blockUsageProvider->getPagesPerBlock($block->getId());
     }
 
     /**

@@ -183,6 +183,30 @@
     });
 
     /**
+     * Handle new channel block button
+     */
+    $(document).on('click', '[data-action="integrated-website-block-new-channel-block"]', function(e) {
+        e.preventDefault();
+
+        button = e.target;
+        id = $(button).data('id');
+        name = $(button).data('name');
+        className = $(button).data('class');
+        csrfToken = $(button).data('csrf-token');
+
+        $blockTarget = $('#create-channel-block-'+id);
+
+        $.post(
+            Routing.generate('integrated_block_block_new_channel_block'),
+            { 'id': id, 'name': name, 'class': className, 'csrf_token': csrfToken },
+            function() {
+                $('.modal.in').modal('hide');
+                createIframe(Routing.generate('integrated_block_block_edit', { 'id': $(button).data('id'), '_format': 'iframe.html'}), 'Edit block');
+            }
+        );
+    });
+
+    /**
      * Handle new textblock button
      */
     $(document).on('click', '[data-action="integrated-website-textblock-add"]', function(e) {
@@ -204,9 +228,9 @@
     var createIframe = function(url, title) {
         var iFrame = $('<iframe frameborder="0" style="width: 100%; max-height:100%; display: auto;">')
             .attr('src', url)
-            .load(function(){
+            .on('load', function(e){
                 var windowHeight = $(window).height() - 160;
-                var iframeHeight = $(this).context.contentWindow.document.body.scrollHeight;
+                var iframeHeight = e.target.contentWindow.document.body.scrollHeight;
 
                 $(this).height(windowHeight > iframeHeight && iframeHeight ? iframeHeight : windowHeight);
 
