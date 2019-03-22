@@ -27,6 +27,15 @@
     };
 
     /**
+     * @param {jQuery} $element
+     */
+    var initChannelBlockGrid = function($element) {
+        $('[data-block-type="channel-block"]', $element).each(function () {
+            $(this).prepend(createChannelBlockButtons());
+        });
+    };
+
+    /**
      * @param {string} blockId
      * @param {jQuery} $before
      */
@@ -50,7 +59,11 @@
             dataType: 'json',
             success: function(data) {
                 $block.html(data.html);
-                $block.prepend(createBlockButtons());
+                if ($block.data('block-type') == 'channel-block') {
+                    $block.prepend(createChannelBlockButtons());
+                } else {
+                    $block.prepend(createBlockButtons());
+                }
             },
             error: function (result) {
                 // @todo error handling (INTEGRATED-420)
@@ -112,10 +125,22 @@
     };
 
     /**
+     * @return {jQuery}
+     */
+    var createChannelBlockButtons = function() {
+        return $('<div class="integrated-website-block-options">')
+            .append('<a href="javascript:;" class="integrated-website-helper-icon" data-action="integrated-website-block-edit" title="Edit block"><span class="glyphicon glyphicon-pencil"></span></a>');
+    };
+
+    /**
      * Init grid buttons on page load
      */
     $('.integrated-website-grid').each(function() {
         initGrid($(this));
+    });
+
+    $('.integrated-website-channel-block-grid').each(function() {
+        initChannelBlockGrid($(this));
     });
 
     /**
@@ -146,7 +171,7 @@
     $(document).on('click', '[data-action="integrated-website-block-choose"]', function(e) {
         addBlock($(this).attr('data-id'), $blockTarget);
 
-        $('.modal.in').modal('hide');
+        $('.modal').modal('hide');
     });
 
     /**
@@ -168,7 +193,7 @@
 
         $blockTarget = null;
 
-        var blockId = $(this).closest('[data-block-type="block"]').data('id');
+        var blockId = $(this).closest('[data-block-type="block"],[data-block-type="channel-block"]').data('id');
         createIframe(Routing.generate('integrated_block_block_edit', { 'id': blockId, '_format': 'iframe.html'}), 'Edit block');
     });
 
@@ -178,7 +203,7 @@
     $(document).on('click', '[data-action="integrated-website-block-new"]', function(e) {
         e.preventDefault();
 
-        $('.modal.in').modal('hide');
+        $('.modal').modal('hide');
         createIframe($(this).attr('href'), 'Add block');
     });
 
@@ -200,7 +225,7 @@
             Routing.generate('integrated_block_block_new_channel_block'),
             { 'id': id, 'name': name, 'class': className, 'csrf_token': csrfToken },
             function() {
-                $('.modal.in').modal('hide');
+                $('.modal').modal('hide');
                 createIframe(Routing.generate('integrated_block_block_edit', { 'id': $(button).data('id'), '_format': 'iframe.html'}), 'Edit block');
             }
         );
@@ -216,7 +241,7 @@
 
         var pageId = $('[data-action="integrated-website-page-save"]').data('id');
 
-        $('.modal.in').modal('hide');
+        $('.modal').modal('hide');
 
         createIframe(Routing.generate('integrated_block_inline_text_block_create', { 'id': pageId}), 'New block');
     });
@@ -239,7 +264,7 @@
 
                 //handle cancel button in iframe
                 $(this).contents().find('.integrated-cancel-button').click(function () {
-                    $('.modal.in').modal('hide');
+                    $('.modal').modal('hide');
                 });
             });
 
@@ -280,7 +305,7 @@
      * Handle block edit in iframe
      */
     document.addEventListener('block-added', function (e) {
-        $('.modal.in').modal('hide');
+        $('.modal').modal('hide');
 
         if ($blockTarget) {
             //new block inserted

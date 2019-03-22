@@ -192,7 +192,12 @@ class BlockExtension extends \Twig_Extension
             ]);
         }
 
-        return $this->renderBlock($environment, $block, $options);
+        $content = $this->renderBlock($environment, $block, $options);
+
+        return $environment->render($this->themeManager->locateTemplate('blocks/channelBlock.html.twig'), [
+            'id' => $id,
+            'content' => $content,
+        ]);
     }
 
     /**
