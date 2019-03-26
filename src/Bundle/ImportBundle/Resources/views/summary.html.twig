@@ -6,7 +6,10 @@
                 <li>
                     <a href="{{ path('integrated_import_index') }}">{% trans %}Import{% endtrans %}</a>
                 </li>
-                <li class="active">{% trans %}Choose import file{% endtrans %}</li>
+                <li>
+                    <a href="{{ path('integrated_import_edit', {'importDefinition': importDefinition.id}) }}">{{ importDefinition.name }}</a>
+                </li>
+                <li class="active">{% trans %}Summary{% endtrans %}</li>
             </ol>
         </div>
     </div>
@@ -20,7 +23,7 @@
             <a class="btn btn-orange" href="{{ path("integrated_import_run", {'importDefinition': importDefinition.id }) }}">{% trans %}Start import{% endtrans %}</a>
         </div>
 
-        <h1>{% trans %}Step 4 of 5: Summary{% endtrans %}</h1>
+        <h1>{% trans %}Step 3 of 4: Summary{% endtrans %}</h1>
 
         <section class="section-white section-padding section-shadow section-radius section-margin" style="width: fit-content">
 

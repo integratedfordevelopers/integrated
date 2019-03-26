@@ -254,7 +254,10 @@ class ImportController extends Controller
 
         return $this->render(
             'IntegratedImportBundle::chooseFile.html.twig',
-            ['form' => $form->createView()]
+            [
+                'importDefinition' => $importDefinition,
+                'form' => $form->createView()
+            ]
         );
     }
 
@@ -323,6 +326,29 @@ class ImportController extends Controller
             $fields['relation-'.$relation->getId()] = ['label' => 'Relation '.$relation->getName(), 'matchCol' => false];
         }
 
+        if ($request->request->get('action') == 'go') {
+            if (isset($data[0])) {
+                $cols = \count($data[0]);
+                $fields2 = [];
+                for ($col = 0; $col < $cols; ++$col) {
+                    $mappedField = $request->request->get('col'.$col, null);
+                    if ($mappedField) {
+                        $field = new ImportField();
+                        $field->setColumn($col);
+                        $field->setSourceField($data[0][$col]);
+                        $field->setMappedField($mappedField);
+                        $fields2[] = $field;
+                    }
+                }
+
+                $importDefinition->setFields($fields2);
+                $this->documentManager->flush();
+            }
+
+            return $this->redirectToRoute('integrated_import_summary', ['importDefinition' => $importDefinition->getId()]);
+        }
+
+        //do some checks to generate some warnings
         if ($importDefinition->getFields()) {
             foreach ($importDefinition->getFields() as $field) {
                 if (isset($fields[$field->getMappedField()])) {
@@ -345,27 +371,6 @@ class ImportController extends Controller
             }
         }
 
-        if ($request->request->get('action') == 'go') {
-            if (isset($data[0])) {
-                $cols = \count($data[0]);
-                $fields2 = [];
-                for ($col = 0; $col < $cols; ++$col) {
-                    $mappedField = $request->request->get('col'.$col, null);
-                    if ($mappedField) {
-                        $field = new ImportField();
-                        $field->setColumn($col);
-                        $field->setSourceField($data[0][$col]);
-                        $field->setMappedField($mappedField);
-                        $fields2[] = $field;
-                    }
-                }
-
-                $importDefinition->setFields($fields2);
-                $this->documentManager->flush();
-            }
-
-            return $this->redirectToRoute('integrated_import_summary', ['importDefinition' => $importDefinition->getId()]);
-        }
         $columnItemCount = [];
         foreach ($data[0] as $columnName) {
             $columnItemCount[$columnName] = 0;
@@ -415,9 +420,9 @@ class ImportController extends Controller
         return $this->render(
             'IntegratedImportBundle::composeDefinition.html.twig',
             [
+                'importDefinition' => $importDefinition,
                 'fields' => $fields,
                 'data' => $data,
-                'startRow' => 0,
             ]
         );
     }

@@ -6,6 +6,9 @@
                 <li>
                     <a href="{{ path('integrated_import_index') }}">{% trans %}Import{% endtrans %}</a>
                 </li>
+                <li>
+                    <a href="{{ path('integrated_import_edit', {'importDefinition': importDefinition.id}) }}">{{ importDefinition.name }}</a>
+                </li>
                 <li class="active">{% trans %}Choose import file{% endtrans %}</li>
             </ol>
         </div>
@@ -15,17 +18,17 @@
     {{ form_start(form, {'style': 'horizontal', 'label_col': 3, 'widget_col': 9, 'col_size': 'sm'}) }}
 
     <div class="pull-right">
-        <a class="btn btn-gray-thin" href="{# { path("integrated_import_edit", {'id': id }) }} #}">{% trans %}Back{% endtrans %}</a>&nbsp;
+        <a class="btn btn-gray-thin" href="{{ path("integrated_import_index") }}">{% trans %}Back{% endtrans %}</a>&nbsp;
         <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
     </div>
 
-    <h1>{% trans %}Step 2 of 3: Choose Operation{% endtrans %}</h1>
+    <h1>{% trans %}Step 1 of 4: Choose import file{% endtrans %}</h1>
 
     <div class="row">
         <section class="section-white section-padding section-shadow section-radius section-margin">
 
             <div class="container">
-                {% trans %}{1}Choose the operations you wish to perform on the selected content item|]1,Inf[Choose the operation you wish to perform on the selected content items{% endtrans  %}
+                {% trans %}Choose the file to import. Supported file type: CSV, XLSX, XML.{% endtrans  %}
             </div>
 
             <hr/>
@@ -37,7 +40,7 @@
     </div>
 
     <div class="pull-right">
-        <a class="btn btn-gray-thin" href="{# { path("integrated_import_edit", {'id': id }) }} #}">{% trans %}Back{% endtrans %}</a>&nbsp;
+        <a class="btn btn-gray-thin" href="{{ path("integrated_import_index") }}">{% trans %}Back{% endtrans %}</a>&nbsp;
         <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
     </div>
 

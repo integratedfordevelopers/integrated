@@ -329,7 +329,7 @@ class ImportDefinition
     /**
      * @return string
      */
-    public function getFileContentType(): string
+    public function getFileContentType(): ?string
     {
         return $this->fileContentType;
     }

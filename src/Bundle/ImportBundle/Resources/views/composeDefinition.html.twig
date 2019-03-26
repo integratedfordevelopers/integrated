@@ -6,7 +6,10 @@
                 <li>
                     <a href="{{ path('integrated_import_index') }}">{% trans %}Import{% endtrans %}</a>
                 </li>
-                <li class="active">{% trans %}Choose import file{% endtrans %}</li>
+                <li>
+                    <a href="{{ path('integrated_import_edit', {'importDefinition': importDefinition.id}) }}">{{ importDefinition.name }}</a>
+                </li>
+                <li class="active">{% trans %}Compose definition{% endtrans %}</li>
             </ol>
         </div>
     </div>
@@ -14,14 +17,13 @@
 {% block content %}
     <form method="post" id="composeForm">
         <input type="hidden" name="action" value="go" />
-        <input type="hidden" name="startRow" value="{{ startRow }}" />
 
     <div class="pull-right">
-        <a class="btn btn-gray-thin" href="{# { path("integrated_import_edit", {'id': id }) }} #}">{% trans %}Back{% endtrans %}</a>&nbsp;
+        <a class="btn btn-gray-thin" href="{{ path("integrated_import_file", {'importDefinition': importDefinition.id }) }}">{% trans %}Back{% endtrans %}</a>&nbsp;
         <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
     </div>
 
-    <h1>{% trans %}Step 3 of 3: Compose definition{% endtrans %}</h1>
+    <h1>{% trans %}Step 2 of 4: Compose definition{% endtrans %}</h1>
 
     <section class="section-white section-padding section-shadow section-radius section-margin" style="width: fit-content">
 
@@ -69,7 +71,7 @@
     </section>
 
     <div class="pull-right">
-        <a class="btn btn-gray-thin" href="{# { path("integrated_import_edit", {'id': id }) }} #}">{% trans %}Back{% endtrans %}</a>&nbsp;
+        <a class="btn btn-gray-thin" href="{{ path("integrated_import_file", {'importDefinition': importDefinition.id }) }}">{% trans %}Back{% endtrans %}</a>&nbsp;
         <button class="btn btn-orange" type="submit">{% trans %}Next{% endtrans %}</button>
     </div>
 
@@ -84,9 +86,4 @@
         $('.import-fieldchoice').select2();
     });
 </script>
-    {% if (startRow > 0) %}
-        <script>
-            $('#composeForm').submit();
-        </script>
-    {% endif %}
 {% endblock %}
