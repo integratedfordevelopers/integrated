@@ -116,9 +116,6 @@ class IntegratedInstallCommand extends Command
 /*
 $ php bin/console doctrine:mongodb:schema:update
 
-migratie maken: php bin/console doctrine:schema:update --force
-$ php bin/console init:queue --force
-$ php bin/console init:locking --force
 $ php bin/console init:scope
  */
         //
