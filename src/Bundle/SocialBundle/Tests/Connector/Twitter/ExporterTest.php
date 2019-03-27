@@ -14,6 +14,7 @@ namespace Integrated\Bundle\SocialBundle\Tests\Connector\Twitter;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Integrated\Bundle\ChannelBundle\Model\ConfigInterface;
 use Integrated\Bundle\ContentBundle\Document\Content\Article;
+use Integrated\Bundle\PageBundle\Services\UrlResolver;
 use Integrated\Bundle\SocialBundle\Connector\Twitter\Exporter;
 use Integrated\Common\Channel\ChannelInterface;
 use Integrated\Common\Channel\Connector\Config\OptionsInterface;
@@ -34,10 +35,16 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      */
     private $config;
 
+    /**
+     * @var UrlResolver | \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $urlResolver;
+
     protected function setUp()
     {
         $this->twitter = $this->createMock(TwitterOAuth::class);
         $this->config = $this->createMock(ConfigInterface::class);
+        $this->urlResolver = $this->createMock(UrlResolver::class);
     }
 
     public function testInterface()
@@ -89,7 +96,7 @@ class ExporterTest extends \PHPUnit\Framework\TestCase
      */
     protected function getInstance(): Exporter
     {
-        return new Exporter($this->twitter, $this->config);
+        return new Exporter($this->twitter, $this->config, $this->urlResolver);
     }
 
     /**

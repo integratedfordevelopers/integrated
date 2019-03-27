@@ -54,7 +54,7 @@ class ValueToChoiceTransformer implements DataTransformerInterface
 
         $results = $this->choiceList->getValuesForChoices([$value]);
 
-        if (1 !== count($results)) {
+        if (1 !== \count($results)) {
             throw new TransformationFailedException('Could not correctly convert the value');
         }
 

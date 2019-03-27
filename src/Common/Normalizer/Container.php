@@ -75,7 +75,7 @@ class Container implements ContainerInterface
      */
     public function has($key)
     {
-        return array_key_exists($key, $this->data);
+        return \array_key_exists($key, $this->data);
     }
 
     /**
@@ -83,7 +83,7 @@ class Container implements ContainerInterface
      */
     public function get($key)
     {
-        return array_key_exists($key, $this->data) ? $this->data[$key] : null;
+        return \array_key_exists($key, $this->data) ? $this->data[$key] : null;
     }
 
     /**
@@ -106,7 +106,7 @@ class Container implements ContainerInterface
      */
     protected static function validateAndReturn($value)
     {
-        if ($value === null || is_scalar($value) || is_array($value)) {
+        if ($value === null || is_scalar($value) || \is_array($value)) {
             return $value;
         }
 
@@ -126,7 +126,7 @@ class Container implements ContainerInterface
      */
     public function count()
     {
-        return count($this->data);
+        return \count($this->data);
     }
 
     /**

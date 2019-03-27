@@ -25,6 +25,11 @@ use Integrated\Bundle\ContentBundle\Document\Content\Content;
 class SearchContentReferenced
 {
     /**
+     * @const IGNORE_CLASSES
+     */
+    const IGNORE_CLASSES = ['Integrated\Bundle\ContentBundle\Document\Bulk\BulkAction'];
+
+    /**
      * @var DocumentManager
      */
     private $dm;
@@ -56,6 +61,10 @@ class SearchContentReferenced
 
         /** @var ClassMetaData $classMetadata */
         foreach ($allMetadata as $classMetadata) {
+            if (\in_array($classMetadata->getName(), $this::IGNORE_CLASSES)) {
+                continue;
+            }
+
             if ($classMetadata->isMappedSuperclass || $classMetadata->isEmbeddedDocument) {
                 continue;
             }
@@ -119,8 +128,8 @@ class SearchContentReferenced
     public function getDeletedInfo($document, ClassMetadataFactory $metadataFactory)
     {
         $deleted = [
-            'className' => get_class($document),
-            'metadata' => $metadataFactory->getMetadataFor(get_class($document)),
+            'className' => \get_class($document),
+            'metadata' => $metadataFactory->getMetadataFor(\get_class($document)),
         ];
 
         $deleted['idField'] = current($deleted['metadata']->getIdentifier());
@@ -149,12 +158,12 @@ class SearchContentReferenced
                 $output[] = [
                     'action' => 'integrated_content_content_edit',
                     'id' => $item->getId(),
-                    'name' => method_exists($item, 'getTitle') ? $item->getTitle() : get_class($item),
+                    'name' => method_exists($item, 'getTitle') ? $item->getTitle() : \get_class($item),
                 ];
             } else {
                 $output[] = [
                     'id' => $item->getId(),
-                    'name' => get_class($item),
+                    'name' => \get_class($item),
                 ];
             }
         }

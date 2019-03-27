@@ -75,7 +75,7 @@ class VideoProvider
     }
 
     /**
-     * @param null|string $type
+     * @param string|null $type
      *
      * @return \Integrated\Common\Content\Document\Storage\Embedded\StorageInterface
      *
@@ -90,7 +90,7 @@ class VideoProvider
     }
 
     /**
-     * @param null|string $type
+     * @param string|null $type
      *
      * @return bool|string
      *
@@ -128,7 +128,7 @@ class VideoProvider
             throw new \Exception(sprintf('No video extension found for mimetype "%s"', $mimeType));
         }
 
-        $extension = is_array(self::$mimeTypes[$mimeType]) ? self::$mimeTypes[$mimeType][0] : self::$mimeTypes[$mimeType];
+        $extension = \is_array(self::$mimeTypes[$mimeType]) ? self::$mimeTypes[$mimeType][0] : self::$mimeTypes[$mimeType];
 
         //new filename should include extension (we cannot guess extension beforehand)
         $newDestination = $destination.'.'.$extension;

@@ -153,7 +153,7 @@ class LoginFormType extends AbstractType
      */
     protected function getRequest(array $options = [])
     {
-        if (array_key_exists('request', $options)) {
+        if (\array_key_exists('request', $options)) {
             return $options['request'];
         }
 
@@ -173,7 +173,7 @@ class LoginFormType extends AbstractType
      */
     protected function getTranslator(array $options = [])
     {
-        if (array_key_exists('translator', $options)) {
+        if (\array_key_exists('translator', $options)) {
             return $options['translator'] ? $options['translator'] : new IdentityTranslator(); // in case of null return a dummy
         }
 
@@ -194,7 +194,7 @@ class LoginFormType extends AbstractType
      */
     protected function getTranslationDomain(array $options = [])
     {
-        if (array_key_exists('translation_domain', $options)) {
+        if (\array_key_exists('translation_domain', $options)) {
             return $options['translation_domain'];
         }
 

@@ -82,7 +82,7 @@ class BulkController extends Controller
             return $this->redirectToRoute('integrated_content_content_index', $request->query->all());
         }
 
-        $form = $this->createForm(BulkSelectionType::class, $bulk, ['content' => array_slice($content, 0, $limit)]);
+        $form = $this->createForm(BulkSelectionType::class, $bulk, ['content' => \array_slice($content, 0, $limit)]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -129,7 +129,7 @@ class BulkController extends Controller
 
         return $this->render('IntegratedContentBundle:bulk:configure.html.twig', [
             'id' => $bulk->getId(),
-            'selection' => count($bulk->getSelection()),
+            'selection' => \count($bulk->getSelection()),
             'form' => $form->createView(),
         ]);
     }
@@ -156,7 +156,7 @@ class BulkController extends Controller
 
                 $this->dm->flush();
 
-                $this->addFlash('success', 'All bulk actions were executed successfully!');
+                $this->addFlash('success', 'All bulk actions were executed successfully. Indexing operations will be executed in the background');
 
                 return $this->redirectToRoute('integrated_content_content_index', $bulk->getFilters());
             } catch (Exception $e) {
@@ -169,7 +169,7 @@ class BulkController extends Controller
 
         return $this->render('IntegratedContentBundle:bulk:confirm.html.twig', [
             'id' => $bulk->getId(),
-            'selection' => count($bulk->getSelection()),
+            'selection' => \count($bulk->getSelection()),
             'form' => $form->createView(),
         ]);
     }

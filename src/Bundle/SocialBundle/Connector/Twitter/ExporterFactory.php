@@ -11,6 +11,7 @@
 
 namespace Integrated\Bundle\SocialBundle\Connector\Twitter;
 
+use Integrated\Bundle\PageBundle\Services\UrlResolver;
 use Integrated\Bundle\SocialBundle\Factory\TwitterFactory;
 use Integrated\Bundle\ChannelBundle\Model\ConfigInterface as ModelConfigInterface;
 use Integrated\Common\Channel\Connector\Config\ConfigInterface;
@@ -28,13 +29,19 @@ class ExporterFactory implements ExportableInterface
      * @var TwitterFactory
      */
     private $factory;
+    /**
+     * @var UrlResolver
+     */
+    private $urlResolver;
 
     /**
      * @param TwitterFactory $factory
+     * @param UrlResolver    $urlResolver
      */
-    public function __construct(TwitterFactory $factory)
+    public function __construct(TwitterFactory $factory, UrlResolver $urlResolver)
     {
         $this->factory = $factory;
+        $this->urlResolver = $urlResolver;
     }
 
     /**
@@ -58,7 +65,8 @@ class ExporterFactory implements ExportableInterface
 
         return new Exporter(
             $this->factory->createClient($options->get('token'), $options->get('token_secret')),
-            $config
+            $config,
+            $this->urlResolver
         );
     }
 }

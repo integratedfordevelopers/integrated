@@ -40,7 +40,7 @@ class Registry implements RegistryInterface
      */
     public function getAdapter($name)
     {
-        if (!is_string($name)) {
+        if (!\is_string($name)) {
             throw new UnexpectedTypeException($name, 'string');
         }
 
@@ -56,7 +56,7 @@ class Registry implements RegistryInterface
      */
     public function hasAdapter($name)
     {
-        if (!is_string($name)) {
+        if (!\is_string($name)) {
             throw new UnexpectedTypeException($name, 'string');
         }
 

@@ -123,7 +123,7 @@ class ScopeManager implements ScopeManagerInterface
     /**
      * @param $name
      *
-     * @return null|ScopeInterface
+     * @return ScopeInterface|null
      */
     public function findByName($name)
     {

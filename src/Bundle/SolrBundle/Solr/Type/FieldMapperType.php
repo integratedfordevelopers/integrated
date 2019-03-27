@@ -82,7 +82,7 @@ class FieldMapperType implements TypeInterface
         // first group the options by field name
 
         foreach ($options as $field => $value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $field = $value[$index = isset($value['name']) ? 'name' : key($value)];
                 unset($value[$index]);
             } else {
@@ -134,7 +134,7 @@ class FieldMapperType implements TypeInterface
         $result = new AppendIterator();
 
         foreach ($paths as $path) {
-            if (is_array($path)) {
+            if (\is_array($path)) {
                 $result->append(new ArrayIterator($this->readArray($data, $path)));
             } else {
                 $result->append(new ArrayIterator([$this->readString($data, $path)]));
@@ -158,13 +158,13 @@ class FieldMapperType implements TypeInterface
         // Check if there is a separator in the path config and if so extract it and then remove it
         // from the path config.
 
-        if (array_key_exists('separator', $paths) && !is_array($paths['separator'])) {
+        if (\array_key_exists('separator', $paths) && !\is_array($paths['separator'])) {
             $separator = (string) $paths['separator'];
             unset($paths['separator']);
         }
 
         foreach ($paths as $index => $path) {
-            if (is_array($path)) {
+            if (\is_array($path)) {
                 // Since $path is a array the $index with be treated as a path and the result of that
                 // path is treated as a array. If the result is not a array then it will be placed in
                 // a array to simulate that the result is a array.
@@ -172,7 +172,7 @@ class FieldMapperType implements TypeInterface
                 try {
                     $array = $this->accessor->getValue($data, (string) $index);
 
-                    if (!is_array($array) && !$array instanceof Traversable) {
+                    if (!\is_array($array) && !$array instanceof Traversable) {
                         $array = [$array];
                     }
                 } catch (ExceptionInterface $e) {
@@ -244,15 +244,15 @@ class FieldMapperType implements TypeInterface
             return $data->setTimezone($this->timezone)->format('Y-m-d\TG:i:s\Z');
         }
 
-        if (is_object($data) && !method_exists($data, '__toString')) {
+        if (\is_object($data) && !method_exists($data, '__toString')) {
             return null; // can't convert object to a string.
         }
 
-        if (is_array($data)) {
+        if (\is_array($data)) {
             return null; // can't convert a array to a string.
         }
 
-        if (is_bool($data)) {
+        if (\is_bool($data)) {
             return $data ? '1' : '0'; // would otherwise be empty if converted to a string
         }
 
@@ -273,10 +273,10 @@ class FieldMapperType implements TypeInterface
     protected function combine(array $data, $separator)
     {
         $results = array_shift($data);
-        $results = is_array($results) ? $results : [$results];
+        $results = \is_array($results) ? $results : [$results];
 
         while ($value = array_shift($data)) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $replacement = [];
 
                 foreach ($value as $array_value) {

@@ -366,7 +366,7 @@ class Article extends Content
      */
     public function getCover()
     {
-        $items = $this->getReferencesByRelationType('embedded');
+        $items = $this->getReferencesByRelationTypes(['cover', 'embedded']);
         if ($items) {
             foreach ($items as $item) {
                 if ($item instanceof FileInterface) {
@@ -385,6 +385,6 @@ class Article extends Content
      */
     public function __toString()
     {
-        return $this->title;
+        return (string) $this->title;
     }
 }

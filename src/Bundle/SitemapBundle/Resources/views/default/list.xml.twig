@@ -3,7 +3,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     {% for document in documents %}
         <url>
-            <loc>{{ url(document) }}</loc>
+            <loc>{{ absolute_url(integrated_url(document)) }}</loc>
             <lastmod>{{ document.createdAt|date("Y-m-d") }}</lastmod>
             <changefreq>weekly</changefreq>
         </url>

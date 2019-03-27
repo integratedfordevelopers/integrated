@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ContentBundle\Form\Registry;
 
 use Integrated\Common\ContentType\Form\Custom\Type;
 use Integrated\Common\ContentType\Form\Custom\Type\Registry;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
@@ -43,9 +44,16 @@ class RegistryFactory
             ->setName('Textarea')
         ;
 
+        $checkbox = new Type();
+        $checkbox
+            ->setType(CheckboxType::class)
+            ->setName('Checkbox')
+        ;
+
         $registry
             ->add($text)
             ->add($textarea)
+            ->add($checkbox)
         ;
 
         return $registry;

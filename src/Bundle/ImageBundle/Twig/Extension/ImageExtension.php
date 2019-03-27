@@ -94,7 +94,7 @@ class ImageExtension extends \Twig_Extension
                 $image = false;
             }
 
-            if (in_array($storageModel->getMetadata()->getExtension(), $this->mimicFormats)) {
+            if (\in_array($storageModel->getMetadata()->getExtension(), $this->mimicFormats)) {
                 return $this->imageMimicHandling->open($image);
             }
         }
@@ -139,9 +139,11 @@ class ImageExtension extends \Twig_Extension
                 $image = false;
             }
 
-            if (in_array($metadata->getExtension(), $this->mimicFormats)) {
+            if (\in_array($metadata->getExtension(), $this->mimicFormats)) {
                 return $this->imageMimicHandling->open($image);
             }
+        } elseif (filter_var($image, FILTER_VALIDATE_URL)) {
+            return $this->imageMimicHandling->open($image);
         }
 
         //detect json format

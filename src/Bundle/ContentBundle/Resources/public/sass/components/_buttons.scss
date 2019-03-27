@@ -2,15 +2,12 @@
 .btn {
 	box-shadow: none;
 	display: inline-block;
-	color: $color-white;
 	padding: 6px 22px;
 	text-align: center;
 	vertical-align: middle;
 	line-height: 22px;
-	border: none;
 	border-radius: 3px;
 	&:hover, &:focus {
-		color: $color-white;
 		text-decoration: none;
 	}
 	@include respond-to(phones) {
@@ -26,20 +23,26 @@
 		font-weight: $font-bold;
 	}
 	&.btn-blue {
+        color: $color-white;
 		background: $color-azure-radiance;
 		&:hover, &:focus {
+            color: $color-white;
 			background: $color-dodger-blue;
 		}
 	}
 	&.btn-blue-thin {
+        color: $color-white;
 		background: $color-danube;
 		&:hover, &:focus {
+            color: $color-white;
 			background: $color-boston-blue;
 		}
 	}
 	&.btn-gray {
+        color: $color-white;
 		background: $color-silver-chalive;
 		&:hover, &:focus {
+            color: $color-white;
 			background: darken($color-silver-chalive, 10%);
 		}
 	}
@@ -52,12 +55,11 @@
 		}
 	}
 	&.btn-orange {
+		color: $color-white;
 		background: $color-ecstasy;
 		&:hover, &:focus {
+            color: $color-white;
 			background: darken($color-ecstasy, 10%);
 		}
 	}
 }
-
-
-

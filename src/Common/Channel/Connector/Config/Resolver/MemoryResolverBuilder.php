@@ -50,13 +50,13 @@ class MemoryResolverBuilder
             $channel = $channel->getId();
         }
 
-        if ($channel !== null && !is_string($channel)) {
+        if ($channel !== null && !\is_string($channel)) {
             throw new UnexpectedTypeException($channel, 'null, string or Integrated\\Common\\Channel\\ChannelInterface');
         }
 
         $name = $config->getName();
 
-        if (!array_key_exists($name, $this->configs)) {
+        if (!\array_key_exists($name, $this->configs)) {
             $this->configs[$name] = $config;
             $this->config_channels[$name] = [];
         }

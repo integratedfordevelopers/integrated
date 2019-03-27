@@ -71,11 +71,11 @@ class BlockManager
      * @param BlockInterface|string $block
      * @param array                 $options
      *
-     * @return null|string
+     * @return string|null
      */
     public function render($block, array $options = [])
     {
-        if (is_string($block)) {
+        if (\is_string($block)) {
             $block = $this->getBlock($block);
         }
 

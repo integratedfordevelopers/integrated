@@ -13,6 +13,7 @@ namespace Integrated\Bundle\ChannelBundle\Form\Type;
 
 use Exception;
 use Integrated\Bundle\ChannelBundle\Form\DataTransformer\OptionsTransformer;
+use Integrated\Bundle\FormTypeBundle\Form\Type\DateTimeType;
 use Integrated\Common\Channel\Connector\Adapter\RegistryInterface;
 use Integrated\Common\Channel\Connector\AdapterInterface;
 use Integrated\Common\Channel\Connector\ConfigurableInterface;
@@ -54,22 +55,28 @@ class ConfigFormType extends AbstractType
         $adapter = $options['adapter'];
 
         $builder->add('name', TextType::class, [
-            'label' => 'form.config.name',
+            'label' => 'Configuration name',
             'translation_domain' => 'IntegratedChannelBundle',
         ]);
 
         $builder->add('channels', ChannelChoiceType::class, [
-            'label' => 'form.config.channels',
+            'label' => 'Channels',
             'translation_domain' => 'IntegratedChannelBundle',
             'multiple' => true,
             'expanded' => true,
+        ]);
+
+        $builder->add('publicationStartDate', DateTimeType::class, [
+            'label' => 'Publication start date',
+            'translation_domain' => 'IntegratedChannelBundle',
+            'required' => false,
         ]);
 
         if ($adapter instanceof ConfigurableInterface) {
             $child = $builder->create(
                 'options',
                 $adapter->getConfiguration()->getForm(),
-                ['label' => 'form.config.options', 'translation_domain' => 'IntegratedChannelBundle']
+                ['label' => 'Options', 'translation_domain' => 'IntegratedChannelBundle']
             );
             $child->addModelTransformer(new OptionsTransformer());
 
@@ -110,7 +117,7 @@ class ConfigFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $adapterNormalizer = function (Options $options, $adapter) {
-            if (is_string($adapter)) {
+            if (\is_string($adapter)) {
                 try {
                     $adapter = $this->registry->getAdapter($adapter);
                 } catch (Exception $e) {

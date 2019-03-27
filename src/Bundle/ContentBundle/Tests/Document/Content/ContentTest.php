@@ -170,7 +170,7 @@ abstract class ContentTest extends \PHPUnit\Framework\TestCase
     {
         foreach ($channels as $channel) {
             $this->assertContains($channel, $this->getContent()->addChannel($channel)->getChannels());
-            $this->assertCount(count($this->getContent()->getChannels()), $this->getContent()->addChannel($channel)->getChannels());
+            $this->assertCount(\count($this->getContent()->getChannels()), $this->getContent()->addChannel($channel)->getChannels());
         }
     }
 
