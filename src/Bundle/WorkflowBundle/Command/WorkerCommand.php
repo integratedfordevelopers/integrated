@@ -25,7 +25,31 @@ use Symfony\Component\Process\Process;
  */
 class WorkerCommand extends ContainerAwareCommand
 {
+    /**
+     * @var Queue|QueueInterface
+     */
+    private $queue;
+
+    /**
+     * @var string
+     */
+    private $workingDirectory;
+
     use LockableTrait;
+
+    /**
+     * @param QueueInterface               $queue
+     * @param string                       $workingDirectory
+     */
+    public function __construct(
+        QueueInterface $queue,
+        string $workingDirectory
+    ) {
+        parent::__construct();
+
+        $this->queue = $queue;
+        $this->workingDirectory = $workingDirectory;
+    }
 
     /**
      * {@inheritdoc}
@@ -57,7 +81,7 @@ The <info>%command.name%</info> .
         }
 
         try {
-            foreach ($this->getQueue()->pull($input->getOption('batch')) as $message) {
+            foreach ($this->queue->pull($input->getOption('batch')) as $message) {
                 $data = (array) $message->getPayload();
 
                 $data['command'] = isset($data['command']) ? $data['command'] : null;
@@ -108,7 +132,10 @@ The <info>%command.name%</info> .
     protected function executeCommand(InputInterface $input, OutputInterface $output, $command, array $arguments = [])
     {
         // run in a different process for isolation like memory issues.
-        $process = new Process('php bin/console '.$command.' -e '.$input->getOption('env').' '.implode(' ', $arguments), getcwd(), null, null, null);
+        $process = new Process(
+            'php bin/console '.$command.' -e '.$input->getOption('env').' '.implode(' ', $arguments),
+            $this->workingDirectory
+        );
         $process->run();
 
         $process->run(function ($type, $buffer) use ($output) {
@@ -120,11 +147,4 @@ The <info>%command.name%</info> .
         }
     }
 
-    /**
-     * @return QueueInterface
-     */
-    public function getQueue()
-    {
-        return $this->getContainer()->get('integrated_queue.workflow');
-    }
 }
