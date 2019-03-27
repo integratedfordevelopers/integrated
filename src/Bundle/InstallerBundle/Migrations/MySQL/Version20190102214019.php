@@ -16,20 +16,135 @@ final class Version20190102214019 extends AbstractMigration
             'Skipping because Integrated tables exist (this is normal when upgrading from Integrated < 0.11)'
         );
 
-        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_states (id INT AUTO_INCREMENT NOT NULL, state_id VARCHAR(36) DEFAULT NULL, content_id VARCHAR(50) NOT NULL, content_class VARCHAR(255) NOT NULL, assigned_id VARCHAR(50) DEFAULT NULL, assigned_class VARCHAR(255) DEFAULT NULL, assigned_type VARCHAR(5) DEFAULT NULL, deadline DATETIME DEFAULT NULL, INDEX IDX_10C7CD8E5D83CC1 (state_id), UNIQUE INDEX UNIQ_10C7CD8E84A0A3ED6884D4D (content_id, content_class), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_definition (id VARCHAR(36) NOT NULL, default_state_id VARCHAR(36) DEFAULT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_F51FF1ED5E237E06 (name), INDEX IDX_F51FF1ED39C0C8F (default_state_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_definition_state_permissions (group_id VARCHAR(255) NOT NULL, state_id VARCHAR(36) NOT NULL, mask INT NOT NULL, INDEX IDX_DA68BC085D83CC1 (state_id), PRIMARY KEY(group_id, state_id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_definition_states (id VARCHAR(36) NOT NULL, workflow_id VARCHAR(36) NOT NULL, name VARCHAR(255) NOT NULL, sort INT NOT NULL, publishable TINYINT(1) NOT NULL, comment INT NOT NULL, assignee INT NOT NULL, deadline INT NOT NULL, INDEX IDX_27407B632C7C2CBA (workflow_id), UNIQUE INDEX UNIQ_27407B632C7C2CBA5E237E06 (workflow_id, name), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_definition_state_transitions (state_id VARCHAR(36) NOT NULL, state_transition_id VARCHAR(36) NOT NULL, INDEX IDX_67C212215D83CC1 (state_id), INDEX IDX_67C21221B8E7AC88 (state_transition_id), PRIMARY KEY(state_id, state_transition_id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_history (id INT AUTO_INCREMENT NOT NULL, owner_id INT DEFAULT NULL, state_id VARCHAR(36) DEFAULT NULL, timestamp DATETIME NOT NULL, user_id VARCHAR(50) DEFAULT NULL, user_class VARCHAR(255) DEFAULT NULL, comment LONGTEXT DEFAULT NULL, deadline DATETIME DEFAULT NULL, INDEX IDX_25F6E6FB7E3C61F9 (owner_id), INDEX IDX_25F6E6FB5D83CC1 (state_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS security_scopes (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, admin TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_323B15255E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS security_users (id INT AUTO_INCREMENT NOT NULL, scope INT DEFAULT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, password_salt VARCHAR(255) DEFAULT NULL, email VARCHAR(255) DEFAULT NULL, locked TINYINT(1) NOT NULL, enabled TINYINT(1) NOT NULL, relation VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_F83F4643E7927C74 (email), INDEX IDX_F83F4643AF55D3 (scope), UNIQUE INDEX UNIQ_F83F4643F85E0677AF55D3 (username, scope), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS security_user_groups (user_id INT NOT NULL, group_id INT NOT NULL, INDEX IDX_B590752CA76ED395 (user_id), INDEX IDX_B590752CFE54D947 (group_id), PRIMARY KEY(user_id, group_id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS security_user_roles (user_id INT NOT NULL, role_id INT NOT NULL, INDEX IDX_942E07EAA76ED395 (user_id), INDEX IDX_942E07EAD60322AC (role_id), PRIMARY KEY(user_id, role_id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS security_roles (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, label VARCHAR(255) DEFAULT NULL, description LONGTEXT DEFAULT NULL, hidden TINYINT(1) NOT NULL, UNIQUE INDEX UNIQ_5A82CD6D5E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS security_groups (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_C682CF655E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS security_group_roles (group_id INT NOT NULL, role_id INT NOT NULL, INDEX IDX_C6BD52C1FE54D947 (group_id), INDEX IDX_C6BD52C1D60322AC (role_id), PRIMARY KEY(group_id, role_id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE IF NOT EXISTS channel_connector_config (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, adapter VARCHAR(255) NOT NULL, options LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:object)\', channels JSON NOT NULL COMMENT \'(DC2Type:json_array)\', created DATETIME NOT NULL, updated DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_states (
+            id INT AUTO_INCREMENT NOT NULL,
+            state_id VARCHAR(36) DEFAULT NULL,
+            content_id VARCHAR(50) NOT NULL,
+            content_class VARCHAR(255) NOT NULL,
+            assigned_id VARCHAR(50) DEFAULT NULL,
+            assigned_class VARCHAR(255) DEFAULT NULL,
+            assigned_type VARCHAR(5) DEFAULT NULL,
+            deadline DATETIME DEFAULT NULL,
+            INDEX IDX_10C7CD8E5D83CC1 (state_id),
+            UNIQUE INDEX UNIQ_10C7CD8E84A0A3ED6884D4D (content_id, content_class),
+            PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_definition (
+            id VARCHAR(36) NOT NULL,
+            default_state_id VARCHAR(36) DEFAULT NULL,
+            name VARCHAR(255) NOT NULL,
+            UNIQUE INDEX UNIQ_F51FF1ED5E237E06 (name),
+            INDEX IDX_F51FF1ED39C0C8F (default_state_id),
+            PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_definition_state_permissions (
+            group_id VARCHAR(255) NOT NULL,
+            state_id VARCHAR(36) NOT NULL,
+            mask INT NOT NULL,
+            INDEX IDX_DA68BC085D83CC1 (state_id),
+            PRIMARY KEY(group_id, state_id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_definition_states (
+            id VARCHAR(36) NOT NULL,
+            workflow_id VARCHAR(36) NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            sort INT NOT NULL,
+            publishable TINYINT(1) NOT NULL,
+            comment INT NOT NULL,
+            assignee INT NOT NULL,
+            deadline INT NOT NULL,
+            INDEX IDX_27407B632C7C2CBA (workflow_id),
+            UNIQUE INDEX UNIQ_27407B632C7C2CBA5E237E06 (workflow_id, name),
+            PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_definition_state_transitions (
+            state_id VARCHAR(36) NOT NULL,
+            state_transition_id VARCHAR(36) NOT NULL,
+            INDEX IDX_67C212215D83CC1 (state_id),
+            INDEX IDX_67C21221B8E7AC88 (state_transition_id),
+            PRIMARY KEY(state_id, state_transition_id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS workflow_history (
+            id INT AUTO_INCREMENT NOT NULL,
+            owner_id INT DEFAULT NULL,
+            state_id VARCHAR(36) DEFAULT NULL,
+            timestamp DATETIME NOT NULL,
+            user_id VARCHAR(50) DEFAULT NULL,
+            user_class VARCHAR(255) DEFAULT NULL,
+            comment LONGTEXT DEFAULT NULL,
+            deadline DATETIME DEFAULT NULL,
+            INDEX IDX_25F6E6FB7E3C61F9 (owner_id),
+            INDEX IDX_25F6E6FB5D83CC1 (state_id),
+            PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS security_scopes (
+            id INT AUTO_INCREMENT NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            admin TINYINT(1) NOT NULL,
+            UNIQUE INDEX UNIQ_323B15255E237E06 (name),
+            PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS security_users (
+            id INT AUTO_INCREMENT NOT NULL,
+            scope INT DEFAULT NULL,
+            username VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            password_salt VARCHAR(255) DEFAULT NULL,
+            email VARCHAR(255) DEFAULT NULL,
+            locked TINYINT(1) NOT NULL,
+            enabled TINYINT(1) NOT NULL,
+            relation VARCHAR(255) DEFAULT NULL,
+            UNIQUE INDEX UNIQ_F83F4643E7927C74 (email),
+            INDEX IDX_F83F4643AF55D3 (scope),
+            UNIQUE INDEX UNIQ_F83F4643F85E0677AF55D3 (username, scope),
+            PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS security_user_groups (
+            user_id INT NOT NULL,
+            group_id INT NOT NULL,
+            INDEX IDX_B590752CA76ED395 (user_id),
+            INDEX IDX_B590752CFE54D947 (group_id),
+            PRIMARY KEY(user_id, group_id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS security_user_roles (
+            user_id INT NOT NULL,
+            role_id INT NOT NULL,
+            INDEX IDX_942E07EAA76ED395 (user_id),
+            INDEX IDX_942E07EAD60322AC (role_id),
+            PRIMARY KEY(user_id, role_id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS security_roles (
+            id INT AUTO_INCREMENT NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            label VARCHAR(255) DEFAULT NULL,
+            description LONGTEXT DEFAULT NULL,
+            hidden TINYINT(1) NOT NULL,
+            UNIQUE INDEX UNIQ_5A82CD6D5E237E06 (name),
+            PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS security_groups (
+            id INT AUTO_INCREMENT NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            UNIQUE INDEX UNIQ_C682CF655E237E06 (name),
+            PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS security_group_roles (
+            group_id INT NOT NULL,
+            role_id INT NOT NULL,
+            INDEX IDX_C6BD52C1FE54D947 (group_id),
+            INDEX IDX_C6BD52C1D60322AC (role_id),
+            PRIMARY KEY(group_id, role_id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE IF NOT EXISTS channel_connector_config (
+            id INT AUTO_INCREMENT NOT NULL,
+            name VARCHAR(255) NOT NULL,
+            adapter VARCHAR(255) NOT NULL,
+            options LONGTEXT DEFAULT NULL COMMENT \'(DC2Type:object)\',
+            channels JSON NOT NULL COMMENT \'(DC2Type:json_array)\',
+            created DATETIME NOT NULL,
+            updated DATETIME NOT NULL,
+            PRIMARY KEY(id)
+            ) DEFAULT CHARACTER SET UTF8 COLLATE UTF8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE workflow_states ADD CONSTRAINT FK_10C7CD8E5D83CC1 FOREIGN KEY (state_id) REFERENCES workflow_definition_states (id)');
         $this->addSql('ALTER TABLE workflow_definition ADD CONSTRAINT FK_F51FF1ED39C0C8F FOREIGN KEY (default_state_id) REFERENCES workflow_definition_states (id) ON DELETE SET NULL');
         $this->addSql('ALTER TABLE workflow_definition_state_permissions ADD CONSTRAINT FK_DA68BC085D83CC1 FOREIGN KEY (state_id) REFERENCES workflow_definition_states (id) ON DELETE CASCADE');
