@@ -32,7 +32,8 @@ class StateManager
 
     /**
      * State constructor.
-     * @param EntityManager   $entityManager
+     *
+     * @param EntityManager $entityManager
      * @param DocumentManager $documentManager
      */
     public function __construct(EntityManager $entityManager, DocumentManager $documentManager)
@@ -43,6 +44,7 @@ class StateManager
 
     /**
      * @param string $contentType
+     *
      * @throws \Doctrine\ODM\MongoDB\LockException
      * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
      * @throws \Doctrine\ODM\MongoDB\MongoDBException
