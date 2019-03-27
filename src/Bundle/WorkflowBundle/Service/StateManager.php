@@ -20,7 +20,6 @@ use Integrated\Bundle\WorkflowBundle\Entity\Workflow\State;
 
 class StateManager
 {
-
     /**
      * @var EntityManager
      */

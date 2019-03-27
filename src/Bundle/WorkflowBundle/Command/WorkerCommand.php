@@ -38,8 +38,8 @@ class WorkerCommand extends ContainerAwareCommand
     use LockableTrait;
 
     /**
-     * @param QueueInterface               $queue
-     * @param string                       $workingDirectory
+     * @param QueueInterface $queue
+     * @param string         $workingDirectory
      */
     public function __construct(
         QueueInterface $queue,

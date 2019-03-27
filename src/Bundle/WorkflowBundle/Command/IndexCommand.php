@@ -39,6 +39,7 @@ class IndexCommand extends ContainerAwareCommand
 
     /**
      * IndexCommand constructor.
+     *
      * @param StateManager $stateManager
      */
     public function __construct(StateManager $stateManager)
