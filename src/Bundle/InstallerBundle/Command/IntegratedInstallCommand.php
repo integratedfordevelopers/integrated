@@ -3,7 +3,8 @@ namespace Integrated\Bundle\InstallerBundle\Command;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
-use Integrated\Bundle\InstallerBundle\Install\Migrations;
+use Integrated\Bundle\InstallerBundle\Install\MySQLMigrations;
+use Integrated\Bundle\InstallerBundle\Test\BundleTest;
 use Solarium\Client;
 use Solarium\QueryType\Select\Query\Query;
 use Symfony\Component\Console\Command\Command;
@@ -21,7 +22,7 @@ use Symfony\Component\Process\Process;
 class IntegratedInstallCommand extends Command
 {
     /**
-     * @var Migrations
+     * @var MySQLMigrations
      */
     private $migrations;
 
@@ -41,17 +42,24 @@ class IntegratedInstallCommand extends Command
     private $solrClient;
 
     /**
-     * @param EntityManager $entityManager
-     * @param DocumentManager $documentManager
-     * @param ContentProvider $contentProvider
-     * @param Migrations $migrations
+     * @var BundleTest
      */
-    public function __construct(EntityManager $entityManager, DocumentManager $documentManager, Client $solrClient, Migrations $migrations)
+    private $bundleTest;
+
+    /**
+     * @param EntityManager   $entityManager
+     * @param DocumentManager $documentManager
+     * @param Client          $solrClient
+     * @param MySQLMigrations $migrations
+     * @param BundleTest      $bundleTest
+     */
+    public function __construct(EntityManager $entityManager, DocumentManager $documentManager, Client $solrClient, MySQLMigrations $migrations, BundleTest $bundleTest)
     {
         $this->migrations = $migrations;
         $this->entityManager = $entityManager;
         $this->documentManager = $documentManager;
         $this->solrClient = $solrClient;
+        $this->bundleTest = $bundleTest;
 
         parent::__construct();
     }
@@ -90,6 +98,15 @@ class IntegratedInstallCommand extends Command
 
             $this->solrClient->execute(new Query());
             $io->success('Solr connection successful');
+
+            $bundleErrors = $this->bundleTest->execute();
+            if (count($bundleErrors) > 0) {
+                foreach ($bundleErrors as $bundleError) {
+                    $io->error($bundleError);
+                }
+            } else {
+                $io->success('Bundle test successful');
+            }
         }
 
         if (in_array('cache', $steps) || empty($steps)) {

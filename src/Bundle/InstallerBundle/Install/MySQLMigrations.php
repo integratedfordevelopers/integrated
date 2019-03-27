@@ -7,7 +7,7 @@ use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class Migrations
+class MySQLMigrations
 {
     const DOCTRINE_MIGRATIONS_DIRECTORY = '/../Migrations/MySQL';
     const DOCTRINE_MIGRATIONS_NAMESPACE = 'Integrated\Bundle\InstallerBundle\Migrations\MySQL';
@@ -20,6 +20,9 @@ class Migrations
 
     /**
      * Migrations constructor.
+     *
+     * @param EntityManager      $entityManager
+     * @param ContainerInterface $container
      */
     public function __construct(EntityManager $entityManager, ContainerInterface $container)
     {
@@ -27,6 +30,9 @@ class Migrations
         $this->container = $container;
     }
 
+    /**
+     * @throws \Doctrine\DBAL\Migrations\MigrationException
+     */
     public function execute()
     {
         $container = $this->container;
@@ -49,6 +55,6 @@ class Migrations
         }
 
         $migration = new Migration($configuration);
-        $migrated = $migration->migrate();
+        $migration->migrate();
     }
 }
