@@ -33,7 +33,7 @@ class StateManager
     /**
      * State constructor.
      *
-     * @param EntityManager $entityManager
+     * @param EntityManager   $entityManager
      * @param DocumentManager $documentManager
      */
     public function __construct(EntityManager $entityManager, DocumentManager $documentManager)
