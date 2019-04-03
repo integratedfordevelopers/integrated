@@ -55,33 +55,37 @@ class StateManager
     {
         $contentType = $this->documentManager->getRepository(ContentType::class)->find($contentType);
 
-        if ($contentType && $contentType->hasOption('workflow')) {
-            $workflow = $this->entityManager->getRepository(Definition::class)->find($contentType->getOption('workflow'));
-            if ($workflow) {
-                $defaultState = $workflow->getDefault();
+        if (!$contentType || !$contentType->hasOption('workflow')) {
+            return;
+        }
 
-                $contentIds = $this->documentManager->createQueryBuilder(Content::class)
-                    ->select('_id', 'class')
-                    ->field('contentType')->equals($contentType->getId())
-                    ->hydrate(false)
-                    ->getQuery()
-                    ->execute();
-                foreach ($contentIds as $content) {
-                    $state = $this->entityManager->getRepository(State::class)->findOneBy(['content_id' => $content['_id'], 'content_class' => $content['class']]);
-                    if (!$state) {
-                        $content = $this->documentManager->getRepository(Content::class)->find($content['_id']);
+        $workflow = $this->entityManager->getRepository(Definition::class)->find($contentType->getOption('workflow'));
+        if (!$workflow) {
+            return;
+        }
 
-                        //is disabled field state same as published state? we don't want to change the disabled state without an item review
-                        if ($content->isDisabled() != $defaultState->isPublishable()) {
-                            //explicitly assign new state to article
-                            $state = new State();
-                            $state->setContent($content);
-                            $state->setState($defaultState);
+        $defaultState = $workflow->getDefault();
 
-                            $this->entityManager->persist($state);
-                            $this->entityManager->flush();
-                        }
-                    }
+        $contentIds = $this->documentManager->createQueryBuilder(Content::class)
+            ->select('_id', 'class')
+            ->field('contentType')->equals($contentType->getId())
+            ->hydrate(false)
+            ->getQuery()
+            ->execute();
+
+        foreach ($contentIds as $content) {
+            if (!$this->entityManager->getRepository(State::class)->findOneBy(['content_id' => $content['_id'], 'content_class' => $content['class']])) {
+                $content = $this->documentManager->getRepository(Content::class)->find($content['_id']);
+
+                //is disabled field state same as published state? we don't want to change the disabled state without an item review
+                if ($content->isDisabled() != $defaultState->isPublishable()) {
+                    //explicitly assign new state to article
+                    $state = new State();
+                    $state->setContent($content);
+                    $state->setState($defaultState);
+
+                    $this->entityManager->persist($state);
+                    $this->entityManager->flush();
                 }
             }
         }

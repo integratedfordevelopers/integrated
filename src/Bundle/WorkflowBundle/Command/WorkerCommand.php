@@ -26,7 +26,7 @@ use Symfony\Component\Process\Process;
 class WorkerCommand extends ContainerAwareCommand
 {
     /**
-     * @var Queue|QueueInterface
+     * @var QueueInterface
      */
     private $queue;
 
