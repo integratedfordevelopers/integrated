@@ -194,7 +194,7 @@ class BlockExtension extends \Twig_Extension
 
         $content = $this->renderBlock($environment, $block, $options);
 
-        return $environment->render($this->themeManager->locateTemplate('blocks/channelBlock.html.twig'), [
+        return $environment->render($this->themeManager->locateTemplate('blocks/channel.html.twig'), [
             'id' => $id,
             'content' => $content,
         ]);

@@ -130,10 +130,12 @@ class BlockController extends Controller
      */
     public function newChannelBlockAction(Request $request)
     {
-        $crlfToken = $request->request->get('csrf_token');
+        $csrfToken = $request->request->get('csrf_token');
 
-        if ((!$this->isGranted('ROLE_WEBSITE_MANAGER') && !$this->isGranted('ROLE_ADMIN'))
-            || !$this->isCsrfTokenValid('create-channel-block', $crlfToken)) {
+        if (!(
+            ($this->isGranted('ROLE_WEBSITE_MANAGER') || $this->isGranted('ROLE_ADMIN'))
+            && $this->isCsrfTokenValid('create-channel-block', $csrfToken))
+        ) {
             throw $this->createAccessDeniedException();
         }
 
@@ -141,18 +143,15 @@ class BlockController extends Controller
         $id = $request->request->get('id');
         $name = $request->request->get('name');
 
-        $block = class_exists($class) ? new $class() : null;
+        $block = class_exists($class) ? new $class($id) : null;
 
-        if (!$block instanceof BlockInterface) {
+        if (!$block instanceof Block) {
             throw $this->createNotFoundException(sprintf('Invalid block "%s"', $class));
         }
 
-        $block->setTitle($id);
+        $block->setTitle($name);
         $block->setLayout('default.html.twig');
         $this->getDocumentManager()->persist($block);
-        $this->getDocumentManager()->flush();
-
-        $block->setTitle($name);
         $this->getDocumentManager()->flush();
 
         return new JsonResponse(['result' => 'ok']);

@@ -30,7 +30,7 @@
      * @param {jQuery} $element
      */
     var initChannelBlockGrid = function($element) {
-        $('[data-block-type="channel-block"]', $element).each(function () {
+        $('[data-block-type="channel"]', $element).each(function () {
             $(this).prepend(createChannelBlockButtons());
         });
     };
@@ -59,7 +59,7 @@
             dataType: 'json',
             success: function(data) {
                 $block.html(data.html);
-                if ($block.data('block-type') == 'channel-block') {
+                if ($block.data('block-type') == 'channel') {
                     $block.prepend(createChannelBlockButtons());
                 } else {
                     $block.prepend(createBlockButtons());
@@ -193,7 +193,7 @@
 
         $blockTarget = null;
 
-        var blockId = $(this).closest('[data-block-type="block"],[data-block-type="channel-block"]').data('id');
+        var blockId = $(this).closest('[data-block-type="block"],[data-block-type="channel"]').data('id');
         createIframe(Routing.generate('integrated_block_block_edit', { 'id': blockId, '_format': 'iframe.html'}), 'Edit block');
     });
 
