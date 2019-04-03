@@ -12,6 +12,7 @@
 namespace Integrated\Bundle\ContentBundle\Controller;
 
 use Braincrafted\Bundle\BootstrapBundle\Form\Type\FormActionsType;
+use Integrated\Bundle\ContentBundle\Doctrine\ContentTypeManager;
 use Integrated\Bundle\ContentBundle\Document\ContentType\ContentType;
 use Integrated\Bundle\ContentBundle\Form\Type\ContentTypeFormType;
 use Integrated\Bundle\ContentBundle\Form\Type\DeleteFormType;
@@ -47,11 +48,11 @@ class ContentTypeController extends Controller
      *
      * @return Response
      */
-    public function indexAction()
+    public function indexAction(ContentTypeManager $contentTypeManager)
     {
         $this->denyAccessUnlessGranted(['ROLE_ADMIN']);
 
-        $documents = $this->get('integrated_content.content_type.manager')->getAll();
+        $documents = $contentTypeManager->getAll();
         $documentTypes = $this->getMetadata()->getAllMetadata();
 
         return $this->render('IntegratedContentBundle:content_type:index.html.twig', [
@@ -222,9 +223,12 @@ class ContentTypeController extends Controller
 
             // Set flash message
             $this->get('braincrafted_bootstrap.flash')->success('Item deleted');
+            return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
         }
-
-        return $this->redirect($this->generateUrl('integrated_content_content_type_index'));
+        return $this->render('IntegratedContentBundle:content_type:delete.html.twig', [
+            'contentType' => $contentType,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
